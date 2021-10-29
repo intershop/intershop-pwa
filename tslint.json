@@ -341,7 +341,7 @@
           "from": "lodash.*"
         },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick)$).*",
+          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick|differenceBy)$).*",
           "from": "lodash.*",
           "filePattern": "^(?!.*.spec.ts$).*.ts$"
         },

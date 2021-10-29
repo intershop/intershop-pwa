@@ -134,6 +134,22 @@ describe('Price Helper', () => {
       expect(emptyPrice.value).toEqual(0);
     });
   });
+
+  describe('getPrice', () => {
+    it('should return a price for a given currency and value', () => {
+      const price = PriceHelper.getPrice('USD', 9000);
+      expect(price.currency).toEqual('USD');
+      expect(price.value).toEqual(9000);
+    });
+
+    it('should throw an error if no currency is given', () => {
+      expect(() => PriceHelper.getPrice(undefined, 9000)).toThrowError('getPrice cannot handle undefined currency');
+    });
+
+    it('should throw an error if no value is given', () => {
+      expect(() => PriceHelper.getPrice('USD', undefined)).toThrowError('getPrice cannot handle undefined value');
+    });
+  });
 });
 
 describe('Price Helper', () => {

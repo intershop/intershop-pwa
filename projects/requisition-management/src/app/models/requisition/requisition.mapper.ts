@@ -50,6 +50,7 @@ export class RequisitionMapper {
                   : 'PENDING',
             },
           },
+          systemRejected: data.systemRejected,
         };
       } else {
         throw new Error(`requisitionData is required`);

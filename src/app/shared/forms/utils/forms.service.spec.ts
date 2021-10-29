@@ -5,6 +5,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 import { FormsService } from './forms.service';
 
@@ -58,7 +59,7 @@ describe('Forms Service', () => {
           { id: '12345', firstName: 'Patricia', lastName: 'Miller', addressLine1: 'Potsdamer Str.', city: 'Berlin' },
           { id: '67890', firstName: 'Bernhard', lastName: 'Boldner', addressLine1: 'Berliner Str.', city: 'Hamburg' },
         ] as Address[])
-      ).subscribe(options => {
+      ).subscribe((options: SelectOption[]) => {
         expect(options).toMatchInlineSnapshot(`
           Array [
             Object {
@@ -73,6 +74,12 @@ describe('Forms Service', () => {
         `);
         done();
       });
+    });
+  });
+
+  describe('getCostCenterBudgetPeriodOptions', () => {
+    it('should return budget period options if called', () => {
+      expect(FormsService.getCostCenterBudgetPeriodOptions()).toHaveLength(4);
     });
   });
 });

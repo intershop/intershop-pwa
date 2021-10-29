@@ -9,6 +9,7 @@ const localizationFile_default = 'src/assets/i18n/en_US.json';
 // ADDITIONAL PATTERNS HAVE TO BE ADDED HERE
 const regExps = [
   /^account\.login\..*\.message/i,
+  /^subject.*/i,
   /.*budget.period..*/i,
   /.*\.error.*/i,
   /^locale\..*/i,

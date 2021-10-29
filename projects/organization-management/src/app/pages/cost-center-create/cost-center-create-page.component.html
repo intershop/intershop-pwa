@@ -1,0 +1,22 @@
+<h1>{{ 'account.costcenter.create.heading' | translate }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
+  <ish-cost-center-form [form]="form"></ish-cost-center-form>
+  <div class="row">
+    <div class="offset-md-4 col-md-8">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="formDisabled"
+        data-testing-id="create-cost-center-submit"
+      >
+        {{ 'account.costcenter.create.button.label' | translate }}
+      </button>
+      <a routerLink="../" class="btn btn-secondary" data-testing-id="create-cost-center-cancel">{{
+        'account.cancel.link' | translate
+      }}</a>
+    </div>
+  </div>
+</form>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

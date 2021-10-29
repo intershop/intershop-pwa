@@ -1,0 +1,165 @@
+<h1>
+  {{ 'account.organization.cost_center_management' | translate }}
+  <a *ngIf="!(error$ | async)" routerLink="create" class="btn btn-secondary" data-testing-id="add-cost-center-link">{{
+    'account.costcenter.list.link.add' | translate
+  }}</a>
+</h1>
+
+<div class="loading-container">
+  <ng-container *ngIf="costCenters$ | async as costCenters">
+    <ng-container *ngIf="costCenters.length > 0; else emptyList">
+      <table
+        cdk-table
+        [dataSource]="costCenters"
+        class="table table-lg mobile-optimized"
+        data-testing-id="costCenter-list"
+      >
+        <!-- Cost Center Id -->
+        <ng-container cdkColumnDef="costCenterId">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-id">
+            {{ 'account.costcenter.list.header.no' | translate }}
+          </th>
+          <td cdk-cell *cdkCellDef="let costCenter" [attr.data-label]="'account.costcenter.list.header.no' | translate">
+            <a [routerLink]="[costCenter.id]">{{ costCenter.costCenterId }}</a
+            ><span *ngIf="costCenter.active === false" class="input-help">
+              {{ 'account.costCenter.status.inactive' | translate }}</span
+            >
+          </td>
+        </ng-container>
+
+        <!-- Cost Center Name -->
+        <ng-container cdkColumnDef="costCenterName">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-name">
+            {{ 'account.costcenter.list.header.name' | translate }}
+          </th>
+          <td
+            cdk-cell
+            *cdkCellDef="let costCenter"
+            [attr.data-label]="'account.costcenter.list.header.name' | translate"
+          >
+            <a [routerLink]="[costCenter.id]">{{ costCenter.name }}</a>
+          </td>
+        </ng-container>
+
+        <!-- Cost Center Manager -->
+        <ng-container cdkColumnDef="costCenterManager">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-manager">
+            {{ 'account.costcenter.list.header.manager' | translate }}
+          </th>
+          <td
+            cdk-cell
+            *cdkCellDef="let costCenter"
+            [attr.data-label]="'account.costcenter.list.header.manager' | translate"
+          >
+            {{ costCenter.costCenterOwner.firstName }} {{ costCenter.costCenterOwner.lastName }}
+          </td>
+        </ng-container>
+
+        <!-- Cost Center Budget -->
+        <ng-container cdkColumnDef="costCenterBudget">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-budget">
+            {{ 'account.costcenter.list.header.budgetspent' | translate }}
+          </th>
+          <td
+            cdk-cell
+            *cdkCellDef="let costCenter"
+            [attr.data-label]="'account.costcenter.list.header.budgetspent' | translate"
+          >
+            <ish-cost-center-budget [costCenter]="costCenter"></ish-cost-center-budget>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container cdkColumnDef="actions">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-actions"></th>
+          <td cdk-cell *cdkCellDef="let costCenter" class="column-price">
+            <ng-container *ngIf="isDeletable(costCenter) | async">
+              <!-- Deactivate -->
+              <a
+                *ngIf="costCenter.active; else activateCostCenter"
+                class="btn-tool"
+                title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
+                (click)="openConfirmationDialog(costCenter, deactivateDialog)"
+                data-testing-id="deactivate-cost-center"
+                ><fa-icon [icon]="['fas', 'ban']"></fa-icon
+              ></a>
+
+              <!-- Activate -->
+              <ng-template #activateCostCenter>
+                <a
+                  class="btn-tool"
+                  title="{{ 'account.costcenter.activate.button.title' | translate }}"
+                  (click)="activate(costCenter)"
+                  data-testing-id="activate-cost-center"
+                  ><fa-icon [icon]="['fas', 'check-circle']"></fa-icon
+                ></a>
+              </ng-template>
+
+              <!-- Delete -->
+              <a
+                *ngIf="!(costCenter.pendingOrders + costCenter.approvedOrders); else deleteButtonDisabled"
+                class="btn-tool"
+                title="{{ 'account.costcenter.delete.link' | translate }}"
+                (click)="openConfirmationDialog(costCenter, deleteDialog)"
+                data-testing-id="delete-cost-center"
+                ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
+              ></a>
+              <ng-template #deleteButtonDisabled>
+                <span class="btn-tool inactive" title="{{ 'account.costcenter.delete.disabled.icon' | translate }}">
+                  <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+                </span>
+              </ng-template>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Declarations -->
+        <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+        <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+      </table>
+    </ng-container>
+
+    <!-- Empty List -->
+    <ng-template #emptyList>
+      <p data-testing-id="emptyList">{{ 'account.costcenter.list.noitems' | translate }}</p>
+    </ng-template>
+  </ng-container>
+
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>
+
+<!--  dialogs -->
+<ish-modal-dialog
+  #deleteDialog
+  [options]="{
+    confirmText: 'account.costcenter.delete.button.label' | translate,
+    rejectText: 'account.cancel.button.label' | translate,
+    titleText: 'account.costcenter.delete_dialog.header' | translate: { '0': selectedCostCenter?.name }
+  }"
+  (confirmed)="delete()"
+>
+  {{ 'account.costcenter.delete.question' | translate }}
+</ish-modal-dialog>
+
+<ish-modal-dialog
+  #deactivateDialog
+  [options]="{
+    confirmText: 'account.costcenter.deactivate.button.label' | translate,
+    rejectText: 'account.cancel.button.label' | translate,
+    titleText: 'account.costcenter.deactivate_dialog.header' | translate: { '0': selectedCostCenter?.name }
+  }"
+  (confirmed)="deactivate()"
+>
+  <p *ngIf="selectedCostCenter?.pendingOrders || selectedCostCenter?.approvedOrders">
+    {{
+      'account.costcenter.deactivate.text'
+        | translate
+          : {
+              '0': selectedCostCenter?.pendingOrders,
+              '1': selectedCostCenter.approvedOrders,
+              '2': selectedCostCenter?.name
+            }
+    }}
+  </p>
+  {{ 'account.costcenter.deactivate.question' | translate }}
+</ish-modal-dialog>

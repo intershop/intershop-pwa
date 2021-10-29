@@ -55,10 +55,18 @@ describe('Order List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display empty list text if there are no orders', () => {
+  it('should display empty list with user related text if there are no orders from store', () => {
     when(accountFacade.orders$()).thenReturn(of([]));
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=emptyList]')).toBeTruthy();
+    expect(component.noOrdersMessageKey).toBe('account.orderlist.no_placed_orders_message');
+  });
+
+  it('should display empty list with default text if there are no orders as component orders input', () => {
+    component.orders = [];
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=emptyList]')).toBeTruthy();
+    expect(component.noOrdersMessageKey).toBe('account.orderlist.no_orders_message');
   });
 
   it('should display loading overlay if orders are loading', () => {
@@ -67,13 +75,25 @@ describe('Order List Component', () => {
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
-  it('should display a list if there are orders', () => {
+  it('should display a list if there are orders in store', () => {
     when(accountFacade.orders$()).thenReturn(of(orders));
     fixture.detectChanges();
 
     expect(element.querySelector('table.cdk-table')).toBeTruthy();
     expect(element.querySelectorAll('table tr.cdk-row')).toHaveLength(2);
     expect(element.querySelector('ish-address')).toBeTruthy();
+  });
+
+  it('should display a list if there are orders provided as input parameter', () => {
+    component.orders = [
+      { id: '00123', documentNo: '123', totals: {} },
+      { id: '00124', documentNo: '124', totals: {} },
+      { id: '00125', documentNo: '125', totals: {} },
+    ] as Order[];
+    fixture.detectChanges();
+
+    expect(element.querySelector('table.cdk-table')).toBeTruthy();
+    expect(element.querySelectorAll('table tr.cdk-row')).toHaveLength(3);
   });
 
   it('should display a certain number of items if maxItemsCount is set', () => {
@@ -83,7 +103,7 @@ describe('Order List Component', () => {
     expect(element.querySelectorAll('table tr.cdk-row')).toHaveLength(1);
   });
 
-  it('should not display addresses if compact is set to true', () => {
+  it('should not display addresses if only creationDate is required to show', () => {
     when(accountFacade.orders$()).thenReturn(of(orders));
     component.columnsToDisplay = ['creationDate'];
     fixture.detectChanges();

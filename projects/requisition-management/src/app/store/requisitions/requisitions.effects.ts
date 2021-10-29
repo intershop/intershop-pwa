@@ -104,4 +104,20 @@ export class RequisitionsEffects {
       )
     )
   );
+
+  /**
+   * In case the requisition (status) update failed because the requisition is invalid
+   * and rejected by system the user is navigated to the requisition overview page
+   */
+  redirectAfterUpdateRequisitionStatusFail$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateRequisitionStatusFail),
+        mapToPayloadProperty('error'),
+        concatMap(error =>
+          error.status === 422 ? this.router.navigate([`/account/requisitions/approver`]) : undefined
+        )
+      ),
+    { dispatch: false }
+  );
 }

@@ -24,6 +24,8 @@ export class OrganizationManagementBreadcrumbService {
       switchMap(([, path]) => {
         if (path.endsWith('users')) {
           return of([{ key: 'account.organization.user_management' }]);
+        } else if (path.endsWith('cost-centers')) {
+          return of([{ key: 'account.organization.cost_center_management' }]);
         } else if (path.endsWith('users/create')) {
           return of([
             { key: 'account.organization.user_management', link: prefix + '/users' },
@@ -50,6 +52,32 @@ export class OrganizationManagementBreadcrumbService {
                   [
                     { key: 'account.organization.user_management', link: prefix + '/users' },
                     { text: translation + ` - ${user.firstName} ${user.lastName}` },
+                  ]
+            )
+          );
+        } else if (path.endsWith('cost-centers/create')) {
+          return of([
+            { key: 'account.organization.cost_center_management', link: prefix + '/cost-centers' },
+            { key: 'account.costcenter.create.heading' },
+          ]);
+        } else if (/cost-centers\/:CostCenterId(\/(edit|buyers))?$/.test(path)) {
+          return this.organizationManagementFacade.selectedCostCenter$.pipe(
+            whenTruthy(),
+            map(cc =>
+              path.endsWith('edit') || path.endsWith('buyers')
+                ? [
+                    { key: 'account.organization.cost_center_management', link: prefix + '/cost-centers' },
+                    {
+                      text: `${cc.name}`,
+                      link: `${prefix}/cost-centers/${cc.id}`,
+                    },
+                    {
+                      key: `account.costcenter.details.${path.substr(path.lastIndexOf('/') + 1)}.heading`,
+                    },
+                  ]
+                : [
+                    { key: 'account.organization.cost_center_management', link: prefix + '/cost-centers' },
+                    { text: cc.name },
                   ]
             )
           );

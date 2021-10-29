@@ -14,6 +14,7 @@ export const environment: Environment = {
     'rating',
     'advancedVariationHandling',
     'businessCustomerRegistration',
+    'costCenters',
     'quoting',
     'quickorder',
     'orderTemplates',

@@ -84,8 +84,8 @@ describe('Requisition Summary Component', () => {
             badge-warning
           "
         >
-          Approval Pending</span
-        >
+          Approval Pending
+        </span>
       </dd>,
       ]
     `);
@@ -111,8 +111,8 @@ describe('Requisition Summary Component', () => {
             badge-warning
           "
         >
-          Approval Pending</span
-        >
+          Approval Pending
+        </span>
       </dd>,
       ]
     `);

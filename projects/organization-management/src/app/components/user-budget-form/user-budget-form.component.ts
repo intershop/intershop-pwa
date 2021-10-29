@@ -1,4 +1,3 @@
-import { getCurrencySymbol } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -30,7 +29,6 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
   fields: FormlyFieldConfig[];
   model: UserBudgetModel;
 
-  currentLocale: string;
   currentCurrency: string;
 
   periods = ['weekly', 'monthly', 'quarterly'];
@@ -43,11 +41,6 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
     if (!this.form) {
       throw new Error('required input parameter <form> is missing for UserBudgetFormComponent');
     }
-
-    // determine current locale
-    this.appFacade.currentLocale$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(locale => {
-      this.currentLocale = locale;
-    });
 
     // determine current currency
     this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(currency => {
@@ -92,8 +85,9 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
             templateOptions: {
               postWrappers: [{ wrapper: 'input-addon', index: -1 }],
               label: 'account.user.new.order_spend_limit.label',
+              placeholder: 'account.budget.unlimited',
               addonLeft: {
-                text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale),
+                text: this.appFacade.currencySymbol$(this.model.currency),
               },
             },
             validators: {
@@ -117,8 +111,9 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
                   labelClass: 'col-md-6',
                   fieldClass: 'col-md-6 pr-0',
                   label: 'account.user.budget.label',
+                  placeholder: 'account.budget.unlimited',
                   addonLeft: {
-                    text: getCurrencySymbol(this.model.currency, 'wide', this.currentLocale),
+                    text: this.appFacade.currencySymbol$(this.model.currency),
                   },
                 },
                 validators: {
