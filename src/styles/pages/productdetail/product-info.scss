@@ -1,5 +1,3 @@
-@use 'sass:math';
-
 .product-title {
   font-family: $font-family-condensedbold;
   font-size: 16px;
@@ -16,7 +14,7 @@ a.product-title {
   color: $text-color-quarternary;
 
   label {
-    padding-right: math.div($space-default, 3);
+    padding-right: divide($space-default, 3);
   }
 }
 
@@ -83,7 +81,7 @@ a.product-title {
 
     &.read-only {
       label {
-        padding-right: math.div($space-default, 3);
+        padding-right: divide($space-default, 3);
       }
     }
 
@@ -95,7 +93,7 @@ a.product-title {
 
   .product-variation {
     .form-group {
-      margin-bottom: math.div($space-default, 3);
+      margin-bottom: divide($space-default, 3);
 
       label {
         padding-top: 0;
@@ -192,11 +190,11 @@ a.product-title {
 }
 
 .product-end-of-live-status {
-  padding-bottom: math.div($space-default, 3);
+  padding-bottom: divide($space-default, 3);
 }
 
 .product-lifecycle-status {
-  padding-bottom: math.div($space-default, 3);
+  padding-bottom: divide($space-default, 3);
   color: $text-color-special;
 
   span {

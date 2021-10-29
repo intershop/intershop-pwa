@@ -1,5 +1,3 @@
-@use 'sass:math';
-
 .ng-fa-icon {
   line-height: 1;
 }
@@ -10,7 +8,7 @@
   }
 
   & ~ .btn-tool {
-    margin-left: math.div($space-default * 2, 3);
+    margin-left: divide($space-default * 2, 3);
   }
 }
 
@@ -26,7 +24,7 @@
 
       & ~ .btn-tool {
         margin-top: 7.5px;
-        margin-left: math.div($space-default * 2, 3);
+        margin-left: divide($space-default * 2, 3);
       }
     }
   }

@@ -1,11 +1,9 @@
 //
 // ACCOUNT NAVIGATION
 
-@use 'sass:math';
-
 .account-navigation {
   li {
-    padding: math.div($space-default * 2, 3) math.div($space-default * 2, 3) ($space-default * 0.5);
+    padding: divide($space-default * 2, 3) divide($space-default * 2, 3) ($space-default * 0.5);
     background: $color-tertiary;
     border: $border-width-default solid $border-color-lighter;
     border-width: 0 1px 1px 1px;

@@ -1,8 +1,6 @@
 //
 // HOMEPAGE
 
-@use 'sass:math';
-
 .homepage {
   header {
     margin-bottom: 0;
@@ -58,7 +56,7 @@
   margin-top: $space-default;
 
   p {
-    margin-bottom: math.div($space-default, 3);
+    margin-bottom: divide($space-default, 3);
     font-family: $font-family-condensedbold;
     font-size: $font-size-lg;
     text-transform: uppercase;
