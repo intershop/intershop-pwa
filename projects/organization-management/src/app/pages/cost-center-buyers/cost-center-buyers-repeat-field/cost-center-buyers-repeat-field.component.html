@@ -1,0 +1,3 @@
+<div *ngFor="let field of field?.fieldGroup; let i = index" class="row" [attr.data-testing-id]="'buyers-line-' + i">
+  <formly-field class="col-12" [field]="field"></formly-field>
+</div>

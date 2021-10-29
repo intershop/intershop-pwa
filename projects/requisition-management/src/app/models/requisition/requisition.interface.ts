@@ -29,6 +29,7 @@ export interface RequisitionBaseData extends BasketBaseData {
 
   approvalStatus: RequisitionApproval;
   approvalStatuses?: { approvalDate: number; approver: BasketApprover; statusCode: string }[];
+  systemRejected?: boolean;
 }
 
 export interface RequisitionData {

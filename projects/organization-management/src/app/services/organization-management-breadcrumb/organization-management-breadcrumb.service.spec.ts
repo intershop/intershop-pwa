@@ -5,10 +5,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 import { routes } from '../../pages/organization-management-routing.module';
+import { loadCostCenterSuccess } from '../../store/cost-centers';
 import { OrganizationManagementStoreModule } from '../../store/organization-management-store.module';
 import { loadUserSuccess } from '../../store/users';
 
@@ -34,8 +38,10 @@ describe('Organization Management Breadcrumb Service', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS', 'APP_B2B_MANAGE_COSTCENTER'),
         CoreStoreModule.forTesting(['router', 'configuration']),
-        OrganizationManagementStoreModule.forTesting('users'),
+        FeatureToggleModule.forTesting('costCenters'),
+        OrganizationManagementStoreModule.forTesting('users', 'costCenters'),
         RouterTestingModule.withRoutes([
           ...adaptRoutes(routes, DummyComponent),
           { path: '**', component: DummyComponent },
@@ -186,6 +192,116 @@ describe('Organization Management Breadcrumb Service', () => {
               },
               Object {
                 "key": "account.user.update_budget.heading",
+              },
+            ]
+          `);
+          done();
+        });
+      });
+    });
+
+    describe('cost center management routes', () => {
+      it('should set breadcrumb for cost centers list view', done => {
+        router.navigateByUrl('/cost-centers');
+
+        organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+          expect(breadcrumbData).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "key": "account.organization.cost_center_management",
+              },
+            ]
+          `);
+          done();
+        });
+      });
+
+      it('should set breadcrumb for cost center create page', done => {
+        router.navigateByUrl('/cost-centers/create');
+
+        organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+          expect(breadcrumbData).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "key": "account.organization.cost_center_management",
+                "link": "/my-account/cost-centers",
+              },
+              Object {
+                "key": "account.costcenter.create.heading",
+              },
+            ]
+          `);
+          done();
+        });
+      });
+
+      it('should set breadcrumb for cost center detail page', done => {
+        store$.dispatch(
+          loadCostCenterSuccess({ costCenter: { id: '1', costCenterId: '100400', name: 'Marketing' } as CostCenter })
+        );
+        router.navigateByUrl('/cost-centers/1');
+
+        organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+          expect(breadcrumbData).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "key": "account.organization.cost_center_management",
+                "link": "/my-account/cost-centers",
+              },
+              Object {
+                "text": "Marketing",
+              },
+            ]
+          `);
+          done();
+        });
+      });
+
+      it('should set breadcrumb for cost center edit page', done => {
+        store$.dispatch(
+          loadCostCenterSuccess({ costCenter: { id: '1', costCenterId: '100400', name: 'Marketing' } as CostCenter })
+        );
+        router.navigateByUrl('/cost-centers/1/edit');
+
+        organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+          expect(breadcrumbData).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "key": "account.organization.cost_center_management",
+                "link": "/my-account/cost-centers",
+              },
+              Object {
+                "link": "/my-account/cost-centers/1",
+                "text": "Marketing",
+              },
+              Object {
+                "key": "account.costcenter.details.edit.heading",
+              },
+            ]
+          `);
+          done();
+        });
+      });
+
+      it('should set breadcrumb for cost center buyers page', done => {
+        store$.dispatch(
+          loadCostCenterSuccess({ costCenter: { id: '1', costCenterId: '100400', name: 'Marketing' } as CostCenter })
+        );
+        router.navigateByUrl('/cost-centers/1/buyers');
+
+        organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+          expect(breadcrumbData).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "key": "account.organization.cost_center_management",
+                "link": "/my-account/cost-centers",
+              },
+              Object {
+                "link": "/my-account/cost-centers/1",
+                "text": "Marketing",
+              },
+              Object {
+                "key": "account.costcenter.details.buyers.heading",
               },
             ]
           `);

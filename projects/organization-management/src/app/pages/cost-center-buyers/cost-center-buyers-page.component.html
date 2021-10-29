@@ -1,0 +1,55 @@
+<h1>{{ 'account.costcenter.details.buyers.heading' | translate }}</h1>
+
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<ng-container *ngIf="buyers$ | async as buyers; else emptyList">
+  <div *ngIf="buyers.length; else emptyList">
+    <div class="container">
+      <div class="row list-header d-none d-md-flex">
+        <div class="col-md-2 list-header-item no-seperator">
+          <a (click)="toggleItemSelection()">
+            <ng-container *ngIf="selectAll; else clearAll">{{
+              'account.costcenter.details.buyers.list.header.selectall' | translate
+            }}</ng-container>
+            <ng-template #clearAll>{{
+              'account.costcenter.details.buyers.list.header.clearall' | translate
+            }}</ng-template>
+          </a>
+        </div>
+        <div class="col-md-3 list-header-item no-seperator">
+          {{ 'account.costcenter.details.buyers.list.header.name' | translate }}
+        </div>
+        <div class="col-md-7 list-header-item no-seperator">
+          {{ 'account.costcenter.details.buyers.list.header.orderspendlimit' | translate }}
+        </div>
+      </div>
+
+      <form (ngSubmit)="submitForm()" [formGroup]="form">
+        <div class="list-body">
+          <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1"></formly-form>
+        </div>
+        <div class="row justify-content-end">
+          <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="add-buyers-submit">
+            {{ 'account.costcenter.details.buyers.action.add' | translate }}
+          </button>
+          <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
+            'account.cancel.link' | translate
+          }}</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-container>
+<ng-template #emptyList>
+  <p *ngIf="!(error$ | async)" data-testing-id="empty-buyer-list">
+    {{ 'account.costcenter.details.add.buyers.list.empty' | translate }}
+  </p>
+
+  <div class="section text-right">
+    <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
+      'account.cancel.link' | translate
+    }}</a>
+  </div>
+</ng-template>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

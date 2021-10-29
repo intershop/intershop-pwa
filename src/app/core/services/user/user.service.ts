@@ -305,12 +305,13 @@ export class UserService {
   }
 
   /**
-   * Get cost center data of a business customer for a given cost center uuid. The logged in user needs permission APP_B2B_VIEW_COSTCENTER.
+   * Get cost center data of a business customer for a given cost center uuid/costCenterId. The logged in user needs permission APP_B2B_VIEW_COSTCENTER.
+   * @param   The Id or costCenterId of the cost center
    * @returns The related cost center.
    */
   getCostCenter(id: string): Observable<CostCenter> {
     if (!id) {
-      return throwError('getCostCenter() called without uuid');
+      return throwError('getCostCenter() called without id');
     }
 
     return combineLatest([

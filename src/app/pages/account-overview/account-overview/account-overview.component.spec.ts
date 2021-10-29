@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
-import { LazyBudgetWidgetComponent } from 'organization-management';
+import { LazyBudgetWidgetComponent, LazyCostCenterWidgetComponent } from 'organization-management';
 import { LazyApprovalWidgetComponent, LazyRequisitionWidgetComponent } from 'requisition-management';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
@@ -36,6 +36,7 @@ describe('Account Overview Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(LazyApprovalWidgetComponent),
         MockComponent(LazyBudgetWidgetComponent),
+        MockComponent(LazyCostCenterWidgetComponent),
         MockComponent(LazyOrderTemplateWidgetComponent),
         MockComponent(LazyQuoteWidgetComponent),
         MockComponent(LazyRequisitionWidgetComponent),

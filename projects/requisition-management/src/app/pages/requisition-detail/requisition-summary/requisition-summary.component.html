@@ -92,13 +92,23 @@
           'border-danger badge-danger': requisition.approval.statusCode === 'REJECTED'
         }"
       >
-        {{ requisition.approval.status }}</span
-      >
+        <ng-container *ngIf="!requisition.systemRejected; else systemRejected">
+          {{ requisition.approval.status }}
+        </ng-container>
+        <ng-template #systemRejected>{{
+          'approval.detailspage.approval_status.system_rejected.status' | translate
+        }}</ng-template>
+      </span>
     </dd>
 
-    <ng-container *ngIf="requisition.approval.approvalComment">
+    <ng-container *ngIf="requisition.approval.approvalComment || requisition.systemRejected">
       <dt class="col-6 col-sm-4 col-md-3 mt-3">{{ 'approval.detailspage.comment.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-9 mt-3">{{ requisition.approval.approvalComment }}</dd>
+      <dd class="col-6 col-sm-8 col-md-9 mt-3">
+        <ng-container *ngIf="requisition.systemRejected">
+          <p>{{ 'approval.detailspage.approval_status.system_rejected.comment' | translate }}</p>
+        </ng-container>
+        {{ requisition.approval.approvalComment }}
+      </dd>
     </ng-container>
   </dl>
 </div>
