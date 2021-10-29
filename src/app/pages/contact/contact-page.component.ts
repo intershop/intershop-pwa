@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { debounce, filter, takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Contact } from 'ish-core/models/contact/contact.model';
@@ -22,24 +21,11 @@ export class ContactPageComponent implements OnInit, OnDestroy {
    */
   success$: Observable<boolean>;
 
-  private destroy$ = new Subject();
-
   constructor(private accountFacade: AccountFacade, private router: Router) {}
 
   ngOnInit() {
     this.loading$ = this.accountFacade.contactLoading$;
     this.success$ = this.accountFacade.contactSuccess$;
-
-    // reset contact page if the user routes to 'contact' again after a contact form submission
-    this.router.events
-      .pipe(
-        filter(event => event instanceof ActivationEnd && !event.snapshot.queryParamMap.has('submitted')),
-        debounce(() => this.router.events.pipe(filter(event => event instanceof NavigationEnd))),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        this.accountFacade.resetContactState();
-      });
   }
 
   /** dispatch contact request */
@@ -49,7 +35,7 @@ export class ContactPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    // reset contact page if the user routes to 'contact' again
+    this.accountFacade.resetContactState();
   }
 }

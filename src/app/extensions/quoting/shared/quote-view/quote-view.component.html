@@ -17,19 +17,23 @@
         <p>{{ 'quote.edit.submitted.we_will_email.text' | translate: { '0': userEmail$ | async } }}</p>
       </ng-container>
       <ng-template #previouslySubmitted>
-        <div data-testing-id="success-message" class="alert alert-info">
-          {{
+        <ish-info-message
+          message="{{
             'quote.edit.submitted.your_quote_request_has_been_submitted.text'
               | translate: { '0': asQuoteRequest(quote).submittedDate || quote.creationDate | ishDate: 'shortDate' }
-          }}
-        </div>
+          }}"
+          [toast]="false"
+        >
+        </ish-info-message>
       </ng-template>
     </ng-container>
 
     <ng-template #quotePending>
-      <div *ngIf="state === 'Responded' && !(isQuoteStarted$ | async)" class="alert alert-info">
-        {{ 'quote.error.not_started' | translate }}
-      </div>
+      <ish-info-message
+        *ngIf="state === 'Responded' && !(isQuoteStarted$ | async)"
+        message="quote.error.not_started"
+        [toast]="false"
+      ></ish-info-message>
     </ng-template>
 
     <div class="row">

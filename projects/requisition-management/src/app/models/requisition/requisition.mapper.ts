@@ -30,7 +30,25 @@ export class RequisitionMapper {
           user: data.userInformation,
           approval: {
             ...data.approvalStatus,
-            customerApprovers: data.approval?.customerApproval?.approvers,
+            approvers: data.approvalStatuses?.map(status => status.approver),
+            customerApproval: {
+              ...data.approval?.customerApproval,
+              statusCode:
+                data.approvalStatuses?.length &&
+                data.approval?.customerApproval?.approvers?.some(
+                  appr => appr.email === data.approvalStatuses[0]?.approver.email
+                )
+                  ? data.approvalStatuses[0].statusCode
+                  : 'PENDING',
+            },
+            costCenterApproval: {
+              ...data.approval?.costCenterApproval,
+              statusCode:
+                data.approvalStatuses?.length &&
+                data.approval?.costCenterApproval?.approvers[0].email === data.approvalStatuses[0]?.approver.email
+                  ? data.approvalStatuses[0].statusCode
+                  : 'PENDING',
+            },
           },
         };
       } else {

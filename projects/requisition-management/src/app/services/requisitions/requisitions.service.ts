@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { UserService } from 'ish-core/services/user/user.service';
 
 import { RequisitionData } from '../../models/requisition/requisition.interface';
 import { RequisitionMapper } from '../../models/requisition/requisition.mapper';
@@ -23,7 +25,11 @@ type RequisitionIncludeType =
 
 @Injectable({ providedIn: 'root' })
 export class RequisitionsService {
-  constructor(private apiService: ApiService, private requisitionMapper: RequisitionMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private userService: UserService,
+    private requisitionMapper: RequisitionMapper
+  ) {}
 
   private allIncludes: RequisitionIncludeType[] = [
     'invoiceToAddress',
@@ -80,7 +86,13 @@ export class RequisitionsService {
       .get<RequisitionData>(`requisitions/${requisitionId}`, {
         params,
       })
-      .pipe(concatMap(payload => this.processRequisitionData(payload)));
+      .pipe(
+        concatMap(payload =>
+          this.processRequisitionData(payload).pipe(
+            concatMap(requisition => this.getRequisitionCostCenter(requisition))
+          )
+        )
+      );
   }
 
   /**
@@ -140,5 +152,35 @@ export class RequisitionsService {
     }
 
     return of(this.requisitionMapper.fromData(payload));
+  }
+
+  /**
+   *  Gets the cost center data, if cost center approval is needed (the current user needs cost center admin permission) and appends it at the requisition cost center approval data.
+   * @param requisition   The requisition (without cost center).
+   * @returns             The requisition with cost center if appropriate().
+   */
+  private getRequisitionCostCenter(requisition: Requisition): Observable<Requisition> {
+    if (!requisition) {
+      return of(undefined);
+    }
+
+    const costCenterUuid = AttributeHelper.getAttributeValueByAttributeName(
+      requisition.attributes,
+      'BusinessObjectAttributes#Order_CostCenter'
+    ) as string;
+
+    if (!costCenterUuid) {
+      return of(requisition);
+    } else {
+      return this.userService.getCostCenter(costCenterUuid).pipe(
+        map(costCenter => ({
+          ...requisition,
+          approval: {
+            ...requisition.approval,
+            costCenterApproval: { ...requisition.approval.costCenterApproval, costCenter },
+          },
+        }))
+      );
+    }
   }
 }

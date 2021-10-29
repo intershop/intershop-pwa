@@ -1,9 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { User } from 'ish-core/models/user/user.model';
 import { loadRolesAndPermissionsFail } from 'ish-core/store/customer/authorization';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
@@ -49,7 +49,7 @@ import {
 export interface UserState {
   customer: Customer;
   user: User;
-  costCenters: CostCenter[];
+  costCenters: UserCostCenter[];
   authorized: boolean;
   paymentMethods: PaymentMethod[];
   loading: boolean;

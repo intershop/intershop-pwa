@@ -5,9 +5,7 @@
   {{ 'account.punchout.subtitle' | translate }}
 </p>
 <ng-template #noPunchoutTypes>
-  <p data-testing-id="info-message" class="alert alert-info">
-    {{ 'account.punchout.no.protocols.info' | translate }}
-  </p>
+  <ish-info-message message="account.punchout.no.protocols.info" [toast]="false"></ish-info-message>
 </ng-template>
 
 <div *ngIf="punchoutTypes?.length > 1">

@@ -116,7 +116,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
   }
 
   compile(template: string): string | Function {
-    if (this.checkIfCompileNeeded(template)) {
+    if (this.sanityCheck(template) && this.checkIfCompileNeeded(template)) {
       if (!cache[template]) {
         cache[template] = this.doCompile(template);
       }
@@ -126,29 +126,25 @@ export class PWATranslateCompiler implements TranslateCompiler {
     return template;
   }
 
-  private sanityCheck(key: string, value: string | Function): boolean {
+  private sanityCheck(value: string | Function): boolean {
     const sane = typeof value !== 'string' || value.length <= PWATranslateCompiler.MAX_COMPILATION_LENGTH;
     if (isDevMode() && !sane) {
       console.warn(
-        'Not compiling translation with key',
-        key,
-        'as it is too big! - Use CMS! - This is a development mode only warning and can be ignored if the behavior is intended.'
+        `Not compiling translation with value '${(value as string).substring(
+          0,
+          20
+        )}'... as it is too big! - Use CMS! - This is a development mode only warning and can be ignored if the behavior is intended.`
       );
     }
     return sane;
   }
 
   compileTranslations(translations: Translations): Translations {
-    return Object.entries(translations)
-      .map<[string, string | Function]>(([key, value]) => {
-        if (this.sanityCheck(key, value) && this.checkIfCompileNeeded(value)) {
-          return [key, this.compile(value as string)];
-        }
-        return [key, value];
-      })
-      .reduce<Translations>((acc, [key, value]) => {
-        acc[key] = value;
-        return acc;
-      }, {});
+    // This implementation is mutable by intention
+    // tslint:disable-next-line: forin - object does not have inherited properties
+    for (const key in translations) {
+      translations[key] = this.compile(translations[key] as string);
+    }
+    return translations;
   }
 }

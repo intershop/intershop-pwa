@@ -1,4 +1,6 @@
 /*********** GLOBAL NAVIGATION **********/
+
+/* purgecss start ignore */
 @mixin mobile-navigation {
   .global-nav-container {
     position: absolute;
@@ -253,3 +255,5 @@
 @include media-breakpoint-down(sm) {
   @include mobile-navigation;
 }
+
+/* purgecss end ignore */

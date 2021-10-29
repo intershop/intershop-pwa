@@ -74,6 +74,7 @@ import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.c
 import { ErrorMessageComponent } from './components/common/error-message/error-message.component';
 import { InPlaceEditComponent } from './components/common/in-place-edit/in-place-edit.component';
 import { InfoBoxComponent } from './components/common/info-box/info-box.component';
+import { InfoMessageComponent } from './components/common/info-message/info-message.component';
 import { LoadingComponent } from './components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
@@ -240,6 +241,7 @@ const exportedComponents = [
   IdentityProviderLoginComponent,
   InPlaceEditComponent,
   InfoBoxComponent,
+  InfoMessageComponent,
   LineItemListComponent,
   LoadingComponent,
   LoginFormComponent,

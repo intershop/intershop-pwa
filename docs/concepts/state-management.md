@@ -219,7 +219,7 @@ To give an example, only the product's state should save products.
 Every other slice of the state that also uses products must only save identifiers (in this case SKUs) for products.
 In selectors, the data can be linked to views to be easily usable by components.
 
-see: [NgRx: Normalizing state](https://medium.com/@timdeschryver/ngrx-normalizing-state-d3960a86a3aa)
+see: [NgRx: Normalizing state](https://timdeschryver.dev/blog/normalizing-state)
 
 ## State Transfer
 

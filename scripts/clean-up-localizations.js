@@ -10,9 +10,9 @@ const localizationFile_default = 'src/assets/i18n/en_US.json';
 const regExps = [
   /^account\.login\..*\.message/i,
   /.*budget.period..*/i,
-  /^account\.budget\.type\..*/i,
   /.*\.error.*/i,
   /^locale\..*/i,
+  /^approval\.order_.*\.text/i,
 ];
 
 // store localizations from default localization file in an object
@@ -31,11 +31,13 @@ Object.keys(localizations_default)
 // go through directory recursively and find files to be searched
 const filesToBeSearched = glob.sync('{src,projects}/**/!(*.spec).{ts,html}');
 
+const regex = _.memoize(key => new RegExp(`[^.-]\\b${key.replace(/[.]/g, '\\$&')}\\b[^.-]`));
+
 // add used localization keys with their localization values
 filesToBeSearched.forEach(filePath => {
   const fileContent = fs.readFileSync(filePath);
   for (const localizationKey in localizations_default) {
-    if (fileContent.includes(localizationKey)) {
+    if (regex(localizationKey).test(fileContent)) {
       // store found localizations
       localizationsFound[localizationKey] = localizations_default[localizationKey];
       delete localizations_default[localizationKey];

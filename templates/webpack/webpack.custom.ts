@@ -151,9 +151,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       }
     });
 
-    // set chunk file names with name instead of id
-    config.output.chunkFilename = '[name].[chunkhash:20].js';
-
     // splitChunks not available for SSR build
     if (config.optimization.splitChunks) {
       logger.log('optimizing chunk splitting');
@@ -228,7 +225,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     logger.log('setting up purgecss CSS minification');
     config.plugins.push(
       new purgecssPlugin({
-        paths: glob.sync('./**/src/app/**/*', { nodir: true }),
+        paths: glob.sync('./**/src/app/**/!(*.spec.ts)*', { nodir: true }),
         safelist: {
           standard: [/(p|m)(l|r|x|y|t|b)?-[0-5]/],
           greedy: [

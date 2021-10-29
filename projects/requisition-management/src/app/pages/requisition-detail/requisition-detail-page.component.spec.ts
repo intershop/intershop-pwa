@@ -2,10 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -16,6 +17,7 @@ import { LineItemListComponent } from 'ish-shared/components/line-item/line-item
 import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 
 import { RequisitionBuyerApprovalComponent } from './requisition-buyer-approval/requisition-buyer-approval.component';
+import { RequisitionCostCenterApprovalComponent } from './requisition-cost-center-approval/requisition-cost-center-approval.component';
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
 import { RequisitionRejectDialogComponent } from './requisition-reject-dialog/requisition-reject-dialog.component';
 import { RequisitionSummaryComponent } from './requisition-summary/requisition-summary.component';
@@ -40,8 +42,10 @@ describe('Requisition Detail Page Component', () => {
         MockComponent(LineItemListComponent),
         MockComponent(LoadingComponent),
         MockComponent(RequisitionBuyerApprovalComponent),
+        MockComponent(RequisitionCostCenterApprovalComponent),
         MockComponent(RequisitionRejectDialogComponent),
         MockComponent(RequisitionSummaryComponent),
+        MockDirective(AuthorizationToggleDirective),
         RequisitionDetailPageComponent,
       ],
     })

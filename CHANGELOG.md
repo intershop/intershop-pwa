@@ -7,6 +7,53 @@ kb_everyone
 
 # Changelog
 
+## [1.3.0](https://github.com/releases/tag/1.3.0) (2021-10-29)
+
+**required Intershop Commerce Management version: 7.10.32.7-LTS**
+
+### Features
+
+- requisition approval usability improvements (#887) ([2de6856](https://github.com/intershop/intershop-pwa/commit/2de6856))
+- add cost center approval widget (#887) ([7b412b7](https://github.com/intershop/intershop-pwa/commit/7b412b7))
+- display a success/info message after a requisition has been approved/rejected (#887) ([9846c87](https://github.com/intershop/intershop-pwa/commit/9846c87))
+- display cost center approval information in the checkout approval dialog (#887) ([1fb61f3](https://github.com/intershop/intershop-pwa/commit/1fb61f3))
+- extend the authorization service and directive to check against multiple permissions ([b4d9c38](https://github.com/intershop/intershop-pwa/commit/b4d9c38))
+- introduce info message component (#909) ([4eb6f24](https://github.com/intershop/intershop-pwa/commit/4eb6f24))
+- adapt styling for toast messages (#909) ([725eeb1](https://github.com/intershop/intershop-pwa/commit/725eeb1))
+- add quickorder sample CSV file (#895) ([cd420f7](https://github.com/intershop/intershop-pwa/commit/cd420f7))
+
+### Bug Fixes
+
+- display wishlist items in the wishlist widget (#917) ([17224f1](https://github.com/intershop/intershop-pwa/commit/17224f1))
+- contact us page can't be used twice (#915) ([41eae48](https://github.com/intershop/intershop-pwa/commit/41eae48))
+- DNS resolve issue in SSR ([0e7010c](https://github.com/intershop/intershop-pwa/commit/0e7010c))
+- update placeholders correctly on SSR (#906) ([b734680](https://github.com/intershop/intershop-pwa/commit/b734680))
+- check for whole occurences of localizations (#907) ([a952146](https://github.com/intershop/intershop-pwa/commit/a952146))
+- don't display 'please select' in the cost center selection dropdown if a cost center has already been assigned to a basket ([8a2a6d3](https://github.com/intershop/intershop-pwa/commit/8a2a6d3))
+- wait for retrieving localized ICM data until configuration is retrieved (#902) ([fc068c2](https://github.com/intershop/intershop-pwa/commit/fc068c2))
+- disable inlineCriticalCss for Angular Universal engine (#904) ([00377e5](https://github.com/intershop/intershop-pwa/commit/00377e5))
+- respect ICM setting "Add Product Behavior" when adding basket items (#905) ([a5fd804](https://github.com/intershop/intershop-pwa/commit/a5fd804))
+- styling of radio buttons on shipping page (#900) ([072f747](https://github.com/intershop/intershop-pwa/commit/072f747))
+- missing styles for main navigation hover menu - removed by PurgeCSS (#901) ([0205842](https://github.com/intershop/intershop-pwa/commit/0205842))
+- repair chunk output file names for differential loading (#896) ([b1e27d5](https://github.com/intershop/intershop-pwa/commit/b1e27d5))
+- quick order CSV file error message doesn't overlap button (#897) ([c23b9d5](https://github.com/intershop/intershop-pwa/commit/c23b9d5))
+
+### Performance Improvements
+
+- refactor loading of server-side translations (#890) ([3048485](https://github.com/intershop/intershop-pwa/commit/3048485))
+
+### Documentation
+
+- revive customization documentation (#910) ([fa1d321](https://github.com/intershop/intershop-pwa/commit/fa1d321))
+
+### Code Refactoring
+
+- remove b64u library and use native methods (#898) ([440828a](https://github.com/intershop/intershop-pwa/commit/440828a))
+
+### BREAKING CHANGES
+
+- The PWA no longer relies on the dependency to 'b64u' since no encoding and decoding Base64 is needed any more in SSR. In the browser native methods are used. If your custom code uses b64u in SSR you should not remove this dependency or use a polyfill like 'btoa-polyfill'.
+
 ## [1.2.0](https://github.com/releases/tag/1.2.0) (2021-09-30)
 
 **required Intershop Commerce Management version: 7.10.32.3-LTS**
