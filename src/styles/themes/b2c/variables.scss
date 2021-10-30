@@ -9,10 +9,10 @@
 //
 // LOGOS
 
-$logo: url('/assets/themes/blue/img/logo.png');
+$logo: url('/assets/themes/b2c/img/logo.png');
 $logo-width: 114px;
 $logo-height: 40px;
-$logo-mobile: url('/assets/themes/blue/img/logo_mobile.png');
+$logo-mobile: url('/assets/themes/b2c/img/logo_mobile.png');
 $logo-mobile-width: 41px;
 $logo-mobile-height: 41px;
 
@@ -36,7 +36,7 @@ $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1r
 //
 //CORPORATE DESIGN COLORS
 
-$CORPORATE-PRIMARY: #688dc3; // BLUE
+$CORPORATE-PRIMARY: #ff6d00; // ORANGE
 $CORPORATE-SECONDARY: darken($CORPORATE-PRIMARY, 10%);
 
 //

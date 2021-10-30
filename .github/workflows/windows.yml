@@ -58,4 +58,4 @@ jobs:
         run: npm run clean
 
       - name: Build with development environment
-        run: npm run build --configuration=default,development
+        run: npm run build --configuration=b2b,development

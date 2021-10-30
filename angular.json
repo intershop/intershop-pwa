@@ -32,12 +32,12 @@
             "aot": true,
             "assets": ["src/assets"],
             "scripts": [],
-            "styles": ["src/styles/themes/default/style.scss"],
+            "styles": ["src/styles/themes/b2b/style.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/default"]
+              "includePaths": ["src/styles/themes/placeholder"]
             }
           },
-          "defaultConfiguration": "default,production",
+          "defaultConfiguration": "b2b,production",
           "configurations": {
             "production": {
               "outputHashing": "all",
@@ -92,8 +92,8 @@
                 }
               ]
             },
-            "default": {},
-            "blue": {}
+            "b2b": {},
+            "b2c": {}
           }
         },
         "serve": {
@@ -103,7 +103,7 @@
             "disableHostCheck": true,
             "host": "0.0.0.0"
           },
-          "defaultConfiguration": "default,development",
+          "defaultConfiguration": "b2b,development",
           "configurations": {
             "production": {
               "browserTarget": "intershop-pwa:build:production"
@@ -111,11 +111,11 @@
             "development": {
               "browserTarget": "intershop-pwa:build:development"
             },
-            "default": {
-              "browserTarget": "intershop-pwa:build:default"
+            "b2b": {
+              "browserTarget": "intershop-pwa:build:b2b"
             },
-            "blue": {
-              "browserTarget": "intershop-pwa:build:blue"
+            "b2c": {
+              "browserTarget": "intershop-pwa:build:b2c"
             }
           }
         },
@@ -145,10 +145,10 @@
             "optimization": true,
             "tsConfig": "tsconfig.server.json",
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/default"]
+              "includePaths": ["src/styles/themes/placeholder"]
             }
           },
-          "defaultConfiguration": "default,production",
+          "defaultConfiguration": "b2b,production",
           "configurations": {
             "production": {
               "outputHashing": "media",
@@ -157,8 +157,8 @@
             "development": {
               "sourceMap": true
             },
-            "default": {},
-            "blue": {}
+            "b2b": {},
+            "b2c": {}
           }
         },
         "serve-ssr": {
@@ -167,15 +167,15 @@
             "browserTarget": "intershop-pwa:build",
             "serverTarget": "intershop-pwa:server"
           },
-          "defaultConfiguration": "default",
+          "defaultConfiguration": "b2b",
           "configurations": {
-            "default": {
-              "browserTarget": "intershop-pwa:build:default,development",
-              "serverTarget": "intershop-pwa:server:default,development"
+            "b2b": {
+              "browserTarget": "intershop-pwa:build:b2b,development",
+              "serverTarget": "intershop-pwa:server:b2b,development"
             },
-            "blue": {
-              "browserTarget": "intershop-pwa:build:blue,development",
-              "serverTarget": "intershop-pwa:server:blue,development"
+            "b2c": {
+              "browserTarget": "intershop-pwa:build:b2c,development",
+              "serverTarget": "intershop-pwa:server:b2c,development"
             }
           }
         }
@@ -203,7 +203,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/organization-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/default/style.scss"],
+            "styles": ["src/styles/themes/b2b/style.scss"],
             "assets": [
               {
                 "glob": "**/*",
@@ -252,7 +252,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/requisition-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/default/style.scss"],
+            "styles": ["src/styles/themes/b2b/style.scss"],
             "assets": [
               {
                 "glob": "**/*",

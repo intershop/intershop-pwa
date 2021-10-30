@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Migrations
 
+## 1.4 to 2.0
+
+With version 2.0 we introduce a renaming of the two standard PWA themes and switch to the B2B theme as the default theme.
+The B2C theme `default` is renamed to `b2c` and the B2B theme `blue` is renamed to `b2b` and `b2b` is now used as the default theme.
+With this switch the according folders and references had to be renamed/moved and need to be adapted in customer projects as well.
+If in a project the recommended way of using a custom theme (see [Customization Guide - Start Customization](./customizations.md#start-customization)) is followed only minimal migration efforts should be necessary.
+
 ## 1.1 to 1.2
 
 The `dist` folder now only contains results of the build process (except for `healthcheck.js`).

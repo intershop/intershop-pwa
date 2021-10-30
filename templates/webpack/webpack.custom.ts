@@ -68,7 +68,7 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
   if (!targetOptions.configuration) {
     targetOptions.configuration =
       angularJson.projects[targetOptions.project].architect[targetOptions.target].defaultConfiguration ||
-      'default,production';
+      'b2b,production';
   }
 
   if (targetOptions.configuration === 'development' || targetOptions.configuration === 'production') {
@@ -296,8 +296,8 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     });
   });
 
-  if (theme !== 'default') {
-    const defaultThemePath = join('src', 'styles', 'themes', 'default');
+  if (theme !== 'b2b') {
+    const defaultThemePath = join('src', 'styles', 'themes', 'b2b');
     const newThemePath = join('src', 'styles', 'themes', theme);
 
     traverse(

@@ -27,7 +27,7 @@
     },
     "theme": {
       "type": "string",
-      "enum": ["default", "blue", "all"],
+      "enum": ["b2b", "b2c", "all"],
       "x-prompt": "For which theme?"
     },
     "ts": {

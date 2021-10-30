@@ -85,12 +85,12 @@ jobs:
       - name: Set B2C Environment
         if: matrix.test == 'b2c'
         run: |
-          echo "THEME=default" >> $GITHUB_ENV
+          echo "THEME=b2c" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
         run: |
-          echo "THEME=blue" >> $GITHUB_ENV
+          echo "THEME=b2b" >> $GITHUB_ENV
 
       - name: Test Universal
         run: |
@@ -130,12 +130,12 @@ jobs:
       - name: Set B2C Environment
         if: matrix.test == 'b2c'
         run: |
-          echo "THEME=default" >> $GITHUB_ENV
+          echo "THEME=b2c" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
         run: |
-          echo "THEME=blue" >> $GITHUB_ENV
+          echo "THEME=b2b" >> $GITHUB_ENV
 
       - name: Start SSR
         run: |
