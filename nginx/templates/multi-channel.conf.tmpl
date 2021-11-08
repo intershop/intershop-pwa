@@ -28,12 +28,16 @@
         proxy_ignore_headers Cache-Control;
         proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
         proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
-        # set $c_uri as cache_key
-        proxy_cache_key $c_uri;
 
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;
         add_header X-ua-device $ua_device always;
+
+        rewrite ^.*$ $ssr_rewrite;
+        set $c_uri $ssr_curi;
+
+        # make a nice cache key without parameters
+        proxy_cache_key $scheme://$host$uri$c_uri;
 
         rewrite ^.*/index.html$ {{ $baseHref }}/loading;
 
@@ -68,10 +72,8 @@ server {
     listen 80;
   {{- end }}
 
-   # ensure $c_uri is set
-   set $c_uri $args;
+    include /etc/nginx/conf.d/cache-blacklist.conf;
 
-   include /etc/nginx/conf.d/cache-blacklist.conf;
 
   {{ if getenv "DEBUG" | strings.ToLower | regexp.Match "on|1|true|yes" }}
     error_log /dev/stdout notice;
@@ -118,6 +120,10 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_ignore_headers Cache-Control;
+        proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
+        proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
 
         proxy_pass {{ $UPSTREAM_PWA }};
         proxy_buffer_size 128k;

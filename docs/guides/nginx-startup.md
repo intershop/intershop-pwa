@@ -61,7 +61,7 @@ An extended list of examples can be found in the [Multi-Site Configurations](../
 
 ### Ignore parameters during caching
 
-Often, nginx receives requests from advertising networks or various user agents that append unused query parameters when making a request, for example `gclid` or `utm_source`. <br>
+Often, nginx receives requests from advertising networks or various user agents that append unused query parameters when making a request, for example `utm_source`. <br>
 These parameters can lead to inefficient caching because even if the same URL is requested multiple times, if it is accessed with different query parameters, the cached version will not be used.
 
 To prevent this, you can define any number of blacklisted parameters that will be ignored by nginx during caching.
@@ -101,6 +101,7 @@ The page speed configuration can also be overridden:
 
 Built-in features can be enabled and disabled:
 
+- `SSR=off` effectively disables SSR rendering for browsers (default `on`)
 - `CACHE=off` disables caching (default `on`)
 - `PAGESPEED=off` disables pagespeed optimizations (default `on`)
 - `COMPRESSION=off` disables compression (default `on`)

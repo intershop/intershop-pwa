@@ -1,4 +1,3 @@
-# synchronize-marker:pwa-docker-build:begin
 FROM node:14-alpine as buildstep
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
@@ -17,10 +16,6 @@ RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
-# synchronize-marker:pwa-docker-build:end
-
-# ^ this part above is copied to Dockerfile_noSSR and should be kept in sync
-
 ARG activeThemes=
 RUN if [ ! -z "${activeThemes}" ]; then npm config set intershop-pwa:active-themes="${activeThemes}"; fi
 RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER

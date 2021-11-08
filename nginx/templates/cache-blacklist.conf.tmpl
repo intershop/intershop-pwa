@@ -1,5 +1,7 @@
 # inspired by https://gist.github.com/a-vasyliev/de8ffc6c6aa74cdeadfe
 
+set $c_uri $args;
+
 {{ $params := (datasource "cachingIgnoreParams").params -}}
 {{ if $params }}
   {{ range  $params -}}
@@ -17,8 +19,5 @@
   if ($c_uri ~ ^\?$) {
       set $c_uri "";
   }
-
-  # make a nice cache key without parameters
-  set $c_uri $scheme://$host$uri$c_uri;
 
 {{ end }}
