@@ -21,6 +21,7 @@ node_modules
 /.nvmrc
 
 # misc
+/.angular/cache
 *.log
 /src/environments/environment.local.ts
 /src/environments/environment.development.ts

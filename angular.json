@@ -125,14 +125,6 @@
             "browserTarget": "intershop-pwa:build"
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["tsconfig.json"],
-            "exclude": ["**/node_modules/**"],
-            "format": "stylish"
-          }
-        },
         "server": {
           "builder": "@angular-builders/custom-webpack:server",
           "options": {

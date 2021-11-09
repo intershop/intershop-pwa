@@ -1,10 +1,10 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import * as fs from 'fs';
-import * as glob from 'glob';
 import { basename, join, sep } from 'path';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
 const purgecssPlugin = require('purgecss-webpack-plugin');
+const glob = require('glob');
 
 class Logger {
   constructor(private target: string, private config: string, progressActive: boolean) {
