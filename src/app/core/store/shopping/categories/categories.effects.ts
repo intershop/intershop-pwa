@@ -68,7 +68,7 @@ export class CategoriesEffects {
         ([id, refs, entities]) =>
           !refs[id] || (refs[id] && !CategoryHelper.isCategoryCompletelyLoaded(entities[refs[id]]))
       ),
-      map(([categoryRefId]) => loadCategoryByRef({ categoryRefId }))
+      map(([categoryId]) => loadCategoryByRef({ categoryId }))
     )
   );
 
@@ -77,26 +77,10 @@ export class CategoriesEffects {
    */
   loadCategory$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadCategory),
+      ofType(loadCategory, loadCategoryByRef),
       mapToPayloadProperty('categoryId'),
-      mergeMap(categoryUniqueId =>
-        this.categoryService.getCategory(categoryUniqueId).pipe(
-          map(categories => loadCategorySuccess({ categories })),
-          mapErrorToAction(loadCategoryFail)
-        )
-      )
-    )
-  );
-
-  /**
-   * loads a {@link Category} using the {@link CategoriesService}
-   */
-  loadCategoryByRef$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadCategoryByRef),
-      mapToPayloadProperty('categoryRefId'),
-      mergeMap(categoryRefId =>
-        this.categoryService.getCategory(categoryRefId).pipe(
+      mergeMap(id =>
+        this.categoryService.getCategory(id).pipe(
           map(categories => loadCategorySuccess({ categories })),
           mapErrorToAction(loadCategoryFail)
         )

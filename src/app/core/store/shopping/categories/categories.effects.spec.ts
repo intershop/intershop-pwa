@@ -100,7 +100,7 @@ describe('Categories Effects', () => {
       effects.selectedCategoryRef$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Categories Internal] Load Category By Reference:
-            categoryRefId: "dummy@domain"
+            categoryId: "dummy@domain"
         `);
         done();
       });
@@ -200,25 +200,25 @@ describe('Categories Effects', () => {
     }));
   });
 
-  describe('loadCategoryByRef$', () => {
+  describe('loadCategory$', () => {
     it('should call the categoriesService for LoadCategoryByRef action', done => {
-      const categoryRefId = '123@domain';
-      const action = loadCategoryByRef({ categoryRefId });
+      const categoryId = '123@domain';
+      const action = loadCategoryByRef({ categoryId });
       actions$ = of(action);
 
-      effects.loadCategoryByRef$.subscribe(() => {
-        verify(categoriesServiceMock.getCategory(categoryRefId)).once();
+      effects.loadCategory$.subscribe(() => {
+        verify(categoriesServiceMock.getCategory(categoryId)).once();
         done();
       });
     });
 
     it('should map to action of type LoadCategorySuccess', () => {
-      const categoryRefId = '123@domain';
-      const action = loadCategoryByRef({ categoryRefId });
+      const categoryId = '123@domain';
+      const action = loadCategoryByRef({ categoryId });
       const response = categoryTree([
         {
           uniqueId: '123',
-          categoryRef: categoryRefId,
+          categoryRef: categoryId,
           categoryPath: ['123'],
         } as Category,
       ]);
@@ -226,21 +226,19 @@ describe('Categories Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadCategoryByRef$).toBeObservable(expected$);
+      expect(effects.loadCategory$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type LoadCategoryFail', () => {
-      const categoryRefId = 'invalid';
-      const action = loadCategoryByRef({ categoryRefId });
+      const categoryId = 'invalid';
+      const action = loadCategoryByRef({ categoryId });
       const completion = loadCategoryFail({ error: makeHttpError({ message: 'invalid category' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadCategoryByRef$).toBeObservable(expected$);
+      expect(effects.loadCategory$).toBeObservable(expected$);
     });
-  });
 
-  describe('loadCategory$', () => {
     it('should call the categoriesService for LoadCategory action', done => {
       const categoryId = '123';
       const action = loadCategory({ categoryId });

@@ -23,5 +23,5 @@ export const loadCategorySuccess = createAction(
 
 export const loadCategoryByRef = createAction(
   '[Categories Internal] Load Category By Reference',
-  payload<{ categoryRefId: string }>()
+  payload<{ categoryId: string }>()
 );
