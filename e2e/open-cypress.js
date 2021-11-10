@@ -5,15 +5,15 @@ let icmBaseUrl;
 if (process.env.ICM_BASE_URL) {
   icmBaseUrl = process.env.ICM_BASE_URL;
   console.log('found ICM_BASE_URL environment variable');
-} else if (fs.existsSync('../src/environments/environment.local.ts')) {
-  console.log('using ICM_BASE_URL from environment.local.ts');
-  const data = fs.readFileSync('../src/environments/environment.local.ts', 'UTF-8');
+} else if (fs.existsSync('../src/environments/environment.development.ts')) {
+  console.log('using ICM_BASE_URL from environment.development.ts');
+  const data = fs.readFileSync('../src/environments/environment.development.ts', 'UTF-8');
 
   const regex = /^ *icmBaseURL: '(.*?)',/m;
   icmBaseUrl = data.match(regex)[1];
 } else {
   console.error(
-    'Did not find a valid ICM_BASE_URL. Setup a environment.local.ts or supply it via environment variable.'
+    'Did not find a valid ICM_BASE_URL. Setup a environment.development.ts or supply it via environment variable.'
   );
   process.exit(1);
 }

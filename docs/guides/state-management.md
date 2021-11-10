@@ -31,7 +31,7 @@ effect = this.actions$.pipe(
 Using flat-mapping operators can lead to unexpected behavior.
 If in doubt, use `concatMap`.
 
-See [RxJS: Avoiding switchMap-Related Bugs](https://medium.com/angular-in-depth/switchmap-bugs-b6de69155524) for more information.
+See [RxJS: Avoiding switchMap-Related Bugs](https://cartant.medium.com/switchmap-bugs-b6de69155524) for more information.
 
 ### Should I put XYZ into the Store or the Component?
 

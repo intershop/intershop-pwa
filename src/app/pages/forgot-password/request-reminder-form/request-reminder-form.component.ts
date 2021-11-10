@@ -39,11 +39,6 @@ export class RequestReminderFormComponent implements OnInit {
           hideRequiredMarker: true,
           required: true,
         },
-        validation: {
-          messages: {
-            required: 'account.email.error.required',
-          },
-        },
       },
       {
         type: 'ish-captcha-field',

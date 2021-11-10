@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "SchematicsPWAPage",
+  "$id": "SchematicsPWAPage",
   "title": "PWA Page Options Schema",
   "type": "object",
   "description": "Creates a new page.",

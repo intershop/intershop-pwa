@@ -1,4 +1,4 @@
-import { SchematicsException, Tree } from '@angular-devkit/schematics';
+import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
 import * as ts from 'typescript';
 
 export function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
@@ -9,4 +9,10 @@ export function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFil
   const sourceText = text.toString('utf-8');
 
   return ts.createSourceFile(modulePath, sourceText, ts.ScriptTarget.Latest, true);
+}
+
+export function copyFile(from: string, to: string): Rule {
+  return host => {
+    host.create(to, host.read(from));
+  };
 }

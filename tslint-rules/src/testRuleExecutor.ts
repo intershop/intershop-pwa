@@ -33,8 +33,9 @@ export class TestRuleExecutor {
   private transpileSource(name: string) {
     const rulePath = join(process.cwd(), 'src', name + '.ts');
     const ruleSource = readFileSync(rulePath, { encoding: 'utf-8' });
-    const transpiled = ts.transpileModule(ruleSource, { compilerOptions: { module: ts.ModuleKind.CommonJS } })
-      .outputText;
+    const transpiled = ts.transpileModule(ruleSource, {
+      compilerOptions: { module: ts.ModuleKind.CommonJS },
+    }).outputText;
     writeFileSync(join(this.rulesDirectory, name + '.js'), transpiled, { encoding: 'utf-8' });
   }
 

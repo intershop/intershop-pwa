@@ -1,23 +1,26 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import b64u from 'b64u';
 import { pick } from 'lodash-es';
-import { Observable, of, throwError } from 'rxjs';
-import { concatMap, first, map, take, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest, of, throwError } from 'rxjs';
+import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
+import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData, CustomerType } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
-import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
+import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getUserPermissions } from 'ish-core/store/customer/authorization';
+import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
@@ -53,7 +56,7 @@ export class UserService {
   signInUser(loginCredentials: Credentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
       ApiService.AUTHORIZATION_HEADER_KEY,
-      'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
+      'BASIC ' + window.btoa(`${loginCredentials.login}:${loginCredentials.password}`)
     );
 
     return this.fetchCustomer({ headers });
@@ -71,7 +74,7 @@ export class UserService {
         headers: new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, token),
       });
     } else {
-      return this.fetchCustomer({ skipApiErrorHandling: true, runExclusively: true });
+      return this.fetchCustomer({ skipApiErrorHandling: true });
     }
   }
 
@@ -79,8 +82,9 @@ export class UserService {
     return this.apiService.get<CustomerData>('customers/-', options).pipe(
       withLatestFrom(this.appFacade.isAppTypeREST$),
       concatMap(([data, isAppTypeRest]) =>
-        // ToDo: #IS-30018 use the customer type for this decision
-        isAppTypeRest && !data.companyName ? this.apiService.get<CustomerData>('privatecustomers/-') : of(data)
+        isAppTypeRest && data.customerType === 'PRIVATE'
+          ? this.apiService.get<CustomerData>('privatecustomers/-')
+          : of(data)
       ),
       map(CustomerMapper.mapLoginData)
     );
@@ -111,7 +115,7 @@ export class UserService {
                 ? {
                     user: {
                       ...body.user,
-                      preferredLanguage: currentLocale.lang ?? 'en_US',
+                      preferredLanguage: currentLocale,
                     },
                   }
                 : {
@@ -128,14 +132,14 @@ export class UserService {
                     firstName: body.user.firstName,
                     lastName: body.user.lastName,
                     email: body.user.email,
-                    preferredLanguage: currentLocale.lang ?? 'en_US',
+                    preferredLanguage: currentLocale,
                   }
                 : {
                     userId: body.userId,
                   }),
               address: customerAddress,
               credentials: body.credentials,
-              preferredLanguage: currentLocale.lang ?? 'en_US',
+              preferredLanguage: currentLocale,
             }
       )
     );
@@ -165,7 +169,7 @@ export class UserService {
     const headers = credentials
       ? new HttpHeaders().set(
           ApiService.AUTHORIZATION_HEADER_KEY,
-          'BASIC ' + b64u.toBase64(b64u.encode(`${credentials.login}:${credentials.password}`))
+          'BASIC ' + window.btoa(`${credentials.login}:${credentials.password}`)
         )
       : undefined;
 
@@ -186,12 +190,8 @@ export class UserService {
       first(),
       concatMap(restResource =>
         body.customer.isBusinessCustomer
-          ? this.apiService
-              .put<User>('customers/-/users/-', changedUser, { headers })
-              .pipe(map(UserMapper.fromData))
-          : this.apiService
-              .put<User>(`${restResource}/-`, changedUser, { headers })
-              .pipe(map(UserMapper.fromData))
+          ? this.apiService.put<User>('customers/-/users/-', changedUser, { headers }).pipe(map(UserMapper.fromData))
+          : this.apiService.put<User>(`${restResource}/-`, changedUser, { headers }).pipe(map(UserMapper.fromData))
       )
     );
   }
@@ -281,5 +281,50 @@ export class UserService {
       skipApiErrorHandling: true,
     };
     return this.apiService.post('security/password', data, options);
+  }
+
+  /**
+   * Get cost centers for the logged in User of a Business Customer.
+   * @returns The related cost centers.
+   */
+  getEligibleCostCenters(): Observable<UserCostCenter[]> {
+    return combineLatest([
+      this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
+      this.store.pipe(select(getLoggedInUser), whenTruthy()),
+    ]).pipe(
+      take(1),
+      switchMap(([customer, user]) =>
+        this.apiService
+          .get(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/costcenters`)
+          .pipe(
+            unpackEnvelope(),
+            map((costCenters: UserCostCenter[]) => costCenters)
+          )
+      )
+    );
+  }
+
+  /**
+   * Get cost center data of a business customer for a given cost center uuid. The logged in user needs permission APP_B2B_VIEW_COSTCENTER.
+   * @returns The related cost center.
+   */
+  getCostCenter(id: string): Observable<CostCenter> {
+    if (!id) {
+      return throwError('getCostCenter() called without uuid');
+    }
+
+    return combineLatest([
+      this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
+      this.store.pipe(select(getUserPermissions), whenTruthy()),
+    ]).pipe(
+      take(1),
+      switchMap(([customer, permissions]) => {
+        if (permissions.includes('APP_B2B_VIEW_COSTCENTER')) {
+          return this.apiService.get<CostCenter>(`customers/${customer.customerNo}/costcenters/${id}`);
+        } else {
+          return of(undefined);
+        }
+      })
+    );
   }
 }

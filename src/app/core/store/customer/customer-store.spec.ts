@@ -32,7 +32,7 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { loginUser } from 'ish-core/store/customer/user';
 import { UserEffects } from 'ish-core/store/customer/user/user.effects';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -172,6 +172,7 @@ describe('Customer Store', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
         provideStoreSnapshots(),
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
@@ -219,6 +220,7 @@ describe('Customer Store', () => {
               items: [{"sku":"test","quantity":1,"unit":"pcs."}]
             [Basket API] Add Items To Basket Success:
               info: undefined
+              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
             [Products Internal] Load Product:
               sku: "test"
             [Basket Internal] Load Basket

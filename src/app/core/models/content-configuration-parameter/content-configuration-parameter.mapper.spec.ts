@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/core/configuration';
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
@@ -16,7 +15,7 @@ describe('Content Configuration Parameter Mapper', () => {
         provideMockStore({
           selectors: [
             { selector: getICMStaticURL, value: 'http://www.example.org/static/channel/-' },
-            { selector: getCurrentLocale, value: { lang: 'de_DE' } as Locale },
+            { selector: getCurrentLocale, value: 'de_DE' },
           ],
         }),
       ],

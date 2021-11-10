@@ -120,8 +120,8 @@
     }
 
     &.list-item-row-big {
-      padding-bottom: ($space-default / 2);
-      margin-top: ($space-default / 2);
+      padding-bottom: ($space-default * 0.5);
+      margin-top: ($space-default * 0.5);
       border-bottom: 1px solid $border-color-lighter;
 
       &:first-child {
@@ -165,7 +165,7 @@
 
       @media (max-width: $screen-xs-max) {
         label {
-          margin-right: $space-default / 2;
+          margin-right: $space-default * 0.5;
         }
       }
     }
@@ -285,7 +285,7 @@
 table.mobile-optimized,
 table.mobile-optimized.table-lg {
   @include media-breakpoint-only(xs) {
-    margin-bottom: $space-default/3;
+    margin-bottom: divide($space-default, 3);
 
     thead {
       display: none;
@@ -294,24 +294,25 @@ table.mobile-optimized.table-lg {
     tr {
       float: left;
       width: 100%;
-      padding-bottom: $space-default * 2/3;
+      padding-bottom: divide($space-default * 2, 3);
       margin-bottom: $space-default;
       border-bottom: 1px solid $border-color-lighter;
 
       td {
-        display: block;
+        display: flex;
+        align-items: flex-start;
         float: left;
         width: 100%;
         padding: 0;
+        margin-bottom: divide($space-default, 3);
         clear: both;
         border: none;
 
         &::before {
-          float: left;
           width: 40%;
-          margin-bottom: $space-default/3;
           content: '';
         }
+
         &[data-label]::before {
           content: attr(data-label) ':';
         }

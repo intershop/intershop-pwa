@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { QueryParamsHandling } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, ReplaySubject, combineLatest } from 'rxjs';
+import { Observable, ReplaySubject, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -55,16 +55,11 @@ export class ProductImageComponent implements OnInit {
       this.context.getProductImage$(this.imageType, this.imageView),
       this.showImage$,
     ]).pipe(map(([i]) => i));
-    this.defaultAltText$ = this.context
-      .select('product')
-      .pipe(map(product => [product?.name || product?.sku || '', this.buildAdditionalAltText()].join(' ')));
-  }
 
-  private buildAdditionalAltText(): string {
-    return `${this.translateService.instant('product.image.text.alttext')}${this.buildAltTextForGivenImageView()}`;
-  }
-
-  private buildAltTextForGivenImageView(): string {
-    return this.imageView ? ` ${this.imageView} ${this.imageType}` : '';
+    this.defaultAltText$ = combineLatest([
+      this.context.select('product').pipe(map(product => product?.name || product?.sku || '')),
+      this.translateService.get('product.image.text.alttext'),
+      of(this.imageView && `${this.imageView} ${this.imageType}`),
+    ]).pipe(map(parts => parts.filter(x => !!x).join(' ')));
   }
 }

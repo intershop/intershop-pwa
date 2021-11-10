@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { UserBudgetFormComponent } from './user-budget-form.component';
@@ -29,7 +28,8 @@ describe('User Budget Form Component', () => {
     fixture = TestBed.createComponent(UserBudgetFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(appFacade.currentLocale$).thenReturn(of({ currency: 'USD' } as Locale));
+    when(appFacade.currentLocale$).thenReturn(of('en_US'));
+    when(appFacade.currentCurrency$).thenReturn(of('USD'));
 
     component.form = new FormGroup({});
   });

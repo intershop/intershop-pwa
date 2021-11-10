@@ -73,9 +73,7 @@ export class OrderService {
       .pipe(
         map(OrderMapper.fromData),
         withLatestFrom(this.store.pipe(select(getCurrentLocale))),
-        concatMap(([order, currentLocale]) =>
-          this.sendRedirectUrlsIfRequired(order, currentLocale && currentLocale.lang)
-        )
+        concatMap(([order, currentLocale]) => this.sendRedirectUrlsIfRequired(order, currentLocale))
       );
   }
 
@@ -171,7 +169,6 @@ export class OrderService {
         headers: this.orderHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
         params,
         skipApiErrorHandling: true,
-        runExclusively: true,
       })
       .pipe(
         map(OrderMapper.fromData),

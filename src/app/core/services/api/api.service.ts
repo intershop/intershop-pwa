@@ -2,10 +2,10 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {
+  EMPTY,
   MonoTypeOperatorFunction,
   Observable,
   OperatorFunction,
-  Subject,
   combineLatest,
   defer,
   forkJoin,
@@ -14,14 +14,19 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { concatMap, filter, first, map, take, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, first, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/core/configuration';
+import {
+  getCurrentCurrency,
+  getCurrentLocale,
+  getICMServerURL,
+  getRestEndpoint,
+} from 'ish-core/store/core/configuration';
+import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
-
-import { ApiServiceErrorHandler } from './api.service.errorhandler';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * Pipeable operator for elements translation (removing the envelope).
@@ -38,9 +43,20 @@ export interface AvailableOptions {
   headers?: HttpHeaders;
   responseType?: string;
   skipApiErrorHandling?: boolean;
-  runExclusively?: boolean;
   captcha?: Captcha;
+  /** opt-out of sending currency matrix parameter by setting it to false */
+  sendCurrency?: boolean;
+  /** opt-out of sending locale matrix parameter by setting it to false */
+  sendLocale?: boolean;
+  /**
+   * opt-in to sending pgid matrix parameter by setting it to true. As per Intershop Commerce REST api documentation ´pgid´ is the standard means
+   * to get and cache personalized content of supported REST resources (e.g. cms).
+   */
   sendPGID?: boolean;
+  /**
+   * opt-in to sending spgid matrix parameter by setting it to true. As per Intershop Commerce REST api documentation this is the special means
+   * to get and cache personalized content of the product and category API (1.x).
+   */
   sendSPGID?: boolean;
 }
 
@@ -49,13 +65,7 @@ export class ApiService {
   static TOKEN_HEADER_KEY = 'authentication-token';
   static AUTHORIZATION_HEADER_KEY = 'Authorization';
 
-  private executionBarrier$: Observable<void> | Subject<void> = of(undefined);
-
-  constructor(
-    private httpClient: HttpClient,
-    private apiServiceErrorHandler: ApiServiceErrorHandler,
-    private store: Store
-  ) {}
+  constructor(private httpClient: HttpClient, private store: Store) {}
 
   /**
 -  * sets the request header for the appropriate captcha service
@@ -95,24 +105,23 @@ export class ApiService {
     );
   }
 
+  private handleErrors<T>(dispatch: boolean): MonoTypeOperatorFunction<T> {
+    return catchError(error => {
+      if (dispatch) {
+        if (error.status === 0) {
+          this.store.dispatch(communicationTimeoutError({ error }));
+          return EMPTY;
+        } else if (error.status >= 500 && error.status < 600) {
+          this.store.dispatch(serverError({ error }));
+          return EMPTY;
+        }
+      }
+      return throwError(error);
+    });
+  }
+
   private execute<T>(options: AvailableOptions, httpCall$: Observable<T>): Observable<T> {
-    const wrappedCall$ = httpCall$.pipe(this.apiServiceErrorHandler.handleErrors(!options?.skipApiErrorHandling));
-
-    if (options?.runExclusively) {
-      // setup a barrier for other calls
-      const subject$ = new Subject<void>();
-      this.executionBarrier$ = subject$;
-      const releaseBarrier = () => {
-        subject$.next();
-        this.executionBarrier$ = of(undefined);
-      };
-
-      // release barrier on completion
-      return wrappedCall$.pipe(tap({ complete: releaseBarrier, error: releaseBarrier }));
-    } else {
-      // respect barrier
-      return this.executionBarrier$.pipe(concatMap(() => wrappedCall$));
-    }
+    return httpCall$.pipe(this.handleErrors(!options?.skipApiErrorHandling));
   }
 
   private constructUrlForPath(path: string, options?: AvailableOptions): Observable<string> {
@@ -122,18 +131,29 @@ export class ApiService {
     return combineLatest([
       // base url
       this.store.pipe(select(getRestEndpoint)),
-      // locale and currency
-      this.store.pipe(
-        select(getCurrentLocale),
-        map(l => (l ? `;loc=${l.lang};cur=${l.currency}` : ''))
-      ),
+      // locale
+      options?.sendLocale === undefined || options.sendLocale
+        ? this.store.pipe(
+            select(getCurrentLocale),
+            whenTruthy(),
+            map(l => `;loc=${l}`)
+          )
+        : of(''),
+      // currency
+      options?.sendCurrency === undefined || options.sendCurrency
+        ? this.store.pipe(
+            select(getCurrentCurrency),
+            whenTruthy(),
+            map(l => `;cur=${l}`)
+          )
+        : of(''),
       // first path segment
       of('/'),
       of(path.includes('/') ? path.split('/')[0] : path),
       // pgid
       this.store.pipe(
         select(getPGID),
-        map(pgid => (options?.sendPGID && pgid ? `;pgid=${pgid}` : options?.sendSPGID ? `;spgid=${pgid}` : ''))
+        map(pgid => (options?.sendPGID && pgid ? `;pgid=${pgid}` : options?.sendSPGID && pgid ? `;spgid=${pgid}` : ''))
       ),
       // remaining path
       of(path.includes('/') ? path.substr(path.indexOf('/')) : ''),

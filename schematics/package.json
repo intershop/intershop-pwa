@@ -24,6 +24,7 @@
         "isolatedModules": true
       }
     },
+    "testRunner": "jest-jasmine2",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -36,8 +37,6 @@
       "ts",
       "js"
     ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/test.js"
-    ]
+    "setupFilesAfterEnv": ["jest-extended/all"]
   }
 }

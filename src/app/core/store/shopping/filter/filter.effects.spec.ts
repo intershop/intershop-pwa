@@ -1,13 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
-import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
@@ -47,7 +50,7 @@ describe('Filter Effects', () => {
       }
     });
 
-    when(filterServiceMock.getFilteredProducts(anything(), anything(), anything())).thenCall(a => {
+    when(filterServiceMock.getFilteredProducts(anything(), anyNumber(), anything(), anyNumber())).thenCall(a => {
       if (a.name === 'invalid') {
         return throwError(makeHttpError({ message: 'invalid' }));
       } else {
@@ -66,6 +69,7 @@ describe('Filter Effects', () => {
       }
     });
     TestBed.configureTestingModule({
+      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('productListing')],
       providers: [
         FilterEffects,
         provideMockActions(() => actions$),
@@ -74,6 +78,8 @@ describe('Filter Effects', () => {
     });
 
     effects = TestBed.inject(FilterEffects);
+    const store$ = TestBed.inject(Store);
+    store$.dispatch(setProductListingPageSize({ itemsPerPage: 2 }));
   });
 
   describe('loadAvailableFilterForCategories$', () => {

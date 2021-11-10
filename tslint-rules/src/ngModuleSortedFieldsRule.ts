@@ -111,9 +111,9 @@ export class Rule extends Lint.Rules.AbstractRule {
     });
   }
 
-  private checkForSpreadArrayInclusion(
-    arr: ts.Expression[] | ts.NodeArray<ts.Expression>
-  ): { [clazz: string]: string } {
+  private checkForSpreadArrayInclusion(arr: ts.Expression[] | ts.NodeArray<ts.Expression>): {
+    [clazz: string]: string;
+  } {
     if (!arr) {
       return {};
     }
@@ -186,10 +186,9 @@ export class Rule extends Lint.Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithFunction(sourceFile, ctx => {
       if (ctx.sourceFile.fileName.endsWith('module.ts')) {
-        tsquery(
-          ctx.sourceFile,
-          'Decorator:has(Identifier[name=NgModule]) ObjectLiteralExpression'
-        ).forEach((el: ts.ObjectLiteralExpression) => this.checkModuleDefinition(ctx, el));
+        tsquery(ctx.sourceFile, 'Decorator:has(Identifier[name=NgModule]) ObjectLiteralExpression').forEach(
+          (el: ts.ObjectLiteralExpression) => this.checkModuleDefinition(ctx, el)
+        );
       }
 
       if (ctx.sourceFile.fileName.endsWith('spec.ts')) {

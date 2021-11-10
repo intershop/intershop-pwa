@@ -14,6 +14,7 @@ on:
 
 env:
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  NODE_OPTIONS: --max_old_space_size=8192
 
 jobs:
   CancelPrevious:
@@ -35,9 +36,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
+          cache: npm
 
       - name: Install root dependencies
         run: npm ci
@@ -46,9 +48,7 @@ jobs:
         run: node schematics/customization/service-worker false
 
       - name: Build SSR
-        run: |
-          node scripts/init-local-environment -f
-          npm run build
+        run: npm run build:multi
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v2
@@ -67,9 +67,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
+          cache: npm
 
       - name: Download Build Output
         uses: actions/download-artifact@v2
@@ -81,18 +82,20 @@ jobs:
         run: |
           echo "LOGGING=true" >> $GITHUB_ENV
 
+      - name: Set B2C Environment
+        if: matrix.test == 'b2c'
+        run: |
+          echo "THEME=default" >> $GITHUB_ENV
+
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
         run: |
           echo "THEME=blue" >> $GITHUB_ENV
-          echo "ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site" >> $GITHUB_ENV
-          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,punchout,advancedVariationHandling" >> $GITHUB_ENV
-
-      - name: Start SSR
-        run: npm run serve &
 
       - name: Test Universal
-        run: sh e2e/test-universal.sh
+        run: |
+          node dist/$THEME/run-standalone &
+          sh e2e/test-universal.sh
 
   Cypress:
     needs: [Build, Universal]
@@ -124,15 +127,19 @@ jobs:
           echo "LOGGING=true" >> $GITHUB_ENV
           echo "BROWSER=chrome" >> $GITHUB_ENV
 
+      - name: Set B2C Environment
+        if: matrix.test == 'b2c'
+        run: |
+          echo "THEME=default" >> $GITHUB_ENV
+
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
         run: |
           echo "THEME=blue" >> $GITHUB_ENV
-          echo "ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site" >> $GITHUB_ENV
-          echo "FEATURES=quoting,quickorder,orderTemplates,compare,recently,businessCustomerRegistration,punchout,advancedVariationHandling" >> $GITHUB_ENV
 
       - name: Start SSR
-        run: npm run serve &
+        run: |
+          node dist/$THEME/run-standalone &
 
       - name: Cypress
         uses: cypress-io/github-action@v2

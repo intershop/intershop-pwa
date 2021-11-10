@@ -7,14 +7,12 @@
       padding-left: 0;
       list-style: none outside none;
 
-      &.page-navigation-0 {
-        ul {
-          padding-left: $space-default;
-        }
+      ul {
+        padding-left: $space-default;
       }
 
       li {
-        line-height: 24px;
+        line-height: 27px;
 
         &.page-navigation-active {
           > a {

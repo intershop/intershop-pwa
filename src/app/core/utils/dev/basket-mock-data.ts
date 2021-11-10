@@ -18,6 +18,7 @@ export class BasketMockData {
       commonShippingMethod: BasketMockData.getShippingMethod(),
       payment: BasketMockData.getPayment(),
       totals: BasketMockData.getTotals(),
+      attributes: [{ name: 'orderReferenceID', value: '111-222-333' }],
     } as BasketView;
   }
 
@@ -79,6 +80,7 @@ export class BasketMockData {
 
   static getShippingMethod(): ShippingMethod {
     return {
+      id: 'STD_GRD',
       name: 'Standard Ground',
       shippingTimeMin: 3,
       shippingTimeMax: 7,

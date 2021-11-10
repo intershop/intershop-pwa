@@ -1,0 +1,20 @@
+params:
+  - utm_source
+  - utm_campaign
+  - utm_medium
+  - utm_content
+  - utm_term
+  - utm_adgroup
+  - utm_id
+  - gclid
+  - gclsrc
+  - dclid
+  - fbclid
+  - gbraid
+  - wbraid
+  - _gac
+  - _gcl
+  - epik
+  - code
+  - state
+  - session_state

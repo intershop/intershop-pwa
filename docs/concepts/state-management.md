@@ -219,7 +219,15 @@ To give an example, only the product's state should save products.
 Every other slice of the state that also uses products must only save identifiers (in this case SKUs) for products.
 In selectors, the data can be linked to views to be easily usable by components.
 
-see: [NgRx: Normalizing state](https://medium.com/@timdeschryver/ngrx-normalizing-state-d3960a86a3aa)
+see: [NgRx: Normalizing state](https://timdeschryver.dev/blog/normalizing-state)
+
+## State Transfer
+
+The server side application in a typical deployment setup makes necessary REST API calls to pre-render a page for an incoming URL.
+The accumulated NgRx state is then passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/platform-browser/TransferState).
+If certain slices of the state should not be passed to the client, you can put an underscore (`_`) in front of the name.
+For reasons of performance, this filtering is limited to a depth of two levels.
+This means feature stores can exclude reducers (in their respective `X-store.module.ts`) and core store slices can exclude properties (in their respective `X.reducer.ts`).
 
 # Further References
 

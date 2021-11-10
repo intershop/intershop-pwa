@@ -1,4 +1,6 @@
 /*********** GLOBAL NAVIGATION **********/
+
+/* purgecss start ignore */
 @mixin mobile-navigation {
   .global-nav-container {
     position: absolute;
@@ -46,7 +48,7 @@
         > a {
           float: left;
           width: calc(100% - #{$toggler-width});
-          padding: $space-default ($grid-gutter-width / 2) !important;
+          padding: $space-default ($grid-gutter-width * 0.5) !important;
           font-size: $font-size-menu-item-mobile;
           line-height: 1.3125rem;
         }
@@ -224,10 +226,10 @@
       z-index: 9999;
       display: block;
       width: 720px;
-      padding: 25px 25px ($grid-gutter-width / 2) 25px;
+      padding: 25px 25px ($grid-gutter-width * 0.5) 25px;
       margin: 0;
       visibility: hidden;
-      border-top: ($space-default / 2) solid $border-color-default;
+      border-top: ($space-default * 0.5) solid $border-color-default;
 
       @media (max-width: $screen-xs-max) {
         visibility: visible;
@@ -253,3 +255,5 @@
 @include media-breakpoint-down(sm) {
   @include mobile-navigation;
 }
+
+/* purgecss end ignore */

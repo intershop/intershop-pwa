@@ -77,7 +77,7 @@
         {{ 'account.approvallist.table.buyer' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let requisition" [attr.data-label]="'account.approvallist.table.buyer' | translate">
-        {{ requisition.user.firstName }} {{ requisition.user.lastName }}
+        {{ requisition.user?.firstName }} {{ requisition.user?.lastName }}
       </td>
     </ng-container>
 
@@ -128,7 +128,12 @@
       <th cdk-header-cell *cdkHeaderCellDef class="text-right" data-testing-id="th-order-total">
         {{ 'account.approvallist.table.line_item_total' | translate }}
       </th>
-      <td cdk-cell *cdkCellDef="let requisition" class="text-right">
+      <td
+        cdk-cell
+        *cdkCellDef="let requisition"
+        [attr.data-label]="'account.approvallist.table.line_item_total' | translate"
+        class="column-price"
+      >
         {{ requisition.totals.total | ishPrice: 'gross' }}
       </td>
     </ng-container>
@@ -139,7 +144,7 @@
   </table>
 
   <div data-testing-id="list-counter">
-    {{ requisitions?.length | i18nPlural: ('account.approvallist.items' | translate) || { other: '#' } }}
+    {{ 'account.approvallist.items' | translate: { '0': requisitions?.length } }}
   </div>
 </ng-container>
 

@@ -18,13 +18,14 @@ kb_sync_latest_only
   - [General Rules](#general-rules)
     - [Usage of Formly, Template Driven and Reactive Forms](#usage-of-formly-template-driven-and-reactive-forms)
     - [Validators](#validators)
-    - [Keep Templates and Type Script Code Simple](#keep-templates-and-type-script-code-simple)
+    - [Keep Templates Simple](#keep-templates-simple)
   - [The Address Form as an Example of a Reusable Form](#the-address-form-as-an-example-of-a-reusable-form)
     - [How to Use the formly-address-form Component](#how-to-use-the-formly-address-form-component)
     - [How to Create a New Country Specific Form](#how-to-create-a-new-country-specific-form)
 
 The Intershop PWA has switched to using [formly](https://formly.dev) to define and build forms.
-We are still in the process of completely removing the old way of creating forms - if you are looking for documentation, refer to [older documentation](https://github.com/intershop/intershop-pwa/blob/0.27.0/docs/guides/forms.md).
+The overwhelming majority of old components and directives has been deprecated as of release 1.0.
+If you are looking for documentation, refer to [older documentation](https://github.com/intershop/intershop-pwa/blob/0.27.0/docs/guides/forms.md).
 
 ## File and Naming Conventions
 
@@ -91,9 +92,9 @@ For the validation of the form input fields you can use Angular's [Built-in Vali
 
 If there is a need for special custom validators, use the class _app/shared/forms/validators/special-validators_ to write your own custom validators.
 
-### Keep Templates and Type Script Code Simple
+### Keep Templates Simple
 
-Formly allows to move almost all logic from the template to the component file.
+Formly allows moving almost all logic from the template to the component file.
 
 Most form behavior like displaying validation messages and status is already defined within the [`FormlyModule`](../../src/app/shared/formly/formly.module.ts).
 Use the available field types and wrappers to construct your form in the component (see [Formly](./formly.md)).

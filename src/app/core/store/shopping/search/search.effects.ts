@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
@@ -13,6 +14,7 @@ import {
   sample,
   switchMap,
   switchMapTo,
+  takeWhile,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -21,7 +23,11 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { loadMoreProducts, setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import {
+  getProductListingItemsPerPage,
+  loadMoreProducts,
+  setProductListingPages,
+} from 'ish-core/store/shopping/product-listing';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -37,7 +43,8 @@ export class SearchEffects {
     private suggestService: SuggestService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   /**
@@ -59,8 +66,10 @@ export class SearchEffects {
       ofType(searchProducts),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-      concatMap(({ searchTerm, page, sorting }) =>
-        this.productsService.searchProducts(searchTerm, page, sorting).pipe(
+      withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage('search')))),
+      map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
+      concatMap(({ searchTerm, amount, sorting, offset, page }) =>
+        this.productsService.searchProducts(searchTerm, amount, sorting, offset).pipe(
           concatMap(({ total, products, sortableAttributes }) => [
             ...products.map(product => loadProductSuccess({ product })),
             setProductListingPages(
@@ -68,6 +77,7 @@ export class SearchEffects {
                 products.map(p => p.sku),
                 'search',
                 searchTerm,
+                amount,
                 {
                   startPage: page,
                   sorting,
@@ -85,6 +95,7 @@ export class SearchEffects {
 
   suggestSearch$ = createEffect(() =>
     this.actions$.pipe(
+      takeWhile(() => isPlatformBrowser(this.platformId)),
       ofType(suggestSearch),
       mapToPayloadProperty('searchTerm'),
       debounceTime(400),

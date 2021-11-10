@@ -1,16 +1,17 @@
-import { I18nPluralPipe } from '@angular/common';
+import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+
+import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 
 import { AccountOrderTemplateListComponent } from './account-order-template-list.component';
 
@@ -18,6 +19,7 @@ describe('Account Order Template List Component', () => {
   let component: AccountOrderTemplateListComponent;
   let fixture: ComponentFixture<AccountOrderTemplateListComponent>;
   let element: HTMLElement;
+  let orderTemplatesFacade: OrderTemplatesFacade;
 
   const orderTemplateDetails = [
     {
@@ -51,6 +53,8 @@ describe('Account Order Template List Component', () => {
   ];
 
   beforeEach(async () => {
+    orderTemplatesFacade = mock(OrderTemplatesFacade);
+
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderTemplateListComponent,
@@ -59,9 +63,9 @@ describe('Account Order Template List Component', () => {
         MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
         MockPipe(DatePipe),
-        MockPipe(I18nPluralPipe),
       ],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
     }).compileComponents();
   });
 
@@ -77,36 +81,24 @@ describe('Account Order Template List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
+  it('should display empty list text if there are no order template', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=emptyList]')).toBeTruthy();
+  });
+
   it('should render table when provided with data', () => {
     component.orderTemplates = orderTemplateDetails;
     fixture.detectChanges();
 
-    expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
-        "order-template-list-item-container",
-        "order-template-list-item",
-        "order-template-list-title",
-        "order-template-list-title",
-        "delete-order-template",
-        "order-template-list-item-container",
-        "order-template-list-item",
-        "order-template-list-title",
-        "order-template-list-title",
-        "delete-order-template",
-        "order-template-list-item-container",
-        "order-template-list-item",
-        "order-template-list-title",
-        "order-template-list-title",
-        "delete-order-template",
-      ]
-    `);
+    expect(element.querySelector('table.cdk-table')).toBeTruthy();
+    expect(element.querySelectorAll('table tr.cdk-row')).toHaveLength(3);
   });
 
   it('should emit delete id when delete is called', () => {
-    const emitter = spy(component.deleteOrderTemplate);
+    when(orderTemplatesFacade.deleteOrderTemplate(anything())).thenReturn();
 
     component.delete('deleteId');
 
-    verify(emitter.emit('deleteId')).once();
+    verify(orderTemplatesFacade.deleteOrderTemplate('deleteId')).once();
   });
 });

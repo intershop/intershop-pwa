@@ -130,6 +130,7 @@ overridable
 installable
 proxied
 dockerized
+dockerignore
 parallelization
 subfolder
 subfolders
@@ -153,6 +154,8 @@ resetted
 blocklist
 safelisting
 walkthrough
+mergeable
+gclid
 
 foo
 foos

@@ -5,16 +5,14 @@
   {{ 'account.punchout.subtitle' | translate }}
 </p>
 <ng-template #noPunchoutTypes>
-  <p data-testing-id="info-message" class="alert alert-info">
-    {{ 'account.punchout.no.protocols.info' | translate }}
-  </p>
+  <ish-info-message message="account.punchout.no.protocols.info" [toast]="false"></ish-info-message>
 </ng-template>
 
 <div *ngIf="punchoutTypes?.length > 1">
   <ul ngbNav class="nav-tabs section" [(activeId)]="selectedType">
     <li *ngFor="let type of punchoutTypes" [ngbNavItem]="type">
       <a ngbNavLink [routerLink]="['../punchout', { format: type }]">{{
-        'account.punchout.' + type + '.text' | translate
+        'account.punchout.type.text' | translate: { '0': type }
       }}</a>
     </li>
   </ul>

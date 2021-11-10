@@ -1,0 +1,167 @@
+{{ $UPSTREAM_PWA := getenv "UPSTREAM_PWA" }}
+
+{{ define "LOCATION_TEMPLATE" }}
+        {{- $channel := .channel }}
+        {{- $application := "" }}{{ if (has . "application") }}{{ $application = join ( slice ";application" .application ) "=" }}{{ end }}
+        {{- $identityProvider := "" }}{{ if (has . "identityProvider") }}{{ $identityProvider = join ( slice ";identityProvider" .identityProvider ) "=" }}{{ end }}
+        {{- $lang := "default" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
+        {{- $currency := "" }}{{ if (has . "currency") }}{{ $currency = join ( slice ";currency" .currency ) "=" }}{{ end }}
+        {{- $features := "" }}{{ if (has . "features") }}{{ $features = join ( slice ";features" .features ) "=" }}{{ end }}
+        {{- $theme := "" }}{{ if (has . "theme") }}{{ $theme = join ( slice ";theme" .theme ) "=" }}{{ end }}
+        {{- $baseHref := "/" }}{{ if (has . "baseHref") }}{{ $baseHref = .baseHref }}{{ end }}
+        {{- $icmScheme := "" }}{{ if (has . "icmScheme") }}{{ $icmScheme = join ( slice "icmScheme" .icmScheme ) "=" }}{{ end }}
+        {{- $icmPort := "" }}{{ if (has . "icmPort") }}{{ $icmPort = join ( slice "icmPort" .icmPort ) "=" }}{{ end }}
+        {{- $icmHost := "default" }}{{ if (has . "icmHost") }}{{ $icmHost = .icmHost }}{{ end }}
+
+        {{- $protected := true }}{{ if (has . "protected") }}{{ $protected = .protected }}{{ end }}
+      {{- if $protected }}
+      {{ else }}
+        allow all;
+        auth_basic off;
+      {{ end }}
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        add_header X-Cache-Status $upstream_cache_status;
+        proxy_ignore_headers Cache-Control;
+        proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
+        proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
+
+        add_header X-icm-channel {{ $channel }} always;
+        add_header X-icm-default-lang {{ $lang }} always;
+        add_header X-ua-device $ua_device always;
+
+        rewrite ^.*$ $ssr_rewrite;
+        set $c_uri $ssr_curi;
+
+        # make a nice cache key without parameters
+        proxy_cache_key $scheme://$host$uri$c_uri;
+
+        rewrite ^.*/index.html$ {{ $baseHref }}/loading;
+
+        rewrite ^{{ $baseHref }}/?$ {{ $baseHref }}/home;
+
+        rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang={{ $lang }}';
+        rewrite '^(?!.*;currency=.*)(.*)$' '$1;currency={{ $currency }}';
+
+        set $default_rewrite_params ';icmHost={{ $icmHost }}{{ $icmScheme }}{{ $icmPort }};channel={{ $channel }}{{ $application }}{{ $identityProvider }}{{ $features }}{{ $theme }};baseHref={{ $baseHref | strings.ReplaceAll "/" "%2F" }};device=$ua_device';
+
+        rewrite '^(.*)$' '$1$default_rewrite_params' break;
+
+        proxy_pass {{ getenv "UPSTREAM_PWA" }};
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+{{- end }}
+
+{{- range $domain, $mapping := (ds "domains") }}
+server {
+    server_name ~^{{ $domain }}$;
+  {{ if $UPSTREAM_PWA | strings.HasPrefix "https" }}
+    listen 443 ssl;
+    ssl_certificate     server.crt;
+    ssl_certificate_key server.key;
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+
+    # https://ma.ttias.be/force-redirect-http-https-custom-port-nginx/
+    error_page  497 https://$http_host$request_uri;
+  {{ else }}
+    listen 80;
+  {{- end }}
+
+    include /etc/nginx/conf.d/cache-blacklist.conf;
+
+
+  {{ if getenv "DEBUG" | strings.ToLower | regexp.Match "on|1|true|yes" }}
+    error_log /dev/stdout notice;
+    rewrite_log on;
+  {{- end }}
+  {{ if getenv "BASIC_AUTH" }}
+    {{ if getenv "BASIC_AUTH_IP_WHITELIST" }}
+    satisfy any;
+    {{- range $ip := (ds "ipwhitelist") }}
+    allow {{ $ip }};
+    {{- end }}
+    deny all;
+    {{- end }}
+    auth_basic              "Protected Area";
+    auth_basic_user_file    /etc/nginx/.htpasswd;
+  {{- end }}
+
+    # let ICM handle everything ICM related
+    location ~* ^/INTERSHOP.*$ {
+        allow all;
+        auth_basic off;
+
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_no_cache true;
+        proxy_cache_bypass true;
+        add_header X-Cache-Status $upstream_cache_status;
+
+        proxy_pass {{ $UPSTREAM_PWA }};
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+
+    # respect cache entries of static assets
+    location ~* ^/(ngx_pagespeed_beacon|metrics|assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
+        allow all;
+        auth_basic off;
+
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_ignore_headers Cache-Control;
+        proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
+        proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
+
+        proxy_pass {{ $UPSTREAM_PWA }};
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+  {{ if (has $mapping "channel") }}
+    location / {
+        {{- tmpl.Exec "LOCATION_TEMPLATE" $mapping }}
+    }
+  {{- else -}}
+    {{ range $mapping }}
+    location {{ .baseHref }} {
+        {{- tmpl.Exec "LOCATION_TEMPLATE" . }}
+    }
+    {{ end }}
+  {{- if (has ($mapping | jsonpath "$..baseHref") "/") }}
+  {{- else }}
+    location / {
+        allow all;
+        auth_basic off;
+        {{ $first := index $mapping 0 -}}
+        rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" permanent;
+        rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri" permanent;
+    }
+  {{- end -}}
+  {{- end }}
+
+{{- if (getenv "ICM_BASE_URL") }}
+    # we have the ICM_BASE_URL so we can include sitemap locations
+    #
+    include /etc/nginx/conf.d/sitemap.conf;
+{{- end }}
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+}
+{{ end }}

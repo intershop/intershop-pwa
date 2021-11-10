@@ -50,7 +50,7 @@ describe('Quote Widget Component', () => {
 
   it('should calculate and display the right amounts when rendered', () => {
     when(quotingFacade.quotingEntities$()).thenReturn(
-      of(range(1, 6).map(num => (({ id: `${num}` } as unknown) as Quote)))
+      of(range(1, 6).map(num => ({ id: `${num}` } as unknown as Quote)))
     );
     when(quotingFacade.state$('1')).thenReturn(of('New'));
     when(quotingFacade.state$('2')).thenReturn(of('Rejected'));

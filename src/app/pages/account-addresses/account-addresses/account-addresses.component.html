@@ -34,7 +34,7 @@
 <div class="my-account-address-list shift-content">
   <div class="myAccount-addressBook">
     <!-- display saved addresses -->
-    <ng-container *ngIf="addresses && addresses.length > 0; else emptyList">
+    <ng-container *ngIf="(addresses$ | async)?.length; else emptyList">
       <!-- preferred invoice address == preferred shipping address -->
       <ng-container *ngIf="hasPreferredAddresses && preferredAddressesEqual">
         <div class="section" data-testing-id="preferred-invoice-and-shipping-address">
@@ -43,21 +43,10 @@
 
           <div class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
-              <ish-select-address
+              <formly-form
                 [form]="preferredAddressForm"
-                controlName="preferredInvoiceAddressUrn"
-                [addresses]="invoiceAddresses"
-                [emptyOptionLabel]="'account.addresses.preferredinvoice.button.label' | translate"
-                inputClass="w-100"
-              ></ish-select-address>
-
-              <ish-select-address
-                [form]="preferredAddressForm"
-                controlName="preferredShippingAddressUrn"
-                [addresses]="shippingAddresses"
-                [emptyOptionLabel]="'account.addresses.preferredshipping.button.label' | translate"
-                inputClass="w-100"
-              ></ish-select-address>
+                [fields]="[selectInvoiceConfig, selectShippingConfig]"
+              ></formly-form>
             </form>
           </div>
         </div>
@@ -76,13 +65,7 @@
           </ng-template>
           <div class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
-              <ish-select-address
-                [form]="preferredAddressForm"
-                controlName="preferredInvoiceAddressUrn"
-                [addresses]="invoiceAddresses"
-                [emptyOptionLabel]="'account.addresses.preferredinvoice.button.label' | translate"
-                inputClass="w-100"
-              ></ish-select-address>
+              <formly-form [form]="preferredAddressForm" [fields]="[selectInvoiceConfig]"></formly-form>
             </form>
           </div>
         </div>
@@ -98,13 +81,7 @@
           </ng-template>
           <div class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
-              <ish-select-address
-                [form]="preferredAddressForm"
-                controlName="preferredShippingAddressUrn"
-                [addresses]="shippingAddresses"
-                [emptyOptionLabel]="'account.addresses.preferredshipping.button.label' | translate"
-                inputClass="w-100"
-              ></ish-select-address>
+              <formly-form [form]="preferredAddressForm" [fields]="[selectShippingConfig]"></formly-form>
             </form>
           </div>
         </div>
@@ -120,7 +97,7 @@
                 <div class="float-right">
                   <!-- delete address: is only possible if the customer has more than one address -->
                   <a
-                    *ngIf="addresses.length > 1"
+                    *ngIf="(addresses$ | async)?.length > 1"
                     class="btn-tool"
                     title="{{ 'account.addresses.delete_address.text' | translate }}"
                     (click)="modalDialog.show(currentAddress)"

@@ -3,6 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { User } from 'ish-core/models/user/user.model';
 import { loadRolesAndPermissionsFail } from 'ish-core/store/customer/authorization';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
@@ -17,6 +18,9 @@ import {
   loadCompanyUserFail,
   loadCompanyUserSuccess,
   loadUserByAPIToken,
+  loadUserCostCenters,
+  loadUserCostCentersFail,
+  loadUserCostCentersSuccess,
   loadUserPaymentMethods,
   loadUserPaymentMethodsFail,
   loadUserPaymentMethodsSuccess,
@@ -45,6 +49,7 @@ import {
 export interface UserState {
   customer: Customer;
   user: User;
+  costCenters: UserCostCenter[];
   authorized: boolean;
   paymentMethods: PaymentMethod[];
   loading: boolean;
@@ -57,6 +62,7 @@ export interface UserState {
 const initialState: UserState = {
   customer: undefined,
   user: undefined,
+  costCenters: undefined,
   authorized: false,
   paymentMethods: undefined,
   loading: false,
@@ -75,6 +81,7 @@ export const userReducer = createReducer(
   setLoadingOn(
     loadCompanyUser,
     loadUserByAPIToken,
+    loadUserCostCenters,
     createUser,
     updateUser,
     updateUserPassword,
@@ -85,6 +92,7 @@ export const userReducer = createReducer(
     requestPasswordReminder
   ),
   unsetLoadingOn(
+    loadUserCostCentersFail,
     updateUserPasswordByPasswordReminderSuccess,
     requestPasswordReminderSuccess,
     updateUserPasswordByPasswordReminderFail,
@@ -113,6 +121,7 @@ export const userReducer = createReducer(
     updateUserSuccess,
     updateUserPasswordSuccess,
     updateCustomerSuccess,
+    loadUserCostCentersSuccess,
     loadUserPaymentMethodsSuccess,
     deleteUserPaymentInstrumentSuccess
   ),
@@ -159,6 +168,10 @@ export const userReducer = createReducer(
   on(setPGID, (state, action) => ({
     ...state,
     pgid: action.payload.pgid,
+  })),
+  on(loadUserCostCentersSuccess, (state, action) => ({
+    ...state,
+    costCenters: action.payload.costCenters,
   })),
   on(loadUserPaymentMethodsSuccess, (state, action) => ({
     ...state,

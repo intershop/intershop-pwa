@@ -1,4 +1,5 @@
 <ish-error-message [error]="error$ | async"></ish-error-message>
+
 <div data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="onCreate()">
     <formly-form [model]="model" [form]="form" [options]="options" [fields]="fields"></formly-form>
@@ -24,3 +25,5 @@
     </div>
   </form>
 </div>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

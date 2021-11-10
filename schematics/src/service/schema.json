@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "SchematicsPWAService",
+  "$id": "SchematicsPWAService",
   "title": "PWA Service Options Schema",
   "properties": {
     "path": {

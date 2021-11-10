@@ -1,4 +1,4 @@
-<div *ngIf="requisition" class="row">
+<div *ngIf="requisition && requisition.userBudget" class="row">
   <ish-info-box heading="approval.detailspage.buyer_budget.heading" class="infobox-wrapper col-12">
     <div class="row">
       <div class="col-md-6">
@@ -31,7 +31,8 @@
     <div class="row">
       <div class="col-md-6">
         <dl *ngIf="requisition.userBudget.budgetPeriod !== 'none'" class="row dl-horizontal dl-separator">
-          <dt class="col-6">{{ budgetLabel | translate }}</dt>
+          <!-- prettier-ignore -->
+          <dt class="col-6">{{ 'account.budget.label' | translate: { '0': requisition?.userBudget?.budgetPeriod } }}</dt>
           <dd class="col-6">
             <strong>
               <ng-container *ngIf="requisition.userBudget.budget; else noLimit">

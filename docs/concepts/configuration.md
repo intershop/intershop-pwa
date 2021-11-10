@@ -153,6 +153,27 @@ For instance, there is no general distinction between B2B and B2C applications.
 Each setup can define specific features at any time.
 Of course, the ICM server must supply appropriate REST resources to leverage functionality.
 
+### Available Feature Toggles
+
+| feature toggle               | description of enabled feature                                                                                             |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| compare                      | product compare feature (additional configuration via `dataRetention` configuration options)                               |
+| rating                       | display product ratings                                                                                                    |
+| recently                     | display recently viewed products (additional configuration via `dataRetention` configuration options)                      |
+| **B2B Features**             |                                                                                                                            |
+| advancedVariationHandling    | handle product variations as individual products in listings and product detail pages                                      |
+| businessCustomerRegistration | create business customers on registration                                                                                  |
+| orderTemplates               | order templates feature                                                                                                    |
+| quickorder                   | quick order page and direct add to cart input                                                                              |
+| quoting                      | quoting feature                                                                                                            |
+| **B2C Features**             |                                                                                                                            |
+| guestCheckout                | allow unregistered guest checkout                                                                                          |
+| wishlists                    | wishlist product list feature                                                                                              |
+| **Third-party Integrations** |                                                                                                                            |
+| sentry                       | Sentry error tracking and monitoring (additional configuration via `sentryDSN`)                                            |
+| tacton                       | Tacton product configuration integration (additional configuration via `tacton` and `dataRetention` configuration options) |
+| tracking                     | Google Tag Manager tracking (additional configuration via `gtmToken`)                                                      |
+
 ### Configuring Features
 
 The configuration of features can be done statically by the Angular CLI environment property `features` (string array) or the environment parameter `FEATURES` (comma-separated string list).
@@ -219,21 +240,42 @@ To dynamically set the default locale, use the URL parameter `lang` when rewriti
 
 ## Extend Locales
 
-To add other languages except English, German or French, you have to create a new json-mapping-file with all translations, e.g., _./src/assets/i18n/nl_NL.json_).
-Add the locale in the file _./src/environment/environments.ts_.
-Additionally, for Angular's built-in components, e.g., currency-pipe, you have to register locale data similar to `localeDe` and `localeFr` with `registerLocaleData(localeNl)` in _./src/app/core/configuration.module.ts._
+To add other languages except English, German or French:
 
-```typescript
-...
-import localeNl from '@angular/common/locales/nl';
-...
-export class ConfigurationModule {
-  constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService) {
-    registerLocaleData(localeNl);
-    ...
-  }
-}
-```
+1. Add the locale to the ICM channel configuration.
+
+2. Create a new json-mapping-file with all translations, e.g., `src/assets/i18n/nl_NL.json`.
+
+<!-- spell-checker: words Niederländisch -->
+
+3. (optional) Add the new language switch translation keys to other locales:
+   _example de_DE.json_
+
+   ```
+     "locale.nl_NL.long": "Niederländisch",
+     "locale.nl_NL.short": "nl",
+   ```
+
+4. (optional) Add the locale specific currency filter to the environments under `src/environments`, e.g.
+
+   ```typescript
+    localeCurrencyOverride: {
+      ...
+      nl_NL: 'EUR',
+    },
+   ```
+
+5. Import the Angular locale data in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts):
+
+   ```typescript
+   import localeNl from '@angular/common/locales/nl';
+   ```
+
+6. Register the locale using `registerLocaleData` in the constructor:
+
+   ```typescript
+   registerLocaleData(localeNl);
+   ```
 
 # Further References
 

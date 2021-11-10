@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -36,12 +35,12 @@ describe('Search Effects', () => {
     when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(suggests));
     productsServiceMock = mock(ProductsService);
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-    when(productsServiceMock.searchProducts(anyString(), anyNumber(), anything())).thenCall(
-      (searchTerm: string, page: number, itemsPerPage: number) => {
+    when(productsServiceMock.searchProducts(anyString(), anyNumber(), anything(), anyNumber())).thenCall(
+      (searchTerm: string, amount: number, _, offset: number) => {
         if (!searchTerm) {
           return throwError(makeHttpError({ message: 'ERROR' }));
         } else {
-          const currentSlice = skus.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
+          const currentSlice = skus.slice(offset, amount + offset);
           return of({
             products: currentSlice.map(sku => ({ sku })),
             sortKeys: [],
@@ -77,7 +76,7 @@ describe('Search Effects', () => {
     router = TestBed.inject(Router);
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
 
-    store$.dispatch(setProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
+    store$.dispatch(setProductListingPageSize({ itemsPerPage: 12 }));
   });
 
   describe('triggerSearch$', () => {
@@ -228,13 +227,13 @@ describe('Search Effects', () => {
       router.navigate(['search', searchTerm]);
       tick(500);
 
-      verify(productsServiceMock.searchProducts(searchTerm, 1, anything())).once();
+      verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 0)).once();
 
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 }));
-      verify(productsServiceMock.searchProducts(searchTerm, 2, anything())).once();
+      verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 12)).once();
 
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 3 }));
-      verify(productsServiceMock.searchProducts(searchTerm, 3, anything())).once();
+      verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 24)).once();
     }));
   });
 });

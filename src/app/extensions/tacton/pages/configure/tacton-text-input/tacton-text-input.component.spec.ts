@@ -25,7 +25,7 @@ describe('Tacton Text Input Component', () => {
     fixture = TestBed.createComponent(TactonTextInputComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.parameter = ({
+    component.parameter = {
       isGroup: false,
       isParameter: true,
       name: 'ID',
@@ -39,7 +39,7 @@ describe('Tacton Text Input Component', () => {
         guitype: 'text',
         hasDetailedView: false,
       },
-    } as unknown) as TactonProductConfigurationParameter;
+    } as unknown as TactonProductConfigurationParameter;
   });
 
   it('should be created', () => {

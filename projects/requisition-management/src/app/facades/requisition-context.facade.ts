@@ -25,7 +25,8 @@ export class RequisitionContextFacade
     entity: Requisition;
     view: 'buyer' | 'approver';
   }>
-  implements OnDestroy {
+  implements OnDestroy
+{
   constructor(private store: Store) {
     super();
 

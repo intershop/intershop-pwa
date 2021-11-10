@@ -10,7 +10,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     return this.applyWithFunction(sourceFile, ctx => {
       tsquery(sourceFile, 'PropertyAssignment').forEach((token: PropertyAssignment) => {
         const identifier = token.name.getText();
-        if (!identifier.match(/^[a-z][A-Za-z0-9]*$/)) {
+        if (!identifier.match(/^([a-z][A-Za-z0-9]*|[a-z][a-z]_[A-Z][A-Z])$/)) {
           ctx.addFailureAtNode(token, `Property ${token.getText()} is not camelCase formatted.`);
         }
       });

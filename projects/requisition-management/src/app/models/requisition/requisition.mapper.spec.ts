@@ -21,18 +21,33 @@ describe('Requisition Mapper', () => {
         id: 'testUUDI',
         requisitionNo: '0001',
         orderNo: '10001',
+        purchaseCurrency: 'USD',
         invoiceToAddress: 'urn_invoiceToAddress_123',
         commonShipToAddress: 'urn_commonShipToAddress_123',
         commonShippingMethod: 'shipping_method_123',
         customer: 'OilCorp',
         user: 'bboldner@test.intershop.de',
+        costCenter: 'CostCenter123',
         creationDate: 12345678,
         lineItemCount: 2,
-        approvalStatus: {
-          status: 'APPROVED',
-          approver: { firstName: 'Bernhard', lastName: 'Boldner' },
-          approvalDate: 76543627,
+        approval: {
+          costCenterApproval: {
+            approvers: [{ email: 'jlink@test.intershop.de' }],
+          },
+          customerApproval: {
+            approvers: [{ email: 'bboldner@test.intershop.de' }],
+          },
         },
+        approvalStatus: {
+          statusCode: 'PENDING',
+        },
+        approvalStatuses: [
+          {
+            statusCode: 'APPROVED',
+            approver: { firstName: 'Bernhard', lastName: 'Boldner', email: 'bboldner@test.intershop.de' },
+            approvalDate: 76543627,
+          },
+        ],
         userInformation: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
         userBudgets: {
           budgetPeriod: 'weekly',
@@ -48,18 +63,36 @@ describe('Requisition Mapper', () => {
       expect(mapped).toMatchInlineSnapshot(`
         Object {
           "approval": Object {
-            "approvalDate": 76543627,
-            "approver": Object {
-              "firstName": "Bernhard",
-              "lastName": "Boldner",
+            "approvers": Array [
+              Object {
+                "email": "bboldner@test.intershop.de",
+                "firstName": "Bernhard",
+                "lastName": "Boldner",
+              },
+            ],
+            "costCenterApproval": Object {
+              "approvers": Array [
+                Object {
+                  "email": "jlink@test.intershop.de",
+                },
+              ],
+              "statusCode": "PENDING",
             },
-            "customerApprovers": undefined,
-            "status": "APPROVED",
+            "customerApproval": Object {
+              "approvers": Array [
+                Object {
+                  "email": "bboldner@test.intershop.de",
+                },
+              ],
+              "statusCode": "APPROVED",
+            },
+            "statusCode": "PENDING",
           },
           "attributes": undefined,
           "bucketId": undefined,
           "commonShipToAddress": undefined,
           "commonShippingMethod": undefined,
+          "costCenter": "CostCenter123",
           "creationDate": 12345678,
           "customerNo": "OilCorp",
           "dynamicMessages": undefined,
@@ -72,7 +105,7 @@ describe('Requisition Mapper', () => {
           "orderNo": "10001",
           "payment": undefined,
           "promotionCodes": undefined,
-          "purchaseCurrency": undefined,
+          "purchaseCurrency": "USD",
           "requisitionNo": "0001",
           "totalProductQuantity": undefined,
           "totals": Object {

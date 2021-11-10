@@ -14,6 +14,8 @@ module.exports = {
     },
   },
   preset: 'jest-preset-angular',
+  testRunner: 'jest-jasmine2',
+  maxWorkers: '75%', // keep some cpu for moving the mouse
   roots: ['src', 'projects'],
   setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],

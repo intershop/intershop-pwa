@@ -1,0 +1,43 @@
+<div class="row mt-4">
+  <div class="col-md-12">
+    <h3>{{ 'quickorder.page.csv.title' | translate }}</h3>
+    <p>{{ 'quickorder.page.csv.subtitle' | translate }}</p>
+    <form [formGroup]="csvForm" (ngSubmit)="addCsvToCart()">
+      <div class="form-group section section-seperator">
+        <input
+          type="file"
+          name="csvFile"
+          id="CSVFile"
+          size="35"
+          class="form-control"
+          accept=".csv"
+          (change)="uploadListener($event.target)"
+        />
+        <div [ngSwitch]="status">
+          <small *ngSwitchCase="'IncorrectInput'" class="has-error"
+            ><span class="validation-message">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span></small
+          >
+          <small *ngSwitchCase="'InvalidFormat'" class="has-error"
+            ><span class="validation-message">{{ 'quickorder.page.csv.file.invalid.format' | translate }}</span></small
+          >
+          <small *ngSwitchCase="'ValidFormat'" class="has-success"
+            ><span class="validation-message">{{ 'quickorder.page.csv.file.uploaded' | translate }}</span></small
+          >
+          <small *ngSwitchDefault></small>
+        </div>
+        <small
+          class="form-text"
+          [innerHTML]="'quickorder.page.csv.sample' | translate: { '0': 'assets/sample-data/quickorder.csv' }"
+        ></small>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary" name="addToCartCSV" [disabled]="isCsvDisabled">
+          {{ 'quickorder.page.add.cart' | translate }}
+        </button>
+        <button type="reset" class="btn btn-link" name="reset" (click)="resetCsvProductArray()">
+          {{ 'quickorder.page.csv.reset.form' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

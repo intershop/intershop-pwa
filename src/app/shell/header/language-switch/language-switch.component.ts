@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { Locale } from 'ish-core/models/locale/locale.model';
 
 @Component({
   selector: 'ish-language-switch',
@@ -17,8 +16,8 @@ export class LanguageSwitchComponent implements OnInit {
    */
   @Input() placement: '' | 'up' = '';
 
-  locale$: Observable<Locale>;
-  availableLocales$: Observable<Locale[]>;
+  locale$: Observable<string>;
+  availableLocales$: Observable<string[]>;
 
   constructor(private appFacade: AppFacade, public location: LocationStrategy) {}
 

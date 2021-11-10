@@ -79,7 +79,7 @@ import 'url-polyfill/url-polyfill.js';
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js/dist/zone'; // Included with Angular CLI.
+import 'zone.js'; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
@@ -89,3 +89,9 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
 (window as any).global = window;
 
 global.Buffer = global.Buffer || require('buffer').Buffer;
+
+(global as any).version = () => ({
+  displayVersion: JSON.parse(document.querySelector('#intershop-pwa-state')?.textContent?.replace(/&q;/g, '"') || '{}')
+    .displayVersion,
+  pwaVersion: document.querySelector('meta[property="pwa-version"]')?.getAttribute('content'),
+});

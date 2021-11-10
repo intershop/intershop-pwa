@@ -14,7 +14,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductItemComponent implements OnInit {
-  @Input() displayType: 'tile' | 'row' = 'tile';
+  @Input() displayType: 'tile' | 'row' | string = 'tile';
 
   product$: Observable<ProductView>;
   loading$: Observable<boolean>;

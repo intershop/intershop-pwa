@@ -7,6 +7,226 @@ kb_everyone
 
 # Changelog
 
+## [1.3.0](https://github.com/releases/tag/1.3.0) (2021-10-29)
+
+**required Intershop Commerce Management version: 7.10.32.7-LTS**
+
+### Features
+
+- requisition approval usability improvements (#887) ([2de6856](https://github.com/intershop/intershop-pwa/commit/2de6856))
+- add cost center approval widget (#887) ([7b412b7](https://github.com/intershop/intershop-pwa/commit/7b412b7))
+- display a success/info message after a requisition has been approved/rejected (#887) ([9846c87](https://github.com/intershop/intershop-pwa/commit/9846c87))
+- display cost center approval information in the checkout approval dialog (#887) ([1fb61f3](https://github.com/intershop/intershop-pwa/commit/1fb61f3))
+- extend the authorization service and directive to check against multiple permissions ([b4d9c38](https://github.com/intershop/intershop-pwa/commit/b4d9c38))
+- introduce info message component (#909) ([4eb6f24](https://github.com/intershop/intershop-pwa/commit/4eb6f24))
+- adapt styling for toast messages (#909) ([725eeb1](https://github.com/intershop/intershop-pwa/commit/725eeb1))
+- add quickorder sample CSV file (#895) ([cd420f7](https://github.com/intershop/intershop-pwa/commit/cd420f7))
+
+### Bug Fixes
+
+- display wishlist items in the wishlist widget (#917) ([17224f1](https://github.com/intershop/intershop-pwa/commit/17224f1))
+- contact us page can't be used twice (#915) ([41eae48](https://github.com/intershop/intershop-pwa/commit/41eae48))
+- DNS resolve issue in SSR ([0e7010c](https://github.com/intershop/intershop-pwa/commit/0e7010c))
+- update placeholders correctly on SSR (#906) ([b734680](https://github.com/intershop/intershop-pwa/commit/b734680))
+- check for whole occurences of localizations (#907) ([a952146](https://github.com/intershop/intershop-pwa/commit/a952146))
+- don't display 'please select' in the cost center selection dropdown if a cost center has already been assigned to a basket ([8a2a6d3](https://github.com/intershop/intershop-pwa/commit/8a2a6d3))
+- wait for retrieving localized ICM data until configuration is retrieved (#902) ([fc068c2](https://github.com/intershop/intershop-pwa/commit/fc068c2))
+- disable inlineCriticalCss for Angular Universal engine (#904) ([00377e5](https://github.com/intershop/intershop-pwa/commit/00377e5))
+- respect ICM setting "Add Product Behavior" when adding basket items (#905) ([a5fd804](https://github.com/intershop/intershop-pwa/commit/a5fd804))
+- styling of radio buttons on shipping page (#900) ([072f747](https://github.com/intershop/intershop-pwa/commit/072f747))
+- missing styles for main navigation hover menu - removed by PurgeCSS (#901) ([0205842](https://github.com/intershop/intershop-pwa/commit/0205842))
+- repair chunk output file names for differential loading (#896) ([b1e27d5](https://github.com/intershop/intershop-pwa/commit/b1e27d5))
+- quick order CSV file error message doesn't overlap button (#897) ([c23b9d5](https://github.com/intershop/intershop-pwa/commit/c23b9d5))
+
+### Performance Improvements
+
+- refactor loading of server-side translations (#890) ([3048485](https://github.com/intershop/intershop-pwa/commit/3048485))
+
+### Documentation
+
+- revive customization documentation (#910) ([fa1d321](https://github.com/intershop/intershop-pwa/commit/fa1d321))
+
+### Code Refactoring
+
+- remove b64u library and use native methods (#898) ([440828a](https://github.com/intershop/intershop-pwa/commit/440828a))
+
+### BREAKING CHANGES
+
+- The PWA no longer relies on the dependency to 'b64u' since no encoding and decoding Base64 is needed any more in SSR. In the browser native methods are used. If your custom code uses b64u in SSR you should not remove this dependency or use a polyfill like 'btoa-polyfill'.
+
+## [1.2.0](https://github.com/releases/tag/1.2.0) (2021-09-30)
+
+**required Intershop Commerce Management version: 7.10.32.3-LTS**
+
+### Features
+
+- helper for never forgetting npm install on branch change (#875) ([7c0b11a](https://github.com/intershop/intershop-pwa/commit/7c0b11a))
+- add option for only building specific themes in docker build (#856) ([ad3fb75](https://github.com/intershop/intershop-pwa/commit/ad3fb75))
+- add virtual theme "all" for always overriding files (#841) ([9b595d1](https://github.com/intershop/intershop-pwa/commit/9b595d1))
+- customizable nginx cache duration (#873) ([b33dc3e](https://github.com/intershop/intershop-pwa/commit/b33dc3e))
+
+### Bug Fixes
+
+- enable cXML punchout with unclean user state (#861) ([5f2e4de](https://github.com/intershop/intershop-pwa/commit/5f2e4de))
+- restrict product-quantity input to numbers (browser dependend) (#884) ([ecef9e4](https://github.com/intershop/intershop-pwa/commit/ecef9e4))
+- no search results displayed when filter name contains special characters (#885) ([5f628d6](https://github.com/intershop/intershop-pwa/commit/5f628d6))
+- use translate get instead of instant for product-image component (#876) ([d4ba64c](https://github.com/intershop/intershop-pwa/commit/d4ba64c))
+- noSSR PWA Docker container does not support deep links (#871) ([0df009e](https://github.com/intershop/intershop-pwa/commit/0df009e))
+- use get instead of value for global variables in Jest tests (#866) ([bc2517c](https://github.com/intershop/intershop-pwa/commit/bc2517c))
+
+### Performance Improvements
+
+- restrict NgRx state transfer filtering to two levels (#889) ([a1e4efd](https://github.com/intershop/intershop-pwa/commit/a1e4efd))
+- prevent unnecessary individual loading of path categories (#877) ([dc820a7](https://github.com/intershop/intershop-pwa/commit/dc820a7))
+- prevent compiling translations with very large values (#880) ([36aebad](https://github.com/intershop/intershop-pwa/commit/36aebad))
+- cache compiled translations in PWA process (#881) ([82de3a4](https://github.com/intershop/intershop-pwa/commit/82de3a4))
+- reduce breadcrumb set delay as it also blocks SSR (#870) ([a0eafd7](https://github.com/intershop/intershop-pwa/commit/a0eafd7))
+- prevent api token restore on SSR (#870) ([c9425f5](https://github.com/intershop/intershop-pwa/commit/c9425f5))
+- prevent basket loading subscription for SSR (#870) ([cffd192](https://github.com/intershop/intershop-pwa/commit/cffd192))
+- prevent suggest search trigger on SSR (#870) ([25624e3](https://github.com/intershop/intershop-pwa/commit/25624e3))
+- retrieve links and child products only on successful products call (#870) ([9b7ab1a](https://github.com/intershop/intershop-pwa/commit/9b7ab1a))
+- cache 404 longer in nginx (#870) ([bdab77a](https://github.com/intershop/intershop-pwa/commit/bdab77a))
+
+### Documentation
+
+- update hybrid approach SSL documentation (#882) ([da1b1aa](https://github.com/intershop/intershop-pwa/commit/da1b1aa))
+
+### Code Refactoring
+
+- build and bundle docker scripts with webpack (#853) ([94e7fb9](https://github.com/intershop/intershop-pwa/commit/94e7fb9))
+
+### BREAKING CHANGES
+
+- JavaScript files from `dist` folder have been moved. See [Migrations / 1.1 to 1.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#11-to-12) for more details.
+- The identity provider's `triggerLogout` method now takes 0 instead of 2 arguments.
+
+## [1.1.0](https://github.com/intershop/intershop-pwa/releases/tag/1.1.0) (2021-09-03)
+
+**required Intershop Commerce Management version: 7.10.32.3-LTS**
+
+### Features
+
+- add version method for inspecting version information (#858) ([4b9294f](https://github.com/intershop/intershop-pwa/commit/4b9294f))
+- Cost Center selection for checkout (#807) ([72a439f](https://github.com/intershop/intershop-pwa/commit/72a439f))
+- display product attachments at the product detail page (#840) ([d275b95](https://github.com/intershop/intershop-pwa/commit/d275b95))
+
+### Bug Fixes
+
+- enable logout of punchout user in combination with SSO (#852) ([eb4f222](https://github.com/intershop/intershop-pwa/commit/eb4f222))
+- let purgecss only search app sources ([8db741a](https://github.com/intershop/intershop-pwa/commit/8db741a))
+- stylePreprocessorOptions missing on server build (#834) ([2069f47](https://github.com/intershop/intershop-pwa/commit/2069f47))
+- broken page on missing requisition data like user and budget (#859) ([0f3f847](https://github.com/intershop/intershop-pwa/commit/0f3f847))
+- prevent double requests after inserting a SKU on direct order and quickorder form including validation ([fb2e192](https://github.com/intershop/intershop-pwa/commit/fb2e192))
+- prevent call for empty product on quickorder and direct order (#844) ([385a855](https://github.com/intershop/intershop-pwa/commit/385a855))
+- propagate extra arguments in build:multi script ([5ece62e](https://github.com/intershop/intershop-pwa/commit/5ece62e))
+- mainNavigationMaxSubCategoriesDepth configuration with '0' fails to disable main navigation hover menu (#850) ([725cfb8](https://github.com/intershop/intershop-pwa/commit/725cfb8))
+- use translate compiler for fallback translations (#843) ([69af5ff](https://github.com/intershop/intershop-pwa/commit/69af5ff))
+- THEME variable should be string ([fc519bc](https://github.com/intershop/intershop-pwa/commit/fc519bc))
+- align table heading with associated content in quickorder form (#832) ([64c0e1d](https://github.com/intershop/intershop-pwa/commit/64c0e1d))
+- insert none default theme at the end ([e2d7639](https://github.com/intershop/intershop-pwa/commit/e2d7639))
+
+## [1.0.0](https://github.com/intershop/intershop-pwa/releases/tag/1.0.0) (2021-08-04)
+
+**required Intershop Commerce Management version: 7.10.32.0-LTS**
+
+### Features
+
+- add readiness and liveness probe for pm2 (#818) ([8a21fb1](https://github.com/intershop/intershop-pwa/commit/8a21fb1))
+- multi-PWA container build with runtime theme switching (#775) ([b4c6060](https://github.com/intershop/intershop-pwa/commit/b4c6060))
+- payone creditcard payment (#717) ([1b6190e](https://github.com/intershop/intershop-pwa/commit/1b6190e))
+- provide deploy-url as runtime property (#630) ([03911e1](https://github.com/intershop/intershop-pwa/commit/03911e1))
+- rework Quickorder page (#752) ([b06ac13](https://github.com/intershop/intershop-pwa/commit/b3bb4c5))
+- add Quickorder Link for mobile view (#794) ([b06ac13](https://github.com/intershop/intershop-pwa/commit/b06ac13))
+- add translate-placeholder extension and use it (#801) ([a413c3e](https://github.com/intershop/intershop-pwa/commit/a413c3e))
+- add formly phone number input with basic validator (#778, #424) ([3a20d3c](https://github.com/intershop/intershop-pwa/commit/3a20d3c))
+- add direct order on cart when feature quickorder is enabled (#745) ([a1e2aff](https://github.com/intershop/intershop-pwa/commit/a1e2aff))
+- disable ngrx Store Devtools in production environments (#773) ([22ef75e](https://github.com/intershop/intershop-pwa/commit/22ef75e))
+- container provide better error message when given ICM uses a not valid ssl certificate (#779) ([d2793a6](https://github.com/intershop/intershop-pwa/commit/d2793a6))
+- adapt language switch with configurable multisite support (#722) ([4949be1](https://github.com/intershop/intershop-pwa/commit/4949be1))
+- add basic formly radio button functionality ([031fc53](https://github.com/intershop/intershop-pwa/commit/031fc53))
+- forward mouse event to callback handler in server-html directive (#750) ([478c096](https://github.com/intershop/intershop-pwa/commit/478c096))
+- basic auth support for nginx (#677) ([7c3e193](https://github.com/intershop/intershop-pwa/commit/7c3e193))
+- replace i18nPlural pipe usage with translate compiler (#719) ([0df6e8d](https://github.com/intershop/intershop-pwa/commit/0df6e8d))
+- enable the B2B user to enter an order reference id during checkout (#714) ([2cf15f2](https://github.com/intershop/intershop-pwa/commit/2cf15f2))
+- individual page sizes for product listings (category, search, master) (#709) ([e6d41ca](https://github.com/intershop/intershop-pwa/commit/e6d41ca))
+- enable data retention for ngrx store slices (recently, compare, tacton) (#720) ([3f0069e](https://github.com/intershop/intershop-pwa/commit/3f0069e))
+- unification of "Product List (Manual)" with the other CMS Product Lists (#673) ([6edf125](https://github.com/intershop/intershop-pwa/commit/6edf125))
+- add support for CMS component "Product List (Category)" (#673) ([d3f0489](https://github.com/intershop/intershop-pwa/commit/d3f0489))
+- add support for CMS component "Product List (Filter)" (#673) ([fbc5e3e](https://github.com/intershop/intershop-pwa/commit/fbc5e3e))
+- introduce shared ProductsList component with list and carousel view (#673) ([8df9599](https://github.com/intershop/intershop-pwa/commit/8df9599))
+- introduce content parameter state management - initial with filtered product lists (#673) ([6aa7fb4](https://github.com/intershop/intershop-pwa/commit/6aa7fb4))
+- improve detecting missing translations (#659) ([32c57bd](https://github.com/intershop/intershop-pwa/commit/32c57bd))
+- load translations with webpack (#655) ([267395c](https://github.com/intershop/intershop-pwa/commit/267395c))
+
+### Bug Fixes
+
+- address countryCode and mainDivision behaviour (#819) ([5f2e70c](https://github.com/intershop/intershop-pwa/commit/5f2e70c))
+- remove type=text from registration password fields (#820) ([8907f36](https://github.com/intershop/intershop-pwa/commit/8907f36))
+- translate-select-options without expressionProperty (#813) ([5b4c817](https://github.com/intershop/intershop-pwa/commit/5b4c817))
+- ensure only one REST call is executed to get eligible shipping/payment methods on checkout pages ([f19434d](https://github.com/intershop/intershop-pwa/commit/f19434d))
+- fetch endlessly addresses on checkout address page all the time ([8e2f66f](https://github.com/intershop/intershop-pwa/commit/8e2f66f))
+- incorrect hover styles for nav links in hamburger menu (#805) ([dafafe1](https://github.com/intershop/intershop-pwa/commit/dafafe1))
+- checkout shipping selection error and test (#798) ([50d9413](https://github.com/intershop/intershop-pwa/commit/50d9413))
+- display an error message in case the customer creation failed ([21e19e0](https://github.com/intershop/intershop-pwa/commit/21e19e0))
+- set canonical link and 'og:url' info independent from SSR container context to 'https' (#777) ([e3f0749](https://github.com/intershop/intershop-pwa/commit/e3f0749))
+- exclude table styles from removing by purgeCSS ([5983945](https://github.com/intershop/intershop-pwa/commit/5983945))
+- styling issue concerning mobile language switch (#769) ([7b7e835](https://github.com/intershop/intershop-pwa/commit/7b7e835))
+- formly styling issues ([c548ca4](https://github.com/intershop/intershop-pwa/commit/c548ca4))
+- adapt post wrappers extension and fix occurences ([e061d25](https://github.com/intershop/intershop-pwa/commit/e061d25))
+- repair 'npm run start:local' (#758, #760) ([1a07855](https://github.com/intershop/intershop-pwa/commit/1a07855))
+- incorrect product label display on product detail page (#762, #763) ([757c1eb](https://github.com/intershop/intershop-pwa/commit/757c1eb))
+- add support for CMS component "Product List (Filter)" - use correct scope configuration (#755) ([1fa5e02](https://github.com/intershop/intershop-pwa/commit/1fa5e02))
+- adapt project SCSS definitions in regards to sass '/' deprecation warnings (#751) ([9ba3618](https://github.com/intershop/intershop-pwa/commit/9ba3618))
+- don't display payment costs on checkout payment page if the value is zero (#744) ([c94c3fb](https://github.com/intershop/intershop-pwa/commit/c94c3fb))
+- don't display multiple buckets message after redirect before checkout (#735) ([ad029d5](https://github.com/intershop/intershop-pwa/commit/ad029d5))
+- display edit line item link only for variation products (#741) ([03c9988](https://github.com/intershop/intershop-pwa/commit/03c9988))
+- quick order - enable the add-to-cart button after a valid csv file has been selected (#736) ([72aaf83](https://github.com/intershop/intershop-pwa/commit/72aaf83))
+- trigger change detection in the authorization toggle directive after permission changes ([74810ed](https://github.com/intershop/intershop-pwa/commit/74810ed))
+- add permission check to edit the company profile ([2096b26](https://github.com/intershop/intershop-pwa/commit/2096b26))
+- double-check missing translation before reporting (#728) ([f1eb525](https://github.com/intershop/intershop-pwa/commit/f1eb525))
+
+### Documentation
+
+- update changed/moved links in documentation ([d17d133](https://github.com/intershop/intershop-pwa/commit/d17d133))
+- extend environment.ts configuration documentation ([4ca29d6](https://github.com/intershop/intershop-pwa/commit/4ca29d6))
+- add single theme configuration description for multi theme support ([302be6d](https://github.com/intershop/intershop-pwa/commit/302be6d))
+- add code documentation for formly things (#806) ([614b9d1](https://github.com/intershop/intershop-pwa/commit/614b9d1))
+- documentation for deploy url (#646) ([8418166](https://github.com/intershop/intershop-pwa/commit/8418166))
+
+### Dependencies
+
+- update to Angular 12 and Webpack 5 (#718) ([c3c80ed](https://github.com/intershop/intershop-pwa/commit/c3c80ed))
+
+### BREAKING CHANGES
+
+- Webpack 5 upgrade - custom webpack configuration has to be updated if customized.
+- Build process in docker image was enhanced to enable multiple configurations at runtime.
+- The `environment.ts` handling and with that the handling of `environment.local.ts` was changed. See [Migrations / 0.30 to 1.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#031-to-10) for more details.
+- Locale definitions in `environment.ts` models are no longer supported, only ICM channel configurations are now used for switching locales.
+
+## [0.31.0](https://github.com/intershop/intershop-pwa/releases/tag/0.31.0) (2021-06-02)
+
+**required Intershop Commerce Management version: 7.10.30.2**
+
+### Features
+
+- enable loading translations from ICM (#695) ([7f8ae68](https://github.com/intershop/intershop-pwa/commit/7f8ae68))
+- display only available products in product links carousels and lists (#626) ([386a584](https://github.com/intershop/intershop-pwa/commit/386a584))
+- omit default redirect in multi channel when one base href is root route (#704) ([76c9074](https://github.com/intershop/intershop-pwa/commit/76c9074))
+- use locales from ICM configuration (#685) ([204fd36](https://github.com/intershop/intershop-pwa/commit/204fd36))
+
+### Bug Fixes
+
+- breadcrumb styling harmonization (#713) ([abb2c4e](https://github.com/intershop/intershop-pwa/commit/abb2c4e))
+- set punchout cookies with "SameSite=None; Secure" to work in https iframes (#683) ([f5900eb](https://github.com/intershop/intershop-pwa/commit/f5900eb))
+- timing issue when fetching CMS content include data after logout (#711) ([712c91b](https://github.com/intershop/intershop-pwa/commit/712c91b))
+- adapt static content navigation styling to meet new IAD/VD requirements (#682) ([2fd56b1](https://github.com/intershop/intershop-pwa/commit/2fd56b1))
+- use region code instead of id for US new-address-form (#708) ([06f466c](https://github.com/intershop/intershop-pwa/commit/06f466c))
+- add missing loading spinner when creating an account (registration) (#705) ([8a77c4d](https://github.com/intershop/intershop-pwa/commit/8a77c4d))
+- undesired logout after contact us submission (#686) ([a76d4a6](https://github.com/intershop/intershop-pwa/commit/a76d4a6))
+- track item changes as local state in checkout facade (#702) ([8600213](https://github.com/intershop/intershop-pwa/commit/8600213))
+- mini cart opens if the user navigates from checkout to other pages (#688) ([5a0ed25](https://github.com/intershop/intershop-pwa/commit/5a0ed25))
+
 ## [0.30.0](https://github.com/intershop/intershop-pwa/releases/tag/0.30.0) (2021-05-05)
 
 **required Intershop Commerce Management version: 7.10.30.2**

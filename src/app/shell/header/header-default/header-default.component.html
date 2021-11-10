@@ -53,7 +53,7 @@
       [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
     ></ish-mini-basket>
   </div>
-  <div class="row align-items-center">
+  <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="col-md-5 text-right">
-      <ish-lazy-header-quickorder></ish-lazy-header-quickorder>
+      <ish-lazy-quickorder-link></ish-lazy-quickorder-link>
     </div>
     <div class="col-md-4">
       <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">

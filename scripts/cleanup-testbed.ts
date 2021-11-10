@@ -1,6 +1,7 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { execSync, spawnSync } from 'child_process';
 import { LeftHandSideExpression, Node, Project, PropertyAccessExpression, SourceFile } from 'ts-morph';
+import * as ts from 'typescript';
 
 // tslint:disable: no-console
 
@@ -48,7 +49,7 @@ for (const file of files) {
 
     if (
       !tsquery(
-        file.getSourceFile().compilerNode,
+        file.getSourceFile().compilerNode as unknown as ts.Node,
         'PropertyAccessExpression[expression.text=TestBed][name.text=configureTestingModule]'
       ).length
     ) {

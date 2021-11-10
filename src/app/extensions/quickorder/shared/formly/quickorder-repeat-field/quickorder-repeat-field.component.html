@@ -1,0 +1,25 @@
+<div
+  *ngFor="let field of field?.fieldGroup; let i = index"
+  class="row"
+  [attr.data-testing-id]="'quickorder-line-' + i"
+  ishProductContext
+  [(quantity)]="model[i].quantity"
+  [configuration]="{ quantity: true }"
+>
+  <formly-field class="col-6" [field]="field"></formly-field>
+  <ish-product-quantity class="col-3 col-sm-2 quickorder-line-item"></ish-product-quantity>
+  <div class="col-3 col-sm-2 d-flex quickorder-line-item">
+    <a
+      class="btn btn-tool"
+      (click)="remove(i); updateContexts()"
+      title="{{ 'quickorder.page.remove.row' | translate }}"
+    >
+      <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+    </a>
+  </div>
+</div>
+<div class="section d-flex flex-nowrap">
+  <a (click)="add(); updateContexts()" data-testing-id="add-quickorder-line">{{ to?.addText | translate }}</a>
+  <span class="link-separator"></span>
+  <a (click)="addMultipleRows(to?.numberMoreRows)">{{ to?.addMoreText | translate: { '0': to?.numberMoreRows } }}</a>
+</div>

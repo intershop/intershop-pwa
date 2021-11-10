@@ -5,7 +5,7 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Building and Running nginx Docker Image
+# Building and Running NGINX Docker Image
 
 We provide a docker image based on [nginx](https://www.nginx.com/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx).
 
@@ -23,81 +23,75 @@ For HTTP, the server will run on default port 80.
 If HTTPS is chosen as an upstream, it will run on default port 443.
 In the latter case the files `server.key` and `server.crt` have to be supplied in the container folder `/etx/nginx` (either by volume mapping with `docker run` or in the image itself by `docker build`).
 
-### Multi-Channel
+### Basic Auth
+
+For deploying to test environments that should not be indexed by search bots or should not be accessible by the public, the nginx container can be set up with basic authentication.
+Just supply a single user-password combination as environment variable, i.e. `BASIC_AUTH=<user>:<password>`.
+You can also whitelist IPs by supplying a YAML list to the environment variable `BASIC_AUTH_IP_WHITELIST`:
+
+```yaml
+nginx:
+  environment:
+    BASIC_AUTH: 'developer:!InterShop00!'
+    BASIC_AUTH_IP_WHITELIST: |
+      - 172.22.0.1
+      - 1.2.3.4
+```
+
+Entries of the IP whitelist are added to the nginx config as [`allow`](http://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also supports IP ranges.
+Please refer to the linked nginx documentation on how to configure this.
+
+After activating basic authentication for your setup globally you can also selectively deactivate it per site.
+See [Multi-Site Configurations](../guides/multi-site-configurations.md#Examples) for examples on how to do that.
+
+### Multi-Site
 
 If the nginx container is run without further configuration, the default Angular CLI environment properties are not overridden.
 Multiple PWA channels can be set up by supplying a [YAML](https://yaml.org) configuration listing all domains the PWA should work for.
 
-The first way of supplying a configuration for domains is to add multiple domain configuration nodes and specify properties:
-
-```yaml
-'domain1':
-  channel: channel1
-  application: app1
-  features: f1,f2,f3
-  lang: la_CO
-  theme: name|color
-```
-
-The domain is interpreted as a regular expression.
-Subdomains (`b2b\..+`) as well as top level domains (`.+\.com`) can be supplied.
-The `channel` property is also mandatory.
-
-All other properties are optional:
-
-- **application**: The ICM application
-- **identityProvider**: The active identity provider for this site
-- **features**: Comma-separated list of activated features
-- **lang**: The default language as defined in the Angular CLI environment
-- **theme**: The theme used for the channel (format: `<theme-name>(|<icon-color>)?`)
-
-Dynamically directing the PWA to different ICM installations can by done by using:
-
-- **icmHost**: the domain where the ICM instance is running (without protocol and port)
-- **icmPort**: (optional) if the port differs from 443
-- **icmScheme**: (optional) if the protocol differs from 'https'
-
-Multiple channels can also be configured via context paths, which re-configure the PWA upstream to use a different `baseHref` for each channel.
-
-```yaml
-'domain2':
-  - baseHref: /us
-    channel: channelUS
-    lang: en_US
-  - baseHref: /de
-    channel: channelDE
-    lang: de_DE
-```
-
-The domain has to be supplied.
-To match all domains use `.+`.
-The parameters `baseHref` and `channel` are mandatory.
-`baseHref` must start with `/`.
-Also note that context path channels have to be supplied as a list.
-The first entry is chosen as default channel, if the website is accessed without supplying a channel, meaning the context path `/`.
-It is also possible to explicitly set a channel configuration for the `/` context path.
-Such a configuration is shown in the following configuration that sets different languages for the according context paths but within the same channel.
-
-```yaml
-'domain2':
-  - baseHref: /fr
-    channel: channel
-    lang: fr_FR
-  - baseHref: /de
-    channel: channel
-    lang: de_DE
-  - baseHref: /
-    channel: channel
-    lang: en_US
-```
+For more information on the multi-site syntax, refer to [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax)
 
 The configuration can be supplied simply by setting the environment variable `MULTI_CHANNEL`.
-Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources).
+Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
 If no environment variables for multi-channel configuration are given, the configuration will fall back to the content of [`nginx/multi-channel.yaml`](../../nginx/multi-channel.yaml), which can also be customized.
 
 > :warning: Multi-Channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker)
 
-An extended example can be found in the `docker-compose.yml` in the project root.
+An extended list of examples can be found in the [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax) guide.
+
+### Ignore parameters during caching
+
+Often, nginx receives requests from advertising networks or various user agents that append unused query parameters when making a request, for example `utm_source`. <br>
+These parameters can lead to inefficient caching because even if the same URL is requested multiple times, if it is accessed with different query parameters, the cached version will not be used.
+
+To prevent this, you can define any number of blacklisted parameters that will be ignored by nginx during caching.
+
+As with multi-site handling above, the configuration can be supplied simply by setting the environment variable `CACHING_IGNORE_PARAMS`. <br>
+Alternatively, the source can be supplied by setting `CACHING_IGNORE_PARAMS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
+Be aware that the supplied list of parameters must be declared under a `params` property.
+
+If no environment variables for ignoring parameters are given, the configuration will fall back to the content of [`nginx/caching-ignore-params.yaml`](../../nginx/caching-ignore-params.yaml), which can also be customized.
+
+### Access ICM sitemap
+
+Please refer to [this](https://support.intershop.com/kb/index.php/Display/23D962#ConceptXMLSitemaps-XMLSitemapsandIntershopPWAxml_sitemap_pwa) Intershop knowledge base article on how to configure ICM to generate PWA sitemap files.
+
+```
+http://pwa/sitemap_pwa.xml
+```
+
+To make above sitemap index file available under your deployment you need to add environment variable `ICM_BASE_URL` in your nginx container.
+Let `ICM_BASE_URL` point to your ICM backend installation, e.g. `https://pwa-ish-demo.test.intershop.com`.
+When the container is started it'll process cache-ignore and multi-channel templates as well as sitemap proxy rules like this:
+
+```yaml
+location /sitemap_ {
+proxy_pass https://pwa-ish-demo.test.intershop.com/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/rest/inSPIRED-inTRONICS/en_US/sitemaps/pwa/sitemap_;
+}
+```
+
+The process will utilize your [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax).
+Be sure to include `application` if you deviate from standard `rest` application.
 
 ### Other
 
@@ -107,6 +101,7 @@ The page speed configuration can also be overridden:
 
 Built-in features can be enabled and disabled:
 
+- `SSR=off` effectively disables SSR rendering for browsers (default `on`)
 - `CACHE=off` disables caching (default `on`)
 - `PAGESPEED=off` disables pagespeed optimizations (default `on`)
 - `COMPRESSION=off` disables compression (default `on`)
@@ -120,10 +115,13 @@ A file named `<feature>.conf` is included if the environment variable `<feature>
 The feature is disabled otherwise and an optional file `<feature>-off.conf` is included in the configuration.
 The feature name must be all word-characters (letters, numbers and underscore).
 
-### Disabling Cache
+### Cache
 
 If the cache feature is switched off, all caching for pre-rendered pages is disabled.
 If the cache should also be disabled for static resources, the page speed feature has to be switched off as well as it caches optimized images individually.
+
+The cache duration for pre-rendered pages can be customized using `CACHE_DURATION_NGINX_OK` (for successful responses) and `CACHE_DURATION_NGINX_NF` (for 404 responses).
+The value supplied must be in the `time` format that is supported by [nginx proxy_cache_valid](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid)
 
 # Further References
 

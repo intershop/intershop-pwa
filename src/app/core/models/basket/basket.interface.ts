@@ -18,6 +18,7 @@ export interface BasketBaseData {
   invoiceToAddress?: string;
   commonShipToAddress?: string;
   commonShippingMethod?: string;
+  costCenter?: string;
   customer?: string;
   user?: string;
   discounts?: {

@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -33,21 +33,19 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
   fields: FormlyFieldConfig[];
   submitted = false;
 
-  constructor(private config: FormlyConfig) {}
-
   ngOnInit() {
     this.fields = [
       {
         key: 'currentPassword',
-        type: 'ish-password-field',
+        type: 'ish-text-input-field',
         templateOptions: {
+          type: 'password',
           required: true,
           hideRequiredMarker: true,
           label: 'account.password.label',
         },
         validation: {
           messages: {
-            required: 'account.update_password.old_password.error.required',
             incorrect: 'account.update_password.old_password.error.incorrect',
           },
         },
@@ -55,23 +53,17 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
       {
         key: 'password',
         type: 'ish-password-field',
-        wrappers: [...(this.config.getType('ish-password-field').wrappers ?? []), 'description'],
         templateOptions: {
+          postWrappers: [{ wrapper: 'description', index: -1 }],
           required: true,
           hideRequiredMarker: true,
           label: 'account.update_password.newpassword.label',
           customDescription: {
-            class: 'input-help',
             key: 'account.register.password.extrainfo.message',
             args: { 0: '7' },
           },
 
-          autocomplete: 'new-password',
-        },
-        validation: {
-          messages: {
-            required: 'account.update_password.new_password.error.required',
-          },
+          attributes: { autocomplete: 'new-password' },
         },
       },
       {
@@ -88,7 +80,6 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
         validation: {
           messages: {
             required: 'account.register.password_confirmation.error.default',
-            equalTo: 'account.update_password.confirm_password.error.stringcompare',
           },
         },
       },

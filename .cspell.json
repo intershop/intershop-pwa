@@ -4,7 +4,7 @@
     "node_modules/**",
     "**/*.spec.ts",
     "docs/compodoc/**",
-    "environment.local.ts"
+    "environment.development.ts"
   ],
   "ignoreRegExpList": [
     "/\\b[\\w-]+(\\.[\\w-]+)+\\b/",

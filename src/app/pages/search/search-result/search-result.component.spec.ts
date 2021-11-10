@@ -49,8 +49,6 @@ describe('Search Result Component', () => {
     component.searchTerm = 'Test Search Term';
     component.totalItems = 111;
     translate.set('search.title.text', '{{1}} - {{2}}');
-    // tslint:disable-next-line:no-any
-    translate.set('search.title.items.text', { other: '#' } as any);
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=search-result-page] h1')).toBeTruthy();
     expect(element.querySelector('[data-testing-id=search-result-page] h1').textContent).toContain(

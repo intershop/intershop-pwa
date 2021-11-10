@@ -1,0 +1,9 @@
+<ng-container *ngIf="(orderTemplatesOptions$ | async).length === 0; else radioButtonForm">
+  <formly-form [form]="formGroup" [fields]="singleFieldConfig"></formly-form>
+</ng-container>
+
+<ng-template #radioButtonForm>
+  <div class="col-md-12">
+    <formly-form [form]="formGroup" [fields]="multipleFieldConfig$ | async"></formly-form>
+  </div>
+</ng-template>

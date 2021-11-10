@@ -18,13 +18,17 @@ export function applyLintFix(): Rule {
 
     // suppress warning for rules requiring type information, throw on other warnings
     console.warn = message => {
-      if (!/Warning: The '.*' rule requires type information./.test(message)) {
+      if (typeof message === 'string') {
+        if (!/Warning: The '.*' rule requires type information./.test(message) && !message.startsWith('DEPRECATION')) {
+          throw new Error(message);
+        }
+      } else {
         throw new Error(message);
       }
     };
 
     context.addTask(
-      // tslint:disable-next-line: deprecation
+      // tslint:disable-next-line: ish-deprecation
       new TslintFixTask({
         ignoreErrors: true,
         silent: true,

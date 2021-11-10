@@ -12,7 +12,7 @@ export class SuccessMessageComponent implements OnChanges {
   @Input() message: string;
   @Input() toast = true;
 
-  constructor(private messagesFacade: MessageFacade) {}
+  constructor(private messageFacade: MessageFacade) {}
 
   ngOnChanges() {
     if (this.toast) {
@@ -22,7 +22,7 @@ export class SuccessMessageComponent implements OnChanges {
 
   private displayToast() {
     if (this.message) {
-      this.messagesFacade.success({
+      this.messageFacade.success({
         message: this.message,
       });
     }

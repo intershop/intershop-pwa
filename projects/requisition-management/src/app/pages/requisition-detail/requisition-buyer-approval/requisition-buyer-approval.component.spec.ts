@@ -1,3 +1,4 @@
+import { CompilerOptions } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -32,8 +33,8 @@ describe('Requisition Buyer Approval Component', () => {
         RequisitionBuyerApprovalComponent,
       ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    }) // tslint:disable-next-line: no-any
-      .configureCompiler({ preserveWhitespaces: true } as any)
+    })
+      .configureCompiler({ preserveWhitespaces: true } as CompilerOptions)
       .compileComponents();
   });
 
@@ -51,7 +52,7 @@ describe('Requisition Buyer Approval Component', () => {
       orderNo: '10001',
       approval: {
         statusCode: 'APPROVED',
-        approver: { firstName: 'Bernhard', lastName: 'Boldner' },
+        approvers: [{ firstName: 'Bernhard', lastName: 'Boldner' }],
         approvalDate: 76543627,
       },
       user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
@@ -84,7 +85,7 @@ describe('Requisition Buyer Approval Component', () => {
       Patricia Miller
       approval.detailspage.order_spend_limit.label
       $500.00
-      account.budget.type.weekly.label
+      account.budget.label
       $3,000.00
       account.budget.already_spent.label
       $300.00 (10%)
@@ -103,7 +104,7 @@ describe('Requisition Buyer Approval Component', () => {
       Patricia Miller
       approval.detailspage.order_spend_limit.label
       $500.00
-      account.budget.type.weekly.label
+      account.budget.label
       $3,000.00
       account.budget.already_spent.label
       $300.00 (10%)

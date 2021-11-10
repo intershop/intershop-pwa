@@ -101,11 +101,6 @@ export class UserProfileFormComponent implements OnInit {
                   label: 'account.user.email.label',
                   required: true,
                 },
-                validation: {
-                  messages: {
-                    required: 'account.update_email.email.error.notempty',
-                  },
-                },
               }
             : {},
           {
@@ -117,7 +112,7 @@ export class UserProfileFormComponent implements OnInit {
           },
           {
             key: 'phoneHome',
-            type: 'ish-text-input-field',
+            type: 'ish-phone-field',
             templateOptions: {
               label: 'account.profile.phone.label',
             },

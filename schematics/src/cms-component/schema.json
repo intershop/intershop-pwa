@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "SchematicsPWAComponent",
+  "$id": "SchematicsPWAComponent",
   "title": "PWA CMSComponent Options Schema",
   "type": "object",
   "description": "Creates a new CMS component.",

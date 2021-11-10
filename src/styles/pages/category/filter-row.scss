@@ -2,7 +2,7 @@
 
 .filters-row {
   z-index: 99999;
-  padding: ($space-default * 2/3) 0;
+  padding: divide($space-default * 2, 3) 0;
   margin: $space-default 0;
   background-color: $color-tertiary;
 
@@ -63,7 +63,7 @@
 
     label {
       float: right;
-      margin-right: ($space-default * 2/3);
+      margin-right: divide($space-default * 2, 3);
       margin-bottom: 0;
       font-weight: normal;
       line-height: $input-height;
@@ -114,8 +114,8 @@
     white-space: nowrap;
 
     .form-control-feedback {
-      padding-left: $space-default/6;
-      font-size: $font-size-base * 4/5;
+      padding-left: divide($space-default, 6);
+      font-size: $font-size-base * 0.8;
       color: $text-color-corporate;
     }
   }

@@ -7,9 +7,7 @@
   <a (click)="toggleCollapse()">
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon"></fa-icon>
     <!-- TODO: check for a better solution for the plural and translate pipe combination for cases where the en_US.json is not yet loaded, current solution: || {"other": "#"} -->
-    <span>{{
-      itemCount$ | async | i18nPlural: ('shopping_cart.ministatus.items.text' | translate) || { other: '#' }
-    }}</span>
+    <span>{{ 'shopping_cart.ministatus.items.text' | translate: { '0': itemCount$ | async } }}</span>
     <ng-container *ngIf="itemTotal$ | async as itemTotal">
       <span> / </span> <span class="mini-cart-price">{{ itemTotal | ishPrice }}</span>
     </ng-container>

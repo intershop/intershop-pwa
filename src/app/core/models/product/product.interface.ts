@@ -1,3 +1,4 @@
+import { AttachmentData } from 'ish-core/models/attachment/attachment.interface';
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { CategoryData } from 'ish-core/models/category/category.interface';
@@ -54,7 +55,7 @@ export interface ProductData {
   summedUpSalePrice?: PriceData;
   // }
 
-  attachments?: unknown;
+  attachments?: AttachmentData[];
   variations?: unknown;
   crosssells?: unknown;
   productMaster: boolean;

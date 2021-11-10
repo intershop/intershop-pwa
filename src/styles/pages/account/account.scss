@@ -13,12 +13,6 @@
     padding: $space-default 0;
 
     h1,
-    h2,
-    h3 {
-      margin-top: 0;
-    }
-
-    h1,
     h2 {
       .btn {
         @media (max-width: $screen-xs-max) {

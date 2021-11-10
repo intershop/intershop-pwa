@@ -16,6 +16,8 @@ A possible scenario would be to have the shopping experience with all its SEO op
 - ICM 7.10.16.6
 - PWA 0.18
 
+> **NOTE:** The feature is based on the assumption that the PWA and the ICM can read and write each other's cookies. That means that both cookies must have the same domain and the same path. Therefore, the feature only works if the PWA and the ICM are running in the same domain.
+
 ## Architectural Concept
 
 ![Hybrid Approach Architecture](hybrid-approach-architecture.svg)
@@ -51,7 +53,9 @@ intershop.WebServerSecureURL=https://<nginx>
 The server-side rendering process must be started with `SSR_HYBRID=1`.
 
 In addition, the PWA must be run with secure URLs as well.
-This can be achieved with `SSL=1`.
+To achieve this locally, set the environment variable `SSL=1` and provide a valid certificate (see [SSR Startup](../guides/ssr-startup.md#running-with-https)).
+
+> :warning: **Don't use this option for production environments**, as those should not use the local certificates provide via the `dist`folder.
 
 > :warning: **Only for development environments**: It might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
 

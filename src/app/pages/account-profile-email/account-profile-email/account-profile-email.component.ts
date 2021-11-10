@@ -44,11 +44,6 @@ export class AccountProfileEmailComponent implements OnInit {
           hideRequiredMarker: true,
           required: true,
         },
-        validation: {
-          messages: {
-            required: 'account.update_email.email.error.notempty',
-          },
-        },
       },
 
       {
@@ -66,14 +61,12 @@ export class AccountProfileEmailComponent implements OnInit {
         validation: {
           messages: {
             required: 'account.update_email.email.error.notempty',
-            equalTo: 'account.update_email.email_confirmation.error.stringcompare',
           },
         },
       },
       {
         key: 'currentPassword',
         type: 'ish-password-field',
-
         templateOptions: {
           hideRequiredMarker: true,
           required: true,

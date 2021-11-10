@@ -18,13 +18,15 @@ import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
+import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
 
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concardis-creditcard-cvc-detail/payment-concardis-creditcard-cvc-detail.component';
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 import { PaymentConcardisDirectdebitComponent } from '../payment-concardis-directdebit/payment-concardis-directdebit.component';
 import { PaymentCybersourceCreditcardComponent } from '../payment-cybersource-creditcard/payment-cybersource-creditcard.component';
 import { PaymentParameterFormComponent } from '../payment-parameter-form/payment-parameter-form.component';
+import { PaymentPayoneCreditcardComponent } from '../payment-payone-creditcard/payment-payone-creditcard.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 
@@ -47,14 +49,16 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketItemsSummaryComponent),
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketValidationResultsComponent),
-        MockComponent(CheckboxComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
+        MockComponent(InfoMessageComponent),
         MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
         MockComponent(PaymentConcardisCreditcardCvcDetailComponent),
         MockComponent(PaymentConcardisDirectdebitComponent),
         MockComponent(PaymentCybersourceCreditcardComponent),
+        MockComponent(PaymentPayoneCreditcardComponent),
+        MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
         PaymentParameterFormComponent,
@@ -130,6 +134,13 @@ describe('Checkout Payment Component', () => {
     expect(arg).toMatchInlineSnapshot(`"testPayment"`);
   });
 
+  it('should display an info message if the basket total is 0', () => {
+    component.basket.totals.total.net = 0;
+    fixture.detectChanges();
+
+    expect(element.querySelector('ish-info-message')).toBeTruthy();
+  });
+
   describe('error display', () => {
     it('should not render an error if no error occurs', () => {
       fixture.detectChanges();
@@ -148,11 +159,11 @@ describe('Checkout Payment Component', () => {
       expect(element.querySelector('[role="alert"]')).toBeFalsy();
     });
 
-    it('should render an error if the user clicks next and has currently no payment method selected', () => {
+    it('should disable continue button if the user clicks next and has currently no payment method selected', () => {
       component.basket.payment = undefined;
       component.goToNextStep();
       fixture.detectChanges();
-      expect(element.querySelector('[role="alert"]')).toBeTruthy();
+      expect(element.querySelector('button').hasAttribute('disabled')).toBeTruthy();
     });
   });
 
@@ -219,11 +230,13 @@ describe('Checkout Payment Component', () => {
 
     it('should throw createUserPaymentInstrument event when the user submits a valid parameter form and saving is allowed', () => {
       component.basket.payment = undefined;
+
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(3);
 
       const emitter = spy(component.createPaymentInstrument);
 
+      component.paymentForm.addControl('saveForLater', new FormControl(true));
       component.parameterForm.addControl('creditCardNumber', new FormControl('456', Validators.required));
       component.submitParameterForm();
 

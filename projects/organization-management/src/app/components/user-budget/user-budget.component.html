@@ -11,7 +11,7 @@
 
   <ng-container *ngIf="budget.budget; else noBudget">
     <dl class="row dl-horizontal dl-separator">
-      <dt class="col-7">{{ 'account.budget.type.' + budget.budgetPeriod + '.label' | translate }}</dt>
+      <dt class="col-7">{{ 'account.budget.label' | translate: { '0': budget.budgetPeriod } }}</dt>
       <dd class="col-5 column-price font-weight-bold text-right">{{ budget.budget | ishPrice }}</dd>
     </dl>
     <dl class="row dl-horizontal dl-separator">
@@ -30,7 +30,7 @@
           <ng-template #BudgetPopover>
             <div class="row">
               <div class="col-md-6">
-                <label>{{ 'account.budget.type.' + budget.budgetPeriod + '.label' | translate }}:</label>
+                <label>{{ 'account.budget.label' | translate: { '0': budget.budgetPeriod } }}:</label>
               </div>
               <div class="col-md-6 text-right">{{ budget.budget | ishPrice }}</div>
             </div>

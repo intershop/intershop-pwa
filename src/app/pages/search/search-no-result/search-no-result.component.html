@@ -1,17 +1,19 @@
 <div class="no-search-result" data-testing-id="no-search-result-page">
+  <ish-breadcrumb></ish-breadcrumb>
+
   <h1 class="h2">{{ 'search.noResult.heading' | translate }}</h1>
 
   <p class="no-search-result-title" [innerHTML]="'search.noResult.message' | translate: { '0': searchTerm }"></p>
-</div>
 
-<div class="search-container main-search-container">
-  <ish-search-box
-    [configuration]="{
-      placeholder: 'search.searchbox.instructional_text' | translate,
-      autoSuggest: true,
-      maxAutoSuggests: 10
-    }"
-  ></ish-search-box>
-</div>
+  <div class="search-container main-search-container">
+    <ish-search-box
+      [configuration]="{
+        placeholder: 'search.searchbox.instructional_text' | translate,
+        autoSuggest: true,
+        maxAutoSuggests: 10
+      }"
+    ></ish-search-box>
+  </div>
 
-<div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>
+  <div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>
+</div>

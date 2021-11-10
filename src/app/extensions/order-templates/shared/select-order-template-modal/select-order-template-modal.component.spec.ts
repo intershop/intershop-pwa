@@ -1,15 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
+import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';
 
 import { SelectOrderTemplateModalComponent } from './select-order-template-modal.component';
 
@@ -25,16 +25,37 @@ describe('Select Order Template Modal Component', () => {
     public: false,
   };
 
+  /**
+   * A fixture.detectChanges() is necessary to make sure the newOrderTemplate
+   * formControl is not disabled from its expressionProperty
+   */
+  function updateOrderTemplateAndNew(newOrderTemplate: string = 'New Ordertemplate Title') {
+    component.formGroup.patchValue({ orderTemplate: 'new' });
+    fixture.detectChanges();
+    component.formGroup.patchValue({ newOrderTemplate });
+  }
+
+  /**
+   * emulates a realistic startup scenario:
+   * the component is initialized before the show() function is called and
+   * real functionality begins
+   */
+  function startup() {
+    fixture.detectChanges();
+    component.show();
+    fixture.detectChanges();
+  }
+
   beforeEach(async () => {
     orderTemplateFacadeMock = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
       declarations: [
-        MockComponent(InputComponent),
         MockDirective(ServerHtmlDirective),
+        SelectOrderTemplateFormComponent,
         SelectOrderTemplateModalComponent,
       ],
-      imports: [NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, NgbModalModule, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
     }).compileComponents();
   });
@@ -45,12 +66,9 @@ describe('Select Order Template Modal Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(orderTemplateDetails));
-    when(orderTemplateFacadeMock.orderTemplates$).thenReturn(of([orderTemplateDetails]));
-
-    fixture.detectChanges();
-    component.show();
-
-    component.orderTemplateOptions = [{ value: 'orderTemplate', label: 'Order Template' }];
+    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(
+      of([{ value: orderTemplateDetails.id, label: orderTemplateDetails.title }])
+    );
   });
 
   it('should be created', () => {
@@ -59,79 +77,133 @@ describe('Select Order Template Modal Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit correct object on form submit with known order template', () => {
+  it('should emit correct object on form submit with known order template', fakeAsync(() => {
+    startup();
+
     const emitter = spy(component.submitEmitter);
-    component.updateOrderTemplateForm.patchValue({ orderTemplate: 'orderTemplate' });
+    component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
 
     component.submitForm();
+    tick(1000);
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
-    expect(arg).toEqual({
-      id: 'orderTemplate',
-      title: 'Order Template',
-    });
-  });
+    expect(arg).toMatchInlineSnapshot(`
+Object {
+  "id": ".SKsEQAE4FIAAAFuNiUBWx0d",
+  "title": "testing order template",
+}
+`);
+  }));
 
-  it('should emit correct object on form submit with new ordertemplate', () => {
+  it('should emit correct object on form submit with new ordertemplate', fakeAsync(() => {
+    startup();
+
     const emitter = spy(component.submitEmitter);
-    component.updateOrderTemplateForm.patchValue({
-      orderTemplate: 'newTemplate',
-      newOrderTemplate: 'New Order Template Title',
-    });
+    updateOrderTemplateAndNew();
 
     component.submitForm();
+    tick(1000);
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
-    expect(arg).toEqual({
-      id: undefined,
-      title: 'New Order Template Title',
-    });
-  });
+    expect(arg).toMatchInlineSnapshot(`
+Object {
+  "id": undefined,
+  "title": "New Ordertemplate Title",
+}
+`);
+  }));
 
-  it('should switch modal contents after successful submit', () => {
-    component.updateOrderTemplateForm.patchValue({ orderTemplate: 'orderTemplate' });
+  it('should emit correct object on single field form submit with new orderTemplate', fakeAsync(() => {
+    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(of([]));
+    startup();
+
+    const emitter = spy(component.submitEmitter);
+    component.formGroup.patchValue({ newOrderTemplate: 'New Ordertemplate Title' });
 
     component.submitForm();
+    tick(1000);
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`
+Object {
+  "id": undefined,
+  "title": "New Ordertemplate Title",
+}
+`);
+  }));
+
+  it('should not emit on radio button form submit with no new orderTemplate name', () => {
+    startup();
+
+    const emitter = spy(component.submitEmitter);
+    updateOrderTemplateAndNew('');
+
+    component.submitForm();
+    verify(emitter.emit(anything())).never();
+  });
+
+  it('should not emit on single field form submit with no orderTemplate name', fakeAsync(() => {
+    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(of([]));
+    startup();
+
+    const emitter = spy(component.submitEmitter);
+    component.formGroup.patchValue({ newOrderTemplate: '' });
+
+    component.submitForm();
+    tick(100);
+    verify(emitter.emit(anything())).never();
+  }));
+
+  it('should switch modal contents after successful submit', fakeAsync(() => {
+    startup();
+
+    component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
+
+    component.submitForm();
+    tick(1000);
     expect(element.querySelector('form')).toBeFalsy();
-  });
+  }));
 
-  it('should ensure that newOrderTemplate remove Validator after being deselected', () => {
-    component.updateOrderTemplateForm.patchValue({ orderTemplate: 'orderTemplate', newOrderTemplate: '' });
-    expect(component.updateOrderTemplateForm.get('newOrderTemplate').validator).toBeNull();
-  });
-
-  describe('selectedOrderTemplateTitle', () => {
-    it('should return correct title of known order template', () => {
-      component.updateOrderTemplateForm.patchValue({ orderTemplate: 'orderTemplate' });
-      const title = component.selectedOrderTemplateTitle;
-      expect(title).toBe('Order Template');
-    });
-
-    it('should return correct title of new order template', () => {
-      component.updateOrderTemplateForm.patchValue({
-        orderTemplate: 'newTemplate',
-        newOrderTemplate: 'New Order Template Title',
+  describe('selectedOrderTemplateTitle$', () => {
+    it('should return correct title of known order template', done => {
+      startup();
+      component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
+      component.selectedOrderTemplateTitle$.subscribe(t => {
+        expect(t).toBe('testing order template');
+        done();
       });
-      const title = component.selectedOrderTemplateTitle;
-      expect(title).toBe('New Order Template Title');
+    });
+
+    it('should return correct title of new order template', done => {
+      startup();
+      updateOrderTemplateAndNew();
+
+      component.selectedOrderTemplateTitle$.subscribe(t => {
+        expect(t).toBe('New Ordertemplate Title');
+        done();
+      });
     });
   });
 
-  describe('selectedOrderTemplateRoute', () => {
-    it('should return correct route of known order template', () => {
-      component.updateOrderTemplateForm.patchValue({ orderTemplate: 'orderTemplate' });
-      const route = component.selectedOrderTemplateRoute;
-      expect(route).toBe('route://account/order-templates/orderTemplate');
+  describe('selectedOrderTemplateRoute$', () => {
+    it('should return correct route of known order template', done => {
+      startup();
+      component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
+
+      component.selectedOrderTemplateRoute$.subscribe(r => {
+        expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
+        done();
+      });
     });
 
-    it('should return correct route of new order template', () => {
-      component.updateOrderTemplateForm.patchValue({
-        orderTemplate: 'newTemplate',
-        newOrderTemplate: 'New Order Template Title',
+    it('should return correct route of new order template', done => {
+      startup();
+      updateOrderTemplateAndNew();
+
+      component.selectedOrderTemplateRoute$.subscribe(r => {
+        expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
       });
-      component.idAfterCreate = 'idAfterCreate';
-      const route = component.selectedOrderTemplateRoute;
-      expect(route).toBe('route://account/order-templates/idAfterCreate');
+      done();
     });
   });
 });

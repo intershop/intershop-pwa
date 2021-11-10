@@ -1,4 +1,5 @@
 import { at, waitLoadingEnd } from '../../framework';
+import { CartPage } from '../../pages/checkout/cart.page';
 import { HomePage } from '../../pages/home.page';
 import { QuickorderPage } from '../../pages/quickorder/quickorder.page';
 
@@ -28,6 +29,27 @@ describe('Quick Order', () => {
       waitLoadingEnd(1000);
       // number of items + one free gift
       page.header.miniCart.text.should('contain', '40 items');
+    });
+  });
+
+  it('should direct order validation fail, when sku is wrong', () => {
+    at(QuickorderPage, page => {
+      page.header.miniCart.goToCart();
+
+      at(CartPage, cartPage => {
+        cartPage.validateDirectOrderSku('123');
+      });
+    });
+  });
+
+  it('should add a product via direct order', () => {
+    at(CartPage, page => {
+      const sku = '5079807';
+      const lineItemPosition = 1;
+      page.lineItem(lineItemPosition).quantity.get().should('equal', 1);
+
+      page.addProductToBasketWithDirectOrder(sku);
+      page.lineItem(lineItemPosition).quantity.get().should('equal', 2);
     });
   });
 });

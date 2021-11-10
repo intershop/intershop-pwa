@@ -1,8 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Observable, of, throwError } from 'rxjs';
-import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
+import { flatten, range } from 'lodash-es';
+import { Observable, from, identity, of, throwError } from 'rxjs';
+import { defaultIfEmpty, map, mergeMap, switchMap, toArray } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -19,8 +19,8 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { getProductListingItemsPerPage } from 'ish-core/store/shopping/product-listing';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { mapToProperty } from 'ish-core/utils/operators';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
@@ -30,16 +30,11 @@ export class ProductsService {
   static STUB_ATTRS =
     'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet';
 
-  private itemsPerPage: number;
-
   constructor(
     private apiService: ApiService,
     private productMapper: ProductMapper,
-    store: Store,
     private featureToggleService: FeatureToggleService
-  ) {
-    store.pipe(select(getProductListingItemsPerPage)).subscribe(itemsPerPage => (this.itemsPerPage = itemsPerPage));
-  }
+  ) {}
 
   /**
    * Get the full Product data for the given Product SKU.
@@ -67,8 +62,9 @@ export class ProductsService {
    */
   getCategoryProducts(
     categoryUniqueId: string,
-    page: number,
-    sortKey?: string
+    amount: number,
+    sortKey?: string,
+    offset = 0
   ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!categoryUniqueId) {
       return throwError('getCategoryProducts() called without categoryUniqueId');
@@ -77,8 +73,8 @@ export class ProductsService {
     let params = new HttpParams()
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
-      .set('amount', this.itemsPerPage.toString())
-      .set('offset', ((page - 1) * this.itemsPerPage).toString())
+      .set('amount', amount.toString())
+      .set('offset', offset.toString())
       .set('returnSortKeys', 'true')
       .set('productFilter', 'fallback_searchquerydefinition');
     if (sortKey) {
@@ -115,8 +111,9 @@ export class ProductsService {
    */
   searchProducts(
     searchTerm: string,
-    page: number = 1,
-    sortKey?: string
+    amount: number,
+    sortKey?: string,
+    offset = 0
   ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!searchTerm) {
       return throwError('searchProducts() called without searchTerm');
@@ -124,8 +121,8 @@ export class ProductsService {
 
     let params = new HttpParams()
       .set('searchTerm', searchTerm)
-      .set('amount', this.itemsPerPage.toString())
-      .set('offset', ((page - 1) * this.itemsPerPage).toString())
+      .set('amount', amount.toString())
+      .set('offset', offset.toString())
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
@@ -156,8 +153,9 @@ export class ProductsService {
 
   getProductsForMaster(
     masterSKU: string,
-    page: number = 1,
-    sortKey?: string
+    amount: number,
+    sortKey?: string,
+    offset = 0
   ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!masterSKU) {
       return throwError('getProductsForMaster() called without masterSKU');
@@ -165,8 +163,8 @@ export class ProductsService {
 
     let params = new HttpParams()
       .set('MasterSKU', masterSKU)
-      .set('amount', this.itemsPerPage.toString())
-      .set('offset', ((page - 1) * this.itemsPerPage).toString())
+      .set('amount', amount.toString())
+      .set('offset', offset.toString())
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
@@ -205,9 +203,7 @@ export class ProductsService {
   /**
    * Get product variations for the given master product sku.
    */
-  getProductVariations(
-    sku: string
-  ): Observable<{
+  getProductVariations(sku: string): Observable<{
     products: Partial<VariationProduct>[];
     defaultVariation: string;
     masterProduct: Partial<VariationProductMaster>;
@@ -220,11 +216,26 @@ export class ProductsService {
       switchMap(resp =>
         !resp.total
           ? of(resp.elements)
-          : this.apiService
-              .get<{ elements: Link[] }>(`products/${sku}/variations`, {
-                params: new HttpParams().set('amount', `${resp.total - resp.amount}`).set('offset', `${resp.amount}`),
-              })
-              .pipe(map(resp2 => [...resp.elements, ...resp2.elements]))
+          : of(resp).pipe(
+              mergeMap(res => {
+                const amount = res.amount;
+                const chunks = Math.ceil((res.total - amount) / amount);
+                return from(
+                  range(1, chunks + 1)
+                    .map(i => [i * amount, Math.min(amount, res.total - amount * i)])
+                    .map(([offset, length]) =>
+                      this.apiService
+                        .get<{ elements: Link[] }>(`products/${sku}/variations`, {
+                          params: new HttpParams().set('amount', length).set('offset', offset),
+                        })
+                        .pipe(mapToProperty('elements'))
+                    )
+                );
+              }),
+              mergeMap(identity, 2),
+              toArray(),
+              map(resp2 => [...resp.elements, ...flatten(resp2)])
+            )
       ),
       map((links: ProductVariationLink[]) => ({
         products: links.map(link => this.productMapper.fromVariationLink(link, sku)),

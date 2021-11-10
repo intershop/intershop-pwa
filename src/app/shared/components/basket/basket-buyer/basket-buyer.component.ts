@@ -16,11 +16,17 @@ import { whenTruthy } from 'ish-core/utils/operators';
 })
 export class BasketBuyerComponent implements OnInit, OnDestroy {
   @Input() object: Basket | Order;
+  /**
+   * Router link for editing the order reference id. If a routerLink is given a link is displayed to route to an edit page.
+   */
+  @Input() editRouterLink?: string;
 
   customer$: Observable<Customer>;
   user$: Observable<User>;
 
   taxationID: string;
+  orderReferenceID: string;
+  costCenterName: string;
   userName: string;
 
   private destroy$ = new Subject();
@@ -28,8 +34,11 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
+    this.taxationID = this.getAttributeValue('taxationID');
+    this.orderReferenceID = this.getAttributeValue('orderReferenceID');
+    this.costCenterName = this.getAttributeValue('BusinessObjectAttributes#Order_CostCenter_Name');
+
     // default values for anonymous users
-    this.taxationID = this.object.attributes?.find(attr => attr.name === 'taxationID')?.value as string;
     this.userName = `${this.object.invoiceToAddress?.firstName} ${this.object.invoiceToAddress?.lastName}`;
 
     this.customer$ = this.accountFacade.customer$;
@@ -43,6 +52,10 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
     this.user$.pipe(whenTruthy(), first(), takeUntil(this.destroy$)).subscribe(user => {
       this.userName = `${user.firstName} ${user.lastName}`;
     });
+  }
+
+  private getAttributeValue(attributeName: string): string {
+    return this.object.attributes?.find(attr => attr.name === attributeName)?.value as string;
   }
 
   ngOnDestroy() {

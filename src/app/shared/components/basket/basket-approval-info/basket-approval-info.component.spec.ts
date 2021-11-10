@@ -49,4 +49,36 @@ describe('Basket Approval Info Component', () => {
     expect(element.querySelector('[data-testing-id="approval-required"]')).toBeTruthy();
     expect(element.querySelector('ish-modal-dialog-link')).toBeTruthy();
   });
+
+  it('should display customer approvers if customer approval is needed', () => {
+    component.approval = {
+      approvalRequired: true,
+      customerApproval: {
+        approvers: [
+          { email: 'jlink@test.intershop.de', firstName: 'Jack', lastName: 'Link' },
+          { email: 'bboldner@test.intershop.de', firstName: 'Bernhard', lastName: 'Boldner' },
+        ],
+      },
+    };
+
+    fixture.detectChanges();
+    expect(element.querySelector('table').textContent).toMatchInlineSnapshot(
+      `"Jack Linkjlink@test.intershop.deBernhard Boldnerbboldner@test.intershop.de"`
+    );
+  });
+
+  it('should display cost center approvers if customer approval is needed', () => {
+    component.approval = {
+      approvalRequired: true,
+      costCenterApproval: {
+        approvers: [{ email: 'pmiller@test.intershop.de', firstName: 'Patricia', lastName: 'Miller' }],
+        costCenterID: '4711',
+      },
+    };
+
+    fixture.detectChanges();
+    expect(element.querySelector('table').textContent).toMatchInlineSnapshot(
+      `"Patricia Millerpmiller@test.intershop.de"`
+    );
+  });
 });

@@ -7,7 +7,13 @@ const localizationFile_default = 'src/assets/i18n/en_US.json';
 
 // regular expression for patterns of not explicitly used localization keys (dynamic created keys, error keys from REST calls)
 // ADDITIONAL PATTERNS HAVE TO BE ADDED HERE
-const regEx = /account\.login\..*\.message|.*budget.period..*|account\.punchout\..*\.text|account\.budget\.type\..*|.*\.error.*/i;
+const regExps = [
+  /^account\.login\..*\.message/i,
+  /.*budget.period..*/i,
+  /.*\.error.*/i,
+  /^locale\..*/i,
+  /^approval\.order_.*\.text/i,
+];
 
 // store localizations from default localization file in an object
 const localizations_default = JSON.parse(fs.readFileSync(localizationFile_default, 'utf8'));
@@ -16,7 +22,7 @@ console.log('Clean up file', localizationFile_default, 'as default localization 
 // add not explicitly used localization keys with their localization values
 const localizationsFound = {};
 Object.keys(localizations_default)
-  .filter(localization => regEx.test(localization))
+  .filter(localization => regExps.some(regEx => regEx.test(localization)))
   .map(localizationKey => {
     localizationsFound[localizationKey] = localizations_default[localizationKey];
     delete localizations_default[localizationKey];
@@ -25,11 +31,13 @@ Object.keys(localizations_default)
 // go through directory recursively and find files to be searched
 const filesToBeSearched = glob.sync('{src,projects}/**/!(*.spec).{ts,html}');
 
+const regex = _.memoize(key => new RegExp(`[^.-]\\b${key.replace(/[.]/g, '\\$&')}\\b[^.-]`));
+
 // add used localization keys with their localization values
 filesToBeSearched.forEach(filePath => {
   const fileContent = fs.readFileSync(filePath);
   for (const localizationKey in localizations_default) {
-    if (fileContent.includes(localizationKey)) {
+    if (regex(localizationKey).test(fileContent)) {
       // store found localizations
       localizationsFound[localizationKey] = localizations_default[localizationKey];
       delete localizations_default[localizationKey];

@@ -1,10 +1,6 @@
 <div class="row" *ngIf="basket">
   <div class="col-md-12">
     <!-- Messages -->
-    <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
-      {{ 'checkout.payment.no_Selection.error' | translate }}
-    </div>
-
     <ish-error-message [error]="error" [toast]="false"></ish-error-message>
     <ish-basket-validation-results></ish-basket-validation-results>
 
@@ -37,7 +33,7 @@
                 </p>
                 <ng-template #displayPaymentCosts>
                   <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
-                    <p *ngIf="paymentMethod.paymentCosts">
+                    <p *ngIf="paymentMethod.paymentCosts && paymentMethod.paymentCosts[priceType]">
                       {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
                         paymentMethod.paymentCosts | ishPrice
                       }}&nbsp;
@@ -147,6 +143,15 @@
                       ></ish-payment-cybersource-creditcard>
                     </ng-template>
 
+                    <ng-template [ngSwitchCase]="'Payone_CreditCard'">
+                      <ish-payment-payone-creditcard
+                        [paymentMethod]="paymentMethod"
+                        [activated]="formIsOpen(i)"
+                        (submit)="createNewPaymentInstrument($event)"
+                        (cancel)="cancelNewPaymentInstrument()"
+                      ></ish-payment-payone-creditcard>
+                    </ng-template>
+
                     <ng-template ngSwitchDefault>
                       <ish-payment-parameter-form
                         [paymentMethod]="paymentMethod"
@@ -162,22 +167,15 @@
             </li>
           </ng-container>
         </ul>
-        <!-- saveForLater checkbox - outlet template -->
-        <ng-template #saveForLaterTemplate>
-          <div class="form-group">
-            <ish-checkbox
-              [form]="paymentForm"
-              controlName="saveForLater"
-              label="checkout.save_edit.checkbox.label"
-            ></ish-checkbox>
-          </div>
-        </ng-template>
       </form>
     </ng-container>
     <ng-template #zeroTotalInfo>
-      <p class="alert alert-info">
-        {{ 'checkout.payment.no_selection_required.info' | translate: { '0': basket.totals?.total | ishPrice } }}
-      </p>
+      <ish-info-message
+        message="{{
+          'checkout.payment.no_selection_required.info' | translate: { '0': basket.totals?.total | ishPrice }
+        }}"
+        [toast]="false"
+      ></ish-info-message>
     </ng-template>
   </div>
   <!-- basket summary -->

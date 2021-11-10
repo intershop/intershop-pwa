@@ -1,16 +1,20 @@
-FROM node:14 as reporting
+# To build this report image, you will have to temporarily truncate the .dockerignore
+
+FROM node:14-alpine as reporting
 WORKDIR /workspace
-ENV CI=true
-COPY . /workspace/
+COPY package.json package-lock.json /workspace/
 RUN npm i --ignore-scripts
+RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
+ENV CI=true
+ENV NODE_OPTIONS="--max_old_space_size=8192"
+COPY . /workspace/
 RUN npm run postinstall
 RUN npm i --no-save jest-html-reporter jest-junit && npx jest -c jest-reports.config.js --ci --testFailureExitCode 0
 RUN npx license-checker --csv --out reports/licenses/licenses.csv --customPath templates/3rd-party-licenses_format.json && npm i --no-save htmlify-csv && node node_modules/htmlify-csv/htmlify-csv convert reports/licenses/licenses.csv --output reports/licenses/index.html
 RUN npm run compodoc
 RUN npm i --no-save jscpd-html-reporter && node reports/jscpd-report
 RUN npm i -g webpack-bundle-analyzer
-RUN rm -Rf dist && npx ng build --progress false --aot --stats-json && webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_aot/index.html -m static
-RUN rm -Rf dist && npx ng build --progress false --prod --stats-json && webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_prod/index.html -m static
+RUN rm -Rf dist && npm run build client -- --progress false --stats-json && webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_prod/index.html -m static
 
 FROM danjellz/http-server
 COPY --from=reporting /workspace/reports /public

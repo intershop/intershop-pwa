@@ -7,6 +7,21 @@ kb_sync_latest_only
 
 # Migrations
 
+## 1.1 to 1.2
+
+The `dist` folder now only contains results of the build process (except for `healthcheck.js`).
+You must **not** edit any file inside that `dist` folder, since this would include not being able to change Kubernetes liveness or readiness probes we included SSR container related source code under `src/ssr/server-scripts/`
+
+## 0.31 to 1.0
+
+The Angular configuration mechanism of the Intershop PWA was refactored to support running multiple configurations in one docker image (see [Guide - Multiple Themes](./multiple-themes.md)).
+This now means that the former `environment.local.ts` which had a standalone configuration can no longer be supported.
+Instead theme-specific environments exist for `default` and `blue` and development settings can be overridden in `environment.development.ts`, which are imported into the theme-specific configurations (see [Guide - Development](./development.md#development-server)).
+`npm install` will create an initial version of the `environment.development.ts` that can be filled with the needed information from `environment.local.ts`.
+The `environment.local.ts` itself becomes obsolete and can be deleted.
+
+Locale definitions in `environment.ts` models are no longer supported, only ICM channel configurations are now used for switching locales.
+
 ## 0.29 to 0.30
 
 We introduced the feature toggle 'guestCheckout' in the `environment.model.ts`.
@@ -38,7 +53,7 @@ We introduced an improved usage of memoized selectors for products selectors, sp
 
 ## 0.26 to 0.27
 
-We upgraded Cypress from Version 4 to 6 and followed all migrations in their [Migration Guide](https://docs.cypress.io/guides/references/migration-guide.html).
+We upgraded Cypress from Version 4 to 6 and followed all migrations in their [Migration Guide](https://docs.cypress.io/guides/references/migration-guide).
 
 We have introduced a [Context Facade](../concepts/state-management.md#context-facades) for product entities and [refactored](https://github.com/intershop/intershop-pwa/pull/403) most of the components that are specific to a single product.
 This includes:

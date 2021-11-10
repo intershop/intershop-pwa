@@ -22,6 +22,7 @@ import {
   getBreadcrumbForCategoryPage,
   getCategory,
   getCategoryEntities,
+  getCategoryIdByRefId,
   getNavigationCategories,
   getSelectedCategory,
 } from './categories.selectors';
@@ -250,6 +251,25 @@ describe('Categories Selectors', () => {
       it('should be empty when selecting leaves', () => {
         expect(getNavigationCategories('A.1.a')(store$.state)).toBeEmpty();
       });
+    });
+  });
+
+  describe('load category by refId', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        loadCategorySuccess({
+          categories: categoryTree([
+            {
+              ...catA,
+              categoryRef: 'categoryRef',
+            },
+          ]),
+        })
+      );
+    });
+
+    it('should get category with its categoryRef', () => {
+      expect(getCategoryIdByRefId('categoryRef')(store$.state)).toEqual(catA.uniqueId);
     });
   });
 });

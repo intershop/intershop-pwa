@@ -3,7 +3,10 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { Address } from 'ish-core/models/address/address.model';
 import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 
+// tslint:disable ish-deprecation
+
 /**
+ * @deprecated use formly instead
  * Select box for the given addresses.
  * if controlName equals 'id' the form control gets the id of the addresses as selected value, otherwise the address urn is taken as value
  */

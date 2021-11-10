@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
@@ -47,7 +47,7 @@ export class ApiTokenService {
 
   constructor(
     private cookiesService: CookiesService,
-    @Inject(PLATFORM_ID) platformId: string,
+    @Inject(PLATFORM_ID) private platformId: string,
     private router: Router,
     private store: Store,
     appRef: ApplicationRef
@@ -67,17 +67,15 @@ export class ApiTokenService {
         this.apiToken$.pipe(skip(1)),
       ])
         .pipe(
-          map(
-            ([user, basket, orderId, apiToken]): ApiTokenCookie => {
-              if (user) {
-                return { type: 'user', apiToken };
-              } else if (basket) {
-                return { type: 'basket', apiToken };
-              } else if (orderId) {
-                return { type: 'order', apiToken, orderId };
-              }
+          map(([user, basket, orderId, apiToken]): ApiTokenCookie => {
+            if (user) {
+              return { type: 'user', apiToken };
+            } else if (basket) {
+              return { type: 'basket', apiToken };
+            } else if (orderId) {
+              return { type: 'order', apiToken, orderId };
             }
-          ),
+          }),
           distinctUntilChanged<ApiTokenCookie>(isEqual)
         )
         .subscribe(apiToken => {
@@ -85,7 +83,7 @@ export class ApiTokenService {
           if (cookieContent) {
             cookiesService.put('apiToken', cookieContent, {
               expires: new Date(Date.now() + 3600000),
-              secure: (isPlatformBrowser(platformId) && location.protocol === 'https:') || false,
+              secure: true,
               sameSite: 'Strict',
             });
           } else {
@@ -134,6 +132,9 @@ export class ApiTokenService {
   }
 
   restore$(types: ApiTokenCookieType[] = ['user', 'basket', 'order']): Observable<boolean> {
+    if (isPlatformServer(this.platformId)) {
+      return of(true);
+    }
     return timer(500, 200).pipe(
       filter(() => this.router.navigated),
       first(),

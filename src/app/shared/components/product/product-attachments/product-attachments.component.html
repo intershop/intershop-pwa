@@ -1,0 +1,11 @@
+<ng-container *ngIf="attachments$ | async as attachments">
+  <div *ngIf="attachments?.length" class="product-attachments">
+    <div *ngFor="let attachment of attachments" class="product-attachment">
+      <strong>{{ attachment.name }}</strong>
+      <a class="download-link" [href]="attachment.url" rel="enclosure">{{
+        'product.attachments.download.link' | translate
+      }}</a>
+      <p *ngIf="attachment.description" class="product-attachment-description">{{ attachment.description }}</p>
+    </div>
+  </div>
+</ng-container>

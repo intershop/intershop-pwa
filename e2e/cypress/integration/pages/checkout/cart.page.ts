@@ -37,6 +37,14 @@ export class CartPage {
     return cy.get(this.tag).find('div.pli-description');
   }
 
+  get costCenterSelection() {
+    return cy.get('select[data-testing-id="costCenter"]');
+  }
+
+  selectCostCenter(id: string) {
+    this.costCenterSelection.select(id);
+  }
+
   addProductToWishlist() {
     this.addToWishlistButton().click();
   }
@@ -47,6 +55,17 @@ export class CartPage {
 
   addBasketToOrderTemplate() {
     this.addBasketToOrderTemplateButton().click();
+  }
+
+  validateDirectOrderSku(sku: string) {
+    cy.get('[data-testing-id="direct-order-form"] input').first().clear().type(sku).wait(1000);
+    cy.get('[data-testing-id="direct-order-form"] small').first().contains(`The product ID ${sku} is not valid.`);
+  }
+
+  addProductToBasketWithDirectOrder(sku: string) {
+    cy.get('[data-testing-id="direct-order-form"] input').first().clear().type(sku).wait(1000);
+    cy.get('[data-testing-id="direct-order-form"] button').last().click();
+    waitLoadingEnd();
   }
 
   collapsePromotionForm() {

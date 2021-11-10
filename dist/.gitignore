@@ -1,6 +1,6 @@
 /**/*
-!/.gitignore
-!/*.sh
+!.gitignore
+!/entrypoint.sh
 !/healthcheck.js
 !/robots.txt
 !/server.crt

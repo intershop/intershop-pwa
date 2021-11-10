@@ -8,6 +8,7 @@
   "git.rebaseWhenSync": true,
   "git.autoStash": true,
   "tslint.alwaysShowRuleFailuresAsWarnings": true,
+  "editor.bracketPairColorization.enabled": true,
 
   // file type specific settings
   "[handlebars]": {

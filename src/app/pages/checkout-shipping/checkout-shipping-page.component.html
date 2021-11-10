@@ -1,13 +1,59 @@
 <div data-testing-id="checkout-shipping-page">
   <h1>{{ 'checkout.shipping.pagetitle' | translate }}</h1>
 
-  <ish-checkout-shipping
-    [basket]="basket$ | async"
-    [shippingMethods]="shippingMethods$ | async"
-    [error]="basketError$ | async"
-    (updateShippingMethod)="updateBasketShippingMethod($event)"
-    (nextStep)="nextStep()"
-  ></ish-checkout-shipping>
+  <div class="row">
+    <!-- Messages -->
+    <div class="col-md-12">
+      <ish-error-message [error]="basketError$ | async" [toast]="false"></ish-error-message>
+      <ish-basket-validation-results></ish-basket-validation-results>
+    </div>
+    <!-- Shipping method form-->
+    <div class="col-md-12 col-lg-8">
+      <div class="section" *ngIf="shippingMethods$ | async as shippingMethods">
+        <div *ngIf="shippingMethods.length; else noShippingMethods" class="shipping-methods">
+          <div *ngIf="!(basketError$ | async) && nextDisabled" role="alert" class="alert alert-danger">
+            {{ 'checkout.shipping_method.no_Selection.error' | translate }}
+          </div>
+          <h3>{{ 'checkout.shipping_method.selection.heading' | translate }}</h3>
+          <ish-checkout-shipping></ish-checkout-shipping>
+        </div>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+        <ng-template #noShippingMethods>
+          <div role="alert" class="alert alert-danger">{{ 'checkout.shipping.no_methods.message' | translate }}</div>
+          <a routerLink="/basket">{{ 'checkout.general.back_to_cart.button.label' | translate }}</a>
+        </ng-template>
+      </div>
+
+      <ng-container *ngIf="isBusinessCustomer$ | async">
+        <ish-basket-order-reference [basket]="basket$ | async"></ish-basket-order-reference>
+      </ng-container>
+    </div>
+    <!-- basket summary -->
+    <div class="col-md-12 col-lg-4 order-summary" *ngIf="basket$ | async as basket">
+      <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+      <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
+      <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+
+      <div class="cost-summary">
+        <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+
+        <button
+          class="btn btn-lg btn-block btn-primary"
+          type="button"
+          [disabled]="nextDisabled"
+          (click)="goToNextStep()"
+        >
+          {{ 'checkout.button.label' | translate }}
+        </button>
+      </div>
+      <!-- Privacy policy link -->
+      <span
+        [ishServerHtml]="
+          'checkout.widget.security_privacy_policy.link' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }
+        "
+      ></span>
+    </div>
+
+    <ish-loading *ngIf="loading$ | async"></ish-loading>
+  </div>
 </div>

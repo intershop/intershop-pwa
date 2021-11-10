@@ -10,7 +10,7 @@ export class CheckoutPaymentPage {
   }
 
   get saveForLaterCheckbox() {
-    return cy.get(this.tag).find('ish-checkbox input[data-testing-id="saveForLater"]');
+    return cy.get(this.tag).find('input[data-testing-id="saveForLater"]');
   }
 
   selectPayment(payment: 'INVOICE' | 'CASH_ON_DELIVERY' | 'CASH_IN_ADVANCE') {

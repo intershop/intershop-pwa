@@ -83,7 +83,7 @@ describe('Lazy Captcha Component', () => {
       <ish-captcha-v3
         ><div class="row">
           <div class="offset-md-4 col-md-8">
-            <p class="form-text" data-testing-id="recaptcha-v3-info"></p>
+            <p class="validation-message" data-testing-id="recaptcha-v3-info"></p>
           </div></div
       ></ish-captcha-v3>
     `);

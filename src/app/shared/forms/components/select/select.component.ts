@@ -8,6 +8,11 @@ export interface SelectOption {
   label: string;
 }
 
+// tslint:disable ish-deprecation
+
+/**
+ * @deprecated use formly instead
+ */
 @Component({
   selector: 'ish-select',
   templateUrl: './select.component.html',

@@ -16,12 +16,10 @@ This section provides an overview of required continuous integration steps to ve
 Since Angular projects are JavaScript-based, even though they use TypeScript-based code, everything is highly dynamic.
 Parts of the software can still run error free with `webpack-dev-server` (`ng serve`), even if other parts were not compiled or have template errors.
 
-To ensure having a consistent code base, the CI system should always perform at least an ahead-of-time compile step (`ng build --aot`).
-
 Angular in production mode does AoT and applies some more code optimizations that can sometimes clash with definitions or third-party libraries.
-To catch this, a production build should be performed: `ng build --prod`.
+To ensure having a consistent code base, the CI system should always perform at least a production build (`npm run build`).
 
-To check the integrity of the unit tests, the TypeScript compiler can be used: `npx tsc -p src/tsconfig.spec.json`.
+To check the integrity including the unit tests, the TypeScript compiler can be used: `npm run compile`.
 
 ## Dependencies
 
@@ -39,7 +37,7 @@ To ensure that contributed code is properly formatted, run the formatter on the 
 
 ## Unit Testing
 
-[Jest](https://facebook.github.io/jest/) is used as a test runner.
+[Jest](https://jestjs.io/) is used as a test runner.
 All tests can and should be run on the CI server with `npm test`.
 
 Since jest is very flexible in accepting code with compile errors, the code integrity should be checked separately.

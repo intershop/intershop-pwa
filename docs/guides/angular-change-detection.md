@@ -67,15 +67,6 @@ Having a stable zone means that Angular has finished rendering and that we do no
 The Intershop PWA effectively uses this concept for communication with the CMS Design View.
 Also, Angular waits for stability in Service Workers and in Universal Rendering (Server-Side Rendering).
 
-### Design View Communication
-
-The Design View, which is part of the ICM backoffice, displays the Intershop PWA in an iframe.
-It analyzes the component structure of the rendered page and displays it as a tree so that users can edit the structure of the CMS components.
-
-In order to be able to analyze the structure, the application needs to wait for the rendering to be finished – using `isStable`.
-After each router navigation, the app waits for the zone to become stable before the component tree will be analyzed.
-The corresponding code can be found in the `SfeAdapterService` class.
-
 ### Service Workers and Universal
 
 Both `@angular/service-worker` and `@angular/platform-server` use zone stability information internally.

@@ -56,13 +56,13 @@
   margin-top: $space-default;
 
   p {
-    margin-bottom: $space-default / 3;
+    margin-bottom: divide($space-default, 3);
     font-family: $font-family-condensedbold;
     font-size: $font-size-lg;
     text-transform: uppercase;
   }
 
   a {
-    padding-right: $space-default / 2;
+    padding-right: $space-default * 0.5;
   }
 }

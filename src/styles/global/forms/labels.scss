@@ -1,6 +1,6 @@
 .form-inline {
   label {
-    padding-right: ($space-default / 4);
+    padding-right: ($space-default * 0.25);
   }
 }
 
@@ -12,7 +12,7 @@ label {
   }
 
   > * {
-    vertical-align: middle;
+    vertical-align: baseline;
   }
 }
 

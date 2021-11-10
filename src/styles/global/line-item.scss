@@ -8,5 +8,10 @@
 
 .line-item-edit-link {
   display: inline-block;
-  margin-bottom: $space-default / 2;
+  margin-bottom: $space-default * 0.5;
+}
+
+.quickorder-line-item {
+  padding-top: $space-default * 0.5;
+  padding-left: 0;
 }

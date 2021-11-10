@@ -35,7 +35,7 @@ See also [Angular Style Guide](https://angular.io/guide/styleguide#style-05-15).
 
 ## Put as Little Logic Into `constructor` as Possible - Use `ngOnInit`
 
-See [The essential difference between Constructor and ngOnInit in Angular](https://indepth.dev/the-essential-difference-between-constructor-and-ngoninit-in-angular/) and [Angular constructor versus ngOnInit](https://ultimatecourses.com/blog/angular-constructor-ngoninit-lifecycle-hook).
+See [The essential difference between Constructor and ngOnInit in Angular](https://indepth.dev/posts/1119/the-essential-difference-between-constructor-and-ngoninit-in-angular) and [Angular constructor versus ngOnInit](https://ultimatecourses.com/blog/angular-constructor-ngoninit-lifecycle-hook).
 
 ## Use Property Binding to Bind Dynamic Values to Attributes or Properties
 
@@ -88,7 +88,7 @@ In this case the condition should look like this:
 
 ## Do Not Unsubscribe, Use Destroy Observable and takeUntil Instead
 
-Following the ideas of the article [RxJS: Don’t Unsubscribe](https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.
+Following the ideas of the article [RxJS: Don’t Unsubscribe](https://benlesh.medium.com/rxjs-dont-unsubscribe-6753ed4fda87), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.
 
 :heavy_check_mark: **'unsubscribe' via destroy\$ Subject**
 

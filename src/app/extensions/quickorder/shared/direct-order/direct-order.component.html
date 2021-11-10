@@ -1,0 +1,29 @@
+<div class="section">
+  <h3>{{ 'shopping_cart.direct_order.heading' | translate }}</h3>
+  <form [formGroup]="directOrderForm" (ngSubmit)="onSubmit()" data-testing-id="direct-order-form">
+    <div class="row mb-1">
+      <div class="col-7 col-sm-5">
+        <formly-form [form]="directOrderForm" [fields]="fields" [model]="model"></formly-form>
+      </div>
+      <div class="col-5 col-sm-3">
+        <ish-product-quantity></ish-product-quantity>
+      </div>
+      <div class="col-12 col-sm-4">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="
+            directOrderForm.pristine ||
+            this.directOrderForm.invalid ||
+            (hasQuantityError$ | async) ||
+            (loading$ | async)
+          "
+        >
+          {{ 'quickorder.page.add.cart' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <a rel="quick-order" routerLink="/quick-order">{{ 'shopping_cart.direct_order.link.multipleItems' | translate }}</a>
+</div>

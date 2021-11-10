@@ -4,6 +4,7 @@ import { HomePage } from '../../pages/home.page';
 describe('Cookie Consent', () => {
   describe('starting at home page', () => {
     before(() => {
+      cy.clearCookie('cookieConsent');
       HomePage.navigateTo();
     });
 

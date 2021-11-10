@@ -7,6 +7,7 @@ import { catchError, concatMap, delay, first, mapTo, switchMap, take, tap } from
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -23,6 +24,7 @@ export class PunchoutPageGuard implements CanActivate {
     private apiTokenService: ApiTokenService,
     private cookiesService: CookiesService,
     private punchoutService: PunchoutService,
+    private identityProvider: IdentityProviderFactory,
     @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
@@ -46,6 +48,7 @@ export class PunchoutPageGuard implements CanActivate {
       return this.router.parseUrl('/loading');
     }
 
+    this.identityProvider.getInstance().triggerLogout();
     // initiate the punchout user login with the access-token (cXML) or the given credentials (OCI)
     if (route.queryParamMap.has('access-token')) {
       this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
@@ -76,9 +79,18 @@ export class PunchoutPageGuard implements CanActivate {
             return this.punchoutService.getCxmlPunchoutSession(route.queryParamMap.get('sid')).pipe(
               // persist cXML session information (sid, returnURL, basketId) in cookies for later basket transfer
               tap(data => {
-                this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'), { sameSite: 'Strict' });
-                this.cookiesService.put('punchout_ReturnURL', data.returnURL, { sameSite: 'Strict' });
-                this.cookiesService.put('punchout_BasketID', data.basketId, { sameSite: 'Strict' });
+                this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'), {
+                  sameSite: 'None',
+                  secure: true,
+                });
+                this.cookiesService.put('punchout_ReturnURL', data.returnURL, {
+                  sameSite: 'None',
+                  secure: true,
+                });
+                this.cookiesService.put('punchout_BasketID', data.basketId, {
+                  sameSite: 'None',
+                  secure: true,
+                });
               }),
               // use the basketId basket for the current PWA session (instead of default current basket)
               // TODO: if load basket error (currently no error page) -> logout and do not use default 'current' basket
@@ -91,7 +103,10 @@ export class PunchoutPageGuard implements CanActivate {
             // handle OCI punchout with HOOK_URL
           } else if (route.queryParamMap.get('HOOK_URL')) {
             // save HOOK_URL to cookie for later basket transfer
-            this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'), { sameSite: 'Strict' });
+            this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'), {
+              sameSite: 'None',
+              secure: true,
+            });
 
             // create a new basket for every punchout session to avoid basket conflicts for concurrent punchout sessions
             this.checkoutFacade.createBasket();

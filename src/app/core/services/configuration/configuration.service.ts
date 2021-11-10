@@ -24,6 +24,8 @@ export class ConfigurationService {
     return this.apiService
       .get(`configurations`, {
         headers: this.configHeaders,
+        sendLocale: false,
+        sendCurrency: false,
       })
       .pipe(map(ServerConfigMapper.fromData));
   }

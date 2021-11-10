@@ -27,7 +27,7 @@ describe('Recently Selectors', () => {
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration'], [RecentlyEffects]),
         RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
-        ShoppingStoreModule.forTesting('recently', 'categories', 'products'),
+        ShoppingStoreModule.forTesting('_recently', 'categories', 'products'),
       ],
       providers: [provideStoreSnapshots()],
     });

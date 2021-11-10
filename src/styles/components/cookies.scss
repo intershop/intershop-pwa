@@ -11,6 +11,7 @@
   h4 {
     color: $color-inverse;
   }
+
   a {
     color: $color-inverse !important;
     text-decoration: underline;
@@ -25,7 +26,7 @@
   .cookie-option {
     label {
       span {
-        padding-left: $space-default / 2;
+        padding-left: $space-default * 0.5;
         font-family: $font-family-bold;
       }
     }
