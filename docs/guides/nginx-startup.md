@@ -93,6 +93,28 @@ proxy_pass https://pwa-ish-demo.test.intershop.com/INTERSHOP/static/WFS/inSPIRED
 The process will utilize your [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax).
 Be sure to include `application` if you deviate from standard `rest` application.
 
+### Override identity providers by path
+
+The PWA can be configured with multiple identity providers.
+In some use cases a specific identity provider must be selected, when a certain route is requested.
+A punchout user eg. should be logged in by the punchout identity provider by requesting a punchout route.
+For all other possible routes the default identity provider must be selected.
+This can be done by setting only the environment variable `OVERRIDE_IDENTITY_PROVIDER`.
+
+```yaml
+nginx:
+  environment:
+    OVERRIDE_IDENTITY_PROVIDERS: |
+      .+:
+        - path: /b2b/punchout
+          type: PUNCHOUT
+```
+
+This setting will generate for all given domains rewrite rules for the url paths.
+Alternatively, the source can be supplied by setting `OVERRIDE_IDENTITY_PROVIDERS_SOURCE` in any supported format by gomplate.
+
+If no environment variable is set, this feature will be disabled.
+
 ### Other
 
 The page speed configuration can also be overridden:
