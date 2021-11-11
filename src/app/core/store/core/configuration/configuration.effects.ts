@@ -1,4 +1,4 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID, isDevMode } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
@@ -32,6 +32,7 @@ export class ConfigurationEffects {
     @Inject(PLATFORM_ID) private platformId: string,
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
     @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
+    @Inject(DOCUMENT) document: Document,
     translateService: TranslateService,
     appRef: ApplicationRef,
     private localizationsService: LocalizationsService
@@ -51,6 +52,7 @@ export class ConfigurationEffects {
       .subscribe(lang => {
         this.transferState.set(SSR_LOCALE, lang);
         translateService.use(lang);
+        document.querySelector('html').setAttribute('lang', lang.replace('_', '-'));
       });
   }
 
