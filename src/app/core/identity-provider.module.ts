@@ -5,6 +5,8 @@ import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { NgModuleWithProviders } from 'ng-mocks';
 import { noop } from 'rxjs';
 
+import { PunchoutIdentityProviderModule } from '../extensions/punchout/identity-provider/punchout-identity-provider.module';
+
 import { Auth0IdentityProvider } from './identity-provider/auth0.identity-provider';
 import { ICMIdentityProvider } from './identity-provider/icm.identity-provider';
 import { IDENTITY_PROVIDER_IMPLEMENTOR, IdentityProviderFactory } from './identity-provider/identity-provider.factory';
@@ -21,7 +23,7 @@ export function storageFactory(platformId: string): OAuthStorage {
 }
 
 @NgModule({
-  imports: [OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } })],
+  imports: [OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } }), PunchoutIdentityProviderModule],
   providers: [
     { provide: OAuthStorage, useFactory: storageFactory, deps: [PLATFORM_ID] },
     {
