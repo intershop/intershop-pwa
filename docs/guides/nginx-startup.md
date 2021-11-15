@@ -41,7 +41,7 @@ nginx:
 Entries of the IP whitelist are added to the nginx config as [`allow`](http://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also supports IP ranges.
 Please refer to the linked nginx documentation on how to configure this.
 
-After activating basic authentication for your setup globally you can also selectively deactivate it per site.
+After globally activating basic authentication for your setup you can also disable it selectively per site.
 See [Multi-Site Configurations](../guides/multi-site-configurations.md#Examples) for examples on how to do that.
 
 ### Multi-Site
@@ -53,13 +53,13 @@ For more information on the multi-site syntax, refer to [Multi-Site Configuratio
 
 The configuration can be supplied simply by setting the environment variable `MULTI_CHANNEL`.
 Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
-If no environment variables for multi-channel configuration are given, the configuration will fall back to the content of [`nginx/multi-channel.yaml`](../../nginx/multi-channel.yaml), which can also be customized.
+If no environment variables for multi-channel configuration are provided, the configuration will fall back to the content of [`nginx/multi-channel.yaml`](../../nginx/multi-channel.yaml), which can also be customized.
 
 > :warning: Multi-Channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker)
 
 An extended list of examples can be found in the [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax) guide.
 
-### Ignore parameters during caching
+### Ignore Parameters During Caching
 
 Often, nginx receives requests from advertising networks or various user agents that append unused query parameters when making a request, for example `gclid` or `utm_source`. <br>
 These parameters can lead to inefficient caching because even if the same URL is requested multiple times, if it is accessed with different query parameters, the cached version will not be used.
@@ -70,9 +70,9 @@ As with multi-site handling above, the configuration can be supplied simply by s
 Alternatively, the source can be supplied by setting `CACHING_IGNORE_PARAMS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
 Be aware that the supplied list of parameters must be declared under a `params` property.
 
-If no environment variables for ignoring parameters are given, the configuration will fall back to the content of [`nginx/caching-ignore-params.yaml`](../../nginx/caching-ignore-params.yaml), which can also be customized.
+If no environment variables for ignoring parameters are provided, the configuration will fall back to the content of [`nginx/caching-ignore-params.yaml`](../../nginx/caching-ignore-params.yaml), which can also be customized.
 
-### Access ICM sitemap
+### Access ICM Sitemap
 
 Please refer to [this](https://support.intershop.com/kb/index.php/Display/23D962#ConceptXMLSitemaps-XMLSitemapsandIntershopPWAxml_sitemap_pwa) Intershop knowledge base article on how to configure ICM to generate PWA sitemap files.
 
@@ -80,9 +80,9 @@ Please refer to [this](https://support.intershop.com/kb/index.php/Display/23D962
 http://pwa/sitemap_pwa.xml
 ```
 
-To make above sitemap index file available under your deployment you need to add environment variable `ICM_BASE_URL` in your nginx container.
+To make above sitemap index file available under your deployment you need to add the environment variable `ICM_BASE_URL` to your nginx container.
 Let `ICM_BASE_URL` point to your ICM backend installation, e.g. `https://pwa-ish-demo.test.intershop.com`.
-When the container is started it'll process cache-ignore and multi-channel templates as well as sitemap proxy rules like this:
+When the container is started it will process cache-ignore and multi-channel templates as well as sitemap proxy rules like this:
 
 ```yaml
 location /sitemap_ {
@@ -93,11 +93,11 @@ proxy_pass https://pwa-ish-demo.test.intershop.com/INTERSHOP/static/WFS/inSPIRED
 The process will utilize your [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax).
 Be sure to include `application` if you deviate from standard `rest` application.
 
-### Override identity providers by path
+### Override Identity Providers by Path
 
 The PWA can be configured with multiple identity providers.
 In some use cases a specific identity provider must be selected, when a certain route is requested.
-A punchout user eg. should be logged in by the punchout identity provider by requesting a punchout route.
+For example, a punchout user should be logged in by the punchout identity provider requesting a punchout route.
 For all other possible routes the default identity provider must be selected.
 This can be done by setting only the environment variable `OVERRIDE_IDENTITY_PROVIDER`.
 
@@ -110,10 +110,10 @@ nginx:
           type: PUNCHOUT
 ```
 
-This setting will generate for all given domains rewrite rules for the url paths.
+This setting will generate rewrite rules for the URL paths for all given domains.
 Alternatively, the source can be supplied by setting `OVERRIDE_IDENTITY_PROVIDERS_SOURCE` in any supported format by gomplate.
 
-If no environment variable is set, this feature will be disabled.
+If no environment variable is set, this feature is disabled.
 
 ### Other
 
@@ -132,9 +132,9 @@ Built-in features can be enabled and disabled:
 ## Features
 
 New features can be supplied in the folder `nginx/features`.
-A file named `<feature>.conf` is included if the environment variable `<feature>` is set to `on`, `1`, `true` or `yes` (checked case in-sensitive).
+A file named `<feature>.conf` is included if the environment variable `<feature>` is set to `on`, `1`, `true` or `yes` (case in-sensitive).
 The feature is disabled otherwise and an optional file `<feature>-off.conf` is included in the configuration.
-The feature name must be all word-characters (letters, numbers and underscore).
+The feature name must only contain word characters (letters, numbers and underscore).
 
 ### Cache
 
