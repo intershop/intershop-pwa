@@ -1,3 +1,15 @@
+function formatBytes(bytes) {
+  const regex = /(\d+)([a-zA-Z])/m;
+  [, number, size] = bytes.match(regex);
+
+  const k = 1000;
+  const sizes = ['B', 'K', 'M', 'G'];
+
+  const i = sizes.findIndex(el => el === size);
+
+  return parseFloat(parseFloat(number) * Math.pow(k, i));
+}
+
 const pm2 = require('pm2');
 let ports = require('./ecosystem-ports.json');
 
@@ -12,12 +24,18 @@ pm2.connect(err1 => {
   if (!err1) {
     pm2.list((err2, list) => {
       if (!err2) {
+        let tooMuchMemoryCounter = 0;
         Object.entries(ports).forEach(([theme]) => {
-          if (!list.find(el => el.name === theme)) {
-            process.exit(1);
-          }
+          list
+            .filter(el => el.name === theme)
+            .filter(
+              el =>
+                el.monit?.memory >=
+                (process.env.MAX_MEMORY_READY ? formatBytes(process.env.MAX_MEMORY_READY) : formatBytes('400M'))
+            )
+            .map(() => tooMuchMemoryCounter++);
         });
-        process.exit(0);
+        tooMuchMemoryCounter != 0 ? process.exit(1) : process.exit(0);
       } else {
         console.log('pm2 list error:', err2);
         process.exit(1);
