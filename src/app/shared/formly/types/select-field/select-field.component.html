@@ -1,9 +1,9 @@
 <select
-  class="form-control"
   [formControl]="formControl"
   [compareWith]="to.compareWith ? to.compareWith : defaultOptions.templateOptions.compareWith"
-  [class.custom-select]="to.customSelect"
   [formlyAttributes]="field"
+  class="form-control"
+  [ngClass]="to.inputClass"
   [attr.data-testing-id]="field.key"
 >
   <ng-container *ngIf="selectOptions && selectOptions | formlySelectOptions: field | async as opts">

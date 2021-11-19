@@ -252,6 +252,8 @@ Refer to the tables below for an overview of these parts.
 
 ### Field Types
 
+Template option `inputClass`: These css class(es) will be added to all input/select/textarea tags.
+
 | Name                 | Description                                                                                  | Relevant templateOptions                                                                                                      |
 | -------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | ish-text-input-field | Basic input field, supports all text types                                                   | type: 'text' (default),'email','tel','password'                                                                               |

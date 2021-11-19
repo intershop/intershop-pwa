@@ -2,7 +2,8 @@
   [formControl]="formControl"
   [cols]="to.cols"
   [rows]="to.rows"
-  class="form-control"
   [formlyAttributes]="field"
+  class="form-control"
+  [ngClass]="to.inputClass"
   [attr.data-testing-id]="field.key"
 ></textarea>
