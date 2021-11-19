@@ -72,6 +72,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
               type: 'ish-radio-field',
               key: 'orderTemplate',
               templateOptions: {
+                inputClass: 'position-static',
                 fieldClass: ' ',
                 value: 'new',
               },

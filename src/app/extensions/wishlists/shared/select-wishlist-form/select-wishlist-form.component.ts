@@ -70,6 +70,7 @@ export class SelectWishlistFormComponent implements OnInit {
               type: 'ish-radio-field',
               key: 'wishlist',
               templateOptions: {
+                inputClass: 'position-static',
                 fieldClass: ' ',
                 value: 'new',
               },
