@@ -4,50 +4,50 @@
 @font-face {
   font-family: 'robotoregular';
   font-style: normal;
-  font-display: swap;
   font-weight: 400;
   src: local('Roboto Regular '), local('Roboto-Regular'),
     //  Super Modern Browsers
     url('~typeface-roboto/files/roboto-latin-400.woff2') format('woff2'),
     // Modern Browsers
     url('~typeface-roboto/files/roboto-latin-400.woff') format('woff');
+  font-display: swap;
 }
 
 /* roboto-700normal - latin */
 @font-face {
   font-family: 'robotobold';
   font-style: normal;
-  font-display: swap;
   font-weight: 700;
   src: local('Roboto Bold '), local('Roboto-Bold'),
     //  Super Modern Browsers
     url('~typeface-roboto/files/roboto-latin-700.woff2') format('woff2'),
     // Modern Browsers
     url('~typeface-roboto/files/roboto-latin-700.woff') format('woff');
+  font-display: swap;
 }
 
 /* roboto-condensed-400normal - latin */
 @font-face {
   font-family: 'roboto_condensedregular';
   font-style: normal;
-  font-display: swap;
   font-weight: 400;
   src: local('Roboto Condensed Regular '), local('Roboto Condensed-Regular'),
     //  Super Modern Browsers
     url('~typeface-roboto-condensed/files/roboto-condensed-latin-400.woff2') format('woff2'),
     // Modern Browsers
     url('~typeface-roboto-condensed/files/roboto-condensed-latin-400.woff') format('woff');
+  font-display: swap;
 }
 
 /* roboto-condensed-700normal - latin */
 @font-face {
   font-family: 'roboto_condensedbold';
   font-style: normal;
-  font-display: swap;
   font-weight: 700;
   src: local('Roboto Condensed Bold '), local('Roboto Condensed-Bold'),
     //  Super Modern Browsers
     url('~typeface-roboto-condensed/files/roboto-condensed-latin-700.woff2') format('woff2'),
     // Modern Browsers
     url('~typeface-roboto-condensed/files/roboto-condensed-latin-700.woff') format('woff');
+  font-display: swap;
 }
