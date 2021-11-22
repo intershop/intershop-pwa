@@ -21,6 +21,10 @@
   }
 }
 
+input {
+  accent-color: $input-accent-color;
+}
+
 input[type='file'] {
   padding: 0;
   border: none;
