@@ -3,7 +3,7 @@
 {{ define "LOCATION_TEMPLATE" }}
         {{- $channel := .channel }}
         {{- $application := "" }}{{ if (has . "application") }}{{ $application = join ( slice ";application" .application ) "=" }}{{ end }}
-        {{- $identityProvider := "" }}{{ if (has . "identityProvider") }}{{ $identityProvider = join ( slice ";identityProvider" .identityProvider ) "=" }}{{ end }}
+        {{- $identityProvider := "" }}{{ if (has . "identityProvider") }}{{ $identityProvider = .identityProvider }}{{ end }}
         {{- $lang := "default" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
         {{- $currency := "" }}{{ if (has . "currency") }}{{ $currency = join ( slice ";currency" .currency ) "=" }}{{ end }}
         {{- $features := "" }}{{ if (has . "features") }}{{ $features = join ( slice ";features" .features ) "=" }}{{ end }}
@@ -46,7 +46,11 @@
         rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang={{ $lang }}';
         rewrite '^(?!.*;currency=.*)(.*)$' '$1;currency={{ $currency }}';
 
-        set $default_rewrite_params ';icmHost={{ $icmHost }}{{ $icmScheme }}{{ $icmPort }};channel={{ $channel }}{{ $application }}{{ $identityProvider }}{{ $features }}{{ $theme }};baseHref={{ $baseHref | strings.ReplaceAll "/" "%2F" }};device=$ua_device';
+      {{ if $identityProvider }}
+        rewrite '^(?!.*;identityProvider=.*)(.*)$' '$1;identityProvider={{ $identityProvider }}';
+      {{ end }}
+
+        set $default_rewrite_params ';icmHost={{ $icmHost }}{{ $icmScheme }}{{ $icmPort }};channel={{ $channel }}{{ $application }}{{ $features }}{{ $theme }};baseHref={{ $baseHref | strings.ReplaceAll "/" "%2F" }};device=$ua_device';
 
         rewrite '^(.*)$' '$1$default_rewrite_params' break;
 
@@ -55,6 +59,11 @@
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
 {{- end }}
+
+{{- define "OVERRIDE_IDENTITY_PROVIDER_TEMPLATE" }}
+    {{- $identityProvider := join ( slice ";identityProvider" .type ) "=" }}
+    rewrite '^((.*){{ .path }})$' '$1{{$identityProvider}}';
+{{- end}}
 
 {{- range $domain, $mapping := (ds "domains") }}
 server {
@@ -74,6 +83,16 @@ server {
 
     include /etc/nginx/conf.d/cache-blacklist.conf;
 
+
+  {{- if getenv "OVERRIDE_IDENTITY_PROVIDERS" }}
+    {{- range $domainOverride, $identyProviderOverride := (ds "overrideIdentityProviders") }}
+      {{ if eq $domain $domainOverride }}
+        {{- range $identyProviderOverride }}
+          {{- tmpl.Exec "OVERRIDE_IDENTITY_PROVIDER_TEMPLATE" . }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
 
   {{ if getenv "DEBUG" | strings.ToLower | regexp.Match "on|1|true|yes" }}
     error_log /dev/stdout notice;

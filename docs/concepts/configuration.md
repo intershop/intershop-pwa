@@ -166,6 +166,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | orderTemplates               | order templates feature                                                                                                    |
 | quickorder                   | quick order page and direct add to cart input                                                                              |
 | quoting                      | quoting feature                                                                                                            |
+| punchout                     | punchout feature                                                                                                           |
 | **B2C Features**             |                                                                                                                            |
 | guestCheckout                | allow unregistered guest checkout                                                                                          |
 | wishlists                    | wishlist product list feature                                                                                              |
