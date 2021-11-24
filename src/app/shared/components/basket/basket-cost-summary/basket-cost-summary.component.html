@@ -9,7 +9,6 @@
       <ng-container *ngFor="let rebate of totals.valueRebates">
         <dt *ngIf="rebate?.promotionId" class="col-6">
           <ish-basket-promotion [rebate]="rebate"></ish-basket-promotion>
-          <ng-template #default>{{ 'checkout.widget.promotion.discount' | translate }}</ng-template>
         </dt>
         <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
       </ng-container>
@@ -27,7 +26,6 @@
       <ng-container *ngFor="let rebate of totals.shippingRebates">
         <dt class="col-6">
           <ish-basket-promotion [rebate]="rebate"></ish-basket-promotion>
-          <ng-template #default>{{ 'checkout.widget.promotion.discount' | translate }}</ng-template>
         </dt>
         <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
       </ng-container>
