@@ -65,6 +65,19 @@
     rewrite '^((.*){{ .path }})$' '$1{{$identityProvider}}';
 {{- end}}
 
+{{- define "LOCATION_TEMPLATE_FOR_SITEMAP" }}
+        {{- $icmBaseUrl := getenv "ICM_BASE_URL" }}
+        {{- $baseHref := ""}}{{ if (has . "baseHref")}}{{ $baseHref = .baseHref }}{{end}}
+        {{- $channel := .channel }}
+        {{- $application := "rest" }}{{ if (has . "application") }}{{ $application = .application }}{{ end }}
+        {{- $lang := "en_US" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
+      {{- if $icmBaseUrl }}
+      proxy_pass {{ $icmBaseUrl }}/INTERSHOP/static/WFS/{{ $channel }}/{{ $application }}/{{ $channel | strings.ReplaceAll "-Site" "" }}/{{ $lang }}/sitemaps/pwa/sitemap_;
+      {{- else }}
+      rewrite ^{{ $baseHref }}/sitemap.*$ {{ $baseHref }}/;
+      {{- end -}}
+{{- end }}
+
 {{- range $domain, $mapping := (ds "domains") }}
 server {
     server_name ~^{{ $domain }}$;
@@ -153,14 +166,20 @@ server {
     location / {
         {{- tmpl.Exec "LOCATION_TEMPLATE" $mapping }}
     }
+    location ^~ /sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $mapping }}
+    }
   {{- else -}}
     {{ range $mapping }}
     location {{ .baseHref }} {
         {{- tmpl.Exec "LOCATION_TEMPLATE" . }}
     }
+    location ^~ {{ .baseHref }}{{if not ( .baseHref | strings.HasSuffix "/")}}/{{end}}sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" . }}
+    }
     {{ end }}
-  {{- if (has ($mapping | jsonpath "$..baseHref") "/") }}
-  {{- else }}
+    {{- if (has ($mapping | jsonpath "$..baseHref") "/") }}
+    {{- else }}
     location / {
         allow all;
         auth_basic off;
@@ -168,14 +187,12 @@ server {
         rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" permanent;
         rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri" permanent;
     }
-  {{- end -}}
+    location ^~ /sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $first }}
+    }
+    {{- end -}}
   {{- end }}
 
-{{- if (getenv "ICM_BASE_URL") }}
-    # we have the ICM_BASE_URL so we can include sitemap locations
-    #
-    include /etc/nginx/conf.d/sitemap.conf;
-{{- end }}
     # redirect server error pages to the static page /50x.html
     #
     error_page 500 502 503 504 /50x.html;
