@@ -126,11 +126,9 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": ["tsconfig.json"],
-            "exclude": ["**/node_modules/**"],
-            "format": "stylish"
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         },
         "server": {

@@ -3,11 +3,10 @@
   "editor.renderWhitespace": "all",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true
+    "source.fixAll.eslint": true
   },
   "git.rebaseWhenSync": true,
   "git.autoStash": true,
-  "tslint.alwaysShowRuleFailuresAsWarnings": true,
   "editor.bracketPairColorization.enabled": true,
 
   // file type specific settings
@@ -23,5 +22,12 @@
 
   "ngschematics.schematics": ["intershop-schematics"],
   "workbench.iconTheme": "vscode-icons",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  // eslint
+
+  "eslint.options": {
+    "extensions": [".ts", ".html"]
+  },
+  "eslint.validate": ["javascript", "typescript", "html"]
 }

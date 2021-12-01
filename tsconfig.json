@@ -27,16 +27,7 @@
     "lib": ["es2018", "dom"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitAny": true,
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin",
-        "alwaysShowRuleFailuresAsWarnings": true,
-        "ignoreDefinitionFiles": true,
-        "configFile": "tslint.json",
-        "suppressWhileTypeErrorsPresent": true
-      }
-    ]
+    "noImplicitAny": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

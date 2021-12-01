@@ -69,9 +69,9 @@ jobs:
       - name: Compile Cypress Tests
         run: (cd e2e && npx tsc -p cypress/tsconfig.json)
 
-      - name: Run Escalated TSLint Rules
+      - name: Run Escalated ESLint Rules
         run: |
-          node scripts/tslint-hard
+          node scripts/eslint-hard
           npm run lint
 
       - name: Check File Synchronization Status
@@ -95,8 +95,8 @@ jobs:
       - name: PWA Jest
         run: npm test
 
-      - name: tslint-rules Jest
-        run: cd tslint-rules && npm run test -- --ci
+      - name: eslint-rules Jest
+        run: npm run test:eslint-rules
 
       - name: schematics Jest
         run: cd schematics && npm run test -- --ci
@@ -151,7 +151,7 @@ jobs:
       - name: Test Schematics
         run: |
           bash e2e/test-schematics-${{ matrix.test }}.sh
-          node scripts/tslint-hard
+          node scripts/eslint-hard
           npm run lint
 
   ProductionPWA:
