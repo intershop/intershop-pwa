@@ -27,6 +27,7 @@ import {
 import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 /**
  * Pipeable operator for elements translation (removing the envelope).
@@ -308,30 +309,26 @@ export class ApiService {
       get: <T>(path: string, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>
-            this.get<T>(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`, options)
+            this.get<T>(`customers/${customer.customerNo}/users/${encodeResourceID(user.login)}/${path}`, options)
           )
         ),
       delete: <T>(path: string, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>
-            this.delete<T>(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`, options)
+            this.delete<T>(`customers/${customer.customerNo}/users/${encodeResourceID(user.login)}/${path}`, options)
           )
         ),
       put: <T>(path: string, body = {}, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>
-            this.put<T>(
-              `customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`,
-              body,
-              options
-            )
+            this.put<T>(`customers/${customer.customerNo}/users/${encodeResourceID(user.login)}/${path}`, body, options)
           )
         ),
       patch: <T>(path: string, body = {}, options?: AvailableOptions) =>
         ids$.pipe(
           concatMap(([user, customer]) =>
             this.patch<T>(
-              `customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`,
+              `customers/${customer.customerNo}/users/${encodeResourceID(user.login)}/${path}`,
               body,
               options
             )
@@ -341,7 +338,7 @@ export class ApiService {
         ids$.pipe(
           concatMap(([user, customer]) =>
             this.post<T>(
-              `customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/${path}`,
+              `customers/${customer.customerNo}/users/${encodeResourceID(user.login)}/${path}`,
               body,
               options
             )

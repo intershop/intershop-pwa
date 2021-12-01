@@ -8,6 +8,7 @@ import { PriceHelper } from 'ish-core/models/price/price.helper';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { B2bRoleData } from '../../models/b2b-role/b2b-role.interface';
 import { B2bRoleMapper } from '../../models/b2b-role/b2b-role.mapper';
@@ -52,7 +53,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .get(`customers/${customer.customerNo}/users/${encodeURIComponent(login)}`)
+          .get(`customers/${customer.customerNo}/users/${encodeResourceID(login)}`)
           .pipe(map(B2bUserMapper.fromData))
       )
     );
@@ -119,7 +120,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}`, {
+          .put(`customers/${customer.customerNo}/users/${encodeResourceID(user.login)}`, {
             ...customer,
             ...user,
             preferredInvoiceToAddress: { urn: user.preferredInvoiceToAddressUrn },
@@ -146,9 +147,7 @@ export class UsersService {
     }
 
     return this.currentCustomer$.pipe(
-      switchMap(customer =>
-        this.apiService.delete(`customers/${customer.customerNo}/users/${encodeURIComponent(login)}`)
-      )
+      switchMap(customer => this.apiService.delete(`customers/${customer.customerNo}/users/${encodeResourceID(login)}`))
     );
   }
 
@@ -172,7 +171,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put(`customers/${customer.customerNo}/users/${encodeURIComponent(login)}/roles`, { userRoles })
+          .put(`customers/${customer.customerNo}/users/${encodeResourceID(login)}/roles`, { userRoles })
           .pipe(
             unpackEnvelope<B2bRoleData>('userRoles'),
             map(data => data.map(r => r.roleID))
@@ -196,7 +195,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService.put<UserBudget>(
-          `customers/${customer.customerNo}/users/${encodeURIComponent(login)}/budgets`,
+          `customers/${customer.customerNo}/users/${encodeResourceID(login)}/budgets`,
           budget
         )
       )

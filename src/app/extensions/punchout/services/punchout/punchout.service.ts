@@ -12,6 +12,7 @@ import { getCurrentBasketId } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { PunchoutSession } from '../../models/punchout-session/punchout-session.model';
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
@@ -122,7 +123,7 @@ export class PunchoutService {
           .put<PunchoutUser>(
             `customers/${customer.customerNo}/punchouts/${this.getResourceType(
               user.punchoutType
-            )}/users/${encodeURIComponent(user.login)}`,
+            )}/users/${encodeResourceID(user.login)}`,
             user,
             {
               headers: this.punchoutHeaders,
@@ -146,7 +147,9 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService.delete<void>(
-          `customers/${customer.customerNo}/punchouts/${this.getResourceType(user.punchoutType)}/users/${user.login}`,
+          `customers/${customer.customerNo}/punchouts/${this.getResourceType(
+            user.punchoutType
+          )}/users/${encodeResourceID(user.login)}`,
           {
             headers: this.punchoutHeaders,
           }

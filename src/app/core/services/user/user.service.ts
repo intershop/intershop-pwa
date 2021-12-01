@@ -26,6 +26,7 @@ import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
@@ -312,12 +313,10 @@ export class UserService {
     ]).pipe(
       take(1),
       switchMap(([customer, user]) =>
-        this.apiService
-          .get(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/costcenters`)
-          .pipe(
-            unpackEnvelope(),
-            map((costCenters: UserCostCenter[]) => costCenters)
-          )
+        this.apiService.get(`customers/${customer.customerNo}/users/${encodeResourceID(user.login)}/costcenters`).pipe(
+          unpackEnvelope(),
+          map((costCenters: UserCostCenter[]) => costCenters)
+        )
       )
     );
   }
