@@ -1,0 +1,14 @@
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+export const <%= camelize(name) %>Rule: TSESLint.RuleModule<string, []> = {
+  meta: {
+    messages: {
+      PLACEHOLDER_ERROR: ``,
+    },
+    type: 'problem',
+    schema: [],
+  },
+  create: context => ({
+
+  }),
+};

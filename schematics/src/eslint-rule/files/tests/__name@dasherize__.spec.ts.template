@@ -1,0 +1,17 @@
+import { RuleTestConfig } from './_execute-tests';
+import { <%= camelize(name) %>Rule } from '../src/rules/<%= dasherize(name) %>';
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+
+const config: RuleTestConfig = {
+  ruleName: '<%= dasherize(name) %>',
+  rule: <%= camelize(name) %>Rule,
+  tests: {
+    valid: [
+
+    ],
+    invalid: [
+
+    ],
+  },
+};
+export default config;

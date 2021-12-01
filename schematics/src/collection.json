@@ -112,6 +112,12 @@
       "factory": "./helpers/override/factory#override",
       "description": "Override a source for customization.",
       "schema": "./helpers/override/schema.json"
+    },
+    "eslint-rule": {
+      "aliases": ["er"],
+      "description": "A blank schematic.",
+      "factory": "./eslint-rule/factory#eslintRule",
+      "schema": "./eslint-rule/schema.json"
     }
   }
 }
