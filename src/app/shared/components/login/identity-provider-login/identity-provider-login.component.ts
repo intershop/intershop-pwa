@@ -18,7 +18,6 @@ import { LoginFormComponent } from 'ish-shared/components/login/login-form/login
   templateUrl: './identity-provider-login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line: component-creation-test
 export class IdentityProviderLoginComponent implements OnInit {
   @Input() labelClass: string;
   @Input() inputClass: string;
@@ -33,7 +32,7 @@ export class IdentityProviderLoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // tslint:disable-next-line: no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let componentRef: ComponentRef<any>;
 
     switch (this.identityProviderFactory.getType()) {

@@ -40,7 +40,7 @@ export class QuoteEditComponent implements OnInit {
 
     if (
       formValues.displayName !== quoteValues.displayName ||
-      // tslint:disable-next-line: triple-equals
+      // eslint-disable-next-line eqeqeq
       formValues.description != quoteValues.description
     ) {
       this.context.update(formValues);

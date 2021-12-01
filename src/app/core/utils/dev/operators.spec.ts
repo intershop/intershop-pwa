@@ -4,7 +4,7 @@ import { Subject, noop } from 'rxjs';
 import { log } from './operators';
 
 describe('Operators', () => {
-  // tslint:disable:no-console
+  /* eslint-disable no-console */
   describe('log', () => {
     let subject$: Subject<string>;
 

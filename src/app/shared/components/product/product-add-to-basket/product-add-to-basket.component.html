@@ -10,7 +10,7 @@
     data-testing-id="addToCartButton"
     (click)="addToBasket()"
   >
-    <ng-container *ngIf="!(displaySpinner$ | async); else spinning">
+    <ng-container *ngIf="(displaySpinner$ | async) !== true; else spinning">
       <!-- Add to Cart button -->
       <ng-container *ngIf="displayIcon; else defaultButton">
         <fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon>

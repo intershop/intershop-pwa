@@ -52,10 +52,6 @@ export class CategoryTreeHelper {
     };
   }
 
-  private static removeDuplicates<T>(input: T[]): T[] {
-    return input.filter((value, index, array) => array.indexOf(value) === index);
-  }
-
   /**
    * Select {@link Category} for update
    */
@@ -66,63 +62,17 @@ export class CategoryTreeHelper {
     return current;
   }
 
-  private static mergeEdges(
-    current: { [id: string]: string[] },
-    incoming: { [id: string]: string[] }
-  ): { [id: string]: string[] } {
-    const edges = { ...current };
-    Object.keys(incoming).forEach(key => {
-      if (current[key]) {
-        let master: string[];
-        let slave: string[];
-
-        // node with more available edges is trustworthy
-        if (incoming[key] && incoming[key].length > current[key].length) {
-          master = incoming[key];
-          slave = current[key];
-        } else {
-          master = current[key];
-          slave = incoming[key];
-        }
-
-        // add edges from both and remove duplicates
-        edges[key] = CategoryTreeHelper.removeDuplicates([...master, ...slave]);
-      } else {
-        edges[key] = [...incoming[key]];
-      }
-    });
-    return edges;
-  }
-
-  private static mergeRootIDs(current: string[], incoming: string[]): string[] {
-    // node with more available rootIDs is trustworthy
-    if (incoming && incoming.length > current.length) {
-      return CategoryTreeHelper.removeDuplicates([...incoming, ...current]);
-    } else {
-      return CategoryTreeHelper.removeDuplicates([...current, ...incoming]);
-    }
-  }
-
-  private static mergeNodes(
-    current: { [id: string]: Category },
-    incoming: { [id: string]: Category }
-  ): { [id: string]: Category } {
-    const nodes = { ...current };
-    Object.keys(incoming).forEach(key => {
-      nodes[key] = { ...CategoryTreeHelper.updateStrategy(current[key], incoming[key]) };
-    });
-    return nodes;
-  }
-
-  private static mergeCategoryRefs(
-    current: { [id: string]: string },
-    incoming: { [id: string]: Category }
-  ): { [id: string]: string } {
-    const refs = { ...current };
-    Object.keys(incoming).forEach(key => {
-      refs[incoming[key]?.categoryRef] = key;
-    });
-    return refs;
+  /**
+   * Perform check for equality. Order of items is ignored.
+   */
+  static equals(tree1: CategoryTree, tree2: CategoryTree): boolean {
+    return (
+      tree1 &&
+      tree2 &&
+      CategoryTreeHelper.rootIdsEqual(tree1.rootIds, tree2.rootIds) &&
+      CategoryTreeHelper.edgesEqual(tree1.edges, tree2.edges) &&
+      CategoryTreeHelper.categoriesEqual(tree1.nodes, tree2.nodes)
+    );
   }
 
   /**
@@ -167,6 +117,65 @@ export class CategoryTreeHelper {
     };
   }
 
+  private static mergeRootIDs(current: string[], incoming: string[]): string[] {
+    // node with more available rootIDs is trustworthy
+    if (incoming && incoming.length > current.length) {
+      return CategoryTreeHelper.removeDuplicates([...incoming, ...current]);
+    } else {
+      return CategoryTreeHelper.removeDuplicates([...current, ...incoming]);
+    }
+  }
+
+  private static mergeNodes(
+    current: { [id: string]: Category },
+    incoming: { [id: string]: Category }
+  ): { [id: string]: Category } {
+    const nodes = { ...current };
+    Object.keys(incoming).forEach(key => {
+      nodes[key] = { ...CategoryTreeHelper.updateStrategy(current[key], incoming[key]) };
+    });
+    return nodes;
+  }
+
+  private static mergeCategoryRefs(
+    current: { [id: string]: string },
+    incoming: { [id: string]: Category }
+  ): { [id: string]: string } {
+    const refs = { ...current };
+    Object.keys(incoming).forEach(key => {
+      refs[incoming[key]?.categoryRef] = key;
+    });
+    return refs;
+  }
+
+  private static mergeEdges(
+    current: { [id: string]: string[] },
+    incoming: { [id: string]: string[] }
+  ): { [id: string]: string[] } {
+    const edges = { ...current };
+    Object.keys(incoming).forEach(key => {
+      if (current[key]) {
+        let master: string[];
+        let slave: string[];
+
+        // node with more available edges is trustworthy
+        if (incoming[key] && incoming[key].length > current[key].length) {
+          master = incoming[key];
+          slave = current[key];
+        } else {
+          master = current[key];
+          slave = incoming[key];
+        }
+
+        // add edges from both and remove duplicates
+        edges[key] = CategoryTreeHelper.removeDuplicates([...master, ...slave]);
+      } else {
+        edges[key] = [...incoming[key]];
+      }
+    });
+    return edges;
+  }
+
   private static rootIdsEqual(t1: string[], t2: string[]) {
     return t1.length === t2.length && t1.every(e => t2.includes(e));
   }
@@ -185,16 +194,7 @@ export class CategoryTreeHelper {
     );
   }
 
-  /**
-   * Perform check for equality. Order of items is ignored.
-   */
-  static equals(tree1: CategoryTree, tree2: CategoryTree): boolean {
-    return (
-      tree1 &&
-      tree2 &&
-      CategoryTreeHelper.rootIdsEqual(tree1.rootIds, tree2.rootIds) &&
-      CategoryTreeHelper.edgesEqual(tree1.edges, tree2.edges) &&
-      CategoryTreeHelper.categoriesEqual(tree1.nodes, tree2.nodes)
-    );
+  private static removeDuplicates<T>(input: T[]): T[] {
+    return input.filter((value, index, array) => array.indexOf(value) === index);
   }
 }

@@ -56,7 +56,7 @@ describe('Icm Error Mapper Interceptor', () => {
     });
 
     httpController.expectOne('some').flush(
-      // tslint:disable-next-line: no-null-keyword
+      // eslint-disable-next-line no-null/no-null
       null,
       { status: 400, statusText: 'Bad Request' }
     );
@@ -236,7 +236,7 @@ describe('Icm Error Mapper Interceptor', () => {
     test(): boolean {
       return true;
     }
-    // tslint:disable-next-line: ban-types
+    // eslint-disable-next-line @typescript-eslint/ban-types
     map(error: HttpErrorResponse, request: HttpRequest<unknown>): Partial<HttpError> {
       return {
         message: `${request.method}:${error.error}`,

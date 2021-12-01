@@ -7,7 +7,6 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 import { CookiesModalComponent } from './cookies-modal.component';
 
-// tslint:disable:no-intelligence-in-artifacts
 describe('Cookies Modal Component', () => {
   let component: CookiesModalComponent;
   let fixture: ComponentFixture<CookiesModalComponent>;

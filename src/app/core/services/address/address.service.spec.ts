@@ -28,7 +28,7 @@ describe('Address Service', () => {
     addressService = TestBed.inject(AddressService);
   });
 
-  it("should get addresses data when 'getCustomerAddresses' is called for b2c/b2x applications", done => {
+  it('should get addresses data when \'getCustomerAddresses\' is called for b2c/b2x applications', done => {
     when(apiService.get(`customers/-/addresses`)).thenReturn(of([]));
     when(apiService.resolveLinks()).thenReturn(() => of([]));
 
@@ -38,7 +38,7 @@ describe('Address Service', () => {
     });
   });
 
-  it("should get addresses data when 'getCustomerAddresses' is called for rest applications", done => {
+  it('should get addresses data when \'getCustomerAddresses\' is called for rest applications', done => {
     when(apiService.get(`privatecustomers/-/addresses`)).thenReturn(of([]));
     when(apiService.resolveLinks()).thenReturn(() => of([]));
     when(appFacade.customerRestResource$).thenReturn(of('privatecustomers'));
@@ -49,7 +49,7 @@ describe('Address Service', () => {
     });
   });
 
-  it("should create an address when 'createCustomerAddress' is called", done => {
+  it('should create an address when \'createCustomerAddress\' is called', done => {
     when(apiService.post(`customers/-/addresses`, anything())).thenReturn(
       of({ type: 'Link', uri: 'site/-/customers/-/addresses/addressId' })
     );
@@ -63,7 +63,7 @@ describe('Address Service', () => {
     });
   });
 
-  it("should update an address when 'updateCustomerAddress' is called", done => {
+  it('should update an address when \'updateCustomerAddress\' is called', done => {
     const newAddress = BasketMockData.getAddress();
     newAddress.firstName = 'John';
 
@@ -76,7 +76,7 @@ describe('Address Service', () => {
     });
   });
 
-  it("should delete an address when 'deleteCustomerAddress' is called", done => {
+  it('should delete an address when \'deleteCustomerAddress\' is called', done => {
     when(apiService.delete(`customers/-/addresses/addressId`)).thenReturn(of({}));
 
     addressService.deleteCustomerAddress('-', 'addressId').subscribe(() => {

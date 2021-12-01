@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
@@ -25,7 +26,6 @@ export interface RegistrationConfigType {
 
 @Injectable({ providedIn: 'root' })
 export class RegistrationFormConfigurationService {
-  // tslint:disable: no-intelligence-in-artifacts
   constructor(
     private accountFacade: AccountFacade,
     private router: Router,
@@ -157,7 +157,7 @@ export class RegistrationFormConfigurationService {
         customer.companyName = formValue.companyName1;
         customer.companyName2 = formValue.companyName2;
         customer.taxationID = formValue.taxationID;
-        user.businessPartnerNo = 'U' + customer.customerNo;
+        user.businessPartnerNo = `U${customer.customerNo}`;
       }
 
       const registration: CustomerRegistrationType = { customer, user, credentials, address };

@@ -27,7 +27,7 @@ describe('Country Service', () => {
     countryService = new CountryService(instance(apiService));
   });
 
-  it("should get all available countries when 'getCountries' is called", done => {
+  it('should get all available countries when \'getCountries\' is called', done => {
     when(apiService.get(`countries`, anything())).thenReturn(of(countryData));
 
     countryService.getCountries().subscribe(() => {
@@ -36,7 +36,7 @@ describe('Country Service', () => {
     });
   });
 
-  it("should get all available regions when 'getRegionByCountry' is called", done => {
+  it('should get all available regions when \'getRegionByCountry\' is called', done => {
     when(apiService.get(`countries/countryCode/main-divisions`, anything())).thenReturn(of(regionData));
 
     countryService.getRegionsByCountry('countryCode').subscribe(regions => {

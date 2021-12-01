@@ -92,7 +92,7 @@ const fromIntersectionObserver = (element: HTMLElement, config: IntersectionObse
     return {
       unsubscribe() {
         intersectionObserver.disconnect();
-        // tslint:disable-next-line rxjs-no-subject-unsubscribe ban
+        // eslint-disable-next-line ban/ban, rxjs/no-subject-unsubscribe
         subject$.unsubscribe();
       },
     };

@@ -27,7 +27,7 @@ describe('Contact Confirmation Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it("should show confirmation success, when 'success' is true", () => {
+  it('should show confirmation success, when \'success\' is true', () => {
     component.success = true;
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
@@ -39,7 +39,7 @@ describe('Contact Confirmation Component', () => {
     `);
   });
 
-  it("should show confirmation failed, when 'success' is false", () => {
+  it('should show confirmation failed, when \'success\' is false', () => {
     component.success = false;
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`

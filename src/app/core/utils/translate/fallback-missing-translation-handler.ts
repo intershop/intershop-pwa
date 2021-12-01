@@ -22,7 +22,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
   constructor(
     private translateLoader: TranslateLoader,
     private translateCompiler: TranslateCompiler,
-    private translateParser: TranslateParser,
+    private parser: TranslateParser,
     private errorHandler: ErrorHandler,
     @Inject(FALLBACK_LANG) private fallback: string,
     @Inject(PLATFORM_ID) private platformId: string,
@@ -91,8 +91,8 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
         // stop after first emission
         whenTruthy(),
         first(),
-        map(translation => this.translateParser.interpolate(translation, params.interpolateParams)),
-        map(translation => (PRODUCTION_MODE ? translation : 'TRANSLATE_ME ' + translation))
+        map(translation => this.parser.interpolate(translation, params.interpolateParams)),
+        map(translation => (PRODUCTION_MODE ? translation : `TRANSLATE_ME ${translation}`))
       );
     }
     return params.key;

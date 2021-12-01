@@ -85,14 +85,14 @@ describe('Product Detail Actions Component', () => {
       );
       fixture.detectChanges();
 
-      expect(element.querySelector("[data-testing-id='compare-sku']")).toBeFalsy();
+      expect(element.querySelector('[data-testing-id=\'compare-sku\']')).toBeFalsy();
     });
   });
 
   it('should emit "product to compare" event when compare link is clicked', () => {
     fixture.detectChanges();
 
-    element.querySelector<HTMLElement>("[data-testing-id='compare-sku'] a").click();
+    element.querySelector<HTMLElement>('[data-testing-id=\'compare-sku\'] a').click();
 
     verify(context.addToCompare()).once();
   });

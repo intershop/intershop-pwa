@@ -125,7 +125,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
       requiredCompletenessLevel: ProductCompletenessLevel.List,
       propagateActive: true,
       allowZeroQuantity: false,
-      // tslint:disable-next-line: no-null-keyword
+      // eslint-disable-next-line no-null/no-null
       categoryId: null,
     });
 
@@ -233,7 +233,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
       this.select('product').pipe(
         map(
           product =>
-            // tslint:disable-next-line: no-null-keyword
+            // eslint-disable-next-line no-null/no-null
             ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name || null
         )
       )
@@ -331,7 +331,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
   log(val: boolean) {
     if (!this.loggingActive) {
       this.hold(this.select().pipe(filter(() => !!val)), ctx => {
-        // tslint:disable-next-line: no-console
+        // eslint-disable-next-line no-console
         console.log(ctx);
       });
     }

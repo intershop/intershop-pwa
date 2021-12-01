@@ -31,7 +31,7 @@ export class ShowFormFeedbackDirective {
   /**
    * FormControl which validation status is considered
    */
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('ishShowFormFeedback') control: AbstractControl | AbstractControl[];
 
   /**

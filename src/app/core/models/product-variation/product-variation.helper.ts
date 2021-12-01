@@ -10,55 +10,6 @@ import { VariationSelectOption } from './variation-select-option.model';
 
 export class ProductVariationHelper {
   /**
-   * Check specific option if perfect variant match is not existing.
-   * @param option  The select option to check.
-   * @returns       Indicates if no perfect match is found.
-   * TODO: Refactor this to a more functional style
-   */
-  private static alternativeCombinationCheck(option: VariationSelectOption, product: ProductView): boolean {
-    if (!product.variableVariationAttributes?.length) {
-      return;
-    }
-
-    let quality: number;
-    const perfectMatchQuality = product.variableVariationAttributes.length;
-
-    // loop all selected product attributes ignoring the ones related to currently checked option.
-    for (const selectedAttribute of product.variableVariationAttributes) {
-      // loop all possible variations
-      for (const variation of product.variations) {
-        quality = 0;
-
-        // loop attributes of possible variation.
-        for (const attribute of variation.variableVariationAttributes || []) {
-          // increment quality if variation attribute matches selected product attribute.
-          if (
-            attribute.variationAttributeId === selectedAttribute.variationAttributeId &&
-            attribute.value === selectedAttribute.value
-          ) {
-            quality += 1;
-            continue;
-          }
-
-          // increment quality if variation attribute matches currently checked option.
-          if (attribute.variationAttributeId === option.type && attribute.value === option.value) {
-            quality += 1;
-            continue;
-          }
-        }
-
-        // perfect match found
-        if (quality === perfectMatchQuality) {
-          return false;
-        }
-      }
-    }
-
-    // imperfect match
-    return true;
-  }
-
-  /**
    * Build select value structure
    */
   static buildVariationOptionGroups(product: ProductView): VariationOptionGroup[] {
@@ -102,23 +53,6 @@ export class ProductVariationHelper {
         options: groupedOptions[attrId],
       };
     });
-  }
-
-  private static simplifyVariableVariationAttributes(attrs: VariationAttribute[]): { [name: string]: string } {
-    return attrs
-      .map(attr => ({
-        name: attr.variationAttributeId,
-        value: attr.value,
-      }))
-      .reduce((acc, val) => ({ ...acc, [val.name]: val.value }), {});
-  }
-
-  private static difference(obj1: { [name: string]: string }, obj2: { [name: string]: string }): number {
-    const keys = Object.keys(obj1);
-    if (keys.length !== Object.keys(obj2).length || keys.some(k => Object.keys(obj2).indexOf(k) < 0)) {
-      throw new Error("cannot calculate difference if objects don't have the same keys");
-    }
-    return keys.reduce((sum, key) => (obj1[key] !== obj2[key] ? sum + 1 : sum), 0);
   }
 
   static findPossibleVariation(name: string, value: string, product: ProductView): string {
@@ -176,5 +110,72 @@ export class ProductVariationHelper {
             selectedFacets.find(([key, val]) => key === attr.variationAttributeId && val === attr.value)
         )
       ).length;
+  }
+
+  /**
+   * Check specific option if perfect variant match is not existing.
+   *
+   * @param option  The select option to check.
+   * @returns       Indicates if no perfect match is found.
+   * TODO: Refactor this to a more functional style
+   */
+  private static alternativeCombinationCheck(option: VariationSelectOption, product: ProductView): boolean {
+    if (!product.variableVariationAttributes?.length) {
+      return;
+    }
+
+    let quality: number;
+    const perfectMatchQuality = product.variableVariationAttributes.length;
+
+    // loop all selected product attributes ignoring the ones related to currently checked option.
+    for (const selectedAttribute of product.variableVariationAttributes) {
+      // loop all possible variations
+      for (const variation of product.variations) {
+        quality = 0;
+
+        // loop attributes of possible variation.
+        for (const attribute of variation.variableVariationAttributes || []) {
+          // increment quality if variation attribute matches selected product attribute.
+          if (
+            attribute.variationAttributeId === selectedAttribute.variationAttributeId &&
+            attribute.value === selectedAttribute.value
+          ) {
+            quality += 1;
+            continue;
+          }
+
+          // increment quality if variation attribute matches currently checked option.
+          if (attribute.variationAttributeId === option.type && attribute.value === option.value) {
+            quality += 1;
+            continue;
+          }
+        }
+
+        // perfect match found
+        if (quality === perfectMatchQuality) {
+          return false;
+        }
+      }
+    }
+
+    // imperfect match
+    return true;
+  }
+
+  private static simplifyVariableVariationAttributes(attrs: VariationAttribute[]): { [name: string]: string } {
+    return attrs
+      .map(attr => ({
+        name: attr.variationAttributeId,
+        value: attr.value,
+      }))
+      .reduce((acc, val) => ({ ...acc, [val.name]: val.value }), {});
+  }
+
+  private static difference(obj1: { [name: string]: string }, obj2: { [name: string]: string }): number {
+    const keys = Object.keys(obj1);
+    if (keys.length !== Object.keys(obj2).length || keys.some(k => Object.keys(obj2).indexOf(k) < 0)) {
+      throw new Error('cannot calculate difference if objects don\'t have the same keys');
+    }
+    return keys.reduce((sum, key) => (obj1[key] !== obj2[key] ? sum + 1 : sum), 0);
   }
 }

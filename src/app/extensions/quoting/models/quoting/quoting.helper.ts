@@ -9,10 +9,6 @@ export class QuotingHelper {
     return !QuotingHelper.isStub(entity);
   }
 
-  private static isQuote(entity: QuotingEntity): entity is Quote {
-    return QuotingHelper.isNotStub(entity) && entity.type === 'Quote';
-  }
-
   /**
    * sorts entity stubs to the bottom and all other quotes and quote requests descending by creationDate
    */
@@ -46,5 +42,9 @@ export class QuotingHelper {
 
   static asQuoteRequest(entity: QuotingEntity): QuoteRequest {
     return entity as QuoteRequest;
+  }
+
+  private static isQuote(entity: QuotingEntity): entity is Quote {
+    return QuotingHelper.isNotStub(entity) && entity.type === 'Quote';
   }
 }

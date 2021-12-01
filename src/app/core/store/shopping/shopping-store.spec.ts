@@ -114,7 +114,7 @@ describe('Shopping Store', () => {
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
-        return of({ sku, name: 'n' + sku });
+        return of({ sku, name: `n${sku}` });
       } else {
         return throwError(makeHttpError({ message: `error loading product ${sku}` }));
       }

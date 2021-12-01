@@ -27,6 +27,7 @@ export class CMSService {
 
   /**
    * Get the content for the given Content Include ID.
+   *
    * @param includeId The include ID.
    * @returns         The content data.
    */
@@ -43,6 +44,7 @@ export class CMSService {
 
   /**
    * Get the content for the given Content Page ID.
+   *
    * @param includeId The page ID.
    * @returns         The content data.
    */
@@ -60,6 +62,7 @@ export class CMSService {
 
   /**
    * Get the page tree for the given root page with the given depth.
+   *
    * @param rootId: The page tree root page id
    * @param depth: Depth of returned page tree
    * @returns Content page tree
@@ -88,6 +91,7 @@ export class CMSService {
 
   /**
    * Get the content for the given View Context with the given context (e.g. Product or Category).
+   *
    * @param viewContextId  The view context ID.
    * @param callParameters The call parameters to give the current context.
    * @returns              The view contexts entrypoint content data.

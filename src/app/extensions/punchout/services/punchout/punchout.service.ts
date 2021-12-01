@@ -36,6 +36,7 @@ export class PunchoutService {
 
   /**
    * Gets all supported punchout formats.
+   *
    * @returns    An array of punchout types.
    */
   getPunchoutTypes(): Observable<PunchoutType[]> {
@@ -56,6 +57,7 @@ export class PunchoutService {
 
   /**
    * Gets the list of punchout users.
+   *
    * @param punchoutType    The user's punchout type.
    * @returns               An array of punchout users.
    */
@@ -81,6 +83,7 @@ export class PunchoutService {
 
   /**
    * Creates a punchout user.
+   *
    * @param user          The punchout user.
    * @returns             The created punchout user.
    */
@@ -105,6 +108,7 @@ export class PunchoutService {
 
   /**
    * Updates a punchout user.
+   *
    * @param user    The punchout user.
    * @returns       The updated punchout user.
    */
@@ -132,6 +136,7 @@ export class PunchoutService {
 
   /**
    * Deletes a punchout user.
+   *
    * @param user    The punchout user.
    */
   deleteUser(user: PunchoutUser): Observable<void> {
@@ -171,6 +176,7 @@ export class PunchoutService {
 
   /**
    * Submits the punchout data via HTML form to the punchout system configured in the given form.
+   *
    * @param form     The prepared HTML form to submit the punchout data.
    * @param submit   Controls whether the HTML form is actually submitted (default) or not (only created in the document body).
    */
@@ -240,6 +246,7 @@ export class PunchoutService {
   /**
    * Creates an cXML punchout compatible form with the given BrowserFormPostURL
    * and a hidden input field that contains the cXML PunchOutOrderMessage.
+   *
    * @param   punchOutOrderMessage
    * @param   browserFormPostUrl
    * @returns The cXML punchout form
@@ -269,6 +276,7 @@ export class PunchoutService {
 
   /**
    * Gets a JSON object with the necessary OCI punchout data for the basket transfer.
+   *
    * @param basketId   The basket id for the punchout.
    */
   private getOciPunchoutBasketData(basketId: string): Observable<Attribute<string>[]> {
@@ -294,6 +302,7 @@ export class PunchoutService {
 
   /**
    * Gets a JSON object with the necessary OCI punchout data for the product validation.
+   *
    * @param productId   The product id (SKU) of the product to validate.
    * @param quantity     The quantity for the validation (default: '1').
    */
@@ -319,6 +328,7 @@ export class PunchoutService {
 
   /**
    * Gets a JSON object with the necessary OCI punchout data for the background search.
+   *
    * @param searchString   The search string to search punchout products.
    */
   getOciPunchoutSearchData(searchString: string): Observable<Attribute<string>[]> {
@@ -343,6 +353,7 @@ export class PunchoutService {
 
   /**
    * Submits the OCI punchout data via HTML form to the OCI punchout system configured in the HOOK_URL
+   *
    * @param data     The punchout data retrieved from ICM.
    * @param submit   Controls whether the HTML form is actually submitted (default) or not (only created in the document body).
    */
@@ -359,6 +370,7 @@ export class PunchoutService {
 
   /**
    * Creates an OCI punchout compatible form with hidden input fields that reflect the attributes of the punchout data.
+   *
    * @param   data      Attributes (key value pair) array
    * @param   hookUrl   The hook URL
    * @returns           The OCI punchout form

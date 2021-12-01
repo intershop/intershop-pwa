@@ -6,8 +6,6 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
 
-// tslint:disable ish-deprecation
-
 /**
  * @deprecated use formly instead
  */
@@ -50,9 +48,9 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
 
     const currentDate = new Date();
     // TODO: move into template?
-    // tslint:disable-next-line:no-assignment-to-inputs
+    // eslint-disable-next-line ish-custom-rules/no-assignment-to-inputs
     this.minYear = this.minYear || currentDate.getFullYear() - 116;
-    // tslint:disable-next-line:no-assignment-to-inputs
+    // eslint-disable-next-line ish-custom-rules/no-assignment-to-inputs
     this.maxYear = this.maxYear || currentDate.getFullYear() - 16;
   }
 
@@ -85,8 +83,8 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
       this.dateForm.get('month').valid &&
       this.dateForm.get('year').valid
     ) {
-      day = day.length === 1 ? '0' + day : day;
-      month = month.length === 1 ? '0' + month : month;
+      day = day.length === 1 ? `0${day}` : day;
+      month = month.length === 1 ? `0${month}` : month;
       birthday = `${year}-${month}-${day}`;
     }
 

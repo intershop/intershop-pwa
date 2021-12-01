@@ -6,6 +6,7 @@ import { PriceItem } from './price-item.model';
 export class PriceItemMapper {
   /**
    * Maps a price item to client side model instance.
+   *
    * @param priceItem Server representation.
    * @returns         The {@link PriceItem}.
    */
@@ -22,6 +23,7 @@ export class PriceItemMapper {
 
   /**
    * Maps a price item to a gross or net price.
+   *
    * @param priceItem Server representation.
    * @param priceType The price type
    * @returns         The {@link Price}.

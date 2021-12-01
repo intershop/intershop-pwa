@@ -40,12 +40,12 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
     form containing the captcha form controls
- */
+   */
   @Input() form: FormGroup;
 
   /**
     css Class for rendering the captcha V2 control, default='offset-md-4 col-md-8'
-  */
+   */
   @Input() cssClass = 'offset-md-4 col-md-8';
 
   @Input() topic: CaptchaTopic;
@@ -77,6 +77,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
         if (version === 3) {
           this.actionFormControl.setValue(this.topic);
 
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           const { CaptchaV3Component, CaptchaV3ComponentModule } = await import(
             '../../shared/captcha-v3/captcha-v3.component'
           );
@@ -92,6 +93,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
           this.formControl.setValidators([Validators.required]);
           this.formControl.updateValueAndValidity();
 
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           const { CaptchaV2Component, CaptchaV2ComponentModule } = await import(
             '../../shared/captcha-v2/captcha-v2.component'
           );

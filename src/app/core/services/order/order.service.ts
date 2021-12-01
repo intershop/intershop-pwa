@@ -47,6 +47,7 @@ export class OrderService {
 
   /**
    * Creates an order based on the given basket. If a redirect is necessary for payment, the return URLs will be sent after order creation in case they are required.
+   *
    * @param basket                      The (current) basket.
    * @param termsAndConditionsAccepted  indicates whether the user has accepted terms and conditions
    * @returns                           The order.
@@ -79,6 +80,7 @@ export class OrderService {
 
   /**
    *  Checks, if RedirectUrls are requested by the server and sends them if it is necessary.
+   *
    * @param order           The order.
    * @param lang            The language code of the current locale, e.g. en_US
    * @returns               The (updated) order.
@@ -113,6 +115,7 @@ export class OrderService {
 
   /**
    * Gets the orders of the logged-in user
+   *
    * @param amount The count of items which should be fetched.
    * @returns      A list of the user's orders
    */
@@ -129,6 +132,7 @@ export class OrderService {
 
   /**
    * Gets a logged-in user's order with the given id
+   *
    * @param orderId The (uuid) of the order.
    * @returns       The order
    */
@@ -149,6 +153,7 @@ export class OrderService {
 
   /**
    * Gets an anonymous user's order with the given id using the provided apiToken.
+   *
    * @param orderId  The (uuid) of the order.
    * @param apiToken The api token of the user's most recent request.
    * @returns        The order
@@ -179,6 +184,7 @@ export class OrderService {
   /**
    * Updates a payment for an order. Used to set redirect query parameters and status after redirect.
    * If cancel/failure is sent back as redirect status, the order doesn't exist any more.
+   *
    * @param orderId      The (uuid) of the order.
      @param queryParams  The payment redirect information (parameters and status).
    * @returns            The orderId

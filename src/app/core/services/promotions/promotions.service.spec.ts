@@ -38,7 +38,7 @@ describe('Promotions Service', () => {
     expect(promotionsService).toBeTruthy();
   });
 
-  it("should get Promotion data when 'getPromotion' is called", done => {
+  it('should get Promotion data when \'getPromotion\' is called', done => {
     when(apiServiceMock.get(`promotions/PROMO_UUID`)).thenReturn(of(promotionMockData));
     promotionsService.getPromotion('PROMO_UUID').subscribe(data => {
       expect(data.id).toEqual('PROMO_UUID');

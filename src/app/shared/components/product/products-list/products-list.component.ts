@@ -51,6 +51,7 @@ export class ProductsListComponent implements OnChanges {
   /**
    * Configure Swipers slidesPerView/slidesPerGroup settings
    * with breakpoint responsive design considerations based on the given slide items.
+   *
    * @param slideItems The amount of slide items that should be rendered if enough screen space is available.
    */
   configureSlides(slideItems: number) {

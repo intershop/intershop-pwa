@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-// tslint:disable: ban-types
+/* eslint-disable @typescript-eslint/ban-types */
 
 export interface SpecialHttpErrorHandler {
   test(error: HttpErrorResponse, request: HttpRequest<unknown>): boolean;
@@ -77,7 +77,7 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
       }[] = httpError.error?.errors;
       if (errors?.length) {
         if (errors.length > 1) {
-          console.warn('ignoring errors' + JSON.stringify(errors.slice(1)));
+          console.warn(`ignoring errors${JSON.stringify(errors.slice(1))}`);
         }
         const error = errors[0];
         if (error.causes?.length) {

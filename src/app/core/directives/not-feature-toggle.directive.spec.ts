@@ -44,11 +44,11 @@ describe('Not Feature Toggle Directive', () => {
     expect(element.textContent).toContain('content2');
   });
 
-  it("should never render content for 'always'", () => {
+  it('should never render content for \'always\'', () => {
     expect(element.textContent).not.toContain('contentAlways');
   });
 
-  it("should always render content for 'never'", () => {
+  it('should always render content for \'never\'', () => {
     expect(element.textContent).toContain('contentNever');
   });
 });

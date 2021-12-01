@@ -90,7 +90,7 @@ describe('Payment Service', () => {
   });
 
   describe('basket payment service', () => {
-    it("should get basket eligible payment methods for a basket when 'getBasketEligiblePaymentMethods' is called", done => {
+    it('should get basket eligible payment methods for a basket when \'getBasketEligiblePaymentMethods\' is called', done => {
       when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
       paymentService.getBasketEligiblePaymentMethods().subscribe(() => {
@@ -99,7 +99,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should set a payment to the basket when 'setBasketPayment' is called", done => {
+    it('should set a payment to the basket when \'setBasketPayment\' is called', done => {
       when(
         apiService.put(`baskets/current/payments/open-tender?include=paymentMethod`, anything(), anything())
       ).thenReturn(of([]));
@@ -112,7 +112,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should create a payment instrument for the basket when 'createBasketPayment' is called", done => {
+    it('should create a payment instrument for the basket when \'createBasketPayment\' is called', done => {
       when(
         apiService.post(`baskets/current/payment-instruments?include=paymentMethod`, anything(), anything())
       ).thenReturn(of([]));
@@ -125,7 +125,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should update a basket payment when 'updateBasketPayment' is called", done => {
+    it('should update a basket payment when \'updateBasketPayment\' is called', done => {
       when(apiService.patch(`baskets/current/payments/open-tender`, anything(), anything())).thenReturn(of({}));
 
       const params = {
@@ -140,7 +140,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should delete a (basket) payment instrument from basket when 'deleteBasketPaymentInstrument' is called", done => {
+    it('should delete a (basket) payment instrument from basket when \'deleteBasketPaymentInstrument\' is called', done => {
       when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
       paymentService.deleteBasketPaymentInstrument(BasketMockData.getBasket(), paymentInstrument).subscribe(() => {
@@ -154,7 +154,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should delete a (user) payment instrument from basket when 'deleteBasketPaymentInstrument' is called", done => {
+    it('should delete a (user) payment instrument from basket when \'deleteBasketPaymentInstrument\' is called', done => {
       when(apiService.delete(anyString())).thenReturn(of({}));
       when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
@@ -171,7 +171,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should delete a payment from basket when 'deleteBasketPayment' is called", done => {
+    it('should delete a payment from basket when \'deleteBasketPayment\' is called', done => {
       when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
       paymentService.deleteBasketPayment(BasketMockData.getBasket()).subscribe(() => {
@@ -180,7 +180,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should update payment instrument from basket when 'updateBasketPaymentInstrument' is called", done => {
+    it('should update payment instrument from basket when \'updateBasketPaymentInstrument\' is called', done => {
       when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
       paymentService.updateConcardisCvcLastUpdated(creditCardPaymentInstrument).subscribe(() => {
         verify(
@@ -196,7 +196,7 @@ describe('Payment Service', () => {
   });
 
   describe('user payment service', () => {
-    it("should get a user's payment method data when 'getUserPaymentMethods' is called for b2c/b2x applications", done => {
+    it('should get a user\'s payment method data when \'getUserPaymentMethods\' is called for b2c/b2x applications', done => {
       when(apiService.get(anyString())).thenReturn(of([]));
       when(apiService.resolveLinks()).thenReturn(() => of([]));
       when(apiService.options(anyString())).thenReturn(of([]));
@@ -212,7 +212,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should get a user's payment method data when 'getUserPaymentMethods' is called for rest applications", done => {
+    it('should get a user\'s payment method data when \'getUserPaymentMethods\' is called for rest applications', done => {
       when(apiService.get(anyString())).thenReturn(of([]));
       when(apiService.resolveLinks()).thenReturn(() => of([]));
       when(apiService.options(anyString())).thenReturn(of([]));
@@ -229,7 +229,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should create a payment instrument for the user when 'createUserPayment' is called", done => {
+    it('should create a payment instrument for the user when \'createUserPayment\' is called', done => {
       const customerNo = '12345';
 
       when(apiService.post(`customers/${customerNo}/payments`, anything())).thenReturn(
@@ -243,7 +243,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should delete a payment instrument from user when 'deleteUserPaymentInstrument' is called", done => {
+    it('should delete a payment instrument from user when \'deleteUserPaymentInstrument\' is called', done => {
       when(apiService.delete(anyString())).thenReturn(of({}));
 
       paymentService.deleteUserPaymentInstrument('-', paymentInstrument.id).subscribe(() => {
@@ -252,7 +252,7 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should update payment instrument from customer when 'updateBasketPaymentInstrument' is called", done => {
+    it('should update payment instrument from customer when \'updateBasketPaymentInstrument\' is called', done => {
       const userCreditCardPaymentInstrument: PaymentInstrument = {
         ...creditCardPaymentInstrument,
         urn: 'urn:payment-instrument:user:fIQKAE8B4tYAAAFu7tuO4P6T:ug8KAE8B1dcAAAFvNQqSJBQg',

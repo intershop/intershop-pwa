@@ -22,8 +22,8 @@ describe('Regions Effects', () => {
   const countryCode = 'US';
 
   const regions = [
-    { name: 'Iowa', regionCode: 'Io', countryCode, id: 'Io' + countryCode },
-    { name: 'Alabama', regionCode: 'Al', countryCode: 'US', id: 'Al' + countryCode },
+    { name: 'Iowa', regionCode: 'Io', countryCode, id: `Io${countryCode}` },
+    { name: 'Alabama', regionCode: 'Al', countryCode: 'US', id: `Al${countryCode}` },
   ] as Region[];
 
   beforeEach(() => {

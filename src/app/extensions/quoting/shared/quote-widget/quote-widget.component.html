@@ -4,7 +4,7 @@
   cssClass="infobox-color-widget d-flex flex-column"
 >
   <div class="loading-container mt-auto">
-    <div *ngIf="!(loading$ | async); else loading">
+    <div *ngIf="(loading$ | async) === false; else loading">
       <div class="row align-items-end no-gutters">
         <div class="col">
           <div class="infobox-count" data-testing-id="responded-counter">

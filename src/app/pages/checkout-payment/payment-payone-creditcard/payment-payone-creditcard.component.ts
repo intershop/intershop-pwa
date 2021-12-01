@@ -18,8 +18,8 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 // allows access to Payone js functionality
-// tslint:disable-next-line:no-any
-declare var Payone: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare let Payone: any;
 
 @Component({
   selector: 'ish-payment-payone-creditcard',
@@ -51,7 +51,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
    */
   scriptLoaded = false;
 
-  // tslint:disable-next-line: no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   iframes: any;
 
   /**
@@ -64,8 +64,8 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
     const thisComp = this;
 
     // register helper function to call the callback function of this component
-    // tslint:disable-next-line:no-string-literal only-arrow-functions no-any
-    (window as any)['payoneCreditCardCallback'] = function (response: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- original disable also for no-string-literal & only-arrow-functions
+    (window as any).payoneCreditCardCallback = function (response: {
       status: string;
       pseudocardpan: string;
       truncatedcardpan: string;
@@ -85,8 +85,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
 
   ngOnDestroy() {
     // unregister helper function again
-    // tslint:disable-next-line:no-string-literal no-any
-    (window as any)['payoneCreditCardCallback'] = undefined;
+    (window as any).payoneCreditCardCallback = undefined;
 
     this.destroy$.next();
     this.destroy$.complete();

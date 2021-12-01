@@ -4,6 +4,13 @@ import { ServerConfigData, ServerConfigDataEntry } from './server-config.interfa
 import { ServerConfig } from './server-config.model';
 
 export class ServerConfigMapper {
+  static fromData(payload: ServerConfigData): ServerConfig {
+    if (payload && payload.data) {
+      return ServerConfigMapper.mapEntries(payload.data);
+    }
+    return {};
+  }
+
   private static transformType(val: unknown) {
     if (typeof val === 'string') {
       if (!isNaN(+val)) {
@@ -33,12 +40,5 @@ export class ServerConfigMapper {
       }),
       {}
     );
-  }
-
-  static fromData(payload: ServerConfigData): ServerConfig {
-    if (payload && payload.data) {
-      return ServerConfigMapper.mapEntries(payload.data);
-    }
-    return {};
   }
 }

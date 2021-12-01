@@ -136,7 +136,7 @@ describe('Category Route', () => {
   describe('additional URL params', () => {
     it('should ignore additional URL params when supplied', () => {
       const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
-      expect(matchCategoryRoute(wrap(generateCategoryUrl(category) + ';lang=de_DE;redirect=1'))).toMatchInlineSnapshot(`
+      expect(matchCategoryRoute(wrap(`${generateCategoryUrl(category)};lang=de_DE;redirect=1`))).toMatchInlineSnapshot(`
         Object {
           "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
         }

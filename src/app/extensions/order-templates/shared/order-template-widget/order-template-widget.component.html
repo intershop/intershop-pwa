@@ -4,7 +4,7 @@
   cssClass="infobox-color-widget d-flex flex-column"
 >
   <div class="loading-container">
-    <div *ngIf="!(loading$ | async); else loading" class="pb-2">
+    <div *ngIf="(loading$ | async) === false; else loading" class="pb-2">
       <ng-container *ngIf="orderTemplates$ | async as orderTemplates; else emptyList">
         <ng-container *ngIf="orderTemplates.length; else emptyList">
           <div *ngFor="let orderTemplate of orderTemplates" class="mb-2">

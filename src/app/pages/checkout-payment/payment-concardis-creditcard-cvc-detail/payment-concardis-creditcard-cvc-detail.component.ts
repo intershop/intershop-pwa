@@ -10,15 +10,15 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
-// tslint:disable:no-any - allows access to concardis js functionality
-declare var PayEngine: any;
+/* eslint-disable @typescript-eslint/no-explicit-any -- allows access to concardis js functionality*/
+declare let PayEngine: any;
 
 @Component({
   selector: 'ish-payment-concardis-creditcard-cvc-detail',
   templateUrl: './payment-concardis-creditcard-cvc-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input() paymentInstrument: PaymentInstrument;
 

@@ -21,7 +21,7 @@ export class ConfigurationGuard implements CanActivate, CanActivateChild {
     const params = Object.entries(route.queryParams)
       .map(kvp => kvp.join('='))
       .join('&');
-    return `/${url}${params ? '?' + params : ''}`;
+    return `/${url}${params ? `?${params}` : ''}`;
   }
 
   private checkRedirect(route: ActivatedRouteSnapshot) {

@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,7 +15,6 @@ import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testin
 
 import { RegistrationPageComponent } from './registration-page.component';
 
-// tslint:disable:no-intelligence-in-artifacts
 describe('Registration Page Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;
   let component: RegistrationPageComponent;

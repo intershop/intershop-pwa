@@ -22,7 +22,7 @@ describe('Configuration Service', () => {
     expect(configurationService).toBeTruthy();
   });
 
-  it("should get the server configuration when 'getServerConfiguration' is called", done => {
+  it('should get the server configuration when \'getServerConfiguration\' is called', done => {
     when(apiServiceMock.get(`configurations`, anything())).thenReturn(of({}));
 
     configurationService.getServerConfiguration().subscribe(() => {

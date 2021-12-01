@@ -48,7 +48,7 @@ describe('Filter Service', () => {
     expect(filterService).toBeTruthy();
   });
 
-  it("should get Filter data when 'getFilterForCategory' is called", done => {
+  it('should get Filter data when \'getFilterForCategory\' is called', done => {
     when(apiService.get(anything())).thenReturn(of(filterMock));
     filterService.getFilterForCategory('A.B').subscribe(data => {
       expect(data.filter).toHaveLength(1);
@@ -67,7 +67,7 @@ describe('Filter Service', () => {
     });
   });
 
-  it("should get Filter data when 'applyFilter' is called", done => {
+  it('should get Filter data when \'applyFilter\' is called', done => {
     when(apiService.get(anything(), anything())).thenReturn(of(filterMock));
     filterService.applyFilter({ SearchParameter: ['b'] } as URLFormParams).subscribe(data => {
       expect(data.filter).toHaveLength(1);
@@ -84,7 +84,7 @@ describe('Filter Service', () => {
     });
   });
 
-  it("should get Product SKUs when 'getFilteredProducts' is called", done => {
+  it('should get Product SKUs when \'getFilteredProducts\' is called', done => {
     when(apiService.get(anything(), anything())).thenReturn(of(productsMock));
 
     filterService.getFilteredProducts({ SearchParameter: ['b'] } as URLFormParams, 2).subscribe(data => {

@@ -277,7 +277,6 @@ describe('Quoting Effects', () => {
 
   describe('submitQuoteRequest$', () => {
     beforeEach(() => {
-      // tslint:disable-next-line: no-unnecessary-callback-wrapper
       when(quotingService.submitQuoteRequest(anything())).thenCall(id => of(id));
       when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
         of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
@@ -344,7 +343,6 @@ describe('Quoting Effects', () => {
 
   describe('updateQuoteRequest$', () => {
     beforeEach(() => {
-      // tslint:disable-next-line: no-unnecessary-callback-wrapper
       when(quotingService.updateQuoteRequest(anything(), anything())).thenCall(id => of(id));
       when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
         of({ id, type, completenessLevel: 'Detail' } as QuoteStub)

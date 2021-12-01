@@ -29,9 +29,9 @@ export interface AbstractBasket<T> {
   attributes?: Attribute[];
 }
 
-export interface Basket extends AbstractBasket<LineItem> {}
+export type Basket = AbstractBasket<LineItem>;
 
-export interface BasketView extends AbstractBasket<LineItemView> {}
+export type BasketView = AbstractBasket<LineItemView>;
 
 export const createBasketView = (
   basket: Basket,

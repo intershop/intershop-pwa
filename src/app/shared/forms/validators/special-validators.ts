@@ -2,12 +2,14 @@ import { FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/
 
 /**
  * A helper function that transforms the special validators to a formly-usable function.
+ *
  * @param name the error to be extracted from the validator
  * @param validator the validator that should be transformed
  * @returns a function that conforms the type signature formly expects.
  *
  * @usageNotes
  * Refer to the [`FormlyFieldConfig.validators`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/fieldconfig.ts#L60) type definition for an explanation of the necessary validator format.
+ *
  */
 export function formlyValidation<T extends (control: FormControl) => { [error: string]: { valid: boolean } }>(
   name: string,

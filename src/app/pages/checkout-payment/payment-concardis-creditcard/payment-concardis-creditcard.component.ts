@@ -9,8 +9,8 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
-// tslint:disable:no-any - allows access to concardis js functionality
-declare var PayEngine: any;
+/* eslint-disable @typescript-eslint/no-explicit-any -- allows access to concardis js functionality */
+declare let PayEngine: any;
 
 /**
  * The Payment Concardis Creditcard Component renders a form on which the user can enter his concardis credit card data. Some entry fields are provided by an external host and embedded as iframes. Therefore an external javascript is loaded. See also {@link CheckoutPaymentPageComponent}
@@ -28,7 +28,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
@@ -206,7 +206,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
       expiryMonth: this.parameterForm.controls.expirationMonth.value,
       expiryYear: this.parameterForm.controls.expirationYear.value,
     };
-    // tslint:disable-next-line:no-null-keyword
+    // eslint-disable-next-line no-null/no-null
     PayEngine.iframesCreatePaymentInstrument(this.iframesReference, paymentData, null, (err: any, val: any) =>
       this.submitCallback(err, val)
     );

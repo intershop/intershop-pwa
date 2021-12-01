@@ -27,7 +27,7 @@ describe('Contact Service', () => {
     contactService = new ContactService(instance(apiService));
   });
 
-  it("should get all available subjects when 'getContactSubjects' is called", done => {
+  it('should get all available subjects when \'getContactSubjects\' is called', done => {
     when(apiService.get(`contact`)).thenReturn(of(subjectData));
 
     contactService.getContactSubjects().subscribe(() => {
@@ -36,7 +36,7 @@ describe('Contact Service', () => {
     });
   });
 
-  it("should create a contact request when 'createContactRequest' is called", done => {
+  it('should create a contact request when \'createContactRequest\' is called', done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({ test: 'test' }));
 
     contactService.createContactRequest(contactData).subscribe(() => {

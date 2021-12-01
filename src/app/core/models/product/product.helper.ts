@@ -35,6 +35,7 @@ export type ProductPrices = Partial<
 export class ProductHelper {
   /**
    * Get primary product image based on image type
+   *
    * @param product   The Product for which to get the primary image
    * @param imageType The wanted ImageType
    * @returns         The primary product image of the given ImageType
@@ -48,6 +49,7 @@ export class ProductHelper {
 
   /**
    * Get product image based on image type and image view
+   *
    * @param product   The Product for which to get the image
    * @param imageType The wanted ImageType
    * @param imageView The wanted ImageView
@@ -62,6 +64,7 @@ export class ProductHelper {
 
   /**
    * Get all product ImageView ids matching image type
+   *
    * @param product   The Product for which to get the image types
    * @param imageType The wanted ImageType
    * @returns         Array of available ImageView ids
@@ -121,6 +124,7 @@ export class ProductHelper {
 
   /**
    * Get product attributes by attribute group id.
+   *
    * @param product           The Product for which to get the attributes
    * @param attributeGroupId  The attribute group id of the attributes to get
    * @returns                 The product attributes of the attribute group (if any)
@@ -156,6 +160,7 @@ export class ProductHelper {
 
   /**
    * Determines the set of common attribute names for the compare products.
+   *
    * @param products List of products to be compared
    * @returns        A set of the common attribute names
    */
@@ -169,6 +174,7 @@ export class ProductHelper {
 
   /**
    * Get a product with only specific attributes. All attributes that are common between the compare products are filtered out.
+   *
    * @param product         The product that should be stripped of its common attributes
    * @param visibleProducts List of products to be compared
    * @returns               A Product with specific attributes only compared to the common attributes

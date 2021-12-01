@@ -70,7 +70,7 @@ describe('Order Service', () => {
   });
 
   describe('getOrders', () => {
-    it("should get orders when 'getOrders' is called without amount", done => {
+    it('should get orders when \'getOrders\' is called without amount', done => {
       when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
       orderService.getOrders().subscribe(() => {
@@ -79,7 +79,7 @@ describe('Order Service', () => {
       });
     });
 
-    it("should get orders when 'getOrders' is called with amount", done => {
+    it('should get orders when \'getOrders\' is called with amount', done => {
       when(apiService.get(anything(), anything())).thenReturn(of([]));
 
       const amount = 10;
@@ -90,7 +90,7 @@ describe('Order Service', () => {
     });
   });
 
-  it("should get an order when 'getOrder' is called", done => {
+  it('should get an order when \'getOrder\' is called', done => {
     when(apiService.get(anything(), anything())).thenReturn(of({ data: {} }));
 
     const orderId = '123454';

@@ -10,7 +10,7 @@ describe('Server Config Mapper', () => {
             applicationType: 'intershop.B2CResponsive',
             id: 'application',
             urlIdentifier: '-',
-            // tslint:disable-next-line: no-null-keyword
+            // eslint-disable-next-line no-null/no-null
             displayName: null,
           },
           basket: { acceleration: true, id: 'basket' },

@@ -29,6 +29,7 @@ describe('Order Template Widget Component', () => {
   beforeEach(async () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
     when(orderTemplatesFacade.orderTemplates$).thenReturn(of(orderTemplates));
+    when(orderTemplatesFacade.orderTemplateLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],

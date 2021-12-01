@@ -49,12 +49,12 @@ export class TrackingConfigEffects {
     )
   );
 
-  // tslint:disable-next-line: no-any - gtm library access
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- gtm library access
   private gtm(w: any, l: string, i: string) {
     w[l] = w[l] || [];
     w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
     const gtmScript = document.createElement('script');
-    const dl = l !== 'dataLayer' ? '&l=' + l : '';
+    const dl = l !== 'dataLayer' ? `&l=${l}` : '';
     gtmScript.async = true;
     gtmScript.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
     const f = document.getElementsByTagName('script')[0];

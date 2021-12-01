@@ -15,6 +15,7 @@ export const getPageTree = createSelector(getPageTreeState, state => state.paget
 
 /**
  * Get the content page tree for the given root and the currently selected content page.
+ *
  * @param rootId: The Id of the root content page of the tree
  * @returns The fitting content page tree
  */

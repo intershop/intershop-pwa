@@ -14,12 +14,12 @@ import { routes } from '../../pages/requisition-management-routing.module';
 
 import { RequisitionManagementBreadcrumbService } from './requisition-management-breadcrumb.service';
 
-// tslint:disable-next-line: no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function adaptRoutes(rts: Route[], cmp: Type<any>): Route[] {
   return rts.map(r => ({
     ...r,
     loadChildren: undefined,
-    path: 'requisitions/' + r.path,
+    path: `requisitions/${r.path}`,
     component: (r.component || r.loadChildren) && cmp,
   }));
 }

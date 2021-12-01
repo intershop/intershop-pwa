@@ -20,8 +20,8 @@ import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
-// tslint:disable:no-any - allows access to cybersource js functionality
-declare var Flex: any;
+/* eslint-disable @typescript-eslint/no-explicit-any -- allows access to cybersource js functionality */
+declare let Flex: any;
 
 @Component({
   selector: 'ish-payment-cybersource-creditcard',

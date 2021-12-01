@@ -65,7 +65,7 @@ describe('Basket Service', () => {
     store$ = TestBed.inject(MockStore);
   });
 
-  it("should get basket data when 'getBasket' is called", done => {
+  it('should get basket data when \'getBasket\' is called', done => {
     when(apiService.get(`baskets/current`, anything())).thenReturn(of(basketMockData));
 
     basketService.getBasket().subscribe(data => {
@@ -108,7 +108,7 @@ describe('Basket Service', () => {
     basketService.getBasketByToken('dummy').subscribe(fail, fail, done);
   });
 
-  it("should create a basket data when 'createBasket' is called", done => {
+  it('should create a basket data when \'createBasket\' is called', done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of(basketMockData));
 
     basketService.createBasket().subscribe(data => {
@@ -118,7 +118,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should update data to basket of a specific basket when 'updateBasket' is called", done => {
+  it('should update data to basket of a specific basket when \'updateBasket\' is called', done => {
     when(apiService.patch(anything(), anything(), anything())).thenReturn(of(basketMockData));
     const payload = { invoiceToAddress: '123456' };
 
@@ -128,7 +128,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should validate the basket when 'validateBasket' is called", done => {
+  it('should validate the basket when \'validateBasket\' is called', done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of(undefined));
 
     basketService.validateBasket().subscribe(() => {
@@ -137,7 +137,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should get active baskets of the current user when 'getBaskets' is called", done => {
+  it('should get active baskets of the current user when \'getBaskets\' is called', done => {
     when(apiService.get(anything(), anything())).thenReturn(of({}));
 
     basketService.getBaskets().subscribe(() => {
@@ -146,7 +146,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should post item to basket when 'addItemsToBasket' is called", done => {
+  it('should post item to basket when \'addItemsToBasket\' is called', done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
     basketService.addItemsToBasket([itemMockData]).subscribe(() => {
@@ -155,7 +155,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should post source basket to basket when 'mergeBasket' is called", done => {
+  it('should post source basket to basket when \'mergeBasket\' is called', done => {
     when(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).thenReturn(
       of({
         data: {
@@ -191,7 +191,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should patch updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
+  it('should patch updated data to basket line item of a basket when \'updateBasketItem\' is called', done => {
     when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
 
     const payload = { quantity: { value: 2 } } as BasketItemUpdateType;
@@ -201,7 +201,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should remove line item from specific basket when 'deleteBasketItem' is called", done => {
+  it('should remove line item from specific basket when \'deleteBasketItem\' is called', done => {
     when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
     basketService.deleteBasketItem(lineItemData.id).subscribe(() => {
@@ -210,7 +210,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should add promotion code to specific basket when 'addPromotionCodeToBasket' is called", done => {
+  it('should add promotion code to specific basket when \'addPromotionCodeToBasket\' is called', done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
     basketService.addPromotionCodeToBasket('code').subscribe(() => {
@@ -219,7 +219,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should remove a promotion code from a specific basket when 'removePromotionCodeFromBasket' is called", done => {
+  it('should remove a promotion code from a specific basket when \'removePromotionCodeFromBasket\' is called', done => {
     when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
     basketService.removePromotionCodeFromBasket('promoCode').subscribe(() => {
@@ -228,7 +228,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should create a basket address when 'createBasketAddress' is called", done => {
+  it('should create a basket address when \'createBasketAddress\' is called', done => {
     when(apiService.post(anyString(), anything(), anything())).thenReturn(of({ data: {} as Address }));
 
     basketService.createBasketAddress(BasketMockData.getAddress()).subscribe(() => {
@@ -237,7 +237,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should update a basket address when 'updateBasketAddress' is called", done => {
+  it('should update a basket address when \'updateBasketAddress\' is called', done => {
     when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({ data: {} as Address }));
 
     const address = BasketMockData.getAddress();
@@ -248,7 +248,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should get eligible shipping methods for a basket when 'getBasketEligibleShippingMethods' is called", done => {
+  it('should get eligible shipping methods for a basket when \'getBasketEligibleShippingMethods\' is called', done => {
     when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
     basketService.getBasketEligibleShippingMethods().subscribe(() => {
@@ -257,7 +257,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should submit a basket for approval when 'submitBasket' is called", done => {
+  it('should submit a basket for approval when \'submitBasket\' is called', done => {
     when(orderService.createOrder(anything(), anything())).thenReturn(
       throwError(makeHttpError({ message: 'invalid', status: 422 }))
     );
@@ -268,7 +268,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should create an attribute for a basket when 'createBasketAttribute' is called", done => {
+  it('should create an attribute for a basket when \'createBasketAttribute\' is called', done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
     basketService.createBasketAttribute({ name: 'attr', value: 'xyz' }).subscribe(() => {
@@ -277,7 +277,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should update an attribute for a basket when 'updateBasketAttribute' is called", done => {
+  it('should update an attribute for a basket when \'updateBasketAttribute\' is called', done => {
     when(apiService.patch(anything(), anything(), anything())).thenReturn(of({}));
 
     basketService.updateBasketAttribute({ name: 'attr', value: 'xyz' }).subscribe(() => {
@@ -286,7 +286,7 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should delete an attribute for a basket when 'deleteBasketAttribute' is called", done => {
+  it('should delete an attribute for a basket when \'deleteBasketAttribute\' is called', done => {
     when(apiService.delete(anything(), anything())).thenReturn(of({}));
 
     basketService.deleteBasketAttribute('attr').subscribe(() => {

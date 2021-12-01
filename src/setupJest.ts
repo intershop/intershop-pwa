@@ -1,4 +1,3 @@
-// tslint:disable:ish-ordered-imports
 require('jest-preset-angular/setup-jest');
 
 import { CompilerOptions } from '@angular/core';
@@ -39,7 +38,7 @@ beforeEach(() => {
         arg.startsWith('A router outlet has not been instantiated during routes activation. URL Segment:')
       )
     ) {
-      // tslint:disable-next-line:no-console
+      // eslint-disable-next-line no-console
       console.log(arg);
     }
   });

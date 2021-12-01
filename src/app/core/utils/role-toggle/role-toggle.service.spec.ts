@@ -32,7 +32,7 @@ describe('Role Toggle Service', () => {
       expect(roleToggleService.hasRole('ROLE1')).toBeObservable(cold('a', { a: true }));
     });
 
-    it("should return false if user doesn't have the role", () => {
+    it('should return false if user doesn\'t have the role', () => {
       expect(roleToggleService.hasRole('ROLE2')).toBeObservable(cold('a', { a: false }));
     });
 
@@ -40,7 +40,7 @@ describe('Role Toggle Service', () => {
       expect(roleToggleService.hasRole(['ROLE1', 'ROLE3'])).toBeObservable(cold('a', { a: true }));
     });
 
-    it("should return false if user doesn't have one the roles", () => {
+    it('should return false if user doesn\'t have one the roles', () => {
       expect(roleToggleService.hasRole(['ROLE2', 'ROLE3'])).toBeObservable(cold('a', { a: false }));
     });
   });

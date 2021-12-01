@@ -8,8 +8,8 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
-// tslint:disable:no-any - allows access to concardis js functionality
-declare var PayEngine: any;
+/* eslint-disable @typescript-eslint/no-explicit-any -- allows access to concardis js functionality */
+declare let PayEngine: any;
 
 /**
  * The Payment Concardis Directdebit Component renders a form on which the user can enter his concardis direct debit data. Some entry fields are provided by an external host and embedded as iframes. Therefore an external javascript is loaded. See also {@link CheckoutPaymentPageComponent}
@@ -27,7 +27,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
@@ -248,7 +248,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     if (parameters.find(p => p.name === 'BIC')) {
       paymentData = { ...paymentData, bic: parameters.find(p => p.name === 'BIC').value };
     }
-    // tslint:disable-next-line:no-null-keyword
+    // eslint-disable-next-line no-null/no-null
     PayEngine.createPaymentInstrument('sepa', paymentData, null, (err: any, val: any) => this.submitCallback(err, val));
   }
 }

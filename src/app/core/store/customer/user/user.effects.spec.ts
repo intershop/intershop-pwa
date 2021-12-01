@@ -721,7 +721,7 @@ describe('User Effects', () => {
         'should navigate to profile page after %s',
         fakeAsync((type: string) => {
           actions$ = of({ type });
-          effects.redirectAfterUpdateOnProfileSettings$.subscribe();
+          effects.redirectAfterUpdateOnProfileSettings$.subscribe(noop, fail, noop);
           tick(500);
 
           expect(location.path()).toEqual('/account/profile');
@@ -739,7 +739,7 @@ describe('User Effects', () => {
         'should not navigate to profile page after %s',
         fakeAsync((type: string) => {
           actions$ = of({ type });
-          effects.redirectAfterUpdateOnProfileSettings$.subscribe();
+          effects.redirectAfterUpdateOnProfileSettings$.subscribe(noop, fail, noop);
           tick(500);
 
           expect(location.path()).toEqual('/any');

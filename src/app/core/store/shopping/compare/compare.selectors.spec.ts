@@ -52,7 +52,7 @@ describe('Compare Selectors', () => {
       expect(isInCompareProducts('123')(store$.state)).toBeTrue();
     });
 
-    it("should say that SKU is not in the list if it isn't", () => {
+    it('should say that SKU is not in the list if it isn\'t', () => {
       store$.dispatch(addToCompare({ sku: '123' }));
       store$.dispatch(addToCompare({ sku: '456' }));
 

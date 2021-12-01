@@ -285,7 +285,7 @@ describe('Product Context Facade', () => {
       });
 
       it('should go to error if quantity is null', () => {
-        // tslint:disable-next-line: no-null-keyword
+        // eslint-disable-next-line no-null/no-null
         context.set('quantity', () => null);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
           Object {

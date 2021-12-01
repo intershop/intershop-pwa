@@ -28,10 +28,10 @@ describe('Mock Interceptor', () => {
 
   describe('Request URL Modification', () => {
     it.each([
-      [BASE_URL + '/categories/Cameras', './assets/mock-data/categories/Cameras/get.json'],
-      [BASE_URL + ';loc=en_US;cur=USD/categories/Cameras', './assets/mock-data/categories/Cameras/get.json'],
-      [BASE_URL + '/categories?view=tree', './assets/mock-data/categories/get.json'],
-      [BASE_URL + ';loc=en_US;cur=USD/categories?view=tree', './assets/mock-data/categories/get.json'],
+      [`${BASE_URL}/categories/Cameras`, './assets/mock-data/categories/Cameras/get.json'],
+      [`${BASE_URL};loc=en_US;cur=USD/categories/Cameras`, './assets/mock-data/categories/Cameras/get.json'],
+      [`${BASE_URL}/categories?view=tree`, './assets/mock-data/categories/get.json'],
+      [`${BASE_URL};loc=en_US;cur=USD/categories?view=tree`, './assets/mock-data/categories/get.json'],
       ['./assets/picture.png', './assets/picture.png'],
     ])('should replace request to "%s" with "%s"', (incoming, outgoing) => {
       const http = new HttpRequest('GET', incoming);

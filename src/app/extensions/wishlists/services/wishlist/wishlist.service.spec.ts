@@ -34,7 +34,7 @@ describe('Wishlist Service', () => {
     expect(wishlistService).toBeTruthy();
   });
 
-  it("should get wishlists when 'getWishlists' is called for rest applications", done => {
+  it('should get wishlists when \'getWishlists\' is called for rest applications', done => {
     when(apiServiceMock.get(`privatecustomers/-/wishlists`)).thenReturn(
       of({ elements: [{ uri: 'any/wishlists/1234' }] })
     );
@@ -59,7 +59,7 @@ describe('Wishlist Service', () => {
     });
   });
 
-  it("should get wishlists when 'getWishlists' is called for b2c applications", done => {
+  it('should get wishlists when \'getWishlists\' is called for b2c applications', done => {
     when(apiServiceMock.get(`customers/-/wishlists`)).thenReturn(of({ elements: [{ uri: 'any/wishlists/1234' }] }));
     when(apiServiceMock.get(`customers/-/wishlists/1234`)).thenReturn(of({ id: '1234', preferred: true }));
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
@@ -83,7 +83,7 @@ describe('Wishlist Service', () => {
     });
   });
 
-  it("should create a wishlist when 'createWishlist' is called", done => {
+  it('should create a wishlist when \'createWishlist\' is called', done => {
     const wishlistId = '1234';
     const wishlistHeader: WishlistHeader = { title: 'wishlist title', preferred: false };
     when(apiServiceMock.post(`privatecustomers/-/wishlists`, anything())).thenReturn(
@@ -97,7 +97,7 @@ describe('Wishlist Service', () => {
     });
   });
 
-  it("should delete a wishlist when 'deleteWishlist' is called", done => {
+  it('should delete a wishlist when \'deleteWishlist\' is called', done => {
     const wishlistId = '1234';
 
     when(apiServiceMock.delete(`privatecustomers/-/wishlists/${wishlistId}`)).thenReturn(of({}));
@@ -108,7 +108,7 @@ describe('Wishlist Service', () => {
     });
   });
 
-  it("should update a wishlist when 'updateWishlist' is called", done => {
+  it('should update a wishlist when \'updateWishlist\' is called', done => {
     const wishlist: Wishlist = { id: '1234', title: 'wishlist title', preferred: false };
 
     when(apiServiceMock.put(`privatecustomers/-/wishlists/${wishlist.id}`, anything())).thenReturn(of({ wishlist }));
@@ -120,7 +120,7 @@ describe('Wishlist Service', () => {
     });
   });
 
-  it("should add a product to a wishlist when 'addProductToWishlist' is called", done => {
+  it('should add a product to a wishlist when \'addProductToWishlist\' is called', done => {
     const wishlistId = '1234';
     const sku = 'abcd';
 
@@ -138,7 +138,7 @@ describe('Wishlist Service', () => {
     });
   });
 
-  it("should remove a product from a wishlist when 'removeProductToWishlist' is called", done => {
+  it('should remove a product from a wishlist when \'removeProductToWishlist\' is called', done => {
     const wishlistId = '1234';
     const sku = 'abcd';
 

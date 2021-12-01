@@ -6,7 +6,7 @@ import { loadContentIncludeSuccess } from 'ish-core/store/content/includes/inclu
 import { loadContentPageSuccess } from 'ish-core/store/content/pages/pages.actions';
 import { loadViewContextEntrypointSuccess } from 'ish-core/store/content/viewcontexts/viewcontexts.actions';
 
-export interface PageletsState extends EntityState<ContentPagelet> {}
+export type PageletsState = EntityState<ContentPagelet>;
 
 export const pageletsAdapter = createEntityAdapter<ContentPagelet>();
 

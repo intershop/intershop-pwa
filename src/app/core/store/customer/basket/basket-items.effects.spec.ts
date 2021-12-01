@@ -311,7 +311,7 @@ describe('Basket Items Effects', () => {
         ],
       };
       const action = updateBasketItems(payload);
-      // tslint:disable-next-line: no-null-keyword
+      // eslint-disable-next-line no-null/no-null
       const completion = updateBasketItemsSuccess({ info: null });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

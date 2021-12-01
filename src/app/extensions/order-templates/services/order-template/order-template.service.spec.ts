@@ -25,7 +25,7 @@ describe('Order Template Service', () => {
     expect(orderTemplateService).toBeTruthy();
   });
 
-  it("should get order templates when 'getOrderTemplates' is called", done => {
+  it('should get order templates when \'getOrderTemplates\' is called', done => {
     when(apiServiceMock.get(`customers/-/users/-/wishlists`)).thenReturn(
       of({ elements: [{ uri: 'any/wishlists/1234' }] })
     );
@@ -49,7 +49,7 @@ describe('Order Template Service', () => {
     });
   });
 
-  it("should get an order template when 'getOrderTemplate' is called", done => {
+  it('should get an order template when \'getOrderTemplate\' is called', done => {
     when(apiServiceMock.get(`customers/-/users/-/wishlists/1234`)).thenReturn(of({ id: '1234' }));
 
     orderTemplateService.getOrderTemplate('1234').subscribe(() => {
@@ -58,7 +58,7 @@ describe('Order Template Service', () => {
     });
   });
 
-  it("should create an order template when 'createOrderTemplate' is called", done => {
+  it('should create an order template when \'createOrderTemplate\' is called', done => {
     const orderTemplateId = '1234';
     const orderTemplateHeader: OrderTemplateHeader = { title: 'order template title' };
     when(apiServiceMock.post(`customers/-/users/-/wishlists`, anything())).thenReturn(
@@ -76,7 +76,7 @@ describe('Order Template Service', () => {
     });
   });
 
-  it("should delete a order template when 'deleteOrderTemplate' is called", done => {
+  it('should delete a order template when \'deleteOrderTemplate\' is called', done => {
     const orderTemplateId = '1234';
 
     when(apiServiceMock.delete(`customers/-/users/-/wishlists/${orderTemplateId}`)).thenReturn(of({}));
@@ -87,7 +87,7 @@ describe('Order Template Service', () => {
     });
   });
 
-  it("should update a order template when 'updateOrderTemplate' is called", done => {
+  it('should update a order template when \'updateOrderTemplate\' is called', done => {
     const orderTemplate: OrderTemplate = { id: '1234', title: 'order template title' };
 
     when(apiServiceMock.put(`customers/-/users/-/wishlists/${orderTemplate.id}`, anything())).thenReturn(
@@ -101,7 +101,7 @@ describe('Order Template Service', () => {
     });
   });
 
-  it("should remove a product from a order template when 'removeProductToOrderTemplate' is called", done => {
+  it('should remove a product from a order template when \'removeProductToOrderTemplate\' is called', done => {
     const orderTemplateId = '1234';
     const sku = 'abcd';
 
