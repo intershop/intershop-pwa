@@ -1,0 +1,25 @@
+{
+  "extends": "../../.eslintrc.json",
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "ban/ban": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "no-null/no-null": "off",
+        "ish-custom-rules/project-structure": [
+          "warn",
+          {
+            "warnUnmatched": false,
+            "pathPatterns": [
+              ".*/integration/framework/.*/*\\.ts",
+              ".*/integration/pages/.*\\.(module|page|dialog)\\.ts",
+              ".*/integration/specs/\\w+/[^/]*\\.e2e-spec\\.ts"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
