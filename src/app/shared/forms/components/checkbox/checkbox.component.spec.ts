@@ -8,7 +8,8 @@ import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form
 
 import { CheckboxComponent } from './checkbox.component';
 
-// tslint:disable ish-deprecation
+/* eslint-disable deprecation/deprecation */
+
 describe('Checkbox Component', () => {
   let component: CheckboxComponent;
   let fixture: ComponentFixture<CheckboxComponent>;

@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
 
-// tslint:disable ish-deprecation
+/* eslint-disable deprecation/deprecation */
 
 /**
  * @deprecated use formly instead

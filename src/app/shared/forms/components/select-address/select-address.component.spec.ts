@@ -10,7 +10,7 @@ import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form
 
 import { SelectAddressComponent } from './select-address.component';
 
-// tslint:disable ish-deprecation
+/* eslint-disable deprecation/deprecation */
 
 describe('Select Address Component', () => {
   let component: SelectAddressComponent;

@@ -8,7 +8,7 @@ import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form
 
 import { TextareaComponent } from './textarea.component';
 
-// tslint:disable ish-deprecation
+/* eslint-disable deprecation/deprecation */
 
 describe('Textarea Component', () => {
   let component: TextareaComponent;

@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
 
+/* eslint-disable deprecation/deprecation */
 /**
  * @deprecated use formly instead
  */

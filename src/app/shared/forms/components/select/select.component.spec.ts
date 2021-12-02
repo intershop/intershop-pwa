@@ -8,7 +8,7 @@ import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form
 
 import { SelectComponent, SelectOption } from './select.component';
 
-// tslint:disable ish-deprecation
+/* eslint-disable deprecation/deprecation */
 
 describe('Select Component', () => {
   let component: SelectComponent;
@@ -101,7 +101,7 @@ describe('Select Component', () => {
     expect(element.querySelector('label.col-md-3')).toBeTruthy();
   });
 
-  it('should set input parameter inputClass on html element: ', () => {
+  it('should set input parameter inputClass on html element:', () => {
     component.inputClass = 'col-md-9';
     fixture.detectChanges();
     expect(element.querySelector('label + div.col-md-9')).toBeTruthy();

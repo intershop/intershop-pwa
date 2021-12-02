@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { Country } from 'ish-core/models/country/country.model';
 import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 
-// tslint:disable ish-deprecation
+/* eslint-disable deprecation/deprecation */
 
 /**
  * @deprecated use formly instead
