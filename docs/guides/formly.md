@@ -252,7 +252,7 @@ Refer to the tables below for an overview of these parts.
 
 ### Field Types
 
-Template option `inputClass`: These css class(es) will be added to all input/select/textarea tags.
+Template option `inputClass`: These css class(es) will be added to all input/select/textarea/text tags.
 
 | Name                 | Description                                                                                  | Relevant templateOptions                                                                                                      |
 | -------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
@@ -266,6 +266,7 @@ Template option `inputClass`: These css class(es) will be added to all input/sel
 | ish-fieldset-field   | Wraps fields in a `<fieldset>` tag for styling                                               | `fieldsetClass`: Class that will be added to the fieldset tag. `childClass`: Class that will be added to the child div.       |
 | ish-captcha-field    | Includes the `<ish-lazy-captcha>` component and adds the relevant `formControls` to the form | `topic`: Topic that will be passed to the Captcha component.                                                                  |
 | ish-radio-field      | Basic radio input                                                                            | ----                                                                                                                          |
+| ish-plain-text-field | Only display the form value                                                                  | ----                                                                                                                          |
 
 ### Wrappers
 
