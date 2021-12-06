@@ -22,6 +22,7 @@ import { registerTranslateSelectOptionsExtension } from './extensions/translate-
 import { CaptchaFieldComponent } from './types/captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './types/checkbox-field/checkbox-field.component';
 import { FieldsetFieldComponent } from './types/fieldset-field/fieldset-field.component';
+import { PlainTextFieldComponent } from './types/plain-text-field/plain-text-field.component';
 import { RadioFieldComponent } from './types/radio-field/radio-field.component';
 import { SelectFieldComponent } from './types/select-field/select-field.component';
 import { TextInputFieldComponent } from './types/text-input-field/text-input-field.component';
@@ -45,6 +46,11 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
           name: 'ish-text-input-field',
           component: TextInputFieldComponent,
           wrappers: ['form-field-horizontal', 'validation'],
+        },
+        {
+          name: 'ish-plain-text-field',
+          component: PlainTextFieldComponent,
+          wrappers: ['form-field-horizontal'],
         },
         {
           name: 'ish-email-field',
@@ -163,6 +169,7 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     HorizontalCheckboxWrapperComponent,
     HorizontalWrapperComponent,
     InputAddonWrapperComponent,
+    PlainTextFieldComponent,
     RadioFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,

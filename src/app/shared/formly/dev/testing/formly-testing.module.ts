@@ -30,6 +30,9 @@ class RadioFieldComponent extends FieldType {}
 @Component({ template: 'TextInputFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextInputFieldComponent extends FieldType {}
 
+@Component({ template: 'PlainTextFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
+class PlainTextFieldComponent extends FieldType {}
+
 @Component({ template: 'EmailFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class EmailFieldComponent extends FieldType {}
 
@@ -59,6 +62,7 @@ class DummyWrapperComponent extends FieldWrapper {}
     FieldsetFieldComponent,
     PasswordFieldComponent,
     PhoneFieldComponent,
+    PlainTextFieldComponent,
     RadioFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
@@ -70,6 +74,10 @@ class DummyWrapperComponent extends FieldWrapper {}
       types: [
         {
           name: 'ish-text-input-field',
+          component: TextInputFieldComponent,
+        },
+        {
+          name: 'ish-plain-text-field',
           component: TextInputFieldComponent,
         },
         {
