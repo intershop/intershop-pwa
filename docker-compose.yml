@@ -9,6 +9,8 @@ services:
       # dockerfile: Dockerfile_noSSR
       args:
         serviceWorker: 'false'
+        # activeThemes: default
+        # activeThemes: blue
     environment:
       - LOGGING=on
       - ICM_BASE_URL
@@ -47,9 +49,12 @@ services:
       # DEBUG: 1
       CACHE: 0
       PAGESPEED: 0
+      SSR: 1
       # PROMETHEUS: 1
       # COMPRESSION: 0
       # DEVICE_DETECTION: 0
+      # CACHING_IGNORE_PARAMS: |
+      #   params:
       # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
       # BASIC_AUTH: 'developer:!InterShop00!'
       # BASIC_AUTH_IP_WHITELIST: |

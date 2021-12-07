@@ -56,8 +56,18 @@
 
       <ish-lazy-requisition-widget class="col-12 col-md-4"></ish-lazy-requisition-widget>
 
-      <ng-container *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'">
-        <ish-lazy-approval-widget class="col-12 col-md-4"></ish-lazy-approval-widget>
+      <ng-container *ishFeature="'costCenters'">
+        <ish-lazy-cost-center-widget
+          *ishIsAuthorizedTo="'APP_B2B_MANAGE_COSTCENTER'"
+          class="col-12 col-md-8"
+        ></ish-lazy-cost-center-widget>
+      </ng-container>
+
+      <ng-container>
+        <ish-lazy-approval-widget
+          *ishIsAuthorizedTo="['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER']"
+          class="col-12 col-md-4"
+        ></ish-lazy-approval-widget>
       </ng-container>
     </ng-container>
 

@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -18,7 +19,12 @@ describe('Requisition Summary Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [MockPipe(DatePipe), MockPipe(PricePipe), RequisitionSummaryComponent],
+      declarations: [
+        MockComponent(FaIconComponent),
+        MockPipe(DatePipe),
+        MockPipe(PricePipe),
+        RequisitionSummaryComponent,
+      ],
     }).compileComponents();
   });
 
@@ -33,10 +39,12 @@ describe('Requisition Summary Component', () => {
       approval: {
         status: 'Approval Pending',
         statusCode: 'PENDING',
-        customerApprovers: [
-          { firstName: 'Jack', lastName: 'Link' },
-          { firstName: 'Bernhhard', lastName: 'Boldner' },
-        ],
+        customerApproval: {
+          approvers: [
+            { firstName: 'Jack', lastName: 'Link' },
+            { firstName: 'Bernhhard', lastName: 'Boldner' },
+          ],
+        },
       },
       user: { firstName: 'Patricia', lastName: 'Miller' },
       totals: undefined,
@@ -64,7 +72,7 @@ describe('Requisition Summary Component', () => {
       NodeList [
         <dd class="col-6 col-sm-8 col-md-9">4712</dd>,
         <dd class="col-6 col-sm-8 col-md-9"></dd>,
-        <dd class="col-6 col-sm-8 col-md-9">Jack Link , Bernhhard Boldner</dd>,
+        <dd class="col-6 col-sm-8 col-md-9">Jack Link, Bernhhard Boldner</dd>,
         <dd class="col-6 col-sm-8 col-md-9"></dd>,
         <dd class="col-6 col-sm-8 col-md-9">
         <span
@@ -76,8 +84,8 @@ describe('Requisition Summary Component', () => {
             badge-warning
           "
         >
-          Approval Pending</span
-        >
+          Approval Pending
+        </span>
       </dd>,
       ]
     `);
@@ -103,8 +111,8 @@ describe('Requisition Summary Component', () => {
             badge-warning
           "
         >
-          Approval Pending</span
-        >
+          Approval Pending
+        </span>
       </dd>,
       ]
     `);

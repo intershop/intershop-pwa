@@ -45,10 +45,10 @@ export class WishlistWidgetComponent implements OnInit {
 
     this.swiperConfig = {
       direction: 'horizontal',
-      keyboard: true,
-      mousewheel: false,
       navigation: true,
-      scrollbar: false,
+      pagination: {
+        clickable: true,
+      },
       breakpoints: {
         0: {
           slidesPerView: 2,
@@ -62,11 +62,6 @@ export class WishlistWidgetComponent implements OnInit {
           slidesPerView: 4,
           slidesPerGroup: 4,
         },
-      },
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-        clickableClass: 'swiper-pagination-clickable',
       },
     };
   }

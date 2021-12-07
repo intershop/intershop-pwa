@@ -37,8 +37,6 @@
       "ts",
       "js"
     ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/test.js"
-    ]
+    "setupFilesAfterEnv": ["jest-extended/all"]
   }
 }

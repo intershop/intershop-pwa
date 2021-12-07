@@ -112,6 +112,9 @@ export class SpecialValidators {
 
   static moneyAmount(control: FormControl): { [error: string]: { valid: boolean } } {
     const moneyAmountPattern = /^$|^\d{1,9}(\.\d{1,2})?$/;
+    if (!control.value) {
+      return;
+    }
     return moneyAmountPattern.test(control.value) ? undefined : { moneyAmount: { valid: false } };
   }
 }

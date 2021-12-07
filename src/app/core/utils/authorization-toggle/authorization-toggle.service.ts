@@ -6,13 +6,15 @@ import { map } from 'rxjs/operators';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-export function checkPermission(permissions: string[], permission: string): boolean {
+export function checkPermission(userPermissions: string[], permission: string | string[]): boolean {
   if (permission === 'always') {
     return true;
   } else if (permission === 'never') {
     return false;
   } else {
-    return permissions.includes(permission);
+    // tslint:disable-next-line: no-parameter-reassignment
+    permission = typeof permission === 'string' ? [permission] : typeof permission === 'undefined' ? [] : permission;
+    return permission.some(id => userPermissions.includes(id));
   }
 }
 
@@ -24,7 +26,7 @@ export class AuthorizationToggleService {
     this.permissions$ = store.pipe(select(getUserPermissions));
   }
 
-  isAuthorizedTo(permission: string): Observable<boolean> {
+  isAuthorizedTo(permission: string | string[]): Observable<boolean> {
     // special case shortcut
     if (permission === 'always' || permission === 'never') {
       return of(checkPermission([], permission));

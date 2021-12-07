@@ -28,6 +28,7 @@ export interface Environment {
     /* B2B features */
     | 'advancedVariationHandling'
     | 'businessCustomerRegistration'
+    | 'costCenters'
     | 'quoting'
     | 'quickorder'
     | 'orderTemplates'

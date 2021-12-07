@@ -1,7 +1,12 @@
 <div class="loading-container">
-  <ng-container *ngIf="orders$ | async as orders">
-    <ng-container *ngIf="orders && orders.length > 0; else emptyList">
-      <table cdk-table [dataSource]="orders" class="table table-lg mobile-optimized" data-testing-id="requisition-list">
+  <ng-container *ngIf="orders$ | async as ordersToDisplay">
+    <ng-container *ngIf="ordersToDisplay && ordersToDisplay.length > 0; else emptyList">
+      <table
+        cdk-table
+        [dataSource]="ordersToDisplay"
+        class="table table-lg mobile-optimized"
+        data-testing-id="requisition-list"
+      >
         <!-- Order creation date -->
         <ng-container cdkColumnDef="creationDate">
           <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-creation-date">
@@ -18,7 +23,20 @@
             {{ 'account.orderlist.table.order_number' | translate }}
           </th>
           <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.order_number' | translate">
-            <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
+            <ng-container *ngIf="orders?.length; else orderNumberWithLink">{{ order.documentNo }}</ng-container>
+            <ng-template #orderNumberWithLink>
+              <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Buyer -->
+        <ng-container cdkColumnDef="buyer">
+          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer">
+            {{ 'account.orderlist.table.buyer' | translate }}
+          </th>
+          <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.buyer' | translate">
+            {{ getBuyerName(order.attributes) }}
           </td>
         </ng-container>
 
@@ -74,7 +92,7 @@
     </ng-container>
 
     <ng-template #emptyList>
-      <p data-testing-id="emptyList">{{ 'account.orderlist.no_orders_message' | translate }}</p>
+      <p data-testing-id="emptyList">{{ noOrdersMessageKey | translate }}</p>
     </ng-template>
   </ng-container>
 

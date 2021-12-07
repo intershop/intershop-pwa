@@ -1,0 +1,23 @@
+# inspired by https://gist.github.com/a-vasyliev/de8ffc6c6aa74cdeadfe
+
+set $c_uri $args;
+
+{{ $params := (datasource "cachingIgnoreParams").params -}}
+{{ if $params }}
+  {{ range  $params -}}
+    if ($c_uri ~ (.*)(?:&|^){{ . }}=[^&]*(.*)) { set $c_uri $1$2 ; }
+  {{ end -}}
+
+  # remove dangling &
+  if ($c_uri ~ ^&(.*)) {
+    set $c_uri $1;
+  }
+
+  set $c_uri $is_args$c_uri;
+
+  # remove lonely ?
+  if ($c_uri ~ ^\?$) {
+      set $c_uri "";
+  }
+
+{{ end }}

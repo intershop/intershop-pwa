@@ -23,7 +23,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
   addressOptions: FormlyFormOptions = {};
 
   shipOptionFields: FormlyFieldConfig[];
-  shipOptionOptions: FormlyFormOptions = {};
 
   isBusinessCustomer = false;
 

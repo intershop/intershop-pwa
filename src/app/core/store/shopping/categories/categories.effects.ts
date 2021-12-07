@@ -13,7 +13,7 @@ import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { loadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
   loadCategory,
@@ -68,21 +68,7 @@ export class CategoriesEffects {
         ([id, refs, entities]) =>
           !refs[id] || (refs[id] && !CategoryHelper.isCategoryCompletelyLoaded(entities[refs[id]]))
       ),
-      map(([categoryRefId]) => loadCategoryByRef({ categoryRefId }))
-    )
-  );
-
-  /**
-   * fires {@link LoadCategory} for category path categories of the selected category that are not yet completely loaded
-   */
-  loadCategoriesOfCategoryPath$ = createEffect(() =>
-    this.store.pipe(
-      select(getSelectedCategory),
-      filter(CategoryHelper.isCategoryCompletelyLoaded),
-      mapToProperty('categoryPath'),
-      withLatestFrom(this.store.pipe(select(getCategoryEntities))),
-      map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
-      mergeMap(ids => ids.map(categoryId => loadCategory({ categoryId })))
+      map(([categoryId]) => loadCategoryByRef({ categoryId }))
     )
   );
 
@@ -91,26 +77,10 @@ export class CategoriesEffects {
    */
   loadCategory$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadCategory),
+      ofType(loadCategory, loadCategoryByRef),
       mapToPayloadProperty('categoryId'),
-      mergeMap(categoryUniqueId =>
-        this.categoryService.getCategory(categoryUniqueId).pipe(
-          map(categories => loadCategorySuccess({ categories })),
-          mapErrorToAction(loadCategoryFail)
-        )
-      )
-    )
-  );
-
-  /**
-   * loads a {@link Category} using the {@link CategoriesService}
-   */
-  loadCategoryByRef$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadCategoryByRef),
-      mapToPayloadProperty('categoryRefId'),
-      mergeMap(categoryRefId =>
-        this.categoryService.getCategory(categoryRefId).pipe(
+      mergeMap(id =>
+        this.categoryService.getCategory(id).pipe(
           map(categories => loadCategorySuccess({ categories })),
           mapErrorToAction(loadCategoryFail)
         )

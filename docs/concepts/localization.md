@@ -83,6 +83,8 @@ The PWA uses an [ICU Message Format](https://unicode-org.github.io/icu/userguide
 
 Have a look at the spec for [PWATranslateCompiler](../../src/app/core/utils/translate/pwa-translate-compiler.spec.ts) for an overview of supported methods.
 
+> :warning: Translations with large values (> 1000 characters) will not be compiled to improve performance. We recommend using CMS components instead. If you _really_ need to increase this limit, adapt the `MAX_COMPILATION_LENGTH` variable of [PWATranslateCompiler](../../src/app/core/utils/translate/pwa-translate-compiler.ts).
+
 ### Localization with Formatted Dates
 
 The date pipe is used as formatter in texts with dates.

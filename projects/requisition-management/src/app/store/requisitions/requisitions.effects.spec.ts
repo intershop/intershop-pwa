@@ -5,8 +5,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 
 import { Requisition } from '../../models/requisition/requisition.model';
@@ -17,6 +19,7 @@ import {
   loadRequisitionSuccess,
   loadRequisitions,
   updateRequisitionStatus,
+  updateRequisitionStatusFail,
 } from './requisitions.actions';
 import { RequisitionsEffects } from './requisitions.effects';
 
@@ -152,18 +155,34 @@ describe('Requisitions Effects', () => {
     });
 
     it('should retrieve the requisition after updating the status', done => {
-      effects.updateRequisitionStatus$.subscribe(action => {
+      effects.updateRequisitionStatus$.pipe(toArray()).subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Requisitions API] Update Requisition Status Success:
             requisition: {"id":"testUUID","requisitionNo":"0001","user":{"firstName":...
+          [Message] Info Toast:
+            message: "approval.order_partially_approved.text"
         `);
         done();
       });
     });
 
+    it('should navigate to the requisition approval page on failure', done => {
+      actions$ = of(
+        updateRequisitionStatusFail({ error: { status: 422, code: 'update.requisition.status.fail' } as HttpError })
+      );
+
+      effects.redirectAfterUpdateRequisitionStatusFail$.subscribe(
+        () => {
+          expect(location.path()).toMatchInlineSnapshot(`"/account/requisitions/approver"`);
+        },
+        fail,
+        done
+      );
+    });
+
     it('should redirect to listing', done => {
       effects.updateRequisitionStatus$.subscribe(() => {
-        expect(location.path()).toMatchInlineSnapshot(`"/account/requisitions/approver/testUUID;status=PENDING"`);
+        expect(location.path()).toEqual(`/account/requisitions/approver`);
         done();
       });
     });

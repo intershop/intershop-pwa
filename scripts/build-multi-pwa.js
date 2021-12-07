@@ -43,11 +43,12 @@ if (result.status !== 0) {
 }
 
 fs.writeFileSync(
-  'dist/ecosystem-ports.js',
-  `exports.ports = {
-${configurations.map(config => `    '${config.theme}': ${config.port},`).join('\n')}
-}
-`
+  'src/ssr/server-scripts/ecosystem-ports.json',
+  JSON.stringify(
+    configurations.reduce((acc, { theme, port }) => ({ ...acc, [theme]: port }), {}),
+    undefined,
+    2
+  )
 );
 
 configurations.forEach(({ theme }) => {

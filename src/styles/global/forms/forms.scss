@@ -1,5 +1,3 @@
-@use 'sass:math';
-
 .form-check {
   height: auto;
   padding-bottom: 0;
@@ -9,7 +7,7 @@
 
 .has-feedback {
   .form-control[type='number'] {
-    padding: $grid-gutter-width * 0.2 math.div($grid-gutter-width, 2.5);
+    padding: $grid-gutter-width * 0.2 divide($grid-gutter-width, 2.5);
   }
 
   .form-control[type='number'] + * .form-control-feedback {
@@ -21,6 +19,10 @@
       pointer-events: all;
     }
   }
+}
+
+input {
+  accent-color: $input-accent-color;
 }
 
 input[type='file'] {
@@ -129,7 +131,7 @@ input.form-check-input {
         .icon-checked {
           position: absolute;
           right: 15px;
-          padding-top: math.div($space-default, 6);
+          padding-top: divide($space-default, 6);
         }
       }
     }
@@ -165,6 +167,7 @@ input.form-check-input {
     right: 40px;
   }
 }
+
 .validation-offset-0 {
   .form-control-feedback {
     right: 10px;

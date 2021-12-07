@@ -14,6 +14,7 @@
     <ul>
       <li>{{ 'approval.details.conditions.order_spend_limit' | translate }}</li>
       <li>{{ 'approval.details.conditions.budget_limit' | translate }}</li>
+      <li *ngIf="approval.costCenterApproval">{{ 'approval.details.conditions.cost_center' | translate }}</li>
     </ul>
     <p>
       {{ 'approval.details.place_order' | translate }}
@@ -25,14 +26,35 @@
       [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
     ></p>
 
-    <ng-container *ngIf="approval.customerApproval?.approvers?.length">
-      <h3>{{ 'approval.details.contacts.heading' | translate }}</h3>
+    <!-- display approvers -->
+    <h3 *ngIf="approval.customerApproval?.approvers?.length || approval.costCenterApproval?.approvers?.length">
+      {{ 'approval.details.contacts.heading' | translate }}
+    </h3>
 
+    <ng-container *ngIf="approval.customerApproval?.approvers?.length">
       <p>{{ 'approval.details.customer_approvers.people_allowed' | translate }}</p>
 
       <table class="table table-sm">
         <tr *ngFor="let approver of approval.customerApproval.approvers">
-          <td>{{ approver.firstName }} {{ approver.lastName }}</td>
+          <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
+          <td>
+            <a href="mailto:{{ approver.email }}">{{ approver.email }}</a>
+          </td>
+        </tr>
+      </table>
+    </ng-container>
+
+    <ng-container *ngIf="approval.costCenterApproval?.approvers?.length">
+      <p>
+        {{
+          'approval.details.cost_center_approvers.people_allowed'
+            | translate: { '0': approval.costCenterApproval.costCenterName || approval.costCenterApproval.costCenterID }
+        }}
+      </p>
+
+      <table class="table table-sm">
+        <tr *ngFor="let approver of approval.costCenterApproval.approvers">
+          <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
           <td>
             <a href="mailto:{{ approver.email }}">{{ approver.email }}</a>
           </td>

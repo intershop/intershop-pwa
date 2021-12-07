@@ -18,6 +18,20 @@ It can be tempting to always modify existing templates, component and style file
 However, when merging incoming upgrades the number of merge conflicts can possibly be large.
 So if you want to upgrade to new PWA versions later, stick to the following recommendations.
 
+## Setup an Intershop PWA-based Project
+
+When initially setting up an Intershop PWA-based project it is not advisable to clone the complete GitHub repository of the Intershop PWA.
+All that is initially needed is the `master` branch that includes the released versions of the PWA.
+This can be achieved with the following Git command.
+
+```
+git clone --single-branch --branch master --origin intershop https://github.com/intershop/intershop-pwa.git project-pwa
+```
+
+This command clones only the `master` branch from the GitHub repository of the Intershop PWA with the remote name `intershop` (not `origin` that will be needed later on for the projects own remote Git repository) into a folder `project-pwa` (instead of `intershop-pwa`).
+
+Based on this initial version of the Intershop PWA (the latest release), any project customizations can be started.
+
 ## Start Customization
 
 To start customizing, **set a theme** for your customization with the script `node schematics/customization/add --default <prefix>`.
@@ -39,41 +53,6 @@ CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-disp
 ...
 ```
 
-## Import Changes from New Release
-
-> Prior to 0.16.1 the entire git history changed completely. Please see [Merging 0.16.1 as 2nd upstream repository: "refusing to merge unrelated histories](https://github.com/intershop/intershop-pwa/issues/62) for suggestions on importing the new history.
-
-Importing changes of new releases is done with Git tooling.
-If you stick to the guidelines in this chapter, the problems arising in the process of updating will not be as impacting as you might fear.
-Also remember to use `npm install` after importing a change that modified the `package-lock.json` and run tests and linting in the process.
-
-For importing changes from the current release you can use different approaches:
-
-### 1. Merge the New Release in Its Entirety
-
-This way your development will not deviate that much from the current PWA development, but you will have to resolve all appearing conflicts at once.
-
-Just add the Intershop PWA GitHub repository as a second remote in your project and `git merge` the release branch.
-
-### 2. Cherry-Pick Individual Changes From the New Release
-
-By cherry-picking changes individually you can decide to skip certain changes and you will get smaller amounts of merge conflicts.
-However, that way the histories will deviate more and more over time.
-
-To execute this, add the Intershop PWA GitHub repository as a second remote in your project and `git cherry-pick` the range of commits for this release.
-
-### 3. Rebase Your Changes Onto the New Release
-
-This way your project code will always be up-to-date with the current Intershop PWA history, as this history remains the base of the project over all releases.
-
-To perform this update, use `git rebase --onto <new release tag> <old release hash>` on your project's main branch.
-Your running feature branches must then be rebased the same way onto the new development branch.
-
-As it may be the best way to keep the original history intact, the upgrade process can be quite challenging.
-By rebasing every single one of your customization commits, every commit is virtually re-applied onto the current PWA history.
-You can imagine it as pretending to start the custom project anew onto the current version.
-If your project's history is clean and every commit is well-described and concise, this might be a way to go.
-
 ## Specific Concerns
 
 ### Components
@@ -93,6 +72,26 @@ If you for example want to customize the template `product-detail.component.html
 Then this overridden component template will be swapped in.
 
 This also works for multiple configurations: `product-detail.component.foo.bar.baz.html` will be active for configurations `foo`, `bar` and `baz`, but not for `foobar`.
+
+There is also a virtual theme `all` that can be used to always override a specific file.
+However, the `all` theme cannot be used in combination with other themes.
+If a theme specific override is available next to an override for `all`, the specific override will be chosen.
+
+As an example, imagine the following files/overrides exist:
+
+```txt
+  my.component.html
+  my.component.all.html
+  my.component.foo.html
+  my.component.bar.baz.html
+```
+
+- In a build for theme `foo`, the file `my.component.foo.html` will be swapped in.
+- In a build for theme `bar`, the file `my.component.bar.baz.html` will be swapped in.
+- In a build for theme `foobar`, the file `my.component.all.html` will be swapped in.
+- The file `my.component.html` won't be used for any builds.
+
+##### Schematic Support
 
 You can use the `override` schematic to introduce custom theme overrides:
 
@@ -157,11 +156,20 @@ Here you can just accept either modification and update the test snapshots.
 ### Styling
 
 Changing the styling of **existing components** should be done by adding overrides in the custom theme folder under `src/styles/themes`.
-You can also change relevant information in the global style files under `src/styles`.
-If too many changes have to be made, it is better to **add the styling in additional files on global or component level**.
+For this you could copy only the `*.scss` files you need to adapt and fit the reference in your themes `style.scss`.
+Or you can start your styling changes by copying the complete set of standard styles to your themes folder right from the start and do all the changes there.
+Or you can come up with your own preferred way for styling adaptions.
+Just putting a brand override file next to the original file in the `src/styles` folder will not lead to the expected results.
+You should not change relevant information in the global style files under `src/styles`.
 
 When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
-You can re-use variables from global styling on component level by adding imports like `@import '~theme/variables.scss';`.
+You can re-use variables from the global styling on component level by importing only the styling file that defines the theme variables, e.g.
+
+```
+@import 'variables';
+```
+
+Be aware that Visual Studio Code will not resolve the import reference correctly but it works in the build PWA version anyways.
 
 ### Dependencies
 
@@ -178,3 +186,92 @@ When executing tests, the test itself requires an appropriate demo server to be 
 We currently use patterns in the test name to determine the channel for which the test can be run.
 E.g. `login-user.b2b.b2c.e2e-spec.ts` can be run on with the inSPIRED B2C and B2B channels.
 The same system can be adopted for customization projects.
+
+## Import Changes from New PWA Release (Migration)
+
+Importing changes of new releases is done with Git tooling.
+If you stick to the guidelines in this chapter, the process of updating should run without major problems.
+Also remember to use `npm install` after importing a change that modified the `package.json` and `package-lock.json` and run tests and linting in the process.
+
+Reading through the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - here especially the 'Breaking Changes' section - should be the first step before any migration.
+
+The first step for any migration is to add the Intershop PWA GitHub repository as an additional remote if this is not already the case.
+
+```
+git remote add intershop https://github.com/intershop/intershop-pwa.git
+```
+
+For importing changes from the current release, you can use different approaches:
+
+### 1. Range Cherry Pick of New Release Commits
+
+For the range `git cherry-pick` approach one needs to create a new branch based on the current project's main development branch, naming it, for example, `migration_to_1.1`.
+
+```
+git checkout -b migration_to_1.1
+```
+
+Now the Git commits of the new Intershop PWA release will be cherry picked into this migration branch.
+For this, one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g. `1.0.0` to `1.1.0`.
+If there are any problems with the tags, using the specific commit SHAs should always work.
+
+```
+git cherry-pick 1.0.0..1.1.0
+```
+
+Now each commit of the new Intershop PWA release is applied to the custom project context.
+Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
+
+After successfully going through the range cherry pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
+Starting the server or `npm run check` are good basic tests for that.
+
+### 2. Rebase Commits of New Release
+
+For the `git rebase --onto` approach one needs to create a new branch based on the release tag of the Intershop PWA one wants to migrate to, naming it, for example, `migration_to_1.1`.
+
+```
+git checkout -b migration_to_1.1 1.1.0
+```
+
+Now the branch with the Git commits of the new Intershop PWA release will be rebased onto the current project's main development branch.
+For this, one needs to provide the branch name of the target branch to rebase onto.
+In addition, a commit is needed where the current migration branch should be "cut off".
+This is usually the current version tag of the Intershop PWA used currently in the custom project, e.g. `1.0.0`.
+If there are any problems with the tag, using the specific commit SHAs should always work.
+
+```
+git rebase --onto develop 1.0.0
+```
+
+Now each commit of the new Intershop PWA release is applied to the custom project context.
+Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
+
+After successfully going through the rebase onto (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
+Starting the server or `npm run check` are good basic tests for that.
+
+### 3. Merge the New Release in its Entirety
+
+This is also a possible way to migrate your custom project to the latest version of the Intershop PWA, but you will have to resolve all potentially appearing conflicts at once and without the specific commit context.
+
+Just add the Intershop PWA GitHub repository as a second remote in your project and `git merge` the release branch.
+
+> Prior to 0.16.1 the entire git history changed completely.
+> Please see [Merging 0.16.1 as 2nd upstream repository: "refusing to merge unrelated histories](https://github.com/intershop/intershop-pwa/issues/62) for suggestions on importing the new history.
+
+## Hints
+
+- The Intershop PWA project is configured to follow consistent formatting rules.
+  For a better overview of relevant changes and less merge efforts it is advised to adhere to these rules during project development as well.
+  For this, one needs to configure one's IDE accordingly.
+  The fitting Visual Studio Code configuration is part of the project.
+- The Intershop PWA project configures and contains a set of linting rules that also aim to ensure a consistent code style and are intended to prevent any coding patterns that are considered problematic.
+  It is advised to follow these rules in customer projects as well.
+  If some rules are actually unwanted in a project, it is best to disable these configurations but to keep all other checks intact and to address any violations.
+- Keep the unit tests running and write new ones.
+  This will also help ensuring not to break any existing functionality after a migration.
+- `npm run check` should run through successfully on local development environments after a feature or bugfix or migration has finished.
+  This check can be left to a CI pipeline as well but the task should be configured in a way that fits the requirements of the project.
+
+# Further References
+
+- [How to do projects with Intershop PWA 1.0 and Themes](https://www.youtube.com/watch?v=qz-ONgd9qdY)

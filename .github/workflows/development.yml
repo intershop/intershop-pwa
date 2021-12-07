@@ -52,6 +52,12 @@ jobs:
       - name: Check No Changes from Formatting
         run: git diff --exit-code --raw -p --stat
 
+      - name: .dockerignore Sync
+        run: node scripts/update-dockerignore
+
+      - name: Check No Changes from .dockerignore Sync
+        run: git diff --exit-code --raw -p --stat
+
       - name: Compile Angular
         run: npm run build client
         env:

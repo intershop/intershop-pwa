@@ -1,5 +1,3 @@
-@use 'sass:math';
-
 .language-switch {
   margin-left: ($space-default * 2);
   font-family: $font-family-bold;
@@ -32,7 +30,7 @@
 
     .language-switch-container {
       z-index: 9999;
-      padding: math.div($space-default * 2, 3) $space-default;
+      padding: divide($space-default * 2, 3) $space-default;
       background: $color-inverse;
       box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2);
 

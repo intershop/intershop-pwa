@@ -1,0 +1,35 @@
+<ng-template #modal let-editModal>
+  <div class="modal-header">
+    <h2 class="modal-title">{{ modalHeader | translate }}</h2>
+    <button
+      type="button"
+      class="close"
+      [title]="'dialog.close.text' | translate"
+      [attr.aria-label]="'dialog.close.text' | translate"
+      (click)="hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="costCenterBuyerForm" (ngSubmit)="submitCostCenterBuyerForm()">
+      <formly-form [form]="costCenterBuyerForm" [fields]="fields" [model]="model"></formly-form>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="formDisabled"
+      (click)="submitCostCenterBuyerForm()"
+      data-testing-id="cost-center-buyer-edit-dialog-submit"
+    >
+      {{ 'account.costcenter.details.buyers.action.save' | translate }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="hide()">
+      {{ 'account.cancel.button.label' | translate }}
+    </button>
+  </div>
+</ng-template>

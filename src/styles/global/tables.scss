@@ -1,6 +1,4 @@
 // SPECIFIC TABLE MIXINS
-@use 'sass:math';
-
 @mixin list-header-mixin() {
   border-top: 0;
   border-bottom: 1px solid $border-color-default;
@@ -149,6 +147,10 @@
         text-transform: uppercase;
       }
 
+      .form-group {
+        margin-bottom: 0;
+      }
+
       &:last-child {
         padding-right: 0;
       }
@@ -287,7 +289,7 @@
 table.mobile-optimized,
 table.mobile-optimized.table-lg {
   @include media-breakpoint-only(xs) {
-    margin-bottom: math.div($space-default, 3);
+    margin-bottom: divide($space-default, 3);
 
     thead {
       display: none;
@@ -296,7 +298,7 @@ table.mobile-optimized.table-lg {
     tr {
       float: left;
       width: 100%;
-      padding-bottom: math.div($space-default * 2, 3);
+      padding-bottom: divide($space-default * 2, 3);
       margin-bottom: $space-default;
       border-bottom: 1px solid $border-color-lighter;
 
@@ -306,7 +308,7 @@ table.mobile-optimized.table-lg {
         float: left;
         width: 100%;
         padding: 0;
-        margin-bottom: math.div($space-default, 3);
+        margin-bottom: divide($space-default, 3);
         clear: both;
         border: none;
 
@@ -314,6 +316,7 @@ table.mobile-optimized.table-lg {
           width: 40%;
           content: '';
         }
+
         &[data-label]::before {
           content: attr(data-label) ':';
         }

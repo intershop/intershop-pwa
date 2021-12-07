@@ -66,4 +66,14 @@ export class PriceHelper {
       currency,
     };
   }
+
+  static getPrice(currency: string, value: number): Price {
+    if (!currency) {
+      throw new Error('getPrice cannot handle undefined currency');
+    }
+    if (value === undefined) {
+      throw new Error('getPrice cannot handle undefined value');
+    }
+    return { currency, value, type: 'Money' };
+  }
 }

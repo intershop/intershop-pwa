@@ -1,0 +1,8 @@
+*
+!settings.json
+!tasks.json
+!launch.json
+!extensions.json
+!*.code-snippets
+!intershop.txt
+!.gitignore

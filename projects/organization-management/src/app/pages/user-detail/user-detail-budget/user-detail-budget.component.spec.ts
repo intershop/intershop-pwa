@@ -63,7 +63,7 @@ describe('User Detail Budget Component', () => {
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">account.user.new.order_spend_limit.label</dt>
           <dd class="col-md-8" data-testing-id="order-spend-limit-field">USD 100</dd>
-          <dt class="col-md-4">account.budget.type.monthly.label</dt>
+          <dt class="col-md-4">account.budget.label</dt>
           <dd class="col-md-8" data-testing-id="budget-field">USD 5000</dd>
         </dl>
       </div>

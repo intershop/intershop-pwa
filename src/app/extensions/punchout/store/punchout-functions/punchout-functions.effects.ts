@@ -28,6 +28,15 @@ export class PunchoutFunctionsEffects {
     )
   );
 
+  removeBasketFromSessionsStorageAfterSuccessfulTransfer$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(transferPunchoutBasketSuccess),
+        map(() => window.sessionStorage.removeItem('basket-id'))
+      ),
+    { dispatch: false }
+  );
+
   displayPunchoutErrorMessage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(transferPunchoutBasketFail),

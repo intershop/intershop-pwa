@@ -1,11 +1,15 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, isDevMode } from '@angular/core';
 import { TranslateCompiler, TranslateService } from '@ngx-translate/core';
 
 import { Translations } from './translations.type';
 
+const cache: Record<string, Function> = {};
+
 @Injectable()
 export class PWATranslateCompiler implements TranslateCompiler {
   constructor(private injector: Injector) {}
+
+  private static MAX_COMPILATION_LENGTH = 1000;
 
   /**
    * regular expression for grabbing everything in the form:
@@ -65,65 +69,82 @@ export class PWATranslateCompiler implements TranslateCompiler {
     return template?.replace(PWATranslateCompiler.SIMPLE_VARIABLE_REGEX, (_, repl) => args?.[repl]?.toString() ?? '');
   }
 
-  compile(template: string): string | Function {
-    if (this.checkIfCompileNeeded(template)) {
-      if (PWATranslateCompiler.PLURAL_REGEX.test(template)) {
-        const match = PWATranslateCompiler.PLURAL_REGEX.exec(template);
-        const variable = match[2];
-        const cases = match[4];
+  private doCompile(template: string): Function {
+    if (PWATranslateCompiler.PLURAL_REGEX.test(template)) {
+      const match = PWATranslateCompiler.PLURAL_REGEX.exec(template);
+      const variable = match[2];
+      const cases = match[4];
 
-        // construct map for looking up case templates for incoming values
-        const casesMap: Record<string, string> = {};
-        let defaultCase: string;
-        for (let cm: RegExpExecArray; (cm = PWATranslateCompiler.CASE_REGEX.exec(cases)); ) {
-          const c = cm[1];
-          if (c.startsWith('=')) {
-            casesMap[c.substring(1)] = cm[2];
-          } else if (c === 'other') {
-            defaultCase = cm[2];
-          }
+      // construct map for looking up case templates for incoming values
+      const casesMap: Record<string, string> = {};
+      let defaultCase: string;
+      for (let cm: RegExpExecArray; (cm = PWATranslateCompiler.CASE_REGEX.exec(cases)); ) {
+        const c = cm[1];
+        if (c.startsWith('=')) {
+          casesMap[c.substring(1)] = cm[2];
+        } else if (c === 'other') {
+          defaultCase = cm[2];
         }
-
-        return (args: Record<string, unknown>) => {
-          const value = args?.[variable] ?? '';
-          const caseTemplate = casesMap[value?.toString()] ?? defaultCase;
-          const caseOutput = caseTemplate?.replace(/#/, value?.toString());
-          const result = `${match[1]}${caseOutput}${match[5]}`;
-
-          return this.recurse(result, args);
-        };
-      } else if (PWATranslateCompiler.TRANSLATE_REGEX.test(template)) {
-        const match = PWATranslateCompiler.TRANSLATE_REGEX.exec(template);
-        const variable = match[2];
-        const key = match[3].split(',')[0].trim();
-        const rename = match[3].split(',')?.[1]?.trim();
-
-        return (args: Record<string, unknown>) => {
-          if (rename) {
-            args[rename] = args[variable];
-          }
-          const delegate = this.injector.get(TranslateService).instant(key, args);
-          const result = `${match[1]}${delegate}${match[4]}`;
-
-          return this.recurse(result, args);
-        };
       }
+
+      return (args: Record<string, unknown>) => {
+        const value = args?.[variable] ?? '';
+        const caseTemplate = casesMap[value?.toString()] ?? defaultCase;
+        const caseOutput = caseTemplate?.replace(/#/, value?.toString());
+        const result = `${match[1]}${caseOutput}${match[5]}`;
+
+        return this.recurse(result, args);
+      };
+    } else if (PWATranslateCompiler.TRANSLATE_REGEX.test(template)) {
+      const match = PWATranslateCompiler.TRANSLATE_REGEX.exec(template);
+      const variable = match[2];
+      const key = match[3].split(',')[0].trim();
+      const rename = match[3].split(',')?.[1]?.trim();
+
+      return (args: Record<string, unknown>) => {
+        if (rename) {
+          args[rename] = args[variable];
+        }
+        const delegate = this.injector.get(TranslateService).instant(key, args);
+        const result = `${match[1]}${delegate}${match[4]}`;
+
+        return this.recurse(result, args);
+      };
+    } else {
+      return (args: Record<string, unknown>) => this.recurse(template, args);
+    }
+  }
+
+  compile(template: string): string | Function {
+    if (this.sanityCheck(template) && this.checkIfCompileNeeded(template)) {
+      if (!cache[template]) {
+        cache[template] = this.doCompile(template);
+      }
+      return cache[template];
     }
 
     return template;
   }
 
+  private sanityCheck(value: string | Function): boolean {
+    const sane = typeof value !== 'string' || value.length <= PWATranslateCompiler.MAX_COMPILATION_LENGTH;
+    if (isDevMode() && !sane) {
+      console.warn(
+        `Not compiling translation with value '${(value as string).substring(
+          0,
+          20
+        )}'... as it is too big! - Use CMS! - This is a development mode only warning and can be ignored if the behavior is intended.`
+      );
+    }
+    return sane;
+  }
+
   compileTranslations(translations: Translations): Translations {
-    return Object.entries(translations)
-      .map<[string, string | Function]>(([key, value]) => {
-        if (this.checkIfCompileNeeded(value)) {
-          return [key, this.compile(value as string)];
-        }
-        return [key, value];
-      })
-      .reduce<Translations>((acc, [key, value]) => {
-        acc[key] = value;
-        return acc;
-      }, {});
+    // This implementation is mutable by intention
+    // tslint:disable-next-line: forin - object does not have inherited properties
+    for (const key in translations) {
+      translations[key] = this.compile(translations[key] as string);
+    }
+    return translations;
   }
 }

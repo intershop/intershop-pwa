@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from } from 'rxjs';
-import { concatMap, map, mapTo, switchMap } from 'rxjs/operators';
+import { concatMap, map, switchMap } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { displayInfoMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
 import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -78,16 +79,45 @@ export class RequisitionsEffects {
           .pipe(
             concatMap(requisition =>
               /* ToDo: use only relative routes */
-              from(
-                this.router.navigate([
-                  `/account/requisitions/approver/${requisition.id}`,
-                  { status: requisition.approval?.statusCode },
-                ])
-              ).pipe(mapTo(updateRequisitionStatusSuccess({ requisition })))
+              from(this.router.navigate([`/account/requisitions/approver`])).pipe(
+                concatMap(() => {
+                  let messageAction;
+                  switch (requisition.approval?.statusCode) {
+                    case 'APPROVED':
+                    case 'REJECTED':
+                      messageAction = displaySuccessMessage({
+                        message: `approval.order_${requisition.approval.statusCode.toLowerCase()}.text`,
+                      });
+                      break;
+                    case 'PENDING':
+                      messageAction = displayInfoMessage({
+                        message: `approval.order_partially_approved.text`,
+                      });
+                  }
+
+                  return [updateRequisitionStatusSuccess({ requisition }), messageAction];
+                })
+              )
             ),
             mapErrorToAction(updateRequisitionStatusFail)
           )
       )
     )
+  );
+
+  /**
+   * In case the requisition (status) update failed because the requisition is invalid
+   * and rejected by system the user is navigated to the requisition overview page
+   */
+  redirectAfterUpdateRequisitionStatusFail$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateRequisitionStatusFail),
+        mapToPayloadProperty('error'),
+        concatMap(error =>
+          error.status === 422 ? this.router.navigate([`/account/requisitions/approver`]) : undefined
+        )
+      ),
+    { dispatch: false }
   );
 }

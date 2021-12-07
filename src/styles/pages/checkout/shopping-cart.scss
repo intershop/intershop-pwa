@@ -1,7 +1,5 @@
 /************* SHOPPING CART LAYOUT ***************/
 
-@use 'sass:math';
-
 .cart-header {
   .share-tools {
     margin-top: $space-default;
@@ -251,13 +249,13 @@
 
 .pli-description {
   ul {
-    padding-left: math.div($space-default, 3) * 4;
+    padding-left: divide($space-default, 3) * 4;
     list-style-position: outside;
   }
 
   .btn-tool {
     display: inline-block;
-    padding: 0 math.div($space-default, 3);
+    padding: 0 divide($space-default, 3);
     margin-top: ($space-default);
     margin-bottom: 0;
 
@@ -270,7 +268,7 @@
     dt {
       float: left;
       width: auto;
-      padding-right: math.div($space-default, 6);
+      padding-right: divide($space-default, 6);
     }
 
     dd {

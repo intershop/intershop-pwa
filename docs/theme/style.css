@@ -12,10 +12,12 @@ a,
   color: #319f9e;
   text-decoration: underline;
 }
+
 a:visited,
 .content a:visited {
   color: #319f9e;
 }
+
 a:hover,
 .content a:hover {
   color: #168989;
@@ -26,6 +28,7 @@ a:hover,
   text-transform: uppercase;
   background-color: #319f9e;
 }
+
 .menu ul.list li a {
   text-decoration: none;
   text-overflow: unset;

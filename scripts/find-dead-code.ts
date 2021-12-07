@@ -1,5 +1,5 @@
 import { parse } from 'path';
-import { ClassDeclaration, Node, Project, ReferenceFindableNode, SyntaxKind } from 'ts-morph';
+import { ClassDeclaration, Node, Project, ReferenceFindableNode, SyntaxKind, ts } from 'ts-morph';
 
 const classMethodCheckRegex = /.*(Mapper|Helper|Facade|Service|State)$/;
 
@@ -160,7 +160,9 @@ function checkNode(node: Node) {
   } else if (Node.isClassDeclaration(node) && Node.hasName(node) && classMethodCheckRegex.test(node.getName())) {
     node
       .getMembers()
-      .filter(m => !m.getFirstModifierByKind(SyntaxKind.PrivateKeyword))
+      .filter(m => !Node.isConstructorDeclaration(m))
+      // tslint:disable-next-line: no-bitwise
+      .filter(m => !(m.getCombinedModifierFlags() & ts.ModifierFlags.Private))
       .forEach(checkNode);
   } else if (Node.isInterfaceDeclaration(node) && Node.hasName(node) && classMethodCheckRegex.test(node.getName())) {
     node.getMembers().forEach(checkNode);

@@ -1,5 +1,5 @@
 <div class="row mt-4">
-  <div class="col-md-6">
+  <div class="col-md-12">
     <h3>{{ 'quickorder.page.csv.title' | translate }}</h3>
     <p>{{ 'quickorder.page.csv.subtitle' | translate }}</p>
     <form [formGroup]="csvForm" (ngSubmit)="addCsvToCart()">
@@ -13,7 +13,7 @@
           accept=".csv"
           (change)="uploadListener($event.target)"
         />
-        <div [ngSwitch]="status" class="position-absolute">
+        <div [ngSwitch]="status">
           <small *ngSwitchCase="'IncorrectInput'" class="has-error"
             ><span class="validation-message">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span></small
           >
@@ -25,6 +25,10 @@
           >
           <small *ngSwitchDefault></small>
         </div>
+        <small
+          class="form-text"
+          [innerHTML]="'quickorder.page.csv.sample' | translate: { '0': 'assets/sample-data/quickorder.csv' }"
+        ></small>
       </div>
       <div>
         <button type="submit" class="btn btn-primary" name="addToCartCSV" [disabled]="isCsvDisabled">

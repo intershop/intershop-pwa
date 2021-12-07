@@ -25,7 +25,19 @@
   >
     <ish-requisition-summary [requisition]="requisition" [view]="view"></ish-requisition-summary>
 
-    <ish-requisition-buyer-approval [requisition]="requisition"></ish-requisition-buyer-approval>
+    <!-- display approval box in buyer view or for customer approvers only -->
+    <ish-requisition-buyer-approval
+      *ngIf="view === 'buyer'; else customerApprover"
+      [requisition]="requisition"
+    ></ish-requisition-buyer-approval>
+    <ng-template #customerApprover>
+      <ish-requisition-buyer-approval
+        *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'"
+        [requisition]="requisition"
+      ></ish-requisition-buyer-approval>
+    </ng-template>
+
+    <ish-requisition-cost-center-approval [requisition]="requisition"></ish-requisition-cost-center-approval>
 
     <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }"></ng-container>
 
@@ -84,11 +96,11 @@
 
     <ng-template #approvalButtonBar let-requisition="requisition">
       <div *ngIf="requisition.approval?.statusCode === 'PENDING' && view === 'approver'" class="section text-right">
-        <button (click)="rejectDialog.show()" type="button" class="btn btn-secondary">
-          {{ 'approval.detailspage.reject.button.label' | translate }}
-        </button>
         <button (click)="approveRequisition()" type="button" class="btn btn-primary">
           {{ 'approval.detailspage.approve.button.label' | translate }}
+        </button>
+        <button (click)="rejectDialog.show()" type="button" class="btn btn-secondary">
+          {{ 'approval.detailspage.reject.button.label' | translate }}
         </button>
       </div>
     </ng-template>

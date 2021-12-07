@@ -38,13 +38,9 @@ const internalCurrencyFilter = createSelector(getConfigurationState, state => st
 
 /**
  * locales configured in ICM
- *
- * if no locale is available, then a default configured locale from environment.ts is loaded as fallback
  */
-export const getAvailableLocales = createSelector(
-  internalDefaultLocale,
-  getServerConfigParameter<string[]>('general.locales'),
-  (defaultLocale, activated) => (activated?.length ? activated : defaultLocale ? [defaultLocale] : undefined)
+export const getAvailableLocales = createSelector(getServerConfigParameter<string[]>('general.locales'), activated =>
+  activated?.length ? activated : undefined
 );
 
 const internalRequestedLocale = createSelector(getConfigurationState, state => state.lang);
@@ -114,7 +110,7 @@ export const getIdentityProvider = createSelectorFactory<
     (state.identityProvider === 'ICM' ? { type: 'ICM' } : state.identityProviders?.[state.identityProvider])
 );
 
-export const getServerTranslations = (lang: string) =>
+const getServerTranslations = (lang: string) =>
   createSelector(getConfigurationState, state => state.serverTranslations?.[lang]);
 
 export const getSpecificServerTranslation = (lang: string, key: string) =>

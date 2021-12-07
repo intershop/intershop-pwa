@@ -34,7 +34,7 @@ export class ViewconfEffects {
       ofType(setBreadcrumbData),
       // collect all breadcrumb actions during routing
       bufferToggle(this.actions$.pipe(ofType(routerRequestAction)), () =>
-        this.actions$.pipe(ofType(routerNavigatedAction), delay(100))
+        this.actions$.pipe(ofType(routerNavigatedAction), delay(10))
       ),
       // if no breadcrumb was set with effects
       filter(actions => !actions.length),

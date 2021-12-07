@@ -15,7 +15,7 @@ describe('Ngrx State Transfer', () => {
         c: 'C',
       };
 
-      expect(filterState(input)).toEqual(output);
+      expect(filterState(input, 2)).toEqual(output);
     });
 
     it('should omit keys starting with underscore when copying state (advanced)', () => {
@@ -34,10 +34,10 @@ describe('Ngrx State Transfer', () => {
         },
       };
 
-      expect(filterState(input)).toEqual(output);
+      expect(filterState(input, 2)).toEqual(output);
     });
 
-    it('should omit keys starting with underscore when copying state (complex)', () => {
+    it('should omit keys starting with underscore for the first two levels when copying state (complex)', () => {
       const input = {
         a: 'A',
         _b: 'B',
@@ -60,15 +60,16 @@ describe('Ngrx State Transfer', () => {
           x: 'X',
           z: {
             a: ['A'],
+            _b: 'B',
           },
         },
       };
 
-      expect(filterState(input)).toEqual(output);
+      expect(filterState(input, 2)).toEqual(output);
     });
 
     it('should be able to handle empty states', () => {
-      expect(filterState({})).toBeEmpty();
+      expect(filterState({}, 2)).toBeEmpty();
     });
 
     it('should be able to handle undefined values', () => {
@@ -87,7 +88,7 @@ describe('Ngrx State Transfer', () => {
         },
       };
 
-      expect(filterState(input)).toEqual(output);
+      expect(filterState(input, 2)).toEqual(output);
     });
 
     it('should be able to handle array values', () => {
@@ -106,7 +107,7 @@ describe('Ngrx State Transfer', () => {
         },
       };
 
-      expect(filterState(input)).toEqual(output);
+      expect(filterState(input, 2)).toEqual(output);
     });
   });
 });

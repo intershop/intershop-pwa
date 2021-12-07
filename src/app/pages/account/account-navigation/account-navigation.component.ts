@@ -9,7 +9,7 @@ interface NavigationItems {
     dataTestingId?: string;
     feature?: string;
     serverSetting?: string;
-    permission?: string;
+    permission?: string | string[];
     notRole?: string | string[];
     children?: NavigationItems;
   };
@@ -39,7 +39,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
     '/account/requisitions/approver': {
       localizationKey: 'account.requisitions.approvals',
       serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
-      permission: 'APP_B2B_ORDER_APPROVAL',
+      permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
     },
     '/account/quotes': {
       localizationKey: 'account.navigation.quotes.link',
@@ -72,9 +72,15 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
       notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
     },
     '/account/profile': { localizationKey: 'account.profile.link', notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'] },
-    '/account/organization': {
+    '/account/organization/users': {
       localizationKey: 'account.organization.user_management',
       permission: 'APP_B2B_MANAGE_USERS',
+    },
+    '/account/organization/cost-centers': {
+      localizationKey: 'account.organization.cost_center_management',
+      feature: 'costCenters',
+      dataTestingId: 'cost-centers-link',
+      permission: 'APP_B2B_MANAGE_COSTCENTER',
     },
     '/account/punchout': {
       localizationKey: 'account.punchout.link',

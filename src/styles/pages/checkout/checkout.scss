@@ -99,28 +99,35 @@
       padding-bottom: $space-default;
       color: $text-color-inverse;
       background: $CORPORATE-PRIMARY;
+
       h3 {
         font-size: $font-size-navbar-item;
         color: inherit;
       }
+
       a {
         color: inherit;
         text-decoration: underline;
         text-transform: none;
+
         &:hover {
           color: darken($text-color-inverse, 15%);
         }
       }
+
       button.btn {
         color: $text-color-inverse;
+
         &:hover {
           color: darken($text-color-inverse, 15%);
         }
       }
+
       .infobox-count {
         font-size: $font-size-lg * 2;
         line-height: 1;
       }
+
       .infobox-count-large {
         font-size: 3.75rem;
         line-height: 1;
@@ -136,6 +143,7 @@
     }
 
     &.infobox-widget {
+      min-height: 175px;
       padding-bottom: $space-default;
 
       .row:last-of-type {

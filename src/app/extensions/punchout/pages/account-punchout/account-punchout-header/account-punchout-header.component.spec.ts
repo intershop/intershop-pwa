@@ -5,6 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
 
 import { AccountPunchoutHeaderComponent } from './account-punchout-header.component';
 
@@ -16,7 +17,11 @@ describe('Account Punchout Header Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NgbNavModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [AccountPunchoutHeaderComponent, MockComponent(ErrorMessageComponent)],
+      declarations: [
+        AccountPunchoutHeaderComponent,
+        MockComponent(ErrorMessageComponent),
+        MockComponent(InfoMessageComponent),
+      ],
     }).compileComponents();
   });
 
@@ -58,11 +63,11 @@ describe('Account Punchout Header Component', () => {
     expect(element.querySelector('.nav-tabs')).toBeFalsy();
   });
 
-  it('should display an info message if there are no types', () => {
+  it('should display an info message if there are no types-header', () => {
     component.punchoutTypes = [];
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id="info-message"]')).toBeTruthy();
+    expect(element.querySelector('ish-info-message')).toBeTruthy();
     expect(element.querySelector('.nav-tabs')).toBeFalsy();
   });
 });

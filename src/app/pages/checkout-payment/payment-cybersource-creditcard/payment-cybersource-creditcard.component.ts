@@ -10,7 +10,6 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import b64u from 'b64u';
 import { range } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -49,7 +48,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
   yearOptions: SelectOption[];
 
   /**
-   * concardis payment method, needed to get configuration parameters
+   * cybersource payment method, needed to get configuration parameters
    */
   @Input() paymentMethod: PaymentMethod;
 
@@ -184,7 +183,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
         exp: string;
         iat: string;
         jti: string;
-      } = JSON.parse(b64u.decode(tokenSplit[1]));
+      } = JSON.parse(window.atob(tokenSplit[1]));
 
       this.submit.emit({
         parameters: [
@@ -194,7 +193,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
           { name: 'maskedCardNumber', value: payloadJson.data.number },
           { name: 'expirationDate', value: `${this.expirationMonthVal}/${this.expirationYearVal}` },
         ],
-        saveAllowed: false,
+        saveAllowed: this.paymentMethod.saveAllowed && this.cyberSourceCreditCardForm.get('saveForLater').value,
       });
     }
     this.cd.detectChanges();
@@ -228,7 +227,11 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
    * cancel new payment instrument, hides and resets the parameter form
    */
   cancelNewPaymentInstrument() {
+    this.resetErrors();
     this.cyberSourceCreditCardForm.reset();
+    if (this.cyberSourceCreditCardForm.get('saveForLater')) {
+      this.cyberSourceCreditCardForm.get('saveForLater').setValue(true);
+    }
     this.cancel.emit();
   }
 }

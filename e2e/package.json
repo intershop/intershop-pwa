@@ -16,6 +16,7 @@
     "cypress": "^7.0.0",
     "cypress-failed-log": "^2.0.0",
     "cypress-log-to-output": "^1.1.2",
+    "har-validator": "^5.1.5",
     "typescript": "*"
   }
 }

@@ -1,4 +1,5 @@
 import { AddressData } from 'ish-core/models/address/address.interface';
+import { BasketApprover } from 'ish-core/models/basket-approval/basket-approval.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
@@ -27,6 +28,8 @@ export interface RequisitionBaseData extends BasketBaseData {
   userBudgets: RequisitionUserBudget;
 
   approvalStatus: RequisitionApproval;
+  approvalStatuses?: { approvalDate: number; approver: BasketApprover; statusCode: string }[];
+  systemRejected?: boolean;
 }
 
 export interface RequisitionData {

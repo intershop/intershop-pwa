@@ -1,5 +1,7 @@
 import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
+import { of, race } from 'rxjs';
+import { delay, filter } from 'rxjs/operators';
 
 /**
  * Extension to translate the templateOptions.placeholder.
@@ -14,7 +16,18 @@ class TranslatePlaceholderExtension implements FormlyExtension {
       return;
     }
 
-    field.templateOptions.placeholder = this.translate.instant(to.placeholder);
+    race(
+      // wait till service has loaded translations
+      this.translate.get(to.placeholder).pipe(filter(value => value !== to.placeholder)),
+      // abort if translation was not found
+      of(to.placeholder).pipe(delay(1000))
+    ).subscribe(translation => {
+      field.templateOptions.placeholder = translation;
+      // trigger formly change detection
+      if (field.options) {
+        field.options.resetModel();
+      }
+    });
   }
 }
 

@@ -13,6 +13,7 @@
 *.ttf
 *.ico
 *.txt
+*.csv
 *.jar
 *.snap
 *.hbs
@@ -21,6 +22,7 @@
 *.crt
 *.key
 .*ignore
+.husky
 .gitattributes
 .editorconfig
 .createMockdata.table

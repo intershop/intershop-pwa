@@ -1,0 +1,94 @@
+<ng-container *ngIf="costCenter">
+  <div *ngIf="costCenter?.costCenterOwner.email === (userEmail$ | async)" class="row">
+    <ish-info-box heading="approval.detailspage.costcenter.approval.heading" class="infobox-wrapper col-12">
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="row dl-horizontal dl-separator">
+            <dt class="col-6">{{ 'approval.detailspage.cost_center.label' | translate }}</dt>
+            <dd class="col-6">{{ costCenter.costCenterId }} {{ costCenter.name }}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="row section">
+        <div class="col-md-6 pt-1">
+          <dl class="row dl-horizontal dl-separator">
+            <!-- prettier-ignore -->
+            <dt class="col-6">{{ 'approval.detailspage.costcenter.budget.label' | translate: { '0': costCenter.budgetPeriod } }}</dt>
+            <dd class="col-6">
+              <strong>
+                <ng-container *ngIf="costCenter?.budget; else noLimit">
+                  {{ costCenter.budget | ishPrice }}
+                </ng-container>
+                <ng-template #noLimit>
+                  {{ 'account.budget.unlimited' | translate }}
+                </ng-template>
+              </strong>
+            </dd>
+          </dl>
+          <dl *ngIf="costCenter.spentBudget" class="row dl-horizontal dl-separator">
+            <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
+            <dd class="col-6" [ngClass]="{ 'text-danger': ccVal.spentPercentage > 1 }">
+              {{ costCenter.spentBudget | ishPrice }} ({{ ccVal.spentPercentage | percent }})
+            </dd>
+          </dl>
+          <dl *ngIf="requisition.approval.statusCode !== 'APPROVED'" class="row dl-horizontal dl-separator">
+            <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate }}</dt>
+            <dd class="col-6" [ngClass]="{ 'text-danger': ccVal.spentPercentageIncludingThisRequisition > 1 }">
+              {{ ccVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
+                ccVal.spentPercentageIncludingThisRequisition | percent
+              }})
+            </dd>
+          </dl>
+        </div>
+        <div *ngIf="costCenter.budget" class="col-md-6 mb-2">
+          <ish-budget-bar
+            [budget]="costCenter.budget"
+            [spentBudget]="costCenter.spentBudget"
+            [additionalAmount]="orderTotal"
+          ></ish-budget-bar>
+        </div>
+      </div>
+
+      <div *ngIf="buyer" class="row" data-testing-id="cost-center-buyer-budget">
+        <div class="col-md-6">
+          <dl class="row dl-horizontal dl-separator">
+            <!-- prettier-ignore -->
+            <dt class="col-6">{{ 'approval.detailspage.buyer.budget.label' | translate: { '0': buyer.budgetPeriod } }}</dt>
+            <dd class="col-6">
+              <strong>
+                <ng-container *ngIf="buyer?.budget; else noLimit">
+                  {{ buyer.budget | ishPrice }}
+                </ng-container>
+                <ng-template #noLimit>
+                  {{ 'account.budget.unlimited' | translate }}
+                </ng-template>
+              </strong>
+            </dd>
+          </dl>
+          <dl *ngIf="buyer.spentBudget" class="row dl-horizontal dl-separator">
+            <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
+            <dd class="col-6" [ngClass]="{ 'text-danger': bVal.spentPercentage > 1 }">
+              {{ buyer.spentBudget | ishPrice }} ({{ bVal.spentPercentage | percent }})
+            </dd>
+          </dl>
+          <dl *ngIf="requisition.approval.statusCode !== 'APPROVED'" class="row dl-horizontal dl-separator">
+            <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate }}</dt>
+            <dd class="col-6" [ngClass]="{ 'text-danger': bVal.spentPercentageIncludingThisRequisition > 1 }">
+              {{ bVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
+                bVal.spentPercentageIncludingThisRequisition | percent
+              }})
+            </dd>
+          </dl>
+        </div>
+        <div *ngIf="buyer.budget" class="col-md-6 mb-2">
+          <ish-budget-bar
+            [budget]="buyer.budget"
+            [spentBudget]="buyer.spentBudget"
+            [additionalAmount]="orderTotal"
+          ></ish-budget-bar>
+        </div>
+      </div>
+    </ish-info-box>
+  </div>
+</ng-container>

@@ -1,9 +1,13 @@
-FROM node:14 as reporting
+# To build this report image, you will have to temporarily truncate the .dockerignore
+
+FROM node:14-alpine as reporting
 WORKDIR /workspace
+COPY package.json package-lock.json /workspace/
+RUN npm i --ignore-scripts
+RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 ENV CI=true
 ENV NODE_OPTIONS="--max_old_space_size=8192"
 COPY . /workspace/
-RUN npm i --ignore-scripts
 RUN npm run postinstall
 RUN npm i --no-save jest-html-reporter jest-junit && npx jest -c jest-reports.config.js --ci --testFailureExitCode 0
 RUN npx license-checker --csv --out reports/licenses/licenses.csv --customPath templates/3rd-party-licenses_format.json && npm i --no-save htmlify-csv && node node_modules/htmlify-csv/htmlify-csv convert reports/licenses/licenses.csv --output reports/licenses/index.html

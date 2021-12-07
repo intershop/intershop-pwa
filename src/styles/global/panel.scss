@@ -1,8 +1,6 @@
 //
 // PANEL
 // TODO: reimplement as cards? https://getbootstrap.com/docs/4.0/migration/#components
-@use 'sass:math';
-
 .panel {
   margin-bottom: ($space-default * 2);
   background-color: $color-inverse;
@@ -167,7 +165,7 @@
       padding: 0;
 
       h4 {
-        padding: math.div($grid-gutter-width, 3) $grid-gutter-width * 0.5;
+        padding: divide($grid-gutter-width, 3) $grid-gutter-width * 0.5;
       }
 
       a {

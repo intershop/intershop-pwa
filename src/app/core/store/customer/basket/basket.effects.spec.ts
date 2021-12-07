@@ -113,6 +113,22 @@ describe('Basket Effects', () => {
 
       expect(effects.loadBasket$).toBeObservable(expected$);
     });
+
+    describe('with basket-id in session storage', () => {
+      beforeEach(() => {
+        window.sessionStorage.clear();
+      });
+
+      it('should map to action of type LoadBasketWithId', () => {
+        window.sessionStorage.setItem('basket-id', 'BID');
+        const action = loadBasket();
+        const completion = loadBasketWithId({ basketId: 'BID' });
+        actions$ = hot('-a-a-a', { a: action });
+        const expected$ = cold('-c-c-c', { c: completion });
+
+        expect(effects.loadBasket$).toBeObservable(expected$);
+      });
+    });
   });
 
   describe('loadBasketWithId$', () => {

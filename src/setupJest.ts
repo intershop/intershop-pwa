@@ -1,10 +1,11 @@
 // tslint:disable:ish-ordered-imports
 require('jest-preset-angular/setup-jest');
 
-require('jest-extended');
-
 import { CompilerOptions } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
+import * as matchers from 'jest-extended';
+
+expect.extend(matchers);
 
 beforeEach(() => {
   const compilerOptions: CompilerOptions = { preserveWhitespaces: false };
@@ -47,15 +48,15 @@ beforeEach(() => {
 afterEach(() => jest.clearAllTimers());
 
 Object.defineProperty(global, 'PRODUCTION_MODE', {
-  value: () => false,
+  get: () => false,
 });
 
 Object.defineProperty(global, 'NGRX_RUNTIME_CHECKS', {
-  value: () => true,
+  get: () => true,
 });
 
 Object.defineProperty(global, 'THEME', {
-  value: () => 'default',
+  get: () => 'default',
 });
 
 Object.defineProperty(document.body.style, 'transform', {

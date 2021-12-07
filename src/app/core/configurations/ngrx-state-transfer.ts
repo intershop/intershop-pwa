@@ -9,7 +9,7 @@ import { mergeDeep } from 'ish-core/utils/functions';
 
 export const NGRX_STATE_SK = makeStateKey<object>('ngrxState');
 
-export const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
+const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
 
 let transferredState: object;
 
@@ -31,11 +31,11 @@ export function ngrxStateTransferMeta(reducer: ActionReducer<CoreState>): Action
 }
 
 // tslint:disable-next-line: no-any - generic store can only be used as any
-export function filterState(store: any): object {
-  if (store && typeof store === 'object' && !(store instanceof Array)) {
+export function filterState(store: any, maxLevel: number): object {
+  if (maxLevel > 0 && store && typeof store === 'object' && !(store instanceof Array)) {
     return Object.keys(store)
       .filter(k => !k.startsWith('_'))
-      .map(k => ({ [k]: filterState(store[k]) }))
+      .map(k => ({ [k]: filterState(store[k], maxLevel - 1) }))
       .reduce((acc, val) => ({ ...acc, ...val }), {});
   } else {
     return store;
@@ -59,9 +59,14 @@ export function ngrxStateTransfer(transferState: TransferState, store: Store, ac
       // server
       transferState.onSerialize(NGRX_STATE_SK, () => {
         let state;
-        store.pipe(take(1), map(filterState)).subscribe((saveState: object) => {
-          state = saveState;
-        });
+        store
+          .pipe(
+            take(1),
+            map(s => filterState(s, 2))
+          )
+          .subscribe((saveState: object) => {
+            state = saveState;
+          });
 
         return state;
       });

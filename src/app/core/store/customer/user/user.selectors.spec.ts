@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Customer, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
@@ -153,7 +153,7 @@ describe('User Selectors', () => {
       expect(getUserLoading(store$.state)).toBeTrue();
     });
     it('should select  cost centers when the user has cost centers', () => {
-      store$.dispatch(loadUserCostCentersSuccess({ costCenters: [{ id: '12345' } as CostCenter] }));
+      store$.dispatch(loadUserCostCentersSuccess({ costCenters: [{ id: '12345' } as UserCostCenter] }));
 
       expect(getUserCostCenters(store$.state)).toHaveLength(1);
       expect(getUserLoading(store$.state)).toBeFalse();

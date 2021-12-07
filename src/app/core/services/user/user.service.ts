@@ -1,7 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import b64u from 'b64u';
 import { pick } from 'lodash-es';
 import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
@@ -15,9 +14,11 @@ import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -55,7 +56,7 @@ export class UserService {
   signInUser(loginCredentials: Credentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
       ApiService.AUTHORIZATION_HEADER_KEY,
-      'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
+      'BASIC ' + window.btoa(`${loginCredentials.login}:${loginCredentials.password}`)
     );
 
     return this.fetchCustomer({ headers });
@@ -73,7 +74,7 @@ export class UserService {
         headers: new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, token),
       });
     } else {
-      return this.fetchCustomer({ skipApiErrorHandling: true, runExclusively: true });
+      return this.fetchCustomer({ skipApiErrorHandling: true });
     }
   }
 
@@ -168,7 +169,7 @@ export class UserService {
     const headers = credentials
       ? new HttpHeaders().set(
           ApiService.AUTHORIZATION_HEADER_KEY,
-          'BASIC ' + b64u.toBase64(b64u.encode(`${credentials.login}:${credentials.password}`))
+          'BASIC ' + window.btoa(`${credentials.login}:${credentials.password}`)
         )
       : undefined;
 
@@ -283,10 +284,10 @@ export class UserService {
   }
 
   /**
-   * Get cost center data for the logged in User of a Business Customer.
-   * @returns The related cost center
+   * Get cost centers for the logged in User of a Business Customer.
+   * @returns The related cost centers.
    */
-  getEligibleCostCenters(): Observable<CostCenter[]> {
+  getEligibleCostCenters(): Observable<UserCostCenter[]> {
     return combineLatest([
       this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
       this.store.pipe(select(getLoggedInUser), whenTruthy()),
@@ -297,9 +298,34 @@ export class UserService {
           .get(`customers/${customer.customerNo}/users/${encodeURIComponent(user.login)}/costcenters`)
           .pipe(
             unpackEnvelope(),
-            map((costCenters: CostCenter[]) => costCenters)
+            map((costCenters: UserCostCenter[]) => costCenters)
           )
       )
+    );
+  }
+
+  /**
+   * Get cost center data of a business customer for a given cost center uuid/costCenterId. The logged in user needs permission APP_B2B_VIEW_COSTCENTER.
+   * @param   The Id or costCenterId of the cost center
+   * @returns The related cost center.
+   */
+  getCostCenter(id: string): Observable<CostCenter> {
+    if (!id) {
+      return throwError('getCostCenter() called without id');
+    }
+
+    return combineLatest([
+      this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
+      this.store.pipe(select(getUserPermissions), whenTruthy()),
+    ]).pipe(
+      take(1),
+      switchMap(([customer, permissions]) => {
+        if (permissions.includes('APP_B2B_VIEW_COSTCENTER')) {
+          return this.apiService.get<CostCenter>(`customers/${customer.customerNo}/costcenters/${id}`);
+        } else {
+          return of(undefined);
+        }
+      })
     );
   }
 }

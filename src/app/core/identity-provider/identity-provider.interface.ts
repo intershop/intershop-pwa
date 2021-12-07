@@ -37,9 +37,9 @@ export interface IdentityProvider<ConfigType = never> {
   triggerInvite?(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): TriggerReturnType;
 
   /**
-   * Route guard for logout
+   * Logout method (can be used by route guard or otherwise)
    */
-  triggerLogout(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): TriggerReturnType;
+  triggerLogout(): TriggerReturnType;
 
   /**
    * Interceptor for all API requests directed to the ICM

@@ -3,7 +3,7 @@
 {{ define "LOCATION_TEMPLATE" }}
         {{- $channel := .channel }}
         {{- $application := "" }}{{ if (has . "application") }}{{ $application = join ( slice ";application" .application ) "=" }}{{ end }}
-        {{- $identityProvider := "" }}{{ if (has . "identityProvider") }}{{ $identityProvider = join ( slice ";identityProvider" .identityProvider ) "=" }}{{ end }}
+        {{- $identityProvider := "" }}{{ if (has . "identityProvider") }}{{ $identityProvider = .identityProvider }}{{ end }}
         {{- $lang := "default" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
         {{- $currency := "" }}{{ if (has . "currency") }}{{ $currency = join ( slice ";currency" .currency ) "=" }}{{ end }}
         {{- $features := "" }}{{ if (has . "features") }}{{ $features = join ( slice ";features" .features ) "=" }}{{ end }}
@@ -26,12 +26,18 @@
 
         add_header X-Cache-Status $upstream_cache_status;
         proxy_ignore_headers Cache-Control;
-        proxy_cache_valid 200 302 10m;
-        proxy_cache_valid 404      1m;
+        proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
+        proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
 
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;
         add_header X-ua-device $ua_device always;
+
+        rewrite ^.*$ $ssr_rewrite;
+        set $c_uri $ssr_curi;
+
+        # make a nice cache key without parameters
+        proxy_cache_key $scheme://$host$uri$c_uri;
 
         rewrite ^.*/index.html$ {{ $baseHref }}/loading;
 
@@ -40,7 +46,11 @@
         rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang={{ $lang }}';
         rewrite '^(?!.*;currency=.*)(.*)$' '$1;currency={{ $currency }}';
 
-        set $default_rewrite_params ';icmHost={{ $icmHost }}{{ $icmScheme }}{{ $icmPort }};channel={{ $channel }}{{ $application }}{{ $identityProvider }}{{ $features }}{{ $theme }};baseHref={{ $baseHref | strings.ReplaceAll "/" "%2F" }};device=$ua_device';
+      {{ if $identityProvider }}
+        rewrite '^(?!.*;identityProvider=.*)(.*)$' '$1;identityProvider={{ $identityProvider }}';
+      {{ end }}
+
+        set $default_rewrite_params ';icmHost={{ $icmHost }}{{ $icmScheme }}{{ $icmPort }};channel={{ $channel }}{{ $application }}{{ $features }}{{ $theme }};baseHref={{ $baseHref | strings.ReplaceAll "/" "%2F" }};device=$ua_device';
 
         rewrite '^(.*)$' '$1$default_rewrite_params' break;
 
@@ -48,6 +58,24 @@
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
+{{- end }}
+
+{{- define "OVERRIDE_IDENTITY_PROVIDER_TEMPLATE" }}
+    {{- $identityProvider := join ( slice ";identityProvider" .type ) "=" }}
+    rewrite '^((.*){{ .path }})$' '$1{{$identityProvider}}';
+{{- end}}
+
+{{- define "LOCATION_TEMPLATE_FOR_SITEMAP" }}
+        {{- $icmBaseUrl := getenv "ICM_BASE_URL" }}
+        {{- $baseHref := ""}}{{ if (has . "baseHref")}}{{ $baseHref = .baseHref }}{{end}}
+        {{- $channel := .channel }}
+        {{- $application := "rest" }}{{ if (has . "application") }}{{ $application = .application }}{{ end }}
+        {{- $lang := "en_US" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
+      {{- if $icmBaseUrl }}
+      proxy_pass {{ $icmBaseUrl }}/INTERSHOP/static/WFS/{{ $channel }}/{{ $application }}/{{ $channel | strings.ReplaceAll "-Site" "" }}/{{ $lang }}/sitemaps/pwa/sitemap_;
+      {{- else }}
+      rewrite ^{{ $baseHref }}/sitemap.*$ {{ $baseHref }}/;
+      {{- end -}}
 {{- end }}
 
 {{- range $domain, $mapping := (ds "domains") }}
@@ -65,6 +93,20 @@ server {
   {{ else }}
     listen 80;
   {{- end }}
+
+    include /etc/nginx/conf.d/cache-blacklist.conf;
+
+
+  {{- if getenv "OVERRIDE_IDENTITY_PROVIDERS" }}
+    {{- range $domainOverride, $identyProviderOverride := (ds "overrideIdentityProviders") }}
+      {{ if eq $domain $domainOverride }}
+        {{- range $identyProviderOverride }}
+          {{- tmpl.Exec "OVERRIDE_IDENTITY_PROVIDER_TEMPLATE" . }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+
   {{ if getenv "DEBUG" | strings.ToLower | regexp.Match "on|1|true|yes" }}
     error_log /dev/stdout notice;
     rewrite_log on;
@@ -111,6 +153,10 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
 
+        proxy_ignore_headers Cache-Control;
+        proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
+        proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
+
         proxy_pass {{ $UPSTREAM_PWA }};
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
@@ -120,14 +166,20 @@ server {
     location / {
         {{- tmpl.Exec "LOCATION_TEMPLATE" $mapping }}
     }
+    location ^~ /sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $mapping }}
+    }
   {{- else -}}
     {{ range $mapping }}
     location {{ .baseHref }} {
         {{- tmpl.Exec "LOCATION_TEMPLATE" . }}
     }
+    location ^~ {{ .baseHref }}{{if not ( .baseHref | strings.HasSuffix "/")}}/{{end}}sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" . }}
+    }
     {{ end }}
-  {{- if (has ($mapping | jsonpath "$..baseHref") "/") }}
-  {{- else }}
+    {{- if (has ($mapping | jsonpath "$..baseHref") "/") }}
+    {{- else }}
     location / {
         allow all;
         auth_basic off;
@@ -135,7 +187,10 @@ server {
         rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" permanent;
         rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri" permanent;
     }
-  {{- end -}}
+    location ^~ /sitemap_ {
+        {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $first }}
+    }
+    {{- end -}}
   {{- end }}
 
     # redirect server error pages to the static page /50x.html

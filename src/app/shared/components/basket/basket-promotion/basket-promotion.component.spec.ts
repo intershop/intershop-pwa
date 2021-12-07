@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -26,6 +27,7 @@ describe('Basket Promotion Component', () => {
     when(appFacade.icmBaseUrl).thenReturn('example.org');
 
     await TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [
         BasketPromotionComponent,
         MockComponent(PromotionDetailsComponent),
@@ -65,12 +67,10 @@ describe('Basket Promotion Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <div>
         <div class="promotion-title" ng-reflect-ish-server-html="MyPromotionTitle"></div>
         <div class="promotion-details-and-remove-links">
           <ish-promotion-details></ish-promotion-details><ish-promotion-remove></ish-promotion-remove>
         </div>
-      </div>
     `);
   });
 
@@ -89,6 +89,6 @@ describe('Basket Promotion Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`N/A`);
+    expect(element).toMatchInlineSnapshot(`checkout.widget.promotion.discount`);
   });
 });
