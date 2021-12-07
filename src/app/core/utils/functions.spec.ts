@@ -1,4 +1,4 @@
-import { arraySlices, isArrayEqual, mergeDeep, omit } from './functions';
+import { arraySlices, isArrayEqual, mergeDeep, omit, parseTimeToSeconds } from './functions';
 
 describe('Functions', () => {
   describe('arraySlices', () => {
@@ -141,6 +141,37 @@ describe('Functions', () => {
       ${[obj]}     | ${[obj]}     | ${true}
     `('should return $isEqual when comparing $array1 and $array2', ({ array1, array2, isEqual }) => {
       expect(isArrayEqual(array1, array2)).toEqual(isEqual);
+    });
+  });
+
+  describe('parseTimeToSeconds', () => {
+    it.each`
+      str     | seconds
+      ${'1'}  | ${1}
+      ${'5'}  | ${5}
+      ${'1s'} | ${1}
+      ${'5s'} | ${5}
+      ${'1m'} | ${1 * 60}
+      ${'5m'} | ${5 * 60}
+      ${'1h'} | ${1 * 60 * 60}
+      ${'5h'} | ${5 * 60 * 60}
+      ${'1d'} | ${1 * 60 * 60 * 24}
+      ${'5d'} | ${5 * 60 * 60 * 24}
+      ${'1S'} | ${1}
+      ${'5S'} | ${5}
+      ${'1M'} | ${1 * 60}
+      ${'5M'} | ${5 * 60}
+      ${'1H'} | ${1 * 60 * 60}
+      ${'5H'} | ${5 * 60 * 60}
+      ${'1D'} | ${1 * 60 * 60 * 24}
+      ${'5D'} | ${5 * 60 * 60 * 24}
+    `('should parse $str to $seconds seconds', ({ str, seconds }) => {
+      expect(parseTimeToSeconds(str)).toEqual(seconds);
+    });
+
+    it('should throw if value does not match format', () => {
+      expect(() => parseTimeToSeconds('20x')).toThrowErrorMatchingInlineSnapshot(`"Cannot parse \\"20x\\" as time."`);
+      expect(() => parseTimeToSeconds('asdf')).toThrowErrorMatchingInlineSnapshot(`"Cannot parse \\"asdf\\" as time."`);
     });
   });
 });

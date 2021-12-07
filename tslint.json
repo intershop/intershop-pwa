@@ -341,7 +341,7 @@
           "from": "lodash.*"
         },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick)$).*",
+          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick|differenceBy)$).*",
           "from": "lodash.*",
           "filePattern": "^(?!.*.spec.ts$).*.ts$"
         },
@@ -615,7 +615,7 @@
           "^.*/src/app/shared/formly/(components|wrappers|types|extensions|utils|dev)/.*$",
           "^.*/src/app/pages/<name>/formly/.*$",
           // identity providers
-          "^.*/src/app/core/identity-provider/.*$",
+          "^.*(/src/app/core|/src/app/extensions/<name>)/identity-provider/.*$",
           // aggregation modules
           "^.*/src/app/(shell|shared)/\\1\\.module(<theme>)?\\.ts$",
           "^.*/src/app/extensions/(<name>)/\\1\\.module(<theme>)?\\.ts$",
@@ -729,6 +729,10 @@
           {
             "name": "^([A-Z].*)ComponentModule$",
             "file": ".*/<kebab>\\.component(<theme>)?\\.ts$"
+          },
+          {
+            "name": "^([A-Z].*)IdentityProviderModule$",
+            "file": ".*/(<kebab>|identity-provider)/<kebab>-identity-provider\\.module(<theme>)?\\.ts$"
           },
           {
             "name": "^(.*)Module$",

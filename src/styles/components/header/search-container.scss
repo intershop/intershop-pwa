@@ -1,7 +1,5 @@
 /*********** SEARCH CONTAINER **********/
 
-@use 'sass:math';
-
 .search-container {
   position: relative;
 
@@ -182,7 +180,7 @@
 
     .btn-search {
       @include media-breakpoint-down(md) {
-        right: math.div($space-default * 2, 3);
+        right: divide($space-default * 2, 3);
         margin-right: 0;
       }
     }

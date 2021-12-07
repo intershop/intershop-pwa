@@ -7,6 +7,7 @@ import { META_REDUCERS } from '@ngrx/store';
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
 import { COOKIE_CONSENT_VERSION, DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
+import { UniversalCacheInterceptor } from 'ish-core/interceptors/universal-cache.interceptor';
 import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
 
@@ -31,6 +32,7 @@ export class UniversalErrorHandler implements ErrorHandler {
   imports: [AppModule, ServerModule, ServerTransferStateModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UniversalCacheInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
     { provide: ErrorHandler, useClass: UniversalErrorHandler },
     { provide: META_REDUCERS, useValue: configurationMeta, multi: true },

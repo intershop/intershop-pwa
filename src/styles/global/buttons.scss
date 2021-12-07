@@ -1,8 +1,6 @@
 //
 // BUTTONS
 
-@use 'sass:math';
-
 .btn {
   font-family: $font-family-bold;
   text-transform: uppercase;
@@ -56,10 +54,10 @@
 // multiple buttons margin handling (use "button-group" in case the buttons are not direct siblings)
 .button-group .btn,
 .btn:not(:only-child) {
-  margin-bottom: math.div($space-default, 3);
+  margin-bottom: divide($space-default, 3);
 
   &:not(.float-right) {
-    margin-right: math.div($space-default, 3);
+    margin-right: divide($space-default, 3);
 
     @media (max-width: $screen-xs-max) {
       margin-right: 0;
@@ -67,7 +65,7 @@
   }
 
   &.float-right {
-    margin-left: math.div($space-default, 3);
+    margin-left: divide($space-default, 3);
 
     @media (max-width: $screen-xs-max) {
       margin-left: 0;

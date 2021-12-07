@@ -37,6 +37,19 @@ export class FormsService {
       )
     );
   }
+
+  /**
+   * Gets budget period select options for cost center budgets.
+   */
+  static getCostCenterBudgetPeriodOptions() {
+    const periods = ['fixed', 'weekly', 'monthly', 'quarterly'];
+
+    return periods.map(period => ({
+      value: period,
+      label: `account.costcenter.budget.period.value.${period}`,
+    }));
+  }
+
   /**
    * Gets all possible salutation options for a certain country.
    * @param translate instance of a translation service

@@ -55,3 +55,13 @@ export function omit<T>(from: T, ...keys: (keyof T | string)[]) {
 export function isArrayEqual<T>(a1: T[], a2: T[]): boolean {
   return (!a1 && !a2) || (a1?.length === a2?.length && a1?.every((el, idx) => a2?.[idx] === el));
 }
+
+export function parseTimeToSeconds(timeString: string): number {
+  const match = /^([0-9]+)(s|m|h|d)?$/.exec(timeString.toLowerCase());
+  if (!match) {
+    throw new Error(`Cannot parse "${timeString}" as time.`);
+  }
+
+  const [, time, unit] = match;
+  return +time * (unit === 'd' ? 24 * 60 * 60 : unit === 'h' ? 60 * 60 : unit === 'm' ? 60 : 1);
+}

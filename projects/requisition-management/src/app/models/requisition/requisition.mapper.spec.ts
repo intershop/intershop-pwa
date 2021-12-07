@@ -48,6 +48,7 @@ describe('Requisition Mapper', () => {
             approvalDate: 76543627,
           },
         ],
+        systemRejected: true,
         userInformation: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
         userBudgets: {
           budgetPeriod: 'weekly',
@@ -107,6 +108,7 @@ describe('Requisition Mapper', () => {
           "promotionCodes": undefined,
           "purchaseCurrency": "USD",
           "requisitionNo": "0001",
+          "systemRejected": true,
           "totalProductQuantity": undefined,
           "totals": Object {
             "bucketSurchargeTotalsByType": undefined,

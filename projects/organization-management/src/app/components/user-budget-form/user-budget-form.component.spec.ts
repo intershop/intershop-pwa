@@ -28,7 +28,6 @@ describe('User Budget Form Component', () => {
     fixture = TestBed.createComponent(UserBudgetFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(appFacade.currentLocale$).thenReturn(of('en_US'));
     when(appFacade.currentCurrency$).thenReturn(of('USD'));
 
     component.form = new FormGroup({});

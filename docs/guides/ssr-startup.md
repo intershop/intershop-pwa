@@ -49,6 +49,7 @@ Make sure to use them as written in the table below.
 | **SSR Specific**    | PORT                  | number               | Port for running the application                                                             |
 |                     | SSL                   | any                  | Enables SSL/TLS                                                                              |
 |                     | CONCURRENCY_SSR       | number \| max        | concurrency for SSR instances per theme (default: 2)                                         |
+|                     | CACHE_ICM_CALLS       | recommended \| JSON  | enable caching for ICM calls, see [Local ICM Cache](#local-icm-cache) (default: disabled)    |
 | **General**         | ICM_BASE_URL          | string               | Sets the base URL for the ICM                                                                |
 |                     | ICM_CHANNEL           | string               | Overrides the default channel                                                                |
 |                     | ICM_APPLICATION       | string               | Overrides the default application                                                            |
@@ -74,6 +75,25 @@ Therefore be prepared for security questions when first accessing the site.
 
 Our image build process is expecting files `server.crt` and `server.key` in folder `dist`.
 Extension `crt` is the certificate and `key` represents the private key.
+
+## Local ICM Cache
+
+As there are multiple calls that are always common for any SSR requests (like retrieving `/configurations`, `/localizations` and category trees), those calls can be cached for a short time inside the PWA SSR process and be reused for multiple pre-renders.
+Set `CACHE_ICM_CALLS=recommended` to setup basic short-time caching for the aforementioned calls.
+
+You can further customize the caching by supplying a JSON structure to the `CACHE_ICM_CALLS` environment variable of the PWA SSR process:
+
+```json
+{
+  "/configurations": "20m",
+  "/variations": "2h",
+  ".*": "2m"
+}
+```
+
+This example will cache `/configurations` for 20 Minutes, product variations for 2 hours and everything else for 2 Minutes.
+
+This feature can also be used to benchmark the SSR render performance locally by caching all ICM calls.
 
 # Further References
 

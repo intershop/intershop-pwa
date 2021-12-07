@@ -1,7 +1,8 @@
 <input
   [type]="to.type"
   [formControl]="formControl"
-  class="form-control"
   [formlyAttributes]="field"
+  class="form-control"
+  [ngClass]="to.inputClass"
   [attr.data-testing-id]="field.key"
 />

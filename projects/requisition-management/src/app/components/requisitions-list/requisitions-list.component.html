@@ -68,6 +68,9 @@
       </th>
       <td cdk-cell *cdkCellDef="let requisition" [attr.data-label]="'account.approvallist.table.approver' | translate">
         {{ requisition.approval?.approver?.firstName }} {{ requisition.approval?.approver?.lastName }}
+        <div *ngIf="requisition.systemRejected">
+          ({{ 'approval.detailspage.approval_status.system_rejected.status' | translate }})
+        </div>
       </td>
     </ng-container>
 

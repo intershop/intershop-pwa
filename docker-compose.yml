@@ -49,6 +49,7 @@ services:
       # DEBUG: 1
       CACHE: 0
       PAGESPEED: 0
+      SSR: 1
       # PROMETHEUS: 1
       # COMPRESSION: 0
       # DEVICE_DETECTION: 0

@@ -143,6 +143,7 @@
     }
 
     &.infobox-widget {
+      min-height: 175px;
       padding-bottom: $space-default;
 
       .row:last-of-type {

@@ -65,7 +65,7 @@ export class ShoppingFacade {
   }
 
   categoryIdByRefId$(categoryRefId: string) {
-    this.store.dispatch(loadCategoryByRef({ categoryRefId }));
+    this.store.dispatch(loadCategoryByRef({ categoryId: categoryRefId }));
     return this.store.pipe(select(getCategoryIdByRefId(categoryRefId)));
   }
 

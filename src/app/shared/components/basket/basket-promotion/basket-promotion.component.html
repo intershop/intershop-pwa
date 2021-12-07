@@ -1,9 +1,10 @@
-<ng-container *ngIf="promotion$ | async as promotion"
-  ><div *ngIf="promotion && !promotion.disableMessages">
+<ng-container *ngIf="promotion$ | async as promotion">
+  <ng-container *ngIf="promotion && !promotion.disableMessages; else fallback">
     <div class="promotion-title" [ishServerHtml]="promotion.title"></div>
     <div class="promotion-details-and-remove-links">
       <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
       <ish-promotion-remove [code]="rebate.code"></ish-promotion-remove>
     </div>
-  </div>
+  </ng-container>
+  <ng-template #fallback>{{ 'checkout.widget.promotion.discount' | translate }}</ng-template>
 </ng-container>

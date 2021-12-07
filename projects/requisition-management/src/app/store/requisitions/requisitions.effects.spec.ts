@@ -8,6 +8,7 @@ import { Observable, of } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 
 import { Requisition } from '../../models/requisition/requisition.model';
@@ -18,6 +19,7 @@ import {
   loadRequisitionSuccess,
   loadRequisitions,
   updateRequisitionStatus,
+  updateRequisitionStatusFail,
 } from './requisitions.actions';
 import { RequisitionsEffects } from './requisitions.effects';
 
@@ -162,6 +164,20 @@ describe('Requisitions Effects', () => {
         `);
         done();
       });
+    });
+
+    it('should navigate to the requisition approval page on failure', done => {
+      actions$ = of(
+        updateRequisitionStatusFail({ error: { status: 422, code: 'update.requisition.status.fail' } as HttpError })
+      );
+
+      effects.redirectAfterUpdateRequisitionStatusFail$.subscribe(
+        () => {
+          expect(location.path()).toMatchInlineSnapshot(`"/account/requisitions/approver"`);
+        },
+        fail,
+        done
+      );
     });
 
     it('should redirect to listing', done => {

@@ -1,3 +1,4 @@
+import { getCurrencySymbol } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
@@ -19,6 +20,7 @@ import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } fro
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
@@ -104,10 +106,23 @@ export class AppFacade {
 
   /**
    * extracts a specific server setting from the store.
-   * @param path the path to the server setting, starting from the serverConfig/_config store.
+   * @param path The path to the server setting, starting from the serverConfig/_config store.
    */
   serverSetting$<T>(path: string) {
     return this.store.pipe(select(getServerConfigParameter<T>(path)));
+  }
+
+  /**
+   * returns the currency symbol for the currency parameter in the current locale.
+   * If no parameter is given, the the default currency is taken instead of it.
+   * @param currency The currency
+   */
+  currencySymbol$(currency?: string) {
+    return this.currentLocale$.pipe(
+      whenTruthy(),
+      withLatestFrom(this.currentCurrency$),
+      map(([locale, defaultCurrency]) => getCurrencySymbol(currency || defaultCurrency, 'wide', locale))
+    );
   }
 
   countries$() {

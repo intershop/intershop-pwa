@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FieldType, FieldWrapper, FormlyForm, FormlyModule } from '@ngx-formly/core';
+import { FieldType, FieldWrapper, FormlyFieldConfig, FormlyForm, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
 // tslint:disable: project-structure
@@ -15,12 +15,20 @@ class CheckboxFieldComponent extends FieldType {}
 @Component({
   template: `FieldsetFieldComponent:
     <div *ngFor="let f of field.fieldGroup">
-      {{ f.key }}
-      {{ f.type }}
+      {{ getFieldSummary(f) }}
       {{ f.templateOptions | json }}
     </div>`,
 })
-class FieldsetFieldComponent extends FieldType {}
+class FieldsetFieldComponent extends FieldType {
+  getFieldSummary(f: FormlyFieldConfig): string {
+    if (!f.fieldGroup) {
+      return `${f.key} ${f.type}`;
+    }
+    return `${f.key} ${f.type} fieldGroup: [
+      ${f.fieldGroup.map(f2 => this.getFieldSummary(f2))}
+    ]`;
+  }
+}
 
 @Component({
   template: `RadioFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }} `,
@@ -29,6 +37,9 @@ class RadioFieldComponent extends FieldType {}
 
 @Component({ template: 'TextInputFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextInputFieldComponent extends FieldType {}
+
+@Component({ template: 'PlainTextFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
+class PlainTextFieldComponent extends FieldType {}
 
 @Component({ template: 'EmailFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class EmailFieldComponent extends FieldType {}
@@ -59,6 +70,7 @@ class DummyWrapperComponent extends FieldWrapper {}
     FieldsetFieldComponent,
     PasswordFieldComponent,
     PhoneFieldComponent,
+    PlainTextFieldComponent,
     RadioFieldComponent,
     SelectFieldComponent,
     TextInputFieldComponent,
@@ -70,6 +82,10 @@ class DummyWrapperComponent extends FieldWrapper {}
       types: [
         {
           name: 'ish-text-input-field',
+          component: TextInputFieldComponent,
+        },
+        {
+          name: 'ish-plain-text-field',
           component: TextInputFieldComponent,
         },
         {

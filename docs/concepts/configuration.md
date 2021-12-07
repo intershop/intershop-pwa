@@ -163,9 +163,11 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | **B2B Features**             |                                                                                                                            |
 | advancedVariationHandling    | handle product variations as individual products in listings and product detail pages                                      |
 | businessCustomerRegistration | create business customers on registration                                                                                  |
-| orderTemplates               | order templates feature                                                                                                    |
+| costCenters                  | cost center feature                                                                                                        |
+| orderTemplates               | order template feature                                                                                                     |
 | quickorder                   | quick order page and direct add to cart input                                                                              |
 | quoting                      | quoting feature                                                                                                            |
+| punchout                     | punchout feature                                                                                                           |
 | **B2C Features**             |                                                                                                                            |
 | guestCheckout                | allow unregistered guest checkout                                                                                          |
 | wishlists                    | wishlist product list feature                                                                                              |

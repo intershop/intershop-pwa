@@ -1,7 +1,3 @@
-//
-
-@use 'sass:math';
-
 .content-page {
   padding: $space-default 0 $space-default 0;
 }
@@ -72,7 +68,7 @@ ol {
 
     li {
       padding-top: 0;
-      padding-bottom: math.div($space-default, 3);
+      padding-bottom: divide($space-default, 3);
       font-family: $font-family-regular;
       font-size: $font-size-lg;
       text-decoration: none;

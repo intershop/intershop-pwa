@@ -10,6 +10,8 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
 import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
+
 import { PaymentCybersourceCreditcardComponent } from './payment-cybersource-creditcard.component';
 
 describe('Payment Cybersource Creditcard Component', () => {
@@ -23,6 +25,7 @@ describe('Payment Cybersource Creditcard Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(FormControlFeedbackComponent),
         MockComponent(NgbPopover),
+        MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(ShowFormFeedbackDirective),
         PaymentCybersourceCreditcardComponent,
       ],
