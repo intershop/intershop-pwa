@@ -3,8 +3,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { range } from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';

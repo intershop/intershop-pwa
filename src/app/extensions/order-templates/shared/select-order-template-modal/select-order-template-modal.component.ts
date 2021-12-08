@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';

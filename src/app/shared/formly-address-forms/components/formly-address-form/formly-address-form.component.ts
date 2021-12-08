@@ -6,8 +6,8 @@ import { map } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-forms/configurations/address-form-configuration.provider';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 @Component({
   selector: 'ish-formly-address-form',

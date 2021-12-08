@@ -1,12 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
-
-export interface SelectOption {
-  value: string;
-  label: string;
-}
 
 // tslint:disable ish-deprecation
 

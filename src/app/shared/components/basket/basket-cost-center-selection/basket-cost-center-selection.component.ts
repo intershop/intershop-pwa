@@ -6,8 +6,8 @@ import { distinctUntilChanged, map, shareReplay, switchMap, take, takeUntil } fr
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**

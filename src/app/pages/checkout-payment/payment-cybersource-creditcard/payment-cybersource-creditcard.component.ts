@@ -16,8 +16,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 // tslint:disable:no-any - allows access to cybersource js functionality

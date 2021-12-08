@@ -15,8 +15,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject, of } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';

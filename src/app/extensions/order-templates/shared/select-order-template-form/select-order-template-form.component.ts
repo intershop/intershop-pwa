@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 

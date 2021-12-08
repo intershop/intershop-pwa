@@ -5,9 +5,9 @@ import { Observable, OperatorFunction } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 /**
  * FormsService.getAddressOptions as a pipeable operator
