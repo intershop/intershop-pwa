@@ -1,23 +1,19 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
-function filterBlockStatement(body: TSESTree.Statement[]): TSESTree.Statement[] {
-  return body?.filter((element, index, array) =>
-    element.type === AST_NODE_TYPES.VariableDeclaration
-      ? array[index + 1]?.type === AST_NODE_TYPES.ReturnStatement
-      : element.type === AST_NODE_TYPES.ReturnStatement
-      ? array[index - 1]?.type === AST_NODE_TYPES.VariableDeclaration
-      : false
-  );
+function getElementBeforeReturnStatement(node: TSESTree.ReturnStatement): TSESTree.Statement {
+  if (node.parent.type === AST_NODE_TYPES.BlockStatement) {
+    const index = node.parent.body.findIndex(element => element.type === AST_NODE_TYPES.ReturnStatement);
+    return node.parent.body[index - 1];
+  }
 }
 
-function checkNoVarBeforeReturn(body: TSESTree.Statement[]): boolean {
+function checkNoVarBeforeReturn(node: TSESTree.ReturnStatement): boolean {
+  const elementBeforeReturn = getElementBeforeReturnStatement(node);
   return (
-    body.length === 2 &&
-    body[0].type === AST_NODE_TYPES.VariableDeclaration &&
-    body[0].declarations[0].id.type === AST_NODE_TYPES.Identifier &&
-    body[1].type === AST_NODE_TYPES.ReturnStatement &&
-    body[1].argument.type === AST_NODE_TYPES.Identifier &&
-    body[0].declarations[0].id.name === body[1].argument.name
+    elementBeforeReturn?.type === AST_NODE_TYPES.VariableDeclaration &&
+    elementBeforeReturn.declarations[0].id.type === AST_NODE_TYPES.Identifier &&
+    node.argument.type === AST_NODE_TYPES.Identifier &&
+    elementBeforeReturn.declarations[0].id.name === node.argument.name
   );
 }
 
@@ -26,19 +22,27 @@ export const noVarBeforeReturnRule: TSESLint.RuleModule<string, []> = {
     messages: {
       varError: `Don't return a variable, which is declared right before. Return the variable value instead.`,
     },
+    fixable: 'code',
     type: 'problem',
     schema: [],
   },
   create: context => ({
-    BlockStatement(node) {
-      const filteredBody = filterBlockStatement(node.body);
-      if (checkNoVarBeforeReturn(filteredBody)) {
-        filteredBody.map(element =>
+    ReturnStatement(node) {
+      if (checkNoVarBeforeReturn(node)) {
+        const variable = getElementBeforeReturnStatement(node);
+        if (variable.type === AST_NODE_TYPES.VariableDeclaration) {
+          const sourceCode = context.getSourceCode();
           context.report({
-            node: element,
+            node: variable,
             messageId: 'varError',
-          })
-        );
+            fix: fixer => fixer.removeRange([variable.range[0], node.range[0]]),
+          });
+          context.report({
+            node,
+            messageId: 'varError',
+            fix: fixer => fixer.replaceText(node.argument, sourceCode.getText(variable.declarations[0].init)),
+          });
+        }
       }
     },
   }),

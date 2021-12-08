@@ -35,8 +35,37 @@ const config: RuleTestConfig = {
         filename: 'test.ts',
         code: `
         function testFunction() {
-          let abc = 2;
+          let abc = '123';
           return abc;
+        }
+        `,
+        output: `
+        function testFunction() {
+          return '123';
+        }
+        `,
+        errors: [
+          {
+            messageId: 'varError',
+            type: AST_NODE_TYPES.VariableDeclaration,
+          },
+          {
+            messageId: 'varError',
+            type: AST_NODE_TYPES.ReturnStatement,
+          },
+        ],
+      },
+      {
+        filename: 'test.ts',
+        code: `
+        function testFunction() {
+          let abc = new RegExp('ab+c', 'i');
+          return abc;
+        }
+        `,
+        output: `
+        function testFunction() {
+          return new RegExp('ab+c', 'i');
         }
         `,
         errors: [
