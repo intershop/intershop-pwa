@@ -6,7 +6,6 @@ import { concatMap, defaultIfEmpty, expand, filter, last, map, mapTo, take } fro
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { BasketService } from 'ish-core/services/basket/basket.service';
 
 import { QuoteRequestUpdate } from '../../models/quote-request-update/quote-request-update.model';
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
@@ -22,11 +21,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class QuotingService {
-  constructor(
-    private apiService: ApiService,
-    private basketService: BasketService,
-    private quoteMapper: QuotingMapper
-  ) {}
+  constructor(private apiService: ApiService, private quoteMapper: QuotingMapper) {}
 
   getQuotes() {
     return forkJoin([
@@ -100,8 +95,9 @@ export class QuotingService {
       .pipe(map(data => this.quoteMapper.fromData(data, 'Quote')));
   }
 
-  addQuoteToBasket(quoteID: string) {
-    return this.basketService.currentBasketEndpoint().post('items', { quoteID }).pipe(mapTo(quoteID));
+  addQuoteToBasket(basketId: string, quoteID: string) {
+    // ToDo: remove parameter basketId and delegate addQuoteToBasket to the basket service if the basket REST api 1.0 provides this functionality, see #70533
+    return this.apiService.post(`baskets/${basketId}/items`, { quoteID }).pipe(mapTo(quoteID));
   }
 
   createQuoteRequestFromQuote(quoteID: string) {

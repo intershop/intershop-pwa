@@ -115,15 +115,15 @@ export class QuotingEffects {
     this.actions$.pipe(
       ofType(addQuoteToBasket),
       mapToPayloadProperty('id'),
-      concatMap(id =>
+      concatMap(quoteId =>
         this.store.pipe(
           select(getCurrentBasketId),
           first(),
           switchMap(basketId =>
             !basketId ? this.basketService.createBasket().pipe(map(basket => basket.id)) : of(basketId)
           ),
-          concatMap(() => this.quotingService.addQuoteToBasket(id)),
-          mergeMapTo([updateBasket({ update: { calculated: true } }), addQuoteToBasketSuccess({ id })]),
+          concatMap(basketId => this.quotingService.addQuoteToBasket(basketId, quoteId)),
+          mergeMapTo([updateBasket({ update: { calculated: true } }), addQuoteToBasketSuccess({ id: quoteId })]),
           mapErrorToAction(loadQuotingFail)
         )
       )
