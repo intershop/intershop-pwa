@@ -17,6 +17,8 @@ With version 2.0 we introduce a renaming of the two standard PWA themes and chan
 With this change the according folders and references had to be renamed/moved and need to be adapted in customer projects as well.
 In projects where the recommended procedure for using a custom theme has been followed (see [Customization Guide - Start Customization](./customizations.md#start-customization)), minimal migration effort should be required.
 
+We moved the model `SelectOption` from the select.component.ts to the select-option.model.ts and adapted all necessary imports.
+
 ## 1.1 to 1.2
 
 The `dist` folder now only contains results of the build process (except for `healthcheck.js`).

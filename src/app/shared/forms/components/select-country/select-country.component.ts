@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Country } from 'ish-core/models/country/country.model';
-import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { SelectComponent } from 'ish-shared/forms/components/select/select.component';
 
 // tslint:disable ish-deprecation
 

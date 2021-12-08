@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 @Component({
   selector: 'ish-product-list-toolbar',

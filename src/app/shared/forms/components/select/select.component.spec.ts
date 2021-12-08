@@ -3,10 +3,11 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
 import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
-import { SelectComponent, SelectOption } from './select.component';
+import { SelectComponent } from './select.component';
 
 // tslint:disable ish-deprecation
 
