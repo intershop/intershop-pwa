@@ -9,6 +9,7 @@ import { noObjectLiteralTypeAssertionRule } from './rules/no-object-literal-type
 import { noReturnUndefinedRule } from './rules/no-return-undefined';
 import { noStarImportsInStoreRule } from './rules/no-star-imports-in-store';
 import { noTestbedWithThenRule } from './rules/no-testbed-with-then';
+import { noVarBeforeReturnRule } from './rules/no-var-before-return';
 import { orderedImportsRule } from './rules/ordered-imports';
 import { privateDestroyFieldRule } from './rules/private-destroy-field';
 import { projectStructureRule } from './rules/project-structure';
@@ -38,6 +39,7 @@ const rules = {
   'ban-imports-file-pattern': banImportsFilePatternRule,
   'project-structure': projectStructureRule,
   'newline-before-root-members': newlineBeforeRootMembersRule,
+  'no-var-before-return': noVarBeforeReturnRule,
 };
 
 module.exports = {
