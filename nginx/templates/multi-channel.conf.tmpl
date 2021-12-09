@@ -185,7 +185,7 @@ server {
         auth_basic off;
         {{ $first := index $mapping 0 -}}
         rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" permanent;
-        rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri" permanent;
+        rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri?" permanent;
     }
     location ^~ /sitemap_ {
         {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $first }}
