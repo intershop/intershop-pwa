@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 import { FeatureToggleDirective } from './directives/feature-toggle.directive';
 import { NotFeatureToggleDirective } from './directives/not-feature-toggle.directive';
 import { FeatureToggleService, checkFeature } from './utils/feature-toggle/feature-toggle.service';
-import { whenTruthy } from './utils/operators';
 
 @NgModule({
   declarations: [FeatureToggleDirective, NotFeatureToggleDirective],
@@ -23,10 +22,7 @@ export class FeatureToggleModule {
           provide: FeatureToggleService,
           useValue: {
             enabled: (feature: string) =>
-              FeatureToggleModule.features.pipe(
-                whenTruthy(),
-                map(toggles => checkFeature(toggles, feature))
-              ),
+              FeatureToggleModule.features.pipe(map(toggles => checkFeature(toggles, feature))),
           },
         },
       ],

@@ -6,8 +6,10 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 @Component({
   template: `
     <div>unrelated</div>
-    <div *ishFeature="'feature1'">content1</div>
-    <div *ishFeature="'feature2'">content2</div>
+    <div *ishFeature="'feature1'; else feature1Else">content1</div>
+    <ng-template #feature1Else><div>contentElse1</div></ng-template>
+    <div *ishFeature="'feature2'; else feature2Else">content2</div>
+    <ng-template #feature2Else><div>contentElse2</div></ng-template>
     <div *ishFeature="'always'">contentAlways</div>
     <div *ishFeature="'never'">contentNever</div>
   `,
@@ -40,8 +42,16 @@ describe('Feature Toggle Directive', () => {
     expect(element.textContent).toContain('content1');
   });
 
+  it('should not render the else content of enabled features', () => {
+    expect(element.textContent).not.toContain('contentElse1');
+  });
+
   it('should not render content of disabled features', () => {
     expect(element.textContent).not.toContain('content2');
+  });
+
+  it('should render the else content of disabled features', () => {
+    expect(element.textContent).toContain('contentElse2');
   });
 
   it("should always render content for 'always'", () => {

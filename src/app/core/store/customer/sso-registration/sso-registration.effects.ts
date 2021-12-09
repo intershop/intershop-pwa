@@ -22,7 +22,7 @@ export class SsoRegistrationEffects {
       ofType(setRegistrationInfo),
       mapToPayload(),
       withLatestFrom(this.featureToggleService.enabled('businessCustomerRegistration')),
-      mergeMap(([data, enabled]) =>
+      mergeMap(([data, businessCustomerRegistration]) =>
         this.userService
           .createUser({
             address: data.address,
@@ -30,7 +30,7 @@ export class SsoRegistrationEffects {
               customerNo: UUID.UUID(),
               companyName: data.companyInfo.companyName1,
               companyName2: data.companyInfo.companyName2,
-              isBusinessCustomer: enabled,
+              isBusinessCustomer: businessCustomerRegistration,
               taxationID: data.companyInfo.taxationID,
             },
             userId: data.userId,

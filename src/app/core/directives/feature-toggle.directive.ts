@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
@@ -20,10 +20,10 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
   selector: '[ishFeature]',
 })
 export class FeatureToggleDirective implements OnDestroy {
-  private otherTemplateRef: TemplateRef<unknown>;
+  @Input() ishFeatureElse: TemplateRef<unknown>;
 
   private subscription: Subscription;
-  private enabled$ = new ReplaySubject<boolean>(1);
+  private enabled$ = new BehaviorSubject<boolean>(undefined);
 
   private destroy$ = new Subject();
 
@@ -33,15 +33,21 @@ export class FeatureToggleDirective implements OnDestroy {
     private featureToggle: FeatureToggleService,
     private cdRef: ChangeDetectorRef
   ) {
-    this.viewContainer.clear();
-    this.enabled$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(enabled => {
-      if (enabled) {
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      } else if (this.otherTemplateRef) {
-        this.viewContainer.createEmbeddedView(this.otherTemplateRef);
-      }
-      this.cdRef.markForCheck();
-    });
+    this.enabled$
+      .pipe(
+        distinctUntilChanged(),
+        filter(val => typeof val === 'boolean'),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(enabled => {
+        this.viewContainer.clear();
+        if (enabled) {
+          this.viewContainer.createEmbeddedView(this.templateRef);
+        } else if (this.ishFeatureElse) {
+          this.viewContainer.createEmbeddedView(this.ishFeatureElse);
+        }
+        this.cdRef.markForCheck();
+      });
   }
 
   @Input() set ishFeature(feature: string) {
@@ -55,20 +61,6 @@ export class FeatureToggleDirective implements OnDestroy {
       .enabled(feature)
       .pipe(takeUntil(this.destroy$))
       .subscribe({ next: val => this.enabled$.next(val) });
-  }
-
-  @Input() set ishFeatureElse(otherTemplateRef: TemplateRef<unknown>) {
-    // end previous subscription and newly subscribe
-    if (this.subscription) {
-      // tslint:disable-next-line: ban
-      this.subscription.unsubscribe();
-    }
-
-    this.otherTemplateRef = otherTemplateRef;
-    this.subscription = this.featureToggle
-      .enabled('')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.enabled$.next(true));
   }
 
   ngOnDestroy(): void {
