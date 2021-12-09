@@ -1,5 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { FeatureToggleDirective } from './directives/feature-toggle.directive';
@@ -11,7 +11,7 @@ import { FeatureToggleService, checkFeature } from './utils/feature-toggle/featu
   exports: [FeatureToggleDirective, NotFeatureToggleDirective],
 })
 export class FeatureToggleModule {
-  private static features = new ReplaySubject<string[]>(1);
+  private static features = new BehaviorSubject<string[]>(undefined);
 
   static forTesting(...features: string[]): ModuleWithProviders<FeatureToggleModule> {
     FeatureToggleModule.switchTestingFeatures(...features);
@@ -21,8 +21,10 @@ export class FeatureToggleModule {
         {
           provide: FeatureToggleService,
           useValue: {
-            enabled: (feature: string) =>
+            enabled$: (feature: string) =>
               FeatureToggleModule.features.pipe(map(toggles => checkFeature(toggles, feature))),
+            // tslint:disable-next-line: rxjs-no-subject-value
+            enabled: (feature: string) => checkFeature(FeatureToggleModule.features.value, feature),
           },
         },
       ],

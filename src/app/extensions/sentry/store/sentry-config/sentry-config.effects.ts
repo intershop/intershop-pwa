@@ -33,10 +33,8 @@ export class SentryConfigEffects {
 
   setSentryConfig$ = createEffect(() =>
     this.actions$.pipe(
-      takeWhile(() => isPlatformServer(this.platformId)),
+      takeWhile(() => isPlatformServer(this.platformId) && this.featureToggleService.enabled('sentry')),
       take(1),
-      withLatestFrom(this.featureToggleService.enabled('sentry')),
-      filter(([, enabled]) => enabled),
       withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('SENTRY_DSN', 'sentryDSN')),
       map(([, sentryDSN]) => sentryDSN),
       whenTruthy(),

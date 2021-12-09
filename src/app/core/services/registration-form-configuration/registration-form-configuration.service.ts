@@ -34,12 +34,10 @@ export class RegistrationFormConfigurationService {
   ) {}
 
   extractConfig(route: ActivatedRouteSnapshot) {
-    let enabled: boolean;
-    this.featureToggle.enabled('businessCustomerRegistration').subscribe(val => (enabled = val));
     return {
       sso: !!route.url.find(segment => segment.path.includes('sso')),
       userId: route.queryParams.userid,
-      businessCustomer: enabled,
+      businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
       cancelUrl: route.queryParams.cancelUrl,
     };
   }

@@ -20,7 +20,7 @@ export class RecentlyEffects {
       whenTruthy(),
       filter(p => !ProductHelper.isFailedLoading(p)),
       distinctUntilKeyChanged('sku'),
-      withLatestFrom(this.featureToggleService.enabled('advancedVariationHandling')),
+      withLatestFrom(this.featureToggleService.enabled$('advancedVariationHandling')),
       filter(
         ([product, advancedVariationHandling]) => advancedVariationHandling || !ProductHelper.isMasterProduct(product)
       ),

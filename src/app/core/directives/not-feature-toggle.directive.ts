@@ -48,7 +48,7 @@ export class NotFeatureToggleDirective implements OnDestroy {
     }
 
     this.subscription = this.featureToggle
-      .enabled(val)
+      .enabled$(val)
       .pipe(takeUntil(this.destroy$))
       .subscribe({ next: value => this.enabled$.next(!value) });
   }

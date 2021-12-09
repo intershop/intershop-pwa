@@ -27,9 +27,8 @@ export class TrackingConfigEffects {
     if (cookiesService.cookieConsentFor('tracking')) {
       store
         .pipe(
-          withLatestFrom(featureToggleService.enabled('tracking')),
-          filter(([, enabled]) => enabled),
           select(getGTMToken),
+          filter(gtmToken => gtmToken && featureToggleService.enabled('tracking')),
           take(1)
         )
         .subscribe(gtmToken => {
@@ -41,10 +40,8 @@ export class TrackingConfigEffects {
 
   setGTMToken$ = createEffect(() =>
     this.actions$.pipe(
-      takeWhile(() => isPlatformServer(this.platformId)),
+      takeWhile(() => isPlatformServer(this.platformId) && this.featureToggleService.enabled('tracking')),
       take(1),
-      withLatestFrom(this.featureToggleService.enabled('tracking')),
-      filter(([, enabled]) => enabled),
       withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
       map(([, gtmToken]) => gtmToken),
       whenTruthy(),

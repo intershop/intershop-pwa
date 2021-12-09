@@ -18,7 +18,8 @@ describe('Feature Toggle Service', () => {
     });
 
     it('should report feature as deactivated, when no settings are defined', () => {
-      expect(featureToggle.enabled('something')).toBeObservable(cold('a', { a: false }));
+      expect(featureToggle.enabled('something')).toBeFalse();
+      expect(featureToggle.enabled$('something')).toBeObservable(cold('a', { a: false }));
     });
   });
 
@@ -38,7 +39,8 @@ describe('Feature Toggle Service', () => {
       ['feature1', true],
       ['feature2', false],
     ])(`should have %s == %s when asked`, (feature, expected) => {
-      expect(featureToggle.enabled(feature)).toBeObservable(cold('a', { a: expected }));
+      expect(featureToggle.enabled(feature)).toEqual(expected);
+      expect(featureToggle.enabled$(feature)).toBeObservable(cold('a', { a: expected }));
     });
   });
 });

@@ -58,7 +58,7 @@ export class FeatureToggleDirective implements OnDestroy {
     }
 
     this.subscription = this.featureToggle
-      .enabled(feature)
+      .enabled$(feature)
       .pipe(takeUntil(this.destroy$))
       .subscribe({ next: val => this.enabled$.next(val) });
   }

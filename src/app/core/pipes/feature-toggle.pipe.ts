@@ -28,7 +28,7 @@ export class FeatureTogglePipe implements PipeTransform, OnDestroy {
     }
 
     this.subscription = this.featureToggleService
-      .enabled(feature)
+      .enabled$(feature)
       .pipe(takeUntil(this.destroy$))
       .subscribe(val => {
         this.enabled = val;

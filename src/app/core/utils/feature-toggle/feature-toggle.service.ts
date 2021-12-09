@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
@@ -17,13 +17,18 @@ export function checkFeature(features: string[] = [], feature: string): boolean 
 
 @Injectable({ providedIn: 'root' })
 export class FeatureToggleService {
-  private featureToggles$: Observable<string[]>;
+  private featureToggles$ = new BehaviorSubject<string[]>(undefined);
 
   constructor(store: Store) {
-    this.featureToggles$ = store.pipe(select(getFeatures));
+    store.pipe(select(getFeatures)).subscribe(this.featureToggles$);
   }
 
-  enabled(feature: string): Observable<boolean> {
+  enabled(feature: string): boolean {
+    // tslint:disable-next-line: rxjs-no-subject-value
+    return checkFeature(this.featureToggles$.value, feature);
+  }
+
+  enabled$(feature: string): Observable<boolean> {
     return this.featureToggles$.pipe(map(featureToggles => checkFeature(featureToggles, feature)));
   }
 }
