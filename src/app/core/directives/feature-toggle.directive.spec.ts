@@ -61,4 +61,39 @@ describe('Feature Toggle Directive', () => {
   it("should never render content for 'never'", () => {
     expect(element.textContent).not.toContain('contentNever');
   });
+
+  describe('after activating the other feature', () => {
+    beforeEach(() => {
+      FeatureToggleModule.switchTestingFeatures('feature2');
+      fixture.detectChanges();
+    });
+
+    it('should always render unrelated content', () => {
+      expect(element.textContent).toContain('unrelated');
+    });
+
+    it('should render content of enabled features', () => {
+      expect(element.textContent).toContain('content2');
+    });
+
+    it('should not render the else content of enabled features', () => {
+      expect(element.textContent).not.toContain('contentElse2');
+    });
+
+    it('should not render content of disabled features', () => {
+      expect(element.textContent).not.toContain('content1');
+    });
+
+    it('should render the else content of disabled features', () => {
+      expect(element.textContent).toContain('contentElse1');
+    });
+
+    it("should always render content for 'always'", () => {
+      expect(element.textContent).toContain('contentAlways');
+    });
+
+    it("should never render content for 'never'", () => {
+      expect(element.textContent).not.toContain('contentNever');
+    });
+  });
 });
