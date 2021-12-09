@@ -32,7 +32,7 @@
             "aot": true,
             "assets": ["src/assets"],
             "scripts": [],
-            "styles": ["src/styles/themes/b2b/style.scss"],
+            "styles": ["src/styles/themes/placeholder/style.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles/themes/placeholder"]
             }
@@ -203,7 +203,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/organization-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/b2b/style.scss"],
+            "styles": ["src/styles/themes/placeholder/style.scss"],
             "assets": [
               {
                 "glob": "**/*",
@@ -252,7 +252,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/requisition-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/b2b/style.scss"],
+            "styles": ["src/styles/themes/placeholder/style.scss"],
             "assets": [
               {
                 "glob": "**/*",

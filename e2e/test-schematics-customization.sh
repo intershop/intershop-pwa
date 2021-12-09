@@ -36,6 +36,7 @@ stat src/app/pages/home/home-page.component.scss
 grep './home-page.component.scss' src/app/pages/home/home-page.component.brand.ts
 grep './home-page.component.scss' src/app/pages/home/home-page.component.ts
 echo '<p>COMPONENT_OVERRIDES</p>' > src/app/pages/home/home-page.component.brand.html
+echo "@import 'variables';" > src/app/pages/home/home-page.component.brand.scss
 
 npx ng g override --theme brand --html --ts src/app/shared/components/product/product-image/product-image.component.ts
 stat src/app/shared/components/product/product-image/product-image.component.brand.ts
