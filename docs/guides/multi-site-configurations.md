@@ -193,9 +193,9 @@ To see what is possible through multi-site handling, have a look at this extende
   channel: inSPIRED-inTRONICS_Business-Site
   features: quoting,businessCustomerRegistration,advancedVariationHandling
 .+\.fr:
-  channel: inSPIRED-inTRONICS-Site
+  channel: inSPIRED-inTRONICS_Business-Site
   lang: fr_FR
-  application: smb-responsive
+  application: rest
   features: quoting
 ```
 
