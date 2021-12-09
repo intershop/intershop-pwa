@@ -180,24 +180,23 @@ To see what is possible through multi-site handling, have a look at this extende
   - baseHref: /de
     lang: de_DE
     channel: inSPIRED-inTRONICS-Site
+    theme: b2c
   - baseHref: /us
     lang: en_US
     channel: inSPIRED-inTRONICS_Business-Site
     features: quoting,businessCustomerRegistration,advancedVariationHandling
-    theme: blue
 .+\.de:
   channel: inSPIRED-inTRONICS-Site
   lang: de_DE
+  theme: b2c
 .+\.com:
   channel: inSPIRED-inTRONICS_Business-Site
   features: quoting,businessCustomerRegistration,advancedVariationHandling
-  theme: blue
 .+\.fr:
-  channel: inSPIRED-inTRONICS-Site
+  channel: inSPIRED-inTRONICS_Business-Site
   lang: fr_FR
-  application: smb-responsive
+  application: rest
   features: quoting
-  theme: blue
 ```
 
 ### Extended Example with two domains, one with basic auth (except /fr), the other without

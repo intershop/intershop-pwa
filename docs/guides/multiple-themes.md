@@ -10,8 +10,8 @@ kb_sync_latest_only
 It is possible to create multiple themes for the PWA.
 This mechanism uses Angular configurations to replace files for each configuration.
 
-The Intershop Progressive Web App currently uses multi-theming to provide different styles for the B2C an the B2B application.
-The styles for B2C are defined in `src/styles/themes/default/style.scss`, for B2B in `src/styles/themes/blue/style.scss`.
+The Intershop Progressive Web App currently uses multi-theming to provide different styles for the B2B an the B2C application.
+The styles for B2B are defined in `src/styles/themes/b2b/style.scss`, for B2C in `src/styles/themes/b2c/style.scss`.
 
 Using schematics to start customizing Intershop Progressive Web App prepares a theme for your own custom styling. (See [Customizations - Start Customization](../guides/customizations.md#start-customization))
 

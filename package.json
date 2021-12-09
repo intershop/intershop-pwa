@@ -194,7 +194,7 @@
     "commitizen": {
       "path": "./node_modules/cz-customizable"
     },
-    "active-themes": "default,blue"
+    "active-themes": "b2b,b2c"
   },
   "postinstall": {
     "jest-extended/types/index.d.ts": "copy node_modules/@types/jest-extended/index.d.ts"

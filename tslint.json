@@ -564,7 +564,7 @@
         "warnUnmatched": false,
         "reusePatterns": {
           "name": "[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*",
-          "theme": "(?:(?:\\.(?:default|blue))*|\\.all)"
+          "theme": "(?:(?:\\.(?:b2b|b2c))*|\\.all)"
         },
         "pathPatterns": [
           "^.*/src/environments/environment(\\.\\w+)?\\.ts$",
@@ -800,7 +800,7 @@
           // environments
           {
             "name": "^(environment)$",
-            "file": "src/environments/environment(\\.[a-z]+)?\\.ts$"
+            "file": "src/environments/environment(\\.[a-z0-9]+)?\\.ts$"
           }
         ],
         "ignoredFiles": [
