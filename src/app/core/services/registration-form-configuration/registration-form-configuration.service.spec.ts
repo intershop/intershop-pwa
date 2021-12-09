@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -119,7 +120,7 @@ describe('Registration Form Configuration Service', () => {
         queryParams: {},
         url: [{ path: '/register' } as UrlSegment],
       } as ActivatedRouteSnapshot;
-      when(featureToggleService.enabled(anyString())).thenReturn(false);
+      when(featureToggleService.enabled(anyString())).thenReturn(of(false));
 
       expect(registrationConfigurationService.extractConfig(snapshot)).toMatchInlineSnapshot(`
         Object {
@@ -136,7 +137,7 @@ describe('Registration Form Configuration Service', () => {
         queryParams: { userid: 'uid', cancelUrl: '/checkout' } as Params,
         url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
       } as ActivatedRouteSnapshot;
-      when(featureToggleService.enabled(anyString())).thenReturn(true);
+      when(featureToggleService.enabled(anyString())).thenReturn(of(true));
 
       expect(registrationConfigurationService.extractConfig(snapshot)).toMatchInlineSnapshot(`
         Object {

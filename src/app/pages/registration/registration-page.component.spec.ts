@@ -39,7 +39,7 @@ describe('Registration Page Component', () => {
       ],
     }).compileComponents();
 
-    when(featureToggleService.enabled(anyString())).thenReturn(false);
+    when(featureToggleService.enabled(anyString())).thenReturn(of(false));
     when(configService.getFields(anything())).thenReturn([
       {
         key: 'test',

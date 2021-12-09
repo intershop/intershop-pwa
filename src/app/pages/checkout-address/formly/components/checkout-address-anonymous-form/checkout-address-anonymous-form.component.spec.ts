@@ -4,6 +4,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -58,7 +59,7 @@ describe('Checkout Address Anonymous Form Component', () => {
   });
 
   it('should set input field for taxation-id, when businessCustomerRegistration feature is enabled', () => {
-    when(featureToggleService.enabled('businessCustomerRegistration')).thenReturn(true);
+    when(featureToggleService.enabled('businessCustomerRegistration')).thenReturn(of(true));
     fixture.detectChanges();
     expect(component.parentForm.get('additionalAddressAttributes').value).toContainKey('taxationID');
   });

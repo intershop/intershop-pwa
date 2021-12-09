@@ -16,6 +16,8 @@ export class FeatureTogglePipe implements PipeTransform {
   constructor(private featureToggleService: FeatureToggleService) {}
 
   transform(feature: string): boolean {
-    return this.featureToggleService.enabled(feature);
+    let enabled: boolean;
+    this.featureToggleService.enabled(feature).subscribe(val => (enabled = val));
+    return enabled;
   }
 }

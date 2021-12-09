@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { distinctUntilKeyChanged, filter, map } from 'rxjs/operators';
+import { distinctUntilKeyChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { getSelectedProduct } from 'ish-core/store/shopping/products/products.selectors';
@@ -20,11 +20,10 @@ export class RecentlyEffects {
       whenTruthy(),
       filter(p => !ProductHelper.isFailedLoading(p)),
       distinctUntilKeyChanged('sku'),
-      filter(
-        product =>
-          this.featureToggleService.enabled('advancedVariationHandling') || !ProductHelper.isMasterProduct(product)
-      ),
-      map(product => ({
+      filter(product => !ProductHelper.isMasterProduct(product)),
+      withLatestFrom(this.featureToggleService.enabled('advancedVariationHandling')),
+      filter(([, enabled]) => enabled),
+      map(([product]) => ({
         sku: product.sku,
         group: (ProductHelper.isVariationProduct(product) && product.productMasterSKU) || undefined,
       })),
