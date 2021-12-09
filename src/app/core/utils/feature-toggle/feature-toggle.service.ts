@@ -23,11 +23,20 @@ export class FeatureToggleService {
     store.pipe(select(getFeatures)).subscribe(this.featureToggles$);
   }
 
+  /**
+   * Synchronously check if {@param feature} is active.
+   *
+   * This method should only be used for browser code and only for
+   * logic that is not included in the initialization process.
+   */
   enabled(feature: string): boolean {
     // tslint:disable-next-line: rxjs-no-subject-value
     return checkFeature(this.featureToggles$.value, feature);
   }
 
+  /**
+   * Asynchronously check if {@param feature} is active.
+   */
   enabled$(feature: string): Observable<boolean> {
     return this.featureToggles$.pipe(map(featureToggles => checkFeature(featureToggles, feature)));
   }
