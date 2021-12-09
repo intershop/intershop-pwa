@@ -30,17 +30,19 @@ export const noVarBeforeReturnRule: TSESLint.RuleModule<string, []> = {
     ReturnStatement(node) {
       if (checkNoVarBeforeReturn(node)) {
         const variable = getElementBeforeReturnStatement(node);
+        const loc = {
+          start: variable.loc.start,
+          end: node.loc.end,
+        };
         if (variable.type === AST_NODE_TYPES.VariableDeclaration) {
           const sourceCode = context.getSourceCode();
           context.report({
-            node: variable,
+            loc,
             messageId: 'varError',
-            fix: fixer => fixer.removeRange([variable.range[0], node.range[0]]),
-          });
-          context.report({
-            node,
-            messageId: 'varError',
-            fix: fixer => fixer.replaceText(node.argument, sourceCode.getText(variable.declarations[0].init)),
+            fix: fixer => [
+              fixer.removeRange([variable.range[0], node.range[0]]),
+              fixer.replaceText(node.argument, sourceCode.getText(variable.declarations[0].init)),
+            ],
           });
         }
       }

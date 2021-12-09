@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-
 import { noVarBeforeReturnRule } from '../src/rules/no-var-before-return';
 
 import { RuleTestConfig } from './_execute-tests';
@@ -47,11 +45,7 @@ const config: RuleTestConfig = {
         errors: [
           {
             messageId: 'varError',
-            type: AST_NODE_TYPES.VariableDeclaration,
-          },
-          {
-            messageId: 'varError',
-            type: AST_NODE_TYPES.ReturnStatement,
+            line: 3,
           },
         ],
       },
@@ -71,11 +65,7 @@ const config: RuleTestConfig = {
         errors: [
           {
             messageId: 'varError',
-            type: AST_NODE_TYPES.VariableDeclaration,
-          },
-          {
-            messageId: 'varError',
-            type: AST_NODE_TYPES.ReturnStatement,
+            line: 3,
           },
         ],
       },
