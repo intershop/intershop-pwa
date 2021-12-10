@@ -9,19 +9,19 @@ Please refer to the [documentation](../docs/guides/nginx-startup.md) for configu
    .+\.net:
      channel: inSPIRED-inTRONICS-Site
      lang: en_US
+     theme: 'b2c'
    .+\.de:
      channel: inSPIRED-inTRONICS-Site
      lang: de_DE
+     theme: 'b2c'
    .+\.com:
      channel: inSPIRED-inTRONICS_Business-Site
      features: quoting,businessCustomerRegistration,advancedVariationHandling
-     theme: 'blue|688dc3'
    .+\.fr:
      channel: inSPIRED-inTRONICS-Site
      lang: fr_FR
      application: smb-responsive
      features: quoting
-     theme: 'blue|688dc3'
    ```
 2. Run the following from the project root:
 

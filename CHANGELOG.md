@@ -7,6 +7,35 @@ kb_everyone
 
 # Changelog
 
+## [1.4.0](https://github.com/releases/tag/1.4.0) (2021-12-07)
+
+**required Intershop Commerce Management version: 7.10.32.10-LTS**
+
+### Features
+
+- cost center management (#920) ([a11651d](https://github.com/intershop/intershop-pwa/commit/a11651d))
+- introduce formly field plain-text-field ([57c6162](https://github.com/intershop/intershop-pwa/commit/57c6162))
+- introduce template option 'inputClass' to set css classes at input/select/textarea tags in formly components ([0a7ccaa](https://github.com/intershop/intershop-pwa/commit/0a7ccaa))
+- formly - data type of the input addon text extended by Observable<string> ([bb1a47c](https://github.com/intershop/intershop-pwa/commit/bb1a47c))
+- set accent color for inputs ([5e44ece](https://github.com/intershop/intershop-pwa/commit/5e44ece))
+- SSR-only ICM call cache interceptor ([369d94c](https://github.com/intershop/intershop-pwa/commit/369d94c))
+- punchout identity provider (#916) ([36fb90f](https://github.com/intershop/intershop-pwa/commit/36fb90f))
+- cybersource creditcard save for later checkbox. (#925) ([058533f](https://github.com/intershop/intershop-pwa/commit/058533f))
+- add 'lang' property to 'html' tag (#926) ([5828487](https://github.com/intershop/intershop-pwa/commit/5828487))
+- add option to enable SSR only for crawlers in nginx (#899) ([c826583](https://github.com/intershop/intershop-pwa/commit/c826583))
+
+### Bug Fixes
+
+- CMSImageEnhancedComponent remove component CSS class from img tag (#943) ([38124c7](https://github.com/intershop/intershop-pwa/commit/38124c7))
+- support sitemap locations for muliple servers ([bbf98ce](https://github.com/intershop/intershop-pwa/commit/bbf98ce))
+- display a default promotion name if promotion messaging is disabled (#934) ([67967c8](https://github.com/intershop/intershop-pwa/commit/67967c8))
+- use newest Bootstrap release 4.6.1 with own divide() function (#921) ([13ce267](https://github.com/intershop/intershop-pwa/commit/13ce267))
+- make ICM sitemap files available via nginx ([9574457](https://github.com/intershop/intershop-pwa/commit/9574457))
+
+### BREAKING CHANGES
+
+- We no longer use `@use 'sass:math';` and `math.div();` in our `.scss` files but instead switched to the new Bootstrap default way using `divide()`. This is more a note to check your styling customizations for possible adaptions. Both ways should still work together and adaptions are not required.
+
 ## [1.3.0](https://github.com/releases/tag/1.3.0) (2021-10-29)
 
 **required Intershop Commerce Management version: 7.10.32.7-LTS**
