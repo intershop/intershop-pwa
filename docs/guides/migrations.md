@@ -13,6 +13,9 @@ The recently viewed products functionality was moved into an extension.
 The already existing `recently` feature toggle works as before but the recently viewed component integration changed from `<ish-recently-viewed *ishFeature="'recently'"></ish-recently-viewed>` to `<ish-lazy-recently-viewed></ish-lazy-recently-viewed>`.
 This was already changed for the product detail page and the basket page but needs to be done for any customized usage of the recently viewed component.
 
+The `clean-localizations` functionality was changed so that `keep-localization-pattern` can be defined where they are used and do no longer need to be added directly to the [`clean-up-localizations` script](../../scripts/clean-up-localizations.js).
+It might be useful to move custom patterns according to the changes done for the standard code (for more information see [Localization File Clean Up Process](../concepts/localization.md#localization-file-clean-up-process)).
+
 ## 1.4 to 2.0
 
 Since [TSLint has been deprecated](https://blog.palantir.com/tslint-in-2019-1a144c2317a9) for a while now and Angular removed the TSLint support we had to migrate our project from TSLint to ESLint as well.

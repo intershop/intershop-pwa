@@ -82,6 +82,7 @@ export class RequisitionsEffects {
               from(this.router.navigate([`/account/requisitions/approver`])).pipe(
                 concatMap(() => {
                   let messageAction;
+                  // keep-localization-pattern: ^approval\.order_.*\.text$
                   switch (requisition.approval?.statusCode) {
                     case 'APPROVED':
                     case 'REJECTED':
