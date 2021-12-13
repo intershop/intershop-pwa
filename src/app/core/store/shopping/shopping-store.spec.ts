@@ -27,7 +27,6 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { getCategoryTree, getSelectedCategory } from './categories';
 import { setProductListingPageSize } from './product-listing';
 import { getProductEntities, getSelectedProduct } from './products';
-import { getRecentlyViewedProducts } from './recently';
 import { suggestSearch } from './search';
 import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from './shopping-store.module';
 
@@ -327,9 +326,6 @@ describe('Shopping Store', () => {
           expect(store.actionsArray()).toMatchInlineSnapshot(`
             @ngrx/router-store/request: /product/P2
             @ngrx/router-store/navigation: /product/P2
-            [Recently Viewed Internal] Add Product to Recently:
-              sku: "P2"
-              group: undefined
             [Products Internal] Load Product:
               sku: "P2"
             [Products API] Load Product Success:
@@ -460,10 +456,6 @@ describe('Shopping Store', () => {
       `);
     }));
 
-    it('should not put anything in recently viewed products when going to a family page', fakeAsync(() => {
-      expect(getRecentlyViewedProducts(store.state)).toBeEmpty();
-    }));
-
     describe('and clicking a product', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
@@ -475,19 +467,12 @@ describe('Shopping Store', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           @ngrx/router-store/request: /category/A.123.456/product/P1
           @ngrx/router-store/navigation: /category/A.123.456/product/P1
-          [Recently Viewed Internal] Add Product to Recently:
-            sku: "P1"
-            group: undefined
           [Products Internal] Load Product:
             sku: "P1"
           [Products API] Load Product Success:
             product: {"sku":"P1","name":"nP1"}
           @ngrx/router-store/navigated: /category/A.123.456/product/P1
         `);
-      }));
-
-      it('should add the product to recently viewed products when going to product detail page', fakeAsync(() => {
-        expect(getRecentlyViewedProducts(store.state)).toEqual(['P1']);
       }));
 
       describe('and and going back to the family page', () => {
@@ -665,15 +650,8 @@ describe('Shopping Store', () => {
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
-        [Recently Viewed Internal] Add Product to Recently:
-          sku: "P1"
-          group: undefined
         @ngrx/router-store/navigated: /category/A.123.456/product/P1
       `);
-    }));
-
-    it('should put the product to recently viewed products when going to product detail page', fakeAsync(() => {
-      expect(getRecentlyViewedProducts(store.state)).toEqual(['P1']);
     }));
 
     describe('and and going back to the family page', () => {
@@ -731,10 +709,6 @@ describe('Shopping Store', () => {
             breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
         `);
       }));
-
-      it('should not put anything additionally to recently viewed products when going back', fakeAsync(() => {
-        expect(getRecentlyViewedProducts(store.state)).toEqual(['P1']);
-      }));
     });
 
     describe('and and going to compare page', () => {
@@ -789,9 +763,6 @@ describe('Shopping Store', () => {
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
-        [Recently Viewed Internal] Add Product to Recently:
-          sku: "P1"
-          group: undefined
         @ngrx/router-store/navigated: /product/P1
       `);
     }));
@@ -863,10 +834,6 @@ describe('Shopping Store', () => {
     it('should not have a selected product or category when redirected to error page', fakeAsync(() => {
       expect(getSelectedCategory(store.state)).toBeUndefined();
       expect(getSelectedProduct(store.state)).toBeUndefined();
-    }));
-
-    it('should not put anything to recently viewed products when invalid product was selected', fakeAsync(() => {
-      expect(getRecentlyViewedProducts(store.state)).toBeEmpty();
     }));
   });
 

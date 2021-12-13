@@ -34,9 +34,7 @@
       ></ish-content-viewcontext>
     </div>
 
-    <ng-container *ishFeature="'recently'"
-      ><ish-recently-viewed *ngIf="(productLoading$ | async) !== true"></ish-recently-viewed
-    ></ng-container>
+    <ish-lazy-recently-viewed *ngIf="(productLoading$ | async) !== true"></ish-lazy-recently-viewed>
 
     <div class="marketing-area">
       <ish-content-viewcontext

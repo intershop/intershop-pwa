@@ -8,9 +8,10 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
+
+import { RecentlyFacade } from '../../facades/recently.facade';
 
 import { RecentlyViewedComponent } from './recently-viewed.component';
 
@@ -18,11 +19,11 @@ describe('Recently Viewed Component', () => {
   let fixture: ComponentFixture<RecentlyViewedComponent>;
   let component: RecentlyViewedComponent;
   let element: HTMLElement;
-  let shoppingFacade: ShoppingFacade;
+  let recentlyFacade: RecentlyFacade;
   let location: Location;
 
   beforeEach(async () => {
-    shoppingFacade = mock(ShoppingFacade);
+    recentlyFacade = mock(RecentlyFacade);
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([{ path: 'recently', component: RecentlyViewedComponent }])],
@@ -32,7 +33,7 @@ describe('Recently Viewed Component', () => {
         MockPipe(TranslatePipe),
         RecentlyViewedComponent,
       ],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [{ provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) }],
     }).compileComponents();
   });
 
@@ -57,7 +58,7 @@ describe('Recently Viewed Component', () => {
 
   describe('with items', () => {
     beforeEach(() => {
-      when(shoppingFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1', 'P2', 'P3']));
+      when(recentlyFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1', 'P2', 'P3']));
 
       fixture.detectChanges();
     });
@@ -84,7 +85,7 @@ describe('Recently Viewed Component', () => {
 
   describe('link to recently page', () => {
     it('should navigate to recently page when view-all link is clicked', fakeAsync(() => {
-      when(shoppingFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1']));
+      when(recentlyFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1']));
 
       fixture.detectChanges();
 

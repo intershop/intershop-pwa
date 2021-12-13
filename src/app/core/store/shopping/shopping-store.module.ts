@@ -19,8 +19,6 @@ import { ProductsEffects } from './products/products.effects';
 import { productsReducer } from './products/products.reducer';
 import { PromotionsEffects } from './promotions/promotions.effects';
 import { promotionsReducer } from './promotions/promotions.reducer';
-import { RecentlyEffects } from './recently/recently.effects';
-import { recentlyReducer } from './recently/recently.reducer';
 import { SearchEffects } from './search/search.effects';
 import { searchReducer } from './search/search.reducer';
 import { ShoppingState } from './shopping-store';
@@ -29,7 +27,6 @@ const shoppingReducers: ActionReducerMap<ShoppingState> = {
   categories: categoriesReducer,
   products: productsReducer,
   _compare: compareReducer,
-  _recently: recentlyReducer,
   search: searchReducer,
   filter: filterReducer,
   promotions: promotionsReducer,
@@ -40,7 +37,6 @@ const shoppingEffects = [
   CategoriesEffects,
   ProductsEffects,
   CompareEffects,
-  RecentlyEffects,
   SearchEffects,
   FilterEffects,
   PromotionsEffects,
@@ -51,7 +47,6 @@ const shoppingEffects = [
 export class DefaultShoppingStoreConfig implements StoreConfig<ShoppingState> {
   metaReducers = [
     dataRetentionMeta<ShoppingState>(this.dataRetention.compare, this.appBaseHref, 'shopping', '_compare'),
-    dataRetentionMeta<ShoppingState>(this.dataRetention.recently, this.appBaseHref, 'shopping', '_recently'),
   ];
 
   constructor(

@@ -196,7 +196,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
           if (feature) {
             // include core functionality in common bundle
-            if (['captcha', 'seo', 'tracking'].some(f => f === feature)) {
+            if (['captcha', 'seo', 'tracking', 'recently'].some(f => f === feature)) {
               return 'common';
             }
 

@@ -28,6 +28,7 @@ import { OrderTemplatesExportsModule } from '../extensions/order-templates/expor
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
+import { RecentlyExportsModule } from '../extensions/recently/exports/recently-exports.module';
 import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
 import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
@@ -130,7 +131,6 @@ import { ProductVariationSelectComponent } from './components/product/product-va
 import { ProductsListComponent } from './components/product/products-list/products-list.component';
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
-import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
 import { ConfirmLeaveModalComponent } from './components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { SearchBoxComponent } from './components/search/search-box/search-box.component';
 import { FormlyAddressFormsModule } from './formly-address-forms/formly-address-forms.module';
@@ -162,6 +162,7 @@ const importExportModules = [
   QuickorderExportsModule,
   QuotingExportsModule,
   ReactiveFormsModule,
+  RecentlyExportsModule,
   RoleToggleModule,
   RouterModule,
   StoreLocatorExportsModule,
@@ -275,7 +276,6 @@ const exportedComponents = [
   ProductsListComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
-  RecentlyViewedComponent,
   SearchBoxComponent,
   SuccessMessageComponent,
 ];
