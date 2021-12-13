@@ -15,6 +15,7 @@
   <div class="modal-body">
     <div data-testing-id="account-login-page">
       <p *ngIf="loginMessageKey" class="alert alert-info">
+        <!-- keep-localization-pattern: ^account\.login\..*\.message$ -->
         {{ 'account.login.' + loginMessageKey + '.message' | translate }}
       </p>
 

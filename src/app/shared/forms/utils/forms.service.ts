@@ -48,6 +48,7 @@ export class FormsService {
 
     return periods.map(period => ({
       value: period,
+      // keep-localization-pattern: ^account\.costcenter\.budget\.period\.value.*
       label: `account.costcenter.budget.period.value.${period}`,
     }));
   }
