@@ -1,8 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, ActivatedRouteSnapshot, UrlSegment, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { LazyCheckoutReceiptRequisitionComponent } from 'requisition-management';
-import { instance, mock } from 'ts-mockito';
+import { EMPTY } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -14,9 +18,13 @@ describe('Checkout Receipt Page Component', () => {
   let component: CheckoutReceiptPageComponent;
   let fixture: ComponentFixture<CheckoutReceiptPageComponent>;
   let element: HTMLElement;
+  let activatedRoute: ActivatedRoute;
+  const checkoutFacade = mock(CheckoutFacade);
 
   beforeEach(async () => {
+    activatedRoute = mock(ActivatedRoute);
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [
         CheckoutReceiptPageComponent,
         MockComponent(CheckoutReceiptComponent),
@@ -24,8 +32,18 @@ describe('Checkout Receipt Page Component', () => {
         MockComponent(LazyCheckoutReceiptRequisitionComponent),
         MockComponent(LoadingComponent),
       ],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
+      providers: [
+        { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+      ],
     }).compileComponents();
+
+    when(activatedRoute.snapshot).thenReturn({
+      queryParamMap: convertToParamMap({ order: '12345' }),
+      url: [{ path: '/checkout' } as UrlSegment, { path: 'receipt' } as UrlSegment],
+    } as ActivatedRouteSnapshot);
+    when(checkoutFacade.submittedBasket$).thenReturn(EMPTY);
   });
 
   beforeEach(() => {
