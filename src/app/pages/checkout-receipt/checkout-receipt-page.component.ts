@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -13,13 +13,12 @@ import { Order } from 'ish-core/models/order/order.model';
   templateUrl: './checkout-receipt-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutReceiptPageComponent implements OnInit, OnDestroy {
+export class CheckoutReceiptPageComponent implements OnInit {
   order$: Observable<Order>;
   loading$: Observable<boolean>;
   submittedBasket$: Observable<Basket>;
 
   order: string;
-  private destroy$ = new Subject();
 
   constructor(
     private checkoutFacade: CheckoutFacade,
@@ -54,10 +53,5 @@ export class CheckoutReceiptPageComponent implements OnInit, OnDestroy {
         }
       })
     );
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
