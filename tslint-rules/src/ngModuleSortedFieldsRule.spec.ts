@@ -11,7 +11,7 @@ describe('NgModuleSortedFieldsRule', () => {
     it('should not detect error when supplying sorted imports', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 @NgModule({
   imports: [A, B, C],
@@ -25,7 +25,7 @@ describe('NgModuleSortedFieldsRule', () => {
     it('should not detect error when supplying sorted imports in expanded array', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 @NgModule({
   imports: [
@@ -43,7 +43,7 @@ describe('NgModuleSortedFieldsRule', () => {
     it('should not detect error when supplying sorted imports in expanded array with complex typing', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 @NgModule({
   imports: [
@@ -68,7 +68,7 @@ describe('NgModuleSortedFieldsRule', () => {
     it('should not detect error when supplying single element imports in expanded array with complex typing', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 @NgModule({
   imports: [
@@ -89,7 +89,7 @@ describe('NgModuleSortedFieldsRule', () => {
 
     it('should detect error when supplying unsorted imports', () => {
       linter.addSourceFile(
-        'module.ts',
+        'test.module.ts',
         `
 @NgModule({
   imports: [C, B, A],
@@ -103,7 +103,7 @@ describe('NgModuleSortedFieldsRule', () => {
     it('should sort imports when fixing source file', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 @NgModule({
   imports: [C, B, A],
@@ -119,7 +119,7 @@ describe('NgModuleSortedFieldsRule', () => {
     it('should sort imports when fixing source file with partially unsorted members', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 @NgModule({
   imports: [F, A, B, D, C, E, G],
@@ -133,7 +133,7 @@ describe('NgModuleSortedFieldsRule', () => {
     it('should sort imports when fixing source file with expanded array of unsorted members', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 @NgModule({
   imports: [
@@ -154,7 +154,7 @@ describe('NgModuleSortedFieldsRule', () => {
 
     it('should sort imports when fixing source file with expanded array of partially unsorted members', () => {
       linter.addSourceFile(
-        'module.ts',
+        'test.module.ts',
         `
 @NgModule({
   imports: [
@@ -212,7 +212,7 @@ describe('NgModuleSortedFieldsRule', () => {
     it('should not detect error when supplying sorted entries', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 const exportedComponents = [A, B, C];
 @NgModule({
@@ -227,7 +227,7 @@ const exportedComponents = [A, B, C];
     it('should not detect error when supplying sorted entries in expanded array', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 const exportedComponents = [
   A,
@@ -247,7 +247,7 @@ const exportedComponents = [
     it('should detect error when supplying unsorted entries', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 const exportedComponents = [C, B, A];
 @NgModule({
@@ -262,7 +262,7 @@ const exportedComponents = [C, B, A];
     it('should sort array when supplying unsorted entries', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 const exportedComponents = [C, B, A];
 @NgModule({
@@ -278,7 +278,7 @@ const exportedComponents = [C, B, A];
   describe('integrate into spread arrays', () => {
     it('should detect error when supplying component directly instead of into matching spread array', () => {
       linter.addSourceFile(
-        'module.ts',
+        'test.module.ts',
         `
 const declaredComponents = [A, C];
 @NgModule({
@@ -299,7 +299,7 @@ const declaredComponents = [A, C];
 
     it('should detect and fix error when supplying component directly instead of into matching spread arrays', () => {
       linter.addSourceFile(
-        'module.ts',
+        'test.module.ts',
         `
 const exportedComponents = [A, C];
 @NgModule({
@@ -322,7 +322,7 @@ const exportedComponents = [A, C];
 
     it('should detect error when supplying component directly instead of into matching spread arrays', () => {
       linter.addSourceFile(
-        'module.ts',
+        'test.module.ts',
         `
 const exportedComponents = [A, C];
 const declaredComponents = [D];
@@ -347,7 +347,7 @@ const declaredComponents = [D];
     it('should not detect error when supplying component directly instead without matching spread array', () => {
       const result = linter
         .addSourceFile(
-          'module.ts',
+          'test.module.ts',
           `
 const exportedComponents = [A, C];
 @NgModule({
@@ -362,7 +362,7 @@ const exportedComponents = [A, C];
 
     it('should add new element with correct whitespace to matching spread array', () => {
       linter.addSourceFile(
-        'module.ts',
+        'test.module.ts',
         `
 const declaredComponents = [
   A,
@@ -385,7 +385,7 @@ const declaredComponents = [
 
     it('should break array when resulting element line length exceeds maximal size', () => {
       linter.addSourceFile(
-        'module.ts',
+        'test.module.ts',
         `
 const declaredComponents = [AAAAAAAAAAAAAAAAAAAAAAAAAAAAA, CCCCCCCCCCCCCCCCCCCCCCCCCCC];
 @NgModule({

@@ -121,7 +121,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     if (spreadArray) {
       return arr
         .filter(node => !selectSpreadArray(node))
-        .reduce((acc, node) => ({ ...acc, [node.getText()]: spreadArray.getText().substr(3) }), {});
+        .reduce((acc, node) => ({ ...acc, [node.getText()]: spreadArray.getText().substring(3) }), {});
     }
   }
 
@@ -185,7 +185,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithFunction(sourceFile, ctx => {
-      if (ctx.sourceFile.fileName.endsWith('module.ts')) {
+      if (/\.module(\..*)?\.ts$/.test(ctx.sourceFile.fileName)) {
         tsquery(ctx.sourceFile, 'Decorator:has(Identifier[name=NgModule]) ObjectLiteralExpression').forEach(
           (el: ts.ObjectLiteralExpression) => this.checkModuleDefinition(ctx, el)
         );

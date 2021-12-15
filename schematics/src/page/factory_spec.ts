@@ -103,6 +103,25 @@ describe('Page Schematic', () => {
       expect(appRoutingModule).toContain('FooPageModule');
     });
 
+    it('should lazily register route in app routing module override by default', async () => {
+      appTree.create(
+        '/src/app/pages/app-routing.module.all.ts',
+        appTree.readContent('/src/app/pages/app-routing.module.ts')
+      );
+
+      const tree = await schematicRunner.runSchematicAsync('page', defaultOptions, appTree).toPromise();
+
+      const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
+      expect(appRoutingModule).not.toContain(`path: 'foo'`);
+      expect(appRoutingModule).not.toContain('foo-page.module');
+      expect(appRoutingModule).not.toContain('FooPageModule');
+
+      const appRoutingModuleOverride = tree.readContent('/src/app/pages/app-routing.module.all.ts');
+      expect(appRoutingModuleOverride).toContain(`path: 'foo'`);
+      expect(appRoutingModuleOverride).toContain('foo-page.module');
+      expect(appRoutingModuleOverride).toContain('FooPageModule');
+    });
+
     it('should create a page in extension if supplied', async () => {
       const options = { ...defaultOptions, extension: 'feature' };
 

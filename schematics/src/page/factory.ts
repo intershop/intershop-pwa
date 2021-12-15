@@ -80,7 +80,12 @@ async function determineRoutingModule(
       : (project.root ? 'pages/' + project.root.replace(/^.*?\//g, '') : 'pages/app') + '-routing.module.ts';
   }
 
-  const routingModule = normalize(`${buildDefaultPath(project)}/${routingModuleLocation}`);
+  let routingModule: string = normalize(`${buildDefaultPath(project)}/${routingModuleLocation}`);
+  const alternateModule = routingModule.replace('.ts', '.all.ts');
+  if (host.exists(alternateModule)) {
+    routingModule = alternateModule;
+  }
+
   return {
     ...options,
     routingModule,
