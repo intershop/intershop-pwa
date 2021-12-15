@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { LazyCheckoutReceiptRequisitionComponent } from 'requisition-management';
-import { EMPTY } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -16,11 +14,9 @@ describe('Checkout Receipt Page Component', () => {
   let component: CheckoutReceiptPageComponent;
   let fixture: ComponentFixture<CheckoutReceiptPageComponent>;
   let element: HTMLElement;
-  const checkoutFacade = mock(CheckoutFacade);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [
         CheckoutReceiptPageComponent,
         MockComponent(CheckoutReceiptComponent),
@@ -28,10 +24,8 @@ describe('Checkout Receipt Page Component', () => {
         MockComponent(LazyCheckoutReceiptRequisitionComponent),
         MockComponent(LoadingComponent),
       ],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
-
-    when(checkoutFacade.selectedOrder$).thenReturn(EMPTY);
   });
 
   beforeEach(() => {

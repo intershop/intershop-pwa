@@ -15,8 +15,6 @@ export class CheckoutReceiptPageComponent implements OnInit {
   loading$: Observable<boolean>;
   submittedBasket$: Observable<Basket>;
 
-  order: string;
-
   constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
