@@ -91,7 +91,7 @@ export class OrdersEffects {
             location.assign(order.orderCreation.stopAction.redirectUrl);
             return EMPTY;
           } else {
-            return from(this.router.navigate(['/checkout/receipt']));
+            return from(this.router.navigate(['/checkout/receipt'], { queryParams: { orderId: order.id } }));
           }
         })
       ),
