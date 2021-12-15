@@ -30,8 +30,8 @@ export class NotFeatureToggleDirective implements OnDestroy {
     private featureToggle: FeatureToggleService,
     private cdRef: ChangeDetectorRef
   ) {
-    this.enabled$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(enabled => {
-      if (enabled) {
+    this.enabled$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(disabled => {
+      if (disabled) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       } else {
         this.viewContainer.clear();
