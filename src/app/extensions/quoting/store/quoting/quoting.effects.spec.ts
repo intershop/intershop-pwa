@@ -180,7 +180,7 @@ describe('Quoting Effects', () => {
 
   describe('addQuoteToBasket$', () => {
     beforeEach(() => {
-      when(quotingService.addQuoteToBasket(anything())).thenReturn(of(''));
+      when(quotingService.addQuoteToBasket(anything(), anything())).thenReturn(of(''));
     });
 
     describe('with basket', () => {
@@ -192,7 +192,7 @@ describe('Quoting Effects', () => {
         actions$ = of(addQuoteToBasket({ id: 'quoteID' }));
 
         effects.addQuoteToBasket$.subscribe(() => {
-          verify(quotingService.addQuoteToBasket('quoteID')).once();
+          verify(quotingService.addQuoteToBasket('basketID', 'quoteID')).once();
           verify(basketService.createBasket()).never();
           done();
         });
@@ -209,7 +209,7 @@ describe('Quoting Effects', () => {
         actions$ = of(addQuoteToBasket({ id: 'quoteID' }));
 
         effects.addQuoteToBasket$.subscribe(() => {
-          verify(quotingService.addQuoteToBasket('quoteID')).once();
+          verify(quotingService.addQuoteToBasket('basketID', 'quoteID')).once();
           verify(basketService.createBasket()).once();
           done();
         });
