@@ -20,7 +20,7 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
 })
 export class NotFeatureToggleDirective implements OnDestroy {
   private subscription: Subscription;
-  private enabled$ = new ReplaySubject<boolean>(1);
+  private disabled$ = new ReplaySubject<boolean>(1);
 
   private destroy$ = new Subject();
 
@@ -30,7 +30,7 @@ export class NotFeatureToggleDirective implements OnDestroy {
     private featureToggle: FeatureToggleService,
     private cdRef: ChangeDetectorRef
   ) {
-    this.enabled$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(disabled => {
+    this.disabled$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(disabled => {
       if (disabled) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       } else {
@@ -50,7 +50,7 @@ export class NotFeatureToggleDirective implements OnDestroy {
     this.subscription = this.featureToggle
       .enabled$(val)
       .pipe(takeUntil(this.destroy$))
-      .subscribe({ next: value => this.enabled$.next(!value) });
+      .subscribe({ next: value => this.disabled$.next(!value) });
   }
 
   ngOnDestroy(): void {
