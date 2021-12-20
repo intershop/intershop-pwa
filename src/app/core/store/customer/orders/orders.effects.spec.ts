@@ -145,7 +145,7 @@ describe('Orders Effects', () => {
 
       tick(500);
 
-      expect(location.path()).toEqual('/checkout/receipt');
+      expect(location.path()).toEqual('/checkout/receipt?orderId=123');
     }));
 
     it('should navigate to an external url after CreateOrderSuccess if there is redirect required', fakeAsync(() => {

@@ -6,7 +6,7 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { EMPTY, from, iif, race } from 'rxjs';
+import { EMPTY, from, iif, merge, race } from 'rxjs';
 import {
   concatMap,
   concatMapTo,
@@ -22,7 +22,7 @@ import {
 } from 'rxjs/operators';
 
 import { OrderService } from 'ish-core/services/order/order.service';
-import { ofUrl, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
+import { ofUrl, selectQueryParam, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { continueCheckoutWithIssues, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
@@ -91,7 +91,7 @@ export class OrdersEffects {
             location.assign(order.orderCreation.stopAction.redirectUrl);
             return EMPTY;
           } else {
-            return from(this.router.navigate(['/checkout/receipt']));
+            return from(this.router.navigate(['/checkout/receipt'], { queryParams: { orderId: order.id } }));
           }
         })
       ),
@@ -181,12 +181,13 @@ export class OrdersEffects {
   );
 
   /**
-   * Triggers a SelectOrder action if route contains orderId parameter ( for order detail page ).
+   * Triggers a SelectOrder action if route contains orderId query or route parameter.
    */
   routeListenerForSelectingOrder$ = createEffect(() =>
-    this.store.pipe(
-      ofUrl(/^\/(account\/orders.*|checkout\/receipt)/),
-      select(selectRouteParam('orderId')),
+    merge(
+      this.store.pipe(ofUrl(/^\/account\/orders.*/), select(selectRouteParam('orderId'))),
+      this.store.pipe(ofUrl(/^\/checkout\/receipt/), select(selectQueryParam('orderId')))
+    ).pipe(
       withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
       filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
       map(([orderId]) => orderId),
