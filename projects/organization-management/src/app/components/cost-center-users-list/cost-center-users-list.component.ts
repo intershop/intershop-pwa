@@ -6,7 +6,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { CostCenterBuyerEditDialogComponent } from '../cost-center-buyer-edit-dialog/cost-center-buyer-edit-dialog.component';
 
-type CostCenterBuyersListColumnsType = 'buyerName' | 'approvedOrders' | 'pendingOrders' | 'budget' | 'actions';
+type CostCenterBuyersListColumnsType = 'buyerName' | 'orders' | 'pendingOrders' | 'budget' | 'actions';
 
 /**
  * The Cost Center User List Component displays the users assigned to the cost center, their budgets, orders and pending orders.
@@ -23,13 +23,7 @@ export class CostCenterUsersListComponent implements OnInit {
   @Input() costCenter: CostCenter;
   @Input() isEditable = false;
 
-  columnsToDisplay: CostCenterBuyersListColumnsType[] = [
-    'buyerName',
-    'approvedOrders',
-    'pendingOrders',
-    'budget',
-    'actions',
-  ];
+  columnsToDisplay: CostCenterBuyersListColumnsType[] = ['buyerName', 'pendingOrders', 'orders', 'budget', 'actions'];
 
   selectedBuyer: CostCenterBuyer;
 
