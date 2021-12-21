@@ -1,4 +1,4 @@
-<div *ngIf="requisition && requisition.userBudget" class="row">
+<div *ngIf="requisition?.userBudget" class="row">
   <ish-info-box heading="approval.detailspage.buyer_budget.heading" class="infobox-wrapper col-12">
     <div class="row">
       <div class="col-md-6">
@@ -41,10 +41,11 @@
             </strong>
           </dd>
         </dl>
-        <dl *ngIf="requisition.userBudget?.spentBudget" class="row dl-horizontal dl-separator">
+        <dl *ngIf="requisition.userBudget?.spentBudget?.value !== undefined" class="row dl-horizontal dl-separator">
           <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
           <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentage > 1 }">
-            {{ requisition.userBudget.spentBudget | ishPrice }} ({{ spentPercentage | percent }})
+            {{ requisition.userBudget.spentBudget | ishPrice }}
+            <ng-container *ngIf="requisition.userBudget.budget">({{ spentPercentage | percent }})</ng-container>
           </dd>
         </dl>
         <dl
@@ -53,13 +54,17 @@
         >
           <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate }}</dt>
           <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisRequisition > 1 }">
-            {{ requisition.userBudget?.spentBudgetIncludingThisRequisition | ishPrice }} ({{
-              spentPercentageIncludingThisRequisition | percent
-            }})
+            {{
+              requisition.userBudget?.spentBudgetIncludingThisRequisition || requisition.totals.total
+                | ishPrice: 'gross'
+            }}
+            <ng-container *ngIf="requisition.userBudget.budget"
+              >({{ spentPercentageIncludingThisRequisition | percent }})</ng-container
+            >
           </dd>
         </dl>
         <ng-template #leftBudgetDisplay>
-          <dl class="row dl-horizontal dl-separator">
+          <dl *ngIf="requisition.userBudget.budget" class="row dl-horizontal dl-separator">
             <dt class="col-6">{{ 'account.budget.left.label' | translate }}</dt>
             <dd class="col-6">
               {{ this.requisition.userBudget?.remainingBudget | ishPrice }} ({{ leftPercentage | percent }})

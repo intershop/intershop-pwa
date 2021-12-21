@@ -88,7 +88,8 @@ describe('Requisition Buyer Approval Component', () => {
       account.budget.label
       $3,000.00
       account.budget.already_spent.label
-      $300.00 (10%)
+      $300.00
+      (10%)
       account.budget.left.label
       $2,700.00 (90%)
       "
@@ -107,9 +108,11 @@ describe('Requisition Buyer Approval Component', () => {
       account.budget.label
       $3,000.00
       account.budget.already_spent.label
-      $300.00 (10%)
+      $300.00
+      (10%)
       approval.detailspage.budget.including_order.label
-      $2,300.00 (77%)
+      $2,300.00
+      (77%)
       "
     `);
   });
