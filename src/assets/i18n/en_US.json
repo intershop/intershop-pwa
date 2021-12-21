@@ -101,7 +101,7 @@
   "account.costcenter.details.buyers.action.save": "Save",
   "account.costcenter.details.buyers.dialog.editbudget.budget.label": "Budget",
   "account.costcenter.details.buyers.heading": "Add Buyers",
-  "account.costcenter.details.buyers.list.header.approvedorders": "Approved Orders",
+  "account.costcenter.details.buyers.list.header.approvedorders": "Orders",
   "account.costcenter.details.buyers.list.header.clearall": "Clear All",
   "account.costcenter.details.buyers.list.header.name": "Name",
   "account.costcenter.details.buyers.list.header.orderspendlimit": "Budget",
