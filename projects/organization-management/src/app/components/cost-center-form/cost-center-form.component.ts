@@ -115,7 +115,7 @@ export class CostCenterFormComponent implements OnInit {
             fieldGroupClassName: 'row',
             fieldGroup: [
               {
-                className: 'col-8',
+                className: 'col-6 col-md-8',
                 key: 'budgetValue',
                 type: 'ish-text-input-field',
                 templateOptions: {
@@ -140,7 +140,7 @@ export class CostCenterFormComponent implements OnInit {
                 },
               },
               {
-                className: 'col-4',
+                className: 'col-6 col-md-4',
                 type: 'ish-select-field',
                 key: 'budgetPeriod',
                 templateOptions: {
