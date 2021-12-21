@@ -1,6 +1,6 @@
 <ish-product-detail-actions></ish-product-detail-actions>
 
-<div class="row product-details">
+<div *ngIf="product$ | async as product" class="row product-details">
   <div class="col-12 col-md-6 col-lg-8"><ish-product-images></ish-product-images></div>
 
   <div class="col-12 col-md-6 col-lg-4">
@@ -47,5 +47,12 @@
     </div>
 
     <ish-product-detail-info-accordion></ish-product-detail-info-accordion>
+
+    <div class="marketing-area">
+      <ish-content-viewcontext
+        viewContextId="viewcontext.include.product.productinfo"
+        [callParameters]="{ Product: product.sku }"
+      ></ish-content-viewcontext>
+    </div>
   </div>
 </div>

@@ -3,6 +3,13 @@
   [attr.data-testing-id]="'family-page-' + category.uniqueId"
   id="family-page-top"
 >
+  <div class="marketing-area">
+    <ish-content-viewcontext
+      viewContextId="viewcontext.include.family.base.top"
+      [callParameters]="{ Category: category.categoryRef }"
+    ></ish-content-viewcontext>
+  </div>
+
   <div class="row">
     <div class="col-md-3">
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
@@ -10,19 +17,49 @@
         <br />
         <ish-filter-navigation [showCategoryFilter]="false"></ish-filter-navigation>
       </div>
+
       <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
         {{ 'search.mobile.filter.trigger' | translate }}
         <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']"></fa-icon>
       </a>
+
+      <div class="marketing-area">
+        <ish-content-viewcontext
+          viewContextId="viewcontext.include.family.navigation"
+          [callParameters]="{ Category: category.categoryRef }"
+        ></ish-content-viewcontext>
+      </div>
     </div>
     <div class="col-md-9">
       <ish-breadcrumb></ish-breadcrumb>
       <h1>{{ category.name }}</h1>
+
+      <div class="marketing-area">
+        <ish-content-viewcontext
+          viewContextId="viewcontext.include.family.content.top"
+          [callParameters]="{ Category: category.categoryRef }"
+        ></ish-content-viewcontext>
+      </div>
+
       <ish-product-listing
         [categoryId]="category.uniqueId"
         [id]="{ type: 'category', value: category.uniqueId }"
         fragmentOnRouting="family-page-top"
       ></ish-product-listing>
+
+      <div class="marketing-area">
+        <ish-content-viewcontext
+          viewContextId="viewcontext.include.family.content.bottom"
+          [callParameters]="{ Category: category.categoryRef }"
+        ></ish-content-viewcontext>
+      </div>
     </div>
+  </div>
+
+  <div class="marketing-area">
+    <ish-content-viewcontext
+      viewContextId="viewcontext.include.family.base.bottom"
+      [callParameters]="{ Category: category.categoryRef }"
+    ></ish-content-viewcontext>
   </div>
 </div>
