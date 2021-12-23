@@ -1,4 +1,6 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
@@ -11,11 +13,33 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
  * @example
  * <ish-product-add-to-compare *ngIf="'compare' | ishFeature"> ...</ish-product-add-to-compare>
  */
-@Pipe({ name: 'ishFeature', pure: true })
-export class FeatureTogglePipe implements PipeTransform {
-  constructor(private featureToggleService: FeatureToggleService) {}
+@Pipe({ name: 'ishFeature', pure: false })
+export class FeatureTogglePipe implements PipeTransform, OnDestroy {
+  private enabled: boolean;
+  private destroy$ = new Subject();
+  private subscription: Subscription;
+
+  constructor(private featureToggleService: FeatureToggleService, private cdRef: ChangeDetectorRef) {}
 
   transform(feature: string): boolean {
-    return this.featureToggleService.enabled(feature);
+    if (this.subscription) {
+      // tslint:disable-next-line: ban
+      this.subscription.unsubscribe();
+    }
+
+    this.subscription = this.featureToggleService
+      .enabled$(feature)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(val => {
+        this.enabled = val;
+        this.cdRef.markForCheck();
+      });
+
+    return this.enabled;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

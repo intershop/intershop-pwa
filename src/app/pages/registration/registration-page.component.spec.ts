@@ -3,10 +3,9 @@ import { ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/rou
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { RegistrationFormConfigurationService } from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -20,14 +19,12 @@ describe('Registration Page Component', () => {
   let component: RegistrationPageComponent;
   let element: HTMLElement;
   let configService: RegistrationFormConfigurationService;
-  let featureToggleService: FeatureToggleService;
   let activatedRoute: ActivatedRoute;
   let accountFacade: AccountFacade;
 
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     configService = mock(RegistrationFormConfigurationService);
-    featureToggleService = mock(FeatureToggleService);
     activatedRoute = mock(ActivatedRoute);
     await TestBed.configureTestingModule({
       declarations: [MockComponent(ErrorMessageComponent), MockComponent(LoadingComponent), RegistrationPageComponent],
@@ -39,7 +36,6 @@ describe('Registration Page Component', () => {
       ],
     }).compileComponents();
 
-    when(featureToggleService.enabled(anyString())).thenReturn(false);
     when(configService.getFields(anything())).thenReturn([
       {
         key: 'test',

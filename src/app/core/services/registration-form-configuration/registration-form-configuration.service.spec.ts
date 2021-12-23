@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { anyString, instance, mock, when } from 'ts-mockito';
+import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { extractKeys } from 'ish-shared/formly/dev/testing/formly-testing-utils';
 
 import {
@@ -15,17 +15,12 @@ import {
 describe('Registration Form Configuration Service', () => {
   let registrationConfigurationService: RegistrationFormConfigurationService;
   let accountFacade: AccountFacade;
-  let featureToggleService: FeatureToggleService;
 
   beforeEach(() => {
     accountFacade = mock(AccountFacade);
-    featureToggleService = mock(FeatureToggleService);
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      providers: [
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-        { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
-      ],
+      imports: [FeatureToggleModule.forTesting(), RouterTestingModule],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     });
     registrationConfigurationService = TestBed.inject(RegistrationFormConfigurationService);
   });
@@ -119,7 +114,6 @@ describe('Registration Form Configuration Service', () => {
         queryParams: {},
         url: [{ path: '/register' } as UrlSegment],
       } as ActivatedRouteSnapshot;
-      when(featureToggleService.enabled(anyString())).thenReturn(false);
 
       expect(registrationConfigurationService.extractConfig(snapshot)).toMatchInlineSnapshot(`
         Object {
@@ -136,7 +130,7 @@ describe('Registration Form Configuration Service', () => {
         queryParams: { userid: 'uid', cancelUrl: '/checkout' } as Params,
         url: [{ path: '/register' } as UrlSegment, { path: 'sso' } as UrlSegment],
       } as ActivatedRouteSnapshot;
-      when(featureToggleService.enabled(anyString())).thenReturn(true);
+      FeatureToggleModule.switchTestingFeatures('businessCustomerRegistration');
 
       expect(registrationConfigurationService.extractConfig(snapshot)).toMatchInlineSnapshot(`
         Object {
