@@ -45,9 +45,11 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
    * initialize parameter form on init
    */
   ngOnInit() {
-    this.payoneManageMandateForm = new FormGroup({
-      acceptMandate: new FormControl(false, Validators.pattern('true')),
-    });
+    this.payoneManageMandateForm = new FormGroup({});
+    this.payoneManageMandateForm.addControl(
+      'acceptMandate',
+      new FormControl('', [Validators.required, Validators.pattern('true')])
+    );
 
     const thisComp = this;
     // register helper function to call the callback function of this component
@@ -63,8 +65,10 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
   ngOnChanges() {
     if (this.paymentMethod) {
       this.mandateError = false;
+
       // tslint:disable-next-line: no-commented-out-code
       // this.loadScript();
+      this.manageMandate();
     }
   }
 
@@ -90,24 +94,7 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
     return parameter.value;
   }
 
-  isMandateNotAccepted() {
-    // TODO: check if mandate id is present then return false, else call manageMandate and return true.
-    // load script only once if component becomes visible
-    if (!this.scriptLoaded) {
-      this.scriptLoaded = true;
-      this.scriptLoader
-        .load('https://secure.pay1.de/client-api/js/ajax.js')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.createMandate();
-        });
-    } else {
-      this.createMandate();
-    }
-    return true;
-  }
-
-  createMandate() {
+  manageMandate() {
     // calling Payone client API for manage mandate
     if (this.paymentInstrument.parameters?.find(attribute => attribute.name === 'IBAN')) {
       const ibanAttr = this.paymentInstrument.parameters.find(attribute => attribute.name === 'IBAN');
@@ -121,8 +108,14 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
           callback_function_name: 'processMandateResponse',
         };
 
-        const request = new PayoneRequest(data, options);
-        request.checkAndStore();
+        this.scriptLoader
+        .load('https://secure.pay1.de/client-api/js/ajax.js')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          const request = new PayoneRequest(data, options);
+          request.checkAndStore();
+        });
+
       }
     }
   }
@@ -132,30 +125,22 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
     // tslint:disable-next-line: no-console
     console.log(response);
 
-    if (response.get('status') === 'APPROVED') {
-      // TODO: set checkbox label as mandateText
+    if (response.get('status') === 'APPROVED')
+    {
       this.mandateId = response.get('mandate_identification');
-      this.mandateText = response.get('mandate_text');
-      // tslint:disable-next-line: no-commented-out-code
-      // this.cd.detectChanges();
-      // tslint:disable-next-line: no-console
-      console.log(this.mandateId + decodeURI(this.mandateText));
+      if(response.get('mandate_status') === 'pending')
+      {
+        // TODO: set checkbox label as mandateText and show checkbox to accept mandate
+        this.mandateText = response.get('mandate_text');
+        // tslint:disable-next-line: no-commented-out-code
+        // this.cd.detectChanges();
+        // tslint:disable-next-line: no-console
+        console.log(this.mandateId + decodeURI(this.mandateText));
+      }
     } else {
       this.mandateId = undefined;
       this.mandateError = true;
       markAsDirtyRecursive(this.payoneManageMandateForm);
-    }
-  }
-
-  /**
-   * save mandate id in payment instrument
-   */
-  updateMandateId() {
-    // tslint:disable-next-line: no-console
-    console.log('update mandate id function');
-    if (this.payoneManageMandateForm.invalid) {
-      markAsDirtyRecursive(this.payoneManageMandateForm);
-      return;
     }
   }
 }
