@@ -1,4 +1,4 @@
-<div *ngIf="isMandateNotAccepted()">
+
   <p *ngIf="mandateError" class="text-danger col-sm-offset-4">
     {{ 'checkout.sepa.mandate.error.notFound' | translate }}
   </p>
@@ -9,17 +9,8 @@
     <form [formGroup]="payoneManageMandateForm">
       <div id="SEPAMandateText"><p>{{mandateText}}</p></div>
 
-      <ish-checkbox
-      [form]="payoneManageMandateForm"
-      controlName="acceptMandate"
-      label="{{ 'checkout.sepa.mandate.accept.label' | translate }}"
-      [errorMessages]="{ pattern: 'checkout.sepa.mandate.error.required' }"
-    ></ish-checkbox>
+      <input type="checkbox" formControlName="acceptMandate" />
+        <span>{{ 'checkout.sepa.mandate.accept.label' | translate }}</span>
+
     </form>
   </div>
-  <div class="col-md-3 col-lg-5">
-    <button type="submit" class="btn btn-primary" (click)="updateMandateId()">
-      {{ 'checkout.account.confirm.button.label' | translate }}
-    </button>
-  </div>
-</div>
