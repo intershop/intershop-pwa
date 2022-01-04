@@ -262,4 +262,31 @@ describe('Component Schematic', () => {
 
     expect(appTree.files).toContain('/projects/bar/custom/app/foo/foo.component.ts');
   });
+
+  it('should find the closest module respecting all override', async () => {
+    const options = { ...defaultOptions };
+    const fooModules = ['/src/app/foo/foo.module.ts', '/src/app/foo/foo.module.all.ts'];
+    fooModules.forEach(fooModule =>
+      appTree.create(
+        fooModule,
+        `
+      import { NgModule } from '@angular/core';
+
+      @NgModule({
+        imports: [],
+        declarations: []
+      })
+      export class FooModule { }
+    `
+      )
+    );
+
+    const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
+    expect(tree.readContent('/src/app/foo/foo.module.ts')).not.toMatch(
+      /import { FooComponent } from '.\/foo.component'/
+    );
+    expect(tree.readContent('/src/app/foo/foo.module.all.ts')).toMatch(
+      /import { FooComponent } from '.\/foo.component'/
+    );
+  });
 });
