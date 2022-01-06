@@ -10,7 +10,7 @@
       >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
     >
     <div class="col-sm-6">
-      <div id="number-container" class="iframe-container"></div>
+      <div id="number-container" class="iframe-container form-control"></div>
       <small *ngIf="errorMessage.number?.message" class="validation-message">{{
         errorMessage.number.message | translate
       }}</small>
@@ -70,7 +70,7 @@
       >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
     >
     <div class="col-sm-6">
-      <div id="securityCode-container" class="iframe-container"></div>
+      <div id="securityCode-container" class="iframe-container form-control"></div>
       <small *ngIf="errorMessage.securityCode?.message" class="validation-message">{{
         errorMessage.securityCode.message | translate
       }}</small>
