@@ -5,7 +5,8 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true
+    "source.fixAll.tslint": true,
+    "source.fixAll.stylelint": true
   },
   "editor.bracketPairColorization.enabled": true,
 
@@ -15,6 +16,11 @@
   "tslint.alwaysShowRuleFailuresAsWarnings": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.iconTheme": "vscode-icons",
+
+  // stylelint
+  "stylelint.validate": ["css", "scss"],
+  "css.validate": false,
+  "scss.validate": false,
 
   // file type specific settings
   "[handlebars]": {
