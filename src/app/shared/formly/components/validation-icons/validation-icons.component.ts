@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 /**
- * Component that displays either a cross or a checkmark to indicate validity.
+ * Component that displays either a cross or a check mark to indicate validity.
  *
  * @templateOption **showValidation** - a function of type ``(field: FormlyFieldConfig) => boolean``
- * that can be used to override the checkmark display condition.
+ * that can be used to override the check mark display condition.
  *
  */
 @Component({

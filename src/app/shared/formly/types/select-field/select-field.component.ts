@@ -16,7 +16,7 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
  *
  * @usageNotes
  * The select field functionality is coupled with the translate-select-options extension. It reads the ``options`` and ``placeholder``
- * from the coniguration and writes them to ``templateOptions.processedOptions``.
+ * from the configuration and writes them to ``templateOptions.processedOptions``.
  * Please don't use ``templateOptions.processedOptions`` manually.
  *
  */
