@@ -84,10 +84,10 @@
     padding: divide($space-default, 3) 0;
 
     a {
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
 
       &:hover {
-        color: darken($text-color-quarternary, 10%);
+        color: darken($text-color-quaternary, 10%);
       }
     }
 

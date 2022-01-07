@@ -47,7 +47,7 @@ $text-color-corporate: $CORPORATE-PRIMARY;
 $text-color-primary: #222;
 $text-color-secondary: #555;
 $text-color-tertiary: #8b8b8b;
-$text-color-quarternary: #999;
+$text-color-quaternary: #999;
 $text-color-quinary: #eee;
 
 $text-color-inverse: #fff;
@@ -67,7 +67,7 @@ $color-inverse: #fff;
 $color-special-primary: #e74c3c; //RED
 $color-special-secondary: #f39c12; //ORANGE
 $color-special-tertiary: #00abea; //BLUE
-$color-special-quarternary: #5cb85c; // GREEN
+$color-special-quaternary: #5cb85c; // GREEN
 
 //
 // BORDERS
@@ -175,7 +175,7 @@ $secondary: $CORPORATE-SECONDARY;
 $danger: $color-special-primary;
 $warning: $color-special-secondary;
 $info: $color-special-tertiary;
-$success: $color-special-quarternary;
+$success: $color-special-quaternary;
 
 // Body
 //
@@ -227,7 +227,7 @@ $headings-color: $text-color-primary;
 // Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
 
 // Forms
-$input-placeholder-color: $text-color-quarternary;
+$input-placeholder-color: $text-color-quaternary;
 $input-accent-color: #222;
 
 // Dropdown
