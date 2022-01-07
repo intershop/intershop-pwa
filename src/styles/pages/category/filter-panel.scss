@@ -80,13 +80,13 @@
   li {
     &.filter-item {
       padding: 3px 0;
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
 
       a {
         display: block;
 
         &.filter-item-name {
-          color: $text-color-quarternary;
+          color: $text-color-quaternary;
         }
 
         &.filter-swatch {
@@ -131,7 +131,7 @@
 
       span {
         font-weight: normal;
-        color: $text-color-quarternary;
+        color: $text-color-quaternary;
 
         &.icon-selected {
           display: inline-block;
@@ -144,7 +144,7 @@
       }
 
       &.filter-color {
-        border-color: $text-color-quarternary;
+        border-color: $text-color-quaternary;
 
         a {
           display: inline-block;
