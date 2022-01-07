@@ -41,7 +41,7 @@ describe('Tacton Step Buttons Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <div class="d-flex flex-nowrap justify-content-between tacton-buttonbar">
+      <div class="d-flex flex-nowrap justify-content-between tacton-button-bar">
         <div class="d-inline-block mr-auto">
           <button
             class="btn btn-secondary no-wrap text-nowrap"
