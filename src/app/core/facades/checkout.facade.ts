@@ -155,6 +155,7 @@ export class CheckoutFacade {
     ]).pipe(
       // compare baskets only by shippingMethod
       distinctUntilChanged(
+        // spell-checker: words prevbasket prevship curbasket curship
         ([prevbasket, prevship], [curbasket, curship]) =>
           prevbasket.commonShippingMethod?.id === curbasket.commonShippingMethod?.id && prevship === curship
       ),

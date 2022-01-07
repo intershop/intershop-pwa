@@ -152,7 +152,7 @@ export class CostCentersService {
   }
 
   /**
-   * Unassigns a buyer from a cost center. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   * Un-assigns a buyer from a cost center. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
    * @param     costCenterId  The id of the costcenter.
    * @param     login         The login of the buyer.
    * @returns                 The changed cost center.

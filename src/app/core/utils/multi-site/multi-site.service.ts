@@ -26,7 +26,7 @@ export class MultiSiteService {
         let newUrl = url;
         /**
          * only replace lang parameter if:
-         * - multiSiteLocaleMap environment var is declared (set to undefined to skip this behaviour)
+         * - multiSiteLocaleMap environment var is declared (set to undefined to skip this behavior)
          * - current baseHref is part of the map (so the empty "/" baseHref would not be replaced)
          * - multiSiteLocaleMap contains target locale
          */

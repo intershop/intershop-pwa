@@ -118,7 +118,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmApplication: 'rest',
   identityProvider: 'ICM',
 
-  /* FEATURE TOOGLES */
+  /* FEATURE TOGGLES */
   features: ['compare', 'guestCheckout', 'recently', 'rating', 'wishlists'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */

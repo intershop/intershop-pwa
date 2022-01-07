@@ -17,6 +17,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
+// spell-checker: disable
 // allows access to Payone js functionality
 // tslint:disable-next-line:no-any
 declare var Payone: any;
