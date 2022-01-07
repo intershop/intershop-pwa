@@ -236,6 +236,8 @@
   }
 }
 
+/* purgecss start ignore */
+
 .product-label {
   position: absolute;
   top: 90px;
@@ -262,6 +264,8 @@
     top: 15px;
   }
 }
+
+/* purgecss end ignore */
 
 .full-page-grid-view-product-list {
   .product-list:not(.slick-carousel) {
