@@ -609,6 +609,7 @@
   "checkout.addresses.shipping_address.option1.text": "Ship to the above invoice address",
   "checkout.addresses.shipping_address.option2.text": "Ship to a different address",
   "checkout.bankGroup.error.required": "Please select a bank group.",
+  "checkout.bankGroup.label": "Bank Group",
   "checkout.button.label": "Continue Checkout",
   "checkout.cancel.button.label": "Cancel",
   "checkout.cart.estimated_shipping_handling.label": "Estimated Shipping",
