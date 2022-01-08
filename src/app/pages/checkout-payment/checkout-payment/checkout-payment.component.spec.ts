@@ -23,6 +23,7 @@ import { InfoMessageComponent } from 'ish-shared/components/common/info-message/
 import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 import { PaymentParameterFormComponent } from '../payment-parameter-form/payment-parameter-form.component';
+import { PaymentPayoneIdealComponent } from '../payment-payone-ideal/payment-payone-ideal.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 
@@ -45,6 +46,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(FormlyForm),
         MockComponent(InfoMessageComponent),
         MockComponent(PaymentConcardisCreditcardComponent),
+        MockComponent(PaymentPayoneIdealComponent),
         MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(NgbCollapse),
         MockDirective(ServerHtmlDirective),
