@@ -20,11 +20,11 @@
       <ish-product-inventory></ish-product-inventory>
       <div *ngIf="editable$ | async" class="d-flex align-items-center">
         <ish-lazy-product-add-to-order-template
-          [class]="'btn btn-link btn-tool add-to-order-template'"
+          [cssClass]="'btn btn-link btn-tool add-to-order-template'"
           displayType="icon"
         ></ish-lazy-product-add-to-order-template>
         <ish-lazy-product-add-to-wishlist
-          [class]="'btn-link btn-tool ml-0'"
+          [cssClass]="'btn-link btn-tool ml-0'"
           displayType="icon"
         ></ish-lazy-product-add-to-wishlist>
         <a

@@ -2,7 +2,7 @@
   *ngIf="visible$ | async"
   type="submit"
   class="btn"
-  [ngClass]="class"
+  [ngClass]="cssClass"
   [class.btn-secondary]="displayType !== 'icon'"
   [disabled]="disabled$ | async"
   [attr.title]="'quote.add_product_to_quote.button.add_to_quote.label' | translate"
