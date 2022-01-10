@@ -1,7 +1,7 @@
 <button
   *ngIf="(visible$ | async) && ('compare' | ishFeature)"
   class="btn add-to-compare"
-  [ngClass]="class"
+  [ngClass]="cssClass"
   [class.is-selected]="isInCompareList$ | async"
   title="{{ 'product.compare.link' | translate }}"
   (click)="toggleCompare()"

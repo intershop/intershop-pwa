@@ -3,7 +3,7 @@
     type="submit"
     name="addProduct"
     class="btn"
-    [ngClass]="class"
+    [ngClass]="cssClass"
     [class.btn-primary]="!displayIcon"
     [disabled]="(hasQuantityError$ | async) || (displaySpinner$ | async)"
     [attr.title]="translationKey$ | async | translate"
