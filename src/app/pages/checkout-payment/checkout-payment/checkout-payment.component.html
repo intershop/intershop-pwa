@@ -82,7 +82,16 @@
                       [value]="paymentInstrument.id"
                     />
                     <label class="form-check-label" [for]="'paymentOption_' + paymentInstrument.id">
-                      {{ paymentInstrument.accountIdentifier }}
+                      <div *ngIf="paymentMethod.serviceId === 'Payone_IDeal'; else default">
+                        <ish-payment-payone-ideal-detail
+                          [paymentInstrument]="paymentInstrument"
+                          [paymentMethod]="paymentMethod"
+                        >
+                        </ish-payment-payone-ideal-detail>
+                      </div>
+                      <ng-template #default>
+                        {{ paymentInstrument.accountIdentifier }}
+                      </ng-template>
                     </label>
                     <a
                       class="float-right"
