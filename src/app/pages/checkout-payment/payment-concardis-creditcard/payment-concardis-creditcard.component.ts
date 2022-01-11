@@ -145,7 +145,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
     if (error) {
       this.mapErrorMessage(error.message);
     } else if (this.parameterForm.valid) {
-      this.submit.emit({
+      this.submitPayment.emit({
         parameters: [
           { name: 'paymentInstrumentId', value: result.paymentInstrumentId },
           { name: 'maskedCardNumber', value: result.attributes.cardNumber },

@@ -57,8 +57,8 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
    */
   @Input() activated = false;
 
-  @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() cancelPayment = new EventEmitter<void>();
+  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   private destroy$ = new Subject();
 
@@ -185,7 +185,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
         jti: string;
       } = JSON.parse(window.atob(tokenSplit[1]));
 
-      this.submit.emit({
+      this.submitPayment.emit({
         parameters: [
           { name: 'token', value: token },
           { name: 'tokenExpiryTime', value: payloadJson.exp },
@@ -232,6 +232,6 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
     if (this.cyberSourceCreditCardForm.get('saveForLater')) {
       this.cyberSourceCreditCardForm.get('saveForLater').setValue(true);
     }
-    this.cancel.emit();
+    this.cancelPayment.emit();
   }
 }

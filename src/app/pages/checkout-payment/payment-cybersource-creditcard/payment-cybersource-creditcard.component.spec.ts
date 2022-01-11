@@ -53,7 +53,7 @@ describe('Payment Cybersource Creditcard Component', () => {
   it('should emit cancel event when cancelNewPaymentInstrument is triggered', () => {
     fixture.detectChanges();
 
-    const emitter = spy(component.cancel);
+    const emitter = spy(component.cancelPayment);
 
     component.cancelNewPaymentInstrument();
     verify(emitter.emit()).once();
@@ -61,7 +61,7 @@ describe('Payment Cybersource Creditcard Component', () => {
 
   it('should emit submit event if submit call back returns with no error and parameter form is valid', () => {
     fixture.detectChanges();
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitPayment);
 
     const payloadjson = {
       data: { number: '4111 1111 1111 1111', type: '001', expirationMonth: '11', expirationYear: '2022' },
@@ -83,7 +83,7 @@ describe('Payment Cybersource Creditcard Component', () => {
 
   it('should not emit submit event if submit call back returns with no error and parameter form is invalid', () => {
     fixture.detectChanges();
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitPayment);
 
     const payloadjson = {
       data: { number: '4111 1111 1111 1111', type: '001', expirationMonth: '11', expirationYear: '2022' },

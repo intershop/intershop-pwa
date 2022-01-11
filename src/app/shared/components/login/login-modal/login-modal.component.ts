@@ -7,9 +7,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class LoginModalComponent {
   @Input() loginMessageKey: string;
-  @Output() close = new EventEmitter<void>();
+  @Output() closeModal = new EventEmitter<void>();
 
   hide() {
-    this.close.emit();
+    this.closeModal.emit();
   }
 }

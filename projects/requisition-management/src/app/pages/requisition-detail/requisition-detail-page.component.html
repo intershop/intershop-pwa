@@ -104,7 +104,10 @@
         </button>
       </div>
     </ng-template>
-    <ish-requisition-reject-dialog #rejectDialog (submit)="rejectRequisition($event)"></ish-requisition-reject-dialog>
+    <ish-requisition-reject-dialog
+      #rejectDialog
+      (submitRejectRequisition)="rejectRequisition($event)"
+    ></ish-requisition-reject-dialog>
 
     <div class="section d-flex d-flex justify-content-between">
       <a [routerLink]="['../', { status: requisition.approval.statusCode }]">

@@ -38,7 +38,7 @@ describe('Wishlist Preferences Dialog Component', () => {
       preferred: true,
     };
 
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitWishlist);
 
     component.submitWishlistForm();
 
@@ -58,7 +58,7 @@ describe('Wishlist Preferences Dialog Component', () => {
     fixture.detectChanges();
     component.wishListForm.addControl('title', new FormControl(undefined, Validators.required));
 
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitWishlist);
     component.submitWishlistForm();
 
     verify(emitter.emit(anything())).never();

@@ -38,8 +38,8 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
    */
   @Input() activated = false;
 
-  @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() cancelPayment = new EventEmitter<void>();
+  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   /**
    * flag to make sure that the init script is executed only once
@@ -215,6 +215,6 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
       this.parameterForm.get('saveForLater').setValue(true);
     }
     this.resetErrors();
-    this.cancel.emit();
+    this.cancelPayment.emit();
   }
 }
