@@ -66,7 +66,7 @@ For usage instructions, check the comments in that file.
 
 The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS and other files.
 In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](https://editorconfig.org) configuration of the project to help maintain consistent coding styles.
-Besides that, the project has [TSLint](https://palantir.github.io/tslint/) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
+Besides that the project has [ESLint](https://eslint.org) and [Stylelint](https://stylelint.io) configured to unify the coding style even further.
 
 The recommended IDE for the Intershop PWA development is
 
