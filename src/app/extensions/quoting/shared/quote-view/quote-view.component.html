@@ -30,7 +30,7 @@
 
     <ng-template #quotePending>
       <ish-info-message
-        *ngIf="state === 'Responded' && !(isQuoteStarted$ | async)"
+        *ngIf="state === 'Responded' && (isQuoteStarted$ | async) === false"
         message="quote.error.not_started"
         [toast]="false"
       ></ish-info-message>

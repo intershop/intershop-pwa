@@ -29,6 +29,7 @@ describe('Product Page Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     when(context.select('product')).thenReturn(EMPTY);
+    when(context.select('loading')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('recently')],

@@ -21,6 +21,7 @@ describe('Search Page Component', () => {
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.searchTerm$).thenReturn(of('search'));
+    when(shoppingFacade.searchLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],

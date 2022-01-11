@@ -1,6 +1,6 @@
 <ish-info-box heading="account.costcenter.widget.title" class="infobox-wrapper" cssClass="infobox-widget">
   <div class="loading-container">
-    <div *ngIf="!(loading$ | async); else loading">
+    <div *ngIf="(loading$ | async) !== true; else loading">
       <ng-container *ngIf="costCenters$ | async as costCenters; else emptyList">
         <ng-container *ngIf="costCenters.length; else emptyList">
           <ng-container *ngFor="let cc of costCenters$ | async">

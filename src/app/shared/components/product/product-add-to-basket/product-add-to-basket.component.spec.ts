@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -19,7 +19,7 @@ describe('Product Add To Basket Component', () => {
 
   beforeEach(async () => {
     const checkoutFacade = mock(CheckoutFacade);
-    when(checkoutFacade.basketLoading$).thenReturn(of(false));
+    when(checkoutFacade.basketLoading$).thenReturn(EMPTY);
 
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToBasket')).thenReturn(of(true));
