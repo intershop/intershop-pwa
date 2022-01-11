@@ -16,7 +16,6 @@ import { getWorkspace } from '@schematics/angular/utility/workspace';
 import * as ts from 'typescript';
 
 import { determineArtifactName, findDeclaringModule } from '../utils/common';
-import { applyLintFix } from '../utils/lint-fix';
 import {
   addDeclarationToNgModule,
   addDecoratorToClass,
@@ -214,11 +213,6 @@ export function createLazyComponent(options: Options): Rule {
         ])
       )
     );
-
-    if (!options.ci) {
-      operations.push(applyLintFix());
-      operations.push(applyLintFix());
-    }
 
     return chain(operations);
   };

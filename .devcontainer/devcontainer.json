@@ -28,8 +28,8 @@
     // code style + formatting
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint",
+    "dbaeumer.vscode-eslint",
     "csstools.postcss",
-    "ms-vscode.vscode-typescript-tslint-plugin",
     // testing
     "andys8.jest-snippets",
     // documentation

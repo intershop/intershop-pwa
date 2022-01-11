@@ -4,8 +4,8 @@ COPY package.json package-lock.json /workspace/
 RUN npm i --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 RUN npm run ngcc
-COPY tsconfig.app.json tsconfig.json ngsw-config.json .browserslistrc angular.json tslint.json /workspace/
-COPY tslint-rules /workspace/tslint-rules
+COPY tsconfig.app.json tsconfig.json ngsw-config.json .browserslistrc angular.json .eslintrc.json /workspace/
+COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY projects /workspace/projects
 COPY src /workspace/src
