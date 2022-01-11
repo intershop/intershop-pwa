@@ -107,7 +107,7 @@ describe('Missing Data', () => {
       at(HomePage, page => page.header.gotoCategoryPage(_.catalog));
       at(CategoryPage, page => page.gotoSubCategory(_.categoryid));
       at(NotFoundPage);
-      cy.url().should('contain', 'cat' + _.categoryid);
+      cy.url().should('contain', `cat${_.categoryid}`);
     });
   });
 

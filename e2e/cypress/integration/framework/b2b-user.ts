@@ -50,7 +50,7 @@ export function createB2BUserViaREST(user: Partial<Registration>) {
 
   cy.request(
     'POST',
-    Cypress.env('ICM_BASE_URL') + '/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-/customers',
+    `${Cypress.env('ICM_BASE_URL')}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-/customers`,
     customer
   ).then(response => {
     expect(response.status).to.equal(201);
