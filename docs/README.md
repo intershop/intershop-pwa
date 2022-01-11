@@ -41,6 +41,7 @@ kb_sync_latest_only
 - [Guide - Code Documentation](./guides/code-documentation.md)
 - [Guide - Angular Change Detection](./guides/angular-change-detection.md)
 - [Guide - Data Handling with Mappers](./guides/data-handling-with-mappers.md)
+- [Guide - Working with ESLint](./guides/eslint.md)
 
 ### Customization
 
