@@ -13,7 +13,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CookiesModalComponent implements OnInit {
-  @Output() close = new EventEmitter<void>();
+  @Output() closeModal = new EventEmitter<void>();
 
   cookieConsentSettings?: CookieConsentSettings;
   selectedIds: { [id: string]: boolean } = {};
@@ -43,11 +43,11 @@ export class CookiesModalComponent implements OnInit {
     this.cookiesService.setCookiesConsentFor(
       Object.keys(this.selectedIds).reduce((acc, x) => (this.selectedIds[x] ? acc.push(x) && acc : acc), [])
     );
-    this.close.emit();
+    this.closeModal.emit();
   }
 
   hide() {
-    this.close.emit();
+    this.closeModal.emit();
   }
 
   unsorted = () => 0;

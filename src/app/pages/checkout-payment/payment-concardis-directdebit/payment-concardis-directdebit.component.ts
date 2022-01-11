@@ -159,7 +159,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     if (error) {
       this.mapErrorMessage(error.message);
     } else if (this.parameterForm.valid) {
-      this.submit.emit({
+      this.submitPayment.emit({
         parameters: [
           { name: 'paymentInstrumentId', value: result.paymentInstrumentId },
           { name: 'accountHolder', value: result.attributes.accountHolder },

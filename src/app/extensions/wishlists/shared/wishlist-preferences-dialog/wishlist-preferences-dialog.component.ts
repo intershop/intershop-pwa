@@ -40,7 +40,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
   /**
    * Emits the data of the new wishlist to create.
    */
-  @Output() submit = new EventEmitter<Wishlist>();
+  @Output() submitWishlist = new EventEmitter<Wishlist>();
 
   wishListForm = new FormGroup({});
   model: Partial<Wishlist> = { preferred: false };
@@ -108,7 +108,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
       return;
     }
 
-    this.submit.emit({
+    this.submitWishlist.emit({
       id: !this.wishlist ? this.model.title : this.wishlistTitle,
       preferred: this.model.preferred,
       title: this.model.title,

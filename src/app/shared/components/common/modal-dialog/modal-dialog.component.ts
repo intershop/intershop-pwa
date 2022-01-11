@@ -46,7 +46,7 @@ export class ModalDialogComponent<T> {
 
   @Output() confirmed = new EventEmitter<T>();
 
-  @Output() onClosed = new EventEmitter<T>();
+  @Output() closed = new EventEmitter<T>();
 
   @ViewChild('template') modalDialogTemplate: TemplateRef<unknown>;
 
@@ -74,7 +74,7 @@ export class ModalDialogComponent<T> {
    */
   hide() {
     this.ngbModalRef.close();
-    this.onClosed.emit(this.data);
+    this.closed.emit(this.data);
   }
 
   /**

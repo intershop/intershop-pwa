@@ -42,8 +42,8 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
    */
   @Input() activated = false;
 
-  @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() cancelPayment = new EventEmitter<void>();
+  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   private destroy$ = new Subject();
 
@@ -127,7 +127,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
    * cancel new payment instrument and hides the form
    */
   cancelNewPaymentInstrument() {
-    this.cancel.emit();
+    this.cancelPayment.emit();
   }
 
   /**
@@ -148,7 +148,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
 
   submitCallback(response: { status: string; pseudocardpan: string; truncatedcardpan: string }) {
     if (response.status === 'VALID' && !this.payoneCreditCardForm.invalid) {
-      this.submit.emit({
+      this.submitPayment.emit({
         parameters: [
           { name: 'pseudocardpan', value: response.pseudocardpan },
           { name: 'truncatedcardpan', value: response.truncatedcardpan },

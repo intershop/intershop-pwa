@@ -36,7 +36,7 @@ describe('Order Template Preferences Dialog Component', () => {
       title: 'test order template',
     };
 
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitOrderTemplate);
 
     component.submitOrderTemplateForm();
 
@@ -52,7 +52,7 @@ describe('Order Template Preferences Dialog Component', () => {
 
   it('should not emit new order template data when submit form was called and the form was invalid', () => {
     fixture.detectChanges();
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitOrderTemplate);
     component.submitOrderTemplateForm();
 
     verify(emitter.emit()).never();

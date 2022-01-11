@@ -40,7 +40,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
   /**
    * Emits the data of the new order template to create.
    */
-  @Output() submit = new EventEmitter<OrderTemplate>();
+  @Output() submitOrderTemplate = new EventEmitter<OrderTemplate>();
 
   orderTemplateForm = new FormGroup({});
   model: Partial<OrderTemplate>;
@@ -97,7 +97,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
       return;
     }
 
-    this.submit.emit({
+    this.submitOrderTemplate.emit({
       id: !this.orderTemplate ? this.model.title : this.orderTemplateTitle,
       title: this.model.title,
     });
