@@ -5,7 +5,7 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true,
+    "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
   "editor.bracketPairColorization.enabled": true,
@@ -13,7 +13,6 @@
   "git.rebaseWhenSync": true,
   "git.autoStash": true,
   "ngschematics.schematics": ["intershop-schematics"],
-  "tslint.alwaysShowRuleFailuresAsWarnings": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.iconTheme": "vscode-icons",
 
@@ -31,5 +30,12 @@
     "__*.*": "ng-template",
     "Dockerfile*": "dockerfile",
     "nginx/**/*conf*": "properties"
-  }
+  },
+
+  // eslint
+
+  "eslint.options": {
+    "extensions": [".ts", ".html"]
+  },
+  "eslint.validate": ["javascript", "typescript", "html"]
 }
