@@ -48,6 +48,7 @@ function addRouteToArray(
   }
 }
 
+// eslint-disable-next-line complexity
 async function determineRoutingModule(
   host: Tree,
   options: { name?: string; project?: string; extension?: string; lazy?: boolean }

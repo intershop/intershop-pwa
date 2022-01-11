@@ -7,6 +7,7 @@ import { setStyleUrls } from '../../utils/registration';
 import { OverrideOptionsSchema as Options } from './schema';
 
 export function override(options: Options): Rule {
+  // eslint-disable-next-line complexity
   return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');

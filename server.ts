@@ -1,4 +1,4 @@
-// tslint:disable: no-console ish-ordered-imports force-jsdoc-comments ban-specific-imports
+/* eslint-disable no-console, ish-custom-rules/ordered-imports, no-restricted-imports, complexity, @typescript-eslint/no-var-requires */
 import 'zone.js/node';
 
 import * as express from 'express';
@@ -19,19 +19,23 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
 
 // uncomment this block to prevent ssr issues with third-party libraries regarding window, document, HTMLElement and navigator
-// tslint:disable-next-line: no-commented-out-code
+// eslint-disable-next-line etc/no-commented-out-code
 /*
 const domino = require('domino');
+
 const template = fs.readFileSync(join(BROWSER_FOLDER, 'index.html')).toString();
+
 const win = domino.createWindow(template);
 
-// tslint:disable:no-string-literal
 global['window'] = win;
+
 global['document'] = win.document;
+
 global['HTMLElement'] = win.HTMLElement;
+
 global['navigator'] = win.navigator;
-// tslint:enable:no-string-literal
 */
+
 // The Express app is exported so that it can be used by serverless Functions.
 // not-dead-code
 export function app() {
@@ -191,7 +195,7 @@ export function app() {
   const icmProxy = proxy(ICM_BASE_URL, {
     // preserve original path
     proxyReqPathResolver: (req: express.Request) => req.originalUrl,
-    // tslint:disable-next-line: no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     proxyReqOptDecorator: (options: any) => {
       if (process.env.TRUST_ICM) {
         // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
@@ -394,6 +398,7 @@ function run() {
 // Webpack will replace 'require' with '__webpack_require__'
 // '__non_webpack_require__' is a proxy to Node 'require'
 // The below code is to ensure that the server is run only when not requiring the bundle.
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const __non_webpack_require__: NodeRequire;
 
 const mainModule = __non_webpack_require__.main;

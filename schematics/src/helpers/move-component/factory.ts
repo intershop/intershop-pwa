@@ -105,6 +105,7 @@ export function move(options: Options): Rule {
     };
     console.log('moving', options.from, '\n    to', options.to);
 
+    /* eslint-disable-next-line complexity */
     host.visit(file => {
       if (file.startsWith(`/src/app/`) || file.startsWith(`/projects/`)) {
         if (file.includes(from + '/')) {

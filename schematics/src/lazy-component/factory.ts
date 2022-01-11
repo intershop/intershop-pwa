@@ -16,6 +16,7 @@ import { getWorkspace } from '@schematics/angular/utility/workspace';
 import * as ts from 'typescript';
 
 import { determineArtifactName, findDeclaringModule } from '../utils/common';
+import { applyLintFix } from '../utils/lint-fix';
 import {
   addDeclarationToNgModule,
   addDecoratorToClass,
@@ -28,6 +29,7 @@ import {
 import { PWALazyComponentOptionsSchema as Options } from './schema';
 
 export function createLazyComponent(options: Options): Rule {
+  // eslint-disable-next-line complexity
   return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
@@ -204,7 +206,7 @@ export function createLazyComponent(options: Options): Rule {
           forEach(fileEntry => {
             if (host.exists(fileEntry.path)) {
               host.overwrite(fileEntry.path, fileEntry.content);
-              // tslint:disable-next-line: no-null-keyword
+              // eslint-disable-next-line unicorn/no-null
               return null;
             } else {
               return fileEntry;
@@ -213,6 +215,8 @@ export function createLazyComponent(options: Options): Rule {
         ])
       )
     );
+
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

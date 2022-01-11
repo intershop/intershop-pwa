@@ -58,8 +58,6 @@ execSync('npx prettier --write package.json');
 
 // replace in .eslintrc.json
 const addPrefixToRule = ruleConfig => {
-  console.log('adding prefix to ', ruleConfig);
-  console.log(ruleConfig.prefix);
   if (typeof ruleConfig.prefix === 'string') {
     ruleConfig.prefix = ['ish'];
   }
