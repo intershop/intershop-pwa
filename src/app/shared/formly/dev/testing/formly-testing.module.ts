@@ -71,8 +71,8 @@ class DummyWrapperComponent extends FieldWrapper {}
     PlainTextFieldComponent,
     RadioFieldComponent,
     SelectFieldComponent,
-    TextInputFieldComponent,
     TextareaFieldComponent,
+    TextInputFieldComponent,
   ],
   imports: [
     CommonModule,
