@@ -9,7 +9,7 @@ export const promotionAdapter = createEntityAdapter<Promotion>({
   selectId: promotion => promotion.id,
 });
 
-export interface PromotionsState extends EntityState<Promotion> {}
+export type PromotionsState = EntityState<Promotion>;
 
 const initialState: PromotionsState = promotionAdapter.getInitialState({});
 

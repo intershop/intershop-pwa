@@ -25,7 +25,7 @@ export const viewcontextsAdapter = createEntityAdapter<ContentPageletEntryPointW
   selectId: viewcontext => serializeContextSpecificViewContextId(viewcontext.viewContextId, viewcontext.callParameters),
 });
 
-export interface ViewcontextsState extends EntityState<ContentPageletEntryPointWithContext> {}
+export type ViewcontextsState = EntityState<ContentPageletEntryPointWithContext>;
 
 const initialState: ViewcontextsState = viewcontextsAdapter.getInitialState({});
 
