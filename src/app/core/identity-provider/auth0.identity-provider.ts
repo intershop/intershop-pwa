@@ -139,6 +139,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
                 : of(false)
             ),
             switchMap((navigated: boolean) =>
+              // eslint-disable-next-line unicorn/no-null
               navigated || navigated === null
                 ? race(
                     this.store.pipe(

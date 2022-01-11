@@ -14,7 +14,7 @@ import { routes } from '../../pages/requisition-management-routing.module';
 
 import { RequisitionManagementBreadcrumbService } from './requisition-management-breadcrumb.service';
 
-// tslint:disable-next-line: no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function adaptRoutes(rts: Route[], cmp: Type<any>): Route[] {
   return rts.map(r => ({
     ...r,

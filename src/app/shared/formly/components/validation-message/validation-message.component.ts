@@ -30,6 +30,7 @@ export class ValidationMessageComponent implements OnChanges {
       if (fieldForm.errors.hasOwnProperty(error)) {
         let message = this.config.getValidatorMessage(error);
 
+        // eslint-disable-next-line unicorn/no-null
         if (fieldForm.errors[error] !== null && typeof fieldForm.errors[error] === 'object') {
           if (fieldForm.errors[error].errorPath) {
             return;

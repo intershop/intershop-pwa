@@ -30,7 +30,7 @@ export class FeatureToggleService {
    * logic that is not included in the initialization process.
    */
   enabled(feature: string): boolean {
-    // tslint:disable-next-line: rxjs-no-subject-value
+    // eslint-disable-next-line rxjs/no-subject-value
     return checkFeature(this.featureToggles$.value, feature);
   }
 

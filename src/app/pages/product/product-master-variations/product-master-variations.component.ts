@@ -11,6 +11,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   templateUrl: './product-master-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class ProductMasterVariationsComponent implements OnInit {
   sku$: Observable<string>;
   categoryId$: Observable<string>;
@@ -34,7 +35,7 @@ export class ProductMasterVariationsComponent implements OnInit {
         // take until routing away
         takeUntil(this.router.events.pipe(filter(event => event instanceof ActivationStart)))
       )
-      // tslint:disable-next-line: rxjs-prefer-angular-takeuntil
+      // eslint-disable-next-line rxjs-angular/prefer-takeuntil
       .subscribe(position => {
         this.scroller.scrollToPosition(position);
       });

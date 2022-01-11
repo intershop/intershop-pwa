@@ -62,7 +62,7 @@ import {
 } from 'ish-core/store/general/contact';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class AccountFacade {
   /**

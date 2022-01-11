@@ -38,7 +38,7 @@ describe('Configuration Effects', () => {
 
   describe('setInitialRestEndpoint$', () => {
     it('should import settings on effects init and complete', done => {
-      // tslint:disable:use-async-synchronization-in-tests
+      /* eslint-disable ish-custom-rules/use-async-synchronization-in-tests */
       const testComplete$ = new Subject<void>();
 
       actions$ = of({ type: ROOT_EFFECTS_INIT });
@@ -53,7 +53,7 @@ describe('Configuration Effects', () => {
         fail,
         () => testComplete$.next()
       );
-      // tslint:enable:use-async-synchronization-in-tests
+      /* eslint-enable ish-custom-rules/use-async-synchronization-in-tests */
     });
   });
 

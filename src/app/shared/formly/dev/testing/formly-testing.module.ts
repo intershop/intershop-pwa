@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldWrapper, FormlyFieldConfig, FormlyForm, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
-// tslint:disable: project-structure
+/* eslint-disable ish-custom-rules/project-structure */
 
 @Component({ template: 'CaptchaFieldComponent: {{ field.key }} {{ to | json }}' })
 class CaptchaFieldComponent extends FieldType {}
@@ -58,8 +58,6 @@ class TextareaFieldComponent extends FieldType {}
 
 @Component({ template: `<ng-template #fieldComponent> </ng-template>` })
 class DummyWrapperComponent extends FieldWrapper {}
-
-// tslint:enable: project-structure
 
 @NgModule({
   declarations: [
@@ -138,5 +136,4 @@ class DummyWrapperComponent extends FieldWrapper {}
   ],
   exports: [FormlyForm, ReactiveFormsModule],
 })
-// tslint:disable-next-line: project-structure
 export class FormlyTestingModule {}

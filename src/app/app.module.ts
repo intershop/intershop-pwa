@@ -20,6 +20,7 @@ import { ShellModule } from './shell/shell.module';
 
 @NgModule({
   declarations: [AppComponent],
+  /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
   imports: [
     BrowserModule.withServerTransition({ appId: 'intershop-pwa' }),
     BrowserAnimationsModule,
@@ -32,6 +33,7 @@ import { ShellModule } from './shell/shell.module';
     TactonRoutingModule,
     AppLastRoutingModule,
   ],
+  /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],
   providers: [{ provide: UrlSerializer, useClass: CustomUrlSerializer }],
 })

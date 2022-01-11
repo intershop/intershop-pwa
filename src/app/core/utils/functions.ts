@@ -22,7 +22,7 @@ function isObject(item: unknown) {
 /**
  * @see https://stackoverflow.com/a/37164538/13001898
  */
-// tslint:disable-next-line: no-any - utility function
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- utility function
 export function mergeDeep(target: any, source: any) {
   let output = { ...target };
   if (isObject(target) && isObject(source)) {

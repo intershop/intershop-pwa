@@ -6,7 +6,7 @@ export function randomDelay<T>(min = 1000, max = 10000): OperatorFunction<T, T> 
 }
 
 export function log<T>(message?: unknown, stringify?: boolean): OperatorFunction<T, T> {
-  // tslint:disable-next-line:no-console
+  // eslint-disable-next-line no-console
   return source$ => source$.pipe(tap(e => console.log(message || '', stringify ? JSON.stringify(e) : e)));
 }
 
@@ -16,14 +16,14 @@ export function logDiff<T>(message?: unknown): OperatorFunction<T, T> {
       map(el => el || ({} as T)),
       startWith({} as T),
       pairwise(),
-      // tslint:disable-next-line: no-console
+      // eslint-disable-next-line no-console
       tap(([a, b]) => console.log(message || '', keyChanges(a, b), { emit: b })),
       map(([, b]) => b)
     );
 }
 
 // https://gist.github.com/Yimiprod/7ee176597fef230d1451
-// tslint:disable: no-any - utility function
+/* eslint-disable @typescript-eslint/no-explicit-any -- utility function */
 function keyChanges(a: any, b: any) {
   const changes: any = {};
 
@@ -55,4 +55,4 @@ function keyChanges(a: any, b: any) {
 
   return changes;
 }
-// tslint:enable: no-any
+/* eslint-enable @typescript-eslint/no-explicit-any */

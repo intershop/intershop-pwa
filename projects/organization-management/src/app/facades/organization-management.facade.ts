@@ -48,7 +48,7 @@ import {
   updateUser,
 } from '../store/users';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class OrganizationManagementFacade {
   constructor(private store: Store) {}

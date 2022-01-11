@@ -72,7 +72,7 @@ describe('Users Page Component', () => {
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
-  it('should display user list after creation ', () => {
+  it('should display user list after creation', () => {
     when(organizationManagementFacade.users$).thenReturn(of(users));
     fixture.detectChanges();
 

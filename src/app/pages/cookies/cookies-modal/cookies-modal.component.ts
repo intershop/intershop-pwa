@@ -18,7 +18,6 @@ export class CookiesModalComponent implements OnInit {
   cookieConsentSettings?: CookieConsentSettings;
   selectedIds: { [id: string]: boolean } = {};
 
-  // tslint:disable:no-intelligence-in-artifacts
   constructor(
     @Inject(COOKIE_CONSENT_OPTIONS) public cookieConsentOptions: CookieConsentOptions,
     private cookiesService: CookiesService

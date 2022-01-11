@@ -40,6 +40,7 @@ export class PaymentService {
 
   /**
    * Get eligible payment methods for selected basket.
+   *
    * @returns         The eligible payment methods.
    */
   getBasketEligiblePaymentMethods(): Observable<PaymentMethod[]> {
@@ -56,6 +57,7 @@ export class PaymentService {
 
   /**
    * Adds a payment at the selected basket. If redirect is required the redirect urls are saved at basket in dependence of the payment instrument capabilities (redirectBeforeCheckout/RedirectAfterCheckout).
+   *
    * @param paymentInstrument The unique name of the payment method, e.g. ISH_INVOICE
    * @returns                 The payment instrument.
    */
@@ -84,6 +86,7 @@ export class PaymentService {
 
   /**
    *  Checks, if RedirectUrls are requested by the server and sends them if it is necessary.
+   *
    * @param pm                The payment method to determine if redirect is required.
    * @param paymentInstrument The payment instrument id.
    * @param lang              The language code of the current locale, e.g. en_US
@@ -127,6 +130,7 @@ export class PaymentService {
   }
   /**
    * Creates a payment instrument for the selected basket.
+   *
    * @param paymentInstrument The payment instrument with parameters, id=undefined, paymentMethod= required.
    * @returns                 The created payment instrument.
    */
@@ -148,6 +152,7 @@ export class PaymentService {
 
   /**
    * Updates a payment for the selected basket. Used to set redirect query parameters and status after redirect.
+   *
    * @param redirect          The payment redirect information (parameters and status).
    * @returns                 The updated payment.
    */
@@ -182,6 +187,7 @@ export class PaymentService {
   /**
    * Deletes a (basket/user) payment instrument.
    * If the payment instrument is used at basket the related payment is also deleted from the selected basket.
+   *
    * @param basket            The basket.
    * @param paymentInstrument The payment instrument, that is to be deleted
    */
@@ -213,6 +219,7 @@ export class PaymentService {
 
   /**
    * Deletes the basket payment.
+   *
    * @param basket          The basket.
    */
   deleteBasketPayment(basket: Basket): Observable<void> {
@@ -230,6 +237,7 @@ export class PaymentService {
 
   /**
    * Gets the payment data of the customer.
+   *
    * @param customer  The customer data.
    * @returns         The customer's payments.
    */
@@ -257,6 +265,7 @@ export class PaymentService {
 
   /**
    * Creates a payment instrument at the customer.
+   *
    * @param customerNo          The customer data.
    * @param paymentInstrument   The payment instrument data.
    * @returns                   The created payment instrument.
@@ -296,6 +305,7 @@ export class PaymentService {
 
   /**
    * Deletes a payment instrument and the related payment from the given user.
+   *
    * @param customerNo            The customer number.
    * @param paymentInstrumentId   The (uu)id of the payment instrument.
    */
@@ -317,6 +327,7 @@ export class PaymentService {
 
   /**
    * Update CvcLastUpdated in concardis credit card (user/basket) payment instrument.
+   *
    * @param paymentInstrument The payment instrument, that is to be updated
    */
   updateConcardisCvcLastUpdated(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {

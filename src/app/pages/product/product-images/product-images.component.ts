@@ -46,6 +46,7 @@ export class ProductImagesComponent implements OnInit {
 
   /**
    * Set the active slide via index (used by the thumbnail indicator)
+   *
    * @param slideIndex The slide index to set the active slide
    */
   setActiveSlide(slideIndex: number) {
@@ -54,6 +55,7 @@ export class ProductImagesComponent implements OnInit {
 
   /**
    * Check if the given slide index equals the active slide
+   *
    * @param slideIndex The slide index to be checked if it is the active slide
    * @returns True if the given slide index is the active slide, false otherwise
    */

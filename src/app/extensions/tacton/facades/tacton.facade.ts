@@ -22,7 +22,7 @@ import {
 } from '../store/product-configuration';
 import { getSelfServiceApiConfiguration, getTactonProductForSelectedProduct } from '../store/tacton-config';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class TactonFacade {
   constructor(private store: Store) {}

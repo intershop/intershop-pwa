@@ -51,6 +51,7 @@ export class ProductComparePagingComponent implements OnChanges {
 
   /**
    * Change the paging to the given page number.
+   *
    * @param pageNumber The page number to change to
    */
   changeToPage(pageNumber: number) {

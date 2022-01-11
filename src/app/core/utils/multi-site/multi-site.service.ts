@@ -13,6 +13,7 @@ export class MultiSiteService {
 
   /**
    * returns the current url, modified to fit the locale parameter if the environment parameter "multiSiteLocaleMap" is set
+   *
    * @param locale the locale which the new url should fit
    * @param url the current url
    * @param baseHref the current baseHref which needs to be replaced

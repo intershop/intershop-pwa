@@ -29,6 +29,7 @@ export class HeaderNavigationComponent implements OnInit {
   /**
    * Handle sub menu show.
    * Adds hover class to rendered element.
+   *
    * @param subMenu The rendered sub menu element.
    */
   subMenuShow(subMenu: HTMLElement) {
@@ -38,6 +39,7 @@ export class HeaderNavigationComponent implements OnInit {
   /**
    * Handle sub menu hide.
    * Removes hover class from rendered element.
+   *
    * @param subMenu The rendered sub menu element.
    */
   subMenuHide(subMenu: HTMLElement) {
@@ -46,6 +48,7 @@ export class HeaderNavigationComponent implements OnInit {
 
   /**
    * Indicate if specific category is expanded.
+   *
    * @param category The category item.
    */
   isOpened(uniqueId: string): boolean {
@@ -54,6 +57,7 @@ export class HeaderNavigationComponent implements OnInit {
 
   /**
    * Toggle category open state.
+   *
    * @param category The category item.
    */
   toggleOpen(uniqueId: string) {

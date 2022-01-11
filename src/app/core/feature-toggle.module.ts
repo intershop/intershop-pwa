@@ -23,7 +23,7 @@ export class FeatureToggleModule {
           useValue: {
             enabled$: (feature: string) =>
               FeatureToggleModule.features.pipe(map(toggles => checkFeature(toggles, feature))),
-            // tslint:disable-next-line: rxjs-no-subject-value
+            // eslint-disable-next-line rxjs/no-subject-value
             enabled: (feature: string) => checkFeature(FeatureToggleModule.features.value, feature),
           },
         },

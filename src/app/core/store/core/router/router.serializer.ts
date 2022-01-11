@@ -5,6 +5,7 @@ import { RouterState } from './router.reducer';
 
 /**
  * custom router serializer, so we can use it with runtime checks
+ *
  * @see https://ngrx.io/guide/router-store/configuration#default-router-state-serializer
  */
 export class CustomRouterSerializer implements RouterStateSerializer<RouterState> {

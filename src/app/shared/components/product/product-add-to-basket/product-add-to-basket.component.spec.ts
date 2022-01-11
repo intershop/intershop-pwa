@@ -53,12 +53,12 @@ describe('Product Add To Basket Component', () => {
     expect(element.querySelector('button')).toBeFalsy();
   });
 
-  it('should show button when display type is not icon ', () => {
+  it('should show button when display type is not icon', () => {
     fixture.detectChanges();
     expect(element.querySelector('button').className).toContain('btn-primary');
   });
 
-  it('should show icon button when display type is icon ', () => {
+  it('should show icon button when display type is icon', () => {
     component.displayType = 'icon';
     fixture.detectChanges();
     expect(element.querySelector('fa-icon')).toBeTruthy();

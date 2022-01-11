@@ -46,6 +46,7 @@ export class CheckoutProgressBarComponent {
 
   /**
    * Checks whether a checkout step should be displayed as link or not.
+   *
    * @param step  The checkout step to evaluate.
    * @returns     Returns 'true' if the step number is lover than the current step and if the current step is lower than 5.
    */

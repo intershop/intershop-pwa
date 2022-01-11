@@ -24,7 +24,7 @@ export class StatePropertiesService {
   getStateOrEnvOrDefault<T>(envKey: string, envPropKey: keyof Environment): Observable<T> {
     return this.store.pipe(
       select(getConfigurationState),
-      // tslint:disable-next-line:no-any - re-mapping type
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- re-mapping type
       mapToProperty(envPropKey as any),
       map(value => {
         if (value && value.length) {

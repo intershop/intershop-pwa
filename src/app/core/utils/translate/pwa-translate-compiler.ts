@@ -141,7 +141,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
 
   compileTranslations(translations: Translations): Translations {
     // This implementation is mutable by intention
-    // tslint:disable-next-line: forin - object does not have inherited properties
+    // eslint-disable-next-line guard-for-in
     for (const key in translations) {
       translations[key] = this.compile(translations[key] as string);
     }

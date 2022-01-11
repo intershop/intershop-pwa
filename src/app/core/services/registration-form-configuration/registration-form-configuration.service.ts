@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { Injectable } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
@@ -25,7 +26,6 @@ export interface RegistrationConfigType {
 
 @Injectable({ providedIn: 'root' })
 export class RegistrationFormConfigurationService {
-  // tslint:disable: no-intelligence-in-artifacts
   constructor(
     private accountFacade: AccountFacade,
     private router: Router,

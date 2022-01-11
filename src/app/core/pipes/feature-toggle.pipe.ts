@@ -23,7 +23,7 @@ export class FeatureTogglePipe implements PipeTransform, OnDestroy {
 
   transform(feature: string): boolean {
     if (this.subscription) {
-      // tslint:disable-next-line: ban
+      // eslint-disable-next-line ban/ban
       this.subscription.unsubscribe();
     }
 

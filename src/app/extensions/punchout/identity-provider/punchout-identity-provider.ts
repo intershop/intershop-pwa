@@ -80,7 +80,6 @@ export class PunchoutIdentityProvider implements IdentityProvider {
       this.accountFacade.userError$.pipe(
         whenTruthy(),
         take(1),
-        // tslint:disable-next-line: no-unnecessary-callback-wrapper
         concatMap(userError => throwError(userError))
       ),
 

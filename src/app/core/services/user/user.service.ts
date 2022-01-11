@@ -48,6 +48,7 @@ export class UserService {
 
   /**
    * Sign in an existing user with the given login credentials (login, password).
+   *
    * @param loginCredentials  The users login credentials {login: 'foo', password. 'bar'}.
    * @returns                 The logged in customer data.
    *                          For private customers user data are also returned.
@@ -63,6 +64,7 @@ export class UserService {
   }
   /**
    * Sign in an existing user with the given token or if no token is given, using token stored in cookie.
+   *
    * @param token             The token that is used to login user.
    * @returns                 The logged in customer data.
    *                          For private customers user data are also returned.
@@ -92,6 +94,7 @@ export class UserService {
 
   /**
    * Create a new user for the given data.
+   *
    * @param body  The user data (customer, user, credentials, address) to create a new user.
    */
   createUser(body: CustomerRegistrationType): Observable<CustomerUserType> {
@@ -159,6 +162,7 @@ export class UserService {
 
   /**
    * Updates the data of the currently logged in user.
+   *
    * @param body  The user data (customer, user ) to update the user.
    */
   updateUser(body: CustomerUserType, credentials?: Credentials): Observable<User> {
@@ -198,6 +202,7 @@ export class UserService {
 
   /**
    * Updates the password of the currently logged in user.
+   *
    * @param customer         The current customer.
    * @param user             The current user.
    * @param password         The new password to update to.
@@ -232,6 +237,7 @@ export class UserService {
 
   /**
    * Updates the customer data of the (currently logged in) b2b customer.
+   *
    * @param customer  The customer data to update the customer.
    */
   updateCustomer(customer: Customer): Observable<Customer> {
@@ -248,6 +254,7 @@ export class UserService {
 
   /**
    * Get User data for the logged in Business Customer.
+   *
    * @returns The related customer user data.
    */
   getCompanyUserData(): Observable<User> {
@@ -261,6 +268,7 @@ export class UserService {
 
   /**
    * Request an email for the given data user with a link to reset the users password.
+   *
    * @param data  The user data (email, firstName, lastName ) to identify the user.
    */
   requestPasswordReminder(data: PasswordReminder) {
@@ -274,6 +282,7 @@ export class UserService {
 
   /**
    * set new password with data based on requestPasswordReminder generated email
+   *
    * @param data  password, userID, secureCode
    */
   updateUserPasswordByReminder(data: PasswordReminderUpdate) {
@@ -285,6 +294,7 @@ export class UserService {
 
   /**
    * Get cost centers for the logged in User of a Business Customer.
+   *
    * @returns The related cost centers.
    */
   getEligibleCostCenters(): Observable<UserCostCenter[]> {
@@ -305,8 +315,9 @@ export class UserService {
   }
 
   /**
-   * Get cost center data of a business customer for a given cost center uuid/costCenterId. The logged in user needs permission APP_B2B_VIEW_COSTCENTER.
-   * @param   The Id or costCenterId of the cost center
+   * Get cost center data of a business customer for a given cost center id. The logged in user needs permission APP_B2B_VIEW_COSTCENTER.
+   *
+   * @param   The Id of the cost center.
    * @returns The related cost center.
    */
   getCostCenter(id: string): Observable<CostCenter> {

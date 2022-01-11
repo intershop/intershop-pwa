@@ -5,6 +5,7 @@ function getAllElementTagsRecursively(el: Element) {
   const returnList: string[] = [];
   returnList.push(el.tagName);
 
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let index = 0; index < el.children.length; index++) {
     const cel = el.children[index];
     returnList.push(...getAllElementTagsRecursively(cel));

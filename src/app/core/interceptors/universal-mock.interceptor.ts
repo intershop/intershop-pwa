@@ -17,7 +17,7 @@ export class UniversalMockInterceptor implements HttpInterceptor {
       console.warn('UniversalMockInterceptor is active for non-server platform');
     }
     if (!req.url.startsWith('http')) {
-      // tslint:disable-next-line:no-console
+      // eslint-disable-next-line no-console
       console.log(`loading mock-data for '${req.url}' from file system.`);
       return new Observable((observer: Observer<HttpResponse<unknown>>) => {
         let rootPath = process.cwd();

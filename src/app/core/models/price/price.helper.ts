@@ -29,6 +29,7 @@ export class PriceHelper {
 
   /**
    * Inverts the value of a price
+   *
    * @param price The price
    * @returns inverted price
    */

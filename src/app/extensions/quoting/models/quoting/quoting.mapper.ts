@@ -1,3 +1,5 @@
+/* eslint-disable ish-custom-rules/no-var-before-return */
+
 import { Injectable } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
@@ -8,7 +10,6 @@ import { Quote, QuoteRequest, QuoteStub, QuoteStubFromAttributes } from './quoti
 
 @Injectable({ providedIn: 'root' })
 export class QuotingMapper {
-  // tslint:disable: no-var-before-return
   fromData(quoteData: QuoteData, type: 'Quote' | 'QuoteRequest'): QuoteStub | Quote | QuoteRequest {
     if (quoteData) {
       if (quoteData.type === 'Link') {

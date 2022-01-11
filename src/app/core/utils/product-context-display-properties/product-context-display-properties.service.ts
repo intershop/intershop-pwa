@@ -37,7 +37,7 @@ export class ProductContextDisplayPropertiesService implements ExternalDisplayPr
 
         return (
           Object.entries(calc)
-            // tslint:disable-next-line: no-boolean-literal-compare
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
             .filter(([, v]) => v === false)
             .reduce((acc, [k, v]) => ({ ...acc, [k]: v as false }), {})
         );

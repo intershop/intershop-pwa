@@ -11,6 +11,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * FormsService.getAddressOptions as a pipeable operator
+ *
  * @returns the input addresses, mapped to select options
  */
 export function mapToAddressOptions(): OperatorFunction<Address[], SelectOption[]> {
@@ -23,6 +24,7 @@ export class FormsService {
 
   /**
    * Get address select options for addresses in order to render them in an address select box.
+   *
    * @param addresses
    * @returns address select options observable
    */
@@ -52,6 +54,7 @@ export class FormsService {
 
   /**
    * Gets all possible salutation options for a certain country.
+   *
    * @param translate instance of a translation service
    * @param countryCode country code of the country for which the salutations should be determined.
    * @returns salutation select options
@@ -65,6 +68,7 @@ export class FormsService {
 
   /**
    * Gets all possible salutation options for the current locale.
+   *
    * @param  appFacade instance of the an application facade
    * @param translate instance of a translation service
    * @returns salutation select options
@@ -78,6 +82,7 @@ export class FormsService {
 
   /**
    * Gets all possible salutations for a certain country.
+   *
    * @param countryCode country code of the country for which the salutations should be determined.
    * @returns translation keys of the salutations
    */
