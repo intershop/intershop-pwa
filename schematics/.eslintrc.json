@@ -1,0 +1,14 @@
+{
+  "extends": "../.eslintrc.json",
+  "ignorePatterns": "**/utils/lint-fix-mock.js",
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "no-console": "off",
+        "no-param-reassign": "off",
+        "ish-custom-rules/project-structure": "off"
+      }
+    }
+  ]
+}
