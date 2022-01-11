@@ -30,7 +30,7 @@ export function createUserViaREST(user: Partial<Registration>) {
 
   cy.request(
     'POST',
-    Cypress.env('ICM_BASE_URL') + '/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/customers',
+    `${Cypress.env('ICM_BASE_URL')}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/customers`,
     customer
   ).then(response => {
     expect(response.status).to.equal(201);
@@ -40,7 +40,7 @@ export function createUserViaREST(user: Partial<Registration>) {
 export function createBasketViaREST(user: Partial<Registration>, lineItems: { [sku: string]: number }) {
   cy.request({
     method: 'POST',
-    url: Cypress.env('ICM_BASE_URL') + '/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/baskets',
+    url: `${Cypress.env('ICM_BASE_URL')}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/baskets`,
     body: {},
     auth: {
       user: user.login,
@@ -54,7 +54,7 @@ export function createBasketViaREST(user: Partial<Registration>, lineItems: { [s
 
     const basketUrl = basketCreationResponse.body.links.self.replace(
       /.*\/INTERSHOP/,
-      Cypress.env('ICM_BASE_URL') + '/INTERSHOP'
+      `${Cypress.env('ICM_BASE_URL')}/INTERSHOP`
     );
     expect(basketUrl).not.to.be.empty;
     const authToken = basketCreationResponse.headers['authentication-token'];
@@ -64,7 +64,7 @@ export function createBasketViaREST(user: Partial<Registration>, lineItems: { [s
 
     cy.request({
       method: 'GET',
-      url: basketUrl + '/items',
+      url: `${basketUrl}/items`,
       headers: {
         'authentication-token': authToken,
         Accept: 'application/vnd.intershop.basket.v1+json',
@@ -75,7 +75,7 @@ export function createBasketViaREST(user: Partial<Registration>, lineItems: { [s
 
     cy.request({
       method: 'POST',
-      url: basketUrl + '/items',
+      url: `${basketUrl}/items`,
       body,
       headers: {
         'authentication-token': authToken,

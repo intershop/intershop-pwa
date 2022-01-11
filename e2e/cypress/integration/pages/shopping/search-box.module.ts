@@ -29,7 +29,7 @@ export class SearchBoxModule {
   private readonly selector = '[data-testing-id="search-box-desktop"]';
 
   private inputField() {
-    return cy.get(this.selector + ' input.searchTerm');
+    return cy.get(`${this.selector} input.searchTerm`);
   }
 
   private suggestionsOverlay() {

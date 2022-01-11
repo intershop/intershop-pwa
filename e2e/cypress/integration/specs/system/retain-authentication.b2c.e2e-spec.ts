@@ -50,6 +50,7 @@ describe('Returning User', () => {
     it('should log out and loose the cookie', () => {
       at(MyAccountPage, page => page.header.logout());
       at(HomePage);
+      // eslint-disable-next-line unicorn/no-null
       cy.getCookie('apiToken').should('equal', null);
     });
   });
