@@ -98,7 +98,7 @@ export class UsersEffects {
       concatMap(newUser =>
         this.usersService.addUser(newUser).pipe(
           concatMap(user =>
-            this.navigateTo('../' + user.login).pipe(
+            this.navigateTo(`../${user.login}`).pipe(
               mergeMapTo([
                 addUserSuccess({ user }),
                 displaySuccessMessage({

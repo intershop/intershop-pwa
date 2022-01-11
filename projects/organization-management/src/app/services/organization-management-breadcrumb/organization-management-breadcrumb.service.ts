@@ -28,7 +28,7 @@ export class OrganizationManagementBreadcrumbService {
           return of([{ key: 'account.organization.cost_center_management' }]);
         } else if (path.endsWith('users/create')) {
           return of([
-            { key: 'account.organization.user_management', link: prefix + '/users' },
+            { key: 'account.organization.user_management', link: `${prefix}/users` },
             { key: 'account.user.breadcrumbs.new_user.text' },
           ]);
         } else if (/users\/:B2BCustomerLogin(\/(profile|roles|budget))?$/.test(path)) {
@@ -39,7 +39,7 @@ export class OrganizationManagementBreadcrumbService {
               path.endsWith('profile') || path.endsWith('roles') || path.endsWith('budget')
                 ? // edit user detail
                   [
-                    { key: 'account.organization.user_management', link: prefix + '/users' },
+                    { key: 'account.organization.user_management', link: `${prefix}/users` },
                     {
                       text: `${translation} - ${user.firstName} ${user.lastName}`,
                       link: `${prefix}/users/${user.login}`,
@@ -50,14 +50,14 @@ export class OrganizationManagementBreadcrumbService {
                   ]
                 : // user detail
                   [
-                    { key: 'account.organization.user_management', link: prefix + '/users' },
-                    { text: translation + ` - ${user.firstName} ${user.lastName}` },
+                    { key: 'account.organization.user_management', link: `${prefix}/users` },
+                    { text: `${translation} - ${user.firstName} ${user.lastName}` },
                   ]
             )
           );
         } else if (path.endsWith('cost-centers/create')) {
           return of([
-            { key: 'account.organization.cost_center_management', link: prefix + '/cost-centers' },
+            { key: 'account.organization.cost_center_management', link: `${prefix}/cost-centers` },
             { key: 'account.costcenter.create.heading' },
           ]);
         } else if (/cost-centers\/:CostCenterId(\/(edit|buyers))?$/.test(path)) {
@@ -66,7 +66,7 @@ export class OrganizationManagementBreadcrumbService {
             map(cc =>
               path.endsWith('edit') || path.endsWith('buyers')
                 ? [
-                    { key: 'account.organization.cost_center_management', link: prefix + '/cost-centers' },
+                    { key: 'account.organization.cost_center_management', link: `${prefix}/cost-centers` },
                     {
                       text: `${cc.name}`,
                       link: `${prefix}/cost-centers/${cc.id}`,
@@ -76,7 +76,7 @@ export class OrganizationManagementBreadcrumbService {
                     },
                   ]
                 : [
-                    { key: 'account.organization.cost_center_management', link: prefix + '/cost-centers' },
+                    { key: 'account.organization.cost_center_management', link: `${prefix}/cost-centers` },
                     { text: cc.name },
                   ]
             )

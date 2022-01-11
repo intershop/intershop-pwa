@@ -21,7 +21,7 @@ export class CustomRouterSerializer implements RouterStateSerializer<RouterState
       params = { ...params, ...route.params };
       if (route.routeConfig?.path) {
         if (path) {
-          path += '/' + route.routeConfig.path;
+          path += `/${route.routeConfig.path}`;
         } else {
           path = route.routeConfig.path;
         }

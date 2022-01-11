@@ -34,11 +34,11 @@ export function createCMSComponent(options: Options): Rule {
     options = await detectExtension('cms', host, options);
     options = await applyNameAndPath('component', host, options);
     if (!options.noCMSPrefixing) {
-      options.name = 'cms-' + options.name;
+      options.name = `cms-${options.name}`;
     }
     options = determineArtifactName('component', host, options);
     if (!options.noCMSPrefixing) {
-      options.artifactName = 'CMS' + options.artifactName.replace('Cms', '');
+      options.artifactName = `CMS${options.artifactName.replace('Cms', '')}`;
     }
     options = await generateSelector(host, options);
     options.module = 'shared/shared.module';

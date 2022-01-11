@@ -41,7 +41,7 @@ let processedFiles = 0;
 for (const file of files) {
   processedFiles++;
 
-  const copyPath = file.getFilePath() + '.ut.spec.ts';
+  const copyPath = `${file.getFilePath()}.ut.spec.ts`;
   let foundSomething = false;
 
   top: while (true) {
@@ -104,7 +104,7 @@ for (const file of files) {
                     copy.saveSync();
 
                     try {
-                      execSync('npx jest -i ' + copy.getFilePath(), {
+                      execSync(`npx jest -i ${copy.getFilePath()}`, {
                         stdio: 'ignore',
                         timeout: 60000,
                         killSignal: 'SIGKILL',
@@ -135,9 +135,9 @@ for (const file of files) {
 
   if (foundSomething) {
     const filePath = file.getFilePath();
-    execSync('node scripts/fix-imports ' + filePath);
+    execSync(`node scripts/fix-imports ${filePath}`);
     try {
-      execSync('npx prettier --write ' + filePath);
+      execSync(`npx prettier --write ${filePath}`);
     } catch (err) {
       // do nothing
     }

@@ -57,7 +57,7 @@ export class UserService {
   signInUser(loginCredentials: Credentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
       ApiService.AUTHORIZATION_HEADER_KEY,
-      'BASIC ' + window.btoa(`${loginCredentials.login}:${loginCredentials.password}`)
+      `BASIC ${window.btoa(`${loginCredentials.login}:${loginCredentials.password}`)}`
     );
 
     return this.fetchCustomer({ headers });
@@ -173,7 +173,7 @@ export class UserService {
     const headers = credentials
       ? new HttpHeaders().set(
           ApiService.AUTHORIZATION_HEADER_KEY,
-          'BASIC ' + window.btoa(`${credentials.login}:${credentials.password}`)
+          `BASIC ${window.btoa(`${credentials.login}:${credentials.password}`)}`
         )
       : undefined;
 

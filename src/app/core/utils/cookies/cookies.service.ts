@@ -144,10 +144,10 @@ export class CookiesService {
       expires = new Date(expires);
     }
     let str = `${encodeURIComponent(name)}=${encodeURIComponent(value || '')}`;
-    str += ';path=' + path;
-    str += opts.domain ? ';domain=' + opts.domain : '';
-    str += expires ? ';expires=' + expires.toUTCString() : '';
-    str += opts.sameSite ? ';SameSite=' + opts.sameSite : '';
+    str += `;path=${path}`;
+    str += opts.domain ? `;domain=${opts.domain}` : '';
+    str += expires ? `;expires=${expires.toUTCString()}` : '';
+    str += opts.sameSite ? `;SameSite=${opts.sameSite}` : '';
     str += opts.secure && location.protocol === 'https:' ? ';secure' : '';
     const cookiesLength = str.length + 1;
     if (cookiesLength > 4096) {

@@ -55,7 +55,7 @@ export function createLazyComponent(options: Options): Rule {
     }
 
     const originalName = /\/([a-z0-9-]+)\.component\.ts/.exec(originalPath)[1];
-    options.name = 'lazy-' + originalName;
+    options.name = `lazy-${originalName}`;
     if (isProject) {
       options.path = `${project.sourceRoot}/app/exports`;
     } else if (isShared) {
@@ -79,7 +79,7 @@ export function createLazyComponent(options: Options): Rule {
     options.selector = selectorPropertyAssignment.initializer
       .getText()
       .replace(/'/g, '')
-      .replace(originalName.replace(project.prefix + '-', ''), options.name.replace(project.prefix + '-', ''));
+      .replace(originalName.replace(`${project.prefix}-`, ''), options.name.replace(`${project.prefix}-`, ''));
 
     if (componentContent.includes('@Input(')) {
       const bindingNodes = tsquery(
@@ -139,7 +139,7 @@ export function createLazyComponent(options: Options): Rule {
       const pathFragments = originalPath.split('/');
       pathFragments.pop();
       pathFragments.pop();
-      componentImportPath = '../../../' + pathFragments.join('/');
+      componentImportPath = `../../../${pathFragments.join('/')}`;
     } else {
       componentImportPath = '../../shared';
     }
@@ -178,7 +178,7 @@ export function createLazyComponent(options: Options): Rule {
       operations.push(
         addDecoratorToClass(
           componentPath,
-          strings.classify(originalName + 'Component'),
+          strings.classify(`${originalName}Component`),
           'GenerateLazyComponent',
           'ish-core/utils/module-loader/generate-lazy-component.decorator'
         )

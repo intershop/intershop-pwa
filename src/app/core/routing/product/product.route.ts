@@ -41,7 +41,7 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
     return { consumed: [] };
   }
 
-  const url = '/' + segments.map(s => s.path).join('/');
+  const url = `/${segments.map(s => s.path).join('/')}`;
   if (productRouteFormat.test(url)) {
     const match = productRouteFormat.exec(url);
     const posParams: { [id: string]: UrlSegment } = {};

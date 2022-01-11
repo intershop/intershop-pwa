@@ -451,7 +451,7 @@ describe('Orders Effects', () => {
   describe('setOrderBreadcrumb$', () => {
     beforeEach(fakeAsync(() => {
       store$.dispatch(loadOrdersSuccess({ orders }));
-      router.navigateByUrl('/account/orders/' + orders[0].id);
+      router.navigateByUrl(`/account/orders/${orders[0].id}`);
       tick(500);
       store$.dispatch(selectOrder({ orderId: orders[0].id }));
     }));

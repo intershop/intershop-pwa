@@ -280,7 +280,7 @@ export function updateModule(options): Rule {
 }
 
 export function setStyleUrls(componentFile: string, styleUrls: string[]): Rule {
-  const normalizedStyleUrls = styleUrls.map(f => path.basename(f)).map(f => './' + f);
+  const normalizedStyleUrls = styleUrls.map(f => path.basename(f)).map(f => `./${f}`);
   const updateString = `[${normalizedStyleUrls.map(f => `'${f}'`).join(', ')}]`;
 
   return host => {

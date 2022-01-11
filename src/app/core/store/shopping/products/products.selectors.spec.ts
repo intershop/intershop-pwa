@@ -145,7 +145,7 @@ describe('Products Selectors', () => {
 
     describe('with product route', () => {
       beforeEach(fakeAsync(() => {
-        router.navigateByUrl('/product;sku=' + prod.sku);
+        router.navigateByUrl(`/product;sku=${prod.sku}`);
         tick(500);
       }));
 

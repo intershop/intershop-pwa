@@ -37,7 +37,7 @@ function keyChanges(a: any, b: any) {
     }
 
     for (const [key, value] of Object.entries(object)) {
-      const currentPath = Array.isArray(object) ? path + `[${key}]` : path === '' ? key : `${path}.${key}`;
+      const currentPath = Array.isArray(object) ? `${path}[${key}]` : path === '' ? key : `${path}.${key}`;
 
       if (base[key] === undefined) {
         changes[currentPath] = '+';

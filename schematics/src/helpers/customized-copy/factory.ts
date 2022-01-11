@@ -31,7 +31,7 @@ export function customize(options: Options): Rule {
     const project = workspace.projects.get(options.project);
     const sourceRoot = project.sourceRoot;
     const from = `${
-      options.path ? options.path + '/' : !options.from?.startsWith(sourceRoot + '/app/') ? sourceRoot + '/app/' : ''
+      options.path ? `${options.path}/` : !options.from?.startsWith(`${sourceRoot}/app/`) ? `${sourceRoot}/app/` : ''
     }${options.from.replace(/\/$/, '')}`;
     const dir = host.getDir(from);
 
@@ -59,8 +59,8 @@ export function customize(options: Options): Rule {
           updateComponentClassName(
             host,
             file,
-            strings.classify(fromName) + 'Component',
-            strings.classify(toName) + 'Component'
+            `${strings.classify(fromName)}Component`,
+            `${strings.classify(toName)}Component`
           );
 
           const imports = tsquery(

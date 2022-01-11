@@ -21,7 +21,7 @@ export function override(options: Options): Rule {
     const project = workspace.projects.get(options.project);
     const sourceRoot = project.sourceRoot;
     const from = `${
-      options.path ? options.path + '/' : !options.from?.startsWith(sourceRoot + '/app/') ? sourceRoot + '/app/' : ''
+      options.path ? `${options.path}/` : !options.from?.startsWith(`${sourceRoot}/app/`) ? `${sourceRoot}/app/` : ''
     }${options.from.replace(/\/$/, '')}`;
     if (!host.exists(from) || !from.endsWith('.ts')) {
       throw new SchematicsException('Input does not point to an existing TypeScript file.');

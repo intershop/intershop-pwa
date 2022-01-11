@@ -71,20 +71,20 @@ export function move(options: Options): Rule {
     const renames = [];
 
     const fromName = from.replace(/.*\//, '');
-    const fromClassName = strings.classify(fromName) + 'Component';
+    const fromClassName = `${strings.classify(fromName)}Component`;
     const toName = to.replace(/.*\//, '');
     if (toName.includes('.')) {
       throw new SchematicsException(`target must be a directory`);
     }
 
-    const toClassName = strings.classify(toName) + 'Component';
+    const toClassName = `${strings.classify(toName)}Component`;
 
     const similarIndex = Math.min(similarIdx(from, to), from.lastIndexOf('/') + 1, to.lastIndexOf('/') + 1);
 
     const replacePath = (path: string) =>
       path
         .replace(from.substr(similarIndex), to.substr(similarIndex))
-        .replace(fromName + '.component', toName + '.component');
+        .replace(`${fromName}.component`, `${toName}.component`);
 
     const replaceImportPath = (file: string, path: string) => {
       const newPath = replacePath(path);
@@ -108,7 +108,7 @@ export function move(options: Options): Rule {
     /* eslint-disable-next-line complexity */
     host.visit(file => {
       if (file.startsWith(`/src/app/`) || file.startsWith(`/projects/`)) {
-        if (file.includes(from + '/')) {
+        if (file.includes(`${from}/`)) {
           renames.push([file, replacePath(file)]);
 
           if (fromName !== toName && file.endsWith('.component.ts')) {
