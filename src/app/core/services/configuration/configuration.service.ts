@@ -18,6 +18,7 @@ export class ConfigurationService {
 
   /**
    * Gets the ICM configuration parameters.
+   *
    * @returns           The configuration object.
    */
   getServerConfiguration(): Observable<ServerConfig> {

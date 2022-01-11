@@ -28,7 +28,7 @@ export class LinkParser {
           // external links are not changed
           return link;
         default:
-          // tslint:disable-next-line:no-console
+          // eslint-disable-next-line no-console
           console.log('Unknown link type:', link);
       }
     }

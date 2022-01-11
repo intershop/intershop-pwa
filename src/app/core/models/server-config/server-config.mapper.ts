@@ -22,6 +22,7 @@ export class ServerConfigMapper {
       (acc, entry) => ({
         ...acc,
         [entry[0]]:
+          // eslint-disable-next-line unicorn/no-null
           entry[1] !== null && typeof entry[1] === 'object' && !Array.isArray(entry[1])
             ? // do recursion if we find an object
               ServerConfigMapper.mapEntries(

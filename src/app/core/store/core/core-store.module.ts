@@ -39,7 +39,6 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
 
 @NgModule({
   imports: [
-    // tslint:disable-next-line: ng-module-sorted-fields
     StoreModule.forRoot<CoreState>(coreReducers, {
       metaReducers: coreMetaReducers,
       runtimeChecks: {

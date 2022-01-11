@@ -12,7 +12,7 @@ export function checkPermission(userPermissions: string[], permission: string | 
   } else if (permission === 'never') {
     return false;
   } else {
-    // tslint:disable-next-line: no-parameter-reassignment
+    // eslint-disable-next-line no-param-reassign
     permission = typeof permission === 'string' ? [permission] : typeof permission === 'undefined' ? [] : permission;
     return permission.some(id => userPermissions.includes(id));
   }

@@ -14,6 +14,7 @@ export class SuggestService {
 
   /**
    * Returns a list of suggested search terms matching the given search term.
+   *
    * @param searchTerm  The search term to get suggestions for.
    * @returns           List of suggested search terms.
    */

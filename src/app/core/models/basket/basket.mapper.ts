@@ -71,6 +71,7 @@ export class BasketMapper {
 
   /**
    * Helper method to determine a basket(order) total on the base of row data.
+   *
    * @returns         The basket total.
    */
   static getTotals(data: BasketBaseData, discounts?: { [id: string]: BasketRebateData }): BasketTotal {

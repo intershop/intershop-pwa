@@ -75,7 +75,7 @@ describe('Account Punchout Page Component', () => {
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
-  it('should display user list after creation ', () => {
+  it('should display user list after creation', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('[data-testing-id="user-list"]')).toBeTruthy();

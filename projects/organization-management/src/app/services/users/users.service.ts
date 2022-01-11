@@ -29,6 +29,7 @@ export class UsersService {
 
   /**
    * Get all users of a customer. The current user is expected to have user management permission.
+   *
    * @returns               All users of the customer.
    */
   getUsers(): Observable<B2bUser[]> {
@@ -43,6 +44,7 @@ export class UsersService {
 
   /**
    * Get the data of a b2b user. The current user is expected to have user management permission.
+   *
    * @param login  The login of the user.
    * @returns      The user.
    */
@@ -58,6 +60,7 @@ export class UsersService {
 
   /**
    * Create a b2b user. The current user is expected to have user management permission.
+   *
    * @param body  The user data (customer, user, credentials, address) to create a new user.
    * @returns     The created user.
    */
@@ -104,6 +107,7 @@ export class UsersService {
 
   /**
    * Update a b2b user. The current user is expected to have user management permission.
+   *
    * @param body  The user data (customer, user, credentials, address) to update  the user.
    * @returns     The updated user.
    */
@@ -132,6 +136,7 @@ export class UsersService {
 
   /**
    * Deletes the data of a b2b user. The current user is expected to have user management permission.
+   *
    * @param login  The login of the user.
    * @returns      The user.
    */
@@ -178,13 +183,14 @@ export class UsersService {
 
   /**
    * Set the budget for a given b2b user.
+   *
    * @param login   The login of the user.
    * @param budget The user's budget.
    * @returns The new budget
    */
   setUserBudget(login: string, budget: UserBudget): Observable<UserBudget> {
     if (!budget) {
-      // tslint:disable-next-line: ish-no-object-literal-type-assertion
+      // eslint-disable-next-line ish-custom-rules/no-object-literal-type-assertion
       return of({} as UserBudget);
     }
     return this.currentCustomer$.pipe(

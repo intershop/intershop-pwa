@@ -23,7 +23,6 @@ describe('In Place Edit Component', () => {
   let fixture: ComponentFixture<DummyComponent>;
   let element: HTMLElement;
   let document: Document;
-  // tslint:disable-next-line: no-suspicious-variable-init-in-tests
   let mousedown: (args: { target: unknown }) => void;
   let inplaceEdit: () => InPlaceEditComponent;
 
@@ -91,7 +90,7 @@ describe('In Place Edit Component', () => {
       mousedown({ target: element.querySelector('p') });
     });
 
-    it('should be created', () => {
+    it('should display an input', () => {
       expect(element.querySelector('input')).toBeTruthy();
     });
 

@@ -43,6 +43,7 @@ export class QuoteListComponent {
 
   /**
    * Deletes an item.
+   *
    * @param item  The Quote item that should be deleted
    */
   onDeleteItem(item: Quote | QuoteRequest): void {

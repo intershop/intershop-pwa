@@ -14,6 +14,7 @@ export class OrderTemplateService {
 
   /**
    * Gets a list of order template for the current user.
+   *
    * @returns           The customer's order templates.
    */
   getOrderTemplates(): Observable<OrderTemplate[]> {
@@ -27,6 +28,7 @@ export class OrderTemplateService {
 
   /**
    * Gets a order template of the given id for the current user.
+   *
    * @param orderTemplateId  The order template id.
    * @returns           The order template.
    */
@@ -41,6 +43,7 @@ export class OrderTemplateService {
 
   /**
    * Creates a order template for the current user.
+   *
    * @param OrderTemplateDetails   The order template data.
    * @returns                 The created order template.
    */
@@ -52,6 +55,7 @@ export class OrderTemplateService {
 
   /**
    * Deletes a order template of the given id.
+   *
    * @param orderTemplateId   The order template id.
    * @returns            The order template.
    */
@@ -64,6 +68,7 @@ export class OrderTemplateService {
 
   /**
    * Updates a order template of the given id.
+   *
    * @param orderTemplate   The order template to be updated.
    * @returns          The updated order template.
    */
@@ -75,6 +80,7 @@ export class OrderTemplateService {
 
   /**
    * Adds a product to the order template with the given id and reloads the order template.
+   *
    * @param orderTemplate Id   The order template id.
    * @param sku           The product sku.
    * @param quantity      The product quantity (default = 1).
@@ -94,6 +100,7 @@ export class OrderTemplateService {
 
   /**
    * Removes a product from the order template with the given id. Returns an error observable if parameters are falsy.
+   *
    * @param wishlist Id   The order template id.
    * @param sku           The product sku.
    * @returns             The changed order template.

@@ -9,6 +9,7 @@ export class CategoryHelper {
 
   /**
    * Converts a given uniqueId of a category in a REST API category path.
+   *
    * @example
    * 'A.B.C' -> 'A/B/C'
    */

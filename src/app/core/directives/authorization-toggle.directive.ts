@@ -45,7 +45,7 @@ export class AuthorizationToggleDirective implements OnDestroy {
   @Input() set ishIsAuthorizedTo(permission: string | string[]) {
     // end previous subscription and subscribe to new permission
     if (this.subscription) {
-      // tslint:disable-next-line: ban
+      // eslint-disable-next-line ban/ban
       this.subscription.unsubscribe();
     }
     this.subscription = this.authorizationToggle

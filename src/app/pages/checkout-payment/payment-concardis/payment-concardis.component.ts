@@ -68,7 +68,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
     expiryMonth: { messageKey: '', message: '', code: 0 },
   };
 
-  // tslint:disable-next-line: private-destroy-field
+  // eslint-disable-next-line ish-custom-rules/private-destroy-field
   protected destroy$ = new Subject();
 
   getPayEngineURL() {
@@ -101,7 +101,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.next();
   }
 
-  // tslint:disable-next-line:no-empty
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   loadScript() {}
 
   /**

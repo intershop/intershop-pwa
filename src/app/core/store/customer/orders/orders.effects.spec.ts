@@ -457,7 +457,7 @@ describe('Orders Effects', () => {
     }));
 
     it('should set the breadcrumb of the selected order', done => {
-      // tslint:disable-next-line: no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       actions$ = of(routerTestNavigatedAction({}));
 
       effects.setOrderBreadcrumb$.subscribe(action => {

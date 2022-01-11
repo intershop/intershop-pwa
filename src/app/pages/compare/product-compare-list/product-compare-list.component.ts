@@ -67,6 +67,7 @@ export class ProductCompareListComponent implements OnInit {
 
   /**
    * Changes the current page and sets the according compare products to be visible.
+   *
    * @param pageNumber The page number to set the current page to
    */
   changeCurrentPage(pageNumber: number) {
@@ -83,6 +84,7 @@ export class ProductCompareListComponent implements OnInit {
 
   /**
    * Remove the product with the given SKU from the compare list.
+   *
    * @param sku The SKU of the product to remove
    */
   removeFromCompare(sku: string) {

@@ -38,7 +38,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
   constructor(private checkoutFacade: CheckoutFacade) {}
   /**
     jumps to nextPage as soon as basket invoice and shipping addresses are set.
-  */
+   */
   ngOnChanges() {
     if (this.isNextStepAvailable()) {
       this.nextStep.emit();

@@ -19,6 +19,7 @@ export class CostCentersService {
 
   /**
    * Get all cost centers of a customer. The current user is expected to have permission APP_B2B_VIEW_COSTCENTER.
+   *
    * @returns               All cost centers of the customer.
    */
   getCostCenters(): Observable<CostCenter[]> {
@@ -34,6 +35,7 @@ export class CostCentersService {
 
   /**
    * Get a cost center of a customer. The current user is expected to have permission APP_B2B_VIEW_COSTCENTER.
+   *
    * @param   costCenterId  The costCenterId of the cost center.
    * @returns               The requested cost center of the customer.
    */
@@ -53,6 +55,7 @@ export class CostCentersService {
 
   /**
    * Creates a cost center of a customer. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param   costCenter  The costCenter for the cost center creation.
    * @returns             The new cost center.
    */
@@ -72,6 +75,7 @@ export class CostCentersService {
 
   /**
    * Updates a cost center of a customer. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param   costCenter  The costCenter for the cost center update.
    * @returns             The updated cost center.
    */
@@ -91,6 +95,7 @@ export class CostCentersService {
 
   /**
    * Deletes a cost center of a customer. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param     id  The id of the costcenter that is to be deleted.
    */
   deleteCostCenter(id: string) {
@@ -105,6 +110,7 @@ export class CostCentersService {
 
   /**
    * Adds buyers with their budgets to the cost center. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param     costCenterId  The id of the costcenter.
    * @param     buyers        An array of buyers and budgets.
    * @returns                 The changed cost center.
@@ -130,6 +136,7 @@ export class CostCentersService {
 
   /**
    * Updates a cost center buyer budget. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param     costCenterId  The id of the costcenter.
    * @param     buyer         The changed buyer budget of the costcenter.
    * @returns                 The updated cost center.
@@ -153,6 +160,7 @@ export class CostCentersService {
 
   /**
    * Un-assigns a buyer from a cost center. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param     costCenterId  The id of the costcenter.
    * @param     login         The login of the buyer.
    * @returns                 The changed cost center.

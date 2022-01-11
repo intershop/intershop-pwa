@@ -43,7 +43,7 @@ export class NotFeatureToggleDirective implements OnDestroy {
   @Input() set ishNotFeature(val: string) {
     // end previous subscription and newly subscribe
     if (this.subscription) {
-      // tslint:disable-next-line: ban
+      // eslint-disable-next-line ban/ban
       this.subscription.unsubscribe();
     }
 

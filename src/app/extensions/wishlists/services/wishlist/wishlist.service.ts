@@ -15,6 +15,7 @@ export class WishlistService {
 
   /**
    * Gets a list of wishlists for the current user.
+   *
    * @returns           The customer's wishlists.
    */
   getWishlists(): Observable<Wishlist[]> {
@@ -33,6 +34,7 @@ export class WishlistService {
 
   /**
    * Gets a wishlist of the given id for the current user.
+   *
    * @param wishlistId  The wishlist id.
    * @returns           The wishlist.
    */
@@ -52,6 +54,7 @@ export class WishlistService {
 
   /**
    * Creates a wishlists for the current user.
+   *
    * @param wishlistDetails   The wishlist data.
    * @returns                 The created wishlist.
    */
@@ -68,6 +71,7 @@ export class WishlistService {
 
   /**
    * Deletes a wishlist of the given id.
+   *
    * @param wishlistId   The wishlist id.
    * @returns            The wishlist.
    */
@@ -83,6 +87,7 @@ export class WishlistService {
 
   /**
    * Updates a wishlist of the given id.
+   *
    * @param wishlist   The wishlist to be updated.
    * @returns          The updated wishlist.
    */
@@ -99,6 +104,7 @@ export class WishlistService {
 
   /**
    * Adds a product to the wishlist with the given id and reloads the wishlist.
+   *
    * @param wishlist Id   The wishlist id.
    * @param sku           The product sku.
    * @param quantity      The product quantity (default = 1).
@@ -123,6 +129,7 @@ export class WishlistService {
 
   /**
    * Removes a product from the wishlist with the given id. Returns an error observable if parameters are falsy.
+   *
    * @param wishlist Id   The wishlist id.
    * @param sku           The product sku.
    * @returns             The changed wishlist.

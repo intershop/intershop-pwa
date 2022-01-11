@@ -122,6 +122,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Determine whether payment parameter form for a payment method is opened or not
+   *
    * @param index Numerical index of the parameter form to get info from
    */
   formIsOpen(index: number): boolean {

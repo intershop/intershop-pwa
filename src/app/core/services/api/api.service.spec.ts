@@ -24,7 +24,7 @@ import { getPGID } from 'ish-core/store/customer/user';
 import { ApiService, unpackEnvelope } from './api.service';
 
 // testing here is handled by http testing controller
-// tslint:disable: use-async-synchronization-in-tests
+/* eslint-disable ish-custom-rules/use-async-synchronization-in-tests */
 
 describe('Api Service', () => {
   describe('API Service Methods', () => {
