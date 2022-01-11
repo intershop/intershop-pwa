@@ -22,6 +22,7 @@ describe('Quote Widget Component', () => {
   beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
     when(quotingFacade.quotingEntities$()).thenReturn(of([]));
+    when(quotingFacade.loading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],

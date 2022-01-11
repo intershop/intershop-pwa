@@ -1,8 +1,12 @@
 <h1>
   {{ 'account.organization.user_management' | translate }}
-  <a *ngIf="!(error$ | async)" routerLink="create" class="btn btn-secondary" data-testing-id="add-user-link">{{
-    'account.user.list.link.add_user' | translate
-  }}</a>
+  <a
+    *ngIf="!!(error$ | async) === false"
+    routerLink="create"
+    class="btn btn-secondary"
+    data-testing-id="add-user-link"
+    >{{ 'account.user.list.link.add_user' | translate }}</a
+  >
 </h1>
 
 <ish-error-message [error]="error$ | async"></ish-error-message>

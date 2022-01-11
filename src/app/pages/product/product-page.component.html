@@ -15,5 +15,5 @@
 </div>
 
 <ng-container *ishFeature="'recently'"
-  ><ish-recently-viewed *ngIf="!(productLoading$ | async)"></ish-recently-viewed
+  ><ish-recently-viewed *ngIf="(productLoading$ | async) !== true"></ish-recently-viewed
 ></ng-container>

@@ -11,7 +11,7 @@
     <div class="col-md-12 col-lg-8">
       <div class="section" *ngIf="shippingMethods$ | async as shippingMethods">
         <div *ngIf="shippingMethods.length; else noShippingMethods" class="shipping-methods">
-          <div *ngIf="!(basketError$ | async) && nextDisabled" role="alert" class="alert alert-danger">
+          <div *ngIf="(basketError$ | async) === undefined && nextDisabled" role="alert" class="alert alert-danger">
             {{ 'checkout.shipping_method.no_Selection.error' | translate }}
           </div>
           <h3>{{ 'checkout.shipping_method.selection.heading' | translate }}</h3>

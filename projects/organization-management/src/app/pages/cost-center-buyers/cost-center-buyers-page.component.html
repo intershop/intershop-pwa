@@ -41,7 +41,7 @@
   </div>
 </ng-container>
 <ng-template #emptyList>
-  <p *ngIf="!(error$ | async)" data-testing-id="empty-buyer-list">
+  <p *ngIf="!!(error$ | async) === false" data-testing-id="empty-buyer-list">
     {{ 'account.costcenter.details.add.buyers.list.empty' | translate }}
   </p>
 

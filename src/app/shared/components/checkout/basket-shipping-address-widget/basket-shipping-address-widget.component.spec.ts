@@ -29,6 +29,7 @@ describe('Basket Shipping Address Widget Component', () => {
     checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(EMPTY);
     when(checkoutFacade.basketShippingAddress$).thenReturn(EMPTY);
+    when(checkoutFacade.basketInvoiceAndShippingAddressEqual$).thenReturn(of(false));
 
     accountFacade = mock(AccountFacade);
     when(accountFacade.addresses$()).thenReturn(EMPTY);
