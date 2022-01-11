@@ -17,8 +17,7 @@ export function findAllCustomElements(el: HTMLElement): string[] {
   const returnList = [];
   const tagList = getAllElementTagsRecursively(el);
 
-  for (let index = 0; index < tagList.length; index++) {
-    const element = tagList[index];
+  for (const element of tagList) {
     const tagName = element.toLocaleLowerCase();
     // https://stackoverflow.com/a/47737765/13001898
     if (!tagName.includes('-')) {

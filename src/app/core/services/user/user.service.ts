@@ -107,45 +107,45 @@ export class UserService {
       mainDivision: body.address.mainDivisionCode,
     };
 
-    let newCustomer$: Observable<CreatePrivateCustomerType | CreateBusinessCustomerType>;
-    newCustomer$ = this.appFacade.currentLocale$.pipe(
-      map(currentLocale =>
-        body.customer.isBusinessCustomer
-          ? {
-              type: 'SMBCustomer',
-              ...body.customer,
-              ...(body.user
-                ? {
-                    user: {
-                      ...body.user,
+    const newCustomer$: Observable<CreatePrivateCustomerType | CreateBusinessCustomerType> =
+      this.appFacade.currentLocale$.pipe(
+        map(currentLocale =>
+          body.customer.isBusinessCustomer
+            ? {
+                type: 'SMBCustomer',
+                ...body.customer,
+                ...(body.user
+                  ? {
+                      user: {
+                        ...body.user,
+                        preferredLanguage: currentLocale,
+                      },
+                    }
+                  : {
+                      userId: body.userId,
+                    }),
+                address: customerAddress,
+                credentials: body.credentials,
+              }
+            : {
+                type: 'PrivateCustomer',
+                ...body.customer,
+                ...(body.user
+                  ? {
+                      firstName: body.user.firstName,
+                      lastName: body.user.lastName,
+                      email: body.user.email,
                       preferredLanguage: currentLocale,
-                    },
-                  }
-                : {
-                    userId: body.userId,
-                  }),
-              address: customerAddress,
-              credentials: body.credentials,
-            }
-          : {
-              type: 'PrivateCustomer',
-              ...body.customer,
-              ...(body.user
-                ? {
-                    firstName: body.user.firstName,
-                    lastName: body.user.lastName,
-                    email: body.user.email,
-                    preferredLanguage: currentLocale,
-                  }
-                : {
-                    userId: body.userId,
-                  }),
-              address: customerAddress,
-              credentials: body.credentials,
-              preferredLanguage: currentLocale,
-            }
-      )
-    );
+                    }
+                  : {
+                      userId: body.userId,
+                    }),
+                address: customerAddress,
+                credentials: body.credentials,
+                preferredLanguage: currentLocale,
+              }
+        )
+      );
 
     return this.appFacade.isAppTypeREST$.pipe(
       first(),
