@@ -1,19 +1,4 @@
-<div [formGroup]="payoneIDealForm">
-  <div class="row form-group has-feedback" [ishShowFormFeedback]="[payoneIDealForm.controls.bankGroup]">
-    <label class="col-form-label col-md-4" for="bankGroup"
-      >{{ 'checkout.bankGroup.label' | translate }}<span class="required">*</span></label
-    >
-    <div class="col-sm-6">
-      <select class="form-control" id="payone_ideal_bankGroup" formControlName="bankGroup">
-        <option *ngFor="let option of this.bankGroupOptions" [value]="option.name">{{ option.value }}</option>
-      </select>
-      <ish-form-control-feedback
-        [messages]="{ required: 'checkout.bankGroup.error.required' }"
-        [control]="payoneIDealForm.controls.bankGroup"
-      ></ish-form-control-feedback>
-    </div>
-  </div>
-</div>
+<formly-form [form]="payoneIDealForm" [fields]="fieldConfig"></formly-form>
 
 <ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="payoneIDealForm">
 </ish-payment-save-checkbox>
