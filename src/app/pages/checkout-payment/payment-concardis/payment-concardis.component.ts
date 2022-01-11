@@ -17,6 +17,10 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
+export type ConcardisErrorMessageType =
+  | { properties: { key: string; code: number; message: string; messageKey: string }[] }
+  | string;
+
 @Component({
   selector: 'ish-payment-concardis',
   template: ' ',
@@ -120,14 +124,12 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * determine errorMessages on the basis of the error code
    */
+  // eslint-disable-next-line complexity
   getErrorMessage(code: number, paymentMethod: string, fieldType: string, defaultMessage: string): string {
     let messageKey: string;
 
     switch (code) {
-      case 4121: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.default`;
-        break;
-      }
+      case 4121:
       case 4122: {
         messageKey = `checkout.${paymentMethod}.${fieldType}.error.default`;
         break;
@@ -140,38 +142,20 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
         messageKey = `checkout.${paymentMethod}.${fieldType}.error.notAlphanumeric`;
         break;
       }
-      case 4126: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.length`;
-        break;
-      }
-      case 4127: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.invalid`;
-        break;
-      }
-      case 4128: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.length`;
-        break;
-      }
-      case 4129: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.invalid`;
-        break;
-      }
-      case 41213: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.countryNotSupported`;
-        break;
-      }
-      case 41214: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.length`;
-        break;
-      }
-      case 41215: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.invalid`;
-        break;
-      }
+      case 4126:
+      case 4128:
+      case 41214:
       case 41216: {
         messageKey = `checkout.${paymentMethod}.${fieldType}.error.length`;
         break;
       }
+      case 4127:
+      case 4129:
+      case 41215: {
+        messageKey = `checkout.${paymentMethod}.${fieldType}.error.invalid`;
+        break;
+      }
+      case 41213:
       case 41217: {
         messageKey = `checkout.${paymentMethod}.${fieldType}.error.countryNotSupported`;
         break;
