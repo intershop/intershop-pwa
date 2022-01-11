@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "experimentalDecorators": true,
+    "lib": ["dom", "es2015", "es6"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "noLib": false,
+    "outDir": "./dist",
+    "removeComments": true,
+    "target": "es2015",
+    "types": ["node"]
+  },
+  "include": ["src/*.ts"],
+  "exclude": ["src/*.spec.ts"]
+}
