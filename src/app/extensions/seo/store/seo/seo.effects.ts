@@ -187,7 +187,7 @@ export class SeoEffects {
     } else {
       url = this.doc.baseURI;
     }
-    return url.endsWith('/') ? url : url + '/';
+    return url.endsWith('/') ? url : `${url}/`;
   }
 
   private setCanonicalLink(url: string) {
@@ -219,7 +219,7 @@ export class SeoEffects {
             this.addOrModifyTag({ name: key, content: value });
             return;
         }
-        this.addOrModifyTag({ property: key.startsWith('og:') ? key : 'og:' + key, content: value });
+        this.addOrModifyTag({ property: key.startsWith('og:') ? key : `og:${key}`, content: value });
       });
     this.addOrModifyTag({ property: 'pwa-version', content: PWA_VERSION });
   }

@@ -526,7 +526,7 @@ describe('Wishlist Effects', () => {
     });
 
     it('should set the breadcrumb of the selected wishlist in my account area', done => {
-      router.navigateByUrl('/account/wishlists/' + wishlists[0].id);
+      router.navigateByUrl(`/account/wishlists/${wishlists[0].id}`);
       actions$ = of(routerTestNavigatedAction({}));
 
       effects.setWishlistBreadcrumb$.subscribe(action => {

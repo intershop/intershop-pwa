@@ -286,8 +286,8 @@ describe('Api Service', () => {
 
       const req = httpTestingController.expectOne(`${REST_URL}/something`);
       req.flush([
-        { uri: REST_URL_PART + '/dummy1' },
-        { type: 'Link', uri: REST_URL_PART + '/dummy2' },
+        { uri: `${REST_URL_PART}/dummy1` },
+        { type: 'Link', uri: `${REST_URL_PART}/dummy2` },
         { type: 'Link' },
       ] as Link[]);
 
@@ -331,7 +331,7 @@ describe('Api Service', () => {
           done();
         });
 
-      httpTestingController.expectOne(`${REST_URL}/something`).flush({ type: 'Link', uri: REST_URL_PART + '/dummy' });
+      httpTestingController.expectOne(`${REST_URL}/something`).flush({ type: 'Link', uri: `${REST_URL_PART}/dummy` });
 
       httpTestingController.expectOne(`${REST_URL}/dummy`).flush({ data: 'dummy' });
     });
@@ -349,7 +349,7 @@ describe('Api Service', () => {
           fail
         );
 
-      httpTestingController.expectOne(`${REST_URL}/something`).flush({ uri: REST_URL_PART + '/dummy' });
+      httpTestingController.expectOne(`${REST_URL}/something`).flush({ uri: `${REST_URL_PART}/dummy` });
 
       httpTestingController.expectNone(`${REST_URL}/dummy`);
     });
@@ -361,7 +361,7 @@ describe('Api Service', () => {
 
       const req = httpTestingController.expectOne(`${REST_URL}/something`);
       expect(req.request.headers.get('dummy')).toEqual('linkHeaderTest');
-      req.flush({ type: 'Link', uri: REST_URL_PART + '/dummy' });
+      req.flush({ type: 'Link', uri: `${REST_URL_PART}/dummy` });
 
       const req2 = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req2.request.headers.get('dummy')).toEqual('linkHeaderTest');
@@ -375,8 +375,8 @@ describe('Api Service', () => {
       const req = httpTestingController.expectOne(`${REST_URL}/something`);
       expect(req.request.headers.get('dummy')).toEqual('linkHeaderTest');
       req.flush([
-        { type: 'Link', uri: REST_URL_PART + '/dummy1' },
-        { type: 'Link', uri: REST_URL_PART + '/dummy2' },
+        { type: 'Link', uri: `${REST_URL_PART}/dummy1` },
+        { type: 'Link', uri: `${REST_URL_PART}/dummy2` },
       ] as Link[]);
 
       const req2 = httpTestingController.expectOne(`${REST_URL}/dummy1`);

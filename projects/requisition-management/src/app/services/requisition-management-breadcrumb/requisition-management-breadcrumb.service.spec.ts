@@ -19,7 +19,7 @@ function adaptRoutes(rts: Route[], cmp: Type<any>): Route[] {
   return rts.map(r => ({
     ...r,
     loadChildren: undefined,
-    path: 'requisitions/' + r.path,
+    path: `requisitions/${r.path}`,
     component: (r.component || r.loadChildren) && cmp,
   }));
 }

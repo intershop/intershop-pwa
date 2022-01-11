@@ -176,7 +176,7 @@ export class QuotingEffects {
         ofType(createQuoteRequestFromQuoteSuccess, createQuoteRequestFromBasketSuccess),
         mapToPayloadProperty('entity'),
         mapToProperty('id'),
-        concatMap(id => from(this.router.navigateByUrl('/account/quotes/' + id)))
+        concatMap(id => from(this.router.navigateByUrl(`/account/quotes/${id}`)))
       ),
     { dispatch: false }
   );
@@ -189,7 +189,7 @@ export class QuotingEffects {
         mapToProperty('id'),
         withLatestFrom(this.store.pipe(select(selectUrl))),
         filter(([, url]) => url.startsWith('/account/quotes')),
-        concatMap(([id]) => from(this.router.navigateByUrl('/account/quotes/' + id)))
+        concatMap(([id]) => from(this.router.navigateByUrl(`/account/quotes/${id}`)))
       ),
     { dispatch: false }
   );

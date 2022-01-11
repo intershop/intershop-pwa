@@ -509,7 +509,7 @@ describe('Order Template Effects', () => {
     });
 
     it('should set the breadcrumb of the selected Order Template when on account url', done => {
-      router.navigateByUrl('/account/order-templates/' + orderTemplates[0].id);
+      router.navigateByUrl(`/account/order-templates/${orderTemplates[0].id}`);
       actions$ = of(routerTestNavigatedAction({}));
 
       effects.setOrderTemplateBreadcrumb$.subscribe(action => {

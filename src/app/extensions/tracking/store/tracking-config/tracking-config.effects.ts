@@ -54,7 +54,7 @@ export class TrackingConfigEffects {
     w[l] = w[l] || [];
     w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
     const gtmScript = document.createElement('script');
-    const dl = l !== 'dataLayer' ? '&l=' + l : '';
+    const dl = l !== 'dataLayer' ? `&l=${l}` : '';
     gtmScript.async = true;
     gtmScript.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
     const f = document.getElementsByTagName('script')[0];

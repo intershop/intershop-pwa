@@ -165,7 +165,7 @@ export function app() {
       if (err) {
         res.sendStatus(404);
       } else {
-        res.set('Content-Type', (path.endsWith('css') ? 'text/css' : 'application/javascript') + '; charset=UTF-8');
+        res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
         res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
       }
     });
@@ -278,7 +278,7 @@ export function app() {
       const icmUrlRegex = new RegExp(entry.icm);
       const pwaUrlRegex = new RegExp(entry.pwa);
       if (icmUrlRegex.exec(url) && entry.handledBy === 'pwa') {
-        newUrl = url.replace(icmUrlRegex, '/' + entry.pwaBuild);
+        newUrl = url.replace(icmUrlRegex, `/${entry.pwaBuild}`);
         break;
       } else if (pwaUrlRegex.exec(url) && entry.handledBy === 'icm') {
         const config: { [is: string]: string } = {};

@@ -78,7 +78,7 @@ async function determineRoutingModule(
   if (!subPaging) {
     routingModuleLocation = options.extension
       ? `extensions/${options.extension}/pages/${options.extension}-routing.module.ts`
-      : (project.root ? 'pages/' + project.root.replace(/^.*?\//g, '') : 'pages/app') + '-routing.module.ts';
+      : `${project.root ? `pages/${project.root.replace(/^.*?\//g, '')}` : 'pages/app'}-routing.module.ts`;
   }
 
   let routingModule: string = normalize(`${buildDefaultPath(project)}/${routingModuleLocation}`);

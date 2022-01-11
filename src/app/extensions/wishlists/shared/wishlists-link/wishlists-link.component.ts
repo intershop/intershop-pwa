@@ -22,6 +22,6 @@ export class WishlistsLinkComponent implements OnInit {
 
   ngOnInit() {
     this.preferredWishlist$ = this.wishlistFacade.preferredWishlist$;
-    this.routerLink$ = this.preferredWishlist$.pipe(map(pref => `/account/wishlists${pref ? '/' + pref.id : '/'}`));
+    this.routerLink$ = this.preferredWishlist$.pipe(map(pref => `/account/wishlists${pref ? `/${pref.id}` : '/'}`));
   }
 }

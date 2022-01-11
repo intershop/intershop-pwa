@@ -157,7 +157,7 @@ export class RegistrationFormConfigurationService {
         customer.companyName = formValue.companyName1;
         customer.companyName2 = formValue.companyName2;
         customer.taxationID = formValue.taxationID;
-        user.businessPartnerNo = 'U' + customer.customerNo;
+        user.businessPartnerNo = `U${customer.customerNo}`;
       }
 
       const registration: CustomerRegistrationType = { customer, user, credentials, address };
