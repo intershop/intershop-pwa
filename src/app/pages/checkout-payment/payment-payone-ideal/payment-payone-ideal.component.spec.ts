@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
-import { anything, spy, verify } from 'ts-mockito';
+import { MockComponent } from 'ng-mocks';
+import { spy, verify } from 'ts-mockito';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
-import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
 import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 
@@ -20,9 +19,8 @@ describe('Payment Payone Ideal Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        MockComponent(FormControlFeedbackComponent),
+        MockComponent(FormlyForm),
         MockComponent(PaymentSaveCheckboxComponent),
-        MockDirective(ShowFormFeedbackDirective),
         PaymentPayoneIdealComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
@@ -53,27 +51,5 @@ describe('Payment Payone Ideal Component', () => {
 
     component.cancelNewPaymentInstrument();
     verify(emitter.emit()).once();
-  });
-
-  it('should emit submit event if parameter form is valid', () => {
-    fixture.detectChanges();
-    const emitter = spy(component.submit);
-
-    component.payoneIDealForm.controls.bankGroup.setValue('bank_code');
-
-    component.submitNewPaymentInstrument();
-
-    verify(emitter.emit(anything())).once();
-  });
-
-  it('should not emit submit event if parameter form is not valid', () => {
-    fixture.detectChanges();
-    const emitter = spy(component.submit);
-
-    component.payoneIDealForm.controls.bankGroup.setValue('');
-
-    component.submitNewPaymentInstrument();
-
-    verify(emitter.emit(anything())).never();
   });
 });

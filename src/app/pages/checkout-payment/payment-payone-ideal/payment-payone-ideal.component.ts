@@ -1,16 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 @Component({
@@ -19,8 +13,6 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPayoneIdealComponent implements OnInit {
-  constructor(protected cd: ChangeDetectorRef) {}
-
   /**
    * payone payment method, needed to get configuration parameters
    */
@@ -34,22 +26,38 @@ export class PaymentPayoneIdealComponent implements OnInit {
   @Output() cancel = new EventEmitter<void>();
   @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
-  payoneIDealForm = new FormGroup({});
-
-  bankGroupOptions: {
-    name: string;
-    value: string;
-  }[];
+  payoneIDealForm: FormGroup;
+  fieldConfig: FormlyFieldConfig[];
 
   ngOnInit() {
-    this.payoneIDealForm.addControl('bankGroup', new FormControl('', [Validators.required]));
+    this.payoneIDealForm = new FormGroup({});
+    this.fieldConfig = [
+      {
+        type: 'ish-select-field',
+        key: 'bankGroup',
+        templateOptions: {
+          required: true,
+          label: 'checkout.bankGroup.label',
+          options: this.getBankGroupOptions(),
+          validation: {
+            messages: {
+              required: 'checkout.bankGroup.error.required',
+            },
+          },
+        },
+      },
+    ];
+  }
 
+  private getBankGroupOptions() {
     // fetching bank group options for ideal
-    this.bankGroupOptions = this.paymentMethod.hostedPaymentPageParameters;
+    const bankGroupOptions: SelectOption[] = this.paymentMethod.hostedPaymentPageParameters?.map(param => ({
+      value: param.name,
+      label: param.value,
+    }));
     // sorting the options by bank name
-    if (this.bankGroupOptions) {
-      this.bankGroupOptions.sort((a, b) => a.value.localeCompare(b.value));
-    }
+    bankGroupOptions?.sort((a, b) => a.value.localeCompare(b.value));
+    return bankGroupOptions;
   }
 
   /**
@@ -65,12 +73,12 @@ export class PaymentPayoneIdealComponent implements OnInit {
   submitNewPaymentInstrument() {
     if (this.payoneIDealForm.invalid) {
       markAsDirtyRecursive(this.payoneIDealForm);
+      return;
     } else {
       this.submit.emit({
         parameters: [{ name: 'bankGroupCode', value: this.payoneIDealForm.get('bankGroup').value }],
         saveAllowed: this.paymentMethod.saveAllowed && this.payoneIDealForm.get('saveForLater').value,
       });
     }
-    this.cd.detectChanges();
   }
 }
