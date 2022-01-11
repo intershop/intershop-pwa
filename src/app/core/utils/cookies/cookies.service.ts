@@ -130,6 +130,7 @@ export class CookiesService {
     };
   }
 
+  // eslint-disable-next-line complexity
   private buildCookieString(name: string, value: string | undefined, opts: CookiesOptions = {}): string {
     let path = opts.path;
     if (!path) {

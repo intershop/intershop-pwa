@@ -6,7 +6,7 @@ import { pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
-import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
+import { ConcardisErrorMessageType, PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- allows access to concardis js functionality */
 declare let PayEngine: any;
@@ -157,45 +157,8 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
 
     this.resetErrors();
     if (error) {
-      // map error messages
-      if (typeof error.message !== 'string' && error.message.properties) {
-        this.errorMessage.iban = error.message.properties && error.message.properties.find(prop => prop.key === 'iban');
-        if (this.errorMessage.iban && this.errorMessage.iban.code) {
-          this.errorMessage.iban.messageKey = this.getErrorMessage(
-            this.errorMessage.iban.code,
-            'sepa',
-            'iban',
-            this.errorMessage.iban.message
-          );
-          this.handleErrors('IBAN', this.errorMessage.iban.messageKey);
-        }
-
-        this.errorMessage.bic = error.message.properties && error.message.properties.find(prop => prop.key === 'bic');
-        if (this.errorMessage.bic && this.errorMessage.bic.code) {
-          this.errorMessage.bic.messageKey = this.getErrorMessage(
-            this.errorMessage.bic.code,
-            'sepa',
-            'bic',
-            this.errorMessage.bic.message
-          );
-          this.handleErrors('BIC', this.errorMessage.bic.messageKey);
-        }
-
-        this.errorMessage.accountholder =
-          error.message.properties && error.message.properties.find(prop => prop.key === 'accountholder');
-        if (this.errorMessage.accountholder && this.errorMessage.accountholder.code) {
-          this.errorMessage.accountholder.messageKey = this.getErrorMessage(
-            this.errorMessage.accountholder.code,
-            'sepa',
-            'accountholder',
-            this.errorMessage.accountholder.message
-          );
-          this.handleErrors('accountHolder', this.errorMessage.accountholder.messageKey);
-        }
-      } else if (typeof error.message === 'string') {
-        this.errorMessage.general.message = error.message;
-      }
-    } else if (!this.parameterForm.invalid) {
+      this.mapErrorMessage(error.message);
+    } else if (this.parameterForm.valid) {
       this.submit.emit({
         parameters: [
           { name: 'paymentInstrumentId', value: result.paymentInstrumentId },
@@ -250,5 +213,45 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     }
     // eslint-disable-next-line unicorn/no-null
     PayEngine.createPaymentInstrument('sepa', paymentData, null, (err: any, val: any) => this.submitCallback(err, val));
+  }
+
+  private mapErrorMessage(errorMessage: ConcardisErrorMessageType) {
+    // map error messages
+    if (typeof errorMessage !== 'string' && errorMessage.properties) {
+      this.errorMessage.iban = errorMessage.properties?.find(prop => prop.key === 'iban');
+      if (this.errorMessage.iban?.code) {
+        this.errorMessage.iban.messageKey = this.getErrorMessage(
+          this.errorMessage.iban.code,
+          'sepa',
+          'iban',
+          this.errorMessage.iban.message
+        );
+        this.handleErrors('IBAN', this.errorMessage.iban.messageKey);
+      }
+
+      this.errorMessage.bic = errorMessage.properties?.find(prop => prop.key === 'bic');
+      if (this.errorMessage.bic?.code) {
+        this.errorMessage.bic.messageKey = this.getErrorMessage(
+          this.errorMessage.bic.code,
+          'sepa',
+          'bic',
+          this.errorMessage.bic.message
+        );
+        this.handleErrors('BIC', this.errorMessage.bic.messageKey);
+      }
+
+      this.errorMessage.accountholder = errorMessage.properties?.find(prop => prop.key === 'accountholder');
+      if (this.errorMessage.accountholder && this.errorMessage.accountholder.code) {
+        this.errorMessage.accountholder.messageKey = this.getErrorMessage(
+          this.errorMessage.accountholder.code,
+          'sepa',
+          'accountholder',
+          this.errorMessage.accountholder.message
+        );
+        this.handleErrors('accountHolder', this.errorMessage.accountholder.messageKey);
+      }
+    } else if (typeof errorMessage === 'string') {
+      this.errorMessage.general.message = errorMessage;
+    }
   }
 }

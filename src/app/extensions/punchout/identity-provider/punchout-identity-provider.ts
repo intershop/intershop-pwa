@@ -1,6 +1,6 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, noop, of, race, throwError } from 'rxjs';
 import { catchError, concatMap, delay, first, map, mapTo, switchMap, take, tap } from 'rxjs/operators';
@@ -90,77 +90,10 @@ export class PunchoutIdentityProvider implements IdentityProvider {
         switchMap(() => {
           // handle cXML punchout with sid
           if (route.queryParamMap.get('sid')) {
-            // fetch sid session information (basketId, returnURL, operation, ...)
-            return this.punchoutService.getCxmlPunchoutSession(route.queryParamMap.get('sid')).pipe(
-              // persist cXML session information (sid, returnURL, basketId) in cookies for later basket transfer
-              tap(data => {
-                this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'), {
-                  sameSite: 'None',
-                  secure: true,
-                });
-                this.cookiesService.put('punchout_ReturnURL', data.returnURL, {
-                  sameSite: 'None',
-                  secure: true,
-                });
-                this.cookiesService.put('punchout_BasketID', data.basketId, {
-                  sameSite: 'None',
-                  secure: true,
-                });
-              }),
-              // use the basketId basket for the current PWA session (instead of default current basket)
-              // TODO: if load basket error (currently no error page) -> logout and do not use default 'current' basket
-              // TODO: if loadBasketWithId is faster then the initial loading of the 'current' basket after login the wrong 'current' basket might be used (the additional delay is the current work around)
-              delay(500),
-              tap(data => this.checkoutFacade.loadBasketWithId(data.basketId)),
-              mapTo(this.router.parseUrl('/home'))
-            );
-
+            return this.handleCxmlPunchoutLogin(route);
             // handle OCI punchout with HOOK_URL
           } else if (route.queryParamMap.get('HOOK_URL')) {
-            // save HOOK_URL to cookie for later basket transfer
-            this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'), {
-              sameSite: 'None',
-              secure: true,
-            });
-
-            const basketId = window.sessionStorage.getItem('basket-id');
-            if (!basketId) {
-              // create a new basket for every punchout session to avoid basket conflicts for concurrent punchout sessions
-              this.checkoutFacade.createBasket();
-            } else {
-              this.checkoutFacade.loadBasketWithId(basketId);
-            }
-
-            // Product Details
-            if (route.queryParamMap.get('FUNCTION') === 'DETAIL' && route.queryParamMap.get('PRODUCTID')) {
-              return of(this.router.parseUrl(`/product/${route.queryParamMap.get('PRODUCTID')}`));
-
-              // Validation of Products
-            } else if (route.queryParamMap.get('FUNCTION') === 'VALIDATE' && route.queryParamMap.get('PRODUCTID')) {
-              return this.punchoutService
-                .getOciPunchoutProductData(
-                  route.queryParamMap.get('PRODUCTID'),
-                  route.queryParamMap.get('QUANTITY') || '1'
-                )
-                .pipe(
-                  tap(data => this.punchoutService.submitOciPunchoutData(data)),
-                  mapTo(false)
-                );
-
-              // Background Search
-            } else if (
-              route.queryParamMap.get('FUNCTION') === 'BACKGROUND_SEARCH' &&
-              route.queryParamMap.get('SEARCHSTRING')
-            ) {
-              return this.punchoutService.getOciPunchoutSearchData(route.queryParamMap.get('SEARCHSTRING')).pipe(
-                tap(data => this.punchoutService.submitOciPunchoutData(data, false)),
-                mapTo(false)
-              );
-
-              // Login
-            } else {
-              return of(this.router.parseUrl('/home'));
-            }
+            return this.handleOciPunchoutLogin(route);
           }
         }),
         // punchout error after successful authentication (needs to logout)
@@ -199,5 +132,73 @@ export class PunchoutIdentityProvider implements IdentityProvider {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return this.apiTokenService.intercept(req, next);
+  }
+
+  private handleCxmlPunchoutLogin(route: ActivatedRouteSnapshot): Observable<UrlTree> {
+    // fetch sid session information (basketId, returnURL, operation, ...)
+    return this.punchoutService.getCxmlPunchoutSession(route.queryParamMap.get('sid')).pipe(
+      // persist cXML session information (sid, returnURL, basketId) in cookies for later basket transfer
+      tap(data => {
+        this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'), {
+          sameSite: 'None',
+          secure: true,
+        });
+        this.cookiesService.put('punchout_ReturnURL', data.returnURL, {
+          sameSite: 'None',
+          secure: true,
+        });
+        this.cookiesService.put('punchout_BasketID', data.basketId, {
+          sameSite: 'None',
+          secure: true,
+        });
+      }),
+      // use the basketId basket for the current PWA session (instead of default current basket)
+      // TODO: if load basket error (currently no error page) -> logout and do not use default 'current' basket
+      // TODO: if loadBasketWithId is faster then the initial loading of the 'current' basket after login the wrong 'current' basket might be used (the additional delay is the current work around)
+      delay(500),
+      tap(data => this.checkoutFacade.loadBasketWithId(data.basketId)),
+      mapTo(this.router.parseUrl('/home'))
+    );
+  }
+
+  private handleOciPunchoutLogin(route: ActivatedRouteSnapshot) {
+    // save HOOK_URL to cookie for later basket transfer
+    this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'), {
+      sameSite: 'None',
+      secure: true,
+    });
+
+    const basketId = window.sessionStorage.getItem('basket-id');
+    if (!basketId) {
+      // create a new basket for every punchout session to avoid basket conflicts for concurrent punchout sessions
+      this.checkoutFacade.createBasket();
+    } else {
+      this.checkoutFacade.loadBasketWithId(basketId);
+    }
+
+    // Product Details
+    if (route.queryParamMap.get('FUNCTION') === 'DETAIL' && route.queryParamMap.get('PRODUCTID')) {
+      return of(this.router.parseUrl(`/product/${route.queryParamMap.get('PRODUCTID')}`));
+
+      // Validation of Products
+    } else if (route.queryParamMap.get('FUNCTION') === 'VALIDATE' && route.queryParamMap.get('PRODUCTID')) {
+      return this.punchoutService
+        .getOciPunchoutProductData(route.queryParamMap.get('PRODUCTID'), route.queryParamMap.get('QUANTITY') || '1')
+        .pipe(
+          tap(data => this.punchoutService.submitOciPunchoutData(data)),
+          mapTo(false)
+        );
+
+      // Background Search
+    } else if (route.queryParamMap.get('FUNCTION') === 'BACKGROUND_SEARCH' && route.queryParamMap.get('SEARCHSTRING')) {
+      return this.punchoutService.getOciPunchoutSearchData(route.queryParamMap.get('SEARCHSTRING')).pipe(
+        tap(data => this.punchoutService.submitOciPunchoutData(data, false)),
+        mapTo(false)
+      );
+
+      // Login
+    } else {
+      return of(this.router.parseUrl('/home'));
+    }
   }
 }

@@ -24,6 +24,7 @@ export class AttributeToStringPipe implements PipeTransform {
     return formatPrice(price, this.translateService.currentLang);
   }
 
+  // eslint-disable-next-line complexity
   transform(data: Attribute, valuesSeparator: string = ', '): string {
     if (!this.translateService.currentLang) {
       return 'undefined';

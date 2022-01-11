@@ -119,6 +119,7 @@ export class ProductVariationHelper {
    * @returns       Indicates if no perfect match is found.
    * TODO: Refactor this to a more functional style
    */
+  // eslint-disable-next-line complexity
   private static alternativeCombinationCheck(option: VariationSelectOption, product: ProductView): boolean {
     if (!product.variableVariationAttributes?.length) {
       return;
