@@ -38,6 +38,9 @@
       "js",
       "json"
     ],
+    "moduleNameMapper": {
+      ".lint-fix$": "<rootDir>/src/utils/lint-fix-mock.js"
+    },
     "setupFilesAfterEnv": [
       "jest-extended/all"
     ]

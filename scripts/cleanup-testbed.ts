@@ -3,7 +3,7 @@ import { execSync, spawnSync } from 'child_process';
 import { LeftHandSideExpression, Node, Project, PropertyAccessExpression, SourceFile } from 'ts-morph';
 import * as ts from 'typescript';
 
-// tslint:disable: no-console
+/* eslint-disable no-console */
 
 function isTestBedConfigure(node: LeftHandSideExpression): node is PropertyAccessExpression {
   return (

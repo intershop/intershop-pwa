@@ -1,5 +1,6 @@
 # outputs
 src/**/*.js
+!src/utils/lint-fix-mock.js
 src/**/*.d.ts
 
 # dependencies

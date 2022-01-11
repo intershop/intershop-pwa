@@ -14,7 +14,6 @@ import {
   templateUrl: './<%= dasherize(name) %>.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:component-creation-test
 export class <%= classify(name) %>Component implements OnInit <% if (bindings.length) { %>, OnChanges <% } %>{
   /*
    * WARNING!
@@ -29,7 +28,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
   <% if (bindings.length) { %><%= bindings.map(b => b.declaration).join('\n  ') %><% } %>
 
-  <% if (bindings.length) { %>// tslint:disable-next-line: no-any - access in on-changes required
+  <% if (bindings.length) { %>// eslint-disable-next-line @typescript-eslint/no-explicit-any -- access in on-changes required
   private component: ComponentRef<any>;<% } %>
 
   constructor(
@@ -42,6 +41,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
     <% if(!isProject && !isShared) { %> if (this.featureToggleService.enabled('<%= camelize(extension) %>')) { <% } %>
       const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
 
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       const { <%= classify(originalName) %>Component } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
 
       const moduleFactory = this.compiler.compileModuleSync(module);

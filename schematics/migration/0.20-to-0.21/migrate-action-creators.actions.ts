@@ -140,6 +140,7 @@ export class ActionCreatorsActionsMorpher {
 
   /**
    * replaces global references to a given actionClass with createAction calls
+   *
    * @param actionClass the actionClass to update
    */
   private updateGlobalActionReferences(actionClass: ClassDeclaration) {
@@ -192,6 +193,7 @@ export class ActionCreatorsActionsMorpher {
 
   /**
    * replaces global references to a given enumDeclaration
+   *
    * @param enumDeclaration the enumDeclaration to update references of
    */
   private updateGlobalEnumReferences(enumDeclaration: EnumDeclaration) {
@@ -220,6 +222,7 @@ export class ActionCreatorsActionsMorpher {
 
   /**
    * replaces global references to a given typeAlias
+   *
    * @param typeAlias the typeAlias to update references of
    */
   private updateGlobalTypeAliasReferences(typeAlias: TypeAliasDeclaration) {

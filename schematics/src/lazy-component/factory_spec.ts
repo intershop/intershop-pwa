@@ -105,7 +105,6 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should load component via module', async () => {
-      // tslint:disable-next-line: no-invalid-template-strings
       expect(componentContent).toContain('import(`../../ext.module`)');
     });
 

@@ -3,6 +3,7 @@ import * as ts from 'typescript';
 
 export function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
   const text = host.read(modulePath);
+  // eslint-disable-next-line unicorn/no-null
   if (text === null) {
     throw new SchematicsException(`File ${modulePath} does not exist.`);
   }

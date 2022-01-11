@@ -4,23 +4,23 @@ import * as glob from 'glob';
 import { basename, join, sep } from 'path';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const purgecssPlugin = require('purgecss-webpack-plugin');
 
 class Logger {
   constructor(private target: string, private config: string, progressActive: boolean) {
     if (progressActive) {
-      // tslint:disable-next-line: no-console
       console.log('\n');
     }
   }
 
   log(...txt: unknown[]) {
-    // tslint:disable-next-line: no-console
     console.log(`${this.target}@${this.config}:`, ...txt);
   }
 
   warn(...txt: unknown[]) {
-    // tslint:disable-next-line: no-console
     console.warn(`${this.target}@${this.config}:`, ...txt);
   }
 }
@@ -47,16 +47,16 @@ function crawlFiles(folder: string, callback: (files: string[]) => void) {
   }
 }
 
-// tslint:disable-next-line: no-any
-function traverse(obj: object, test: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function traverse(obj: object, ftest: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
   Object.entries(obj).forEach(([k, v]) => {
-    if (test(v)) {
+    if (ftest(v)) {
       func(obj, k);
     }
   });
   Object.values(obj).forEach(v => {
     if (v && typeof v === 'object') {
-      traverse(v, test, func);
+      traverse(v, ftest, func);
     }
   });
 }
@@ -106,6 +106,7 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
  * - no elvis operators
  * - no instanceof checks
  */
+// eslint-disable-next-line complexity
 export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
   const { theme, production, availableThemes } = determineConfiguration(angularJsonConfig, targetOptions);
 
@@ -314,7 +315,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     }
   }
 
-  // tslint:disable-next-line: no-commented-out-code
+  // eslint-disable-next-line etc/no-commented-out-code
   // fs.writeFileSync('effective.config.json', JSON.stringify(config, undefined, 2), { encoding: 'utf-8' });
 
   return config;

@@ -64,7 +64,7 @@ describe('Service Schematic', () => {
     );
   });
 
-  it('service should be tree-shakeable', async () => {
+  it('should be tree-shakeable', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();

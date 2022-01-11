@@ -9,6 +9,7 @@ describe('Default Url Mapping Table', () => {
     });
   });
 
+  /* eslint-disable jest/valid-title */
   describe('HYBRID_MAPPING_TABLE', () => {
     it.each(HYBRID_MAPPING_TABLE.map(e => e.icm))(`{icm: '%p'} should be a valid regex`, entry => {
       expect(() => new RegExp(entry)).not.toThrow();

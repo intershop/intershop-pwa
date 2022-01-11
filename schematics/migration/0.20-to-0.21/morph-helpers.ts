@@ -4,6 +4,7 @@ import * as ts from 'typescript';
 
 /**
  * returns the new action name from an ActionClass or Action multiple export
+ *
  * @param identifier string that contains the action name
  */
 export function standardizeIdentifier(identifier: string) {
@@ -14,6 +15,7 @@ export function standardizeIdentifier(identifier: string) {
 
 /**
  * helper: checks whether the given expression text belongs to a map operator
+ *
  * @param identifier expression text
  */
 export function isMap(identifier: string) {
@@ -22,6 +24,7 @@ export function isMap(identifier: string) {
 
 /**
  * returns expression from conditional as array
+ *
  * @param conditional the conditional to extract expressions from
  */
 export function getConditionalWhenExpressions(conditional: ConditionalExpression): Expression[] {
@@ -39,7 +42,8 @@ export function getStateName(reducerFile: SourceFile): string {
     .getName();
 }
 
-export function checkReducerLoadingOnly(clauseBody: Statement<ts.Statement>): boolean {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function checkReducerLoadingOnly(clauseBody: Statement<any>): boolean {
   const ret = tsquery(
     clauseBody.compilerNode,
     'ReturnStatement > ObjectLiteralExpression'
@@ -53,7 +57,8 @@ export function checkReducerLoadingOnly(clauseBody: Statement<ts.Statement>): bo
   );
 }
 
-export function checkReducerErrorHandler(clauseBody: Statement<ts.Statement>): boolean {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function checkReducerErrorHandler(clauseBody: Statement<any>): boolean {
   const ret = tsquery(
     clauseBody.compilerNode,
     'ReturnStatement > ObjectLiteralExpression'

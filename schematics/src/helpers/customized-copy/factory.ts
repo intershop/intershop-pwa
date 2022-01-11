@@ -1,5 +1,5 @@
 import { strings } from '@angular-devkit/core';
-import { Rule, SchematicsException } from '@angular-devkit/schematics';
+import { Rule, SchematicsException, chain } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { basename, join } from 'path';
@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 
 import { applyNameAndPath, determineArtifactName, findDeclaringModule } from '../../utils/common';
 import { readIntoSourceFile } from '../../utils/filesystem';
+import { applyLintFix } from '../../utils/lint-fix';
 import { addDeclarationToNgModule } from '../../utils/registration';
 import { updateComponentClassName, updateComponentDecorator, updateComponentSelector } from '../move-component/factory';
 
@@ -97,6 +98,6 @@ export function customize(options: Options): Rule {
     options2 = determineArtifactName('component', host, options2);
     options2 = findDeclaringModule(host, options2);
 
-    return addDeclarationToNgModule(options2);
+    return chain([addDeclarationToNgModule(options2), applyLintFix()]);
   };
 }
