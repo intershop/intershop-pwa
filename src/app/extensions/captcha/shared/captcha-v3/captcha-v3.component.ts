@@ -48,7 +48,7 @@ export class CaptchaV3Component implements OnInit, OnDestroy {
 }
 
 @NgModule({
-  imports: [RecaptchaV3Module, TranslateModule, DirectivesModule],
+  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
   declarations: [CaptchaV3Component],
   providers: [
     {
