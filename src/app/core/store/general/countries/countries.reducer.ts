@@ -9,7 +9,7 @@ export const countryAdapter = createEntityAdapter<Country>({
   selectId: country => country.countryCode,
 });
 
-export interface CountriesState extends EntityState<Country> {}
+export type CountriesState = EntityState<Country>;
 
 const initialState: CountriesState = countryAdapter.getInitialState({});
 
