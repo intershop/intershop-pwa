@@ -1,5 +1,6 @@
 import { Injectable, Injector, isDevMode } from '@angular/core';
 import { TranslateCompiler, TranslateService } from '@ngx-translate/core';
+import { once } from 'lodash-es';
 
 import { Translations } from './translations.type';
 
@@ -7,8 +8,6 @@ const cache: Record<string, Function> = {};
 
 @Injectable()
 export class PWATranslateCompiler implements TranslateCompiler {
-  constructor(private injector: Injector) {}
-
   private static MAX_COMPILATION_LENGTH = 1000;
 
   /**
@@ -51,6 +50,13 @@ export class PWATranslateCompiler implements TranslateCompiler {
    * have to be replaced
    */
   private static SIMPLE_VARIABLE_REGEX = /\{\{\s*(\w+)\s*\}\}/g;
+
+  private translate: () => TranslateService;
+
+  constructor(injector: Injector) {
+    // set cyclic dependency
+    this.translate = once(() => injector.get(TranslateService));
+  }
 
   private checkIfCompileNeeded(value: string | Function): boolean {
     return (
@@ -105,7 +111,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
         if (rename) {
           args[rename] = args[variable];
         }
-        const delegate = this.injector.get(TranslateService).instant(key, args);
+        const delegate = this.translate().instant(key, args);
         const result = `${match[1]}${delegate}${match[4]}`;
 
         return this.recurse(result, args);
@@ -140,6 +146,9 @@ export class PWATranslateCompiler implements TranslateCompiler {
   }
 
   compileTranslations(translations: Translations): Translations {
+    // be sure translate dependency is initialized on the first run
+    this.translate();
+
     // This implementation is mutable by intention
     // tslint:disable-next-line: forin - object does not have inherited properties
     for (const key in translations) {
