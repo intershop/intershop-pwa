@@ -18,7 +18,6 @@ if (Object.keys(ports).length === 1) {
     name: distributor
     instances: ${process.env.CONCURRENCY_DISTRIBUTOR || 'max'}
     exec_mode: cluster
-    time: true
   `;
 }
 
@@ -26,7 +25,6 @@ if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
   content += `
   - script: dist/prometheus.js
     name: prometheus
-    time: true
 `;
 }
 
@@ -36,7 +34,6 @@ Object.entries(ports).forEach(([theme, port]) => {
     name: ${theme}
     instances: ${process.env.CONCURRENCY_SSR || 2}
     exec_mode: cluster
-    time: true
     max_memory_restart: ${process.env.SSR_MAX_MEM || '400M'}
     env:
       BROWSER_FOLDER: dist/${theme}/browser
