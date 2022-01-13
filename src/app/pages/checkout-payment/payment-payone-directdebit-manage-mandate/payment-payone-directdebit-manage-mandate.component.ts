@@ -109,13 +109,12 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
         };
 
         this.scriptLoader
-        .load('https://secure.pay1.de/client-api/js/ajax.js')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          const request = new PayoneRequest(data, options);
-          request.checkAndStore();
-        });
-
+          .load('https://secure.pay1.de/client-api/js/ajax.js')
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(() => {
+            const request = new PayoneRequest(data, options);
+            request.checkAndStore();
+          });
       }
     }
   }
@@ -125,11 +124,9 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
     // tslint:disable-next-line: no-console
     console.log(response);
 
-    if (response.get('status') === 'APPROVED')
-    {
+    if (response.get('status') === 'APPROVED') {
       this.mandateId = response.get('mandate_identification');
-      if(response.get('mandate_status') === 'pending')
-      {
+      if (response.get('mandate_status') === 'pending') {
         // TODO: set checkbox label as mandateText and show checkbox to accept mandate
         this.mandateText = response.get('mandate_text');
         // tslint:disable-next-line: no-commented-out-code
@@ -142,5 +139,6 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
       this.mandateError = true;
       markAsDirtyRecursive(this.payoneManageMandateForm);
     }
+    this.cd.markForCheck();
   }
 }
