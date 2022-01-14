@@ -47,7 +47,7 @@ describe('Payment Payone Ideal Component', () => {
   it('should emit cancel event when cancelNewPaymentInstrument is triggered', () => {
     fixture.detectChanges();
 
-    const emitter = spy(component.cancel);
+    const emitter = spy(component.cancelPayment);
 
     component.cancelNewPaymentInstrument();
     verify(emitter.emit()).once();

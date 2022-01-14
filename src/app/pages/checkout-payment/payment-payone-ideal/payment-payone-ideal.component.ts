@@ -23,8 +23,8 @@ export class PaymentPayoneIdealComponent implements OnInit {
    */
   @Input() activated = false;
 
-  @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() cancelPayment = new EventEmitter<void>();
+  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   payoneIDealForm: FormGroup;
   fieldConfig: FormlyFieldConfig[];
@@ -64,7 +64,7 @@ export class PaymentPayoneIdealComponent implements OnInit {
    * cancel new payment instrument and hides the form
    */
   cancelNewPaymentInstrument() {
-    this.cancel.emit();
+    this.cancelPayment.emit();
   }
 
   /**
@@ -75,7 +75,7 @@ export class PaymentPayoneIdealComponent implements OnInit {
       markAsDirtyRecursive(this.payoneIDealForm);
       return;
     } else {
-      this.submit.emit({
+      this.submitPayment.emit({
         parameters: [{ name: 'bankGroupCode', value: this.payoneIDealForm.get('bankGroup').value }],
         saveAllowed: this.paymentMethod.saveAllowed && this.payoneIDealForm.get('saveForLater').value,
       });
