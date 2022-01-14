@@ -187,7 +187,7 @@ export class QuotingService {
 
   updateQuoteRequest(quoteRequestId: string, changes: QuoteRequestUpdate[]) {
     if (!changes?.length) {
-      return throwError(new Error('updateQuoteRequest called without changes'));
+      return throwError(() => new Error('updateQuoteRequest called without changes'));
     }
     return concat(
       ...changes.map(change =>

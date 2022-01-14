@@ -45,7 +45,7 @@ export class ProductImageComponent implements OnInit {
   /**
    * deferred loading flag
    */
-  showImage$ = new ReplaySubject(1);
+  showImage$ = new ReplaySubject<void>(1);
 
   constructor(private translateService: TranslateService, private context: ProductContextFacade) {}
 

@@ -105,7 +105,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketFail', () => {
-      when(basketServiceMock.getBasket()).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.getBasket()).thenReturn(throwError(() => makeHttpError({ message: 'invalid' })));
       const action = loadBasket();
       const completion = loadBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
@@ -157,7 +157,9 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketFail', () => {
-      when(basketServiceMock.getBasketWithId(basketId)).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.getBasketWithId(basketId)).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
       const action = loadBasketWithId({ basketId });
       const completion = loadBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
@@ -218,7 +220,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type CreateBasketFail', () => {
-      when(basketServiceMock.createBasket()).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.createBasket()).thenReturn(throwError(() => makeHttpError({ message: 'invalid' })));
       const action = createBasket();
       const completion = createBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
@@ -267,7 +269,7 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type LoadBasketEligibleShippingMethodsFail', () => {
       when(basketServiceMock.getBasketEligibleShippingMethods(anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = loadBasketEligibleShippingMethods();
       const completion = loadBasketEligibleShippingMethodsFail({
@@ -318,7 +320,9 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketFail', () => {
       const update = { commonShippingMethod: 'shippingId' };
-      when(basketServiceMock.updateBasket(anything())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.updateBasket(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
 
       const action = updateBasket({ update });
       const completion = updateBasketFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -413,7 +417,7 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type SetBasketCustomAttributeFail', () => {
       when(basketServiceMock.createBasketAttribute(anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const attribute = { name: 'attr', value: 'xyz' };
@@ -462,13 +466,13 @@ describe('Basket Effects', () => {
       const action = deleteBasketAttribute({ attributeName });
       actions$ = of(action);
 
-      effects.deleteCustomAttributeFromBasket$.subscribe(
-        () => {
+      effects.deleteCustomAttributeFromBasket$.subscribe({
+        next: () => {
           verify(basketServiceMock.deleteBasketAttribute(attributeName)).never();
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should map to action of type DeleteBasketCustomAttributeSuccess and LoadBasket', () => {
@@ -486,7 +490,7 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type DeleteBasketCustomAttributeFail', () => {
       when(basketServiceMock.deleteBasketAttribute(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const attributeName = 'attr2';
@@ -569,7 +573,7 @@ describe('Basket Effects', () => {
 
     it('should map an invalid request to action of type SubmitBasketFail', () => {
       when(basketServiceMock.createRequisition(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = submitBasket();
       const completion = submitBasketFail({ error: makeHttpError({ message: 'invalid' }) });

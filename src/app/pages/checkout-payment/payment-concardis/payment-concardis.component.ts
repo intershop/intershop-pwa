@@ -73,7 +73,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   // eslint-disable-next-line ish-custom-rules/private-destroy-field
-  protected destroy$ = new Subject();
+  protected destroy$ = new Subject<void>();
 
   getPayEngineURL() {
     return this.getParamValue('ConcardisPaymentService.Environment', '') === 'LIVE'

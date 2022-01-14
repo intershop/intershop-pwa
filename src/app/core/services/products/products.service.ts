@@ -40,7 +40,7 @@ export class ProductsService {
    */
   getProduct(sku: string): Observable<Product> {
     if (!sku) {
-      return throwError('getProduct() called without a sku');
+      return throwError(() => new Error('getProduct() called without a sku'));
     }
 
     const params = new HttpParams().set('allImages', 'true');
@@ -65,7 +65,7 @@ export class ProductsService {
     offset = 0
   ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!categoryUniqueId) {
-      return throwError('getCategoryProducts() called without categoryUniqueId');
+      return throwError(() => new Error('getCategoryProducts() called without categoryUniqueId'));
     }
 
     let params = new HttpParams()
@@ -118,7 +118,7 @@ export class ProductsService {
     offset = 0
   ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!searchTerm) {
-      return throwError('searchProducts() called without searchTerm');
+      return throwError(() => new Error('searchProducts() called without searchTerm'));
     }
 
     let params = new HttpParams()
@@ -163,7 +163,7 @@ export class ProductsService {
     offset = 0
   ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!masterSKU) {
-      return throwError('getProductsForMaster() called without masterSKU');
+      return throwError(() => new Error('getProductsForMaster() called without masterSKU'));
     }
 
     let params = new HttpParams()
@@ -214,7 +214,7 @@ export class ProductsService {
     masterProduct: Partial<VariationProductMaster>;
   }> {
     if (!sku) {
-      return throwError('getProductVariations() called without a sku');
+      return throwError(() => new Error('getProductVariations() called without a sku'));
     }
 
     return this.apiService.get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`).pipe(
@@ -256,7 +256,7 @@ export class ProductsService {
    */
   getProductBundles(sku: string): Observable<{ stubs: Partial<Product>[]; bundledProducts: SkuQuantityType[] }> {
     if (!sku) {
-      return throwError('getProductBundles() called without a sku');
+      return throwError(() => new Error('getProductBundles() called without a sku'));
     }
 
     return this.apiService.get(`products/${sku}/bundles`).pipe(
@@ -273,7 +273,7 @@ export class ProductsService {
    */
   getRetailSetParts(sku: string): Observable<Partial<Product>[]> {
     if (!sku) {
-      return throwError('getRetailSetParts() called without a sku');
+      return throwError(() => new Error('getRetailSetParts() called without a sku'));
     }
 
     return this.apiService.get(`products/${sku}/partOfRetailSet`).pipe(

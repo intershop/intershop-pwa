@@ -1,5 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { noop } from 'rxjs';
+import { lastValueFrom, noop } from 'rxjs';
 
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
 
@@ -18,9 +18,11 @@ describe('CMS Component Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner)
-      .pipe(createModule(schematicRunner, { name: 'shared' }), createModule(schematicRunner, { name: 'shared/cms' }))
-      .toPromise();
+    const appTree$ = createApplication(schematicRunner).pipe(
+      createModule(schematicRunner, { name: 'shared' }),
+      createModule(schematicRunner, { name: 'shared/cms' })
+    );
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create a component in cms module with added name prefix', async () => {

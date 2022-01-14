@@ -91,7 +91,7 @@ describe('Quoting Effects', () => {
     it('should navigate to created quote request 2', fakeAsync(() => {
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
-      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+      effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(0);
 
@@ -101,7 +101,7 @@ describe('Quoting Effects', () => {
     it('should navigate to created quote request 3', done => {
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
-      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+      effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
       setTimeout(() => {
         expect(location.path()).toMatchInlineSnapshot(`"/account/quotes/123"`);
@@ -115,7 +115,7 @@ describe('Quoting Effects', () => {
 
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
-      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+      effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
       verify(routerSpy.navigateByUrl(anything())).once();
 

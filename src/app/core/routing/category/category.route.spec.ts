@@ -198,7 +198,7 @@ describe('Category Route', () => {
     it('should not detect category route when sku and categoryUniqueId are params', fakeAsync(() => {
       router.navigateByUrl('/category;sku=123;categoryUniqueId=ABC');
 
-      store$.pipe(ofCategoryUrl()).subscribe(fail, fail, fail);
+      store$.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -206,7 +206,7 @@ describe('Category Route', () => {
     it('should not detect category route when categoryUniqueId is missing', fakeAsync(() => {
       router.navigateByUrl('/other');
 
-      store$.pipe(ofCategoryUrl()).subscribe(fail, fail, fail);
+      store$.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

@@ -80,7 +80,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
       this.accountFacade.userError$.pipe(
         whenTruthy(),
         take(1),
-        concatMap(userError => throwError(userError))
+        concatMap(userError => throwError(() => userError))
       ),
 
       // handle the punchout functions once the punchout user is logged in

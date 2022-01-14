@@ -30,6 +30,6 @@ export class UniversalLogInterceptor implements HttpInterceptor {
       }
     };
 
-    return next.handle(req).pipe(tap(logger, logger));
+    return next.handle(req).pipe(tap({ next: logger, error: logger }));
   }
 }

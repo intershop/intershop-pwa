@@ -22,7 +22,7 @@ export class NotFeatureToggleDirective implements OnDestroy {
   private subscription: Subscription;
   private disabled$ = new ReplaySubject<boolean>(1);
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private templateRef: TemplateRef<unknown>,

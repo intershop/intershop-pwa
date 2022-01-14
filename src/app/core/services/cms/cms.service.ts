@@ -33,7 +33,7 @@ export class CMSService {
    */
   getContentInclude(includeId: string): Observable<{ include: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
     if (!includeId) {
-      return throwError('getContentInclude() called without an includeId');
+      return throwError(() => new Error('getContentInclude() called without an includeId'));
     }
 
     return this.apiService.get<ContentPageletEntryPointData>(`cms/includes/${includeId}`, { sendPGID: true }).pipe(
@@ -50,7 +50,7 @@ export class CMSService {
    */
   getContentPage(pageId: string): Observable<{ page: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
     if (!pageId) {
-      return throwError('getContentPage() called without an pageId');
+      return throwError(() => new Error('getContentPage() called without an pageId'));
     }
 
     return this.apiService.get<ContentPageletEntryPointData>(`cms/pages/${pageId}`, { sendPGID: true }).pipe(
@@ -69,7 +69,7 @@ export class CMSService {
    */
   getContentPageTree(rootId: string, depth?: number): Observable<ContentPageTree> {
     if (!rootId) {
-      return throwError('getContentPageTree() called without an rootId');
+      return throwError(() => new Error('getContentPageTree() called without an rootId'));
     }
 
     let params = new HttpParams();
@@ -101,7 +101,7 @@ export class CMSService {
     callParameters: CallParameters
   ): Observable<{ entrypoint: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
     if (!viewContextId) {
-      return throwError('getViewContextContent() called without a viewContextId');
+      return throwError(() => new Error('getViewContextContent() called without a viewContextId'));
     }
 
     let params = new HttpParams();

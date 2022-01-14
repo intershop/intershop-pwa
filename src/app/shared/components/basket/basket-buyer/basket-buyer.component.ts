@@ -29,7 +29,7 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
   costCenterName: string;
   userName: string;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade) {}
 

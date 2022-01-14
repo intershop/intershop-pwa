@@ -38,7 +38,7 @@ describe('Search Effects', () => {
     when(productsServiceMock.searchProducts(anyString(), anyNumber(), anything(), anyNumber())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {
         if (!searchTerm) {
-          return throwError(makeHttpError({ message: 'ERROR' }));
+          return throwError(() => makeHttpError({ message: 'ERROR' }));
         } else {
           const currentSlice = skus.slice(offset, amount + offset);
           return of({
@@ -146,12 +146,12 @@ describe('Search Effects', () => {
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
-      when(suggestServiceMock.search(anyString())).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(suggestServiceMock.search(anyString())).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(4000);
 
-      effects.suggestSearch$.subscribe(fail, fail, fail);
+      effects.suggestSearch$.subscribe({ next: fail, error: fail });
 
       verify(suggestServiceMock.search('good')).once();
     }));

@@ -117,7 +117,7 @@ export class ApiService {
           return EMPTY;
         }
       }
-      return throwError(error);
+      return throwError(() => error);
     });
   }
 
@@ -270,7 +270,7 @@ export class ApiService {
             // flat map to API request
             this.get<T>(`${icmServerURL}/${link.uri}`, options),
             // throw if link is not properly supplied
-            throwError(new Error('link was not properly formatted'))
+            throwError(() => new Error('link was not properly formatted'))
           )
         )
       );

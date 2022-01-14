@@ -16,7 +16,7 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
 @Pipe({ name: 'ishFeature', pure: false })
 export class FeatureTogglePipe implements PipeTransform, OnDestroy {
   private enabled: boolean;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
   private subscription: Subscription;
 
   constructor(private featureToggleService: FeatureToggleService, private cdRef: ChangeDetectorRef) {}

@@ -25,7 +25,7 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
   currentPage$: Observable<number>;
   sortBy$: Observable<string>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router, private activatedRoute: ActivatedRoute) {}
 

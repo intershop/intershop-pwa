@@ -16,7 +16,7 @@ export class PromotionsService {
    */
   getPromotion(id: string): Observable<Promotion> {
     if (!id) {
-      return throwError('getPromotion() called without a id');
+      return throwError(() => new Error('getPromotion() called without a id'));
     }
 
     return this.apiService.get<Promotion>(`promotions/${id}`);

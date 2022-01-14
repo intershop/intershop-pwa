@@ -45,7 +45,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   @Output() cancelPayment = new EventEmitter<void>();
   @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   /**
    * flag to make sure that the init script is executed only once

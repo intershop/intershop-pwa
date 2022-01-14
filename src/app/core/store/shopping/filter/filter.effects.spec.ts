@@ -37,14 +37,14 @@ describe('Filter Effects', () => {
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError(makeHttpError({ message: 'invalid' }));
+        return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
         return of(filterNav);
       }
     });
     when(filterServiceMock.getFilterForCategory(anything())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError(makeHttpError({ message: 'invalid' }));
+        return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
         return of(filterNav);
       }
@@ -52,7 +52,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.getFilteredProducts(anything(), anyNumber(), anything(), anyNumber())).thenCall(a => {
       if (a.name === 'invalid') {
-        return throwError(makeHttpError({ message: 'invalid' }));
+        return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
         return of({
           total: 2,
@@ -63,7 +63,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.applyFilter(anything())).thenCall(a => {
       if (a.param[0] === 'invalid') {
-        return throwError(makeHttpError({ message: 'invalid' }));
+        return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
         return of(filterNav);
       }

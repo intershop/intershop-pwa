@@ -21,7 +21,7 @@ export class BuyerPageComponent implements OnInit, OnDestroy {
 
   status: RequisitionStatus;
   columnsToDisplay: RequisitionColumnsType[];
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private requisitionManagementFacade: RequisitionManagementFacade) {}
 

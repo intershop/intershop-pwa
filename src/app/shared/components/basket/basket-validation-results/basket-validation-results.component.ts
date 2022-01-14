@@ -31,7 +31,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
 
   itemHasBeenRemoved = false;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 

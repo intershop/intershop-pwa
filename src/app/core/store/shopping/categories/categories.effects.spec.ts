@@ -55,7 +55,7 @@ describe('Categories Effects', () => {
       of(categoryTree([{ uniqueId: '123', categoryRef: '123@domain', categoryPath: ['123'] } as Category]))
     );
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(
-      throwError(makeHttpError({ message: 'invalid category' }))
+      throwError(() => makeHttpError({ message: 'invalid category' }))
     );
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(TOP_LEVEL_CATEGORIES));
 
@@ -111,7 +111,7 @@ describe('Categories Effects', () => {
       store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/categoryref/dummy@domain');
 
-      effects.selectedCategoryRef$.subscribe(fail, fail, fail);
+      effects.selectedCategoryRef$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -158,7 +158,7 @@ describe('Categories Effects', () => {
       store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/category/dummy');
 
-      effects.selectedCategory$.subscribe(fail, fail, fail);
+      effects.selectedCategory$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -194,7 +194,7 @@ describe('Categories Effects', () => {
     it('should not trigger LoadCategory when /something is visited', fakeAsync(() => {
       router.navigateByUrl('/something');
 
-      effects.selectedCategory$.subscribe(fail, fail, fail);
+      effects.selectedCategory$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -304,7 +304,7 @@ describe('Categories Effects', () => {
 
     it('should map invalid request to action of type LoadCategoryFail', () => {
       when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid number' }))
+        throwError(() => makeHttpError({ message: 'invalid number' }))
       );
       const action = loadTopLevelCategories();
       const completion = loadTopLevelCategoriesFail({
@@ -321,8 +321,8 @@ describe('Categories Effects', () => {
     it('should call error service if triggered', done => {
       actions$ = of(loadCategoryFail({ error: makeHttpError({ status: 404 }) }));
 
-      effects.redirectIfErrorInCategories$.subscribe(
-        () => {
+      effects.redirectIfErrorInCategories$.subscribe({
+        next: () => {
           verify(httpStatusCodeService.setStatus(anything())).once();
           expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
                       Array [
@@ -331,9 +331,9 @@ describe('Categories Effects', () => {
                   `);
           done();
         },
-        fail,
-        noop
-      );
+        error: fail,
+        complete: noop,
+      });
     });
   });
 });

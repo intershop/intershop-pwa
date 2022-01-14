@@ -131,7 +131,7 @@ describe('Cost Centers Effects', () => {
 
     it('should dispatch a loadCostCentersFail action on failed cost centers load', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.getCostCenters()).thenReturn(throwError(error));
+      when(costCentersService.getCostCenters()).thenReturn(throwError(() => error));
 
       const action = loadCostCenters();
       const completion = loadCostCentersFail({ error });
@@ -192,7 +192,7 @@ describe('Cost Centers Effects', () => {
 
     it('should dispatch a loadCostCenterFail action on failed cost center load', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.getCostCenter(anyString())).thenReturn(throwError(error));
+      when(costCentersService.getCostCenter(anyString())).thenReturn(throwError(() => error));
 
       const action = loadCostCenter({ costCenterId });
       const completion = loadCostCenterFail({ error });
@@ -239,18 +239,18 @@ describe('Cost Centers Effects', () => {
     it('should navigate to the cost center detail on success', done => {
       actions$ = of(addCostCenter({ costCenter }));
 
-      effects.addCostCenter$.subscribe(
-        () => {
+      effects.addCostCenter$.subscribe({
+        next: () => {
           expect(location.path()).toMatchInlineSnapshot(`"/cost-centers/1"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should dispatch an addCostCenterFail action on failed cost center creation', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.addCostCenter(anything())).thenReturn(throwError(error));
+      when(costCentersService.addCostCenter(anything())).thenReturn(throwError(() => error));
 
       const action = addCostCenter({ costCenter });
       const completion = addCostCenterFail({ error });
@@ -291,7 +291,7 @@ describe('Cost Centers Effects', () => {
 
     it('should dispatch an updateCostCenterFail action on failed cost center update', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.updateCostCenter(anything())).thenReturn(throwError(error));
+      when(costCentersService.updateCostCenter(anything())).thenReturn(throwError(() => error));
 
       const action = updateCostCenter({ costCenter });
       const completion = updateCostCenterFail({ error });
@@ -331,7 +331,7 @@ describe('Cost Centers Effects', () => {
 
     it('should dispatch a deleteCostCenterFail action on failed cost center deletion', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.deleteCostCenter(anything())).thenReturn(throwError(error));
+      when(costCentersService.deleteCostCenter(anything())).thenReturn(throwError(() => error));
 
       const action = deleteCostCenter({ id });
       const completion = deleteCostCenterFail({ error });
@@ -387,18 +387,18 @@ describe('Cost Centers Effects', () => {
     it('should navigate to the cost center detail page on success', done => {
       actions$ = of(addCostCenterBuyers({ costCenterId, buyers }));
 
-      effects.addCostCenterBuyers$.subscribe(
-        () => {
+      effects.addCostCenterBuyers$.subscribe({
+        next: () => {
           expect(location.path()).toMatchInlineSnapshot(`"/cost-centers/1"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should dispatch an addCostCenterBuyersFail action in case of a failure', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.addCostCenterBuyers(anyString(), anything())).thenReturn(throwError(error));
+      when(costCentersService.addCostCenterBuyers(anyString(), anything())).thenReturn(throwError(() => error));
 
       const action = addCostCenterBuyers({ costCenterId, buyers });
       const completion = addCostCenterBuyersFail({ error });
@@ -448,7 +448,7 @@ describe('Cost Centers Effects', () => {
 
     it('should dispatch an updateCostCenterBuyerFail action on failed cost center buyer update', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.updateCostCenterBuyer(anyString(), anything())).thenReturn(throwError(error));
+      when(costCentersService.updateCostCenterBuyer(anyString(), anything())).thenReturn(throwError(() => error));
 
       const action = updateCostCenterBuyer({ costCenterId, buyer });
       const completion = updateCostCenterBuyerFail({ error });
@@ -498,7 +498,7 @@ describe('Cost Centers Effects', () => {
 
     it('should dispatch a deleteCostCenterFail action on failed cost center buyer deletion', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.deleteCostCenterBuyer(anyString(), anything())).thenReturn(throwError(error));
+      when(costCentersService.deleteCostCenterBuyer(anyString(), anything())).thenReturn(throwError(() => error));
 
       const action = deleteCostCenterBuyer({ costCenterId, login });
       const completion = deleteCostCenterBuyerFail({ error });

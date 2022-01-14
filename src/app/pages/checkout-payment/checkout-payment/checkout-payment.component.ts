@@ -56,7 +56,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   private openFormIndex = -1; // index of the open parameter form
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private route: ActivatedRoute) {}
 

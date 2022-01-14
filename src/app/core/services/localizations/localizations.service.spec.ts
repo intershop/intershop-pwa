@@ -38,8 +38,8 @@ describe('Localizations Service', () => {
 
   describe('getServerTranslations', () => {
     it('should fetch translations for lang from ICM api', done => {
-      localizationsService.getServerTranslations('en_US').subscribe(
-        res => {
+      localizationsService.getServerTranslations('en_US').subscribe({
+        next: res => {
           expect(res).toMatchInlineSnapshot(`
             Object {
               "a": "A",
@@ -47,9 +47,9 @@ describe('Localizations Service', () => {
             }
           `);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
 
       const req = http.expectOne(() => true);
       expect(req.request.url).toMatchInlineSnapshot(`"https://example.com/rest;loc=en_US/localizations"`);
@@ -60,8 +60,8 @@ describe('Localizations Service', () => {
     });
 
     it('should return empty translations and log error in case of failures', done => {
-      localizationsService.getServerTranslations('en_US').subscribe(
-        res => {
+      localizationsService.getServerTranslations('en_US').subscribe({
+        next: res => {
           expect(res).toMatchInlineSnapshot(`Object {}`);
           verify(errorHandler.handleError(anything())).once();
           const [error] = capture<Error>(errorHandler.handleError).last();
@@ -69,9 +69,9 @@ describe('Localizations Service', () => {
             `"Http failure response for https://example.com/rest;loc=en_US/localizations?searchKeys=pwa-: 404 Not Found"`
           );
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
 
       const req = http.expectOne(() => true);
       expect(req.request.url).toMatchInlineSnapshot(`"https://example.com/rest;loc=en_US/localizations"`);

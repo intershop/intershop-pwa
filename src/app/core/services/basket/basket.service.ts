@@ -240,16 +240,16 @@ export class BasketService {
    */
   mergeBasket(sourceBasketId: string, sourceBasketAuthToken: string, targetBasketId: string): Observable<Basket> {
     if (!sourceBasketId) {
-      return throwError('mergeBasket() called without sourceBasketId');
+      return throwError(() => new Error('mergeBasket() called without sourceBasketId'));
     }
     if (!sourceBasketAuthToken) {
-      return throwError('mergeBasket() called without sourceBasketAuthToken');
+      return throwError(() => new Error('mergeBasket() called without sourceBasketAuthToken'));
     }
     if (!targetBasketId) {
-      return throwError('mergeBasket() called without targetBasketId');
+      return throwError(() => new Error('mergeBasket() called without targetBasketId'));
     }
     if (targetBasketId === sourceBasketId) {
-      return throwError('mergeBasket() cannot be called when targetBasketId === sourceBasketId');
+      return throwError(() => new Error('mergeBasket() cannot be called when targetBasketId === sourceBasketId'));
     }
 
     const params = new HttpParams().set('include', this.allTargetBasketIncludes.join());
@@ -273,7 +273,7 @@ export class BasketService {
    */
   updateBasket(body: BasketUpdateType): Observable<Basket> {
     if (!body) {
-      return throwError('updateBasket() called without body');
+      return throwError(() => new Error('updateBasket() called without body'));
     }
 
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
@@ -327,7 +327,7 @@ export class BasketService {
    */
   addItemsToBasket(items: SkuQuantityType[]): Observable<BasketInfo[]> {
     if (!items) {
-      return throwError('addItemsToBasket() called without items');
+      return throwError(() => new Error('addItemsToBasket() called without items'));
     }
 
     const body = items.map(item => ({
@@ -413,7 +413,7 @@ export class BasketService {
    */
   createBasketAddress(address: Address): Observable<Address> {
     if (!address) {
-      return throwError('createBasketAddress() called without address');
+      return throwError(() => new Error('createBasketAddress() called without address'));
     }
     return this.currentBasketEndpoint()
       .post(`addresses`, address, {
@@ -433,10 +433,10 @@ export class BasketService {
    */
   updateBasketAddress(address: Address): Observable<Address> {
     if (!address) {
-      return throwError('updateBasketAddress() called without address');
+      return throwError(() => new Error('updateBasketAddress() called without address'));
     }
     if (!address.id) {
-      return throwError('updateBasketAddress() called without addressId');
+      return throwError(() => new Error('updateBasketAddress() called without addressId'));
     }
     return this.currentBasketEndpoint()
       .patch(`addresses/${address.id}`, address, {
@@ -482,7 +482,7 @@ export class BasketService {
    */
   createRequisition(basketId: string): Observable<void> {
     if (!basketId) {
-      return throwError('createRequisition() called without required basketId');
+      return throwError(() => new Error('createRequisition() called without required basketId'));
     }
 
     return this.orderService.createOrder(basketId, true).pipe(
@@ -491,7 +491,7 @@ export class BasketService {
         if (err.status === 422) {
           return of(undefined);
         }
-        return throwError(err);
+        return throwError(() => err);
       })
     );
   }
@@ -504,7 +504,7 @@ export class BasketService {
    */
   createBasketAttribute(attr: Attribute): Observable<Attribute> {
     if (!attr) {
-      return throwError('createBasketAttribute() called without attribute');
+      return throwError(() => new Error('createBasketAttribute() called without attribute'));
     }
 
     // if no type is provided save it as string
@@ -523,7 +523,7 @@ export class BasketService {
    */
   updateBasketAttribute(attr: Attribute): Observable<Attribute> {
     if (!attr) {
-      return throwError('updateBasketAttribute() called without attribute');
+      return throwError(() => new Error('updateBasketAttribute() called without attribute'));
     }
 
     // if no type is provided save it as string
@@ -541,7 +541,7 @@ export class BasketService {
    */
   deleteBasketAttribute(attributeName: string): Observable<unknown> {
     if (!attributeName) {
-      return throwError('deleteBasketAttribute() called without attributeName');
+      return throwError(() => new Error('deleteBasketAttribute() called without attributeName'));
     }
     return this.currentBasketEndpoint().delete(`attributes/${attributeName}`, {
       headers: this.basketHeaders,

@@ -11,7 +11,7 @@ type ProductContextAccessContext = ProductContext & { context: ProductContextFac
 })
 export class ProductContextAccessDirective implements OnDestroy {
   private view: EmbeddedViewRef<ProductContextAccessContext>;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     context: ProductContextFacade,

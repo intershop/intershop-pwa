@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import {
@@ -21,17 +22,16 @@ describe('Store Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner)
-      .pipe(
-        createModule(schematicRunner, { name: 'shared' }),
-        createAppLastRoutingModule(schematicRunner),
-        mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree)),
-        copyFileFromPWA('src/app/core/store/core/core-store.module.ts'),
-        copyFileFromPWA('src/app/core/store/core/core-store.ts'),
-        copyFileFromPWA('src/app/core/state-management.module.ts'),
-        mergeMap(tree => schematicRunner.runSchematicAsync('store-group', { ...defaultOptions, name: 'bar' }, tree))
-      )
-      .toPromise();
+    const appTree$ = createApplication(schematicRunner).pipe(
+      createModule(schematicRunner, { name: 'shared' }),
+      createAppLastRoutingModule(schematicRunner),
+      mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree)),
+      copyFileFromPWA('src/app/core/store/core/core-store.module.ts'),
+      copyFileFromPWA('src/app/core/store/core/core-store.ts'),
+      copyFileFromPWA('src/app/core/state-management.module.ts'),
+      mergeMap(tree => schematicRunner.runSchematicAsync('store-group', { ...defaultOptions, name: 'bar' }, tree))
+    );
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create a store in core store by default', async () => {

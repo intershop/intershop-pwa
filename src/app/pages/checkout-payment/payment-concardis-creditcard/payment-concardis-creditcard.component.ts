@@ -94,8 +94,8 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
       this.scriptLoader
         .load(this.getPayEngineURL())
         .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          () => {
+        .subscribe({
+          next: () => {
             PayEngine.setPublishableKey(merchantId);
             // render iframe input fields for card number and cvc
             PayEngine.iframesInit(
@@ -105,12 +105,12 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
               (err: any, val: any) => this.initCallback(err, val)
             );
           },
-          error => {
+          error: error => {
             this.scriptLoaded = false;
             this.errorMessage.general.message = error;
             this.cd.detectChanges();
-          }
-        );
+          },
+        });
     }
   }
 

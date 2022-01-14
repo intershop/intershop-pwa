@@ -46,14 +46,14 @@ describe('Configuration Effects', () => {
 
       testComplete$.pipe(take(2)).subscribe({ complete: done });
 
-      effects.transferEnvironmentProperties$.subscribe(
-        data => {
+      effects.transferEnvironmentProperties$.subscribe({
+        next: data => {
           expect(data.type).toEqual(applyConfiguration.type);
           testComplete$.next();
         },
-        fail,
-        () => testComplete$.next()
-      );
+        error: fail,
+        complete: () => testComplete$.next(),
+      });
       /* eslint-enable ish-custom-rules/use-async-synchronization-in-tests */
     });
   });

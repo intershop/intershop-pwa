@@ -42,7 +42,7 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
    */
   displaySpinner$ = new BehaviorSubject(false);
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   ngOnInit() {
     this.hasQuantityError$ = this.context.select('hasQuantityError');

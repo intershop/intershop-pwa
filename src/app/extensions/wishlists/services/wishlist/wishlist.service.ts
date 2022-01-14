@@ -40,7 +40,7 @@ export class WishlistService {
    */
   private getWishlist(wishlistId: string): Observable<Wishlist> {
     if (!wishlistId) {
-      return throwError('getWishlist() called without wishlistId');
+      return throwError(() => new Error('getWishlist() called without wishlistId'));
     }
     return this.appFacade.customerRestResource$.pipe(
       first(),
@@ -77,7 +77,7 @@ export class WishlistService {
    */
   deleteWishlist(wishlistId: string): Observable<void> {
     if (!wishlistId) {
-      return throwError('deleteWishlist() called without wishlistId');
+      return throwError(() => new Error('deleteWishlist() called without wishlistId'));
     }
     return this.appFacade.customerRestResource$.pipe(
       first(),
@@ -112,10 +112,10 @@ export class WishlistService {
    */
   addProductToWishlist(wishlistId: string, sku: string, quantity = 1): Observable<Wishlist> {
     if (!wishlistId) {
-      return throwError('addProductToWishlist() called without wishlistId');
+      return throwError(() => new Error('addProductToWishlist() called without wishlistId'));
     }
     if (!sku) {
-      return throwError('addProductToWishlist() called without sku');
+      return throwError(() => new Error('addProductToWishlist() called without sku'));
     }
     return this.appFacade.customerRestResource$.pipe(
       first(),
@@ -136,10 +136,10 @@ export class WishlistService {
    */
   removeProductFromWishlist(wishlistId: string, sku: string): Observable<Wishlist> {
     if (!wishlistId) {
-      return throwError('removeProductFromWishlist() called without wishlistId');
+      return throwError(() => new Error('removeProductFromWishlist() called without wishlistId'));
     }
     if (!sku) {
-      return throwError('removeProductFromWishlist() called without sku');
+      return throwError(() => new Error('removeProductFromWishlist() called without sku'));
     }
     return this.appFacade.customerRestResource$.pipe(
       first(),

@@ -108,9 +108,9 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
           this.errorHandler.handleError(error);
         }
         if (error.name === 'HttpErrorResponse') {
-          return throwError(this.mapError(error, req));
+          return throwError(() => this.mapError(error, req));
         }
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }

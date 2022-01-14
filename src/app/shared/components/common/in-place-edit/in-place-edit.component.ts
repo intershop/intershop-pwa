@@ -22,7 +22,7 @@ export class InPlaceEditComponent implements AfterViewInit, OnDestroy {
   @Output() aborted = new EventEmitter<void>();
 
   private mode: 'view' | 'edit' = 'view';
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   hover: boolean;
 

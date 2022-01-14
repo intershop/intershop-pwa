@@ -66,7 +66,7 @@ export class UsersService {
    */
   addUser(user: B2bUser): Observable<B2bUser> {
     if (!user) {
-      return throwError('addUser() called without required user data');
+      return throwError(() => new Error('addUser() called without required user data'));
     }
 
     return this.currentCustomer$.pipe(
@@ -113,7 +113,7 @@ export class UsersService {
    */
   updateUser(user: B2bUser): Observable<B2bUser> {
     if (!user) {
-      return throwError('updateUser() called without required user data');
+      return throwError(() => new Error('updateUser() called without required user data'));
     }
 
     return this.currentCustomer$.pipe(
@@ -142,7 +142,7 @@ export class UsersService {
    */
   deleteUser(login: string) {
     if (!login) {
-      return throwError('deleteUser() called without customerItemUserKey/login');
+      return throwError(() => new Error('deleteUser() called without customerItemUserKey/login'));
     }
 
     return this.currentCustomer$.pipe(

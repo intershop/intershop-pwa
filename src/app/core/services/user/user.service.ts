@@ -99,7 +99,7 @@ export class UserService {
    */
   createUser(body: CustomerRegistrationType): Observable<CustomerUserType> {
     if (!body || !body.customer || (!body.user && !body.userId) || !body.address) {
-      return throwError('createUser() called without required body data');
+      return throwError(() => new Error('createUser() called without required body data'));
     }
 
     const customerAddress = {
@@ -167,7 +167,7 @@ export class UserService {
    */
   updateUser(body: CustomerUserType, credentials?: Credentials): Observable<User> {
     if (!body || !body.customer || !body.user) {
-      return throwError('updateUser() called without required body data');
+      return throwError(() => new Error('updateUser() called without required body data'));
     }
 
     const headers = credentials
@@ -210,16 +210,16 @@ export class UserService {
    */
   updateUserPassword(customer: Customer, user: User, password: string, currentPassword: string): Observable<void> {
     if (!customer) {
-      return throwError('updateUserPassword() called without customer');
+      return throwError(() => new Error('updateUserPassword() called without customer'));
     }
     if (!user) {
-      return throwError('updateUserPassword() called without user');
+      return throwError(() => new Error('updateUserPassword() called without user'));
     }
     if (!password) {
-      return throwError('updateUserPassword() called without password');
+      return throwError(() => new Error('updateUserPassword() called without password'));
     }
     if (!currentPassword) {
-      return throwError('updateUserPassword() called without currentPassword');
+      return throwError(() => new Error('updateUserPassword() called without currentPassword'));
     }
 
     return this.appFacade.customerRestResource$.pipe(
@@ -242,11 +242,11 @@ export class UserService {
    */
   updateCustomer(customer: Customer): Observable<Customer> {
     if (!customer) {
-      return throwError('updateCustomer() called without customer');
+      return throwError(() => new Error('updateCustomer() called without customer'));
     }
 
     if (!customer.isBusinessCustomer) {
-      return throwError('updateCustomer() cannot be called for a private customer)');
+      return throwError(() => new Error('updateCustomer() cannot be called for a private customer)'));
     }
 
     return this.apiService.put('customers/-', { ...customer, type: 'SMBCustomer' }).pipe(map(CustomerMapper.fromData));
@@ -322,7 +322,7 @@ export class UserService {
    */
   getCostCenter(id: string): Observable<CostCenter> {
     if (!id) {
-      return throwError('getCostCenter() called without id');
+      return throwError(() => new Error('getCostCenter() called without id'));
     }
 
     return combineLatest([

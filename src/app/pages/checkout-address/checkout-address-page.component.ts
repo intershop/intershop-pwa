@@ -34,7 +34,7 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
    */
   validBasketAddresses$: Observable<boolean>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade, private router: Router) {}
 

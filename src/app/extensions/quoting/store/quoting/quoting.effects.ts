@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { from, iif, of } from 'rxjs';
+import { EMPTY, from, iif, of } from 'rxjs';
 import { concatMap, filter, first, map, mergeMap, mergeMapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -242,7 +242,8 @@ export class QuotingEffects {
                 },
               ]),
               map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
-            )
+            ),
+            EMPTY
           )
         )
       )

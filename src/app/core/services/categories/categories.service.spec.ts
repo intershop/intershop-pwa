@@ -66,18 +66,24 @@ describe('Categories Service', () => {
     });
 
     it('should return error when called with undefined', done => {
-      categoriesService.getCategory(undefined).subscribe(fail, err => {
-        expect(err).toBeTruthy();
-        done();
+      categoriesService.getCategory(undefined).subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toBeTruthy();
+          done();
+        },
       });
 
       verify(apiServiceMock.get(anything())).never();
     });
 
     it('should return error when called with empty category', done => {
-      categoriesService.getCategory('').subscribe(fail, err => {
-        expect(err).toBeTruthy();
-        done();
+      categoriesService.getCategory('').subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toBeTruthy();
+          done();
+        },
       });
 
       verify(apiServiceMock.get(anything(), anything())).never();

@@ -101,7 +101,7 @@ describe('Shopping Store', () => {
             ])
           );
         default:
-          return throwError(makeHttpError({ message: `error loading category ${uniqueId}` }));
+          return throwError(() => makeHttpError({ message: `error loading category ${uniqueId}` }));
       }
     });
 
@@ -116,7 +116,7 @@ describe('Shopping Store', () => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: `n${sku}` });
       } else {
-        return throwError(makeHttpError({ message: `error loading product ${sku}` }));
+        return throwError(() => makeHttpError({ message: `error loading product ${sku}` }));
       }
     });
     when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anything(), anyNumber())).thenReturn(

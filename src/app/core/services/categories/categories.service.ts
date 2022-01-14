@@ -24,7 +24,7 @@ export class CategoriesService {
    */
   getCategory(categoryUniqueId: string): Observable<CategoryTree> {
     if (!categoryUniqueId) {
-      return throwError('getCategory() called without categoryUniqueId');
+      return throwError(() => new Error('getCategory() called without categoryUniqueId'));
     }
 
     return this.apiService.get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`).pipe(

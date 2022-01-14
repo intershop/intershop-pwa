@@ -25,7 +25,7 @@ import {
 export class CaptchaV3Component implements OnInit, OnDestroy {
   @Input() parentForm: FormGroup;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private recaptchaV3Service: ReCaptchaV3Service) {}
 

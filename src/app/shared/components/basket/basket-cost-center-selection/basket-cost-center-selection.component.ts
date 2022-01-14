@@ -25,7 +25,7 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
 
   costCenterOptions$: Observable<SelectOption[]>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private checkoutFacade: CheckoutFacade,

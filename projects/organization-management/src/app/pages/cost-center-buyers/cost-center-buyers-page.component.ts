@@ -48,7 +48,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
 
   selectAll = true;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private appFacade: AppFacade, private organizationManagementFacade: OrganizationManagementFacade) {}
 

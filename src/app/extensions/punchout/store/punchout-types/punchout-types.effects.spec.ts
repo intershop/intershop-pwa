@@ -67,7 +67,7 @@ describe('Punchout Types Effects', () => {
 
     it('should dispatch a loadPunchoutUsersFail action on failed users load', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.getPunchoutTypes()).thenReturn(throwError(error));
+      when(punchoutService.getPunchoutTypes()).thenReturn(throwError(() => error));
 
       const action = loadPunchoutTypes();
       const completion = loadPunchoutTypesFail({ error });
