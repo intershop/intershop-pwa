@@ -41,7 +41,7 @@ export class CostCentersService {
    */
   getCostCenter(costCenterId: string): Observable<CostCenter> {
     if (!costCenterId) {
-      return throwError('getCostCenter() called without required costCenterId');
+      return throwError(() => new Error('getCostCenter() called without required costCenterId'));
     }
 
     return this.currentCustomer$.pipe(
@@ -61,7 +61,7 @@ export class CostCentersService {
    */
   addCostCenter(costCenter: CostCenterBase): Observable<CostCenter> {
     if (!costCenter) {
-      return throwError('addCostCenter() called without required costCenter');
+      return throwError(() => new Error('addCostCenter() called without required costCenter'));
     }
 
     return this.currentCustomer$.pipe(
@@ -81,7 +81,7 @@ export class CostCentersService {
    */
   updateCostCenter(costCenter: CostCenterBase): Observable<CostCenter> {
     if (!costCenter) {
-      return throwError('updateCostCenter() called without required costCenter');
+      return throwError(() => new Error('updateCostCenter() called without required costCenter'));
     }
 
     return this.currentCustomer$.pipe(
@@ -100,7 +100,7 @@ export class CostCentersService {
    */
   deleteCostCenter(id: string) {
     if (!id) {
-      return throwError('deleteCostCenter() called without required id');
+      return throwError(() => new Error('deleteCostCenter() called without required id'));
     }
 
     return this.currentCustomer$.pipe(
@@ -117,10 +117,10 @@ export class CostCentersService {
    */
   addCostCenterBuyers(costCenterId: string, buyers: CostCenterBuyer[]): Observable<CostCenter> {
     if (!costCenterId) {
-      return throwError('addCostCenterBuyers() called without required costCenterId');
+      return throwError(() => new Error('addCostCenterBuyers() called without required costCenterId'));
     }
     if (!buyers?.length) {
-      return throwError('addCostCenterBuyers() called without required buyers');
+      return throwError(() => new Error('addCostCenterBuyers() called without required buyers'));
     }
 
     return this.currentCustomer$.pipe(
@@ -143,10 +143,10 @@ export class CostCentersService {
    */
   updateCostCenterBuyer(costCenterId: string, buyer: CostCenterBuyer): Observable<CostCenter> {
     if (!costCenterId) {
-      return throwError('updateCostCenterBuyer() called without required costCenterId');
+      return throwError(() => new Error('updateCostCenterBuyer() called without required costCenterId'));
     }
     if (!buyer) {
-      return throwError('updateCostCenterBuyer() called without required buyer');
+      return throwError(() => new Error('updateCostCenterBuyer() called without required buyer'));
     }
 
     return this.currentCustomer$.pipe(
@@ -167,10 +167,10 @@ export class CostCentersService {
    */
   deleteCostCenterBuyer(costCenterId: string, login: string): Observable<CostCenter> {
     if (!costCenterId) {
-      return throwError('deleteCostCenterBuyer() called without required costCenterId');
+      return throwError(() => new Error('deleteCostCenterBuyer() called without required costCenterId'));
     }
     if (!login) {
-      return throwError('deleteCostCenterBuyer() called without required login');
+      return throwError(() => new Error('deleteCostCenterBuyer() called without required login'));
     }
 
     return this.currentCustomer$.pipe(

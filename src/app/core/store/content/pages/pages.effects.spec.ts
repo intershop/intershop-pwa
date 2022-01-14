@@ -53,7 +53,7 @@ describe('Pages Effects', () => {
 
   describe('loadPages$', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
-      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       actions$ = of(loadContentPage({ contentPageId: 'dummy' }));
 
@@ -68,7 +68,7 @@ describe('Pages Effects', () => {
     });
 
     it('should not die when encountering an error', () => {
-      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       actions$ = hot('a-a-a-a', { a: loadContentPage({ contentPageId: 'dummy' }) });
 

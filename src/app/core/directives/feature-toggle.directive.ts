@@ -25,7 +25,7 @@ export class FeatureToggleDirective implements OnDestroy {
   private enabled$ = new BehaviorSubject<boolean>(undefined);
   private tick$ = new BehaviorSubject<void>(undefined);
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private templateRef: TemplateRef<unknown>,

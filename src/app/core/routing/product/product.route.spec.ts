@@ -360,7 +360,7 @@ describe('Product Route', () => {
     it('should not detect product route when sku is missing', fakeAsync(() => {
       router.navigateByUrl('/other');
 
-      store$.pipe(ofProductUrl()).subscribe(fail, fail, fail);
+      store$.pipe(ofProductUrl()).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

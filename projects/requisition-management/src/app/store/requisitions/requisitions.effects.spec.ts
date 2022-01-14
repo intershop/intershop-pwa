@@ -171,13 +171,13 @@ describe('Requisitions Effects', () => {
         updateRequisitionStatusFail({ error: { status: 422, code: 'update.requisition.status.fail' } as HttpError })
       );
 
-      effects.redirectAfterUpdateRequisitionStatusFail$.subscribe(
-        () => {
+      effects.redirectAfterUpdateRequisitionStatusFail$.subscribe({
+        next: () => {
           expect(location.path()).toMatchInlineSnapshot(`"/account/requisitions/approver"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should redirect to listing', done => {

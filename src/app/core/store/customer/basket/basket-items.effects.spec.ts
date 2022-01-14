@@ -150,7 +150,7 @@ describe('Basket Items Effects', () => {
 
     it('should map invalid request to action of type AddItemsToBasketFail', () => {
       when(basketServiceMock.addItemsToBasket(anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       store$.dispatch(
@@ -311,8 +311,7 @@ describe('Basket Items Effects', () => {
         ],
       };
       const action = updateBasketItems(payload);
-      // eslint-disable-next-line unicorn/no-null
-      const completion = updateBasketItemsSuccess({ info: null });
+      const completion = updateBasketItemsSuccess({ info: undefined });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -321,7 +320,7 @@ describe('Basket Items Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketItemsFail', () => {
       when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const payload = {
@@ -400,7 +399,7 @@ describe('Basket Items Effects', () => {
 
     it('should map invalid request to action of type DeleteBasketItemFail', () => {
       when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const itemId = 'BIID';
@@ -428,7 +427,7 @@ describe('Basket Items Effects', () => {
     it('should navigate to basket if interaction has info', fakeAsync(() => {
       actions$ = of(deleteBasketItemSuccess({ info: [{ message: 'INFO' } as BasketInfo] }));
 
-      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe(noop, fail, noop);
+      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 
@@ -438,7 +437,7 @@ describe('Basket Items Effects', () => {
     it('should not navigate to basket if interaction had no info', fakeAsync(() => {
       actions$ = of(deleteBasketItemSuccess({ info: undefined }));
 
-      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe(noop, fail, noop);
+      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 

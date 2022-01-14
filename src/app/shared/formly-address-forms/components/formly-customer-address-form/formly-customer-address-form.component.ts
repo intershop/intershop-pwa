@@ -47,7 +47,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade) {}
 

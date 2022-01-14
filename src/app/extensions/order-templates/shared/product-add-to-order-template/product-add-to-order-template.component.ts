@@ -31,7 +31,7 @@ export class ProductAddToOrderTemplateComponent implements OnDestroy, OnInit {
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,

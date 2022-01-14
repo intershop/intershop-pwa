@@ -41,7 +41,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
   preferredAddressForm: FormGroup = new FormGroup({});
   furtherAddresses: Address[] = [];
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade) {}
 

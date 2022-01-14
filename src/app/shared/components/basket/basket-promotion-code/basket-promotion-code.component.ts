@@ -32,7 +32,7 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
   basketPromoCodes: string[];
   lastEnteredPromoCode = '';
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
 

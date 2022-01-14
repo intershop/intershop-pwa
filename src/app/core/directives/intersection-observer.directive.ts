@@ -29,7 +29,7 @@ export class IntersectionObserverDirective implements OnInit, OnDestroy {
 
   @Output() visibilityChange = new EventEmitter<IntersectionStatus>();
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private element: ElementRef, @Inject(PLATFORM_ID) private platformId: string) {}
 

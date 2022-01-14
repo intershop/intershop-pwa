@@ -17,7 +17,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 export class ServerSettingPipe implements PipeTransform, OnDestroy {
   private returnValue: unknown;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
   private sub: Subscription;
 
   constructor(private appFacade: AppFacade) {}

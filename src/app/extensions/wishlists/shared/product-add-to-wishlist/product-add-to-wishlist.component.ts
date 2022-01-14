@@ -30,7 +30,7 @@ export class ProductAddToWishlistComponent implements OnDestroy, OnInit {
 
   visible$: Observable<boolean>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private wishlistsFacade: WishlistsFacade,

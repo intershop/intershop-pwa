@@ -50,7 +50,7 @@ describe('Includes Effects', () => {
     });
 
     it('should send fail action when loading action via service is unsuccessful', done => {
-      when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       actions$ = of(loadContentInclude({ includeId: 'dummy' }));
 
@@ -65,7 +65,7 @@ describe('Includes Effects', () => {
     });
 
     it('should not die when encountering an error', () => {
-      when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       actions$ = hot('a-a-a-a', { a: loadContentInclude({ includeId: 'dummy' }) });
 

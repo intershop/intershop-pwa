@@ -39,7 +39,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
   editAddress: Partial<Address>;
   emptyOptionLabel = 'checkout.addresses.select_invoice_address.button';
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
 

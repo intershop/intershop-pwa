@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   Injector,
   Input,
   OnChanges,
@@ -43,14 +42,9 @@ export class ContentPageletComponent implements OnChanges, OnInit, OnDestroy {
   @ViewChild('cmsOutlet', { read: ViewContainerRef, static: true }) cmsOutlet: ViewContainerRef;
 
   private pageletId$ = new ReplaySubject<string>(1);
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
-  constructor(
-    private injector: Injector,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private cmsFacade: CMSFacade,
-    private cdRef: ChangeDetectorRef
-  ) {}
+  constructor(private injector: Injector, private cmsFacade: CMSFacade, private cdRef: ChangeDetectorRef) {}
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -87,9 +81,8 @@ export class ContentPageletComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private createComponent(mappedComponent: CMSComponentProvider) {
-    const factory = this.componentFactoryResolver.resolveComponentFactory(mappedComponent.class);
     this.cmsOutlet.clear();
-    return this.cmsOutlet.createComponent(factory);
+    return this.cmsOutlet.createComponent(mappedComponent.class);
   }
 
   private initializeComponent(instance: CMSComponent, pagelet: ContentPageletView) {

@@ -103,9 +103,9 @@ describe('Basket Service', () => {
   });
 
   it('should not throw errors when getting a basket by token is unsuccessful', done => {
-    when(apiService.get(anything(), anything())).thenReturn(throwError(new Error()));
+    when(apiService.get(anything(), anything())).thenReturn(throwError(() => new Error()));
 
-    basketService.getBasketByToken('dummy').subscribe(fail, fail, done);
+    basketService.getBasketByToken('dummy').subscribe({ next: fail, error: fail, complete: done });
   });
 
   it("should create a basket data when 'createBasket' is called", done => {
@@ -259,7 +259,7 @@ describe('Basket Service', () => {
 
   it("should submit a basket for approval when 'submitBasket' is called", done => {
     when(orderService.createOrder(anything(), anything())).thenReturn(
-      throwError(makeHttpError({ message: 'invalid', status: 422 }))
+      throwError(() => makeHttpError({ message: 'invalid', status: 422 }))
     );
 
     basketService.createRequisition('basketId').subscribe(() => {

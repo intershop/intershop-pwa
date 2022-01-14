@@ -14,9 +14,13 @@ describe('Operators', () => {
     });
 
     it('should call console.log with custom message for each emitted value', done => {
-      subject$.pipe(log('message')).subscribe(noop, fail, () => {
-        expect(console.log).toHaveBeenCalledTimes(3);
-        done();
+      subject$.pipe(log('message')).subscribe({
+        next: noop,
+        error: fail,
+        complete: () => {
+          expect(console.log).toHaveBeenCalledTimes(3);
+          done();
+        },
       });
 
       subject$.next('a');

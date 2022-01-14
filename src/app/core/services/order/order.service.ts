@@ -56,7 +56,7 @@ export class OrderService {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!basketId) {
-      return throwError('createOrder() called without basketId');
+      return throwError(() => new Error('createOrder() called without basketId'));
     }
 
     return this.apiService
@@ -140,7 +140,7 @@ export class OrderService {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!orderId) {
-      return throwError('getOrder() called without orderId');
+      return throwError(() => new Error('getOrder() called without orderId'));
     }
 
     return this.apiService
@@ -162,11 +162,11 @@ export class OrderService {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!orderId) {
-      return throwError('getOrderByToken() called without orderId');
+      return throwError(() => new Error('getOrderByToken() called without orderId'));
     }
 
     if (!apiToken) {
-      return throwError('getOrderByToken() called without apiToken');
+      return throwError(() => new Error('getOrderByToken() called without apiToken'));
     }
 
     return this.apiService
@@ -193,15 +193,15 @@ export class OrderService {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!orderId) {
-      return throwError('updateOrderPayment() called without orderId');
+      return throwError(() => new Error('updateOrderPayment() called without orderId'));
     }
 
     if (!queryParams) {
-      return throwError('updateOrderPayment() called without query parameter data');
+      return throwError(() => new Error('updateOrderPayment() called without query parameter data'));
     }
 
     if (!queryParams.redirect) {
-      return throwError('updateOrderPayment() called without redirect parameter data');
+      return throwError(() => new Error('updateOrderPayment() called without redirect parameter data'));
     }
 
     const orderCreation = {

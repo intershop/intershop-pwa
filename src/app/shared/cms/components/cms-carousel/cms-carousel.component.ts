@@ -32,7 +32,7 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges, OnDestroy 
 
   constructor(private appRef: ApplicationRef) {}
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   ngOnChanges() {
     if (this.pagelet.hasParam('SlideItems')) {

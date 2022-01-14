@@ -34,7 +34,7 @@ export class OrderTemplateService {
    */
   getOrderTemplate(orderTemplateId: string): Observable<OrderTemplate> {
     if (!orderTemplateId) {
-      return throwError('getOrderTemplate() called without orderTemplateId');
+      return throwError(() => new Error('getOrderTemplate() called without orderTemplateId'));
     }
     return this.apiService
       .get<OrderTemplateData>(`customers/-/users/-/wishlists/${orderTemplateId}`)
@@ -61,7 +61,7 @@ export class OrderTemplateService {
    */
   deleteOrderTemplate(orderTemplateId: string): Observable<void> {
     if (!orderTemplateId) {
-      return throwError('deleteOrderTemplate() called without orderTemplateId');
+      return throwError(() => new Error('deleteOrderTemplate() called without orderTemplateId'));
     }
     return this.apiService.delete(`customers/-/users/-/wishlists/${orderTemplateId}`);
   }
@@ -88,10 +88,10 @@ export class OrderTemplateService {
    */
   addProductToOrderTemplate(orderTemplateId: string, sku: string, quantity: number): Observable<OrderTemplate> {
     if (!orderTemplateId) {
-      return throwError('addProductToOrderTemplate() called without orderTemplateId');
+      return throwError(() => new Error('addProductToOrderTemplate() called without orderTemplateId'));
     }
     if (!sku) {
-      return throwError('addProductToOrderTemplate() called without sku');
+      return throwError(() => new Error('addProductToOrderTemplate() called without sku'));
     }
     return this.apiService
       .post(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}?quantity=${quantity}`)
@@ -107,10 +107,10 @@ export class OrderTemplateService {
    */
   removeProductFromOrderTemplate(orderTemplateId: string, sku: string): Observable<OrderTemplate> {
     if (!orderTemplateId) {
-      return throwError('removeProductFromOrderTemplate() called without orderTemplateId');
+      return throwError(() => new Error('removeProductFromOrderTemplate() called without orderTemplateId'));
     }
     if (!sku) {
-      return throwError('removeProductFromOrderTemplate() called without sku');
+      return throwError(() => new Error('removeProductFromOrderTemplate() called without sku'));
     }
     return this.apiService
       .delete(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}`)

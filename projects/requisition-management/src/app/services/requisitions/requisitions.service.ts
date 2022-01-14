@@ -78,7 +78,7 @@ export class RequisitionsService {
    */
   getRequisition(requisitionId: string): Observable<Requisition> {
     if (!requisitionId) {
-      return throwError('getRequisition() called without required id');
+      return throwError(() => new Error('getRequisition() called without required id'));
     }
 
     const params = new HttpParams().set('include', this.allIncludes.join());
@@ -111,10 +111,10 @@ export class RequisitionsService {
     approvalComment?: string
   ): Observable<Requisition> {
     if (!requisitionId) {
-      return throwError('updateRequisitionStatus() called without required id');
+      return throwError(() => new Error('updateRequisitionStatus() called without required id'));
     }
     if (!statusCode) {
-      return throwError('updateRequisitionStatus() called without required requisition status');
+      return throwError(() => new Error('updateRequisitionStatus() called without required requisition status'));
     }
 
     const params = new HttpParams().set('include', this.allIncludes.join());

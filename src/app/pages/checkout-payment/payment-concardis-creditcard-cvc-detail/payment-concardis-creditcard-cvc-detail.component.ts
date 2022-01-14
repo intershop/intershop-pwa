@@ -72,16 +72,16 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
       this.scriptLoader
         .load(this.getPayEngineURL())
         .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          () => {
+        .subscribe({
+          next: () => {
             PayEngine.setPublishableKey(merchantId);
           },
-          error => {
+          error: error => {
             this.scriptLoaded = false;
             this.errorMessage.general.message = error;
             this.cd.detectChanges();
-          }
-        );
+          },
+        });
     }
     this.validityTimeInMinutes = this.getParamValue(
       'intershop.payment.Concardis_CreditCard.cvcmaxage',

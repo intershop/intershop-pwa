@@ -36,7 +36,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   activeIndex = -1;
   inputFocused: boolean;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
 

@@ -21,7 +21,7 @@ export class AccountProfileCompanyPageComponent implements OnInit, OnDestroy {
   userError$: Observable<HttpError>;
   userLoading$: Observable<boolean>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade, private router: Router) {}
 

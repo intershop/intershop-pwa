@@ -19,7 +19,7 @@ export function formatPrice(price: Price, lang: string): string {
 export class PricePipe implements PipeTransform, OnDestroy {
   displayText: string;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private translateService: TranslateService,

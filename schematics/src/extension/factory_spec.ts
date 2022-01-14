@@ -1,5 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { noop } from 'rxjs';
+import { lastValueFrom, noop } from 'rxjs';
 
 import {
   createAppLastRoutingModule,
@@ -19,9 +19,11 @@ describe('Extension Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner)
-      .pipe(createModule(schematicRunner, { name: 'shared' }), createAppLastRoutingModule(schematicRunner))
-      .toPromise();
+    const appTree$ = createApplication(schematicRunner).pipe(
+      createModule(schematicRunner, { name: 'shared' }),
+      createAppLastRoutingModule(schematicRunner)
+    );
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create an extension', async () => {

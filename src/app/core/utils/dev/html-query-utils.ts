@@ -33,7 +33,7 @@ export function findAllDataTestingIDs(fixture: ComponentFixture<unknown>): strin
   return fixture.debugElement.queryAll(By.css('[data-testing-id]')).map(el => el.attributes['data-testing-id']);
 }
 
-export function createDocumentFromHTML(html: string): HTMLDocument {
+export function createDocumentFromHTML(html: string): Document {
   const parser = new DOMParser();
   return parser.parseFromString(html, 'text/html');
 }

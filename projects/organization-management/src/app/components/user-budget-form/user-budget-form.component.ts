@@ -33,7 +33,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
 
   periods = ['weekly', 'monthly', 'quarterly'];
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private appFacade: AppFacade) {}
 

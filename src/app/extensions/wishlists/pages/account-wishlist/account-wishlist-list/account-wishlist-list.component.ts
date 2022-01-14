@@ -32,7 +32,7 @@ export class AccountWishlistListComponent implements OnChanges, OnDestroy {
   deleteHeader: string;
   preferredWishlist: Wishlist;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private translate: TranslateService) {}
 

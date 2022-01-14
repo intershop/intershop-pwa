@@ -21,7 +21,7 @@ describe('Promotions Effects', () => {
     promotionsServiceMock = mock(PromotionsService);
     when(promotionsServiceMock.getPromotion(anyString())).thenCall((id: string) => {
       if (id === 'invalid') {
-        return throwError(makeHttpError({ message: 'invalid' }));
+        return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
         return of({ id } as Promotion);
       }

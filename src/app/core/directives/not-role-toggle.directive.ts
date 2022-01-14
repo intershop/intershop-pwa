@@ -24,7 +24,7 @@ export class NotRoleToggleDirective implements OnDestroy {
   private subscription: Subscription;
   private enabled$ = new ReplaySubject<boolean>(1);
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private templateRef: TemplateRef<unknown>,

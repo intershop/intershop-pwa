@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
@@ -9,7 +10,8 @@ describe('Page Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner).toPromise();
+    const appTree$ = createApplication(schematicRunner);
+    appTree = await lastValueFrom(appTree$);
 
     appTree.create(
       '/src/app/pages/app-routing.module.ts',

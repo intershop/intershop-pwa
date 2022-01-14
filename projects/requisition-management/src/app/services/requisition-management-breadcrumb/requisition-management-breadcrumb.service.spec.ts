@@ -61,7 +61,9 @@ describe('Requisition Management Breadcrumb Service', () => {
     describe('unrelated routes', () => {
       it('should not report a breadcrumb for unrelated routes', fakeAsync(() => {
         router.navigateByUrl('/foobar');
-        requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(fail, fail, fail);
+        requisitionManagementBreadcrumbService
+          .breadcrumb$('/my-account')
+          .subscribe({ next: fail, error: fail, complete: fail });
 
         tick(2000);
       }));

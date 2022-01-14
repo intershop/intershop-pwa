@@ -23,7 +23,7 @@ export function mapErrorToAction<S, T>(actionType: (props: { error: HttpError })
       catchError((error: HttpError) => {
         if (error.name !== 'HttpErrorResponse') {
           // rethrow runtime errors
-          return throwError(error);
+          return throwError(() => error);
         }
         const errorAction = actionType({ error, ...extras });
         return of(errorAction);

@@ -62,7 +62,7 @@ describe('Regions Effects', () => {
     });
     it('should map invalid request to action of type LoadRegionsFail', () => {
       when(countryServiceMock.getRegionsByCountry(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = loadRegions({ countryCode });
       const error = makeHttpError({ message: 'invalid' });

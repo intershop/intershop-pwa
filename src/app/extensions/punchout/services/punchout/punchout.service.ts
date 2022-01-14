@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, iif, throwError } from 'rxjs';
+import { EMPTY, Observable, iif, throwError } from 'rxjs';
 import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -62,7 +62,7 @@ export class PunchoutService {
    */
   getUsers(punchoutType: PunchoutType): Observable<PunchoutUser[]> {
     if (!punchoutType) {
-      return throwError('getUsers() of the punchout service called without punchout type');
+      return throwError(() => new Error('getUsers() of the punchout service called without punchout type'));
     }
 
     return this.currentCustomer$.pipe(
@@ -88,7 +88,7 @@ export class PunchoutService {
    */
   createUser(user: PunchoutUser): Observable<PunchoutUser> {
     if (!user) {
-      return throwError('createUser() of the punchout service called without punchout user');
+      return throwError(() => new Error('createUser() of the punchout service called without punchout user'));
     }
 
     return this.currentCustomer$.pipe(
@@ -113,7 +113,7 @@ export class PunchoutService {
    */
   updateUser(user: PunchoutUser): Observable<PunchoutUser> {
     if (!user) {
-      return throwError('updateUser() of the punchout service called without punchout user');
+      return throwError(() => new Error('updateUser() of the punchout service called without punchout user'));
     }
 
     return this.currentCustomer$.pipe(
@@ -140,7 +140,7 @@ export class PunchoutService {
    */
   deleteUser(user: PunchoutUser): Observable<void> {
     if (!user) {
-      return throwError('deleteUser() of the punchout service called without user');
+      return throwError(() => new Error('deleteUser() of the punchout service called without user'));
     }
 
     return this.currentCustomer$.pipe(
@@ -167,7 +167,7 @@ export class PunchoutService {
         iif(
           () => permissions.includes('APP_B2B_SEND_CXML_BASKET'),
           this.transferCxmlPunchoutBasket(),
-          iif(() => permissions.includes('APP_B2B_SEND_OCI_BASKET'), this.transferOciPunchoutBasket())
+          iif(() => permissions.includes('APP_B2B_SEND_OCI_BASKET'), this.transferOciPunchoutBasket(), EMPTY)
         )
       )
     );
@@ -181,7 +181,7 @@ export class PunchoutService {
    */
   private submitPunchoutForm(form: HTMLFormElement, submit = true) {
     if (!form) {
-      return throwError('submitPunchoutForm() of the punchout service called without a form');
+      return throwError(() => new Error('submitPunchoutForm() of the punchout service called without a form'));
     }
 
     // replace the document content with the form and submit the form
@@ -216,11 +216,13 @@ export class PunchoutService {
   private transferCxmlPunchoutBasket() {
     const punchoutSID = this.cookiesService.get('punchout_SID');
     if (!punchoutSID) {
-      return throwError('no punchout_SID available in cookies for cXML punchout basket transfer');
+      return throwError(() => new Error('no punchout_SID available in cookies for cXML punchout basket transfer'));
     }
     const returnURL = this.cookiesService.get('punchout_ReturnURL');
     if (!returnURL) {
-      return throwError('no punchout_ReturnURL available in cookies for cXML punchout basket transfer');
+      return throwError(
+        () => new Error('no punchout_ReturnURL available in cookies for cXML punchout basket transfer')
+      );
     }
 
     return this.currentCustomer$.pipe(
@@ -280,7 +282,7 @@ export class PunchoutService {
    */
   private getOciPunchoutBasketData(basketId: string): Observable<Attribute<string>[]> {
     if (!basketId) {
-      return throwError('getOciPunchoutBasketData() of the punchout service called without basketId');
+      return throwError(() => new Error('getOciPunchoutBasketData() of the punchout service called without basketId'));
     }
 
     return this.currentCustomer$.pipe(
@@ -307,7 +309,9 @@ export class PunchoutService {
    */
   getOciPunchoutProductData(productId: string, quantity = '1'): Observable<Attribute<string>[]> {
     if (!productId) {
-      return throwError('getOciPunchoutProductData() of the punchout service called without productId');
+      return throwError(
+        () => new Error('getOciPunchoutProductData() of the punchout service called without productId')
+      );
     }
 
     return this.currentCustomer$.pipe(
@@ -332,7 +336,9 @@ export class PunchoutService {
    */
   getOciPunchoutSearchData(searchString: string): Observable<Attribute<string>[]> {
     if (!searchString) {
-      return throwError('getOciPunchoutSearchData() of the punchout service called without searchString');
+      return throwError(
+        () => new Error('getOciPunchoutSearchData() of the punchout service called without searchString')
+      );
     }
 
     return this.currentCustomer$.pipe(
@@ -358,11 +364,13 @@ export class PunchoutService {
    */
   submitOciPunchoutData(data: Attribute<string>[], submit = true) {
     if (!data || !data.length) {
-      return throwError('submitOciPunchoutData() of the punchout service called without data');
+      return throwError(() => new Error('submitOciPunchoutData() of the punchout service called without data'));
     }
     const hookUrl = this.cookiesService.get('punchout_HookURL');
     if (!hookUrl) {
-      return throwError('no punchout_HookURL available in cookies for OCI Punchout submitPunchoutData()');
+      return throwError(
+        () => new Error('no punchout_HookURL available in cookies for OCI Punchout submitPunchoutData()')
+      );
     }
     this.submitPunchoutForm(this.createOciForm(data, hookUrl), submit);
   }
