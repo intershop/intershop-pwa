@@ -170,8 +170,8 @@
                       <ish-payment-payone-ideal
                         [paymentMethod]="paymentMethod"
                         [activated]="formIsOpen(i)"
-                        (submit)="createNewPaymentInstrument($event)"
-                        (cancel)="cancelNewPaymentInstrument()"
+                        (submitPayment)="createNewPaymentInstrument($event)"
+                        (cancelPayment)="cancelNewPaymentInstrument()"
                       ></ish-payment-payone-ideal>
                     </ng-template>
 
