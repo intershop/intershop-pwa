@@ -48,7 +48,7 @@ describe('Basket Info Component', () => {
 
     expect(element.querySelector('[data-testing-id=info-messages]')).toBeTruthy();
     expect(element).toMatchInlineSnapshot(`
-      <div class="alert alert-info" data-testing-id="info-messages">
+      <div data-testing-id="info-messages" class="alert alert-info">
         info message
         <p>cause1</p>
       </div>
@@ -65,7 +65,7 @@ describe('Basket Info Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(
-      `<div class="alert alert-info" data-testing-id="info-messages">info message</div>`
+      `<div data-testing-id="info-messages" class="alert alert-info">info message</div>`
     );
   });
 });

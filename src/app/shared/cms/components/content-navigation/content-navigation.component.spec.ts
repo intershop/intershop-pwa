@@ -132,7 +132,7 @@ describe('Content Navigation Component', () => {
           NodeList [
             <li class="page-navigation-active">
             <a ng-reflect-router-link="/page,1.A" title="Page 1.A" href="/page/1.A">Page 1.A</a>
-            <ul class="page-navigation-1" ng-reflect-ng-class="page-navigation-1">
+            <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
               <li>
                 <a ng-reflect-router-link="/page,1.A.a" title="Page 1.A.a" href="/page/1.A.a">Page 1.A.a</a>
               </li>
@@ -155,10 +155,10 @@ describe('Content Navigation Component', () => {
       it('should set page-navigation-0 class to first layer', () => {
         expect(element.querySelectorAll('.page-navigation-0')).toMatchInlineSnapshot(`
           NodeList [
-            <ul class="page-navigation-0" ng-reflect-ng-class="page-navigation-0">
+            <ul ng-reflect-ng-class="page-navigation-0" class="page-navigation-0">
             <li>
               <a ng-reflect-router-link="/page,1.A" title="Page 1.A" href="/page/1.A">Page 1.A</a>
-              <ul class="page-navigation-1" ng-reflect-ng-class="page-navigation-1">
+              <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
                 <li>
                   <a ng-reflect-router-link="/page,1.A.a" title="Page 1.A.a" href="/page/1.A.a">Page 1.A.a</a>
                 </li>
@@ -176,7 +176,7 @@ describe('Content Navigation Component', () => {
       it('should set page-navigation-1 class to second layer', () => {
         expect(element.querySelectorAll('.page-navigation-1')).toMatchInlineSnapshot(`
           NodeList [
-            <ul class="page-navigation-1" ng-reflect-ng-class="page-navigation-1">
+            <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
             <li>
               <a ng-reflect-router-link="/page,1.A.a" title="Page 1.A.a" href="/page/1.A.a">Page 1.A.a</a>
             </li>

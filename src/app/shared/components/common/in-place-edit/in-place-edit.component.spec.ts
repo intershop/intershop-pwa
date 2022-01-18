@@ -72,12 +72,12 @@ describe('In Place Edit Component', () => {
       <ish-in-place-edit
         ><div class="d-flex flex-row align-items-baseline">
           <input class="form-control" /><button
-            class="btn btn-link ml-2"
             data-testing-id="confirm"
+            class="btn btn-link ml-2"
             title="inplace_edit.save"
           >
             <fa-icon ng-reflect-icon="fas,check"></fa-icon></button
-          ><button class="btn btn-link" data-testing-id="cancel" title="inplace_edit.cancel">
+          ><button data-testing-id="cancel" class="btn btn-link" title="inplace_edit.cancel">
             <fa-icon ng-reflect-icon="fas,times"></fa-icon>
           </button></div
       ></ish-in-place-edit>
