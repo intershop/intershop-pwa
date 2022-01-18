@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SwiperOptions } from 'swiper';
-import SwiperCore, { Navigation, Pagination } from 'swiper/core';
+import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';

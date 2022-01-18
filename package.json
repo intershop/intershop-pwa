@@ -93,7 +93,7 @@
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-toastr": "^14.2.1",
     "rxjs": "~7.4.0",
-    "swiper": "^6.8.4",
+    "swiper": "^7.0.7",
     "tslib": "^2.3.1",
     "typeface-roboto": "1.1.13",
     "typeface-roboto-condensed": "1.1.13",

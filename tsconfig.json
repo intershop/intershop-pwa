@@ -23,7 +23,8 @@
       ],
       "requisition-management": [
         "projects/requisition-management/src/app/exports"
-      ]
+      ],
+      "swiper_angular": ["node_modules/swiper/angular"]
     },
     "lib": ["es2018", "dom"],
     "noUnusedLocals": true,
