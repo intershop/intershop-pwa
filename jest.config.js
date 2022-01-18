@@ -1,4 +1,4 @@
-const esModules = ['lodash-es/.*', '.*\\.mjs$'];
+const esModules = ['lodash-es/.*', 'swiper', 'ssr-window', 'dom7', '.*\\.mjs$'];
 
 module.exports = {
   globals: {

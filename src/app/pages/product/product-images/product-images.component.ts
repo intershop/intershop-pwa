@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import SwiperCore, { Navigation } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
-import SwiperCore, { Navigation } from 'swiper/core';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -27,8 +27,6 @@ SwiperCore.use([Navigation]);
 export class ProductImagesComponent implements OnInit {
   @ViewChild('carousel') carousel: SwiperComponent;
 
-  activeSlide = 0;
-
   product$: Observable<ProductView>;
 
   constructor(private context: ProductContextFacade) {}
@@ -50,7 +48,7 @@ export class ProductImagesComponent implements OnInit {
    * @param slideIndex The slide index to set the active slide
    */
   setActiveSlide(slideIndex: number) {
-    this.carousel.setIndex(slideIndex);
+    this.carousel?.swiperRef?.slideTo(slideIndex);
   }
 
   /**
@@ -60,6 +58,6 @@ export class ProductImagesComponent implements OnInit {
    * @returns True if the given slide index is the active slide, false otherwise
    */
   isActiveSlide(slideIndex: number): boolean {
-    return this.activeSlide === slideIndex;
+    return this.carousel?.swiperRef?.activeIndex === slideIndex;
   }
 }
