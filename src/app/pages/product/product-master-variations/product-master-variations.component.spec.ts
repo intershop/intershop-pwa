@@ -49,8 +49,8 @@ describe('Product Master Variations Component', () => {
         ng-reflect-orientation="horizontal"
       ></ish-filter-navigation
       ><ish-product-listing
-        fragmentonrouting="variation-list-top"
         mode="paging"
+        fragmentonrouting="variation-list-top"
         ng-reflect-mode="paging"
         ng-reflect-fragment-on-routing="variation-list-top"
       ></ish-product-listing>

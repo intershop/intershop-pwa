@@ -75,9 +75,9 @@ describe('User Budget Component', () => {
           <dt class="col-7">account.budget.already_spent.label</dt>
           <dd class="col-5 font-weight-bold text-right">USD 2500</dd>
         </dl>
-        <div data-testing-id="user-budget-popover" placement="top" ng-reflect-placement="top">
+        <div placement="top" data-testing-id="user-budget-popover" ng-reflect-placement="top">
           <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: 50%">
+            <div role="progressbar" class="progress-bar" style="width: 50%">
               <span class="progress-display">50%</span>
             </div>
           </div>

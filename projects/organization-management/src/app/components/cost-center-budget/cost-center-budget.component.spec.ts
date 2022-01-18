@@ -67,9 +67,9 @@ describe('Cost Center Budget Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div>
-        <div data-testing-id="cost-center-budget-popover" placement="top" ng-reflect-placement="top">
+        <div placement="top" data-testing-id="cost-center-budget-popover" ng-reflect-placement="top">
           <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: 40%">
+            <div role="progressbar" class="progress-bar" style="width: 40%">
               <span class="progress-display">40%</span>
             </div>
           </div>

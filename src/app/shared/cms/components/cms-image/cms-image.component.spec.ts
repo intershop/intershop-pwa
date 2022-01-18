@@ -46,10 +46,10 @@ describe('Cms Image Component', () => {
       <a class="teaser-link" href="http://example.com" title="bar"
         ><div class="defer-load">
           <img
-            class="foo"
-            ng-reflect-ng-class="foo"
             src="http://example.com/foo/bar.png"
+            ng-reflect-ng-class="foo"
             alt="foo"
+            class="foo"
           /></div
       ></a>
     `);

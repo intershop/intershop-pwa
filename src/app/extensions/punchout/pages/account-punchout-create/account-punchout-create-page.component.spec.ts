@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { EMPTY, of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -36,6 +37,9 @@ describe('Account Punchout Create Page Component', () => {
     fixture = TestBed.createComponent(AccountPunchoutCreatePageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    when(punchoutFacade.selectedPunchoutType$).thenReturn(EMPTY);
+    when(punchoutFacade.punchoutLoading$).thenReturn(of(true));
   });
 
   it('should be created', () => {

@@ -61,6 +61,7 @@ describe('Account Punchout Page Component', () => {
     when(punchoutFacade.punchoutUsersByRoute$()).thenReturn(of(users));
     when(punchoutFacade.selectedPunchoutType$).thenReturn(of('oci'));
     when(appFacade.getRestEndpoint$).thenReturn(of('https://myBaseServerURL/INTERSHOP/rest/WFS/myChannel/rest'));
+    when(punchoutFacade.punchoutLoading$).thenReturn(of(false));
   });
 
   it('should be created', () => {

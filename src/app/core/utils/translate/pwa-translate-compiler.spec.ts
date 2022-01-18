@@ -16,6 +16,8 @@ describe('Pwa Translate Compiler', () => {
           },
         }),
       ],
+
+      teardown: { destroyAfterEach: false },
     });
 
     translate = TestBed.inject(TranslateService);

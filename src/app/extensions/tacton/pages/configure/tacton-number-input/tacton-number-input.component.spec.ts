@@ -73,7 +73,7 @@ describe('Tacton Number Input Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div class="row">
-        <div class="col-4"><input class="form-control" type="number" min="0" max="3" /></div>
+        <div class="col-4"><input type="number" class="form-control" min="0" max="3" /></div>
       </div>
     `);
   });

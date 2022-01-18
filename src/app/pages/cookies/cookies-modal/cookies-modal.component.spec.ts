@@ -59,7 +59,7 @@ describe('Cookies Modal Component', () => {
       <div class="cookies-modal">
         <div class="modal-header">
           <h2>cookie.preferences.heading</h2>
-          <button class="close" type="button" title="dialog.close.text" aria-label="dialog.close.text">
+          <button type="button" class="close" title="dialog.close.text" aria-label="dialog.close.text">
             <span aria-hidden="true">×</span>
           </button>
         </div>
@@ -74,9 +74,9 @@ describe('Cookies Modal Component', () => {
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" type="button">cookies.modal.accept_all</button
-          ><button class="btn btn-secondary" type="button">cookies.modal.save</button
-          ><button class="btn btn-secondary" type="button">cookies.modal.cancel</button>
+          <button type="button" class="btn btn-primary">cookies.modal.accept_all</button
+          ><button type="button" class="btn btn-secondary">cookies.modal.save</button
+          ><button type="button" class="btn btn-secondary">cookies.modal.cancel</button>
         </div>
       </div>
     `);

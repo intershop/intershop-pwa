@@ -18,11 +18,11 @@ describe('Login Page Component', () => {
   let component: LoginPageComponent;
   let element: HTMLElement;
   let accountFacade: AccountFacade;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
-    when(accountFacade.isLoggedIn$).thenReturn(of(false));
-
+    appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
@@ -31,8 +31,8 @@ describe('Login Page Component', () => {
         MockComponent(LoadingComponent),
       ],
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     }).compileComponents();
   });
@@ -41,6 +41,8 @@ describe('Login Page Component', () => {
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    when(appFacade.routingInProgress$).thenReturn(of(false));
+    when(accountFacade.isLoggedIn$).thenReturn(of(false));
   });
 
   it('should be created', () => {
