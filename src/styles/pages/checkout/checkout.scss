@@ -71,10 +71,6 @@
   }
 }
 
-.addressDeleteConfirmation {
-  display: none;
-}
-
 .infobox-wrapper {
   display: flex;
   width: 100%;
@@ -150,20 +146,5 @@
         margin-top: $space-default;
       }
     }
-  }
-}
-
-/* Promotions Carousel */
-
-.promotionsCarousel {
-  padding-bottom: $space-default * 3;
-
-  .carousel-indicators {
-    bottom: -25px;
-  }
-
-  .carousel-inner > .active {
-    padding-right: 30px;
-    padding-left: 30px;
   }
 }
