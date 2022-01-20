@@ -5,6 +5,7 @@ const pinned = {
   bootstrap: '4', // pinned
   '@types/node': '14', // LTS
   swiper: '6', // 7 needs migration changes
+  stylelint: '14.2.0', // different versions are very instable in combination with prettier
 };
 
 // <HELPERS>
