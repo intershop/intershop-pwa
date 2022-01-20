@@ -17,7 +17,7 @@ export class CategoryMapper {
    * Maps the incoming raw category path to a path with unique IDs.
    */
   mapCategoryPath(path: CategoryPathElement[]) {
-    if (path && path.length) {
+    if (path?.length) {
       return path
         .map(x => x.id)
         .reduce((acc, _, idx, arr) => [...acc, arr.slice(0, idx + 1).join(CategoryHelper.uniqueIdSeparator)], []);
@@ -123,7 +123,7 @@ export class CategoryMapper {
     if (categoryData) {
       // recurse into tree
       let subTrees: CategoryTree;
-      if (categoryData.subCategories && categoryData.subCategories.length) {
+      if (categoryData.subCategories?.length) {
         subTrees = categoryData.subCategories
           .map(c => this.fromData(c) as CategoryTree)
           .reduce((a, b) => CategoryTreeHelper.merge(a, b));

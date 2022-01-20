@@ -5,7 +5,7 @@ import { ServerConfig } from './server-config.model';
 
 export class ServerConfigMapper {
   static fromData(payload: ServerConfigData): ServerConfig {
-    if (payload && payload.data) {
+    if (payload?.data) {
       return ServerConfigMapper.mapEntries(payload.data);
     }
     return {};

@@ -11,7 +11,7 @@ export const selectRouteData = <T>(key: string) =>
 export const selectQueryParams = createSelector(selectRouter, state => state?.state?.queryParams ?? {});
 
 export const selectQueryParam = (key: string) =>
-  createSelector(selectQueryParams, (queryParams): string => queryParams && queryParams[key]);
+  createSelector(selectQueryParams, (queryParams): string => queryParams?.[key]);
 
 export const selectRouteParam = (key: string) =>
   createSelector(selectRouter, (state): string => state?.state?.params && state.state.params[key]);

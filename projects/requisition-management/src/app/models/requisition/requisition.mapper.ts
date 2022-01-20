@@ -84,7 +84,7 @@ export class RequisitionMapper {
   }
 
   private fromUserBudgets(userBudgets: RequisitionUserBudget, purchaseCurrency: string): RequisitionUserBudget {
-    if (!(userBudgets && userBudgets.budgetPeriod)) {
+    if (!userBudgets?.budgetPeriod) {
       return;
     }
     const emptyPrice: Price = {

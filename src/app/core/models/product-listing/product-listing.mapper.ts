@@ -23,7 +23,7 @@ export class ProductListingMapper {
     const pages = range(0, Math.ceil(skus.length / itemsPerPage)).map(n =>
       skus.slice(n * itemsPerPage, (n + 1) * itemsPerPage)
     );
-    const startPage = (extras && extras.startPage) || 1;
+    const startPage = extras?.startPage || 1;
     const view: ProductListingType = {
       id: {
         type: productListingType,

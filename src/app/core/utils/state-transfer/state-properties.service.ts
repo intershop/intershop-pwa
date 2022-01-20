@@ -27,7 +27,7 @@ export class StatePropertiesService {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- re-mapping type
       mapToProperty(envPropKey as any),
       map(value => {
-        if (value && value.length) {
+        if (value?.length) {
           return value;
         } else if (isPlatformServer(this.platformId) && process.env[envKey]) {
           return process.env[envKey];

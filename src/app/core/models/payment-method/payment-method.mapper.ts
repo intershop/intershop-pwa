@@ -36,7 +36,7 @@ export class PaymentMethodMapper {
         paymentCosts: PriceItemMapper.fromPriceItem(data.paymentCosts),
         paymentCostsThreshold: PriceItemMapper.fromPriceItem(data.paymentCostsThreshold),
         paymentInstruments:
-          included && included.paymentInstruments && data.paymentInstruments
+          included?.paymentInstruments && data.paymentInstruments
             ? data.paymentInstruments.map(id => included.paymentInstruments[id])
             : undefined,
         parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
@@ -78,7 +78,7 @@ export class PaymentMethodMapper {
             paymentMethod: pm.id,
           })),
       }))
-      .filter(x => x.paymentInstruments && x.paymentInstruments.length);
+      .filter(x => x.paymentInstruments?.length);
   }
 
   /**

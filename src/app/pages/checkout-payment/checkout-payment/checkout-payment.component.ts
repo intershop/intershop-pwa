@@ -93,7 +93,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getBasketPayment(): string {
-    return this.basket && this.basket.payment ? this.basket.payment.paymentInstrument.id : '';
+    return this.basket?.payment ? this.basket.payment.paymentInstrument.id : '';
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -101,7 +101,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     if (c.paymentMethods) {
       // copy objects for runtime checks because formly modifies them, TODO: refactor
-      this.filteredPaymentMethods = this.paymentMethods && this.paymentMethods.map(x => JSON.parse(JSON.stringify(x)));
+      this.filteredPaymentMethods = this.paymentMethods?.map(x => JSON.parse(JSON.stringify(x)));
     }
   }
 
@@ -235,8 +235,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   get paymentRedirectRequired() {
     if (this.basket.payment) {
       return (
-        this.basket.payment.capabilities &&
-        this.basket.payment.capabilities.includes('RedirectBeforeCheckout') &&
+        this.basket.payment.capabilities?.includes('RedirectBeforeCheckout') &&
         this.basket.payment.redirectUrl &&
         this.basket.payment.redirectRequired
       );

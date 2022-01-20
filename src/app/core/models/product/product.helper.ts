@@ -41,7 +41,7 @@ export class ProductHelper {
    * @returns         The primary product image of the given ImageType
    */
   static getPrimaryImage(product: ProductView, imageType: string): Image {
-    if (!(product && product.images)) {
+    if (!product?.images) {
       return;
     }
     return product.images.find(image => image.typeID === imageType && image.primaryImage);
@@ -56,7 +56,7 @@ export class ProductHelper {
    * @returns         The matching product image
    */
   static getImageByImageTypeAndImageView(product: ProductView, imageType: string, imageView: string): Image {
-    if (!(product && product.images)) {
+    if (!product?.images) {
       return;
     }
     return product.images.find(image => image.typeID === imageType && image.viewID === imageView);
@@ -70,7 +70,7 @@ export class ProductHelper {
    * @returns         Array of available ImageView ids
    */
   static getImageViewIDs(product: ProductView, imageType: string): string[] {
-    if (!(product && product.images)) {
+    if (!product?.images) {
       return [];
     }
     return product.images
@@ -130,13 +130,7 @@ export class ProductHelper {
    * @returns                 The product attributes of the attribute group (if any)
    */
   static getAttributesOfGroup(product: ProductView, attributeGroupId: string): Attribute[] {
-    if (
-      product &&
-      product.attributeGroups &&
-      product.attributeGroups[attributeGroupId] &&
-      product.attributeGroups[attributeGroupId].attributes &&
-      product.attributeGroups[attributeGroupId].attributes.length > 0
-    ) {
+    if (product?.attributeGroups?.[attributeGroupId]?.attributes?.length > 0) {
       return product.attributeGroups[attributeGroupId].attributes;
     }
     return;

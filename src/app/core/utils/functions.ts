@@ -6,7 +6,7 @@ import { Observable, isObservable, of } from 'rxjs';
  * Truncates whenever no complete remaining slice could be constructed.
  */
 export const arraySlices = <T>(input: T[], sliceLength: number): T[][] =>
-  input && input.length && sliceLength > 0
+  input?.length && sliceLength > 0
     ? // determine slice indexes
       range(0, Math.ceil(input.length / sliceLength))
         // cut array into slices

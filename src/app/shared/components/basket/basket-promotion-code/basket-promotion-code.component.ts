@@ -72,6 +72,6 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
   }
 
   get displaySuccessMessage(): boolean {
-    return this.basketPromoCodes && this.basketPromoCodes.includes(this.lastEnteredPromoCode);
+    return this.basketPromoCodes?.includes(this.lastEnteredPromoCode);
   }
 }

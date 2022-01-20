@@ -26,7 +26,7 @@ export async function applyNameAndPath(
   const project = workspace.projects.get(options.project);
 
   // remove possible added path from root
-  if (name && name.startsWith('src/app/')) {
+  if (name?.startsWith('src/app/')) {
     name = name.substr(8);
   }
 

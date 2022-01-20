@@ -24,7 +24,7 @@ export class ScriptLoaderService {
       }
 
       // Complete if already loaded
-      if (script && script.loaded) {
+      if (script?.loaded) {
         observer.next(script);
         observer.complete();
       } else {

@@ -72,8 +72,7 @@ export class OrderMapper {
           included?.payments && data.payments?.length && included.payments[data.payments[0]]
             ? PaymentMapper.fromIncludeData(
                 included.payments[data.payments[0]],
-                included.payments_paymentMethod &&
-                  included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
+                included.payments_paymentMethod?.[included.payments[data.payments[0]].paymentMethod]
                   ? included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
                   : undefined,
                 included.payments[data.payments[0]].paymentInstrument && included.payments_paymentInstrument

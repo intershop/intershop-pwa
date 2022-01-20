@@ -91,7 +91,7 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
   }
 
   handleErrors(c: SimpleChanges) {
-    if (c.error && c.error.currentValue && c.error.currentValue.error && c.error.currentValue.status === 401) {
+    if (c.error?.currentValue?.error && c.error.currentValue.status === 401) {
       this.accountProfilePasswordForm.controls.currentPassword.setErrors({ incorrect: true });
       this.accountProfilePasswordForm.controls.currentPassword.markAsDirty();
       this.accountProfilePasswordForm.controls.currentPassword.markAsTouched();

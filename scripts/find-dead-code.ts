@@ -135,7 +135,7 @@ function checkNode(node: Node) {
   }
 
   const ignoreComment = node.getPreviousSiblingIfKind(SyntaxKind.SingleLineCommentTrivia);
-  if (ignoreComment && ignoreComment.getText().includes('not-dead-code')) {
+  if (ignoreComment?.getText().includes('not-dead-code')) {
     return;
   }
 

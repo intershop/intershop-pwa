@@ -64,7 +64,7 @@ export class ModalDialogComponent<T> {
       this.data = data;
     }
 
-    const size = this.options && this.options.size ? this.options.size : undefined;
+    const size = this.options?.size ? this.options.size : undefined;
 
     this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, { size });
   }

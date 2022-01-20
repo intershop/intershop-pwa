@@ -274,7 +274,7 @@ export class ProductMapper {
         variableVariationAttributes: data.variableVariationAttributes,
         type: 'VariationProduct',
       };
-    } else if ((data.productTypes && data.productTypes.includes('BUNDLE')) || data.productBundle) {
+    } else if (data.productTypes?.includes('BUNDLE') || data.productBundle) {
       return {
         ...product,
         type: 'Bundle',

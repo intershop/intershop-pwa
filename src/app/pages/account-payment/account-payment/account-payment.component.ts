@@ -44,7 +44,7 @@ export class AccountPaymentComponent implements OnChanges {
           ...pm,
           paymentInstruments: pm.paymentInstruments.filter(pi => pi.id !== this.preferredPaymentInstrument.id),
         }))
-        .filter(pm => pm.paymentInstruments && pm.paymentInstruments.length);
+        .filter(pm => pm.paymentInstruments?.length);
     }
   }
 
@@ -54,8 +54,7 @@ export class AccountPaymentComponent implements OnChanges {
     if (this.paymentMethods && this.user) {
       this.paymentMethods.forEach(pm => {
         this.preferredPaymentInstrument =
-          (pm.paymentInstruments &&
-            pm.paymentInstruments.find(pi => pi.id === this.user.preferredPaymentInstrumentId)) ||
+          pm.paymentInstruments?.find(pi => pi.id === this.user.preferredPaymentInstrumentId) ||
           this.preferredPaymentInstrument;
       });
       this.preferredPaymentMethod =

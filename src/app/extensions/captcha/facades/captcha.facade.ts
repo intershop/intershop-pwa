@@ -27,9 +27,9 @@ export class CaptchaFacade {
     ),
     whenTruthy(),
     map(services =>
-      services.ReCaptchaV3ServiceDefinition && services.ReCaptchaV3ServiceDefinition.runnable
+      services.ReCaptchaV3ServiceDefinition?.runnable
         ? 3
-        : services.ReCaptchaV2ServiceDefinition && services.ReCaptchaV2ServiceDefinition.runnable
+        : services.ReCaptchaV2ServiceDefinition?.runnable
         ? 2
         : undefined
     )
