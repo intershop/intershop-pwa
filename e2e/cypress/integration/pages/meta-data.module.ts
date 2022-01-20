@@ -57,7 +57,8 @@ export class MetaDataModule {
     if (expected.description) {
       this.meta('description').should(this.checkStrategy(expected.description), expected.description);
       this.meta('og:description').should(this.checkStrategy(expected.description), expected.description);
-      this.meta('description').then(description => {
+
+      (this.meta('description') as Cypress.Chainable<unknown>).then(description => {
         this.meta('og:description').should('equal', description);
       });
     }
