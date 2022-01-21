@@ -205,7 +205,7 @@
   "account.order.view_all_order.link": "View All Orders",
   "account.order_history.heading": "Order History",
   "account.order_history.link": "Order History",
-  "account.order_template.add_to_template.button.add_to_template.label": "Add to order template",
+  "account.order_template.add_to_template.button.add_to_template.label": "Add to Order Template",
   "account.order_template.added.confirmation": "{{0}} has been added to <a callback=\"callbackHideDialogModal\" href=\"{{2}}\">{{1}}</a>.",
   "account.order_template.delete.button.text": "Delete",
   "account.order_template.delete.do_you_really.text": "Do you really want to delete this order template?",
