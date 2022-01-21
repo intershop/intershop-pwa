@@ -257,6 +257,11 @@ export function app() {
 
           newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
 
+          const useragent = req.headers['user-agent'];
+          if (useragent?.toLowerCase().includes('googlebot')) {
+            newHtml = newHtml.replace(/<script [\s\S]*>[\s\S]*<\/script>/gm, '');
+          }
+
           res.status(res.statusCode).send(newHtml);
         } else {
           res.status(500).send(err.message);
