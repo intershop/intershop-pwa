@@ -11,13 +11,9 @@ import { createTsMorphProject } from '../utils/ts-morph';
 // per file.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function eslintRule(options: any): Rule {
-  // extract properties
-  const ruleName = options.name;
-
   // update options
   options.path = '/eslint-rules/';
 
-  console.log('eslint-rule schematic', ruleName);
   return async _ => {
     const operations: Rule[] = [];
 
