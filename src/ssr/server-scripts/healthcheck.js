@@ -21,7 +21,7 @@ const errFunc = function (err) {
   process.exit(1);
 };
 
-let ports = require('./ecosystem-ports').ports;
+let ports = require('./ecosystem-ports.json');
 
 if (process.env.ACTIVE_THEMES) {
   const active = process.env.ACTIVE_THEMES.split(',');
