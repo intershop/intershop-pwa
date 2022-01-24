@@ -74,7 +74,7 @@
       </ng-container>
 
       <!-- promotions -->
-      <div *ngIf="pli.valueRebates && pli.valueRebates.length">
+      <div *ngIf="pli.valueRebates?.length">
         <ng-container *ngFor="let rebate of pli.valueRebates">
           <ish-basket-promotion [rebate]="rebate" class="list-item-promo"></ish-basket-promotion>
         </ng-container>

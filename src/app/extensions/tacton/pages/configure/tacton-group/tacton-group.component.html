@@ -1,4 +1,4 @@
-<ng-container *ngIf="group && group.hasVisibleParameters">
+<ng-container *ngIf="group?.hasVisibleParameters">
   <h2 [id]="'anchor-' + group.name" *ngIf="!level; else subGroup">{{ group?.description }}</h2>
   <ng-template #subGroup>
     <span class="anchor" [id]="'anchor-' + group.name"></span>

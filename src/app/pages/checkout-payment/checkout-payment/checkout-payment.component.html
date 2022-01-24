@@ -33,7 +33,7 @@
                 </p>
                 <ng-template #displayPaymentCosts>
                   <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
-                    <p *ngIf="paymentMethod.paymentCosts && paymentMethod.paymentCosts[priceType]">
+                    <p *ngIf="paymentMethod.paymentCosts?.[priceType]">
                       {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
                         paymentMethod.paymentCosts | ishPrice
                       }}&nbsp;
@@ -69,7 +69,7 @@
               </div>
               <!-- Payment parameter form -->
               <div
-                *ngIf="paymentMethod.parameters && paymentMethod.parameters.length"
+                *ngIf="paymentMethod.parameters?.length"
                 [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
               >
                 <li *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel section">

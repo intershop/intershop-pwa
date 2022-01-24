@@ -1,4 +1,4 @@
-<div *ngIf="orderTemplates && orderTemplates.length > 0; else noOrderTemplate" class="section">
+<div *ngIf="orderTemplates?.length > 0; else noOrderTemplate" class="section">
   <table
     cdk-table
     [dataSource]="orderTemplates"

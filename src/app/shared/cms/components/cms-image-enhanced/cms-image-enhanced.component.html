@@ -1,4 +1,4 @@
-<ng-container *ngIf="pagelet && pagelet.hasParam('Link') && !pagelet.hasParam('LinkText'); else imageEnhanced">
+<ng-container *ngIf="pagelet?.hasParam('Link') && !pagelet.hasParam('LinkText'); else imageEnhanced">
   <ng-container *ngIf="isRouterLink(pagelet, 'Link'); else externalLink">
     <a [routerLink]="routerLink(pagelet, 'Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
       <ng-container *ngTemplateOutlet="imageEnhanced"></ng-container>

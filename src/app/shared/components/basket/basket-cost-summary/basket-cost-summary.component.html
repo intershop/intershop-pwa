@@ -5,7 +5,7 @@
     <dd class="col-6" data-testing-id="basket-subtotal">{{ totals.itemTotal | ishPrice }}</dd>
 
     <!-- list all applied order level promotions -->
-    <ng-container *ngIf="totals.valueRebates && totals.valueRebates.length > 0">
+    <ng-container *ngIf="totals.valueRebates?.length > 0">
       <ng-container *ngFor="let rebate of totals.valueRebates">
         <dt *ngIf="rebate?.promotionId" class="col-6">
           <ish-basket-promotion [rebate]="rebate"></ish-basket-promotion>
@@ -22,7 +22,7 @@
     <dd class="col-6">{{ totals.undiscountedShippingTotal | ishPrice }}</dd>
 
     <!-- Shipping promotions -->
-    <ng-container *ngIf="totals.shippingRebates && totals.shippingRebates.length > 0">
+    <ng-container *ngIf="totals.shippingRebates?.length > 0">
       <ng-container *ngFor="let rebate of totals.shippingRebates">
         <dt class="col-6">
           <ish-basket-promotion [rebate]="rebate"></ish-basket-promotion>
@@ -49,7 +49,7 @@
 
     <!-- Tax -->
     <!-- ToDo: display tax in dependence of price calculation preferences -->
-    <ng-container *ngIf="totals.taxTotal && totals.taxTotal.value">
+    <ng-container *ngIf="totals.taxTotal?.value">
       <dt class="col-6">{{ taxTranslation$ | async | translate }}</dt>
       <dd class="col-6" data-testing-id="basket-tax">{{ totals.taxTotal | ishPrice }}</dd>
     </ng-container>
