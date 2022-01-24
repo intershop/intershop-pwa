@@ -1,10 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { filter, map, skip, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, skip, withLatestFrom } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 import { AppFacade } from './app.facade';
 import { ProductContextFacade } from './product-context.facade';
@@ -16,7 +15,6 @@ export class SelectedProductContextFacade extends ProductContextFacade {
     shoppingFacade: ShoppingFacade,
     translate: TranslateService,
     injector: Injector,
-    private featureToggleService: FeatureToggleService,
     private router: Router,
     private appFacade: AppFacade
   ) {
@@ -28,9 +26,13 @@ export class SelectedProductContextFacade extends ProductContextFacade {
     this.connect(
       'sku',
       this.select('product').pipe(
-        filter(() => !this.featureToggleService.enabled('advancedVariationHandling')),
         filter(ProductVariationHelper.hasDefaultVariation),
-        map(p => p.defaultVariationSKU)
+        concatMap(p =>
+          this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling').pipe(
+            filter(advancedVariationHandling => advancedVariationHandling !== undefined && !advancedVariationHandling),
+            map(() => p.defaultVariationSKU)
+          )
+        )
       )
     );
 

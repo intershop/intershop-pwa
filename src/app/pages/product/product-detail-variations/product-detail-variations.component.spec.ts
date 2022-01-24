@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
@@ -19,60 +19,83 @@ describe('Product Detail Variations Component', () => {
   let element: HTMLElement;
   let context: ProductContextFacade;
 
-  beforeEach(async () => {
+  async function prepareTestbed(serverSetting: boolean) {
     context = mock(ProductContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting()],
       declarations: [
         MockComponent(ProductMasterLinkComponent),
         MockComponent(ProductVariationDisplayComponent),
         MockComponent(ProductVariationSelectComponent),
+        MockPipe(ServerSettingPipe, () => serverSetting),
         ProductDetailVariationsComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
-  });
+  }
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ProductDetailVariationsComponent);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-  });
+  describe('b2c variation handling', () => {
+    beforeEach(async () => {
+      prepareTestbed(false);
+    });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-    expect(element).toBeTruthy();
-    expect(() => fixture.detectChanges()).not.toThrow();
-  });
+    beforeEach(() => {
+      fixture = TestBed.createComponent(ProductDetailVariationsComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
+    });
 
-  it('should not render if display is false', () => {
-    fixture.detectChanges();
+    it('should be created', () => {
+      expect(component).toBeTruthy();
+      expect(element).toBeTruthy();
+      expect(() => fixture.detectChanges()).not.toThrow();
+    });
 
-    expect(element).toMatchInlineSnapshot(`N/A`);
-  });
+    it('should not render if display is false', () => {
+      fixture.detectChanges();
 
-  it('should always render select by default', () => {
-    when(context.select('displayProperties', 'variations')).thenReturn(of(true));
-    fixture.detectChanges();
+      expect(element).toMatchInlineSnapshot(`N/A`);
+    });
 
-    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+    it('should always render select by default', () => {
+      when(context.select('displayProperties', 'variations')).thenReturn(of(true));
+      fixture.detectChanges();
+
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-variation-select",
       ]
     `);
+    });
   });
 
-  it('should always render display for advanced variation handling', () => {
-    when(context.select('displayProperties', 'variations')).thenReturn(of(true));
-    FeatureToggleModule.switchTestingFeatures('advancedVariationHandling');
-    fixture.detectChanges();
+  describe('advanced variation handling', () => {
+    beforeEach(async () => {
+      prepareTestbed(true);
+    });
 
-    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+    beforeEach(() => {
+      fixture = TestBed.createComponent(ProductDetailVariationsComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
+    });
+
+    it('should be created', () => {
+      expect(component).toBeTruthy();
+      expect(element).toBeTruthy();
+      expect(() => fixture.detectChanges()).not.toThrow();
+    });
+
+    it('should always render display for advanced variation handling', () => {
+      when(context.select('displayProperties', 'variations')).thenReturn(of(true));
+      fixture.detectChanges();
+
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-variation-display",
         "ish-product-master-link",
       ]
     `);
+    });
   });
 });

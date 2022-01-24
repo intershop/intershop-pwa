@@ -106,7 +106,7 @@ describe('Shopping Store', () => {
     });
 
     const configurationServiceMock = mock(ConfigurationService);
-    when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(EMPTY);
 
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
@@ -143,7 +143,7 @@ describe('Shopping Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['router', 'configuration'], true),
+        CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
         RouterTestingModule.withRoutes([
           {
             path: 'home',

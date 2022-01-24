@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -12,6 +13,8 @@ import { FilterService } from './filter.service';
 describe('Filter Service', () => {
   let apiService: ApiService;
   let filterService: FilterService;
+  let appFacadeMock: AppFacade;
+
   const productsMock = {
     elements: [
       { uri: 'products/123', attributes: [{ name: 'sku', value: '123' }] },
@@ -36,12 +39,18 @@ describe('Filter Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    appFacadeMock = mock(AppFacade);
 
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['configuration'])],
-      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
+      ],
     });
     filterService = TestBed.inject(FilterService);
+
+    when(appFacadeMock.serverSetting$(anyString())).thenReturn(of(false));
   });
 
   it('should be created', () => {

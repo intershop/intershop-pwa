@@ -26,7 +26,6 @@ export interface Environment {
     | 'rating'
     | 'recently'
     /* B2B features */
-    | 'advancedVariationHandling'
     | 'businessCustomerRegistration'
     | 'costCenters'
     | 'quoting'

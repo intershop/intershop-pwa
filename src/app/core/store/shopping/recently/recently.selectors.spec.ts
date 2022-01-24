@@ -25,7 +25,7 @@ describe('Recently Selectors', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['router', 'configuration'], [RecentlyEffects]),
+        CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], [RecentlyEffects]),
         RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
         ShoppingStoreModule.forTesting('_recently', 'categories', 'products'),
       ],

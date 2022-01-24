@@ -12,7 +12,6 @@ export const environment: Environment = {
     'compare',
     'recently',
     'rating',
-    'advancedVariationHandling',
     'businessCustomerRegistration',
     'costCenters',
     'quoting',

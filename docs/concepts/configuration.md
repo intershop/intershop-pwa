@@ -161,7 +161,6 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | rating                       | display product ratings                                                                                                    |
 | recently                     | display recently viewed products (additional configuration via `dataRetention` configuration options)                      |
 | **B2B Features**             |                                                                                                                            |
-| advancedVariationHandling    | handle product variations as individual products in listings and product detail pages                                      |
 | businessCustomerRegistration | create business customers on registration                                                                                  |
 | costCenters                  | cost center feature                                                                                                        |
 | orderTemplates               | order template feature                                                                                                     |
