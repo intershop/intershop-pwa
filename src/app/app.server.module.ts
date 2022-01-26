@@ -22,8 +22,14 @@ export class UniversalErrorHandler implements ErrorHandler {
       console.error('ERROR', error.message);
     } else if (error instanceof Error) {
       console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
+    } else if (typeof error === 'object') {
+      try {
+        console.error('ERROR', JSON.stringify(error));
+      } catch (_) {
+        console.error('ERROR (cannot stringify)', error);
+      }
     } else {
-      console.error('ERROR', error?.toString());
+      console.error('ERROR', error);
     }
   }
 }
