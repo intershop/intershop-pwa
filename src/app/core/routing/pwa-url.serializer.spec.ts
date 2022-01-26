@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { UrlSerializer } from '@angular/router';
 
-import { CustomUrlSerializer } from './custom-url-serializer';
+import { PWAUrlSerializer } from './pwa-url.serializer';
 
-describe('Custom Url Serializer', () => {
+describe('Pwa Url Serializer', () => {
   let urlSerializer: UrlSerializer;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [{ provide: UrlSerializer, useClass: CustomUrlSerializer }] });
+    TestBed.configureTestingModule({ providers: [{ provide: UrlSerializer, useClass: PWAUrlSerializer }] });
     urlSerializer = TestBed.inject(UrlSerializer);
   });
 

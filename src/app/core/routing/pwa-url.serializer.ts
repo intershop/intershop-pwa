@@ -5,7 +5,7 @@ import { DefaultUrlSerializer, UrlSerializer, UrlTree } from '@angular/router';
  *
  * taken from: https://github.com/angular/angular/issues/10280#issuecomment-309129784
  */
-export class CustomUrlSerializer implements UrlSerializer {
+export class PWAUrlSerializer implements UrlSerializer {
   private defaultUrlSerializer: DefaultUrlSerializer = new DefaultUrlSerializer();
 
   parse(url: string): UrlTree {

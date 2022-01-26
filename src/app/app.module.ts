@@ -5,7 +5,7 @@ import { UrlSerializer } from '@angular/router';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
-import { CustomUrlSerializer } from 'ish-core/utils/custom-url-serializer';
+import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
 
 import { environment } from '../environments/environment';
 
@@ -35,7 +35,7 @@ import { ShellModule } from './shell/shell.module';
   ],
   /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],
-  providers: [{ provide: UrlSerializer, useClass: CustomUrlSerializer }],
+  providers: [{ provide: UrlSerializer, useClass: PWAUrlSerializer }],
 })
 export class AppModule {
   constructor(transferState: TransferState) {
