@@ -156,7 +156,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     const selectedValue = this.formGroup.get('wishlist')?.value;
     if (selectedValue === 'new' || !selectedValue) {
       return this.wishlistsFacade.currentWishlist$.pipe(
-        map(currentWishlist => `route://account/wishlists/${currentWishlist && currentWishlist.id}`),
+        map(currentWishlist => `route://account/wishlists/${currentWishlist?.id}`),
         take(1)
       );
     } else {

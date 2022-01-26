@@ -73,7 +73,7 @@ function calculateAbsolutePath(basePath: string, literal: string): string {
 function getAliasImports(): { pattern: string; alias: string }[] {
   try {
     const config = parse(fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' }));
-    if (config && config.compilerOptions && config.compilerOptions.paths) {
+    if (config?.compilerOptions?.paths) {
       const paths = config.compilerOptions.paths;
       return Object.keys(paths).map(key => ({
         pattern: `.*/${paths[key][0].replace(/\/\*$/, '/')}`,

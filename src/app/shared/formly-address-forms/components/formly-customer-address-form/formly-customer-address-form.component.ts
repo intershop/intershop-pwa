@@ -70,7 +70,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
    * Trigger reset form from parent.
    */
   ngOnChanges(c: SimpleChanges) {
-    this.doResetForm(c.resetForm && c.resetForm.currentValue);
+    this.doResetForm(c.resetForm?.currentValue);
   }
 
   doResetForm(resetForm: boolean) {

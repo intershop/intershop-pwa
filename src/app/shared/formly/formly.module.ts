@@ -146,11 +146,8 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
       extras: {
         lazyRender: true,
         showError: field =>
-          field.formControl &&
-          field.formControl.invalid &&
-          (field.formControl.dirty ||
-            (field.options.parentForm && field.options.parentForm.submitted) ||
-            !!(field.field.validation && field.field.validation.show)),
+          field.formControl?.invalid &&
+          (field.formControl.dirty || field.options.parentForm?.submitted || !!field.field.validation?.show),
       },
       extensions: [{ name: 'hide-if-empty-options-extension', extension: hideIfEmptyOptionsExtension }],
     }),

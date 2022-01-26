@@ -77,7 +77,7 @@ export class PaymentService {
       )
       .pipe(
         map(({ data, included }) =>
-          data && data.paymentMethod && included ? included.paymentMethod[data.paymentMethod] : undefined
+          data?.paymentMethod && included ? included.paymentMethod[data.paymentMethod] : undefined
         ),
         withLatestFrom(this.store.pipe(select(getCurrentLocale))),
         concatMap(([pm, currentLocale]) => this.sendRedirectUrlsIfRequired(pm, paymentInstrument, currentLocale))
@@ -199,13 +199,10 @@ export class PaymentService {
       return throwError('deleteBasketPayment() called without paymentInstrument');
     }
 
-    const deletePayment =
-      basket.payment &&
-      basket.payment.paymentInstrument &&
-      basket.payment.paymentInstrument.id === paymentInstrument.id;
+    const deletePayment = basket.payment?.paymentInstrument?.id === paymentInstrument.id;
 
     // user payment instrument
-    if (paymentInstrument.urn && paymentInstrument.urn.includes('user')) {
+    if (paymentInstrument.urn?.includes('user')) {
       return this.deleteUserPaymentInstrument('-', paymentInstrument.id).pipe(
         concatMap(() => (deletePayment ? this.deleteBasketPayment(basket) : of(undefined)))
       );

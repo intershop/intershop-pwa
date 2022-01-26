@@ -163,9 +163,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
 
     if (selectedValue === 'new' || !selectedValue) {
       return this.orderTemplatesFacade.currentOrderTemplate$.pipe(
-        map(
-          currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate && currentOrderTemplate.id}`
-        ),
+        map(currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate?.id}`),
         take(1)
       );
     } else {

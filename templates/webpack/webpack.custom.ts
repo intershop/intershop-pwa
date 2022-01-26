@@ -111,7 +111,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   const { theme, production, availableThemes } = determineConfiguration(angularJsonConfig, targetOptions);
 
   const angularCompilerPlugin = config.plugins.find(
-    (pl: AngularPlugin) => pl.options && pl.options.directTemplateLoading !== undefined
+    (pl: AngularPlugin) => pl.options?.directTemplateLoading !== undefined
   ) as AngularPlugin;
 
   if (angularCompilerPlugin.options.directTemplateLoading) {
@@ -147,7 +147,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   if (production) {
     // keep module names for debugging
     config.optimization.minimizer.forEach((m: WebpackPluginInstance) => {
-      if (m.options && m.options.terserOptions) {
+      if (m.options?.terserOptions) {
         m.options.terserOptions.keep_classnames = /.*Module$/;
       }
     });
@@ -184,14 +184,14 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
           // move translation files into own bundles
           const i18nMatch = /[\\/]assets[\\/]i18n[\\/](.*?)\.json/.exec(identifier);
-          const locale = i18nMatch && i18nMatch[1];
+          const locale = i18nMatch?.[1];
 
           if (locale) {
             return locale.replace('_', '-');
           }
 
           const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
-          const feature = match && match[2];
+          const feature = match?.[2];
 
           if (feature) {
             // include core functionality in common bundle

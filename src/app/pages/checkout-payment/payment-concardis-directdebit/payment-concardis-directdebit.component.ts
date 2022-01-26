@@ -241,7 +241,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
       }
 
       this.errorMessage.accountholder = errorMessage.properties?.find(prop => prop.key === 'accountholder');
-      if (this.errorMessage.accountholder && this.errorMessage.accountholder.code) {
+      if (this.errorMessage.accountholder?.code) {
         this.errorMessage.accountholder.messageKey = this.getErrorMessage(
           this.errorMessage.accountholder.code,
           'sepa',

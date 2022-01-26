@@ -48,7 +48,7 @@ export const createBasketView = (
               ? validationResults.errors.find(error => error.parameters && error.parameters.lineItemId === li.id)
               : undefined,
           info:
-            basketInfo && basketInfo.length && basketInfo[0].causes
+            basketInfo?.length && basketInfo[0].causes
               ? basketInfo[0].causes.find(cause => cause.parameters && cause.parameters.lineItemId === li.id)
               : undefined,
         }))

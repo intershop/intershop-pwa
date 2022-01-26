@@ -170,9 +170,8 @@ export class ActionCreatorsActionsMorpher {
           unionType.replaceWithText(returnTypeString);
           i++;
         } else if (
-          callExpression &&
           callExpression
-            .getArguments()
+            ?.getArguments()
             .filter(arg => arg.getKind() === SyntaxKind.Identifier)
             .includes(reference)
         ) {

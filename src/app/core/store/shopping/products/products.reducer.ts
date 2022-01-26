@@ -53,7 +53,7 @@ export const productsReducer = createReducer(
     const oldProduct = state.entities[product.sku] || { completenessLevel: 0 };
 
     const newProduct = { ...product };
-    if (product.completenessLevel || (oldProduct && oldProduct.completenessLevel)) {
+    if (product.completenessLevel || oldProduct?.completenessLevel) {
       newProduct.completenessLevel = Math.max(product.completenessLevel, oldProduct.completenessLevel);
     }
 

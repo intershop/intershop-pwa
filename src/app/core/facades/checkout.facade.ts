@@ -87,11 +87,9 @@ export class CheckoutFacade {
   basketInfo$ = this.store.pipe(select(getBasketInfo));
   basketLoading$ = this.store.pipe(select(getBasketLoading));
   basketValidationResults$ = this.store.pipe(select(getBasketValidationResults));
-  basketItemCount$ = this.basket$.pipe(map(basket => (basket && basket.totalProductQuantity) || 0));
-  basketItemTotal$ = this.basket$.pipe(map(basket => basket && basket.totals && basket.totals.itemTotal));
-  basketLineItems$ = this.basket$.pipe(
-    map(basket => (basket && basket.lineItems && basket.lineItems.length ? basket.lineItems : undefined))
-  );
+  basketItemCount$ = this.basket$.pipe(map(basket => basket?.totalProductQuantity || 0));
+  basketItemTotal$ = this.basket$.pipe(map(basket => basket?.totals?.itemTotal));
+  basketLineItems$ = this.basket$.pipe(map(basket => (basket?.lineItems?.length ? basket.lineItems : undefined)));
   submittedBasket$ = this.store.pipe(select(getSubmittedBasket));
   basketMaxItemQuantity$ = this.store.pipe(
     select(getServerConfigParameter<number>('basket.maxItemQuantity')),

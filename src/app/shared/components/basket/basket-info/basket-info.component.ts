@@ -22,16 +22,13 @@ export class BasketInfoComponent implements OnInit {
 
   ngOnInit() {
     this.infoMessages$ = this.checkoutFacade.basketInfo$.pipe(
-      map(
-        results =>
-          results &&
-          results.map(info => ({
-            ...info,
-            causes:
-              info &&
-              info.causes &&
-              info.causes.filter(cause => !cause.parameters || (cause.parameters && !cause.parameters.lineItemId)),
-          }))
+      map(results =>
+        results?.map(info => ({
+          ...info,
+          causes: info?.causes?.filter(
+            cause => !cause.parameters || (cause.parameters && !cause.parameters.lineItemId)
+          ),
+        }))
       )
     );
   }

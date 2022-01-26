@@ -10,10 +10,10 @@ export class BasketValidationMapper {
       return {
         basket: BasketMapper.fromData(BasketValidationMapper.transform(data)),
         results: {
-          valid: data.data.results && data.data.results.valid,
-          adjusted: data.data.results && data.data.results.adjusted,
-          errors: data.data.results && data.data.results.errors,
-          infos: data.data.results && data.data.results.infos,
+          valid: data.data.results?.valid,
+          adjusted: data.data.results?.adjusted,
+          errors: data.data.results?.errors,
+          infos: data.data.results?.infos,
         },
         scopes: data.data.scopes,
       };

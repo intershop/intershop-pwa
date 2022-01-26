@@ -5,7 +5,7 @@
 
 <div [formGroup]="parameterForm">
   <!-- Credit card number -->
-  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cardNumber && errorMessage.cardNumber.message }">
+  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cardNumber?.message }">
     <label class="col-form-label col-md-4" for="cardpanInput"
       >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
     >

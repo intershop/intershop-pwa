@@ -34,11 +34,8 @@ describe('Validation Wrapper Component', () => {
           ],
           extras: {
             showError: field =>
-              field.formControl &&
-              field.formControl.invalid &&
-              (field.formControl.dirty ||
-                (field.options.parentForm && field.options.parentForm.submitted) ||
-                !!(field.field.validation && field.field.validation.show)),
+              field.formControl?.invalid &&
+              (field.formControl.dirty || field.options.parentForm?.submitted || !!field.field.validation?.show),
           },
         }),
         FormlyTestingComponentsModule,

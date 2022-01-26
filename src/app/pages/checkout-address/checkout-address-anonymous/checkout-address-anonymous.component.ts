@@ -49,7 +49,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
    * checks, if all data are available to jump to the next checkout step
    */
   isNextStepAvailable() {
-    return this.basket && this.basket.invoiceToAddress && this.basket.commonShipToAddress;
+    return this.basket?.invoiceToAddress && this.basket.commonShipToAddress;
   }
 
   showAddressForm() {

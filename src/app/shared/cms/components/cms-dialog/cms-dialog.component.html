@@ -1,6 +1,6 @@
 <!-- dialog content can either be in the content parameter or in the slot -->
 <div
-  *ngIf="pagelet && pagelet.stringParam('Content')"
+  *ngIf="pagelet?.stringParam('Content')"
   [ishServerHtml]="pagelet.stringParam('Content')"
   data-testing-id="dialog-content"
 ></div>

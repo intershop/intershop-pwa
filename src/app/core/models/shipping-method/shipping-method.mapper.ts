@@ -11,14 +11,12 @@ export class ShippingMethodMapper {
         id: data.id,
         description: data.description,
         shippingCosts: PriceItemMapper.fromPriceItem(data.shippingCosts),
-        shippingTimeMin:
-          data.deliveryTimeMin && data.deliveryTimeMin.match(/^P\d+D$/gi)
-            ? +data.deliveryTimeMin.replace(/[PD]/gi, '')
-            : undefined,
-        shippingTimeMax:
-          data.deliveryTimeMax && data.deliveryTimeMax.match(/^P\d+D$/gi)
-            ? +data.deliveryTimeMax.replace(/[PD]/gi, '')
-            : undefined,
+        shippingTimeMin: data.deliveryTimeMin?.match(/^P\d+D$/gi)
+          ? +data.deliveryTimeMin.replace(/[PD]/gi, '')
+          : undefined,
+        shippingTimeMax: data.deliveryTimeMax?.match(/^P\d+D$/gi)
+          ? +data.deliveryTimeMax.replace(/[PD]/gi, '')
+          : undefined,
       };
     }
   }

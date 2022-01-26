@@ -70,10 +70,8 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
 
     // prepare data for shipping select drop down
     this.addresses$ = combineLatest([this.customerAddresses$, this.shippingAddress$]).pipe(
-      map(
-        ([addresses, shippingAddress]) =>
-          addresses &&
-          addresses.filter(address => address.shipToAddress).filter(address => address.id !== shippingAddress?.id)
+      map(([addresses, shippingAddress]) =>
+        addresses?.filter(address => address.shipToAddress).filter(address => address.id !== shippingAddress?.id)
       )
     );
 

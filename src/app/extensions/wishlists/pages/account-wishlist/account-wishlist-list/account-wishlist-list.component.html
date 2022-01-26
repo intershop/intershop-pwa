@@ -1,4 +1,4 @@
-<div *ngIf="wishlists && wishlists.length > 0; else noWishlist" class="list-body">
+<div *ngIf="wishlists?.length > 0; else noWishlist" class="list-body">
   <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: preferredWishlist }"></ng-container>
   <ng-container *ngFor="let wishlist of wishlists">
     <ng-container *ngIf="!preferredWishlist || wishlist.id !== preferredWishlist.id">

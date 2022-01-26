@@ -51,11 +51,11 @@ export class ValidationMessageComponent implements OnChanges {
       message = this.field.validation.messages[error];
     }
 
-    if (this.field.validators && this.field.validators[error]?.message) {
+    if (this.field.validators?.[error]?.message) {
       message = this.field.validators[error].message;
     }
 
-    if (this.field.asyncValidators && this.field.asyncValidators[error]?.message) {
+    if (this.field.asyncValidators?.[error]?.message) {
       message = this.field.asyncValidators[error].message;
     }
 

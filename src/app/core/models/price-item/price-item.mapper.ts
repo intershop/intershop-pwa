@@ -11,7 +11,7 @@ export class PriceItemMapper {
    * @returns         The {@link PriceItem}.
    */
   static fromPriceItem(priceItem: PriceItemData): PriceItem {
-    if (priceItem && priceItem.gross && priceItem.net) {
+    if (priceItem?.gross && priceItem.net) {
       return {
         type: 'PriceItem',
         gross: priceItem.gross.value,

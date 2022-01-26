@@ -357,7 +357,7 @@ export class BasketService {
       .post('promotioncodes', body, {
         headers: this.basketHeaders,
       })
-      .pipe(map(({ infos }) => infos && infos[0] && infos[0].message));
+      .pipe(map(({ infos }) => infos?.[0]?.message));
   }
 
   /**

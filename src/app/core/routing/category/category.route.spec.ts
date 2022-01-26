@@ -35,7 +35,7 @@ describe('Category Route', () => {
   } as Category;
 
   expect.addSnapshotSerializer({
-    test: val => val && val.consumed && val.posParams,
+    test: val => val?.consumed && val.posParams,
     print: (val: UrlMatchResult, serialize) =>
       serialize(
         Object.keys(val.posParams)
