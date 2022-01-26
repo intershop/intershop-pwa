@@ -1,7 +1,7 @@
 import { DefaultUrlSerializer, UrlSerializer, UrlTree } from '@angular/router';
 
 /**
- * Custom serializer for allowing parenthesis in URLs
+ * Custom serializer for allowing parenthesis in URLs and removing matrix parameters
  *
  * taken from: https://github.com/angular/angular/issues/10280#issuecomment-309129784
  */
@@ -14,6 +14,14 @@ export class CustomUrlSerializer implements UrlSerializer {
   }
 
   serialize(tree: UrlTree): string {
-    return this.defaultUrlSerializer.serialize(tree).replace(/%28/g, '(').replace(/%29/g, ')');
+    return (
+      this.defaultUrlSerializer
+        .serialize(tree)
+        // display parenthesis unencoded in URL
+        .replace(/%28/g, '(')
+        .replace(/%29/g, ')')
+        // remove matrix parameters
+        .replace(/;[^?]*/, '')
+    );
   }
 }

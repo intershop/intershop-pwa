@@ -14,18 +14,24 @@ describe('Custom Url Serializer', () => {
   it('should deal with parenthesis in parameter names', () => {
     const tree = urlSerializer.parse('/path/a/b/c?param=(value)');
     const result = urlSerializer.serialize(tree);
-    expect(result).toBe('/path/a/b/c?param=(value)');
+    expect(result).toMatchInlineSnapshot(`"/path/a/b/c?param=(value)"`);
   });
 
   it('should deal with parenthesis in path segment names', () => {
     const tree = urlSerializer.parse('/path/a/(segmentname)');
     const result = urlSerializer.serialize(tree);
-    expect(result).toBe('/path/a/(segmentname)');
+    expect(result).toMatchInlineSnapshot(`"/path/a/(segmentname)"`);
   });
 
-  it('should deal with parenthesis in matrix parameters', () => {
-    const tree = urlSerializer.parse('/path/a/b/c;(matrix-param)=value');
+  it('should remove matrix parameters from URL', () => {
+    const tree = urlSerializer.parse('/path/a/b/c;matrix=value');
     const result = urlSerializer.serialize(tree);
-    expect(result).toBe('/path/a/b/c;(matrix-param)=value');
+    expect(result).toMatchInlineSnapshot(`"/path/a/b/c"`);
+  });
+
+  it('should remove matrix parameters from and keep query params in URL', () => {
+    const tree = urlSerializer.parse('/path/a/b/c;matrix=value?test=dummy&foo=bar');
+    const result = urlSerializer.serialize(tree);
+    expect(result).toMatchInlineSnapshot(`"/path/a/b/c?test=dummy&foo=bar"`);
   });
 });
