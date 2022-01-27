@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 /**
  * Basic type for radio buttons
@@ -20,6 +19,4 @@ import { FieldType } from '@ngx-formly/core';
   templateUrl: './radio-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RadioFieldComponent extends FieldType {
-  formControl: FormControl;
-}
+export class RadioFieldComponent extends FieldType<FieldTypeConfig> {}

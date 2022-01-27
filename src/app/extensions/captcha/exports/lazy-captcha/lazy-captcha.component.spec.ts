@@ -100,6 +100,7 @@ describe('Lazy Captcha Component', () => {
   });
 
   it('should throw an error if there is no control "captcha" in the given form', () => {
+    component.form = component.form as FormGroup;
     delete component.form.controls.captcha;
     expect(() => fixture.detectChanges()).toThrowErrorMatchingInlineSnapshot(
       `"form control 'captcha' does not exist in the given form for LazyCaptchaComponent"`
@@ -107,6 +108,7 @@ describe('Lazy Captcha Component', () => {
   });
 
   it('should throw an error if there is no control "captchaAction" in the given form', () => {
+    component.form = component.form as FormGroup;
     delete component.form.controls.captchaAction;
     expect(() => fixture.detectChanges()).toThrowErrorMatchingInlineSnapshot(
       `"form control 'captchaAction' does not exist in the given form for LazyCaptchaComponent"`

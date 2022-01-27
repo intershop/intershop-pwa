@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 /**
  * Type for a basic checkbox field.
@@ -15,6 +14,4 @@ import { FieldType } from '@ngx-formly/core';
   templateUrl: './checkbox-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckboxFieldComponent extends FieldType {
-  formControl: FormControl;
-}
+export class CheckboxFieldComponent extends FieldType<FieldTypeConfig> {}
