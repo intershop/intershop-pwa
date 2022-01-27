@@ -11,6 +11,7 @@ import {
   RegistrationConfigType,
   RegistrationFormConfigurationService,
 } from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
@@ -56,6 +57,7 @@ export class RegistrationPageComponent implements OnInit {
 
   onCreate() {
     if (this.form.invalid) {
+      markAsDirtyRecursive(this.form);
       this.submitted = true;
       return;
     }

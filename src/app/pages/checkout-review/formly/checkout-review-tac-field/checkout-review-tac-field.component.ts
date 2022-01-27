@@ -1,15 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'ish-checkout-review-tac-field',
   templateUrl: './checkout-review-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutReviewTacFieldComponent extends FieldType {
-  formControl: FormControl;
-
+export class CheckoutReviewTacFieldComponent extends FieldType<FieldTypeConfig> {
   getArgs() {
     return this.to.args ? this.to.args : {};
   }

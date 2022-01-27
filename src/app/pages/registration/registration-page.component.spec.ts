@@ -64,12 +64,12 @@ describe('Registration Page Component', () => {
 
   it('should display form with registration configuration', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('formly-field')).toMatchInlineSnapshot(`
+    expect(element.querySelector('formly-field').querySelectorAll('formly-field')).toMatchInlineSnapshot(`
       NodeList [
-        <formly-field hide-deprecation=""
+        <formly-field
         ><ng-component
-          >TextInputFieldComponent: test ish-text-input-field { "label": "", "placeholder": "", "focus":
-          false, "disabled": false}</ng-component
+          >TextInputFieldComponent: test ish-text-input-field { "label": "", "placeholder": "",
+          "disabled": false}</ng-component
         ></formly-field
       >,
       ]

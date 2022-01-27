@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
@@ -25,8 +24,7 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
   templateUrl: './select-field.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class SelectFieldComponent extends FieldType {
-  formControl: FormControl;
+export class SelectFieldComponent extends FieldType<FieldTypeConfig> {
   defaultOptions = {
     templateOptions: {
       options: [] as SelectOption[],
