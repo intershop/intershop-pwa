@@ -402,6 +402,7 @@
               "^.*/(<name>)(/src/app)?/store/\\1-store(\\.module)?(<theme>)?\\.ts",
               // ngrx router-store
               "^.*/src/app/core/store/core/router/router\\.(operators|serializer)(<theme>)?\\.ts",
+              "^.*/src/app/core/routing/\\.serializer()?\\.ts",
               // allow only app related content directly in src/app
               "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
               // application shell
