@@ -299,8 +299,7 @@ describe('Product Route', () => {
       const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
       const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product);
 
-      expect(matchProductRoute(wrap(`${generateProductUrl(product, category)};lang=de_DE;redirect=1`)))
-        .toMatchInlineSnapshot(`
+      expect(matchProductRoute(wrap(`${generateProductUrl(product, category)};lang=de_DE`))).toMatchInlineSnapshot(`
         Object {
           "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
           "sku": "A",
