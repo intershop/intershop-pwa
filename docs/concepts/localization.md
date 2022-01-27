@@ -7,12 +7,14 @@ kb_sync_latest_only
 
 # Localization
 
-Intershop Progressive Web App uses a mix of Angular's internationalization tools (i18n) and the internationalization library ngx-translate for localization.
+Intershop Progressive Web App uses the internationalization library ngx-translate for localization.
+In addition the dependency to Angular's internationalization tools (i18n) is needed as a dependency for ng-bootstrap.
 
 For more information refer to:
 
-- [Angular - Internationalization (i18n)](https://angular.io/guide/i18n)
 - [NGX-Translate: The internationalization (i18n) library for Angular](http://www.ngx-translate.com/)
+- [Angular - Internationalization (i18n)](https://angular.io/guide/i18n)
+- [ng-bootstrap Angular 9 support](https://github.com/ng-bootstrap/ng-bootstrap/issues/3537#issuecomment-586472803)
 
 ## Usage Examples
 
