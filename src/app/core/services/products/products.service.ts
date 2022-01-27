@@ -2,8 +2,9 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { flatten, range } from 'lodash-es';
 import { Observable, from, identity, of, throwError } from 'rxjs';
-import { defaultIfEmpty, map, mergeMap, switchMap, toArray } from 'rxjs/operators';
+import { defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { Link } from 'ish-core/models/link/link.model';
@@ -19,7 +20,6 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { mapToProperty } from 'ish-core/utils/operators';
 
 /**
@@ -30,11 +30,7 @@ export class ProductsService {
   static STUB_ATTRS =
     'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet';
 
-  constructor(
-    private apiService: ApiService,
-    private productMapper: ProductMapper,
-    private featureToggleService: FeatureToggleService
-  ) {}
+  constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
 
   /**
    * Get the full Product data for the given Product SKU.
@@ -96,8 +92,11 @@ export class ProductsService {
           sortableAttributes: Object.values(response.sortableAttributes || {}),
           total: response.total ? response.total : response.elements.length,
         })),
-        map(({ products, sortableAttributes, total }) => ({
-          products: this.postProcessMasters(products),
+        withLatestFrom(
+          this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
+        ),
+        map(([{ products, sortableAttributes, total }, advancedVariationHandling]) => ({
+          products: this.postProcessMasters(products, advancedVariationHandling),
           sortableAttributes,
           total,
         }))
@@ -146,8 +145,11 @@ export class ProductsService {
           sortableAttributes: Object.values(response.sortableAttributes || {}),
           total: response.total ? response.total : response.elements.length,
         })),
-        map(({ products, sortableAttributes, total }) => ({
-          products: this.postProcessMasters(products),
+        withLatestFrom(
+          this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
+        ),
+        map(([{ products, sortableAttributes, total }, advancedVariationHandling]) => ({
+          products: this.postProcessMasters(products, advancedVariationHandling),
           sortableAttributes,
           total,
         }))
@@ -194,8 +196,8 @@ export class ProductsService {
    * exchange single-return variation products to master products for B2B
    * TODO: this is a work-around
    */
-  private postProcessMasters(products: Partial<Product>[]): Product[] {
-    if (this.featureToggleService.enabled('advancedVariationHandling')) {
+  private postProcessMasters(products: Partial<Product>[], advancedVariationHandling: boolean): Product[] {
+    if (advancedVariationHandling) {
       return products.map(p =>
         ProductHelper.isVariationProduct(p) ? { sku: p.productMasterSKU, completenessLevel: 0 } : p
       ) as Product[];

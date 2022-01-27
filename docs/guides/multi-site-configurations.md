@@ -184,14 +184,14 @@ To see what is possible through multi-site handling, have a look at this extende
   - baseHref: /us
     lang: en_US
     channel: inSPIRED-inTRONICS_Business-Site
-    features: quoting,businessCustomerRegistration,advancedVariationHandling
+    features: quoting,businessCustomerRegistration
 .+\.de:
   channel: inSPIRED-inTRONICS-Site
   lang: de_DE
   theme: b2c
 .+\.com:
   channel: inSPIRED-inTRONICS_Business-Site
-  features: quoting,businessCustomerRegistration,advancedVariationHandling
+  features: quoting,businessCustomerRegistration
 .+\.fr:
   channel: inSPIRED-inTRONICS_Business-Site
   lang: fr_FR

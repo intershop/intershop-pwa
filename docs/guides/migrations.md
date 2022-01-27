@@ -37,6 +37,10 @@ Now we removed the obsolete form components.
 If you want to use the obsolete form components in your project nevertheless, skip the commit `remove obsolete form components`.
 For more information concerning Formly please refer to our [Formly - Guide](./formly.md)).
 
+The feature toggle 'advancedVariationHandling' has been removed.
+Instead the ICM channel preference 'AdvancedVariationHandling' is used to configure it.
+You will find this preference as 'List View' in the ICM backoffice under Channel Preferences -> Product Variations.
+
 ## 1.1 to 1.2
 
 The `dist` folder now only contains results of the build process (except for `healthcheck.js`).

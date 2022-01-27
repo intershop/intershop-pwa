@@ -16,7 +16,7 @@ Please refer to the [documentation](../docs/guides/nginx-startup.md) for configu
      theme: 'b2c'
    .+\.com:
      channel: inSPIRED-inTRONICS_Business-Site
-     features: quoting,businessCustomerRegistration,advancedVariationHandling
+     features: quoting,businessCustomerRegistration
    .+\.fr:
      channel: inSPIRED-inTRONICS-Site
      lang: fr_FR
