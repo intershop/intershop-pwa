@@ -4,7 +4,7 @@
       <div
         class="progress-bar"
         [ngClass]="{ 'bg-danger': spentBudgetPercentage * 100 > 90 }"
-        [ngStyle]="{ width: spentBudgetPercentage | percent }"
+        [ngStyle]="{ width: progressBarWidth | percent }"
         role="progressbar"
       >
         <span class="progress-display">{{ spentBudgetPercentage | percent }}</span>
