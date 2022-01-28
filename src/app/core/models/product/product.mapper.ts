@@ -47,10 +47,6 @@ export class ProductMapper {
     private categoryMapper: CategoryMapper
   ) {}
 
-  private defaultMinOrderQuantity = 1;
-  private defaultMaxOrderQuantity = 100;
-  private defaultStepOrderQuantity = 1;
-
   static parseSkuFromURI(uri: string): string {
     const match = /products[^\/]*\/([^\?]*)/.exec(uri);
     if (match) {
@@ -157,13 +153,9 @@ export class ProductMapper {
         retrieveStubAttributeValue(data, 'inStock')
       ),
       longDescription: undefined,
-      minOrderQuantity:
-        retrieveStubAttributeValue<{ value: number }>(data, 'minOrderQuantity')?.value || this.defaultMinOrderQuantity,
-      maxOrderQuantity:
-        retrieveStubAttributeValue<{ value: number }>(data, 'maxOrderQuantity')?.value || this.defaultMaxOrderQuantity,
-      stepOrderQuantity:
-        retrieveStubAttributeValue<{ value: number }>(data, 'stepOrderQuantity')?.value ||
-        this.defaultStepOrderQuantity,
+      minOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'minOrderQuantity')?.value,
+      maxOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'maxOrderQuantity')?.value,
+      stepOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'stepOrderQuantity')?.value,
       packingUnit: retrieveStubAttributeValue(data, 'packingUnit'),
       attributeGroups: data.attributeGroup && mapAttributeGroups(data),
       readyForShipmentMin: undefined,
@@ -187,9 +179,9 @@ export class ProductMapper {
       shortDescription: data.shortDescription,
       longDescription: data.longDescription,
       available: this.calculateAvailable(data.availability, data.inStock),
-      minOrderQuantity: data.minOrderQuantity || this.defaultMinOrderQuantity,
-      maxOrderQuantity: data.maxOrderQuantity || this.defaultMaxOrderQuantity,
-      stepOrderQuantity: data.stepOrderQuantity || this.defaultStepOrderQuantity,
+      minOrderQuantity: data.minOrderQuantity,
+      maxOrderQuantity: data.maxOrderQuantity,
+      stepOrderQuantity: data.stepOrderQuantity,
       packingUnit: data.packingUnit,
       availableStock: data.availableStock,
       attributes: data.attributeGroups?.PRODUCT_DETAIL_ATTRIBUTES?.attributes || data.attributes,

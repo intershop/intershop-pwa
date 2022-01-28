@@ -12,6 +12,7 @@ import { Category } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
+import { AppFacade } from './app.facade';
 import {
   EXTERNAL_DISPLAY_PROPERTY_PROVIDER,
   ExternalDisplayPropertiesProvider,
@@ -39,9 +40,16 @@ describe('Product Context Facade', () => {
     when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
     when(shoppingFacade.inCompareProducts$(anything())).thenReturn(of(false));
 
+    const appFacade = mock(AppFacade);
+    when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
+
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      providers: [ProductContextFacade, { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [
+        ProductContextFacade,
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+      ],
     });
 
     context = TestBed.inject(ProductContextFacade);
@@ -746,11 +754,15 @@ describe('Product Context Facade', () => {
 
       when(shoppingFacade.product$(anyString(), anything())).thenCall(sku => of({ ...product, sku }));
 
+      const appFacade = mock(AppFacade);
+      when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
+
       TestBed.configureTestingModule({
         imports: [TranslateModule.forRoot()],
         providers: [
           ProductContextFacade,
           { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+          { provide: AppFacade, useFactory: () => instance(appFacade) },
           { provide: EXTERNAL_DISPLAY_PROPERTY_PROVIDER, useClass: ProviderA, multi: true },
           { provide: EXTERNAL_DISPLAY_PROPERTY_PROVIDER, useClass: ProviderB, multi: true },
           { provide: EXTERNAL_DISPLAY_PROPERTY_PROVIDER, useClass: ProviderC, multi: true },

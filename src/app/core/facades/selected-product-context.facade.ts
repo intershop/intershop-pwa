@@ -15,10 +15,10 @@ export class SelectedProductContextFacade extends ProductContextFacade {
     shoppingFacade: ShoppingFacade,
     translate: TranslateService,
     injector: Injector,
-    private router: Router,
-    private appFacade: AppFacade
+    router: Router,
+    appFacade: AppFacade
   ) {
-    super(shoppingFacade, translate, injector);
+    super(shoppingFacade, appFacade, translate, injector);
     this.set('requiredCompletenessLevel', () => true);
     this.connect('categoryId', shoppingFacade.selectedCategoryId$);
     this.connect('sku', shoppingFacade.selectedProductId$);
@@ -28,7 +28,7 @@ export class SelectedProductContextFacade extends ProductContextFacade {
       this.select('product').pipe(
         filter(ProductVariationHelper.hasDefaultVariation),
         concatMap(p =>
-          this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling').pipe(
+          appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling').pipe(
             filter(advancedVariationHandling => advancedVariationHandling !== undefined && !advancedVariationHandling),
             map(() => p.defaultVariationSKU)
           )
@@ -39,10 +39,10 @@ export class SelectedProductContextFacade extends ProductContextFacade {
     this.hold(
       this.select('productURL').pipe(
         skip(1),
-        withLatestFrom(this.appFacade.routingInProgress$),
+        withLatestFrom(appFacade.routingInProgress$),
         filter(([, progress]) => !progress)
       ),
-      ([url]) => this.router.navigateByUrl(url)
+      ([url]) => router.navigateByUrl(url)
     );
   }
 }

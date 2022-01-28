@@ -16,6 +16,7 @@ import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductContextDisplayPropertiesService } from 'ish-core/utils/product-context-display-properties/product-context-display-properties.service';
 
+import { AppFacade } from './app.facade';
 import { ShoppingFacade } from './shopping.facade';
 
 declare type DisplayEval = ((product: ProductView) => boolean) | boolean;
@@ -106,7 +107,7 @@ export interface ProductContext {
 @Injectable()
 export class ProductContextFacade extends RxState<ProductContext> {
   private privateConfig$ = new BehaviorSubject<Partial<ProductContextDisplayProperties>>({});
-  private loggingActive = false;
+  private loggingActive: boolean;
   private lazyFieldsInitialized: string[] = [];
 
   set config(config: Partial<ProductContextDisplayProperties>) {
@@ -118,7 +119,12 @@ export class ProductContextFacade extends RxState<ProductContext> {
     mapToProperty('sku')
   );
 
-  constructor(private shoppingFacade: ShoppingFacade, private translate: TranslateService, injector: Injector) {
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private appFacade: AppFacade,
+    private translate: TranslateService,
+    injector: Injector
+  ) {
     super();
 
     this.set({
@@ -172,30 +178,37 @@ export class ProductContextFacade extends RxState<ProductContext> {
 
     this.connect(
       'minQuantity',
-      combineLatest([this.select('product', 'minOrderQuantity'), this.select('allowZeroQuantity')]).pipe(
-        map(([minOrderQuantity, allowZeroQuantity]) => (allowZeroQuantity ? 0 : minOrderQuantity))
+      combineLatest([this.select('product'), this.select('allowZeroQuantity')]).pipe(
+        map(([product, allowZeroQuantity]) => (allowZeroQuantity ? 0 : product.minOrderQuantity || 1))
       )
     );
 
-    this.connect('maxQuantity', this.select('product', 'maxOrderQuantity'));
-    this.connect('stepQuantity', this.select('product', 'stepOrderQuantity'));
+    this.connect(
+      'maxQuantity',
+      combineLatest([this.select('product'), this.appFacade.serverSetting$<number>('basket.maxItemQuantity')]).pipe(
+        map(([product, fromConfig]) => product?.maxOrderQuantity || fromConfig || 100)
+      )
+    );
+    this.connect('stepQuantity', this.select('product').pipe(map(product => product?.stepOrderQuantity || 1)));
 
     this.connect(
       combineLatest([
         this.select('product'),
         this.select('minQuantity'),
+        this.select('maxQuantity'),
+        this.select('stepQuantity'),
         this.select('quantity').pipe(distinctUntilChanged()),
       ]).pipe(
-        map(([product, minOrderQuantity, quantity]) => {
+        map(([product, minOrderQuantity, maxOrderQuantity, stepQuantity, quantity]) => {
           if (product && !product.failed) {
             if (Number.isNaN(quantity)) {
               return this.translate.instant('product.quantity.integer.text');
             } else if (quantity < minOrderQuantity) {
-              return this.translate.instant('product.quantity.greaterthan.text', { 0: product.minOrderQuantity });
-            } else if (quantity > product.maxOrderQuantity) {
-              return this.translate.instant('product.quantity.lessthan.text', { 0: product.maxOrderQuantity });
-            } else if (quantity % product.stepOrderQuantity !== 0) {
-              return this.translate.instant('product.quantity.step.text', { 0: product.stepOrderQuantity });
+              return this.translate.instant('product.quantity.greaterthan.text', { 0: minOrderQuantity });
+            } else if (quantity > maxOrderQuantity) {
+              return this.translate.instant('product.quantity.lessthan.text', { 0: maxOrderQuantity });
+            } else if (quantity % stepQuantity !== 0) {
+              return this.translate.instant('product.quantity.step.text', { 0: stepQuantity });
             }
           }
           return;
