@@ -31,6 +31,7 @@ Dockerfile*
 .browserslistrc
 node_modules
 /cache
+/.angular/cache
 /dist/**/browser/**
 /dist/**/server/**
 /out-tsc

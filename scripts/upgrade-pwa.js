@@ -4,8 +4,6 @@ const fs = require('fs');
 const pinned = {
   bootstrap: '4', // pinned
   '@types/node': '14', // LTS
-  '@rx-angular/state': '1.4.3', // peer dependency to rxjs 7 currently not working
-  'jest-marbles': '2', // peer dependency to rxjs 7 in version 3 currently not working
   swiper: '6', // 7 needs migration changes
 };
 
@@ -99,7 +97,6 @@ coreLibs = [
   '@nguniversal/express-engine',
   '@angular-builders/custom-webpack',
   '@rx-angular/state',
-  'codelyzer',
   '@phenomnomnominal/tsquery',
   '@types/node',
   '@types/webpack',

@@ -46,7 +46,6 @@ ISREST
 
 Angular
 Angular's
-Codelyzer
 NgUniversal
 Mockito
 PWA's
