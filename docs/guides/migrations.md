@@ -45,6 +45,15 @@ The ICM channel preference 'basket.maxItemQuantity' is included to validate the 
 You find this preference as 'Maximum Quantity per Product in Cart' under the Application Settings -> Shopping Cart & Checkout.
 The default value is 100.
 
+The Intershop PWA 2.0 release includes the Angular 13 update and updates to a lot of other dependencies (NgRx, RxJS, Formly, Swiper).
+These dependencies updates require many necessary code adaptions that are included in additional commits.
+The following official guides might help to migrate custom code as well:
+
+- https://update.angular.io/?l=3&v=12.0-13.0
+- https://ngrx.io/guide/migration/v13
+- https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md
+- https://swiperjs.com/migration-guide
+
 ## 1.1 to 1.2
 
 The `dist` folder now only contains results of the build process (except for `healthcheck.js`).
