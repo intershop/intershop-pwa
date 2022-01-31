@@ -54,7 +54,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
   private translate: () => TranslateService;
 
   constructor(injector: Injector) {
-    // set cyclic dependency
+    // cache TranslateService reference to avoid repeated calls to injector
     this.translate = once(() => injector.get(TranslateService));
   }
 
