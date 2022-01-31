@@ -131,7 +131,7 @@ export class BasketItemsEffects {
             }
           })
         ).pipe(
-          defaultIfEmpty(),
+          defaultIfEmpty(undefined),
           last(),
           map(info => updateBasketItemsSuccess({ info })),
           mapErrorToAction(updateBasketItemsFail)

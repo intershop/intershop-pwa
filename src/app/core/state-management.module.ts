@@ -24,6 +24,7 @@ import { storeDevtoolsModule } from './store/store-devtools.module';
     storeDevtoolsModule, // disable the Store Devtools in production (https://ngrx.io/guide/store-devtools/recipes/exclude)
   ],
   providers: [
+    /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
     { provide: APP_INITIALIZER, useFactory: ngrxStateTransfer, deps: [TransferState, Store, Actions], multi: true },
   ],
 })

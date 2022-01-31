@@ -57,7 +57,7 @@ function checkDestroyInAngularArtifacts(clazz: ClassDeclaration) {
 }
 
 function isExported(node: Node) {
-  return Node.isExportableNode(node) && node.isExported();
+  return Node.isExportable(node) && node.isExported();
 }
 
 function inTest(node: Node) {
@@ -126,7 +126,7 @@ function checkNode(node: Node) {
     return;
   }
 
-  if (!Node.isReferenceFindableNode(node)) {
+  if (!Node.isReferenceFindable(node)) {
     return;
   }
 

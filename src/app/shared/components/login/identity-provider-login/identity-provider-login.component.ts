@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Input,
   OnInit,
@@ -26,10 +25,7 @@ export class IdentityProviderLoginComponent implements OnInit {
 
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
 
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private identityProviderFactory: IdentityProviderFactory
-  ) {}
+  constructor(private identityProviderFactory: IdentityProviderFactory) {}
 
   ngOnInit() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,15 +33,11 @@ export class IdentityProviderLoginComponent implements OnInit {
 
     switch (this.identityProviderFactory.getType()) {
       case 'auth0':
-        componentRef = this.anchor.createComponent(
-          this.componentFactoryResolver.resolveComponentFactory(Auth0SignInComponent)
-        );
+        componentRef = this.anchor.createComponent(Auth0SignInComponent);
         break;
 
       default:
-        componentRef = this.anchor.createComponent(
-          this.componentFactoryResolver.resolveComponentFactory(LoginFormComponent)
-        );
+        componentRef = this.anchor.createComponent(LoginFormComponent);
         break;
     }
 

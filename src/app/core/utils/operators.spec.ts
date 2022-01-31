@@ -64,7 +64,7 @@ describe('Operators', () => {
     });
 
     it('should ignore falsy input when used', done => {
-      of(undefined)
+      of<{ test: string }>(undefined)
         .pipe(mapToProperty('test'))
         .subscribe(data => {
           expect(data).toBeUndefined();

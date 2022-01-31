@@ -15,7 +15,7 @@ export const privateDestroyFieldRule: TSESLint.RuleModule<string, []> = {
     schema: [],
   },
   create: context => ({
-    'ClassProperty[value.type="NewExpression"]'(node: TSESTree.ClassProperty) {
+    'PropertyDefinition[value.type="NewExpression"]'(node: TSESTree.PropertyDefinition) {
       if (!isType(node.parent.parent as TSESTree.ClassDeclaration, ['Component', 'Directive', 'Pipe'])) {
         return;
       }

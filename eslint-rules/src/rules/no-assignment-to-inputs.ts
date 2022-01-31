@@ -21,9 +21,9 @@ export const noAssignmentToInputsRule: TSESLint.RuleModule<string, []> = {
     const inputs: string[] = [];
 
     /**
-     * checks whether a ClassProperty is decorated with the @Input() decorator
+     * checks whether a PropertyDefinition is decorated with the @Input() decorator
      */
-    function checkIsInput(node: TSESTree.ClassProperty): boolean {
+    function checkIsInput(node: TSESTree.PropertyDefinition): boolean {
       const decorators = node.decorators;
       if (!decorators || !decorators.length) {
         return false;
@@ -38,7 +38,7 @@ export const noAssignmentToInputsRule: TSESLint.RuleModule<string, []> = {
     }
 
     return {
-      ClassProperty(node): void {
+      PropertyDefinition(node): void {
         if (checkIsInput(node)) {
           inputs.push(node.key.type === AST_NODE_TYPES.Identifier ? node.key.name : '');
         }

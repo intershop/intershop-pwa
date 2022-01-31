@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { Injectable, InjectionToken, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -19,14 +19,20 @@ const punchoutReducers: ActionReducerMap<PunchoutState> = {
 
 const punchoutEffects = [PunchoutUsersEffects, PunchoutFunctionsEffects, PunchoutTypesEffects];
 
-const metaReducers = [resetOnLogoutMeta];
+@Injectable()
+export class PunchoutStoreConfig implements StoreConfig<PunchoutState> {
+  metaReducers = [resetOnLogoutMeta];
+}
+
+export const PUNCHOUT_STORE_CONFIG = new InjectionToken<StoreConfig<PunchoutState>>('punchoutStoreConfig');
 
 // not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(punchoutEffects),
-    StoreModule.forFeature('punchout', punchoutReducers, { metaReducers }),
+    StoreModule.forFeature('punchout', punchoutReducers, PUNCHOUT_STORE_CONFIG),
   ],
+  providers: [{ provide: PUNCHOUT_STORE_CONFIG, useClass: PunchoutStoreConfig }],
 })
 export class PunchoutStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<PunchoutState>)[]) {
