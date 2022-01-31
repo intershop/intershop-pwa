@@ -43,7 +43,7 @@ const config: RuleTestConfig = {
         errors: [
           {
             messageId: 'wrongInitializeError',
-            type: AST_NODE_TYPES.ClassProperty,
+            type: AST_NODE_TYPES.PropertyDefinition,
           },
         ],
       },

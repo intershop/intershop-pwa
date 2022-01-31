@@ -16,7 +16,7 @@ export const noInitializeObservablesDirectlyRule: TSESLint.RuleModule<string, []
     schema: [],
   },
   create: context => ({
-    'ClassProperty[value.type="NewExpression"]'(node: TSESTree.ClassProperty) {
+    'PropertyDefinition[value.type="NewExpression"]'(node: TSESTree.PropertyDefinition) {
       if (!isComponent(node.parent.parent as TSESTree.ClassDeclaration)) {
         return;
       }

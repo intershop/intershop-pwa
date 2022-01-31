@@ -4,7 +4,7 @@ import { TransferState } from '@angular/platform-browser';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Action, Store, select } from '@ngrx/store';
 import { Severity, addBreadcrumb, captureEvent, configureScope, init } from '@sentry/browser';
-import { iif } from 'rxjs';
+import { EMPTY, iif } from 'rxjs';
 import { distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
@@ -53,7 +53,8 @@ export class SentryConfigEffects {
             const release = this.transferState.get<string>(DISPLAY_VERSION, 'development');
             init({ dsn, release });
           })
-        )
+        ),
+        EMPTY
       ),
     { dispatch: false }
   );

@@ -31,7 +31,7 @@ const config: RuleTestConfig = {
         errors: [
           {
             messageId: 'privateDestroyError',
-            type: AST_NODE_TYPES.ClassProperty,
+            type: AST_NODE_TYPES.PropertyDefinition,
           },
         ],
         output: `
@@ -52,7 +52,7 @@ const config: RuleTestConfig = {
         errors: [
           {
             messageId: 'privateDestroyError',
-            type: AST_NODE_TYPES.ClassProperty,
+            type: AST_NODE_TYPES.PropertyDefinition,
           },
         ],
         output: `

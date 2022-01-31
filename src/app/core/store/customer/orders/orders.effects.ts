@@ -176,7 +176,8 @@ export class OrdersEffects {
         mapToPayloadProperty('orderId'),
         whenTruthy(),
         map(orderId => loadOrder({ orderId }))
-      )
+      ),
+      EMPTY
     )
   );
 

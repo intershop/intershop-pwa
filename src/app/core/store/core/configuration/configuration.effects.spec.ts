@@ -23,10 +23,11 @@ describe('Configuration Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserTransferStateModule,
-        CoreStoreModule.forTesting(['configuration', 'serverConfig'], [ConfigurationEffects]),
+        CoreStoreModule.forTesting(['configuration', 'serverConfig']),
         TranslateModule.forRoot(),
       ],
       providers: [
+        ConfigurationEffects,
         provideMockActions(() => actions$),
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
       ],
