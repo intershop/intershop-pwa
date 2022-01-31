@@ -10,7 +10,7 @@ import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment, APP_BA
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 
-const PM2 = process.env.pm_id;
+const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
 
 if (PM2) {
   const logOriginal = console.log;
