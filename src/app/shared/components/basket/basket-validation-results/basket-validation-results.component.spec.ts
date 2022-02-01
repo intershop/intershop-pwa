@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketValidationItemsComponent } from 'ish-shared/components/basket/basket-validation-items/basket-validation-items.component';
@@ -26,6 +27,7 @@ describe('Basket Validation Results Component', () => {
         BasketValidationResultsComponent,
         MockComponent(BasketValidationItemsComponent),
         MockComponent(BasketValidationProductsComponent),
+        MockDirective(ScrollDirective),
       ],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) }],
