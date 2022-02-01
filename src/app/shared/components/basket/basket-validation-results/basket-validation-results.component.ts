@@ -31,6 +31,10 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
 
   itemHasBeenRemoved = false;
 
+  // default values to controll scrolling behavior
+  scrollDuration = 500;
+  scrollSpacing = 64;
+
   private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade) {}
