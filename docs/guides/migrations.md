@@ -41,6 +41,10 @@ The feature toggle 'advancedVariationHandling' has been removed.
 Instead the ICM channel preference 'AdvancedVariationHandling' is used to configure it.
 You will find this preference as 'List View' in the ICM backoffice under Channel Preferences -> Product Variations.
 
+The ICM channel preference 'basket.maxItemQuantity' is included to validate the product quantity if no specific setting is defined on the product.
+You find this preference as 'Maximum Quantity per Product in Cart' under the Application Settings -> Shopping Cart & Checkout.
+The default value is 100.
+
 ## 1.1 to 1.2
 
 The `dist` folder now only contains results of the build process (except for `healthcheck.js`).
