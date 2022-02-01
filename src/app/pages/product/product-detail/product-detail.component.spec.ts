@@ -21,7 +21,7 @@ import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting/expo
 import { LazyTactonConfigureProductComponent } from '../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { ProductBrandComponent } from '../product-brand/product-brand.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
-import { ProductDetailInfoAccordionComponent } from '../product-detail-info-accordion/product-detail-info-accordion.component';
+import { ProductDetailInfoComponent } from '../product-detail-info/product-detail-info.component';
 import { ProductDetailVariationsComponent } from '../product-detail-variations/product-detail-variations.component';
 import { ProductImagesComponent } from '../product-images/product-images.component';
 
@@ -45,7 +45,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductBrandComponent),
         MockComponent(ProductDetailActionsComponent),
-        MockComponent(ProductDetailInfoAccordionComponent),
+        MockComponent(ProductDetailInfoComponent),
         MockComponent(ProductDetailVariationsComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImagesComponent),

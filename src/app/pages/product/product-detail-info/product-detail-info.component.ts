@@ -5,12 +5,13 @@ import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
-  selector: 'ish-product-detail-info-accordion',
-  templateUrl: './product-detail-info-accordion.component.html',
+  selector: 'ish-product-detail-info',
+  templateUrl: './product-detail-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductDetailInfoAccordionComponent implements OnInit {
+export class ProductDetailInfoComponent implements OnInit {
   product$: Observable<ProductView>;
+  active = 'DESCRIPTION';
 
   constructor(private context: ProductContextFacade) {}
 

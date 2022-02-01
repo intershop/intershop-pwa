@@ -19,7 +19,7 @@ describe('Variation Handling B2B', () => {
     it('should be at that variation', () => {
       at(ProductDetailPage, page => {
         page.sku.should('have.text', _.featuredVariationSKU);
-        page.accordionItem('Details').should('be.visible');
+        page.infoNav('Details').should('be.visible');
       });
     });
   });
@@ -30,7 +30,7 @@ describe('Variation Handling B2B', () => {
     it('should be at that variation', () => {
       at(ProductDetailPage, page => {
         page.sku.should('have.text', _.featuredVariationSKU);
-        page.accordionItem('Details').should('be.visible');
+        page.infoNav('Details').should('be.visible');
       });
     });
 
@@ -49,7 +49,7 @@ describe('Variation Handling B2B', () => {
     it('should be at master variation selection', () => {
       at(ProductDetailPage, page => {
         page.sku.should('have.text', _.masterSKU);
-        page.accordionItem('Details').should('be.visible');
+        page.infoNav('Details').should('be.visible');
         page.variations.numberOfItems.should('equal', _.numberOfVariations);
       });
     });
