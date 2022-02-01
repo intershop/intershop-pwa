@@ -17,7 +17,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 
 /**
  * The Account Profile Password Page Component displays a form for changing the user's password
- * see also: {@link AccountProfilePasswordPageContainerComponent}
+ * see also: {@link AccountProfilePasswordPageComponent}
  */
 @Component({
   selector: 'ish-account-profile-password',

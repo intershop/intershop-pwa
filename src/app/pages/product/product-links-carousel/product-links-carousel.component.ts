@@ -14,7 +14,7 @@ SwiperCore.use([Navigation, Pagination]);
  * The Product Link Carousel Component
  *
  * Displays the products which are assigned to a specific product link type as an carousel.
- * It uses the {@link ProductItemContainerComponent} for the rendering of products.
+ * It uses the {@link ProductItemComponent} for the rendering of products.
  *
  * @example
  * <ish-product-links-carousel [links]="links.crossselling" [productLinkTitle]="'product.product_links.crossselling.title' | translate"></ish-product-links-carousel>

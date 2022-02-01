@@ -16,8 +16,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
  * @example
  * <ish-shopping-basket
  *   [basket]="basket"
- *   (updateItem)="updateItem($event)"
- *   (deleteItem)="deleteItem($event)"
+ *   [error]="basketError$ | async"
  *   (nextStep)="nextStep()"
  * ></ish-shopping-basket>
  */

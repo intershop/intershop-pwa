@@ -8,7 +8,7 @@ import { QuoteStatus } from '../../models/quoting/quoting.model';
  * The Quote State Component displays the current state of a quote.
  *
  * @example
- * <ish-quote-state [quote]="quote"></ish-quote-state>
+ * <ish-quote-state [quoteId]="quote.id"></ish-quote-state>
  */
 @Component({
   selector: 'ish-quote-state',

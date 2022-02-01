@@ -11,7 +11,7 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
  * The Account Wishlist List Component show the customer an overview list over his wishlists.
  *
  * @example
- * <ish-account-wishlist-list [wishlists]="wishlists" [settings]="settings" (updateSettings)="updateSettings($event)"></ish-account-wishlist-list>
+ * <ish-account-wishlist-list [wishlists]="wishlists" (deleteWishlist)="deleteWishlist($event)"></ish-account-wishlist-list>
  */
 @Component({
   selector: 'ish-account-wishlist-list',

@@ -15,7 +15,6 @@ import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
 /**
  * The Account Address Page Component displays the preferred InvoiceTo and ShipTo addresses of the user
  * and any further addresses. The user can add and delete addresses. It is mandatory to have at least one address.
- * see also: {@link AccountAddressPageContainerComponent}
  */
 @Component({
   selector: 'ish-account-addresses',

@@ -20,7 +20,6 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
  * <ish-search-result
  *               [searchTerm]="searchTerm"
  *               [totalItems]="totalItems$ | async"
- *               (loadMore)="loadMore.emit()"
  * ></ish-search-result>
  */
 @Component({

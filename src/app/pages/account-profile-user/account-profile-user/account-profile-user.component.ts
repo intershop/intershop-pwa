@@ -13,7 +13,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 
 /**
  * The Account Profile User Page Component displays a form for changing the user's profile data
- * see also: {@link AccountProfileUserPageContainerComponent}
+ * see also: {@link AccountProfileUserPageComponent}
  */
 @Component({
   selector: 'ish-account-profile-user',

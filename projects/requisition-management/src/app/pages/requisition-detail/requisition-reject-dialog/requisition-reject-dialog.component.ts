@@ -18,7 +18,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  *
  * @example
  * <ish-requisition-reject-dialog
-    (submit)="rejectRequisition($event)">
+    (submitRejectRequisition)="rejectRequisition($event)">
    </ish-requisition-reject-dialog>
  */
 @Component({
