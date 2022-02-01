@@ -6,8 +6,8 @@ import { ContentPageletEntryPointView } from 'ish-core/models/content-view/conte
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 /**
- * The Content Include Container Component renders the content of the include with the given 'includeId'.
- * For rendering it uses the {@link ContentPageletContainerComponent} for each sub pagelet.
+ * The Content Include Component renders the content of the include with the given 'includeId'.
+ * For rendering it uses the {@link ContentPageletComponent} for each sub pagelet.
  *
  * @example
  * <ish-content-include includeId="pwa.include.homepage.pagelet2-Include"></ish-content-include>

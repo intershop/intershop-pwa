@@ -10,7 +10,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 
 /**
  * The Account Profile Email Page Component displays a form for changing the user's email address
- * see also: {@link AccountProfileEmailPageContainerComponent}
+ * see also: {@link AccountProfileEmailPageComponent}
  */
 @Component({
   selector: 'ish-account-profile-email',

@@ -9,7 +9,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Account Profile Company Page Component displays a form for changing a business customers' company data
- * see also: {@link AccountProfileCompanyPageContainerComponent}
+ * see also: {@link AccountProfileCompanyPageComponent}
  */
 @Component({
   selector: 'ish-account-profile-company',

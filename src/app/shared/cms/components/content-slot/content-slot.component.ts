@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
 /**
- * The Content Slot Container Component renders the assigned sub pagelets
+ * The Content Slot Component renders the assigned sub pagelets
  * of the identified 'slot' of the given 'pagelet'.
- * By default it is just using the {@link ContentPageletContainerComponent}
+ * By default it is just using the {@link ContentPageletComponent}
  * to render each sub pagelet.
  * If more specific HTML or functionality is needed for the rendering
  * the 'wrapper' flag needs to be used to use the provided HTML for rendering.

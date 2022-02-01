@@ -9,8 +9,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 import { QuotingFacade } from '../../facades/quoting.facade';
 
 /**
- * The Product Add To Quote Container Component displays a button which adds a product to a Quote Request.
- * It provides two display types, text and icon.
+ * The Basket Add To Quote Component displays a button which adds a product to a Quote Request.
  */
 @Component({
   selector: 'ish-basket-add-to-quote',

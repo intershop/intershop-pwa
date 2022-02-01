@@ -13,7 +13,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  * It provides the add promotion code functionality
  *
  * @example
- * <ish-basket-promotion-code ></ish-basket-promotion-code>
+ * <ish-basket-promotion-code></ish-basket-promotion-code>
  */
 @Component({
   selector: 'ish-basket-promotion-code',

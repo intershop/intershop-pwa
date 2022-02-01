@@ -13,11 +13,7 @@ import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product
  * Displays a table of products to be compared with paging handled by the {@link ProductComparePagingComponent}.
  *
  * @example
- * <ish-product-compare-list
- *               [compareProducts]="compareProducts"
- *               (productToBasket)="addToBasket($event)"
- *               (removeProductCompare)="removeFromCompare($event)"
- * ></ish-product-compare-list>
+ * <ish-product-compare-list [compareProducts]="compareProducts$ | async"></ish-product-compare-list>
  */
 @Component({
   selector: 'ish-product-compare-list',

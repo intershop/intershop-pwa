@@ -9,7 +9,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
- * The Account Profile Company Page Container Component renders a page where the (business) user can change the company data using the {@link AccountProfileCompanyPageComponent}
+ * The Account Profile Company Page Component renders a page where the (business) user can change the company data.
  */
 @Component({
   selector: 'ish-account-profile-company-page',

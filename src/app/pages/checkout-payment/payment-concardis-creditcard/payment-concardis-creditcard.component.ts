@@ -19,8 +19,8 @@ declare let PayEngine: any;
  * <ish-payment-concardis-creditcard
  [paymentMethod]="paymentMethod"
  [activated]="i === openFormIndex"
- (submit)="createNewPaymentInstrument($event)"
- (cancel)="cancelNewPaymentInstrument()"
+ (submitPayment)="createNewPaymentInstrument($event)"
+ (cancelPayment)="cancelNewPaymentInstrument()"
 ></ish-payment-concardis-creditcard>
  */
 @Component({

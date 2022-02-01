@@ -21,7 +21,7 @@ import { CMSComponentProvider, CMS_COMPONENT } from 'ish-shared/cms/configuratio
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 /**
- * The Content Pagelet Container Component renders the pagelet for the given 'pageletId'.
+ * The Content Pagelet Component renders the pagelet for the given 'pageletId'.
  * For the rendering an Angular component is used that has to be provided
  * for the DefinitionQualifiedName of the pagelet.
  *

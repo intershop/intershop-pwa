@@ -23,7 +23,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
  * @example
  * <ish-account-wishlist-preferences-dialog
     [wishlist]="wishlist"
-    (submit)="createWishlist($event)">
+    (submitWishlist)="createWishlist($event)">
    </ish-account-wishlist-preferences-dialog>
  */
 @Component({
