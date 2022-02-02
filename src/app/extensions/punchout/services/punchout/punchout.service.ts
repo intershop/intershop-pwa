@@ -30,7 +30,7 @@ export class PunchoutService {
   });
 
   private getResourceType(punchoutType: PunchoutType): string {
-    return punchoutType === 'oci' ? 'oci5' : 'cxml1.2';
+    return punchoutType === 'oci' ? 'oci5' : punchoutType === 'cxml' ? 'cxml1.2' : punchoutType;
   }
 
   /**
