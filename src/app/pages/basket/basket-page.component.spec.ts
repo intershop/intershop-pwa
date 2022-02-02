@@ -7,6 +7,7 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { RecentlyViewedComponent } from 'ish-shared/components/recently/recently-viewed/recently-viewed.component';
 
@@ -25,6 +26,7 @@ describe('Basket Page Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         BasketPageComponent,
+        MockComponent(ContentIncludeComponent),
         MockComponent(LoadingComponent),
         MockComponent(RecentlyViewedComponent),
         MockComponent(ShoppingBasketComponent),
