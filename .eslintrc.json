@@ -93,9 +93,9 @@
             ]
           }
         ],
-        "@typescript-eslint/method-signature-style": ["error", "method"],
+        "@typescript-eslint/method-signature-style": ["warn", "method"],
         "@typescript-eslint/naming-convention": [
-          "error",
+          "warn",
           {
             "selector": "variable",
             "modifiers": ["const"],
@@ -119,17 +119,17 @@
             "ignoreParameters": true
           }
         ],
-        "@typescript-eslint/no-throw-literal": "error",
-        "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
+        "@typescript-eslint/no-throw-literal": "warn",
+        "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
         "@typescript-eslint/no-unused-expressions": [
-          "error",
+          "warn",
           {
             "allowTernary": true
           }
         ],
         "@typescript-eslint/no-var-requires": "error",
         "@typescript-eslint/prefer-optional-chain": "warn",
-        "arrow-parens": ["error", "as-needed"],
+        "arrow-parens": ["warn", "as-needed"],
         "ban/ban": [
           "error",
           {
@@ -363,12 +363,12 @@
             }
           }
         ],
-        "ish-custom-rules/no-object-literal-type-assertion": "error",
+        "ish-custom-rules/no-object-literal-type-assertion": "warn",
         "ish-custom-rules/no-return-undefined": "error",
         "ish-custom-rules/no-star-imports-in-store": "error",
         "ish-custom-rules/no-testbed-with-then": "error",
         "ish-custom-rules/no-var-before-return": "warn",
-        "ish-custom-rules/ordered-imports": "error",
+        "ish-custom-rules/ordered-imports": "warn",
         "ish-custom-rules/private-destroy-field": "error",
         "ish-custom-rules/project-structure": [
           "warn",
@@ -635,13 +635,13 @@
           }
         ],
         "ish-custom-rules/use-alias-imports": "error",
-        "ish-custom-rules/use-async-synchronization-in-tests": "error",
+        "ish-custom-rules/use-async-synchronization-in-tests": "warn",
         "ish-custom-rules/use-camel-case-environment-properties": "error",
-        "ish-custom-rules/use-component-change-detection": "error",
+        "ish-custom-rules/use-component-change-detection": "warn",
         "ish-custom-rules/use-jest-extended-matchers-in-tests": "warn",
-        "jest/no-commented-out-tests": "error",
-        "jest/no-disabled-tests": "error",
-        "jest/no-focused-tests": "error",
+        "jest/no-commented-out-tests": "warn",
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "warn",
         "jest/valid-title": [
           "warn",
           {
@@ -674,7 +674,7 @@
         "no-empty": "warn",
         "no-extra-boolean-cast": "error",
         "no-irregular-whitespace": "error",
-        "no-multiple-empty-lines": "error",
+        "no-multiple-empty-lines": "warn",
         "no-param-reassign": "error",
         "no-restricted-imports": [
           "warn",
