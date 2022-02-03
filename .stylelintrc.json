@@ -20,6 +20,10 @@
     "no-duplicate-selectors": true,
     "property-no-vendor-prefix": true,
     "selector-no-vendor-prefix": true,
+    "selector-pseudo-element-no-unknown": [
+      true,
+      { "ignorePseudoElements": ["ng-deep"] }
+    ],
     "scss/comment-no-empty": null,
     "scss/no-global-function-names": null,
     "value-keyword-case": "lower",

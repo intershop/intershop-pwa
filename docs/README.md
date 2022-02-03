@@ -80,3 +80,4 @@ kb_sync_latest_only
 - [Guide - Extended Product Configurations with Tacton](./guides/tacton-product-configuration.md)
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)
 - [Guide - SSO with Auth0 for PWA](./guides/sso-auth0.md)
+- [Guide - Store Locator with Google Maps](./guides/store-locator.md)
