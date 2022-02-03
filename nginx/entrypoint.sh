@@ -36,9 +36,9 @@ then
   fi
 fi
 
-if [ -z "$CACHING_IGNORE_PARAMS_SOURCE"]
+if [ -z "$CACHING_IGNORE_PARAMS_SOURCE" ]
 then
-  if [ -z "$CACHING_IGNORE_PARAMS"]
+  if [ -z "$CACHING_IGNORE_PARAMS" ]
   then
     CACHING_IGNORE_PARAMS_SOURCE="./caching-ignore-params.yaml"
   else
