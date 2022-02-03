@@ -19,6 +19,7 @@ import { TrackingExportsModule } from '../extensions/tracking/exports/tracking-e
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
 import { CookiesBannerComponent } from './application/cookies-banner/cookies-banner.component';
+import { FooterTopComponent } from './footer/footer-top/footer-top.component';
 import { FooterComponent } from './footer/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from './header/header-default/header-default.component';
@@ -59,6 +60,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
   declarations: [
     ...exportedComponents,
     CookiesBannerComponent,
+    FooterTopComponent,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     HeaderNavigationComponent,
