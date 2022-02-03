@@ -66,6 +66,11 @@ export class ScrollDirective implements OnChanges {
         ? document.documentElement
         : this.scrollContainer;
 
+    // return if there is nothing to scroll
+    if (!target.offsetParent) {
+      return;
+    }
+
     // calculate the offset from target to scrollContainer
     let offset = target.offsetTop;
     let tempTarget = target.offsetParent as HTMLElement;

@@ -8,7 +8,7 @@ export const environment: Environment = {
 
   themeColor: '#ff6d00',
 
-  features: ['compare', 'recently', 'rating', 'guestCheckout', 'wishlists'],
+  features: ['compare', 'recently', 'rating', 'guestCheckout', 'wishlists', 'storeLocator'],
 
   ...overrides,
 };

@@ -1,0 +1,18 @@
+<address>
+  <div *ngIf="store.name">{{ store.name }}</div>
+  <div *ngIf="store.address">{{ store.address }}</div>
+  <div *ngIf="store.postalCode || store.city">{{ store.postalCode }} {{ store.city }}</div>
+  <div *ngIf="store.country">{{ store.country }}</div>
+  <div *ngIf="store.phone">
+    <fa-icon [icon]="['fas', 'phone']" class="pr-1"></fa-icon>
+    <a href="tel:{{ store.phone }}">{{ store.phone }}</a>
+  </div>
+  <div *ngIf="store.fax">
+    <fa-icon [icon]="['fas', 'fax']" class="pr-1"></fa-icon>
+    <span>{{ store.fax }}</span>
+  </div>
+  <div *ngIf="store.email">
+    <fa-icon [icon]="['fas', 'envelope']" class="pr-1"></fa-icon>
+    <a href="mailto:{{ store.email }}">{{ store.email }}</a>
+  </div>
+</address>

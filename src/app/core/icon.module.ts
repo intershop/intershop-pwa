@@ -15,7 +15,9 @@ import {
   faCog,
   faCogs,
   faColumns,
+  faEnvelope,
   faFastForward,
+  faFax,
   faGlobeAmericas,
   faHeart,
   faHome,
@@ -23,6 +25,7 @@ import {
   faInfoCircle,
   faList,
   faListAlt,
+  faMapMarkerAlt,
   faMinus,
   faPaperPlane,
   faPencilAlt,
@@ -93,7 +96,10 @@ export class IconModule {
       faStar,
       faStarHalf,
       faHeart,
-      faFastForward
+      faFastForward,
+      faMapMarkerAlt,
+      faEnvelope,
+      faFax
     );
   }
 }

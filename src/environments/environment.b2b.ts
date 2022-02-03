@@ -18,6 +18,8 @@ export const environment: Environment = {
     'quickorder',
     'orderTemplates',
     'punchout',
+    'storeLocator',
+    'maps',
   ],
 
   ...overrides,
