@@ -10,6 +10,28 @@ import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment, APP_BA
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 
+const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
+
+if (PM2) {
+  const logOriginal = console.log;
+
+  console.log = (...args: unknown[]) => {
+    logOriginal(PM2, ...args);
+  };
+
+  const warnOriginal = console.warn;
+
+  console.warn = (...args: unknown[]) => {
+    warnOriginal(PM2, ...args);
+  };
+
+  const errorOriginal = console.error;
+
+  console.error = (...args: unknown[]) => {
+    errorOriginal(PM2, ...args);
+  };
+}
+
 const PORT = process.env.PORT || 4200;
 
 const DEPLOY_URL = getDeployURLFromEnv();
@@ -126,8 +148,14 @@ export function app() {
   server.set('views', BROWSER_FOLDER);
 
   if (logging) {
+    const morgan = require('morgan');
+    // see https://github.com/expressjs/morgan#predefined-formats
+    let logFormat = morgan.tiny;
+    if (PM2) {
+      logFormat = `${PM2} ${logFormat}`;
+    }
     server.use(
-      require('morgan')('tiny', {
+      morgan(logFormat, {
         skip: (req: express.Request) => req.originalUrl.startsWith('/INTERSHOP/static'),
       })
     );
