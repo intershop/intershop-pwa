@@ -53,7 +53,7 @@ export class SelectWishlistFormComponent implements OnInit {
         wishlistOptions.map(option => ({
           type: 'ish-radio-field',
           key: 'wishlist',
-          defaultValue: wishlistOptions[0].value,
+          defaultValue: this.formGroup.get('wishlist')?.value || wishlistOptions[0].value,
           templateOptions: {
             fieldClass: ' ',
             value: option.value,
