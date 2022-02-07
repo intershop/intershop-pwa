@@ -24,7 +24,7 @@ exec('npx ng g decontainerize-0.16-to-0.17', (err, stdout, stderr) => {
           to = from.replace(/(containers|components)\//, '');
         } else if (from.includes('/shared/')) {
           const group = /shared\/(components\/|)([a-z-]+)\//.exec(from)[2];
-          const name = from.substr(from.lastIndexOf('/') + 1);
+          const name = from.substring(from.lastIndexOf('/') + 1);
           if (fs.existsSync(`src/app/shared/${group}/${group}.module.ts`)) {
             to = `src/app/shared/${group}/components/${name}`;
           } else {
