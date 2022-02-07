@@ -6,6 +6,7 @@ import { instance, mock } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { extractKeys } from 'ish-shared/formly/dev/testing/formly-testing-utils';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import {
   RegistrationConfigType,
@@ -20,7 +21,10 @@ describe('Registration Form Configuration Service', () => {
     accountFacade = mock(AccountFacade);
     TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting(), RouterTestingModule],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: FormsService, useFactory: () => instance(mock(FormsService)) },
+      ],
     });
     registrationConfigurationService = TestBed.inject(RegistrationFormConfigurationService);
   });
@@ -38,6 +42,7 @@ describe('Registration Form Configuration Service', () => {
             "taxationID",
           ],
           Array [
+            "title",
             "firstName",
             "lastName",
             "phoneHome",
@@ -70,6 +75,7 @@ describe('Registration Form Configuration Service', () => {
               "taxationID",
             ],
             Array [
+              "title",
               "firstName",
               "lastName",
               "phoneHome",
@@ -95,6 +101,7 @@ describe('Registration Form Configuration Service', () => {
               "passwordConfirmation",
             ],
             Array [
+              "title",
               "firstName",
               "lastName",
               "phoneHome",
