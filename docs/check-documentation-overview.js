@@ -29,7 +29,7 @@ files.forEach(file => {
   // console.log(files);
   // console.log(fullPath);
   if (!links.includes(fullPath)) {
-    console.warn('document not linked in overview docs/README.md: .' + file.substr(4));
+    console.warn('document not linked in overview docs/README.md: .' + file.substring(4));
     isError = true;
   }
 });

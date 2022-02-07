@@ -62,9 +62,9 @@ export class SeoEffects {
         switchMap(() =>
           race([
             // PRODUCT PAGE
-            this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substr(1))),
+            this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substring(1))),
             // CATEGORY / FAMILY PAGE
-            this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substr(1))),
+            this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substring(1))),
             // DEFAULT
             this.appRef.isStable.pipe(whenTruthy(), mapTo(this.doc.URL.replace(/[;?].*/g, ''))),
           ])

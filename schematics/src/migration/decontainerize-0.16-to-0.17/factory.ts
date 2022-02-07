@@ -18,11 +18,11 @@ function checkNoCollisions(host: Tree): boolean {
         target = target.replace('/shared/', '/shared/components/');
       }
 
-      moving[target] = moving[target] ? [...moving[target], path.substr(1)] : [path.substr(1)];
+      moving[target] = moving[target] ? [...moving[target], path.substring(1)] : [path.substring(1)];
 
       const name = path.replace(/.*\//, '').replace(/\..*/, '');
 
-      naming[name] = naming[name] ? [...naming[name], path.substr(1)] : [path.substr(1)];
+      naming[name] = naming[name] ? [...naming[name], path.substring(1)] : [path.substring(1)];
     }
   });
 

@@ -157,7 +157,7 @@ export class ApiService {
         map(pgid => (options?.sendPGID && pgid ? `;pgid=${pgid}` : options?.sendSPGID && pgid ? `;spgid=${pgid}` : ''))
       ),
       // remaining path
-      of(path.includes('/') ? path.substr(path.indexOf('/')) : ''),
+      of(path.includes('/') ? path.substring(path.indexOf('/')) : ''),
     ]).pipe(
       first(),
       map(arr => arr.join(''))

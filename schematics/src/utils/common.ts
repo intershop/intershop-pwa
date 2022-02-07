@@ -27,7 +27,7 @@ export async function applyNameAndPath(
 
   // remove possible added path from root
   if (name?.startsWith('src/app/')) {
-    name = name.substr(8);
+    name = name.substring(8);
   }
 
   const parsedPath = parseName(path || buildDefaultPath(project), name);

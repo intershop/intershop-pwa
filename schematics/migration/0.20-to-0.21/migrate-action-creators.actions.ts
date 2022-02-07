@@ -160,7 +160,7 @@ export class ActionCreatorsActionsMorpher {
         if (newExpression) {
           // swap new class instantiation to actionCreator call
           newExpression.replaceWithText(
-            actionClass.getName().substr(0, 1).toLowerCase() + newExpression.getText().substr(5)
+            actionClass.getName().substring(0, 1).toLowerCase() + newExpression.getText().substring(5)
           );
           i++;
           return;

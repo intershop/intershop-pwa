@@ -83,7 +83,7 @@ export function move(options: Options): Rule {
 
     const replacePath = (path: string) =>
       path
-        .replace(from.substr(similarIndex), to.substr(similarIndex))
+        .replace(from.substring(similarIndex), to.substring(similarIndex))
         .replace(`${fromName}.component`, `${toName}.component`);
 
     const replaceImportPath = (file: string, path: string) => {

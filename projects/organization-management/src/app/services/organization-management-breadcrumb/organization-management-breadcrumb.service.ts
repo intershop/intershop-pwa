@@ -45,7 +45,7 @@ export class OrganizationManagementBreadcrumbService {
                       link: `${prefix}/users/${user.login}`,
                     },
                     {
-                      key: `account.user.update_${path.substr(path.lastIndexOf('/') + 1)}.heading`,
+                      key: `account.user.update_${path.substring(path.lastIndexOf('/') + 1)}.heading`,
                     },
                   ]
                 : // user detail
@@ -72,7 +72,7 @@ export class OrganizationManagementBreadcrumbService {
                       link: `${prefix}/cost-centers/${cc.id}`,
                     },
                     {
-                      key: `account.costcenter.details.${path.substr(path.lastIndexOf('/') + 1)}.heading`,
+                      key: `account.costcenter.details.${path.substring(path.lastIndexOf('/') + 1)}.heading`,
                     },
                   ]
                 : [

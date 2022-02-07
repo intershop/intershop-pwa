@@ -195,7 +195,7 @@ export class CostCentersService {
         map(links =>
           links.map(item => {
             // check link uri and prepend server ICM if necessary
-            const uri = item.uri.substr(item.uri.indexOf('/customers'));
+            const uri = item.uri.substring(item.uri.indexOf('/customers'));
             return this.apiService.get<T>(uri, options);
           })
         ),
