@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - develop
+      - master
 
 jobs:
   CancelPrevious:
@@ -20,6 +21,16 @@ jobs:
     if: ${{ github.event.repository.owner.login == 'intershop' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Branch used
+        id: extract_branch
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            echo "::set-output name=branch::$(echo ${GITHUB_REF##*/})"
+          elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            echo "::set-output name=branch::$(echo $GITHUB_BASE_REF)"
+          else
+            echo "::set-output name=branch::INVALID_EVENT_BRANCH_UNKNOWN"
+          fi
       - name: Azure Pipelines Action
         uses: Azure/pipelines@v1
         with:
@@ -29,3 +40,5 @@ jobs:
           azure-pipeline-name: Sync
           # Paste personal access token of the user as value of secret variable:AZURE_DEVOPS_TOKEN
           azure-devops-token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
+          # Pass source branch name
+          azure-pipeline-variables: '{ "branch": ${{ steps.extract_branch.outputs.branch }} }'
