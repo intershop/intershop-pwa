@@ -41,4 +41,4 @@ jobs:
           # Paste personal access token of the user as value of secret variable:AZURE_DEVOPS_TOKEN
           azure-devops-token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
           # Pass source branch name
-          azure-pipeline-variables: '{ "branch": ${{ steps.extract_branch.outputs.branch }} }'
+          azure-pipeline-variables: '{ "branch": "${{ steps.extract_branch.outputs.branch }}" }'
