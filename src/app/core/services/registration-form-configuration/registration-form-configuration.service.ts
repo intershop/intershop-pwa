@@ -15,6 +15,7 @@ import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/cus
 import { User } from 'ish-core/models/user/user.model';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { ConfirmLeaveModalComponent } from 'ish-shared/components/registration/confirm-leave-modal/confirm-leave-modal.component';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 export interface RegistrationConfigType {
@@ -30,7 +31,8 @@ export class RegistrationFormConfigurationService {
     private accountFacade: AccountFacade,
     private router: Router,
     private modalService: NgbModal,
-    private featureToggle: FeatureToggleService
+    private featureToggle: FeatureToggleService,
+    private formsService: FormsService
   ) {}
 
   extractConfig(route: ActivatedRouteSnapshot) {
@@ -301,6 +303,15 @@ export class RegistrationFormConfigurationService {
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
         fieldGroup: [
+          {
+            key: 'title',
+            type: 'ish-select-field',
+            templateOptions: {
+              label: 'account.default_address.title.label',
+              placeholder: 'account.option.select.text',
+              options: this.formsService.getSalutationOptions(),
+            },
+          },
           {
             key: 'firstName',
             type: 'ish-text-input-field',
