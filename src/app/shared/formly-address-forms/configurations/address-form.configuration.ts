@@ -3,6 +3,10 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Address } from 'ish-core/models/address/address.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
+/*
+ * Abstract class that valid address configurations have to extend.
+ * The countryCode, businessCustomer and shortForm properties will be set by the AddressFormConfigurationProvider
+ */
 export abstract class AddressFormConfiguration {
   countryCode = 'default';
   businessCustomer = false;
@@ -13,11 +17,13 @@ export abstract class AddressFormConfiguration {
   abstract getModel(model?: Partial<Address>): Partial<Address>;
 }
 
+// post-processing method that will be called for every field configuration
 function applyStandardStyles(config: FormlyFieldConfig): FormlyFieldConfig {
   /* do some customization here */
   return config;
 }
 
+// collection of standard address form field configurations
 const standardFields: { [key: string]: Omit<FormlyFieldConfig, 'key'> } = {
   companyName1: {
     type: 'ish-text-input-field',
@@ -133,6 +139,7 @@ function standardField(key: keyof Address | (FormlyFieldConfig & { key: keyof Ad
   return applyStandardStyles(key);
 }
 
+// helper method to reduce repetition when defining address form configurations containing standard fields
 export function addressesFieldConfiguration(
   keys: (
     | keyof Address

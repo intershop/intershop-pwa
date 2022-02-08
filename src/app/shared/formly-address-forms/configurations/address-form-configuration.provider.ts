@@ -4,12 +4,16 @@ import { AddressFormConfiguration } from './address-form.configuration';
 
 export const ADDRESS_FORM_CONFIGURATION = new InjectionToken<AddressFormConfiguration>('Address Form Factory');
 
+/*
+ * Service that collects address configurations from the module
+ * and provides correctly configured `AddressFormConfiguration` objects
+ */
 @Injectable()
 export class AddressFormConfigurationProvider {
   constructor(@Inject(ADDRESS_FORM_CONFIGURATION) private configurations: AddressFormConfiguration[]) {}
 
   /**
-   * gets the appropriate address configuration for the given countryCode
+   * gets the appropriate address configuration for the given countryCode and configuration
    */
   getConfiguration(
     countryCode: string = '',
