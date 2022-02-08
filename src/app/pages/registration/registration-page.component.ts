@@ -21,7 +21,6 @@ import {
 @Component({
   templateUrl: './registration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [RegistrationFormConfigurationService],
 })
 export class RegistrationPageComponent implements OnInit {
   error$: Observable<HttpError>;
