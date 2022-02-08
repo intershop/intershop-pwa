@@ -59,7 +59,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       clientId: config.clientID,
 
       // The app's redirectUri configured in Auth0
-      redirectUri: effectiveOrigin + '/loading',
+      redirectUri: `${effectiveOrigin}/loading`,
 
       // logout redirect URL
       postLogoutRedirectUri: effectiveOrigin,
@@ -139,6 +139,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
                 : of(false)
             ),
             switchMap((navigated: boolean) =>
+              // eslint-disable-next-line unicorn/no-null
               navigated || navigated === null
                 ? race(
                     this.store.pipe(
@@ -247,7 +248,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       !req.url.endsWith('users/processtoken') &&
       !req.headers.has(ApiService.TOKEN_HEADER_KEY)
         ? req.clone({
-            headers: req.headers.set(ApiService.AUTHORIZATION_HEADER_KEY, 'Bearer ' + this.oauthService.getIdToken()),
+            headers: req.headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `Bearer ${this.oauthService.getIdToken()}`),
           })
         : req;
     return next.handle(newRequest);

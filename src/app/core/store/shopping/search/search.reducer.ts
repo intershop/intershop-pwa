@@ -14,7 +14,7 @@ export const searchAdapter = createEntityAdapter<SuggestSearch>({
   selectId: search => search.searchTerm,
 });
 
-export interface SearchState extends EntityState<SuggestSearch> {}
+export type SearchState = EntityState<SuggestSearch>;
 
 const initialState: SearchState = searchAdapter.getInitialState({});
 

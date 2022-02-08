@@ -23,8 +23,8 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
 @GenerateLazyComponent()
 export class BasketCreateOrderTemplateComponent implements OnDestroy {
   @Input() products: LineItemView[];
-  @Input() class?: string;
-  private destroy$ = new Subject();
+  @Input() cssClass?: string;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,

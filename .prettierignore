@@ -31,14 +31,14 @@ Dockerfile*
 .browserslistrc
 node_modules
 /cache
+/.angular/cache
 /dist/**/browser/**
 /dist/**/server/**
 /out-tsc
 /coverage
 /docs/compodoc
 /junit.xml
-/tslint-rules/dist
-/tslint-rules/test
+/eslint-rules/dist
 /schematics/src/**/files/**
 /schematics/src/**/*.js
 nginx.conf

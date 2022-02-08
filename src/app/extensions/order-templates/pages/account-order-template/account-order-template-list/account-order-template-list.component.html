@@ -1,4 +1,4 @@
-<div *ngIf="orderTemplates && orderTemplates.length > 0; else noOrderTemplate" class="section">
+<div *ngIf="orderTemplates?.length > 0; else noOrderTemplate" class="section">
   <table
     cdk-table
     [dataSource]="orderTemplates"
@@ -58,7 +58,7 @@
             ishProductContext
             [parts]="getParts(orderTemplate)"
             displayType="icon"
-            class="text-primary p-0"
+            cssClass="text-primary p-0"
           ></ish-product-add-to-basket>
         </a>
         <a

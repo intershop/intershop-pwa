@@ -61,7 +61,7 @@ export class BasketItemsEffects {
       mapToPayload(),
       // add unit
       withLatestFrom(this.store.pipe(select(getProductEntities))),
-      map(([val, entities]) => ({ ...val, unit: entities[val.sku] && entities[val.sku].packingUnit })),
+      map(([val, entities]) => ({ ...val, unit: entities[val.sku]?.packingUnit })),
       // accumulate all actions
       window(this.actions$.pipe(ofType(addProductToBasket), debounceTime(1000))),
       mergeMap(window$ => window$.pipe(toArray())),
@@ -131,7 +131,7 @@ export class BasketItemsEffects {
             }
           })
         ).pipe(
-          defaultIfEmpty(),
+          defaultIfEmpty(undefined),
           last(),
           map(info => updateBasketItemsSuccess({ info })),
           mapErrorToAction(updateBasketItemsFail)

@@ -125,7 +125,7 @@ describe('Orders Effects', () => {
 
     it('should map an invalid request to action of type CreateOrderFail', () => {
       when(orderServiceMock.createOrder(anything(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = createOrder();
       const completion = createOrderFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -141,11 +141,11 @@ describe('Orders Effects', () => {
       const action = createOrderSuccess({ order: { id: '123' } as Order });
       actions$ = of(action);
 
-      effects.continueAfterOrderCreation$.subscribe(noop, fail, noop);
+      effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 
-      expect(location.path()).toEqual('/checkout/receipt');
+      expect(location.path()).toEqual('/checkout/receipt?orderId=123');
     }));
 
     it('should navigate to an external url after CreateOrderSuccess if there is redirect required', fakeAsync(() => {
@@ -163,7 +163,7 @@ describe('Orders Effects', () => {
       });
       actions$ = of(action);
 
-      effects.continueAfterOrderCreation$.subscribe(noop, fail, noop);
+      effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 
@@ -182,8 +182,8 @@ describe('Orders Effects', () => {
       });
       actions$ = of(action);
 
-      effects.rollbackAfterOrderCreation$.pipe(toArray()).subscribe(
-        actions => {
+      effects.rollbackAfterOrderCreation$.pipe(toArray()).subscribe({
+        next: actions => {
           expect(actions).toMatchInlineSnapshot(`
             [Basket Internal] Load Basket
             [Basket API] Validate Basket and continue with issues:
@@ -195,9 +195,9 @@ describe('Orders Effects', () => {
 
           done();
         },
-        fail,
-        noop
-      );
+        error: fail,
+        complete: noop,
+      });
     });
   });
 
@@ -222,7 +222,7 @@ describe('Orders Effects', () => {
     });
 
     it('should dispatch a LoadOrdersFail action if a load error occurs', () => {
-      when(orderServiceMock.getOrders()).thenReturn(throwError(makeHttpError({ message: 'error' })));
+      when(orderServiceMock.getOrders()).thenReturn(throwError(() => makeHttpError({ message: 'error' })));
 
       const action = loadOrders();
       const completion = loadOrdersFail({ error: makeHttpError({ message: 'error' }) });
@@ -254,7 +254,7 @@ describe('Orders Effects', () => {
     });
 
     it('should dispatch a LoadOrderFail action if a load error occurs', () => {
-      when(orderServiceMock.getOrder(anyString())).thenReturn(throwError(makeHttpError({ message: 'error' })));
+      when(orderServiceMock.getOrder(anyString())).thenReturn(throwError(() => makeHttpError({ message: 'error' })));
 
       const action = loadOrder({ orderId: order.id });
       const completion = loadOrderFail({ error: makeHttpError({ message: 'error' }) });
@@ -287,7 +287,7 @@ describe('Orders Effects', () => {
 
     it('should dispatch a LoadOrderFail action if a load error occurs', () => {
       when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'error' }))
+        throwError(() => makeHttpError({ message: 'error' }))
       );
 
       const action = loadOrderByAPIToken({ apiToken: 'dummy', orderId: order.id });
@@ -327,7 +327,7 @@ describe('Orders Effects', () => {
     it('should not fire SelectOrder when route /something is navigated', fakeAsync(() => {
       router.navigateByUrl('/something');
 
-      effects.routeListenerForSelectingOrder$.subscribe(fail, fail, fail);
+      effects.routeListenerForSelectingOrder$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -339,7 +339,7 @@ describe('Orders Effects', () => {
         queryParams: { redirect: 'success', param1: 123, orderId: order.id },
       });
 
-      effects.returnFromRedirectAfterOrderCreation$.subscribe(fail, fail, fail);
+      effects.returnFromRedirectAfterOrderCreation$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -419,7 +419,7 @@ describe('Orders Effects', () => {
 
     it('should map an failing request to action of type SelectOrderAfterRedirectFail', () => {
       when(orderServiceMock.updateOrderPayment(order.id, anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const params = { redirect: 'success', param1: 123, orderId: order.id };
 
@@ -436,28 +436,28 @@ describe('Orders Effects', () => {
     it('should navigate to /checkout/payment if order creation failed after redirect', done => {
       actions$ = of(selectOrderAfterRedirectFail(undefined));
 
-      effects.selectOrderAfterRedirectFailed$.subscribe(
-        action => {
+      effects.selectOrderAfterRedirectFailed$.subscribe({
+        next: action => {
           expect(action).toMatchInlineSnapshot(`[Basket Internal] Load Basket`);
           expect(location.path()).toEqual('/checkout/payment?redirect=failure');
           done();
         },
-        fail,
-        noop
-      );
+        error: fail,
+        complete: noop,
+      });
     });
   });
 
   describe('setOrderBreadcrumb$', () => {
     beforeEach(fakeAsync(() => {
       store$.dispatch(loadOrdersSuccess({ orders }));
-      router.navigateByUrl('/account/orders/' + orders[0].id);
+      router.navigateByUrl(`/account/orders/${orders[0].id}`);
       tick(500);
       store$.dispatch(selectOrder({ orderId: orders[0].id }));
     }));
 
     it('should set the breadcrumb of the selected order', done => {
-      // tslint:disable-next-line: no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       actions$ = of(routerTestNavigatedAction({}));
 
       effects.setOrderBreadcrumb$.subscribe(action => {

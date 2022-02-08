@@ -4,7 +4,7 @@
 # It can be synchronized using 'node scripts/update-dockerignore'
 
 # from .gitignore
-/tslint*hard*
+/eslint*hard*
 **/*.xliff
 **/*.ut.spec.ts
 **/node_modules
@@ -18,6 +18,7 @@
 /.nb-gradle
 /nbproject/
 /.nvmrc
+/.angular/cache
 **/*.log
 /src/environments/environment.local.ts
 /src/environments/environment.development.ts
@@ -47,12 +48,17 @@
 /e2e/reports
 /e2e/package-lock.json
 
+# from eslint-rules/.gitignore
+/eslint-rules/node_modules
+/eslint-rules/package-lock.json
+/eslint-rules/dist
+
 # from reports/.gitignore
 /reports/junit.xml
 /reports/unit-tests.html
 /reports/coverage
 /reports/e2e
-/reports/tslint
+/reports/eslint
 /reports/bundle
 /reports/jscpd
 /reports/licenses
@@ -60,17 +66,19 @@
 
 # from schematics/.gitignore
 /schematics/src/**/*.js
+!/schematics/src/utils/lint-fix-mock.js
 /schematics/src/**/*.d.ts
 /schematics/package-lock.json
-
-# from tslint-rules/.gitignore
-/tslint-rules/test
-/tslint-rules/package-lock.json
 
 # from e2e/cypress/.gitignore
 /e2e/cypress/videos
 /e2e/cypress/screenshots
 /e2e/cypress/logs
+
+# from node_modules/eslint-plugin-ish-custom-rules/.gitignore
+/node_modules/eslint-plugin-ish-custom-rules/node_modules
+/node_modules/eslint-plugin-ish-custom-rules/package-lock.json
+/node_modules/eslint-plugin-ish-custom-rules/dist
 
 # from src/ssr/server-scripts/.gitignore
 /src/ssr/server-scripts/ecosystem-ports.json

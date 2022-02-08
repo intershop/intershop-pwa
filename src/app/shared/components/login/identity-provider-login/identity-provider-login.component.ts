@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Input,
   OnInit,
@@ -18,7 +17,6 @@ import { LoginFormComponent } from 'ish-shared/components/login/login-form/login
   templateUrl: './identity-provider-login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line: component-creation-test
 export class IdentityProviderLoginComponent implements OnInit {
   @Input() labelClass: string;
   @Input() inputClass: string;
@@ -27,26 +25,19 @@ export class IdentityProviderLoginComponent implements OnInit {
 
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
 
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private identityProviderFactory: IdentityProviderFactory
-  ) {}
+  constructor(private identityProviderFactory: IdentityProviderFactory) {}
 
   ngOnInit() {
-    // tslint:disable-next-line: no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let componentRef: ComponentRef<any>;
 
     switch (this.identityProviderFactory.getType()) {
       case 'auth0':
-        componentRef = this.anchor.createComponent(
-          this.componentFactoryResolver.resolveComponentFactory(Auth0SignInComponent)
-        );
+        componentRef = this.anchor.createComponent(Auth0SignInComponent);
         break;
 
       default:
-        componentRef = this.anchor.createComponent(
-          this.componentFactoryResolver.resolveComponentFactory(LoginFormComponent)
-        );
+        componentRef = this.anchor.createComponent(LoginFormComponent);
         break;
     }
 

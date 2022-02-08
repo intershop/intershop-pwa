@@ -38,68 +38,68 @@ describe('Quoting Service', () => {
     it('should retrieve quote and quote request stubs when called', done => {
       when(apiService.get(anything(), anything())).thenReturn(of({}));
 
-      quotingService.getQuotes().subscribe(
-        () => {
+      quotingService.getQuotes().subscribe({
+        next: () => {
           verify(apiService.get(anything(), anything())).twice();
 
           expect(capture(apiService.get).beforeLast()?.[0]).toMatchInlineSnapshot(`"quoterequests"`);
           expect(capture(apiService.get).last()?.[0]).toMatchInlineSnapshot(`"quotes"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
   describe('getQuoteDetails', () => {
     it('should not call anything when Stub level is requested', done => {
-      quotingService.getQuoteDetails('123', 'Quote', 'Stub').subscribe(
-        () => {
+      quotingService.getQuoteDetails('123', 'Quote', 'Stub').subscribe({
+        next: () => {
           verify(apiService.get(anything())).never();
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should call quote API when List level is requested for quote', done => {
       when(apiService.get(anything())).thenReturn(of({ type: 'Quote', items: [] } as QuoteData));
 
-      quotingService.getQuoteDetails('123', 'Quote', 'List').subscribe(
-        () => {
+      quotingService.getQuoteDetails('123', 'Quote', 'List').subscribe({
+        next: () => {
           verify(apiService.get(anything())).once();
           expect(capture(apiService.get).last()?.[0]).toMatchInlineSnapshot(`"quotes/123"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should call quote request API when List level is requested for quote request', done => {
       when(apiService.get(anything())).thenReturn(of({ type: 'QuoteRequest', items: [] } as QuoteData));
 
-      quotingService.getQuoteDetails('123', 'QuoteRequest', 'List').subscribe(
-        () => {
+      quotingService.getQuoteDetails('123', 'QuoteRequest', 'List').subscribe({
+        next: () => {
           verify(apiService.get(anything())).once();
           expect(capture(apiService.get).last()?.[0]).toMatchInlineSnapshot(`"quoterequests/123"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should call quote request and items API when Detail level is requested for quote request', done => {
       when(apiService.get(anything())).thenReturn(of({ type: 'QuoteRequest', items: [] } as QuoteData));
       when(apiService.resolveLinks()).thenReturn(() => of([]));
 
-      quotingService.getQuoteDetails('123', 'QuoteRequest', 'Detail').subscribe(
-        () => {
+      quotingService.getQuoteDetails('123', 'QuoteRequest', 'Detail').subscribe({
+        next: () => {
           verify(apiService.get(anything())).once();
           expect(capture(apiService.get).last()?.[0]).toMatchInlineSnapshot(`"quoterequests/123"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
@@ -109,25 +109,25 @@ describe('Quoting Service', () => {
     });
 
     it('should use quote API for deleting quotes', done => {
-      quotingService.deleteQuote({ type: 'Quote', id: 'ID' } as QuoteStub).subscribe(
-        () => {
+      quotingService.deleteQuote({ type: 'Quote', id: 'ID' } as QuoteStub).subscribe({
+        next: () => {
           verify(apiService.delete(anything())).once();
           expect(capture(apiService.delete).last()?.[0]).toMatchInlineSnapshot(`"quotes/ID"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should use quote request API for deleting quote requests', done => {
-      quotingService.deleteQuote({ type: 'QuoteRequest', id: 'ID' } as QuoteStub).subscribe(
-        () => {
+      quotingService.deleteQuote({ type: 'QuoteRequest', id: 'ID' } as QuoteStub).subscribe({
+        next: () => {
           verify(apiService.delete(anything())).once();
           expect(capture(apiService.delete).last()?.[0]).toMatchInlineSnapshot(`"quoterequests/ID"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
@@ -137,8 +137,8 @@ describe('Quoting Service', () => {
     });
 
     it('should use quote API for rejecting quotes', done => {
-      quotingService.rejectQuote('ID').subscribe(
-        () => {
+      quotingService.rejectQuote('ID').subscribe({
+        next: () => {
           verify(apiService.put(anything(), anything())).once();
           const [path, body] = capture(apiService.put).last();
           expect(path).toMatchInlineSnapshot(`"quotes/ID"`);
@@ -148,32 +148,32 @@ describe('Quoting Service', () => {
             }
           `);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
   describe('addQuoteToBasket', () => {
     beforeEach(() => {
-      when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
+      when(apiService.post(anything(), anything())).thenReturn(of({}));
     });
 
     it('should use basket API for adding quotes to basket', done => {
-      quotingService.addQuoteToBasket('quoteID').subscribe(
-        () => {
-          verify(apiService.post(anything(), anything(), anything())).once();
+      quotingService.addQuoteToBasket('basketId', 'quoteID').subscribe({
+        next: () => {
+          verify(apiService.post(anything(), anything())).once();
           const [path, body] = capture(apiService.post).last();
-          expect(path).toMatchInlineSnapshot(`"baskets/current/items"`);
+          expect(path).toMatchInlineSnapshot(`"baskets/basketId/items"`);
           expect(body).toMatchInlineSnapshot(`
             Object {
               "quoteID": "quoteID",
             }
           `);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
@@ -183,17 +183,17 @@ describe('Quoting Service', () => {
     });
 
     it('should use quote request API for creating quoterequest from quote', done => {
-      quotingService.createQuoteRequestFromQuote('quoteID').subscribe(
-        () => {
+      quotingService.createQuoteRequestFromQuote('quoteID').subscribe({
+        next: () => {
           verify(apiService.post(anything(), anything(), anything())).once();
           const [path, body, options] = capture<string, object, AvailableOptions>(apiService.post).last();
           expect(path).toMatchInlineSnapshot(`"quoterequests"`);
           expect(body).toMatchInlineSnapshot(`undefined`);
           expect(options?.params?.toString()).toMatchInlineSnapshot(`"quoteID=quoteID"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
@@ -203,17 +203,17 @@ describe('Quoting Service', () => {
     });
 
     it('should use quote request API for creating quote request from quote request', done => {
-      quotingService.createQuoteRequestFromQuoteRequest('quoteRequestID').subscribe(
-        () => {
+      quotingService.createQuoteRequestFromQuoteRequest('quoteRequestID').subscribe({
+        next: () => {
           verify(apiService.post(anything(), anything(), anything())).once();
           const [path, body, options] = capture<string, object, AvailableOptions>(apiService.post).last();
           expect(path).toMatchInlineSnapshot(`"quoterequests"`);
           expect(body).toMatchInlineSnapshot(`undefined`);
           expect(options?.params?.toString()).toMatchInlineSnapshot(`"quoteRequestID=quoteRequestID"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
@@ -223,8 +223,8 @@ describe('Quoting Service', () => {
     });
 
     it('should use quote API for submitting quote requests', done => {
-      quotingService.submitQuoteRequest('quoteRequestID').subscribe(
-        () => {
+      quotingService.submitQuoteRequest('quoteRequestID').subscribe({
+        next: () => {
           verify(apiService.post(anything(), anything())).once();
           const [path, body] = capture(apiService.post).last();
           expect(path).toMatchInlineSnapshot(`"quotes"`);
@@ -234,9 +234,9 @@ describe('Quoting Service', () => {
             }
           `);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
@@ -254,8 +254,8 @@ describe('Quoting Service', () => {
           { type: 'change-item', itemId: 'item1', quantity: 2 },
           { type: 'change-item', itemId: 'item3', quantity: 1 },
         ])
-        .subscribe(
-          id => {
+        .subscribe({
+          next: id => {
             expect(id).toMatchInlineSnapshot(`"quoteRequestID"`);
 
             verify(apiService.put(anything(), anything())).thrice();
@@ -296,9 +296,9 @@ describe('Quoting Service', () => {
               ]
             `);
           },
-          fail,
-          done
-        );
+          error: fail,
+          complete: done,
+        });
     });
   });
 });

@@ -13,7 +13,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  * It provides the add promotion code functionality
  *
  * @example
- * <ish-basket-promotion-code ></ish-basket-promotion-code>
+ * <ish-basket-promotion-code></ish-basket-promotion-code>
  */
 @Component({
   selector: 'ish-basket-promotion-code',
@@ -32,7 +32,7 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
   basketPromoCodes: string[];
   lastEnteredPromoCode = '';
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
 
@@ -72,6 +72,6 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
   }
 
   get displaySuccessMessage(): boolean {
-    return this.basketPromoCodes && this.basketPromoCodes.includes(this.lastEnteredPromoCode);
+    return this.basketPromoCodes?.includes(this.lastEnteredPromoCode);
   }
 }

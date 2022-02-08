@@ -36,7 +36,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   activeIndex = -1;
   inputFocused: boolean;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
 
@@ -99,7 +99,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   selectSuggestedTerm(index: number) {
     this.searchResults$.pipe(take(1), takeUntil(this.destroy$)).subscribe(results => {
       if (
-        (this.configuration && this.configuration.maxAutoSuggests && index > this.configuration.maxAutoSuggests - 1) ||
+        (this.configuration?.maxAutoSuggests && index > this.configuration.maxAutoSuggests - 1) ||
         index < -1 ||
         index > results.length - 1
       ) {

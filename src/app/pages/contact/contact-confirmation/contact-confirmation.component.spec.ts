@@ -43,7 +43,7 @@ describe('Contact Confirmation Component', () => {
     component.success = false;
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
-      <div class="alert alert-danger" role="alert">
+      <div role="alert" class="alert alert-danger">
         <p>helpdesk.mail_not_sent.message</p>
         <p>helpdesk.try_again.message</p>
       </div>

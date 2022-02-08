@@ -15,6 +15,7 @@ export class WishlistService {
 
   /**
    * Gets a list of wishlists for the current user.
+   *
    * @returns           The customer's wishlists.
    */
   getWishlists(): Observable<Wishlist[]> {
@@ -33,12 +34,13 @@ export class WishlistService {
 
   /**
    * Gets a wishlist of the given id for the current user.
+   *
    * @param wishlistId  The wishlist id.
    * @returns           The wishlist.
    */
   private getWishlist(wishlistId: string): Observable<Wishlist> {
     if (!wishlistId) {
-      return throwError('getWishlist() called without wishlistId');
+      return throwError(() => new Error('getWishlist() called without wishlistId'));
     }
     return this.appFacade.customerRestResource$.pipe(
       first(),
@@ -52,6 +54,7 @@ export class WishlistService {
 
   /**
    * Creates a wishlists for the current user.
+   *
    * @param wishlistDetails   The wishlist data.
    * @returns                 The created wishlist.
    */
@@ -68,12 +71,13 @@ export class WishlistService {
 
   /**
    * Deletes a wishlist of the given id.
+   *
    * @param wishlistId   The wishlist id.
    * @returns            The wishlist.
    */
   deleteWishlist(wishlistId: string): Observable<void> {
     if (!wishlistId) {
-      return throwError('deleteWishlist() called without wishlistId');
+      return throwError(() => new Error('deleteWishlist() called without wishlistId'));
     }
     return this.appFacade.customerRestResource$.pipe(
       first(),
@@ -83,6 +87,7 @@ export class WishlistService {
 
   /**
    * Updates a wishlist of the given id.
+   *
    * @param wishlist   The wishlist to be updated.
    * @returns          The updated wishlist.
    */
@@ -99,6 +104,7 @@ export class WishlistService {
 
   /**
    * Adds a product to the wishlist with the given id and reloads the wishlist.
+   *
    * @param wishlist Id   The wishlist id.
    * @param sku           The product sku.
    * @param quantity      The product quantity (default = 1).
@@ -106,10 +112,10 @@ export class WishlistService {
    */
   addProductToWishlist(wishlistId: string, sku: string, quantity = 1): Observable<Wishlist> {
     if (!wishlistId) {
-      return throwError('addProductToWishlist() called without wishlistId');
+      return throwError(() => new Error('addProductToWishlist() called without wishlistId'));
     }
     if (!sku) {
-      return throwError('addProductToWishlist() called without sku');
+      return throwError(() => new Error('addProductToWishlist() called without sku'));
     }
     return this.appFacade.customerRestResource$.pipe(
       first(),
@@ -123,16 +129,17 @@ export class WishlistService {
 
   /**
    * Removes a product from the wishlist with the given id. Returns an error observable if parameters are falsy.
+   *
    * @param wishlist Id   The wishlist id.
    * @param sku           The product sku.
    * @returns             The changed wishlist.
    */
   removeProductFromWishlist(wishlistId: string, sku: string): Observable<Wishlist> {
     if (!wishlistId) {
-      return throwError('removeProductFromWishlist() called without wishlistId');
+      return throwError(() => new Error('removeProductFromWishlist() called without wishlistId'));
     }
     if (!sku) {
-      return throwError('removeProductFromWishlist() called without sku');
+      return throwError(() => new Error('removeProductFromWishlist() called without sku'));
     }
     return this.appFacade.customerRestResource$.pipe(
       first(),

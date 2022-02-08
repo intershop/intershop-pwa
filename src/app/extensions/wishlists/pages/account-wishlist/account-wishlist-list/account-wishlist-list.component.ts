@@ -11,7 +11,7 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
  * The Account Wishlist List Component show the customer an overview list over his wishlists.
  *
  * @example
- * <ish-account-wishlist-list [wishlists]="wishlists" [settings]="settings" (updateSettings)="updateSettings($event)"></ish-account-wishlist-list>
+ * <ish-account-wishlist-list [wishlists]="wishlists" (deleteWishlist)="deleteWishlist($event)"></ish-account-wishlist-list>
  */
 @Component({
   selector: 'ish-account-wishlist-list',
@@ -32,7 +32,7 @@ export class AccountWishlistListComponent implements OnChanges, OnDestroy {
   deleteHeader: string;
   preferredWishlist: Wishlist;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private translate: TranslateService) {}
 
@@ -43,8 +43,7 @@ export class AccountWishlistListComponent implements OnChanges, OnDestroy {
 
   ngOnChanges() {
     // determine preferred wishlist
-    this.preferredWishlist =
-      this.wishlists && this.wishlists.length ? this.wishlists.find(wishlist => wishlist.preferred) : undefined;
+    this.preferredWishlist = this.wishlists?.length ? this.wishlists.find(wishlist => wishlist.preferred) : undefined;
   }
 
   /** Emits the id of the wishlist to delete. */

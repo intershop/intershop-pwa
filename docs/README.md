@@ -41,6 +41,7 @@ kb_sync_latest_only
 - [Guide - Code Documentation](./guides/code-documentation.md)
 - [Guide - Angular Change Detection](./guides/angular-change-detection.md)
 - [Guide - Data Handling with Mappers](./guides/data-handling-with-mappers.md)
+- [Guide - Working with ESLint](./guides/eslint.md)
 
 ### Customization
 
@@ -79,3 +80,4 @@ kb_sync_latest_only
 - [Guide - Extended Product Configurations with Tacton](./guides/tacton-product-configuration.md)
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)
 - [Guide - SSO with Auth0 for PWA](./guides/sso-auth0.md)
+- [Guide - Store Locator with Google Maps](./guides/store-locator.md)

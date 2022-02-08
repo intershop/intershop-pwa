@@ -7,6 +7,98 @@ kb_everyone
 
 # Changelog
 
+## [2.0.0](https://github.com/releases/tag/2.0.0) (2022-02-08)
+
+**required Intershop Commerce Management version: 7.10.38.0-LTS**
+
+### Features
+
+- introduce footer top component that integrates the store locator ([9a433e9](https://github.com/intershop/intershop-pwa/commit/9a433e9))
+- store locator with Google Maps integration (#911) ([2f3bc1a](https://github.com/intershop/intershop-pwa/commit/2f3bc1a))
+- replace product detail info accordion with tabs (#994) ([3b9f9d1](https://github.com/intershop/intershop-pwa/commit/3b9f9d1))
+- local ICM cache for (performance) testing purposes (#867) ([9aedbfc](https://github.com/intershop/intershop-pwa/commit/9aedbfc))
+- render additional CMS demo content artifacts (#967) ([d31f430](https://github.com/intershop/intershop-pwa/commit/d31f430))
+- extend product image component by an optional link target parameter ([037253c](https://github.com/intershop/intershop-pwa/commit/037253c))
+
+### Bug Fixes
+
+- add title to registration form (#1002) ([3e1d3b0](https://github.com/intershop/intershop-pwa/commit/3e1d3b0))
+- terms and conditions link on checkout review page ([e044069](https://github.com/intershop/intershop-pwa/commit/e044069))
+- minor bugs concerning the preferred wishlist behavior ([b4d98a7](https://github.com/intershop/intershop-pwa/commit/b4d98a7))
+- cost center management improvements and fixes ([4413804](https://github.com/intershop/intershop-pwa/commit/4413804))
+- optional info-box heading, parameter docu ([4ec081f](https://github.com/intershop/intershop-pwa/commit/4ec081f))
+- move the position of the CSSClass configuration from the 'img' to the 'div' tag ([8a92b10](https://github.com/intershop/intershop-pwa/commit/8a92b10))
+- respect ICM setting basket.maxItemQuantity (#993) ([81341ce](https://github.com/intershop/intershop-pwa/commit/81341ce))
+- lazily resolve translate service in translate compiler (#978) ([3838171](https://github.com/intershop/intershop-pwa/commit/3838171))
+- remove matrix parameters from URL to prevent accumulation (#976) ([83a1711](https://github.com/intershop/intershop-pwa/commit/83a1711))
+- catch and log errors from translation API ([e04c735](https://github.com/intershop/intershop-pwa/commit/e04c735))
+- stringify SSR error if possible ([50cafde](https://github.com/intershop/intershop-pwa/commit/50cafde))
+- remove console.log from schematic ([98daa81](https://github.com/intershop/intershop-pwa/commit/98daa81))
+- include healthcheck.js in docker compile scripts (#969) ([9946ca2](https://github.com/intershop/intershop-pwa/commit/9946ca2))
+- rename component inputs named 'class' to 'cssClass' (#975) ([892a1ef](https://github.com/intershop/intershop-pwa/commit/892a1ef))
+- code documentation of the attribute helper class ([44111ab](https://github.com/intershop/intershop-pwa/commit/44111ab))
+- improve Cybersource Credit Card styling ([2e3f5bf](https://github.com/intershop/intershop-pwa/commit/2e3f5bf))
+- display product labels by adding PurgeCSS exeption to keep 'product-label' styling ([6b7657c](https://github.com/intershop/intershop-pwa/commit/6b7657c))
+- display of unlimited budget (phone view) (#950) ([17c37a9](https://github.com/intershop/intershop-pwa/commit/17c37a9))
+- improve requisition buyer approval widget ui in case the buyer has an unlimited budget (#951) ([cd3e3c0](https://github.com/intershop/intershop-pwa/commit/cd3e3c0))
+- unify budget input fields layout in phone view (#957) ([cb4355c](https://github.com/intershop/intershop-pwa/commit/cb4355c))
+- remove unnecessary quoting breadcrumb data (#964) ([3c35ac5](https://github.com/intershop/intershop-pwa/commit/3c35ac5))
+- add quote to cart in case no cart exists (#952) ([114c8d5](https://github.com/intershop/intershop-pwa/commit/114c8d5))
+- query-params should not duplicate at rewrite (#945) ([498ecbe](https://github.com/intershop/intershop-pwa/commit/498ecbe))
+
+### Documentation
+
+- adapt outdated component documentation ([02f2c0d](https://github.com/intershop/intershop-pwa/commit/02f2c0d))
+- **eslint:** update documentation regarding the switch from tslint to eslint ([bad71ea](https://github.com/intershop/intershop-pwa/commit/bad71ea))
+
+### Code Refactoring
+
+- replace deprecated methods after dependencies update ([c7766ed](https://github.com/intershop/intershop-pwa/commit/c7766ed))
+- necessary code adaptions after dependencies updates ([bd87999](https://github.com/intershop/intershop-pwa/commit/bd87999))
+- use the ICM channel preference to configure the advancedVariationHandling instead of the feature toggle of the same name (#991) ([b459006](https://github.com/intershop/intershop-pwa/commit/b459006))
+- remove obsolete form components (#953) ([7cc7ec1](https://github.com/intershop/intershop-pwa/commit/7cc7ec1))
+- move SelectOption interface to the model folder (#953) ([c634b58](https://github.com/intershop/intershop-pwa/commit/c634b58))
+- rename standard PWA themes - (b2b + b2c) (#923) ([12c52ae](https://github.com/intershop/intershop-pwa/commit/12c52ae))
+- **eslint:** e2e test code changes from tslint to eslint ([eb211be](https://github.com/intershop/intershop-pwa/commit/eb211be))
+- **eslint:** code adaptions to respect "no-negated-async" rule ([c98c4d1](https://github.com/intershop/intershop-pwa/commit/c98c4d1))
+- **eslint:** code adaptions to respect "no-output-native" and "no-output-on-prefix" rule ([6194435](https://github.com/intershop/intershop-pwa/commit/6194435))
+- **eslint:** code adaptions to respect "complexity" rule ([85e2616](https://github.com/intershop/intershop-pwa/commit/85e2616))
+- **eslint:** code adaptions to respect "prefer-template" rule ([4cde7f6](https://github.com/intershop/intershop-pwa/commit/4cde7f6))
+- **eslint:** code adaptions to respect "member-ordering" rule ([dc2af27](https://github.com/intershop/intershop-pwa/commit/dc2af27))
+- **eslint:** code adaptions to respect "no-empty-interface" rule ([6e11d11](https://github.com/intershop/intershop-pwa/commit/6e11d11))
+- **eslint:** code adaptions to respect "sort-ngmodule-metadata-arrays" rule ([013236c](https://github.com/intershop/intershop-pwa/commit/013236c))
+- **eslint:** code adaptions to respect minor rule requirements ([fcf2b74](https://github.com/intershop/intershop-pwa/commit/fcf2b74))
+- **eslint:** application code changes from tslint to eslint ([23578b9](https://github.com/intershop/intershop-pwa/commit/23578b9))
+- **eslint:** helper code changes from tslint to eslint ([4d8114e](https://github.com/intershop/intershop-pwa/commit/4d8114e))
+- **eslint:** add eslint rule 'prefer-optional-chain' to enforce the usage of the elvis operator (#987) ([4f6ad62](https://github.com/intershop/intershop-pwa/commit/4f6ad62))
+
+### Dependencies
+
+- update swiper to version 7 (#892) ([c771796](https://github.com/intershop/intershop-pwa/commit/c771796))
+- formly 6 update and necessary code adaptions ([f01ebbf](https://github.com/intershop/intershop-pwa/commit/f01ebbf))
+- update polyfills.ts and .browserslistrc according to Angular 13.0.2 defaults ([e18b0e3](https://github.com/intershop/intershop-pwa/commit/e18b0e3))
+- Angular 13.0.2 update + dependencies updates + configuration adaptions ([6f68e77](https://github.com/intershop/intershop-pwa/commit/6f68e77))
+
+### Build
+
+- **eslint:** switch project configuration from tslint to eslint ([0034553](https://github.com/intershop/intershop-pwa/commit/0034553))
+- **eslint:** add eslint configuration ([f3a5230](https://github.com/intershop/intershop-pwa/commit/f3a5230))
+- **eslint:** add custom eslint rules and eslint rule schematic ([3cb52b4](https://github.com/intershop/intershop-pwa/commit/3cb52b4))
+- **eslint:** remove custom tslint rules and tslint configuration ([c19c99c](https://github.com/intershop/intershop-pwa/commit/c19c99c))
+
+### BREAKING CHANGES
+
+- Switch linting from `tslint` to `eslint` (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
+- Swiper 7 upgrade (see [Migration Guide to Swiper 7](https://swiperjs.com/migration-guide) for more details).
+- Formly 6 upgrade (see [upgrade from 5.0 to 6.0](https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md) for more details).
+- Angular 13 and dependecies update (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
+- Angular 13 removes support for IE 11 (see [Internet Explorer 11 support deprecation and removal](https://github.com/angular/angular/issues/41840) for more details).
+- The feature toggle 'advancedVariationHandling' has been removed. Use the ICM channel preference for 'Variations List View' now. (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details.
+- The input parameter `class` was changed to `cssClass` for the following components: `ish-basket-create-order-template`,`ish-lazy-basket-create-order-template`, `ish-lazy-product-add-to-order-template`,`ish-lazy-product-add-to-quote`, `ish-lazy-product-add-to-wishlist`, `ish-product-add-to-basket`, `ish-product-add-to-compare`, `ish-product-add-to-order-template`, `ish-product-add-to-quote`, `ish-product-add-to-wishlist`. All uses of these components need to be adapted in custom code.
+- Our deprecated form components have been removed, use Formly to generate and maintain your forms. (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details.
+- The `SelectOption` interface has been moved to the select-option.model.ts file of the core/model folder, the related import statements have been adapted.
+- The B2C theme `default` is renamed to `b2c` and the B2B theme `blue` is renamed to `b2b` and `b2b` is now used as the default theme (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details.
+
 ## [1.4.0](https://github.com/releases/tag/1.4.0) (2021-12-07)
 
 **required Intershop Commerce Management version: 7.10.32.10-LTS**

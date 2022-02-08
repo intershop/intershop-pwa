@@ -3,6 +3,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 
 /**
  * The default wrapper for displaying fields with labels.
+ *
  * @templateOption **label** - the label to be displayed
  * @templateOption **labelClass** - the css class to be applied to the ``<label>`` tag.
  * @templateOption **fieldClass** - the css class to be applied to a div around the ``#fieldComponent`` template.

@@ -16,7 +16,7 @@ if (fs.existsSync(`src/styles/themes/${theme}/style.scss`)) {
 }
 
 // add style definition files
-execSync(`npx ncp src/styles/themes/default src/styles/themes/${theme} --stopOnErr`);
+execSync(`npx ncp src/styles/themes/b2b src/styles/themes/${theme} --stopOnErr`);
 
 // replace in angular.json
 const angularJson = parse(fs.readFileSync('./angular.json', { encoding: 'UTF-8' }));
@@ -56,28 +56,29 @@ if (setDefault) {
 fs.writeFileSync('./package.json', stringify(packageJson, null, 2));
 execSync('npx prettier --write package.json');
 
-// replace in tslint.json
-const addPrefix = target => {
-  if (typeof target[2] === 'string') {
-    target[2] = ['ish'];
+// replace in .eslintrc.json
+const addPrefixToRule = ruleConfig => {
+  if (typeof ruleConfig.prefix === 'string') {
+    ruleConfig.prefix = ['ish'];
   }
-  target[2].push('custom');
-  target[2] = target[2].filter((val, idx, arr) => arr.indexOf(val) === idx);
+  ruleConfig.prefix.push('custom');
+  ruleConfig.prefix = ruleConfig.prefix.filter((val, idx, arr) => arr.indexOf(val) === idx);
 };
 
-const tslintJson = parse(fs.readFileSync('./tslint.json', { encoding: 'UTF-8' }));
-addPrefix(tslintJson.rules['directive-selector']);
-addPrefix(tslintJson.rules['component-selector']);
+const eslintJson = parse(fs.readFileSync('./.eslintrc.json', { encoding: 'UTF-8' }));
+const overrideRules = eslintJson.overrides.find(c => c.files.includes('*.ts')).rules;
+addPrefixToRule(overrideRules['@angular-eslint/directive-selector'][1]);
+addPrefixToRule(overrideRules['@angular-eslint/component-selector'][1]);
 
-const reusePatterns = tslintJson.rules['project-structure'].options.reusePatterns;
-reusePatterns.theme = reusePatterns.theme.replace('default|blue', `default|blue|${theme}`);
+const reusePatterns = overrideRules['ish-custom-rules/project-structure'][1].reusePatterns;
+reusePatterns.theme = reusePatterns.theme.replace('b2b|b2c', `b2b|b2c|${theme}`);
 
-fs.writeFileSync('./tslint.json', stringify(tslintJson, null, 2));
-execSync('npx prettier --write tslint.json');
+fs.writeFileSync('./.eslintrc.json', stringify(eslintJson, null, 2));
+execSync('npx prettier --write .eslintrc.json');
 
 // add environment copy
 if (!fs.existsSync(`src/environments/environment.${theme}.ts`)) {
-  execSync(`npx ncp src/environments/environment.default.ts src/environments/environment.${theme}.ts --stopOnErr`);
+  execSync(`npx ncp src/environments/environment.b2b.ts src/environments/environment.${theme}.ts --stopOnErr`);
 }
 
 // add theme to schematics

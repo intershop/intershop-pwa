@@ -1,4 +1,4 @@
-import { FormlyExtension } from '@ngx-formly/core';
+import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
 import { isObservable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
  * @templateOption **options** - array or observable of arrays that will be checked for emptiness
  */
 export const hideIfEmptyOptionsExtension: FormlyExtension = {
-  prePopulate(field): void {
+  prePopulate(field: FormlyFieldConfig): void {
     if (field.type !== 'ish-select-field') {
       return;
     }

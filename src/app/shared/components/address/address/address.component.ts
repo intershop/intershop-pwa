@@ -7,7 +7,7 @@ import { Address } from 'ish-core/models/address/address.model';
  *
  * @example
  * <ish-address
- *   [address]="order.invoiceToAddress" [isEmailShown]="true"
+ *   [address]="order.invoiceToAddress" [displayEmail]="true"
  * ></ish-address>
  */
 @Component({

@@ -26,7 +26,7 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
 
   isBusinessCustomer = false;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   get isShippingAddressFormExpanded() {
     return this.form && this.form.get('shipOption').value === 'shipToDifferentAddress';

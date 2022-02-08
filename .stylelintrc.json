@@ -7,7 +7,9 @@
   ],
   "ignoreFiles": ["**/node_modules/**", "**/dist/**", "**/compodoc/**"],
   "rules": {
+    "alpha-value-notation": "number",
     "at-rule-no-vendor-prefix": true,
+    "color-function-notation": "legacy",
     "color-named": "never",
     "font-family-name-quotes": "always-unless-keyword",
     "function-url-no-scheme-relative": true,
@@ -18,7 +20,12 @@
     "no-duplicate-selectors": true,
     "property-no-vendor-prefix": true,
     "selector-no-vendor-prefix": true,
-    "string-quotes": "single",
+    "selector-pseudo-element-no-unknown": [
+      true,
+      { "ignorePseudoElements": ["ng-deep"] }
+    ],
+    "scss/comment-no-empty": null,
+    "scss/no-global-function-names": null,
     "value-keyword-case": "lower",
     "value-no-vendor-prefix": true
   }

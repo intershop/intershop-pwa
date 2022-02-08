@@ -3,21 +3,6 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { Price } from './price.model';
 
 export class PriceHelper {
-  private static sanityChecks(p1: Price, p2: Price) {
-    if (!p1 || !p2) {
-      throw new Error('cannot handle undefined inputs');
-    }
-    if (!Number.isFinite(p1.value) || !Number.isFinite(p2.value)) {
-      throw new Error('cannot handle undefined values');
-    }
-    if (!p1.currency || !p2.currency) {
-      throw new Error('cannot handle undefined currency');
-    }
-    if (p1.currency !== p2.currency) {
-      throw new Error('currency mismatch');
-    }
-  }
-
   static diff(p1: Price, p2: Price): Price {
     PriceHelper.sanityChecks(p1, p2);
     return {
@@ -29,6 +14,7 @@ export class PriceHelper {
 
   /**
    * Inverts the value of a price
+   *
    * @param price The price
    * @returns inverted price
    */
@@ -75,5 +61,20 @@ export class PriceHelper {
       throw new Error('getPrice cannot handle undefined value');
     }
     return { currency, value, type: 'Money' };
+  }
+
+  private static sanityChecks(p1: Price, p2: Price) {
+    if (!p1 || !p2) {
+      throw new Error('cannot handle undefined inputs');
+    }
+    if (!Number.isFinite(p1.value) || !Number.isFinite(p2.value)) {
+      throw new Error('cannot handle undefined values');
+    }
+    if (!p1.currency || !p2.currency) {
+      throw new Error('cannot handle undefined currency');
+    }
+    if (p1.currency !== p2.currency) {
+      throw new Error('currency mismatch');
+    }
   }
 }

@@ -25,7 +25,7 @@ describe('Recently Selectors', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['router', 'configuration'], [RecentlyEffects]),
+        CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], [RecentlyEffects]),
         RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
         ShoppingStoreModule.forTesting('_recently', 'categories', 'products'),
       ],
@@ -47,7 +47,7 @@ describe('Recently Selectors', () => {
         store$.dispatch(loadProductSuccess({ product: { sku } as Product }))
       );
       ['A', 'B', 'F', 'C', 'A', 'D', 'E', 'D', 'A', 'B', 'A'].forEach(sku => {
-        router.navigateByUrl('/product/' + sku);
+        router.navigateByUrl(`/product/${sku}`);
         tick(500);
       });
     }));
@@ -85,7 +85,7 @@ describe('Recently Selectors', () => {
       ]).forEach(a => store$.dispatch(a));
 
       ['A1', 'A2', 'B', 'A1', 'A3'].forEach(sku => {
-        router.navigateByUrl('/product/' + sku);
+        router.navigateByUrl(`/product/${sku}`);
         tick(500);
       });
     }));

@@ -227,7 +227,7 @@ describe('Router Integration', () => {
     });
 
     it('should not pass through exact matcher when used', fakeAsync(() => {
-      store$.pipe(ofUrl(/^\/any$/), select(selectUrl)).subscribe(fail, fail, fail);
+      store$.pipe(ofUrl(/^\/any$/), select(selectUrl)).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { FORMLY_CONFIG, FormlyConfig, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { FORMLY_CONFIG, FieldType, FormlyConfig, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -145,12 +145,9 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
       ],
       extras: {
         lazyRender: true,
-        showError: field =>
-          field.formControl &&
-          field.formControl.invalid &&
-          (field.formControl.dirty ||
-            (field.options.parentForm && field.options.parentForm.submitted) ||
-            !!(field.field.validation && field.field.validation.show)),
+        showError: (field: FieldType) =>
+          field.formControl?.invalid &&
+          (field.formControl.dirty || field.options.parentForm?.submitted || !!field.field.validation?.show),
       },
       extensions: [{ name: 'hide-if-empty-options-extension', extension: hideIfEmptyOptionsExtension }],
     }),
@@ -164,17 +161,17 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     CaptchaFieldComponent,
     CheckboxFieldComponent,
     DescriptionWrapperComponent,
-    FieldTooltipComponent,
     FieldsetFieldComponent,
+    FieldTooltipComponent,
     HorizontalCheckboxWrapperComponent,
     HorizontalWrapperComponent,
     InputAddonWrapperComponent,
     PlainTextFieldComponent,
     RadioFieldComponent,
     SelectFieldComponent,
-    TextInputFieldComponent,
     TextareaDescriptionWrapperComponent,
     TextareaFieldComponent,
+    TextInputFieldComponent,
     TooltipWrapperComponent,
     ValidationIconsComponent,
     ValidationMessageComponent,
@@ -204,8 +201,8 @@ import { ValidationWrapperComponent } from './wrappers/validation-wrapper/valida
     CaptchaFieldComponent,
     FormlyBaseModule,
     SelectFieldComponent,
-    TextInputFieldComponent,
     TextareaFieldComponent,
+    TextInputFieldComponent,
     ValidationMessageComponent,
   ],
 })

@@ -18,7 +18,7 @@ export class BasketPromotionComponent implements OnChanges {
   constructor(private shoppingFacade: ShoppingFacade) {}
 
   ngOnChanges() {
-    if (this.rebate && this.rebate.promotionId) {
+    if (this.rebate?.promotionId) {
       this.promotion$ = this.shoppingFacade.promotion$(this.rebate.promotionId);
     }
   }

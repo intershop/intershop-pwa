@@ -28,4 +28,8 @@ export class CostCenterBudgetComponent implements OnChanges {
         this.costCenter.budget.value === 0 ? 0 : this.costCenter.remainingBudget.value / this.costCenter.budget.value;
     }
   }
+
+  get progressBarWidth() {
+    return Math.min(this.spentBudgetPercentage, 1);
+  }
 }

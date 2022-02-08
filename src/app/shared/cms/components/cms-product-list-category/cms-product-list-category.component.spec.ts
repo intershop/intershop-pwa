@@ -110,10 +110,13 @@ describe('Cms Product List Category Component', () => {
       component.ngOnChanges();
 
       let count = 0;
-      component.productSKUs$.subscribe(() => {
-        count++;
-        done();
-      }, done());
+      component.productSKUs$.subscribe({
+        next: () => {
+          count++;
+          done();
+        },
+        error: done(),
+      });
 
       expect(count).toEqual(0);
     });

@@ -9,7 +9,7 @@ export const includesAdapter = createEntityAdapter<ContentPageletEntryPoint>({
   selectId: contentInclude => contentInclude.id,
 });
 
-export interface IncludesState extends EntityState<ContentPageletEntryPoint> {}
+export type IncludesState = EntityState<ContentPageletEntryPoint>;
 
 const initialState: IncludesState = includesAdapter.getInitialState({});
 

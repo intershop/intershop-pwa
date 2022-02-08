@@ -29,7 +29,7 @@ export function stringToFormParams(object: string, separator = ','): URLFormPara
   return object
     ? object
         .split('&')
-        .filter(val => val && val.includes('='))
+        .filter(val => val?.includes('='))
         .map(val => {
           const [key, values] = val.split('=');
           return { key: decodeURIComponent(key), value: values.split(separator).map(decodeURIComponent) };

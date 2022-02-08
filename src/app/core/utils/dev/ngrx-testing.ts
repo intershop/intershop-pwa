@@ -4,7 +4,7 @@ import { Action, ActionReducer, Store } from '@ngrx/store';
 
 import { CoreState } from 'ish-core/store/core/core-store';
 
-// tslint:disable:no-console
+/* eslint-disable no-console */
 
 export const containsActionWithType = (type: string) => (actions: Action[]) =>
   !!actions.filter(a => a.type === type).length;
@@ -45,6 +45,7 @@ export abstract class StoreWithSnapshots {
 
   /**
    * Retrieve a list of actions fired since the last reset.
+   *
    * @param regex optional filter
    */
   abstract actionsArray(regex?: RegExp): Action[];

@@ -3,6 +3,19 @@
 
 if git diff-tree -r --name-only --no-commit-id $1 $2 | grep -q package.json
 then
-  git clean -xdf src/**/lazy-* projects/**/lazy-*
-  npm install
+  if [ -z "$INTERSHOP_PWA_AUTO_INSTALL" ]
+  then
+    echo
+    echo --------------------------------------------------------------------------------
+    echo The \'package.json\' contains changes. It could be necessary to run \'npm install\'.
+    echo You can automate this by setting INTERSHOP_PWA_AUTO_INSTALL to "true".
+    echo --------------------------------------------------------------------------------
+    echo
+  fi
+
+  if [ "$INTERSHOP_PWA_AUTO_INSTALL" = "true" ]
+  then
+    git clean -xdf src/**/lazy-* projects/**/lazy-*
+    npm install
+  fi
 fi

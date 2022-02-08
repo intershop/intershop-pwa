@@ -31,7 +31,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
 
   private onTouched: Function;
   private staticRoles$ = new ReplaySubject<string[]>(1);
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   isExpanded: boolean[] = [];
 

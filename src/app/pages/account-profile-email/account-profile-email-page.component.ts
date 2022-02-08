@@ -7,7 +7,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 
 /**
- * The Account Profile Email Page Container Component renders a page where the user can change his email using the {@link AccountProfileEmailPageComponent}
+ * The Account Profile Email Page Component renders a page where the user can change his email.
  */
 @Component({
   selector: 'ish-account-profile-email-page',

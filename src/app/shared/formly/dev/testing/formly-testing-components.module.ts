@@ -16,5 +16,5 @@ import { FormlyTestingFieldgroupExampleComponent } from './formly-testing-fieldg
   ],
   exports: [FormlyTestingContainerComponent, FormlyTestingExampleComponent],
 })
-// tslint:disable: project-structure
+// eslint-disable-next-line ish-custom-rules/project-structure
 export class FormlyTestingComponentsModule {}

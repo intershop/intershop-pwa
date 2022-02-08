@@ -5,7 +5,7 @@ import { pick } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 

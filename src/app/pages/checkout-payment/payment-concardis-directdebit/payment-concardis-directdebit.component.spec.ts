@@ -54,7 +54,7 @@ describe('Payment Concardis Directdebit Component', () => {
   it('should emit submit event if submit call back returns with no error and parameter form is valid', () => {
     fixture.detectChanges();
 
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitPayment);
 
     component.submitCallback(undefined, {
       paymentInstrumentId: '4711',
@@ -91,7 +91,7 @@ describe('Payment Concardis Directdebit Component', () => {
   it('should emit cancel event when cancelNewPaymentInstrument is triggered', () => {
     fixture.detectChanges();
 
-    const emitter = spy(component.cancel);
+    const emitter = spy(component.cancelPayment);
 
     component.cancelNewPaymentInstrument();
     verify(emitter.emit()).once();

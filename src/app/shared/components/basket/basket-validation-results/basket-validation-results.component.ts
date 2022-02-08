@@ -31,7 +31,11 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
 
   itemHasBeenRemoved = false;
 
-  private destroy$ = new Subject();
+  // default values to controll scrolling behavior
+  scrollDuration = 500;
+  scrollSpacing = 64;
+
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 
@@ -49,14 +53,13 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
     });
 
     this.hasGeneralBasketError$ = this.validationResults$.pipe(
-      map(results => results && results.errors && results.errors.some(error => this.isLineItemMessage(error)))
+      map(results => results?.errors?.some(error => this.isLineItemMessage(error)))
     );
 
     this.errorMessages$ = this.validationResults$.pipe(
       map(results =>
         uniq(
-          results &&
-            results.errors &&
+          results?.errors &&
             results.errors
               .filter(
                 error =>
@@ -67,9 +70,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
                   ].includes(error.code)
               )
               .map(error =>
-                error.parameters && error.parameters.shippingRestriction
-                  ? error.parameters.shippingRestriction
-                  : error.message
+                error.parameters?.shippingRestriction ? error.parameters.shippingRestriction : error.message
               )
         ).filter(message => !!message)
       )
@@ -78,8 +79,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
     this.undeliverableItems$ = this.validationResults$.pipe(
       map(
         results =>
-          results &&
-          results.errors &&
+          results?.errors &&
           results.errors
             .filter(error => error.code === 'basket.validation.line_item_shipping_restrictions.error' && error.lineItem)
             .map(error => ({ ...error.lineItem }))
@@ -89,8 +89,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
     this.removedItems$ = this.validationResults$.pipe(
       map(
         results =>
-          results &&
-          results.infos &&
+          results?.infos &&
           results.infos
             .map(info => ({
               message: info.message,
@@ -102,9 +101,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
     );
 
     this.infoMessages$ = this.validationResults$.pipe(
-      map(results =>
-        uniq(results && results.infos && results.infos.map(info => info.message)).filter(message => !!message)
-      )
+      map(results => uniq(results?.infos && results.infos.map(info => info.message)).filter(message => !!message))
     );
   }
 

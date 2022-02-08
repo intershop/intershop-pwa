@@ -9,7 +9,4 @@ export const getCompareProductsSKUs = createSelector(getCompareState, state => s
 export const isInCompareProducts = (sku: string) =>
   createSelector(getCompareProductsSKUs, productSKUs => productSKUs.includes(sku));
 
-export const getCompareProductsCount = createSelector(
-  getCompareProductsSKUs,
-  productSKUs => (productSKUs && productSKUs.length) || 0
-);
+export const getCompareProductsCount = createSelector(getCompareProductsSKUs, productSKUs => productSKUs?.length || 0);

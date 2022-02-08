@@ -1,6 +1,8 @@
 import { parse } from 'path';
 import { ClassDeclaration, Node, Project, ReferenceFindableNode, SyntaxKind, ts } from 'ts-morph';
 
+/* eslint-disable no-console */
+
 const classMethodCheckRegex = /.*(Mapper|Helper|Facade|Service|State)$/;
 
 const project = new Project({ tsConfigFilePath: 'tsconfig.all.json' });
@@ -11,7 +13,6 @@ const args = process.argv.splice(2);
 
 for (const file of args.length ? project.getSourceFiles(args) : project.getSourceFiles()) {
   if (args.length) {
-    // tslint:disable-next-line:no-console
     console.log('at', file.getFilePath());
   }
   file.forEachChild(child => {
@@ -56,7 +57,7 @@ function checkDestroyInAngularArtifacts(clazz: ClassDeclaration) {
 }
 
 function isExported(node: Node) {
-  return Node.isExportableNode(node) && node.isExported();
+  return Node.isExportable(node) && node.isExported();
 }
 
 function inTest(node: Node) {
@@ -115,6 +116,7 @@ function isUnreferenced(node: Node & ReferenceFindableNode) {
   return onlyLocal;
 }
 
+// eslint-disable-next-line complexity
 function checkNode(node: Node) {
   if (
     Node.hasName(node) &&
@@ -124,7 +126,7 @@ function checkNode(node: Node) {
     return;
   }
 
-  if (!Node.isReferenceFindableNode(node)) {
+  if (!Node.isReferenceFindable(node)) {
     return;
   }
 
@@ -133,7 +135,7 @@ function checkNode(node: Node) {
   }
 
   const ignoreComment = node.getPreviousSiblingIfKind(SyntaxKind.SingleLineCommentTrivia);
-  if (ignoreComment && ignoreComment.getText().includes('not-dead-code')) {
+  if (ignoreComment?.getText().includes('not-dead-code')) {
     return;
   }
 
@@ -161,7 +163,7 @@ function checkNode(node: Node) {
     node
       .getMembers()
       .filter(m => !Node.isConstructorDeclaration(m))
-      // tslint:disable-next-line: no-bitwise
+      /* eslint-disable-next-line no-bitwise */
       .filter(m => !(m.getCombinedModifierFlags() & ts.ModifierFlags.Private))
       .forEach(checkNode);
   } else if (Node.isInterfaceDeclaration(node) && Node.hasName(node) && classMethodCheckRegex.test(node.getName())) {

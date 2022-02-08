@@ -160,8 +160,8 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | compare                      | product compare feature (additional configuration via `dataRetention` configuration options)                               |
 | rating                       | display product ratings                                                                                                    |
 | recently                     | display recently viewed products (additional configuration via `dataRetention` configuration options)                      |
+| storeLocator                 | display physical stores and their addresses                                                                                |
 | **B2B Features**             |                                                                                                                            |
-| advancedVariationHandling    | handle product variations as individual products in listings and product detail pages                                      |
 | businessCustomerRegistration | create business customers on registration                                                                                  |
 | costCenters                  | cost center feature                                                                                                        |
 | orderTemplates               | order template feature                                                                                                     |
@@ -175,6 +175,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | sentry                       | Sentry error tracking and monitoring (additional configuration via `sentryDSN`)                                            |
 | tacton                       | Tacton product configuration integration (additional configuration via `tacton` and `dataRetention` configuration options) |
 | tracking                     | Google Tag Manager tracking (additional configuration via `gtmToken`)                                                      |
+| maps                         | Google Maps integration for locating stores (used with the `storeLocator` feature, additional configuration via `gmaKey`)  |
 
 ### Configuring Features
 

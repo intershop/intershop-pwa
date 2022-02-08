@@ -39,7 +39,7 @@ describe('Requisition Reject Dialog Component', () => {
       comment: 'test comment',
     });
 
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitRejectRequisition);
     component.submitForm();
 
     verify(emitter.emit(anything())).once();
@@ -49,7 +49,7 @@ describe('Requisition Reject Dialog Component', () => {
 
   it('should not emit new approval comment when submit form was called and the form was invalid', () => {
     fixture.detectChanges();
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitRejectRequisition);
     component.submitForm();
 
     verify(emitter.emit(anything())).never();

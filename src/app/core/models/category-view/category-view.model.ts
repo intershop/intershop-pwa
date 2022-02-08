@@ -26,6 +26,7 @@ export function createCategoryView(tree: CategoryTree, uniqueId: string): Catego
 
 /**
  * Translates a given uniqueId into a key value that can be used to retrieve category data from store.
+ *
  * @param tree the category tree structure to lookup `categoryRef` translation value
  * @param uniqueId the key value, either in category-path or category-ref notation
  * @returns the key value that can be used to resolve category data

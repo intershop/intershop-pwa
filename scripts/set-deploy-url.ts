@@ -1,4 +1,4 @@
-// tslint:disable: ish-ordered-imports ban-specific-imports no-console
+/* eslint-disable ish-custom-rules/ordered-imports, no-console */
 import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';

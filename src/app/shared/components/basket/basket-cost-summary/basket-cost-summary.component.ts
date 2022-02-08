@@ -35,7 +35,7 @@ export class BasketCostSummaryComponent implements OnInit {
   }
 
   get hasPaymentCostsTotal(): boolean {
-    const paymentCosts = PriceItemHelper.selectType(this.totals && this.totals.paymentCostsTotal, 'gross');
+    const paymentCosts = PriceItemHelper.selectType(this.totals?.paymentCostsTotal, 'gross');
     return !!paymentCosts && !!paymentCosts.value;
   }
 }

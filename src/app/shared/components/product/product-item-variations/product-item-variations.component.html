@@ -3,7 +3,12 @@
 </ng-container>
 <ng-template #variationProduct>
   <div *ngIf="visible$ | async" class="product-variation-container">
-    <ng-container *ishFeature="'advancedVariationHandling'; else normalVariationDisplay">
+    <ng-container
+      *ngIf="
+        'preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting;
+        else normalVariationDisplay
+      "
+    >
       <ish-product-variation-display></ish-product-variation-display>
     </ng-container>
     <ng-template #normalVariationDisplay>

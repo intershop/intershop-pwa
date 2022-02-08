@@ -48,7 +48,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
 
   selectAll = true;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private appFacade: AppFacade, private organizationManagementFacade: OrganizationManagementFacade) {}
 
@@ -95,20 +95,23 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
               type: 'ish-checkbox-field',
               key: 'selected',
               defaultValue: false,
-              className: 'col-1 col-sm-2 list-item',
+              className: 'col-1 col-md-2 list-item pb-0',
               templateOptions: {
-                fieldClass: 'offset-md-2 col-3 mt-1',
+                fieldClass: 'offset-md-2 col-2 mt-1',
               },
             },
             {
               key: 'name',
               type: 'ish-plain-text-field',
-              className: 'col-11 col-sm-10 col-md-3 list-item',
+              className: 'col-11 col-sm-10 col-md-3 list-item pb-0',
+              templateOptions: {
+                inputClass: 'col-form-label pb-0',
+              },
             },
             {
               key: 'budgetValue',
               type: 'ish-text-input-field',
-              className: 'col-md-4 list-item',
+              className: 'col-6 col-md-4 list-item',
               templateOptions: {
                 fieldClass: 'col-12',
                 postWrappers: [{ wrapper: 'input-addon', index: -1 }],
@@ -128,7 +131,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
             {
               key: 'budgetPeriod',
               type: 'ish-select-field',
-              className: 'col-md-3 list-item',
+              className: 'col-6 col-md-3 list-item',
               templateOptions: {
                 fieldClass: 'col-12',
                 options: FormsService.getCostCenterBudgetPeriodOptions(),

@@ -1,4 +1,4 @@
-<ng-container *ngIf="customer && customer.isBusinessCustomer; else personalCustomerMessage">
+<ng-container *ngIf="customer?.isBusinessCustomer; else personalCustomerMessage">
   <h1
     [innerHTML]="
       'account.overview.personal_message_b2b.text'

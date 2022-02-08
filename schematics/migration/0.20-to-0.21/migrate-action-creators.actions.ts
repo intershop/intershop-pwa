@@ -140,6 +140,7 @@ export class ActionCreatorsActionsMorpher {
 
   /**
    * replaces global references to a given actionClass with createAction calls
+   *
    * @param actionClass the actionClass to update
    */
   private updateGlobalActionReferences(actionClass: ClassDeclaration) {
@@ -159,7 +160,7 @@ export class ActionCreatorsActionsMorpher {
         if (newExpression) {
           // swap new class instantiation to actionCreator call
           newExpression.replaceWithText(
-            actionClass.getName().substr(0, 1).toLowerCase() + newExpression.getText().substr(5)
+            actionClass.getName().substring(0, 1).toLowerCase() + newExpression.getText().substring(5)
           );
           i++;
           return;
@@ -169,9 +170,8 @@ export class ActionCreatorsActionsMorpher {
           unionType.replaceWithText(returnTypeString);
           i++;
         } else if (
-          callExpression &&
           callExpression
-            .getArguments()
+            ?.getArguments()
             .filter(arg => arg.getKind() === SyntaxKind.Identifier)
             .includes(reference)
         ) {
@@ -192,6 +192,7 @@ export class ActionCreatorsActionsMorpher {
 
   /**
    * replaces global references to a given enumDeclaration
+   *
    * @param enumDeclaration the enumDeclaration to update references of
    */
   private updateGlobalEnumReferences(enumDeclaration: EnumDeclaration) {
@@ -220,6 +221,7 @@ export class ActionCreatorsActionsMorpher {
 
   /**
    * replaces global references to a given typeAlias
+   *
    * @param typeAlias the typeAlias to update references of
    */
   private updateGlobalTypeAliasReferences(typeAlias: TypeAliasDeclaration) {

@@ -67,5 +67,5 @@ jobs:
         with:
           body: |
             Azure Demo Servers are available:
-            - [Universal B2C](http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/home)
-            - [Universal B2B](http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/home;theme=blue)
+            - [Universal B2B](http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/home)
+            - [Universal B2C](http://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/home;theme=b2c)

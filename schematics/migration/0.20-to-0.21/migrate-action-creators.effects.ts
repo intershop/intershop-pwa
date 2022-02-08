@@ -55,6 +55,7 @@ export class ActionCreatorsEffectMorpher {
   }
   /**
    * updates ofType calls in given pipe
+   *
    * @param pipe pipe CallExpression
    */
   private updateOfType(pipe: CallExpression): CallExpression {

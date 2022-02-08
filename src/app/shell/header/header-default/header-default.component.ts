@@ -7,13 +7,13 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 /**
  * The Header Component displays the page header.
  *
- * It uses the {@link LoginStatusContainerComponent} for rendering the users login status.
- * It uses the {@link ProductCompareStatusContainerComponent} for rendering the product compare button and count.
- * It uses the {@link MobileBasketContainerComponent} for rendering the mobile basket button and basket item count.
- * It uses the {@link LanguageSwitchContainerComponent} for rendering the language selection dropdown.
- * It uses the {@link SearchBoxContainerComponent} for rendering the search box.
- * It uses the {@link HeaderNavigationContainerComponent} for rendering the pages main navigation.
- * It uses the {@link MiniBasketContainerComponent} for rendering mini basket on desktop sized viewports.
+ * It uses the {@link LoginStatusComponent} for rendering the users login status.
+ * It uses the {@link ProductCompareStatusComponent} for rendering the product compare button and count.
+ * It uses the {@link MobileBasketComponent} for rendering the mobile basket button and basket item count.
+ * It uses the {@link LanguageSwitchComponent} for rendering the language selection dropdown.
+ * It uses the {@link SearchBoxComponent} for rendering the search box.
+ * It uses the {@link HeaderNavigationComponent} for rendering the pages main navigation.
+ * It uses the {@link MiniBasketComponent} for rendering mini basket on desktop sized viewports.
  *
  * @example
  * <ish-header></ish-header>

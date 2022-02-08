@@ -1,28 +1,6 @@
 //
 // QUICK CART
 
-ul {
-  &.quick-links {
-    float: left;
-    padding: $space-default ($space-default * 2) 0 0;
-    margin: 0;
-    list-style: none outside none;
-
-    li {
-      float: left;
-      margin-left: ($space-default * 2);
-    }
-
-    a {
-      font-family: $font-family-condensedregular;
-      font-size: $font-size-base;
-      color: $text-color-secondary;
-      text-decoration: none !important;
-      text-transform: uppercase;
-    }
-  }
-}
-
 .quick-cart-link {
   position: relative;
   padding: 0 $space-default;
@@ -37,7 +15,7 @@ ul {
     cursor: pointer;
 
     span {
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
 
       &.mini-cart-price {
         font-size: $font-size-base;
@@ -113,7 +91,7 @@ ul {
 
     .btn-scroll-up {
       width: 100%;
-      padding: 2px 0 0 0;
+      padding: 2px 0 0;
       margin: $space-default 0 0;
       font-size: $font-size-lg;
       color: $text-color-corporate;
@@ -127,7 +105,7 @@ ul {
 
     .btn-scroll-down {
       width: 100%;
-      padding: 2px 0 0 0;
+      padding: 2px 0 0;
       margin: 0 0 $space-default;
       font-size: $font-size-lg;
       color: $text-color-corporate;
@@ -179,7 +157,7 @@ ul {
       font-family: $font-family-condensedregular;
       font-size: $font-size-base;
       font-weight: normal;
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
       text-overflow: ellipsis;
       text-transform: none;
       white-space: nowrap;
@@ -200,7 +178,7 @@ ul {
 
     .cart-pli-data {
       font-size: 85%;
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
 
       span {
         display: inline-block;
@@ -210,7 +188,7 @@ ul {
 
     .qty-label {
       font-size: 85%;
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
 
       span {
         display: inline-block;

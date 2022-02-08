@@ -8,7 +8,7 @@
   <div class="row" data-testing-id="account-login-page">
     <div class="col-lg-6">
       <div class="section">
-        <div *ngIf="!(isLoggedIn$ | async)">
+        <div *ngIf="(isLoggedIn$ | async) !== true">
           <h2>{{ 'account.login.signin.heading' | translate }}</h2>
           <p *ngIf="loginMessageKey$ | async as loginMessageKey" class="alert alert-info">
             {{ loginMessageKey | translate }}

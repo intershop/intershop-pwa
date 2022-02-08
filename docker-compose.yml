@@ -9,8 +9,8 @@ services:
       # dockerfile: Dockerfile_noSSR
       args:
         serviceWorker: 'false'
-        # activeThemes: default
-        # activeThemes: blue
+        # activeThemes: b2b
+        # activeThemes: b2c
     environment:
       - LOGGING=on
       - ICM_BASE_URL
@@ -71,6 +71,6 @@ services:
           - baseHref: /fr
             channel: default
             lang: fr_FR
-          - baseHref: /b2b
+          - baseHref: /b2c
             channel: default
-            theme: blue
+            theme: b2c

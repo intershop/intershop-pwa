@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
 import { OrderTemplate, OrderTemplateHeader } from '../models/order-template/order-template.model';
 import {

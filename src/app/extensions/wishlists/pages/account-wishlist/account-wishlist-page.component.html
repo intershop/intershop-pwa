@@ -31,6 +31,9 @@
   <a routerLink="/home">{{ 'account.wishlist.searchform.continue_shopping.link' | translate }}</a>
 </div>
 
-<ish-wishlist-preferences-dialog #addWishlistDialog (submit)="addWishlist($event)"></ish-wishlist-preferences-dialog>
+<ish-wishlist-preferences-dialog
+  #addWishlistDialog
+  (submitWishlist)="addWishlist($event)"
+></ish-wishlist-preferences-dialog>
 
 <ish-loading *ngIf="wishlistLoading$ | async"></ish-loading>

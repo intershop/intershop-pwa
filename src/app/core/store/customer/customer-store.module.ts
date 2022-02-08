@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { Injectable, InjectionToken, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -51,16 +51,22 @@ const customerEffects = [
   SsoRegistrationEffects,
 ];
 
-const metaReducers = [resetOnLogoutMeta];
+@Injectable()
+export class CustomerStoreConfig implements StoreConfig<CustomerState> {
+  metaReducers = [resetOnLogoutMeta];
+}
+
+export const CUSTOMER_STORE_CONFIG = new InjectionToken<StoreConfig<CustomerState>>('customerStoreConfig');
 
 @NgModule({
   imports: [
     EffectsModule.forFeature(customerEffects),
-    StoreModule.forFeature('_customer', customerReducers, { metaReducers }),
+    StoreModule.forFeature('_customer', customerReducers, CUSTOMER_STORE_CONFIG),
   ],
+  providers: [{ provide: CUSTOMER_STORE_CONFIG, useClass: CustomerStoreConfig }],
 })
 export class CustomerStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<CustomerState>)[]) {
-    return StoreModule.forFeature('_customer', pick(customerReducers, reducers), { metaReducers });
+    return StoreModule.forFeature('_customer', pick(customerReducers, reducers));
   }
 }

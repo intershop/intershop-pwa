@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { cold } from 'jest-marbles';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { getFeatures } from 'ish-core/store/core/configuration';
@@ -18,6 +19,7 @@ describe('Feature Toggle Service', () => {
 
     it('should report feature as deactivated, when no settings are defined', () => {
       expect(featureToggle.enabled('something')).toBeFalse();
+      expect(featureToggle.enabled$('something')).toBeObservable(cold('a', { a: false }));
     });
   });
 
@@ -37,7 +39,8 @@ describe('Feature Toggle Service', () => {
       ['feature1', true],
       ['feature2', false],
     ])(`should have %s == %s when asked`, (feature, expected) => {
-      expect(featureToggle.enabled(feature)).toBe(expected);
+      expect(featureToggle.enabled(feature)).toEqual(expected);
+      expect(featureToggle.enabled$(feature)).toBeObservable(cold('a', { a: expected }));
     });
   });
 });

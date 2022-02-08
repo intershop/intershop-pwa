@@ -18,12 +18,13 @@ export class CategoriesService {
 
   /**
    * Get the full Category data for the given unique category ID.
+   *
    * @param categoryUniqueId  The unique category id for the category of interest (encodes the category path).
    * @returns                 The Category information.
    */
   getCategory(categoryUniqueId: string): Observable<CategoryTree> {
     if (!categoryUniqueId) {
-      return throwError('getCategory() called without categoryUniqueId');
+      return throwError(() => new Error('getCategory() called without categoryUniqueId'));
     }
 
     return this.apiService.get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`).pipe(
@@ -39,6 +40,7 @@ export class CategoriesService {
 
   /**
    * Get the sorted top level categories (e.g. for main navigation creation) with sorted sub categories up to the given depth.
+   *
    * @param limit  The number of levels to be returned (depth) in hierarchical view.
    * @returns      A Sorted list of top level categories with sub categories.
    */

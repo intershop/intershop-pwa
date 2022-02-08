@@ -25,11 +25,13 @@ export class HeaderModule {
   }
 
   gotoLoginPage(wait: () => unknown = waitLoadingEnd) {
+    cy.scrollTo('top');
     cy.get('[data-testing-id="user-status-desktop"] .my-account-login').click();
     wait();
   }
 
   gotoRegistrationPage(wait: () => unknown = waitLoadingEnd) {
+    cy.scrollTo('top');
     cy.get('[data-testing-id="user-status-desktop"] .my-account-register').click();
     wait();
   }

@@ -6,7 +6,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 /**
- * The Product Add To Quote Container Component displays a button which adds a product to a Quote Request.
+ * The Product Add To Quote Component displays a button which adds a product to a Quote Request.
  * It provides two display types, text and icon.
  */
 @Component({
@@ -17,7 +17,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 @GenerateLazyComponent()
 export class ProductAddToQuoteComponent implements OnInit {
   @Input() displayType?: 'icon' | 'link' = 'link';
-  @Input() class?: string;
+  @Input() cssClass?: string;
 
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;

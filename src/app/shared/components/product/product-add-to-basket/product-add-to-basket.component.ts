@@ -12,8 +12,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
  *
  * @example
  * <ish-product-add-to-basket
-    [class]="'btn-lg btn-block'"
-    [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
+    [cssClass]="'btn-lg btn-block'"
   ></ish-product-add-to-basket>
  */
 @Component({
@@ -29,7 +28,7 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   /**
    * additional css styling
    */
-  @Input() class?: string;
+  @Input() cssClass?: string;
 
   basketLoading$: Observable<boolean>;
   hasQuantityError$: Observable<boolean>;
@@ -43,7 +42,7 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
    */
   displaySpinner$ = new BehaviorSubject(false);
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   ngOnInit() {
     this.hasQuantityError$ = this.context.select('hasQuantityError');

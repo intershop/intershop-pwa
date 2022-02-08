@@ -33,7 +33,6 @@ If you are looking for documentation, refer to [older documentation](https://git
 
 - Reusable form components are available as Formly field types that come with wrappers and extensions. You can find them in: _app/shared/formly/_ or _app/shared/formly-address-forms/components_
 - These forms can be used as (sub)forms on arbitrary pages, e.g., there are address forms on registration page, checkout and _My Account_ pages.
-- There are still some deprecated form components which you can find in _app/shared/forms/components/\<form-name>_ or _app/shared/address-forms/components/\<form-name>_
 
 ### Page Specific Form Components
 

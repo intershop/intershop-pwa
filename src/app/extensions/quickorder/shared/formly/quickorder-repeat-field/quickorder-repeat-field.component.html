@@ -19,7 +19,7 @@
   </div>
 </div>
 <div class="section d-flex flex-nowrap">
-  <a (click)="add(); updateContexts()" data-testing-id="add-quickorder-line">{{ to?.addText | translate }}</a>
+  <a (click)="addMultipleRows(1)" data-testing-id="add-quickorder-line">{{ to?.addText | translate }}</a>
   <span class="link-separator"></span>
   <a (click)="addMultipleRows(to?.numberMoreRows)">{{ to?.addMoreText | translate: { '0': to?.numberMoreRows } }}</a>
 </div>

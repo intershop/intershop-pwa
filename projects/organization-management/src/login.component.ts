@@ -9,5 +9,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line: component-creation-test
 export class LoginComponent {}

@@ -91,7 +91,7 @@ describe('Quoting Effects', () => {
     it('should navigate to created quote request 2', fakeAsync(() => {
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
-      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+      effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(0);
 
@@ -101,7 +101,7 @@ describe('Quoting Effects', () => {
     it('should navigate to created quote request 3', done => {
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
-      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+      effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
       setTimeout(() => {
         expect(location.path()).toMatchInlineSnapshot(`"/account/quotes/123"`);
@@ -115,7 +115,7 @@ describe('Quoting Effects', () => {
 
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
-      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+      effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
       verify(routerSpy.navigateByUrl(anything())).once();
 
@@ -180,7 +180,7 @@ describe('Quoting Effects', () => {
 
   describe('addQuoteToBasket$', () => {
     beforeEach(() => {
-      when(quotingService.addQuoteToBasket(anything())).thenReturn(of(''));
+      when(quotingService.addQuoteToBasket(anything(), anything())).thenReturn(of(''));
     });
 
     describe('with basket', () => {
@@ -192,7 +192,7 @@ describe('Quoting Effects', () => {
         actions$ = of(addQuoteToBasket({ id: 'quoteID' }));
 
         effects.addQuoteToBasket$.subscribe(() => {
-          verify(quotingService.addQuoteToBasket('quoteID')).once();
+          verify(quotingService.addQuoteToBasket('basketID', 'quoteID')).once();
           verify(basketService.createBasket()).never();
           done();
         });
@@ -209,7 +209,7 @@ describe('Quoting Effects', () => {
         actions$ = of(addQuoteToBasket({ id: 'quoteID' }));
 
         effects.addQuoteToBasket$.subscribe(() => {
-          verify(quotingService.addQuoteToBasket('quoteID')).once();
+          verify(quotingService.addQuoteToBasket('basketID', 'quoteID')).once();
           verify(basketService.createBasket()).once();
           done();
         });
@@ -277,7 +277,6 @@ describe('Quoting Effects', () => {
 
   describe('submitQuoteRequest$', () => {
     beforeEach(() => {
-      // tslint:disable-next-line: no-unnecessary-callback-wrapper
       when(quotingService.submitQuoteRequest(anything())).thenCall(id => of(id));
       when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
         of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
@@ -344,7 +343,6 @@ describe('Quoting Effects', () => {
 
   describe('updateQuoteRequest$', () => {
     beforeEach(() => {
-      // tslint:disable-next-line: no-unnecessary-callback-wrapper
       when(quotingService.updateQuoteRequest(anything(), anything())).thenCall(id => of(id));
       when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
         of({ id, type, completenessLevel: 'Detail' } as QuoteStub)

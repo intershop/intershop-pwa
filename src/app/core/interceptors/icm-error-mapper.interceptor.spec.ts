@@ -29,49 +29,58 @@ describe('Icm Error Mapper Interceptor', () => {
   });
 
   it('should convert text responses to simplified format', done => {
-    http.get('some').subscribe(fail, error => {
-      expect(error).toMatchInlineSnapshot(`
-          Object {
-            "message": "Unauthorized",
-            "name": "HttpErrorResponse",
-            "status": 401,
-          }
-        `);
-      done();
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
+            Object {
+              "message": "Unauthorized",
+              "name": "HttpErrorResponse",
+              "status": 401,
+            }
+          `);
+        done();
+      },
     });
 
     httpController.expectOne('some').flush('Unauthorized', { status: 401, statusText: 'Unauthorized' });
   });
 
   it('should convert empty responses to simplified format', done => {
-    http.get('some').subscribe(fail, error => {
-      expect(error).toMatchInlineSnapshot(`
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
         Object {
           "message": "Http failure response for some: 400 Bad Request",
           "name": "HttpErrorResponse",
           "status": 400,
         }
       `);
-      done();
+        done();
+      },
     });
 
     httpController.expectOne('some').flush(
-      // tslint:disable-next-line: no-null-keyword
+      // eslint-disable-next-line unicorn/no-null
       null,
       { status: 400, statusText: 'Bad Request' }
     );
   });
 
   it('should convert ICM errors format with cause to simplified format concatenating all causes', done => {
-    http.get('some').subscribe(fail, error => {
-      expect(error).toMatchInlineSnapshot(`
-        Object {
-          "message": "The promotion code could not be added. The promotion code could not be found. Some other error.",
-          "name": "HttpErrorResponse",
-          "status": 422,
-        }
-      `);
-      done();
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
+          Object {
+            "message": "The promotion code could not be added. The promotion code could not be found. Some other error.",
+            "name": "HttpErrorResponse",
+            "status": 422,
+          }
+        `);
+        done();
+      },
     });
 
     httpController.expectOne('some').flush(
@@ -101,15 +110,18 @@ describe('Icm Error Mapper Interceptor', () => {
   });
 
   it('should convert ICM errors format to simplified format', done => {
-    http.get('some').subscribe(fail, error => {
-      expect(error).toMatchInlineSnapshot(`
-        Object {
-          "message": "The product could not be added to your cart.",
-          "name": "HttpErrorResponse",
-          "status": 422,
-        }
-      `);
-      done();
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
+          Object {
+            "message": "The product could not be added to your cart.",
+            "name": "HttpErrorResponse",
+            "status": 422,
+          }
+        `);
+        done();
+      },
     });
 
     httpController.expectOne('some').flush(
@@ -128,15 +140,18 @@ describe('Icm Error Mapper Interceptor', () => {
   });
 
   it('should convert error-key header responses to simplified format', done => {
-    http.get('some').subscribe(fail, error => {
-      expect(error).toMatchInlineSnapshot(`
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
         Object {
           "code": "customer.credentials.login.not_unique.error",
           "name": "HttpErrorResponse",
           "status": 409,
         }
       `);
-      done();
+        done();
+      },
     });
 
     httpController.expectOne('some').flush('Conflict (Login name is not unique (it already exists))', {
@@ -147,15 +162,18 @@ describe('Icm Error Mapper Interceptor', () => {
   });
 
   it('should convert error-missing-attributes header responses to debug format', done => {
-    http.get('some').subscribe(fail, error => {
-      expect(error).toMatchInlineSnapshot(`
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
         Object {
           "message": "Bad Request (The following attributes are missing: email,preferredLanguage)",
           "name": "HttpErrorResponse",
           "status": 400,
         }
       `);
-      done();
+        done();
+      },
     });
 
     httpController
@@ -178,15 +196,18 @@ describe('Icm Error Mapper Interceptor', () => {
         preferredLanguage: 'ASDF',
         some: { other: 'field' },
       })
-      .subscribe(fail, error => {
-        expect(error).toMatchInlineSnapshot(`
-          Object {
-            "message": "Bad Request (The following attributes are invalid: email,preferredLanguage){\\"email\\":\\"asdf@.\\",\\"preferredLanguage\\":\\"ASDF\\"}",
-            "name": "HttpErrorResponse",
-            "status": 400,
-          }
-        `);
-        done();
+      .subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            Object {
+              "message": "Bad Request (The following attributes are invalid: email,preferredLanguage){\\"email\\":\\"asdf@.\\",\\"preferredLanguage\\":\\"ASDF\\"}",
+              "name": "HttpErrorResponse",
+              "status": 400,
+            }
+          `);
+          done();
+        },
       });
 
     httpController
@@ -203,16 +224,19 @@ describe('Icm Error Mapper Interceptor', () => {
   });
 
   it('should convert other error responses directly for a fallback', done => {
-    http.get('some').subscribe(fail, error => {
-      expect(error).toMatchInlineSnapshot(`
-        Object {
-          "error": "some other format",
-          "key": "value",
-          "name": "HttpErrorResponse",
-          "status": 400,
-        }
-      `);
-      done();
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
+          Object {
+            "error": "some other format",
+            "key": "value",
+            "name": "HttpErrorResponse",
+            "status": 400,
+          }
+        `);
+        done();
+      },
     });
 
     httpController.expectOne('some').flush(
@@ -236,7 +260,7 @@ describe('Icm Error Mapper Interceptor', () => {
     test(): boolean {
       return true;
     }
-    // tslint:disable-next-line: ban-types
+    // eslint-disable-next-line @typescript-eslint/ban-types
     map(error: HttpErrorResponse, request: HttpRequest<unknown>): Partial<HttpError> {
       return {
         message: `${request.method}:${error.error}`,
@@ -262,15 +286,18 @@ describe('Icm Error Mapper Interceptor', () => {
   });
 
   it('should include provided error handlers for mapping', done => {
-    http.get('some').subscribe(fail, error => {
-      expect(error).toMatchInlineSnapshot(`
-        Object {
-          "message": "GET:Test",
-          "name": "HttpErrorResponse",
-          "status": 400,
-        }
-      `);
-      done();
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
+          Object {
+            "message": "GET:Test",
+            "name": "HttpErrorResponse",
+            "status": 400,
+          }
+        `);
+        done();
+      },
     });
 
     httpController.expectOne('some').flush('Test', {

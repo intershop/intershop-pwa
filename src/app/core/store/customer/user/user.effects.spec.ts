@@ -154,7 +154,7 @@ describe('User Effects', () => {
     it('should dispatch a LoginUserFail action on failed login', () => {
       const error = makeHttpError({ status: 401, code: 'error' });
 
-      when(userServiceMock.signInUser(anything())).thenReturn(throwError(error));
+      when(userServiceMock.signInUser(anything())).thenReturn(throwError(() => error));
 
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
       const completion = loginUserFail({ error });
@@ -187,7 +187,7 @@ describe('User Effects', () => {
 
     it('should dispatch a LoadCompanyUserFail action on failed for LoadCompanyUser', () => {
       const error = makeHttpError({ status: 401, code: 'field' });
-      when(userServiceMock.getCompanyUserData()).thenReturn(throwError(error));
+      when(userServiceMock.getCompanyUserData()).thenReturn(throwError(() => error));
 
       const action = loadCompanyUser();
       const completion = loadCompanyUserFail({ error });
@@ -205,7 +205,7 @@ describe('User Effects', () => {
 
       actions$ = of(action);
 
-      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
+      effects.redirectAfterLogin$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 
@@ -221,7 +221,7 @@ describe('User Effects', () => {
 
       actions$ = of(action);
 
-      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
+      effects.redirectAfterLogin$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 
@@ -235,7 +235,7 @@ describe('User Effects', () => {
 
       store$.dispatch(loginUserSuccess(loginResponseData));
 
-      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
+      effects.redirectAfterLogin$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 
@@ -274,7 +274,7 @@ describe('User Effects', () => {
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
       const error = makeHttpError({ status: 401, code: 'field' });
-      when(userServiceMock.createUser(anything())).thenReturn(throwError(error));
+      when(userServiceMock.createUser(anything())).thenReturn(throwError(() => error));
 
       const action = createUser({} as CustomerRegistrationType);
       const completion = createUserFail({ error });
@@ -337,7 +337,7 @@ describe('User Effects', () => {
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
       const error = makeHttpError({ status: 401, code: 'field' });
-      when(userServiceMock.updateUser(anything(), anything())).thenReturn(throwError(error));
+      when(userServiceMock.updateUser(anything(), anything())).thenReturn(throwError(() => error));
 
       const action = updateUser({ user: {} as User });
       const completion = updateUserFail({ error });
@@ -404,7 +404,7 @@ describe('User Effects', () => {
 
     it('should dispatch an UpdateUserPasswordFail action on failed user password update', () => {
       when(userServiceMock.updateUserPassword(anything(), anything(), anything(), anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const password = '123';
@@ -473,7 +473,9 @@ describe('User Effects', () => {
     });
 
     it('should dispatch an UpdateCustomerFail action on failed company update', () => {
-      when(userServiceMock.updateCustomer(anything())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(userServiceMock.updateCustomer(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
 
       const action = updateCustomer({ customer });
       const completion = updateCustomerFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -489,7 +491,7 @@ describe('User Effects', () => {
     it('should not dispatch UserErrorReset action on router navigation if error is not set', fakeAsync(() => {
       router.navigateByUrl('/any');
 
-      effects.resetUserError$.subscribe(fail, fail, fail);
+      effects.resetUserError$.subscribe({ next: fail, error: fail, complete: fail });
 
       tick(2000);
     }));
@@ -567,7 +569,7 @@ describe('User Effects', () => {
 
     it('should dispatch a loadUserCostCentersFail action on failed', () => {
       const error = makeHttpError({ status: 401, code: 'error' });
-      when(userServiceMock.getEligibleCostCenters()).thenReturn(throwError(error));
+      when(userServiceMock.getEligibleCostCenters()).thenReturn(throwError(() => error));
 
       const action = loadUserCostCenters();
       const completion = loadUserCostCentersFail({
@@ -611,7 +613,7 @@ describe('User Effects', () => {
 
     it('should dispatch a LoadUserPaymentMethodsFail action on failed', () => {
       const error = makeHttpError({ status: 401, code: 'error' });
-      when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(throwError(error));
+      when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(throwError(() => error));
 
       const action = loadUserPaymentMethods();
       const completion = loadUserPaymentMethodsFail({
@@ -659,7 +661,9 @@ describe('User Effects', () => {
 
     it('should dispatch a DeleteUserPaymentFail action on failed', () => {
       const error = makeHttpError({ status: 401, code: 'error' });
-      when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(throwError(error));
+      when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(
+        throwError(() => error)
+      );
 
       const action = deleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
       const completion = deleteUserPaymentInstrumentFail({
@@ -697,7 +701,7 @@ describe('User Effects', () => {
 
     it('should dispatch a RequestPasswordReminderFail action on failed', () => {
       const error = makeHttpError({ status: 401, code: 'error' });
-      when(userServiceMock.requestPasswordReminder(anything())).thenReturn(throwError(error));
+      when(userServiceMock.requestPasswordReminder(anything())).thenReturn(throwError(() => error));
 
       const action = requestPasswordReminder({ data });
       const completion = requestPasswordReminderFail({
@@ -721,7 +725,7 @@ describe('User Effects', () => {
         'should navigate to profile page after %s',
         fakeAsync((type: string) => {
           actions$ = of({ type });
-          effects.redirectAfterUpdateOnProfileSettings$.subscribe();
+          effects.redirectAfterUpdateOnProfileSettings$.subscribe({ next: noop, error: fail, complete: noop });
           tick(500);
 
           expect(location.path()).toEqual('/account/profile');
@@ -739,7 +743,7 @@ describe('User Effects', () => {
         'should not navigate to profile page after %s',
         fakeAsync((type: string) => {
           actions$ = of({ type });
-          effects.redirectAfterUpdateOnProfileSettings$.subscribe();
+          effects.redirectAfterUpdateOnProfileSettings$.subscribe({ next: noop, error: fail, complete: noop });
           tick(500);
 
           expect(location.path()).toEqual('/any');

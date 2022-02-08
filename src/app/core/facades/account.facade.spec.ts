@@ -34,7 +34,7 @@ describe('Account Facade', () => {
       });
 
       it('should do nothing when no user is present', done => {
-        facade.addresses$().subscribe(fail, fail, fail);
+        facade.addresses$().subscribe({ next: fail, error: fail, complete: fail });
 
         setTimeout(() => {
           verify(storeSpy$.dispatch(anything())).never();
@@ -43,7 +43,7 @@ describe('Account Facade', () => {
       });
 
       it('should do nothing when no user is present', fakeAsync(() => {
-        facade.addresses$().subscribe(noop, fail, fail);
+        facade.addresses$().subscribe({ next: noop, error: fail, complete: fail });
 
         tick(2000);
 
@@ -53,7 +53,7 @@ describe('Account Facade', () => {
       it('should load addresses when user is loaded delayed', done => {
         facade.user$ = merge(of(undefined), of({} as User).pipe(delay(30)));
 
-        facade.addresses$().subscribe(noop, fail, fail);
+        facade.addresses$().subscribe({ next: noop, error: fail, complete: fail });
 
         setTimeout(() => {
           verify(storeSpy$.dispatch(anything())).never();

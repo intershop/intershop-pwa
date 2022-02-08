@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import {
@@ -19,20 +20,15 @@ describe('Lazy Component Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner)
-      .pipe(
-        createModule(schematicRunner, { name: 'shared' }),
-        createAppLastRoutingModule(schematicRunner),
-        switchMap(tree => schematicRunner.runSchematicAsync('extension', { ...defaultOptions, name: 'ext' }, tree)),
-        switchMap(tree =>
-          schematicRunner.runSchematicAsync(
-            'component',
-            { ...defaultOptions, name: 'extensions/ext/shared/dummy' },
-            tree
-          )
-        )
+    const appTree$ = createApplication(schematicRunner).pipe(
+      createModule(schematicRunner, { name: 'shared' }),
+      createAppLastRoutingModule(schematicRunner),
+      switchMap(tree => schematicRunner.runSchematicAsync('extension', { ...defaultOptions, name: 'ext' }, tree)),
+      switchMap(tree =>
+        schematicRunner.runSchematicAsync('component', { ...defaultOptions, name: 'extensions/ext/shared/dummy' }, tree)
       )
-      .toPromise();
+    );
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should be created', () => {
@@ -105,12 +101,7 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should load component via module', async () => {
-      // tslint:disable-next-line: no-invalid-template-strings
       expect(componentContent).toContain('import(`../../ext.module`)');
-    });
-
-    it('should load component using ivy', async () => {
-      expect(componentContent).toContain('.resolveComponentFactory(DummyComponent)');
     });
 
     it('should check if extension is enabled', async () => {

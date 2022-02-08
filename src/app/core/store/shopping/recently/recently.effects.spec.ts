@@ -4,6 +4,7 @@ import { cold } from 'jest-marbles';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { getServerConfig } from 'ish-core/store/core/server-config';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
 
 import { addToRecently } from './recently.actions';
@@ -21,6 +22,11 @@ describe('Recently Effects', () => {
 
     effects = TestBed.inject(RecentlyEffects);
     store$ = TestBed.inject(MockStore);
+
+    // workaround: overrideSelector is not working for selectors with parameters https://github.com/ngrx/platform/issues/2717
+    store$.overrideSelector(getServerConfig, {
+      _config: { preferences: { ChannelPreferences: { EnableAdvancedVariationHandling: true } } },
+    });
   });
 
   describe('viewedProduct$', () => {

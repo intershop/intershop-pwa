@@ -4,7 +4,7 @@ import { FileSystemHost, Project } from 'ts-morph';
 
 export function createTsMorphProject(host: Tree) {
   return new Project({
-    // tslint:disable-next-line: ish-no-object-literal-type-assertion
+    // eslint-disable-next-line ish-custom-rules/no-object-literal-type-assertion
     fileSystem: {
       getCurrentDirectory: () => '',
       directoryExistsSync: p => host.exists(p) || existsSync(p),

@@ -16,6 +16,8 @@ describe('Pwa Translate Compiler', () => {
           },
         }),
       ],
+
+      teardown: { destroyAfterEach: false },
     });
 
     translate = TestBed.inject(TranslateService);
@@ -48,7 +50,6 @@ describe('Pwa Translate Compiler', () => {
     });
 
     it('should translate when "0" argument was given', () => {
-      // tslint:disable-next-line: use-shorthand-property-in-object-creation
       expect(translate.instant('plural', { 0: 0 })).toMatchInlineSnapshot(`"0 items"`);
     });
 
@@ -71,7 +72,6 @@ describe('Pwa Translate Compiler', () => {
     });
 
     it('should translate when "0" argument was given', () => {
-      // tslint:disable-next-line: use-shorthand-property-in-object-creation
       expect(translate.instant('plural', { 0: 0 })).toMatchInlineSnapshot(`"Content: 0 items!"`);
     });
 

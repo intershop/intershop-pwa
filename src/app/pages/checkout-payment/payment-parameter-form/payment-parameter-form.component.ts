@@ -14,8 +14,8 @@ export class PaymentParameterFormComponent implements OnInit {
   @Input() paymentMethod: PaymentMethod;
   @Input() submitDisabled: boolean;
 
-  @Output() cancel = new EventEmitter();
-  @Output() submit = new EventEmitter();
+  @Output() cancelPayment = new EventEmitter();
+  @Output() submitPayment = new EventEmitter();
 
   fields: FormlyFieldConfig[];
   model: { [key: string]: unknown } = {};
@@ -29,11 +29,11 @@ export class PaymentParameterFormComponent implements OnInit {
   }
 
   cancelNewPaymentInstrument() {
-    this.cancel.emit();
+    this.cancelPayment.emit();
   }
 
   submitParameterForm() {
     this.parentForm.setControl('parameters', this.form);
-    this.submit.emit();
+    this.submitPayment.emit();
   }
 }

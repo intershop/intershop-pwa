@@ -14,7 +14,7 @@
 
 <ish-order-template-preferences-dialog
   #addOrderTemplateDialog
-  (submit)="addOrderTemplate($event)"
+  (submitOrderTemplate)="addOrderTemplate($event)"
 ></ish-order-template-preferences-dialog>
 
 <ish-loading *ngIf="orderTemplateLoading$ | async"></ish-loading>

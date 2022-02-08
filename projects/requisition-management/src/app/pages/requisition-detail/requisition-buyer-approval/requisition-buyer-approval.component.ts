@@ -34,9 +34,10 @@ export class RequisitionBuyerApprovalComponent implements OnChanges {
         currency: this.requisition.totals.total.currency,
       };
 
-      this.spentPercentage = this.requisition.userBudget?.spentBudget?.value
-        ? this.requisition.userBudget.spentBudget.value / this.requisition.userBudget.budget.value
-        : 0;
+      this.spentPercentage =
+        this.requisition.userBudget?.spentBudget?.value && this.requisition.userBudget.budget?.value
+          ? this.requisition.userBudget.spentBudget.value / this.requisition.userBudget.budget.value
+          : 0;
       this.leftPercentage = this.spentPercentage < 1 ? 1 - this.spentPercentage : 0;
 
       const spentBudgetIncludingThisOrder = this.requisition.userBudget?.spentBudgetIncludingThisRequisition;

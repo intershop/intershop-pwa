@@ -6,7 +6,7 @@
 .rating-total,
 .rating-rated {
   line-height: 24px;
-  color: $text-color-quarternary;
+  color: $text-color-quaternary;
 }
 
 .rating-total {
@@ -32,7 +32,7 @@
   li {
     float: left;
     margin-right: 2px;
-    color: $text-color-quarternary;
+    color: $text-color-quaternary;
 
     &:last-child {
       margin-right: 0;
@@ -47,7 +47,7 @@
     }
 
     a {
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
 
       &:hover {
         color: $text-color-primary;
@@ -68,11 +68,11 @@
     float: left;
     margin-right: 2px;
     font-size: $font-size-lg;
-    color: lighten($text-color-quarternary, 17%);
+    color: lighten($text-color-quaternary, 17%);
 
     &.rating-total {
       font-size: $font-size-corporate;
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
     }
 
     &:last-child {
@@ -146,23 +146,13 @@ div.rating-description {
 }
 
 //
-// PRODUCT DETAIL PAGE / EXPRESSSHOP
-.product-details-top-line,
-.express-shop {
-  .rating-rated {
-    float: left;
-    white-space: nowrap;
-  }
-}
-
-//
 // REVIEW
 
 .review-item {
   margin-bottom: $space-default * 2;
 
   .review-item-created {
-    color: $text-color-quarternary;
+    color: $text-color-quaternary;
   }
 
   .review-item-header-title {

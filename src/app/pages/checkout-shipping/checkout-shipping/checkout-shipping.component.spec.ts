@@ -48,7 +48,7 @@ describe('Checkout Shipping Component', () => {
 
   it('should render available shipping methods on page', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('formly-field')).toHaveLength(1);
+    expect(element.querySelector('formly-field').querySelectorAll('formly-field')).toHaveLength(1);
   });
 
   it('should throw updateShippingMethod event when the user changes payment selection', () => {
@@ -56,7 +56,7 @@ describe('Checkout Shipping Component', () => {
 
     component.shippingForm.get('shippingMethod').setValue('testShipping');
 
-    verify(checkoutFacade.updateBasketShippingMethod(anything())).once();
+    verify(checkoutFacade.updateBasketShippingMethod(anything())).twice();
     const [arg] = capture(checkoutFacade.updateBasketShippingMethod).last();
     expect(arg).toMatchInlineSnapshot(`"testShipping"`);
   });
@@ -64,7 +64,7 @@ describe('Checkout Shipping Component', () => {
   it('should update basket if current shippingMethod is invalid', () => {
     when(checkoutFacade.getValidShippingMethod$()).thenReturn(of('other'));
     fixture.detectChanges();
-    verify(checkoutFacade.updateBasketShippingMethod(anything())).once();
+    verify(checkoutFacade.updateBasketShippingMethod(anything())).twice();
     const [arg] = capture(checkoutFacade.updateBasketShippingMethod).last();
     expect(arg).toMatchInlineSnapshot(`"other"`);
   });

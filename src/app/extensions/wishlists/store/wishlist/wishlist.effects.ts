@@ -129,7 +129,7 @@ export class WishlistEffects {
     this.actions$.pipe(
       ofType(updateWishlistSuccess, createWishlistSuccess),
       mapToPayloadProperty('wishlist'),
-      filter(wishlist => wishlist && wishlist.preferred),
+      filter(wishlist => wishlist?.preferred),
       mapTo(loadWishlists())
     )
   );

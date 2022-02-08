@@ -17,7 +17,7 @@ import {
   loadQuotingDetail,
 } from '../store/quoting';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
   constructor(private store: Store) {}

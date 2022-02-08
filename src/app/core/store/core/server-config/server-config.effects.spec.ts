@@ -111,7 +111,7 @@ describe('Server Config Effects', () => {
 
     it('should map invalid request to action of type LoadServerConfigFail', () => {
       when(configurationServiceMock.getServerConfiguration()).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const action = loadServerConfig();

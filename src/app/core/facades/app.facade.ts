@@ -106,7 +106,8 @@ export class AppFacade {
 
   /**
    * extracts a specific server setting from the store.
-   * @param path The path to the server setting, starting from the serverConfig/_config store.
+   *
+   * @param path the path to the server setting, starting from the serverConfig/_config store.
    */
   serverSetting$<T>(path: string) {
     return this.store.pipe(select(getServerConfigParameter<T>(path)));
@@ -115,6 +116,7 @@ export class AppFacade {
   /**
    * returns the currency symbol for the currency parameter in the current locale.
    * If no parameter is given, the the default currency is taken instead of it.
+   *
    * @param currency The currency
    */
   currencySymbol$(currency?: string) {

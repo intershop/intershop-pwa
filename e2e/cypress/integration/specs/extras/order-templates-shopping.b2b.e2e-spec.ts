@@ -138,6 +138,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     at(OrderTemplatesDetailsPage, page => {
       page.toggleCheckbox(_.product1);
       page.addOrderTemplateToBasket();
+      cy.wait(1000);
       page.header.miniCart.text.should('contain', '7 items');
       page.header.miniCart.goToCart();
     });

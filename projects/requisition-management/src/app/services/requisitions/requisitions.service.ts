@@ -50,6 +50,7 @@ export class RequisitionsService {
 
   /**
    * Get all customer requisitions of a certain status and view. The current user is expected to have the approver permission.
+   *
    * @param  view    Defines whether the 'buyer' or 'approver' view is returned. Default: 'buyer'
    * @param  status  Approval status filter. Default: All requisitions are returned
    * @returns        Requisitions of the customer with their main attributes. To get all properties the getRequisition call is needed.
@@ -71,12 +72,13 @@ export class RequisitionsService {
 
   /**
    * Get a customer requisition of a certain id. The current user is expected to have the approver permission.
+   *
    * @param  id      Requisition id.
    * @returns        Requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
    */
   getRequisition(requisitionId: string): Observable<Requisition> {
     if (!requisitionId) {
-      return throwError('getRequisition() called without required id');
+      return throwError(() => new Error('getRequisition() called without required id'));
     }
 
     const params = new HttpParams().set('include', this.allIncludes.join());
@@ -97,6 +99,7 @@ export class RequisitionsService {
 
   /**
    * Updates the requisition status. The current user is expected to have the approver permission.
+   *
    * @param id          Requisition id.
    * @param statusCode  The requisition approval status
    * @param comment     The approval comment
@@ -108,10 +111,10 @@ export class RequisitionsService {
     approvalComment?: string
   ): Observable<Requisition> {
     if (!requisitionId) {
-      return throwError('updateRequisitionStatus() called without required id');
+      return throwError(() => new Error('updateRequisitionStatus() called without required id'));
     }
     if (!statusCode) {
-      return throwError('updateRequisitionStatus() called without required requisition status');
+      return throwError(() => new Error('updateRequisitionStatus() called without required requisition status'));
     }
 
     const params = new HttpParams().set('include', this.allIncludes.join());
@@ -132,6 +135,7 @@ export class RequisitionsService {
 
   /**
    *  Gets the order data, if needed and maps the requisition/order data.
+   *
    * @param payload  The requisition row data returned by the REST interface.
    * @returns        The requisition.
    */
@@ -156,6 +160,7 @@ export class RequisitionsService {
 
   /**
    *  Gets the cost center data, if cost center approval is needed (the current user needs cost center admin permission) and appends it at the requisition cost center approval data.
+   *
    * @param requisition   The requisition (without cost center).
    * @returns             The requisition with cost center if appropriate().
    */

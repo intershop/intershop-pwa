@@ -1,5 +1,4 @@
 import { NgModule, Type } from '@angular/core';
-import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
@@ -7,8 +6,6 @@ import { pick } from 'lodash-es';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { ngrxStateTransferMeta } from 'ish-core/configurations/ngrx-state-transfer';
-import { ConfigurationGuard } from 'ish-core/guards/configuration.guard';
-import { addGlobalGuard } from 'ish-core/utils/routing';
 
 import { ConfigurationEffects } from './configuration/configuration.effects';
 import { configurationReducer } from './configuration/configuration.reducer';
@@ -39,7 +36,6 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
 
 @NgModule({
   imports: [
-    // tslint:disable-next-line: ng-module-sorted-fields
     StoreModule.forRoot<CoreState>(coreReducers, {
       metaReducers: coreMetaReducers,
       runtimeChecks: {
@@ -57,10 +53,6 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
   ],
 })
 export class CoreStoreModule {
-  constructor(router: Router) {
-    addGlobalGuard(router, ConfigurationGuard);
-  }
-
   /**
    * Instantiate {@link CoreStoreModule} for testing.
    *

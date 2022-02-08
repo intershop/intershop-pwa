@@ -15,15 +15,16 @@ import { storeDevtoolsModule } from './store/store-devtools.module';
 @NgModule({
   imports: [
     BrowserTransferStateModule,
-    CoreStoreModule,
-    storeDevtoolsModule, // disable the Store Devtools in production (https://ngrx.io/guide/store-devtools/recipes/exclude)
-    GeneralStoreModule,
-    CustomerStoreModule,
     ContentStoreModule,
+    CoreStoreModule,
+    CustomerStoreModule,
+    GeneralStoreModule,
     HybridStoreModule,
     ShoppingStoreModule,
+    storeDevtoolsModule, // disable the Store Devtools in production (https://ngrx.io/guide/store-devtools/recipes/exclude)
   ],
   providers: [
+    /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
     { provide: APP_INITIALIZER, useFactory: ngrxStateTransfer, deps: [TransferState, Store, Actions], multi: true },
   ],
 })

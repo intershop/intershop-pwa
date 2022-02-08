@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -10,8 +11,8 @@ import {
   RegistrationConfigType,
   RegistrationFormConfigurationService,
 } from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
-// tslint:disable:no-intelligence-in-artifacts
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
  *
@@ -56,6 +57,7 @@ export class RegistrationPageComponent implements OnInit {
 
   onCreate() {
     if (this.form.invalid) {
+      markAsDirtyRecursive(this.form);
       this.submitted = true;
       return;
     }

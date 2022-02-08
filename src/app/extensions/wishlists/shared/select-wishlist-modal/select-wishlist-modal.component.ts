@@ -13,10 +13,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject, of } from 'rxjs';
-import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { filter, map, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -116,15 +116,23 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     this.modal = this.ngbModal.open(this.modalTemplate);
 
     this.wishlistsFacade.preferredWishlist$
-      .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
-      .subscribe(preferredWishlist => {
+      .pipe(
+        whenTruthy(),
+        take(1),
+        withLatestFrom(this.wishlistsFacade.currentWishlist$),
+        map(([preferredWishlist, selectedWishlist]) => ({ preferredWishlist, selectedWishlist })),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(data => {
         // don't show wishlist selection form but add a product immediately if there is a preferred wishlist
         if (this.addMoveProduct === 'add') {
-          this.formGroup.patchValue({ wishlist: preferredWishlist.id });
+          this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
           this.submitForm();
         } else {
-          // set default form value  preferred wishlist
-          this.formGroup.patchValue({ wishlist: preferredWishlist.id });
+          // set default form value to preferred wishlist unless the current wishlist is the preferred one
+          if (data.preferredWishlist.id !== data.selectedWishlist.id) {
+            this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
+          }
         }
       });
   }
@@ -156,7 +164,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     const selectedValue = this.formGroup.get('wishlist')?.value;
     if (selectedValue === 'new' || !selectedValue) {
       return this.wishlistsFacade.currentWishlist$.pipe(
-        map(currentWishlist => `route://account/wishlists/${currentWishlist && currentWishlist.id}`),
+        map(currentWishlist => `route://account/wishlists/${currentWishlist?.id}`),
         take(1)
       );
     } else {

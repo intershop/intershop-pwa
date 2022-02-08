@@ -61,6 +61,7 @@ describe('Account Punchout Page Component', () => {
     when(punchoutFacade.punchoutUsersByRoute$()).thenReturn(of(users));
     when(punchoutFacade.selectedPunchoutType$).thenReturn(of('oci'));
     when(appFacade.getRestEndpoint$).thenReturn(of('https://myBaseServerURL/INTERSHOP/rest/WFS/myChannel/rest'));
+    when(punchoutFacade.punchoutLoading$).thenReturn(of(false));
   });
 
   it('should be created', () => {
@@ -75,7 +76,7 @@ describe('Account Punchout Page Component', () => {
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
-  it('should display user list after creation ', () => {
+  it('should display user list after creation', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('[data-testing-id="user-list"]')).toBeTruthy();

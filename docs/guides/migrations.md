@@ -7,6 +7,53 @@ kb_sync_latest_only
 
 # Migrations
 
+## 1.4 to 2.0
+
+Since [TSLint has been deprecated](https://blog.palantir.com/tslint-in-2019-1a144c2317a9) for a while now and Angular removed the TSLint support we had to migrate our project from TSLint to ESLint as well.
+This means in version 2.0 all TSLint rules and configurations were removed and where possible replaced by ESLint.
+
+This not only required configuration changes in the Intershop PWA project but also application code adaptions to comply with some of the new ESLint rules.
+To allow for an as easy as possible migration of existing PWA projects, we split the whole switch in separate commits that should make it easier to resolve potential merge conflicts by providing some context, e.g. changes to satisfy a specific rule or project configuration changes etc.
+We advise you to first cherry pick all the `eslint` commits provided by the PWA release before applying the lint rules to the project customizations to fix the issues that reside in the project code.
+If the found issues are too many to address them in an ordered manner, it is probably best to temporarily disable some of the failing rules in `.eslintrc.json` (see [Configuring ESLint](./eslint.md#configuring-eslint) and to only fix one after another.
+
+It is also probably a good idea to do the PWA 2.0 migration not in one go as described in [Import Changes from New PWA Release](./customizations.md#import-changes-from-new-pwa-release-migration) but to first do the commits before the linter switch and bring your project to a clean state (`npm run check`).
+After this all the linter switch commits should be applied and the project should be brought back to a clean state.
+Once this is done, subsequent commits should be migrated.
+If your project contains own custom TSLint rules you will have to re-implement them as ESLint rules to be able to apply them to your code base (see [Custom ESLint rules](./eslint.md#custom-eslint-rules)).
+
+With version 2.0 we introduce a renaming of the two standard PWA themes and change the default theme:
+
+- The previous B2B theme `blue` is now called `b2b` and is used as default theme from now on.
+- The previous B2C theme `default` is now called `b2c`.
+
+With this change the according folders and references had to be renamed/moved and need to be adapted in customer projects as well.
+In projects where the recommended procedure for using a custom theme has been followed (see [Customization Guide - Start Customization](./customizations.md#start-customization)), minimal migration effort should be required.
+
+We moved the model `SelectOption` from the select.component.ts to the `select-option.model.ts` and adapted all necessary imports.
+
+In the PWA 0.28 we introduced the usage of [Formly](https://formly.dev/) to generate and maintain our forms.
+Now we removed the obsolete form components.
+If you want to use the obsolete form components in your project nevertheless, skip the commit `remove obsolete form components`.
+For more information concerning Formly please refer to our [Formly - Guide](./formly.md)).
+
+The feature toggle 'advancedVariationHandling' has been removed.
+Instead the ICM channel preference 'AdvancedVariationHandling' is used to configure it.
+You will find this preference as 'List View' in the ICM backoffice under Channel Preferences -> Product Variations.
+
+The ICM channel preference 'basket.maxItemQuantity' is included to validate the product quantity if no specific setting is defined on the product.
+You find this preference as 'Maximum Quantity per Product in Cart' under the Application Settings -> Shopping Cart & Checkout.
+The default value is 100.
+
+The Intershop PWA 2.0 release includes the Angular 13 update and updates to a lot of other dependencies (NgRx, RxJS, Formly, Swiper).
+These dependencies updates require many necessary code adaptions that are included in additional commits.
+The following official guides might help to migrate custom code as well:
+
+- https://update.angular.io/?l=3&v=12.0-13.0
+- https://ngrx.io/guide/migration/v13
+- https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md
+- https://swiperjs.com/migration-guide
+
 ## 1.1 to 1.2
 
 The `dist` folder now only contains results of the build process (except for `healthcheck.js`).

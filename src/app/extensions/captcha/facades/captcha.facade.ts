@@ -13,7 +13,7 @@ export type CaptchaTopic =
   | 'redemptionOfGiftCardsAndCertificates'
   | 'register';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class CaptchaFacade {
   constructor(private store: Store) {}
@@ -27,9 +27,9 @@ export class CaptchaFacade {
     ),
     whenTruthy(),
     map(services =>
-      services.ReCaptchaV3ServiceDefinition && services.ReCaptchaV3ServiceDefinition.runnable
+      services.ReCaptchaV3ServiceDefinition?.runnable
         ? 3
-        : services.ReCaptchaV2ServiceDefinition && services.ReCaptchaV2ServiceDefinition.runnable
+        : services.ReCaptchaV2ServiceDefinition?.runnable
         ? 2
         : undefined
     )
@@ -53,7 +53,7 @@ export class CaptchaFacade {
       filter(() => !!key),
       switchMapTo(this.captchaVersion$),
       whenTruthy(),
-      switchMapTo(this.store.pipe(select(getServerConfigParameter<boolean>('captcha.' + key))))
+      switchMapTo(this.store.pipe(select(getServerConfigParameter<boolean>(`captcha.${key}`))))
     );
   }
 }

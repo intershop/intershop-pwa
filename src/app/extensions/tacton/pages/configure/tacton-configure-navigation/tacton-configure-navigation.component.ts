@@ -25,6 +25,7 @@ export class TactonConfigureNavigationComponent implements OnInit {
 
   /**
    * scroll anchor smoothly into view
+   *
    * @see https://stackoverflow.com/questions/46658522/how-to-smooth-scroll-to-page-anchor-in-angular-4-without-plugins-properly/51400379#51400379
    */
   scrollIntoView(id: string) {

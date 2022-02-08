@@ -19,7 +19,7 @@ export class ICMTranslateLoader implements TranslateLoader {
   ) {}
 
   getTranslation = memoize(lang => {
-    const SSR_TRANSLATIONS = makeStateKey<Translations>('ssrTranslations-' + lang);
+    const SSR_TRANSLATIONS = makeStateKey<Translations>(`ssrTranslations-${lang}`);
 
     const local$ = defer(() => from(import(`../../../../assets/i18n/${lang}.json`)).pipe(catchError(() => of({}))));
     const server$ = iif(

@@ -1,14 +1,25 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.renderWhitespace": "all",
   "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
   },
+  "editor.bracketPairColorization.enabled": true,
+
   "git.rebaseWhenSync": true,
   "git.autoStash": true,
-  "tslint.alwaysShowRuleFailuresAsWarnings": true,
-  "editor.bracketPairColorization.enabled": true,
+  "ngschematics.schematics": ["intershop-schematics"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "workbench.iconTheme": "vscode-icons",
+
+  // stylelint
+  "stylelint.validate": ["css", "scss"],
+  "css.validate": false,
+  "scss.validate": false,
 
   // file type specific settings
   "[handlebars]": {
@@ -21,7 +32,10 @@
     "nginx/**/*conf*": "properties"
   },
 
-  "ngschematics.schematics": ["intershop-schematics"],
-  "workbench.iconTheme": "vscode-icons",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  // eslint
+
+  "eslint.options": {
+    "extensions": [".ts", ".html"]
+  },
+  "eslint.validate": ["javascript", "typescript", "html"]
 }

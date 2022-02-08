@@ -68,7 +68,6 @@ export const createContentConfigurationParameterView = (
       Number(params[key]) === 0 ? Number(params[key]) : Number(params[key]) || defaultValue,
     paramMemoize
   ),
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   configParam: <T extends object>(key: string) => params[key] as T,
 });
 
