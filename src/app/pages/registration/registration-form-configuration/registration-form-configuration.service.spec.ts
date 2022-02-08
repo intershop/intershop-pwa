@@ -22,6 +22,7 @@ describe('Registration Form Configuration Service', () => {
     TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting(), RouterTestingModule],
       providers: [
+        RegistrationFormConfigurationService,
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: FormsService, useFactory: () => instance(mock(FormsService)) },
       ],
