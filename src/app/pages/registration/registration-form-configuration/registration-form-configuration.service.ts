@@ -25,7 +25,8 @@ export interface RegistrationConfigType {
   cancelUrl?: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
+// eslint-disable-next-line ish-custom-rules/project-structure
 export class RegistrationFormConfigurationService {
   constructor(
     private accountFacade: AccountFacade,

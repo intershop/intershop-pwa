@@ -7,11 +7,12 @@ import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+
 import {
   RegistrationConfigType,
   RegistrationFormConfigurationService,
-} from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+} from './registration-form-configuration/registration-form-configuration.service';
 
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
@@ -20,6 +21,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 @Component({
   templateUrl: './registration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RegistrationFormConfigurationService],
 })
 export class RegistrationPageComponent implements OnInit {
   error$: Observable<HttpError>;
