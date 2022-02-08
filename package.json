@@ -1,7 +1,7 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
   "keywords": [
     "intershop"
@@ -114,7 +114,7 @@
     "@angular/language-service": "13.0.2",
     "@commitlint/cli": "^16.1.0",
     "@compodoc/compodoc": "^1.1.16",
-    "@cspell/dict-de-de": "^2.1.0",
+    "@cspell/dict-de-de": "1.1.32",
     "@cspell/dict-fr-fr": "^2.0.1",
     "@nguniversal/builders": "13.0.1",
     "@phenomnomnominal/tsquery": "^4.2.0",
