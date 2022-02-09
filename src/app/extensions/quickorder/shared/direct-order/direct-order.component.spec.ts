@@ -51,16 +51,16 @@ describe('Direct Order Component', () => {
 
   it('should display form with direct order configuration', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('formly-field')).toMatchInlineSnapshot(`
-NodeList [
-  <formly-field hide-deprecation=""
-  ><ng-component
-    >TextInputFieldComponent: sku ish-text-input-field { "fieldClass": "col-12", "placeholder":
-    "shopping_cart.direct_order.item_placeholder", "attributes": { "autocomplete": "on" }, "label":
-    "", "focus": false, "disabled": false}</ng-component
-  ></formly-field
->,
-]
-`);
+    expect(element.querySelector('formly-field').querySelectorAll('formly-field')).toMatchInlineSnapshot(`
+      NodeList [
+        <formly-field
+        ><ng-component
+          >TextInputFieldComponent: sku ish-text-input-field { "fieldClass": "col-12", "placeholder":
+          "shopping_cart.direct_order.item_placeholder", "attributes": { "autocomplete": "on" }, "label":
+          "", "disabled": false}</ng-component
+        ></formly-field
+      >,
+      ]
+    `);
   });
 });

@@ -90,7 +90,7 @@ searchProducts(
  * It uses the {@link ProductImageComponent} for the rendering of product images.
  *
  * @example
- * <ish-product-images [product]="product"></ish-product-images>
+ * <ish-product-images></ish-product-images>
  */
 ```
 

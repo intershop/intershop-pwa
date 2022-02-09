@@ -22,12 +22,6 @@
       "tsconfig": "tsconfig.app.json",
       "option": "watch",
       "problemMatcher": ["$tsc-watch"]
-    },
-    {
-      "label": "run tslint",
-      "type": "npm",
-      "script": "lint",
-      "problemMatcher": ["$tslint5"]
     }
   ]
 }

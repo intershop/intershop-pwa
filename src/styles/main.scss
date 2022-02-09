@@ -17,8 +17,8 @@
 @import '~ngx-toastr/toastr-bs4-alert';
 
 // import Swiper default theme
-@import '~swiper/swiper';
-@import '~swiper/components/pagination/pagination.scss';
+@import '~swiper/scss';
+@import '~swiper/scss/pagination';
 
 //
 // STYLING COMPATIBILITY LAYER
@@ -40,9 +40,7 @@
 @import 'global/tables';
 @import 'global/toasts';
 @import 'global/swiper';
-@import 'global/forms/labels';
-@import 'global/forms/fields';
-@import 'global/forms/forms';
+@import 'global/forms';
 @import 'global/lists';
 @import 'global/share-tools';
 @import 'global/notifications';
@@ -52,7 +50,6 @@
 @import 'global/print';
 @import 'global/propertygroups';
 @import 'global/promotions';
-@import 'global/variation-selection';
 @import 'components/header/header';
 @import 'components/header/language-switch';
 @import 'components/header/search-container';
@@ -72,7 +69,6 @@
 @import 'pages/category/category-page';
 @import 'pages/category/filter-row';
 @import 'pages/category/filter-panel';
-@import 'pages/category/quick-view';
 @import 'pages/account/account';
 @import 'pages/account/account-dashboard';
 @import 'pages/account/account-navigation';

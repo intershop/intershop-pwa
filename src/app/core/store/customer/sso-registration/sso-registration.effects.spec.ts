@@ -49,7 +49,7 @@ describe('Sso Registration Effects', () => {
   beforeEach(() => {
     when(userServiceMock.createUser(anything())).thenReturn(of(mockCustomerUserType));
   });
-  it('should call userService when registrationInfo is set ', done => {
+  it('should call userService when registrationInfo is set', done => {
     const action = setRegistrationInfo(mockRegistrationInfo);
     actions$ = of(action);
 

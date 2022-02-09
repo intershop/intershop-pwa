@@ -91,11 +91,14 @@ describe('User Service', () => {
     it('should return error message when wrong credentials are entered', done => {
       const errorMessage = '401 and Unauthorized';
       const userDetails = { login: 'intershop@123.com', password: 'wrong' };
-      when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(new Error(errorMessage)));
-      userService.signInUser(userDetails).subscribe(fail, error => {
-        expect(error).toBeTruthy();
-        expect(error.message).toBe(errorMessage);
-        done();
+      when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(() => new Error(errorMessage)));
+      userService.signInUser(userDetails).subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toBeTruthy();
+          expect(error.message).toBe(errorMessage);
+          done();
+        },
       });
     });
 
@@ -133,9 +136,12 @@ describe('User Service', () => {
     it('should return an error when called with undefined', done => {
       when(apiServiceMock.post(anything(), anything())).thenReturn(of({}));
 
-      userService.createUser(undefined).subscribe(fail, err => {
-        expect(err).toMatchInlineSnapshot(`"createUser() called without required body data"`);
-        done();
+      userService.createUser(undefined).subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toMatchInlineSnapshot(`[Error: createUser() called without required body data]`);
+          done();
+        },
       });
 
       verify(apiServiceMock.post(anything(), anything())).never();
@@ -172,9 +178,12 @@ describe('User Service', () => {
     });
 
     it('should return an error when called with undefined', done => {
-      userService.updateUser(undefined).subscribe(fail, err => {
-        expect(err).toMatchInlineSnapshot(`"updateUser() called without required body data"`);
-        done();
+      userService.updateUser(undefined).subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toMatchInlineSnapshot(`[Error: updateUser() called without required body data]`);
+          done();
+        },
       });
 
       verify(apiServiceMock.put(anything(), anything(), anything())).never();
@@ -207,18 +216,24 @@ describe('User Service', () => {
 
   describe('Update a user password', () => {
     it('should return an error when called and the customer parameter is missing', done => {
-      userService.updateUserPassword(undefined, undefined, '123', '1234').subscribe(fail, err => {
-        expect(err).toMatchInlineSnapshot(`"updateUserPassword() called without customer"`);
-        done();
+      userService.updateUserPassword(undefined, undefined, '123', '1234').subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toMatchInlineSnapshot(`[Error: updateUserPassword() called without customer]`);
+          done();
+        },
       });
 
       verify(apiServiceMock.put(anything(), anything())).never();
     });
 
     it('should return an error when called and the password parameter is missing', done => {
-      userService.updateUserPassword({} as Customer, {} as User, '', '').subscribe(fail, err => {
-        expect(err).toMatchInlineSnapshot(`"updateUserPassword() called without password"`);
-        done();
+      userService.updateUserPassword({} as Customer, {} as User, '', '').subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toMatchInlineSnapshot(`[Error: updateUserPassword() called without password]`);
+          done();
+        },
       });
 
       verify(apiServiceMock.put(anything(), anything())).never();
@@ -253,9 +268,12 @@ describe('User Service', () => {
     it('should return an error when called and the customer parameter is missing', done => {
       when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
 
-      userService.updateCustomer(undefined).subscribe(fail, err => {
-        expect(err).toMatchInlineSnapshot(`"updateCustomer() called without customer"`);
-        done();
+      userService.updateCustomer(undefined).subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toMatchInlineSnapshot(`[Error: updateCustomer() called without customer]`);
+          done();
+        },
       });
 
       verify(apiServiceMock.put(anything(), anything())).never();
@@ -264,9 +282,12 @@ describe('User Service', () => {
     it('should return an error when called for an individual customer', done => {
       when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
 
-      userService.updateCustomer({ isBusinessCustomer: false } as Customer).subscribe(fail, err => {
-        expect(err).toMatchInlineSnapshot(`"updateCustomer() cannot be called for a private customer)"`);
-        done();
+      userService.updateCustomer({ isBusinessCustomer: false } as Customer).subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toMatchInlineSnapshot(`[Error: updateCustomer() cannot be called for a private customer)]`);
+          done();
+        },
       });
 
       verify(apiServiceMock.put(anything(), anything())).never();

@@ -23,7 +23,7 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
 
   status: RequisitionStatus;
   columnsToDisplay: RequisitionColumnsType[];
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   ngOnInit() {
     this.requisitions$ = this.requisitionManagementFacade.requisitionsByRoute$;

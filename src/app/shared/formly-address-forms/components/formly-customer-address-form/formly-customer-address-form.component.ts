@@ -47,7 +47,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade) {}
 
@@ -70,7 +70,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
    * Trigger reset form from parent.
    */
   ngOnChanges(c: SimpleChanges) {
-    this.doResetForm(c.resetForm && c.resetForm.currentValue);
+    this.doResetForm(c.resetForm?.currentValue);
   }
 
   doResetForm(resetForm: boolean) {

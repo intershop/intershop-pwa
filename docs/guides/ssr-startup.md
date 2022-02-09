@@ -62,6 +62,7 @@ Make sure to use them as written in the table below.
 | **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in [Hybrid Mode][concept-hybrid]                                 |
 |                     | PROXY_ICM             | any \| URL           | Proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                                 |
 | **Third party**     | GTM_TOKEN             | string               | Token for Google Tag Manager                                                                 |
+|                     | GMA_KEY               | string               | API key for Google Maps                                                                      |
 |                     | SENTRY_DSN            | string               | Sentry DSN URL for using Sentry Error Monitor                                                |
 |                     | PROMETHEUS            | switch               | Exposes Prometheus metrics                                                                   |
 |                     | ICM_IDENTITY_PROVIDER | string               | ID of Identity Provider for [SSO][concept-sso]                                               |

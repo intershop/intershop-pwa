@@ -17,6 +17,10 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
+export type ConcardisErrorMessageType =
+  | { properties: { key: string; code: number; message: string; messageKey: string }[] }
+  | string;
+
 @Component({
   selector: 'ish-payment-concardis',
   template: ' ',
@@ -34,8 +38,8 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
    */
   @Input() activated = false;
 
-  @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() cancelPayment = new EventEmitter<void>();
+  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   /**
    * flag to make sure that the init script is executed only once
@@ -68,8 +72,8 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
     expiryMonth: { messageKey: '', message: '', code: 0 },
   };
 
-  // tslint:disable-next-line: private-destroy-field
-  protected destroy$ = new Subject();
+  // eslint-disable-next-line ish-custom-rules/private-destroy-field
+  protected destroy$ = new Subject<void>();
 
   getPayEngineURL() {
     return this.getParamValue('ConcardisPaymentService.Environment', '') === 'LIVE'
@@ -101,7 +105,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.next();
   }
 
-  // tslint:disable-next-line:no-empty
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   loadScript() {}
 
   /**
@@ -120,14 +124,12 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * determine errorMessages on the basis of the error code
    */
+  // eslint-disable-next-line complexity
   getErrorMessage(code: number, paymentMethod: string, fieldType: string, defaultMessage: string): string {
     let messageKey: string;
 
     switch (code) {
-      case 4121: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.default`;
-        break;
-      }
+      case 4121:
       case 4122: {
         messageKey = `checkout.${paymentMethod}.${fieldType}.error.default`;
         break;
@@ -140,38 +142,20 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
         messageKey = `checkout.${paymentMethod}.${fieldType}.error.notAlphanumeric`;
         break;
       }
-      case 4126: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.length`;
-        break;
-      }
-      case 4127: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.invalid`;
-        break;
-      }
-      case 4128: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.length`;
-        break;
-      }
-      case 4129: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.invalid`;
-        break;
-      }
-      case 41213: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.countryNotSupported`;
-        break;
-      }
-      case 41214: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.length`;
-        break;
-      }
-      case 41215: {
-        messageKey = `checkout.${paymentMethod}.${fieldType}.error.invalid`;
-        break;
-      }
+      case 4126:
+      case 4128:
+      case 41214:
       case 41216: {
         messageKey = `checkout.${paymentMethod}.${fieldType}.error.length`;
         break;
       }
+      case 4127:
+      case 4129:
+      case 41215: {
+        messageKey = `checkout.${paymentMethod}.${fieldType}.error.invalid`;
+        break;
+      }
+      case 41213:
       case 41217: {
         messageKey = `checkout.${paymentMethod}.${fieldType}.error.countryNotSupported`;
         break;
@@ -231,6 +215,6 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
       this.parameterForm.get('saveForLater').setValue(true);
     }
     this.resetErrors();
-    this.cancel.emit();
+    this.cancelPayment.emit();
   }
 }

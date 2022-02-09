@@ -71,7 +71,7 @@ describe('Tacton Text Buttons Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div>info</div>
-      <div class="btn-group btn-group-toggle form-group" data-toggle="buttons">
+      <div data-toggle="buttons" class="btn-group btn-group-toggle form-group">
         <label class="btn btn-primary active"><input type="radio" name="ID" id="b1" /> yes </label
         ><label class="btn btn-primary"><input type="radio" name="ID" id="b2" /> no </label>
       </div>

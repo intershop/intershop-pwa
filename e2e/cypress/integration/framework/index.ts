@@ -65,7 +65,8 @@ export function performAddToCart(
 
   button().click();
 
-  return cy
-    .wait('@basket')
-    .then(result => (result.response.statusCode >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any;
+  return cy.wait('@basket').then(
+    result => (result.response.statusCode >= 400 ? result : cy.wait('@basketCurrent').then(() => result))
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ) as any;
 }

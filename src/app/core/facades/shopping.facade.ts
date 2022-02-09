@@ -50,7 +50,7 @@ import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/
 import { toObservable } from 'ish-core/utils/functions';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class ShoppingFacade {
   constructor(private store: Store) {}

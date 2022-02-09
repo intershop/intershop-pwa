@@ -40,7 +40,7 @@ export function add(options: Options): Rule {
         if (!classDeclaration.getProperty('destroy$')) {
           classDeclaration.insertProperty(classDeclaration.getProperties().length, {
             name: 'destroy$',
-            initializer: 'new Subject()',
+            initializer: 'new Subject<void>()',
             scope: Scope.Private,
           });
         }

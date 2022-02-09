@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -18,8 +19,11 @@ describe('App Component', () => {
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
   let element: HTMLElement;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
+    appFacade = mock(AppFacade);
+
     await TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -28,7 +32,7 @@ describe('App Component', () => {
         MockComponent(HeaderComponent),
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });
 
@@ -41,6 +45,8 @@ describe('App Component', () => {
     translate.setDefaultLang('en');
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     translate.use('en');
+
+    when(appFacade.appWrapperClasses$).thenReturn(of(['col-m-12']));
   });
 
   it('should be created', () => {

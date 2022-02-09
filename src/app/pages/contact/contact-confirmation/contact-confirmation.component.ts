@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  * or failure of his sent contact request
  *
  * @example
- * <ish-contact-confirmation [requestSucceeded]="requestSucceeded"></ish-contact-confirmation>
+ * <ish-contact-confirmation [success]="success$ | async"></ish-contact-confirmation>
  */
 @Component({
   selector: 'ish-contact-confirmation',

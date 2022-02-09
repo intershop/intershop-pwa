@@ -2,10 +2,11 @@ import { Attribute } from './attribute.model';
 
 export class AttributeHelper {
   /**
-   * Get a specific product attribute by attribute name.
-   * @param product       The Product for which to get the attribute
-   * @param attributeName The attribute name of the attribute to get
-   * @returns              The matching product attribute
+   * Gets a specific attribute by attribute name.
+   *
+   * @param attributes      An array of attributes belonging to an object (e.g. product, basket etc.).
+   * @param attributeName   The attribute name of the attribute to get.
+   * @returns               The matching attribute.
    */
   static getAttributeByAttributeName(attributes: Attribute[], attributeName: string): Attribute {
     if (!attributes) {
@@ -15,7 +16,12 @@ export class AttributeHelper {
   }
 
   /**
-   * check if attribute is available and return value, otherwise undefined
+   * Gets an attribute value of an attribute within an attribute array.
+   * Checks if the attribute is available and returns the value, otherwise undefined.
+   *
+   * @param attributes      An array of attributes belonging to an object (e.g. product, basket etc.).
+   * @param attributeName   The attribute name of the appropriate attribute.
+   * @returns               The matching attribute value.
    */
   static getAttributeValueByAttributeName<T>(attributes: Attribute[], attributeName: string) {
     const attribute = AttributeHelper.getAttributeByAttributeName(attributes, attributeName);

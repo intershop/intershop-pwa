@@ -81,9 +81,7 @@ describe('Server Html', () => {
 
       waitLoadingEnd();
 
-      cy.location()
-        .its('pathname')
-        .should('equal', '/page/' + _.pageId);
+      cy.location().its('pathname').should('equal', `/page/${_.pageId}`);
     });
   });
 
@@ -93,9 +91,7 @@ describe('Server Html', () => {
 
       waitLoadingEnd();
 
-      cy.location()
-        .its('pathname')
-        .should('equal', '/' + _.route);
+      cy.location().its('pathname').should('equal', `/${_.route}`);
     });
   });
 });

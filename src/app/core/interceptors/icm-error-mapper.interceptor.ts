@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-// tslint:disable: ban-types
+/* eslint-disable @typescript-eslint/ban-types */
 
 export interface SpecialHttpErrorHandler {
   test(error: HttpErrorResponse, request: HttpRequest<unknown>): boolean;
@@ -24,20 +24,23 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
     private errorHandler: ErrorHandler
   ) {}
 
+  // eslint-disable-next-line complexity
   private mapError(httpError: HttpErrorResponse, request: HttpRequest<unknown>): HttpError {
     const specialHandlers = this.injector.get<SpecialHttpErrorHandler[]>(SPECIAL_HTTP_ERROR_HANDLER, []);
 
     const specialHandler = specialHandlers.find(handler => handler.test(httpError, request));
+
+    const responseError: HttpError = {
+      name: 'HttpErrorResponse',
+      status: httpError.status,
+    };
+
     if (specialHandler) {
       return { name: 'HttpErrorResponse', status: httpError.status, ...specialHandler.map(httpError, request) };
     }
 
     if (httpError.headers?.get('error-type') === 'error-missing-attributes') {
-      return {
-        name: 'HttpErrorResponse',
-        status: httpError.status,
-        message: httpError.error,
-      };
+      return { ...responseError, message: httpError.error };
     }
     if (httpError.headers?.get('error-type') === 'error-invalid-attributes') {
       let message = httpError.error;
@@ -45,22 +48,19 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
         message += JSON.stringify(pick(request.body, httpError.headers?.get('error-invalid-attributes').split(',')));
       }
       return {
-        name: 'HttpErrorResponse',
-        status: httpError.status,
+        ...responseError,
         message,
       };
     }
     if (httpError.headers?.get('error-key')) {
       return {
-        name: 'HttpErrorResponse',
-        status: httpError.status,
+        ...responseError,
         code: httpError.headers.get('error-key'),
       };
     }
     if (typeof httpError.error === 'string') {
       return {
-        name: 'HttpErrorResponse',
-        status: httpError.status,
+        ...responseError,
         message: httpError.error,
       };
     }
@@ -77,25 +77,22 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
       }[] = httpError.error?.errors;
       if (errors?.length) {
         if (errors.length > 1) {
-          console.warn('ignoring errors' + JSON.stringify(errors.slice(1)));
+          console.warn(`ignoring errors${JSON.stringify(errors.slice(1))}`);
         }
         const error = errors[0];
         if (error.causes?.length) {
           return {
-            name: 'HttpErrorResponse',
+            ...responseError,
             message: [error.message].concat(...error.causes.map(c => c.message)).join(' '),
-            status: httpError.status,
           };
         }
         return {
-          name: 'HttpErrorResponse',
+          ...responseError,
           message: error.message,
-          status: httpError.status,
         };
       } else {
         return {
-          name: 'HttpErrorResponse',
-          status: httpError.status,
+          ...responseError,
           ...httpError.error,
         };
       }
@@ -111,9 +108,9 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
           this.errorHandler.handleError(error);
         }
         if (error.name === 'HttpErrorResponse') {
-          return throwError(this.mapError(error, req));
+          return throwError(() => this.mapError(error, req));
         }
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }

@@ -33,7 +33,7 @@
     data-testing-id="create-invoice-address-link"
     class="btn btn-link"
     (click)="showAddressForm()"
-    [attr.aria-expanded]="!(collapseChange | async)"
+    [attr.aria-expanded]="(collapseChange | async) === false"
     aria-controls="collapseBasic"
   >
     {{ 'checkout.create_address.link' | translate }}

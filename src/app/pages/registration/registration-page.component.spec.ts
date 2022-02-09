@@ -1,12 +1,12 @@
+/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { RegistrationFormConfigurationService } from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -14,20 +14,17 @@ import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testin
 
 import { RegistrationPageComponent } from './registration-page.component';
 
-// tslint:disable:no-intelligence-in-artifacts
 describe('Registration Page Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;
   let component: RegistrationPageComponent;
   let element: HTMLElement;
   let configService: RegistrationFormConfigurationService;
-  let featureToggleService: FeatureToggleService;
   let activatedRoute: ActivatedRoute;
   let accountFacade: AccountFacade;
 
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     configService = mock(RegistrationFormConfigurationService);
-    featureToggleService = mock(FeatureToggleService);
     activatedRoute = mock(ActivatedRoute);
     await TestBed.configureTestingModule({
       declarations: [MockComponent(ErrorMessageComponent), MockComponent(LoadingComponent), RegistrationPageComponent],
@@ -39,7 +36,6 @@ describe('Registration Page Component', () => {
       ],
     }).compileComponents();
 
-    when(featureToggleService.enabled(anyString())).thenReturn(false);
     when(configService.getFields(anything())).thenReturn([
       {
         key: 'test',
@@ -68,12 +64,12 @@ describe('Registration Page Component', () => {
 
   it('should display form with registration configuration', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('formly-field')).toMatchInlineSnapshot(`
+    expect(element.querySelector('formly-field').querySelectorAll('formly-field')).toMatchInlineSnapshot(`
       NodeList [
-        <formly-field hide-deprecation=""
+        <formly-field
         ><ng-component
-          >TextInputFieldComponent: test ish-text-input-field { "label": "", "placeholder": "", "focus":
-          false, "disabled": false}</ng-component
+          >TextInputFieldComponent: test ish-text-input-field { "label": "", "placeholder": "",
+          "disabled": false}</ng-component
         ></formly-field
       >,
       ]

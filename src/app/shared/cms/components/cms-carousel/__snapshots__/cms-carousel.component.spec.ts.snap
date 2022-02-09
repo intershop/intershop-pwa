@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Cms Carousel Component should be created 1`] = `
-<div class="foo-class" ng-reflect-ng-class="foo-class">
-  <ish-content-slot ng-reflect-slot="app_sf_base_cm:slot.carousel.i" ng-reflect-wrapper="true"
+<div ng-reflect-ng-class="foo-class" class="foo-class">
+  <ish-content-slot ng-reflect-wrapper="true" ng-reflect-slot="app_sf_base_cm:slot.carousel.i"
     ><div>
       <ngb-carousel
-        class="carousel slide"
         tabindex="0"
+        class="carousel slide"
         ng-reflect-interval="0"
         ng-reflect-show-navigation-arrows="false"
-        style="display: block"
         aria-activedescendant="slide-ngb-slide-0"
-        ><ol class="carousel-indicators sr-only" role="tablist">
+        style="display: block"
+        ><ol role="tablist" class="carousel-indicators sr-only">
           <li
             role="tab"
             class="active"
@@ -21,13 +21,13 @@ exports[`Cms Carousel Component should be created 1`] = `
           ></li>
         </ol>
         <div class="carousel-inner">
-          <div class="carousel-item active" role="tabpanel" id="slide-ngb-slide-0">
+          <div role="tabpanel" class="carousel-item active" id="slide-ngb-slide-0">
             <span class="sr-only"> Slide 1 of 1 </span>
             <div class="row">
-              <div class="col-sm-6" ng-reflect-ng-class="col-sm-6">
+              <div ng-reflect-ng-class="col-sm-6" class="col-sm-6">
                 <ish-content-pagelet ng-reflect-pagelet-id="slide1"></ish-content-pagelet>
               </div>
-              <div class="col-sm-6" ng-reflect-ng-class="col-sm-6">
+              <div ng-reflect-ng-class="col-sm-6" class="col-sm-6">
                 <ish-content-pagelet ng-reflect-pagelet-id="slide2"></ish-content-pagelet>
               </div>
             </div>

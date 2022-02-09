@@ -102,7 +102,8 @@ glob('**/*.md')
           !link.includes('github.com') &&
           !link.includes('github.com/intershop/intershop-pwa/commit') &&
           !link.includes('optimizesmart.com') && // working link but for some reason returning 403 status code
-          !link.includes('nginx.com') // working link but for some reason returning 403 status code
+          !link.includes('nginx.com') && // working link but for some reason returning 403 status code
+          !link.includes('ngrx.io') // working link but for some reason returning 403 status code
       )
       .sort();
 

@@ -57,10 +57,10 @@ describe('Product Quantity Component', () => {
     `);
     expect(element.querySelector('input')).toMatchInlineSnapshot(`
       <input
-        class="form-control text-center"
         data-testing-id="quantity"
-        pattern="[0-9]*"
         type="number"
+        pattern="[0-9]*"
+        class="form-control text-center"
         id="ASDF"
         min="2"
         max="6"
@@ -80,10 +80,10 @@ describe('Product Quantity Component', () => {
     `);
     expect(element.querySelector('input')).toMatchInlineSnapshot(`
       <input
-        class="form-control"
         data-testing-id="quantity"
-        pattern="[0-9]*"
         type="number"
+        pattern="[0-9]*"
+        class="form-control"
         id="ASDF"
         min="2"
         max="6"
@@ -102,7 +102,7 @@ describe('Product Quantity Component', () => {
       ]
     `);
     expect(element.querySelector('select')).toMatchInlineSnapshot(`
-      <select class="form-control" data-testing-id="quantity" id="ASDF">
+      <select data-testing-id="quantity" class="form-control" id="ASDF">
         <option value="2">2</option>
         <option value="4">4</option>
         <option value="6">6</option>

@@ -48,20 +48,21 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
           {
             key: 'buyerName',
             type: 'ish-plain-text-field',
-            className: 'col-md-8 col-xs-12',
+            className: 'col-8',
             templateOptions: {
-              labelClass: 'col-md-4',
+              labelClass: 'col-4',
+              fieldClass: 'col-8',
               label: 'account.costcenter.details.buyers.list.header.name',
             },
           },
           {
             key: 'budgetValue',
             type: 'ish-text-input-field',
-            className: 'col-md-8 col-xs-12',
+            className: ' col-6 col-md-8',
             templateOptions: {
               postWrappers: [{ wrapper: 'input-addon', index: -1 }],
               labelClass: 'col-md-4',
-              fieldClass: 'col-md-8',
+              fieldClass: 'col-md-8  pr-0',
               label: 'account.costcenter.details.buyers.dialog.editbudget.budget.label',
               addonLeft: {
                 text: this.appFacade.currencySymbol$(this.buyer?.budget.currency),
@@ -79,7 +80,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
           {
             key: 'budgetPeriod',
             type: 'ish-select-field',
-            className: 'col-md-4 col-xs-12',
+            className: 'col-6 col-md-4',
             templateOptions: {
               fieldClass: 'col-12 label-empty',
               options: FormsService.getCostCenterBudgetPeriodOptions(),

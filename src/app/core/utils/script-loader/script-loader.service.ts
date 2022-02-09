@@ -12,6 +12,7 @@ export class ScriptLoaderService {
 
   /**
    * load a script, if it has not already been loaded
+   *
    * @param url  script url, e.g. https://pptest.payengine.de/bridge/1.0/payengine.min.js
    */
   load(url: string): Observable<ScriptType> {
@@ -23,7 +24,7 @@ export class ScriptLoaderService {
       }
 
       // Complete if already loaded
-      if (script && script.loaded) {
+      if (script?.loaded) {
         observer.next(script);
         observer.complete();
       } else {

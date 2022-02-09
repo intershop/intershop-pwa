@@ -11,7 +11,7 @@ const _ = {
     login: 'jlink@test.intershop.de',
     password: sensibleDefaults.password,
   },
-  sku: '201807181',
+  sku: '201807199',
 };
 
 describe('Shopping User B2B', () => {

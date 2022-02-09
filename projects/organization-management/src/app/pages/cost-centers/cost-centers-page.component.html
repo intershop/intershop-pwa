@@ -1,8 +1,12 @@
 <h1>
   {{ 'account.organization.cost_center_management' | translate }}
-  <a *ngIf="!(error$ | async)" routerLink="create" class="btn btn-secondary" data-testing-id="add-cost-center-link">{{
-    'account.costcenter.list.link.add' | translate
-  }}</a>
+  <a
+    *ngIf="!!(error$ | async) === false"
+    routerLink="create"
+    class="btn btn-secondary"
+    data-testing-id="add-cost-center-link"
+    >{{ 'account.costcenter.list.link.add' | translate }}</a
+  >
 </h1>
 
 <div class="loading-container">

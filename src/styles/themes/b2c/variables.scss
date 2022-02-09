@@ -47,7 +47,7 @@ $text-color-corporate: $CORPORATE-PRIMARY;
 $text-color-primary: #222;
 $text-color-secondary: #555;
 $text-color-tertiary: #8b8b8b;
-$text-color-quarternary: #999;
+$text-color-quaternary: #999;
 $text-color-quinary: #eee;
 
 $text-color-inverse: #fff;
@@ -67,7 +67,7 @@ $color-inverse: #fff;
 $color-special-primary: #e74c3c; //RED
 $color-special-secondary: #f39c12; //ORANGE
 $color-special-tertiary: #00abea; //BLUE
-$color-special-quarternary: #5cb85c; // GREEN
+$color-special-quaternary: #5cb85c; // GREEN
 
 //
 // BORDERS
@@ -105,7 +105,7 @@ $datepicker-active-hover: $CORPORATE-SECONDARY;
 $error-color: #dc3545; // TODO: merge with existing theme color?
 $success-color: #28a745; // TODO: merge with existing theme color?
 
-// mobile toogler base width
+// mobile toggler base width
 $toggler-width: 64px;
 
 // Header
@@ -134,10 +134,12 @@ $toast-error-icon: '<path d="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-
 $toast-warning-icon: '<path d="M7.5,14.967A7.467,7.467,0,1,0,.033,7.5,7.476,7.476,0,0,0,7.5,14.967Zm0-14A6.533,6.533,0,1,1,.967,7.5,6.54,6.54,0,0,1,7.5.967Z"/><circle cx="7.5" cy="11.5" r="0.5"/><path d="M8,8V3.5a.5.5,0,0,0-1,0V10H8Z"/>';
 $toast-success-icon: '<path d="M437,75C388.7,26.6,324.4,0,256,0S123.3,26.6,75,75C26.6,123.3,0,187.6,0,256s26.6,132.7,75,181c48.4,48.4,112.6,75,181,75s132.7-26.6,181-75c48.4-48.4,75-112.6,75-181S485.4,123.3,437,75z M389,191L225,355c-4.5,4.5-10.6,7-17,7s-12.5-2.5-17-7l-68-68c-9.4-9.4-9.4-24.6,0-33.9c9.4-9.4,24.6-9.4,33.9,0l51,51l147-147c9.4-9.4,24.6-9.4,33.9,0C398.3,166.4,398.3,181.6,389,191z"/>';
 $toast-info-icon: '<path d="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-114.6,256-256S397.4,0,256,0z M280,400c0,13.3-10.7,24-24,24s-24-10.7-24-24V216c0-13.3,10.7-24,24-24s24,10.7,24,24V400z M256,160c-17.7,0-32-14.3-32-32s14.3-32,32-32c17.7,0,32,14.3,32,32S273.7,160,256,160z"/>';
+/* stylelint-disable number-max-precision */
 $toast-error-color: rgba(114, 28, 36, 0.999999);
 $toast-warning-color: rgba(133, 100, 4, 0.999999);
 $toast-success-color: rgba(21, 87, 36, 0.999999);
 $toast-info-color: rgba(12, 84, 96, 0.999999);
+/* stylelint-enable number-max-precision */
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -156,7 +158,7 @@ $toast-info-color: rgba(12, 84, 96, 0.999999);
 // @gray:                   lighten(#000, 33.5%); // #555
 // @gray-light:             lighten(#000, 60%);   // #999
 // @gray-lighter:           lighten(#000, 93.5%); // #eee
-// TODO: add propper intershop custom colors
+// TODO: add proper intershop custom colors
 $white: #fff;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
@@ -175,7 +177,7 @@ $secondary: $CORPORATE-SECONDARY;
 $danger: $color-special-primary;
 $warning: $color-special-secondary;
 $info: $color-special-tertiary;
-$success: $color-special-quarternary;
+$success: $color-special-quaternary;
 
 // Body
 //
@@ -227,10 +229,10 @@ $headings-color: $text-color-primary;
 // Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
 
 // Forms
-$input-placeholder-color: $text-color-quarternary;
+$input-placeholder-color: $text-color-quaternary;
 $input-accent-color: #222;
 
-// Dropdowns
+// Dropdown
 //
 // Dropdown menu container and contents.
 

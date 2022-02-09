@@ -88,7 +88,7 @@
       </ng-container>
 
       <!-- further addresses -->
-      <ng-container *ngIf="furtherAddresses && furtherAddresses.length > 0">
+      <ng-container *ngIf="furtherAddresses?.length > 0">
         <div class="section" data-testing-id="further-addresses">
           <h3>{{ 'account.addresses.heading' | translate }}</h3>
           <div *ngFor="let currentAddress of furtherAddresses" class="list-item-row">

@@ -1,7 +1,7 @@
 <h2>{{ 'checkout.address.shipping.label' | translate }}</h2>
 <ng-container *ngIf="shippingAddress$ | async as address">
   <div class="address-box">
-    <ng-container *ngIf="!(basketInvoiceAndShippingAddressEqual$ | async)">
+    <ng-container *ngIf="(basketInvoiceAndShippingAddressEqual$ | async) === false">
       <div class="float-right">
         <!-- edit shipping address -->
         <a
@@ -67,7 +67,7 @@
     data-testing-id="create-shipping-address-link"
     class="btn btn-link"
     (click)="showAddressForm()"
-    [attr.aria-expanded]="!(collapseChange | async)"
+    [attr.aria-expanded]="(collapseChange | async) === false"
     aria-controls="collapseBasic"
   >
     {{ 'checkout.create_address.link' | translate }}

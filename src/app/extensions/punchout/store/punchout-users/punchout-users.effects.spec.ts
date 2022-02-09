@@ -94,7 +94,7 @@ describe('Punchout Users Effects', () => {
 
     it('should dispatch a loadPunchoutUsersFail action on failed users load', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.getUsers(anything())).thenReturn(throwError(error));
+      when(punchoutService.getUsers(anything())).thenReturn(throwError(() => error));
 
       const action = loadPunchoutUsers({ type: 'oci' });
       const completion = loadPunchoutUsersFail({ error });
@@ -143,8 +143,8 @@ describe('Punchout Users Effects', () => {
       const action = addPunchoutUser({ user: users[0] });
       actions$ = of(action);
 
-      effects.createPunchoutUser$.pipe(toArray()).subscribe(
-        actions => {
+      effects.createPunchoutUser$.pipe(toArray()).subscribe({
+        next: actions => {
           expect(actions).toMatchInlineSnapshot(`
             [Punchout API] Add Punchout User Success:
               user: {"id":"ociUser","login":"ociuser@test.intershop.de","email":...
@@ -154,14 +154,14 @@ describe('Punchout Users Effects', () => {
           `);
           expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should dispatch a AddPunchoutUserFail action on failed user creation', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.createUser(users[0])).thenReturn(throwError(error));
+      when(punchoutService.createUser(users[0])).thenReturn(throwError(() => error));
 
       const action = addPunchoutUser({ user: users[0] });
       const completion = addPunchoutUserFail({ error });
@@ -187,8 +187,8 @@ describe('Punchout Users Effects', () => {
       const action = updatePunchoutUser({ user: users[0] });
       actions$ = of(action);
 
-      effects.updatePunchoutUser$.pipe(toArray()).subscribe(
-        actions => {
+      effects.updatePunchoutUser$.pipe(toArray()).subscribe({
+        next: actions => {
           expect(actions).toMatchInlineSnapshot(`
             [Punchout API] Update Punchout User Success:
               user: {"id":"ociUser","login":"ociuser@test.intershop.de","email":...
@@ -198,14 +198,14 @@ describe('Punchout Users Effects', () => {
           `);
           expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should dispatch a UpdatePunchoutUserFail action on failed user creation', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.updateUser(users[0])).thenReturn(throwError(error));
+      when(punchoutService.updateUser(users[0])).thenReturn(throwError(() => error));
 
       const action = updatePunchoutUser({ user: users[0] });
       const completion = updatePunchoutUserFail({ error });
@@ -243,7 +243,7 @@ describe('Punchout Users Effects', () => {
 
     it('should dispatch a DeletePunchoutUserFail action on failed user deletion', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.deleteUser(users[0])).thenReturn(throwError(error));
+      when(punchoutService.deleteUser(users[0])).thenReturn(throwError(() => error));
 
       const action = deletePunchoutUser({ user: users[0] });
       const completion = deletePunchoutUserFail({ error });

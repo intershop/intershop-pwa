@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Product } from 'ish-core/models/product/product.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -13,6 +14,7 @@ import { ProductsService } from './products.service';
 describe('Products Service', () => {
   let productsService: ProductsService;
   let apiServiceMock: ApiService;
+  let appFacadeMock: AppFacade;
 
   const productSku = 'SKU';
   const categoryId = 'CategoryID';
@@ -61,14 +63,21 @@ describe('Products Service', () => {
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
+    appFacadeMock = mock(AppFacade);
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['configuration'], [ProductListingEffects]),
         ShoppingStoreModule.forTesting('productListing'),
       ],
-      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
+      ],
     });
     productsService = TestBed.inject(ProductsService);
+
+    when(appFacadeMock.serverSetting$(anyString())).thenReturn(of(false));
   });
 
   it("should get Product data when 'getProduct' is called", done => {

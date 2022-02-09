@@ -39,7 +39,7 @@ describe('Contact Form Component', () => {
 
   it('should always render formly form', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('formly-field')).toHaveLength(7);
+    expect(element.querySelector('formly-field').querySelectorAll('formly-field')).toHaveLength(7);
   });
 
   it('should not emit contact request when invalid form is submitted', () => {

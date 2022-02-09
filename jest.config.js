@@ -1,11 +1,4 @@
-const esModules = [
-  'jest-test',
-  '@ngrx',
-  'ngx-bootstrap',
-  '@angular/common/locales',
-  'lodash-es/.*',
-  'ngx-utils-cookies-port',
-];
+const esModules = ['lodash-es/.*', 'swiper', 'ssr-window', 'dom7', '.*\\.mjs$'];
 
 module.exports = {
   globals: {

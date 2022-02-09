@@ -2,6 +2,7 @@ import { FormGroup } from '@angular/forms';
 
 /**
  * Marks all fields in a form group as dirty recursively (i.e. for nested form groups also)
+ *
  * @param formGroup The form group
  */
 export function markAsDirtyRecursive(formGroup: FormGroup) {

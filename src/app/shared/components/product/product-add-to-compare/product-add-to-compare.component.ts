@@ -9,7 +9,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
  * @example
  * <ish-product-add-to-compare
  *   displayType="icon"
- *   class="btn-link"
+ *   cssClass="btn-link"
  * ></ish-product-add-to-compare>
  */
 @Component({
@@ -19,7 +19,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 })
 export class ProductAddToCompareComponent implements OnInit {
   @Input() displayType?: string;
-  @Input() class?: string;
+  @Input() cssClass?: string;
 
   isInCompareList$: Observable<boolean>;
   visible$: Observable<boolean>;

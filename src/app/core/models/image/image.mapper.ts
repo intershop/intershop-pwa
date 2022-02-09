@@ -24,6 +24,7 @@ export class ImageMapper {
 
   /**
    * Maps Images to Images.
+   *
    * @param images The source images.
    * @param icmBaseURL The prefix URL for building absolute URLs for each relative URL.
    * @returns The images.
@@ -37,6 +38,7 @@ export class ImageMapper {
 
   /**
    * Maps Image to Image.
+   *
    * @param image The source image.
    * @param icmBaseURL The prefix URL for building absolute URLs for each relative URL.
    * @returns The image.
@@ -50,6 +52,7 @@ export class ImageMapper {
 
   /**
    * Builds absolute URL from relative URL and icmBaseURL or returns absolute URL.
+   *
    * @param url The relative or absolute image URL.
    * @param icmBaseURL The prefix URL for building absolute URLs for each relative URL.
    * @returns The URL.

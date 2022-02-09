@@ -91,7 +91,7 @@ describe('Basket Promotion Code Effects', () => {
 
     it('should map invalid request to action of type AddPromotionCodeToBasketFail', () => {
       when(basketServiceMock.addPromotionCodeToBasket(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const code = 'CODE';
@@ -141,7 +141,7 @@ describe('Basket Promotion Code Effects', () => {
 
     it('should map invalid request to action of type RemovePromotionCodeFromBasketFail', () => {
       when(basketServiceMock.removePromotionCodeFromBasket(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const code = 'CODE';

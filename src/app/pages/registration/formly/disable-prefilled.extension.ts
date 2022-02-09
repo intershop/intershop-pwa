@@ -18,7 +18,7 @@ export const disablePrefilledExtension: FormlyExtension = {
 function hasDisabled(field: FormlyFieldConfig): field is FieldConfigWithDisabled {
   return (
     Array.isArray(field.options?.formState?.disabled) &&
-    // tslint:disable-next-line: no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (field.options.formState.disabled as any[]).reduce((acc, val) => acc && typeof val === 'string', true)
   );
 }

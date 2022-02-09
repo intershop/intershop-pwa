@@ -17,7 +17,7 @@ import {
   loadRequisitions,
 } from '../store/requisitions';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class RequisitionManagementFacade {
   constructor(private store: Store, private router: Router) {}

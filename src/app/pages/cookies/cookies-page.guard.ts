@@ -21,7 +21,7 @@ export class CookiesPageGuard implements CanActivate {
     const cookiesModalComponent = this.currentDialog.componentInstance as CookiesModalComponent;
 
     // dialog closed
-    cookiesModalComponent.close.pipe(first()).subscribe(() => {
+    cookiesModalComponent.closeModal.pipe(first()).subscribe(() => {
       this.currentDialog.dismiss();
     });
 

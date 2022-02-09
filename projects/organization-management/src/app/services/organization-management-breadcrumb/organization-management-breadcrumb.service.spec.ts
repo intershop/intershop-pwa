@@ -66,7 +66,9 @@ describe('Organization Management Breadcrumb Service', () => {
       it('should not report a breadcrumb for unrelated routes', fakeAsync(() => {
         router.navigateByUrl('/foobar');
 
-        organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(fail, fail, fail);
+        organizationManagementBreadcrumbService
+          .breadcrumb$('/my-account')
+          .subscribe({ next: fail, error: fail, complete: fail });
 
         tick(2000);
       }));

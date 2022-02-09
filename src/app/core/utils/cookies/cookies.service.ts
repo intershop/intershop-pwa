@@ -49,6 +49,7 @@ export class CookiesService {
   /**
    * Saves the given cookie consent options settings together with the current cookie consent version
    * to a users cookie named 'cookieConsent' and reloads the PWA application with the new settings.
+   *
    * @param options The selected cookie consent options that should be enabled.
    */
   setCookiesConsentFor(options: string[]) {
@@ -67,6 +68,7 @@ export class CookiesService {
 
   /**
    * Check if consent was given for {option}.
+   *
    * @param option The cookie consent option of interest.
    * @returns      'true' if the user has given the consent for the requested option, 'false' otherwise.
    */
@@ -128,6 +130,7 @@ export class CookiesService {
     };
   }
 
+  // eslint-disable-next-line complexity
   private buildCookieString(name: string, value: string | undefined, opts: CookiesOptions = {}): string {
     let path = opts.path;
     if (!path) {
@@ -142,14 +145,14 @@ export class CookiesService {
       expires = new Date(expires);
     }
     let str = `${encodeURIComponent(name)}=${encodeURIComponent(value || '')}`;
-    str += ';path=' + path;
-    str += opts.domain ? ';domain=' + opts.domain : '';
-    str += expires ? ';expires=' + expires.toUTCString() : '';
-    str += opts.sameSite ? ';SameSite=' + opts.sameSite : '';
+    str += `;path=${path}`;
+    str += opts.domain ? `;domain=${opts.domain}` : '';
+    str += expires ? `;expires=${expires.toUTCString()}` : '';
+    str += opts.sameSite ? `;SameSite=${opts.sameSite}` : '';
     str += opts.secure && location.protocol === 'https:' ? ';secure' : '';
     const cookiesLength = str.length + 1;
     if (cookiesLength > 4096) {
-      // tslint:disable-next-line: no-console
+      // eslint-disable-next-line no-console
       console.log(`Cookie \'${name}\' possibly not set or overflowed because it was too
       large (${cookiesLength} > 4096 bytes)!`);
     }

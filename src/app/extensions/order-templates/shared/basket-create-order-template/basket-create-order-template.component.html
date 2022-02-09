@@ -1,7 +1,7 @@
 <button
   type="submit"
   name="addProduct"
-  [ngClass]="class"
+  [ngClass]="cssClass"
   (click)="openModal(modal)"
   data-testing-id="addBasketToOrderTemplateButton"
 >
@@ -11,5 +11,5 @@
 <ish-order-template-preferences-dialog
   #modal
   modalTitle="account.order_template.new_from_basket.heading"
-  (submit)="createOrderTemplate($event)"
+  (submitOrderTemplate)="createOrderTemplate($event)"
 ></ish-order-template-preferences-dialog>

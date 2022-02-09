@@ -6,10 +6,10 @@ import { pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
-import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
+import { ConcardisErrorMessageType, PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
-// tslint:disable:no-any - allows access to concardis js functionality
-declare var PayEngine: any;
+/* eslint-disable @typescript-eslint/no-explicit-any -- allows access to concardis js functionality */
+declare let PayEngine: any;
 
 /**
  * The Payment Concardis Directdebit Component renders a form on which the user can enter his concardis direct debit data. Some entry fields are provided by an external host and embedded as iframes. Therefore an external javascript is loaded. See also {@link CheckoutPaymentPageComponent}
@@ -18,8 +18,8 @@ declare var PayEngine: any;
  * <ish-payment-concardis-directdebit
  [paymentMethod]="paymentMethod"
  [activated]="i === openFormIndex"
- (submit)="createNewPaymentInstrument($event)"
- (cancel)="cancelNewPaymentInstrument()"
+ (submitPayment)="createNewPaymentInstrument($event)"
+ (cancelPayment)="cancelNewPaymentInstrument()"
 ></ish-payment-concardis-directdebit>
  */
 @Component({
@@ -27,7 +27,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
@@ -89,16 +89,16 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
       this.scriptLoader
         .load(this.getPayEngineURL())
         .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          () => {
+        .subscribe({
+          next: () => {
             PayEngine.setPublishableKey(merchantId);
           },
-          error => {
+          error: error => {
             this.scriptLoaded = false;
             this.errorMessage.general.message = error;
             this.cd.detectChanges();
-          }
-        );
+          },
+        });
     }
   }
 
@@ -157,46 +157,9 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
 
     this.resetErrors();
     if (error) {
-      // map error messages
-      if (typeof error.message !== 'string' && error.message.properties) {
-        this.errorMessage.iban = error.message.properties && error.message.properties.find(prop => prop.key === 'iban');
-        if (this.errorMessage.iban && this.errorMessage.iban.code) {
-          this.errorMessage.iban.messageKey = this.getErrorMessage(
-            this.errorMessage.iban.code,
-            'sepa',
-            'iban',
-            this.errorMessage.iban.message
-          );
-          this.handleErrors('IBAN', this.errorMessage.iban.messageKey);
-        }
-
-        this.errorMessage.bic = error.message.properties && error.message.properties.find(prop => prop.key === 'bic');
-        if (this.errorMessage.bic && this.errorMessage.bic.code) {
-          this.errorMessage.bic.messageKey = this.getErrorMessage(
-            this.errorMessage.bic.code,
-            'sepa',
-            'bic',
-            this.errorMessage.bic.message
-          );
-          this.handleErrors('BIC', this.errorMessage.bic.messageKey);
-        }
-
-        this.errorMessage.accountholder =
-          error.message.properties && error.message.properties.find(prop => prop.key === 'accountholder');
-        if (this.errorMessage.accountholder && this.errorMessage.accountholder.code) {
-          this.errorMessage.accountholder.messageKey = this.getErrorMessage(
-            this.errorMessage.accountholder.code,
-            'sepa',
-            'accountholder',
-            this.errorMessage.accountholder.message
-          );
-          this.handleErrors('accountHolder', this.errorMessage.accountholder.messageKey);
-        }
-      } else if (typeof error.message === 'string') {
-        this.errorMessage.general.message = error.message;
-      }
-    } else if (!this.parameterForm.invalid) {
-      this.submit.emit({
+      this.mapErrorMessage(error.message);
+    } else if (this.parameterForm.valid) {
+      this.submitPayment.emit({
         parameters: [
           { name: 'paymentInstrumentId', value: result.paymentInstrumentId },
           { name: 'accountHolder', value: result.attributes.accountHolder },
@@ -248,7 +211,47 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     if (parameters.find(p => p.name === 'BIC')) {
       paymentData = { ...paymentData, bic: parameters.find(p => p.name === 'BIC').value };
     }
-    // tslint:disable-next-line:no-null-keyword
+    // eslint-disable-next-line unicorn/no-null
     PayEngine.createPaymentInstrument('sepa', paymentData, null, (err: any, val: any) => this.submitCallback(err, val));
+  }
+
+  private mapErrorMessage(errorMessage: ConcardisErrorMessageType) {
+    // map error messages
+    if (typeof errorMessage !== 'string' && errorMessage.properties) {
+      this.errorMessage.iban = errorMessage.properties?.find(prop => prop.key === 'iban');
+      if (this.errorMessage.iban?.code) {
+        this.errorMessage.iban.messageKey = this.getErrorMessage(
+          this.errorMessage.iban.code,
+          'sepa',
+          'iban',
+          this.errorMessage.iban.message
+        );
+        this.handleErrors('IBAN', this.errorMessage.iban.messageKey);
+      }
+
+      this.errorMessage.bic = errorMessage.properties?.find(prop => prop.key === 'bic');
+      if (this.errorMessage.bic?.code) {
+        this.errorMessage.bic.messageKey = this.getErrorMessage(
+          this.errorMessage.bic.code,
+          'sepa',
+          'bic',
+          this.errorMessage.bic.message
+        );
+        this.handleErrors('BIC', this.errorMessage.bic.messageKey);
+      }
+
+      this.errorMessage.accountholder = errorMessage.properties?.find(prop => prop.key === 'accountholder');
+      if (this.errorMessage.accountholder?.code) {
+        this.errorMessage.accountholder.messageKey = this.getErrorMessage(
+          this.errorMessage.accountholder.code,
+          'sepa',
+          'accountholder',
+          this.errorMessage.accountholder.message
+        );
+        this.handleErrors('accountHolder', this.errorMessage.accountholder.messageKey);
+      }
+    } else if (typeof errorMessage === 'string') {
+      this.errorMessage.general.message = errorMessage;
+    }
   }
 }

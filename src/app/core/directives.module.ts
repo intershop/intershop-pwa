@@ -5,6 +5,7 @@ import { IdentityProviderCapabilityDirective } from './directives/identity-provi
 import { IntersectionObserverDirective } from './directives/intersection-observer.directive';
 import { ProductContextAccessDirective } from './directives/product-context-access.directive';
 import { ProductContextDirective } from './directives/product-context.directive';
+import { ScrollDirective } from './directives/scroll.directive';
 import { ServerHtmlDirective } from './directives/server-html.directive';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ServerHtmlDirective } from './directives/server-html.directive';
     IntersectionObserverDirective,
     ProductContextAccessDirective,
     ProductContextDirective,
+    ScrollDirective,
     ServerHtmlDirective,
   ],
   exports: [
@@ -22,6 +24,7 @@ import { ServerHtmlDirective } from './directives/server-html.directive';
     IntersectionObserverDirective,
     ProductContextAccessDirective,
     ProductContextDirective,
+    ScrollDirective,
     ServerHtmlDirective,
   ],
 })

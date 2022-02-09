@@ -10,7 +10,6 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 import { CookiesBannerComponent } from './cookies-banner.component';
 
-// tslint:disable:no-intelligence-in-artifacts
 describe('Cookies Banner Component', () => {
   let component: CookiesBannerComponent;
   let fixture: ComponentFixture<CookiesBannerComponent>;

@@ -24,7 +24,7 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
   model: { shippingMethod: string };
   shippingConfig$: Observable<FormlyFieldConfig[]>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade) {}
   ngOnInit() {
@@ -48,7 +48,7 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
           templateOptions: {
             label: method.name,
             shippingMethod: method,
-            id: 'shipping_method' + method.id,
+            id: `shipping_method${method.id}`,
             value: method.id,
           },
         }))

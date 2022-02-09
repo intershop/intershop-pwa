@@ -161,6 +161,7 @@ export class BasketService {
 
   /**
    * Gets the currently used basket for the current user.
+   *
    * @returns         The basket.
    */
   getBasket(): Observable<Basket> {
@@ -176,6 +177,7 @@ export class BasketService {
 
   /**
    * Gets the basket for the current user with the given basket id if available.
+   *
    * @param basketId  The basket id for the basket to be fetched.
    * @returns         The basket.
    */
@@ -192,6 +194,7 @@ export class BasketService {
 
   /**
    * Gets the 'current' default basket for the current user authenticated by the given apiToken.
+   *
    * @param apiToken  The authentication token.
    * @returns         The basket.
    */
@@ -212,6 +215,7 @@ export class BasketService {
 
   /**
    * Creates a new basket for the current user.
+   *
    * @returns         The basket.
    */
   createBasket(): Observable<Basket> {
@@ -228,6 +232,7 @@ export class BasketService {
 
   /**
    * Merge the source basket into the target basket.
+   *
    * @param sourceBasketId          The id of the source basket.
    * @param sourceBasketAuthToken   The token value of the source basket owner.
    * @param targetBasketId          The id of the target basket.
@@ -235,16 +240,16 @@ export class BasketService {
    */
   mergeBasket(sourceBasketId: string, sourceBasketAuthToken: string, targetBasketId: string): Observable<Basket> {
     if (!sourceBasketId) {
-      return throwError('mergeBasket() called without sourceBasketId');
+      return throwError(() => new Error('mergeBasket() called without sourceBasketId'));
     }
     if (!sourceBasketAuthToken) {
-      return throwError('mergeBasket() called without sourceBasketAuthToken');
+      return throwError(() => new Error('mergeBasket() called without sourceBasketAuthToken'));
     }
     if (!targetBasketId) {
-      return throwError('mergeBasket() called without targetBasketId');
+      return throwError(() => new Error('mergeBasket() called without targetBasketId'));
     }
     if (targetBasketId === sourceBasketId) {
-      return throwError('mergeBasket() cannot be called when targetBasketId === sourceBasketId');
+      return throwError(() => new Error('mergeBasket() cannot be called when targetBasketId === sourceBasketId'));
     }
 
     const params = new HttpParams().set('include', this.allTargetBasketIncludes.join());
@@ -262,12 +267,13 @@ export class BasketService {
 
   /**
    * Updates the currently used basket.
+   *
    * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
    * @returns         The changed basket.
    */
   updateBasket(body: BasketUpdateType): Observable<Basket> {
     if (!body) {
-      return throwError('updateBasket() called without body');
+      return throwError(() => new Error('updateBasket() called without body'));
     }
 
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
@@ -281,6 +287,7 @@ export class BasketService {
 
   /**
    * Validates the currently used basket.
+   *
    * @param scopes    Basket scopes which should be validated ( see also BasketValidationScopeType ), default: minimal scope (max items limit, empty basket)
    * @returns         The (adjusted) basket and the validation results.
    */
@@ -302,6 +309,7 @@ export class BasketService {
   /**
    * Returns the list of active baskets for the current user. The first basket is the last modified basket.
    * Use this method to check if the user has at least one active basket
+   *
    * @returns         An array of basket base data.
    */
   getBaskets(): Observable<BasketBaseData[]> {
@@ -314,11 +322,12 @@ export class BasketService {
 
   /**
    * Adds a list of items with the given sku and quantity to the currently used basket.
+   *
    * @param items     The list of product SKU and quantity pairs to be added to the basket.
    */
   addItemsToBasket(items: SkuQuantityType[]): Observable<BasketInfo[]> {
     if (!items) {
-      return throwError('addItemsToBasket() called without items');
+      return throwError(() => new Error('addItemsToBasket() called without items'));
     }
 
     const body = items.map(item => ({
@@ -338,6 +347,7 @@ export class BasketService {
 
   /**
    * Add a promotion code to currently used basket.
+   *
    * @param codeStr   The code string of the promotion code that should be added to basket.
    * @returns         The info message after creation.
    */
@@ -347,11 +357,12 @@ export class BasketService {
       .post('promotioncodes', body, {
         headers: this.basketHeaders,
       })
-      .pipe(map(({ infos }) => infos && infos[0] && infos[0].message));
+      .pipe(map(({ infos }) => infos?.[0]?.message));
   }
 
   /**
    * Remove a promotion code from the currently used basket.
+   *
    * @param codeStr   The code string of the promotion code that should be removed from basket.
    */
   removePromotionCodeFromBasket(codeStr: string): Observable<string> {
@@ -362,6 +373,7 @@ export class BasketService {
 
   /**
    * Updates specific line items (quantity/shipping method) of the currently used basket.
+   *
    * @param itemId    The id of the line item that should be updated.
    * @param body      request body
    * @returns         Possible infos after the update.
@@ -379,6 +391,7 @@ export class BasketService {
 
   /**
    * Remove specific line item from the currently used basket.
+   *
    * @param itemId    The id of the line item that should be deleted.
    */
   deleteBasketItem(itemId: string): Observable<BasketInfo[]> {
@@ -394,12 +407,13 @@ export class BasketService {
 
   /**
    * Create a basket address for the currently used basket of an anonymous user.
+   *
    * @param address   The address which should be created
    * @returns         The new basket address.
    */
   createBasketAddress(address: Address): Observable<Address> {
     if (!address) {
-      return throwError('createBasketAddress() called without address');
+      return throwError(() => new Error('createBasketAddress() called without address'));
     }
     return this.currentBasketEndpoint()
       .post(`addresses`, address, {
@@ -413,15 +427,16 @@ export class BasketService {
 
   /**
    * Update partly or completely an address for the currently used basket of an anonymous user.
+   *
    * @param address   The address data which should be updated
    * @returns         The new basket address.
    */
   updateBasketAddress(address: Address): Observable<Address> {
     if (!address) {
-      return throwError('updateBasketAddress() called without address');
+      return throwError(() => new Error('updateBasketAddress() called without address'));
     }
     if (!address.id) {
-      return throwError('updateBasketAddress() called without addressId');
+      return throwError(() => new Error('updateBasketAddress() called without addressId'));
     }
     return this.currentBasketEndpoint()
       .patch(`addresses/${address.id}`, address, {
@@ -435,6 +450,7 @@ export class BasketService {
 
   /**
    * Get eligible shipping methods for the currently used basket or for the selected bucket of a basket.
+   *
    * @param bucketId  The bucket id.
    * @returns         The eligible shipping methods.
    */
@@ -460,12 +476,13 @@ export class BasketService {
 
   /**
    * Creates a requisition of a certain basket that has to be approved.
+   *
    * @param  basketId      Basket id.
    * @returns              nothing
    */
   createRequisition(basketId: string): Observable<void> {
     if (!basketId) {
-      return throwError('createRequisition() called without required basketId');
+      return throwError(() => new Error('createRequisition() called without required basketId'));
     }
 
     return this.orderService.createOrder(basketId, true).pipe(
@@ -474,19 +491,20 @@ export class BasketService {
         if (err.status === 422) {
           return of(undefined);
         }
-        return throwError(err);
+        return throwError(() => err);
       })
     );
   }
 
   /**
    * Create a custom attribute on the currently used basket. Default attribute type is 'String'.
+   *
    * @param attr   The custom attribute
    * @returns      The custom attribute
    */
   createBasketAttribute(attr: Attribute): Observable<Attribute> {
     if (!attr) {
-      return throwError('createBasketAttribute() called without attribute');
+      return throwError(() => new Error('createBasketAttribute() called without attribute'));
     }
 
     // if no type is provided save it as string
@@ -499,12 +517,13 @@ export class BasketService {
 
   /**
    * Update a custom attribute on the currently used basket. Default attribute type is 'String'.
+   *
    * @param attribute   The custom attribute
    * @returns           The custom attribute
    */
   updateBasketAttribute(attr: Attribute): Observable<Attribute> {
     if (!attr) {
-      return throwError('updateBasketAttribute() called without attribute');
+      return throwError(() => new Error('updateBasketAttribute() called without attribute'));
     }
 
     // if no type is provided save it as string
@@ -517,11 +536,12 @@ export class BasketService {
 
   /**
    * Delete a custom attribute from the currently used basket.
+   *
    * @param attributeName The name of the custom attribute
    */
   deleteBasketAttribute(attributeName: string): Observable<unknown> {
     if (!attributeName) {
-      return throwError('deleteBasketAttribute() called without attributeName');
+      return throwError(() => new Error('deleteBasketAttribute() called without attributeName'));
     }
     return this.currentBasketEndpoint().delete(`attributes/${attributeName}`, {
       headers: this.basketHeaders,

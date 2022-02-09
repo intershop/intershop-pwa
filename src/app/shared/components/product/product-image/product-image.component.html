@@ -2,7 +2,7 @@
   <a
     *ngIf="link; else image"
     data-testing-id="product-image-link"
-    [routerLink]="productURL$ | async"
+    [routerLink]="linkTarget || (productURL$ | async)"
     [queryParamsHandling]="queryParamsHandling"
     ><ng-container *ngTemplateOutlet="image"></ng-container>
   </a>

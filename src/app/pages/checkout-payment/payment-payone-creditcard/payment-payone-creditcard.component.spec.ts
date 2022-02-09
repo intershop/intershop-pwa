@@ -42,7 +42,7 @@ describe('Payment Payone Creditcard Component', () => {
   it('should emit cancel event when cancelNewPaymentInstrument is triggered', () => {
     fixture.detectChanges();
 
-    const emitter = spy(component.cancel);
+    const emitter = spy(component.cancelPayment);
 
     component.cancelNewPaymentInstrument();
     verify(emitter.emit()).once();
@@ -50,7 +50,7 @@ describe('Payment Payone Creditcard Component', () => {
 
   it('should emit submit event if submit call back returns with no error and parameter form is valid', () => {
     fixture.detectChanges();
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitPayment);
 
     const response = {
       pseudocardpan: 'token',
@@ -65,7 +65,7 @@ describe('Payment Payone Creditcard Component', () => {
 
   it('should not emit submit event if submit call back returns with error and parameter form is valid', () => {
     fixture.detectChanges();
-    const emitter = spy(component.submit);
+    const emitter = spy(component.submitPayment);
 
     const response = {
       pseudocardpan: 'token',

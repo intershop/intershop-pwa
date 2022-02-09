@@ -18,7 +18,7 @@
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint",
     "csstools.postcss",
-    "ms-vscode.vscode-typescript-tslint-plugin",
+    "dbaeumer.vscode-eslint",
     // testing
     "andys8.jest-snippets",
     // documentation

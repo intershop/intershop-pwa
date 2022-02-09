@@ -1,8 +1,8 @@
-// tslint:disable:ish-ordered-imports
 require('jest-preset-angular/setup-jest');
 
 import { CompilerOptions } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
+import '@angular/localize/init';
 import * as matchers from 'jest-extended';
 
 expect.extend(matchers);
@@ -39,7 +39,7 @@ beforeEach(() => {
         arg.startsWith('A router outlet has not been instantiated during routes activation. URL Segment:')
       )
     ) {
-      // tslint:disable-next-line:no-console
+      // eslint-disable-next-line no-console
       console.log(arg);
     }
   });

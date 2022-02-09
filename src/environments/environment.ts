@@ -8,5 +8,5 @@ import { Environment } from './environment.model';
  * otherwise tests will be polluted with them
  */
 
-// tslint:disable-next-line: ish-no-object-literal-type-assertion
+// eslint-disable-next-line ish-custom-rules/no-object-literal-type-assertion
 export const environment = {} as Environment;

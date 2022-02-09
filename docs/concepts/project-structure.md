@@ -17,7 +17,7 @@ We decided on a folder layout to fit our project-specific needs.
 Basic concerns included defining a set of basic rules where components and other artifacts should be located to ease development, customization and bundling to achieve fast loading.
 Here we deviate from the general guidelines of Angular CLI, but we provide custom CLI schematics to easily add all artifacts to the project.
 
-Additionally, the custom tslint rules `project-structure` and `ban-specific-imports` should be activated to have a feedback when adding files to the project.
+Additionally, the custom ESLint rules `project-structure` and `ban-imports-file-pattern` should be activated to receive feedback when adding files to the project.
 
 The basic structure looks like this:
 

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 
@@ -53,7 +53,7 @@ export class SelectWishlistFormComponent implements OnInit {
         wishlistOptions.map(option => ({
           type: 'ish-radio-field',
           key: 'wishlist',
-          defaultValue: wishlistOptions[0].value,
+          defaultValue: this.formGroup.get('wishlist')?.value || wishlistOptions[0].value,
           templateOptions: {
             fieldClass: ' ',
             value: option.value,

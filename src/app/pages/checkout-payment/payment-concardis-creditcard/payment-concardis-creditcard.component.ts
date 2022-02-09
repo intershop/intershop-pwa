@@ -3,14 +3,14 @@ import { FormControl, Validators } from '@angular/forms';
 import { range } from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
-import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
+import { ConcardisErrorMessageType, PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
-// tslint:disable:no-any - allows access to concardis js functionality
-declare var PayEngine: any;
+/* eslint-disable @typescript-eslint/no-explicit-any -- allows access to concardis js functionality */
+declare let PayEngine: any;
 
 /**
  * The Payment Concardis Creditcard Component renders a form on which the user can enter his concardis credit card data. Some entry fields are provided by an external host and embedded as iframes. Therefore an external javascript is loaded. See also {@link CheckoutPaymentPageComponent}
@@ -19,8 +19,8 @@ declare var PayEngine: any;
  * <ish-payment-concardis-creditcard
  [paymentMethod]="paymentMethod"
  [activated]="i === openFormIndex"
- (submit)="createNewPaymentInstrument($event)"
- (cancel)="cancelNewPaymentInstrument()"
+ (submitPayment)="createNewPaymentInstrument($event)"
+ (cancelPayment)="cancelNewPaymentInstrument()"
 ></ish-payment-concardis-creditcard>
  */
 @Component({
@@ -28,7 +28,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
@@ -94,8 +94,8 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
       this.scriptLoader
         .load(this.getPayEngineURL())
         .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          () => {
+        .subscribe({
+          next: () => {
             PayEngine.setPublishableKey(merchantId);
             // render iframe input fields for card number and cvc
             PayEngine.iframesInit(
@@ -105,12 +105,12 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
               (err: any, val: any) => this.initCallback(err, val)
             );
           },
-          error => {
+          error: error => {
             this.scriptLoaded = false;
             this.errorMessage.general.message = error;
             this.cd.detectChanges();
-          }
-        );
+          },
+        });
     }
   }
 
@@ -130,7 +130,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
    * call back function to submit data, get a response token from provider and send data in case of success
    */
   submitCallback(
-    error: { message: { properties: { key: string; code: number; message: string; messageKey: string }[] } | string },
+    error: { message: ConcardisErrorMessageType },
     result: {
       paymentInstrumentId: string;
       attributes: { brand: string; cardNumber: string; expiryMonth: string; expiryYear: string };
@@ -143,47 +143,9 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
 
     this.resetErrors();
     if (error) {
-      // map error messages
-      if (typeof error.message !== 'string' && error.message.properties) {
-        this.errorMessage.cardNumber =
-          error.message.properties && error.message.properties.find(prop => prop.key === 'cardNumber');
-        if (this.errorMessage.cardNumber && this.errorMessage.cardNumber.code) {
-          this.errorMessage.cardNumber.messageKey = this.getErrorMessage(
-            this.errorMessage.cardNumber.code,
-            'credit_card',
-            'number',
-            this.errorMessage.cardNumber.message
-          );
-        }
-
-        this.errorMessage.cvc =
-          error.message.properties && error.message.properties.find(prop => prop.key === 'verification');
-        if (this.errorMessage.cvc && this.errorMessage.cvc.code) {
-          this.errorMessage.cvc.messageKey = this.getErrorMessage(
-            this.errorMessage.cvc.code,
-            'credit_card',
-            'cvc',
-            this.errorMessage.cvc.message
-          );
-        }
-
-        if (!this.parameterForm.invalid) {
-          this.errorMessage.expiryMonth =
-            error.message.properties && error.message.properties.find(prop => prop.key === 'expiryMonth');
-          if (this.errorMessage.expiryMonth && this.errorMessage.expiryMonth.code) {
-            this.errorMessage.expiryMonth.messageKey = this.getErrorMessage(
-              this.errorMessage.expiryMonth.code,
-              'credit_card',
-              'expiryMonth',
-              this.errorMessage.expiryMonth.message
-            );
-          }
-        }
-      } else if (typeof error.message === 'string') {
-        this.errorMessage.general.message = error.message;
-      }
-    } else if (!this.parameterForm.invalid) {
-      this.submit.emit({
+      this.mapErrorMessage(error.message);
+    } else if (this.parameterForm.valid) {
+      this.submitPayment.emit({
         parameters: [
           { name: 'paymentInstrumentId', value: result.paymentInstrumentId },
           { name: 'maskedCardNumber', value: result.attributes.cardNumber },
@@ -206,9 +168,48 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
       expiryMonth: this.parameterForm.controls.expirationMonth.value,
       expiryYear: this.parameterForm.controls.expirationYear.value,
     };
-    // tslint:disable-next-line:no-null-keyword
+    // eslint-disable-next-line unicorn/no-null
     PayEngine.iframesCreatePaymentInstrument(this.iframesReference, paymentData, null, (err: any, val: any) =>
       this.submitCallback(err, val)
     );
+  }
+
+  // map call back error message to component messages
+  private mapErrorMessage(errorMessage: ConcardisErrorMessageType) {
+    if (typeof errorMessage !== 'string' && errorMessage.properties) {
+      this.errorMessage.cardNumber = errorMessage.properties?.find(prop => prop.key === 'cardNumber');
+      if (this.errorMessage.cardNumber?.code) {
+        this.errorMessage.cardNumber.messageKey = this.getErrorMessage(
+          this.errorMessage.cardNumber.code,
+          'credit_card',
+          'number',
+          this.errorMessage.cardNumber.message
+        );
+      }
+
+      this.errorMessage.cvc = errorMessage.properties?.find(prop => prop.key === 'verification');
+      if (this.errorMessage.cvc?.code) {
+        this.errorMessage.cvc.messageKey = this.getErrorMessage(
+          this.errorMessage.cvc.code,
+          'credit_card',
+          'cvc',
+          this.errorMessage.cvc.message
+        );
+      }
+
+      if (!this.parameterForm.invalid) {
+        this.errorMessage.expiryMonth = errorMessage.properties?.find(prop => prop.key === 'expiryMonth');
+        if (this.errorMessage.expiryMonth?.code) {
+          this.errorMessage.expiryMonth.messageKey = this.getErrorMessage(
+            this.errorMessage.expiryMonth.code,
+            'credit_card',
+            'expiryMonth',
+            this.errorMessage.expiryMonth.message
+          );
+        }
+      }
+    } else if (typeof errorMessage === 'string') {
+      this.errorMessage.general.message = errorMessage;
+    }
   }
 }

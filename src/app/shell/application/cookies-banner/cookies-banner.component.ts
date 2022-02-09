@@ -21,7 +21,6 @@ export class CookiesBannerComponent implements OnInit {
   showBanner = false;
   transitionBanner: string = undefined;
 
-  // tslint:disable:no-intelligence-in-artifacts
   constructor(
     @Inject(PLATFORM_ID) private platformId: string,
     private transferState: TransferState,

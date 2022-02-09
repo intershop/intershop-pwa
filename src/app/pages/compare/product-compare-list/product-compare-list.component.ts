@@ -13,11 +13,7 @@ import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product
  * Displays a table of products to be compared with paging handled by the {@link ProductComparePagingComponent}.
  *
  * @example
- * <ish-product-compare-list
- *               [compareProducts]="compareProducts"
- *               (productToBasket)="addToBasket($event)"
- *               (removeProductCompare)="removeFromCompare($event)"
- * ></ish-product-compare-list>
+ * <ish-product-compare-list [compareProducts]="compareProducts$ | async"></ish-product-compare-list>
  */
 @Component({
   selector: 'ish-product-compare-list',
@@ -67,6 +63,7 @@ export class ProductCompareListComponent implements OnInit {
 
   /**
    * Changes the current page and sets the according compare products to be visible.
+   *
    * @param pageNumber The page number to set the current page to
    */
   changeCurrentPage(pageNumber: number) {
@@ -83,6 +80,7 @@ export class ProductCompareListComponent implements OnInit {
 
   /**
    * Remove the product with the given SKU from the compare list.
+   *
    * @param sku The SKU of the product to remove
    */
   removeFromCompare(sku: string) {

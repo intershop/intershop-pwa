@@ -19,6 +19,7 @@ export class BasketValidationItemsComponent {
 
   /**
    * Throws deleteItem event when delete button was clicked.
+   *
    * @param itemId The id of the item that should be deleted.
    */
   onDeleteItem(itemId: string) {

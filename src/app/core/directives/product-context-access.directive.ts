@@ -11,7 +11,7 @@ type ProductContextAccessContext = ProductContext & { context: ProductContextFac
 })
 export class ProductContextAccessDirective implements OnDestroy {
   private view: EmbeddedViewRef<ProductContextAccessContext>;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     context: ProductContextFacade,
@@ -25,7 +25,7 @@ export class ProductContextAccessDirective implements OnDestroy {
         if (!this.view && ctx?.product) {
           this.view = viewContainer.createEmbeddedView(template, { ...ctx, context });
         } else if (this.view && ctx?.product) {
-          // tslint:disable-next-line: ban
+          // eslint-disable-next-line ban/ban
           Object.assign(this.view.context, ctx);
         }
 

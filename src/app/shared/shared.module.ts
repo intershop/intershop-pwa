@@ -28,6 +28,7 @@ import { OrderTemplatesExportsModule } from '../extensions/order-templates/expor
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
+import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
 import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
@@ -163,6 +164,7 @@ const importExportModules = [
   ReactiveFormsModule,
   RoleToggleModule,
   RouterModule,
+  StoreLocatorExportsModule,
   SwiperModule,
   TactonExportsModule,
   TranslateModule,

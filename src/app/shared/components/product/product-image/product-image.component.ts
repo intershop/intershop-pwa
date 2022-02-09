@@ -21,9 +21,11 @@ import { Image } from 'ish-core/models/image/image.model';
 })
 export class ProductImageComponent implements OnInit {
   /**
-   * If true, a product link is generated around the component
+   * If true, a product link is generated around the component or the given link target is taken
    */
   @Input() link = false;
+  @Input() linkTarget?: string;
+
   @Input() queryParamsHandling: QueryParamsHandling = 'merge';
   /**
    * The image type (size), i.e. 'S' for the small image.
@@ -45,7 +47,7 @@ export class ProductImageComponent implements OnInit {
   /**
    * deferred loading flag
    */
-  showImage$ = new ReplaySubject(1);
+  showImage$ = new ReplaySubject<void>(1);
 
   constructor(private translateService: TranslateService, private context: ProductContextFacade) {}
 

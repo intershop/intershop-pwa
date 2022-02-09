@@ -29,9 +29,9 @@ export interface AbstractBasket<T> {
   attributes?: Attribute[];
 }
 
-export interface Basket extends AbstractBasket<LineItem> {}
+export type Basket = AbstractBasket<LineItem>;
 
-export interface BasketView extends AbstractBasket<LineItemView> {}
+export type BasketView = AbstractBasket<LineItemView>;
 
 export const createBasketView = (
   basket: Basket,
@@ -48,7 +48,7 @@ export const createBasketView = (
               ? validationResults.errors.find(error => error.parameters && error.parameters.lineItemId === li.id)
               : undefined,
           info:
-            basketInfo && basketInfo.length && basketInfo[0].causes
+            basketInfo?.length && basketInfo[0].causes
               ? basketInfo[0].causes.find(cause => cause.parameters && cause.parameters.lineItemId === li.id)
               : undefined,
         }))

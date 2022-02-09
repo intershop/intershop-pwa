@@ -20,7 +20,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
   shippingMethods$: Observable<ShippingMethod[]>;
   isBusinessCustomer$: Observable<boolean>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   nextDisabled = false;
 

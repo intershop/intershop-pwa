@@ -8,7 +8,7 @@ import { BasketView, createBasketView } from 'ish-core/models/basket/basket.mode
 import { getCustomerState } from 'ish-core/store/customer/customer-store';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
-const getBasketState = createSelector(getCustomerState, state => state && state.basket);
+const getBasketState = createSelector(getCustomerState, state => state?.basket);
 
 export const getBasketValidationResults = createSelector(getBasketState, (basket): BasketValidationResultType => {
   if (!basket || !basket.validationResults) {
@@ -22,10 +22,9 @@ export const getBasketValidationResults = createSelector(getBasketState, (basket
     errors: basketResults.errors
       ? basketResults.errors.map(error => ({
           ...error,
-          lineItem: error.parameters &&
-            error.parameters.lineItemId && {
-              ...basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId),
-            },
+          lineItem: error.parameters?.lineItemId && {
+            ...basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId),
+          },
         }))
       : [],
   };
@@ -69,13 +68,8 @@ export const getBasketEligibleShippingMethods = createSelector(
   basket => basket.eligibleShippingMethods
 );
 
-export const getBasketEligiblePaymentMethods = createSelector(
-  getBasketState,
-  getLoggedInCustomer,
-  (basket, customer) =>
-    basket &&
-    basket.eligiblePaymentMethods &&
-    basket.eligiblePaymentMethods.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
+export const getBasketEligiblePaymentMethods = createSelector(getBasketState, getLoggedInCustomer, (basket, customer) =>
+  basket?.eligiblePaymentMethods?.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
 );
 
 export const getBasketInvoiceAddress = createSelectorFactory<object, Address>(projector =>

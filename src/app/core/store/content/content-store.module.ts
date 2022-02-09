@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { Injectable, InjectionToken, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -29,16 +29,22 @@ const contentReducers: ActionReducerMap<ContentState> = {
 
 const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects, PageTreeEffects, ParametersEffects];
 
-const metaReducers = [resetOnLogoutMeta];
+@Injectable()
+export class ContentStoreConfig implements StoreConfig<ContentState> {
+  metaReducers = [resetOnLogoutMeta];
+}
+
+export const CONTENT_STORE_CONFIG = new InjectionToken<StoreConfig<ContentState>>('contentStoreConfig');
 
 @NgModule({
   imports: [
     EffectsModule.forFeature(contentEffects),
-    StoreModule.forFeature('content', contentReducers, { metaReducers }),
+    StoreModule.forFeature('content', contentReducers, CONTENT_STORE_CONFIG),
   ],
+  providers: [{ provide: CONTENT_STORE_CONFIG, useClass: ContentStoreConfig }],
 })
 export class ContentStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<ContentState>)[]) {
-    return StoreModule.forFeature('content', pick(contentReducers, reducers), { metaReducers });
+    return StoreModule.forFeature('content', pick(contentReducers, reducers));
   }
 }

@@ -9,7 +9,7 @@ import {
   TranslateParser,
 } from '@ngx-translate/core';
 import { memoize } from 'lodash-es';
-import { concat, defer, iif, of } from 'rxjs';
+import { EMPTY, concat, defer, iif, of } from 'rxjs';
 import { filter, first, map, tap } from 'rxjs/operators';
 
 import { getSpecificServerTranslation, loadSingleServerTranslation } from 'ish-core/store/core/configuration';
@@ -80,11 +80,15 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
       const isFallbackAvailable = currentLang !== this.fallback;
       return concat(
         // try API call with specific key
-        iif(() => doSingleCheck, this.retrieveICMSpecificTranslation(currentLang, params.key)),
+        iif(() => doSingleCheck, this.retrieveICMSpecificTranslation(currentLang, params.key), EMPTY),
         // try fallback translations
-        iif(() => isFallbackAvailable, this.retrieveOtherSpecificTranslation(this.fallback, params.key)),
+        iif(() => isFallbackAvailable, this.retrieveOtherSpecificTranslation(this.fallback, params.key), EMPTY),
         // try API call with fallback translation
-        iif(() => isFallbackAvailable && doSingleCheck, this.retrieveICMSpecificTranslation(this.fallback, params.key)),
+        iif(
+          () => isFallbackAvailable && doSingleCheck,
+          this.retrieveICMSpecificTranslation(this.fallback, params.key),
+          EMPTY
+        ),
         // give up
         of(params.key)
       ).pipe(
@@ -92,7 +96,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
         whenTruthy(),
         first(),
         map(translation => this.translateParser.interpolate(translation, params.interpolateParams)),
-        map(translation => (PRODUCTION_MODE ? translation : 'TRANSLATE_ME ' + translation))
+        map(translation => (PRODUCTION_MODE ? translation : `TRANSLATE_ME ${translation}`))
       );
     }
     return params.key;

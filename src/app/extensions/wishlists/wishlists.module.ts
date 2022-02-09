@@ -16,8 +16,8 @@ import { WishlistsLinkComponent } from './shared/wishlists-link/wishlists-link.c
     SelectWishlistFormComponent,
     SelectWishlistModalComponent,
     WishlistPreferencesDialogComponent,
-    WishlistWidgetComponent,
     WishlistsLinkComponent,
+    WishlistWidgetComponent,
   ],
   exports: [SelectWishlistModalComponent, WishlistPreferencesDialogComponent],
 })

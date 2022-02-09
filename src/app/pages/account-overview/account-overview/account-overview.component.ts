@@ -4,10 +4,10 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 
 /**
- * The Account Overview Page Component displays the account overview dashboard of the user's 'MyAccount' section. See also {@link OrderOverviewPageContainerComponent}
+ * The Account Overview Page Component displays the account overview dashboard of the user's 'MyAccount' section.
  *
  * @example
- * <ish-account-overview-page [user]="user$ | async"></ish-account-overview-page>
+ * <ish-account-overview [user]="user$ | async"></ish-account-overview>
  */
 @Component({
   selector: 'ish-account-overview',

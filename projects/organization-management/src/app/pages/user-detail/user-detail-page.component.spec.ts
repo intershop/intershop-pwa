@@ -63,7 +63,7 @@ describe('User Detail Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display user data after creation ', () => {
+  it('should display user data after creation', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('[data-testing-id="name-field"]').textContent).toMatchInlineSnapshot(

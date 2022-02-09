@@ -19,17 +19,16 @@ export class FilterNavigationMapper {
 
   fromData(data: FilterNavigationData): FilterNavigation {
     return {
-      filter:
-        data && data.elements
-          ? data.elements.map(filterData => ({
-              id: filterData.id,
-              name: filterData.name,
-              displayType: filterData.displayType,
-              limitCount: filterData.limitCount || -1,
-              facets: this.mapFacetData(filterData),
-              selectionType: filterData.selectionType || 'single',
-            }))
-          : [],
+      filter: data?.elements
+        ? data.elements.map(filterData => ({
+            id: filterData.id,
+            name: filterData.name,
+            displayType: filterData.displayType,
+            limitCount: filterData.limitCount || -1,
+            facets: this.mapFacetData(filterData),
+            selectionType: filterData.selectionType || 'single',
+          }))
+        : [],
     };
   }
 

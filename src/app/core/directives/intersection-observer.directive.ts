@@ -29,7 +29,7 @@ export class IntersectionObserverDirective implements OnInit, OnDestroy {
 
   @Output() visibilityChange = new EventEmitter<IntersectionStatus>();
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private element: ElementRef, @Inject(PLATFORM_ID) private platformId: string) {}
 
@@ -92,7 +92,7 @@ const fromIntersectionObserver = (element: HTMLElement, config: IntersectionObse
     return {
       unsubscribe() {
         intersectionObserver.disconnect();
-        // tslint:disable-next-line rxjs-no-subject-unsubscribe ban
+        // eslint-disable-next-line ban/ban, rxjs/no-subject-unsubscribe
         subject$.unsubscribe();
       },
     };

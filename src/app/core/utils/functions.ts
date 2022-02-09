@@ -6,7 +6,7 @@ import { Observable, isObservable, of } from 'rxjs';
  * Truncates whenever no complete remaining slice could be constructed.
  */
 export const arraySlices = <T>(input: T[], sliceLength: number): T[][] =>
-  input && input.length && sliceLength > 0
+  input?.length && sliceLength > 0
     ? // determine slice indexes
       range(0, Math.ceil(input.length / sliceLength))
         // cut array into slices
@@ -22,7 +22,7 @@ function isObject(item: unknown) {
 /**
  * @see https://stackoverflow.com/a/37164538/13001898
  */
-// tslint:disable-next-line: no-any - utility function
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- utility function
 export function mergeDeep(target: any, source: any) {
   let output = { ...target };
   if (isObject(target) && isObject(source)) {

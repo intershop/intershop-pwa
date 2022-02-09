@@ -19,6 +19,7 @@ export class CostCentersService {
 
   /**
    * Get all cost centers of a customer. The current user is expected to have permission APP_B2B_VIEW_COSTCENTER.
+   *
    * @returns               All cost centers of the customer.
    */
   getCostCenters(): Observable<CostCenter[]> {
@@ -34,12 +35,13 @@ export class CostCentersService {
 
   /**
    * Get a cost center of a customer. The current user is expected to have permission APP_B2B_VIEW_COSTCENTER.
+   *
    * @param   costCenterId  The costCenterId of the cost center.
    * @returns               The requested cost center of the customer.
    */
   getCostCenter(costCenterId: string): Observable<CostCenter> {
     if (!costCenterId) {
-      return throwError('getCostCenter() called without required costCenterId');
+      return throwError(() => new Error('getCostCenter() called without required costCenterId'));
     }
 
     return this.currentCustomer$.pipe(
@@ -53,12 +55,13 @@ export class CostCentersService {
 
   /**
    * Creates a cost center of a customer. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param   costCenter  The costCenter for the cost center creation.
    * @returns             The new cost center.
    */
   addCostCenter(costCenter: CostCenterBase): Observable<CostCenter> {
     if (!costCenter) {
-      return throwError('addCostCenter() called without required costCenter');
+      return throwError(() => new Error('addCostCenter() called without required costCenter'));
     }
 
     return this.currentCustomer$.pipe(
@@ -72,12 +75,13 @@ export class CostCentersService {
 
   /**
    * Updates a cost center of a customer. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param   costCenter  The costCenter for the cost center update.
    * @returns             The updated cost center.
    */
   updateCostCenter(costCenter: CostCenterBase): Observable<CostCenter> {
     if (!costCenter) {
-      return throwError('updateCostCenter() called without required costCenter');
+      return throwError(() => new Error('updateCostCenter() called without required costCenter'));
     }
 
     return this.currentCustomer$.pipe(
@@ -91,11 +95,12 @@ export class CostCentersService {
 
   /**
    * Deletes a cost center of a customer. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param     id  The id of the costcenter that is to be deleted.
    */
   deleteCostCenter(id: string) {
     if (!id) {
-      return throwError('deleteCostCenter() called without required id');
+      return throwError(() => new Error('deleteCostCenter() called without required id'));
     }
 
     return this.currentCustomer$.pipe(
@@ -105,16 +110,17 @@ export class CostCentersService {
 
   /**
    * Adds buyers with their budgets to the cost center. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param     costCenterId  The id of the costcenter.
    * @param     buyers        An array of buyers and budgets.
    * @returns                 The changed cost center.
    */
   addCostCenterBuyers(costCenterId: string, buyers: CostCenterBuyer[]): Observable<CostCenter> {
     if (!costCenterId) {
-      return throwError('addCostCenterBuyers() called without required costCenterId');
+      return throwError(() => new Error('addCostCenterBuyers() called without required costCenterId'));
     }
     if (!buyers?.length) {
-      return throwError('addCostCenterBuyers() called without required buyers');
+      return throwError(() => new Error('addCostCenterBuyers() called without required buyers'));
     }
 
     return this.currentCustomer$.pipe(
@@ -130,16 +136,17 @@ export class CostCentersService {
 
   /**
    * Updates a cost center buyer budget. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param     costCenterId  The id of the costcenter.
    * @param     buyer         The changed buyer budget of the costcenter.
    * @returns                 The updated cost center.
    */
   updateCostCenterBuyer(costCenterId: string, buyer: CostCenterBuyer): Observable<CostCenter> {
     if (!costCenterId) {
-      return throwError('updateCostCenterBuyer() called without required costCenterId');
+      return throwError(() => new Error('updateCostCenterBuyer() called without required costCenterId'));
     }
     if (!buyer) {
-      return throwError('updateCostCenterBuyer() called without required buyer');
+      return throwError(() => new Error('updateCostCenterBuyer() called without required buyer'));
     }
 
     return this.currentCustomer$.pipe(
@@ -152,17 +159,18 @@ export class CostCentersService {
   }
 
   /**
-   * Unassigns a buyer from a cost center. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   * Un-assigns a buyer from a cost center. The current user is expected to have permission APP_B2B_MANAGE_COSTCENTER.
+   *
    * @param     costCenterId  The id of the costcenter.
    * @param     login         The login of the buyer.
    * @returns                 The changed cost center.
    */
   deleteCostCenterBuyer(costCenterId: string, login: string): Observable<CostCenter> {
     if (!costCenterId) {
-      return throwError('deleteCostCenterBuyer() called without required costCenterId');
+      return throwError(() => new Error('deleteCostCenterBuyer() called without required costCenterId'));
     }
     if (!login) {
-      return throwError('deleteCostCenterBuyer() called without required login');
+      return throwError(() => new Error('deleteCostCenterBuyer() called without required login'));
     }
 
     return this.currentCustomer$.pipe(
@@ -187,7 +195,7 @@ export class CostCentersService {
         map(links =>
           links.map(item => {
             // check link uri and prepend server ICM if necessary
-            const uri = item.uri.substr(item.uri.indexOf('/customers'));
+            const uri = item.uri.substring(item.uri.indexOf('/customers'));
             return this.apiService.get<T>(uri, options);
           })
         ),

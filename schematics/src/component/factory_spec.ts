@@ -1,5 +1,6 @@
 import { noop } from '@angular-devkit/schematics';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
@@ -17,7 +18,8 @@ describe('Component Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner).toPromise();
+    const appTree$ = createApplication(schematicRunner);
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create a component', async () => {
@@ -261,5 +263,32 @@ describe('Component Schematic', () => {
     appTree = await schematicRunner.runSchematicAsync('component', defaultOptions, appTree).toPromise();
 
     expect(appTree.files).toContain('/projects/bar/custom/app/foo/foo.component.ts');
+  });
+
+  it('should find the closest module respecting all override', async () => {
+    const options = { ...defaultOptions };
+    const fooModules = ['/src/app/foo/foo.module.ts', '/src/app/foo/foo.module.all.ts'];
+    fooModules.forEach(fooModule =>
+      appTree.create(
+        fooModule,
+        `
+      import { NgModule } from '@angular/core';
+
+      @NgModule({
+        imports: [],
+        declarations: []
+      })
+      export class FooModule { }
+    `
+      )
+    );
+
+    const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
+    expect(tree.readContent('/src/app/foo/foo.module.ts')).not.toMatch(
+      /import { FooComponent } from '.\/foo.component'/
+    );
+    expect(tree.readContent('/src/app/foo/foo.module.all.ts')).toMatch(
+      /import { FooComponent } from '.\/foo.component'/
+    );
   });
 });

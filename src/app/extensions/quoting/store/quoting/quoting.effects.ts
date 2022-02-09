@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { from, iif, of } from 'rxjs';
+import { EMPTY, from, iif, of } from 'rxjs';
 import { concatMap, filter, first, map, mergeMap, mergeMapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -115,15 +115,15 @@ export class QuotingEffects {
     this.actions$.pipe(
       ofType(addQuoteToBasket),
       mapToPayloadProperty('id'),
-      concatMap(id =>
+      concatMap(quoteId =>
         this.store.pipe(
           select(getCurrentBasketId),
           first(),
           switchMap(basketId =>
             !basketId ? this.basketService.createBasket().pipe(map(basket => basket.id)) : of(basketId)
           ),
-          concatMap(() => this.quotingService.addQuoteToBasket(id)),
-          mergeMapTo([updateBasket({ update: { calculated: true } }), addQuoteToBasketSuccess({ id })]),
+          concatMap(basketId => this.quotingService.addQuoteToBasket(basketId, quoteId)),
+          mergeMapTo([updateBasket({ update: { calculated: true } }), addQuoteToBasketSuccess({ id: quoteId })]),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -176,7 +176,7 @@ export class QuotingEffects {
         ofType(createQuoteRequestFromQuoteSuccess, createQuoteRequestFromBasketSuccess),
         mapToPayloadProperty('entity'),
         mapToProperty('id'),
-        concatMap(id => from(this.router.navigateByUrl('/account/quotes/' + id)))
+        concatMap(id => from(this.router.navigateByUrl(`/account/quotes/${id}`)))
       ),
     { dispatch: false }
   );
@@ -189,7 +189,7 @@ export class QuotingEffects {
         mapToProperty('id'),
         withLatestFrom(this.store.pipe(select(selectUrl))),
         filter(([, url]) => url.startsWith('/account/quotes')),
-        concatMap(([id]) => from(this.router.navigateByUrl('/account/quotes/' + id)))
+        concatMap(([id]) => from(this.router.navigateByUrl(`/account/quotes/${id}`)))
       ),
     { dispatch: false }
   );
@@ -242,7 +242,8 @@ export class QuotingEffects {
                 },
               ]),
               map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
-            )
+            ),
+            EMPTY
           )
         )
       )

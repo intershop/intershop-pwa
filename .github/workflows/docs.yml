@@ -40,10 +40,6 @@ jobs:
       - name: Check No Changes
         run: git diff --exit-code --raw -p --stat
 
-      - name: Check Dead Links For All Files
-        if: github.ref == 'refs/heads/develop'
-        run: node docs/check-dead-links
-
       - name: Check Dead Links For Changed Files
         if: github.ref != 'refs/heads/develop'
         run: node docs/check-dead-links origin/develop

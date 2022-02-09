@@ -4,6 +4,13 @@ import { ServerConfigData, ServerConfigDataEntry } from './server-config.interfa
 import { ServerConfig } from './server-config.model';
 
 export class ServerConfigMapper {
+  static fromData(payload: ServerConfigData): ServerConfig {
+    if (payload?.data) {
+      return ServerConfigMapper.mapEntries(payload.data);
+    }
+    return {};
+  }
+
   private static transformType(val: unknown) {
     if (typeof val === 'string') {
       if (!isNaN(+val)) {
@@ -22,6 +29,7 @@ export class ServerConfigMapper {
       (acc, entry) => ({
         ...acc,
         [entry[0]]:
+          // eslint-disable-next-line unicorn/no-null
           entry[1] !== null && typeof entry[1] === 'object' && !Array.isArray(entry[1])
             ? // do recursion if we find an object
               ServerConfigMapper.mapEntries(
@@ -33,12 +41,5 @@ export class ServerConfigMapper {
       }),
       {}
     );
-  }
-
-  static fromData(payload: ServerConfigData): ServerConfig {
-    if (payload && payload.data) {
-      return ServerConfigMapper.mapEntries(payload.data);
-    }
-    return {};
   }
 }

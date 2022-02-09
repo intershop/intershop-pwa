@@ -3,10 +3,10 @@ import { Store, select } from '@ngrx/store';
 
 import { get<%= classify(name) %>State } from '../store/<%= dasherize(name) %>-store';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class <%= classify(name) %>Facade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store) {}
 
   /**
    * example for debugging

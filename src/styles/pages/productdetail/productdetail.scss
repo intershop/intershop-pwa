@@ -6,7 +6,7 @@
 }
 
 .product-details {
-  padding: 0;
+  padding: 0 0 $space-default * 3 0;
 
   .label-quantity {
     padding-top: 7px;
@@ -84,10 +84,10 @@
     padding: divide($space-default, 3) 0;
 
     a {
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
 
       &:hover {
-        color: darken($text-color-quarternary, 10%);
+        color: darken($text-color-quaternary, 10%);
       }
     }
 
@@ -124,21 +124,4 @@
   .product-warranty-list {
     margin-top: divide($space-default, 3);
   }
-}
-
-// product links with tabs or as accordion
-.collection .tab-content > .tab-pane,
-.accordion .panel-collapse {
-  display: block;
-  height: 0;
-  pointer-events: none;
-  visibility: hidden;
-}
-
-.collection .tab-content > .active,
-.accordion .panel-collapse.in {
-  display: block;
-  height: auto;
-  pointer-events: auto;
-  visibility: visible;
 }

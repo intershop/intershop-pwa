@@ -245,7 +245,7 @@ export class ApiTokenService {
               // timer introduced for testability
               return timer(500).pipe(switchMapTo(next.handle(retryRequest)));
             }
-            return throwError(err);
+            return throwError(() => err);
           }),
           tap(event => this.setTokenFromResponse(event))
         )

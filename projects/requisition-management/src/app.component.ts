@@ -9,7 +9,6 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line: component-creation-test
 export class AppComponent implements OnInit {
   user$: Observable<User>;
 

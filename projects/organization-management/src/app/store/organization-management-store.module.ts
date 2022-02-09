@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { Injectable, InjectionToken, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -21,18 +21,28 @@ const organizationManagementReducers: ActionReducerMap<OrganizationManagementSta
 
 const organizationManagementEffects = [UsersEffects, CostCentersEffects, BudgetEffects];
 
-const metaReducers = [resetOnLogoutMeta];
+@Injectable()
+export class DefaultOrganizationManagementStoreConfig implements StoreConfig<OrganizationManagementState> {
+  metaReducers = [resetOnLogoutMeta];
+}
+
+export const ORGANIZATION_MANAGEMENT_STORE_CONFIG = new InjectionToken<StoreConfig<OrganizationManagementState>>(
+  'organizationManagementStoreConfig'
+);
 
 @NgModule({
   imports: [
     EffectsModule.forFeature(organizationManagementEffects),
-    StoreModule.forFeature('organizationManagement', organizationManagementReducers, { metaReducers }),
+    StoreModule.forFeature(
+      'organizationManagement',
+      organizationManagementReducers,
+      ORGANIZATION_MANAGEMENT_STORE_CONFIG
+    ),
   ],
+  providers: [{ provide: ORGANIZATION_MANAGEMENT_STORE_CONFIG, useClass: DefaultOrganizationManagementStoreConfig }],
 })
 export class OrganizationManagementStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<OrganizationManagementState>)[]) {
-    return StoreModule.forFeature('organizationManagement', pick(organizationManagementReducers, reducers), {
-      metaReducers,
-    });
+    return StoreModule.forFeature('organizationManagement', pick(organizationManagementReducers, reducers));
   }
 }

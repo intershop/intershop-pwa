@@ -28,7 +28,7 @@ export const overrides: Partial<Environment> = {};
     envDevFile,
     `import { Environment } from "./environment.model";
 
-// tslint:disable
+/* eslint-disable */
 
 // running out of memory?
 // NODE_OPTIONS=--max_old_space_size=8192

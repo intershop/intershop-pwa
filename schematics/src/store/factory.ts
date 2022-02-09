@@ -21,6 +21,7 @@ import { insertImport } from '../utils/registration';
 
 import { PWAStoreOptionsSchema as Options } from './schema';
 
+// eslint-disable-next-line complexity
 export async function determineStoreLocation(
   host: Tree,
   options: {

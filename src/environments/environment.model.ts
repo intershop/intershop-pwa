@@ -25,24 +25,28 @@ export interface Environment {
     | 'compare'
     | 'rating'
     | 'recently'
+    | 'storeLocator'
     /* B2B features */
-    | 'advancedVariationHandling'
     | 'businessCustomerRegistration'
     | 'costCenters'
     | 'quoting'
     | 'quickorder'
     | 'orderTemplates'
     | 'punchout'
+    /* B2C features */
+    | 'guestCheckout'
+    | 'wishlists'
     /* Third-party Integrations */
     | 'sentry'
     | 'tracking'
     | 'tacton'
-    /* B2C features */
-    | 'guestCheckout'
-    | 'wishlists'
+    | 'maps'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
+
+  // Google Maps API Key
+  gmaKey?: string;
 
   // track shop interaction via Google Tag Manager (to be used with 'tracking' feature, works with server side rendering only)
   gtmToken?: string;
@@ -118,7 +122,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmApplication: 'rest',
   identityProvider: 'ICM',
 
-  /* FEATURE TOOGLES */
+  /* FEATURE TOGGLES */
   features: ['compare', 'guestCheckout', 'recently', 'rating', 'wishlists'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */

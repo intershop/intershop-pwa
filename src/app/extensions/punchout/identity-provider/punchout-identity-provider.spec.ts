@@ -3,8 +3,8 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, Router, UrlTree, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { EMPTY, Observable, Subject, noop, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { EMPTY, Observable, Subject, noop, of, timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { anyString, anything, capture, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -183,7 +183,7 @@ describe('Punchout Identity Provider', () => {
       describe('isLoggedIn$ emits first', () => {
         beforeEach(() => {
           // userError$ first
-          when(accountFacade.userError$).thenReturn(EMPTY.pipe(delay(Infinity)));
+          when(accountFacade.userError$).thenReturn(timer(Infinity).pipe(switchMap(() => EMPTY)));
           when(accountFacade.isLoggedIn$).thenReturn(of(true));
         });
 
@@ -336,7 +336,7 @@ describe('Punchout Identity Provider', () => {
       describe('userError$ emits first', () => {
         beforeEach(() => {
           when(accountFacade.userError$).thenReturn(of(makeHttpError({ message: 'userError' })));
-          when(accountFacade.isLoggedIn$).thenReturn(EMPTY.pipe(delay(Infinity)));
+          when(accountFacade.isLoggedIn$).thenReturn(timer(Infinity).pipe(switchMap(() => EMPTY)));
           queryParams = { sid: 'sid', 'access-token': 'accessToken' };
         });
 

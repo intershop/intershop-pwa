@@ -29,7 +29,7 @@
   }
 
   .cart-pli-data {
-    color: $text-color-quarternary;
+    color: $text-color-quaternary;
 
     span {
       display: inline-block;
@@ -69,10 +69,6 @@
   input {
     border: $border-width-default solid $border-color-default;
   }
-}
-
-.addressDeleteConfirmation {
-  display: none;
 }
 
 .infobox-wrapper {
@@ -150,20 +146,5 @@
         margin-top: $space-default;
       }
     }
-  }
-}
-
-/* Promotions Carousel */
-
-.promotionsCarousel {
-  padding-bottom: $space-default * 3;
-
-  .carousel-indicators {
-    bottom: -25px;
-  }
-
-  .carousel-inner > .active {
-    padding-right: 30px;
-    padding-left: 30px;
   }
 }

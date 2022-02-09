@@ -30,7 +30,7 @@ export class ConfigurePageComponent implements OnInit, OnDestroy {
   step$: Observable<TactonProductConfigurationGroup>;
   loading$: Observable<boolean>;
   product$: Observable<ProductView>;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private tactonFacade: TactonFacade, private context: ProductContextFacade) {}
 

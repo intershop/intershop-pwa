@@ -26,12 +26,12 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
 @GenerateLazyComponent()
 export class ProductAddToOrderTemplateComponent implements OnDestroy, OnInit {
   @Input() displayType?: 'icon' | 'link' | 'animated' = 'link';
-  @Input() class?: string;
+  @Input() cssClass?: string;
 
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,

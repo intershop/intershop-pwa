@@ -1,26 +1,27 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import * as fs from 'fs';
-import * as glob from 'glob';
 import { basename, join, sep } from 'path';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const purgecssPlugin = require('purgecss-webpack-plugin');
+
+const glob = require('glob');
 
 class Logger {
   constructor(private target: string, private config: string, progressActive: boolean) {
     if (progressActive) {
-      // tslint:disable-next-line: no-console
       console.log('\n');
     }
   }
 
   log(...txt: unknown[]) {
-    // tslint:disable-next-line: no-console
     console.log(`${this.target}@${this.config}:`, ...txt);
   }
 
   warn(...txt: unknown[]) {
-    // tslint:disable-next-line: no-console
     console.warn(`${this.target}@${this.config}:`, ...txt);
   }
 }
@@ -47,16 +48,16 @@ function crawlFiles(folder: string, callback: (files: string[]) => void) {
   }
 }
 
-// tslint:disable-next-line: no-any
-function traverse(obj: object, test: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function traverse(obj: object, ftest: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
   Object.entries(obj).forEach(([k, v]) => {
-    if (test(v)) {
+    if (ftest(v)) {
       func(obj, k);
     }
   });
   Object.values(obj).forEach(v => {
     if (v && typeof v === 'object') {
-      traverse(v, test, func);
+      traverse(v, ftest, func);
     }
   });
 }
@@ -106,11 +107,12 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
  * - no elvis operators
  * - no instanceof checks
  */
+// eslint-disable-next-line complexity
 export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
   const { theme, production, availableThemes } = determineConfiguration(angularJsonConfig, targetOptions);
 
   const angularCompilerPlugin = config.plugins.find(
-    (pl: AngularPlugin) => pl.options && pl.options.directTemplateLoading !== undefined
+    (pl: AngularPlugin) => pl.options?.directTemplateLoading !== undefined
   ) as AngularPlugin;
 
   if (angularCompilerPlugin.options.directTemplateLoading) {
@@ -146,7 +148,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   if (production) {
     // keep module names for debugging
     config.optimization.minimizer.forEach((m: WebpackPluginInstance) => {
-      if (m.options && m.options.terserOptions) {
+      if (m.options?.terserOptions) {
         m.options.terserOptions.keep_classnames = /.*Module$/;
       }
     });
@@ -183,14 +185,14 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
           // move translation files into own bundles
           const i18nMatch = /[\\/]assets[\\/]i18n[\\/](.*?)\.json/.exec(identifier);
-          const locale = i18nMatch && i18nMatch[1];
+          const locale = i18nMatch?.[1];
 
           if (locale) {
             return locale.replace('_', '-');
           }
 
           const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
-          const feature = match && match[2];
+          const feature = match?.[2];
 
           if (feature) {
             // include core functionality in common bundle
@@ -314,7 +316,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     }
   }
 
-  // tslint:disable-next-line: no-commented-out-code
+  // eslint-disable-next-line etc/no-commented-out-code
   // fs.writeFileSync('effective.config.json', JSON.stringify(config, undefined, 2), { encoding: 'utf-8' });
 
   return config;

@@ -1,0 +1,216 @@
+fieldset {
+  margin-bottom: ($space-default);
+}
+
+// 	REQUIRED FIELDS
+.indicates-required {
+  color: $text-color-quaternary;
+
+  .required {
+    margin-right: 4px;
+    color: $text-color-special;
+  }
+}
+
+// LABELS
+label {
+  font-weight: normal;
+
+  .required {
+    margin-left: 4px;
+    color: $text-color-special;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  > * {
+    vertical-align: baseline;
+  }
+}
+
+.label-empty {
+  @media (max-width: $screen-xs-max) {
+    margin-top: 2.2rem;
+  }
+}
+
+.form-check {
+  height: auto;
+  padding-bottom: 0;
+  padding-left: 0;
+  margin-bottom: 0.5rem;
+
+  label {
+    label {
+      padding-left: 0;
+    }
+  }
+}
+
+.form-check-label {
+  margin-left: 18px;
+}
+
+// FORM CONTROLS
+.quantity-input {
+  min-width: 80px;
+  max-width: 165px;
+  margin-bottom: $space-default;
+}
+
+input {
+  accent-color: $input-accent-color;
+}
+
+input[type='file'] {
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
+
+input[type='radio'] ~ input[type='text'] {
+  margin-left: $space-default * 0.5;
+
+  @media (max-width: $screen-xs-max) {
+    display: inline-block;
+    width: 90%;
+  }
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+input.form-check-input {
+  margin-top: 0.25rem;
+  margin-left: 0;
+}
+
+.form-control-checkbox {
+  margin-bottom: 0;
+  font-size: $font-size-base;
+  border: none;
+
+  &:invalid {
+    .form-control {
+      a {
+        color: inherit;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .form-control {
+    padding-right: 0;
+    padding-left: 0;
+    background-color: inherit;
+    border: none;
+
+    @include box-shadow(none);
+  }
+
+  .form-control-feedback {
+    display: none !important;
+  }
+}
+
+.form-control:focus {
+  border-color: $color-special-tertiary;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px lighten($color-special-tertiary, 20%);
+}
+
+.input-help {
+  color: $text-color-quaternary;
+}
+
+// ERROR and SUCCESS
+.has-feedback {
+  .form-control[type='number'] {
+    padding: $grid-gutter-width * 0.2 divide($grid-gutter-width, 2.5);
+  }
+
+  .form-control[type='number'] + * .form-control-feedback {
+    display: none !important;
+  }
+
+  .form-control {
+    + a.form-control-feedback {
+      pointer-events: all;
+    }
+
+    padding-right: 42.5px; // TODO: dynamic field
+  }
+}
+
+.has-feedback .form-control-feedback {
+  position: absolute;
+  top: 0;
+  right: 25px; // TODO: dynamic field
+  height: $input-line-height + ($input-padding-y * 2);
+  line-height: $input-line-height + ($input-padding-y * 2);
+}
+
+.has-feedback select + * .form-control-feedback {
+  right: 35px; // TODO: dynamic field
+}
+
+.has-success {
+  .ng-fa-icon {
+    color: $success-color;
+  }
+}
+
+.has-error {
+  .col-form-label,
+  .ng-fa-icon,
+  .validation-message,
+  .form-check {
+    color: $error-color;
+  }
+
+  .form-check a,
+  label a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  input,
+  select,
+  textarea {
+    border-color: $error-color;
+
+    &:focus {
+      border-color: $error-color;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px lighten($error-color, 20%);
+    }
+  }
+
+  .captcha > div {
+    border: solid 1px $error-color;
+  }
+}
+
+.validation-message small {
+  display: block;
+}
+
+.validation-offset {
+  .form-control-feedback {
+    right: 40px;
+  }
+}
+
+.validation-offset-0 {
+  .form-control-feedback {
+    right: 10px;
+  }
+}
+
+/* purgecss ignore */
+.grecaptcha-badge {
+  visibility: hidden;
+}

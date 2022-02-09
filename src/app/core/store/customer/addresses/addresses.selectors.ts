@@ -1,5 +1,4 @@
 import { createSelector } from '@ngrx/store';
-import { identity } from 'rxjs';
 
 import { getCustomerState } from 'ish-core/store/customer/customer-store';
 
@@ -9,7 +8,7 @@ const getAddressesState = createSelector(getCustomerState, state => state.addres
 
 const { selectAll } = addressAdapter.getSelectors(getAddressesState);
 
-export const getAllAddresses = createSelector(selectAll, identity);
+export const getAllAddresses = createSelector(selectAll, addresses => addresses);
 
 export const getAddressesLoading = createSelector(getAddressesState, addresses => addresses.loading);
 

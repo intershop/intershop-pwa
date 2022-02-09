@@ -1,7 +1,15 @@
 <div class="no-search-result" data-testing-id="no-search-result-page">
+  <div class="marketing-area">
+    <ish-content-include includeId="include.searchnoresult.base.top.pagelet2-Include"></ish-content-include>
+  </div>
+
   <ish-breadcrumb></ish-breadcrumb>
 
   <h1 class="h2">{{ 'search.noResult.heading' | translate }}</h1>
+
+  <div class="marketing-area">
+    <ish-content-include includeId="include.searchnoresult.content.top.pagelet2-Include"></ish-content-include>
+  </div>
 
   <p class="no-search-result-title" [innerHTML]="'search.noResult.message' | translate: { '0': searchTerm }"></p>
 
@@ -16,4 +24,12 @@
   </div>
 
   <div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>
+
+  <div class="marketing-area">
+    <ish-content-include includeId="include.searchnoresult.content.bottom.pagelet2-Include"></ish-content-include>
+  </div>
+
+  <div class="marketing-area">
+    <ish-content-include includeId="include.searchnoresult.base.bottom.pagelet2-Include"></ish-content-include>
+  </div>
 </div>

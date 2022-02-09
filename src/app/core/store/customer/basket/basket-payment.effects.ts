@@ -77,7 +77,7 @@ export class BasketPaymentEffects {
       map(([payload, customer]) => ({
         saveForLater: payload.saveForLater,
         paymentInstrument: payload.paymentInstrument,
-        customerNo: customer && customer.customerNo,
+        customerNo: customer?.customerNo,
       })),
       concatMap(payload => {
         const createPayment$ =

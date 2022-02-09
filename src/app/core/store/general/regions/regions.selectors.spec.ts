@@ -15,8 +15,8 @@ describe('Regions Selectors', () => {
   const countryCode = 'US';
 
   const allRegions = [
-    { name: 'Iowa', regionCode: 'Io', countryCode, id: 'Io' + countryCode },
-    { name: 'Alabama', regionCode: 'Al', countryCode: 'US', id: 'Al' + countryCode },
+    { name: 'Iowa', regionCode: 'Io', countryCode, id: `Io${countryCode}` },
+    { name: 'Alabama', regionCode: 'Al', countryCode: 'US', id: `Al${countryCode}` },
     { name: 'Sofia', regionCode: 'S', countryCode: 'BG,', id: 'SBG' },
   ] as Region[];
 

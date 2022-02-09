@@ -42,13 +42,13 @@ describe('Attribute Pipe', () => {
     ${{ name: 'MultipleBigDecimalAttribute', type: 'MultipleBigDecimal', value: [12.3456789, 12345.6789] }}            | ${`12.346${valuesSeparator}12,345.679`}       | ${`12,346${valuesSeparator}12.345,679`}
     ${{ name: 'MultipleBooleanAttribute', type: 'MultipleBoolean', value: [true, false] }}                             | ${`true${valuesSeparator}false`}              | ${`true${valuesSeparator}false`}
     ${{ name: 'MultipleDateAttribute', type: 'MultipleDate', value: [1355270400000, 1349827200000] }}                  | ${`12/12/12${valuesSeparator}10/10/12`}       | ${`12.12.12${valuesSeparator}10.10.12`}
-  `('should translate attribute of type $attribute.type correctly when locale ', ({ attribute, en_US, de_DE }) => {
-    // tslint:disable-next-line:meaningful-naming-in-tests
+  `('should translate attribute of type $attribute.type correctly when locale', ({ attribute, en_US, de_DE }) => {
+    // eslint-disable-next-line jest/valid-title
     it(`en_US is set`, () => {
       translateService.use('en_US');
       expect(pipe.transform(attribute, valuesSeparator)).toEqual(en_US);
     });
-    // tslint:disable-next-line:meaningful-naming-in-tests
+    // eslint-disable-next-line jest/valid-title
     it(`de_DE is set`, () => {
       translateService.use('de_DE');
       expect(pipe.transform(attribute, valuesSeparator)).toEqual(de_DE);

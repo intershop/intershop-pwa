@@ -24,7 +24,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
   private basketError$: Observable<HttpError>;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private checkoutFacade: CheckoutFacade,

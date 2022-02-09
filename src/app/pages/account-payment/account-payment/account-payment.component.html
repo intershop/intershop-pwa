@@ -2,7 +2,7 @@
 
 <ish-error-message [error]="error"></ish-error-message>
 
-<ng-container *ngIf="paymentMethods && paymentMethods.length; else noPaymentMethods">
+<ng-container *ngIf="paymentMethods?.length; else noPaymentMethods">
   <p>{{ 'account.payment.message' | translate }}</p>
 
   <div *ngIf="preferredPaymentInstrument && preferredPaymentMethod" class="section">
@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <ng-container *ngIf="savedPaymentMethods && savedPaymentMethods.length">
+  <ng-container *ngIf="savedPaymentMethods?.length">
     <h3>{{ 'account.payment.further_payments.heading' | translate }}</h3>
     <div *ngFor="let method of savedPaymentMethods" class="section" data-testing-id="paymentMethodList">
       <h4>

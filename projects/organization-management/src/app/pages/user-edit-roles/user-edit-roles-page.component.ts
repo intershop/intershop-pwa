@@ -23,7 +23,7 @@ export class UserEditRolesPageComponent implements OnInit, OnDestroy {
   staticRoles$: Observable<string[]>;
 
   form$: Observable<FormGroup>;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,

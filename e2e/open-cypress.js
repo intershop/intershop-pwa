@@ -8,10 +8,10 @@ if (process.env.ICM_BASE_URL) {
 } else if (fs.existsSync('../src/environments/environment.development.ts')) {
   console.log('using ICM_BASE_URL from environment.development.ts');
   const data = fs.readFileSync('../src/environments/environment.development.ts', 'UTF-8');
-
-  const regex = /^ *icmBaseURL: '(.*?)',/m;
-  icmBaseUrl = data.match(regex)[1];
-} else {
+  const regex = /^ *icmBaseURL: '(.*?)'/m;
+  icmBaseUrl = data.match(regex) ? data.match(regex)[1] : undefined;
+}
+if (!icmBaseUrl) {
   console.error(
     'Did not find a valid ICM_BASE_URL. Setup a environment.development.ts or supply it via environment variable.'
   );

@@ -3,7 +3,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerRequestAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { defer, fromEvent, iif } from 'rxjs';
+import { EMPTY, defer, fromEvent, iif } from 'rxjs';
 import { bufferToggle, concatMap, delay, distinctUntilChanged, filter, first, map } from 'rxjs/operators';
 
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
@@ -21,11 +21,12 @@ export class ViewconfEffects {
       () => isPlatformBrowser(this.platformId),
       defer(() =>
         fromEvent(window, 'scroll').pipe(
-          map(() => window.pageYOffset >= 170),
+          map(() => window.scrollY >= 170),
           distinctUntilChanged(),
           map(sticky => setStickyHeader({ sticky }))
         )
-      )
+      ),
+      EMPTY
     )
   );
 

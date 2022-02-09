@@ -4,7 +4,7 @@ import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { defer, fromEvent, iif, merge } from 'rxjs';
+import { EMPTY, defer, fromEvent, iif, merge } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
@@ -39,7 +39,7 @@ export class ConfigurationEffects {
   ) {
     appRef.isStable
       .pipe(takeWhile(() => isPlatformBrowser(platformId)))
-      // tslint:disable-next-line:no-any - window can only be used with any here
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- window can only be used with any here
       .subscribe(stable => ((window as any).angularStable = stable));
 
     store
@@ -114,7 +114,8 @@ export class ConfigurationEffects {
               multiSiteLocaleMap,
             })
         )
-      )
+      ),
+      EMPTY
     )
   );
 
@@ -135,7 +136,8 @@ export class ConfigurationEffects {
           distinctCompareWith(this.store.pipe(select(getDeviceType))),
           map(deviceType => applyConfiguration({ _deviceType: deviceType }))
         )
-      )
+      ),
+      EMPTY
     )
   );
 

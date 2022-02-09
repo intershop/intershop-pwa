@@ -21,7 +21,7 @@ describe('Meta Reducers', () => {
 
     it('should reset state when reducing LogoutUser action', () => {
       const result = resetOnLogoutMeta(identity)(state, logoutUser());
-      expect(result).toBeEmpty();
+      expect(result).toBeUndefined();
     });
 
     it('should reset and delegate to reducer initial state when reducing LogoutUser action', () => {

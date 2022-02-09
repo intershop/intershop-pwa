@@ -26,6 +26,7 @@ describe('Account Punchout Details Page Component', () => {
     } as PunchoutUser;
     when(punchoutFacade.selectedPunchoutUser$).thenReturn(of(user));
     when(punchoutFacade.updatePunchoutUser(anything())).thenReturn();
+    when(punchoutFacade.punchoutLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],

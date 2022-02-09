@@ -101,12 +101,12 @@ describe('Shopping Store', () => {
             ])
           );
         default:
-          return throwError(makeHttpError({ message: `error loading category ${uniqueId}` }));
+          return throwError(() => makeHttpError({ message: `error loading category ${uniqueId}` }));
       }
     });
 
     const configurationServiceMock = mock(ConfigurationService);
-    when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(EMPTY);
 
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
@@ -114,9 +114,9 @@ describe('Shopping Store', () => {
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
-        return of({ sku, name: 'n' + sku });
+        return of({ sku, name: `n${sku}` });
       } else {
-        return throwError(makeHttpError({ message: `error loading product ${sku}` }));
+        return throwError(() => makeHttpError({ message: `error loading product ${sku}` }));
       }
     });
     when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anything(), anyNumber())).thenReturn(
@@ -143,7 +143,7 @@ describe('Shopping Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['router', 'configuration'], true),
+        CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
         RouterTestingModule.withRoutes([
           {
             path: 'home',

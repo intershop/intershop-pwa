@@ -40,6 +40,7 @@ export class PaymentService {
 
   /**
    * Get eligible payment methods for selected basket.
+   *
    * @returns         The eligible payment methods.
    */
   getBasketEligiblePaymentMethods(): Observable<PaymentMethod[]> {
@@ -56,12 +57,13 @@ export class PaymentService {
 
   /**
    * Adds a payment at the selected basket. If redirect is required the redirect urls are saved at basket in dependence of the payment instrument capabilities (redirectBeforeCheckout/RedirectAfterCheckout).
+   *
    * @param paymentInstrument The unique name of the payment method, e.g. ISH_INVOICE
    * @returns                 The payment instrument.
    */
   setBasketPayment(paymentInstrument: string): Observable<string> {
     if (!paymentInstrument) {
-      return throwError('setBasketPayment() called without paymentInstrument');
+      return throwError(() => new Error('setBasketPayment() called without paymentInstrument'));
     }
 
     return this.basketService
@@ -75,7 +77,7 @@ export class PaymentService {
       )
       .pipe(
         map(({ data, included }) =>
-          data && data.paymentMethod && included ? included.paymentMethod[data.paymentMethod] : undefined
+          data?.paymentMethod && included ? included.paymentMethod[data.paymentMethod] : undefined
         ),
         withLatestFrom(this.store.pipe(select(getCurrentLocale))),
         concatMap(([pm, currentLocale]) => this.sendRedirectUrlsIfRequired(pm, paymentInstrument, currentLocale))
@@ -84,6 +86,7 @@ export class PaymentService {
 
   /**
    *  Checks, if RedirectUrls are requested by the server and sends them if it is necessary.
+   *
    * @param pm                The payment method to determine if redirect is required.
    * @param paymentInstrument The payment instrument id.
    * @param lang              The language code of the current locale, e.g. en_US
@@ -127,15 +130,16 @@ export class PaymentService {
   }
   /**
    * Creates a payment instrument for the selected basket.
+   *
    * @param paymentInstrument The payment instrument with parameters, id=undefined, paymentMethod= required.
    * @returns                 The created payment instrument.
    */
   createBasketPayment(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
     if (!paymentInstrument) {
-      return throwError('createBasketPayment() called without paymentInstrument');
+      return throwError(() => new Error('createBasketPayment() called without paymentInstrument'));
     }
     if (!paymentInstrument.paymentMethod) {
-      return throwError('createBasketPayment() called without paymentMethodId');
+      return throwError(() => new Error('createBasketPayment() called without paymentMethodId'));
     }
 
     return this.basketService
@@ -148,16 +152,17 @@ export class PaymentService {
 
   /**
    * Updates a payment for the selected basket. Used to set redirect query parameters and status after redirect.
+   *
    * @param redirect          The payment redirect information (parameters and status).
    * @returns                 The updated payment.
    */
   updateBasketPayment(params: { [key: string]: string }): Observable<Payment> {
     if (!params) {
-      return throwError('updateBasketPayment() called without parameter data');
+      return throwError(() => new Error('updateBasketPayment() called without parameter data'));
     }
 
     if (!params.redirect) {
-      return throwError('updateBasketPayment() called without redirect parameter data');
+      return throwError(() => new Error('updateBasketPayment() called without redirect parameter data'));
     }
 
     const redirect = {
@@ -182,24 +187,22 @@ export class PaymentService {
   /**
    * Deletes a (basket/user) payment instrument.
    * If the payment instrument is used at basket the related payment is also deleted from the selected basket.
+   *
    * @param basket            The basket.
    * @param paymentInstrument The payment instrument, that is to be deleted
    */
   deleteBasketPaymentInstrument(basket: Basket, paymentInstrument: PaymentInstrument): Observable<void> {
     if (!basket) {
-      return throwError('deleteBasketPayment() called without basket');
+      return throwError(() => new Error('deleteBasketPayment() called without basket'));
     }
     if (!paymentInstrument) {
-      return throwError('deleteBasketPayment() called without paymentInstrument');
+      return throwError(() => new Error('deleteBasketPayment() called without paymentInstrument'));
     }
 
-    const deletePayment =
-      basket.payment &&
-      basket.payment.paymentInstrument &&
-      basket.payment.paymentInstrument.id === paymentInstrument.id;
+    const deletePayment = basket.payment?.paymentInstrument?.id === paymentInstrument.id;
 
     // user payment instrument
-    if (paymentInstrument.urn && paymentInstrument.urn.includes('user')) {
+    if (paymentInstrument.urn?.includes('user')) {
       return this.deleteUserPaymentInstrument('-', paymentInstrument.id).pipe(
         concatMap(() => (deletePayment ? this.deleteBasketPayment(basket) : of(undefined)))
       );
@@ -213,11 +216,12 @@ export class PaymentService {
 
   /**
    * Deletes the basket payment.
+   *
    * @param basket          The basket.
    */
   deleteBasketPayment(basket: Basket): Observable<void> {
     if (!basket) {
-      return throwError('deleteBasketPayment() called without basket');
+      return throwError(() => new Error('deleteBasketPayment() called without basket'));
     }
     if (!basket.payment) {
       return of();
@@ -230,12 +234,13 @@ export class PaymentService {
 
   /**
    * Gets the payment data of the customer.
+   *
    * @param customer  The customer data.
    * @returns         The customer's payments.
    */
   getUserPaymentMethods(customer: Customer): Observable<PaymentMethod[]> {
     if (!customer) {
-      return throwError('getUserPaymentMethods called without required body data');
+      return throwError(() => new Error('getUserPaymentMethods called without required body data'));
     }
 
     return this.appFacade.customerRestResource$.pipe(
@@ -257,20 +262,21 @@ export class PaymentService {
 
   /**
    * Creates a payment instrument at the customer.
+   *
    * @param customerNo          The customer data.
    * @param paymentInstrument   The payment instrument data.
    * @returns                   The created payment instrument.
    */
   createUserPayment(customerNo: string, paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
     if (!customerNo) {
-      return throwError('createUserPayment called without required customer number');
+      return throwError(() => new Error('createUserPayment called without required customer number'));
     }
     if (!paymentInstrument) {
-      return throwError('createUserPayment called without required payment instrument');
+      return throwError(() => new Error('createUserPayment called without required payment instrument'));
     }
 
     if (!paymentInstrument.parameters || !paymentInstrument.parameters.length) {
-      return throwError('createUserPayment called without required payment parameters');
+      return throwError(() => new Error('createUserPayment called without required payment parameters'));
     }
 
     const body: {
@@ -296,15 +302,16 @@ export class PaymentService {
 
   /**
    * Deletes a payment instrument and the related payment from the given user.
+   *
    * @param customerNo            The customer number.
    * @param paymentInstrumentId   The (uu)id of the payment instrument.
    */
   deleteUserPaymentInstrument(customerNo: string, paymentInstrumentId: string): Observable<void> {
     if (!customerNo) {
-      return throwError('deleteUserPayment() called without customerNo');
+      return throwError(() => new Error('deleteUserPayment() called without customerNo'));
     }
     if (!paymentInstrumentId) {
-      return throwError('deleteUserPayment() called without paymentInstrumentId');
+      return throwError(() => new Error('deleteUserPayment() called without paymentInstrumentId'));
     }
 
     return this.appFacade.customerRestResource$.pipe(
@@ -317,11 +324,12 @@ export class PaymentService {
 
   /**
    * Update CvcLastUpdated in concardis credit card (user/basket) payment instrument.
+   *
    * @param paymentInstrument The payment instrument, that is to be updated
    */
   updateConcardisCvcLastUpdated(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
     if (!paymentInstrument) {
-      return throwError('updateConcardisCvcLastUpdated() called without paymentInstrument');
+      return throwError(() => new Error('updateConcardisCvcLastUpdated() called without paymentInstrument'));
     }
 
     if (paymentInstrument.urn?.includes('basket')) {

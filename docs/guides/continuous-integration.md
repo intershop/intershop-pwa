@@ -62,15 +62,15 @@ Have a look into `e2e/test-universal.sh` to see how we are doing that.
 
 SCA tools help to improve code quality, which leads to better maintainability and thus to a reduction of technical debts.
 
-Intershop uses `tslint` for static code analysis.
-Run the linting process on the CI with `"npm run lint".`
+Intershop uses [`ESLint`](./eslint.md) for static code analysis.
+Run the linting process on the CI with `"npm run lint"`
 
 If a rule seems too harsh for you, downgrade it to warning level by choosing:
 
-**tslint.json**
+**.eslintrc.json**
 
-```typescript
-"rule-name": { "severity": "warning" }
+```json
+"rule-name": "warn"
 ```
 
-Turn it off completely by using `"rule-name": false`.
+Turn it off completely by using `"rule-name": "off"`.

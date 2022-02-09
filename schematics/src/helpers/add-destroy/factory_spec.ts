@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { PWAComponentOptionsSchema } from '../../component/schema';
@@ -9,20 +10,19 @@ describe('Lazy Component Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner)
-      .pipe(
-        switchMap(tree =>
-          schematicRunner.runSchematicAsync(
-            'component',
-            {
-              project: 'bar',
-              name: 'foo',
-            } as PWAComponentOptionsSchema,
-            tree
-          )
+    const appTree$ = createApplication(schematicRunner).pipe(
+      switchMap(tree =>
+        schematicRunner.runSchematicAsync(
+          'component',
+          {
+            project: 'bar',
+            name: 'foo',
+          } as PWAComponentOptionsSchema,
+          tree
         )
       )
-      .toPromise();
+    );
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should be created', () => {
@@ -98,7 +98,7 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should add destroy$ subject', () => {
-      expect(content).toContain('destroy$ = new Subject();');
+      expect(content).toContain('destroy$ = new Subject<void>();');
     });
 
     it('should add ngOnDestroy method', () => {

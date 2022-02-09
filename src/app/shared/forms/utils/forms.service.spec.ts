@@ -4,8 +4,8 @@ import { of } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 import { FormsService } from './forms.service';
 

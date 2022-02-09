@@ -44,6 +44,30 @@ export class ContentPageTreeHelper {
     };
   }
 
+  /**
+   * Merge two trees to a new tree.
+   * Updates nodes according to updateStrategy.
+   */
+  static merge(current: ContentPageTree, incoming: ContentPageTree): ContentPageTree {
+    if (!current || !incoming) {
+      throw new Error('falsy input');
+    }
+
+    return {
+      edges: ContentPageTreeHelper.mergeEdges(current.edges, incoming.edges),
+      nodes: ContentPageTreeHelper.mergeNodes(current.nodes, incoming.nodes),
+      rootIds: ContentPageTreeHelper.mergeRootIDs(current.rootIds, incoming.rootIds),
+    };
+  }
+
+  /**
+   * Helper method for adding a single element to a tree.
+   */
+  static add(tree: ContentPageTree, element: ContentPageTreeElement): ContentPageTree {
+    const singleContentPageTree = ContentPageTreeHelper.single(element);
+    return ContentPageTreeHelper.merge(tree, singleContentPageTree);
+  }
+
   private static removeDuplicates<T>(input: T[]): T[] {
     return input.filter((value, index, array) => array.indexOf(value) === index);
   }
@@ -94,29 +118,5 @@ export class ContentPageTreeHelper {
     } else {
       return ContentPageTreeHelper.removeDuplicates([...current, ...incoming]);
     }
-  }
-
-  /**
-   * Merge two trees to a new tree.
-   * Updates nodes according to updateStrategy.
-   */
-  static merge(current: ContentPageTree, incoming: ContentPageTree): ContentPageTree {
-    if (!current || !incoming) {
-      throw new Error('falsy input');
-    }
-
-    return {
-      edges: ContentPageTreeHelper.mergeEdges(current.edges, incoming.edges),
-      nodes: ContentPageTreeHelper.mergeNodes(current.nodes, incoming.nodes),
-      rootIds: ContentPageTreeHelper.mergeRootIDs(current.rootIds, incoming.rootIds),
-    };
-  }
-
-  /**
-   * Helper method for adding a single element to a tree.
-   */
-  static add(tree: ContentPageTree, element: ContentPageTreeElement): ContentPageTree {
-    const singleContentPageTree = ContentPageTreeHelper.single(element);
-    return ContentPageTreeHelper.merge(tree, singleContentPageTree);
   }
 }

@@ -19,7 +19,7 @@ export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
     return { consumed: [] };
   }
 
-  const url = '/' + segments.map(s => s.path).join('/');
+  const url = `/${segments.map(s => s.path).join('/')}`;
   if (categoryRouteFormat.test(url)) {
     const match = categoryRouteFormat.exec(url);
     const posParams: { [id: string]: UrlSegment } = {};

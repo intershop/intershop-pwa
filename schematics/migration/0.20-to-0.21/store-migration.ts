@@ -21,11 +21,11 @@ const morpherPaths =
 
 const morphers = morpherPaths.map(dir => {
   const storeBaseNames = `${dir.getPath()}/${dir.getBaseName()}`;
-  const actionsMorph = new ActionCreatorsActionsMorpher(project.getSourceFile(storeBaseNames + '.actions.ts'));
+  const actionsMorph = new ActionCreatorsActionsMorpher(project.getSourceFile(`${storeBaseNames}.actions.ts`));
   return {
     storeName: dir.getPath(),
     actionsMorph,
-    reducerMorph: new ActionCreatorsReducerMorpher(project.getSourceFile(storeBaseNames + '.reducer.ts'), actionsMorph),
+    reducerMorph: new ActionCreatorsReducerMorpher(project.getSourceFile(`${storeBaseNames}.reducer.ts`), actionsMorph),
     effectsMorphs: dir.getSourceFiles('*.effects.ts').map(eff => new ActionCreatorsEffectMorpher(eff)),
   };
 });
