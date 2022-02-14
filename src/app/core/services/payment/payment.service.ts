@@ -1,5 +1,6 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { concatMap, first, map, mapTo, withLatestFrom } from 'rxjs/operators';
@@ -30,7 +31,8 @@ export class PaymentService {
     private apiService: ApiService,
     private basketService: BasketService,
     private store: Store,
-    private appFacade: AppFacade
+    private appFacade: AppFacade,
+    @Inject(APP_BASE_HREF) private baseHref: string
   ) {}
 
   private basketHeaders = new HttpHeaders({
@@ -97,11 +99,11 @@ export class PaymentService {
     paymentInstrument: string,
     lang: string
   ): Observable<string> {
-    const loc = location.origin;
     if (!pm || !pm.capabilities || !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data))) {
       return of(paymentInstrument);
       // send redirect urls if there is a redirect required
     } else {
+      const loc = `${location.origin}${this.baseHref}`;
       const redirect = {
         successUrl: `${loc}/checkout/review;lang=${lang}?redirect=success`,
         cancelUrl: `${loc}/checkout/payment;lang=${lang}?redirect=cancel`,
