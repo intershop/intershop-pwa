@@ -191,6 +191,9 @@
     "*": [
       "prettier --loglevel warn --write"
     ],
+    "*.html" : [
+      "eslint --fix"
+    ],
     "*.ts": [
       "eslint --fix",
       "jest --ci --bail --findRelatedTests"
