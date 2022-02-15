@@ -1,15 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from 'ish-core/icon.module';
+import { ComponentsModule } from 'ish-shared/formly/components/components.module';
 
-import { FieldTooltipComponent } from './components/field-tooltip/field-tooltip.component';
-import { ValidationIconsComponent } from './components/validation-icons/validation-icons.component';
-import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { DescriptionWrapperComponent } from './description-wrapper/description-wrapper.component';
 import { HorizontalCheckboxWrapperComponent } from './horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './horizontal-wrapper/horizontal-wrapper.component';
@@ -26,16 +22,12 @@ const wrapperComponents = [
   TextareaDescriptionWrapperComponent,
   TooltipWrapperComponent,
   ValidationWrapperComponent,
-  FieldTooltipComponent,
-  ValidationIconsComponent,
-  ValidationMessageComponent,
 ];
 
 @NgModule({
   imports: [
     CommonModule,
-    IconModule,
-    NgbPopoverModule,
+    ComponentsModule,
     ReactiveFormsModule,
     TranslateModule,
     FormlyBaseModule.forChild({

@@ -5,9 +5,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
-import { ValidationMessageComponent } from 'ish-shared/formly/wrappers/components/validation-message/validation-message.component';
 
 import { CheckoutReviewTacFieldComponent } from './checkout-review-tac-field.component';
 

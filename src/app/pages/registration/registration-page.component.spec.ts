@@ -11,8 +11,8 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
-import { RegistrationFormConfigurationService } from './registration-form-configuration/registration-form-configuration.service';
 import { RegistrationPageComponent } from './registration-page.component';
+import { RegistrationFormConfigurationService } from './services/registration-form-configuration/registration-form-configuration.service';
 
 describe('Registration Page Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;

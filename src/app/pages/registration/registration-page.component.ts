@@ -12,7 +12,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import {
   RegistrationConfigType,
   RegistrationFormConfigurationService,
-} from './registration-form-configuration/registration-form-configuration.service';
+} from './services/registration-form-configuration/registration-form-configuration.service';
 
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
