@@ -56,7 +56,7 @@ describe('Page Meta', () => {
       page.metaData.check({
         title: 'Error | Intershop PWA',
         url: /.*\/error$/,
-        description: 'Intershop - Progressive Web App - Demo PWA',
+        description: 'Intershop - Progressive Web App',
       });
     });
   });
