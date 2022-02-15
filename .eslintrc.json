@@ -376,7 +376,7 @@
             "warnUnmatched": false,
             "reusePatterns": {
               "name": "[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*",
-              "theme": "(?:\\.(?:b2b|b2c))*"
+              "theme": "(?:(?:\\.(?:b2b|b2c))*|\\.all)"
             },
             "pathPatterns": [
               "^.*/src/environments/environment(\\.\\w+)?\\.ts$",
