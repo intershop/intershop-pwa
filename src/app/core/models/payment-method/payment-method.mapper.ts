@@ -1,5 +1,6 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
 import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
 
@@ -39,7 +40,10 @@ export class PaymentMethodMapper {
           included?.paymentInstruments && data.paymentInstruments
             ? data.paymentInstruments.map(id => included.paymentInstruments[id])
             : undefined,
-        parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
+        parameters:
+          data.serviceID === 'Payone_IDeal'
+            ? PaymentMethodMapper.mapPayoneParameters(data.parameterDefinitions, data.hostedPaymentPageParameters)
+            : PaymentMethodMapper.mapParameter(data.parameterDefinitions),
         hostedPaymentPageParameters:
           data.serviceID === 'Concardis_DirectDebit'
             ? PaymentMethodMapper.mapSEPAMandateInformation(data.hostedPaymentPageParameters)
@@ -160,6 +164,9 @@ export class PaymentMethodMapper {
    * maps form parameter if there are some (like credit card or direct debit)
    */
   private static mapParameter(parametersData: PaymentMethodParameterType[]): FormlyFieldConfig[] {
+    if (!parametersData) {
+      return;
+    }
     return parametersData.map(p => {
       const param: FormlyFieldConfig = {
         key: p.name,
@@ -207,6 +214,29 @@ export class PaymentMethodMapper {
       }
       return param;
     });
+  }
+
+  /**
+   * maps form parameters for payone iDeal
+   * move bank group code options from hostedPaymentPageParameters to parametersData
+   * this workaround will be obsolete if the REST api comply with the correct data format
+   */
+  private static mapPayoneParameters(
+    parametersData: PaymentMethodParameterType[],
+    hostedPaymentPageParameters: Attribute<string>[]
+  ): FormlyFieldConfig[] {
+    const options = hostedPaymentPageParameters?.map(param => {
+      return { displayName: param.value, id: param.name };
+    });
+
+    const payoneParametersData = parametersData?.map(data => {
+      const constraints = data.constraints.required
+        ? { ...data.constraints, required: { message: 'checkout.bankGroup.error.required' } }
+        : data.constraints;
+      return data.name === 'bankGroupCode' ? { ...data, constraints, options } : data;
+    });
+
+    return PaymentMethodMapper.mapParameter(payoneParametersData);
   }
 
   /**
