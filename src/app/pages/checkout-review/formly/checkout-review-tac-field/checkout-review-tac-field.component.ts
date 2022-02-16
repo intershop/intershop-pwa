@@ -6,8 +6,4 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   templateUrl: './checkout-review-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutReviewTacFieldComponent extends FieldType<FieldTypeConfig> {
-  getArgs() {
-    return this.to.args ? this.to.args : {};
-  }
-}
+export class CheckoutReviewTacFieldComponent extends FieldType<FieldTypeConfig> {}

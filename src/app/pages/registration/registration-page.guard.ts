@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { RegistrationFormConfigurationService } from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
-
 import { RegistrationPageComponent } from './registration-page.component';
+import { RegistrationFormConfigurationService } from './services/registration-form-configuration/registration-form-configuration.service';
 
 @Injectable()
 export class RegistrationPageGuard implements CanDeactivate<RegistrationPageComponent> {

@@ -7,6 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { StoreLocatorFacade } from '../../facades/store-locator.facade';
@@ -28,6 +29,7 @@ describe('Store Locator Page Component', () => {
       declarations: [
         MockComponent(StoreAddressComponent),
         MockComponent(StoresMapComponent),
+        MockComponent(ErrorMessageComponent),
         MockDirective(ScrollDirective),
         StoreLocatorPageComponent,
       ],
