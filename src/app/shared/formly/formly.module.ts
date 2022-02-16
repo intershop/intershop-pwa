@@ -2,9 +2,6 @@ import { NgModule } from '@angular/core';
 import { FieldType, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 
 import { ComponentsModule } from './components/components.module';
-import { FieldTooltipComponent } from './components/field-tooltip/field-tooltip.component';
-import { ValidationIconsComponent } from './components/validation-icons/validation-icons.component';
-import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { ExtensionsModule } from './extensions/extensions.module';
 import { TypesModule } from './types/types.module';
 import { WrappersModule } from './wrappers/wrappers.module';
@@ -24,6 +21,6 @@ import { WrappersModule } from './wrappers/wrappers.module';
     TypesModule,
     WrappersModule,
   ],
-  exports: [FieldTooltipComponent, FormlyBaseModule, ValidationIconsComponent, ValidationMessageComponent],
+  exports: [ComponentsModule, FormlyBaseModule],
 })
 export class FormlyModule {}
