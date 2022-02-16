@@ -24,7 +24,6 @@ import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/pa
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 import { PaymentParameterFormComponent } from '../payment-parameter-form/payment-parameter-form.component';
 import { PaymentPayoneCreditcardComponent } from '../payment-payone-creditcard/payment-payone-creditcard.component';
-import { PaymentPayoneIdealComponent } from '../payment-payone-ideal/payment-payone-ideal.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 
@@ -51,7 +50,6 @@ describe('Checkout Payment Component', () => {
         MockComponent(PaymentConcardisDirectdebitComponent),
         MockComponent(PaymentCybersourceCreditcardComponent),
         MockComponent(PaymentPayoneCreditcardComponent),
-        MockComponent(PaymentPayoneIdealComponent),
         MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(NgbCollapse),
         MockDirective(ServerHtmlDirective),

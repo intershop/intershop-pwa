@@ -157,15 +157,6 @@
                       ></ish-payment-payone-creditcard>
                     </ng-template>
 
-                    <ng-template [ngSwitchCase]="'Payone_IDeal'">
-                      <ish-payment-payone-ideal
-                        [paymentMethod]="paymentMethod"
-                        [activated]="formIsOpen(i)"
-                        (submitPayment)="createNewPaymentInstrument($event)"
-                        (cancelPayment)="cancelNewPaymentInstrument()"
-                      ></ish-payment-payone-ideal>
-                    </ng-template>
-
                     <ng-template ngSwitchDefault>
                       <ish-payment-parameter-form
                         [paymentMethod]="paymentMethod"

@@ -609,7 +609,6 @@
   "checkout.addresses.shipping_address.option1.text": "Livraison à l’adresse de facturation indiquée ci-dessus",
   "checkout.addresses.shipping_address.option2.text": "Livraison à une adresse différente",
   "checkout.bankGroup.error.required": "Veuillez sélectionner un Groupe bancaire.",
-  "checkout.bankGroup.label": "Groupe bancaire",
   "checkout.button.label": "Poursuivre le paiement",
   "checkout.cancel.button.label": "Annuler",
   "checkout.cart.estimated_shipping_handling.label": "Estimation des frais d’expédition",
