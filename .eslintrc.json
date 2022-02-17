@@ -639,6 +639,7 @@
         "ish-custom-rules/use-camel-case-environment-properties": "error",
         "ish-custom-rules/use-component-change-detection": "warn",
         "ish-custom-rules/use-jest-extended-matchers-in-tests": "warn",
+        "ish-custom-rules/require-formly-code-documentation": "warn",
         "jest/no-commented-out-tests": "warn",
         "jest/no-disabled-tests": "warn",
         "jest/no-focused-tests": "warn",
