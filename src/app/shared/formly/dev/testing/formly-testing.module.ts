@@ -5,6 +5,7 @@ import { FieldType, FieldWrapper, FormlyFieldConfig, FormlyForm, FormlyModule } 
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
 /* eslint-disable ish-custom-rules/project-structure */
+/* eslint-disable ish-custom-rules/require-formly-code-documentation */
 
 @Component({ template: 'CaptchaFieldComponent: {{ field.key }} {{ to | json }}' })
 class CaptchaFieldComponent extends FieldType {}
