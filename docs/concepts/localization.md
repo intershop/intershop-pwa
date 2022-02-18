@@ -149,7 +149,7 @@ If you want to get the translation for a key within a component file, you have t
 ```typescript
 export class ProductTileComponent implements OnDestroy {
   ...
-  destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
   constructor(protected translate: TranslateService) {}
   ...
   toggleCompare() {
@@ -164,6 +164,7 @@ export class ProductTileComponent implements OnDestroy {
   ...
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 ```
