@@ -2,12 +2,32 @@ import { Action, ActionReducer, MetaReducer } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { identity } from 'rxjs';
 
-import { logoutUser } from 'ish-core/store/customer/user';
+import { loginUserSuccess, logoutUser } from 'ish-core/store/customer/user';
+import { ShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 export function resetOnLogoutMeta<S>(reducer: ActionReducer<S>): ActionReducer<S> {
   return (state: S, action: Action) => {
     if (action.type === logoutUser.type) {
       return reducer(undefined, action);
+    }
+    return reducer(state, action);
+  };
+}
+
+export function resetPersonalizedShoppingMeta(reducer: ActionReducer<ShoppingState>): ActionReducer<ShoppingState> {
+  return (state: ShoppingState, action: Action) => {
+    if (action.type === logoutUser.type || action.type === loginUserSuccess.type) {
+      return reducer(
+        {
+          ...state,
+          categories: undefined,
+          products: undefined,
+          search: undefined,
+          filter: undefined,
+          promotions: undefined,
+        },
+        action
+      );
     }
     return reducer(state, action);
   };

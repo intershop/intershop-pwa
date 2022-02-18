@@ -46,7 +46,7 @@ export class ProductsService {
     const params = new HttpParams().set('allImages', 'true');
 
     return this.apiService
-      .get<ProductData>(`products/${sku}`, { params })
+      .get<ProductData>(`products/${sku}`, { sendSPGID: true, params })
       .pipe(map(element => this.productMapper.fromData(element)));
   }
 
@@ -85,7 +85,7 @@ export class ProductsService {
         sortableAttributes: { [id: string]: SortableAttributesType };
         categoryUniqueId: string;
         total: number;
-      }>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}/products`, { params })
+      }>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}/products`, { sendSPGID: true, params })
       .pipe(
         map(response => ({
           products: response.elements.map((element: ProductDataStub) => this.productMapper.fromStubData(element)),
@@ -138,7 +138,7 @@ export class ProductsService {
         sortKeys: string[];
         sortableAttributes: { [id: string]: SortableAttributesType };
         total: number;
-      }>('products', { params })
+      }>('products', { sendSPGID: true, params })
       .pipe(
         map(response => ({
           products: response.elements.map(element => this.productMapper.fromStubData(element)),
@@ -182,7 +182,7 @@ export class ProductsService {
         elements: ProductDataStub[];
         sortableAttributes: { [id: string]: SortableAttributesType };
         total: number;
-      }>('products', { params })
+      }>('products', { sendSPGID: true, params })
       .pipe(
         map(response => ({
           products: response.elements.map(element => this.productMapper.fromStubData(element)) as Product[],
@@ -231,6 +231,7 @@ export class ProductsService {
                     .map(([offset, length]) =>
                       this.apiService
                         .get<{ elements: Link[] }>(`products/${sku}/variations`, {
+                          sendSPGID: true,
                           params: new HttpParams().set('amount', length).set('offset', offset),
                         })
                         .pipe(mapToProperty('elements'))

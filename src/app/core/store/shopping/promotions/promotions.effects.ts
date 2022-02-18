@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { distinct, map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -15,8 +15,6 @@ export class PromotionsEffects {
     this.actions$.pipe(
       ofType(loadPromotion),
       mapToPayloadProperty('promoId'),
-      // trigger the promotion REST call only once for each distinct promotion id (per application session)
-      distinct(),
       mergeMap(
         promoId =>
           this.promotionsService.getPromotion(promoId).pipe(

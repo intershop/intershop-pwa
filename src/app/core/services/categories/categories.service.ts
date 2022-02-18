@@ -27,15 +27,17 @@ export class CategoriesService {
       return throwError(() => new Error('getCategory() called without categoryUniqueId'));
     }
 
-    return this.apiService.get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`).pipe(
-      map(element => this.categoryMapper.fromData(element)),
-      // bump up completeness level as it won't get any better than this
-      tap(
-        tree =>
-          (tree.nodes[tree.categoryRefs[categoryUniqueId] ?? categoryUniqueId].completenessLevel =
-            CategoryCompletenessLevel.Max)
-      )
-    );
+    return this.apiService
+      .get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`, { sendSPGID: true })
+      .pipe(
+        map(element => this.categoryMapper.fromData(element)),
+        // bump up completeness level as it won't get any better than this
+        tap(
+          tree =>
+            (tree.nodes[tree.categoryRefs[categoryUniqueId] ?? categoryUniqueId].completenessLevel =
+              CategoryCompletenessLevel.Max)
+        )
+      );
   }
 
   /**
@@ -50,7 +52,7 @@ export class CategoriesService {
       params = params.set('view', 'tree').set('limit', limit.toString()).set('omitHasOnlineProducts', 'true');
     }
 
-    return this.apiService.get('categories', { params }).pipe(
+    return this.apiService.get('categories', { sendSPGID: true, params }).pipe(
       unpackEnvelope<CategoryData>(),
       map(categoriesData =>
         categoriesData
