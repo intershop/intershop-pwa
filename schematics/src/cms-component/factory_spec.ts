@@ -125,9 +125,12 @@ describe('CMS Component Schematic', () => {
 
   it('should throw when definitionQualifiedName is missing', done => {
     const options = { ...defaultOptions, definitionQualifiedName: undefined };
-    schematicRunner.runSchematicAsync('cms-component', options, appTree).subscribe(noop, err => {
-      expect(err).toMatchInlineSnapshot(`[Error: Option (definitionQualifiedName) is required.]`);
-      done();
+    schematicRunner.runSchematicAsync('cms-component', options, appTree).subscribe({
+      next: noop,
+      error: err => {
+        expect(err).toMatchInlineSnapshot(`[Error: Option (definitionQualifiedName) is required.]`);
+        done();
+      },
     });
   });
 });

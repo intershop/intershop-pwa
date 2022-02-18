@@ -133,9 +133,12 @@ describe('Store Schematic', () => {
   it('should throw if both feature and extension are supplied', done => {
     const options = { ...defaultOptions, extension: 'feature', feature: 'bar' };
 
-    schematicRunner.runSchematicAsync('store', options, appTree).subscribe(fail, err => {
-      expect(err).toMatchInlineSnapshot(`[Error: cannot add feature store in extension]`);
-      done();
+    schematicRunner.runSchematicAsync('store', options, appTree).subscribe({
+      next: fail,
+      error: err => {
+        expect(err).toMatchInlineSnapshot(`[Error: cannot add feature store in extension]`);
+        done();
+      },
     });
   });
 

@@ -124,9 +124,12 @@ export class AppModule { }
 
     const options = { ...defaultOptions };
 
-    schematicRunner.runSchematicAsync('extension', options, appTree).subscribe(noop, err => {
-      expect(err).toMatchInlineSnapshot(`[Error: did not find 'AppLastRoutingModule' in /src/app/app.module.ts]`);
-      done();
+    schematicRunner.runSchematicAsync('extension', options, appTree).subscribe({
+      next: noop,
+      error: err => {
+        expect(err).toMatchInlineSnapshot(`[Error: did not find 'AppLastRoutingModule' in /src/app/app.module.ts]`);
+        done();
+      },
     });
   });
 });
