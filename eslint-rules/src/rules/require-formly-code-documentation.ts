@@ -14,7 +14,7 @@ export const requireFormlyCodeDocumentationRule: TSESLint.RuleModule<string, []>
     function hasPrecedingComment(node: TSESTree.ClassDeclaration) {
       return (
         context.getSourceCode().getCommentsBefore(node)?.length > 0 ||
-        context.getSourceCode().getCommentsBefore(node.decorators?.[0])?.length > 0
+        (node.decorators?.[0] && context.getSourceCode().getCommentsBefore(node.decorators[0])?.length > 0)
       );
     }
     if (!context.getFilename().includes('formly')) {
