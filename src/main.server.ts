@@ -10,8 +10,6 @@ if (PRODUCTION_MODE) {
 }
 
 export { AppServerModule } from './app/app.server.module';
-export { ngExpressEngine } from '@nguniversal/express-engine';
 export { environment } from './environments/environment';
 export { HYBRID_MAPPING_TABLE, ICM_WEB_URL } from './hybrid/default-url-mapping-table';
-export { renderModule, renderModuleFactory } from '@angular/platform-server';
 export { APP_BASE_HREF } from '@angular/common';
