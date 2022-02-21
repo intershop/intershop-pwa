@@ -1,7 +1,7 @@
 # dockerignore-update:start
 
 # The content between these markers is generated.
-# It can be synchronized using 'node scripts/update-dockerignore'
+# It can be synchronized using 'npm run update-dockerignore'
 
 # from .gitignore
 **/*.xliff
@@ -113,7 +113,7 @@
 /schematics/src/extension/files/__name@dasherize__/exports/*/**/*.*
 
 # The content between these markers is generated.
-# It can be synchronized using 'node scripts/update-dockerignore'
+# It can be synchronized using 'npm run update-dockerignore'
 
 # dockerignore-update:end
 

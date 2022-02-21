@@ -53,7 +53,7 @@ jobs:
         run: git diff --exit-code --raw -p --stat
 
       - name: .dockerignore Sync
-        run: node scripts/update-dockerignore
+        run: npm run update-dockerignore
 
       - name: Check No Changes from .dockerignore Sync
         run: git diff --exit-code --raw -p --stat
