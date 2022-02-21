@@ -1,11 +1,11 @@
 import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
 
-/**
- * This extension disables all fields that have keys that match those
- * specified in the formstate.disabled property
- */
 type FieldConfigWithDisabled = Omit<FormlyFieldConfig, 'options'> & { options: { formState: { disabled: string[] } } };
 
+/**
+ * Extension that disables all fields that have keys that match those
+ * specified in the formstate.disabled property
+ */
 export const disablePrefilledExtension: FormlyExtension = {
   onPopulate(field) {
     if (hasDisabled(field) && field.key) {
