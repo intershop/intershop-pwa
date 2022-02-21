@@ -54,6 +54,9 @@ The following official guides might help to migrate custom code as well:
 - https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md
 - https://swiperjs.com/migration-guide
 
+To help with the necessary rxjs refactorings, consider using [rxjs-fixers-morph](https://github.com/timdeschryver/rxjs-fixers-morph).
+Simply run `npx rxjs-fixers-morph ./project/tsconfig.json`.
+
 ## 1.1 to 1.2
 
 The `dist` folder now only contains results of the build process (except for `healthcheck.js`).
