@@ -25,6 +25,7 @@
     "test:schematics": "cd schematics && npm run test",
     "e2e": "cd e2e && npm install && node open-cypress",
     "lint": "ng lint",
+    "lint-hard": "node scripts/eslint-hard",
     "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --loglevel warn --write \"**/*.*\"",
     "compile": "tsc --project tsconfig.all.json",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
@@ -191,7 +192,7 @@
     "*": [
       "prettier --loglevel warn --write"
     ],
-    "*.html" : [
+    "*.html": [
       "eslint --fix"
     ],
     "*.ts": [

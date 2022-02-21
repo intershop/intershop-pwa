@@ -4,7 +4,6 @@
 # It can be synchronized using 'node scripts/update-dockerignore'
 
 # from .gitignore
-/eslint*hard*
 **/*.xliff
 **/*.ut.spec.ts
 **/node_modules
