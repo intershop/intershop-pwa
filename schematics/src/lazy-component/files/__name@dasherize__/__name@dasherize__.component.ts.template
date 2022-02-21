@@ -28,7 +28,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
   <% if (bindings.length) { %><%= bindings.map(b => b.declaration).join('\n  ') %><% } %>
 
-  <% if (bindings.length) { %>// tslint:disable-next-line: no-any - access in on-changes required
+  <% if (bindings.length) { %>// eslint-disable-next-line @typescript-eslint/no-explicit-any -- access in on-changes required
   private component: ComponentRef<any>;<% } %>
 
   constructor(
