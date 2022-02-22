@@ -576,10 +576,21 @@ describe('Shopping Store', () => {
               filters: undefined
               sorting: undefined
               page: undefined
-            [Product Listing Internal] Set Product Listing Pages:
-              id: {"type":"category","value":"A.123.456"}
+            [Products Internal] Load Products for Category:
+              categoryId: "A.123.456"
+              page: undefined
+              sorting: undefined
             [Filter Internal] Load Filter For Category:
               uniqueId: "A.123.456"
+            [Products API] Load Product Success:
+              product: {"sku":"P1"}
+            [Products API] Load Product Success:
+              product: {"sku":"P2"}
+            [Product Listing Internal] Set Product Listing Pages:
+              1: ["P1","P2"]
+              id: {"type":"category","value":"A.123.456"}
+              itemCount: 2
+              sortableAttributes: []
             [Filter API] Load Filter Success:
               filterNavigation: {}
             @ngrx/router-store/navigated: /category/A.123.456
