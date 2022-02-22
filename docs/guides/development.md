@@ -134,3 +134,11 @@ This can be done by setting the environment variable `NODE_OPTIONS=--max_old_spa
 [Debug Angular apps in production without revealing source maps](https://medium.com/angular-in-depth/debug-angular-apps-in-production-without-revealing-source-maps-ab4a235edd85)
 
 - If you also generate the source maps for production builds, you can load them in the browser development tools and use them for debugging production setups.
+
+## Parallelism
+
+The parallelism of `npm run test` and `npm run build:multi` can be customized with environment variables.
+
+The environment variable `JEST_MAX_WORKERS` is deferred to [`maxWorkers`](https://jestjs.io/docs/configuration#maxworkers-number--string) of `jest`.
+
+The environment variable `PWA_BUILD_MAX_WORKERS` is deferred to [`--max-parallel`](https://github.com/mysticatea/npm-run-all/blob/master/docs/npm-run-all.md#npm-run-all-command) of `npm-run-all`.
