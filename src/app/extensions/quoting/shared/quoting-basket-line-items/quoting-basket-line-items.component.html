@@ -1,0 +1,4 @@
+<ng-container *ngFor="let item of lineItems$ | async">
+  <h1 *ngIf="item[0]">{{ getName(item[0]) | async }}</h1>
+  <ish-line-item-list [lineItems]="item[1]"></ish-line-item-list>
+</ng-container>

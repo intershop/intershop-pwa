@@ -6,7 +6,7 @@ import { map, mapTo, sample, switchMap, switchMapTo, tap } from 'rxjs/operators'
 import { whenFalsy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
-import { QuotingEntity } from '../models/quoting/quoting.model';
+import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
   createQuoteRequestFromBasket,
   deleteQuotingEntity,
@@ -55,6 +55,13 @@ export class QuotingFacade {
     return timer(0, 2000).pipe(
       switchMapTo(this.store.pipe(select(getQuotingEntity(quoteId)))),
       map(QuotingHelper.state)
+    );
+  }
+
+  name$(quoteId: string) {
+    return this.store.pipe(
+      select(getQuotingEntity(quoteId)),
+      map((quote: Quote | QuoteRequest) => quote.displayName)
     );
   }
 
