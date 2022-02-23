@@ -1,4 +1,18 @@
 <ng-container *ngFor="let item of lineItems$ | async">
-  <h1 *ngIf="item[0]">{{ getName(item[0]) | async }}</h1>
+  <div class="row">
+    <div class="col-md-6 my-auto">
+      <h1 *ngIf="item[0] !== 'undefined'">{{ getName(item[0]) | async }}</h1>
+    </div>
+    <div class="col-md-6 my-auto text-right">
+      <a
+        class="btn-tool"
+        *ngIf="item[0] !== 'undefined'"
+        title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
+        (click)="onDeleteQuote(item[1])"
+      >
+        <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+      </a>
+    </div>
+  </div>
   <ish-line-item-list [lineItems]="item[1]"></ish-line-item-list>
 </ng-container>

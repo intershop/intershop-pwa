@@ -29,4 +29,8 @@ export class QuotingBasketLineItemsComponent implements OnInit {
   getName(quoteId: string) {
     return this.quotingFacade.name$(quoteId);
   }
+
+  onDeleteQuote(lineItems: LineItem[]) {
+    lineItems.forEach(item => this.checkoutFacade.deleteBasketItem(item.id));
+  }
 }
