@@ -11,11 +11,6 @@
         "$source": "projectName"
       },
       "visible": false
-    },
-    "ci": {
-      "type": "boolean",
-      "default": false,
-      "visible": false
     }
   }
 }

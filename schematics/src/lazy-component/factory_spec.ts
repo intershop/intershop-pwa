@@ -143,12 +143,22 @@ describe('Lazy Component Schematic', () => {
     let tree: UnitTestTree;
     let exportsModuleContent: string;
     let originalComponent: string;
+    let storedCI: string;
+
+    beforeAll(() => {
+      storedCI = process.env.CI;
+      process.env.CI = 'true';
+    });
+
+    afterAll(() => {
+      process.env.CI = storedCI;
+    });
 
     beforeEach(async () => {
       tree = await schematicRunner
         .runSchematicAsync(
           'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts', ci: true },
+          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
           appTree
         )
         .toPromise();
