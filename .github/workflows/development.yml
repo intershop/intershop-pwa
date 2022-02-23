@@ -98,6 +98,8 @@ jobs:
 
       - name: schematics Jest
         run: cd schematics && npm run test -- --ci
+        env:
+          CI: false
 
   DeadCode:
     needs: [Quality, Jest]
@@ -129,6 +131,8 @@ jobs:
   Schematics:
     needs: [Quality, Jest]
     runs-on: ubuntu-latest
+    env:
+      CI: false
 
     strategy:
       fail-fast: false

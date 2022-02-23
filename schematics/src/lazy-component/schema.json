@@ -39,11 +39,6 @@
         "index": 0
       },
       "x-prompt": "What component is the base for generating a lazy component?"
-    },
-    "ci": {
-      "type": "boolean",
-      "default": false,
-      "visible": false
     }
   }
 }
