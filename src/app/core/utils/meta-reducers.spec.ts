@@ -1,69 +1,61 @@
-import { Action, ActionReducerMap, combineReducers } from '@ngrx/store';
+import { TestBed } from '@angular/core/testing';
+import { Action, combineReducers } from '@ngrx/store';
 import { identity } from 'rxjs';
 
-import { CustomerUserType } from 'ish-core/models/customer/customer.model';
-import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { loginUserSuccess, logoutUser } from 'ish-core/store/customer/user';
-import { PromotionsState, promotionsReducer } from 'ish-core/store/shopping/promotions/promotions.reducer';
-import { ShoppingState } from 'ish-core/store/shopping/shopping-store';
+import { applyConfiguration, getICMBaseURL } from 'ish-core/store/core/configuration';
+import { CoreState } from 'ish-core/store/core/core-store';
+import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { loginUser, logoutUser } from 'ish-core/store/customer/user';
 
-import { resetOnLogoutMeta, resetPersonalizedShoppingMeta } from './meta-reducers';
+import { StoreWithSnapshots, provideStoreSnapshots } from './dev/ngrx-testing';
+import { resetOnLogoutMeta, resetSubStatesOnActionsMeta } from './meta-reducers';
 
 describe('Meta Reducers', () => {
-  describe('resetPersonalizedShoppingMeta', () => {
-    const state = {
-      promotions: { ids: ['id'], entities: { id: { id: '123' } as Promotion } } as PromotionsState,
-      productListing: { loading: false, itemsPerPage: 9, viewType: undefined, currentSettings: undefined },
-    } as ShoppingState;
+  describe('resetSubStatesOnActionsMeta', () => {
+    let store$: StoreWithSnapshots;
+    const baseURL = 'http://url.de';
 
-    const reducer = combineReducers({ promotions: promotionsReducer } as ActionReducerMap<ShoppingState>);
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          CoreStoreModule.forTesting(['configuration'], true, [
+            resetSubStatesOnActionsMeta<CoreState>(['configuration'], [logoutUser]),
+          ]),
+          CustomerStoreModule.forTesting('user'),
+        ],
+        providers: [provideStoreSnapshots()],
+      });
 
-    it('should reset state when reducing LogoutUser action', () => {
-      const result = resetPersonalizedShoppingMeta(identity)(state, logoutUser());
-      expect(result.promotions).toBeUndefined();
-      expect(result.productListing.itemsPerPage).toBe(9);
+      store$ = TestBed.inject(StoreWithSnapshots);
     });
 
-    it('should reset state when reducing LoginUserSuccess action', () => {
-      const result = resetPersonalizedShoppingMeta(identity)(
-        state,
-        loginUserSuccess({ customer: { customerNo: 'user' } } as CustomerUserType)
-      );
-      expect(result.promotions).toBeUndefined();
-      expect(result.productListing.itemsPerPage).toBe(9);
+    describe('on logout action', () => {
+      beforeEach(() => {
+        store$.dispatch(applyConfiguration({ baseURL }));
+      });
+
+      it('should reset the configuration sub state', () => {
+        expect(getICMBaseURL(store$.state)).toEqual(baseURL);
+
+        store$.dispatch(logoutUser());
+
+        expect(getICMBaseURL(store$.state)).toBeUndefined();
+      });
     });
 
-    it('should reset and delegate to reducer initial state when reducing LogoutUser action', () => {
-      const result = resetPersonalizedShoppingMeta(reducer)(state, logoutUser());
-      expect(result).toMatchInlineSnapshot(`
-        Object {
-          "promotions": Object {
-            "entities": Object {},
-            "ids": Array [],
-          },
-        }
-      `);
-    });
+    describe('on another action', () => {
+      beforeEach(() => {
+        store$.dispatch(applyConfiguration({ baseURL }));
+      });
 
-    it('should reset and delegate to reducer initial state when reducing LoginUserSuccess action', () => {
-      const result = resetPersonalizedShoppingMeta(reducer)(
-        state,
-        loginUserSuccess({ customer: { customerNo: 'user' } } as CustomerUserType)
-      );
+      it('should not change the configuration sub state', () => {
+        expect(getICMBaseURL(store$.state)).toEqual(baseURL);
 
-      expect(result).toMatchInlineSnapshot(`
-        Object {
-          "promotions": Object {
-            "entities": Object {},
-            "ids": Array [],
-          },
-        }
-      `);
-    });
+        store$.dispatch(loginUser({ credentials: { login: 'user', password: 'password' } }));
 
-    it('should not react on any other action with upstream reducer', () => {
-      const result = resetPersonalizedShoppingMeta(reducer)(state, {} as Action);
-      expect(result).toBe(state);
+        expect(getICMBaseURL(store$.state)).toEqual(baseURL);
+      });
     });
   });
 

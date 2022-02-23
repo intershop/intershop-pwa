@@ -2,8 +2,9 @@ import { Action, ActionReducer, MetaReducer } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { identity } from 'rxjs';
 
-import { loginUserSuccess, logoutUser } from 'ish-core/store/customer/user';
-import { ShoppingState } from 'ish-core/store/shopping/shopping-store';
+import { logoutUser } from 'ish-core/store/customer/user';
+
+import { omit } from './functions';
 
 export function resetOnLogoutMeta<S>(reducer: ActionReducer<S>): ActionReducer<S> {
   return (state: S, action: Action) => {
@@ -14,23 +15,14 @@ export function resetOnLogoutMeta<S>(reducer: ActionReducer<S>): ActionReducer<S
   };
 }
 
-export function resetPersonalizedShoppingMeta(reducer: ActionReducer<ShoppingState>): ActionReducer<ShoppingState> {
-  return (state: ShoppingState, action: Action) => {
-    if (action.type === logoutUser.type || action.type === loginUserSuccess.type) {
-      return reducer(
-        {
-          ...state,
-          categories: undefined,
-          products: undefined,
-          search: undefined,
-          filter: undefined,
-          promotions: undefined,
-        },
-        action
-      );
-    }
-    return reducer(state, action);
-  };
+export function resetSubStatesOnActionsMeta<S>(subStates: (keyof S)[], actions: Action[]): MetaReducer<S, Action> {
+  return (reducer): ActionReducer<S> =>
+    (state: S, action: Action) => {
+      if (actions?.some(a => a.type === action.type)) {
+        return reducer(omit<S>(state, ...subStates) as S, action);
+      }
+      return reducer(state, action);
+    };
 }
 
 function saveMeta<S>(
