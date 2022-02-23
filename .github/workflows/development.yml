@@ -73,7 +73,7 @@ jobs:
         run: npm run lint-hard
 
       - name: Check File Synchronization Status
-        run: node scripts/check-file-synchronization
+        run: npm run check-file-synchronization
 
   Jest:
     needs: [CancelPrevious]
