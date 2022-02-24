@@ -47,6 +47,11 @@ export class ProductContextDirective implements OnInit, OnChanges {
   }
 
   @Input()
+  set propagateActive(propagateActive: boolean) {
+    this.context.set('propagateActive', () => propagateActive);
+  }
+
+  @Input()
   set parts(parts: SkuQuantityType[]) {
     this.context.set('parts', () => parts);
     this.context.set('displayProperties', () => ({
