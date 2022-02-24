@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { debounce, delay, filter, map, switchMap, tap } from 'rxjs/operators';
+import { debounce, delay, filter, map, pairwise, switchMap, tap } from 'rxjs/operators';
 
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
@@ -99,6 +99,18 @@ export class ShoppingFacade {
       switchMap(plainSKU =>
         this.store.pipe(
           select(getProduct(plainSKU)),
+          pairwise(),
+          tap(([prev, curr]) => {
+            if (
+              ProductHelper.isReadyForDisplay(prev, completenessLevel) &&
+              !ProductHelper.isReadyForDisplay(curr, completenessLevel)
+            ) {
+              level === true
+                ? this.store.dispatch(loadProduct({ sku: plainSKU }))
+                : this.store.dispatch(loadProductIfNotLoaded({ sku: plainSKU, level }));
+            }
+          }),
+          map(([, curr]) => curr),
           filter(p => ProductHelper.isReadyForDisplay(p, completenessLevel))
         )
       )
