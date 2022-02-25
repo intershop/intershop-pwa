@@ -276,6 +276,37 @@
           }
         }
       }
+    },
+    "@intershop-pwa/formly": {
+      "projectType": "library",
+      "root": "libs/shared/ui/formly",
+      "sourceRoot": "libs/shared/ui/formly/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "libs/shared/ui/formly/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/ui/formly/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/shared/ui/formly/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/shared/ui/formly/src/test.ts",
+            "tsConfig": "libs/shared/ui/formly/tsconfig.spec.json",
+            "karmaConfig": "libs/shared/ui/formly/karma.conf.js"
+          }
+        }
+      }
     }
   },
   "defaultProject": "intershop-pwa",

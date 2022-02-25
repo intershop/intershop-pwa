@@ -15,6 +15,10 @@
     "importHelpers": true,
     "target": "es2015",
     "paths": {
+      "formly": [
+        "dist/formly/formly",
+        "dist/formly"
+      ],
       "ish-core/*": ["src/app/core/*"],
       "ish-shared/*": ["src/app/shared/*"],
       "ish-shell/*": ["src/app/shell/*"],
