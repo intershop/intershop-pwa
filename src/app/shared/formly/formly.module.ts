@@ -3,6 +3,7 @@ import { FieldType, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 
 import { ComponentsModule } from './components/components.module';
 import { ExtensionsModule } from './extensions/extensions.module';
+import { FieldLibraryModule } from './field-library/field-library.module';
 import { TypesModule } from './types/types.module';
 import { WrappersModule } from './wrappers/wrappers.module';
 
@@ -18,6 +19,7 @@ import { WrappersModule } from './wrappers/wrappers.module';
       },
     }),
     ExtensionsModule,
+    FieldLibraryModule,
     TypesModule,
     WrappersModule,
   ],

@@ -3,6 +3,7 @@ import { componentCreationTestRule } from './rules/component-creation-test';
 import { newlineBeforeRootMembersRule } from './rules/newline-before-root-members';
 import { noAssignmentToInputsRule } from './rules/no-assignment-to-inputs';
 import { noCollapsibleIfRule } from './rules/no-collapsible-if';
+import { noFormlyExplicitPseudoTypeRule } from './rules/no-formly-explicit-pseudo-type';
 import { noInitializeObservablesDirectlyRule } from './rules/no-initialize-observables-directly';
 import { noIntelligenceInArtifactsRule } from './rules/no-intelligence-in-artifacts';
 import { noObjectLiteralTypeAssertionRule } from './rules/no-object-literal-type-assertion';
@@ -42,6 +43,7 @@ const rules = {
   'newline-before-root-members': newlineBeforeRootMembersRule,
   'no-var-before-return': noVarBeforeReturnRule,
   'require-formly-code-documentation': requireFormlyCodeDocumentationRule,
+  'no-formly-explicit-pseudo-type': noFormlyExplicitPseudoTypeRule,
 };
 
 module.exports = {

@@ -7,6 +7,12 @@
       "description": "Create an address form configuration",
       "schema": "./address-form-configuration/schema.json"
     },
+    "field-library-configuration": {
+      "aliases": ["flc"],
+      "factory": "./field-library-configuration/factory#createFieldLibraryConfiguration",
+      "description": "Create an field library configuration item",
+      "schema": "./field-library-configuration/schema.json"
+    },
     "cms-component": {
       "aliases": ["cms"],
       "factory": "./cms-component/factory#createCMSComponent",

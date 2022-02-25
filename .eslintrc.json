@@ -345,6 +345,7 @@
         "ish-custom-rules/newline-before-root-members": "warn",
         "ish-custom-rules/no-assignment-to-inputs": "error",
         "ish-custom-rules/no-collapsible-if": "warn",
+        "ish-custom-rules/no-formly-explicit-pseudo-type": "error",
         "ish-custom-rules/no-initialize-observables-directly": "warn",
         "ish-custom-rules/no-intelligence-in-artifacts": [
           "warn",
@@ -616,6 +617,11 @@
               {
                 "name": "^(environment)$",
                 "file": "src/environments/environment(\\.[a-z]+)?\\.ts$"
+              },
+              // formly
+              {
+                "name": "^([A-Z].*)Configuration$",
+                "file": "src/app/shared/(formly-address-forms|formly/field-library)/configurations/(.+/)*<kebab>.configuration.ts$"
               }
             ],
             "ignoredFiles": [
@@ -631,7 +637,8 @@
               ".*.actions.ts$",
               ".*.model.ts$",
               "store-devtools.module"
-            ]
+            ],
+            "allowedNumberWords": ["b2b", "v2", "v3", "auth0"]
           }
         ],
         "ish-custom-rules/use-alias-imports": "error",
