@@ -1,28 +1,22 @@
 import { NgModule } from '@angular/core';
-import { FieldType, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { FIELD_LIBRARY_CONFIGURATION } from '@intershop-pwa/formly/field-library/services/field-library/field-library.service';
+import { SharedUiFormlyModule } from '@intershop-pwa/formly/shared-ui-formly.module';
+import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
-import { ComponentsModule } from './components/components.module';
-import { ExtensionsModule } from './extensions/extensions.module';
-import { FieldLibraryModule } from './field-library/field-library.module';
-import { TypesModule } from './types/types.module';
-import { WrappersModule } from './wrappers/wrappers.module';
+import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
+import { TitleConfiguration } from './title.configuration';
 
 @NgModule({
+  declarations: [CaptchaFieldComponent],
   imports: [
-    ComponentsModule,
+    CaptchaExportsModule,
     FormlyBaseModule.forChild({
-      extras: {
-        lazyRender: true,
-        showError: (field: FieldType) =>
-          field.formControl?.invalid &&
-          (field.formControl.dirty || field.options.parentForm?.submitted || !!field.field.validation?.show),
-      },
+      types: [{ name: 'ish-captcha-field', component: CaptchaFieldComponent }],
     }),
-    ExtensionsModule,
-    FieldLibraryModule,
-    TypesModule,
-    WrappersModule,
+    SharedUiFormlyModule,
   ],
-  exports: [ComponentsModule, FormlyBaseModule],
+  providers: [{ provide: FIELD_LIBRARY_CONFIGURATION, useClass: TitleConfiguration, multi: true }],
+  exports: [SharedUiFormlyModule],
 })
 export class FormlyModule {}

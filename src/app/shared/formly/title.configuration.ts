@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
+import { FieldLibraryConfiguration } from '@intershop-pwa/formly/field-library/configurations/field-library-configuration';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
-
-import { FieldLibraryConfiguration } from './field-library-configuration';
 
 /**
  * Title/Salutation, automatically extracts options from FormsService, not required by default

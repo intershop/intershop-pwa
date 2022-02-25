@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SpecialValidators } from '@intershop-pwa/formly/validators/special-validators';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { UserBudgetFormComponent } from '../../components/user-budget-form/user-budget-form.component';
 import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';

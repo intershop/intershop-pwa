@@ -9,11 +9,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { SpecialValidators } from '@intershop-pwa/formly/validators/special-validators';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Component({
   selector: 'ish-basket-order-reference',

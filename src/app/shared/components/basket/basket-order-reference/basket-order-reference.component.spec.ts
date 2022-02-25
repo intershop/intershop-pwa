@@ -1,6 +1,7 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SpecialValidators } from '@intershop-pwa/formly/validators/special-validators';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -9,7 +10,6 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { BasketOrderReferenceComponent } from './basket-order-reference.component';
 

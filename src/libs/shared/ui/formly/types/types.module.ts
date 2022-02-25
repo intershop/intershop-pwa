@@ -1,14 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SpecialValidators, formlyValidation } from '@intershop-pwa/formly/validators/special-validators';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
-import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
-import { DirectivesModule } from 'ish-core/directives.module';
-import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
-
-import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './checkbox-field/checkbox-field.component';
 import { FieldsetFieldComponent } from './fieldset-field/fieldset-field.component';
 import { PlainTextFieldComponent } from './plain-text-field/plain-text-field.component';
@@ -18,7 +14,6 @@ import { TextInputFieldComponent } from './text-input-field/text-input-field.com
 import { TextareaFieldComponent } from './textarea-field/textarea-field.component';
 
 const fieldComponents = [
-  CaptchaFieldComponent,
   CheckboxFieldComponent,
   FieldsetFieldComponent,
   PlainTextFieldComponent,
@@ -30,12 +25,9 @@ const fieldComponents = [
 
 @NgModule({
   imports: [
-    CaptchaExportsModule,
     CommonModule,
-    DirectivesModule,
     FormlySelectModule,
     ReactiveFormsModule,
-
     FormlyBaseModule.forChild({
       types: [
         {
@@ -119,7 +111,6 @@ const fieldComponents = [
           component: CheckboxFieldComponent,
           wrappers: ['form-field-checkbox-horizontal'],
         },
-        { name: 'ish-captcha-field', component: CaptchaFieldComponent },
         {
           name: 'ish-fieldset-field',
           component: FieldsetFieldComponent,

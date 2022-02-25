@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
+import { IconModule } from '@intershop-pwa/icon/icon.module';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 
-import { IconModule } from './icon.module';
 import { ThemeService } from './utils/theme/theme.service';
 
 @NgModule({

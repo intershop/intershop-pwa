@@ -1,8 +1,7 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { FieldLibraryConfiguration } from '@intershop-pwa/formly/field-library/configurations/field-library-configuration';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { mergeWith } from 'lodash-es';
-
-import { FieldLibraryConfiguration } from 'ish-shared/formly/field-library/configurations/field-library-configuration';
 
 export const FIELD_LIBRARY_CONFIGURATION = new InjectionToken<FieldLibraryConfiguration>(
   'Reusable Formly Field Configuration'

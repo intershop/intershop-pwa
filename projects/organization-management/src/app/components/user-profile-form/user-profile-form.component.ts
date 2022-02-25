@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+import { SpecialValidators } from '@intershop-pwa/formly/validators/special-validators';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 

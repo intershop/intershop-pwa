@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { IconModule } from 'src/libs/shared/ui/icon/icon.module';
 
 import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';

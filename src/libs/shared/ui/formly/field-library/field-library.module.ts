@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FORMLY_CONFIG, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
-
 import { AddressLine1Configuration } from './configurations/address-line-1.configuration';
 import { AddressLine2Configuration } from './configurations/address-line-2.configuration';
 import { CityConfiguration } from './configurations/city.configuration';
@@ -14,7 +12,6 @@ import { LastNameConfiguration } from './configurations/last-name.configuration'
 import { PhoneHomeConfiguration } from './configurations/phone-home.configuration';
 import { PostalCodeConfiguration } from './configurations/postal-code.configuration';
 import { TaxationIDConfiguration } from './configurations/taxation-id.configuration';
-import { TitleConfiguration } from './configurations/title.configuration';
 import { registerLibraryConfigReplacementExtension } from './library-config-replacement.extension';
 import {
   FIELD_LIBRARY_CONFIGURATION,
@@ -23,10 +20,9 @@ import {
 } from './services/field-library/field-library.service';
 
 @NgModule({
-  imports: [CommonModule, FormsSharedModule, FormlyBaseModule.forChild({})],
+  imports: [CommonModule, FormlyBaseModule.forChild({})],
   providers: [
     FieldLibraryService,
-    { provide: FIELD_LIBRARY_CONFIGURATION, useClass: TitleConfiguration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: FirstNameConfiguration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: LastNameConfiguration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: PhoneHomeConfiguration, multi: true },

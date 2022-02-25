@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ComponentsModule } from 'ish-shared/formly/components/components.module';
+import { ComponentsModule } from '../components/components.module';
 
 import { DescriptionWrapperComponent } from './description-wrapper/description-wrapper.component';
 import { HorizontalCheckboxWrapperComponent } from './horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';

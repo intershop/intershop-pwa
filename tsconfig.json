@@ -15,10 +15,6 @@
     "importHelpers": true,
     "target": "es2015",
     "paths": {
-      "formly": [
-        "dist/formly/formly",
-        "dist/formly"
-      ],
       "ish-core/*": ["src/app/core/*"],
       "ish-shared/*": ["src/app/shared/*"],
       "ish-shell/*": ["src/app/shell/*"],
@@ -28,7 +24,10 @@
       "requisition-management": [
         "projects/requisition-management/src/app/exports"
       ],
-      "swiper_angular": ["node_modules/swiper/angular"]
+      "swiper_angular": ["node_modules/swiper/angular"],
+      // libs
+      "@intershop-pwa/formly/*": ["src/libs/shared/ui/formly/*"],
+      "@intershop-pwa/icon/*": ["src/libs/shared/ui/icon/*"]
     },
     "lib": ["es2018", "dom"],
     "noUnusedLocals": true,

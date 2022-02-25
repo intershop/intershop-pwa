@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
+import { SpecialValidators } from '@intershop-pwa/formly/validators/special-validators';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { FieldLibraryConfiguration } from './field-library-configuration';
 
