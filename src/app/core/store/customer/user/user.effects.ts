@@ -15,7 +15,6 @@ import {
   mapTo,
   mergeMap,
   sample,
-  switchMap,
   takeWhile,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -52,6 +51,7 @@ import {
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
   setPGID,
+  setPGIDSuccess,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -85,7 +85,7 @@ export class UserEffects {
       ofType(loginUser),
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
-        this.userService.signInUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+        this.userService.signInUser(credentials).pipe(map(setPGID), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -94,9 +94,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(loginUserWithToken),
       mapToPayloadProperty('token'),
-      exhaustMap(token =>
-        this.userService.signInUserByToken(token).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
-      )
+      exhaustMap(token => this.userService.signInUserByToken(token).pipe(map(setPGID), mapErrorToAction(loginUserFail)))
     )
   );
 
@@ -132,7 +130,7 @@ export class UserEffects {
       ofType(createUser),
       mapToPayload(),
       mergeMap((data: CustomerRegistrationType) =>
-        this.userService.createUser(data).pipe(map(loginUserSuccess), mapErrorToAction(createUserFail))
+        this.userService.createUser(data).pipe(map(setPGID), mapErrorToAction(createUserFail))
       )
     )
   );
@@ -226,16 +224,17 @@ export class UserEffects {
   loadUserByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
-      concatMap(() => this.userService.signInUserByToken().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail)))
+      concatMap(() => this.userService.signInUserByToken().pipe(map(setPGID), mapErrorToAction(loginUserFail)))
     )
   );
 
   fetchPGID$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loginUserSuccess),
-      switchMap(() =>
+      ofType(setPGID),
+      mapToPayload(),
+      concatMap(payload =>
         this.personalizationService.getPGID().pipe(
-          map(pgid => setPGID({ pgid })),
+          concatMap(pgid => [setPGIDSuccess({ pgid }), loginUserSuccess(payload)]),
           catchError(() => EMPTY)
         )
       )

@@ -22,6 +22,7 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
+import { setPGID } from '.';
 import {
   createUser,
   createUserFail,
@@ -141,9 +142,9 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a LoginUserSuccess action on successful login', () => {
+    it('should dispatch a setPGID action on successful login', () => {
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
-      const completion = loginUserSuccess(loginResponseData);
+      const completion = setPGID(loginResponseData);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -260,11 +261,11 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a LoginUserSuccess action on successful user creation', () => {
+    it('should dispatch a setPGID action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
 
       const action = createUser({ credentials } as CustomerRegistrationType);
-      const completion = loginUserSuccess({} as CustomerUserType);
+      const completion = setPGID({} as CustomerUserType);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -509,7 +510,7 @@ describe('User Effects', () => {
   });
 
   describe('loadUserByAPIToken$', () => {
-    it('should call the user service on LoadUserByAPIToken action and load user on success', done => {
+    it('should call the user service on LoadUserByAPIToken action and set pgid on success', done => {
       when(userServiceMock.signInUserByToken()).thenReturn(
         of({ user: { email: 'test@intershop.de' } } as CustomerUserType)
       );
@@ -519,8 +520,8 @@ describe('User Effects', () => {
       effects.loadUserByAPIToken$.subscribe(action => {
         verify(userServiceMock.signInUserByToken()).once();
         expect(action).toMatchInlineSnapshot(`
-          [User API] Login User Success:
-            user: {"email":"test@intershop.de"}
+        [User Internal] Set PGID:
+          user: {"email":"test@intershop.de"}
         `);
         done();
       });

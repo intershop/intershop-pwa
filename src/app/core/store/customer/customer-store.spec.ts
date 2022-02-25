@@ -6,7 +6,6 @@ import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
@@ -29,7 +28,6 @@ import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { loginUser } from 'ish-core/store/customer/user';
 import { UserEffects } from 'ish-core/store/customer/user/user.effects';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -239,19 +237,6 @@ describe('Customer Store', () => {
         store.dispatch(loadBasketSuccess({ basket }));
 
         store.reset();
-      });
-      it('should merge basket on user login.', () => {
-        store.dispatch(loginUser({ credentials: {} as Credentials }));
-
-        expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [User] Login User:
-            credentials: {}
-          [User API] Login User Success:
-            customer: {"isBusinessCustomer":false,"customerNo":"test"}
-            user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
-          [Basket API] Merge two baskets Success:
-            basket: {"id":"test","lineItems":[1]}
-        `);
       });
 
       it('should go to checkout address page after starting checkout.', () => {

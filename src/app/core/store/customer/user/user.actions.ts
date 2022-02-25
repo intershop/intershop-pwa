@@ -69,7 +69,9 @@ export const userErrorReset = createAction('[User Internal] Reset User Error');
 
 export const loadUserByAPIToken = createAction('[User] Load User by API Token');
 
-export const setPGID = createAction('[User Internal] Set PGID', payload<{ pgid: string }>());
+export const setPGID = createAction('[User Internal] Set PGID', payload<CustomerUserType>());
+
+export const setPGIDSuccess = createAction('[User Internal] Set PGID Success', payload<{ pgid: string }>());
 
 export const loadUserCostCenters = createAction('[User] Load User Cost Centers');
 
