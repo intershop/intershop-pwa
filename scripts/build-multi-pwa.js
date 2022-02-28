@@ -25,7 +25,7 @@ if (processArgs.includes('server') || !processArgs.includes('client'))
     )
   );
 
-const cores = Math.round(require('os').cpus().length / 3) || 1;
+const cores = +process.env.PWA_BUILD_MAX_WORKERS || Math.round(require('os').cpus().length / 3) || 1;
 const parallel = cores === 1 ? [] : ['--max-parallel', cores, '--parallel'];
 if (parallel) {
   console.log(`Using ${cores} cores for multi compile.`);
