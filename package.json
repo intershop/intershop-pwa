@@ -38,6 +38,7 @@
     "postclean": "npm ci",
     "check": "npm-run-all \"lint -- --fix\" format compile build:multi test dead-code clean-localizations",
     "clean-check": "npm-run-all clean check",
+    "check-no-changes": "git diff --exit-code --raw -p --stat",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
     "3rd-party-licenses:summary": "npx license-checker --summary",

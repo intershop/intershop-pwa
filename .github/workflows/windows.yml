@@ -40,7 +40,7 @@ jobs:
       - run: npm run check
 
       - name: Check No Changes
-        run: git diff --exit-code --raw -p --stat
+        run: npm run check-no-changes
 
   Local:
     needs: [CancelPrevious]

@@ -47,16 +47,13 @@ jobs:
           npm i
 
       - name: Code Formatting
-        run: npm run format
-
-      - name: Check No Changes from Formatting
-        run: git diff --exit-code --raw -p --stat
+        run: npx npm-run-all format check-no-changes
 
       - name: .dockerignore Sync
-        run: npm run update-dockerignore
+        run: npx npm-run-all update-dockerignore check-no-changes
 
-      - name: Check No Changes from .dockerignore Sync
-        run: git diff --exit-code --raw -p --stat
+      - name: Clean Localizations
+        run: npx npm-run-all clean-localizations check-no-changes
 
       - name: Compile Angular
         run: npm run build client
@@ -126,7 +123,7 @@ jobs:
       - name: Find Unused TestBed declarations
         run: |
           npx ts-node scripts/cleanup-testbed origin/develop
-          git diff --exit-code --raw -p --stat
+          npm run check-no-changes
 
   Schematics:
     needs: [Quality, Jest]

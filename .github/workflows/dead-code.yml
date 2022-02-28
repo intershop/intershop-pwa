@@ -27,4 +27,4 @@ jobs:
       - name: Find Unused TestBed declarations
         run: |
           npx ts-node scripts/cleanup-testbed
-          git diff --exit-code --raw -p --stat
+          npm run check-no-changes
