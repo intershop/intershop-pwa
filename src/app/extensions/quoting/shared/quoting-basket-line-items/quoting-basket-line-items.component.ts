@@ -20,7 +20,7 @@ export class QuotingBasketLineItemsComponent implements OnInit {
   constructor(private checkoutFacade: CheckoutFacade, private quotingFacade: QuotingFacade) {}
 
   ngOnInit() {
-    this.quotingFacade.quotingEntities$();
+    this.quotingFacade.loadQuoting();
     this.lineItems$ = this.checkoutFacade.basket$.pipe(
       map(basket => Object.entries(groupBy(basket.lineItems, 'quote')))
     );
@@ -31,6 +31,6 @@ export class QuotingBasketLineItemsComponent implements OnInit {
   }
 
   onDeleteQuote(lineItems: LineItem[]) {
-    lineItems.forEach(item => this.checkoutFacade.deleteBasketItem(item.id));
+    this.checkoutFacade.deleteBasketItem(lineItems[0].id);
   }
 }

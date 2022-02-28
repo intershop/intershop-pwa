@@ -26,7 +26,7 @@ export class QuotingFacade {
 
   quotingEntities$() {
     // update on subscription
-    this.store.dispatch(loadQuoting());
+    this.loadQuoting();
 
     return this.store.pipe(
       select(getQuotingEntities),
@@ -36,7 +36,7 @@ export class QuotingFacade {
         timer(0, 60_000).pipe(
           tap(count => {
             if (count) {
-              this.store.dispatch(loadQuoting());
+              this.loadQuoting();
             }
           }),
           mapTo(entities)
@@ -71,5 +71,9 @@ export class QuotingFacade {
 
   createQuoteRequestFromBasket() {
     this.store.dispatch(createQuoteRequestFromBasket());
+  }
+
+  loadQuoting() {
+    this.store.dispatch(loadQuoting());
   }
 }
