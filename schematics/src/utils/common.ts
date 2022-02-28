@@ -127,9 +127,12 @@ export async function detectExtension(
 
 export function findDeclaringModule(host: Tree, options: { name?: string }) {
   let module: string = findModuleFromOptions(host, { ...options, name: options.name as string });
-  const alternateModule = module.replace('.ts', '.all.ts');
-  if (host.exists(alternateModule)) {
-    module = alternateModule;
+
+  if (module) {
+    const alternateModule = module.replace('.ts', '.all.ts');
+    if (host.exists(alternateModule)) {
+      module = alternateModule;
+    }
   }
 
   return {
