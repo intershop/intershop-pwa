@@ -5,7 +5,7 @@
     class="btn"
     [ngClass]="cssClass"
     [class.btn-primary]="!displayIcon"
-    [disabled]="(hasQuantityError$ | async) || (displaySpinner$ | async)"
+    [disabled]="buttonDisabled$ | async"
     [attr.title]="translationKey$ | async | translate"
     data-testing-id="addToCartButton"
     (click)="addToBasket()"
