@@ -2,8 +2,8 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { Loader } from '@googlemaps/js-api-loader';
 import { Store as ngrx_Store } from '@ngrx/store';
 
-import { StoreHelper } from '../../models/store/store.helper';
-import { Store } from '../../models/store/store.model';
+import { StoreLocationHelper } from '../../models/store-location/store-location.helper';
+import { StoreLocation } from '../../models/store-location/store-location.model';
 import { getGMAKey } from '../../store/store-locator-config';
 import { getHighlightedStore, getStores, highlightStore } from '../../store/stores';
 
@@ -15,7 +15,7 @@ export const STORE_MAP_ICON_CONFIGURATION = new InjectionToken<IconConfiguration
 export class StoresMapService {
   private map: google.maps.Map;
   private infoWindow: google.maps.InfoWindow;
-  private entries: { store: Store; marker: google.maps.Marker }[] = [];
+  private entries: { store: StoreLocation; marker: google.maps.Marker }[] = [];
 
   constructor(private store: ngrx_Store, @Inject(STORE_MAP_ICON_CONFIGURATION) private icons: IconConfiguration) {}
 
@@ -49,7 +49,7 @@ export class StoresMapService {
     });
   }
 
-  private placeMarkers(stores: Store[]) {
+  private placeMarkers(stores: StoreLocation[]) {
     this.entries.forEach(entry => {
       entry.marker.setMap(undefined);
     });
@@ -70,9 +70,9 @@ export class StoresMapService {
     this.map.fitBounds(bounds);
   }
 
-  private highlightMarkers(store: Store) {
+  private highlightMarkers(store: StoreLocation) {
     this.entries.forEach(entry => {
-      if (StoreHelper.equal(entry.store, store)) {
+      if (StoreLocationHelper.equal(entry.store, store)) {
         entry.marker.setIcon(this.icons?.highlight);
         entry.marker.setZIndex(1);
         this.map.panTo(entry.marker.getPosition());

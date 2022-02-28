@@ -9,8 +9,8 @@ import { Country } from 'ish-core/models/country/country.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { StoreLocatorFacade } from '../../facades/store-locator.facade';
-import { StoreHelper } from '../../models/store/store.helper';
-import { Store } from '../../models/store/store.model';
+import { StoreLocationHelper } from '../../models/store-location/store-location.helper';
+import { StoreLocation } from '../../models/store-location/store-location.model';
 import { StoresMapComponent } from '../../shared/stores-map/stores-map.component';
 
 @Component({
@@ -24,8 +24,8 @@ export class StoreLocatorPageComponent implements OnInit {
 
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
-  stores$: Observable<Store[]>;
-  highlightedStore$: Observable<Store>;
+  stores$: Observable<StoreLocation[]>;
+  highlightedStore$: Observable<StoreLocation>;
 
   submitted = false;
 
@@ -90,15 +90,15 @@ export class StoreLocatorPageComponent implements OnInit {
     this.storeLocatorFacade.loadStores(countryCode, postalCode, city);
   }
 
-  empty(stores: Store[]) {
+  empty(stores: StoreLocation[]) {
     return !stores?.length;
   }
 
-  highlighted$(store: Store) {
-    return this.highlightedStore$.pipe(map(highlightedStore => StoreHelper.equal(store, highlightedStore)));
+  highlighted$(store: StoreLocation) {
+    return this.highlightedStore$.pipe(map(highlightedStore => StoreLocationHelper.equal(store, highlightedStore)));
   }
 
-  highlight(store: Store) {
+  highlight(store: StoreLocation) {
     this.storeLocatorFacade.setHighlighted(store);
   }
 }

@@ -4,12 +4,12 @@ import { map } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
-import { StoreData } from '../../models/store/store.interface';
-import { StoreMapper } from '../../models/store/store.mapper';
+import { StoreLocationData } from '../../models/store-location/store-location.interface';
+import { StoreLocationMapper } from '../../models/store-location/store-location.mapper';
 
 @Injectable({ providedIn: 'root' })
 export class StoresService {
-  constructor(private apiService: ApiService, private storeMapper: StoreMapper) {}
+  constructor(private apiService: ApiService, private storeLocationMapper: StoreLocationMapper) {}
 
   getStores(countryCode?: string, postalCode?: string, city?: string) {
     let params = new HttpParams();
@@ -25,7 +25,7 @@ export class StoresService {
 
     return this.apiService.get('stores', { params }).pipe(
       unpackEnvelope(),
-      map((stores: StoreData[]) => stores.map(store => this.storeMapper.fromData(store)))
+      map((stores: StoreLocationData[]) => stores.map(store => this.storeLocationMapper.fromData(store)))
     );
   }
 }

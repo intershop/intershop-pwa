@@ -1,23 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 
-import { StoreData } from './store.interface';
-import { StoreMapper } from './store.mapper';
+import { StoreLocationData } from './store-location.interface';
+import { StoreLocationMapper } from './store-location.mapper';
 
-describe('Store Mapper', () => {
-  let storeMapper: StoreMapper;
+describe('Store Location Mapper', () => {
+  let storeLocationMapper: StoreLocationMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    storeMapper = TestBed.inject(StoreMapper);
+    storeLocationMapper = TestBed.inject(StoreLocationMapper);
   });
 
   describe('fromData', () => {
     it('should throw when input is falsy', () => {
-      expect(() => storeMapper.fromData(undefined)).toThrow();
+      expect(() => storeLocationMapper.fromData(undefined)).toThrow();
     });
 
     it('should map incoming data to model data', () => {
-      const data: StoreData = {
+      const data: StoreLocationData = {
         uuid: 'test',
         name: 'test',
         address: 'test',
@@ -31,7 +31,7 @@ describe('Store Mapper', () => {
         latitude: '1',
         longitude: '1',
       };
-      const mapped = storeMapper.fromData(data);
+      const mapped = storeLocationMapper.fromData(data);
       expect(mapped).toHaveProperty('id', 'test');
       expect(mapped).toHaveProperty('name', 'test');
       expect(mapped).toHaveProperty('address', 'test');
