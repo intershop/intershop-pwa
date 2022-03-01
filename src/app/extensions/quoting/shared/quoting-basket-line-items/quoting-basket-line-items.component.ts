@@ -30,7 +30,7 @@ export class QuotingBasketLineItemsComponent implements OnInit {
     return this.quotingFacade.name$(quoteId);
   }
 
-  onDeleteQuote(lineItems: LineItem[]) {
-    this.checkoutFacade.deleteBasketItem(lineItems[0].id);
+  onDeleteQuote(quoteId: string) {
+    this.quotingFacade.deleteQuoteFromBasket(quoteId);
   }
 }

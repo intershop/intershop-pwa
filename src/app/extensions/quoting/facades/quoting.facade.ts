@@ -9,6 +9,7 @@ import { QuotingHelper } from '../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
   createQuoteRequestFromBasket,
+  deleteQuoteFromBasket,
   deleteQuotingEntity,
   getQuotingEntities,
   getQuotingEntity,
@@ -61,7 +62,7 @@ export class QuotingFacade {
   name$(quoteId: string) {
     return this.store.pipe(
       select(getQuotingEntity(quoteId)),
-      map((quote: Quote | QuoteRequest) => quote.displayName)
+      map((quote: Quote | QuoteRequest) => quote?.displayName)
     );
   }
 
@@ -75,5 +76,9 @@ export class QuotingFacade {
 
   loadQuoting() {
     this.store.dispatch(loadQuoting());
+  }
+
+  deleteQuoteFromBasket(quoteId: string) {
+    this.store.dispatch(deleteQuoteFromBasket({ id: quoteId }));
   }
 }
