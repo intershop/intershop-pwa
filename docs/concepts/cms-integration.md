@@ -87,6 +87,17 @@ CREATE src/app/cms/components/cms-inventory/cms-inventory.component.spec.ts (795
 UPDATE src/app/cms/cms.module.ts (4956 bytes)
 ```
 
+## Design Preview
+
+In conjunction with Intershop Commerce Management (ICM) 7.10.39.1, Intershop PWA 3.3.0 introduced basic support for a design preview.
+This means the _Design View_ tab in the ICM backoffice can be used to preview content changes in the PWA, but without any direct editing capabilities.
+Direct item preview for products, categories and content pages works now as well in the context of the PWA.
+
+The preview feature basically consists of the [`PreviewService`](../../src/app/core/services/preview/preview.service.ts) that handles the preview functionality by listening for `PreviewContextID` initialization or changes and saving it to the browser session storage.
+The [`PreviewInterceptor`](../../src/app/core/interceptors/preview.interceptor.ts) than handles adding a currently available PreviewContextID as matrix parameter `;prectx=` to all REST requests so they can be evaluated on the ICM side returning content fitting to the set preview context.
+
+To end a preview session and to delete the saved `PreviewContextID` in the browser session storage, use the _Finish Preview_ button of the _Design View_ configuration.
+
 ## Integration with an External CMS
 
 Since the Intershop PWA can integrate any other REST API in addition to the ICM REST API, it should not be a problem to integrate an external 3rd party CMS that provides an own REST API, instead of using the integrated ICM CMS.
