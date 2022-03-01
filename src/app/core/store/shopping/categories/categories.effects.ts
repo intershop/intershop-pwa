@@ -11,9 +11,15 @@ import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
+import { waitForSPGIDComplete } from 'ish-core/store/customer/user';
 import { loadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import {
+  mapErrorToAction,
+  mapToPayloadProperty,
+  useCombinedObservableOnAction,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 
 import {
   loadCategory,
@@ -46,8 +52,11 @@ export class CategoriesEffects {
    * when the requested {@link Category} is not available, yet
    */
   selectedCategory$ = createEffect(() =>
-    this.store.pipe(
-      select(selectRouteParam('categoryUniqueId')),
+    this.actions$.pipe(
+      useCombinedObservableOnAction(
+        this.store.pipe(select(selectRouteParam('categoryUniqueId'))),
+        waitForSPGIDComplete
+      ),
       whenTruthy(),
       withLatestFrom(this.store.pipe(select(getCategoryEntities))),
       filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
@@ -60,8 +69,8 @@ export class CategoriesEffects {
    * when the requested ref in {@link getCategoryRefs} is not available, yet
    */
   selectedCategoryRef$ = createEffect(() =>
-    this.store.pipe(
-      select(selectRouteParam('categoryRefId')),
+    this.actions$.pipe(
+      useCombinedObservableOnAction(this.store.pipe(select(selectRouteParam('categoryRefId'))), waitForSPGIDComplete),
       whenTruthy(),
       withLatestFrom(this.store.pipe(select(getCategoryRefs)), this.store.pipe(select(getCategoryEntities))),
       filter(
@@ -90,7 +99,7 @@ export class CategoriesEffects {
 
   loadTopLevelCategories$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadTopLevelCategories),
+      useCombinedObservableOnAction(this.actions$.pipe(ofType(loadTopLevelCategories)), waitForSPGIDComplete),
       switchMap(() =>
         this.categoryService.getTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth).pipe(
           map(categories => loadTopLevelCategoriesSuccess({ categories })),

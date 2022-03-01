@@ -29,6 +29,7 @@ import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
+import { waitForSPGIDComplete } from 'ish-core/store/customer/user';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -37,6 +38,7 @@ import {
   mapToPayload,
   mapToPayloadProperty,
   mapToProperty,
+  useCombinedObservableOnAction,
   whenTruthy,
 } from 'ish-core/utils/operators';
 
@@ -227,7 +229,7 @@ export class ProductsEffects {
    */
   loadProductVariations$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadProductVariationsIfNotLoaded),
+      useCombinedObservableOnAction(this.actions$.pipe(ofType(loadProductVariationsIfNotLoaded)), waitForSPGIDComplete),
       mapToPayloadProperty('sku'),
       groupBy(identity),
       mergeMap(group$ =>

@@ -30,19 +30,23 @@ export class FilterService {
   getFilterForCategory(categoryUniqueId: string): Observable<FilterNavigation> {
     const category = CategoryHelper.getCategoryPath(categoryUniqueId);
     return this.apiService
-      .get<FilterNavigationData>(`categories/${category}/productfilters`)
+      .get<FilterNavigationData>(`categories/${category}/productfilters`, { sendSPGID: true })
       .pipe(map(filter => this.filterNavigationMapper.fromData(filter)));
   }
 
   getFilterForSearch(searchTerm: string): Observable<FilterNavigation> {
     return this.apiService
-      .get<FilterNavigationData>(`productfilters`, { params: new HttpParams().set('searchTerm', searchTerm) })
+      .get<FilterNavigationData>(`productfilters`, {
+        sendSPGID: true,
+        params: new HttpParams().set('searchTerm', searchTerm),
+      })
       .pipe(map(filter => this.filterNavigationMapper.fromData(filter)));
   }
 
   getFilterForMaster(masterSKU: string): Observable<FilterNavigation> {
     return this.apiService
       .get<FilterNavigationData>(`productfilters`, {
+        sendSPGID: true,
         params: new HttpParams().set('MasterSKU', masterSKU),
       })
       .pipe(map(filter => this.filterNavigationMapper.fromData(filter)));

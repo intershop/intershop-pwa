@@ -217,39 +217,41 @@ export class ProductsService {
       return throwError(() => new Error('getProductVariations() called without a sku'));
     }
 
-    return this.apiService.get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`).pipe(
-      switchMap(resp =>
-        !resp.total
-          ? of(resp.elements)
-          : of(resp).pipe(
-              mergeMap(res => {
-                const amount = res.amount;
-                const chunks = Math.ceil((res.total - amount) / amount);
-                return from(
-                  range(1, chunks + 1)
-                    .map(i => [i * amount, Math.min(amount, res.total - amount * i)])
-                    .map(([offset, length]) =>
-                      this.apiService
-                        .get<{ elements: Link[] }>(`products/${sku}/variations`, {
-                          sendSPGID: true,
-                          params: new HttpParams().set('amount', length).set('offset', offset),
-                        })
-                        .pipe(mapToProperty('elements'))
-                    )
-                );
-              }),
-              mergeMap(identity, 2),
-              toArray(),
-              map(resp2 => [...resp.elements, ...flatten(resp2)])
-            )
-      ),
-      map((links: ProductVariationLink[]) => ({
-        products: links.map(link => this.productMapper.fromVariationLink(link, sku)),
-        defaultVariation: ProductMapper.findDefaultVariation(links),
-      })),
-      map(data => ({ ...data, masterProduct: ProductMapper.constructMasterStub(sku, data.products) })),
-      defaultIfEmpty({ products: [], defaultVariation: undefined, masterProduct: undefined })
-    );
+    return this.apiService
+      .get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`, { sendSPGID: true })
+      .pipe(
+        switchMap(resp =>
+          !resp.total
+            ? of(resp.elements)
+            : of(resp).pipe(
+                mergeMap(res => {
+                  const amount = res.amount;
+                  const chunks = Math.ceil((res.total - amount) / amount);
+                  return from(
+                    range(1, chunks + 1)
+                      .map(i => [i * amount, Math.min(amount, res.total - amount * i)])
+                      .map(([offset, length]) =>
+                        this.apiService
+                          .get<{ elements: Link[] }>(`products/${sku}/variations`, {
+                            sendSPGID: true,
+                            params: new HttpParams().set('amount', length).set('offset', offset),
+                          })
+                          .pipe(mapToProperty('elements'))
+                      )
+                  );
+                }),
+                mergeMap(identity, 2),
+                toArray(),
+                map(resp2 => [...resp.elements, ...flatten(resp2)])
+              )
+        ),
+        map((links: ProductVariationLink[]) => ({
+          products: links.map(link => this.productMapper.fromVariationLink(link, sku)),
+          defaultVariation: ProductMapper.findDefaultVariation(links),
+        })),
+        map(data => ({ ...data, masterProduct: ProductMapper.constructMasterStub(sku, data.products) })),
+        defaultIfEmpty({ products: [], defaultVariation: undefined, masterProduct: undefined })
+      );
   }
 
   /**

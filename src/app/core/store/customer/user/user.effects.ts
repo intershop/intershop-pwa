@@ -9,6 +9,7 @@ import {
   catchError,
   concatMap,
   concatMapTo,
+  delay,
   exhaustMap,
   filter,
   map,
@@ -25,8 +26,11 @@ import { PersonalizationService } from 'ish-core/services/personalization/person
 import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { log } from 'ish-core/utils/dev/operators';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
+import { getPGID, waitForSPGIDComplete } from '.';
 import {
   createUser,
   createUserFail,
@@ -77,6 +81,7 @@ export class UserEffects {
     private paymentService: PaymentService,
     private personalizationService: PersonalizationService,
     private router: Router,
+    private apiTokenService: ApiTokenService,
     @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
@@ -238,6 +243,17 @@ export class UserEffects {
           catchError(() => EMPTY)
         )
       )
+    )
+  );
+
+  waitForPGID$ = createEffect(() =>
+    this.store$.pipe(
+      select(getPGID),
+      map(pgid => !this.apiTokenService.hasApiToken() || pgid),
+      whenTruthy(),
+      delay(100),
+      log('wait for pgid'),
+      map(() => waitForSPGIDComplete())
     )
   );
 

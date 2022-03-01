@@ -131,6 +131,10 @@ export class ApiTokenService {
     }
   }
 
+  hasApiToken() {
+    return !!this.cookiesService.get('apiToken');
+  }
+
   restore$(types: ApiTokenCookieType[] = ['user', 'basket', 'order']): Observable<boolean> {
     if (isPlatformServer(this.platformId)) {
       return of(true);

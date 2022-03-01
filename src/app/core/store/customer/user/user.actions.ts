@@ -73,6 +73,8 @@ export const setPGID = createAction('[User Internal] Set PGID', payload<Customer
 
 export const setPGIDSuccess = createAction('[User Internal] Set PGID Success', payload<{ pgid: string }>());
 
+export const waitForSPGIDComplete = createAction('[User Internal] Wait for SPGID Complete');
+
 export const loadUserCostCenters = createAction('[User] Load User Cost Centers');
 
 export const loadUserCostCentersFail = createAction('[User API] Load User Cost Centers Fail', httpError());

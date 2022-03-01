@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { debounce, delay, filter, map, switchMap, tap } from 'rxjs/operators';
+import { debounce, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { addProductToBasket } from 'ish-core/store/customer/basket';
-import { getPGID } from 'ish-core/store/customer/user';
 import {
   getCategory,
   getCategoryIdByRefId,
@@ -66,20 +65,10 @@ export class ShoppingFacade {
   }
 
   navigationCategories$(uniqueId?: string) {
-    return uniqueId
-      ? this.store.pipe(select(getNavigationCategories(uniqueId)))
-      : this.store.pipe(select(getPGID)).pipe(
-          delay(0), // delay ensures the apiToken cookie is deleted before a cms request without a pgid is triggered
-          tap(() => {
-            this.store.dispatch(loadTopLevelCategories()); // fetch top level categories after pgid changes (login/logout)
-          }),
-          switchMap(() =>
-            this.store.pipe(
-              select(getNavigationCategories(uniqueId)),
-              filter(categories => !!categories?.length) // prevent to display an empty navigation bar after login/logout
-            )
-          )
-        );
+    if (!uniqueId) {
+      this.store.dispatch(loadTopLevelCategories());
+    }
+    return this.store.pipe(select(getNavigationCategories(uniqueId)));
   }
 
   // PRODUCT

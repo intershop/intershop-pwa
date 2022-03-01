@@ -1,5 +1,6 @@
-import { Action } from '@ngrx/store';
-import { MonoTypeOperatorFunction, Observable, OperatorFunction, of, throwError } from 'rxjs';
+import { ofType } from '@ngrx/effects';
+import { Action, ActionCreator } from '@ngrx/store';
+import { MonoTypeOperatorFunction, Observable, OperatorFunction, combineLatest, of, throwError } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -53,4 +54,20 @@ export function whenTruthy<T>(): MonoTypeOperatorFunction<T> {
 
 export function whenFalsy<T>(): MonoTypeOperatorFunction<T> {
   return (source$: Observable<T>) => source$.pipe(filter(x => !x));
+}
+
+/**
+ * Operator that maps to an observable when the stream contains the specified action.
+ * Uses combineLatest so it will emit after both the action is fired and the observable emits.
+ *
+ * @param observable$ the observable that will be mapped to
+ * @param action the action to listen for
+ * @returns a stream containing only the values of the provided observable
+ */
+export function useCombinedObservableOnAction<T>(
+  observable$: Observable<T>,
+  action: ActionCreator
+): OperatorFunction<Action, T> {
+  return (source$: Observable<Action>) =>
+    combineLatest([observable$, source$.pipe(ofType(action))]).pipe(map(([obs, _]) => obs));
 }
