@@ -1,5 +1,5 @@
-export interface Store {
-  id: string;
+export interface StoreLocationData {
+  uuid: string;
   name: string;
   address: string;
   city: string;
@@ -8,7 +8,7 @@ export interface Store {
   countryCode: string;
   email: string;
   fax: string;
-  phone: string;
-  latitude: number;
-  longitude: number;
+  phoneBusiness: string;
+  latitude: string;
+  longitude: string;
 }
