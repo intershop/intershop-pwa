@@ -9,7 +9,7 @@ import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-l
 import { IdentityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'loading', loadChildren: () => import('./loading/loading-page.module').then(m => m.LoadingPageModule) },
   {
     path: 'home',
