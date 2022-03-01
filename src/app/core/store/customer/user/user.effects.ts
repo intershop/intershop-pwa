@@ -249,10 +249,10 @@ export class UserEffects {
   waitForPGID$ = createEffect(() =>
     this.store$.pipe(
       select(getPGID),
+      log('wait for pgid'),
       map(pgid => !this.apiTokenService.hasApiToken() || pgid),
       whenTruthy(),
-      delay(100),
-      log('wait for pgid'),
+      delay(200),
       map(() => waitForSPGIDComplete())
     )
   );

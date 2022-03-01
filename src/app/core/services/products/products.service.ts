@@ -262,7 +262,7 @@ export class ProductsService {
       return throwError(() => new Error('getProductBundles() called without a sku'));
     }
 
-    return this.apiService.get(`products/${sku}/bundles`).pipe(
+    return this.apiService.get(`products/${sku}/bundles`, { sendSPGID: true }).pipe(
       unpackEnvelope<Link>(),
       map(links => ({
         stubs: links.map(link => this.productMapper.fromLink(link)),
@@ -279,7 +279,7 @@ export class ProductsService {
       return throwError(() => new Error('getRetailSetParts() called without a sku'));
     }
 
-    return this.apiService.get(`products/${sku}/partOfRetailSet`).pipe(
+    return this.apiService.get(`products/${sku}/partOfRetailSet`, { sendSPGID: true }).pipe(
       unpackEnvelope<Link>(),
       map(links => links.map(link => this.productMapper.fromRetailSetLink(link))),
       defaultIfEmpty([])
@@ -287,7 +287,7 @@ export class ProductsService {
   }
 
   getProductLinks(sku: string): Observable<ProductLinksDictionary> {
-    return this.apiService.get(`products/${sku}/links`).pipe(
+    return this.apiService.get(`products/${sku}/links`, { sendSPGID: true }).pipe(
       unpackEnvelope<{ linkType: string; categoryLinks: Link[]; productLinks: Link[] }>(),
       map(links =>
         links.reduce(

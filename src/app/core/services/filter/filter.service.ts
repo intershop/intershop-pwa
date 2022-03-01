@@ -88,7 +88,7 @@ export class FilterService {
         total: number;
         elements: ProductDataStub[];
         sortableAttributes: { [id: string]: SortableAttributesType };
-      }>(resource, { params })
+      }>(resource, { params, sendSPGID: true })
       .pipe(
         map(x => ({
           products: x.elements.map(stub => this.productMapper.fromStubData(stub)),
