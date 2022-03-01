@@ -1,7 +1,17 @@
 import { ofType } from '@ngrx/effects';
 import { Action, ActionCreator } from '@ngrx/store';
-import { MonoTypeOperatorFunction, Observable, OperatorFunction, combineLatest, of, throwError } from 'rxjs';
-import { catchError, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
+import {
+  MonoTypeOperatorFunction,
+  NEVER,
+  Observable,
+  OperatorFunction,
+  combineLatest,
+  concat,
+  of,
+  throwError,
+  connect,
+} from 'rxjs';
+import { buffer, catchError, distinctUntilChanged, filter, map, mergeAll, take, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -70,4 +80,18 @@ export function useCombinedObservableOnAction<T>(
 ): OperatorFunction<Action, T> {
   return (source$: Observable<Action>) =>
     combineLatest([observable$, source$.pipe(ofType(action))]).pipe(map(([obs, _]) => obs));
+}
+
+/**
+ * Delays emissions until the notifier emits.
+ * Taken from https://ncjamieson.com/how-to-write-delayuntil/
+ *
+ * @param notifier the observable that will be waited for
+ * @returns an observable that starts emitting only after the notifier emits
+ */
+export function delayUntil<T>(notifier: Observable<unknown>): OperatorFunction<T, T> {
+  return source =>
+    source.pipe(
+      connect(connected => concat(concat(connected, NEVER).pipe(buffer(notifier), take(1), mergeAll()), connected))
+    );
 }
