@@ -103,6 +103,9 @@
 # from src/app/extensions/quoting/exports/.gitignore
 /src/app/extensions/quoting/exports/*/**/*.*
 
+# from src/app/extensions/recently/exports/.gitignore
+/src/app/extensions/recently/exports/*/**/*.*
+
 # from src/app/extensions/tacton/exports/.gitignore
 /src/app/extensions/tacton/exports/*/**/lazy*.*
 

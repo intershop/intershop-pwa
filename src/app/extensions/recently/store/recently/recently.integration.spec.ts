@@ -10,6 +10,8 @@ import { loadProductSuccess, loadProductVariationsSuccess } from 'ish-core/store
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
+import { RecentlyStoreModule } from '../recently-store.module';
+
 import { clearRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';
 import { getMostRecentlyViewedProducts, getRecentlyViewedProducts } from './recently.selectors';
@@ -27,7 +29,8 @@ describe('Recently Selectors', () => {
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], [RecentlyEffects]),
         RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
-        ShoppingStoreModule.forTesting('_recently', 'categories', 'products'),
+        ShoppingStoreModule.forTesting('categories', 'products'),
+        RecentlyStoreModule.forTesting('_recently'),
       ],
       providers: [provideStoreSnapshots()],
     });

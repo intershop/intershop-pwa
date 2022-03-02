@@ -1,17 +1,18 @@
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
-import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 import { isArrayEqual } from 'ish-core/utils/functions';
 
-import { RecentlyState } from './recently.reducer';
+import { getRecentlyState } from '../recently-store';
 
-const getRecentlyState = createSelector(getShoppingState, state => state._recently);
+import { RecentlyViewedProducts } from './recently.reducer';
+
+const internalProducts = createSelector(getRecentlyState, state => state._recently);
 
 export const getRecentlyViewedProducts = createSelectorFactory<object, string[]>(projector =>
   resultMemoize(projector, isArrayEqual)
-)(getRecentlyState, (state: RecentlyState): string[] =>
-  state.products
+)(internalProducts, (products: RecentlyViewedProducts): string[] =>
+  products
     // take only first element of each group
     .filter((val, _, arr) => !val.group || arr.find(el => el.group === val.group) === val)
     .map(e => e.sku)

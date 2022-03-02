@@ -41,11 +41,6 @@ import {
   loadProductParts,
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
-import {
-  clearRecently,
-  getMostRecentlyViewedProducts,
-  getRecentlyViewedProducts,
-} from 'ish-core/store/shopping/recently';
 import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/store/shopping/search';
 import { toObservable } from 'ish-core/utils/functions';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -197,15 +192,6 @@ export class ShoppingFacade {
 
   removeProductFromCompare(sku: string) {
     this.store.dispatch(removeFromCompare({ sku }));
-  }
-
-  // RECENTLY
-
-  recentlyViewedProducts$ = this.store.pipe(select(getRecentlyViewedProducts));
-  mostRecentlyViewedProducts$ = this.store.pipe(select(getMostRecentlyViewedProducts));
-
-  clearRecentlyViewedProducts() {
-    this.store.dispatch(clearRecently());
   }
 
   // PROMOTIONS
