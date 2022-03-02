@@ -63,7 +63,7 @@ export class QuotingEffects {
   loadQuoting$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadQuoting),
-      switchMap(() =>
+      mergeMap(() =>
         this.quotingService.getQuotes().pipe(
           map(quoting => loadQuotingSuccess({ quoting })),
           mapErrorToAction(loadQuotingFail)
