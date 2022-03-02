@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Migrations
 
+## 2.0 to 2.1
+
+The recently viewed products functionality was moved into an extension.
+The already existing `recently` feature toggle works as before but the recently viewed component integration changed from `<ish-recently-viewed *ishFeature="'recently'"></ish-recently-viewed>` to `<ish-lazy-recently-viewed></ish-lazy-recently-viewed>`.
+This was already changed for the product detail page and the basket page but needs to be done for any customized usage of the recently viewed component.
+
 ## 1.4 to 2.0
 
 Since [TSLint has been deprecated](https://blog.palantir.com/tslint-in-2019-1a144c2317a9) for a while now and Angular removed the TSLint support we had to migrate our project from TSLint to ESLint as well.
