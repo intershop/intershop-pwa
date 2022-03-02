@@ -87,6 +87,8 @@ describe('User Effects', () => {
   beforeEach(() => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
+    apiTokenServiceMock = mock(ApiTokenService);
+
     when(userServiceMock.signInUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.signInUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));

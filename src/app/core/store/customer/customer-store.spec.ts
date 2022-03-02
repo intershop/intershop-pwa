@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
@@ -31,11 +32,13 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { UserEffects } from 'ish-core/store/customer/user/user.effects';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
+import { loginUser } from './user';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -145,7 +148,10 @@ describe('Customer Store', () => {
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user }));
 
     const personalizationServiceMock = mock(PersonalizationService);
-    when(personalizationServiceMock.getPGID()).thenReturn(EMPTY);
+    when(personalizationServiceMock.getPGID()).thenReturn(of(''));
+
+    const apiTokenServiceMock = mock(ApiTokenService);
+    when(apiTokenServiceMock.hasApiToken()).thenReturn(false);
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
@@ -171,6 +177,7 @@ describe('Customer Store', () => {
       ],
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
+        { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
         { provide: AuthorizationService, useFactory: () => instance(authorizationServiceMock) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
@@ -206,9 +213,10 @@ describe('Customer Store', () => {
     });
 
     describe('and without basket', () => {
-      it('should initially load basket and basketItems on product add.', done => {
-        setTimeout(() => {
-          expect(store.actionsArray(/Basket|Products/)).toMatchInlineSnapshot(`
+      it('should initially load basket and basketItems on product add.', fakeAsync(() => {
+        tick(1000);
+
+        expect(store.actionsArray(/Basket|Products/)).toMatchInlineSnapshot(`
             [Products API] Load Product Success:
               product: {"sku":"test","packingUnit":"pcs.","completenessLevel":2}
             [Basket] Add Product:
@@ -227,9 +235,7 @@ describe('Customer Store', () => {
             [Basket API] Load Basket Success:
               basket: {"id":"test","lineItems":[1]}
           `);
-          done();
-        }, 1000);
-      });
+      }));
     });
 
     describe('and with basket', () => {
@@ -237,6 +243,20 @@ describe('Customer Store', () => {
         store.dispatch(loadBasketSuccess({ basket }));
 
         store.reset();
+      });
+
+      it('should merge basket on user login.', () => {
+        store.dispatch(loginUser({ credentials: {} as Credentials }));
+
+        expect(store.actionsArray(/User/)).toMatchInlineSnapshot(`
+          [User] Login User:
+            credentials: {}
+          [User API] Login User Success:
+            customer: {"isBusinessCustomer":false,"customerNo":"test"}
+            user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
+          [Basket API] Merge two baskets Success:
+            basket: {"id":"test","lineItems":[1]}
+        `);
       });
 
       it('should go to checkout address page after starting checkout.', () => {
