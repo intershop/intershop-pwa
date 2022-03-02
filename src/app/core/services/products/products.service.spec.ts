@@ -118,9 +118,9 @@ describe('Products Service', () => {
   });
 
   it("should get product variations data when 'getProductVariations' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(of({ elements: [] }));
+    when(apiServiceMock.get(`products/${productSku}/variations`, anything())).thenReturn(of({ elements: [] }));
     productsService.getProductVariations(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/variations`)).once();
+      verify(apiServiceMock.get(`products/${productSku}/variations`, anything())).once();
       done();
     });
   });
@@ -146,31 +146,31 @@ describe('Products Service', () => {
   });
 
   it("should get product bundles data when 'getProductBundles' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/bundles`)).thenReturn(of([]));
+    when(apiServiceMock.get(`products/${productSku}/bundles`, anything())).thenReturn(of([]));
     productsService.getProductBundles(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/bundles`)).once();
+      verify(apiServiceMock.get(`products/${productSku}/bundles`, anything())).once();
       done();
     });
   });
 
   it("should get retail set parts data when 'getRetailSetParts' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/partOfRetailSet`)).thenReturn(of([]));
+    when(apiServiceMock.get(`products/${productSku}/partOfRetailSet`, anything())).thenReturn(of([]));
     productsService.getRetailSetParts(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/partOfRetailSet`)).once();
+      verify(apiServiceMock.get(`products/${productSku}/partOfRetailSet`, anything())).once();
       done();
     });
   });
 
   it("should get product links data when 'getProductLinks' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/links`)).thenReturn(of([]));
+    when(apiServiceMock.get(`products/${productSku}/links`, anything())).thenReturn(of([]));
     productsService.getProductLinks(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/links`)).once();
+      verify(apiServiceMock.get(`products/${productSku}/links`, anything())).once();
       done();
     });
   });
 
   it("should get map product links data when 'getProductLinks' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/links`)).thenReturn(
+    when(apiServiceMock.get(`products/${productSku}/links`, anything())).thenReturn(
       of({
         elements: [
           {

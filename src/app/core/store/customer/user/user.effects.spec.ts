@@ -19,6 +19,7 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
@@ -64,6 +65,7 @@ describe('User Effects', () => {
   let store$: Store;
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
+  let apiTokenServiceMock: ApiTokenService;
   let router: Router;
   let location: Location;
 
@@ -96,6 +98,7 @@ describe('User Effects', () => {
     when(userServiceMock.getEligibleCostCenters()).thenReturn(of([]));
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
+    when(apiTokenServiceMock.hasApiToken()).thenReturn(false);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -105,6 +108,7 @@ describe('User Effects', () => {
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
       ],
       providers: [
+        { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
