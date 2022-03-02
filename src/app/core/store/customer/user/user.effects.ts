@@ -252,7 +252,7 @@ export class UserEffects {
       log('wait for pgid'),
       map(pgid => !this.apiTokenService.hasApiToken() || pgid),
       whenTruthy(),
-      delay(200),
+      delay(100),
       map(() => waitForSPGIDComplete())
     )
   );

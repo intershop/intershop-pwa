@@ -139,8 +139,7 @@ export class ApiTokenService {
     if (isPlatformServer(this.platformId)) {
       return of(true);
     }
-    return timer(500, 200).pipe(
-      filter(() => this.router.navigated),
+    return this.router.events.pipe(
       first(),
       switchMap(() => this.initialCookie$),
       switchMap(cookie => {
