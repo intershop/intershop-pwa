@@ -1,3 +1,4 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
@@ -76,6 +77,7 @@ describe('Payment Service', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: APP_BASE_HREF, useFactory: () => '/' },
         provideMockStore({
           selectors: [
             { selector: getCurrentLocale, value: 'en_US' },

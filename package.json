@@ -13,6 +13,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
+    "update-dockerignore": "node scripts/update-dockerignore",
     "init-development-environment": "node scripts/init-development-environment",
     "postinstall": "postinstall && npm-run-all --silent build:eslint-rules build:schematics synchronize-lazy-components init-development-environment ngcc",
     "build:eslint-rules": "cd eslint-rules && npm run build",
@@ -25,6 +26,7 @@
     "test:schematics": "cd schematics && npm run test",
     "e2e": "cd e2e && npm install && node open-cypress",
     "lint": "ng lint",
+    "lint-hard": "node scripts/eslint-hard",
     "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --loglevel warn --write \"**/*.*\"",
     "compile": "tsc --project tsconfig.all.json",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
@@ -190,6 +192,9 @@
     ],
     "*": [
       "prettier --loglevel warn --write"
+    ],
+    "*.html": [
+      "eslint --fix"
     ],
     "*.ts": [
       "eslint --fix",

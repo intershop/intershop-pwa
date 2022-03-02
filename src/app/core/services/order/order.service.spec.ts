@@ -1,3 +1,4 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -31,6 +32,7 @@ describe('Order Service', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: APP_BASE_HREF, useFactory: () => '/' },
         provideMockStore({ selectors: [{ selector: getCurrentLocale, value: 'en_US' }] }),
       ],
     });

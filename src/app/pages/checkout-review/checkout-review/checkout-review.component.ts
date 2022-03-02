@@ -63,8 +63,6 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
         type: 'ish-checkout-review-tac-field',
         key: 'termsAndConditions',
         templateOptions: {
-          label: 'checkout.tac.text',
-          args: { 0: 'page://page.termsAndConditions.pagelet2-Page' },
           validation: {
             show: true,
           },

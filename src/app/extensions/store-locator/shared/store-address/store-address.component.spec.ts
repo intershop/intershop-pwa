@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
 
-import { Store as StoreModel } from '../../models/store/store.model';
+import { StoreLocation as StoreModel } from '../../models/store-location/store-location.model';
 
 import { StoreAddressComponent } from './store-address.component';
 

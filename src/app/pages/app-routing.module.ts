@@ -55,19 +55,6 @@ const routes: Routes = [
     },
   },
   {
-    path: 'recently',
-    loadChildren: () => import('./recently/recently-page.module').then(m => m.RecentlyPageModule),
-    canActivate: [FeatureToggleGuard],
-    data: {
-      feature: 'recently',
-      meta: {
-        title: 'application.recentlyViewed.heading',
-        robots: 'noindex, nofollow',
-      },
-      breadcrumbData: [{ key: 'application.recentlyViewed.breadcrumb.label' }],
-    },
-  },
-  {
     path: 'search',
     loadChildren: () => import('./search/search-page.module').then(m => m.SearchPageModule),
   },

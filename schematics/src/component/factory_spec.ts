@@ -147,8 +147,10 @@ describe('Component Schematic', () => {
 
   it('should fail if specified module does not exist', done => {
     const options = { ...defaultOptions, module: '/src/app.moduleXXX.ts' };
-    schematicRunner.runSchematicAsync('component', options, appTree).subscribe(noop, err => {
-      expect(err).toMatchInlineSnapshot(`
+    schematicRunner.runSchematicAsync('component', options, appTree).subscribe({
+      next: noop,
+      error: err => {
+        expect(err).toMatchInlineSnapshot(`
         [Error: Specified module '/src/app.moduleXXX.ts' does not exist.
         Looked in the following directories:
             /src/app/src/app.moduleXXX.ts
@@ -157,7 +159,8 @@ describe('Component Schematic', () => {
             /src/app
             /src]
       `);
-      done();
+        done();
+      },
     });
   });
 

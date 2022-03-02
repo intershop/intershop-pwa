@@ -203,7 +203,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     const paymentMethod = this.filteredPaymentMethods[this.openFormIndex];
     const parameters = Object.entries(this.parameterForm.controls)
       .filter(([, control]) => control.enabled && control.value)
-      .map(([key, control]) => ({ name: key, value: control.value }));
+      .map(([key, control]) => ({
+        name: key,
+        value: typeof control.value === 'string' ? control.value.trim() : control.value,
+      }));
 
     this.createNewPaymentInstrument({
       parameters,
