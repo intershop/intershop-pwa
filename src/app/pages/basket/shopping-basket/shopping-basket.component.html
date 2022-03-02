@@ -34,8 +34,14 @@
         </div>
 
         <ish-basket-cost-center-selection></ish-basket-cost-center-selection>
-        <ng-container *ishFeature="'quoting'; else elseTemplate">
-          <ish-lazy-quoting-basket-line-items></ish-lazy-quoting-basket-line-items>
+        <div class="section">
+          <ng-container *ishFeature="'quoting'; else elseTemplate">
+            <ish-lazy-quoting-basket-line-items></ish-lazy-quoting-basket-line-items>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
+          </ng-template>
+
           <div class="button-group" *ngIf="!basketContainsQuote">
             <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
             <ish-lazy-basket-create-order-template
@@ -44,21 +50,7 @@
               [products]="basket.lineItems"
             ></ish-lazy-basket-create-order-template>
           </div>
-        </ng-container>
-        <ng-template #elseTemplate>
-          <div class="section">
-            <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
-
-            <div class="button-group">
-              <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
-              <ish-lazy-basket-create-order-template
-                *ngIf="basket"
-                [cssClass]="'btn btn-secondary'"
-                [products]="basket.lineItems"
-              ></ish-lazy-basket-create-order-template>
-            </div>
-          </div>
-        </ng-template>
+        </div>
         <ish-lazy-direct-order></ish-lazy-direct-order>
 
         <p>
