@@ -137,6 +137,7 @@
     "commitizen": "^4.2.4",
     "commitlint-config-cz": "^0.13.3",
     "conventional-changelog-cli": "2.2.2",
+    "cors": "^2.8.5",
     "cspell": "^5.18.4",
     "cz-customizable": "^6.3.0",
     "eslint": "^8.8.0",

@@ -23,6 +23,8 @@ However, it is possible to dynamically configure the deploy URL as a runtime set
 
 ### Problem
 
+TODO: adapt this documentation
+
 To solve this problem, individual problems had to be solved:
 
 1. The Angular CLI build process inserts references to the initial bundles (`main`, `common`, `polyfills` and `runtime`) into the `index.html` relatively when called without `--deploy-url`, but uses a static deploy URL if requested.

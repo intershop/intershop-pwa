@@ -21,7 +21,7 @@ ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=
 RUN if [ ! -z "${activeThemes}" ]; then npm config set intershop-pwa:active-themes="${activeThemes}"; fi
-RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
+RUN npm run build:multi client
 COPY tsconfig.server.json server.ts /workspace/
 RUN npm run build:multi server
 RUN node scripts/compile-docker-scripts

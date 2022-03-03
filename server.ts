@@ -8,7 +8,8 @@ import * as fs from 'fs';
 import * as proxy from 'express-http-proxy';
 import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment, APP_BASE_HREF } from './src/main.server';
 import { ngExpressEngine } from '@nguniversal/express-engine';
-import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
+
+const cors = require('cors');
 
 const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
 
@@ -34,7 +35,10 @@ if (PM2) {
 
 const PORT = process.env.PORT || 4200;
 
-const DEPLOY_URL = getDeployURLFromEnv();
+const DEPLOY_URL = ((): string => {
+  const envDeployUrl = process.env.DEPLOY_URL || '/';
+  return `${envDeployUrl}${envDeployUrl.endsWith('/') ? '' : '/'}`;
+})();
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
@@ -187,31 +191,19 @@ export function app() {
   }
 
   // Serve static files from browser folder
-  server.get(/\/.*\.(js|css)$/, (req, res) => {
-    // remove all parameters
-    const path = req.originalUrl.substring(1).replace(/[;?&].*$/, '');
-
-    fs.readFile(join(BROWSER_FOLDER, path), { encoding: 'utf-8' }, (err, data) => {
-      if (err) {
-        res.sendStatus(404);
-      } else {
-        res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
-        res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
-      }
-    });
-  });
-  server.get(/\/ngsw\.json/, (_, res) => {
-    fs.readFile(join(BROWSER_FOLDER, 'ngsw.json'), { encoding: 'utf-8' }, (err, data) => {
-      if (err) {
-        res.sendStatus(404);
-      } else {
-        res.set('Content-Type', 'application/json; charset=UTF-8');
-        res.send(data);
-      }
-    });
-  });
+  // server.get(/\/ngsw\.json/, (_, res) => {
+  //   fs.readFile(join(BROWSER_FOLDER, 'ngsw.json'), { encoding: 'utf-8' }, (err, data) => {
+  //     if (err) {
+  //       res.sendStatus(404);
+  //     } else {
+  //       res.set('Content-Type', 'application/json; charset=UTF-8');
+  //       res.send(data);
+  //     }
+  //   });
+  // });
   server.get(
     '*.*',
+    cors(),
     express.static(BROWSER_FOLDER, {
       setHeaders: (res, path) => {
         if (/\.[0-9a-f]{20,}\./.test(path)) {
@@ -220,13 +212,6 @@ export function app() {
         } else {
           // file should be re-checked more frequently -> 5m
           res.set('Cache-Control', 'public, max-age=300');
-        }
-        // add cors headers for required resources
-        if (
-          DEPLOY_URL.startsWith('http') &&
-          ['manifest.webmanifest', 'woff2', 'woff', 'json'].some(match => path.endsWith(match))
-        ) {
-          res.set('access-control-allow-origin', '*');
         }
       },
     })
@@ -276,6 +261,11 @@ export function app() {
     for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl)); ) {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
     }
+    baseHref = DEPLOY_URL + baseHref.substring(1);
+    if (!baseHref.endsWith('/')) {
+      baseHref += '/';
+    }
+    console.log({ baseHref });
 
     res.render(
       'index',
@@ -294,8 +284,6 @@ export function app() {
             );
           }
           newHtml = newHtml.replace(/<base href="[^>]*>/, `<base href="${baseHref}" />`);
-
-          newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
 
           res.status(res.statusCode).send(newHtml);
         } else {

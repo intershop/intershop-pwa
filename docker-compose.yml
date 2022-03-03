@@ -19,21 +19,21 @@ services:
       # - PROMETHEUS=on
       # - MULTI_SITE_LOCALE_MAP={"en_US":"/en","de_DE":"/de","fr_FR":"/fr"}
 
-  # <CDN-Example>
-  # add 127.0.0.1 mypwa.net to your hosts file and
-  # uncomment the following lines
-  #
-  #     - DEPLOY_URL=http://mypwa.net:4222
-  # cdn:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile_noSSR
-  #     args:
-  #       configuration: production
-  #       serviceWorker: 'false'
-  #       deployUrl: http://mypwa.net:4222
-  #   ports:
-  #     - '4222:4200'
+      # <CDN-Example>
+      # add 127.0.0.1 mypwa.net to your hosts file and
+      # uncomment the following lines
+      #
+      - DEPLOY_URL=http://mypwa.net:4222
+  cdn:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        configuration: production
+        serviceWorker: 'false'
+        deployUrl: http://mypwa.net:4222
+    ports:
+      - '4222:4200'
   #
   # </CDN-Example>
 
