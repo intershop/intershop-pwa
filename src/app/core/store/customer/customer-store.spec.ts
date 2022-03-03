@@ -29,16 +29,14 @@ import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { UserEffects } from 'ish-core/store/customer/user/user.effects';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
-import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
-import { loginUser } from './user';
+import { loginUser, waitForSPGIDComplete } from './user';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -148,10 +146,7 @@ describe('Customer Store', () => {
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user }));
 
     const personalizationServiceMock = mock(PersonalizationService);
-    when(personalizationServiceMock.getPGID()).thenReturn(EMPTY);
-
-    const apiTokenServiceMock = mock(ApiTokenService);
-    when(apiTokenServiceMock.hasApiTokenCookie()).thenReturn(false);
+    when(personalizationServiceMock.getPGID()).thenReturn(of('spgid'));
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
@@ -160,7 +155,7 @@ describe('Customer Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['configuration', 'serverConfig'], [UserEffects]),
+        CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
         RouterTestingModule.withRoutes([
           {
@@ -177,7 +172,6 @@ describe('Customer Store', () => {
       ],
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
-        { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
         { provide: AuthorizationService, useFactory: () => instance(authorizationServiceMock) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
@@ -210,13 +204,14 @@ describe('Customer Store', () => {
         })
       );
       store.dispatch(addProductToBasket({ sku: 'test', quantity: 1 }));
+      store.dispatch(waitForSPGIDComplete());
     });
 
     describe('and without basket', () => {
       it('should initially load basket and basketItems on product add.', fakeAsync(() => {
-        tick(1000);
+        tick(2000);
 
-        expect(store.actionsArray(/Basket|Products/)).toMatchInlineSnapshot(`
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
             [Products API] Load Product Success:
               product: {"sku":"test","packingUnit":"pcs.","completenessLevel":2}
             [Basket] Add Product:
@@ -248,9 +243,14 @@ describe('Customer Store', () => {
       it('should merge basket on user login.', () => {
         store.dispatch(loginUser({ credentials: {} as Credentials }));
 
-        expect(store.actionsArray(/User/)).toMatchInlineSnapshot(`
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
           [User] Login User:
             credentials: {}
+          [User Internal] Set PGID:
+            customer: {"isBusinessCustomer":false,"customerNo":"test"}
+            user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
+          [User Internal] Set PGID Success:
+            pgid: "spgid"
           [User API] Login User Success:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...

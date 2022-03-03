@@ -27,7 +27,6 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { log } from 'ish-core/utils/dev/operators';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { getPGID, waitForSPGIDComplete } from '.';
@@ -252,7 +251,6 @@ export class UserEffects {
   waitForPGID$ = createEffect(() =>
     this.store$.pipe(
       select(getPGID),
-      log('wait for pgid'),
       map(pgid => !this.apiTokenService.hasApiTokenCookie() || pgid),
       whenTruthy(),
       delay(100),
