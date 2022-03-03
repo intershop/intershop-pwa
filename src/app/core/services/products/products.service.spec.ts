@@ -127,11 +127,13 @@ describe('Products Service', () => {
 
   it("should get all product variations data when 'getProductVariations' is called and more than 50 variations exist", done => {
     const total = 156;
-    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(of({ elements: [], amount: 40, total }));
-    when(apiServiceMock.get(`products/${productSku}/variations`, anything())).thenReturn(of({ elements: [], total }));
+    when(apiServiceMock.get(`products/${productSku}/variations`, anything())).thenCall((_, opts) => {
+      return !opts.params ? of({ elements: [], amount: 40, total }) : of({ elements: [], total });
+    });
+
     productsService.getProductVariations(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/variations`)).once();
-      verify(apiServiceMock.get(`products/${productSku}/variations`, anything())).thrice();
+      verify(apiServiceMock.get(`products/${productSku}/variations`, anything())).times(4);
+      expect(capture<string, AvailableOptions>(apiServiceMock.get).byCallIndex(0)?.[1]?.params).toBeUndefined();
       expect(
         capture<string, AvailableOptions>(apiServiceMock.get).byCallIndex(1)?.[1]?.params?.toString()
       ).toMatchInlineSnapshot(`"amount=40&offset=40"`);

@@ -30,6 +30,7 @@ import {
   setProductListingPages,
 } from 'ish-core/store/shopping/product-listing';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
+import { log } from 'ish-core/utils/dev/operators';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
   mapErrorToAction,
@@ -67,8 +68,10 @@ export class SearchEffects {
       ofUrl(/^\/search.*/),
       withLatestFrom(this.store.pipe(select(selectRouteParam('searchTerm')))),
       map(([, searchTerm]) => searchTerm),
+      log('before wt'),
       whenTruthy(),
-      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } }))
+      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } })),
+      log('after wt')
     )
   );
 
