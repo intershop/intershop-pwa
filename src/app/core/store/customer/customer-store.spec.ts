@@ -148,10 +148,10 @@ describe('Customer Store', () => {
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user }));
 
     const personalizationServiceMock = mock(PersonalizationService);
-    when(personalizationServiceMock.getPGID()).thenReturn(of(''));
+    when(personalizationServiceMock.getPGID()).thenReturn(EMPTY);
 
     const apiTokenServiceMock = mock(ApiTokenService);
-    when(apiTokenServiceMock.hasApiToken()).thenReturn(false);
+    when(apiTokenServiceMock.hasApiTokenCookie()).thenReturn(false);
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);

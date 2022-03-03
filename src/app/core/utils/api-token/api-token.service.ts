@@ -131,7 +131,7 @@ export class ApiTokenService {
     }
   }
 
-  hasApiToken() {
+  hasApiTokenCookie() {
     return !!this.cookiesService.get('apiToken');
   }
 

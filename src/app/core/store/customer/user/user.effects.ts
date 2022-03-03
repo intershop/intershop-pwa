@@ -246,11 +246,14 @@ export class UserEffects {
     )
   );
 
+  /**
+   * This effect emits the waitForSPGIDComplete action when the pgid is set or there is no apiToken cookie,
+   */
   waitForPGID$ = createEffect(() =>
     this.store$.pipe(
       select(getPGID),
       log('wait for pgid'),
-      map(pgid => !this.apiTokenService.hasApiToken() || pgid),
+      map(pgid => !this.apiTokenService.hasApiTokenCookie() || pgid),
       whenTruthy(),
       delay(100),
       map(() => waitForSPGIDComplete())
