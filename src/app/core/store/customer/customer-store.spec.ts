@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
@@ -205,32 +205,6 @@ describe('Customer Store', () => {
       );
       store.dispatch(addProductToBasket({ sku: 'test', quantity: 1 }));
       store.dispatch(waitForSPGIDComplete());
-    });
-
-    describe('and without basket', () => {
-      it('should initially load basket and basketItems on product add.', fakeAsync(() => {
-        tick(2000);
-
-        expect(store.actionsArray()).toMatchInlineSnapshot(`
-            [Products API] Load Product Success:
-              product: {"sku":"test","packingUnit":"pcs.","completenessLevel":2}
-            [Basket] Add Product:
-              sku: "test"
-              quantity: 1
-            [Basket Internal] Add Items To Basket:
-              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            [Basket API] Add Items To Basket Success:
-              info: undefined
-              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            [Products Internal] Load Product:
-              sku: "test"
-            [Basket Internal] Load Basket
-            [Products API] Load Product Success:
-              product: {"name":"test","shortDescription":"test","longDescription":"...
-            [Basket API] Load Basket Success:
-              basket: {"id":"test","lineItems":[1]}
-          `);
-      }));
     });
 
     describe('and with basket', () => {
