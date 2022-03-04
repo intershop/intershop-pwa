@@ -34,11 +34,15 @@
         </div>
 
         <ish-basket-cost-center-selection></ish-basket-cost-center-selection>
-
         <div class="section">
-          <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
+          <ng-container *ishFeature="'quoting'; else elseTemplate">
+            <ish-lazy-quoting-basket-line-items></ish-lazy-quoting-basket-line-items>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
+          </ng-template>
 
-          <div class="button-group">
+          <div class="button-group" *ngIf="!basketContainsQuote">
             <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
             <ish-lazy-basket-create-order-template
               *ngIf="basket"

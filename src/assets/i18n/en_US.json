@@ -916,6 +916,7 @@
   "quickorder.page.title": "Quick Order & Order by File",
   "quote.add_product_to_quote.button.add_to_quote.label": "Add to Quote Request",
   "quote.already_in_basket.error": "The quote is already in the cart.",
+  "quote.basket_items.label": "Your Quote Items - {{quoteId}}",
   "quote.delete.message": "Your quote has been deleted.",
   "quote.edit.back_to_quotes.link": "Back to Quotes",
   "quote.edit.button.add_quote_to_cart.label": "Add Quote to Cart",
