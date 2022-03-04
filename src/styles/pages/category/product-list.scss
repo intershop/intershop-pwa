@@ -155,6 +155,12 @@
   }
 }
 
+.scaled-prices {
+  margin-bottom: ($space-default * 2);
+  font-family: $font-family-condensedregular;
+  color: $text-color-quaternary;
+}
+
 .filtered-products {
   .product-list {
     .product-list-item {
