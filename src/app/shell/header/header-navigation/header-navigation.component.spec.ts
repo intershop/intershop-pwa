@@ -65,6 +65,9 @@ describe('Header Navigation Component', () => {
             CAT_C
           </a>
         </li>
+        <ish-lazy-content-include
+          includeid="include.header.navigation.pagelet2-Include"
+        ></ish-lazy-content-include>
       </ul>
     `);
   });
