@@ -36,13 +36,13 @@ describe('Product Page Component', () => {
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(ContentViewcontextComponent),
+        MockComponent(LazyRecentlyViewedComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductBundlePartsComponent),
         MockComponent(ProductDetailComponent),
         MockComponent(ProductLinksComponent),
         MockComponent(ProductMasterVariationsComponent),
         MockComponent(RetailSetPartsComponent),
-        MockComponent(LazyRecentlyViewedComponent),
         ProductPageComponent,
       ],
     })

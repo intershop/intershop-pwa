@@ -26,8 +26,8 @@ describe('Header Navigation Component', () => {
       declarations: [
         HeaderNavigationComponent,
         MockComponent(FaIconComponent),
-        MockComponent(SubCategoryNavigationComponent),
         MockComponent(LazyContentIncludeComponent),
+        MockComponent(SubCategoryNavigationComponent),
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();

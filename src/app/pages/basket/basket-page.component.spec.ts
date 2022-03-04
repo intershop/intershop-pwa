@@ -27,8 +27,8 @@ describe('Basket Page Component', () => {
       declarations: [
         BasketPageComponent,
         MockComponent(ContentIncludeComponent),
-        MockComponent(LoadingComponent),
         MockComponent(LazyRecentlyViewedComponent),
+        MockComponent(LoadingComponent),
 
         MockComponent(ShoppingBasketComponent),
         MockComponent(ShoppingBasketEmptyComponent),
