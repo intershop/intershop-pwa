@@ -39,11 +39,6 @@ Object {
       "viewID": "front",
     },
   ],
-  "listPrice": Object {
-    "currency": "USD",
-    "type": "Money",
-    "value": 132.24,
-  },
   "longDescription": undefined,
   "manufacturer": "Kodak",
   "maxOrderQuantity": undefined,
@@ -54,11 +49,6 @@ Object {
   "readyForShipmentMax": undefined,
   "readyForShipmentMin": undefined,
   "roundedAverageRating": 0,
-  "salePrice": Object {
-    "currency": "USD",
-    "type": "Money",
-    "value": 132.24,
-  },
   "shortDescription": "EasyShare M552, 14MP, 6.858 cm (2.7 \\") LCD, 4x, 28mm, HD 720p, Black",
   "sku": "7912057",
   "stepOrderQuantity": undefined,

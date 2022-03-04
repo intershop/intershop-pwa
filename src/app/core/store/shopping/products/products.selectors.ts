@@ -22,8 +22,10 @@ import {
 } from 'ish-core/models/product/product.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { getPriceDisplayType } from 'ish-core/store/customer/user';
 import { getCategoryEntities, getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
+import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { ProductsState, productAdapter } from './products.reducer';
@@ -97,12 +99,36 @@ export const getProduct = (sku: string) =>
     internalProductDefaultVariationSKU(sku),
     internalProductVariations(sku),
     internalProductMaster(sku),
-    (product, defaultCategory, defaultVariationSKU, variations, productMaster): ProductView =>
+    getProductPrice(sku),
+    getPriceDisplayType,
+    (
+      product,
+      defaultCategory,
+      defaultVariationSKU,
+      variations,
+      productMaster,
+      productPrice,
+      priceDisplayType
+    ): ProductView =>
       ProductHelper.isMasterProduct(product)
-        ? createVariationProductMasterView(product, defaultVariationSKU, variations, defaultCategory)
+        ? createVariationProductMasterView(
+            product,
+            defaultVariationSKU,
+            variations,
+            productPrice,
+            priceDisplayType,
+            defaultCategory
+          )
         : ProductHelper.isVariationProduct(product)
-        ? createVariationProductView(product, variations, productMaster, defaultCategory)
-        : createProductView(product, defaultCategory)
+        ? createVariationProductView(
+            product,
+            variations,
+            productMaster,
+            productPrice,
+            priceDisplayType,
+            defaultCategory
+          )
+        : createProductView(product, productPrice, priceDisplayType, defaultCategory)
   );
 
 export const getSelectedProduct = createSelectorFactory<object, ProductView>(projector =>
