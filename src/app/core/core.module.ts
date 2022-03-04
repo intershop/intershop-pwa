@@ -11,6 +11,7 @@ import { IdentityProviderModule } from './identity-provider.module';
 import { ICMErrorMapperInterceptor } from './interceptors/icm-error-mapper.interceptor';
 import { IdentityProviderInterceptor } from './interceptors/identity-provider.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
+import { PaymentPayoneInterceptor } from './interceptors/payment-payone.interceptor';
 import { InternationalizationModule } from './internationalization.module';
 import { StateManagementModule } from './state-management.module';
 import { DefaultErrorHandler } from './utils/default-error-handler';
@@ -33,6 +34,7 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
       useClass: IdentityProviderInterceptor,
       multi: true,
     },
+    { provide: HTTP_INTERCEPTORS, useClass: PaymentPayoneInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: ErrorHandler, useClass: DefaultErrorHandler },
     {

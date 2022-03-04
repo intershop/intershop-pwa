@@ -613,6 +613,7 @@
   "checkout.addresses.shipping_address.heading": "Lieferadresse",
   "checkout.addresses.shipping_address.option1.text": "An Rechnungsadresse liefern",
   "checkout.addresses.shipping_address.option2.text": "An abweichende Adresse liefern",
+  "checkout.bankGroup.error.required": "Bitte wählen Sie eine Bankgruppe aus.",
   "checkout.button.label": "Bestellvorgang fortsetzen",
   "checkout.cancel.button.label": "Abbrechen",
   "checkout.cart.estimated_shipping_handling.label": "Versand (voraussichtlich)",
