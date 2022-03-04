@@ -634,6 +634,7 @@
             ]
           }
         ],
+        "ish-custom-rules/sort-testbed-metadata-arrays": "warn",
         "ish-custom-rules/use-alias-imports": "error",
         "ish-custom-rules/use-async-synchronization-in-tests": "warn",
         "ish-custom-rules/use-camel-case-environment-properties": "error",
