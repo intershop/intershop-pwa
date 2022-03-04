@@ -23,12 +23,8 @@ beforeEach(() => {
     logFunction(...args);
   };
 
-  const errorFunction = global.console.error;
   global.console.error = (...args: unknown[]) => {
-    if (args?.some(arg => arg instanceof Error)) {
-      fail(...args);
-    }
-    errorFunction(...args);
+    fail(...args);
   };
 
   jest.spyOn(global.console, 'warn').mockImplementation(arg => {
