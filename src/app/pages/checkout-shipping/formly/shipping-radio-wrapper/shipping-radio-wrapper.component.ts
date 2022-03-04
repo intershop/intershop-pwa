@@ -14,8 +14,4 @@ import { FieldWrapper } from '@ngx-formly/core';
   templateUrl: './shipping-radio-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShippingRadioWrapperComponent extends FieldWrapper {
-  get shippingMethod() {
-    return this.to.shippingMethod;
-  }
-}
+export class ShippingRadioWrapperComponent extends FieldWrapper {}
