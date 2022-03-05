@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -46,7 +47,12 @@ describe('Shopping Basket Component', () => {
         MockComponent(ModalDialogLinkComponent),
         ShoppingBasketComponent,
       ],
-      imports: [AuthorizationToggleModule.forTesting(), RoleToggleModule.forTesting(), TranslateModule.forRoot()],
+      imports: [
+        AuthorizationToggleModule.forTesting(),
+        FeatureToggleModule.forTesting(),
+        RoleToggleModule.forTesting(),
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents();
   });
 
