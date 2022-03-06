@@ -24,9 +24,6 @@ RUN if [ ! -z "${activeThemes}" ]; then npm config set intershop-pwa:active-them
 RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 COPY tsconfig.server.json server.ts /workspace/
 RUN npm run build:multi server
-# remove cache check for resources (especially index.html)
-# https://github.com/angular/angular/issues/23613#issuecomment-415886919
-RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedHash/false/g' /workspace/dist/browser/ngsw-worker.js || true
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
