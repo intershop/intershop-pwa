@@ -298,6 +298,10 @@ HTML
 
 The clean up script is integrated in the full check run (`npm run check`) and will also be performed in continuous integration on the whole code base.
 
+The cleanup script also supports a build argument: `npm run clean-localizations --build`.
+When supplied, an Angular build with source maps is performed to limit the project to sources that are actually used before performing a cleanup.
+With this, project customizations can clean-up keys from features that are not required in the project.
+
 ## Extend Locales
 
 To learn how languages other than English, German and French can be used in the progressive web app, see [Configuration - Extend Localization](./configuration.md#extend-locales).

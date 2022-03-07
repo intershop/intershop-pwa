@@ -9,12 +9,25 @@ const localizationFile_default = 'src/assets/i18n/en_US.json';
 // ADDITIONAL GLOBAL PATTERNS HAVE TO BE ADDED HERE
 const regExps = [/.*\.error.*/i];
 
-// store localizations from default localization file in an object
-const localizations_default = JSON.parse(fs.readFileSync(localizationFile_default, 'utf8'));
-console.log('Clean up file', localizationFile_default, 'as default localization file');
+let filesToBeSearched;
 
-// go through directory recursively and find files to be searched
-const filesToBeSearched = glob.sync('{src,projects}/**/!(*.spec).{ts,html}');
+const doBuild = process.argv.slice(2).includes('--build') || !!process.env.npm_config_build;
+
+if (doBuild) {
+  // perform a build with sourcemaps and use those files
+  execSync('git clean -xdf dist', { stdio: 'inherit' });
+  execSync('npm run build:multi client -- --source-map', { stdio: 'inherit' });
+
+  filesToBeSearched = _.flatten(
+    glob.sync('dist/**/active-files.json').map(activeFilesPath => {
+      console.log('loading', activeFilesPath);
+      return JSON.parse(fs.readFileSync(activeFilesPath, { encoding: 'utf-8' }));
+    })
+  ).filter((v, i, a) => a.indexOf(v) === i);
+} else {
+  // go through directory recursively and find files to be searched
+  filesToBeSearched = glob.sync('{src,projects}/**/!(*.spec).{ts,html}');
+}
 
 console.log('\nKeep-patterns:');
 regExps.forEach(regex => {
@@ -34,6 +47,10 @@ filesToBeSearched.forEach(filePath => {
     }
   }
 });
+
+// store localizations from default localization file in an object
+const localizations_default = JSON.parse(fs.readFileSync(localizationFile_default, 'utf8'));
+console.log('Clean up file', localizationFile_default, 'as default localization file');
 
 // add not explicitly used localization keys with their localization values
 const localizationsFound = {};
