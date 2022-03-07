@@ -27,9 +27,9 @@ describe('Store Locator Page Component', () => {
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule, FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [
+        MockComponent(ErrorMessageComponent),
         MockComponent(StoreAddressComponent),
         MockComponent(StoresMapComponent),
-        MockComponent(ErrorMessageComponent),
         MockDirective(ScrollDirective),
         StoreLocatorPageComponent,
       ],

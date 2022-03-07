@@ -37,7 +37,7 @@ import { ShellModule } from './shell/shell.module';
     RecentlyRoutingModule,
     AppLastRoutingModule,
   ],
-  /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
+  /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],
   providers: [{ provide: UrlSerializer, useClass: PWAUrlSerializer }],
 })

@@ -25,10 +25,10 @@ describe('Recently Page Component', () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
-        RecentlyPageComponent,
         MockComponent(BreadcrumbComponent),
         MockComponent(ProductItemComponent),
         MockDirective(ProductContextDirective),
+        RecentlyPageComponent,
       ],
       providers: [{ provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) }],
     }).compileComponents();
