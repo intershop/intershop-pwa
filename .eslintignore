@@ -6,6 +6,4 @@ polyfills.ts
 
 environment.development.ts
 
-**/lazy-*.component.ts
-
 **/index.html
