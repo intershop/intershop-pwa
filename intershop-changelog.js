@@ -3,16 +3,9 @@ var compareFunc = require('compare-func');
 var Q = require('q');
 var readFile = Q.denodeify(require('fs').readFile);
 var resolve = require('path').resolve;
-var path = require('path');
-var pkgJson = {};
-try {
-  pkgJson = require(path.resolve(process.cwd(), './package.json'));
-} catch (err) {
-  console.error('no root package.json found');
-}
 
 var parserOpts = {
-  headerPattern: /^(\w*)(?:\((.*)\))?\: (.*)$/,
+  headerPattern: /^(\w*)(?:\((.*)\))?: (.*)$/,
   headerCorrespondence: ['type', 'scope', 'subject'],
   noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
   revertPattern: /^revert:\s([\s\S]*?)\s*This reverts commit (\w*)\./,

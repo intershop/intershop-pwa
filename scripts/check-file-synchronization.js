@@ -4,7 +4,7 @@ const synchronizations = {
 
 const fs = require('fs');
 
-foundError = false;
+let foundError = false;
 
 Object.keys(synchronizations).forEach(key => {
   console.log(key);

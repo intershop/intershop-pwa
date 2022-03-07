@@ -43,7 +43,6 @@
 
 # from e2e/.gitignore
 /e2e/node_modules
-/e2e/out-tsc
 /e2e/reports
 /e2e/package-lock.json
 

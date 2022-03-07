@@ -1,4 +1,4 @@
-import { asTree } from 'treeify';
+const { asTree } = require('treeify');
 
 const arrayToObject = (val, edges) =>
   val.reduce((tree, node) => {

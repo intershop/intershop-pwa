@@ -8,7 +8,7 @@
   ],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "outDir": "../out-tsc",
+    "outDir": "../node_modules/.out-tsc",
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es6",

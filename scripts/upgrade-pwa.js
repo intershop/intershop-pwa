@@ -88,7 +88,7 @@ modifyPackageJson(packageJson => {
 execute('npm i');
 commit('chore: install pinned versions');
 
-coreLibs = [
+const coreLibs = [
   '@schematics/angular',
   '@angular/cli',
   '@angular/cdk',

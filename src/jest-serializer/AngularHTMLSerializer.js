@@ -1,4 +1,5 @@
-import * as prettier from 'prettier';
+/* eslint-disable no-undef */
+const prettier = require('prettier');
 
 const print = val => {
   let source;
@@ -11,7 +12,7 @@ const print = val => {
   }
   source = source
     .replace(/\n/g, '')
-    .replace(/<!\-\-.*?\-\->/g, '')
+    .replace(/<!--.*?-->/g, '')
     .replace(/ng-reflect-klass="[^"]*"/g, '')
     .replace(/ng-reflect-[a-z-]*="\[object Object]"/g, '');
   const result = prettier.format(source, { parser: 'html', printWidth: 100 }).replace(/^\s*$/g, '').trim();
