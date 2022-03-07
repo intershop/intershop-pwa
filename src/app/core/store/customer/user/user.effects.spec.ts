@@ -19,9 +19,11 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
+import { loadPGID } from '.';
 import {
   createUser,
   createUserFail,
@@ -63,6 +65,7 @@ describe('User Effects', () => {
   let store$: Store;
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
+  let apiTokenServiceMock: ApiTokenService;
   let router: Router;
   let location: Location;
 
@@ -84,6 +87,8 @@ describe('User Effects', () => {
   beforeEach(() => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
+    apiTokenServiceMock = mock(ApiTokenService);
+
     when(userServiceMock.signInUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.signInUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
@@ -95,6 +100,7 @@ describe('User Effects', () => {
     when(userServiceMock.getEligibleCostCenters()).thenReturn(of([]));
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
+    when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -104,6 +110,7 @@ describe('User Effects', () => {
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
       ],
       providers: [
+        { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
@@ -141,9 +148,9 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a LoginUserSuccess action on successful login', () => {
+    it('should dispatch a loadPGID action on successful login', () => {
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
-      const completion = loginUserSuccess(loginResponseData);
+      const completion = loadPGID(loginResponseData);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -260,11 +267,11 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a LoginUserSuccess action on successful user creation', () => {
+    it('should dispatch a loadPGID action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
 
       const action = createUser({ credentials } as CustomerRegistrationType);
-      const completion = loginUserSuccess({} as CustomerUserType);
+      const completion = loadPGID({} as CustomerUserType);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -509,7 +516,7 @@ describe('User Effects', () => {
   });
 
   describe('loadUserByAPIToken$', () => {
-    it('should call the user service on LoadUserByAPIToken action and load user on success', done => {
+    it('should call the user service on LoadUserByAPIToken action and set pgid on success', done => {
       when(userServiceMock.signInUserByToken()).thenReturn(
         of({ user: { email: 'test@intershop.de' } } as CustomerUserType)
       );
@@ -519,8 +526,8 @@ describe('User Effects', () => {
       effects.loadUserByAPIToken$.subscribe(action => {
         verify(userServiceMock.signInUserByToken()).once();
         expect(action).toMatchInlineSnapshot(`
-          [User API] Login User Success:
-            user: {"email":"test@intershop.de"}
+        [User Internal] Load PGID:
+          user: {"email":"test@intershop.de"}
         `);
         done();
       });

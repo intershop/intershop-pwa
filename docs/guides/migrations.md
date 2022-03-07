@@ -20,6 +20,13 @@ TestBed configuration arrays are sorted again as of 2.1 This means a lot of (sma
 Simply run `ng lint --fix` in order to sort your arrays.
 If you have a lot of migration changes, you might be required to run it more than once.
 
+With the introduction of personalized REST calls for categories and products, data in the ngrx store runs the risk of not being up-to-date after a login or logout.
+To fix this, a new `resetSubStatesOnActionsMeta` meta-reducer was introduced to remove potentially invalid data from the store.
+If the removal of previous data from the store is not wanted this meta reducer should not be used in customized projects.
+In addition a mechanism was introduced to trigger such personalized REST calls after loading the PGID if necessary.
+This way of loading personalized data might need to be added to any custom implementations that potentially fetch personalized data.
+To get an idea of the necessary mechanism search for the usage of `useCombinedObservableOnAction` and `personalizationStatusDetermined` in the source code.
+
 ## 1.4 to 2.0
 
 Since [TSLint has been deprecated](https://blog.palantir.com/tslint-in-2019-1a144c2317a9) for a while now and Angular removed the TSLint support we had to migrate our project from TSLint to ESLint as well.

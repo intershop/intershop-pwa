@@ -12,6 +12,7 @@ import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, w
 import { Product, VariationProductMaster } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -89,10 +90,11 @@ describe('Products Effects', () => {
   });
 
   describe('loadProduct$', () => {
+    const waitAction = personalizationStatusDetermined();
     it('should call the productsService for LoadProduct action', done => {
       const sku = 'P123';
       const action = loadProduct({ sku });
-      actions$ = of(action);
+      actions$ = merge(of(personalizationStatusDetermined()), of(action));
 
       effects.loadProduct$.subscribe(() => {
         verify(productsServiceMock.getProduct(sku)).once();
@@ -104,8 +106,8 @@ describe('Products Effects', () => {
       const sku = 'P123';
       const action = loadProduct({ sku });
       const completion = loadProductSuccess({ product: { sku } as Product });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: waitAction });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadProduct$).toBeObservable(expected$);
     });
@@ -114,14 +116,15 @@ describe('Products Effects', () => {
       const sku = 'invalid';
       const action = loadProduct({ sku });
       const completion = loadProductFail({ error: makeHttpError({ message: 'invalid' }), sku });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: waitAction });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadProduct$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type LoadProductFail - setTimeout', done => {
       actions$ = merge(
+        of(personalizationStatusDetermined()),
         new BehaviorSubject(loadProduct({ sku: 'invalid' })),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(1000)),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(2000))
@@ -157,6 +160,7 @@ describe('Products Effects', () => {
 
     it('should map invalid request to action of type LoadProductFail - fakeAsync', fakeAsync(() => {
       actions$ = merge(
+        of(personalizationStatusDetermined()),
         new BehaviorSubject(loadProduct({ sku: 'invalid' })),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(1000)),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(2000))

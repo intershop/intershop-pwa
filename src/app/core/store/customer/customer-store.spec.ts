@@ -29,8 +29,6 @@ import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { loginUser } from 'ish-core/store/customer/user';
-import { UserEffects } from 'ish-core/store/customer/user/user.effects';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -38,6 +36,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
+import { loginUser, personalizationStatusDetermined } from './user';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -147,7 +146,7 @@ describe('Customer Store', () => {
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user }));
 
     const personalizationServiceMock = mock(PersonalizationService);
-    when(personalizationServiceMock.getPGID()).thenReturn(EMPTY);
+    when(personalizationServiceMock.getPGID()).thenReturn(of('spgid'));
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
@@ -156,7 +155,7 @@ describe('Customer Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['configuration', 'serverConfig'], [UserEffects]),
+        CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
         RouterTestingModule.withRoutes([
           {
@@ -205,33 +204,7 @@ describe('Customer Store', () => {
         })
       );
       store.dispatch(addProductToBasket({ sku: 'test', quantity: 1 }));
-    });
-
-    describe('and without basket', () => {
-      it('should initially load basket and basketItems on product add.', done => {
-        setTimeout(() => {
-          expect(store.actionsArray(/Basket|Products/)).toMatchInlineSnapshot(`
-            [Products API] Load Product Success:
-              product: {"sku":"test","packingUnit":"pcs.","completenessLevel":2}
-            [Basket] Add Product:
-              sku: "test"
-              quantity: 1
-            [Basket Internal] Add Items To Basket:
-              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            [Basket API] Add Items To Basket Success:
-              info: undefined
-              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            [Products Internal] Load Product:
-              sku: "test"
-            [Basket Internal] Load Basket
-            [Products API] Load Product Success:
-              product: {"name":"test","shortDescription":"test","longDescription":"...
-            [Basket API] Load Basket Success:
-              basket: {"id":"test","lineItems":[1]}
-          `);
-          done();
-        }, 1000);
-      });
+      store.dispatch(personalizationStatusDetermined());
     });
 
     describe('and with basket', () => {
@@ -240,12 +213,18 @@ describe('Customer Store', () => {
 
         store.reset();
       });
+
       it('should merge basket on user login.', () => {
         store.dispatch(loginUser({ credentials: {} as Credentials }));
 
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           [User] Login User:
             credentials: {}
+          [User Internal] Load PGID:
+            customer: {"isBusinessCustomer":false,"customerNo":"test"}
+            user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
+          [User API] Load PGID Success:
+            pgid: "spgid"
           [User API] Login User Success:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...

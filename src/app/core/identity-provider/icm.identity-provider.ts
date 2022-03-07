@@ -41,8 +41,8 @@ export class ICMIdentityProvider implements IdentityProvider {
   }
 
   triggerLogout(): TriggerReturnType {
-    this.store.dispatch(logoutUser());
     this.apiTokenService.removeApiToken();
+    this.store.dispatch(logoutUser());
     return this.store.pipe(
       select(selectQueryParam('returnUrl')),
       map(returnUrl => returnUrl || '/home'),
