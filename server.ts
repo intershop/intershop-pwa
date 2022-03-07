@@ -188,13 +188,25 @@ export function app() {
 
   // Serve static files from browser folder
   server.get(/\/.*\.(js|css)$/, (req, res) => {
-    const path = req.originalUrl.substring(1);
+    // remove all parameters
+    const path = req.originalUrl.substring(1).replace(/[;?&].*$/, '');
+
     fs.readFile(join(BROWSER_FOLDER, path), { encoding: 'utf-8' }, (err, data) => {
       if (err) {
         res.sendStatus(404);
       } else {
         res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
         res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
+      }
+    });
+  });
+  server.get(/\/ngsw\.json/, (_, res) => {
+    fs.readFile(join(BROWSER_FOLDER, 'ngsw.json'), { encoding: 'utf-8' }, (err, data) => {
+      if (err) {
+        res.sendStatus(404);
+      } else {
+        res.set('Content-Type', 'application/json; charset=UTF-8');
+        res.send(data);
       }
     });
   });
