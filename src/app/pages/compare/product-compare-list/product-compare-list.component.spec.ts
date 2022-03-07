@@ -9,6 +9,7 @@ import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.direc
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
+import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { ProductView, createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
@@ -34,7 +35,7 @@ describe('Product Compare List Component', () => {
   let compareProduct2: ProductView;
 
   beforeEach(async () => {
-    compareProduct1 = createProductView({ sku: '111', available: true } as Product);
+    compareProduct1 = createProductView({ sku: '111', available: true } as Product, {} as ProductPriceDetails, 'gross');
     compareProduct1.attributes = [
       {
         name: 'Optical zoom',

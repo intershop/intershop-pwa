@@ -7,6 +7,7 @@ import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 
@@ -44,7 +45,7 @@ describe('Product Detail Actions Component', () => {
     translate.use('en');
 
     const product = { sku: 'sku', available: true } as Product;
-    when(context.select('product')).thenReturn(of(createProductView(product)));
+    when(context.select('product')).thenReturn(of(createProductView(product, {} as ProductPriceDetails, 'gross')));
     when(context.select('displayProperties', anyString())).thenReturn(of(true));
   });
 
@@ -81,7 +82,13 @@ describe('Product Detail Actions Component', () => {
 
     it('should not show "compare" link when product information is available and productMaster = true', () => {
       when(context.select('product')).thenReturn(
-        of(createProductView({ sku: 'SKU', type: 'VariationProductMaster' } as Product))
+        of(
+          createProductView(
+            { sku: 'SKU', type: 'VariationProductMaster' } as Product,
+            {} as ProductPriceDetails,
+            'gross'
+          )
+        )
       );
       fixture.detectChanges();
 

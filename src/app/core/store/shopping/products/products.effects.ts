@@ -31,6 +31,7 @@ import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { loadProductPrices } from 'ish-core/store/shopping/product-prices';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
   delayUntil,
@@ -107,6 +108,16 @@ export class ProductsEffects {
       withLatestFrom(this.store.pipe(select(getProductEntities))),
       filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
       map(([{ sku }]) => loadProduct({ sku }))
+    )
+  );
+
+  loadProductPricesAfterProductSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadProductSuccess),
+      mapToPayloadProperty('product'),
+      mapToProperty('sku'),
+      whenTruthy(),
+      map(sku => loadProductPrices({ skus: [sku] }))
     )
   );
 
