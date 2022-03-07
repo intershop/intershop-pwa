@@ -140,11 +140,13 @@ describe('Filter Effects', () => {
     });
 
     it('should always have the latest filters emitting', fakeAsync(() => {
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       when(filterServiceMock.getFilterForMaster('master1')).thenReturn(of('filter master 1' as any).pipe(delay(10)));
       when(filterServiceMock.getFilterForMaster('master2')).thenReturn(of('filter master 2' as any).pipe(delay(100)));
       when(filterServiceMock.getFilterForCategory('category')).thenReturn(
         of('filter categories' as any).pipe(delay(1000))
       );
+      /* eslint-enable @typescript-eslint/no-explicit-any */
 
       actions$ = merge(
         // go to master 1
