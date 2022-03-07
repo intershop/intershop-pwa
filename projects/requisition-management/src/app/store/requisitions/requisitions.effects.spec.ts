@@ -69,9 +69,9 @@ describe('Requisitions Effects', () => {
       declarations: [DummyComponent],
       imports: [RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }])],
       providers: [
-        RequisitionsEffects,
-        provideMockActions(() => actions$),
         { provide: RequisitionsService, useFactory: () => instance(requisitionsService) },
+        provideMockActions(() => actions$),
+        RequisitionsEffects,
       ],
     });
 

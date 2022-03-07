@@ -25,8 +25,8 @@ describe('Cms Dialog Component', () => {
       imports: [RouterTestingModule],
       declarations: [CMSDialogComponent, MockComponent(ContentSlotComponent), ServerHtmlDirective],
       providers: [
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     }).compileComponents();
   });

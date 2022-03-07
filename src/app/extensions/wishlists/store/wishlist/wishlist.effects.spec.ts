@@ -87,9 +87,9 @@ describe('Wishlist Effects', () => {
         WishlistsStoreModule.forTesting('wishlists'),
       ],
       providers: [
-        WishlistEffects,
-        provideMockActions(() => actions$),
         { provide: WishlistService, useFactory: () => instance(wishlistServiceMock) },
+        provideMockActions(() => actions$),
+        WishlistEffects,
       ],
     });
 

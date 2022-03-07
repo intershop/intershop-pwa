@@ -128,10 +128,10 @@ describe('Formly Address Form Component', () => {
         FormlyTestingComponentsModule,
       ],
       providers: [
-        AddressFormConfigurationProvider,
         { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormDefaultConfigurationMock, multi: true },
         { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormExampleConfigurationMock, multi: true },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        AddressFormConfigurationProvider,
       ],
     }).compileComponents();
   });

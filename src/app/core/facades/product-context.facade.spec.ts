@@ -46,9 +46,9 @@ describe('Product Context Facade', () => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
-        ProductContextFacade,
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        ProductContextFacade,
       ],
     });
 
@@ -762,12 +762,12 @@ describe('Product Context Facade', () => {
       TestBed.configureTestingModule({
         imports: [TranslateModule.forRoot()],
         providers: [
-          ProductContextFacade,
-          { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
           { provide: AppFacade, useFactory: () => instance(appFacade) },
           { provide: EXTERNAL_DISPLAY_PROPERTY_PROVIDER, useClass: ProviderA, multi: true },
           { provide: EXTERNAL_DISPLAY_PROPERTY_PROVIDER, useClass: ProviderB, multi: true },
           { provide: EXTERNAL_DISPLAY_PROPERTY_PROVIDER, useClass: ProviderC, multi: true },
+          { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+          ProductContextFacade,
         ],
       });
 

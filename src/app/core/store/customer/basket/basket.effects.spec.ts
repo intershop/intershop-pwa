@@ -68,10 +68,10 @@ describe('Basket Effects', () => {
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
       ],
       providers: [
+        { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
       ],
     });
 

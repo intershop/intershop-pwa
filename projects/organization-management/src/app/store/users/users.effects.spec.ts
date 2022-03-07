@@ -84,9 +84,9 @@ describe('Users Effects', () => {
         ]),
       ],
       providers: [
-        UsersEffects,
-        provideMockActions(() => actions$),
         { provide: UsersService, useFactory: () => instance(usersService) },
+        provideMockActions(() => actions$),
+        UsersEffects,
       ],
     });
 

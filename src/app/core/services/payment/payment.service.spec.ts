@@ -76,8 +76,8 @@ describe('Payment Service', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: APP_BASE_HREF, useFactory: () => '/' },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
         provideMockStore({
           selectors: [
             { selector: getCurrentLocale, value: 'en_US' },

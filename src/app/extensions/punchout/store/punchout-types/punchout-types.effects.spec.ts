@@ -23,9 +23,9 @@ describe('Punchout Types Effects', () => {
     when(punchoutService.getPunchoutTypes()).thenReturn(of(['oci']));
     TestBed.configureTestingModule({
       providers: [
-        PunchoutTypesEffects,
-        provideMockActions(() => actions$),
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
+        provideMockActions(() => actions$),
+        PunchoutTypesEffects,
       ],
     });
 

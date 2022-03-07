@@ -21,7 +21,7 @@ export const sortTestbedMetadataArraysRule: TSESLint.RuleModule<string, []> = {
     }
 
     return {
-      'CallExpression[callee.object.name="TestBed"][callee.property.name="configureTestingModule"] > ObjectExpression > Property[key.name!="providers"] > ArrayExpression'({
+      'CallExpression[callee.object.name="TestBed"][callee.property.name="configureTestingModule"] > ObjectExpression > Property > ArrayExpression'({
         elements,
       }: TSESTree.ArrayExpression) {
         // logic from https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin/src/rules/sort-ngmodule-metadata-arrays.ts

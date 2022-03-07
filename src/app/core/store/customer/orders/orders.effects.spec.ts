@@ -80,9 +80,9 @@ describe('Orders Effects', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         OrdersEffects,
         provideMockActions(() => actions$),
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
       ],
     });
 

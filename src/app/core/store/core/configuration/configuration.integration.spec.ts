@@ -45,9 +45,9 @@ describe('Configuration Integration', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        provideStoreSnapshots(),
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
         { provide: UrlSerializer, useClass: PWAUrlSerializer },
+        provideStoreSnapshots(),
       ],
     });
 

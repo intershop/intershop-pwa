@@ -71,9 +71,9 @@ describe('Filter Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('productListing')],
       providers: [
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         FilterEffects,
         provideMockActions(() => actions$),
-        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
       ],
     });
 

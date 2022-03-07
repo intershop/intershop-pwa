@@ -17,7 +17,7 @@ describe('Recently Effects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('recently')],
-      providers: [RecentlyEffects, provideMockStore()],
+      providers: [provideMockStore(), RecentlyEffects],
     });
 
     effects = TestBed.inject(RecentlyEffects);

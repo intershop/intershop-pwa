@@ -64,8 +64,8 @@ describe('Line Item List Element Component', () => {
         MockPipe(ServerSettingPipe, () => serverSetting),
       ],
       providers: [
-        { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
     }).compileComponents();
   }

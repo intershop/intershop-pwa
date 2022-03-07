@@ -54,11 +54,11 @@ describe('Quoting Effects', () => {
       declarations: [DummyComponent],
       imports: [RouterTestingModule.withRoutes([{ path: 'account/quotes/:id', component: DummyComponent }])],
       providers: [
-        QuotingEffects,
+        { provide: BasketService, useFactory: () => instance(basketService) },
+        { provide: QuotingService, useFactory: () => instance(quotingService) },
         provideMockActions(() => actions$),
         provideMockStore(),
-        { provide: QuotingService, useFactory: () => instance(quotingService) },
-        { provide: BasketService, useFactory: () => instance(basketService) },
+        QuotingEffects,
       ],
     });
 

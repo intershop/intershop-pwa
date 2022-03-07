@@ -72,10 +72,10 @@ describe('Categories Effects', () => {
         ShoppingStoreModule.forTesting('categories'),
       ],
       providers: [
-        CategoriesEffects,
-        provideMockActions(() => actions$),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
+        CategoriesEffects,
+        provideMockActions(() => actions$),
       ],
     });
 

@@ -104,11 +104,11 @@ describe('User Effects', () => {
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
       ],
       providers: [
-        UserEffects,
-        provideMockActions(() => actions$),
-        { provide: UserService, useFactory: () => instance(userServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
+        { provide: UserService, useFactory: () => instance(userServiceMock) },
+        provideMockActions(() => actions$),
+        UserEffects,
       ],
     });
 
