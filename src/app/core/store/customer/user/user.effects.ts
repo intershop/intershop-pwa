@@ -247,12 +247,12 @@ export class UserEffects {
   );
 
   /**
-   * This effect emits the 'personalizationStatusDetermined' action once the PGID is fetched or there is no apiToken cookie,
+   * This effect emits the 'personalizationStatusDetermined' action once the PGID is fetched or there is no user apiToken cookie,
    */
   determinePersonalizationStatus$ = createEffect(() =>
     this.store$.pipe(
       select(getPGID),
-      map(pgid => !this.apiTokenService.hasApiTokenCookie() || pgid),
+      map(pgid => !this.apiTokenService.hasUserApiTokenCookie() || pgid),
       whenTruthy(),
       delay(100),
       map(() => personalizationStatusDetermined())

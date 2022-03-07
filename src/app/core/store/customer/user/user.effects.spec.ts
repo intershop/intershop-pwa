@@ -100,7 +100,7 @@ describe('User Effects', () => {
     when(userServiceMock.getEligibleCostCenters()).thenReturn(of([]));
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
-    when(apiTokenServiceMock.hasApiTokenCookie()).thenReturn(false);
+    when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],

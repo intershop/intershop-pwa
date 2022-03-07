@@ -131,8 +131,9 @@ export class ApiTokenService {
     }
   }
 
-  hasApiTokenCookie() {
-    return !!this.cookiesService.get('apiToken');
+  hasUserApiTokenCookie() {
+    const apiTokenCookie = this.parseCookie();
+    return apiTokenCookie?.type === 'user';
   }
 
   restore$(types: ApiTokenCookieType[] = ['user', 'basket', 'order']): Observable<boolean> {
