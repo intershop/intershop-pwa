@@ -23,8 +23,8 @@ describe('Basket Add To Quote Component', () => {
       declarations: [BasketAddToQuoteComponent],
       imports: [RoleToggleModule.forTesting(), RouterTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
       ],
     }).compileComponents();
   });

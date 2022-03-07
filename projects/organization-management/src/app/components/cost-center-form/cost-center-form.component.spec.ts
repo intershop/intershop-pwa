@@ -39,8 +39,8 @@ describe('Cost Center Form Component', () => {
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [CostCenterFormComponent, MockComponent(ErrorMessageComponent)],
       providers: [
-        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
       ],
     }).compileComponents();
   });

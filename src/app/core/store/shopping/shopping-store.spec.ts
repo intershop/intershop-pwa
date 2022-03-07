@@ -178,14 +178,14 @@ describe('Shopping Store', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
-        SelectedProductContextFacade,
-        provideStoreSnapshots(),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
+        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
-        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        provideStoreSnapshots(),
+        SelectedProductContextFacade,
       ],
     });
 

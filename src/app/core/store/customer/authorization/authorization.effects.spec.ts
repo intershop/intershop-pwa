@@ -25,6 +25,7 @@ describe('Authorization Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: AuthorizationService, useFactory: () => instance(authorizationService) },
         AuthorizationEffects,
         provideMockActions(() => actions$),
         provideMockStore({
@@ -33,7 +34,6 @@ describe('Authorization Effects', () => {
             { selector: getLoggedInUser, value: {} },
           ],
         }),
-        { provide: AuthorizationService, useFactory: () => instance(authorizationService) },
       ],
     });
 

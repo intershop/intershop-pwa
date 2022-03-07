@@ -29,9 +29,9 @@ describe('Promotions Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         PromotionsEffects,
         provideMockActions(() => actions$),
-        { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
       ],
     });
 

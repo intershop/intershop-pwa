@@ -48,8 +48,8 @@ describe('Users Page Component', () => {
         UsersPageComponent,
       ],
       providers: [
-        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
       ],
     }).compileComponents();
   });

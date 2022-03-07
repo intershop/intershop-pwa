@@ -58,9 +58,9 @@ describe('Basket Items Effects', () => {
         ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketItemsEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
       ],
     });
 

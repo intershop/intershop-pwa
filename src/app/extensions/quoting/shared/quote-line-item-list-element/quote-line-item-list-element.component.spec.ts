@@ -57,8 +57,8 @@ describe('Quote Line Item List Element Component', () => {
         QuoteLineItemListElementComponent,
       ],
       providers: [
-        { provide: QuoteContextFacade, useFactory: () => instance(quoteContext) },
         { provide: ProductContextFacade, useFactory: () => instance(productContext) },
+        { provide: QuoteContextFacade, useFactory: () => instance(quoteContext) },
       ],
     }).compileComponents();
   });

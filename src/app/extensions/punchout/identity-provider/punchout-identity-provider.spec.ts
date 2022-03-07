@@ -59,13 +59,13 @@ describe('Punchout Identity Provider', () => {
         ]),
       ],
       providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
-        { provide: PunchoutService, useFactory: () => instance(punchoutService) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: CookiesService, useFactory: () => instance(cookiesService) },
+        { provide: PunchoutService, useFactory: () => instance(punchoutService) },
         provideMockStore(),
       ],
     }).compileComponents();

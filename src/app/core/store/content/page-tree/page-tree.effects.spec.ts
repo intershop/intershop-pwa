@@ -22,9 +22,9 @@ describe('Page Tree Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
         PageTreeEffects,
         provideMockActions(() => actions$),
-        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
       ],
     });
 

@@ -59,8 +59,8 @@ describe('Auth0 Identity Provider', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
-        { provide: OAuthService, useFactory: () => instance(oAuthService) },
         { provide: APP_BASE_HREF, useValue: baseHref },
+        { provide: OAuthService, useFactory: () => instance(oAuthService) },
         provideMockStore(),
       ],
     }).compileComponents();

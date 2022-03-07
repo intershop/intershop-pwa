@@ -38,8 +38,8 @@ describe('Sub Category Navigation Component', () => {
       imports: [RouterTestingModule],
       declarations: [MockComponent(FaIconComponent), SubCategoryNavigationComponent],
       providers: [
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
     }).compileComponents();
   });

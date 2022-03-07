@@ -85,9 +85,9 @@ describe('Order Template Effects', () => {
         ]),
       ],
       providers: [
+        { provide: OrderTemplateService, useFactory: () => instance(orderTemplateServiceMock) },
         OrderTemplateEffects,
         provideMockActions(() => actions$),
-        { provide: OrderTemplateService, useFactory: () => instance(orderTemplateServiceMock) },
       ],
     });
 

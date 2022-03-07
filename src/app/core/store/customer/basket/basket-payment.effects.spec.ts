@@ -61,9 +61,9 @@ describe('Basket Payment Effects', () => {
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
       ],
       providers: [
+        { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         BasketPaymentEffects,
         provideMockActions(() => actions$),
-        { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
       ],
     });
 

@@ -58,8 +58,8 @@ describe('Product Add To Order Template Component', () => {
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(productContext) },
       ],
     }).compileComponents();

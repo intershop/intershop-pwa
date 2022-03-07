@@ -74,9 +74,9 @@ describe('Products Effects', () => {
         ShoppingStoreModule.forTesting('products', 'categories', 'productListing'),
       ],
       providers: [
+        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         ProductsEffects,
         provideMockActions(() => actions$),
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
       ],
     });
 

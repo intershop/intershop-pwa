@@ -43,8 +43,8 @@ describe('Checkout Shipping Page Component', () => {
       ],
       imports: [TranslateModule.forRoot()],
       providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
     }).compileComponents();
   });

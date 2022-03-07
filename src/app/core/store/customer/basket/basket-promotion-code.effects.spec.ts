@@ -33,9 +33,9 @@ describe('Basket Promotion Code Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting()],
       providers: [
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketPromotionCodeEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
       ],
     });
 

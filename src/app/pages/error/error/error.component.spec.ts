@@ -23,8 +23,8 @@ describe('Error Component', () => {
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [ErrorComponent, MockComponent(SearchBoxComponent), ServerHtmlDirective],
       providers: [
-        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
       ],
     }).compileComponents();
   });

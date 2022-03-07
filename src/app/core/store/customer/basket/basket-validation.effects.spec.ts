@@ -57,9 +57,9 @@ describe('Basket Validation Effects', () => {
         ]),
       ],
       providers: [
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketValidationEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
       ],
     });
 

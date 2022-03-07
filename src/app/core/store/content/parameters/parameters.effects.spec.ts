@@ -22,9 +22,9 @@ describe('Parameters Effects', () => {
     filterServiceMock = mock(FilterService);
     TestBed.configureTestingModule({
       providers: [
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         ParametersEffects,
         provideMockActions(() => actions$),
-        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
       ],
     });
 

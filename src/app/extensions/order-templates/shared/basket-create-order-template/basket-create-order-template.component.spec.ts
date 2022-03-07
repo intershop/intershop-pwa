@@ -21,8 +21,8 @@ describe('Basket Create Order Template Component', () => {
       declarations: [BasketCreateOrderTemplateComponent, MockComponent(OrderTemplatePreferencesDialogComponent)],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
       ],
     }).compileComponents();
   });

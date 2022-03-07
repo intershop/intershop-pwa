@@ -34,8 +34,8 @@ describe('Store Locator Page Component', () => {
         StoreLocatorPageComponent,
       ],
       providers: [
-        { provide: StoreLocatorFacade, useFactory: () => instance(storeLocatorFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: StoreLocatorFacade, useFactory: () => instance(storeLocatorFacade) },
       ],
     }).compileComponents();
   });

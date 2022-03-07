@@ -22,9 +22,9 @@ describe('Includes Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
         IncludesEffects,
         provideMockActions(() => actions$),
-        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
       ],
     });
     effects = TestBed.inject(IncludesEffects);

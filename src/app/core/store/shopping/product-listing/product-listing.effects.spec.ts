@@ -31,9 +31,9 @@ describe('Product Listing Effects', () => {
         ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
-        provideStoreSnapshots(),
-        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
+        provideStoreSnapshots(),
       ],
     });
 

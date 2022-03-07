@@ -30,9 +30,9 @@ describe('Registration Page Component', () => {
       declarations: [MockComponent(ErrorMessageComponent), MockComponent(LoadingComponent), RegistrationPageComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
         { provide: RegistrationFormConfigurationService, useFactory: () => instance(configService) },
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
     }).compileComponents();
 
