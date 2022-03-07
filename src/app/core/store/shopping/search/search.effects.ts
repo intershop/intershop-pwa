@@ -23,7 +23,7 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { waitForSPGIDComplete } from 'ish-core/store/customer/user';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import {
   getProductListingItemsPerPage,
   loadMoreProducts,
@@ -61,7 +61,10 @@ export class SearchEffects {
     this.store.pipe(
       sample(
         this.actions$.pipe(
-          useCombinedObservableOnAction(this.actions$.pipe(ofType(routerNavigatedAction)), waitForSPGIDComplete)
+          useCombinedObservableOnAction(
+            this.actions$.pipe(ofType(routerNavigatedAction)),
+            personalizationStatusDetermined
+          )
         )
       ),
       ofUrl(/^\/search.*/),

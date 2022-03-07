@@ -5,7 +5,7 @@ import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
-import { waitForSPGIDComplete } from 'ish-core/store/customer/user';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { DataRetentionPolicy, dataRetentionMeta, resetSubStatesOnActionsMeta } from 'ish-core/utils/meta-reducers';
 
 import { CategoriesEffects } from './categories/categories.effects';
@@ -48,7 +48,10 @@ const shoppingEffects = [
 export class DefaultShoppingStoreConfig implements StoreConfig<ShoppingState> {
   metaReducers = [
     dataRetentionMeta<ShoppingState>(this.dataRetention.compare, this.appBaseHref, 'shopping', '_compare'),
-    resetSubStatesOnActionsMeta<ShoppingState>(['categories', 'products', 'search', 'filter'], [waitForSPGIDComplete]),
+    resetSubStatesOnActionsMeta<ShoppingState>(
+      ['categories', 'products', 'search', 'filter'],
+      [personalizationStatusDetermined]
+    ),
   ];
 
   constructor(

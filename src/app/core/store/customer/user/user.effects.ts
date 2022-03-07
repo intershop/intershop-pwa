@@ -4,9 +4,8 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, from } from 'rxjs';
+import { from } from 'rxjs';
 import {
-  catchError,
   concatMap,
   concatMapTo,
   delay,
@@ -29,7 +28,7 @@ import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import { getPGID, waitForSPGIDComplete } from '.';
+import { getPGID, personalizationStatusDetermined } from '.';
 import {
   createUser,
   createUserFail,
@@ -53,8 +52,8 @@ import {
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
-  setPGID,
-  setPGIDSuccess,
+  loadPGID,
+  loadPGIDSuccess,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -89,7 +88,7 @@ export class UserEffects {
       ofType(loginUser),
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
-        this.userService.signInUser(credentials).pipe(map(setPGID), mapErrorToAction(loginUserFail))
+        this.userService.signInUser(credentials).pipe(map(loadPGID), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -98,7 +97,9 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(loginUserWithToken),
       mapToPayloadProperty('token'),
-      exhaustMap(token => this.userService.signInUserByToken(token).pipe(map(setPGID), mapErrorToAction(loginUserFail)))
+      exhaustMap(token =>
+        this.userService.signInUserByToken(token).pipe(map(loadPGID), mapErrorToAction(loginUserFail))
+      )
     )
   );
 
@@ -134,7 +135,7 @@ export class UserEffects {
       ofType(createUser),
       mapToPayload(),
       mergeMap((data: CustomerRegistrationType) =>
-        this.userService.createUser(data).pipe(map(setPGID), mapErrorToAction(createUserFail))
+        this.userService.createUser(data).pipe(map(loadPGID), mapErrorToAction(createUserFail))
       )
     )
   );
@@ -228,33 +229,33 @@ export class UserEffects {
   loadUserByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
-      concatMap(() => this.userService.signInUserByToken().pipe(map(setPGID), mapErrorToAction(loginUserFail)))
+      concatMap(() => this.userService.signInUserByToken().pipe(map(loadPGID), mapErrorToAction(loginUserFail)))
     )
   );
 
   fetchPGID$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setPGID),
+      ofType(loadPGID),
       mapToPayload(),
       concatMap(payload =>
         this.personalizationService.getPGID().pipe(
-          concatMap(pgid => [setPGIDSuccess({ pgid }), loginUserSuccess(payload)]),
-          catchError(() => EMPTY)
+          concatMap(pgid => [loadPGIDSuccess({ pgid }), loginUserSuccess(payload)]),
+          mapErrorToAction(loginUserFail)
         )
       )
     )
   );
 
   /**
-   * This effect emits the waitForSPGIDComplete action when the pgid is set or there is no apiToken cookie,
+   * This effect emits the 'personalizationStatusDetermined' action once the PGID is fetched or there is no apiToken cookie,
    */
-  waitForPGID$ = createEffect(() =>
+  determinePersonalizationStatus$ = createEffect(() =>
     this.store$.pipe(
       select(getPGID),
       map(pgid => !this.apiTokenService.hasApiTokenCookie() || pgid),
       whenTruthy(),
       delay(100),
-      map(() => waitForSPGIDComplete())
+      map(() => personalizationStatusDetermined())
     )
   );
 

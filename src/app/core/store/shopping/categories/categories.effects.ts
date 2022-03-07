@@ -11,7 +11,7 @@ import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { waitForSPGIDComplete } from 'ish-core/store/customer/user';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
@@ -55,7 +55,7 @@ export class CategoriesEffects {
     this.actions$.pipe(
       useCombinedObservableOnAction(
         this.store.pipe(select(selectRouteParam('categoryUniqueId'))),
-        waitForSPGIDComplete
+        personalizationStatusDetermined
       ),
       whenTruthy(),
       withLatestFrom(this.store.pipe(select(getCategoryEntities))),
@@ -70,7 +70,10 @@ export class CategoriesEffects {
    */
   selectedCategoryRef$ = createEffect(() =>
     this.actions$.pipe(
-      useCombinedObservableOnAction(this.store.pipe(select(selectRouteParam('categoryRefId'))), waitForSPGIDComplete),
+      useCombinedObservableOnAction(
+        this.store.pipe(select(selectRouteParam('categoryRefId'))),
+        personalizationStatusDetermined
+      ),
       whenTruthy(),
       withLatestFrom(this.store.pipe(select(getCategoryRefs)), this.store.pipe(select(getCategoryEntities))),
       filter(
@@ -99,7 +102,10 @@ export class CategoriesEffects {
 
   loadTopLevelCategories$ = createEffect(() =>
     this.actions$.pipe(
-      useCombinedObservableOnAction(this.actions$.pipe(ofType(loadTopLevelCategories)), waitForSPGIDComplete),
+      useCombinedObservableOnAction(
+        this.actions$.pipe(ofType(loadTopLevelCategories)),
+        personalizationStatusDetermined
+      ),
       switchMap(() =>
         this.categoryService.getTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth).pipe(
           map(categories => loadTopLevelCategoriesSuccess({ categories })),

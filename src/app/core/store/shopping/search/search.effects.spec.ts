@@ -10,7 +10,7 @@ import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { waitForSPGIDComplete } from 'ish-core/store/customer/user';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -78,7 +78,7 @@ describe('Search Effects', () => {
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
 
     store$.dispatch(setProductListingPageSize({ itemsPerPage: 12 }));
-    store$.dispatch(waitForSPGIDComplete());
+    store$.dispatch(personalizationStatusDetermined());
   });
 
   describe('triggerSearch$', () => {

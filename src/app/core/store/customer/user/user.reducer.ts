@@ -30,7 +30,7 @@ import {
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
   resetPasswordReminder,
-  setPGIDSuccess,
+  loadPGIDSuccess,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -165,7 +165,7 @@ export const userReducer = createReducer(
       customer,
     };
   }),
-  on(setPGIDSuccess, (state, action) => ({
+  on(loadPGIDSuccess, (state, action) => ({
     ...state,
     pgid: action.payload.pgid,
   })),

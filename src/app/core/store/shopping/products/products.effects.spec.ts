@@ -12,7 +12,7 @@ import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, w
 import { Product, VariationProductMaster } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { waitForSPGIDComplete } from 'ish-core/store/customer/user/user.actions';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -90,11 +90,11 @@ describe('Products Effects', () => {
   });
 
   describe('loadProduct$', () => {
-    const waitAction = waitForSPGIDComplete();
+    const waitAction = personalizationStatusDetermined();
     it('should call the productsService for LoadProduct action', done => {
       const sku = 'P123';
       const action = loadProduct({ sku });
-      actions$ = merge(of(waitForSPGIDComplete()), of(action));
+      actions$ = merge(of(personalizationStatusDetermined()), of(action));
 
       effects.loadProduct$.subscribe(() => {
         verify(productsServiceMock.getProduct(sku)).once();
@@ -124,7 +124,7 @@ describe('Products Effects', () => {
 
     it('should map invalid request to action of type LoadProductFail - setTimeout', done => {
       actions$ = merge(
-        of(waitForSPGIDComplete()),
+        of(personalizationStatusDetermined()),
         new BehaviorSubject(loadProduct({ sku: 'invalid' })),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(1000)),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(2000))
@@ -160,7 +160,7 @@ describe('Products Effects', () => {
 
     it('should map invalid request to action of type LoadProductFail - fakeAsync', fakeAsync(() => {
       actions$ = merge(
-        of(waitForSPGIDComplete()),
+        of(personalizationStatusDetermined()),
         new BehaviorSubject(loadProduct({ sku: 'invalid' })),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(1000)),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(2000))

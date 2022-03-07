@@ -23,7 +23,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
-import { setPGID } from '.';
+import { loadPGID } from '.';
 import {
   createUser,
   createUserFail,
@@ -148,9 +148,9 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a setPGID action on successful login', () => {
+    it('should dispatch a loadPGID action on successful login', () => {
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
-      const completion = setPGID(loginResponseData);
+      const completion = loadPGID(loginResponseData);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -267,11 +267,11 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a setPGID action on successful user creation', () => {
+    it('should dispatch a loadPGID action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
 
       const action = createUser({ credentials } as CustomerRegistrationType);
-      const completion = setPGID({} as CustomerUserType);
+      const completion = loadPGID({} as CustomerUserType);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -526,7 +526,7 @@ describe('User Effects', () => {
       effects.loadUserByAPIToken$.subscribe(action => {
         verify(userServiceMock.signInUserByToken()).once();
         expect(action).toMatchInlineSnapshot(`
-        [User Internal] Set PGID:
+        [User Internal] Load PGID:
           user: {"email":"test@intershop.de"}
         `);
         done();

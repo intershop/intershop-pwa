@@ -36,7 +36,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
-import { loginUser, waitForSPGIDComplete } from './user';
+import { loginUser, personalizationStatusDetermined } from './user';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -204,7 +204,7 @@ describe('Customer Store', () => {
         })
       );
       store.dispatch(addProductToBasket({ sku: 'test', quantity: 1 }));
-      store.dispatch(waitForSPGIDComplete());
+      store.dispatch(personalizationStatusDetermined());
     });
 
     describe('and with basket', () => {
@@ -220,10 +220,10 @@ describe('Customer Store', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           [User] Login User:
             credentials: {}
-          [User Internal] Set PGID:
+          [User Internal] Load PGID:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
-          [User Internal] Set PGID Success:
+          [User API] Load PGID Success:
             pgid: "spgid"
           [User API] Login User Success:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}

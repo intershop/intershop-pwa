@@ -20,7 +20,7 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { waitForSPGIDComplete } from 'ish-core/store/customer/user';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -196,7 +196,7 @@ describe('Shopping Store', () => {
     TestBed.inject(SelectedProductContextFacade);
     store.reset();
 
-    store.dispatch(waitForSPGIDComplete());
+    store.dispatch(personalizationStatusDetermined());
   });
 
   it('should be created', () => {
@@ -211,7 +211,7 @@ describe('Shopping Store', () => {
 
     it('should just load toplevel categories when no specific shopping page is loaded', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [User Internal] Wait for SPGID Complete
+        [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /home
         @ngrx/router-store/navigation: /home
         @ngrx/router-store/navigated: /home
@@ -360,7 +360,7 @@ describe('Shopping Store', () => {
 
     it('should have toplevel loading and category loading actions when going to a category page', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [User Internal] Wait for SPGID Complete
+        [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /category/A.123
         @ngrx/router-store/navigation: /category/A.123
         [Categories Internal] Load Category:
@@ -425,7 +425,7 @@ describe('Shopping Store', () => {
 
     it('should have all required actions when going to a family page', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [User Internal] Wait for SPGID Complete
+        [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /category/A.123.456
         @ngrx/router-store/navigation: /category/A.123.456
         [Categories Internal] Load Category:
@@ -646,7 +646,7 @@ describe('Shopping Store', () => {
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [User Internal] Wait for SPGID Complete
+        [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /category/A.123.456/product/P1
         @ngrx/router-store/navigation: /category/A.123.456/product/P1
         [Categories Internal] Load Category:
@@ -764,7 +764,7 @@ describe('Shopping Store', () => {
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [User Internal] Wait for SPGID Complete
+        [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /product/P1
         @ngrx/router-store/navigation: /product/P1
         [Products Internal] Load Product:
@@ -821,7 +821,7 @@ describe('Shopping Store', () => {
 
     it('should trigger required load actions when going to a product page with invalid product sku', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [User Internal] Wait for SPGID Complete
+        [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /category/A.123.456/product/P3
         @ngrx/router-store/navigation: /category/A.123.456/product/P3
         [Categories Internal] Load Category:
@@ -859,7 +859,7 @@ describe('Shopping Store', () => {
 
     it('should trigger required load actions when going to a category page with invalid category uniqueId', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [User Internal] Wait for SPGID Complete
+        [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /category/A.123.XXX
         @ngrx/router-store/navigation: /category/A.123.XXX
         [Categories Internal] Load Category:
@@ -891,7 +891,7 @@ describe('Shopping Store', () => {
 
     it('should trigger required actions when searching', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [User Internal] Wait for SPGID Complete
+        [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /search/something
         @ngrx/router-store/navigation: /search/something
         @ngrx/router-store/navigated: /search/something
