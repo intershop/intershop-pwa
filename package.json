@@ -45,7 +45,7 @@
     "docs": "npx markserv -a 0.0.0.0 docs/README.md",
     "compodoc": "npx compodoc -p tsconfig.doc.json -d docs/compodoc -y docs/theme --hideGenerator",
     "compodoc:serve": "npm run compodoc -- -s -w",
-    "synchronize-lazy-components": "ng g lazy-components && prettier --loglevel warn --write \"**/lazy-*.component.{ts,html}\"",
+    "synchronize-lazy-components": "ng g lazy-components",
     "build:watch": "npm run build client -- --watch",
     "build": "node scripts/build-pwa",
     "build:multi": "node scripts/build-multi-pwa",

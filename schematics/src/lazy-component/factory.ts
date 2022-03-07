@@ -216,9 +216,7 @@ export function createLazyComponent(options: Options): Rule {
       )
     );
 
-    if (process.env.CI !== 'true') {
-      operations.push(applyLintFix());
-    }
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

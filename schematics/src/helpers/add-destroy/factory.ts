@@ -76,9 +76,7 @@ this.destroy$.complete();`);
     host.overwrite(path, sourceFile.getText());
 
     const operations = [];
-    if (process.env.CI !== 'true') {
-      operations.push(applyLintFix());
-    }
+    operations.push(applyLintFix());
 
     return chain(operations);
   };
