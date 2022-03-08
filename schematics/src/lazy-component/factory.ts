@@ -146,7 +146,7 @@ export function createLazyComponent(options: Options): Rule {
 
     const operations = [];
 
-    if (!options.ci) {
+    if (process.env.CI !== 'true') {
       if (!isShared && !exportsModuleExists) {
         operations.push(
           schematic('module', {

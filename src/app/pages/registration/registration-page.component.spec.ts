@@ -7,12 +7,12 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { RegistrationFormConfigurationService } from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { RegistrationPageComponent } from './registration-page.component';
+import { RegistrationFormConfigurationService } from './services/registration-form-configuration/registration-form-configuration.service';
 
 describe('Registration Page Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;
@@ -30,9 +30,9 @@ describe('Registration Page Component', () => {
       declarations: [MockComponent(ErrorMessageComponent), MockComponent(LoadingComponent), RegistrationPageComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
         { provide: RegistrationFormConfigurationService, useFactory: () => instance(configService) },
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
     }).compileComponents();
 

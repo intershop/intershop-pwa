@@ -31,9 +31,9 @@ describe('Contact Effects', () => {
     contactServiceMock = mock(ContactService);
     TestBed.configureTestingModule({
       providers: [
+        { provide: ContactService, useFactory: () => instance(contactServiceMock) },
         ContactEffects,
         provideMockActions(() => actions$),
-        { provide: ContactService, useFactory: () => instance(contactServiceMock) },
       ],
     });
 

@@ -45,8 +45,8 @@ describe('Basket Shipping Address Widget Component', () => {
         MockDirective(NgbCollapse),
       ],
       providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
     }).compileComponents();
   });

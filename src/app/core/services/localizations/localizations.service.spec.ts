@@ -19,8 +19,8 @@ describe('Localizations Service', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        provideMockStore({ selectors: [{ selector: getRestEndpoint, value: 'https://example.com/rest' }] }),
         { provide: ErrorHandler, useFactory: () => instance(errorHandler) },
+        provideMockStore({ selectors: [{ selector: getRestEndpoint, value: 'https://example.com/rest' }] }),
       ],
     });
 

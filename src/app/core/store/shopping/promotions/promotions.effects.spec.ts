@@ -29,9 +29,9 @@ describe('Promotions Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         PromotionsEffects,
         provideMockActions(() => actions$),
-        { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
       ],
     });
 
@@ -56,7 +56,7 @@ describe('Promotions Effects', () => {
       const action = loadPromotion({ promoId });
       const completion = loadPromotionSuccess({ promotion: { id } as Promotion });
       actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c----', { c: completion });
+      const expected$ = cold('-c-----', { c: completion });
 
       expect(effects.loadPromotion$).toBeObservable(expected$);
     });
@@ -66,7 +66,7 @@ describe('Promotions Effects', () => {
       const action = loadPromotion({ promoId });
       const completion = loadPromotionFail({ error: makeHttpError({ message: 'invalid' }), promoId });
       actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c----', { c: completion });
+      const expected$ = cold('-c-----', { c: completion });
 
       expect(effects.loadPromotion$).toBeObservable(expected$);
     });

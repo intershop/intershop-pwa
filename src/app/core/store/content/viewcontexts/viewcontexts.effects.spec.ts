@@ -21,9 +21,9 @@ describe('Viewcontexts Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        ViewcontextsEffects,
-        provideMockActions(() => actions$),
         { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
+        provideMockActions(() => actions$),
+        ViewcontextsEffects,
       ],
     });
 

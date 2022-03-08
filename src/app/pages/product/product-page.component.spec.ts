@@ -4,7 +4,6 @@ import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Category } from 'ish-core/models/category/category.model';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
@@ -12,7 +11,8 @@ import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ContentViewcontextComponent } from 'ish-shared/cms/components/content-viewcontext/content-viewcontext.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { RecentlyViewedComponent } from 'ish-shared/components/recently/recently-viewed/recently-viewed.component';
+
+import { LazyRecentlyViewedComponent } from '../../extensions/recently/exports/lazy-recently-viewed/lazy-recently-viewed.component';
 
 import { ProductBundlePartsComponent } from './product-bundle-parts/product-bundle-parts.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
@@ -33,16 +33,15 @@ describe('Product Page Component', () => {
     when(context.select('loading')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('recently')],
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(ContentViewcontextComponent),
+        MockComponent(LazyRecentlyViewedComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductBundlePartsComponent),
         MockComponent(ProductDetailComponent),
         MockComponent(ProductLinksComponent),
         MockComponent(ProductMasterVariationsComponent),
-        MockComponent(RecentlyViewedComponent),
         MockComponent(RetailSetPartsComponent),
         ProductPageComponent,
       ],
@@ -76,7 +75,7 @@ describe('Product Page Component', () => {
   it('should display product page components when product is available', () => {
     const product = { sku: 'dummy', completenessLevel: ProductCompletenessLevel.Detail } as Product;
     const category = { uniqueId: 'A', categoryPath: ['A'] } as Category;
-    when(context.select('product')).thenReturn(of(createProductView(product, category)));
+    when(context.select('product')).thenReturn(of(createProductView(product, undefined, undefined, category)));
 
     fixture.detectChanges();
 
@@ -91,7 +90,7 @@ describe('Product Page Component', () => {
         "ish-retail-set-parts",
         "ish-product-links",
         "ish-content-viewcontext",
-        "ish-recently-viewed",
+        "ish-lazy-recently-viewed",
         "ish-content-viewcontext",
       ]
     `);

@@ -14,7 +14,7 @@ describe('Make Href Pipe', () => {
   beforeEach(() => {
     multiSiteService = mock(MultiSiteService);
     TestBed.configureTestingModule({
-      providers: [MakeHrefPipe, { provide: MultiSiteService, useFactory: () => instance(multiSiteService) }],
+      providers: [{ provide: MultiSiteService, useFactory: () => instance(multiSiteService) }, MakeHrefPipe],
     });
     makeHrefPipe = TestBed.inject(MakeHrefPipe);
     when(multiSiteService.getLangUpdatedUrl(anything(), anything(), anything())).thenCall(

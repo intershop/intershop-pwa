@@ -4,17 +4,17 @@ import { createReducer, on } from '@ngrx/store';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { setErrorOn } from 'ish-core/utils/ngrx-creators';
 
-import { Store } from '../../models/store/store.model';
+import { StoreLocation } from '../../models/store-location/store-location.model';
 
 import { highlightStore, loadStores, loadStoresFail, loadStoresSuccess } from './stores.actions';
 
-export interface StoresState extends EntityState<Store> {
+export interface StoresState extends EntityState<StoreLocation> {
   loading: boolean;
   highlighted: string;
   error: HttpError;
 }
 
-export const storesAdapter = createEntityAdapter<Store>({ selectId: store => store.id });
+export const storesAdapter = createEntityAdapter<StoreLocation>({ selectId: store => store.id });
 
 export const initialState: StoresState = storesAdapter.getInitialState({
   loading: false,

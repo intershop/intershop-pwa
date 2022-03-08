@@ -40,9 +40,9 @@ describe('Pages Effects', () => {
         RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
       ],
       providers: [
+        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
         PagesEffects,
         provideMockActions(() => actions$),
-        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
       ],
     });
 

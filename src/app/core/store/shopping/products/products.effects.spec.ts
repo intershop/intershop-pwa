@@ -9,11 +9,16 @@ import { BehaviorSubject, Observable, merge, noop, of, throwError } from 'rxjs';
 import { delay, toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { Product, VariationProductMaster } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
+import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
+import { loadProductPrices } from 'ish-core/store/shopping/product-prices/product-prices.actions';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -65,18 +70,19 @@ describe('Products Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['router']),
+        CoreStoreModule.forTesting(['router', 'serverConfig']),
+        CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([
           { path: 'category/:categoryUniqueId/product/:sku', component: DummyComponent },
           { path: 'product/:sku', component: DummyComponent },
           { path: '**', component: DummyComponent },
         ]),
-        ShoppingStoreModule.forTesting('products', 'categories', 'productListing'),
+        ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices'),
       ],
       providers: [
+        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         ProductsEffects,
         provideMockActions(() => actions$),
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
       ],
     });
 
@@ -89,10 +95,11 @@ describe('Products Effects', () => {
   });
 
   describe('loadProduct$', () => {
+    const waitAction = personalizationStatusDetermined();
     it('should call the productsService for LoadProduct action', done => {
       const sku = 'P123';
       const action = loadProduct({ sku });
-      actions$ = of(action);
+      actions$ = merge(of(personalizationStatusDetermined()), of(action));
 
       effects.loadProduct$.subscribe(() => {
         verify(productsServiceMock.getProduct(sku)).once();
@@ -104,8 +111,8 @@ describe('Products Effects', () => {
       const sku = 'P123';
       const action = loadProduct({ sku });
       const completion = loadProductSuccess({ product: { sku } as Product });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: waitAction });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadProduct$).toBeObservable(expected$);
     });
@@ -114,14 +121,15 @@ describe('Products Effects', () => {
       const sku = 'invalid';
       const action = loadProduct({ sku });
       const completion = loadProductFail({ error: makeHttpError({ message: 'invalid' }), sku });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: waitAction });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadProduct$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type LoadProductFail - setTimeout', done => {
       actions$ = merge(
+        of(personalizationStatusDetermined()),
         new BehaviorSubject(loadProduct({ sku: 'invalid' })),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(1000)),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(2000))
@@ -157,6 +165,7 @@ describe('Products Effects', () => {
 
     it('should map invalid request to action of type LoadProductFail - fakeAsync', fakeAsync(() => {
       actions$ = merge(
+        of(personalizationStatusDetermined()),
         new BehaviorSubject(loadProduct({ sku: 'invalid' })),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(1000)),
         of(loadProduct({ sku: 'invalid' })).pipe(delay(2000))
@@ -183,6 +192,18 @@ describe('Products Effects', () => {
 
       expect(actions.every(a => a.type === loadProductFail.type));
     }));
+  });
+
+  describe('loadProductPricesAfterProductSuccess$', () => {
+    it('should trigger action to load product prices after successful load product action', () => {
+      const sku = 'sku123';
+      const action = loadProductSuccess({ product: { sku } as Product });
+      const completion = loadProductPrices({ skus: [sku] });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductPricesAfterProductSuccess$).toBeObservable(expected$);
+    });
   });
 
   describe('loadProductsForCategory$', () => {
@@ -529,6 +550,12 @@ describe('Products Effects', () => {
       store$.dispatch(
         loadProductSuccess({
           product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
+        })
+      );
+
+      store$.dispatch(
+        loadProductPricesSuccess({
+          prices: [{ sku: 'ABC', prices: { salePrice: { currency: 'EUR', gross: 1 } } } as ProductPriceDetails],
         })
       );
 

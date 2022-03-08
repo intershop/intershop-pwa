@@ -63,9 +63,9 @@ describe('Product Add To Wishlist Component', () => {
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
         { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
       ],
     }).compileComponents();
   });

@@ -73,6 +73,7 @@ export interface ProductContext {
   sku: string;
   requiredCompletenessLevel: ProductCompletenessLevel | true;
   product: ProductView;
+  hasProductError: boolean;
   productURL: string;
   loading: boolean;
   label: string;
@@ -239,6 +240,21 @@ export class ProductContextFacade extends RxState<ProductContext> {
         first()
       ),
       (state, minOrderQuantity) => (state.quantity ??= minOrderQuantity)
+    );
+
+    this.connect(
+      'hasProductError',
+      this.select('product').pipe(map(product => !!product && (!!product.failed || !product.available)))
+    );
+
+    this.connect(
+      'hasProductError',
+      this.select('children').pipe(
+        map(
+          children =>
+            !children?.filter(x => !!x).length || children.filter(x => !!x).some(child => child.hasProductError)
+        )
+      )
     );
 
     this.connect(

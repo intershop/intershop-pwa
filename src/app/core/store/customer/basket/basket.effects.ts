@@ -15,11 +15,13 @@ import {
   sample,
   startWith,
   switchMap,
+  take,
   withLatestFrom,
 } from 'rxjs/operators';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
+import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { resetOrderErrors } from 'ish-core/store/customer/orders';
 import { createUser, loadUserByAPIToken, loginUser, loginUserSuccess } from 'ish-core/store/customer/user';
@@ -111,6 +113,20 @@ export class BasketEffects {
       concatMap(apiToken =>
         this.basketService.getBasketByToken(apiToken).pipe(map(basket => loadBasketSuccess({ basket })))
       )
+    )
+  );
+
+  /**
+   * Recalculate basket if the basket currency doesn't match the current currency.
+   */
+  recalculateBasketAfterCurrencyChange$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasketSuccess),
+      mapToPayloadProperty('basket'),
+      withLatestFrom(this.store.select(getCurrentCurrency)),
+      filter(([basket, currency]) => basket.purchaseCurrency !== currency),
+      take(1),
+      mapTo(updateBasket({ update: { calculated: true } }))
     )
   );
 

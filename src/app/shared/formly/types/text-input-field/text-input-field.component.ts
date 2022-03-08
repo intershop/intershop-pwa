@@ -4,7 +4,7 @@ import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core'
 /**
  * Type for a basic input field
  *
- * @templateOption type supports all text types; 'text' (default), 'email', 'password', 'tel'
+ * @templateOption **type** supports all text types; 'text' (default), 'email', 'password', 'tel'
  *
  * @defaultWrappers form-field-horizontal & validation
  */

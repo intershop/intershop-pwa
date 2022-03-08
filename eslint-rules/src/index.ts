@@ -13,6 +13,8 @@ import { noVarBeforeReturnRule } from './rules/no-var-before-return';
 import { orderedImportsRule } from './rules/ordered-imports';
 import { privateDestroyFieldRule } from './rules/private-destroy-field';
 import { projectStructureRule } from './rules/project-structure';
+import { requireFormlyCodeDocumentationRule } from './rules/require-formly-code-documentation';
+import { sortTestbedMetadataArraysRule } from './rules/sort-testbed-metadata-arrays';
 import { useAliasImportsRule } from './rules/use-alias-imports';
 import { useAsyncSynchronizationInTestsRule } from './rules/use-async-synchronization-in-tests';
 import { useCamelCaseEnvironmentPropertiesRule } from './rules/use-camel-case-environment-properties';
@@ -40,6 +42,8 @@ const rules = {
   'project-structure': projectStructureRule,
   'newline-before-root-members': newlineBeforeRootMembersRule,
   'no-var-before-return': noVarBeforeReturnRule,
+  'require-formly-code-documentation': requireFormlyCodeDocumentationRule,
+  'sort-testbed-metadata-arrays': sortTestbedMetadataArraysRule,
 };
 
 module.exports = {

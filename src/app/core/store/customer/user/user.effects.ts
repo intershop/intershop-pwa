@@ -4,18 +4,17 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, from } from 'rxjs';
+import { from } from 'rxjs';
 import {
-  catchError,
   concatMap,
   concatMapTo,
+  delay,
   exhaustMap,
   filter,
   map,
   mapTo,
   mergeMap,
   sample,
-  switchMap,
   takeWhile,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -26,8 +25,10 @@ import { PersonalizationService } from 'ish-core/services/personalization/person
 import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
+import { getPGID, personalizationStatusDetermined } from '.';
 import {
   createUser,
   createUserFail,
@@ -51,7 +52,8 @@ import {
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
-  setPGID,
+  loadPGID,
+  loadPGIDSuccess,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -77,6 +79,7 @@ export class UserEffects {
     private paymentService: PaymentService,
     private personalizationService: PersonalizationService,
     private router: Router,
+    private apiTokenService: ApiTokenService,
     @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
@@ -85,7 +88,7 @@ export class UserEffects {
       ofType(loginUser),
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
-        this.userService.signInUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+        this.userService.signInUser(credentials).pipe(map(loadPGID), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -95,7 +98,7 @@ export class UserEffects {
       ofType(loginUserWithToken),
       mapToPayloadProperty('token'),
       exhaustMap(token =>
-        this.userService.signInUserByToken(token).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+        this.userService.signInUserByToken(token).pipe(map(loadPGID), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -132,7 +135,7 @@ export class UserEffects {
       ofType(createUser),
       mapToPayload(),
       mergeMap((data: CustomerRegistrationType) =>
-        this.userService.createUser(data).pipe(map(loginUserSuccess), mapErrorToAction(createUserFail))
+        this.userService.createUser(data).pipe(map(loadPGID), mapErrorToAction(createUserFail))
       )
     )
   );
@@ -226,19 +229,33 @@ export class UserEffects {
   loadUserByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
-      concatMap(() => this.userService.signInUserByToken().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail)))
+      concatMap(() => this.userService.signInUserByToken().pipe(map(loadPGID), mapErrorToAction(loginUserFail)))
     )
   );
 
   fetchPGID$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loginUserSuccess),
-      switchMap(() =>
+      ofType(loadPGID),
+      mapToPayload(),
+      concatMap(payload =>
         this.personalizationService.getPGID().pipe(
-          map(pgid => setPGID({ pgid })),
-          catchError(() => EMPTY)
+          concatMap(pgid => [loadPGIDSuccess({ pgid }), loginUserSuccess(payload)]),
+          mapErrorToAction(loginUserFail)
         )
       )
+    )
+  );
+
+  /**
+   * This effect emits the 'personalizationStatusDetermined' action once the PGID is fetched or there is no user apiToken cookie,
+   */
+  determinePersonalizationStatus$ = createEffect(() =>
+    this.store$.pipe(
+      select(getPGID),
+      map(pgid => !this.apiTokenService.hasUserApiTokenCookie() || pgid),
+      whenTruthy(),
+      delay(100),
+      map(() => personalizationStatusDetermined())
     )
   );
 

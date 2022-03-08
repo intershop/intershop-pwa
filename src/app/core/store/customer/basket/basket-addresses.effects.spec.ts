@@ -46,10 +46,10 @@ describe('Basket Addresses Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
       providers: [
+        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketAddressesEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
       ],
     });
 

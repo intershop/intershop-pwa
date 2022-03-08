@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-routing.module';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
 import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing.module';
+import { RecentlyRoutingModule } from './extensions/recently/pages/recently-routing.module';
 import { StoreLocatorRoutingModule } from './extensions/store-locator/pages/store-locator-routing.module';
 import { TactonRoutingModule } from './extensions/tacton/pages/tacton-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
@@ -33,9 +34,10 @@ import { ShellModule } from './shell/shell.module';
     PunchoutRoutingModule,
     TactonRoutingModule,
     StoreLocatorRoutingModule,
+    RecentlyRoutingModule,
     AppLastRoutingModule,
   ],
-  /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
+  /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],
   providers: [{ provide: UrlSerializer, useClass: PWAUrlSerializer }],
 })

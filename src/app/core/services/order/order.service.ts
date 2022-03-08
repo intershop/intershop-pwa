@@ -1,5 +1,6 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
@@ -26,7 +27,7 @@ type OrderIncludeType =
  */
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(private apiService: ApiService, private store: Store, @Inject(APP_BASE_HREF) private baseHref: string) {}
 
   private orderHeaders = new HttpHeaders({
     'content-type': 'application/json',
@@ -86,13 +87,13 @@ export class OrderService {
    * @returns               The (updated) order.
    */
   private sendRedirectUrlsIfRequired(order: Order, lang: string): Observable<Order> {
-    const loc = location.origin;
     if (
       order.orderCreation &&
       order.orderCreation.status === 'STOPPED' &&
       order.orderCreation.stopAction.type === 'Workflow' &&
       order.orderCreation.stopAction.exitReason === 'redirect_urls_required'
     ) {
+      const loc = `${location.origin}${this.baseHref}`;
       const body = {
         orderCreation: {
           redirect: {

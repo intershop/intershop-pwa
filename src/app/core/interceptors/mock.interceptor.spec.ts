@@ -18,8 +18,8 @@ describe('Mock Interceptor', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        MockInterceptor,
         { provide: API_MOCK_PATHS, useValue: ['.*'] },
+        MockInterceptor,
         provideMockStore({ selectors: [{ selector: getRestEndpoint, value: BASE_URL }] }),
       ],
     });

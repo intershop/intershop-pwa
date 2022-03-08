@@ -1053,7 +1053,7 @@
 "inside@1.0.0","Public Domain","","https://github.com/aantthony/node-self"
 "internal-ip@6.2.0","MIT","Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)","https://github.com/sindresorhus/internal-ip"
 "internal-slot@1.0.3","MIT","Copyright (c) 2019 Jordan Harband","https://github.com/ljharb/internal-slot"
-"intershop-pwa@2.0.0","UNLICENSED","Copyright (c) 2021 Intershop Communications AG, http://www.intershop.de",""
+"intershop-pwa@2.1.0","UNLICENSED","Copyright (c) 2022 Intershop Communications AG, http://www.intershop.de",""
 "intershop-schematics@0.0.1","UNLICENSED","",""
 "ip-regex@4.3.0","MIT","Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)","https://github.com/sindresorhus/ip-regex"
 "ip@1.1.5","MIT","Copyright Fedor Indutny, 2012.","https://github.com/indutny/node-ip"

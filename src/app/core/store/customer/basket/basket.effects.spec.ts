@@ -11,6 +11,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { resetOrderErrors } from 'ish-core/store/customer/orders';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -62,15 +63,15 @@ describe('Basket Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['router']),
+        CoreStoreModule.forTesting(['router', 'serverConfig', 'configuration']),
         CustomerStoreModule.forTesting('user', 'basket'),
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
       ],
       providers: [
+        { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
       ],
     });
 
@@ -191,6 +192,37 @@ describe('Basket Effects', () => {
       actions$ = hot('a-a-a-', { a: loadBasketByAPIToken({ apiToken: 'dummy' }) });
 
       expect(effects.loadBasketByAPIToken$).toBeObservable(cold('------'));
+    });
+  });
+
+  describe('recalculateBasketAfterCurrencyChange$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        loadServerConfigSuccess({
+          config: {
+            general: {
+              defaultLocale: 'de_DE',
+              defaultCurrency: 'EUR',
+              locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE'],
+              currencies: ['USD', 'EUR'],
+            },
+          },
+        })
+      );
+    });
+
+    it('should trigger a basket recalculation if the basket currency differs from current currency', done => {
+      const id = 'BID';
+
+      actions$ = of(loadBasketSuccess({ basket: { id, purchaseCurrency: 'USD' } as Basket }));
+
+      effects.recalculateBasketAfterCurrencyChange$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+        [Basket Internal] Update Basket:
+          update: {"calculated":true}
+        `);
+        done();
+      });
     });
   });
 

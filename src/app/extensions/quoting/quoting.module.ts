@@ -13,6 +13,7 @@ import { QuoteLineItemListComponent } from './shared/quote-line-item-list/quote-
 import { QuoteStateComponent } from './shared/quote-state/quote-state.component';
 import { QuoteViewComponent } from './shared/quote-view/quote-view.component';
 import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.component';
+import { QuotingBasketLineItemsComponent } from './shared/quoting-basket-line-items/quoting-basket-line-items.component';
 
 @NgModule({
   imports: [SharedModule],
@@ -28,6 +29,7 @@ import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.compone
     QuoteStateComponent,
     QuoteViewComponent,
     QuoteWidgetComponent,
+    QuotingBasketLineItemsComponent,
   ],
   exports: [
     ProductAddToQuoteComponent,
@@ -37,6 +39,7 @@ import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.compone
     QuoteStateComponent,
     QuoteViewComponent,
     QuoteWidgetComponent,
+    QuotingBasketLineItemsComponent,
     SharedModule,
   ],
 })

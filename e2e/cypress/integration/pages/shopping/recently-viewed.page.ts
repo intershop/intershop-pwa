@@ -2,7 +2,7 @@ export class RecentlyViewedPage {
   readonly tag = 'ish-recently-page';
 
   get recentlyViewedItems() {
-    return cy.get('ish-recently-viewed-all ish-product-tile');
+    return cy.get(`${this.tag} ish-product-tile`);
   }
 
   clearAllRecentlyViewedItems() {

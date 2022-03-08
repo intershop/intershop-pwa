@@ -146,6 +146,12 @@ export class CheckoutFacade {
   }
   eligibleShippingMethodsNoFetch$ = this.store.pipe(select(getBasketEligibleShippingMethods));
 
+  shippingMethod$(id: string) {
+    return this.eligibleShippingMethodsNoFetch$.pipe(
+      map(methods => (methods?.length ? methods.find(method => method.id === id) : undefined))
+    );
+  }
+
   getValidShippingMethod$() {
     return combineLatest([
       this.basket$.pipe(whenTruthy()),

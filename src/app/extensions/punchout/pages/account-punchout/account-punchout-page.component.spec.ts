@@ -46,9 +46,9 @@ describe('Account Punchout Page Component', () => {
         MockComponent(ModalDialogComponent),
       ],
       providers: [
-        { provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) },
       ],
     }).compileComponents();
   });

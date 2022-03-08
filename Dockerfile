@@ -1,9 +1,12 @@
+# synchronize-marker:docker-cache-share:begin
 FROM node:14-alpine as buildstep
+ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
 RUN npm i --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 RUN npm run ngcc
+# synchronize-marker:docker-cache-share:end
 COPY tsconfig.app.json tsconfig.json ngsw-config.json .browserslistrc angular.json .eslintrc.json /workspace/
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
@@ -21,9 +24,6 @@ RUN if [ ! -z "${activeThemes}" ]; then npm config set intershop-pwa:active-them
 RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 COPY tsconfig.server.json server.ts /workspace/
 RUN npm run build:multi server
-# remove cache check for resources (especially index.html)
-# https://github.com/angular/angular/issues/23613#issuecomment-415886919
-RUN test "${serviceWorker}" = "true" && sed -i 's/canonicalHash !== cacheBustedHash/false/g' /workspace/dist/browser/ngsw-worker.js || true
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 

@@ -123,8 +123,6 @@ export class ProductMapper {
       shortDescription: data.description,
       name: data.title,
       sku,
-      listPrice: PriceMapper.fromData(retrieveStubAttributeValue(data, 'listPrice')),
-      salePrice: PriceMapper.fromData(retrieveStubAttributeValue(data, 'salePrice')),
       images: this.imageMapper.fromImages([
         {
           effectiveUrl: retrieveStubAttributeValue(data, 'image'),
@@ -188,8 +186,6 @@ export class ProductMapper {
       attributeGroups: data.attributeGroups,
       attachments: this.attachmentMapper.fromAttachments(data.attachments),
       images: this.imageMapper.fromImages(data.images),
-      listPrice: PriceMapper.fromData(data.listPrice),
-      salePrice: PriceMapper.fromData(data.salePrice),
       manufacturer: data.manufacturer,
       readyForShipmentMin: data.readyForShipmentMin,
       readyForShipmentMax: data.readyForShipmentMax,

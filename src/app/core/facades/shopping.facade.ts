@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { debounce, filter, map, switchMap, tap } from 'rxjs/operators';
+import { debounce, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
@@ -41,11 +41,6 @@ import {
   loadProductParts,
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
-import {
-  clearRecently,
-  getMostRecentlyViewedProducts,
-  getRecentlyViewedProducts,
-} from 'ish-core/store/shopping/recently';
 import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/store/shopping/search';
 import { toObservable } from 'ish-core/utils/functions';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -73,7 +68,10 @@ export class ShoppingFacade {
     if (!uniqueId) {
       this.store.dispatch(loadTopLevelCategories());
     }
-    return this.store.pipe(select(getNavigationCategories(uniqueId)));
+    return this.store.pipe(
+      select(getNavigationCategories(uniqueId)),
+      filter(categories => !!categories?.length)
+    ); // prevent to display an empty navigation bar after login/logout);
   }
 
   // PRODUCT
@@ -93,6 +91,19 @@ export class ShoppingFacade {
       switchMap(plainSKU =>
         this.store.pipe(
           select(getProduct(plainSKU)),
+          startWith(undefined),
+          pairwise(),
+          tap(([prev, curr]) => {
+            if (
+              ProductHelper.isReadyForDisplay(prev, completenessLevel) &&
+              !ProductHelper.isReadyForDisplay(curr, completenessLevel)
+            ) {
+              level === true
+                ? this.store.dispatch(loadProduct({ sku: plainSKU }))
+                : this.store.dispatch(loadProductIfNotLoaded({ sku: plainSKU, level }));
+            }
+          }),
+          map(([, curr]) => curr),
           filter(p => ProductHelper.isReadyForDisplay(p, completenessLevel))
         )
       )
@@ -197,15 +208,6 @@ export class ShoppingFacade {
 
   removeProductFromCompare(sku: string) {
     this.store.dispatch(removeFromCompare({ sku }));
-  }
-
-  // RECENTLY
-
-  recentlyViewedProducts$ = this.store.pipe(select(getRecentlyViewedProducts));
-  mostRecentlyViewedProducts$ = this.store.pipe(select(getMostRecentlyViewedProducts));
-
-  clearRecentlyViewedProducts() {
-    this.store.dispatch(clearRecently());
   }
 
   // PROMOTIONS

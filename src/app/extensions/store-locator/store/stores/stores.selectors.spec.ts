@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { Store as StoreModel } from '../../models/store/store.model';
+import { StoreLocation as StoreModel } from '../../models/store-location/store-location.model';
 import { StoreLocatorStoreModule } from '../store-locator-store.module';
 
 import { getLoading, highlightStore } from '.';

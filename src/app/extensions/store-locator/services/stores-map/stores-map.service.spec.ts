@@ -14,9 +14,9 @@ describe('Stores Map Service', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: Store, useFactory: () => instance(store$) },
         { provide: StatePropertiesService, useFactory: () => instance(stateProperties) },
         { provide: STORE_MAP_ICON_CONFIGURATION, useFactory: () => ({}) },
+        { provide: Store, useFactory: () => instance(store$) },
       ],
     });
     storesMapService = TestBed.inject(StoresMapService);

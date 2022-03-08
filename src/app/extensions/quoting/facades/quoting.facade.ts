@@ -6,9 +6,10 @@ import { map, mapTo, sample, switchMap, switchMapTo, tap } from 'rxjs/operators'
 import { whenFalsy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
-import { QuotingEntity } from '../models/quoting/quoting.model';
+import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
   createQuoteRequestFromBasket,
+  deleteQuoteFromBasket,
   deleteQuotingEntity,
   getQuotingEntities,
   getQuotingEntity,
@@ -26,7 +27,7 @@ export class QuotingFacade {
 
   quotingEntities$() {
     // update on subscription
-    this.store.dispatch(loadQuoting());
+    this.loadQuoting();
 
     return this.store.pipe(
       select(getQuotingEntities),
@@ -36,7 +37,7 @@ export class QuotingFacade {
         timer(0, 60_000).pipe(
           tap(count => {
             if (count) {
-              this.store.dispatch(loadQuoting());
+              this.loadQuoting();
             }
           }),
           mapTo(entities)
@@ -58,11 +59,26 @@ export class QuotingFacade {
     );
   }
 
+  name$(quoteId: string) {
+    return this.store.pipe(
+      select(getQuotingEntity(quoteId)),
+      map((quote: Quote | QuoteRequest) => quote?.displayName)
+    );
+  }
+
   delete(entity: QuotingEntity) {
     this.store.dispatch(deleteQuotingEntity({ entity }));
   }
 
   createQuoteRequestFromBasket() {
     this.store.dispatch(createQuoteRequestFromBasket());
+  }
+
+  loadQuoting() {
+    this.store.dispatch(loadQuoting());
+  }
+
+  deleteQuoteFromBasket(quoteId: string) {
+    this.store.dispatch(deleteQuoteFromBasket({ id: quoteId }));
   }
 }

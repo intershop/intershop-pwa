@@ -63,9 +63,9 @@ describe('Punchout Users Effects', () => {
         ]),
       ],
       providers: [
-        PunchoutUsersEffects,
-        provideMockActions(() => actions$),
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
+        provideMockActions(() => actions$),
+        PunchoutUsersEffects,
       ],
     });
 

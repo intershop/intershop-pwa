@@ -58,17 +58,20 @@ describe('Filter Service', () => {
   });
 
   it("should get Filter data when 'getFilterForCategory' is called", done => {
-    when(apiService.get(anything())).thenReturn(of(filterMock));
+    when(apiService.get(anything(), anything())).thenReturn(of(filterMock));
     filterService.getFilterForCategory('A.B').subscribe(data => {
       expect(data.filter).toHaveLength(1);
       expect(data.filter[0].facets).toHaveLength(2);
       expect(data.filter[0].facets[0].name).toEqual('a');
       expect(data.filter[0].facets[1].name).toEqual('b');
 
-      verify(apiService.get(anything())).once();
+      verify(apiService.get(anything(), anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
         Array [
           "categories/A/B/productfilters",
+          Object {
+            "sendSPGID": true,
+          },
         ]
       `);
 
@@ -110,7 +113,7 @@ describe('Filter Service', () => {
       const [resource, params] = capture(apiService.get).last();
       expect(resource).toMatchInlineSnapshot(`"products"`);
       expect((params as AvailableOptions)?.params?.toString()).toMatchInlineSnapshot(
-        `"amount=2&offset=0&attrs=sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet&attributeGroup=PRODUCT_LABEL_ATTRIBUTES&returnSortKeys=true&SearchParameter=b"`
+        `"amount=2&offset=0&attrs=sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet&attributeGroup=PRODUCT_LABEL_ATTRIBUTES&returnSortKeys=true&SearchParameter=b"`
       );
 
       done();

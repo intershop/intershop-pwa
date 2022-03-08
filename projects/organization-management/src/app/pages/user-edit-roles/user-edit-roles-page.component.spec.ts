@@ -44,8 +44,8 @@ describe('User Edit Roles Page Component', () => {
         UserEditRolesPageComponent,
       ],
       providers: [
-        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
       ],
     }).compileComponents();
   });

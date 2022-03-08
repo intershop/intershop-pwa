@@ -37,9 +37,9 @@ describe('Content Pagelet Component', () => {
           useValue: { definitionQualifiedName: 'fq-defined', class: CMSTextComponent },
           multi: true,
         },
-        { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })

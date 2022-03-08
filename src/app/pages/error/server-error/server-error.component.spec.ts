@@ -21,8 +21,8 @@ describe('Server Error Component', () => {
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [ServerErrorComponent, ServerHtmlDirective],
       providers: [
-        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
       ],
     }).compileComponents();
   });

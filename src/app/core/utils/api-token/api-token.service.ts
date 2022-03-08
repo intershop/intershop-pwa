@@ -131,12 +131,16 @@ export class ApiTokenService {
     }
   }
 
+  hasUserApiTokenCookie() {
+    const apiTokenCookie = this.parseCookie();
+    return apiTokenCookie?.type === 'user';
+  }
+
   restore$(types: ApiTokenCookieType[] = ['user', 'basket', 'order']): Observable<boolean> {
     if (isPlatformServer(this.platformId)) {
       return of(true);
     }
-    return timer(500, 200).pipe(
-      filter(() => this.router.navigated),
+    return this.router.events.pipe(
       first(),
       switchMap(() => this.initialCookie$),
       switchMap(cookie => {

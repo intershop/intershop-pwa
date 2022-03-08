@@ -1,4 +1,14 @@
-import { Directive, Input, OnChanges, OnInit, Optional, Output, SimpleChanges, SkipSelf } from '@angular/core';
+import {
+  Directive,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+  SimpleChanges,
+  SkipSelf,
+} from '@angular/core';
 
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/product/product.model';
@@ -7,7 +17,7 @@ import { ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/produ
   selector: '[ishProductContext]',
   providers: [ProductContextFacade],
 })
-export class ProductContextDirective implements OnInit, OnChanges {
+export class ProductContextDirective implements OnInit, OnChanges, OnDestroy {
   @Input() completeness: 'List' | 'Detail' = 'List';
   @Input() propagateIndex: number;
 
@@ -47,6 +57,11 @@ export class ProductContextDirective implements OnInit, OnChanges {
   }
 
   @Input()
+  set propagateActive(propagateActive: boolean) {
+    this.context.set('propagateActive', () => propagateActive);
+  }
+
+  @Input()
   set parts(parts: SkuQuantityType[]) {
     this.context.set('parts', () => parts);
     this.context.set('displayProperties', () => ({
@@ -60,14 +75,14 @@ export class ProductContextDirective implements OnInit, OnChanges {
     this.context.config = config;
   }
 
-  private propagate() {
+  private propagate(remove = false) {
     if (this.propagateIndex !== undefined) {
       if (!this.parentContext) {
         throw new Error('cannot propagate without parent context');
       }
       this.parentContext.propagate(
         this.propagateIndex,
-        this.context.get('propagateActive') ? this.context.get() : undefined
+        this.context.get('propagateActive') && !remove ? this.context.get() : undefined
       );
     }
   }
@@ -82,5 +97,9 @@ export class ProductContextDirective implements OnInit, OnChanges {
     this.context.set('requiredCompletenessLevel', () =>
       this.completeness === 'List' ? ProductCompletenessLevel.List : ProductCompletenessLevel.Detail
     );
+  }
+
+  ngOnDestroy(): void {
+    this.propagate(true);
   }
 }

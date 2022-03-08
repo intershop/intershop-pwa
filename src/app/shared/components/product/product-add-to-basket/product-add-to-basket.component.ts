@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -31,11 +31,12 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   @Input() cssClass?: string;
 
   basketLoading$: Observable<boolean>;
-  hasQuantityError$: Observable<boolean>;
   visible$: Observable<boolean>;
   translationKey$: Observable<string>;
 
   constructor(private checkoutFacade: CheckoutFacade, private context: ProductContextFacade) {}
+
+  buttonDisabled$: Observable<boolean>;
 
   /**
    * fires 'true' after add To Cart is clicked and basket is loading
@@ -45,7 +46,6 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   ngOnInit() {
-    this.hasQuantityError$ = this.context.select('hasQuantityError');
     this.visible$ = this.context.select('displayProperties', 'addToBasket');
     this.translationKey$ = this.context.select('product').pipe(
       map(product =>
@@ -58,6 +58,14 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
 
     // update emitted to display spinning animation
     this.basketLoading$.pipe(whenFalsy(), takeUntil(this.destroy$)).subscribe(this.displaySpinner$); // false
+
+    const hasQuantityError$ = this.context.select('hasQuantityError');
+    const hasProductError$ = this.context.select('hasProductError');
+    this.buttonDisabled$ = combineLatest([
+      this.displaySpinner$.pipe(startWith(false)),
+      hasQuantityError$.pipe(),
+      hasProductError$.pipe(),
+    ]).pipe(map(conditions => conditions.some(c => !!c)));
   }
 
   addToBasket() {

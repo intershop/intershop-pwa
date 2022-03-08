@@ -9,8 +9,14 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getCurrentBasketId, updateBasket } from 'ish-core/store/customer/basket';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
+import { deleteBasketItem, getCurrentBasket, getCurrentBasketId, updateBasket } from 'ish-core/store/customer/basket';
+import {
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  mapToProperty,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuotingService } from '../../services/quoting/quoting.service';
@@ -40,6 +46,7 @@ import {
   submitQuoteRequestSuccess,
   updateQuoteRequest,
   updateQuoteRequestSuccess,
+  deleteQuoteFromBasket,
 } from './quoting.actions';
 import { getQuotingEntity } from './quoting.selectors';
 
@@ -56,7 +63,7 @@ export class QuotingEffects {
   loadQuoting$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadQuoting),
-      switchMap(() =>
+      mergeMap(() =>
         this.quotingService.getQuotes().pipe(
           map(quoting => loadQuotingSuccess({ quoting })),
           mapErrorToAction(loadQuotingFail)
@@ -108,6 +115,17 @@ export class QuotingEffects {
           mapErrorToAction(rejectQuoteFail, { id })
         )
       )
+    )
+  );
+
+  deleteQuoteFromBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteQuoteFromBasket),
+      mapToPayloadProperty('id'),
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      map(([quoteId, basket]) => basket?.lineItems?.find(li => li.quote === quoteId)?.id),
+      whenTruthy(),
+      map(itemId => deleteBasketItem({ itemId }))
     )
   );
 

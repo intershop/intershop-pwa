@@ -26,8 +26,8 @@ describe('Server Config Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['serverConfig'], [ServerConfigEffects])],
       providers: [
-        provideStoreSnapshots(),
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
+        provideStoreSnapshots(),
       ],
     });
 
@@ -61,10 +61,10 @@ describe('Server Config Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        ServerConfigEffects,
-        provideMockStore(),
-        provideMockActions(() => actions$),
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
+        provideMockActions(() => actions$),
+        provideMockStore(),
+        ServerConfigEffects,
       ],
     });
 

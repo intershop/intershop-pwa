@@ -19,8 +19,8 @@ describe('Cms Freestyle Component', () => {
       imports: [RouterTestingModule],
       declarations: [CMSFreestyleComponent, ServerHtmlDirective],
       providers: [
-        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
       ],
     }).compileComponents();
   });

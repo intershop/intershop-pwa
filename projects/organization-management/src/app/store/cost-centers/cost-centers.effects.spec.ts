@@ -80,9 +80,9 @@ describe('Cost Centers Effects', () => {
         ]),
       ],
       providers: [
+        { provide: CostCentersService, useFactory: () => instance(costCentersService) },
         CostCentersEffects,
         provideMockActions(() => actions$),
-        { provide: CostCentersService, useFactory: () => instance(costCentersService) },
       ],
     });
 

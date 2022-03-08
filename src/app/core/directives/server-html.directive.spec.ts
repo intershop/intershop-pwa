@@ -28,8 +28,8 @@ describe('Server Html Directive', () => {
         declarations: [ServerHtmlDirective, TestComponent],
         imports: [RouterTestingModule],
         providers: [
-          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
           { provide: APP_BASE_HREF, useValue: '/' },
+          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         ],
       }).compileComponents();
 
@@ -68,8 +68,8 @@ describe('Server Html Directive', () => {
         declarations: [ServerHtmlDirective, TestComponent],
         imports: [RouterTestingModule],
         providers: [
-          { provide: AppFacade, useFactory: () => instance(appFacade) },
           { provide: APP_BASE_HREF, useValue: '/' },
+          { provide: AppFacade, useFactory: () => instance(appFacade) },
         ],
       }).compileComponents();
 
@@ -109,8 +109,8 @@ describe('Server Html Directive', () => {
         declarations: [ServerHtmlDirective, TestComponent],
         imports: [RouterTestingModule],
         providers: [
-          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
           { provide: APP_BASE_HREF, useValue: '/' },
+          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         ],
       }).compileComponents();
 
@@ -142,8 +142,8 @@ describe('Server Html Directive', () => {
           TranslateModule.forRoot(),
         ],
         providers: [
-          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
           { provide: APP_BASE_HREF, useValue: '/' },
+          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         ],
       }).compileComponents();
 
@@ -190,8 +190,8 @@ describe('Server Html Directive', () => {
           TranslateModule.forRoot(),
         ],
         providers: [
-          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
           { provide: APP_BASE_HREF, useValue: '/americas' },
+          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         ],
       }).compileComponents();
 

@@ -49,6 +49,8 @@ export const deleteQuotingEntitySuccess = createAction(
   payload<IdPayloadType>()
 );
 
+export const deleteQuoteFromBasket = createAction('[Quoting] Delete Quote From Basket', payload<IdPayloadType>());
+
 export const rejectQuote = createAction('[Quoting] Reject Quote', payload<IdPayloadType>());
 
 export const rejectQuoteFail = createAction('[Quoting API] Reject Quote Fail', httpError<IdPayloadType>());

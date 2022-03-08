@@ -13,6 +13,7 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { Category, CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -72,10 +73,10 @@ describe('Categories Effects', () => {
         ShoppingStoreModule.forTesting('categories'),
       ],
       providers: [
-        CategoriesEffects,
-        provideMockActions(() => actions$),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
+        CategoriesEffects,
+        provideMockActions(() => actions$),
       ],
     });
 
@@ -93,6 +94,7 @@ describe('Categories Effects', () => {
         uniqueId: 'dummy',
         categoryRef: 'dummy@domain',
       } as CategoryView;
+      actions$ = of(personalizationStatusDetermined());
     });
     it('should trigger loadCategoryByRef when /categoryref/XXX is visited', done => {
       router.navigateByUrl('/categoryref/dummy@domain');
@@ -280,7 +282,7 @@ describe('Categories Effects', () => {
   describe('loadTopLevelCategories$', () => {
     it('should call the categoriesService for LoadTopLevelCategories action', done => {
       const action = loadTopLevelCategories();
-      actions$ = of(action);
+      actions$ = of(personalizationStatusDetermined(), action);
 
       effects.loadTopLevelCategories$.subscribe(() => {
         verify(categoriesServiceMock.getTopLevelCategories(anyNumber())).once();
@@ -296,8 +298,8 @@ describe('Categories Effects', () => {
     it('should map to action of type LoadCategorySuccess', () => {
       const action = loadTopLevelCategories();
       const completion = loadTopLevelCategoriesSuccess({ categories: TOP_LEVEL_CATEGORIES });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined() });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadTopLevelCategories$).toBeObservable(expected$);
     });
@@ -310,8 +312,8 @@ describe('Categories Effects', () => {
       const completion = loadTopLevelCategoriesFail({
         error: makeHttpError({ message: 'invalid number' }),
       });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined() });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadTopLevelCategories$).toBeObservable(expected$);
     });

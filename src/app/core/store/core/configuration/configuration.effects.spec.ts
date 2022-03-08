@@ -27,9 +27,9 @@ describe('Configuration Effects', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
         ConfigurationEffects,
         provideMockActions(() => actions$),
-        { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
       ],
     });
 

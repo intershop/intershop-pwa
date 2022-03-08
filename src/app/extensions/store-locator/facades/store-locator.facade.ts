@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { Store as StoreModel } from '../models/store/store.model';
+import { StoreLocation as StoreModel } from '../models/store-location/store-location.model';
 import { StoresMapService } from '../services/stores-map/stores-map.service';
 import { getError, getHighlightedStore, getLoading, getStores, highlightStore, loadStores } from '../store/stores';
 
