@@ -123,7 +123,7 @@ export class AppFacade {
     return this.currentLocale$.pipe(
       whenTruthy(),
       withLatestFrom(this.currentCurrency$),
-      map(([locale, defaultCurrency]) => getCurrencySymbol(currency || defaultCurrency, 'wide', locale))
+      map(([locale, defaultCurrency]) => getCurrencySymbol(currency || defaultCurrency, 'narrow', locale))
     );
   }
 
