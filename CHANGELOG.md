@@ -7,6 +7,48 @@ kb_everyone
 
 # Changelog
 
+## [2.1.0](https://github.com/releases/tag/2.1.0) (2022-03-08)
+
+**required Intershop Commerce Management version: 7.10.38.0-LTS**
+
+### Features
+
+- fetch product price information with new productprice REST API (#1018) ([26ebdf2](https://github.com/intershop/intershop-pwa/commit/26ebdf2))
+- fetch and display personalized category and product data (#1021) ([fd08931](https://github.com/intershop/intershop-pwa/commit/fd08931))
+- remove quote items from cart (#1029) ([84c449e](https://github.com/intershop/intershop-pwa/commit/84c449e))
+- use demo content artifact in header navigation (#1038) ([e065b3f](https://github.com/intershop/intershop-pwa/commit/e065b3f))
+- support payone iDeal payment method (#974) ([06a25c4](https://github.com/intershop/intershop-pwa/commit/06a25c4))
+- move localization keep patterns where they are needed (#960) ([9b6a996](https://github.com/intershop/intershop-pwa/commit/9b6a996))
+- context with propagateActive as input (#1007) ([a4c1c16](https://github.com/intershop/intershop-pwa/commit/a4c1c16))
+- recalculate basket after currency change (#1005) ([04b44bc](https://github.com/intershop/intershop-pwa/commit/04b44bc))
+
+### Bug Fixes
+
+- repair service worker (#1045) ([2a7a47d](https://github.com/intershop/intershop-pwa/commit/2a7a47d))
+- prevent out of stock products from being added to basket on order templates (#1031) ([5f85f9d](https://github.com/intershop/intershop-pwa/commit/5f85f9d))
+- prevent console error messages on checkout shipping page (#1040) ([7af76a6](https://github.com/intershop/intershop-pwa/commit/7af76a6))
+- render content of product detail description tab as html (#1037) ([147b07c](https://github.com/intershop/intershop-pwa/commit/147b07c))
+- checkout payment parameter form validation (#1035) ([4dbccaf](https://github.com/intershop/intershop-pwa/commit/4dbccaf))
+- update propagation of parent context if child context is removed (#1022) ([61cb60a](https://github.com/intershop/intershop-pwa/commit/61cb60a))
+- product search is cached in PWA and does not trigger a new REST call (#983, #1024) ([db38c8a](https://github.com/intershop/intershop-pwa/commit/db38c8a))
+- trim payment parameter form values (#1013) ([507966f](https://github.com/intershop/intershop-pwa/commit/507966f))
+- include 'all' theme in allowed overrides (#1014) ([302285f](https://github.com/intershop/intershop-pwa/commit/302285f))
+- payment & order redirect respects baseHref (#1010) ([d29c1ec](https://github.com/intershop/intershop-pwa/commit/d29c1ec))
+
+### Performance Improvements
+
+- **schematics:** better linter performance (#1044) ([49497c9](https://github.com/intershop/intershop-pwa/commit/49497c9))
+
+### Code Refactoring
+
+- recently viewed products as extension (#1034) ([d7a8613](https://github.com/intershop/intershop-pwa/commit/d7a8613))
+
+### BREAKING CHANGES
+
+- Product prices are now fetched by separate `productprices` REST calls instead of using the information fetched with the products REST call.
+- Handling personalized REST calls for category and product data required some possibly breaking changes (see [Migrations / 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#20-to-21) for more details).
+- The recently viewed products functionality was moved into an extension (see [Migrations / 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#20-to-21) for more details).
+
 ## [2.0.0](https://github.com/releases/tag/2.0.0) (2022-02-08)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
