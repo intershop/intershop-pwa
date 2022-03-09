@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 
 import { PaymentConcardisComponent } from './payment-concardis.component';
 

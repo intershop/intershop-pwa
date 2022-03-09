@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormlyModule } from '@ngx-formly/core';
+import { DemoPaymentMethodModule } from 'src/libs/checkout/payment/demo-payment-method/demo-payment-method.module';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
@@ -20,6 +21,7 @@ import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard/pa
     FormlyModule.forChild({
       extensions: [{ name: 'server-validation', extension: serverValidationExtension }],
     }),
+    DemoPaymentMethodModule,
     SharedModule,
   ],
   declarations: [

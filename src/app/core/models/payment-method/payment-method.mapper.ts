@@ -1,3 +1,4 @@
+import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
@@ -9,7 +10,6 @@ import {
   PaymentMethodOptionsDataType,
   PaymentMethodParameterType,
 } from './payment-method.interface';
-import { PaymentMethod } from './payment-method.model';
 
 export class PaymentMethodMapper {
   static fromData(body: PaymentMethodData): PaymentMethod[] {

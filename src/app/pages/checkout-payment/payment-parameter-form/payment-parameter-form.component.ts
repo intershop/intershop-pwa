@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-
-import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
 @Component({
   selector: 'ish-payment-parameter-form',

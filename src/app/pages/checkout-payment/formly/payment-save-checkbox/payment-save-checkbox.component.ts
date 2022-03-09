@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-
-import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
 /**
  * The Payment Save Checkbox Component displays a save-for-later checkbox if the saveAllowed flag is set at the provided payment method.

@@ -27,7 +27,10 @@
       "swiper_angular": ["node_modules/swiper/angular"],
       // libs
       "@intershop-pwa/formly/*": ["src/libs/shared/ui/formly/*"],
-      "@intershop-pwa/icon/*": ["src/libs/shared/ui/icon/*"]
+      "@intershop-pwa/icon/*": ["src/libs/shared/ui/icon/*"],
+      "@intershop-pwa/checkout/payment/payment-method-base/*": [
+        "src/libs/checkout/payment/payment-method-base/*"
+      ]
     },
     "lib": ["es2018", "dom"],
     "noUnusedLocals": true,
