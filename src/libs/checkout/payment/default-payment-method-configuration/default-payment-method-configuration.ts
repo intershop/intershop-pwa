@@ -27,21 +27,30 @@ export class DefaultPaymentMethodConfigurationComponent implements PaymentMethod
     }
 
     if (paymentMethod.parameters?.length && paymentMethod.paymentInstruments?.length) {
+      const parameters: FormlyFieldConfig[] = [];
+      paymentMethod.parameters.forEach(param => parameters.push({ ...param }));
       return {
         type: 'ish-fieldset-field',
         wrappers: ['ish-payment-method-wrapper'],
-        fieldGroup: paymentMethod.paymentInstruments.map(paymentInstrument => ({
-          type: 'ish-radio-field',
-          key: 'paymentMethodSelect',
-          wrappers: ['form-field-checkbox-horizontal', 'ish-payment-instruments-delete-wrapper'],
-          templateOptions: {
-            paymentInstrument,
-            label: paymentInstrument.accountIdentifier,
-            inputClass: 'form-check-input',
-            value: paymentInstrument.id,
-            deletePaymentInstrumentCallback: (e: PaymentInstrument) => deletePaymentInstrumentCallback(e),
+        fieldGroup: [
+          ...paymentMethod.paymentInstruments.map(paymentInstrument => ({
+            type: 'ish-radio-field',
+            key: 'paymentMethodSelect',
+            wrappers: ['form-field-checkbox-horizontal', 'ish-payment-instruments-delete-wrapper'],
+            templateOptions: {
+              paymentInstrument,
+              label: paymentInstrument.accountIdentifier,
+              inputClass: 'form-check-input',
+              value: paymentInstrument.id,
+              deletePaymentInstrumentCallback: (e: PaymentInstrument) => deletePaymentInstrumentCallback(e),
+            },
+          })),
+          {
+            type: 'ish-payment-parameters-type',
+            key: 'payment-parameters',
+            fieldGroup: parameters,
           },
-        })),
+        ],
         templateOptions: {
           childClass: 'panel section',
           paymentMethod,

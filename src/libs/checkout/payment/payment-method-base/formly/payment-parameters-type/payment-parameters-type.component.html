@@ -1,0 +1,6 @@
+<ng-template #parameterForm>
+  <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
+</ng-template>
+<a *ngIf="!isFormOpened; else parameterForm" (click)="isFormOpened = true" data-testing-id="add-payment-link"
+  >{{ 'checkout.payment.addPayment.link' | translate }}
+</a>

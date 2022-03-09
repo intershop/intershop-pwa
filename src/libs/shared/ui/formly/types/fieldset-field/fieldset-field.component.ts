@@ -18,4 +18,8 @@ import { FieldType } from '@ngx-formly/core';
   templateUrl: './fieldset-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FieldsetFieldComponent extends FieldType {}
+export class FieldsetFieldComponent extends FieldType {
+  defaultOptions = {
+    defaultValue: {},
+  };
+}
