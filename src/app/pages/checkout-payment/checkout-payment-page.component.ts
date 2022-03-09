@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { Observable, Subject } from 'rxjs';
 import { filter, first, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -6,7 +7,6 @@ import { filter, first, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 
 @Component({
   selector: 'ish-checkout-payment-page',

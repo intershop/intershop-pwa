@@ -1,4 +1,5 @@
 import { Params } from '@angular/router';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { createAction } from '@ngrx/store';
 
@@ -8,7 +9,6 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { SkuQuantityType } from 'ish-core/models/product/product.helper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from 'ish-core/services/basket/basket.service';

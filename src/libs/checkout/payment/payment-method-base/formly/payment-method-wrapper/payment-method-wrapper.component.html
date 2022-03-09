@@ -1,8 +1,8 @@
-<li class="panel">
+<div class="panel">
   <strong>
     {{ paymentMethod.displayName }}
     <ng-container *ngIf="!paymentMethod.displayName">{{ paymentMethod.id }}</ng-container>
   </strong>
   <p *ngIf="paymentMethod.description">{{ paymentMethod.description }}</p>
   <ng-template #fieldComponent></ng-template>
-</li>
+</div>

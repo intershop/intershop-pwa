@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 
 @Component({
   selector: 'ish-account-payment-concardis-directdebit',

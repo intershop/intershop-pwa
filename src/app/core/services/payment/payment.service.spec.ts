@@ -1,12 +1,12 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';

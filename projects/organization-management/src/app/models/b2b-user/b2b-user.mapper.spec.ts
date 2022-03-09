@@ -1,5 +1,6 @@
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
+
 import { Address } from 'ish-core/models/address/address.model';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { B2bUserData, B2bUserDataLink } from './b2b-user.interface';

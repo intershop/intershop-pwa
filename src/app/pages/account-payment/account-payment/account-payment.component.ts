@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { User } from 'ish-core/models/user/user.model';
 
 /**

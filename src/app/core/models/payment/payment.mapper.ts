@@ -1,4 +1,5 @@
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
+
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 
 import { PaymentData } from './payment.interface';

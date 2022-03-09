@@ -1,10 +1,11 @@
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
+
 import { AddressData } from 'ish-core/models/address/address.interface';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';

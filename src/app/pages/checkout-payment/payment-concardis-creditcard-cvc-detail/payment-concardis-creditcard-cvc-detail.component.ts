@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 

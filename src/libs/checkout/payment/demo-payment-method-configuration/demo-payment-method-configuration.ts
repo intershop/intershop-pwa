@@ -2,7 +2,7 @@ import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-ba
 import { PaymentMethodConfiguration } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method.interface';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-export class DemoPaymentMethod implements PaymentMethodConfiguration {
+export class DemoPaymentMethodConfiguration implements PaymentMethodConfiguration {
   id = 'ISH_INVOICE';
   getFormlyFieldConfig(paymentMethod: PaymentMethod): FormlyFieldConfig {
     return {
@@ -13,8 +13,5 @@ export class DemoPaymentMethod implements PaymentMethodConfiguration {
         label: paymentMethod.displayName,
       },
     };
-  }
-  get formlyFieldConfig(): FormlyFieldConfig {
-    return { template: `<div>SPECIAL: ${this.id}</div>` };
   }
 }

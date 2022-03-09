@@ -1,6 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
@@ -11,7 +12,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import {
   PaymentMethodBaseData,
   PaymentMethodOptionsDataType,

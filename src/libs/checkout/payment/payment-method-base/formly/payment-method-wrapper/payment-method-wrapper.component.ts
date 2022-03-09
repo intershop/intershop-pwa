@@ -10,7 +10,6 @@ import { FieldWrapper } from '@ngx-formly/core';
 })
 export class PaymentMethodWrapperComponent extends FieldWrapper {
   get paymentMethod(): PaymentMethod {
-    console.log(this.to.paymentMethod);
     return this.to.paymentMethod;
   }
 }

@@ -31,4 +31,8 @@ export class HorizontalCheckboxWrapperComponent extends FieldWrapper {
   get keyString() {
     return this.field.key as string;
   }
+
+  get args() {
+    return typeof this.to.args ? this.to.args : {};
+  }
 }

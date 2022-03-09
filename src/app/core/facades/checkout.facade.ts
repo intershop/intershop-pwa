@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { Store, createSelector, select } from '@ngrx/store';
 import { Subject, combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
@@ -7,7 +8,6 @@ import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap }
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getAllAddresses } from 'ish-core/store/customer/addresses';

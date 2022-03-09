@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
@@ -18,7 +19,6 @@ import { filter, take, takeUntil } from 'rxjs/operators';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 

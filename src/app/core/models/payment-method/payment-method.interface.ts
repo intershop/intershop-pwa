@@ -1,4 +1,5 @@
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
+
 import { PaymentRestriction } from 'ish-core/models/payment-restriction/payment-restriction.model';
 import { PriceItemData } from 'ish-core/models/price-item/price-item.interface';
 
