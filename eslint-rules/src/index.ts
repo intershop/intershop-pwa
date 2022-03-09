@@ -1,5 +1,6 @@
 import { banImportsFilePatternRule } from './rules/ban-imports-file-pattern';
 import { componentCreationTestRule } from './rules/component-creation-test';
+import { doNotUseThemeIdentifierRule } from './rules/do-not-use-theme-identifier';
 import { newlineBeforeRootMembersRule } from './rules/newline-before-root-members';
 import { noAssignmentToInputsRule } from './rules/no-assignment-to-inputs';
 import { noCollapsibleIfRule } from './rules/no-collapsible-if';
@@ -19,6 +20,7 @@ import { useAliasImportsRule } from './rules/use-alias-imports';
 import { useAsyncSynchronizationInTestsRule } from './rules/use-async-synchronization-in-tests';
 import { useCamelCaseEnvironmentPropertiesRule } from './rules/use-camel-case-environment-properties';
 import { useComponentChangeDetectionRule } from './rules/use-component-change-detection';
+import { useCorrectComponentOverridesRule } from './rules/use-correct-component-overrides';
 import { useJestExtendedMatchersInTestsRule } from './rules/use-jest-extended-matchers-in-tests';
 
 const rules = {
@@ -44,6 +46,8 @@ const rules = {
   'no-var-before-return': noVarBeforeReturnRule,
   'require-formly-code-documentation': requireFormlyCodeDocumentationRule,
   'sort-testbed-metadata-arrays': sortTestbedMetadataArraysRule,
+  'do-not-use-theme-identifier': doNotUseThemeIdentifierRule,
+  'use-correct-component-overrides': useCorrectComponentOverridesRule,
 };
 
 module.exports = {

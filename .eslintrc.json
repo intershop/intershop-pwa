@@ -342,6 +342,7 @@
           ]
         ],
         "ish-custom-rules/component-creation-test": "error",
+        "ish-custom-rules/do-not-use-theme-identifier": "warn",
         "ish-custom-rules/newline-before-root-members": "warn",
         "ish-custom-rules/no-assignment-to-inputs": "error",
         "ish-custom-rules/no-collapsible-if": "warn",
@@ -639,6 +640,7 @@
         "ish-custom-rules/use-async-synchronization-in-tests": "warn",
         "ish-custom-rules/use-camel-case-environment-properties": "error",
         "ish-custom-rules/use-component-change-detection": "warn",
+        "ish-custom-rules/use-correct-component-overrides": "warn",
         "ish-custom-rules/use-jest-extended-matchers-in-tests": "warn",
         "ish-custom-rules/require-formly-code-documentation": "warn",
         "jest/no-commented-out-tests": "warn",
