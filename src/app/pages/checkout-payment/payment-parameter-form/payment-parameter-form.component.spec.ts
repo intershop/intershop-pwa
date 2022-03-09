@@ -4,7 +4,6 @@ import { FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
 
 import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
@@ -18,10 +17,7 @@ describe('Payment Parameter Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        FormlyModule.forRoot({ types: [{ name: 'example', component: FormlyTestingExampleComponent }] }),
-        FormlyTestingComponentsModule,
-      ],
+      imports: [FormlyModule.forRoot({ types: [{ name: 'example', component: FormlyTestingExampleComponent }] })],
       declarations: [
         MockComponent(PaymentSaveCheckboxComponent),
         MockPipe(TranslatePipe),

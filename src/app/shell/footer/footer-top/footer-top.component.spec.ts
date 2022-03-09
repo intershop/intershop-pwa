@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -15,7 +14,7 @@ describe('Footer Top Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FooterTopComponent, MockComponent(FaIconComponent)],
-      imports: [FeatureToggleModule.forTesting('storeLocator'), TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('storeLocator')],
     }).compileComponents();
   });
 

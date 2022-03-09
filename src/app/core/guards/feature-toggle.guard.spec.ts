@@ -1,4 +1,3 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,27 +8,23 @@ describe('Feature Toggle Guard', () => {
   let router: Router;
 
   beforeEach(() => {
-    @Component({ template: 'dummy', changeDetection: ChangeDetectionStrategy.OnPush })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         FeatureToggleModule.forTesting('feature1'),
         RouterTestingModule.withRoutes([
           {
             path: 'error',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'feature1',
-            component: DummyComponent,
+            children: [],
             canActivate: [FeatureToggleGuard],
             data: { feature: 'feature1' },
           },
           {
             path: 'feature2',
-            component: DummyComponent,
+            children: [],
             canActivate: [FeatureToggleGuard],
             data: { feature: 'feature2' },
           },

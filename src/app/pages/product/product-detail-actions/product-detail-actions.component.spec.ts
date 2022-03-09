@@ -11,8 +11,6 @@ import { ProductPriceDetails } from 'ish-core/models/product-prices/product-pric
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 
-import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
-
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
 describe('Product Detail Actions Component', () => {
@@ -26,11 +24,7 @@ describe('Product Detail Actions Component', () => {
     context = mock(ProductContextFacade);
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockComponent(LazyProductAddToWishlistComponent),
-        ProductDetailActionsComponent,
-      ],
+      declarations: [MockComponent(FaIconComponent), ProductDetailActionsComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });

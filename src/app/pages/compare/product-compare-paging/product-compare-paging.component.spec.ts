@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ProductComparePagingComponent } from './product-compare-paging.component';
@@ -11,7 +10,6 @@ describe('Product Compare Paging Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProductComparePagingComponent],
-      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
 

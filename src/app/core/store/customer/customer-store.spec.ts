@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -106,9 +105,6 @@ describe('Customer Store', () => {
   } as Promotion;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     const categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
 
@@ -154,18 +150,17 @@ describe('Customer Store', () => {
     when(productPriceServiceMock.getProductPrices(anything())).thenReturn(of([]));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
         RouterTestingModule.withRoutes([
           {
             path: 'account',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'checkout/address',
-            component: DummyComponent,
+            children: [],
           },
         ]),
         ShoppingStoreModule,

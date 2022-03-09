@@ -3,7 +3,6 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { AccountProfilePasswordPageComponent } from './account-profile-password-page.component';
 import { AccountProfilePasswordComponent } from './account-profile-password/account-profile-password.component';
@@ -15,11 +14,7 @@ describe('Account Profile Password Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountProfilePasswordPageComponent,
-        MockComponent(AccountProfilePasswordComponent),
-        MockComponent(LoadingComponent),
-      ],
+      declarations: [AccountProfilePasswordPageComponent, MockComponent(AccountProfilePasswordComponent)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });

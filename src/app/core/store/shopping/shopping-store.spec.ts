@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -48,9 +47,6 @@ describe('Shopping Store', () => {
   let priceServiceMock: PricesService;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     const catA = { uniqueId: 'A', categoryPath: ['A'], name: 'nA' } as Category;
     const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'], name: 'nA123' } as Category;
     const catA123456 = {
@@ -147,39 +143,38 @@ describe('Shopping Store', () => {
     when(priceServiceMock.getProductPrices(anything())).thenReturn(of([]));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
         CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([
           {
             path: 'home',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'compare',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'error',
-            component: DummyComponent,
+            children: [],
             data: { headerType: 'simple' },
           },
           {
             path: 'category/:categoryUniqueId',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'category/:categoryUniqueId/product/:sku',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'product/:sku',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'search/:searchTerm',
-            component: DummyComponent,
+            children: [],
           },
         ]),
         ShoppingStoreModule,
