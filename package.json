@@ -32,6 +32,7 @@
     "compile": "tsc --project tsconfig.all.json",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
     "clean-localizations": "node scripts/clean-up-localizations",
+    "cleanup-testbed": "npx ts-node scripts/cleanup-testbed",
     "spell-check": "cspell lint --no-summary --no-progress \"{src,projects,docs}/**/*.{html,ts,scss,md}\"",
     "spell-check-localizations": "cspell lint --no-summary --no-progress \"src/assets/i18n/{de_DE,en_US,fr_FR}.json\"",
     "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*environment.development.ts\" -e \"*node_modules\"",
