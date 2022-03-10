@@ -10,6 +10,7 @@ on:
 
 env:
   NODE_OPTIONS: --max_old_space_size=8192
+  JEST_MAX_WORKERS: 1
 
 jobs:
   CancelPrevious:
@@ -23,6 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Check:
+    if: github.ref == 'refs/heads/develop'
     needs: [CancelPrevious]
     runs-on: windows-latest
 
@@ -59,3 +61,17 @@ jobs:
 
       - name: Build with development environment
         run: npm run build --configuration=b2b,development
+
+      - name: Run some tests
+        run: |
+          npm run test service
+          npm run test shell
+
+      - name: Run Formatter
+        run: npm run format
+
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Clean Localizations
+        run: npm run clean-localizations
