@@ -1,3 +1,5 @@
+import { waitLoadingEnd } from '../framework';
+
 export class MetaDataModule {
   get canonicalLink() {
     return cy.get('head link[rel="canonical"]').then(el => el.attr('href'));
@@ -33,6 +35,7 @@ export class MetaDataModule {
   }
 
   check(expect: { title?: string; url?: RegExp; description?: string; [key: string]: string | RegExp }) {
+    waitLoadingEnd(3000);
     const expected = {
       ...MetaDataModule.defaultMeta,
       ...expect,

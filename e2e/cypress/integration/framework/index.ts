@@ -11,7 +11,7 @@ export function waitLoadingEnd(initialWait: number = 500) {
 
 function onPage<T extends Page>(page: new () => T) {
   currentPage = new page();
-  return cy.get(currentPage.tag);
+  return cy.get(currentPage.tag, { timeout: 3000 });
 }
 
 export function at<T extends Page>(type: new () => T, callback?: (page: T) => void) {

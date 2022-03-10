@@ -113,7 +113,7 @@ describe('Filter Service', () => {
       const [resource, params] = capture(apiService.get).last();
       expect(resource).toMatchInlineSnapshot(`"products"`);
       expect((params as AvailableOptions)?.params?.toString()).toMatchInlineSnapshot(
-        `"amount=2&offset=0&attrs=sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet&attributeGroup=PRODUCT_LABEL_ATTRIBUTES&returnSortKeys=true&SearchParameter=b"`
+        `"amount=2&offset=0&attrs=sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet,defaultCategory&attributeGroup=PRODUCT_LABEL_ATTRIBUTES&returnSortKeys=true&SearchParameter=b"`
       );
 
       done();
