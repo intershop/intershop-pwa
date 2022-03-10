@@ -1,4 +1,4 @@
-<div class="row list-item-row list-item-row-big" data-testing-id="product-list-item">
+<div class="row list-item-row" data-testing-id="product-list-item">
   <!-- Errors and Infos -->
   <div *ngIf="pli.validationError?.message" class="alert alert-inline alert-danger col-12">
     {{ pli.validationError.message }}
@@ -115,7 +115,7 @@
 
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
-    <div class="form-group w-100" [ngClass]="{ 'text-right': editable }">
+    <div class="form-group w-100 text-right" [ngClass]="{ 'pr-2': !editable }">
       <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
       <ish-product-quantity *ngIf="editable; else readonly"></ish-product-quantity>
       <ng-template #readonly>{{ pli.quantity.value | number }}</ng-template>
