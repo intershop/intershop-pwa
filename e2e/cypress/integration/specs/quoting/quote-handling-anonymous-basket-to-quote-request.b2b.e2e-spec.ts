@@ -29,7 +29,9 @@ describe('Quote Handling as Anonymous User', () => {
         page.addProductToCart();
         page.header.miniCart.goToCart();
       });
-      at(CartPage, page => page.createQuoteRequest());
+      at(CartPage, page => {
+        page.createQuoteRequest();
+      });
     });
 
     it('user should log in and land at basket page', () => {
@@ -41,7 +43,9 @@ describe('Quote Handling as Anonymous User', () => {
     });
 
     it('user should be able to see quote request', () => {
-      at(CartPage, page => page.createQuoteRequest());
+      at(CartPage, page => {
+        page.createQuoteRequest();
+      });
       at(QuoteDetailPage, page => {
         page.productId.eq(0).should('contain', _.product.sku);
         page.quoteState.should('have.text', 'New');

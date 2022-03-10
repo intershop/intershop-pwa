@@ -28,7 +28,7 @@ import { mapToProperty } from 'ish-core/utils/operators';
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
   static STUB_ATTRS =
-    'sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet';
+    'sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet,defaultCategory';
 
   constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
 
