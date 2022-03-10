@@ -18,9 +18,9 @@ export class CartPage {
   }
 
   createQuoteRequest() {
-    waitLoadingEnd(1000);
+    waitLoadingEnd(5000);
     this.saveQuoteRequestButton().click();
-    waitLoadingEnd(1000);
+    waitLoadingEnd(5000);
   }
 
   private addToWishlistButton = () => cy.get('ish-shopping-basket').find('[data-testing-id="addToWishlistButton"]');
