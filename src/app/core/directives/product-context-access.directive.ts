@@ -1,4 +1,4 @@
-import { Directive, EmbeddedViewRef, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, EmbeddedViewRef, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -10,6 +10,8 @@ type ProductContextAccessContext = ProductContext & { context: ProductContextFac
   selector: '[ishProductContextAccess]',
 })
 export class ProductContextAccessDirective implements OnDestroy {
+  @Input() ishProductContextAccessAlways = false;
+
   private view: EmbeddedViewRef<ProductContextAccessContext>;
   private destroy$ = new Subject<void>();
 
@@ -22,9 +24,9 @@ export class ProductContextAccessDirective implements OnDestroy {
       .select()
       .pipe(takeUntil(this.destroy$))
       .subscribe(ctx => {
-        if (!this.view && ctx?.product) {
+        if (!this.view && this.check(ctx)) {
           this.view = viewContainer.createEmbeddedView(template, { ...ctx, context });
-        } else if (this.view && ctx?.product) {
+        } else if (this.view && this.check(ctx)) {
           // eslint-disable-next-line ban/ban
           Object.assign(this.view.context, ctx);
         }
@@ -37,6 +39,10 @@ export class ProductContextAccessDirective implements OnDestroy {
 
   static ngTemplateContextGuard(_: ProductContextAccessDirective, ctx: unknown): ctx is ProductContextAccessContext {
     return !!ctx || true;
+  }
+
+  private check(ctx: ProductContext): boolean {
+    return this.ishProductContextAccessAlways || !!ctx?.product;
   }
 
   ngOnDestroy() {
