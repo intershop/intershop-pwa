@@ -16,6 +16,7 @@ import { ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/produ
 @Directive({
   selector: '[ishProductContext]',
   providers: [ProductContextFacade],
+  exportAs: 'ishProductContext',
 })
 export class ProductContextDirective implements OnInit, OnChanges, OnDestroy {
   @Input() completeness: 'List' | 'Detail' = 'List';
