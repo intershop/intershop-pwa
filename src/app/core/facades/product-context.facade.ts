@@ -163,7 +163,10 @@ export class ProductContextFacade extends RxState<ProductContext> {
       combineLatest([
         this.select('product'),
         this.select('categoryId').pipe(switchMap(categoryId => this.shoppingFacade.category$(categoryId))),
-      ]).pipe(map(args => generateProductUrl(...args)))
+      ]).pipe(
+        map(args => generateProductUrl(...args)),
+        distinctUntilChanged()
+      )
     );
 
     this.connect(
@@ -174,17 +177,26 @@ export class ProductContextFacade extends RxState<ProductContext> {
     this.connect(
       'minQuantity',
       combineLatest([this.select('product'), this.select('allowZeroQuantity')]).pipe(
-        map(([product, allowZeroQuantity]) => (allowZeroQuantity ? 0 : product.minOrderQuantity || 1))
+        map(([product, allowZeroQuantity]) => (allowZeroQuantity ? 0 : product.minOrderQuantity || 1)),
+        distinctUntilChanged()
       )
     );
 
     this.connect(
       'maxQuantity',
       combineLatest([this.select('product'), this.appFacade.serverSetting$<number>('basket.maxItemQuantity')]).pipe(
-        map(([product, fromConfig]) => product?.maxOrderQuantity || fromConfig || 100)
+        map(([product, fromConfig]) => product?.maxOrderQuantity || fromConfig || 100),
+        distinctUntilChanged()
       )
     );
-    this.connect('stepQuantity', this.select('product').pipe(map(product => product?.stepOrderQuantity || 1)));
+
+    this.connect(
+      'stepQuantity',
+      this.select('product').pipe(
+        map(product => product?.stepOrderQuantity || 1),
+        distinctUntilChanged()
+      )
+    );
 
     this.connect(
       combineLatest([
@@ -222,7 +234,8 @@ export class ProductContextFacade extends RxState<ProductContext> {
         map(
           children =>
             !children?.filter(x => !!x).length || children.filter(x => !!x).some(child => child.hasQuantityError)
-        )
+        ),
+        distinctUntilChanged()
       )
     );
 
@@ -238,7 +251,10 @@ export class ProductContextFacade extends RxState<ProductContext> {
 
     this.connect(
       'hasProductError',
-      this.select('product').pipe(map(product => !!product && (!!product.failed || !product.available)))
+      this.select('product').pipe(
+        map(product => !!product && (!!product.failed || !product.available)),
+        distinctUntilChanged()
+      )
     );
 
     this.connect(
@@ -247,7 +263,8 @@ export class ProductContextFacade extends RxState<ProductContext> {
         map(
           children =>
             !children?.filter(x => !!x).length || children.filter(x => !!x).some(child => child.hasProductError)
-        )
+        ),
+        distinctUntilChanged()
       )
     );
 
@@ -258,7 +275,8 @@ export class ProductContextFacade extends RxState<ProductContext> {
           product =>
             // eslint-disable-next-line unicorn/no-null
             ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name || null
-        )
+        ),
+        distinctUntilChanged()
       )
     );
 
