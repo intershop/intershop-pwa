@@ -39,8 +39,9 @@ const DEFAULT_CONFIG = {
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
 };
 
-const checkMaxRunsReached = num => {
-  if (num >= MAX_NUM_RUNS) {
+const checkMaxRunsReached = (num, noOfSpecs) => {
+  // retry a single flaky test more often
+  if ((num >= MAX_NUM_RUNS && noOfSpecs !== 1) || num >= 2 * MAX_NUM_RUNS) {
     console.log(`Ran a total of '${num}' times but still have failures. Exiting...`);
     return process.exit(1);
   }
@@ -85,7 +86,7 @@ const run = (num, spec, retryGroup) => {
           .map(result => ({ title: result.title.join(' > '), error: result.error }))
           .forEach(result => console.warn(result.title, '\n', result.error, '\n'));
 
-        checkMaxRunsReached(num);
+        checkMaxRunsReached(num, specs.length);
 
         console.log(`Retrying '${specs.length}' specs...`);
 
@@ -97,7 +98,7 @@ const run = (num, spec, retryGroup) => {
     })
     .catch(err => {
       console.error(err.message);
-      checkMaxRunsReached(num);
+      checkMaxRunsReached(num, spec?.length);
       return run(num, spec, newGroupName(num));
     });
 };
