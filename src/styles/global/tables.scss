@@ -167,7 +167,7 @@
         display: none !important;
       }
 
-      @media (max-width: $screen-xs-max) {
+      @media (max-width: $screen-sm-max) {
         label {
           margin-right: $space-default * 0.5;
         }

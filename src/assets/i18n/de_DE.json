@@ -916,6 +916,8 @@
   "quickorder.page.title": "Schnellbestellung und Bestellung per Datei",
   "quote.add_product_to_quote.button.add_to_quote.label": "In die Preisanfrage",
   "quote.already_in_basket.error": "Das Preisangebot befindet sich bereits im Warenkorb.",
+  "quote.basket_items.label": "Ihre Preisangebotsartikel - {{0}}",
+  "quote.basket_items.remove.button.label": "Artikel entfernen",
   "quote.delete.message": "Ihr Preisangebot wurde gelöscht.",
   "quote.edit.back_to_quotes.link": "Zurück zu Preisangeboten",
   "quote.edit.button.add_quote_to_cart.label": "Preisangebot in Warenkorb legen",
