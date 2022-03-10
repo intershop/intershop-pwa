@@ -1,13 +1,13 @@
 #!/bin/sh
 
 PWA_BASE_URL=${PWA_BASE_URL:-"http://localhost:4200"}
-PWA_CANONICAL_BASE_URL=${PWA_CANONICAL_BASE_URL:-"https://localhost:4200"}
+PWA_CANONICAL_BASE_URL=${PWA_CANONICAL_BASE_URL:-"https:${PWA_BASE_URL:5}"}
 
 universalTest() {
   NUM="$1"
   URL="$2"
   GREP="$3"
-  echo "\n\nTEST $NUM: searching '$GREP' in '$URL'"
+  echo -e "\n\nTEST $NUM: searching '$GREP' in '$URL'"
   timeout 5m sh -c "[ ! -z \"\$(wget -O - -q -t 0 --waitretry 5 $URL | grep \"$GREP\")\" ]"
   res=$?
   [ "$res" -ne "0" ] && curl -v "$URL"

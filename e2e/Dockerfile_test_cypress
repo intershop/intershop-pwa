@@ -1,0 +1,8 @@
+ARG cypressVersion
+FROM cypress/included:${cypressVersion}
+COPY *.json cypress-ci-e2e.js /e2e/
+WORKDIR /e2e
+RUN npm i
+ARG user=1000:1000
+RUN mkdir -p /.config && chown -Rf ${user} /.config && chown -Rf ${user} /e2e
+ENTRYPOINT [ "node", "cypress-ci-e2e" ]

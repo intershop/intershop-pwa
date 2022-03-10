@@ -28,78 +28,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  Build:
+  E2E:
     needs: [CancelPrevious]
-    runs-on: ubuntu-latest
-    env:
-      TESTING: true
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-
-      - name: Install root dependencies
-        run: npm ci
-
-      - name: Disable ServiceWorker
-        run: node schematics/customization/service-worker false
-
-      - name: Build SSR
-        run: npm run build:multi
-
-      - name: Upload Build Output
-        uses: actions/upload-artifact@v2
-        with:
-          name: dist
-          path: dist
-
-  Universal:
-    needs: [Build]
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        test: ['b2c', 'b2b']
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-
-      - name: Download Build Output
-        uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: dist
-
-      - name: Set Environment
-        run: |
-          echo "LOGGING=true" >> $GITHUB_ENV
-
-      - name: Set B2C Environment
-        if: matrix.test == 'b2c'
-        run: |
-          echo "THEME=b2c" >> $GITHUB_ENV
-
-      - name: Set B2B Environment
-        if: matrix.test == 'b2b'
-        run: |
-          echo "THEME=b2b" >> $GITHUB_ENV
-
-      - name: Test Universal
-        run: |
-          node dist/$THEME/run-standalone &
-          sh e2e/test-universal.sh
-
-  Cypress:
-    needs: [Build, Universal]
     runs-on: ubuntu-latest
 
     strategy:
@@ -111,43 +41,59 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install e2e dependencies
-        run: cd e2e && npm i
-
-      - name: Download Build Output
-        uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: dist
-
-      - name: Set Environment
+      - name: Build Cypress image
         run: |
-          echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
-          echo "LOGGING=true" >> $GITHUB_ENV
-          echo "BROWSER=chrome" >> $GITHUB_ENV
+          docker build \
+            --build-arg cypressVersion=$(node -p -e 'require("./e2e/package.json").dependencies.cypress') \
+            --build-arg user=$UID \
+            -f e2e/Dockerfile_test_cypress \
+            -t cypress \
+            e2e
 
-      - name: Set B2C Environment
-        if: matrix.test == 'b2c'
+      - name: Build Universal image
         run: |
-          echo "THEME=b2c" >> $GITHUB_ENV
+          docker build \
+            -f e2e/Dockerfile_test_universal \
+            -t universal \
+            e2e
 
-      - name: Set B2B Environment
-        if: matrix.test == 'b2b'
+      - name: Build PWA in TESTING mode
         run: |
-          echo "THEME=b2b" >> $GITHUB_ENV
+          docker build \
+            --build-arg testing=true \
+            --build-arg activeThemes=${{ matrix.test }} \
+            -t pwa \
+            .
 
-      - name: Start SSR
+      - name: Start PWA
         run: |
-          node dist/$THEME/run-standalone &
+          docker run \
+            -d \
+            --rm \
+            -e ICM_BASE_URL=${{ env.ICM_BASE_URL }} \
+            -e CACHE_ICM_CALLS="{\".*\": \"30m\"}" \
+            --name pwa \
+            pwa
+
+      - name: Universal
+        run: |
+          docker run \
+            --rm \
+            -e PWA_BASE_URL=http://pwa:4200 \
+            --link pwa \
+            universal
 
       - name: Cypress
-        uses: cypress-io/github-action@v2
-        with:
-          install: false
-          wait-on: 'http://localhost:4200'
-          wait-on-timeout: 180
-          working-directory: e2e
-          command: node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
+        run: |
+          docker run \
+            --rm \
+            --user $UID \
+            -w /e2e \
+            -v $PWD/e2e/cypress:/e2e/cypress \
+            -e PWA_BASE_URL=http://pwa:4200 \
+            --link pwa \
+            -e ICM_BASE_URL=${{ env.ICM_BASE_URL }} \
+            cypress '**/*${{ matrix.test }}*.e2e-spec.ts'
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v2
