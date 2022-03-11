@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -25,19 +25,13 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   templateUrl: './shopping-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShoppingBasketComponent implements OnChanges {
+export class ShoppingBasketComponent {
   @Input() basket: BasketView;
   @Input() error: HttpError;
 
   @Output() nextStep = new EventEmitter<void>();
 
   submitted = false;
-
-  basketContainsQuote = false;
-
-  ngOnChanges() {
-    this.basketContainsQuote = this.basket.lineItems?.some(x => x.quote);
-  }
 
   /**
    * checkout button leads to checkout address page if basket is valid
