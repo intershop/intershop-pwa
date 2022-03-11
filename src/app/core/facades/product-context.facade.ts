@@ -3,7 +3,17 @@ import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith, switchMap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+  skip,
+  skipWhile,
+  startWith,
+  switchMap,
+} from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
@@ -101,7 +111,7 @@ export interface ProductContext {
 
   // child contexts
   propagateActive: boolean;
-  children: ProductContext[];
+  children: Record<string | number, ProductContext>;
 }
 
 @Injectable()
@@ -131,6 +141,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
       requiredCompletenessLevel: ProductCompletenessLevel.List,
       propagateActive: true,
       allowZeroQuantity: false,
+      children: {},
       // eslint-disable-next-line unicorn/no-null
       categoryId: null,
     });
@@ -146,7 +157,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
             map(product => ({
               product,
               loading: false,
-              children: undefined,
             })),
             startWith({ loading: true })
           )
@@ -231,9 +241,11 @@ export class ProductContextFacade extends RxState<ProductContext> {
     this.connect(
       'hasQuantityError',
       this.select('children').pipe(
+        map(children => Object.values(children)),
+        skipWhile(children => !children?.length),
         map(
           children =>
-            !children?.filter(x => !!x).length || children.filter(x => !!x).some(child => child.hasQuantityError)
+            !children.filter(x => !!x).length || children.filter(x => !!x).some(child => child.hasQuantityError)
         ),
         distinctUntilChanged()
       )
@@ -260,9 +272,11 @@ export class ProductContextFacade extends RxState<ProductContext> {
     this.connect(
       'hasProductError',
       this.select('children').pipe(
+        map(children => Object.values(children)),
+        skipWhile(children => !children?.length),
         map(
           children =>
-            !children?.filter(x => !!x).length || children.filter(x => !!x).some(child => child.hasProductError)
+            !children.filter(x => !!x).length || children.filter(x => !!x).some(child => child.hasProductError)
         ),
         distinctUntilChanged()
       )
@@ -393,7 +407,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
   }
 
   addToBasket() {
-    const items: SkuQuantityType[] = this.get('children') || this.get('parts');
+    const items: SkuQuantityType[] = Object.values(this.get('children')) || this.get('parts');
     if (items && !ProductHelper.isProductBundle(this.get('product'))) {
       items
         .filter(x => !!x && !!x.quantity)
@@ -405,9 +419,9 @@ export class ProductContextFacade extends RxState<ProductContext> {
     }
   }
 
-  propagate(index: number, childState: ProductContext) {
+  propagate(index: number | string, childState: ProductContext) {
     this.set('children', state => {
-      const current = [...(state.children || [])];
+      const current = { ...state.children };
       current[index] = childState;
       return current;
     });
