@@ -61,11 +61,11 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
 
     const hasQuantityError$ = this.context.select('hasQuantityError');
     const hasProductError$ = this.context.select('hasProductError');
-    this.buttonDisabled$ = combineLatest([
-      this.displaySpinner$.pipe(startWith(false)),
-      hasQuantityError$.pipe(),
-      hasProductError$.pipe(),
-    ]).pipe(map(conditions => conditions.some(c => !!c)));
+    const hasNoQuantity$ = this.context.select('quantity').pipe(map(quantity => quantity <= 0));
+    const loading$ = this.displaySpinner$.pipe(startWith(false));
+    this.buttonDisabled$ = combineLatest([loading$, hasQuantityError$, hasProductError$, hasNoQuantity$]).pipe(
+      map(conditions => conditions.some(c => !!c))
+    );
   }
 
   addToBasket() {
