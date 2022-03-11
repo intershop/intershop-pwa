@@ -34,7 +34,7 @@ export const isQuoteValid = (state$: Observable<{ entityAsQuote: Quote }>) =>
   );
 
 @Injectable()
-export abstract class QuoteContextFacade
+export class QuoteContextFacade
   extends RxState<{
     id: string;
     loading: boolean;

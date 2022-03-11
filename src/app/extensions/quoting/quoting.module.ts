@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
+import { QuoteContextDirective } from './directives/quote-context.directive';
 import { BasketAddToQuoteComponent } from './shared/basket-add-to-quote/basket-add-to-quote.component';
 import { ProductAddToQuoteDialogComponent } from './shared/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
 import { ProductAddToQuoteComponent } from './shared/product-add-to-quote/product-add-to-quote.component';
@@ -20,6 +21,7 @@ import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.compone
     BasketAddToQuoteComponent,
     ProductAddToQuoteComponent,
     ProductAddToQuoteDialogComponent,
+    QuoteContextDirective,
     QuoteEditComponent,
     QuoteExpirationDateComponent,
     QuoteInteractionsComponent,
@@ -31,6 +33,7 @@ import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.compone
   ],
   exports: [
     ProductAddToQuoteComponent,
+    QuoteContextDirective,
     QuoteEditComponent,
     QuoteExpirationDateComponent,
     QuoteInteractionsComponent,
