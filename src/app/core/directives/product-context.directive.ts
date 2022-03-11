@@ -20,7 +20,7 @@ import { ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/produ
 })
 export class ProductContextDirective implements OnInit, OnChanges, OnDestroy {
   @Input() completeness: 'List' | 'Detail' = 'List';
-  @Input() propagateIndex: number;
+  @Input() propagateIndex: number | string;
 
   @Output() skuChange = this.context.select('sku');
   @Output() quantityChange = this.context.select('quantity');
