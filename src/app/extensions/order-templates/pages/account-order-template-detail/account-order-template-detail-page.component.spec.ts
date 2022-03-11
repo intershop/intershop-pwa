@@ -18,6 +18,7 @@ describe('Account Order Template Detail Page Component', () => {
   beforeEach(async () => {
     const orderTemplatesFacade = mock(OrderTemplatesFacade);
     when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(EMPTY);
+    when(orderTemplatesFacade.currentOrderTemplateOutOfStockItems$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],

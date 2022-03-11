@@ -13,6 +13,10 @@
     >
   </h1>
 
+  <p *ngIf="noOfUnavailableProducts$ | async as noOfUnavailableProducts" class="alert alert-info">
+    {{ 'account.order_template.out_of_stock.warning' | translate: { num: noOfUnavailableProducts } }}
+  </p>
+
   <div class="section">
     <ng-container *ngIf="orderTemplate.itemsCount && orderTemplate.itemsCount > 0; else noItems" class="section">
       <div class="list-header d-md-flex">
