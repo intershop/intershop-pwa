@@ -309,6 +309,16 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     }
   );
 
+  // set theme specific angular cache directory
+  const cacheDir = join('.angular', 'cache');
+  traverse(
+    config,
+    v => typeof v === 'string' && v.includes(cacheDir),
+    (obj, key) => {
+      obj[key] = (obj[key] as string).replace(cacheDir, join(cacheDir, theme));
+    }
+  );
+
   if (angularJsonConfig.tsConfig.endsWith('tsconfig.app-no-checks.json')) {
     logger.warn('using tsconfig without compile checks');
     if (production) {
