@@ -1,16 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
+import {
+  PAYMENT_METHOD_CALLBACK,
+  PaymentMethodCallback,
+} from '@intershop-pwa/checkout/payment/payment-method-base/payment-method.callback.interface';
 import { PaymentMethodConfiguration } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method.interface';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Injectable()
 export class DefaultPaymentMethodConfigurationComponent implements PaymentMethodConfiguration {
+  constructor(@Inject(PAYMENT_METHOD_CALLBACK) private paymentMethodCallbacks: PaymentMethodCallback[]) {}
   id = 'DEFAULT';
-  getFormlyFieldConfig(
-    paymentMethod: PaymentMethod,
-    deletePaymentInstrumentCallback: (paymentInstrument: PaymentInstrument) => void
-  ): FormlyFieldConfig {
+  getFormlyFieldConfig(paymentMethod: PaymentMethod): FormlyFieldConfig {
     if (!paymentMethod.parameters && !paymentMethod.isRestricted) {
       return {
         type: 'ish-radio-field',
@@ -29,6 +31,7 @@ export class DefaultPaymentMethodConfigurationComponent implements PaymentMethod
     if (paymentMethod.parameters?.length && paymentMethod.paymentInstruments?.length) {
       const parameters: FormlyFieldConfig[] = [];
       paymentMethod.parameters.forEach(param => parameters.push({ ...param }));
+
       return {
         type: 'ish-fieldset-field',
         wrappers: ['ish-payment-method-wrapper'],
@@ -42,7 +45,8 @@ export class DefaultPaymentMethodConfigurationComponent implements PaymentMethod
               label: paymentInstrument.accountIdentifier,
               inputClass: 'form-check-input',
               value: paymentInstrument.id,
-              deletePaymentInstrumentCallback: (e: PaymentInstrument) => deletePaymentInstrumentCallback(e),
+              deletePaymentInstrumentCallback: (e: PaymentInstrument) =>
+                this.paymentMethodCallbacks.find(p => p.name === 'deletePaymentInstrument').callback(e),
             },
           })),
           {

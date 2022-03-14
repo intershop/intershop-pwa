@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import {
   PAYMENT_METHOD,
   PaymentMethodConfiguration,
@@ -31,11 +30,7 @@ export class PaymentMethodProvider {
       map(paymentMethods =>
         paymentMethods.map<FormlyFieldConfig>(method => {
           const find = this.specialPaymentMethods.find(paymentMethod => paymentMethod.id === method.serviceId);
-          return find
-            ? find.getFormlyFieldConfig(method)
-            : this.defaultPaymentMethod.getFormlyFieldConfig(method, (p: PaymentInstrument) =>
-                this.checkoutFacade.deleteBasketPayment(p)
-              );
+          return find ? find.getFormlyFieldConfig(method) : this.defaultPaymentMethod.getFormlyFieldConfig(method);
         })
       )
     );
