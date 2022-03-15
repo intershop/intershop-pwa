@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
+import { LazyProductCompareStatusComponent } from './lazy-product-compare-status/lazy-product-compare-status.component';
+
 @NgModule({
   imports: [FeatureToggleModule],
   providers: [
@@ -15,7 +17,7 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
       multi: true,
     },
   ],
-  declarations: [],
-  exports: [],
+  declarations: [LazyProductCompareStatusComponent],
+  exports: [LazyProductCompareStatusComponent],
 })
 export class CompareExportsModule {}
