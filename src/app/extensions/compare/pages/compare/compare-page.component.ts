@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { CompareFacade } from '../../facades/compare.facade';
 
 @Component({
   selector: 'ish-compare-page',
@@ -12,10 +12,10 @@ export class ComparePageComponent implements OnInit {
   compareProducts$: Observable<string[]>;
   compareProductsCount$: Observable<number>;
 
-  constructor(private shoppingFacade: ShoppingFacade) {}
+  constructor(private compareFacade: CompareFacade) {}
 
   ngOnInit() {
-    this.compareProducts$ = this.shoppingFacade.compareProducts$;
-    this.compareProductsCount$ = this.shoppingFacade.compareProductsCount$;
+    this.compareProducts$ = this.compareFacade.compareProducts$;
+    this.compareProductsCount$ = this.compareFacade.compareProductsCount$;
   }
 }

@@ -1,5 +1,9 @@
 import { createFeatureSelector } from '@ngrx/store';
 
-export interface CompareState {}
+import { CompareProducts } from './compare/compare.reducer';
+
+export interface CompareState {
+  _compare: CompareProducts;
+}
 
 export const getCompareState = createFeatureSelector<CompareState>('compare');

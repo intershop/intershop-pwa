@@ -7,7 +7,7 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { CompareFacade } from '../../facades/compare.facade';
 
 import { ProductCompareStatusComponent } from './product-compare-status.component';
 
@@ -15,16 +15,16 @@ describe('Product Compare Status Component', () => {
   let component: ProductCompareStatusComponent;
   let fixture: ComponentFixture<ProductCompareStatusComponent>;
   let element: HTMLElement;
-  let shoppingFacade: ShoppingFacade;
+  let compareFacade: CompareFacade;
   let location: Location;
 
   beforeEach(async () => {
-    shoppingFacade = mock(ShoppingFacade);
+    compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
       declarations: [MockComponent(FaIconComponent), ProductCompareStatusComponent],
       imports: [RouterTestingModule.withRoutes([{ path: 'compare', children: [] }]), TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [{ provide: CompareFacade, useFactory: () => instance(compareFacade) }],
     }).compileComponents();
   });
 
@@ -50,21 +50,11 @@ describe('Product Compare Status Component', () => {
   });
 
   it('should display product compare count when rendered', () => {
-    when(shoppingFacade.compareProductsCount$).thenReturn(of(123456789));
+    when(compareFacade.compareProductsCount$).thenReturn(of(123456789));
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`
-      <a
-        routerlink="/compare"
-        rel="nofollow"
-        class="compare-status item-count-container"
-        ng-reflect-router-link="/compare"
-        href="/compare"
-        ><fa-icon class="header-icon" ng-reflect-icon="fas,balance-scale"></fa-icon
-        ><span data-testing-id="product-compare-count" class="badge badge-pill">123456789</span
-        ><span class="d-none d-md-inline">product.compare.link</span></a
-      >
-    `);
-    expect(element.textContent).toContain('123456789');
+    expect(element.querySelector('[data-testing-id="product-compare-count"]')?.textContent).toMatchInlineSnapshot(
+      `"123456789"`
+    );
   });
 });

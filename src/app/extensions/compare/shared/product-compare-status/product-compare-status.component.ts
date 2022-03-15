@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+
+import { CompareFacade } from '../../facades/compare.facade';
 
 @Component({
   selector: 'ish-product-compare-status',
@@ -15,9 +16,9 @@ export class ProductCompareStatusComponent implements OnInit {
 
   productCompareCount$: Observable<number>;
 
-  constructor(private shoppingFacade: ShoppingFacade) {}
+  constructor(private compareFacade: CompareFacade) {}
 
   ngOnInit() {
-    this.productCompareCount$ = this.shoppingFacade.compareProductsCount$;
+    this.productCompareCount$ = this.compareFacade.compareProductsCount$;
   }
 }

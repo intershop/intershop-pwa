@@ -17,14 +17,6 @@ import {
   loadCategoryByRef,
   loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
-import {
-  addToCompare,
-  getCompareProductsCount,
-  getCompareProductsSKUs,
-  isInCompareProducts,
-  removeFromCompare,
-  toggleCompare,
-} from 'ish-core/store/shopping/compare';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
 import {
   getProductListingLoading,
@@ -201,27 +193,6 @@ export class ShoppingFacade {
       whenTruthy(),
       map(x => (withCategoryFilter ? x : { ...x, filter: x.filter?.filter(f => f.id !== 'CategoryUUIDLevelMulti') }))
     );
-  }
-
-  // COMPARE
-
-  compareProducts$ = this.store.pipe(select(getCompareProductsSKUs));
-  compareProductsCount$ = this.store.pipe(select(getCompareProductsCount));
-
-  inCompareProducts$(sku: string | Observable<string>) {
-    return toObservable(sku).pipe(switchMap(plainSKU => this.store.pipe(select(isInCompareProducts(plainSKU)))));
-  }
-
-  addProductToCompare(sku: string) {
-    this.store.dispatch(addToCompare({ sku }));
-  }
-
-  toggleProductCompare(sku: string) {
-    this.store.dispatch(toggleCompare({ sku }));
-  }
-
-  removeProductFromCompare(sku: string) {
-    this.store.dispatch(removeFromCompare({ sku }));
   }
 
   // PROMOTIONS

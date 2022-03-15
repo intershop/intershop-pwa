@@ -36,7 +36,6 @@ describe('Product Context Facade', () => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
     when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
-    when(shoppingFacade.inCompareProducts$(anything())).thenReturn(of(false));
 
     const appFacade = mock(AppFacade);
     when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
@@ -108,7 +107,6 @@ describe('Product Context Facade', () => {
           "children": undefined,
           "hasProductError": true,
           "hasQuantityError": false,
-          "isInCompareList": false,
           "label": null,
           "loading": false,
           "maxQuantity": 100,
@@ -180,7 +178,6 @@ describe('Product Context Facade', () => {
           "children": undefined,
           "hasProductError": false,
           "hasQuantityError": false,
-          "isInCompareList": false,
           "label": null,
           "loading": false,
           "maxQuantity": 100,
@@ -743,7 +740,6 @@ describe('Product Context Facade', () => {
       shoppingFacade = mock(ShoppingFacade);
       when(shoppingFacade.category$(anything())).thenReturn(EMPTY);
       when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
-      when(shoppingFacade.inCompareProducts$(anything())).thenReturn(of(undefined));
 
       product = {
         completenessLevel: ProductCompletenessLevel.Detail,

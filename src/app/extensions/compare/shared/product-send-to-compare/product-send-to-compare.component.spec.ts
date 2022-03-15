@@ -2,9 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock, verify } from 'ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+
+import { CompareFacade } from '../../facades/compare.facade';
 
 import { ProductSendToCompareComponent } from './product-send-to-compare.component';
 
@@ -12,14 +14,21 @@ describe('Product Send To Compare Component', () => {
   let component: ProductSendToCompareComponent;
   let fixture: ComponentFixture<ProductSendToCompareComponent>;
   let element: HTMLElement;
-  let context: ProductContextFacade;
+  let compareFacade: CompareFacade;
 
   beforeEach(async () => {
-    context = mock(ProductContextFacade);
+    const context = mock(ProductContextFacade);
+    when(context.get('sku')).thenReturn('1234');
+
+    compareFacade = mock(CompareFacade);
+
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), ProductSendToCompareComponent],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      providers: [
+        { provide: CompareFacade, useFactory: () => instance(compareFacade) },
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
+      ],
     }).compileComponents();
   });
 
@@ -40,6 +49,8 @@ describe('Product Send To Compare Component', () => {
 
     element.querySelector('a').click();
 
-    verify(context.addToCompare()).once();
+    verify(compareFacade.addProductToCompare(anything())).once();
+    const [sku] = capture(compareFacade.addProductToCompare).last();
+    expect(sku).toMatchInlineSnapshot(`"1234"`);
   });
 });
