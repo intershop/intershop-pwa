@@ -5,6 +5,7 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
 
 import { LazyProductAddToCompareComponent } from './lazy-product-add-to-compare/lazy-product-add-to-compare.component';
 import { LazyProductCompareStatusComponent } from './lazy-product-compare-status/lazy-product-compare-status.component';
+import { LazyProductSendToCompareComponent } from './lazy-product-send-to-compare/lazy-product-send-to-compare.component';
 
 @NgModule({
   imports: [FeatureToggleModule],
@@ -18,7 +19,11 @@ import { LazyProductCompareStatusComponent } from './lazy-product-compare-status
       multi: true,
     },
   ],
-  declarations: [LazyProductAddToCompareComponent, LazyProductCompareStatusComponent],
-  exports: [LazyProductAddToCompareComponent, LazyProductCompareStatusComponent],
+  declarations: [
+    LazyProductAddToCompareComponent,
+    LazyProductCompareStatusComponent,
+    LazyProductSendToCompareComponent,
+  ],
+  exports: [LazyProductAddToCompareComponent, LazyProductCompareStatusComponent, LazyProductSendToCompareComponent],
 })
 export class CompareExportsModule {}
