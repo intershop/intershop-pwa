@@ -24,6 +24,7 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
+import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
@@ -285,9 +286,9 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  imports: [...importExportModules],
+  imports: [...importExportModules, CompareExportsModule],
   declarations: [...declaredComponents, ...exportedComponents],
-  exports: [...exportedComponents, ...importExportModules],
+  exports: [...exportedComponents, ...importExportModules, CompareExportsModule],
 })
 export class SharedModule {
   constructor(moduleLoader: ModuleLoaderService, injector: Injector) {
