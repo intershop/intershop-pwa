@@ -230,6 +230,7 @@
   "account.order_template.new_order_template.text": "Nouveau modèle de commande",
   "account.order_template.no_entries": "Il n’y a actuellement aucun article dans ce modèle de commande.",
   "account.order_template.order_template.edit.rename": "Renommer",
+  "account.order_template.out_of_stock.warning": "{{ num, plural, =1{# élément} other{# éléments} }} dans votre modèle de commande {{ num, plural, =1{est} other{sont} }} en rupture de stock. {{ num, plural, =1{Cet article ne peut pas être ajouté au panier} other{Ces articles ne peuvent pas être ajoutés au panier} }}.",
   "account.order_template.table.header.date_added": "Date ajoutée",
   "account.order_template.table.header.item": "Description de l’article",
   "account.order_template.table.header.price": "Prix",

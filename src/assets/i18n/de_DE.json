@@ -230,6 +230,7 @@
   "account.order_template.new_order_template.text": "Neue Bestellvorlage",
   "account.order_template.no_entries": "Derzeit befinden sich keine Artikel in der Bestellvorlage.",
   "account.order_template.order_template.edit.rename": "Umbenennen",
+  "account.order_template.out_of_stock.warning": "{{num}} Artikel in Ihrer Bestellvorlage {{ num, plural, =1{ist} other{sind} }} nicht verfügbar. {{ num, plural, =1{Dieser Artikel kann} other{Diese Artikel können} }} nicht in den Warenkorb gelegt werden.",
   "account.order_template.table.header.date_added": "Hinzugefügt am",
   "account.order_template.table.header.item": "Artikelbeschreibung",
   "account.order_template.table.header.price": "Preis",
