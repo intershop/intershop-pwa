@@ -1,7 +1,4 @@
 <ng-template #fieldComponent></ng-template>
-<a
-  class="float-right"
-  (click)="deletePaymentInstrumentCallback(to.paymentInstrument)"
-  data-testing-id="delete-payment-link"
-  >{{ 'checkout.payment.method.delete.link' | translate }}</a
->
+<a class="float-right" (click)="deletePaymentInstrument(to.paymentInstrument)" data-testing-id="delete-payment-link">{{
+  'checkout.payment.method.delete.link' | translate
+}}</a>

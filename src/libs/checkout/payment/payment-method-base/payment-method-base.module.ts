@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PaymentInstrumentsDeleteWrapperComponent } from './formly/payment-instruments-delete-wrapper/payment-instruments-delete-wrapper.component';
 import { PaymentMethodWrapperComponent } from './formly/payment-method-wrapper/payment-method-wrapper.component';
 import { PaymentParametersTypeComponent } from './formly/payment-parameters-type/payment-parameters-type.component';
+import { PaymentMethodFacade } from './payment-method-facade/payment-method.facade';
 
 @NgModule({
   imports: [
@@ -32,5 +33,6 @@ import { PaymentParametersTypeComponent } from './formly/payment-parameters-type
     PaymentMethodWrapperComponent,
     PaymentParametersTypeComponent,
   ],
+  providers: [PaymentMethodFacade],
 })
 export class PaymentMethodBaseModule {}

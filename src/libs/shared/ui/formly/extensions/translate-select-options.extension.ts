@@ -23,16 +23,19 @@ class TranslateSelectOptionsExtension implements FormlyExtension {
     if (!to || !to.options) {
       return;
     }
-    field.templateOptions.processedOptions = (isObservable(to.options) ? to.options : of(to.options)).pipe(
-      startWith([]),
-      map(options => (to.placeholder ? [{ value: '', label: to.placeholder }] : []).concat(options ?? [])),
-      tap(() => {
-        if (to.placeholder && !field.formControl.value && !field.model[field.key as string]) {
-          field.formControl.setValue('');
-        }
-      }),
-      map(options => options?.map(option => ({ ...option, label: this.translate.instant(option.label) })))
-    );
+    field.templateOptions = {
+      ...field.templateOptions,
+      processedOptions: (isObservable(to.options) ? to.options : of(to.options)).pipe(
+        startWith([]),
+        map(options => (to.placeholder ? [{ value: '', label: to.placeholder }] : []).concat(options ?? [])),
+        tap(() => {
+          if (to.placeholder && !field.formControl.value && !field.model[field.key as string]) {
+            field.formControl.setValue('');
+          }
+        }),
+        map(options => options?.map(option => ({ ...option, label: this.translate.instant(option.label) })))
+      ),
+    };
   }
 }
 

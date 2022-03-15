@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { PaymentMethodBaseModule } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method-base.module';
 import { FormlyModule } from '@ngx-formly/core';
 import { DefaultPaymentMethodConfigurationModule } from 'src/libs/checkout/payment/default-payment-method-configuration/default-payment-method-configuration.module';
 import { DemoPaymentMethodConfigurationModule } from 'src/libs/checkout/payment/demo-payment-method-configuration/demo-payment-method-configuration.module';
@@ -24,6 +25,7 @@ import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard/pa
     }),
     DefaultPaymentMethodConfigurationModule,
     DemoPaymentMethodConfigurationModule,
+    PaymentMethodBaseModule,
     SharedModule,
   ],
   declarations: [
