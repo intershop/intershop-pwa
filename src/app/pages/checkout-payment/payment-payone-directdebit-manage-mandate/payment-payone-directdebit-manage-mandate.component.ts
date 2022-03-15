@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,17 +9,13 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, takeUntil } from 'rxjs';
 
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
-
-// allows access to Payone js functionality
-// tslint:disable-next-line:no-any
-declare var PayoneRequest: any;
 
 @Component({
   selector: 'ish-payment-payone-directdebit-manage-mandate',
@@ -28,19 +25,17 @@ declare var PayoneRequest: any;
 export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges, OnDestroy, OnInit {
   @Input() paymentInstrument: PaymentInstrument;
   @Input() paymentMethod: PaymentMethod;
+  @Input() basket: Basket;
 
   payoneManageMandateForm: FormGroup;
   mandateText = '';
   mandateId = '';
   mandateError = false;
+  http: HttpClient;
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {}
 
-  private destroy$ = new Subject();
-  /**
-   * flag to make sure that the init script is executed only once
-   */
-  scriptLoaded = false;
-
+  // eslint-disable-next-line ish-custom-rules/private-destroy-field
+  protected destroy$ = new Subject<void>();
   /**
    * initialize parameter form on init
    */
@@ -50,13 +45,6 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
       'acceptMandate',
       new FormControl('', [Validators.required, Validators.pattern('true')])
     );
-
-    const thisComp = this;
-    // register helper function to call the callback function of this component
-    // tslint:disable-next-line:no-string-literal only-arrow-functions no-any
-    (window as any)['processMandateResponse'] = function (response: any) {
-      thisComp.mandateResponseCallback(response);
-    };
   }
 
   /**
@@ -65,18 +53,11 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
   ngOnChanges() {
     if (this.paymentMethod) {
       this.mandateError = false;
-
-      // tslint:disable-next-line: no-commented-out-code
-      // this.loadScript();
       this.manageMandate();
     }
   }
 
   ngOnDestroy() {
-    // unregister helper function again
-    // tslint:disable-next-line:no-string-literal no-any
-    (window as any)['processMandateResponse'] = undefined;
-
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -100,28 +81,20 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
       const ibanAttr = this.paymentInstrument.parameters.find(attribute => attribute.name === 'IBAN');
 
       const ibanValue = ibanAttr.value ? ibanAttr.value.toString() : undefined;
+      const paymentId = this.paymentInstrument.id;
+      const basketId = this.basket.id;
       if (ibanValue) {
-        const data = JSON.parse(this.getParamValue('request', ''));
-        data.iban = ibanValue;
-        const options = {
-          return_type: 'object',
-          callback_function_name: 'processMandateResponse',
-        };
+        const mandateURL = `http://localhost:81/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/payone/mandate/manage?paymentId=${paymentId}&basketId=${basketId}`;
 
-        this.scriptLoader
-          .load('https://secure.pay1.de/client-api/js/ajax.js')
+        this.http
+          .get<JSON>(mandateURL)
           .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            const request = new PayoneRequest(data, options);
-            request.checkAndStore();
-          });
+          .subscribe((response: JSON) => this.mandateResponseCallback(response));
       }
     }
   }
 
-  // tslint:disable-next-line: no-any
   mandateResponseCallback(response: any) {
-    // tslint:disable-next-line: no-console
     console.log(response);
 
     if (response.get('status') === 'APPROVED') {
@@ -129,9 +102,7 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
       if (response.get('mandate_status') === 'pending') {
         // TODO: set checkbox label as mandateText and show checkbox to accept mandate
         this.mandateText = response.get('mandate_text');
-        // tslint:disable-next-line: no-commented-out-code
         // this.cd.detectChanges();
-        // tslint:disable-next-line: no-console
         console.log(this.mandateId + decodeURI(this.mandateText));
       }
     } else {
