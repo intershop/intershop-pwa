@@ -2,7 +2,7 @@
 <ish-error-message [error]="orderTemplateError$ | async"></ish-error-message>
 
 <ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
-  <h1>
+  <h1 class="clearfix">
     {{ orderTemplate?.title }}
     <a
       (click)="editOrderTemplateDialog.show()"
