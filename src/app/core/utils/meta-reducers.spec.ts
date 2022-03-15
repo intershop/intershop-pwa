@@ -5,7 +5,6 @@ import { identity } from 'rxjs';
 import { applyConfiguration, getICMBaseURL } from 'ish-core/store/core/configuration';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUser, logoutUser } from 'ish-core/store/customer/user';
 
 import { StoreWithSnapshots, provideStoreSnapshots } from './dev/ngrx-testing';
@@ -22,7 +21,6 @@ describe('Meta Reducers', () => {
           CoreStoreModule.forTesting(['configuration'], true, [
             resetSubStatesOnActionsMeta<CoreState>(['configuration'], [logoutUser]),
           ]),
-          CustomerStoreModule.forTesting('user'),
         ],
         providers: [provideStoreSnapshots()],
       });

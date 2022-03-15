@@ -6,7 +6,6 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
-import { BasketBuyerComponent } from 'ish-shared/components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
@@ -23,7 +22,6 @@ describe('Checkout Receipt Component', () => {
       declarations: [
         CheckoutReceiptComponent,
         MockComponent(AddressComponent),
-        MockComponent(BasketBuyerComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),

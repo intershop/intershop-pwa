@@ -25,6 +25,4 @@ jobs:
         run: npm ci
 
       - name: Find Unused TestBed declarations
-        run: |
-          npx ts-node scripts/cleanup-testbed
-          npm run check-no-changes
+        run: npx npm-run-all cleanup-testbed check-no-changes

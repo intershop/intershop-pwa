@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -166,15 +165,8 @@ describe('Category Route', () => {
   let store$: Store;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
-      ],
+      imports: [CoreStoreModule.forTesting(['router']), RouterTestingModule.withRoutes([{ path: '**', children: [] }])],
     });
 
     router = TestBed.inject(Router);

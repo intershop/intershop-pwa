@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -19,16 +18,8 @@ describe('Auth Guard', () => {
     let store$: Store;
 
     beforeEach(async () => {
-      @Component({ template: 'dummy' })
-      class DummyComponent {}
-
       await TestBed.configureTestingModule({
-        imports: [
-          CoreStoreModule.forTesting(),
-          CustomerStoreModule.forTesting('user'),
-          RouterTestingModule.withRoutes([{ path: 'login', component: DummyComponent }]),
-        ],
-        declarations: [DummyComponent],
+        imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user'), RouterTestingModule],
         providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],
       }).compileComponents();
     });

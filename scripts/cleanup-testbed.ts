@@ -1,7 +1,5 @@
-import { tsquery } from '@phenomnomnominal/tsquery';
 import { execSync, spawnSync } from 'child_process';
 import { LeftHandSideExpression, Node, Project, PropertyAccessExpression, SourceFile } from 'ts-morph';
-import * as ts from 'typescript';
 
 /* eslint-disable no-console */
 
@@ -38,44 +36,44 @@ console.log(`found ${files.length} test file(s)`);
 
 let processedFiles = 0;
 
+const lintFiles = [];
+
 for (const file of files) {
   processedFiles++;
 
+  const hasTestBedModule = file.getText().includes('configureTestingModule');
+
   const copyPath = `${file.getFilePath()}.ut.spec.ts`;
-  let foundSomething = false;
 
   top: while (true) {
     const percent = ((processedFiles / files.length) * 100).toFixed(0);
 
-    if (
-      !tsquery(
-        file.getSourceFile().compilerNode as unknown as ts.Node,
-        'PropertyAccessExpression[expression.text=TestBed][name.text=configureTestingModule]'
-      ).length
-    ) {
+    if (!hasTestBedModule) {
       console.log(`at ${percent}% - ${path(file)}`, 0, `test(s)`);
     } else {
       const configs: { tb: number; type: string; index: number }[] = [];
 
       let tb = 0;
-      file.forEachDescendant(node => {
-        if (Node.isCallExpression(node) && isTestBedConfigure(node.getExpression())) {
-          const configObject = node.getArguments().find(Node.isObjectLiteralExpression);
-          if (configObject) {
-            for (const type of ['declarations', 'providers', 'imports']) {
-              const array = configObject.getProperty(type);
-              if (Node.isPropertyAssignment(array)) {
-                const initializer = array.getInitializer();
-                if (Node.isArrayLiteralExpression(initializer)) {
-                  for (let index = 0; index < initializer.getElements().length; index++) {
-                    configs.push({ tb, type, index });
+      project.forgetNodesCreatedInBlock(() => {
+        file.forEachDescendant(node => {
+          if (Node.isCallExpression(node) && isTestBedConfigure(node.getExpression())) {
+            const configObject = node.getArguments().find(Node.isObjectLiteralExpression);
+            if (configObject) {
+              for (const type of ['declarations', 'providers', 'imports']) {
+                const array = configObject.getProperty(type);
+                if (Node.isPropertyAssignment(array)) {
+                  const initializer = array.getInitializer();
+                  if (Node.isArrayLiteralExpression(initializer)) {
+                    for (let index = initializer.getElements().length - 1; index >= 0; index--) {
+                      configs.push({ tb, type, index });
+                    }
                   }
                 }
               }
             }
+            tb++;
           }
-          tb++;
-        }
+        });
       });
 
       console.log(`at ${percent}% - ${path(file)}`, configs.length, `test(s)`);
@@ -94,7 +92,7 @@ for (const file of files) {
                 if (Node.isPropertyAssignment(array)) {
                   const initializer = array.getInitializer();
                   if (Node.isArrayLiteralExpression(initializer)) {
-                    const element = initializer.getElements()[config.index].getText();
+                    const element = initializer.getElements()[config.index]?.getText();
 
                     if (initializer.getElements().length === 1) {
                       array.remove();
@@ -113,7 +111,10 @@ for (const file of files) {
                         `${path(file)} - removing '${element}' from ${config.type} in TestBed #${config.tb + 1}`
                       );
                       copy.copyImmediatelySync(file.getFilePath(), { overwrite: true });
-                      foundSomething = true;
+                      lintFiles.push(file.getFilePath());
+                      copy.forget();
+                      copy.deleteImmediatelySync();
+
                       continue top;
                     } catch (err) {
                       continue next;
@@ -130,18 +131,12 @@ for (const file of files) {
   }
 
   if (project.getSourceFile(copyPath)) {
-    project.getSourceFile(copyPath).delete();
-  }
-
-  if (foundSomething) {
-    const filePath = file.getFilePath();
-    execSync(`node scripts/fix-imports ${filePath}`);
-    try {
-      execSync(`npx prettier --write ${filePath}`);
-    } catch (err) {
-      // do nothing
-    }
+    project.getSourceFile(copyPath).deleteImmediatelySync();
   }
 }
 
 project.saveSync();
+
+if (lintFiles.length) {
+  execSync(`npx eslint --fix ${lintFiles.join(' ')}`);
+}

@@ -3,7 +3,6 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';
 import { AccountAddressesComponent } from './account-addresses/account-addresses.component';
@@ -15,11 +14,7 @@ describe('Account Addresses Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountAddressesPageComponent,
-        MockComponent(AccountAddressesComponent),
-        MockComponent(LoadingComponent),
-      ],
+      declarations: [AccountAddressesPageComponent, MockComponent(AccountAddressesComponent)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });

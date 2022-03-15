@@ -8,7 +8,6 @@ import { ProductContextDirective } from 'ish-core/directives/product-context.dir
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
-import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductBundlePartsComponent } from './product-bundle-parts.component';
 
@@ -31,7 +30,6 @@ describe('Product Bundle Parts Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(ProductAddToBasketComponent),
-        MockComponent(ProductItemComponent),
         MockDirective(ProductContextDirective),
         ProductBundlePartsComponent,
       ],
