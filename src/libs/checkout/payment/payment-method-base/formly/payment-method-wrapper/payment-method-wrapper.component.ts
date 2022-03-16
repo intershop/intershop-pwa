@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { PaymentMethodFacade } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method-facade/payment-method.facade';
 import { FieldWrapper } from '@ngx-formly/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 // eslint-disable-next-line ish-custom-rules/require-formly-code-documentation
 @Component({
@@ -18,8 +18,6 @@ export class PaymentMethodWrapperComponent extends FieldWrapper implements OnIni
   }
 
   ngOnInit(): void {
-    this.paymentMethod$ = this.paymentMethodFacade
-      .getPaymentMethodById$(this.to.paymentMethodId)
-      .pipe(tap(x => console.log('in wrapper', x)));
+    this.paymentMethod$ = this.paymentMethodFacade.getPaymentMethodById$(this.to.paymentMethodId);
   }
 }

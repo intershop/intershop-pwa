@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PaymentSaveCheckboxComponent } from '@intershop-pwa/checkout/payment/payment-method-base/formly/payment-save-checkbox/payment-save-checkbox.component';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
-
-import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 
 import { PaymentConcardisDirectdebitComponent } from './payment-concardis-directdebit.component';
 
