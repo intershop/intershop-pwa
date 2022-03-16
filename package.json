@@ -37,7 +37,7 @@
     "spell-check-localizations": "cspell lint --no-summary --no-progress \"src/assets/i18n/{de_DE,en_US,fr_FR}.json\"",
     "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*environment.development.ts\" -e \"*node_modules\"",
     "postclean": "npm ci",
-    "check": "npm-run-all \"lint -- --fix\" format compile build:multi test dead-code clean-localizations",
+    "check": "npm-run-all \"lint -- --fix\" format compile build:multi test dead-code update-dockerignore clean-localizations",
     "clean-check": "npm-run-all clean check",
     "check-no-changes": "git diff --exit-code --raw -p --stat",
     "show-ignored-files": "git ls-files . --exclude-standard --others --ignored --directory",
