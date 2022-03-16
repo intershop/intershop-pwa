@@ -6,7 +6,7 @@ import { Observable, filter, map } from 'rxjs';
 
 @Injectable()
 export class DemoPaymentMethodConfiguration implements PaymentMethodConfiguration {
-  id = 'ISH_INVOICE';
+  id = 'DEMO_PAYMENT';
 
   constructor(private paymentMethodFacade: PaymentMethodFacade) {}
   getFormlyFieldConfig$(paymentMethodId: string): Observable<FormlyFieldConfig> {

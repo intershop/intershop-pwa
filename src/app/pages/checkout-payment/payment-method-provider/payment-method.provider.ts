@@ -7,7 +7,7 @@ import {
   PaymentMethodConfiguration,
 } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method.interface';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, combineLatest, map, shareReplay, switchMap } from 'rxjs';
+import { Observable, combineLatest, distinctUntilChanged, filter, map, shareReplay, switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -35,9 +35,20 @@ export class PaymentMethodProvider {
     this.eligiblePaymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$().pipe(shareReplay(1));
     this.paymentMethodFacade.setPaymentMethodsSource(this.eligiblePaymentMethods$);
 
-    // this.paymentMethodFacade.deletePaymentMethodEvents$.subscribe(pi => this.checkoutFacade.deleteBasketPayment(pi));
     this.paymentMethodFacade.setDeletePaymentMethodInstrumentCallback((pi: PaymentInstrument) =>
       this.checkoutFacade.deleteBasketPayment(pi)
+    );
+
+    this.paymentMethodFacade.setSubmitPaymentInstrumentCallback((pi: PaymentInstrument, saveForLater: boolean) =>
+      this.checkoutFacade.createBasketPayment(pi, saveForLater)
+    );
+
+    this.paymentMethodFacade.setSelectedPaymentMethodSource(
+      this.checkoutFacade.basket$.pipe(
+        filter(basket => !!basket?.payment?.paymentInstrument),
+        map(basket => basket.payment.paymentInstrument.id),
+        distinctUntilChanged()
+      )
     );
   }
 

@@ -1,3 +1,34 @@
-<div id="payment-accordion">
-  <formly-form [fields]="paymentMethods$ | async" [form]="formGroup"></formly-form>
+<div class="row">
+  <div id="payment-accordion" class="col-md-12 col-lg-8">
+    <formly-form [fields]="paymentMethods$ | async" [form]="formGroup"></formly-form>
+  </div>
+  <!-- basket summary -->
+  <div class="col-md-12 col-lg-4 order-summary">
+    <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+
+    <ish-basket-promotion-code [toast]="false"></ish-basket-promotion-code>
+
+    <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
+    <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+
+    <div class="cost-summary">
+      <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+
+      <button
+        class="btn btn-lg btn-block btn-primary"
+        id="checkoutBtn"
+        type="button"
+        [disabled]="nextDisabled"
+        (click)="goToNextStep()"
+      >
+        {{ 'checkout.button.label' | translate }}
+      </button>
+    </div>
+    <!-- Privacy policy link -->
+    <span
+      [ishServerHtml]="
+        'checkout.widget.security_privacy_policy.link' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }
+      "
+    ></span>
+  </div>
 </div>
