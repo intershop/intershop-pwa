@@ -30,6 +30,7 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
   mandateText = '';
   mandateId = '';
   mandateError = false;
+
   constructor(
     private apiService: ApiService,
     protected scriptLoader: ScriptLoaderService,
@@ -38,6 +39,7 @@ export class PaymentPayoneDirectdebitManageMandateComponent implements OnChanges
 
   // eslint-disable-next-line ish-custom-rules/private-destroy-field
   protected destroy$ = new Subject<void>();
+
   /**
    * initialize parameter form on init
    */
