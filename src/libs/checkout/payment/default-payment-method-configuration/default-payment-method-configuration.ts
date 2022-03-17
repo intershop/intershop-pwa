@@ -1,20 +1,15 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PaymentMethodFacade } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method-facade/payment-method.facade';
-import {
-  PAYMENT_METHOD_CALLBACK,
-  PaymentMethodCallback,
-} from '@intershop-pwa/checkout/payment/payment-method-base/payment-method.callback.interface';
 import { PaymentMethodConfiguration } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method.interface';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, filter, map } from 'rxjs';
 
 @Injectable()
 export class DefaultPaymentMethodConfigurationComponent implements PaymentMethodConfiguration {
-  constructor(
-    @Inject(PAYMENT_METHOD_CALLBACK) private paymentMethodCallbacks: PaymentMethodCallback[],
-    private paymentMethodFacade: PaymentMethodFacade
-  ) {}
   id = 'DEFAULT';
+
+  constructor(private paymentMethodFacade: PaymentMethodFacade) {}
+
   getFormlyFieldConfig$(paymentMethodId: string): Observable<FormlyFieldConfig> {
     return this.paymentMethodFacade.getPaymentMethodById$(paymentMethodId).pipe(
       filter(x => !!x),

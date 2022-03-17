@@ -2,13 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { FormControlFeedbackComponent } from '@intershop-pwa/checkout/payment/payment-method-base/components/form-control-feedback/form-control-feedback.component';
-import { ShowFormFeedbackDirective } from '@intershop-pwa/checkout/payment/payment-method-base/directives/show-form-feedback.directive';
 import { PaymentSaveCheckboxComponent } from '@intershop-pwa/checkout/payment/payment-method-base/formly/payment-save-checkbox/payment-save-checkbox.component';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
+
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
 import { PaymentCybersourceCreditcardComponent } from './payment-cybersource-creditcard.component';
 

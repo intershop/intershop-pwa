@@ -8,11 +8,6 @@ import { IconModule } from 'src/libs/shared/ui/icon/icon.module';
 import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 
-import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
-import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
-
-const exportedComponents = [FormControlFeedbackComponent, ShowFormFeedbackDirective];
-
 @NgModule({
   imports: [
     CommonModule,
@@ -23,7 +18,5 @@ const exportedComponents = [FormControlFeedbackComponent, ShowFormFeedbackDirect
     RouterModule,
     TranslateModule,
   ],
-  declarations: [...exportedComponents],
-  exports: [...exportedComponents],
 })
 export class FormsSharedModule {}

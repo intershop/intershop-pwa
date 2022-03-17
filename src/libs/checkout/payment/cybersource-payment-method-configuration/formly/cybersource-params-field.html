@@ -1,0 +1,14 @@
+<ng-template #parameterForm>
+  <ish-payment-cybersource-creditcard
+    [paymentMethod]="paymentMethod$ | async"
+    [activated]="activated$ | async"
+    (submitPayment)="submitPaymentInstrument($event)"
+    (cancelPayment)="cancelCreatePaymentInstrument()"
+  ></ish-payment-cybersource-creditcard>
+</ng-template>
+<a
+  *ngIf="(activated$ | async) === false; else parameterForm"
+  (click)="openParameterForm()"
+  data-testing-id="add-payment-link"
+  >{{ 'checkout.payment.addPayment.link' | translate }}
+</a>

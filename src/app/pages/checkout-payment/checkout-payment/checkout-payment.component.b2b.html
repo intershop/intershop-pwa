@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="basket">
   <div id="payment-accordion" class="col-md-12 col-lg-8">
     <formly-form [fields]="paymentMethods$ | async" [form]="formGroup"></formly-form>
   </div>

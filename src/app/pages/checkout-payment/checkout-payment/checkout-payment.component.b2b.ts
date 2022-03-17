@@ -36,6 +36,8 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
   @Output() deletePaymentInstrument = new EventEmitter<PaymentInstrument>();
   @Output() nextStep = new EventEmitter<void>();
 
+  basket$: Observable<Basket>;
+
   paymentMethods$: Observable<FormlyFieldConfig[]>;
   private destroy$ = new Subject<void>();
 
@@ -45,7 +47,8 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
   constructor(private paymentMethodProvider: PaymentMethodProvider, private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit(): void {
-    this.paymentMethods$ = this.paymentMethodProvider.getPaymentMethodConfig$();
+    this.basket$ = this.checkoutFacade.basket$;
+    this.paymentMethods$ = this.paymentMethodProvider.getPaymentMethodConfig$().pipe(log('formly conf'));
     this.formGroup.valueChanges
       .pipe(
         map(value => value?.paymentMethodSelect),

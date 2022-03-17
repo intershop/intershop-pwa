@@ -10,6 +10,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, combineLatest, distinctUntilChanged, filter, map, shareReplay, switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 const DEFAULT_ID = 'DEFAULT';
@@ -26,6 +27,8 @@ export class PaymentMethodProvider {
     private checkoutFacade: CheckoutFacade,
     private paymentMethodFacade: PaymentMethodFacade
   ) {
+    console.log(paymentMethodConfigurations);
+    // extract default and special payment method configurationss
     this.defaultPaymentMethodConfig = paymentMethodConfigurations.find(
       configuration => configuration.id === DEFAULT_ID
     );
@@ -33,15 +36,9 @@ export class PaymentMethodProvider {
       configuration => configuration.id !== DEFAULT_ID
     );
     this.eligiblePaymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$().pipe(shareReplay(1));
+
+    // pass data to payment method facade
     this.paymentMethodFacade.setPaymentMethodsSource(this.eligiblePaymentMethods$);
-
-    this.paymentMethodFacade.setDeletePaymentMethodInstrumentCallback((pi: PaymentInstrument) =>
-      this.checkoutFacade.deleteBasketPayment(pi)
-    );
-
-    this.paymentMethodFacade.setSubmitPaymentInstrumentCallback((pi: PaymentInstrument, saveForLater: boolean) =>
-      this.checkoutFacade.createBasketPayment(pi, saveForLater)
-    );
 
     this.paymentMethodFacade.setSelectedPaymentMethodSource(
       this.checkoutFacade.basket$.pipe(
@@ -50,12 +47,26 @@ export class PaymentMethodProvider {
         distinctUntilChanged()
       )
     );
+
+    // pass callbacks to payment method facade
+    this.paymentMethodFacade.setDeletePaymentMethodInstrumentCallback((pi: PaymentInstrument) =>
+      this.checkoutFacade.deleteBasketPayment(pi)
+    );
+
+    this.paymentMethodFacade.setSubmitPaymentInstrumentCallback((pi: PaymentInstrument, saveForLater: boolean) =>
+      this.checkoutFacade.createBasketPayment(pi, saveForLater)
+    );
   }
 
   getPaymentMethodConfig$(): Observable<FormlyFieldConfig[]> {
     return this.eligiblePaymentMethods$.pipe(
       whenTruthy(),
-      map(paymentMethods => paymentMethods.map(pm => pm.serviceId)),
+      map(paymentMethods =>
+        paymentMethods
+          .map(pm => pm.serviceId)
+          .filter(pm => !pm.toLowerCase().includes('concardis') && !pm.toLowerCase().includes('payone'))
+      ),
+      log('pms'),
       switchMap(paymentMethodIds =>
         combineLatest(
           paymentMethodIds.map(pmid => {
@@ -64,7 +75,7 @@ export class PaymentMethodProvider {
               ? find.getFormlyFieldConfig$(pmid)
               : this.defaultPaymentMethodConfig.getFormlyFieldConfig$(pmid);
           })
-        )
+        ).pipe(map(c => c.map(c2 => c2 ?? {})))
       )
     );
   }

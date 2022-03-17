@@ -3,7 +3,8 @@
   {{ errorMessage.general.message | translate }}
 </p>
 
-<!-- <div [formGroup]="cyberSourceCreditCardForm">
+<div [formGroup]="cyberSourceCreditCardForm">
+  <!-- Containers in which we will load microform -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage?.number.message }">
     <label class="col-form-label col-md-4" for="number-container"
       >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
@@ -14,10 +15,10 @@
         errorMessage.number.message | translate
       }}</small>
     </div>
-  </div> -->
+  </div>
 
-<!-- Expiry date mm-yyyy -->
-<!-- <div
+  <!-- Expiry date mm-yyyy -->
+  <div
     class="row form-group has-feedback"
     [ishShowFormFeedback]="[
       cyberSourceCreditCardForm.controls.expirationMonth,
@@ -61,10 +62,10 @@
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 
-<!-- security code CVC -->
-<!-- <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.securityCode?.message }">
+  <!-- security code CVC -->
+  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.securityCode?.message }">
     <label class="col-form-label col-md-4" for="securityCode-container"
       >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
     >
@@ -83,10 +84,10 @@
       </a>
     </div>
   </div>
-</div> -->
-<!--
+</div>
+
 <ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="cyberSourceCreditCardForm">
-</ish-payment-save-checkbox> -->
+</ish-payment-save-checkbox>
 
 <div class="offset-md-4 col-md-8">
   <div class="form-group">

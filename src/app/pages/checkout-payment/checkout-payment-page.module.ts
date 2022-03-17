@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { PaymentMethodBaseModule } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method-base.module';
 import { FormlyModule } from '@ngx-formly/core';
+import { CybersourcePaymentMethodConfigurationModule } from 'src/libs/checkout/payment/cybersource-payment-method-configuration/cybersource-payment-method-configuration.module';
 import { DefaultPaymentMethodConfigurationModule } from 'src/libs/checkout/payment/default-payment-method-configuration/default-payment-method-configuration.module';
 import { DemoPaymentMethodConfigurationModule } from 'src/libs/checkout/payment/demo-payment-method-configuration/demo-payment-method-configuration.module';
 
@@ -13,7 +15,6 @@ import { PaymentConcardisCreditcardCvcDetailComponent } from './payment-concardi
 import { PaymentConcardisCreditcardComponent } from './payment-concardis-creditcard/payment-concardis-creditcard.component';
 import { PaymentConcardisDirectdebitComponent } from './payment-concardis-directdebit/payment-concardis-directdebit.component';
 import { PaymentConcardisComponent } from './payment-concardis/payment-concardis.component';
-import { PaymentCybersourceCreditcardComponent } from './payment-cybersource-creditcard/payment-cybersource-creditcard.component';
 import { PaymentParameterFormComponent } from './payment-parameter-form/payment-parameter-form.component';
 import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard/payment-payone-creditcard.component';
 
@@ -22,9 +23,11 @@ import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard/pa
     FormlyModule.forChild({
       extensions: [{ name: 'server-validation', extension: serverValidationExtension }],
     }),
+    CybersourcePaymentMethodConfigurationModule,
     DefaultPaymentMethodConfigurationModule,
     DemoPaymentMethodConfigurationModule,
     PaymentMethodBaseModule,
+    ReactiveFormsModule,
     SharedModule,
   ],
   declarations: [
@@ -34,7 +37,6 @@ import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard/pa
     PaymentConcardisCreditcardComponent,
     PaymentConcardisCreditcardCvcDetailComponent,
     PaymentConcardisDirectdebitComponent,
-    PaymentCybersourceCreditcardComponent,
     PaymentParameterFormComponent,
     PaymentPayoneCreditcardComponent,
   ],
