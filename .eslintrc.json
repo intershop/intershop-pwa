@@ -828,6 +828,18 @@
       }
     },
     {
+      "files": ["*.js"],
+      "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+      "env": {
+        "es6": true,
+        "node": true
+      },
+      "parserOptions": {
+        "ecmaVersion": "latest"
+      },
+      "rules": {}
+    },
+    {
       "files": ["*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}

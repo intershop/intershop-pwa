@@ -4,7 +4,7 @@ var app = express();
 
 app.get('/*', function (req, res) {
   const name = req.url.substring(1).replace(/\/.*/g, '');
-  const path = req.url.replace(/^\/[^\/]*/, '');
+  const path = req.url.replace(/^\/[^/]*/, '');
 
   if (name) {
     exec(`docker inspect ${name}`, (err, stdout) => {

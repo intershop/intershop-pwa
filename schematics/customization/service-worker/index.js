@@ -1,7 +1,6 @@
 const fs = require('fs');
 const { parse, stringify } = require('comment-json');
 const { execSync } = require('child_process');
-const { Project, ts } = require('ts-morph');
 
 if (process.argv.length < 3) {
   console.warn('required argument missing, provide true or false');
