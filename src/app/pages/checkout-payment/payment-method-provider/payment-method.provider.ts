@@ -10,7 +10,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, combineLatest, distinctUntilChanged, filter, map, shareReplay, switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 const DEFAULT_ID = 'DEFAULT';
@@ -27,7 +26,6 @@ export class PaymentMethodProvider {
     private checkoutFacade: CheckoutFacade,
     private paymentMethodFacade: PaymentMethodFacade
   ) {
-    console.log(paymentMethodConfigurations);
     // extract default and special payment method configurationss
     this.defaultPaymentMethodConfig = paymentMethodConfigurations.find(
       configuration => configuration.id === DEFAULT_ID
@@ -66,7 +64,6 @@ export class PaymentMethodProvider {
           .map(pm => pm.serviceId)
           .filter(pm => !pm.toLowerCase().includes('concardis') && !pm.toLowerCase().includes('payone'))
       ),
-      log('pms'),
       switchMap(paymentMethodIds =>
         combineLatest(
           paymentMethodIds.map(pmid => {

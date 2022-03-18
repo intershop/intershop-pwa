@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { PaymentMethodBaseModule } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method-base.module';
 import { PAYMENT_METHOD } from '@intershop-pwa/checkout/payment/payment-method-base/payment-method.interface';
 import { IconModule } from '@intershop-pwa/icon/icon.module';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { PaymentCybersourceCreditcardComponent } from 'src/app/pages/checkout-payment/payment-cybersource-creditcard/payment-cybersource-creditcard.component';
 
 import { CybersourceCreditCardPaymentMethodConfiguration } from './cybersource-credit-card-payment-method-configuration';
 import { CybersourceParamsFieldComponent } from './formly/cybersource-params-field';
+import { PaymentCybersourceCreditcardComponent } from './payment-cybersource-creditcard/payment-cybersource-creditcard.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { CybersourceParamsFieldComponent } from './formly/cybersource-params-fie
     IconModule,
     NgbPopoverModule,
     PaymentMethodBaseModule,
+    ReactiveFormsModule,
     TranslateModule,
     FormlyModule.forChild({
       types: [

@@ -3,12 +3,10 @@ import { FormGroup } from '@angular/forms';
 import { PaymentInstrument } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-instrument.model';
 import { PaymentMethod } from '@intershop-pwa/checkout/payment/payment-method-base/models/payment-method.model';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject, distinctUntilChanged, filter, map, takeUntil, withLatestFrom } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
 
-import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { log } from 'ish-core/utils/dev/operators';
 
 import { PaymentMethodProvider } from '../payment-method-provider/payment-method.provider';
 
@@ -44,32 +42,29 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
   formGroup = new FormGroup({});
   nextSubmitted = false;
 
-  constructor(private paymentMethodProvider: PaymentMethodProvider, private checkoutFacade: CheckoutFacade) {}
+  constructor(private paymentMethodProvider: PaymentMethodProvider) {}
 
   ngOnInit(): void {
-    this.basket$ = this.checkoutFacade.basket$;
-    this.paymentMethods$ = this.paymentMethodProvider.getPaymentMethodConfig$().pipe(log('formly conf'));
+    this.paymentMethods$ = this.paymentMethodProvider.getPaymentMethodConfig$();
     this.formGroup.valueChanges
       .pipe(
+        filter(() => !!this.formGroup.get('paymentMethodSelect')),
         map(value => value?.paymentMethodSelect),
-        withLatestFrom(this.checkoutFacade.basket$),
-        filter(([selected, basket]) => selected !== this.getBasketPayment(basket)),
-        log(),
-        distinctUntilChanged(([prevSelected], [currSelected]) => prevSelected === currSelected),
-        log(),
+        filter(selected => selected !== this.getBasketPayment()),
+        distinctUntilChanged(),
         takeUntil(this.destroy$)
       )
-      .subscribe(([selected, basket]) => {
-        if (!selected && basket) {
-          this.setPaymentSelectionFromBasket(basket);
+      .subscribe(selected => {
+        if (!selected && this.basket) {
+          this.setPaymentSelectionFromBasket();
         } else {
-          this.checkoutFacade.setBasketPayment(selected);
+          this.updatePaymentMethod.emit(selected);
         }
       });
   }
 
-  private getBasketPayment(basket: BasketView): string {
-    return basket?.payment ? basket.payment.paymentInstrument.id : undefined;
+  private getBasketPayment(): string {
+    return this.basket?.payment ? this.basket.payment.paymentInstrument.id : undefined;
   }
 
   ngOnDestroy(): void {
@@ -82,8 +77,8 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
    * Should be used for initialization when basket data is changed
    * invoked by `ngOnChanges()`, important in case of an error
    */
-  private setPaymentSelectionFromBasket(basket: BasketView) {
-    this.formGroup.get('paymentMethodSelect').setValue(this.getBasketPayment(basket));
+  private setPaymentSelectionFromBasket() {
+    this.formGroup.get('paymentMethodSelect').setValue(this.getBasketPayment());
   }
 
   /**
