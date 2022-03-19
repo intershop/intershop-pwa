@@ -13,7 +13,11 @@
     >
   </h1>
 
-  <p *ngIf="noOfUnavailableProducts$ | async as noOfUnavailableProducts" class="alert alert-info">
+  <p
+    *ngIf="noOfUnavailableProducts$ | async as noOfUnavailableProducts"
+    data-testing-id="out-of-stock-warning"
+    class="alert alert-info"
+  >
     {{ 'account.order_template.out_of_stock.warning' | translate: { num: noOfUnavailableProducts } }}
   </p>
 
