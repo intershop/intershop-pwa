@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MockComponent } from 'ng-mocks';
 
 import { StoreLocation as StoreModel } from '../../models/store-location/store-location.model';
 
@@ -14,7 +12,7 @@ describe('Store Address Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(FaIconComponent), StoreAddressComponent],
+      declarations: [StoreAddressComponent],
     }).compileComponents();
   });
 

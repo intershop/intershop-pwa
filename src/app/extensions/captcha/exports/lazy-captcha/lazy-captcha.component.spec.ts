@@ -28,7 +28,6 @@ describe('Lazy Captcha Component', () => {
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      declarations: [LazyCaptchaComponent],
       providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     })
       .overrideModule(CaptchaV2ComponentModule, { set: { entryComponents: [CaptchaV2Component] } })

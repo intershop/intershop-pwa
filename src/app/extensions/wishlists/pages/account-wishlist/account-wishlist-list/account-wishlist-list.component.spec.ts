@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
@@ -16,8 +14,8 @@ describe('Account Wishlist List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccountWishlistListComponent, MockComponent(FaIconComponent), MockComponent(ModalDialogComponent)],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [AccountWishlistListComponent, MockComponent(ModalDialogComponent)],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
 

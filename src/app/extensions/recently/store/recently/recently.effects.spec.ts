@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jest-marbles';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { getServerConfig } from 'ish-core/store/core/server-config';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
@@ -16,7 +15,6 @@ describe('Recently Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('recently')],
       providers: [provideMockStore(), RecentlyEffects],
     });
 

@@ -6,7 +6,6 @@ import { instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
-import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { RecentlyFacade } from '../../facades/recently.facade';
 
@@ -24,12 +23,7 @@ describe('Recently Page Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(BreadcrumbComponent),
-        MockComponent(ProductItemComponent),
-        MockDirective(ProductContextDirective),
-        RecentlyPageComponent,
-      ],
+      declarations: [MockComponent(BreadcrumbComponent), MockDirective(ProductContextDirective), RecentlyPageComponent],
       providers: [{ provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) }],
     }).compileComponents();
   });

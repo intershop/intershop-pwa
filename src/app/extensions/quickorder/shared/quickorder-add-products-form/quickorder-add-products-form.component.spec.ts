@@ -28,7 +28,7 @@ describe('Quickorder Add Products Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(QuickorderRepeatFieldComponent), QuickorderAddProductsFormComponent],
+      declarations: [QuickorderAddProductsFormComponent],
       imports: [FormlyModule.forChild(quickOrderFormlyConfig), FormlyTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();

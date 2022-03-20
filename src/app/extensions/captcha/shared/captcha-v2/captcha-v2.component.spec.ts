@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -19,8 +18,7 @@ describe('Captcha V2 Component', () => {
     when(captchaFacade.captchaSiteKey$).thenReturn(of('captchaV2SiteKey'));
 
     await TestBed.configureTestingModule({
-      declarations: [CaptchaV2Component],
-      imports: [ReactiveFormsModule, RecaptchaModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, RecaptchaModule],
       providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     }).compileComponents();
   });
