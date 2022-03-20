@@ -7,10 +7,6 @@ describe('Accordion Component', () => {
   let fixture: ComponentFixture<AccordionComponent>;
   let element: HTMLElement;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(AccordionComponent);
     component = fixture.componentInstance;

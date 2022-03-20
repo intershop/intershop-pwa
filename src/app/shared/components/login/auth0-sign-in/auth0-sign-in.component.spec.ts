@@ -7,10 +7,6 @@ describe('Auth0 Sign In Component', () => {
   let fixture: ComponentFixture<Auth0SignInComponent>;
   let element: HTMLElement;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(Auth0SignInComponent);
     component = fixture.componentInstance;

@@ -7,10 +7,6 @@ describe('Formly Testing Container Component', () => {
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(FormlyTestingContainerComponent);
     component = fixture.componentInstance;

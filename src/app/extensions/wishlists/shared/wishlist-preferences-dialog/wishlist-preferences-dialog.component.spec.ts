@@ -9,10 +9,6 @@ describe('Wishlist Preferences Dialog Component', () => {
   let fixture: ComponentFixture<WishlistPreferencesDialogComponent>;
   let element: HTMLElement;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(WishlistPreferencesDialogComponent);
     component = fixture.componentInstance;

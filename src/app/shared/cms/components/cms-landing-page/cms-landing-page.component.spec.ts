@@ -12,10 +12,6 @@ describe('Cms Landing Page Component', () => {
   let pageletView: ContentPageletView;
   let pagelet: ContentPagelet;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSLandingPageComponent);
     component = fixture.componentInstance;

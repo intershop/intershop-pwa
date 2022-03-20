@@ -6,7 +6,6 @@ describe('Product Listing Mapper', () => {
   let productListingMapper: ProductListingMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     productListingMapper = TestBed.inject(ProductListingMapper);
   });
 

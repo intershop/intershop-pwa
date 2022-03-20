@@ -7,7 +7,6 @@ describe('<%= classify(name) %> Mapper', () => {
   let <%= camelize(name) %>Mapper: <%= classify(name) %>Mapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     <%= camelize(name) %>Mapper = TestBed.inject(<%= classify(name) %>Mapper);
   });
 

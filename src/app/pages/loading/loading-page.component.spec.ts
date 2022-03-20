@@ -9,10 +9,6 @@ describe('Loading Page Component', () => {
   let fixture: ComponentFixture<LoadingPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(LoadingPageComponent);
     component = fixture.componentInstance;
