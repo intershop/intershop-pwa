@@ -7,12 +7,6 @@ describe('Header Simple Component', () => {
   let element: HTMLElement;
   let component: HeaderSimpleComponent;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [HeaderSimpleComponent],
-    }).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderSimpleComponent);
     component = fixture.componentInstance;
