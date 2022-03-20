@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -22,20 +21,16 @@ import {
   isSystemUserRolesLoaded,
 } from './users.selectors';
 
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
 describe('Users Selectors', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         OrganizationManagementStoreModule.forTesting('users'),
-        RouterTestingModule.withRoutes([{ path: 'users/:B2BCustomerLogin', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'users/:B2BCustomerLogin', children: [] }]),
       ],
       providers: [provideStoreSnapshots()],
     });

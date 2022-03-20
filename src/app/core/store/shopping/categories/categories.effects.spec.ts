@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -44,9 +43,6 @@ describe('Categories Effects', () => {
     { uniqueId: '456', categoryPath: ['456'] },
   ] as Category[]);
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   beforeEach(() => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getCategory('123')).thenReturn(
@@ -61,14 +57,13 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(TOP_LEVEL_CATEGORIES));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([
-          { path: 'category/:categoryUniqueId/product/:sku', component: DummyComponent },
-          { path: 'category/:categoryUniqueId', component: DummyComponent },
-          { path: 'categoryref/:categoryRefId', component: DummyComponent },
-          { path: '**', component: DummyComponent },
+          { path: 'category/:categoryUniqueId/product/:sku', children: [] },
+          { path: 'category/:categoryUniqueId', children: [] },
+          { path: 'categoryref/:categoryRefId', children: [] },
+          { path: '**', children: [] },
         ]),
         ShoppingStoreModule.forTesting('categories'),
       ],

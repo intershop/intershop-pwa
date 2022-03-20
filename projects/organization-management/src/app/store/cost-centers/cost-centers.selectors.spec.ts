@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -38,20 +37,16 @@ import {
   getSelectedCostCenter,
 } from './cost-centers.selectors';
 
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
 describe('Cost Centers Selectors', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         OrganizationManagementStoreModule.forTesting('costCenters'),
-        RouterTestingModule.withRoutes([{ path: 'cost-centers/:CostCenterId', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'cost-centers/:CostCenterId', children: [] }]),
       ],
       providers: [provideStoreSnapshots()],
     });

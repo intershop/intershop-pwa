@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -20,17 +19,11 @@ describe('Product Compare Status Component', () => {
   let location: Location;
 
   beforeEach(async () => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [DummyComponent, MockComponent(FaIconComponent), ProductCompareStatusComponent],
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'compare', component: DummyComponent }]),
-        TranslateModule.forRoot(),
-      ],
+      declarations: [MockComponent(FaIconComponent), ProductCompareStatusComponent],
+      imports: [RouterTestingModule.withRoutes([{ path: 'compare', children: [] }]), TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });

@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -24,9 +23,6 @@ describe('Page Tree Selectors', () => {
   let tree6: ContentPageTreeElement;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     tree1 = { contentPageId: '1', path: ['1'], name: '1' } as ContentPageTreeElement;
     tree2 = { contentPageId: '1.1', path: ['1', '1.1'], name: '1.1' } as ContentPageTreeElement;
     tree3 = { contentPageId: '1.1.1', path: ['1', '1.1', '1.1.1'], name: '1.1.1' } as ContentPageTreeElement;
@@ -39,11 +35,10 @@ describe('Page Tree Selectors', () => {
     tree6 = { contentPageId: '2', path: ['2'], name: '2' } as ContentPageTreeElement;
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         ContentStoreModule.forTesting('pagetree'),
         CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', children: [] }]),
       ],
       providers: [provideStoreSnapshots()],
     });

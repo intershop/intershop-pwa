@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,9 +13,6 @@ import { ProductsListComponent } from 'ish-shared/components/product/products-li
 
 import { CMSProductListCategoryComponent } from './cms-product-list-category.component';
 
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
 describe('Cms Product List Category Component', () => {
   let component: CMSProductListCategoryComponent;
   let fixture: ComponentFixture<CMSProductListCategoryComponent>;
@@ -29,12 +25,12 @@ describe('Cms Product List Category Component', () => {
     shoppingFacade = mock(ShoppingFacade);
     cmsFacade = mock(CMSFacade);
     await TestBed.configureTestingModule({
-      declarations: [CMSProductListCategoryComponent, DummyComponent, MockComponent(ProductsListComponent)],
+      declarations: [CMSProductListCategoryComponent, MockComponent(ProductsListComponent)],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
-      imports: [RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]), TranslateModule.forRoot()],
+      imports: [RouterTestingModule.withRoutes([{ path: '**', children: [] }]), TranslateModule.forRoot()],
     }).compileComponents();
   });
 

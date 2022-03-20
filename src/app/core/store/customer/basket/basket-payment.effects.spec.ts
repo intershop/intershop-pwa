@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -50,15 +49,11 @@ describe('Basket Payment Effects', () => {
   beforeEach(() => {
     paymentServiceMock = mock(PaymentService);
 
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user', 'basket'),
-        RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'checkout/review', children: [] }]),
       ],
       providers: [
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },

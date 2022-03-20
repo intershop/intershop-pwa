@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -41,15 +40,11 @@ describe('Products Selectors', () => {
   beforeEach(() => {
     prod = { sku: 'sku', completenessLevel: ProductCompletenessLevel.Detail, name: 'product' } as Product;
 
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig']),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
         ShoppingStoreModule.forTesting('products', 'categories', 'productPrices'),
       ],
       providers: [provideStoreSnapshots()],

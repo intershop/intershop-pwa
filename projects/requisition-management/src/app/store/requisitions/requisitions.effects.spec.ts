@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -22,9 +21,6 @@ import {
   updateRequisitionStatusFail,
 } from './requisitions.actions';
 import { RequisitionsEffects } from './requisitions.effects';
-
-@Component({ template: 'dummy' })
-class DummyComponent {}
 
 const requisitions = [
   {
@@ -66,8 +62,7 @@ describe('Requisitions Effects', () => {
     );
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }])],
+      imports: [RouterTestingModule.withRoutes([{ path: '**', children: [] }])],
       providers: [
         { provide: RequisitionsService, useFactory: () => instance(requisitionsService) },
         provideMockActions(() => actions$),

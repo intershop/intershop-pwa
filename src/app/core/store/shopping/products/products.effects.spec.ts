@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -46,9 +45,6 @@ describe('Products Effects', () => {
   let router: Router;
   let httpStatusCodeService: HttpStatusCodeService;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   beforeEach(() => {
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
@@ -68,14 +64,13 @@ describe('Products Effects', () => {
     );
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig']),
         CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([
-          { path: 'category/:categoryUniqueId/product/:sku', component: DummyComponent },
-          { path: 'product/:sku', component: DummyComponent },
-          { path: '**', component: DummyComponent },
+          { path: 'category/:categoryUniqueId/product/:sku', children: [] },
+          { path: 'product/:sku', children: [] },
+          { path: '**', children: [] },
         ]),
         ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices'),
       ],
