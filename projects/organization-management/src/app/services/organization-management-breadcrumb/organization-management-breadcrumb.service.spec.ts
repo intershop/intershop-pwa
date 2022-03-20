@@ -36,7 +36,6 @@ describe('Organization Management Breadcrumb Service', () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS', 'APP_B2B_MANAGE_COSTCENTER'),
         CoreStoreModule.forTesting(['router', 'configuration']),

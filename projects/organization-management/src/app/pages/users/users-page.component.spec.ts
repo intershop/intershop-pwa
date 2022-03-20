@@ -12,7 +12,6 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
-import { UserBudgetComponent } from '../../components/user-budget/user-budget.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
@@ -42,7 +41,6 @@ describe('Users Page Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
-        MockComponent(UserBudgetComponent),
         MockComponent(UserRolesBadgesComponent),
         MockPipe(ServerSettingPipe),
         UsersPageComponent,

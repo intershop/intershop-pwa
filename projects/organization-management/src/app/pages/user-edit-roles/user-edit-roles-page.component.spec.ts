@@ -8,7 +8,6 @@ import { instance, mock, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { UserRolesSelectionComponent } from '../../components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -39,7 +38,6 @@ describe('User Edit Roles Page Component', () => {
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
         MockComponent(UserRolesSelectionComponent),
         UserEditRolesPageComponent,
       ],

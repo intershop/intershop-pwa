@@ -1,12 +1,8 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
-import { Price } from 'ish-core/models/price/price.model';
-import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 import { CostCenterBudgetComponent } from './cost-center-budget.component';
 
@@ -18,11 +14,8 @@ describe('Cost Center Budget Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot()],
-      declarations: [
-        CostCenterBudgetComponent,
-        MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
-      ],
+      imports: [NgbPopoverModule],
+      declarations: [CostCenterBudgetComponent],
     }).compileComponents();
   });
 

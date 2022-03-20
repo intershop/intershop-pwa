@@ -6,7 +6,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { CostCenterFormComponent } from '../../components/cost-center-form/cost-center-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -34,11 +33,7 @@ describe('Cost Center Edit Page Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        CostCenterEditPageComponent,
-        MockComponent(CostCenterFormComponent),
-        MockComponent(LoadingComponent),
-      ],
+      declarations: [CostCenterEditPageComponent, MockComponent(CostCenterFormComponent)],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
 
