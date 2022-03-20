@@ -19,7 +19,7 @@ describe('Checkout Shipping Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [CheckoutShippingComponent, DummyWrapperComponent],
+      declarations: [CheckoutShippingComponent],
       imports: [
         FormlyModule.forChild({
           wrappers: [{ name: 'shipping-radio-wrapper', component: DummyWrapperComponent }],
