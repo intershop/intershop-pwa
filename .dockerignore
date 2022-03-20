@@ -5,7 +5,7 @@
 
 # from .gitignore
 **/*.xliff
-**/*.ut.spec.ts
+**/*.ut.spec.ts*
 **/node_modules
 /.idea
 /.project
