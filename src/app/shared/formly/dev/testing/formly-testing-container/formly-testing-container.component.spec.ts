@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormlyModule } from '@ngx-formly/core';
 
 import { FormlyTestingContainerComponent } from './formly-testing-container.component';
 
@@ -9,10 +8,7 @@ describe('Formly Testing Container Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [FormlyModule.forRoot()],
-      declarations: [FormlyTestingContainerComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   beforeEach(() => {

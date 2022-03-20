@@ -10,7 +10,6 @@ import { instance, mock, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
 
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
 
@@ -24,13 +23,7 @@ describe('Basket Cost Summary Component', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        BasketCostSummaryComponent,
-        MockComponent(BasketPromotionComponent),
-        MockComponent(FaIconComponent),
-        MockComponent(NgbPopover),
-        PricePipe,
-      ],
+      declarations: [BasketCostSummaryComponent, MockComponent(FaIconComponent), MockComponent(NgbPopover), PricePipe],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     })

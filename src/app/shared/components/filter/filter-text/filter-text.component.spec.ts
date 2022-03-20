@@ -1,7 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
@@ -15,8 +12,7 @@ describe('Filter Text Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [FilterTextComponent, MockComponent(FaIconComponent), SanitizePipe],
+      declarations: [FilterTextComponent, SanitizePipe],
     }).compileComponents();
   });
 

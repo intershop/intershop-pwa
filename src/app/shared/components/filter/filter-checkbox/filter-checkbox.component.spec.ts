@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
 
@@ -12,7 +11,6 @@ describe('Filter Checkbox Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       declarations: [FilterCheckboxComponent],
     }).compileComponents();
   });
