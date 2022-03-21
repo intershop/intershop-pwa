@@ -127,9 +127,9 @@ describe('Products Service', () => {
 
   it("should get all product variations data when 'getProductVariations' is called and more than 50 variations exist", done => {
     const total = 156;
-    when(apiServiceMock.get(`products/${productSku}/variations`, anything())).thenCall((_, opts) => {
-      return !opts.params ? of({ elements: [], amount: 40, total }) : of({ elements: [], total });
-    });
+    when(apiServiceMock.get(`products/${productSku}/variations`, anything())).thenCall((_, opts) =>
+      !opts.params ? of({ elements: [], amount: 40, total }) : of({ elements: [], total })
+    );
 
     productsService.getProductVariations(productSku).subscribe(() => {
       verify(apiServiceMock.get(`products/${productSku}/variations`, anything())).times(4);
