@@ -3,6 +3,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateModule } from '@ngx-translate/core';
+import { ConcardisPaymentMethodModule } from 'src/libs/checkout/payment/concardis-payment-method/concardis-payment-method.module';
 
 import { AppearanceModule } from './appearance.module';
 import { ConfigurationModule } from './configuration.module';
@@ -18,12 +19,13 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
 @NgModule({
   imports: [
     AppearanceModule,
+    ConcardisPaymentMethodModule,
     ConfigurationModule,
     FeatureToggleModule,
     HttpClientModule,
     IdentityProviderModule,
-    InternationalizationModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: SERVICE_WORKER }),
+    InternationalizationModule,
     StateManagementModule,
   ],
   providers: [
