@@ -4,4 +4,8 @@ export interface Price {
   currency: string;
 }
 
+export interface ScaledPrice extends Price {
+  minQuantity: number;
+}
+
 export * from './price.helper';

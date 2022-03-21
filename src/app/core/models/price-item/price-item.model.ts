@@ -5,3 +5,7 @@ export interface PriceItem extends Pick<Price, 'currency'> {
   gross: number;
   net: number;
 }
+
+export interface ScaledPriceItem extends PriceItem {
+  minQuantity: number;
+}

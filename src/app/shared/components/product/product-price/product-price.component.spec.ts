@@ -134,5 +134,42 @@ describe('Product Price Component', () => {
       expect(element.querySelector('meta[itemprop="price"]').getAttribute('content')).toEqual('10.00');
       expect(element.querySelector('meta[itemprop="priceCurrency"]').getAttribute('content')).toEqual('USD');
     });
+
+    it('should show scaled prices when configured and scaled prices are available', () => {
+      component.showScaledPrices = true;
+
+      translate.set('product.price.scaledPrice.text', 'Buy {{0}}-{{1}} for {{2}} each');
+      translate.set('product.price.scaledPrice.text.last', 'Buy {{0}}+ for {{1}} each');
+      translate.set('product.price.scaledPrice.single.text', 'Buy {{0}} for {{1}} each');
+      when(context.select('product')).thenReturn(
+        of({
+          sku: '123',
+          listPrice: {
+            type: 'Money',
+            value: 300,
+            currency: 'USD',
+          },
+          salePrice: {
+            type: 'Money',
+            value: 250,
+            currency: 'USD',
+          },
+          scaledPrices: [
+            { type: 'Money', value: 240.0, currency: 'USD', minQuantity: 2 },
+            { type: 'Money', value: 220.0, currency: 'USD', minQuantity: 3 },
+            { type: 'Money', value: 200.0, currency: 'USD', minQuantity: 5 },
+          ],
+        })
+      );
+      fixture.detectChanges();
+
+      expect(element.querySelector('[data-testing-id=scaled-prices]')).toMatchInlineSnapshot(`
+        <div data-testing-id="scaled-prices" class="scaled-prices">
+          <div>Buy 2 for $240.00 each</div>
+          <div>Buy 3-4 for $220.00 each</div>
+          <div>Buy 5+ for $200.00 each</div>
+        </div>
+      `);
+    });
   });
 });

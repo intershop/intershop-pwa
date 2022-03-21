@@ -15,6 +15,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 export class ProductPriceComponent implements OnInit {
   @Input() showInformationalPrice: boolean;
   @Input() showPriceSavings: boolean;
+  @Input() showScaledPrices = true;
 
   visible$: Observable<boolean>;
   isPriceRange$: Observable<boolean>;
@@ -25,7 +26,7 @@ export class ProductPriceComponent implements OnInit {
       priceSavings: Price;
       lowerPrice: Price;
       upperPrice: Price;
-    } & Pick<ProductView, 'salePrice' | 'listPrice'>
+    } & Pick<ProductView, 'salePrice' | 'listPrice' | 'scaledPrices'>
   >;
 
   constructor(private context: ProductContextFacade) {}
@@ -40,6 +41,7 @@ export class ProductPriceComponent implements OnInit {
       map(product => ({
         salePrice: product.salePrice,
         listPrice: product.listPrice,
+        scaledPrices: product.scaledPrices,
         isListPriceGreaterThanSalePrice: product.listPrice?.value > product.salePrice?.value,
         isListPriceLessThanSalePrice: product.listPrice?.value < product.salePrice?.value,
         priceSavings: product.listPrice && product.salePrice && PriceHelper.diff(product.listPrice, product.salePrice),

@@ -1,6 +1,6 @@
 import { Category } from 'ish-core/models/category/category.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
-import { Price } from 'ish-core/models/price/price.model';
+import { Price, ScaledPrice } from 'ish-core/models/price/price.model';
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { Product, VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 
@@ -12,6 +12,7 @@ interface SimpleProductView extends Product {
   defaultCategory: Category;
   listPrice: Price;
   salePrice: Price;
+  scaledPrices: ScaledPrice[];
 }
 
 interface VariationProductView extends VariationProduct, SimpleProductView {
@@ -38,6 +39,9 @@ export function createProductView(
       defaultCategory,
       salePrice: PriceItemHelper.selectType(productPrice?.prices?.salePrice, priceDisplayType),
       listPrice: PriceItemHelper.selectType(productPrice?.prices?.listPrice, priceDisplayType),
+      scaledPrices: productPrice?.prices?.scaledPrices?.map(priceItem =>
+        PriceItemHelper.selectScaledPriceType(priceItem, priceDisplayType)
+      ),
     }
   );
 }
