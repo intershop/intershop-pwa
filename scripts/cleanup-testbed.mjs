@@ -36,7 +36,7 @@ if (args.length === 0) {
 
   Usage: npm run cleanup-testbed [git-rev|folder|file [file...]]
 
-    When used without an argument, the all project files
+    When used without an argument, all project files
     ending in '.spec.ts' are used as input for the cleanup.
 
     When git-rev is supplied, a git diff against the provided

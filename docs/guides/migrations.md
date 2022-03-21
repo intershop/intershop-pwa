@@ -7,7 +7,15 @@ kb_sync_latest_only
 
 # Migrations
 
-## 2.0 to 2.1
+## 2.1 to 2.2
+
+Changes with Angular 13 require to declare less dependencies in test beds than before.
+For that reason the PWA 2.2 contains two pull requests that cleanup a lot of test specs (see #1057 and #1072).
+It is not considered a breaking change but it might result in merge conflicts with customized Jest tests.
+To cleanup the own code base run `npm run cleanup-testbed`.
+Run `npm run cleanup-testbed -- --help` for more detailed options.
+
+# 2.0 to 2.1
 
 The recently viewed products functionality was moved into an extension.
 The already existing `recently` feature toggle works as before but the recently viewed component integration changed from `<ish-recently-viewed *ishFeature="'recently'"></ish-recently-viewed>` to `<ish-lazy-recently-viewed></ish-lazy-recently-viewed>`.
