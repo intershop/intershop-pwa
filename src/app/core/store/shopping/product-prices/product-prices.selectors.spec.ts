@@ -8,7 +8,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { loadProductPricesSuccess } from '.';
 import { getProductPrice } from './product-prices.selectors';
 
-describe('Product Price Selectors', () => {
+describe('Product Prices Selectors', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {

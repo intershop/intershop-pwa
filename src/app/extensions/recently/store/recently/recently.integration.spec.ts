@@ -16,7 +16,7 @@ import { clearRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';
 import { getMostRecentlyViewedProducts, getRecentlyViewedProducts } from './recently.selectors';
 
-describe('Recently Selectors', () => {
+describe('Recently Integration', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
 

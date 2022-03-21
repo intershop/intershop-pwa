@@ -8,7 +8,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
 
 import { QuotingBasketLineItemsComponent } from './quoting-basket-line-items.component';
 
-describe('QuotingBasketLineItemsComponent', () => {
+describe('Quoting Basket Line Items Component', () => {
   let component: QuotingBasketLineItemsComponent;
   let fixture: ComponentFixture<QuotingBasketLineItemsComponent>;
   let element: HTMLElement;
