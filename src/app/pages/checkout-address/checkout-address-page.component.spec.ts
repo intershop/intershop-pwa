@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -23,9 +22,6 @@ describe('Checkout Address Page Component', () => {
   let accountFacade: AccountFacade;
 
   beforeEach(async () => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(of({ lineItems: [BasketMockData.getBasketItem()] } as BasketView));
 
@@ -37,11 +33,7 @@ describe('Checkout Address Page Component', () => {
         MockComponent(CheckoutAddressAnonymousComponent),
         MockComponent(CheckoutAddressComponent),
       ],
-
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'basket', component: DummyComponent }]),
-        TranslateModule.forRoot(),
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'basket', children: [] }]), TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },

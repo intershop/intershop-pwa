@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 import { ShippingInfoComponent } from './shipping-info.component';
 
@@ -17,7 +14,7 @@ describe('Shipping Info Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [MockPipe(PricePipe), MockPipe(TranslatePipe), ShippingInfoComponent],
+      declarations: [ShippingInfoComponent],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });

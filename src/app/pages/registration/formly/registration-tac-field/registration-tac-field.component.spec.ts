@@ -2,10 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
@@ -26,11 +25,7 @@ describe('Registration Tac Field Component', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [
-        MockComponent(ValidationMessageComponent),
-        MockDirective(ServerHtmlDirective),
-        RegistrationTacFieldComponent,
-      ],
+      declarations: [MockDirective(ServerHtmlDirective), RegistrationTacFieldComponent],
     }).compileComponents();
   });
 

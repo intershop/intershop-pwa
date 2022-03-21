@@ -1,12 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
 
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
@@ -19,12 +15,7 @@ describe('Quickorder Repeat Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockComponent(ProductQuantityComponent),
-        MockDirective(ProductContextDirective),
-        QuickorderRepeatFieldComponent,
-      ],
+      declarations: [QuickorderRepeatFieldComponent],
       imports: [
         FormlyModule.forChild({
           types: [{ name: 'repeat', component: QuickorderRepeatFieldComponent }],

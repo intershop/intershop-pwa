@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -51,16 +50,12 @@ describe('Search Effects', () => {
       }
     );
 
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router'], [SearchEffects, ProductListingEffects]),
         RouterTestingModule.withRoutes([
-          { path: 'error', component: DummyComponent },
-          { path: 'search/:searchTerm', component: DummyComponent },
+          { path: 'error', children: [] },
+          { path: 'search/:searchTerm', children: [] },
         ]),
         ShoppingStoreModule.forTesting('productListing'),
         TranslateModule.forRoot(),

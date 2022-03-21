@@ -2,7 +2,6 @@ import { TestBed, fakeAsync } from '@angular/core/testing';
 
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -14,11 +13,7 @@ describe('Product Price Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['serverConfig']),
-        CustomerStoreModule.forTesting('user'),
-        ShoppingStoreModule.forTesting('productPrices'),
-      ],
+      imports: [CoreStoreModule.forTesting(['serverConfig']), ShoppingStoreModule.forTesting('productPrices')],
       providers: [provideStoreSnapshots()],
     });
 

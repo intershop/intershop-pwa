@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -36,7 +35,7 @@ describe('Cost Center Form Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule],
       declarations: [CostCenterFormComponent, MockComponent(ErrorMessageComponent)],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },

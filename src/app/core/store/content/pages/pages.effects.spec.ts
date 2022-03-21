@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -28,16 +27,13 @@ describe('Pages Effects', () => {
   let store$: Store;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         ContentStoreModule.forTesting('pagetree', 'pages'),
         CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', children: [] }]),
       ],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsServiceMock) },

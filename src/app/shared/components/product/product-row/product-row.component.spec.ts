@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -38,9 +37,10 @@ describe('Product Row Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     when(context.select('product')).thenReturn(of({ sku: 'SKU' } as ProductView));
+    when(context.select('displayProperties', anyString())).thenReturn(of(true));
+    when(context.select('displayProperties', 'readOnly')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),

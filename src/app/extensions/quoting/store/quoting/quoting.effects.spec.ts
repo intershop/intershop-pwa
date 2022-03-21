@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -44,15 +43,11 @@ describe('Quoting Effects', () => {
   let router: Router;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     quotingService = mock(QuotingService);
     basketService = mock(BasketService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [RouterTestingModule.withRoutes([{ path: 'account/quotes/:id', component: DummyComponent }])],
+      imports: [RouterTestingModule.withRoutes([{ path: 'account/quotes/:id', children: [] }])],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketService) },
         { provide: QuotingService, useFactory: () => instance(quotingService) },

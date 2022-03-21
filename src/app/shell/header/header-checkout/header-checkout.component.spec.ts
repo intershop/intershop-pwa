@@ -9,10 +9,6 @@ describe('Header Checkout Component', () => {
   let fixture: ComponentFixture<HeaderCheckoutComponent>;
   let element: HTMLElement;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderCheckoutComponent);
     component = fixture.componentInstance;

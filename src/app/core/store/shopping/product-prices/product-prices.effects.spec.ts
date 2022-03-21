@@ -2,16 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { anything, capture, instance, mock, when } from 'ts-mockito';
 
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { PricesService } from 'ish-core/services/prices/prices.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
-import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-import { provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadProductPrices, loadProductPricesSuccess } from '.';
 import { ProductPricesEffects } from './product-prices.effects';
@@ -23,29 +18,13 @@ describe('Products Effects', () => {
 
   beforeEach(() => {
     pricesServiceMock = mock(PricesService);
-    when(pricesServiceMock.getProductPrices(anything())).thenCall((skus: string[]) => {
-      if (skus.length === 0) {
-        return throwError(() => makeHttpError({ message: 'getProductPrices() called with invalid sku' }));
-      } else {
-        return of(
-          skus.map(sku => {
-            return { sku } as ProductPriceDetails;
-          })
-        );
-      }
-    });
+    when(pricesServiceMock.getProductPrices(anything())).thenCall((skus: string[]) => of(skus.map(sku => ({ sku }))));
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['serverConfig']),
-        CustomerStoreModule.forTesting('user'),
-        ShoppingStoreModule.forTesting('productPrices'),
-      ],
       providers: [
         { provide: PricesService, useFactory: () => instance(pricesServiceMock) },
         ProductPricesEffects,
         provideMockActions(() => actions$),
-        provideStoreSnapshots(),
       ],
     });
 

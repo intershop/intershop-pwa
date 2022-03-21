@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -32,6 +32,8 @@ describe('Product Tile Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     when(context.select('product')).thenReturn(of({ sku: 'SKU' } as ProductView));
+    when(context.select('displayProperties', anyString())).thenReturn(of(true));
+    when(context.select('displayProperties', 'readOnly')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -75,6 +77,7 @@ describe('Product Tile Component', () => {
         "ish-product-name",
         "ish-product-rating",
         "ish-product-promotion",
+        "ish-product-price",
         "ish-product-item-variations",
         "ish-lazy-tacton-configure-product",
         "ish-lazy-product-add-to-quote",

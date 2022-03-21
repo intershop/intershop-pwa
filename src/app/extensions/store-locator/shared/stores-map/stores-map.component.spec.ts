@@ -13,7 +13,6 @@ describe('Stores Map Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StoresMapComponent],
       providers: [{ provide: StoreLocatorFacade, useFactory: () => instance(storeLocatorFacade) }],
     }).compileComponents();
   });

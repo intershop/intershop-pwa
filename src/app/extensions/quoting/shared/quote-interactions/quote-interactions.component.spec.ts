@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
@@ -13,7 +12,6 @@ describe('Quote Interactions Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       declarations: [QuoteInteractionsComponent],
       providers: [{ provide: QuoteContextFacade, useFactory: () => instance(mock(QuoteContextFacade)) }],
     }).compileComponents();

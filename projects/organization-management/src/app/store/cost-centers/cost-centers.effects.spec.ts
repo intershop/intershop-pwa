@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -15,7 +14,6 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { CostCentersService } from '../../services/cost-centers/cost-centers.service';
-import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
 import {
   addCostCenter,
@@ -36,9 +34,6 @@ import {
   updateCostCenterFail,
 } from './cost-centers.actions';
 import { CostCentersEffects } from './cost-centers.effects';
-
-@Component({ template: 'dummy' })
-class DummyComponent {}
 
 const costCenters = [
   {
@@ -70,13 +65,11 @@ describe('Cost Centers Effects', () => {
     when(costCentersService.deleteCostCenterBuyer(anyString(), anything())).thenReturn(of(costCenters[0]));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
-        OrganizationManagementStoreModule.forTesting('costCenters'),
         RouterTestingModule.withRoutes([
-          { path: 'cost-centers/:CostCenterId', component: DummyComponent },
-          { path: '**', component: DummyComponent },
+          { path: 'cost-centers/:CostCenterId', children: [] },
+          { path: '**', children: [] },
         ]),
       ],
       providers: [

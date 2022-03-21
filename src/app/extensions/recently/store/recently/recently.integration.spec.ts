@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -22,16 +21,12 @@ describe('Recently Selectors', () => {
   let router: Router;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], [RecentlyEffects]),
         CustomerStoreModule.forTesting('user'),
         RecentlyStoreModule.forTesting('_recently'),
-        RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'product/:sku', children: [] }]),
         ShoppingStoreModule.forTesting('categories', 'products', 'productPrices'),
       ],
       providers: [provideStoreSnapshots()],

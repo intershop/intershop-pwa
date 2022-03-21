@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -50,14 +49,10 @@ describe('Categories Selectors', () => {
       name: 'nA1',
     } as Category;
 
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: 'category/:categoryUniqueId', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'category/:categoryUniqueId', children: [] }]),
         ShoppingStoreModule.forTesting('categories'),
       ],
       providers: [provideStoreSnapshots()],

@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -36,9 +35,6 @@ import {
 } from './users.actions';
 import { UsersEffects } from './users.effects';
 
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
 const users = [
   {
     login: '1',
@@ -73,14 +69,13 @@ describe('Users Effects', () => {
     when(usersService.setUserBudget(anyString(), anything())).thenReturn(of(users[0].userBudget));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         OrganizationManagementStoreModule.forTesting('users'),
         RouterTestingModule.withRoutes([
-          { path: 'users/:B2BCustomerLogin', component: DummyComponent },
-          { path: 'users/:B2BCustomerLogin/edit', component: DummyComponent },
-          { path: '**', component: DummyComponent },
+          { path: 'users/:B2BCustomerLogin', children: [] },
+          { path: 'users/:B2BCustomerLogin/edit', children: [] },
+          { path: '**', children: [] },
         ]),
       ],
       providers: [

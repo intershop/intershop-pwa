@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
@@ -25,7 +25,6 @@ describe('Plain Text Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
-        ReactiveFormsModule,
       ],
     }).compileComponents();
   });

@@ -11,7 +11,6 @@ describe('Content Page Tree Mapper', () => {
   let contentPageTreeMapper: ContentPageTreeMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     contentPageTreeMapper = TestBed.inject(ContentPageTreeMapper);
   });
 

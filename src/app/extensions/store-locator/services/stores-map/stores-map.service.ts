@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { Loader } from '@googlemaps/js-api-loader';
-import { Store as ngrx_Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import { StoreLocationHelper } from '../../models/store-location/store-location.helper';
 import { StoreLocation } from '../../models/store-location/store-location.model';
@@ -17,7 +17,7 @@ export class StoresMapService {
   private infoWindow: google.maps.InfoWindow;
   private entries: { store: StoreLocation; marker: google.maps.Marker }[] = [];
 
-  constructor(private store: ngrx_Store, @Inject(STORE_MAP_ICON_CONFIGURATION) private icons: IconConfiguration) {}
+  constructor(private store: Store, @Inject(STORE_MAP_ICON_CONFIGURATION) private icons: IconConfiguration) {}
 
   initialize(container: HTMLElement) {
     this.store.select(getGMAKey).subscribe((gmaKey: string) => {
