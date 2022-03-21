@@ -27,10 +27,10 @@ function generateProductSlug(product: ProductView) {
       .replace(/-+/g, '-');
   }
 
-  return slug;
+  return slug.replace('-cat', '-Cat');
 }
 
-const productRouteFormat = new RegExp('^/(.*)?sku(.*?)(-cat(.*))?$');
+const productRouteFormat = new RegExp('/(?!cat)((?!.*-cat.*-sku).*-)?sku(.*?)(-cat(.*))?$');
 
 export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
