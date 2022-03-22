@@ -15,6 +15,9 @@ It is not considered a breaking change but it might result in merge conflicts wi
 To cleanup the own code base run `npm run cleanup-testbed`.
 Run `npm run cleanup-testbed -- --help` for more detailed options.
 
+The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependencies updates.
+These updates required some internal webpack handling changes especially for the template overloading.
+Also some test adaptions where necessary, so is it now necessary to mock the `SwiperComponent`.
 # 2.0 to 2.1
 
 The recently viewed products functionality was moved into an extension.

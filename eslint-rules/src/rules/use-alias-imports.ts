@@ -72,7 +72,8 @@ function calculateAbsolutePath(basePath: string, literal: string): string {
  */
 function getAliasImports(): { pattern: string; alias: string }[] {
   try {
-    const config = parse(fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- revert strongly typed CommentJSONValue (since version 4.2.0)
+    const config = parse(fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' })) as any;
     if (config?.compilerOptions?.paths) {
       const paths = config.compilerOptions.paths;
       return Object.keys(paths).map(key => ({

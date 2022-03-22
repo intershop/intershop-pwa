@@ -1,11 +1,18 @@
 import { normalize, strings } from '@angular-devkit/core';
-import { Tree } from '@angular-devkit/schematics';
+import { SchematicsException, Tree } from '@angular-devkit/schematics';
 import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
 import { parseName } from '@schematics/angular/utility/parse-name';
-import { validateHtmlSelector, validateName } from '@schematics/angular/utility/validation';
+import { validateHtmlSelector } from '@schematics/angular/utility/validation';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { buildSelector } from './selector';
+
+function validateName(name: string) {
+  if (name && /^\d/.test(name)) {
+    throw new SchematicsException(`name (${name})
+    can not start with a digit.`);
+  }
+}
 
 export async function applyNameAndPath(
   artifact: string,

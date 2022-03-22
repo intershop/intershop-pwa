@@ -123,7 +123,7 @@ describe('Quote Line Item List Element Component', () => {
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
       Array [
         "product-list-item",
-        "remove-pli-item123-element",
+        "remove-line-item",
         "total-price",
       ]
     `);
