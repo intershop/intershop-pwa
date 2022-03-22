@@ -153,7 +153,7 @@ export function createPage(options: Options): Rule {
 
     operations.push(
       schematic('component', {
-        ...options,
+        project: options.project,
         name: `${options.name}-page`,
         path: `${options.path}${options.name}`,
         flat: true,

@@ -3,6 +3,7 @@
   "$id": "SchematicsPWAAzurePipeline",
   "title": "PWA Azure Pipeline Options Schema",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",

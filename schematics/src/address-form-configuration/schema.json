@@ -4,6 +4,7 @@
   "title": "PWA Address Form Configuration Options Schema",
   "type": "object",
   "description": "Creates a new address form configuration.",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",

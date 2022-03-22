@@ -8,12 +8,18 @@ const schemaFiles = glob.sync('src/**/schema.json').map(file => ({
   output: file.replace(/\.json$/, '.d.ts'),
 }));
 
-for (const schemaFile of schemaFiles) {
-  const output = await compileFromFile(schemaFile.input);
+await Promise.all(
+  schemaFiles.map(async schemaFile => {
+    const output = await compileFromFile(schemaFile.input, {
+      unknownAny: true,
+      bannerComment: `/*
+  THIS FILE IS GENERATED!
+  update it by running 'npm run build:schematics'
+*/`,
+    });
 
-  const content = output.replace('[k: string]: unknown;', '').replace('/* tslint:disable */', '');
-
-  writeFileSync(schemaFile.output, content);
-}
+    writeFileSync(schemaFile.output, output);
+  })
+);
 
 execSync('npx eslint --fix ' + schemaFiles.map(f => f.output).join(' '));

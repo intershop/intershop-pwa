@@ -3,6 +3,7 @@
   "$id": "CustomizedCopy",
   "title": "Customized Copy Options Schema",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",

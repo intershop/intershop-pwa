@@ -4,6 +4,7 @@
   "title": "PWA Eslint Rule Options Schema",
   "type": "object",
   "description": "Creates a eslint rule.",
+  "additionalProperties": false,
   "properties": {
     "name": {
       "type": "string",

@@ -3,6 +3,7 @@
   "$id": "SchematicsPWAService",
   "title": "PWA Pipe Options Schema",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "path": {
       "type": "string",
