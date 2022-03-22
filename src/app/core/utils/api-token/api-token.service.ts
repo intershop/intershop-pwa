@@ -1,6 +1,5 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
-import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
@@ -47,18 +46,17 @@ export class ApiTokenService {
 
   constructor(
     private cookiesService: CookiesService,
-    @Inject(PLATFORM_ID) private platformId: string,
     private router: Router,
     private store: Store,
     appRef: ApplicationRef
   ) {
     const initialCookie = this.parseCookie();
-    this.initialCookie$ = of(isPlatformBrowser(platformId) ? initialCookie : undefined);
+    this.initialCookie$ = of(!SSR ? initialCookie : undefined);
     this.initialCookie$.pipe(mapToProperty('apiToken')).subscribe(token => {
       this.apiToken$.next(token);
     });
 
-    if (isPlatformBrowser(platformId)) {
+    if (!SSR) {
       // save token routine
       combineLatest([
         store.pipe(select(getLoggedInUser)),
@@ -145,7 +143,7 @@ export class ApiTokenService {
   }
 
   restore$(types: ApiTokenCookieType[] = ['user', 'order']): Observable<boolean> {
-    if (isPlatformServer(this.platformId)) {
+    if (SSR) {
       return of(true);
     }
     return this.router.events.pipe(

@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
@@ -65,8 +64,7 @@ export class BasketEffects {
     private basketService: BasketService,
     private apiTokenService: ApiTokenService,
     private router: Router,
-    private store: Store,
-    @Inject(PLATFORM_ID) private platformId: string
+    private store: Store
   ) {}
 
   /**
@@ -76,7 +74,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(loadBasket),
       mergeMap(() =>
-        isPlatformBrowser(this.platformId) && window.sessionStorage.getItem('basket-id')
+        !SSR && window.sessionStorage.getItem('basket-id')
           ? of(loadBasketWithId({ basketId: window.sessionStorage.getItem('basket-id') }))
           : this.basketService.getBasket().pipe(
               map(basket => loadBasketSuccess({ basket })),

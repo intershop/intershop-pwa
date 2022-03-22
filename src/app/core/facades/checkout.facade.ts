@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { Subject, combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
@@ -57,8 +56,8 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 export class CheckoutFacade {
   private basketChangeInternal$ = new Subject<void>();
 
-  constructor(private store: Store, @Inject(PLATFORM_ID) platformId: string) {
-    if (isPlatformBrowser(platformId)) {
+  constructor(private store: Store) {
+    if (!SSR) {
       this.store
         .pipe(
           select(getBasketLastTimeProductAdded),

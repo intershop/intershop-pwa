@@ -657,6 +657,7 @@
         "ish-custom-rules/use-component-change-detection": "warn",
         "ish-custom-rules/use-correct-component-overrides": "warn",
         "ish-custom-rules/use-jest-extended-matchers-in-tests": "warn",
+        "ish-custom-rules/use-ssr-variable-instead-of-platform-id": "warn",
         "ish-custom-rules/require-formly-code-documentation": "warn",
         "jest/no-commented-out-tests": "warn",
         "jest/no-disabled-tests": "warn",

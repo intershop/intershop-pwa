@@ -66,18 +66,13 @@ The actual transfer is handled by the [`app.server.module.ts`](../../src/app/app
 Accessing the transferred state in a service or a component is pretty straight forward:
 
 ```typescript
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
 import { NEW_KEY } from 'ish-core/configurations/state-keys';
 
 newKey string;
 
-constructor(
-  @Inject(PLATFORM_ID) private platformId: string,
-  private transferState: TransferState,
-) {}
+constructor(private transferState: TransferState) {}
 
-if (isPlatformBrowser(this.platformId)) {
+if (!SSR) {
   this.newKey = this.transferState.get<string>(NEW_KEY, 'default value');
 }
 ```

@@ -1,15 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  Inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  PLATFORM_ID,
-} from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 
@@ -31,10 +20,10 @@ export class IntersectionObserverDirective implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private element: ElementRef, @Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(private element: ElementRef) {}
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (!SSR) {
       const element = this.element.nativeElement;
       const config = {
         root: this.intersectionRoot,

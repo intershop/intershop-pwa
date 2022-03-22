@@ -137,6 +137,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       SERVICE_WORKER: serviceWorker,
       NGRX_RUNTIME_CHECKS: ngrxRuntimeChecks,
       THEME: JSON.stringify(theme),
+      SSR: targetOptions.target === 'server',
     })
   );
   logger.log('setting production:', production);

@@ -2,12 +2,14 @@ declare module 'express-http-proxy';
 
 declare module 'express-robots-txt';
 
-declare var PRODUCTION_MODE: boolean;
+declare const PRODUCTION_MODE: boolean;
 
-declare var SERVICE_WORKER: boolean;
+declare const SERVICE_WORKER: boolean;
 
-declare var NGRX_RUNTIME_CHECKS: boolean;
+declare const NGRX_RUNTIME_CHECKS: boolean;
 
-declare var PWA_VERSION: string;
+declare const PWA_VERSION: string;
 
-declare var THEME: string;
+declare const THEME: string;
+
+declare const SSR: boolean;

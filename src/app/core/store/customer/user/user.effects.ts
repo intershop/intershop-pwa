@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
@@ -63,8 +62,7 @@ export class UserEffects {
     private userService: UserService,
     private paymentService: PaymentService,
     private router: Router,
-    private apiTokenService: ApiTokenService,
-    @Inject(PLATFORM_ID) private platformId: string
+    private apiTokenService: ApiTokenService
   ) {}
 
   loginUser$ = createEffect(() =>
@@ -106,7 +104,7 @@ export class UserEffects {
   redirectAfterLogin$ = createEffect(
     () =>
       this.store$.pipe(select(selectQueryParam('returnUrl'))).pipe(
-        takeWhile(() => isPlatformBrowser(this.platformId)),
+        takeWhile(() => !SSR),
         whenTruthy(),
         sample(this.actions$.pipe(ofType(loginUserSuccess))),
         concatMap(navigateTo => from(this.router.navigateByUrl(navigateTo)))

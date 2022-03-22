@@ -1,5 +1,4 @@
-import { isPlatformServer } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,16 +18,11 @@ export class LoginPageComponent implements OnInit {
   loginMessageKey$: Observable<string>;
   routingInProgress$: Observable<boolean>;
 
-  constructor(
-    private accountFacade: AccountFacade,
-    private route: ActivatedRoute,
-    private appFacade: AppFacade,
-    @Inject(PLATFORM_ID) private platformId: string
-  ) {}
+  constructor(private accountFacade: AccountFacade, private route: ActivatedRoute, private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.isLoggedIn$ = this.accountFacade.isLoggedIn$;
-    if (isPlatformServer(this.platformId)) {
+    if (SSR) {
       // SSR response should always display loading animation
       this.routingInProgress$ = of(true);
     } else {

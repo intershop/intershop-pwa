@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
@@ -22,14 +21,14 @@ export class FooterComponent implements OnInit, OnChanges {
 
   appVersion: string;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: string, private transferState: TransferState) {}
+  constructor(private transferState: TransferState) {}
 
   collapsed: boolean[] = [false, false, false, false, false, false];
 
   ngOnInit() {
     this.collapsed = this.collapsed.map(() => this.deviceType === 'mobile');
 
-    if (isPlatformBrowser(this.platformId)) {
+    if (!SSR) {
       this.appVersion = this.transferState.get(DISPLAY_VERSION, '');
     }
   }
