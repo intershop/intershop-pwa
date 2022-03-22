@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
@@ -48,7 +47,6 @@ export class OrdersEffects {
     private actions$: Actions,
     private orderService: OrderService,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: string,
     private store: Store,
     private translateService: TranslateService
   ) {}
@@ -167,7 +165,7 @@ export class OrdersEffects {
    */
   loadOrderForSelectedOrder$ = createEffect(() =>
     iif(
-      () => isPlatformBrowser(this.platformId),
+      () => !SSR,
       this.actions$.pipe(
         ofType(selectOrder),
         mapToPayloadProperty('orderId'),

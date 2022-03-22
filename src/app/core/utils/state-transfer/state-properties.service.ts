@@ -1,5 +1,4 @@
-import { isPlatformServer } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,7 +15,7 @@ import { Environment } from '../../../../environments/environment.model';
  */
 @Injectable({ providedIn: 'root' })
 export class StatePropertiesService {
-  constructor(private store: Store, @Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(private store: Store) {}
 
   /**
    * Retrieve property from first set property of server state, system environment or environment.ts
@@ -29,7 +28,7 @@ export class StatePropertiesService {
       map(value => {
         if (value?.length) {
           return value;
-        } else if (isPlatformServer(this.platformId) && process.env[envKey]) {
+        } else if (SSR && process.env[envKey]) {
           return process.env[envKey];
         } else {
           return environment[envPropKey];

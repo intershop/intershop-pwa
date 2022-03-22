@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -15,14 +14,12 @@ export class CategoryCategoriesComponent implements OnInit, OnChanges {
 
   isCollapsed = false;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: string) {}
-
   ngOnInit() {
     this.isCollapsed = this.deviceType === 'mobile';
   }
 
   ngOnChanges() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (!SSR) {
       window.scroll(0, 0);
     }
     this.isCollapsed = this.deviceType === 'mobile';
@@ -30,7 +27,7 @@ export class CategoryCategoriesComponent implements OnInit, OnChanges {
 
   toggle() {
     this.isCollapsed = !this.isCollapsed;
-    if (isPlatformBrowser(this.platformId)) {
+    if (!SSR) {
       window.scroll(0, 0);
     }
   }

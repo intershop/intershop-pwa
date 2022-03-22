@@ -41,7 +41,23 @@ beforeEach(() => {
   });
 });
 
-afterEach(() => jest.clearAllTimers());
+let ssr = false;
+
+Object.defineProperty(global, 'SSR', {
+  get: () => ssr,
+});
+
+describe.onSSREnvironment = (name: string, fn?: jest.EmptyFunction) =>
+  // eslint-disable-next-line jest/valid-title
+  describe(name, () => {
+    beforeAll(() => {
+      ssr = true;
+    });
+    fn();
+    afterAll(() => {
+      ssr = false;
+    });
+  });
 
 Object.defineProperty(global, 'PRODUCTION_MODE', {
   get: () => false,

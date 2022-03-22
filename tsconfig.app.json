@@ -6,5 +6,5 @@
     "module": "ESNext"
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts"]
+  "include": ["src/typings.d.ts"]
 }
