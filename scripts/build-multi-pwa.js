@@ -2,7 +2,9 @@ const cp = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const configurations = (process.env.npm_config_active_themes || process.env.npm_package_config_active_themes)
+const configurations = (
+  process.env.npm_config_active_themes || JSON.parse(fs.readFileSync('package.json')).config['active-themes']
+)
   .split(',')
   .map((theme, index) => ({ theme, port: 4000 + index }));
 
