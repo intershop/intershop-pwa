@@ -28,9 +28,7 @@ export const sortTestbedMetadataArraysRule: TSESLint.RuleModule<string, []> = {
 
         const unorderedNodes = elements
           .map((current, index, list) => [current, list[index + 1]])
-          .find(([current, next]) => {
-            return next && getText(current).localeCompare(getText(next)) === 1;
-          });
+          .find(([current, next]) => next && getText(current).localeCompare(getText(next)) === 1);
 
         if (!unorderedNodes) return;
 

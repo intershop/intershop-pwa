@@ -35,9 +35,10 @@ export class PaymentPayoneInterceptor implements HttpInterceptor {
    * @returns The mapped payment method data
    */
   private mapPayoneBankGroupParameters(paymentMethod: PaymentMethodBaseData): PaymentMethodBaseData {
-    const options = paymentMethod.hostedPaymentPageParameters?.map(param => {
-      return { displayName: param.value, id: param.name };
-    });
+    const options = paymentMethod.hostedPaymentPageParameters?.map(param => ({
+      displayName: param.value,
+      id: param.name,
+    }));
 
     const parameterDefinitions = paymentMethod.parameterDefinitions?.map(data => {
       const constraints = data.constraints.required

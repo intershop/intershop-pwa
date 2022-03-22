@@ -2,7 +2,7 @@ const { exec } = require('child_process');
 var express = require('express');
 var app = express();
 
-app.get('/*', function (req, res) {
+app.get('/*', (req, res) => {
   const name = req.url.substring(1).replace(/\/.*/g, '');
   const path = req.url.replace(/^\/[^/]*/, '');
 
@@ -69,6 +69,6 @@ app.get('/*', function (req, res) {
   }
 });
 
-app.listen(3000, function () {
+app.listen(3000, () => {
   console.log('app listening');
 });

@@ -129,6 +129,7 @@
         ],
         "@typescript-eslint/no-var-requires": "error",
         "@typescript-eslint/prefer-optional-chain": "warn",
+        "arrow-body-style": ["warn", "as-needed"],
         "arrow-parens": ["warn", "as-needed"],
         "ban/ban": [
           "error",
@@ -782,6 +783,7 @@
           }
         ],
         "object-shorthand": "error",
+        "prefer-arrow-callback": "warn",
         "prefer-template": "warn",
         "prettier/prettier": "warn",
         "rxjs-angular/prefer-takeuntil": [
@@ -840,6 +842,8 @@
         "ecmaVersion": "latest"
       },
       "rules": {
+        "arrow-body-style": ["warn", "as-needed"],
+        "prefer-arrow-callback": "warn",
         "prettier/prettier": "warn"
       }
     },
@@ -855,6 +859,8 @@
         "sourceType": "module"
       },
       "rules": {
+        "arrow-body-style": ["warn", "as-needed"],
+        "prefer-arrow-callback": "warn",
         "prettier/prettier": "warn"
       }
     },
