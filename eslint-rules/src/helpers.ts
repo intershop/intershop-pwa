@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 /**
  * Checks whether the given class declaration is of type 'Component'

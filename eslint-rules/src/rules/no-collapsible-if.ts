@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 /**
  * Finds and merges collapsible if statements.

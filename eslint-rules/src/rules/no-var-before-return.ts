@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 function getElementBeforeReturnStatement(node: TSESTree.ReturnStatement): TSESTree.Statement {
   if (node.parent.type === AST_NODE_TYPES.BlockStatement) {
