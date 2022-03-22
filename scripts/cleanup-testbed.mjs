@@ -4,7 +4,7 @@ import glob from 'glob';
 import minimatch from 'minimatch';
 import runAll from 'npm-run-all';
 import { cpus } from 'os';
-import { basename, dirname, join } from 'path';
+import { basename, dirname, join, normalize } from 'path';
 import rimraf from 'rimraf';
 import { Node, Project } from 'ts-morph';
 
@@ -54,6 +54,7 @@ const jestPathPattern = jestProjects.substring(0, jestProjects.lastIndexOf('/') 
 
 function findTests(args) {
   return args
+    .map(f => normalize(f))
     .map(f => (f.endsWith('.spec.ts') ? f : f.replace(/\.(ts|html)$/, '.spec.ts')))
     .filter(f => minimatch(f, jestPathPattern) && existsSync(f) && statSync(f).isFile())
     .filter((v, i, a) => a.indexOf(v) === i);
@@ -73,13 +74,13 @@ if (args.length === 0) {
   console.log('searching for tests in project');
   files = glob.sync(jestPathPattern, { ignore: ['node_modules/**'] });
 } else if (args.length === 1) {
-  if (!minimatch(args[0], jestProjects)) {
+  if (!minimatch(normalize(args[0]), jestProjects)) {
     console.log('using', args[0], 'as git-rev');
     files = findTests(spawnSync('git', ['--no-pager', 'diff', args[0], '--name-only']).stdout.toString().split('\n'));
-  } else if (statSync(args[0]).isDirectory()) {
+  } else if (statSync(normalize(args[0])).isDirectory()) {
     console.log('using', args[0], 'as folder');
-    files = glob.sync(join(args[0], '**/*.spec.ts'));
-  } else if (statSync(args[0]).isFile() && args[0].endsWith('.spec.ts')) {
+    files = glob.sync(join(args[0], jestPattern));
+  } else if (statSync(normalize(args[0])).isFile() && args[0].endsWith('.spec.ts')) {
     files = args;
   } else {
     console.error('cannot interpret argument as git revision, folder or test file');
@@ -99,7 +100,7 @@ if (!files.length) {
     console.log(`Using ${cores} cores for testbed cleanup.`);
   }
 
-  const tasks = files.map(file => `cleanup-testbed ${file}`);
+  const tasks = files.map(file => `cleanup-testbed ${file.replace(/\\/g, '/')}`);
 
   runAll(tasks, {
     parallel: cores > 1,
