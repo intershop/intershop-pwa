@@ -1,5 +1,5 @@
 import { strings } from '@angular-devkit/core';
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { basename } from 'path';
 
 export const meaningfulDescribeInTestsRule: TSESLint.RuleModule<string, []> = {

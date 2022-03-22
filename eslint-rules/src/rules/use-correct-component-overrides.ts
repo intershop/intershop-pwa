@@ -1,6 +1,6 @@
 import { strings } from '@angular-devkit/core';
 import { Selectors } from '@angular-eslint/utils';
-import { ASTUtils, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { ASTUtils, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as fs from 'fs';
 import * as path from 'path';
 

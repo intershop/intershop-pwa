@@ -1,5 +1,5 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import { RuleTester, RunTests } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+import { TSESLint } from '@typescript-eslint/utils';
+import { RuleTester, RunTests } from '@typescript-eslint/utils/dist/ts-eslint';
 import { readdirSync } from 'fs';
 import { join, normalize } from 'path';
 import { throwError } from 'rxjs';

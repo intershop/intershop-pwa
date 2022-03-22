@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { useJestExtendedMatchersInTestsRule } from '../src/rules/use-jest-extended-matchers-in-tests';
 
