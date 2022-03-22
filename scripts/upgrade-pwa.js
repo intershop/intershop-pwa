@@ -3,8 +3,9 @@ const fs = require('fs');
 
 const pinned = {
   bootstrap: '4', // pinned
+  '@ng-bootstrap/ng-bootstrap': '11', // 12 requires Bootstrap 5
   '@types/node': '14', // LTS
-  stylelint: '14.2.0', // different versions are very instable in combination with prettier
+  '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
 };
 
 // <HELPERS>

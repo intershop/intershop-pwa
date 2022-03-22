@@ -29,7 +29,7 @@
         ></ish-lazy-product-add-to-wishlist>
         <a
           class="btn-tool"
-          [attr.data-testing-id]="'remove-pli-' + lineItem.id + '-element'"
+          [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="lineItem.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem()"

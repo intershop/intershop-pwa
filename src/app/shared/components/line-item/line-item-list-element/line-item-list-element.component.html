@@ -93,7 +93,7 @@
         <a
           class="btn-tool"
           *ngIf="!pli.isFreeGift && editable"
-          [attr.data-testing-id]="'remove-pli-' + pli.id + '-element'"
+          [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="pli.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem(pli.id)"
