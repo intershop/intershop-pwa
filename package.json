@@ -196,7 +196,7 @@
     "*": [
       "prettier --loglevel warn --write"
     ],
-    "*.{html,js}": [
+    "*.{html,js,mjs}": [
       "eslint --fix"
     ],
     "*.ts": [

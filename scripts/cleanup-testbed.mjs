@@ -1,38 +1,19 @@
 import { execSync, spawnSync } from 'child_process';
 import { existsSync, statSync } from 'fs';
 import glob from 'glob';
+import minimatch from 'minimatch';
+import runAll from 'npm-run-all';
 import { cpus } from 'os';
-import { basename, dirname, join } from 'path';
+import { basename, dirname, join, normalize } from 'path';
 import rimraf from 'rimraf';
 import { Node, Project } from 'ts-morph';
-import runAll from 'npm-run-all';
 
 /* eslint-disable no-console */
 
-function findTests(args) {
-  return args
-    .map(f => (f.endsWith('.spec.ts') ? f : f.replace(/\.(ts|html)$/, '.spec.ts')))
-    .filter(f => f.endsWith('.spec.ts') && existsSync(f) && statSync(f).isFile())
-    .filter((v, i, a) => a.indexOf(v) === i);
-}
-
-function isTestBedConfigure(node) {
-  return (
-    Node.isPropertyAccessExpression(node) &&
-    node.getExpression().getText() === 'TestBed' &&
-    node.getName() === 'configureTestingModule'
-  );
-}
-
 const args = process.argv.splice(2);
 
-let files;
-
-if (args.length === 0) {
-  files = glob.sync('{src,projects}/**/*.spec.ts');
-} else if (args.length === 1) {
-  if (args[0] === '--help') {
-    process.stderr.write(`  Utility for removing unused TestBed declarations.
+if (args.includes('--help')) {
+  process.stderr.write(`  Utility for removing unused TestBed declarations.
 
   Usage: npm run cleanup-testbed [git-rev|folder|file [file...]]
 
@@ -64,13 +45,42 @@ if (args.length === 0) {
     environment variable.
 
 `);
+  process.exit(0);
+}
 
-    process.exit(0);
-  } else if (!args[0].split(/[\\/]/g).includes('src')) {
+const jestProjects = '{src,projects}/**';
+const jestPattern = '**/*.spec.ts';
+const jestPathPattern = jestProjects.substring(0, jestProjects.lastIndexOf('/') + 1) + jestPattern;
+
+function findTests(args) {
+  return args
+    .map(f => normalize(f))
+    .map(f => (f.endsWith('.spec.ts') ? f : f.replace(/\.(ts|html)$/, '.spec.ts')))
+    .filter(f => minimatch(f, jestPathPattern) && existsSync(f) && statSync(f).isFile())
+    .filter((v, i, a) => a.indexOf(v) === i);
+}
+
+function isTestBedConfigure(node) {
+  return (
+    Node.isPropertyAccessExpression(node) &&
+    node.getExpression().getText() === 'TestBed' &&
+    node.getName() === 'configureTestingModule'
+  );
+}
+
+let files;
+
+if (args.length === 0) {
+  console.log('searching for tests in project');
+  files = glob.sync(jestPathPattern, { ignore: ['node_modules/**'] });
+} else if (args.length === 1) {
+  if (!minimatch(normalize(args[0]), jestProjects)) {
+    console.log('using', args[0], 'as git-rev');
     files = findTests(spawnSync('git', ['--no-pager', 'diff', args[0], '--name-only']).stdout.toString().split('\n'));
-  } else if (statSync(args[0]).isDirectory()) {
-    files = glob.sync(join(args[0], '**/*.spec.ts'));
-  } else if (statSync(args[0]).isFile() && args[0].endsWith('.spec.ts')) {
+  } else if (statSync(normalize(args[0])).isDirectory()) {
+    console.log('using', args[0], 'as folder');
+    files = glob.sync(join(args[0], jestPattern));
+  } else if (statSync(normalize(args[0])).isFile() && args[0].endsWith('.spec.ts')) {
     files = args;
   } else {
     console.error('cannot interpret argument as git revision, folder or test file');
@@ -90,7 +100,7 @@ if (!files.length) {
     console.log(`Using ${cores} cores for testbed cleanup.`);
   }
 
-  const tasks = files.map(file => `cleanup-testbed ${file}`);
+  const tasks = files.map(file => `cleanup-testbed ${file.replace(/\\/g, '/')}`);
 
   runAll(tasks, {
     parallel: cores > 1,

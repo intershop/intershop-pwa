@@ -861,6 +861,7 @@
       },
       "rules": {
         "arrow-body-style": ["warn", "as-needed"],
+        "ish-custom-rules/ordered-imports": "warn",
         "prefer-arrow-callback": "warn",
         "prettier/prettier": "warn"
       }
