@@ -8,6 +8,7 @@
     "directory": "e2e"
   },
   "scripts": {
+    "build": "tsc -p cypress/tsconfig.json --noEmit",
     "test": "node open-cypress"
   },
   "author": "",

@@ -22,6 +22,9 @@ Another change is the [Formly](https://formly.dev/) downgrade from v6 pre-releas
 After the updates the deprecated RxJS MapTo operators (`mapTo`, `mergeMapTo`, `switchMapTo`) were replaced [Deprecating MapTo variants](https://github.com/ReactiveX/rxjs/issues/6399).
 Linting will point out these issues in custom code that can than easily be replaced.
 
+The Intershop PWA now uses Node.js 16 LTS with a corresponding npm version >=8.0.0.
+With this new npm, calls using `npx npm-run-all` in CI have to be changed to `npm run exec npm-run-all`.
+
 # 2.0 to 2.1
 
 The recently viewed products functionality was moved into an extension.

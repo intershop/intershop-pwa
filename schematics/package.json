@@ -10,7 +10,7 @@
   "scripts": {
     "prebuild": "npm i --no-save json-schema-to-typescript && npm run generate:schemas",
     "build": "npm i --no-save typescript-transpile-only && tsc-transpile-only",
-    "test": "npx ../node_modules/.bin/jest -i",
+    "test": "npx jest -i",
     "generate:schemas": "node scripts/generate-schema-defs.js"
   },
   "keywords": [
