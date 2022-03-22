@@ -11,6 +11,6 @@ export function createTsMorphProject(host: Tree) {
       fileExistsSync: p => host.exists(p) || existsSync(p),
       readFileSync: (p, encoding) => (host.read(p) || readFileSync(p)).toString(encoding as BufferEncoding),
       readDirSync: dirPath => host.getDir(dirPath).subfiles.map(sf => sf as string),
-    } as FileSystemHost,
+    } as unknown as FileSystemHost,
   });
 }

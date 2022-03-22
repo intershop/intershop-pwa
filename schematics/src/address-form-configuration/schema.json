@@ -25,6 +25,14 @@
         "index": 0
       },
       "x-prompt": "What country code would you like to generate a configuration for?"
+    },
+    "module": {
+      "type": "string",
+      "visible": false
+    },
+    "artifactPath": {
+      "type": "string",
+      "visible": false
     }
   }
 }
