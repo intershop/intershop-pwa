@@ -1,16 +1,40 @@
-import { execSync } from 'child_process';
-import { writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import glob from 'glob';
 import { compileFromFile } from 'json-schema-to-typescript';
+import { dirname, join, normalize } from 'path';
 
-const schemaFiles = glob.sync('src/**/schema.json').map(file => ({
-  input: file,
-  output: file.replace(/\.json$/, '.d.ts'),
-}));
+const findProjectRoot = () => {
+  let projectRoot = normalize(process.cwd());
 
-await Promise.all(
-  schemaFiles.map(async schemaFile => {
-    const output = await compileFromFile(schemaFile.input, {
+  while (!existsSync(join(projectRoot, 'angular.json'))) {
+    if (dirname(projectRoot) === projectRoot) {
+      throw new Error('cannot determine project root');
+    }
+    projectRoot = dirname(projectRoot);
+  }
+  return projectRoot;
+};
+
+const prettierConfigPath = join(findProjectRoot(), '.prettierrc.json');
+let formatting;
+if (existsSync(prettierConfigPath)) {
+  const prettierConfig = JSON.parse(readFileSync(prettierConfigPath));
+  formatting = {
+    style: {
+      ...prettierConfig,
+      parser: 'typescript',
+    },
+  };
+} else {
+  formatting = {
+    format: false,
+  };
+}
+
+Promise.all(
+  glob.sync('src/**/schema.json').map(async schemaFile => {
+    const output = await compileFromFile(schemaFile, {
+      ...formatting,
       unknownAny: true,
       bannerComment: `/*
   THIS FILE IS GENERATED!
@@ -18,8 +42,6 @@ await Promise.all(
 */`,
     });
 
-    writeFileSync(schemaFile.output, output);
+    writeFileSync(schemaFile.replace(/\.json$/, '.d.ts'), output);
   })
 );
-
-execSync('npx eslint --fix ' + schemaFiles.map(f => f.output).join(' '));
