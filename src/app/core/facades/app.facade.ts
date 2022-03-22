@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
-import { filter, map, mapTo, sample, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
+import { filter, map, sample, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import {
   getAvailableLocales,
@@ -63,15 +63,15 @@ export class AppFacade {
   routingInProgress$ = merge(
     this.router.events.pipe(
       filter(event => event instanceof NavigationStart),
-      mapTo(true)
+      map(() => true)
     ),
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
-      mapTo(false)
+      map(() => false)
     ),
     this.router.events.pipe(
       filter(event => event instanceof NavigationCancel),
-      mapTo(false)
+      map(() => false)
     )
   ).pipe(startWith(true), shareReplay(1));
   path$ = this.store.pipe(select(selectPath));

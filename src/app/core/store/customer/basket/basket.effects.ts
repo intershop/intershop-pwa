@@ -5,19 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, combineLatest, from, iif, of } from 'rxjs';
-import {
-  concatMap,
-  concatMapTo,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  sample,
-  startWith,
-  switchMap,
-  take,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, sample, startWith, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -126,7 +114,7 @@ export class BasketEffects {
       withLatestFrom(this.store.select(getCurrentCurrency)),
       filter(([basket, currency]) => basket.purchaseCurrency !== currency),
       take(1),
-      mapTo(updateBasket({ update: { calculated: true } }))
+      map(() => updateBasket({ update: { calculated: true } }))
     )
   );
 
@@ -212,7 +200,10 @@ export class BasketEffects {
         (this.basketContainsAttribute(basket, attr.name)
           ? this.basketService.updateBasketAttribute(attr)
           : this.basketService.createBasketAttribute(attr)
-        ).pipe(concatMapTo([setBasketAttributeSuccess(), loadBasket()]), mapErrorToAction(setBasketAttributeFail))
+        ).pipe(
+          mergeMap(() => [setBasketAttributeSuccess(), loadBasket()]),
+          mapErrorToAction(setBasketAttributeFail)
+        )
       )
     )
   );
@@ -227,12 +218,10 @@ export class BasketEffects {
       withLatestFrom(this.store.pipe(select(getCurrentBasket))),
       mergeMap(([name, basket]) =>
         this.basketContainsAttribute(basket, name)
-          ? this.basketService
-              .deleteBasketAttribute(name)
-              .pipe(
-                concatMapTo([deleteBasketAttributeSuccess(), loadBasket()]),
-                mapErrorToAction(deleteBasketAttributeFail)
-              )
+          ? this.basketService.deleteBasketAttribute(name).pipe(
+              mergeMap(() => [deleteBasketAttributeSuccess(), loadBasket()]),
+              mapErrorToAction(deleteBasketAttributeFail)
+            )
           : [deleteBasketAttributeSuccess()]
       )
     )
@@ -297,7 +286,7 @@ export class BasketEffects {
       ofType(routerNavigatedAction),
       mapToRouterState(),
       filter(routerState => /^\/(basket|checkout.*)/.test(routerState.url) && !routerState.queryParams?.error),
-      concatMapTo([resetBasketErrors(), resetOrderErrors()])
+      mergeMap(() => [resetBasketErrors(), resetOrderErrors()])
     )
   );
 
@@ -309,12 +298,10 @@ export class BasketEffects {
       ofType(submitBasket),
       withLatestFrom(this.store.select(getCurrentBasketId)),
       concatMap(([, basketId]) =>
-        this.basketService
-          .createRequisition(basketId)
-          .pipe(
-            concatMapTo(from(this.router.navigate(['/checkout/receipt'])).pipe(mapTo(submitBasketSuccess()))),
-            mapErrorToAction(submitBasketFail)
-          )
+        this.basketService.createRequisition(basketId).pipe(
+          mergeMap(() => from(this.router.navigate(['/checkout/receipt'])).pipe(map(() => submitBasketSuccess()))),
+          mapErrorToAction(submitBasketFail)
+        )
       )
     )
   );

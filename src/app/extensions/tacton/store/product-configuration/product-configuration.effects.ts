@@ -10,9 +10,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
-  mapTo,
   switchMap,
-  switchMapTo,
   take,
   throttleTime,
   withLatestFrom,
@@ -116,7 +114,7 @@ export class ProductConfigurationEffects {
     this.actions$.pipe(
       ofType(routerNavigatedAction),
       filter(action => !action.payload.routerState.url.startsWith('/configure')),
-      mapTo(clearTactonConfiguration())
+      map(() => clearTactonConfiguration())
     )
   );
 
@@ -178,13 +176,13 @@ export class ProductConfigurationEffects {
   submitTactonConfiguration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitTactonConfiguration),
-      switchMapTo(this.store.pipe(select(getTactonProductForSelectedProduct), whenTruthy(), take(1))),
+      switchMap(() => this.store.pipe(select(getTactonProductForSelectedProduct), whenTruthy(), take(1))),
       switchMap(productPath =>
         of(productPath).pipe(withLatestFrom(this.store.pipe(select(getSavedTactonConfiguration(productPath)))))
       ),
       switchMap(([, savedConfiguration]) =>
         this.tactonSelfServiceApiService.submitConfiguration(savedConfiguration).pipe(
-          mapTo(
+          map(() =>
             submitTactonConfigurationSuccess({ productId: savedConfiguration.productId, user: savedConfiguration.user })
           ),
           mapErrorToAction(submitTactonConfigurationFail, {
@@ -212,7 +210,7 @@ export class ProductConfigurationEffects {
   submitTactonConfigurationErrorToast$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitTactonConfigurationFail),
-      mapTo(
+      map(() =>
         displayErrorMessage({
           message: 'tacton.submit.error.message',
         })
