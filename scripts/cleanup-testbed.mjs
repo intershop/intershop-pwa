@@ -1,18 +1,23 @@
 import { execSync, spawnSync } from 'child_process';
 import { existsSync, statSync } from 'fs';
 import glob from 'glob';
+import minimatch from 'minimatch';
+import runAll from 'npm-run-all';
 import { cpus } from 'os';
 import { basename, dirname, join } from 'path';
 import rimraf from 'rimraf';
 import { Node, Project } from 'ts-morph';
-import runAll from 'npm-run-all';
 
 /* eslint-disable no-console */
+
+const jestProjects = '{src,projects}/**';
+const jestPattern = '**/*.spec.ts';
+const jestPathPattern = jestProjects.substring(0, jestProjects.lastIndexOf('/') + 1) + jestPattern;
 
 function findTests(args) {
   return args
     .map(f => (f.endsWith('.spec.ts') ? f : f.replace(/\.(ts|html)$/, '.spec.ts')))
-    .filter(f => f.endsWith('.spec.ts') && existsSync(f) && statSync(f).isFile())
+    .filter(f => minimatch(f, jestPathPattern) && existsSync(f) && statSync(f).isFile())
     .filter((v, i, a) => a.indexOf(v) === i);
 }
 
@@ -29,7 +34,8 @@ const args = process.argv.splice(2);
 let files;
 
 if (args.length === 0) {
-  files = glob.sync('{src,projects}/**/*.spec.ts');
+  console.log('searching for tests in project');
+  files = glob.sync(jestPathPattern, { ignore: ['node_modules/**'] });
 } else if (args.length === 1) {
   if (args[0] === '--help') {
     process.stderr.write(`  Utility for removing unused TestBed declarations.
@@ -66,9 +72,11 @@ if (args.length === 0) {
 `);
 
     process.exit(0);
-  } else if (!args[0].split(/[\\/]/g).includes('src')) {
+  } else if (!minimatch(args[0], jestProjects)) {
+    console.log('using', args[0], 'as git-rev');
     files = findTests(spawnSync('git', ['--no-pager', 'diff', args[0], '--name-only']).stdout.toString().split('\n'));
   } else if (statSync(args[0]).isDirectory()) {
+    console.log('using', args[0], 'as folder');
     files = glob.sync(join(args[0], '**/*.spec.ts'));
   } else if (statSync(args[0]).isFile() && args[0].endsWith('.spec.ts')) {
     files = args;
