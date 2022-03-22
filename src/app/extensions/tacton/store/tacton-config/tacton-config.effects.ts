@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { getProductEntities, loadProductSuccess, productSpecialUpdate } from 'ish-core/store/shopping/products';
 import { mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -31,7 +31,11 @@ export class TactonConfigEffects {
   );
 
   loadConfigOnInit$ = createEffect(() =>
-    this.store.pipe(select(getTactonConfig), whenFalsy(), mapTo(loadTactonConfig()))
+    this.store.pipe(
+      select(getTactonConfig),
+      whenFalsy(),
+      map(() => loadTactonConfig())
+    )
   );
 
   setSpecialTactonProductOnProductLoad$ = createEffect(() =>

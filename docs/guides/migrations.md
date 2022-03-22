@@ -19,6 +19,9 @@ The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependen
 These updates required some internal webpack handling changes especially for the template overloading.
 Also some test adaptions where necessary, so is it now necessary to mock the `SwiperComponent`.
 Another change is the [Formly](https://formly.dev/) downgrade from v6 pre-release to v5 that still works with Angular 13 with a changed `ngcc` setting.
+After the updates the deprecated RxJS MapTo operators (`mapTo`, `mergeMapTo`, `switchMapTo`) were replaced [Deprecating MapTo variants](https://github.com/ReactiveX/rxjs/issues/6399).
+Linting will point out these issues in custom code that can than easily be replaced.
+
 # 2.0 to 2.1
 
 The recently viewed products functionality was moved into an extension.

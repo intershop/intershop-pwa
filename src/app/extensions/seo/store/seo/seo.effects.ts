@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Request } from 'express';
 import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
-import { distinctUntilChanged, filter, map, mapTo, switchMap, takeWhile, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -66,7 +66,10 @@ export class SeoEffects {
             // CATEGORY / FAMILY PAGE
             this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substring(1))),
             // DEFAULT
-            this.appRef.isStable.pipe(whenTruthy(), mapTo(this.doc.URL.replace(/[;?].*/g, ''))),
+            this.appRef.isStable.pipe(
+              whenTruthy(),
+              map(() => this.doc.URL.replace(/[;?].*/g, ''))
+            ),
           ])
         ),
         distinctUntilChanged(),

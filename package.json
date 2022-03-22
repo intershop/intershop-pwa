@@ -29,7 +29,7 @@
     "lint": "ng lint",
     "lint-hard": "node scripts/eslint-hard",
     "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --loglevel warn --write \"**/*.*\"",
-    "compile": "tsc --project tsconfig.all.json",
+    "compile": "tsc --project tsconfig.all.json --noEmit",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
     "clean-localizations": "node scripts/clean-up-localizations",
     "cleanup-testbed": "node scripts/cleanup-testbed.mjs",

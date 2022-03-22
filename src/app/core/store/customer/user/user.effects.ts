@@ -5,19 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import {
-  concatMap,
-  concatMapTo,
-  delay,
-  exhaustMap,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  sample,
-  takeWhile,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { concatMap, delay, exhaustMap, filter, map, mergeMap, sample, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -162,7 +150,7 @@ export class UserEffects {
       withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
       concatMap(([[payload, customer], user]) =>
         this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
-          mapTo(
+          map(() =>
             updateUserPasswordSuccess({
               successMessage: payload.successMessage || { message: 'account.profile.update_password.message' },
             })
@@ -213,7 +201,7 @@ export class UserEffects {
       ofType(routerNavigatedAction),
       withLatestFrom(this.store$.pipe(select(getUserError))),
       filter(([, error]) => !!error),
-      mapTo(userErrorReset())
+      map(() => userErrorReset())
     )
   );
 
@@ -222,7 +210,7 @@ export class UserEffects {
       ofType(loginUserSuccess),
       mapToPayload(),
       filter(payload => payload.customer.isBusinessCustomer),
-      mapTo(loadCompanyUser())
+      map(() => loadCompanyUser())
     )
   );
 
@@ -295,7 +283,7 @@ export class UserEffects {
       filter(([, customer]) => !!customer),
       concatMap(([id, customer]) =>
         this.paymentService.deleteUserPaymentInstrument(customer.customerNo, id).pipe(
-          concatMapTo([
+          mergeMap(() => [
             deleteUserPaymentInstrumentSuccess(),
             loadUserPaymentMethods(),
             displaySuccessMessage({

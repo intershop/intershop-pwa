@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
 import { getLoggedInCustomer, getLoggedInUser, loadCompanyUserSuccess } from 'ish-core/store/customer/user';
@@ -18,7 +18,10 @@ export class AuthorizationEffects {
   constructor(private actions$: Actions, private store: Store, private authorizationService: AuthorizationService) {}
 
   triggerLoading$ = createEffect(() =>
-    this.actions$.pipe(ofType(loadCompanyUserSuccess), mapTo(loadRolesAndPermissions()))
+    this.actions$.pipe(
+      ofType(loadCompanyUserSuccess),
+      map(() => loadRolesAndPermissions())
+    )
   );
 
   loadRolesAndPermissions$ = createEffect(() =>

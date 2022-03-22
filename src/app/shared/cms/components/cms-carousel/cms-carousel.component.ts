@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
-import { mapTo, take, takeUntil } from 'rxjs/operators';
+import { map, take, takeUntil } from 'rxjs/operators';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { arraySlices } from 'ish-core/utils/functions';
@@ -46,7 +46,7 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges, OnDestroy 
     this.appRef.isStable
       .pipe(
         whenTruthy(),
-        mapTo(this.pagelet.booleanParam('StartCycling') ? this.pagelet.numberParam('SlideInterval', 5000) : 0),
+        map(() => (this.pagelet.booleanParam('StartCycling') ? this.pagelet.numberParam('SlideInterval', 5000) : 0)),
         take(1),
         takeUntil(this.destroy$)
       )

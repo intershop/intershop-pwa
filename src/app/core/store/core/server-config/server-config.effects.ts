@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { identity } from 'rxjs';
-import { concatMap, first, map, mapTo, switchMapTo } from 'rxjs/operators';
+import { concatMap, first, map, switchMap } from 'rxjs/operators';
 
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { mapErrorToAction, whenFalsy } from 'ish-core/utils/operators';
@@ -28,9 +28,9 @@ export class ServerConfigEffects {
     this.actions$.pipe(
       ofType(routerNavigationAction),
       isPlatformServer(this.platformId) ? first() : identity,
-      switchMapTo(this.store.pipe(select(isServerConfigurationLoaded))),
+      switchMap(() => this.store.pipe(select(isServerConfigurationLoaded))),
       whenFalsy(),
-      mapTo(loadServerConfig())
+      map(() => loadServerConfig())
     )
   );
 

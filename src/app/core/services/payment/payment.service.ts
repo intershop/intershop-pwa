@@ -3,7 +3,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
-import { concatMap, first, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -127,7 +127,7 @@ export class PaymentService {
         .put('payments/open-tender', body, {
           headers: this.basketHeaders,
         })
-        .pipe(mapTo(paymentInstrument));
+        .pipe(map(() => paymentInstrument));
     }
   }
   /**
@@ -367,7 +367,9 @@ export class PaymentService {
       };
 
       // TODO: Replace this PUT request with PATCH request once it is fixed in ICM
-      return this.apiService.put(`customers/-/payments/${paymentInstrument.id}`, body).pipe(mapTo(paymentInstrument));
+      return this.apiService
+        .put(`customers/-/payments/${paymentInstrument.id}`, body)
+        .pipe(map(() => paymentInstrument));
     }
   }
 }

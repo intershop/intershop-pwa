@@ -13,7 +13,6 @@ import {
   map,
   sample,
   switchMap,
-  switchMapTo,
   takeWhile,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -136,7 +135,7 @@ export class SearchEffects {
   setSearchBreadcrumb$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofUrl(/^\/search.*/),
           select(selectRouteParam('searchTerm')),

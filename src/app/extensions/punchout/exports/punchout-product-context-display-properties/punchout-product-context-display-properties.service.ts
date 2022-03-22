@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, switchMapTo } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import {
   ExternalDisplayPropertiesProvider,
@@ -15,7 +15,7 @@ export class PunchoutProductContextDisplayPropertiesService implements ExternalD
 
   setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
     return product$.pipe(
-      switchMapTo(this.roleToggleService.hasRole(['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'])),
+      switchMap(() => this.roleToggleService.hasRole(['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'])),
       map(isPunchoutUser =>
         isPunchoutUser
           ? {

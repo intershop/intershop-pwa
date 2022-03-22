@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { intersection } from 'lodash-es';
 import { EMPTY, Observable, from } from 'rxjs';
-import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { BasketFeedbackView } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import {
@@ -58,7 +58,7 @@ export class BasketValidationEffects {
       ofType(startCheckout),
       withLatestFrom(this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
       filter(([, acc]) => !acc),
-      mapTo(continueCheckout({ targetStep: 1 }))
+      map(() => continueCheckout({ targetStep: 1 }))
     )
   );
 
