@@ -1,6 +1,7 @@
 import { banImportsFilePatternRule } from './rules/ban-imports-file-pattern';
 import { componentCreationTestRule } from './rules/component-creation-test';
 import { doNotUseThemeIdentifierRule } from './rules/do-not-use-theme-identifier';
+import { meaningfulDescribeInTestsRule } from './rules/meaningful-describe-in-tests';
 import { newlineBeforeRootMembersRule } from './rules/newline-before-root-members';
 import { noAssignmentToInputsRule } from './rules/no-assignment-to-inputs';
 import { noCollapsibleIfRule } from './rules/no-collapsible-if';
@@ -48,6 +49,7 @@ const rules = {
   'sort-testbed-metadata-arrays': sortTestbedMetadataArraysRule,
   'do-not-use-theme-identifier': doNotUseThemeIdentifierRule,
   'use-correct-component-overrides': useCorrectComponentOverridesRule,
+  'meaningful-describe-in-tests': meaningfulDescribeInTestsRule,
 };
 
 module.exports = {

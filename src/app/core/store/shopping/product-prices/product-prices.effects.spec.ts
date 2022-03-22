@@ -11,7 +11,7 @@ import { PricesService } from 'ish-core/services/prices/prices.service';
 import { loadProductPrices, loadProductPricesSuccess } from '.';
 import { ProductPricesEffects } from './product-prices.effects';
 
-describe('Products Effects', () => {
+describe('Product Prices Effects', () => {
   let actions$: Observable<Action>;
   let effects: ProductPricesEffects;
   let pricesServiceMock: PricesService;

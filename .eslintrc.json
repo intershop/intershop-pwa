@@ -344,6 +344,7 @@
         ],
         "ish-custom-rules/component-creation-test": "error",
         "ish-custom-rules/do-not-use-theme-identifier": "warn",
+        "ish-custom-rules/meaningful-describe-in-tests": "warn",
         "ish-custom-rules/newline-before-root-members": "warn",
         "ish-custom-rules/no-assignment-to-inputs": "error",
         "ish-custom-rules/no-collapsible-if": "warn",
