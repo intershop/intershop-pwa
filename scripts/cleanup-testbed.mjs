@@ -10,35 +10,10 @@ import { Node, Project } from 'ts-morph';
 
 /* eslint-disable no-console */
 
-const jestProjects = '{src,projects}/**';
-const jestPattern = '**/*.spec.ts';
-const jestPathPattern = jestProjects.substring(0, jestProjects.lastIndexOf('/') + 1) + jestPattern;
-
-function findTests(args) {
-  return args
-    .map(f => (f.endsWith('.spec.ts') ? f : f.replace(/\.(ts|html)$/, '.spec.ts')))
-    .filter(f => minimatch(f, jestPathPattern) && existsSync(f) && statSync(f).isFile())
-    .filter((v, i, a) => a.indexOf(v) === i);
-}
-
-function isTestBedConfigure(node) {
-  return (
-    Node.isPropertyAccessExpression(node) &&
-    node.getExpression().getText() === 'TestBed' &&
-    node.getName() === 'configureTestingModule'
-  );
-}
-
 const args = process.argv.splice(2);
 
-let files;
-
-if (args.length === 0) {
-  console.log('searching for tests in project');
-  files = glob.sync(jestPathPattern, { ignore: ['node_modules/**'] });
-} else if (args.length === 1) {
-  if (args[0] === '--help') {
-    process.stderr.write(`  Utility for removing unused TestBed declarations.
+if (args.includes('--help')) {
+  process.stderr.write(`  Utility for removing unused TestBed declarations.
 
   Usage: npm run cleanup-testbed [git-rev|folder|file [file...]]
 
@@ -70,9 +45,35 @@ if (args.length === 0) {
     environment variable.
 
 `);
+  process.exit(0);
+}
 
-    process.exit(0);
-  } else if (!minimatch(args[0], jestProjects)) {
+const jestProjects = '{src,projects}/**';
+const jestPattern = '**/*.spec.ts';
+const jestPathPattern = jestProjects.substring(0, jestProjects.lastIndexOf('/') + 1) + jestPattern;
+
+function findTests(args) {
+  return args
+    .map(f => (f.endsWith('.spec.ts') ? f : f.replace(/\.(ts|html)$/, '.spec.ts')))
+    .filter(f => minimatch(f, jestPathPattern) && existsSync(f) && statSync(f).isFile())
+    .filter((v, i, a) => a.indexOf(v) === i);
+}
+
+function isTestBedConfigure(node) {
+  return (
+    Node.isPropertyAccessExpression(node) &&
+    node.getExpression().getText() === 'TestBed' &&
+    node.getName() === 'configureTestingModule'
+  );
+}
+
+let files;
+
+if (args.length === 0) {
+  console.log('searching for tests in project');
+  files = glob.sync(jestPathPattern, { ignore: ['node_modules/**'] });
+} else if (args.length === 1) {
+  if (!minimatch(args[0], jestProjects)) {
     console.log('using', args[0], 'as git-rev');
     files = findTests(spawnSync('git', ['--no-pager', 'diff', args[0], '--name-only']).stdout.toString().split('\n'));
   } else if (statSync(args[0]).isDirectory()) {
