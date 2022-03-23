@@ -7,7 +7,7 @@
   (click)="toggleCompare()"
 >
   <ng-container *ngIf="displayType === 'icon'; else defaultButton">
-    <fa-icon [icon]="['fas', 'columns']"></fa-icon>
+    <fa-icon [icon]="['fas', 'balance-scale']"></fa-icon>
   </ng-container>
 
   <ng-template #defaultButton> {{ 'product.compare.link' | translate }} </ng-template>
