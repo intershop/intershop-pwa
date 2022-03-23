@@ -48,9 +48,11 @@ describe('Quickorder Add Products Form Component', () => {
 
   it('should display form with add products configuration', () => {
     fixture.detectChanges();
-    expect(element.querySelector('formly-field').querySelectorAll('formly-field')).toMatchInlineSnapshot(`
+    expect(element.querySelectorAll('formly-field')).toMatchInlineSnapshot(`
       NodeList [
-        <formly-field><ish-quickorder-repeat-field></ish-quickorder-repeat-field></formly-field>,
+        <formly-field hide-deprecation=""
+        ><ish-quickorder-repeat-field></ish-quickorder-repeat-field
+      ></formly-field>,
       ]
     `);
   });
