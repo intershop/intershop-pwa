@@ -18,6 +18,7 @@ Run `npm run cleanup-testbed -- --help` for more detailed options.
 The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependencies updates.
 These updates required some internal webpack handling changes especially for the template overloading.
 Also some test adaptions where necessary, so is it now necessary to mock the `SwiperComponent`.
+Another change is the [Formly](https://formly.dev/) downgrade from v6 pre-release to v5 that still works with Angular 13 with a changed `ngcc` setting.
 # 2.0 to 2.1
 
 The recently viewed products functionality was moved into an extension.
