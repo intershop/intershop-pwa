@@ -60,7 +60,7 @@ describe('Product Compare Status Component', () => {
         class="compare-status item-count-container"
         ng-reflect-router-link="/compare"
         href="/compare"
-        ><fa-icon class="header-icon" ng-reflect-icon="fas,columns"></fa-icon
+        ><fa-icon class="header-icon" ng-reflect-icon="fas,balance-scale"></fa-icon
         ><span data-testing-id="product-compare-count" class="badge badge-pill">123456789</span
         ><span class="d-none d-md-inline">product.compare.link</span></a
       >

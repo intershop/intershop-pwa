@@ -69,9 +69,9 @@ describe('Product Detail Actions Component', () => {
     it(`should show "compare" link when product information is available`, () => {
       translate.set('product.compare.link', 'Compare');
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,columns"]').nextElementSibling.textContent).toContain(
-        'Compare'
-      );
+      expect(
+        element.querySelector('fa-icon[ng-reflect-icon="fas,balance-scale"]').nextElementSibling.textContent
+      ).toContain('Compare');
     });
 
     it('should not show "compare" link when product information is available and productMaster = true', () => {
