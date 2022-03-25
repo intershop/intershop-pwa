@@ -7,8 +7,8 @@
     "intershop"
   ],
   "engines": {
-    "node": ">=14.15.0",
-    "npm": ">=6.14.8"
+    "node": ">=16.13.0",
+    "npm": ">=8.1.0"
   },
   "private": true,
   "scripts": {
@@ -24,7 +24,7 @@
     "test": "jest --ci",
     "test:watch": "jest --watch -i",
     "test:eslint-rules": "npx ts-node eslint-rules/tests/_execute-tests.ts",
-    "test:schematics": "cd schematics && npm run test",
+    "test:schematics": "cd schematics && npm run test -- --ci",
     "e2e": "cd e2e && npm install && node open-cypress",
     "lint": "ng lint",
     "lint-hard": "node scripts/eslint-hard",
@@ -131,7 +131,7 @@
     "@types/google.maps": "^3.48.3",
     "@types/jest": "^27.4.1",
     "@types/lodash-es": "^4.17.6",
-    "@types/node": "^14.18.12",
+    "@types/node": "^16.11.26",
     "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "5.16.0",
     "@typescript-eslint/parser": "5.16.0",

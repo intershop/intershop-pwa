@@ -50,7 +50,7 @@ grep '"serviceWorker": false' angular.json
 
 export NODE_OPTIONS=--max_old_space_size=8192
 
-npx npm-run-all format "lint -- --fix" compile build
+npm exec npm-run-all format "lint -- --fix" compile build
 
 nohup bash -c "npm run serve &"
 npx wait-on --verbose --interval 1000 --delay 1000 --timeout 30000 tcp:4200

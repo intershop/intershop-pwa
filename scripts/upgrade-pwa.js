@@ -4,7 +4,7 @@ const fs = require('fs');
 const pinned = {
   bootstrap: '4', // pinned
   '@ng-bootstrap/ng-bootstrap': '11', // 12 requires Bootstrap 5
-  '@types/node': '14', // LTS
+  '@types/node': '16', // LTS
   '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
 };
 

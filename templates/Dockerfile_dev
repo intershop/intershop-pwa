@@ -1,4 +1,4 @@
-FROM node:14 as buildstep
+FROM node:16 as buildstep
 ENV CI=true
 COPY . /workspace/
 WORKDIR /workspace

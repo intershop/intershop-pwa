@@ -1,5 +1,5 @@
 # synchronize-marker:docker-cache-share:begin
-FROM node:14-alpine as buildstep
+FROM node:16-alpine as buildstep
 ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
@@ -20,14 +20,14 @@ COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=
-RUN if [ ! -z "${activeThemes}" ]; then npm config set intershop-pwa:active-themes="${activeThemes}"; fi
+RUN if [ ! -z "${activeThemes}" ]; then npm config set active-themes="${activeThemes}"; fi
 RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 COPY tsconfig.server.json server.ts /workspace/
 RUN npm run build:multi server
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
-FROM node:14-alpine
+FROM node:16-alpine
 COPY --from=buildstep /workspace/dist /dist
 RUN cd dist && npm install
 ARG displayVersion=

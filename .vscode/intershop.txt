@@ -51,6 +51,7 @@ Mockito
 PWA's
 RxJS
 Grafana
+ngcc
 NgRx
 NgSW
 Formly
