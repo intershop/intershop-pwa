@@ -91,28 +91,28 @@
 /projects/requisition-management/src/app/exports/lazy**
 
 # from src/app/extensions/order-templates/exports/.gitignore
-/src/app/extensions/order-templates/exports/*/**/*.*
+/src/app/extensions/order-templates/exports/**/lazy*
 
 # from src/app/extensions/punchout/exports/.gitignore
-/src/app/extensions/punchout/exports/*/**/lazy*.*
+/src/app/extensions/punchout/exports/**/lazy*
 
 # from src/app/extensions/quickorder/exports/.gitignore
-/src/app/extensions/quickorder/exports/*/**/*.*
+/src/app/extensions/quickorder/exports/**/lazy*
 
 # from src/app/extensions/quoting/exports/.gitignore
-/src/app/extensions/quoting/exports/*/**/*.*
+/src/app/extensions/quoting/exports/**/lazy*
 
 # from src/app/extensions/recently/exports/.gitignore
-/src/app/extensions/recently/exports/*/**/*.*
+/src/app/extensions/recently/exports/**/lazy*
 
 # from src/app/extensions/tacton/exports/.gitignore
-/src/app/extensions/tacton/exports/*/**/lazy*.*
+/src/app/extensions/tacton/exports/**/lazy*
 
 # from src/app/extensions/wishlists/exports/.gitignore
-/src/app/extensions/wishlists/exports/*/**/*.*
+/src/app/extensions/wishlists/exports/**/lazy*
 
 # from schematics/src/extension/files/__name@dasherize__/exports/.gitignore
-/schematics/src/extension/files/__name@dasherize__/exports/*/**/*.*
+/schematics/src/extension/files/__name@dasherize__/exports/**/lazy*
 
 # The content between these markers is generated.
 # It can be synchronized using 'npm run update-dockerignore'
