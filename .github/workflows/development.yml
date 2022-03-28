@@ -170,6 +170,3 @@ jobs:
 
       - name: Build Nginx Image
         run: docker-compose build nginx
-
-      - name: Test Nginx Configuration
-        run: docker-compose run --rm -- nginx /usr/local/nginx/sbin/nginx -c /etc/nginx/nginx.conf -t
