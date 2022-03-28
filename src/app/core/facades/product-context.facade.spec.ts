@@ -34,8 +34,6 @@ describe('Product Context Facade', () => {
 
   beforeEach(() => {
     shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.productLinks$(anything())).thenReturn(of({}));
-    when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
     when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
     when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
     when(shoppingFacade.inCompareProducts$(anything())).thenReturn(of(false));
@@ -312,6 +310,10 @@ describe('Product Context Facade', () => {
     });
 
     describe('lazy property handling', () => {
+      beforeEach(() => {
+        when(shoppingFacade.productLinks$(anything())).thenReturn(of({}));
+      });
+
       it('should not load product links until subscription', done => {
         verify(shoppingFacade.productLinks$(anything())).never();
 
@@ -739,7 +741,6 @@ describe('Product Context Facade', () => {
       someOther$ = new BehaviorSubject(false);
 
       shoppingFacade = mock(ShoppingFacade);
-      when(shoppingFacade.productParts$(anything())).thenReturn(EMPTY);
       when(shoppingFacade.category$(anything())).thenReturn(EMPTY);
       when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
       when(shoppingFacade.inCompareProducts$(anything())).thenReturn(of(undefined));

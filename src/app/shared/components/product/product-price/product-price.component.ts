@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { Price, PriceHelper } from 'ish-core/models/price/price.model';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { Price, PriceHelper, Pricing } from 'ish-core/models/price/price.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
@@ -26,7 +25,7 @@ export class ProductPriceComponent implements OnInit {
       priceSavings: Price;
       lowerPrice: Price;
       upperPrice: Price;
-    } & Pick<ProductView, 'salePrice' | 'listPrice' | 'scaledPrices'>
+    } & Pricing
   >;
 
   constructor(private context: ProductContextFacade) {}
@@ -37,14 +36,12 @@ export class ProductPriceComponent implements OnInit {
       .select('product')
       .pipe(map(product => ProductHelper.isMasterProduct(product) || ProductHelper.isRetailSet(product)));
 
-    this.data$ = this.context.select('product').pipe(
-      map(product => ({
-        salePrice: product.salePrice,
-        listPrice: product.listPrice,
-        scaledPrices: product.scaledPrices,
-        isListPriceGreaterThanSalePrice: product.listPrice?.value > product.salePrice?.value,
-        isListPriceLessThanSalePrice: product.listPrice?.value < product.salePrice?.value,
-        priceSavings: product.listPrice && product.salePrice && PriceHelper.diff(product.listPrice, product.salePrice),
+    this.data$ = combineLatest([this.context.select('product'), this.context.select('prices')]).pipe(
+      map(([product, prices]) => ({
+        ...prices,
+        isListPriceGreaterThanSalePrice: prices.listPrice?.value > prices.salePrice?.value,
+        isListPriceLessThanSalePrice: prices.listPrice?.value < prices.salePrice?.value,
+        priceSavings: prices.listPrice && prices.salePrice && PriceHelper.diff(prices.listPrice, prices.salePrice),
         lowerPrice:
           (ProductHelper.isMasterProduct(product) || ProductHelper.isRetailSet(product)) && product.minSalePrice,
         upperPrice: ProductHelper.isMasterProduct(product)

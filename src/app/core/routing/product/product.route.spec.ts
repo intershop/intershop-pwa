@@ -60,7 +60,7 @@ describe('Product Route', () => {
 
   describe('without category', () => {
     describe('without product name', () => {
-      const product = createProductView({ sku: 'A' } as Product, undefined, undefined);
+      const product = createProductView({ sku: 'A' } as Product);
       it('should create simple link when just sku is supplied', () => {
         expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/skuA"`);
       });
@@ -75,7 +75,7 @@ describe('Product Route', () => {
     });
 
     describe('with product name', () => {
-      const product = createProductView({ sku: 'A', name: 'some example name' } as Product, undefined, undefined);
+      const product = createProductView({ sku: 'A', name: 'some example name' } as Product);
 
       it('should include slug when product has a name', () => {
         expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/some-example-name-skuA"`);
@@ -96,20 +96,16 @@ describe('Product Route', () => {
     });
 
     describe('variation product', () => {
-      const product = createProductView(
-        {
-          sku: 'A',
-          name: 'some example name',
-          type: 'VariationProduct',
-          variableVariationAttributes: [
-            { value: 'SSD - (HDD)' },
-            { value: 'Cobalt Blue & Yellow' },
-            { value: '500 r/min' },
-          ],
-        } as VariationProduct,
-        undefined,
-        undefined
-      );
+      const product = createProductView({
+        sku: 'A',
+        name: 'some example name',
+        type: 'VariationProduct',
+        variableVariationAttributes: [
+          { value: 'SSD - (HDD)' },
+          { value: 'Cobalt Blue & Yellow' },
+          { value: '500 r/min' },
+        ],
+      } as VariationProduct);
 
       it('should include attribute values in slug when product is a variation', () => {
         expect(generateProductUrl(product)).toMatchInlineSnapshot(
@@ -124,7 +120,7 @@ describe('Product Route', () => {
 
     describe('as context', () => {
       describe('without product name', () => {
-        const product = createProductView({ sku: 'A' } as Product, undefined, undefined, specials);
+        const product = createProductView({ sku: 'A' } as Product, specials);
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(`"/Spezielles/skuA-catSpecials"`);
@@ -141,12 +137,7 @@ describe('Product Route', () => {
       });
 
       describe('with product name', () => {
-        const product = createProductView(
-          { sku: 'A', name: 'Das neue Surface Pro 7' } as Product,
-          undefined,
-          undefined,
-          specials
-        );
+        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, specials);
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
@@ -167,7 +158,7 @@ describe('Product Route', () => {
 
     describe('as default category', () => {
       describe('without product name', () => {
-        const product = createProductView({ sku: 'A' } as Product, undefined, undefined, specials);
+        const product = createProductView({ sku: 'A' } as Product, specials);
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/Spezielles/skuA-catSpecials"`);
@@ -184,12 +175,7 @@ describe('Product Route', () => {
       });
 
       describe('with product name', () => {
-        const product = createProductView(
-          { sku: 'A', name: 'Das neue Surface Pro 7' } as Product,
-          undefined,
-          undefined,
-          specials
-        );
+        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, specials);
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
@@ -215,7 +201,7 @@ describe('Product Route', () => {
 
     describe('as context', () => {
       describe('without product name', () => {
-        const product = createProductView({ sku: 'A' } as Product, undefined, undefined, specials);
+        const product = createProductView({ sku: 'A' } as Product, specials);
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
@@ -234,12 +220,7 @@ describe('Product Route', () => {
       });
 
       describe('with product name', () => {
-        const product = createProductView(
-          { sku: 'A', name: 'Das neue Surface Pro 7' } as Product,
-          undefined,
-          undefined,
-          specials
-        );
+        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, specials);
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
@@ -260,7 +241,7 @@ describe('Product Route', () => {
 
     describe('as default category', () => {
       describe('without product name', () => {
-        const product = createProductView({ sku: 'A' } as Product, undefined, undefined, limitedOffer);
+        const product = createProductView({ sku: 'A' } as Product, limitedOffer);
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
@@ -279,12 +260,7 @@ describe('Product Route', () => {
       });
 
       describe('with product name', () => {
-        const product = createProductView(
-          { sku: 'A', name: 'Das neue Surface Pro 7' } as Product,
-          undefined,
-          undefined,
-          limitedOffer
-        );
+        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, limitedOffer);
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
@@ -320,7 +296,7 @@ describe('Product Route', () => {
   describe('additional URL params', () => {
     it('should ignore additional URL params when supplied', () => {
       const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
-      const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, undefined, undefined);
+      const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product);
 
       expect(matchProductRoute(wrap(`${generateProductUrl(product, category)};lang=de_DE`))).toMatchInlineSnapshot(`
         Object {

@@ -75,7 +75,7 @@ describe('Product Page Component', () => {
   it('should display product page components when product is available', () => {
     const product = { sku: 'dummy', completenessLevel: ProductCompletenessLevel.Detail } as Product;
     const category = { uniqueId: 'A', categoryPath: ['A'] } as Category;
-    when(context.select('product')).thenReturn(of(createProductView(product, undefined, undefined, category)));
+    when(context.select('product')).thenReturn(of(createProductView(product, category)));
 
     fixture.detectChanges();
 

@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Category } from 'ish-core/models/category/category.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadCategorySuccess } from 'ish-core/store/shopping/categories';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -43,7 +42,6 @@ describe('Products Selectors', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig']),
-        CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
         ShoppingStoreModule.forTesting('products', 'categories', 'productPrices'),
       ],
@@ -114,9 +112,6 @@ describe('Products Selectors', () => {
           Object {
             "defaultCategory": undefined,
             "failed": true,
-            "listPrice": undefined,
-            "salePrice": undefined,
-            "scaledPrices": undefined,
             "sku": "invalid",
           }
         `);
@@ -324,9 +319,6 @@ describe('Products Selectors', () => {
           Object {
             "defaultCategory": undefined,
             "defaultVariationSKU": "VAR",
-            "listPrice": undefined,
-            "salePrice": undefined,
-            "scaledPrices": undefined,
             "sku": "SKU",
             "type": "VariationProductMaster",
             "variations": Array [
