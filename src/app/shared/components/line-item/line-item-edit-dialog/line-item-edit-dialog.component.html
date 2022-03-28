@@ -13,7 +13,7 @@
       <ish-product-id></ish-product-id>
 
       <!-- price -->
-      <div class="current-price">{{ variation.salePrice | ishPrice }}</div>
+      <div class="current-price">{{ variationSalePrice$ | async | ishPrice }}</div>
 
       <!-- Availability -->
       <ish-product-inventory></ish-product-inventory>

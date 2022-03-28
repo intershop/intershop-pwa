@@ -1,7 +1,4 @@
 import { Category } from 'ish-core/models/category/category.model';
-import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
-import { Price, ScaledPrice } from 'ish-core/models/price/price.model';
-import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { Product, VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 
 export type ProductView = Partial<SimpleProductView> &
@@ -10,9 +7,6 @@ export type ProductView = Partial<SimpleProductView> &
 
 interface SimpleProductView extends Product {
   defaultCategory: Category;
-  listPrice: Price;
-  salePrice: Price;
-  scaledPrices: ScaledPrice[];
 }
 
 interface VariationProductView extends VariationProduct, SimpleProductView {
@@ -27,21 +21,11 @@ interface VariationProductMasterView extends VariationProductMaster, SimpleProdu
   defaultVariationSKU: string;
 }
 
-export function createProductView(
-  product: Product,
-  productPrice: ProductPriceDetails,
-  priceDisplayType: 'gross' | 'net',
-  defaultCategory?: Category
-): SimpleProductView {
+export function createProductView(product: Product, defaultCategory?: Category): SimpleProductView {
   return (
     product && {
       ...product,
       defaultCategory,
-      salePrice: PriceItemHelper.selectType(productPrice?.prices?.salePrice, priceDisplayType),
-      listPrice: PriceItemHelper.selectType(productPrice?.prices?.listPrice, priceDisplayType),
-      scaledPrices: productPrice?.prices?.scaledPrices?.map(priceItem =>
-        PriceItemHelper.selectScaledPriceType(priceItem, priceDisplayType)
-      ),
     }
   );
 }
@@ -50,14 +34,12 @@ export function createVariationProductMasterView(
   product: VariationProductMaster,
   defaultVariationSKU: string,
   variations: VariationProduct[],
-  productPrice: ProductPriceDetails,
-  priceDisplayType: 'gross' | 'net',
   defaultCategory?: Category
 ): VariationProductMasterView {
   return (
     product &&
     variations?.length && {
-      ...createProductView(product, productPrice, priceDisplayType, defaultCategory),
+      ...createProductView(product, defaultCategory),
       type: 'VariationProductMaster',
       defaultVariationSKU,
       variations,
@@ -69,15 +51,13 @@ export function createVariationProductView(
   product: VariationProduct,
   variations: VariationProduct[],
   productMaster: VariationProductMaster,
-  productPrice: ProductPriceDetails,
-  priceDisplayType: 'gross' | 'net',
   defaultCategory?: Category
 ): VariationProductView {
   return (
     product &&
     productMaster &&
     variations?.length && {
-      ...createProductView(product, productPrice, priceDisplayType, defaultCategory),
+      ...createProductView(product, defaultCategory),
       type: 'VariationProduct',
       variations,
       productMaster,
