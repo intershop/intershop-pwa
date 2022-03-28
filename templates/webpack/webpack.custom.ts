@@ -1,5 +1,6 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import * as fs from 'fs';
+import { PluginOptions as MiniCssExtractPluginOptions } from 'mini-css-extract-plugin';
 import { basename, join, resolve } from 'path';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
@@ -210,6 +211,19 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
           return 'common';
         },
       };
+
+      // prefix styles with theme
+      const miniCssExtractPlugin = config.plugins.find(
+        (p: WebpackPluginInstance) => p.constructor?.name === 'MiniCssExtractPlugin'
+      ) as WebpackPluginInstance & { options: MiniCssExtractPluginOptions };
+      if (miniCssExtractPlugin) {
+        if (typeof miniCssExtractPlugin.options.filename === 'string') {
+          miniCssExtractPlugin.options.filename = `${theme}-${miniCssExtractPlugin.options.filename}`;
+        }
+        if (typeof miniCssExtractPlugin.options.chunkFilename === 'string') {
+          miniCssExtractPlugin.options.chunkFilename = `${theme}-${miniCssExtractPlugin.options.chunkFilename}`;
+        }
+      }
     }
 
     if (!process.env.TESTING) {

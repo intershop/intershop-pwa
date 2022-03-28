@@ -22,7 +22,8 @@ export function setDeployUrlInFile(deployUrl: string, path: string, input: strin
       newInput = newInput.replace(assetsRegex, (...args) => `"${deployUrl}${args[1]}"`);
     }
 
-    const javascriptRegex = /"(DEPLOY_URL_PLACEHOLDER|\/)?((runtime|vendor|main|polyfills|styles)[^"]*\.(js|css))"/g;
+    const javascriptRegex =
+      /"(DEPLOY_URL_PLACEHOLDER|\/)?((runtime|vendor|main|polyfills|[\w-]*styles)[^"]*\.(js|css))"/g;
     if (javascriptRegex.test(newInput)) {
       newInput = newInput.replace(javascriptRegex, (...args) => `"${deployUrl}${args[2]}"`);
     }
