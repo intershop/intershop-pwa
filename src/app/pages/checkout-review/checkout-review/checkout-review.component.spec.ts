@@ -14,6 +14,7 @@ import { ContentIncludeComponent } from 'ish-shared/cms/components/content-inclu
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
@@ -37,6 +38,7 @@ describe('Checkout Review Component', () => {
         MockComponent(AddressComponent),
         MockComponent(BasketApprovalInfoComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketShippingMethodComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),

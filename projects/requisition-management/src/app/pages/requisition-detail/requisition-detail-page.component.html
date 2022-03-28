@@ -70,7 +70,7 @@
 
       <!-- Shipping Method -->
       <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
-        <p>{{ requisition.commonShippingMethod?.name }}</p>
+        <ish-basket-shipping-method [data]="requisition"></ish-basket-shipping-method>
       </ish-info-box>
     </div>
 

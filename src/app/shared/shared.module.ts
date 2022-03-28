@@ -59,11 +59,13 @@ import { BasketApprovalInfoComponent } from './components/basket/basket-approval
 import { BasketBuyerComponent } from './components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostCenterSelectionComponent } from './components/basket/basket-cost-center-selection/basket-cost-center-selection.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketDesiredDeliveryDateComponent } from './components/basket/basket-desired-delivery-date/basket-desired-delivery-date.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
 import { BasketOrderReferenceComponent } from './components/basket/basket-order-reference/basket-order-reference.component';
 import { BasketPromotionCodeComponent } from './components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketPromotionComponent } from './components/basket/basket-promotion/basket-promotion.component';
+import { BasketShippingMethodComponent } from './components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationItemsComponent } from './components/basket/basket-validation-items/basket-validation-items.component';
 import { BasketValidationProductsComponent } from './components/basket/basket-validation-products/basket-validation-products.component';
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
@@ -225,6 +227,7 @@ const exportedComponents = [
   BasketBuyerComponent,
   BasketCostCenterSelectionComponent,
   BasketCostSummaryComponent,
+  BasketDesiredDeliveryDateComponent,
   BasketInfoComponent,
   BasketInvoiceAddressWidgetComponent,
   BasketItemsSummaryComponent,
@@ -232,6 +235,7 @@ const exportedComponents = [
   BasketPromotionCodeComponent,
   BasketPromotionComponent,
   BasketShippingAddressWidgetComponent,
+  BasketShippingMethodComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
   ConfirmLeaveModalComponent,

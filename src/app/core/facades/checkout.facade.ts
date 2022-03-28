@@ -136,6 +136,26 @@ export class CheckoutFacade {
 
   // SHIPPING
 
+  isDesiredDeliveryDateEnabled$ = this.store.pipe(
+    select(getServerConfigParameter<boolean>('shipping.desiredDeliveryDate'))
+  );
+
+  isDesiredDeliveryExcludeSaturday$ = this.store.pipe(
+    select(getServerConfigParameter<boolean>('shipping.deliveryExcludeSaturday'))
+  );
+
+  isDesiredDeliveryExcludeSunday$ = this.store.pipe(
+    select(getServerConfigParameter<boolean>('shipping.deliveryExcludeSunday'))
+  );
+
+  desiredDeliveryDaysMax$ = this.store.pipe(
+    select(getServerConfigParameter<number>('shipping.desiredDeliveryDaysMax'))
+  );
+
+  desiredDeliveryDaysMin$ = this.store.pipe(
+    select(getServerConfigParameter<number>('shipping.desiredDeliveryDaysMin'))
+  );
+
   eligibleShippingMethods$() {
     return this.basket$.pipe(
       whenTruthy(),

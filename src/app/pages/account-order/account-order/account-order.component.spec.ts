@@ -8,6 +8,7 @@ import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
@@ -24,6 +25,7 @@ describe('Account Order Component', () => {
         AccountOrderComponent,
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketShippingMethodComponent),
         MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
