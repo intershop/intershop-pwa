@@ -4,7 +4,10 @@
     *ngIf="showValidationIcons()"
     [field]="field"
     [showError]="showError"
-    [ngClass]="{ 'validation-offset': field.type === 'ish-select-field' }"
+    [ngClass]="{
+      'validation-offset': field.type === 'ish-select-field',
+      'validation-offset-date-picker': field.type === 'ish-date-picker-field'
+    }"
   ></ish-validation-icons>
   <ng-container *ngIf="showError" class="invalid-feedback d-block">
     <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>

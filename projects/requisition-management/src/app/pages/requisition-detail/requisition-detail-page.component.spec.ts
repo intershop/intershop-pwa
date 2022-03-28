@@ -10,6 +10,7 @@ import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 
@@ -35,6 +36,7 @@ describe('Requisition Detail Page Component', () => {
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketShippingMethodComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
@@ -81,6 +83,7 @@ describe('Requisition Detail Page Component', () => {
         "ish-info-box",
         "ish-address",
         "ish-info-box",
+        "ish-basket-shipping-method",
         "ish-basket-cost-summary",
         "ish-requisition-reject-dialog",
       ]

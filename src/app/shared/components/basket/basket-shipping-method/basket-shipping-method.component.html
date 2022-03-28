@@ -1,0 +1,7 @@
+<ng-container *ngIf="data">
+  <p data-testing-id="shippingMethodName">{{ data.commonShippingMethod?.name }}</p>
+  <div *ngIf="desiredDeliveryDate">
+    <strong>{{ 'checkout.widget.shipping_method.desired_delivery_date' | translate }}</strong>
+    <p data-testing-id="desiredDeliveryDate">{{ desiredDeliveryDate | ishDate }}</p>
+  </div>
+</ng-container>

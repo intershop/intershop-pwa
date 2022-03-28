@@ -60,10 +60,14 @@ class TextareaFieldComponent extends FieldType {}
 @Component({ template: `<ng-template #fieldComponent> </ng-template>` })
 class DummyWrapperComponent extends FieldWrapper {}
 
+@Component({ template: 'DatePickerFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
+class DatePickerFieldComponent extends FieldType {}
+
 @NgModule({
   declarations: [
     CaptchaFieldComponent,
     CheckboxFieldComponent,
+    DatePickerFieldComponent,
     DummyWrapperComponent,
     EmailFieldComponent,
     FieldsetFieldComponent,
@@ -121,6 +125,7 @@ class DummyWrapperComponent extends FieldWrapper {}
         },
         { name: 'ish-radio-field', component: RadioFieldComponent },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
+        { name: 'ish-date-picker-field', component: DatePickerFieldComponent },
       ],
       wrappers: [
         { name: 'form-field-horizontal', component: DummyWrapperComponent },
