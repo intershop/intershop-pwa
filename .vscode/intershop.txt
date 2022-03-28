@@ -198,3 +198,5 @@ foobars
 asdf
 qwertz
 appr
+
+logformat
