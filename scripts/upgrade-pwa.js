@@ -126,7 +126,7 @@ execute(
   'npx rimraf package-lock.json ' +
     (process.platform === 'win32' ? '\\"node_modules/!(rimraf|.bin)\\"' : 'node_modules')
 );
-execute('npm install');
+execute('npm install --force');
 commit('chore: synchronize package-lock.json');
 
 // set pinned version in package.json with used values

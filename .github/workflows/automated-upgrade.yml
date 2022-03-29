@@ -1,0 +1,50 @@
+name: AutomatedUpgrade
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - chore/automated-upgrades
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  AutomatedUpgrade:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # TODO: change to develop before merge
+          # ref: develop
+          ref: chore/automated-upgrades
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: npm
+
+      - name: Create Upgrade Branch
+        run: |
+          git config --global user.email "pwa@intershop.de"
+          git config --global user.name "GitHub CI"
+          git switch -c upgrade/automated-upgrade
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Run Upgrade Script
+        run: node scripts/upgrade-pwa
+
+      - name: Run Automated Fixes
+        run: |
+          npm run lint -- --fix
+          npm run format
+          git add .
+          git commit -m "chore: post upgrade fixes" --allow-empty
+
+      - name: Push Upgrade Branch
+        if: always()
+        run: git push --force origin upgrade/automated-upgrade
