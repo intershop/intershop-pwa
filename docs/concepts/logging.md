@@ -10,6 +10,8 @@ kb_sync_latest_only
 ## nginx
 
 The nginx image providing [PageSpeed](https://www.modpagespeed.com/) and multi-channel configuration uses the default logging capabilities of [nginx](https://www.nginx.com/).
+You can enable `json` formatted logging by passing environment variable `LOGFORMAT=json` to the container.
+When no `LOGFORMAT` variable is passed the container uses `main` as its default format.
 
 - [Configure Logging](https://docs.nginx.com/nginx/admin-guide/monitoring/logging/)
 - [Debugging Nginx Configuration](https://easyengine.io/tutorials/nginx/debugging/)
