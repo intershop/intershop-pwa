@@ -8,10 +8,10 @@
     "directory": "schematics"
   },
   "scripts": {
-    "prebuild": "npm i --no-save json-schema-to-typescript && npm run generate:schemas",
-    "build": "npm i --no-save typescript-transpile-only && tsc-transpile-only",
+    "prebuild": "npm run generate:schemas",
+    "build": "tsc",
     "test": "npx jest -i",
-    "generate:schemas": "node scripts/generate-schema-defs.js"
+    "generate:schemas": "node scripts/generate-schema-defs.mjs"
   },
   "keywords": [
     "schematics",

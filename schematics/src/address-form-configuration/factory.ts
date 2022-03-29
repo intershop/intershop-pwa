@@ -13,7 +13,6 @@ export function createAddressFormConfiguration(options: Options): Rule {
     const project = workspace.projects.get(options.project);
 
     options.path = `/${project.sourceRoot}/app/shared/formly-address-forms/configurations`;
-    options.countryCodeCaps = options.countryCode.toUpperCase();
     options.module = `/${project.sourceRoot}/app/shared/formly-address-forms/formly-address-forms.module.ts`;
     options.artifactPath = `/${project.sourceRoot}/app/shared/formly-address-forms/configurations/${strings.dasherize(
       options.countryCode
@@ -25,6 +24,7 @@ export function createAddressFormConfiguration(options: Options): Rule {
       mergeWith(
         apply(url('./files'), [
           applyTemplates({
+            toUpperCase: (str: string) => str.toUpperCase(),
             ...strings,
             ...options,
           }),
@@ -36,7 +36,7 @@ export function createAddressFormConfiguration(options: Options): Rule {
       addTokenProviderToNgModule({
         ...options,
         token: 'ADDRESS_FORM_CONFIGURATION',
-        class: `AddressForm${options.countryCodeCaps}Configuration`,
+        class: `AddressForm${options.countryCode.toUpperCase()}Configuration`,
         multi: true,
       })
     );

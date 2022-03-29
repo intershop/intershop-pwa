@@ -4,6 +4,7 @@
   "title": "PWA Page Options Schema",
   "type": "object",
   "description": "Creates a new page.",
+  "additionalProperties": false,
   "properties": {
     "path": {
       "type": "string",

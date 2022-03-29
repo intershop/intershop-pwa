@@ -3,6 +3,7 @@
   "$id": "SchematicsPWAKubernetesDeployment",
   "title": "PWA Kubernetes Deployment Options Schema",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",

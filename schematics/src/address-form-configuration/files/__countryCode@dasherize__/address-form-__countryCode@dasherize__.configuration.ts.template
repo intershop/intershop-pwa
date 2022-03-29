@@ -7,8 +7,8 @@ import { AddressFormConfiguration } from 'ish-shared/formly-address-forms/config
 import { FormlyService } from 'ish-shared/formly/formly.service';
 
 @Injectable()
-export class AddressForm<%= countryCodeCaps %>Configuration extends AddressFormConfiguration {
-  countryCode = '<%= countryCodeCaps %>';
+export class AddressForm<%= toUpperCase(countryCode) %>Configuration extends AddressFormConfiguration {
+  countryCode = '<%= toUpperCase(countryCode) %>';
 
   constructor() {
     super();

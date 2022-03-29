@@ -4,6 +4,7 @@
   "title": "PWA Lazy Components Options Schema",
   "type": "object",
   "description": "Creates Lazy Components for all decorated components.",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",
