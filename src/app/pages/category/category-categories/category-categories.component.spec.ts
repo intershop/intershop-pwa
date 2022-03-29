@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
@@ -31,7 +31,7 @@ describe('Category Categories Component', () => {
         MockComponent(CategoryNavigationComponent),
         MockComponent(ContentViewcontextComponent),
         MockComponent(FaIconComponent),
-        MockComponent(NgbCollapse),
+        MockDirective(NgbCollapse),
       ],
     }).compileComponents();
   });
