@@ -2,14 +2,13 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+import { PWALazyComponentOptionsSchema as Options } from '../../dist/lazy-component/schema';
 import {
   createAppLastRoutingModule,
   createApplication,
   createModule,
   createSchematicRunner,
 } from '../utils/testHelper';
-
-import { PWALazyComponentOptionsSchema as Options } from './schema';
 
 describe('Lazy Component Schematic', () => {
   const schematicRunner = createSchematicRunner();

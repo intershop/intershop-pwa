@@ -1,9 +1,8 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom } from 'rxjs';
 
+import { PWAEslintRuleOptionsSchema as Options } from '../../dist/eslint-rule/schema';
 import { copyFileFromPWA, createApplication, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAEslintRuleOptionsSchema as Options } from './schema';
 
 describe('eslint-rule', () => {
   const schematicRunner = createSchematicRunner();
@@ -16,10 +15,9 @@ describe('eslint-rule', () => {
     const appTree$ = createApplication(schematicRunner).pipe(copyFileFromPWA('eslint-rules/src/index.ts'));
     appTree = await lastValueFrom(appTree$);
   });
-  it('should create a rule and add it to index.ts', async () => {
-    const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('eslint-rule', options, appTree).toPromise();
+  it('should create a rule and add it to index.ts', async () => {
+    const tree = await schematicRunner.runSchematicAsync('eslint-rule', defaultOptions, appTree).toPromise();
     const files = tree.files.filter(x => x.search('rules') >= 0);
     expect(files).toContain('/eslint-rules/src/rules/foo-bar.ts');
 

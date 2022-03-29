@@ -1,9 +1,8 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom } from 'rxjs';
 
+import { PWAAddressFormConfigurationOptionsSchema as Options } from '../../dist/address-form-configuration/schema';
 import { copyFileFromPWA, createApplication, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAAddressFormConfigurationOptionsSchema as Options } from './schema';
 
 describe('Address Form Configuration Schematic', () => {
   const schematicRunner = createSchematicRunner();

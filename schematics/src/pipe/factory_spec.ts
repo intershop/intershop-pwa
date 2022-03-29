@@ -1,9 +1,8 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom } from 'rxjs';
 
+import { PWAPipeOptionsSchema as Options } from '../../dist/pipe/schema';
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAPipeOptionsSchema as Options } from './schema';
 
 describe('Pipe Schematic', () => {
   const schematicRunner = createSchematicRunner();

@@ -63,9 +63,7 @@
 /reports/e2e-*.xml
 
 # from schematics/.gitignore
-/schematics/src/**/*.js
-!/schematics/src/utils/lint-fix-mock.js
-/schematics/src/**/*.d.ts
+/schematics/dist
 /schematics/package-lock.json
 
 # from e2e/cypress/.gitignore
@@ -77,6 +75,10 @@
 /node_modules/eslint-plugin-ish-custom-rules/node_modules
 /node_modules/eslint-plugin-ish-custom-rules/package-lock.json
 /node_modules/eslint-plugin-ish-custom-rules/dist
+
+# from node_modules/intershop-schematics/.gitignore
+/node_modules/intershop-schematics/dist
+/node_modules/intershop-schematics/package-lock.json
 
 # from src/ssr/server-scripts/.gitignore
 /src/ssr/server-scripts/ecosystem-ports.json

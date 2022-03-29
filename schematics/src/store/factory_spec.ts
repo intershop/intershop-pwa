@@ -2,6 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
+import { PWAStoreOptionsSchema as Options } from '../../dist/store/schema';
 import {
   copyFileFromPWA,
   createAppLastRoutingModule,
@@ -11,7 +12,6 @@ import {
 } from '../utils/testHelper';
 
 import { determineStoreLocation } from './factory';
-import { PWAStoreOptionsSchema as Options } from './schema';
 
 describe('Store Schematic', () => {
   const schematicRunner = createSchematicRunner();

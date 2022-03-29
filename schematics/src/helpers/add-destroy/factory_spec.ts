@@ -2,7 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { PWAComponentOptionsSchema } from '../../component/schema';
+import { PWAComponentOptionsSchema } from '../../../dist/component/schema';
 import { createApplication, createSchematicRunner } from '../../utils/testHelper';
 
 describe('Lazy Component Schematic', () => {

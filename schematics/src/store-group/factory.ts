@@ -11,12 +11,11 @@ import {
   url,
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWAStoreGroupOptionsSchema as Options } from 'schemas/store-group/schema';
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 import { addImportToNgModule } from '../utils/registration';
-
-import { PWAStoreGroupOptionsSchema as Options } from './schema';
 
 async function determineStoreGroupLocation(
   host: Tree,

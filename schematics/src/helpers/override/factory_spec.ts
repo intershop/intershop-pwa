@@ -1,10 +1,9 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom } from 'rxjs';
 
-import { PWAComponentOptionsSchema } from '../../component/schema';
+import { PWAComponentOptionsSchema } from '../../../dist/component/schema';
+import { OverrideOptionsSchema as Options } from '../../../dist/helpers/override/schema';
 import { componentDecorator, createApplication, createModule, createSchematicRunner } from '../../utils/testHelper';
-
-import { OverrideOptionsSchema as Options } from './schema';
 
 describe('override Schematic', () => {
   const schematicRunner = createSchematicRunner();

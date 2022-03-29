@@ -10,6 +10,7 @@
   "scripts": {
     "prebuild": "npm run generate:schemas",
     "build": "tsc",
+    "postbuild": "node scripts/copy-dist-files.mjs",
     "test": "npx jest -i",
     "generate:schemas": "node scripts/generate-schema-defs.mjs"
   },
@@ -17,7 +18,7 @@
     "schematics",
     "intershop"
   ],
-  "schematics": "./src/collection.json",
+  "schematics": "./dist/collection.json",
   "jest": {
     "globals": {
       "ts-jest": {
@@ -30,7 +31,7 @@
     },
     "testRegex": "/src/.*spec\\.ts$",
     "testPathIgnorePatterns": [
-      "<rootDir>/.*/(files|other-files)",
+      "<rootDir>/.*/files",
       "<rootDir>/node_modules/"
     ],
     "moduleFileExtensions": [
@@ -39,7 +40,8 @@
       "json"
     ],
     "moduleNameMapper": {
-      ".lint-fix$": "<rootDir>/src/utils/lint-fix-mock.js"
+      ".lint-fix$": "<rootDir>/src/utils/lint-fix-mock.js",
+      "^schemas/(.*)$": "<rootDir>/dist/$1"
     },
     "setupFilesAfterEnv": [
       "jest-extended/all"

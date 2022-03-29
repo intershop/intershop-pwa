@@ -1,11 +1,10 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
+import { MoveComponentOptionsSchema as Options } from 'schemas/helpers/move-component/schema';
 import * as ts from 'typescript';
 
 import { readIntoSourceFile } from '../../utils/filesystem';
-
-import { MoveComponentOptionsSchema as Options } from './schema';
 
 function similarIdx(str1: string, str2: string) {
   for (let index = 0; index < Math.min(str1.length, str2.length); index++) {

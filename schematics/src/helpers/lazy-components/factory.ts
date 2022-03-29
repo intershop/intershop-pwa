@@ -1,7 +1,6 @@
 import { Rule, SchematicsException, chain, schematic } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
-
-import { PWALazyComponentsOptionsSchema as Options } from './schema';
+import { PWALazyComponentsOptionsSchema as Options } from 'schemas/helpers/lazy-components/schema';
 
 export function createLazyComponents(options: Options): Rule {
   return async host => {

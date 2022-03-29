@@ -1,9 +1,8 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom, noop } from 'rxjs';
 
+import { PWACMSComponentOptionsSchema as Options } from '../../dist/cms-component/schema';
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
-
-import { PWACMSComponentOptionsSchema as Options } from './schema';
 
 describe('CMS Component Schematic', () => {
   const schematicRunner = createSchematicRunner();

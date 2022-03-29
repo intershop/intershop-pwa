@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "outDir": "dist",
     "rootDir": "src/",
     "lib": ["es2017", "dom"],
     "target": "es2015",
@@ -15,8 +16,11 @@
     "types": ["jest", "jest-extended", "node"],
     // @lint rules
     "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
     // "noUnusedLocals": true,
+    "paths": {
+      "schemas/*": ["dist/*"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": [

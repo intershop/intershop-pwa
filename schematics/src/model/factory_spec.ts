@@ -1,9 +1,8 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom } from 'rxjs';
 
+import { PWAModelOptionsSchema as Options } from '../../dist/model/schema';
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAModelOptionsSchema as Options } from './schema';
 
 describe('Model Schematic', () => {
   const schematicRunner = createSchematicRunner();

@@ -14,5 +14,5 @@ environment.development.ts
 
 /eslint-rules/dist/**
 
-/schematics/src/**/*.js
+/schematics/dist/**
 /schematics/migration/**

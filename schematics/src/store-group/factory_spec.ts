@@ -1,9 +1,8 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { lastValueFrom } from 'rxjs';
 
+import { PWAStoreGroupOptionsSchema as Options } from '../../dist/store-group/schema';
 import { copyFileFromPWA, createApplication, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAStoreGroupOptionsSchema as Options } from './schema';
 
 describe('Store Group Schematic', () => {
   const schematicRunner = createSchematicRunner();

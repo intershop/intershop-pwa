@@ -9,11 +9,10 @@ import {
   move,
   url,
 } from '@angular-devkit/schematics';
+import { PWAModuleOptionsSchema as Options } from 'schemas/module/schema';
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
-
-import { PWAModuleOptionsSchema as Options } from './schema';
 
 export function createModule(options: Options): Rule {
   return async host => {
