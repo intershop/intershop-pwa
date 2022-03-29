@@ -1,3 +1,5 @@
+export type PriceUpdateType = 'stable' | 'always';
+
 export interface Price {
   type: 'Money';
   value: number;

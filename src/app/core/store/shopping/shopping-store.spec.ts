@@ -20,7 +20,6 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -145,7 +144,6 @@ describe('Shopping Store', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
-        CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([
           {
             path: 'home',
@@ -319,10 +317,6 @@ describe('Shopping Store', () => {
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
-          [Product Price Internal] Load Product Prices:
-            skus: ["P2"]
-          [Products API] Load Product Prices Success:
-            prices: []
         `);
       }));
 
@@ -341,11 +335,7 @@ describe('Shopping Store', () => {
               sku: "P2"
             [Products API] Load Product Success:
               product: {"sku":"P2","name":"nP2"}
-            [Product Price Internal] Load Product Prices:
-              skus: ["P2"]
             @ngrx/router-store/navigated: /product/P2
-            [Products API] Load Product Prices Success:
-              prices: []
           `);
         }));
       });
@@ -470,12 +460,6 @@ describe('Shopping Store', () => {
           sortableAttributes: []
         [Filter API] Load Filter Success:
           filterNavigation: {}
-        [Product Price Internal] Load Product Prices:
-          skus: ["P1"]
-        [Product Price Internal] Load Product Prices:
-          skus: ["P2"]
-        [Products API] Load Product Prices Success:
-          prices: []
       `);
     }));
 
@@ -494,11 +478,7 @@ describe('Shopping Store', () => {
             sku: "P1"
           [Products API] Load Product Success:
             product: {"sku":"P1","name":"nP1"}
-          [Product Price Internal] Load Product Prices:
-            skus: ["P1"]
           @ngrx/router-store/navigated: /category/A.123.456/product/P1
-          [Products API] Load Product Prices Success:
-            prices: []
         `);
       }));
 
@@ -565,10 +545,6 @@ describe('Shopping Store', () => {
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
-          [Product Price Internal] Load Product Prices:
-            skus: ["P2"]
-          [Products API] Load Product Prices Success:
-            prices: []
         `);
       }));
 
@@ -609,17 +585,11 @@ describe('Shopping Store', () => {
               sortableAttributes: []
             [Filter API] Load Filter Success:
               filterNavigation: {}
-            [Product Price Internal] Load Product Prices:
-              skus: ["P1"]
-            [Product Price Internal] Load Product Prices:
-              skus: ["P2"]
             @ngrx/router-store/navigated: /category/A.123.456
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
               breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
-            [Products API] Load Product Prices Success:
-              prices: []
           `);
         }));
       });
@@ -688,11 +658,7 @@ describe('Shopping Store', () => {
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
-        [Product Price Internal] Load Product Prices:
-          skus: ["P1"]
         @ngrx/router-store/navigated: /category/A.123.456/product/P1
-        [Products API] Load Product Prices Success:
-          prices: []
       `);
     }));
 
@@ -744,17 +710,11 @@ describe('Shopping Store', () => {
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
-          [Product Price Internal] Load Product Prices:
-            skus: ["P1"]
-          [Product Price Internal] Load Product Prices:
-            skus: ["P2"]
           @ngrx/router-store/navigated: /category/A.123.456
           [Product Listing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
-          [Products API] Load Product Prices Success:
-            prices: []
         `);
       }));
     });
@@ -812,11 +772,7 @@ describe('Shopping Store', () => {
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
-        [Product Price Internal] Load Product Prices:
-          skus: ["P1"]
         @ngrx/router-store/navigated: /product/P1
-        [Products API] Load Product Prices Success:
-          prices: []
       `);
     }));
 
@@ -964,10 +920,6 @@ describe('Shopping Store', () => {
           sortableAttributes: []
         [Filter API] Load Filter Success:
           filterNavigation: {}
-        [Product Price Internal] Load Product Prices:
-          skus: ["P2"]
-        [Products API] Load Product Prices Success:
-          prices: []
       `);
     }));
   });
