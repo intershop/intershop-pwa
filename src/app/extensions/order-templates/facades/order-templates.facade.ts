@@ -17,6 +17,7 @@ import {
   getOrderTemplateError,
   getOrderTemplateLoading,
   getSelectedOrderTemplateDetails,
+  getSelectedOrderTemplateOutOfStockItems,
   moveItemToOrderTemplate,
   removeItemFromOrderTemplate,
   updateOrderTemplate,
@@ -28,6 +29,9 @@ export class OrderTemplatesFacade {
 
   orderTemplates$: Observable<OrderTemplate[]> = this.store.pipe(select(getAllOrderTemplates));
   currentOrderTemplate$: Observable<OrderTemplate> = this.store.pipe(select(getSelectedOrderTemplateDetails));
+  currentOrderTemplateOutOfStockItems$: Observable<string[]> = this.store.pipe(
+    select(getSelectedOrderTemplateOutOfStockItems)
+  );
   orderTemplateLoading$: Observable<boolean> = this.store.pipe(select(getOrderTemplateLoading));
   orderTemplateError$: Observable<HttpError> = this.store.pipe(select(getOrderTemplateError));
 

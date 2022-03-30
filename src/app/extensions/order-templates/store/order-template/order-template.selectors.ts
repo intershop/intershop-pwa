@@ -1,5 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
+import { getProductEntities } from 'ish-core/store/shopping/products';
+
 import { getOrderTemplatesState } from '../order-templates-store';
 
 import { initialState, orderTemplateAdapter } from './order-template.reducer';
@@ -22,6 +24,12 @@ export const getSelectedOrderTemplateDetails = createSelector(
   selectEntities,
   getSelectedOrderTemplateId,
   (entities, id) => entities[id]
+);
+
+export const getSelectedOrderTemplateOutOfStockItems = createSelector(
+  getSelectedOrderTemplateDetails,
+  getProductEntities,
+  (template, products) => template?.items?.map(i => i.sku)?.filter(sku => products[sku] && !products[sku].available)
 );
 
 export const getOrderTemplateDetails = (id: string) => createSelector(selectEntities, entities => entities[id]);

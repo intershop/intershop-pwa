@@ -230,6 +230,7 @@
   "account.order_template.new_order_template.text": "New Order Template",
   "account.order_template.no_entries": "There are currently no items in this order template.",
   "account.order_template.order_template.edit.rename": "Rename",
+  "account.order_template.out_of_stock.warning": "{{ num, plural, =1{# item} other{# items} }} in your order template {{ num, plural, =1{is} other{are} }} out of stock. {{ num, plural, =1{This item} other{These items} }} cannot be added to the shopping cart.",
   "account.order_template.table.header.date_added": "Added on",
   "account.order_template.table.header.item": "Item Description",
   "account.order_template.table.header.price": "Price",
