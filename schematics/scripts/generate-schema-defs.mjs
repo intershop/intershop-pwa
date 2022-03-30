@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import glob from 'glob';
 import { compileFromFile } from 'json-schema-to-typescript';
 import { dirname, join, normalize } from 'path';
@@ -42,6 +42,12 @@ Promise.all(
 */`,
     });
 
-    writeFileSync(schemaFile.replace(/\.json$/, '.d.ts'), output);
+    const target = schemaFile.replace(/^src/, 'dist').replace(/\.json$/, '.d.ts');
+
+    if (!existsSync(dirname(target))) {
+      mkdirSync(dirname(target), { recursive: true });
+    }
+
+    writeFileSync(target, output);
   })
 );

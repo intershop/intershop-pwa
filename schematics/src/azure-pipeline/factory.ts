@@ -1,8 +1,7 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException, apply, mergeWith, move, template, url } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
-
-import { PWAAzurePipelineOptionsSchema as Options } from './schema';
+import { PWAAzurePipelineOptionsSchema as Options } from 'schemas/azure-pipeline/schema';
 
 export function createAzurePipeline(options: Options): Rule {
   return async host => {

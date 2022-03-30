@@ -11,6 +11,7 @@ import {
   noop,
   url,
 } from '@angular-devkit/schematics';
+import { PWACMSComponentOptionsSchema as Options } from 'schemas/cms-component/schema';
 
 import {
   applyNameAndPath,
@@ -21,8 +22,6 @@ import {
 } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addImportToFile, addProviderToNgModule } from '../utils/registration';
-
-import { PWACMSComponentOptionsSchema as Options } from './schema';
 
 export function createCMSComponent(options: Options): Rule {
   return async host => {
@@ -71,7 +70,7 @@ export function createCMSComponent(options: Options): Rule {
           applyTemplates({
             ...strings,
             ...options,
-            'if-flat': s => (options.flat ? '' : s),
+            'if-flat': (s: unknown) => (options.flat ? '' : s),
           }),
           move(options.path),
         ])

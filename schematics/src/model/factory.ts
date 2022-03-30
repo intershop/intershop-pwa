@@ -11,11 +11,10 @@ import {
   noop,
   url,
 } from '@angular-devkit/schematics';
+import { PWAModelOptionsSchema as Options } from 'schemas/model/schema';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
-
-import { PWAModelOptionsSchema as Options } from './schema';
 
 export function createModel(options: Options): Rule {
   return async host => {

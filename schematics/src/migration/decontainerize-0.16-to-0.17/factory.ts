@@ -1,10 +1,9 @@
 import { Rule, SchematicsException, Tree, UpdateRecorder } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
+import { Decontainerize as Options } from 'schemas/migration/decontainerize-0.16-to-0.17/schema';
 import * as ts from 'typescript';
 
 import { readIntoSourceFile } from '../../utils/filesystem';
-
-import { Decontainerize as Options } from './schema';
 
 function checkNoCollisions(host: Tree): boolean {
   const moving: { [path: string]: string[] } = {};

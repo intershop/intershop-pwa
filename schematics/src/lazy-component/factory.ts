@@ -13,6 +13,7 @@ import {
 } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWALazyComponentOptionsSchema as Options } from 'schemas/lazy-component/schema';
 import * as ts from 'typescript';
 
 import { determineArtifactName, findDeclaringModule } from '../utils/common';
@@ -25,8 +26,6 @@ import {
   generateGitignore,
   updateModule,
 } from '../utils/registration';
-
-import { PWALazyComponentOptionsSchema as Options } from './schema';
 
 export function createLazyComponent(options: Options): Rule {
   // eslint-disable-next-line complexity

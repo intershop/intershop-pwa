@@ -40,7 +40,7 @@ node_modules
 /junit.xml
 /eslint-rules/dist
 /schematics/src/**/files/**
-/schematics/src/**/*.js
+/schematics/dist
 nginx.conf
 /nginx/**/*.conf
 /nginx/**/*.tmpl

@@ -11,12 +11,11 @@ import {
   url,
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWAExtensionOptionsSchema as Options } from 'schemas/extension/schema';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 import { addExportToNgModule, addImportToNgModule, addImportToNgModuleBefore } from '../utils/registration';
-
-import { PWAExtensionOptionsSchema as Options } from './schema';
 
 export function createExtension(options: Options): Rule {
   return async host => {

@@ -1,11 +1,10 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, apply, applyTemplates, chain, mergeWith, move, url } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWAAddressFormConfigurationOptionsSchema as Options } from 'schemas/address-form-configuration/schema';
 
 import { applyLintFix } from '../utils/lint-fix';
 import { addTokenProviderToNgModule } from '../utils/registration';
-
-import { PWAAddressFormConfigurationOptionsSchema as Options } from './schema';
 
 export function createAddressFormConfiguration(options: Options): Rule {
   return async host => {
