@@ -41,7 +41,7 @@ export function createComponent(options: Options): Rule {
           applyTemplates({
             ...strings,
             ...options,
-            'if-flat': s => (options.flat ? '' : s),
+            'if-flat': (s: unknown) => (options.flat ? '' : s),
           }),
           move(options.path),
         ])

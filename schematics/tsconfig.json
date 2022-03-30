@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "dist",
@@ -23,10 +24,5 @@
     }
   },
   "include": ["src/**/*.ts"],
-  "exclude": [
-    "src/**/*_spec.ts",
-    "src/**/test*.ts",
-    "src/*/files/**/*",
-    "src/*/other-files/**/*"
-  ]
+  "exclude": ["src/*/files/**/*", "src/*/other-files/**/*"]
 }

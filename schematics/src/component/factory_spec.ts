@@ -1,8 +1,7 @@
 import { noop } from '@angular-devkit/schematics';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
+import { PWAComponentOptionsSchema as Options } from 'schemas/component/schema';
 
-import { PWAComponentOptionsSchema as Options } from '../../dist/component/schema';
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
 describe('Component Schematic', () => {
@@ -18,7 +17,7 @@ describe('Component Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     const appTree$ = createApplication(schematicRunner);
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
   });
 
   it('should create a component', async () => {
@@ -197,7 +196,7 @@ describe('Component Schematic', () => {
   });
 
   it('should use the default project prefix if none is passed', async () => {
-    const options = { ...defaultOptions, prefix: undefined };
+    const options = { ...defaultOptions, prefix: undefined as string };
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     const content = tree.readContent('/src/app/foo/foo.component.ts');

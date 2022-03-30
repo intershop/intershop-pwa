@@ -272,7 +272,7 @@ export function generateGitignore(options: { path?: string; content?: string }):
   };
 }
 
-export function updateModule(options): Rule {
+export function updateModule(options: { module?: string; path?: string }): Rule {
   return host => {
     options.module = findModule(host, options.path);
     return host;

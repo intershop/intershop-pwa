@@ -1,7 +1,7 @@
+import { noop } from '@angular-devkit/core/node_modules/rxjs';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom, noop } from 'rxjs';
+import { PWACMSComponentOptionsSchema as Options } from 'schemas/cms-component/schema';
 
-import { PWACMSComponentOptionsSchema as Options } from '../../dist/cms-component/schema';
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
 
 describe('CMS Component Schematic', () => {
@@ -21,7 +21,7 @@ describe('CMS Component Schematic', () => {
       createModule(schematicRunner, { name: 'shared' }),
       createModule(schematicRunner, { name: 'shared/cms' })
     );
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
   });
 
   it('should create a component in cms module with added name prefix', async () => {
@@ -123,7 +123,7 @@ describe('CMS Component Schematic', () => {
   });
 
   it('should throw when definitionQualifiedName is missing', done => {
-    const options = { ...defaultOptions, definitionQualifiedName: undefined };
+    const options = { ...defaultOptions, definitionQualifiedName: undefined as string };
     schematicRunner.runSchematicAsync('cms-component', options, appTree).subscribe({
       next: noop,
       error: err => {

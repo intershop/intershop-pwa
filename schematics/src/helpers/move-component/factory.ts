@@ -1,5 +1,5 @@
 import { strings } from '@angular-devkit/core';
-import { Rule, SchematicsException } from '@angular-devkit/schematics';
+import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { MoveComponentOptionsSchema as Options } from 'schemas/helpers/move-component/schema';
 import * as ts from 'typescript';
@@ -67,7 +67,7 @@ export function move(options: Options): Rule {
     host.getDir(from);
     const to = options.to.replace(/\/$/, '');
 
-    const renames = [];
+    const renames: unknown[] = [];
 
     const fromName = from.replace(/.*\//, '');
     const fromClassName = `${strings.classify(fromName)}Component`;
@@ -154,7 +154,13 @@ export function move(options: Options): Rule {
   };
 }
 
-export function updateComponentSelector(host, file, fromName: string, toName: string, includePrefix: boolean = true) {
+export function updateComponentSelector(
+  host: Tree,
+  file: string,
+  fromName: string,
+  toName: string,
+  includePrefix: boolean = true
+) {
   const content = host.read(file).toString();
   const replacement = content.replace(
     new RegExp(`(?!.*${fromName}[a-z-]+.*)ish-${fromName}`, 'g'),
@@ -165,7 +171,7 @@ export function updateComponentSelector(host, file, fromName: string, toName: st
   }
 }
 
-export function updateComponentClassName(host, file, fromClassName: string, toClassName: string) {
+export function updateComponentClassName(host: Tree, file: string, fromClassName: string, toClassName: string) {
   const identifiers = tsquery(readIntoSourceFile(host, file), `Identifier[name=${fromClassName}]`);
   if (identifiers.length) {
     const updater = host.beginUpdate(file);
@@ -176,7 +182,7 @@ export function updateComponentClassName(host, file, fromClassName: string, toCl
   }
 }
 
-export function updateComponentDecorator(host, file, fromName: string, toName: string) {
+export function updateComponentDecorator(host: Tree, file: string, fromName: string, toName: string) {
   const updater = host.beginUpdate(file);
   tsquery(readIntoSourceFile(host, file), 'Decorator Identifier[name=Component]')
     .map(x => x.parent)

@@ -1,7 +1,6 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
+import { PWAEslintRuleOptionsSchema as Options } from 'schemas/eslint-rule/schema';
 
-import { PWAEslintRuleOptionsSchema as Options } from '../../dist/eslint-rule/schema';
 import { copyFileFromPWA, createApplication, createSchematicRunner } from '../utils/testHelper';
 
 describe('eslint-rule', () => {
@@ -13,7 +12,7 @@ describe('eslint-rule', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     const appTree$ = createApplication(schematicRunner).pipe(copyFileFromPWA('eslint-rules/src/index.ts'));
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
   });
 
   it('should create a rule and add it to index.ts', async () => {

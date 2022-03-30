@@ -1,8 +1,7 @@
+import { switchMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { PWAComponentOptionsSchema } from 'schemas/component/schema';
 
-import { PWAComponentOptionsSchema } from '../../../dist/component/schema';
 import { createApplication, createSchematicRunner } from '../../utils/testHelper';
 
 describe('Lazy Component Schematic', () => {
@@ -22,7 +21,7 @@ describe('Lazy Component Schematic', () => {
         )
       )
     );
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
   });
 
   it('should be created', () => {

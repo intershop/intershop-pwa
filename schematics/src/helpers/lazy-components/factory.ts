@@ -9,7 +9,7 @@ export function createLazyComponents(options: Options): Rule {
     }
     const workspace = await getWorkspace(host);
     const project = workspace.projects.get(options.project);
-    const operations = [];
+    const operations: Rule[] = [];
 
     const fileVisitor = (file: string) => {
       if (file.endsWith('.component.ts')) {

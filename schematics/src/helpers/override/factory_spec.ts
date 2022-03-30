@@ -1,8 +1,7 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
+import { PWAComponentOptionsSchema } from 'schemas/component/schema';
+import { OverrideOptionsSchema as Options } from 'schemas/helpers/override/schema';
 
-import { PWAComponentOptionsSchema } from '../../../dist/component/schema';
-import { OverrideOptionsSchema as Options } from '../../../dist/helpers/override/schema';
 import { componentDecorator, createApplication, createModule, createSchematicRunner } from '../../utils/testHelper';
 
 describe('override Schematic', () => {
@@ -13,7 +12,7 @@ describe('override Schematic', () => {
 
   beforeEach(async () => {
     const appTree$ = createApplication(schematicRunner).pipe(createModule(schematicRunner, { name: 'shared' }));
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
     appTree = await schematicRunner
       .runSchematicAsync('component', { project: 'bar', name: 'foo/dummy' }, appTree)
       .toPromise();
