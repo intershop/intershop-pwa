@@ -1,8 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { HttpHandler, HttpRequest } from '@angular/common/http';
-import { NgModule, PLATFORM_ID } from '@angular/core';
+import { ModuleWithProviders, NgModule, PLATFORM_ID } from '@angular/core';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
-import { NgModuleWithProviders } from 'ng-mocks';
 import { noop } from 'rxjs';
 
 import { PunchoutIdentityProviderModule } from '../extensions/punchout/identity-provider/punchout-identity-provider.module';
@@ -47,7 +46,7 @@ export function storageFactory(platformId: string): OAuthStorage {
 export class IdentityProviderModule {
   static forTesting(
     capabilities: IdentityProviderCapabilities = { editEmail: true, editPassword: true, editProfile: true }
-  ): NgModuleWithProviders {
+  ): ModuleWithProviders<IdentityProviderModule> {
     return {
       ngModule: IdentityProviderModule,
       providers: [
