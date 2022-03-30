@@ -12,12 +12,8 @@
 </ng-container>
 
 <ng-template #imageEnhanced>
-  <div
-    (deferLoad)="showImage = true"
-    class="enhanced-image-container defer-load"
-    [ngClass]="pagelet.stringParam('CSSClass')"
-  >
-    <picture *ngIf="showImage" class="enhanced-image">
+  <div class="enhanced-image-container" [ngClass]="pagelet.stringParam('CSSClass')">
+    <picture class="enhanced-image">
       <source
         *ngIf="pagelet.hasParam('ImageXS')"
         [srcset]="pagelet.stringParam('ImageXS')"
@@ -34,6 +30,7 @@
         media="(max-width: 1199px)"
       />
       <img
+        loading="lazy"
         [src]="pagelet.stringParam('Image')"
         [attr.alt]="pagelet.stringParam('AlternateText')"
         class="enhanced-image"

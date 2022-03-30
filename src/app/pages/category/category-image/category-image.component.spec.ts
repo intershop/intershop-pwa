@@ -9,12 +9,6 @@ describe('Category Image Component', () => {
   let element: HTMLElement;
   let fixture: ComponentFixture<CategoryImageComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CategoryImageComponent],
-    }).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryImageComponent);
     component = fixture.componentInstance;
@@ -31,7 +25,6 @@ describe('Category Image Component', () => {
       ],
     } as Category;
     component.category = category;
-    component.showImage = true;
     component.ngOnChanges();
     fixture.detectChanges();
   });
