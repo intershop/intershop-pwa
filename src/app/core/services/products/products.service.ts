@@ -24,14 +24,13 @@ import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
 
+import STUB_ATTRS from './products-list-attributes';
+
 /**
  * The Products Service handles the interaction with the 'products' REST API.
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  private static STUB_ATTRS =
-    'sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet,defaultCategory';
-
   constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
 
   /**
@@ -71,7 +70,7 @@ export class ProductsService {
     }
 
     let params = new HttpParams()
-      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
@@ -127,7 +126,7 @@ export class ProductsService {
       .set('searchTerm', searchTerm)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
-      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
@@ -172,7 +171,7 @@ export class ProductsService {
       .set('MasterSKU', masterSKU)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
-      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
@@ -203,7 +202,7 @@ export class ProductsService {
     let params = new HttpParams()
       .set('amount', amount ? amount.toString() : '')
       .set('offset', offset.toString())
-      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {

@@ -250,11 +250,11 @@ describe('Products Service', () => {
       expect(data?.sortableAttributes).toMatchInlineSnapshot(`Array []`);
 
       verify(apiServiceMock.get(anything(), anything())).once();
-      const [resource, params] = capture(apiServiceMock.get).last();
+      const [resource, options] = capture<string, AvailableOptions>(apiServiceMock.get).last();
       expect(resource).toMatchInlineSnapshot(`"products"`);
-      expect((params as AvailableOptions)?.params?.toString()).toMatchInlineSnapshot(
-        `"amount=2&offset=0&attrs=sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet,defaultCategory&attributeGroup=PRODUCT_LABEL_ATTRIBUTES&returnSortKeys=true&SearchParameter=b"`
-      );
+      expect(options?.params.get('SearchParameter')).toMatchInlineSnapshot(`"b"`);
+      expect(options?.params.get('amount')).toMatchInlineSnapshot(`"2"`);
+      expect(options?.params.get('offset')).toMatchInlineSnapshot(`"0"`);
 
       done();
     });
