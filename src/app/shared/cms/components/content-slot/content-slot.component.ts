@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
 /**
@@ -37,4 +38,8 @@ export class ContentSlotComponent {
    * An optional flag that controls the rendering of the pagelets with the wrapped HTML content.
    */
   @Input() wrapper?: boolean;
+  /**
+   * The call parameter object to map context data through the different CMS artifacts, e.g. { RenderContext: 'list' }.
+   */
+  @Input() callParameters?: CallParameters;
 }

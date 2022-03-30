@@ -15,6 +15,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
+import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { CMSComponentProvider, CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
@@ -38,6 +39,10 @@ export class ContentPageletComponent implements OnChanges, OnInit, OnDestroy {
    * The Id of the Pagelet that is to be rendered.
    */
   @Input() pageletId: string;
+  /**
+   * The call parameter object to map context data through the different CMS artifacts, e.g. { RenderContext: 'list' }.
+   */
+  @Input() callParameters?: CallParameters;
 
   @ViewChild('cmsOutlet', { read: ViewContainerRef, static: true }) cmsOutlet: ViewContainerRef;
 
@@ -87,6 +92,7 @@ export class ContentPageletComponent implements OnChanges, OnInit, OnDestroy {
 
   private initializeComponent(instance: CMSComponent, pagelet: ContentPageletView) {
     instance.pagelet = pagelet;
+    instance.callParameters = this.callParameters;
 
     // OnChanges has to be manually invoked on dynamically created components
     if (instance.ngOnChanges) {

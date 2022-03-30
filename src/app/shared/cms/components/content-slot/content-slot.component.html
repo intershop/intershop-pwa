@@ -4,5 +4,6 @@
   <ish-content-pagelet
     *ngFor="let pagelet of pagelet.slot(slot).pageletIDs"
     [pageletId]="pagelet"
+    [callParameters]="callParameters"
   ></ish-content-pagelet>
 </ng-template>

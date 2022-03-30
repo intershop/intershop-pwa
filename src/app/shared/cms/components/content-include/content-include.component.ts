@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@a
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
+import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
@@ -21,7 +22,14 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 })
 @GenerateLazyComponent()
 export class ContentIncludeComponent implements OnInit, OnChanges {
+  /**
+   * The ID of the Content Include whose content is to be rendered.
+   */
   @Input() includeId: string;
+  /**
+   * The call parameter object to map context data through the different CMS artifacts, e.g. { RenderContext: 'list' }.
+   */
+  @Input() callParameters?: CallParameters;
 
   contentInclude$: Observable<ContentPageletEntryPointView>;
 
