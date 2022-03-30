@@ -8,6 +8,7 @@ import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service'
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { ProductsService } from './products.service';
 
@@ -223,6 +224,38 @@ describe('Products Service', () => {
           },
         }
       `);
+      done();
+    });
+  });
+
+  it("should get Product SKUs when 'getFilteredProducts' is called", done => {
+    when(apiServiceMock.get(anything(), anything())).thenReturn(
+      of({
+        elements: [
+          { uri: 'products/123', attributes: [{ name: 'sku', value: '123' }] },
+          { uri: 'products/234', attributes: [{ name: 'sku', value: '234' }] },
+        ],
+        total: 2,
+      })
+    );
+
+    productsService.getFilteredProducts({ SearchParameter: ['b'] } as URLFormParams, 2).subscribe(data => {
+      expect(data?.products?.map(p => p.sku)).toMatchInlineSnapshot(`
+        Array [
+          "123",
+          "234",
+        ]
+      `);
+      expect(data?.total).toMatchInlineSnapshot(`2`);
+      expect(data?.sortableAttributes).toMatchInlineSnapshot(`Array []`);
+
+      verify(apiServiceMock.get(anything(), anything())).once();
+      const [resource, params] = capture(apiServiceMock.get).last();
+      expect(resource).toMatchInlineSnapshot(`"products"`);
+      expect((params as AvailableOptions)?.params?.toString()).toMatchInlineSnapshot(
+        `"amount=2&offset=0&attrs=sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet,defaultCategory&attributeGroup=PRODUCT_LABEL_ATTRIBUTES&returnSortKeys=true&SearchParameter=b"`
+      );
+
       done();
     });
   });

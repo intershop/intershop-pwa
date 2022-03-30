@@ -1,16 +1,15 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jest-marbles';
 import { Observable, merge, of, throwError } from 'rxjs';
-import { delay, toArray } from 'rxjs/operators';
-import { anyNumber, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
+import { delay } from 'rxjs/operators';
+import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
@@ -22,7 +21,6 @@ import {
   loadFilterForMaster,
   loadFilterForSearch,
   loadFilterSuccess,
-  loadProductsForFilter,
 } from './filter.actions';
 import { FilterEffects } from './filter.effects';
 
@@ -58,17 +56,6 @@ describe('Filter Effects', () => {
       }
     });
 
-    when(filterServiceMock.getFilteredProducts(anything(), anyNumber(), anything(), anyNumber())).thenCall(a => {
-      if (a.name === 'invalid') {
-        return throwError(() => makeHttpError({ message: 'invalid' }));
-      } else {
-        return of({
-          total: 2,
-          products: [{ sku: '123' }, { sku: '234' }],
-        });
-      }
-    });
-
     when(filterServiceMock.applyFilter(anything())).thenCall(a => {
       if (a.param[0] === 'invalid') {
         return throwError(() => makeHttpError({ message: 'invalid' }));
@@ -77,11 +64,11 @@ describe('Filter Effects', () => {
       }
     });
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('productListing')],
       providers: [
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         FilterEffects,
         provideMockActions(() => actions$),
+        provideMockStore(),
       ],
     });
 
@@ -242,35 +229,6 @@ describe('Filter Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.applyFilter$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadFilteredProducts$', () => {
-    it('should trigger product actions for ApplyFilterSuccess action', done => {
-      const action = loadProductsForFilter({
-        id: {
-          type: 'search',
-          value: 'test',
-          filters: { searchTerm: ['b*'] },
-        },
-        searchParameter: { param: ['b'] },
-      });
-
-      actions$ = of(action);
-      effects.loadFilteredProducts$.pipe(toArray()).subscribe(actions => {
-        expect(actions).toMatchInlineSnapshot(`
-          [Products API] Load Product Success:
-            product: {"sku":"123"}
-          [Products API] Load Product Success:
-            product: {"sku":"234"}
-          [Product Listing Internal] Set Product Listing Pages:
-            1: ["123","234"]
-            id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
-            itemCount: 2
-            sortableAttributes: []
-        `);
-        done();
-      });
     });
   });
 });

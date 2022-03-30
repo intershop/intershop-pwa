@@ -20,14 +20,16 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
+import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  static STUB_ATTRS =
+  private static STUB_ATTRS =
     'sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet,defaultCategory';
 
   constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
@@ -188,6 +190,48 @@ export class ProductsService {
           products: response.elements.map(element => this.productMapper.fromStubData(element)) as Product[],
           sortableAttributes: Object.values(response.sortableAttributes || {}),
           total: response.total ? response.total : response.elements.length,
+        }))
+      );
+  }
+
+  getFilteredProducts(
+    searchParameter: URLFormParams,
+    amount: number,
+    sortKey?: string,
+    offset = 0
+  ): Observable<{ total: number; products: Partial<Product>[]; sortableAttributes: SortableAttributesType[] }> {
+    let params = new HttpParams()
+      .set('amount', amount ? amount.toString() : '')
+      .set('offset', offset.toString())
+      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
+      .set('returnSortKeys', 'true');
+    if (sortKey) {
+      params = params.set('sortKey', sortKey);
+    }
+    params = appendFormParamsToHttpParams(omit(searchParameter, 'category'), params);
+
+    const resource = searchParameter.category ? `categories/${searchParameter.category[0]}/products` : 'products';
+
+    return this.apiService
+      .get<{
+        total: number;
+        elements: ProductDataStub[];
+        sortableAttributes: { [id: string]: SortableAttributesType };
+      }>(resource, { params, sendSPGID: true })
+      .pipe(
+        map(x => ({
+          products: x.elements.map(stub => this.productMapper.fromStubData(stub)),
+          total: x.total,
+          sortableAttributes: Object.values(x.sortableAttributes || {}),
+        })),
+        withLatestFrom(
+          this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
+        ),
+        map(([{ products, sortableAttributes, total }, advancedVariationHandling]) => ({
+          products: params.has('MasterSKU') ? products : this.postProcessMasters(products, advancedVariationHandling),
+          sortableAttributes,
+          total,
         }))
       );
   }

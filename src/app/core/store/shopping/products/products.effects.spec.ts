@@ -12,9 +12,9 @@ import { ProductPriceDetails } from 'ish-core/models/product-prices/product-pric
 import { Product, VariationProductMaster } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';
+import { loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { loadProductPrices } from 'ish-core/store/shopping/product-prices/product-prices.actions';
@@ -63,10 +63,20 @@ describe('Products Effects', () => {
       })
     );
 
+    when(productsServiceMock.getFilteredProducts(anything(), anyNumber(), anything(), anyNumber())).thenCall(a => {
+      if (a.name === 'invalid') {
+        return throwError(() => makeHttpError({ message: 'invalid' }));
+      } else {
+        return of({
+          total: 2,
+          products: [{ sku: '123' }, { sku: '234' }],
+        });
+      }
+    });
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig']),
-        CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([
           { path: 'category/:categoryUniqueId/product/:sku', children: [] },
           { path: 'product/:sku', children: [] },
@@ -245,6 +255,35 @@ describe('Products Effects', () => {
           }),
         })
       );
+    });
+  });
+
+  describe('loadFilteredProducts$', () => {
+    it('should trigger product actions for ApplyFilterSuccess action', done => {
+      const action = loadProductsForFilter({
+        id: {
+          type: 'search',
+          value: 'test',
+          filters: { searchTerm: ['b*'] },
+        },
+        searchParameter: { param: ['b'] },
+      });
+
+      actions$ = of(action);
+      effects.loadFilteredProducts$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toMatchInlineSnapshot(`
+          [Products API] Load Product Success:
+            product: {"sku":"123"}
+          [Products API] Load Product Success:
+            product: {"sku":"234"}
+          [Product Listing Internal] Set Product Listing Pages:
+            1: ["123","234"]
+            id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
+            itemCount: 2
+            sortableAttributes: []
+        `);
+        done();
+      });
     });
   });
 
