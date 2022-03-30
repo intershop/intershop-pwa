@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -35,9 +35,9 @@ describe('Header Default Component', () => {
         MockComponent(LazySearchBoxComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(MiniBasketComponent),
-        MockComponent(NgbCollapse),
         MockComponent(ProductCompareStatusComponent),
         MockComponent(UserInformationMobileComponent),
+        MockDirective(NgbCollapse),
       ],
     }).compileComponents();
   });
