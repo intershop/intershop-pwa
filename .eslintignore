@@ -1,10 +1,8 @@
 node_modules
 
-*.d.ts
+/src/polyfills.ts
 
-polyfills.ts
-
-environment.development.ts
+/src/environments/environment.development.ts
 
 **/index.html
 

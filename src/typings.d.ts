@@ -1,13 +1,6 @@
-/* SystemJS module definition */
-declare var module: NodeModule;
-
 declare module 'express-http-proxy';
 
 declare module 'express-robots-txt';
-
-declare module 'jest-extended';
-
-interface NodeModule {}
 
 declare var PRODUCTION_MODE: boolean;
 
