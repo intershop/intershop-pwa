@@ -100,11 +100,7 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
       type: 'ish-fieldset-field',
       fieldGroup: [
         {
-          key: 'taxationID',
-          type: 'ish-text-input-field',
-          templateOptions: {
-            label: 'account.address.taxation.label',
-          },
+          type: '#taxationID',
         },
       ],
     };
