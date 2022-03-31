@@ -42,20 +42,13 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
       [
         {
           key: 'city',
-          type: 'ish-text-input-field',
+          type: '#city',
           templateOptions: {
             postWrappers: [{ wrapper: 'tooltip', index: -1 }],
-            label: 'account.default_address.city.label',
-            required: true,
             tooltip: {
               link: 'account.address.apo_fpo.link',
               text: 'account.address.apo_fpo.tooltip',
               title: 'account.address.apo_fpo.tooltip.headline',
-            },
-          },
-          validation: {
-            messages: {
-              required: 'account.address.city.missing.error',
             },
           },
         },
@@ -78,20 +71,15 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
         },
         {
           key: 'postalCode',
-          templateOptions: {
-            label: 'account.default_address.postalcode.label',
-            required: true,
-          },
+          type: '#postalCode',
           validators: {
             validation: [Validators.pattern('^[0-9]{5}$|^[0-9]{5}-[0-9]{4}$')],
           },
           validation: {
             messages: {
-              required: 'account.address.postalcode.missing.error',
               pattern: 'account.address.us.postalcode.error.regexp',
             },
           },
-          type: 'ish-text-input-field',
         },
       ],
       !this.shortForm ? 'phoneHome' : undefined,

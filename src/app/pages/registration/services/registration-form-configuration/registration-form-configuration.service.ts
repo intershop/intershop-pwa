@@ -15,7 +15,7 @@ import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/cus
 import { User } from 'ish-core/models/user/user.model';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { ConfirmLeaveModalComponent } from 'ish-shared/components/registration/confirm-leave-modal/confirm-leave-modal.component';
-import { FormsService } from 'ish-shared/forms/utils/forms.service';
+import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 export interface RegistrationConfigType {
@@ -33,7 +33,7 @@ export class RegistrationFormConfigurationService {
     private router: Router,
     private modalService: NgbModal,
     private featureToggle: FeatureToggleService,
-    private formsService: FormsService
+    private fieldLibrary: FieldLibrary
   ) {}
 
   extractConfig(route: ActivatedRouteSnapshot) {
@@ -303,59 +303,7 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
-        fieldGroup: [
-          {
-            key: 'title',
-            type: 'ish-select-field',
-            templateOptions: {
-              label: 'account.default_address.title.label',
-              placeholder: 'account.option.select.text',
-              options: this.formsService.getSalutationOptions(),
-            },
-          },
-          {
-            key: 'firstName',
-            type: 'ish-text-input-field',
-            templateOptions: {
-              label: 'account.default_address.firstname.label',
-              required: true,
-            },
-            validators: {
-              validation: [SpecialValidators.noSpecialChars],
-            },
-            validation: {
-              messages: {
-                required: 'account.address.firstname.missing.error',
-                noSpecialChars: 'account.name.error.forbidden.chars',
-              },
-            },
-          },
-          {
-            key: 'lastName',
-            type: 'ish-text-input-field',
-            templateOptions: {
-              label: 'account.default_address.lastname.label',
-              required: true,
-            },
-            validators: {
-              validation: [SpecialValidators.noSpecialChars],
-            },
-            validation: {
-              messages: {
-                required: 'account.address.lastname.missing.error',
-                noSpecialChars: 'account.name.error.forbidden.chars',
-              },
-            },
-          },
-          {
-            key: 'phoneHome',
-            type: 'ish-phone-field',
-            templateOptions: {
-              label: 'account.profile.phone.label',
-              required: false,
-            },
-          },
-        ],
+        fieldGroup: this.fieldLibrary.getConfigurationGroup('personalInfo'),
       },
     ];
   }
@@ -376,36 +324,7 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
-        fieldGroup: [
-          {
-            key: 'companyName1',
-            type: 'ish-text-input-field',
-            templateOptions: {
-              label: 'account.address.company_name.label',
-              required: true,
-            },
-            validation: {
-              messages: {
-                required: 'account.address.company_name.error.required',
-              },
-            },
-          },
-          {
-            key: 'companyName2',
-            type: 'ish-text-input-field',
-            templateOptions: {
-              label: 'account.address.company_name_2.label',
-              required: false,
-            },
-          },
-          {
-            key: 'taxationID',
-            type: 'ish-text-input-field',
-            templateOptions: {
-              label: 'account.address.taxation.label',
-            },
-          },
-        ],
+        fieldGroup: this.fieldLibrary.getConfigurationGroup('companyInfo'),
       },
     ];
   }
