@@ -1,7 +1,7 @@
 import { createAction } from '@ngrx/store';
 
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
-import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
+import { Customer, CustomerLoginType, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
@@ -15,7 +15,7 @@ export const loginUserWithToken = createAction('[User] Login User With Token', p
 
 export const loginUserFail = createAction('[User API] Login User Failed', httpError());
 
-export const loginUserSuccess = createAction('[User API] Login User Success', payload<CustomerUserType>());
+export const loginUserSuccess = createAction('[User API] Login User Success', payload<CustomerLoginType>());
 
 export const loadCompanyUser = createAction('[User Internal] Load Company User');
 
@@ -68,10 +68,6 @@ export const updateCustomerFail = createAction('[User API] Update Customer Faile
 export const userErrorReset = createAction('[User Internal] Reset User Error');
 
 export const loadUserByAPIToken = createAction('[User] Load User by API Token');
-
-export const loadPGID = createAction('[User Internal] Load PGID', payload<CustomerUserType>());
-
-export const loadPGIDSuccess = createAction('[User API] Load PGID Success', payload<{ pgid: string }>());
 
 export const personalizationStatusDetermined = createAction('[User Internal] Personalization Status Determined');
 
