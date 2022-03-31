@@ -3,20 +3,21 @@ import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { addToCompare } from 'ish-core/store/shopping/compare';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 
-import { ShoppingFacade } from './shopping.facade';
+import { addToCompare } from '../store/compare';
+import { CompareStoreModule } from '../store/compare-store.module';
 
-describe('Shopping Facade', () => {
-  let facade: ShoppingFacade;
+import { CompareFacade } from './compare.facade';
+
+describe('Compare Facade', () => {
+  let facade: CompareFacade;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideMockStore()],
     });
 
-    facade = TestBed.inject(ShoppingFacade);
+    facade = TestBed.inject(CompareFacade);
   });
 
   it('should be created', () => {
@@ -24,16 +25,16 @@ describe('Shopping Facade', () => {
   });
 });
 
-describe('Shopping Facade', () => {
-  let facade: ShoppingFacade;
+describe('Compare Facade', () => {
+  let facade: CompareFacade;
   let store$: Store;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('_compare')],
+      imports: [CompareStoreModule.forTesting('_compare'), CoreStoreModule.forTesting()],
     });
 
-    facade = TestBed.inject(ShoppingFacade);
+    facade = TestBed.inject(CompareFacade);
     store$ = TestBed.inject(Store);
   });
 

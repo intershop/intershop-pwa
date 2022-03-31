@@ -16,6 +16,7 @@ import { ProductImageComponent } from 'ish-shared/components/product/product-ima
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 
+import { CompareFacade } from '../../../facades/compare.facade';
 import { ProductComparePagingComponent } from '../product-compare-paging/product-compare-paging.component';
 
 import { ProductCompareListComponent } from './product-compare-list.component';
@@ -25,6 +26,7 @@ describe('Product Compare List Component', () => {
   let component: ProductCompareListComponent;
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
+  let compareFacade: CompareFacade;
   let translate: TranslateService;
   let compareProduct1: ProductView;
   let compareProduct2: ProductView;
@@ -65,6 +67,8 @@ describe('Product Compare List Component', () => {
     when(shoppingFacade.product$(compareProduct1.sku, anything())).thenReturn(of(compareProduct1));
     when(shoppingFacade.product$(compareProduct2.sku, anything())).thenReturn(of(compareProduct2));
 
+    compareFacade = mock(CompareFacade);
+
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
@@ -79,7 +83,10 @@ describe('Product Compare List Component', () => {
         MockPipe(AttributeToStringPipe),
         ProductCompareListComponent,
       ],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [
+        { provide: CompareFacade, useFactory: () => instance(compareFacade) },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+      ],
     }).compileComponents();
   });
 
@@ -103,7 +110,7 @@ describe('Product Compare List Component', () => {
   it('should use facade remove from compare when click on remove compare product', () => {
     component.removeFromCompare('111');
 
-    verify(shoppingFacade.removeProductFromCompare('111')).once();
+    verify(compareFacade.removeProductFromCompare('111')).once();
   });
 
   it('should switch to lower page when number of products is reduced', () => {

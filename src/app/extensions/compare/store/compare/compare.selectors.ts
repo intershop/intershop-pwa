@@ -1,10 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
-import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
+import { getCompareState } from '../compare-store';
 
-const getCompareState = createSelector(getShoppingState, (state: ShoppingState) => state._compare);
-
-export const getCompareProductsSKUs = createSelector(getCompareState, state => state.products);
+export const getCompareProductsSKUs = createSelector(getCompareState, state => state._compare);
 
 export const isInCompareProducts = (sku: string) =>
   createSelector(getCompareProductsSKUs, productSKUs => productSKUs.includes(sku));

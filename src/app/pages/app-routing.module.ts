@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
 import { IdentityProviderInviteGuard } from 'ish-core/guards/identity-provider-invite.guard';
 import { IdentityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
@@ -38,18 +37,6 @@ const routes: Routes = [
     data: {
       meta: {
         title: 'account.my_account.heading',
-        robots: 'noindex, nofollow',
-      },
-    },
-  },
-  {
-    path: 'compare',
-    loadChildren: () => import('./compare/compare-page.module').then(m => m.ComparePageModule),
-    canActivate: [FeatureToggleGuard],
-    data: {
-      feature: 'compare',
-      meta: {
-        title: 'product.compare.link',
         robots: 'noindex, nofollow',
       },
     },

@@ -5,7 +5,8 @@ import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+
+import { CompareStoreModule } from '../compare-store.module';
 
 import { addToCompare, removeFromCompare, toggleCompare } from './compare.actions';
 import { CompareEffects } from './compare.effects';
@@ -17,7 +18,7 @@ describe('Compare Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('_compare')],
+      imports: [CompareStoreModule.forTesting('_compare'), CoreStoreModule.forTesting()],
       providers: [CompareEffects, provideMockActions(() => actions$)],
     });
 

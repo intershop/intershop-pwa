@@ -90,9 +90,6 @@ export interface ProductContext {
   // variation handling
   variationCount: number;
 
-  // compare
-  isInCompareList: boolean;
-
   // quantity
   quantity: number;
   allowZeroQuantity: boolean;
@@ -172,11 +169,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
     this.connect(
       'variationCount',
       this.select('sku').pipe(switchMap(sku => this.shoppingFacade.productVariationCount$(sku)))
-    );
-
-    this.connect(
-      'isInCompareList',
-      this.select('sku').pipe(switchMap(sku => this.shoppingFacade.inCompareProducts$(sku)))
     );
 
     this.connect(
@@ -393,14 +385,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
     } else {
       this.shoppingFacade.addProductToBasket(this.get('sku'), this.get('quantity'));
     }
-  }
-
-  toggleCompare() {
-    this.shoppingFacade.toggleProductCompare(this.get('sku'));
-  }
-
-  addToCompare() {
-    this.shoppingFacade.addProductToCompare(this.get('sku'));
   }
 
   propagate(index: number, childState: ProductContext) {

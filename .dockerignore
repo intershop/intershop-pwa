@@ -92,6 +92,9 @@
 # from projects/requisition-management/src/app/exports/.gitignore
 /projects/requisition-management/src/app/exports/lazy**
 
+# from src/app/extensions/compare/exports/.gitignore
+/src/app/extensions/compare/exports/**/lazy*
+
 # from src/app/extensions/order-templates/exports/.gitignore
 /src/app/extensions/order-templates/exports/**/lazy*
 

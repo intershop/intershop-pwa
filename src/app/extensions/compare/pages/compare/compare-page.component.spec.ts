@@ -4,8 +4,9 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+
+import { CompareFacade } from '../../facades/compare.facade';
 
 import { ComparePageComponent } from './compare-page.component';
 import { ProductCompareListComponent } from './product-compare-list/product-compare-list.component';
@@ -14,14 +15,14 @@ describe('Compare Page Component', () => {
   let fixture: ComponentFixture<ComparePageComponent>;
   let element: HTMLElement;
   let component: ComparePageComponent;
-  let shoppingFacade: ShoppingFacade;
+  let compareFacade: CompareFacade;
 
   beforeEach(async () => {
-    shoppingFacade = mock(ShoppingFacade);
+    compareFacade = mock(CompareFacade);
     await TestBed.configureTestingModule({
       declarations: [ComparePageComponent, MockComponent(ProductCompareListComponent)],
       imports: [TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [{ provide: CompareFacade, useFactory: () => instance(compareFacade) }],
     }).compileComponents();
   });
 
@@ -43,7 +44,7 @@ describe('Compare Page Component', () => {
   });
 
   it('should display compare product list when compare products available', () => {
-    when(shoppingFacade.compareProductsCount$).thenReturn(of(2));
+    when(compareFacade.compareProductsCount$).thenReturn(of(2));
 
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toEqual(['ish-product-compare-list']);

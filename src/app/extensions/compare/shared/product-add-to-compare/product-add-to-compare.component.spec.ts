@@ -3,10 +3,12 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
+
+import { CompareFacade } from '../../facades/compare.facade';
 
 import { ProductAddToCompareComponent } from './product-add-to-compare.component';
 
@@ -14,11 +16,13 @@ describe('Product Add To Compare Component', () => {
   let component: ProductAddToCompareComponent;
   let fixture: ComponentFixture<ProductAddToCompareComponent>;
   let element: HTMLElement;
-  let context: ProductContextFacade;
+  let compareFacade: CompareFacade;
 
   beforeEach(async () => {
-    context = mock(ProductContextFacade);
+    const context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToCompare')).thenReturn(of(true));
+
+    compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -27,7 +31,10 @@ describe('Product Add To Compare Component', () => {
         MockPipe(FeatureTogglePipe, () => true),
         ProductAddToCompareComponent,
       ],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      providers: [
+        { provide: CompareFacade, useFactory: () => instance(compareFacade) },
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
+      ],
     }).compileComponents();
   });
 
@@ -44,13 +51,13 @@ describe('Product Add To Compare Component', () => {
   });
 
   it('should show muted button when "isInCompareList" is set to "true"', () => {
-    when(context.select('isInCompareList')).thenReturn(of(true));
+    when(compareFacade.inCompareProducts$(anything())).thenReturn(of(true));
     fixture.detectChanges();
     expect(element.querySelector('button').className).toContain('is-selected');
   });
 
   it('should show normal button when "isInCompareList" is set to "false"', () => {
-    when(context.select('isInCompareList')).thenReturn(of(false));
+    when(compareFacade.inCompareProducts$(anything())).thenReturn(of(false));
     fixture.detectChanges();
     expect(element.querySelector('button').className).toBe('btn add-to-compare');
   });
@@ -69,6 +76,6 @@ describe('Product Add To Compare Component', () => {
   it('should detect errors on emitter using spy', () => {
     component.toggleCompare();
 
-    verify(context.toggleCompare()).once();
+    verify(compareFacade.toggleProductCompare(anything())).once();
   });
 });

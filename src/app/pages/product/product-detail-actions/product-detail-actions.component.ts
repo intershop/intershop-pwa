@@ -24,10 +24,6 @@ export class ProductDetailActionsComponent implements OnInit {
     this.product$ = this.context.select('product');
   }
 
-  addToCompare() {
-    this.context.addToCompare();
-  }
-
   configuration$(key: keyof ProductContextDisplayProperties) {
     return this.context.select('displayProperties', key);
   }

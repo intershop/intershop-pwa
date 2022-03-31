@@ -20,7 +20,6 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -30,7 +29,7 @@ import { getCategoryTree, getSelectedCategory } from './categories';
 import { setProductListingPageSize } from './product-listing';
 import { getProductEntities, getSelectedProduct } from './products';
 import { suggestSearch } from './search';
-import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from './shopping-store.module';
+import { ShoppingStoreModule } from './shopping-store.module';
 
 const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
 
@@ -145,7 +144,6 @@ describe('Shopping Store', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
-        CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([
           {
             path: 'home',
@@ -186,7 +184,6 @@ describe('Shopping Store', () => {
         { provide: PricesService, useFactory: () => instance(priceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,

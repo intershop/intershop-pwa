@@ -7,6 +7,8 @@ import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 
+import { CompareFacade } from '../../../facades/compare.facade';
+
 /**
  * The Product Compare List Component
  *
@@ -44,7 +46,7 @@ export class ProductCompareListComponent implements OnInit {
 
   getProductWithoutCommonAttributes = ProductHelper.getProductWithoutCommonAttributes;
 
-  constructor(private shoppingFacade: ShoppingFacade) {}
+  constructor(private shoppingFacade: ShoppingFacade, private compareFacade: CompareFacade) {}
 
   ngOnInit() {
     this.compareProducts$ = this.compareProductSKUs$.pipe(
@@ -84,6 +86,6 @@ export class ProductCompareListComponent implements OnInit {
    * @param sku The SKU of the product to remove
    */
   removeFromCompare(sku: string) {
-    this.shoppingFacade.removeProductFromCompare(sku);
+    this.compareFacade.removeProductFromCompare(sku);
   }
 }
