@@ -1,0 +1,37 @@
+<ng-container *ngIf="callParameters?.ArticleViewType === 'list'; else detail">
+  <div class="blog-list-item">
+    <h2>{{ pagelet.stringParam('Headline') }}</h2>
+    <div *ngIf="pagelet.stringParam('Author')" class="pb-3">
+      {{ 'blog.list.author.label' | translate }} {{ pagelet.stringParam('Author') }}
+    </div>
+    <div *ngIf="pagelet.stringParam('Abstract')" class="pb-3" [ishServerHtml]="pagelet.stringParam('Abstract')"></div>
+    <a [routerLink]="['/blog', pagelet.id]">{{ 'blog.list.detail.link' | translate }}</a>
+  </div>
+</ng-container>
+
+<ng-template #detail>
+  <h1>{{ pagelet.stringParam('Headline') }}</h1>
+  <div *ngIf="pagelet.stringParam('Author')" class="pb-3">
+    {{ 'blog.detail.author.label' | translate }} {{ pagelet.stringParam('Author') }}
+  </div>
+  <div class="row pb-3">
+    <div class="col-md-4">
+      <img [src]="pagelet.stringParam('Image')" itemprop="image" />
+    </div>
+    <div class="col-md-8">
+      <h2 *ngIf="pagelet.stringParam('Subline')" [ishServerHtml]="pagelet.stringParam('Subline')"></h2>
+      <div *ngIf="pagelet.stringParam('Content')" [ishServerHtml]="pagelet.stringParam('Content')"></div>
+      <div *ngIf="pagelet.stringParam('Tags')" class="pt-3"># {{ pagelet.stringParam('Tags') }}</div>
+    </div>
+  </div>
+
+  <ish-content-slot [slot]="'app_sf_blog_cm:slot.blog.content.pagelet2-Slot'" [pagelet]="pagelet"></ish-content-slot>
+
+  <div class="pt-5">
+    <pre>{{ pagelet.configurationParameters | json }}</pre>
+  </div>
+
+  <div class="pt-3">
+    <a [routerLink]="'/blog'">{{ 'blog.detail.back.link' | translate }}</a>
+  </div>
+</ng-template>

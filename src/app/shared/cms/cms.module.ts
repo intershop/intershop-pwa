@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 
+import { CMSBlogArticleComponent } from './components/cms-blog-article/cms-blog-article.component';
 import { CMSCarouselComponent } from './components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './components/cms-container/cms-container.component';
 import { CMSDialogComponent } from './components/cms-dialog/cms-dialog.component';
@@ -127,6 +128,14 @@ import { CMS_COMPONENT } from './configurations/injection-keys';
       useValue: {
         definitionQualifiedName: 'app_sf_base_cm:component.common.dialog.pagelet2-Component',
         class: CMSDialogComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_blog_cm:component.blog.article.pagelet2-Component',
+        class: CMSBlogArticleComponent,
       },
       multi: true,
     },
