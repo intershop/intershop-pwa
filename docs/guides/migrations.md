@@ -9,21 +9,30 @@ kb_sync_latest_only
 
 ## 2.1 to 2.2
 
+The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependencies updates.<br/>
+These updates required some internal webpack handling changes especially for the template overloading.<br/>
+Also some test adaptions where necessary, so is it now necessary to mock the `SwiperComponent`.<br/>
+Another change is the [Formly](https://formly.dev/) downgrade from v6 pre-release to v5 that still works with Angular 13 with a changed `ngcc` setting.<br/>
+After the updates the deprecated RxJS MapTo operators (`mapTo`, `mergeMapTo`, `switchMapTo`) were replaced [Deprecating MapTo variants](https://github.com/ReactiveX/rxjs/issues/6399).
+Linting will point out these issues in custom code that can than easily be replaced.
+
+The Intershop PWA now uses Node.js 16 LTS with a corresponding npm version >=8.0.0.
+With this new npm, calls using `npx npm-run-all` in CI have to be changed to `npm run exec npm-run-all`.
+
 Changes with Angular 13 require to declare less dependencies in test beds than before.
 For that reason the PWA 2.2 contains two pull requests that cleanup a lot of test specs (see #1057 and #1072).
 It is not considered a breaking change but it might result in merge conflicts with customized Jest tests.
 To cleanup the own code base run `npm run cleanup-testbed`.
 Run `npm run cleanup-testbed -- --help` for more detailed options.
 
-The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependencies updates.
-These updates required some internal webpack handling changes especially for the template overloading.
-Also some test adaptions where necessary, so is it now necessary to mock the `SwiperComponent`.
-Another change is the [Formly](https://formly.dev/) downgrade from v6 pre-release to v5 that still works with Angular 13 with a changed `ngcc` setting.
-After the updates the deprecated RxJS MapTo operators (`mapTo`, `mergeMapTo`, `switchMapTo`) were replaced [Deprecating MapTo variants](https://github.com/ReactiveX/rxjs/issues/6399).
-Linting will point out these issues in custom code that can than easily be replaced.
-
-The Intershop PWA now uses Node.js 16 LTS with a corresponding npm version >=8.0.0.
-With this new npm, calls using `npx npm-run-all` in CI have to be changed to `npm run exec npm-run-all`.
+The `shared/formly` folder - containing all custom types, wrappers, etc. - was updated.<br/>
+For a cleaner separation of code artifacts, there are now multiple subfolders declaring their own modules where formly is partly configured.
+The `FormlyModule` brings all these together so you can use it just like before.
+If you made any changes in `shared/formly`, you will have to adapt the corresponding modules.<br/>
+Additionally, we introduced a `formly/field-library` subfolder that contains a `FieldLibrary` service which enables you to define reusable `FormlyFieldConfig`s and access them easily.
+If you have customized anything in `shared/formly-address-forms/configurations/address-form-configuration.ts`, for example the `standardFields` variable, you will have to migrate these changes by defining new `FieldLibraryConfiguration`s.
+The address form configurations now use the new `FieldLibrary` functionality under the hood.<br/>
+For more information, read the new [Field Library](../guides/field-library.md) documentation.
 
 The compare products functionality was moved into an extension.
 The already existing `compare` feature toggle works as before but the compare components integration changed to lazy components, e.g. `<ish-product-add-to-compare displayType="icon"></ish-product-add-to-compare>` to `<ish-lazy-product-add-to-compare displayType="icon"></ish-lazy-product-add-to-compare>`.
@@ -48,15 +57,6 @@ If the removal of previous data from the store is not wanted this meta reducer s
 In addition a mechanism was introduced to trigger such personalized REST calls after loading the PGID if necessary.
 This way of loading personalized data might need to be added to any custom implementations that potentially fetch personalized data.
 To get an idea of the necessary mechanism search for the usage of `useCombinedObservableOnAction` and `personalizationStatusDetermined` in the source code.
-
-The `shared/formly` folder - containing all custom types, wrappers, etc. - was updated. <br/>
-For a cleaner separation of code artifacts, there are now multiple subfolders declaring their own modules where formly is partly configured.
-The `FormlyModule` brings all these together so you can use it just like before.
-If you made any changes in `shared/formly`, you will have to adapt the corresponding modules. <br/>
-Additionally, we introduced a `formly/field-library` subfolder that contains a `FieldLibrary` service which enables you to define reusable `FormlyFieldConfig`s and access them easily.
-If you have customized anything in `shared/formly-address-forms/configurations/address-form-configuration.ts`, for example the `standardFields` variable, you will have to migrate these changes by defining new `FieldLibraryConfiguration`s.
-The address form configurations now use the new `FieldLibrary` functionality under the hood. <br/>
-For more information, read the new [Field Library](../guides/field-library.md) documentation.
 
 ## 1.4 to 2.0
 
