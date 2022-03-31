@@ -42,7 +42,7 @@ jobs:
 
       - name: Peer Dependency Incompatibilities
         if: always()
-        run: npm ls >/dev/null || true
+        run: npm ls -a >/dev/null || true
 
       - name: npm audit -- PWA
         if: always()
