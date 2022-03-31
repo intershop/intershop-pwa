@@ -145,6 +145,7 @@ const importExportModules = [
   CaptchaExportsModule,
   CdkTableModule,
   CommonModule,
+  CompareExportsModule,
   DeferLoadModule,
   DirectivesModule,
   FeatureToggleModule,
@@ -284,9 +285,9 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  imports: [...importExportModules, CompareExportsModule],
+  imports: [...importExportModules],
   declarations: [...declaredComponents, ...exportedComponents],
-  exports: [...exportedComponents, ...importExportModules, CompareExportsModule],
+  exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {
   constructor(moduleLoader: ModuleLoaderService, injector: Injector) {

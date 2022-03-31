@@ -25,6 +25,10 @@ Linting will point out these issues in custom code that can than easily be repla
 The Intershop PWA now uses Node.js 16 LTS with a corresponding npm version >=8.0.0.
 With this new npm, calls using `npx npm-run-all` in CI have to be changed to `npm run exec npm-run-all`.
 
+The compare products functionality was moved into an extension.
+The already existing `compare` feature toggle works as before but the compare components integration changed to lazy components, e.g. `<ish-product-add-to-compare displayType="icon"></ish-product-add-to-compare>` to `<ish-lazy-product-add-to-compare displayType="icon"></ish-lazy-product-add-to-compare>`.
+For other compare components check the compare-exports.module.ts file.
+
 # 2.0 to 2.1
 
 The recently viewed products functionality was moved into an extension.
