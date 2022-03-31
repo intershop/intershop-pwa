@@ -1,0 +1,17 @@
+import { Injectable } from '@angular/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+
+import { FieldLibraryConfiguration } from './field-library-configuration';
+
+/**
+* <%= classify(name) %>Configuration %> Description
+*/
+@Injectable()
+export class <%= classify(name) %>Configuration extends FieldLibraryConfiguration {
+
+  id = '<%= name %>';
+
+  getFieldConfig(): FormlyFieldConfig {
+    return {}
+  }
+}

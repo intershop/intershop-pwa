@@ -5,6 +5,7 @@ import { meaningfulDescribeInTestsRule } from './rules/meaningful-describe-in-te
 import { newlineBeforeRootMembersRule } from './rules/newline-before-root-members';
 import { noAssignmentToInputsRule } from './rules/no-assignment-to-inputs';
 import { noCollapsibleIfRule } from './rules/no-collapsible-if';
+import { noFormlyExplicitPseudoTypeRule } from './rules/no-formly-explicit-pseudo-type';
 import { noInitializeObservablesDirectlyRule } from './rules/no-initialize-observables-directly';
 import { noIntelligenceInArtifactsRule } from './rules/no-intelligence-in-artifacts';
 import { noObjectLiteralTypeAssertionRule } from './rules/no-object-literal-type-assertion';
@@ -50,6 +51,7 @@ const rules = {
   'do-not-use-theme-identifier': doNotUseThemeIdentifierRule,
   'use-correct-component-overrides': useCorrectComponentOverridesRule,
   'meaningful-describe-in-tests': meaningfulDescribeInTestsRule,
+  'no-formly-explicit-pseudo-type': noFormlyExplicitPseudoTypeRule,
 };
 
 module.exports = {
