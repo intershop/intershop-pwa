@@ -34,6 +34,9 @@ jobs:
       - name: Check Documentation Overview
         run: node docs/check-documentation-overview
 
+      - name: Synchronize Automated Formly Documentation
+        run: npx ts-node docs/sync-formly-docs.ts --ci
+
       - name: Run Formatting
         run: npm exec npm-run-all format check-no-changes
 

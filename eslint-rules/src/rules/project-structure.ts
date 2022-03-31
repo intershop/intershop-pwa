@@ -1,4 +1,5 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { kebabCase } from 'lodash';
 
 import { normalizePath } from '../helpers';
 
@@ -14,6 +15,7 @@ export interface RuleSetting {
     name: string;
     file: string;
   }[];
+  allowedNumberWords: string[];
 }
 
 /**
@@ -24,6 +26,7 @@ export interface RuleSetting {
  * pathPatterns: RegExp patterns to check the directory/path of the file.
  * patterns: RegExp patterns to check whether the class name matches its file.
  * ignoredFiles: RegExp patterns files which should be ignored.
+ * allowedNumberWords: List of words containing numbers that will be treated as normal for the sake of kebab-case. Usually, numbers are treated as their own words.
  */
 export const projectStructureRule: TSESLint.RuleModule<string, RuleSetting[]> = {
   meta: {
@@ -67,6 +70,12 @@ export const projectStructureRule: TSESLint.RuleModule<string, RuleSetting[]> = 
               additionalProperties: false,
             },
           },
+          allowedNumberWords: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
         },
       },
     ],
@@ -78,6 +87,20 @@ export const projectStructureRule: TSESLint.RuleModule<string, RuleSetting[]> = 
     config.ignoredFiles = config.ignoredFiles ?? [];
     config.pathPatterns = config.pathPatterns ?? [];
     config.patterns = config.patterns ?? [];
+    config.allowedNumberWords = config.allowedNumberWords ?? [];
+    // create list of allowed number words in kebab case
+    const kebabSubstitutionDict = config.allowedNumberWords.reduce(
+      (acc, curr) => ({
+        ...acc,
+        [kebabCase(curr)]: curr,
+      }),
+      {}
+    );
+    // create regex to match any of the allowed words
+    const kebabRegex = `(${config.allowedNumberWords.reduce(
+      (acc, curr, idx) => `${kebabCase(curr)}${idx === 0 ? '' : '|'}${acc}`,
+      ''
+    )})`;
 
     // don't continue for ignored files
     if (isIgnoredFile(config.ignoredFiles, config.reusePatterns, filePath)) {
@@ -102,7 +125,9 @@ export const projectStructureRule: TSESLint.RuleModule<string, RuleSetting[]> = 
           config.warnUnmatched,
           config.reusePatterns,
           node.name,
-          filePath
+          filePath,
+          kebabRegex,
+          kebabSubstitutionDict
         );
         // return error, when the class name doesn't match to the according file pattern
         if (matchPatternError !== '') {
@@ -127,14 +152,10 @@ function reusePattern(pattern: string, reusePatterns: { [name: string]: string }
 }
 
 /**
- * return true the current file to check matches to the ignored file list
+ * return the string in camel case format
  */
-function isIgnoredFile(ignoredFiles: string[], reusePatterns: { [name: string]: string }, filePath: string): boolean {
-  if (ignoredFiles.length === 0) {
-    return false;
-  }
-  return ignoredFiles.some(ignoredFile => new RegExp(reusePattern(ignoredFile, reusePatterns)).test(filePath));
-}
+const camelCaseFromPascalCase = (input: string): string =>
+  `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`;
 
 /**
  * return true the current file to check matches to the path pattern list
@@ -148,6 +169,16 @@ function matchPathPattern(
 }
 
 /**
+ * return true the current file to check matches to the ignored file list
+ */
+function isIgnoredFile(ignoredFiles: string[], reusePatterns: { [name: string]: string }, filePath: string): boolean {
+  if (ignoredFiles.length === 0) {
+    return false;
+  }
+  return ignoredFiles.some(ignoredFile => new RegExp(reusePattern(ignoredFile, reusePatterns)).test(filePath));
+}
+
+/**
  * return error string, when the class name doesn't match the according path pattern for the current file
  */
 function matchPattern(
@@ -155,7 +186,9 @@ function matchPattern(
   warnUnmatched: boolean,
   reusePatterns: { [name: string]: string },
   className: string,
-  filePath: string
+  filePath: string,
+  kebabRegex: string,
+  kebabSubstitutionDict: Record<string, string>
 ): string {
   const matchingPatterns = patterns
     .map(pattern => ({ pattern, match: new RegExp(reusePattern(pattern.name, reusePatterns)).exec(className) }))
@@ -164,7 +197,7 @@ function matchPattern(
     const config = matchingPatterns[0];
     const matched = config.match[1];
     const pathPattern = config.pattern.file
-      .replace(/<kebab>/g, kebabCaseFromPascalCase(matched))
+      .replace(/<kebab>/g, kebabCaseFromPascalCase(matched, kebabRegex, kebabSubstitutionDict))
       .replace(/<camel>/g, camelCaseFromPascalCase(matched));
 
     if (!new RegExp(reusePattern(pathPattern, reusePatterns)).test(filePath)) {
@@ -179,20 +212,14 @@ function matchPattern(
 }
 
 /**
- * return the string in kebab case format
+ * return the string in kebab case format, respecting the allowed words that contain numbers
  */
-const kebabCaseFromPascalCase = (input: string): string =>
-  input
-    .replace(/[A-Z]{2,}$/, m => `${m.substring(0, 1)}${m.substring(1, m.length).toLowerCase()}`)
-    .replace(
-      /[A-Z]{3,}/g,
-      m => `${m.substring(0, 1)}${m.substring(1, m.length - 1).toLowerCase()}${m.substring(m.length - 1, m.length)}`
-    )
-    .replace(/[A-Z]/g, match => `-${match.toLowerCase()}`)
-    .replace(/^-/, '');
-
-/**
- * return the string in camel case format
- */
-const camelCaseFromPascalCase = (input: string): string =>
-  `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`;
+const kebabCaseFromPascalCase = (
+  input: string,
+  kebabRegex: string,
+  kebabSubstitutionDict: Record<string, string>
+): string => {
+  const k = kebabCase(input);
+  const match = k.match(kebabRegex);
+  return match?.[1] ? k.replace(match[1], kebabSubstitutionDict[match[1]]) : k;
+};

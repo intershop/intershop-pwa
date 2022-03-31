@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { Component, ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FieldType, FieldWrapper, FormlyFieldConfig, FormlyForm, FormlyModule } from '@ngx-formly/core';
+import { FORMLY_CONFIG, FieldType, FieldWrapper, FormlyFieldConfig, FormlyForm, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
 /* eslint-disable ish-custom-rules/project-structure */
@@ -56,6 +56,9 @@ class SelectFieldComponent extends FieldType {}
 
 @Component({ template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class TextareaFieldComponent extends FieldType {}
+
+@Component({ template: 'DummyLibraryFieldComponent: {{ field.key }}' })
+class DummyLibraryFieldComponent extends FieldType {}
 
 @Component({ template: `<ng-template #fieldComponent> </ng-template>` })
 class DummyWrapperComponent extends FieldWrapper {}
@@ -142,4 +145,27 @@ class DatePickerFieldComponent extends FieldType {}
   ],
   exports: [FormlyForm, ReactiveFormsModule],
 })
-export class FormlyTestingModule {}
+export class FormlyTestingModule {
+  static withPresetMocks(libraryMockTypes: string[] = []): ModuleWithProviders<FormlyTestingModule> {
+    return {
+      ngModule: FormlyTestingModule,
+      providers: [
+        {
+          provide: FORMLY_CONFIG,
+          multi: true,
+          useValue: {
+            types: [
+              libraryMockTypes
+                .map(libraryMockType => (libraryMockType.startsWith('#') ? libraryMockType : `#${libraryMockType}`))
+                .map(name => ({
+                  name,
+                  component: DummyLibraryFieldComponent,
+                  defaultOptions: { key: name.substring(1) },
+                })),
+            ],
+          },
+        },
+      ],
+    };
+  }
+}
