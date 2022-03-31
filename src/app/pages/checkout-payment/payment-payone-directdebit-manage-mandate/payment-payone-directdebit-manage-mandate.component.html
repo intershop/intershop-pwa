@@ -1,16 +1,33 @@
-
-  <p *ngIf="mandateError" class="text-danger col-sm-offset-4">
-    {{ 'checkout.sepa.mandate.error.notFound' | translate }}
-  </p>
-
-  <div class="col-12 col-md-9 col-lg-7">
-    <h3>{{ 'checkout.sepa.mandate.header' | translate }}</h3>
-    <p>{{ 'checkout.sepa.mandate.message' | translate }}</p>
-    <form [formGroup]="payoneManageMandateForm">
-      <div id="SEPAMandateText"><p>{{mandateText}}</p></div>
-
-      <input type="checkbox" formControlName="acceptMandate" />
-        <span>{{ 'checkout.sepa.mandate.accept.label' | translate }}</span>
-
-    </form>
-  </div>
+<!-- show mandate text and checkbox if mandate status is pending -->
+<div class="col-12 col-md-9 col-lg-7" *ngIf="this.isMandateStatusPending && this.mandateText">
+  <h3>{{ 'checkout.sepa.mandate.header' | translate }}</h3>
+  <p>{{ 'checkout.sepa.mandate.message' | translate }}</p>
+  <form [formGroup]="payoneManageMandateForm">
+    <div
+      id="SEPAMandateText"
+      style="
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 15px;
+        height: 200px;
+        width: 100%;
+        background-color: #'#' #fff;
+      "
+      [ishServerHtml]="this.mandateText"
+    ></div>
+    <input
+      type="checkbox"
+      (change)="onCheckChange($event)"
+      [id]="'AcceptSEPAMandate_' + this.paymentId"
+      [formControlName]="'AcceptSEPAMandate_' + this.paymentId"
+    />
+    <span>{{ 'checkout.sepa.mandate.accept.label' | translate }}</span>
+  </form>
+</div>
+<!-- show mandate download link if mandate status is active -->
+<div *ngIf="!this.isMandateStatusPending">
+  <a id="SEPAMandateDownload" (click)="downloadMandate()" data-testing-id="download-mandate-link"
+    >Download SEPA mandate</a
+  >
+</div>
