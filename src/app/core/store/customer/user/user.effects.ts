@@ -9,7 +9,6 @@ import { concatMap, delay, exhaustMap, filter, map, mergeMap, sample, takeWhile,
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
@@ -40,8 +39,6 @@ import {
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
-  loadPGID,
-  loadPGIDSuccess,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -65,7 +62,6 @@ export class UserEffects {
     private store$: Store,
     private userService: UserService,
     private paymentService: PaymentService,
-    private personalizationService: PersonalizationService,
     private router: Router,
     private apiTokenService: ApiTokenService,
     @Inject(PLATFORM_ID) private platformId: string
@@ -76,7 +72,7 @@ export class UserEffects {
       ofType(loginUser),
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
-        this.userService.signInUser(credentials).pipe(map(loadPGID), mapErrorToAction(loginUserFail))
+        this.userService.signInUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -86,7 +82,7 @@ export class UserEffects {
       ofType(loginUserWithToken),
       mapToPayloadProperty('token'),
       exhaustMap(token =>
-        this.userService.signInUserByToken(token).pipe(map(loadPGID), mapErrorToAction(loginUserFail))
+        this.userService.signInUserByToken(token).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -123,7 +119,7 @@ export class UserEffects {
       ofType(createUser),
       mapToPayload(),
       mergeMap((data: CustomerRegistrationType) =>
-        this.userService.createUser(data).pipe(map(loadPGID), mapErrorToAction(createUserFail))
+        this.userService.createUser(data).pipe(map(loginUserSuccess), mapErrorToAction(createUserFail))
       )
     )
   );
@@ -217,20 +213,7 @@ export class UserEffects {
   loadUserByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
-      concatMap(() => this.userService.signInUserByToken().pipe(map(loadPGID), mapErrorToAction(loginUserFail)))
-    )
-  );
-
-  fetchPGID$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadPGID),
-      mapToPayload(),
-      concatMap(payload =>
-        this.personalizationService.getPGID().pipe(
-          concatMap(pgid => [loadPGIDSuccess({ pgid }), loginUserSuccess(payload)]),
-          mapErrorToAction(loginUserFail)
-        )
-      )
+      concatMap(() => this.userService.signInUserByToken().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail)))
     )
   );
 
