@@ -51,13 +51,13 @@ describe('Direct Order Component', () => {
 
   it('should display form with direct order configuration', () => {
     fixture.detectChanges();
-    expect(element.querySelector('formly-field').querySelectorAll('formly-field')).toMatchInlineSnapshot(`
+    expect(element.querySelectorAll('formly-field')).toMatchInlineSnapshot(`
       NodeList [
-        <formly-field
+        <formly-field hide-deprecation=""
         ><ng-component
           >TextInputFieldComponent: sku ish-text-input-field { "fieldClass": "col-12", "placeholder":
           "shopping_cart.direct_order.item_placeholder", "attributes": { "autocomplete": "on" }, "label":
-          "", "disabled": false}</ng-component
+          "", "focus": false, "disabled": false}</ng-component
         ></formly-field
       >,
       ]

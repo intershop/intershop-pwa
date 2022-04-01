@@ -51,6 +51,7 @@ Mockito
 PWA's
 RxJS
 Grafana
+ngcc
 NgRx
 NgSW
 Formly
@@ -197,3 +198,5 @@ foobars
 asdf
 qwertz
 appr
+
+logformat

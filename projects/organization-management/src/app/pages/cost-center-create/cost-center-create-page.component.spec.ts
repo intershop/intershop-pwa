@@ -4,8 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-
 import { CostCenterFormComponent } from '../../components/cost-center-form/cost-center-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -23,11 +21,7 @@ describe('Cost Center Create Page Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        CostCenterCreatePageComponent,
-        MockComponent(CostCenterFormComponent),
-        MockComponent(LoadingComponent),
-      ],
+      declarations: [CostCenterCreatePageComponent, MockComponent(CostCenterFormComponent)],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   });

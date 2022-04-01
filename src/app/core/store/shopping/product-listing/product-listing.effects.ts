@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { distinctUntilChanged, map, mapTo, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
@@ -40,14 +40,17 @@ export class ProductListingEffects {
   ) {}
 
   initializePageSize$ = createEffect(() =>
-    this.actions$.pipe(take(1), mapTo(setProductListingPageSize({ itemsPerPage: this.itemsPerPage })))
+    this.actions$.pipe(
+      take(1),
+      map(() => setProductListingPageSize({ itemsPerPage: this.itemsPerPage }))
+    )
   );
 
   initializeDefaultViewType$ = createEffect(() =>
     this.store.pipe(
       select(getProductListingViewType),
       whenFalsy(),
-      mapTo(setViewType({ viewType: this.defaultViewType }))
+      map(() => setViewType({ viewType: this.defaultViewType }))
     )
   );
 

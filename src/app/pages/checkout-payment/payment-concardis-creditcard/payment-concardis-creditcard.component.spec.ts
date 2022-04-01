@@ -24,8 +24,8 @@ describe('Payment Concardis Creditcard Component', () => {
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(FormControlFeedbackComponent),
-        MockComponent(NgbPopover),
         MockComponent(PaymentSaveCheckboxComponent),
+        MockDirective(NgbPopover),
         MockDirective(ShowFormFeedbackDirective),
         PaymentConcardisCreditcardComponent,
       ],

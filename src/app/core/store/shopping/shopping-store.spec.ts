@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,7 +20,6 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -31,7 +29,7 @@ import { getCategoryTree, getSelectedCategory } from './categories';
 import { setProductListingPageSize } from './product-listing';
 import { getProductEntities, getSelectedProduct } from './products';
 import { suggestSearch } from './search';
-import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from './shopping-store.module';
+import { ShoppingStoreModule } from './shopping-store.module';
 
 const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
 
@@ -48,9 +46,6 @@ describe('Shopping Store', () => {
   let priceServiceMock: PricesService;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     const catA = { uniqueId: 'A', categoryPath: ['A'], name: 'nA' } as Category;
     const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'], name: 'nA123' } as Category;
     const catA123456 = {
@@ -147,39 +142,37 @@ describe('Shopping Store', () => {
     when(priceServiceMock.getProductPrices(anything())).thenReturn(of([]));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
-        CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([
           {
             path: 'home',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'compare',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'error',
-            component: DummyComponent,
+            children: [],
             data: { headerType: 'simple' },
           },
           {
             path: 'category/:categoryUniqueId',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'category/:categoryUniqueId/product/:sku',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'product/:sku',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'search/:searchTerm',
-            component: DummyComponent,
+            children: [],
           },
         ]),
         ShoppingStoreModule,
@@ -191,7 +184,6 @@ describe('Shopping Store', () => {
         { provide: PricesService, useFactory: () => instance(priceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,

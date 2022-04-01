@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -10,12 +10,11 @@ import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/he
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
-import { ProductCompareStatusComponent } from 'ish-shell/header/product-compare-status/product-compare-status.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
 import { LazySearchBoxComponent } from 'ish-shell/shared/lazy-search-box/lazy-search-box.component';
 
+import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
 import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
-import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/lazy-wishlists-link/lazy-wishlists-link.component';
 
 import { HeaderDefaultComponent } from './header-default.component';
 
@@ -32,14 +31,13 @@ describe('Header Default Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(HeaderNavigationComponent),
         MockComponent(LanguageSwitchComponent),
+        MockComponent(LazyProductCompareStatusComponent),
         MockComponent(LazyQuickorderLinkComponent),
         MockComponent(LazySearchBoxComponent),
-        MockComponent(LazyWishlistsLinkComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(MiniBasketComponent),
-        MockComponent(NgbCollapse),
-        MockComponent(ProductCompareStatusComponent),
         MockComponent(UserInformationMobileComponent),
+        MockDirective(NgbCollapse),
       ],
     }).compileComponents();
   });
@@ -58,8 +56,9 @@ describe('Header Default Component', () => {
 
   it('should render User Links on template', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-login-status', 'ish-product-compare-status']);
+    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-login-status', 'ish-lazy-product-compare-status']);
   });
+
   it('should render Language Switch on template', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toContain('ish-language-switch');

@@ -7,7 +7,6 @@ describe('Requisition Mapper', () => {
   let requisitionMapper: RequisitionMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     requisitionMapper = TestBed.inject(RequisitionMapper);
   });
 

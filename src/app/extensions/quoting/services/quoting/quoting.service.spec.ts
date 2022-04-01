@@ -1,10 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 
 import { QuoteData } from '../../models/quoting/quoting.interface';
 import { QuoteStub } from '../../models/quoting/quoting.model';
@@ -20,12 +18,7 @@ describe('Quoting Service', () => {
     when(apiService.b2bUserEndpoint()).thenReturn(instance(apiService));
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: ApiService, useFactory: () => instance(apiService) },
-        provideMockStore({
-          selectors: [{ selector: getBasketIdOrCurrent, value: 'current' }],
-        }),
-      ],
+      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
     });
     quotingService = TestBed.inject(QuotingService);
   });

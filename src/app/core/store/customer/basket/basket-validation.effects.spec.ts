@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -40,20 +39,16 @@ describe('Basket Validation Effects', () => {
   let store$: Store;
   let location: Location;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['serverConfig']),
         CustomerStoreModule.forTesting('user', 'basket'),
         RouterTestingModule.withRoutes([
-          { path: 'checkout', children: [{ path: 'address', component: DummyComponent }] },
-          { path: 'checkout', children: [{ path: 'review', component: DummyComponent }] },
+          { path: 'checkout', children: [{ path: 'address', children: [] }] },
+          { path: 'checkout', children: [{ path: 'review', children: [] }] },
         ]),
       ],
       providers: [

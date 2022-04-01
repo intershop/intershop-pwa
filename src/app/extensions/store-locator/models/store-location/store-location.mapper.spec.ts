@@ -7,7 +7,6 @@ describe('Store Location Mapper', () => {
   let storeLocationMapper: StoreLocationMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     storeLocationMapper = TestBed.inject(StoreLocationMapper);
   });
 

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { debounce, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
+import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { addProductToBasket } from 'ish-core/store/customer/basket';
+import { getPriceDisplayType } from 'ish-core/store/customer/user';
 import {
   getCategory,
   getCategoryIdByRefId,
@@ -15,14 +17,6 @@ import {
   loadCategoryByRef,
   loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
-import {
-  addToCompare,
-  getCompareProductsCount,
-  getCompareProductsSKUs,
-  isInCompareProducts,
-  removeFromCompare,
-  toggleCompare,
-} from 'ish-core/store/shopping/compare';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
 import {
   getProductListingLoading,
@@ -30,6 +24,7 @@ import {
   getProductListingViewType,
   loadMoreProducts,
 } from 'ish-core/store/shopping/product-listing';
+import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
 import {
   getProduct,
   getProductLinks,
@@ -106,6 +101,17 @@ export class ShoppingFacade {
           map(([, curr]) => curr),
           filter(p => ProductHelper.isReadyForDisplay(p, completenessLevel))
         )
+      )
+    );
+  }
+
+  productPrices$(sku: string | Observable<string>) {
+    return toObservable(sku).pipe(
+      switchMap(plainSKU =>
+        combineLatest([
+          this.store.pipe(select(getProductPrice(plainSKU))),
+          this.store.pipe(select(getPriceDisplayType)),
+        ]).pipe(map(args => PriceItemHelper.selectPricing(...args)))
       )
     );
   }
@@ -187,27 +193,6 @@ export class ShoppingFacade {
       whenTruthy(),
       map(x => (withCategoryFilter ? x : { ...x, filter: x.filter?.filter(f => f.id !== 'CategoryUUIDLevelMulti') }))
     );
-  }
-
-  // COMPARE
-
-  compareProducts$ = this.store.pipe(select(getCompareProductsSKUs));
-  compareProductsCount$ = this.store.pipe(select(getCompareProductsCount));
-
-  inCompareProducts$(sku: string | Observable<string>) {
-    return toObservable(sku).pipe(switchMap(plainSKU => this.store.pipe(select(isInCompareProducts(plainSKU)))));
-  }
-
-  addProductToCompare(sku: string) {
-    this.store.dispatch(addToCompare({ sku }));
-  }
-
-  toggleProductCompare(sku: string) {
-    this.store.dispatch(toggleCompare({ sku }));
-  }
-
-  removeProductFromCompare(sku: string) {
-    this.store.dispatch(removeFromCompare({ sku }));
   }
 
   // PROMOTIONS

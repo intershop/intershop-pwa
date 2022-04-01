@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -18,21 +17,16 @@ import {
   getSelectedPunchoutUser,
 } from './punchout-users.selectors';
 
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
 describe('Punchout Users Selectors', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-
       imports: [
         CoreStoreModule.forTesting(['router']),
         PunchoutStoreModule.forTesting('punchoutUsers'),
-        RouterTestingModule.withRoutes([{ path: 'account/punchout/:PunchoutLogin', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'account/punchout/:PunchoutLogin', children: [] }]),
       ],
       providers: [provideStoreSnapshots()],
     });

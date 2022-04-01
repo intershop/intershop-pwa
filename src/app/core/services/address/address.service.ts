@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { concatMap, first, map, mapTo } from 'rxjs/operators';
+import { concatMap, first, map } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
@@ -90,7 +90,7 @@ export class AddressService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.delete(`${restResource}/${customerId}/addresses/${addressId}`).pipe(mapTo(addressId))
+        this.apiService.delete(`${restResource}/${customerId}/addresses/${addressId}`).pipe(map(() => addressId))
       )
     );
   }

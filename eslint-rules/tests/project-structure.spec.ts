@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { projectStructureRule } from '../src/rules/project-structure';
 
@@ -87,6 +87,27 @@ const config: RuleTestConfig = {
         }
         `,
       },
+      // kebab conversion should work with allowed word containing a number
+      {
+        options: [
+          {
+            ...options,
+            patterns: [
+              {
+                name: '^([A-Z].*)Component$',
+                file: 'src/test/<kebab>.component.ts$',
+              },
+            ],
+            allowedNumberWords: ['b2b'],
+          },
+        ],
+        filename: 'src/test/test-b2b.component.ts',
+        code: `
+        @Component({})
+        export class TestB2BComponent {
+        }
+        `,
+      },
     ],
     invalid: [
       // files doesn't match path pattern when path is invalid and warnUnmatched is false
@@ -124,6 +145,40 @@ const config: RuleTestConfig = {
               message: 'no pattern match for TestFooComponent in file path/src/test/test.component.bar.ts',
             },
             type: AST_NODE_TYPES.Identifier,
+          },
+        ],
+      },
+      // file doesn't match  kebab class name pattern when it contains a number word that isn't allowed
+      {
+        options: [
+          {
+            ...options,
+            patterns: [
+              {
+                name: '^([A-Z].*)Component$',
+                file: 'src/test/<kebab>.component.ts$',
+              },
+            ],
+          },
+        ],
+        filename: 'src/test/test-b2b.component.ts',
+        code: `
+        @Component({})
+        export class TestB2BComponent {
+        }
+        `,
+        errors: [
+          {
+            type: AST_NODE_TYPES.Identifier,
+            messageId: 'projectStructureError',
+            data: {
+              message:
+                "'TestB2BComponent' is not in the correct file (expected '/src/test/test-b-2-b.component.ts$/')".replace(
+                  // hack to circumvent automatic string formatting
+                  '/src/test/test-b-2-b.component.ts$/',
+                  '/src\\/test\\/test-b-2-b.component.ts$/'
+                ),
+            },
           },
         ],
       },

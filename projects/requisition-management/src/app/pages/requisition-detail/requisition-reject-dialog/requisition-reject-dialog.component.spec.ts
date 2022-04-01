@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { anything, capture, spy, verify } from 'ts-mockito';
-
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { RequisitionRejectDialogComponent } from './requisition-reject-dialog.component';
 
@@ -11,13 +8,6 @@ describe('Requisition Reject Dialog Component', () => {
   let component: RequisitionRejectDialogComponent;
   let fixture: ComponentFixture<RequisitionRejectDialogComponent>;
   let element: HTMLElement;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [RequisitionRejectDialogComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-    }).compileComponents();
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RequisitionRejectDialogComponent);

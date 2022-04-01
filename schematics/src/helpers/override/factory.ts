@@ -1,10 +1,9 @@
 import { Rule, SchematicsException, chain } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { OverrideOptionsSchema as Options } from 'schemas/helpers/override/schema';
 
 import { copyFile } from '../../utils/filesystem';
 import { setStyleUrls } from '../../utils/registration';
-
-import { OverrideOptionsSchema as Options } from './schema';
 
 export function override(options: Options): Rule {
   // eslint-disable-next-line complexity

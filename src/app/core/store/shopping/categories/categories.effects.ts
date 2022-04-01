@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, filter, map, mergeMap, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -118,7 +118,7 @@ export class CategoriesEffects {
   productOrCategoryChanged$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofCategoryUrl(),
           select(getSelectedCategory),
@@ -142,7 +142,7 @@ export class CategoriesEffects {
   setBreadcrumbForCategoryPage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofCategoryUrl(),
           select(getBreadcrumbForCategoryPage),

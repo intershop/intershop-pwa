@@ -8,7 +8,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { RegistrationPageComponent } from './registration-page.component';
@@ -27,7 +26,7 @@ describe('Registration Page Component', () => {
     configService = mock(RegistrationFormConfigurationService);
     activatedRoute = mock(ActivatedRoute);
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(ErrorMessageComponent), MockComponent(LoadingComponent), RegistrationPageComponent],
+      declarations: [MockComponent(ErrorMessageComponent), RegistrationPageComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
@@ -64,12 +63,12 @@ describe('Registration Page Component', () => {
 
   it('should display form with registration configuration', () => {
     fixture.detectChanges();
-    expect(element.querySelector('formly-field').querySelectorAll('formly-field')).toMatchInlineSnapshot(`
+    expect(element.querySelectorAll('formly-field')).toMatchInlineSnapshot(`
       NodeList [
-        <formly-field
+        <formly-field hide-deprecation=""
         ><ng-component
-          >TextInputFieldComponent: test ish-text-input-field { "label": "", "placeholder": "",
-          "disabled": false}</ng-component
+          >TextInputFieldComponent: test ish-text-input-field { "label": "", "placeholder": "", "focus":
+          false, "disabled": false}</ng-component
         ></formly-field
       >,
       ]

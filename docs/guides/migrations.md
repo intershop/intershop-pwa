@@ -7,7 +7,38 @@ kb_sync_latest_only
 
 # Migrations
 
-## 2.0 to 2.1
+## 2.1 to 2.2
+
+The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependencies updates.<br/>
+These updates required some internal webpack handling changes especially for the template overloading.<br/>
+Also some test adaptions where necessary, so is it now necessary to mock the `SwiperComponent`.<br/>
+Another change is the [Formly](https://formly.dev/) downgrade from v6 pre-release to v5 that still works with Angular 13 with a changed `ngcc` setting.<br/>
+After the updates the deprecated RxJS MapTo operators (`mapTo`, `mergeMapTo`, `switchMapTo`) were replaced [Deprecating MapTo variants](https://github.com/ReactiveX/rxjs/issues/6399).
+Linting will point out these issues in custom code that can than easily be replaced.
+
+The Intershop PWA now uses Node.js 16 LTS with a corresponding npm version >=8.0.0.
+With this new npm, calls using `npx npm-run-all` in CI have to be changed to `npm run exec npm-run-all`.
+
+Changes with Angular 13 require to declare less dependencies in test beds than before.
+For that reason the PWA 2.2 contains two pull requests that cleanup a lot of test specs (see #1057 and #1072).
+It is not considered a breaking change but it might result in merge conflicts with customized Jest tests.
+To cleanup the own code base run `npm run cleanup-testbed`.
+Run `npm run cleanup-testbed -- --help` for more detailed options.
+
+The `shared/formly` folder - containing all custom types, wrappers, etc. - was updated.<br/>
+For a cleaner separation of code artifacts, there are now multiple subfolders declaring their own modules where formly is partly configured.
+The `FormlyModule` brings all these together so you can use it just like before.
+If you made any changes in `shared/formly`, you will have to adapt the corresponding modules.<br/>
+Additionally, we introduced a `formly/field-library` subfolder that contains a `FieldLibrary` service which enables you to define reusable `FormlyFieldConfig`s and access them easily.
+If you have customized anything in `shared/formly-address-forms/configurations/address-form-configuration.ts`, for example the `standardFields` variable, you will have to migrate these changes by defining new `FieldLibraryConfiguration`s.
+The address form configurations now use the new `FieldLibrary` functionality under the hood.<br/>
+For more information, read the new [Field Library](../guides/field-library.md) documentation.
+
+The compare products functionality was moved into an extension.
+The already existing `compare` feature toggle works as before but the compare components integration changed to lazy components, e.g. `<ish-product-add-to-compare displayType="icon"></ish-product-add-to-compare>` to `<ish-lazy-product-add-to-compare displayType="icon"></ish-lazy-product-add-to-compare>`.
+For other compare components check the compare-exports.module.ts file.
+
+# 2.0 to 2.1
 
 The recently viewed products functionality was moved into an extension.
 The already existing `recently` feature toggle works as before but the recently viewed component integration changed from `<ish-recently-viewed *ishFeature="'recently'"></ish-recently-viewed>` to `<ish-lazy-recently-viewed></ish-lazy-recently-viewed>`.

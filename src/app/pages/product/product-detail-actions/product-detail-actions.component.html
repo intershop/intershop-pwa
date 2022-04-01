@@ -12,10 +12,7 @@
       </ng-container>
       <ng-container *ishFeature="'compare'">
         <li *ngIf="configuration$('addToCompare') | async" [attr.data-testing-id]="'compare-' + product.sku">
-          <a routerLink="/compare" (click)="addToCompare()" rel="nofollow">
-            <fa-icon [icon]="['fas', 'columns']"></fa-icon>
-            <span class="share-label">{{ 'product.compare.link' | translate }}</span>
-          </a>
+          <ish-lazy-product-send-to-compare></ish-lazy-product-send-to-compare>
         </li>
       </ng-container>
 

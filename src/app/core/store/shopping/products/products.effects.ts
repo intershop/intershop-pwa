@@ -13,10 +13,8 @@ import {
   first,
   groupBy,
   map,
-  mapTo,
   mergeMap,
   switchMap,
-  switchMapTo,
   take,
   throttleTime,
   withLatestFrom,
@@ -251,7 +249,7 @@ export class ProductsEffects {
               select(getProductVariationSKUs(sku)),
               first(),
               filter(variations => !variations?.length),
-              mapTo(sku)
+              map(() => sku)
             )
           ),
           exhaustMap(sku =>
@@ -359,7 +357,7 @@ export class ProductsEffects {
   setBreadcrumbForProductPage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofProductUrl(),
           select(getBreadcrumbForProductPage),

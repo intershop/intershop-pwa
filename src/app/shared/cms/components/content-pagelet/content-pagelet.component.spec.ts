@@ -30,7 +30,7 @@ describe('Content Pagelet Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [CMSTextComponent, ContentPageletComponent, ServerHtmlDirective],
+      declarations: [CMSTextComponent, ServerHtmlDirective],
       providers: [
         {
           provide: CMS_COMPONENT,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, mapTo } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 
 import { ContactService } from 'ish-core/services/contact/contact.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -41,9 +41,10 @@ export class ContactEffects {
       ofType(createContact),
       mapToPayloadProperty('contact'),
       concatMap(contact =>
-        this.contactService
-          .createContactRequest(contact)
-          .pipe(mapTo(createContactSuccess()), mapErrorToAction(createContactFail))
+        this.contactService.createContactRequest(contact).pipe(
+          map(() => createContactSuccess()),
+          mapErrorToAction(createContactFail)
+        )
       )
     )
   );

@@ -41,6 +41,15 @@ describe('Operators', () => {
       subject$.next('a');
     });
 
+    it('should execute message if it is a function', done => {
+      subject$.pipe(log(() => 1234)).subscribe(() => {
+        expect(console.log).toHaveBeenCalledWith(1234, 'a');
+        done();
+      });
+
+      subject$.next('a');
+    });
+
     it('should leave emitted values for stream unchanged', done => {
       subject$.pipe(log()).subscribe(e => {
         expect(e).toEqual('a');

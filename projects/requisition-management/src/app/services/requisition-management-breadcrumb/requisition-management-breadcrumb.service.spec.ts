@@ -34,7 +34,6 @@ describe('Requisition Management Breadcrumb Service', () => {
     class DummyComponent {}
     reqFacade = mock(RequisitionManagementFacade);
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration']),
         RouterTestingModule.withRoutes([

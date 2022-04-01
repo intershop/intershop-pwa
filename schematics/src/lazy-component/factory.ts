@@ -13,6 +13,7 @@ import {
 } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWALazyComponentOptionsSchema as Options } from 'schemas/lazy-component/schema';
 import * as ts from 'typescript';
 
 import { determineArtifactName, findDeclaringModule } from '../utils/common';
@@ -25,8 +26,6 @@ import {
   generateGitignore,
   updateModule,
 } from '../utils/registration';
-
-import { PWALazyComponentOptionsSchema as Options } from './schema';
 
 export function createLazyComponent(options: Options): Rule {
   // eslint-disable-next-line complexity
@@ -150,7 +149,7 @@ export function createLazyComponent(options: Options): Rule {
       if (!isShared && !exportsModuleExists) {
         operations.push(
           schematic('module', {
-            ...options,
+            project: options.project,
             name: exportsModuleName,
             flat: true,
           })
@@ -158,7 +157,7 @@ export function createLazyComponent(options: Options): Rule {
         operations.push(updateModule(options));
         operations.push(
           addExportToBarrelFile({
-            ...options,
+            path: options.path,
             artifactName: strings.classify(`${exportsModuleName}-module`),
             moduleImportPath: `/${options.path}/${exportsModuleName}.module`,
           })
@@ -169,7 +168,7 @@ export function createLazyComponent(options: Options): Rule {
         operations.push(addExportToNgModule(options));
       }
       if (!gitignoreExists) {
-        operations.push(generateGitignore({ ...options, content: '/lazy**' }));
+        operations.push(generateGitignore({ path: options.path, content: '/lazy**' }));
       }
 
       if (isProject) {

@@ -5,8 +5,6 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-
 import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -34,11 +32,7 @@ describe('User Edit Profile Page Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(LoadingComponent),
-        MockComponent(UserProfileFormComponent),
-        UserEditProfilePageComponent,
-      ],
+      declarations: [MockComponent(UserProfileFormComponent), UserEditProfilePageComponent],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
 

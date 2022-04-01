@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,24 +13,20 @@ describe('Viewconf Integration', () => {
   let router: Router;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'viewconf'], [ViewconfEffects]),
         RouterTestingModule.withRoutes([
           {
             path: 'some',
-            component: DummyComponent,
+            children: [],
             data: {
               wrapperClass: 'something',
               headerType: 'simple',
               breadcrumbData: [{ text: 'TEXT' }],
             },
           },
-          { path: '**', component: DummyComponent },
+          { path: '**', children: [] },
         ]),
       ],
       providers: [provideStoreSnapshots()],

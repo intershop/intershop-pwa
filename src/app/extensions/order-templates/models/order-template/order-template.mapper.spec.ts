@@ -8,7 +8,6 @@ describe('Order Template Mapper', () => {
   let orderTemplateMapper: OrderTemplateMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     orderTemplateMapper = TestBed.inject(OrderTemplateMapper);
   });
 

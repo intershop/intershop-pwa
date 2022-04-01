@@ -1,6 +1,6 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import * as fs from 'fs';
-import { basename, join, sep } from 'path';
+import { basename, join, resolve } from 'path';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
 /* eslint-disable no-console */
@@ -118,9 +118,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   if (angularCompilerPlugin.options.directTemplateLoading) {
     // deactivate directTemplateLoading so that webpack loads html files
     angularCompilerPlugin.options.directTemplateLoading = false;
-
-    // needed after deactivating directTemplateLoading
-    config.module.rules.push({ test: /\.html$/, loader: 'raw-loader' });
 
     logger.log('deactivated directTemplateLoading');
   }
@@ -248,8 +245,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     );
   }
 
-  logger.log(`setting up replacements for "${theme}"`);
-
   crawlFiles(join(process.cwd()), files => {
     const themes = [...availableThemes, 'all'];
 
@@ -294,8 +289,21 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
     replacements.forEach(replacement => {
       angularCompilerPlugin.options.fileReplacements[replacement.original] = replacement.replacement;
-      logger.warn('using', replacement.replacement.replace(process.cwd() + sep, ''));
     });
+  });
+  const noOfReplacements = Object.keys(angularCompilerPlugin.options.fileReplacements).length;
+  logger.log(`using ${noOfReplacements} replacement${noOfReplacements === 1 ? '' : 's'} for "${theme}"`);
+
+  config.module.rules.push({
+    test: /\.component\.(html|scss)$/,
+    loader: 'file-replace-loader',
+    options: {
+      condition: 'always',
+      replacement(resourcePath: string) {
+        return resolve(angularCompilerPlugin.options.fileReplacements[resourcePath] ?? resourcePath);
+      },
+      async: true,
+    },
   });
 
   const defaultThemePath = join('src', 'styles', 'themes', 'placeholder');
@@ -306,6 +314,16 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     v => typeof v === 'string' && v.includes(defaultThemePath),
     (obj, key) => {
       obj[key] = (obj[key] as string).replace(defaultThemePath, newThemePath);
+    }
+  );
+
+  // set theme specific angular cache directory
+  const cacheDir = join('.angular', 'cache');
+  traverse(
+    config,
+    v => typeof v === 'string' && v.includes(cacheDir),
+    (obj, key) => {
+      obj[key] = (obj[key] as string).replace(cacheDir, join(cacheDir, theme));
     }
   );
 

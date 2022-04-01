@@ -9,14 +9,11 @@ import { isEqual } from 'lodash-es';
 import { EMPTY, from, iif, merge, race } from 'rxjs';
 import {
   concatMap,
-  concatMapTo,
   distinctUntilChanged,
   filter,
   map,
-  mapTo,
   mergeMap,
   switchMap,
-  switchMapTo,
   take,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -105,7 +102,7 @@ export class OrdersEffects {
       filter(order => order.orderCreation && order.orderCreation.status === 'ROLLED_BACK'),
       concatMap(order =>
         from(this.router.navigate(['/checkout/payment'], { queryParams: { error: true } })).pipe(
-          concatMapTo([
+          mergeMap(() => [
             loadBasket(),
             continueCheckoutWithIssues({
               targetRoute: undefined,
@@ -211,7 +208,7 @@ export class OrdersEffects {
         race([
           this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1)),
           this.store.pipe(select(getOrder(queryParams.orderId)), whenTruthy(), take(1)),
-        ]).pipe(mapTo(selectOrderAfterRedirect({ params: queryParams })))
+        ]).pipe(map(() => selectOrderAfterRedirect({ params: queryParams })))
       )
     )
   );
@@ -247,7 +244,7 @@ export class OrdersEffects {
           this.router.navigate(['/checkout/payment'], {
             queryParams: { redirect: 'failure' },
           })
-        ).pipe(mapTo(loadBasket()))
+        ).pipe(map(() => loadBasket()))
       )
     )
   );
@@ -255,7 +252,7 @@ export class OrdersEffects {
   setOrderBreadcrumb$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofUrl(/^\/account\/orders\/.*/),
           select(getSelectedOrder),

@@ -11,7 +11,7 @@ import {
 } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, iif, of, race, timer } from 'rxjs';
-import { mapTo, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 import { getUserAuthorized } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -49,7 +49,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
         // send to login after timeout
         // send right away if no user can be re-hydrated
-        timer(!this.router.navigated && this.cookieService.get('apiToken') ? 4000 : 0).pipe(mapTo(defaultRedirect))
+        timer(!this.router.navigated && this.cookieService.get('apiToken') ? 4000 : 0).pipe(map(() => defaultRedirect))
       )
     );
   }

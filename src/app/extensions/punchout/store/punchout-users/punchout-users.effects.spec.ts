@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -31,9 +30,6 @@ import {
 } from './punchout-users.actions';
 import { PunchoutUsersEffects } from './punchout-users.effects';
 
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
 describe('Punchout Users Effects', () => {
   let actions$: Observable<Action>;
   let effects: PunchoutUsersEffects;
@@ -53,13 +49,12 @@ describe('Punchout Users Effects', () => {
     when(punchoutService.deleteUser(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([
-          { path: 'account/punchout', component: DummyComponent },
-          { path: 'account/punchout/:PunchoutLogin', component: DummyComponent },
-          { path: '**', component: DummyComponent },
+          { path: 'account/punchout', children: [] },
+          { path: 'account/punchout/:PunchoutLogin', children: [] },
+          { path: '**', children: [] },
         ]),
       ],
       providers: [

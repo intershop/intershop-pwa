@@ -1,14 +1,14 @@
+import { Observable, OperatorFunction } from '@angular-devkit/core/node_modules/rxjs';
+import { switchMap, tap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { Schema as ModuleOptions } from '@schematics/angular/module/schema';
 import { readFileSync } from 'fs';
-import { Observable, OperatorFunction } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
 
 export function createSchematicRunner() {
   return new SchematicTestRunner('intershop-schematics', require.resolve('../collection.json'));
 }
 
-export function createApplication(schematicRunner: SchematicTestRunner): Observable<UnitTestTree> {
+export function createApplication(schematicRunner: SchematicTestRunner) {
   return schematicRunner
     .runExternalSchematicAsync('@schematics/angular', 'workspace', {
       name: 'workspace',

@@ -19,11 +19,10 @@ kb_sync_latest_only
     - [Usage of Formly, Template Driven and Reactive Forms](#usage-of-formly-template-driven-and-reactive-forms)
     - [Validators](#validators)
     - [Keep Templates Simple](#keep-templates-simple)
-  - [The Address Form as an Example of a Reusable Form](#the-address-form-as-an-example-of-a-reusable-form)
-    - [How to Use the formly-address-form Component](#how-to-use-the-formly-address-form-component)
-    - [How to Create a New Country Specific Form](#how-to-create-a-new-country-specific-form)
+- [Further References](#further-references)
 
 The Intershop PWA has switched to using [formly](https://formly.dev) to define and build forms.
+Refer to our [Formly Documentation](./formly.md) for information.
 The overwhelming majority of old components and directives has been deprecated as of release 1.0.
 If you are looking for documentation, refer to [older documentation](https://github.com/intershop/intershop-pwa/blob/0.27.0/docs/guides/forms.md).
 
@@ -31,7 +30,8 @@ If you are looking for documentation, refer to [older documentation](https://git
 
 ### Reusable Form Components
 
-- Reusable form components are available as Formly field types that come with wrappers and extensions. You can find them in: _app/shared/formly/_ or _app/shared/formly-address-forms/components_
+- Form components are available as Formly field types that come with wrappers and extensions. You can find them in: _app/shared/formly/_ or _app/shared/formly-address-forms/components_. Refer to our [Formly Documentation](./formly.md) for more information.
+- It is possible to define formly field configurations that can be reused anywhere in the PWA. You can find them in: _app/shared/formly/field-library_. Refer to the [Field Library docs](./field-library.md) for more information.
 - These forms can be used as (sub)forms on arbitrary pages, e.g., there are address forms on registration page, checkout and _My Account_ pages.
 
 ### Page Specific Form Components
@@ -98,57 +98,7 @@ Formly allows moving almost all logic from the template to the component file.
 Most form behavior like displaying validation messages and status is already defined within the [`FormlyModule`](../../src/app/shared/formly/formly.module.ts).
 Use the available field types and wrappers to construct your form in the component (see [Formly](./formly.md)).
 
-## The Address Form as an Example of a Reusable Form
+# Further References
 
-### How to Use the formly-address-form Component
-
-The following steps describe how to use the formly-address-form component on your form (see also the example below):
-
-Container component:
-
-1. Create a `FormGroup`. It will be populated with an `address` control.
-
-Container template:
-
-1. Add a `<ish-formly-address-form>` component to your template
-2. Pass your `FormGroup` via the `parentForm` input.
-3. Optional: Define whether you want to display business customer addresses via the `businessCustomer` input.
-4. Optional: Define whether you want to have the address form pre-filled via the `prefilledAddress` input.
-
-### How to Create a New Country Specific Form
-
-Use the _address-form-configuration_ (or shortcut _afc_) schematic with your desired `countryCode` parameter.
-This will create a new configuration under _src/app/shared/formly-address-forms/configurations_ and register it in the `formlyAddressFormsModule`.
-An empty example configuration looks like this:
-
-```typescript
-...
-
-@Injectable()
-export class AddressFormEXConfiguration extends AddressFormConfiguration {
-  countryCode = 'EX';
-
-  constructor() {
-    super();
-  }
-
-  getModel(model: Partial<Address> = {}): Partial<Address> {
-    return {
-      ...model,
-    };
-  }
-
-  getFieldConfiguration(): FormlyFieldConfig[] {
-    return [];
-  }
-}
-
-```
-
-- `getFieldConfiguration` and `getModel` will automatically be called by the `formly-address-form` component when a new country is selected. They are used to populate the address form. The `businessCustomer` attribute will be set automatically, based on what you passed to the `formly-address-form`. You can use it to adjust the configuration and model.
-
-- Define the [field configuration](./formly.md) in `getFieldConfiguration`.
-
-- Define the model for the country form in `getModel`. The method will be called with the previous model to make keeping field values between countries possible.
-
-- use the `addressesFieldConfiguration` helper method to quickly reuse common address field configurations (see `standardFields`).
+- [Formly documentation](./formly.md)
+- [Field Library documentation](./field-library.md)

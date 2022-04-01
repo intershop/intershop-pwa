@@ -3,6 +3,7 @@
   "$id": "SchematicsPWAExtension",
   "title": "PWA Extension Options Schema",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "path": {
       "type": "string",

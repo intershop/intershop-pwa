@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MockComponent } from 'ng-mocks';
 
 import { ValidationIconsComponent } from './validation-icons.component';
 
@@ -11,7 +9,7 @@ describe('Validation Icons Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(FaIconComponent), ValidationIconsComponent],
+      declarations: [ValidationIconsComponent],
     }).compileComponents();
   });
 

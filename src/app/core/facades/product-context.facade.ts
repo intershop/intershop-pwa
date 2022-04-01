@@ -7,6 +7,7 @@ import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
+import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -73,6 +74,7 @@ export interface ProductContext {
   sku: string;
   requiredCompletenessLevel: ProductCompletenessLevel | true;
   product: ProductView;
+  prices: Pricing;
   hasProductError: boolean;
   productURL: string;
   loading: boolean;
@@ -87,9 +89,6 @@ export interface ProductContext {
 
   // variation handling
   variationCount: number;
-
-  // compare
-  isInCompareList: boolean;
 
   // quantity
   quantity: number;
@@ -170,11 +169,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
     this.connect(
       'variationCount',
       this.select('sku').pipe(switchMap(sku => this.shoppingFacade.productVariationCount$(sku)))
-    );
-
-    this.connect(
-      'isInCompareList',
-      this.select('sku').pipe(switchMap(sku => this.shoppingFacade.inCompareProducts$(sku)))
     );
 
     this.connect(
@@ -353,6 +347,16 @@ export class ProductContextFacade extends RxState<ProductContext> {
             switchMap(() => this.shoppingFacade.productParts$(this.validProductSKU$))
           )
         );
+        break;
+      case 'prices':
+        wrap(
+          'prices',
+          combineLatest([this.select('displayProperties', 'price'), this.select('product', 'sku')]).pipe(
+            filter(([visible]) => !!visible),
+            switchMap(([, ids]) => this.shoppingFacade.productPrices$(ids))
+          )
+        );
+        break;
     }
     return k2 ? super.select(k1, k2) : k1 ? super.select(k1) : super.select();
   }
@@ -381,14 +385,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
     } else {
       this.shoppingFacade.addProductToBasket(this.get('sku'), this.get('quantity'));
     }
-  }
-
-  toggleCompare() {
-    this.shoppingFacade.toggleProductCompare(this.get('sku'));
-  }
-
-  addToCompare() {
-    this.shoppingFacade.addProductToCompare(this.get('sku'));
   }
 
   propagate(index: number, childState: ProductContext) {

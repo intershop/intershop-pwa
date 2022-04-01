@@ -3,7 +3,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators';
 
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
@@ -224,6 +224,6 @@ export class OrderService {
           params,
         }
       )
-      .pipe(mapTo(orderId));
+      .pipe(map(() => orderId));
   }
 }

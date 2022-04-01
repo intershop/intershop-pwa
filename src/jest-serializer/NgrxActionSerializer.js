@@ -13,11 +13,10 @@ const serializeValue = v => {
   return stringified.length >= 64 ? stringified.substring(0, 61) + '...' : stringified;
 };
 
-const serializePayload = v => {
-  return Object.entries(v)
+const serializePayload = v =>
+  Object.entries(v)
     .map(([key, val]) => `${key}:${serializeValue(val)}`)
     .join('\n');
-};
 
 const print = (val, _, indent) => {
   let ret = val.type;
@@ -30,14 +29,11 @@ const print = (val, _, indent) => {
   return ret;
 };
 
-const test = val => {
-  return (
-    !!val &&
-    typeof val === 'object' &&
-    Object.keys(val).includes('type') &&
-    Object.keys(val).every(key => ['type', 'payload'].includes(key))
-  );
-};
+const test = val =>
+  !!val &&
+  typeof val === 'object' &&
+  Object.keys(val).includes('type') &&
+  Object.keys(val).every(key => ['type', 'payload'].includes(key));
 
 module.exports = {
   print: print,

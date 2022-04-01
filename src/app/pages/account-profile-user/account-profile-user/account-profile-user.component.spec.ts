@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, instance, mock, spy, verify } from 'ts-mockito';
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
-import { FormsService } from 'ish-shared/forms/utils/forms.service';
+import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 
 import { AccountProfileUserComponent } from './account-profile-user.component';
 
@@ -14,15 +14,36 @@ describe('Account Profile User Component', () => {
   let component: AccountProfileUserComponent;
   let fixture: ComponentFixture<AccountProfileUserComponent>;
   let element: HTMLElement;
-  let formsService: FormsService;
+  let fieldLibrary: FieldLibrary;
 
   beforeEach(async () => {
-    formsService = mock(FormsService);
+    fieldLibrary = mock(FieldLibrary);
+    when(fieldLibrary.getConfigurationGroup(anything())).thenReturn([
+      {
+        key: 'title',
+        type: 'ish-select-field',
+      },
+      {
+        key: 'firstName',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          required: true,
+        },
+      },
+      {
+        key: 'lastName',
+        type: 'ish-text-input-field',
+      },
+      {
+        key: 'phoneHome',
+        type: 'ish-phone-field',
+      },
+    ]);
 
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [AccountProfileUserComponent, MockComponent(ErrorMessageComponent)],
-      providers: [{ provide: FormsService, useFactory: () => instance(formsService) }],
+      providers: [{ provide: FieldLibrary, useFactory: () => instance(fieldLibrary) }],
     }).compileComponents();
   });
 

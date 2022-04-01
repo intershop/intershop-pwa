@@ -1,6 +1,6 @@
+import { switchMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { PWALazyComponentOptionsSchema as Options } from 'schemas/lazy-component/schema';
 
 import {
   createAppLastRoutingModule,
@@ -8,8 +8,6 @@ import {
   createModule,
   createSchematicRunner,
 } from '../utils/testHelper';
-
-import { PWALazyComponentOptionsSchema as Options } from './schema';
 
 describe('Lazy Component Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -23,12 +21,14 @@ describe('Lazy Component Schematic', () => {
     const appTree$ = createApplication(schematicRunner).pipe(
       createModule(schematicRunner, { name: 'shared' }),
       createAppLastRoutingModule(schematicRunner),
-      switchMap(tree => schematicRunner.runSchematicAsync('extension', { ...defaultOptions, name: 'ext' }, tree)),
+      switchMap(tree =>
+        schematicRunner.runSchematicAsync('extension', { project: defaultOptions.project, name: 'ext' }, tree)
+      ),
       switchMap(tree =>
         schematicRunner.runSchematicAsync('component', { ...defaultOptions, name: 'extensions/ext/shared/dummy' }, tree)
       )
     );
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
   });
 
   it('should be created', () => {

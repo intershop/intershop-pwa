@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { timer } from 'rxjs';
-import { map, mapTo, sample, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { map, sample, switchMap, tap } from 'rxjs/operators';
 
 import { whenFalsy } from 'ish-core/utils/operators';
 
@@ -40,7 +40,7 @@ export class QuotingFacade {
               this.loadQuoting();
             }
           }),
-          mapTo(entities)
+          map(() => entities)
         )
       ),
       tap(entities => {
@@ -54,7 +54,7 @@ export class QuotingFacade {
 
   state$(quoteId: string) {
     return timer(0, 2000).pipe(
-      switchMapTo(this.store.pipe(select(getQuotingEntity(quoteId)))),
+      switchMap(() => this.store.pipe(select(getQuotingEntity(quoteId)))),
       map(QuotingHelper.state)
     );
   }

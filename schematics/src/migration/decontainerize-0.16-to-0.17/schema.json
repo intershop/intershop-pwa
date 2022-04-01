@@ -3,6 +3,7 @@
   "$id": "decontainerize",
   "title": "decontainerize",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",

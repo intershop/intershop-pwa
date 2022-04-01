@@ -9,11 +9,10 @@ import {
   move,
   url,
 } from '@angular-devkit/schematics';
+import { PWAServiceOptionsSchema as Options } from 'schemas/service/schema';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
-
-import { PWAServiceOptionsSchema as Options } from './schema';
 
 export function createService(options: Options): Rule {
   return async host => {

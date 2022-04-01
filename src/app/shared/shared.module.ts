@@ -24,6 +24,7 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
+import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
@@ -59,11 +60,13 @@ import { BasketApprovalInfoComponent } from './components/basket/basket-approval
 import { BasketBuyerComponent } from './components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostCenterSelectionComponent } from './components/basket/basket-cost-center-selection/basket-cost-center-selection.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketDesiredDeliveryDateComponent } from './components/basket/basket-desired-delivery-date/basket-desired-delivery-date.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
 import { BasketOrderReferenceComponent } from './components/basket/basket-order-reference/basket-order-reference.component';
 import { BasketPromotionCodeComponent } from './components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketPromotionComponent } from './components/basket/basket-promotion/basket-promotion.component';
+import { BasketShippingMethodComponent } from './components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationItemsComponent } from './components/basket/basket-validation-items/basket-validation-items.component';
 import { BasketValidationProductsComponent } from './components/basket/basket-validation-products/basket-validation-products.component';
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
@@ -101,7 +104,6 @@ import { LoginModalComponent } from './components/login/login-modal/login-modal.
 import { OrderListComponent } from './components/order/order-list/order-list.component';
 import { OrderWidgetComponent } from './components/order/order-widget/order-widget.component';
 import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
-import { ProductAddToCompareComponent } from './components/product/product-add-to-compare/product-add-to-compare.component';
 import { ProductAttachmentsComponent } from './components/product/product-attachments/product-attachments.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductBundleDisplayComponent } from './components/product/product-bundle-display/product-bundle-display.component';
@@ -143,6 +145,7 @@ const importExportModules = [
   CaptchaExportsModule,
   CdkTableModule,
   CommonModule,
+  CompareExportsModule,
   DeferLoadModule,
   DirectivesModule,
   FeatureToggleModule,
@@ -225,6 +228,7 @@ const exportedComponents = [
   BasketBuyerComponent,
   BasketCostCenterSelectionComponent,
   BasketCostSummaryComponent,
+  BasketDesiredDeliveryDateComponent,
   BasketInfoComponent,
   BasketInvoiceAddressWidgetComponent,
   BasketItemsSummaryComponent,
@@ -232,6 +236,7 @@ const exportedComponents = [
   BasketPromotionCodeComponent,
   BasketPromotionComponent,
   BasketShippingAddressWidgetComponent,
+  BasketShippingMethodComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
   ConfirmLeaveModalComponent,
@@ -254,7 +259,6 @@ const exportedComponents = [
   OrderListComponent,
   OrderWidgetComponent,
   ProductAddToBasketComponent,
-  ProductAddToCompareComponent,
   ProductAttachmentsComponent,
   ProductAttributesComponent,
   ProductBundleDisplayComponent,

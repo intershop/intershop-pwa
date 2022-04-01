@@ -12,7 +12,7 @@ function restoreConfigs() {
   });
 }
 
-process.on('SIGINT', function () {
+process.on('SIGINT', () => {
   restoreConfigs();
   process.exit(1);
 });

@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { Router, UrlSerializer } from '@angular/router';
@@ -26,14 +25,10 @@ describe('Configuration Integration', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     const configurationService = mock(ConfigurationService);
     when(configurationService.getServerConfiguration()).thenReturn(EMPTY);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         BrowserTransferStateModule,
         CoreStoreModule.forTesting(
@@ -41,7 +36,7 @@ describe('Configuration Integration', () => {
           [ConfigurationEffects],
           [configurationMeta]
         ),
-        RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'home', children: [] }]),
         TranslateModule.forRoot(),
       ],
       providers: [

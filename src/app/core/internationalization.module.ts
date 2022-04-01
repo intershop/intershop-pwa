@@ -18,6 +18,7 @@ import {
 } from './utils/translate/fallback-missing-translation-handler';
 import { ICMTranslateLoader } from './utils/translate/icm-translate-loader';
 import { PWATranslateCompiler } from './utils/translate/pwa-translate-compiler';
+import { TranslationGenerator } from './utils/translate/translations-generator';
 
 @NgModule({
   imports: [
@@ -28,13 +29,14 @@ import { PWATranslateCompiler } from './utils/translate/pwa-translate-compiler';
       compiler: { provide: TranslateCompiler, useClass: PWATranslateCompiler },
     }),
   ],
-  providers: [{ provide: FALLBACK_LANG, useValue: 'en_US' }],
+  providers: [{ provide: FALLBACK_LANG, useValue: 'en_US' }, TranslationGenerator],
 })
 export class InternationalizationModule {
   constructor(
     @Inject(LOCALE_ID) angularDefaultLocale: string,
     translateService: TranslateService,
-    transferState: TransferState
+    transferState: TransferState,
+    generator: TranslationGenerator
   ) {
     registerLocaleData(localeDe);
     registerLocaleData(localeFr);
@@ -45,5 +47,7 @@ export class InternationalizationModule {
     }
     translateService.setDefaultLang(defaultLang);
     translateService.use(defaultLang);
+
+    generator.init();
   }
 }

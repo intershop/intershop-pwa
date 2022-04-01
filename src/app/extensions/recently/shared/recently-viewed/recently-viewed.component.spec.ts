@@ -3,13 +3,12 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
-import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { RecentlyFacade } from '../../facades/recently.facade';
 
@@ -27,12 +26,7 @@ describe('Recently Viewed Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([{ path: 'recently', component: RecentlyViewedComponent }])],
-      declarations: [
-        MockComponent(ProductItemComponent),
-        MockDirective(ProductContextDirective),
-        MockPipe(TranslatePipe),
-        RecentlyViewedComponent,
-      ],
+      declarations: [MockDirective(ProductContextDirective), MockPipe(TranslatePipe), RecentlyViewedComponent],
       providers: [{ provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) }],
     }).compileComponents();
   });

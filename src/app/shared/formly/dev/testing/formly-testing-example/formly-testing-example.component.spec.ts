@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -17,9 +17,8 @@ describe('Formly Testing Example Component', () => {
         FormlyModule.forRoot({
           types: [{ name: 'example', component: FormlyTestingExampleComponent }],
         }),
-        ReactiveFormsModule,
       ],
-      declarations: [FormlyTestingContainerComponent, FormlyTestingExampleComponent],
+      declarations: [FormlyTestingContainerComponent],
     }).compileComponents();
   });
 

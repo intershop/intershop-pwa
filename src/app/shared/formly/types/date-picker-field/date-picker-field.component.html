@@ -1,0 +1,23 @@
+<div class="input-group date-picker-custom-class">
+  <input
+    [formControl]="formControl"
+    [formlyAttributes]="field"
+    [minDate]="minDate$ | async"
+    [maxDate]="maxDate$ | async"
+    [markDisabled]="markDateDisable$ | async"
+    outsideDays="collapsed"
+    navigation="arrows"
+    class="form-control"
+    [ngClass]="to.inputClass"
+    name="dp"
+    ngbDatepicker
+    #d="ngbDatepicker"
+    data-testing-id="date-picker"
+  />
+
+  <div class="input-group-append">
+    <div class="btn btn-secondary" (click)="d.toggle()" type="button" data-testing-id="btn-date-picker">
+      <fa-icon class="text-secondary" icon="calendar-day"></fa-icon>
+    </div>
+  </div>
+</div>

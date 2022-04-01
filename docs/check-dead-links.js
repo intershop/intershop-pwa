@@ -10,7 +10,7 @@ async function checkExternalLinkError(link) {
   const client = link.startsWith('https') ? require('https') : require('http');
   return new Promise(resolve => {
     const req = client.request(link, res => {
-      isError = res.statusCode >= 400;
+      const isError = res.statusCode >= 400;
       if (isError) {
         console.warn('found dead link to', link);
       }
@@ -57,7 +57,7 @@ glob('**/*.md')
       .filter(file => !file.includes('node_modules/') && !file.includes('dist/'))
       .forEach(file => {
         const content = fs.readFileSync(file, { encoding: 'utf-8' });
-        const match = content.match(/\[.*?\](\(|:\ +)[^\s]*\)?/g);
+        const match = content.match(/\[.*?\](\(|: +)[^\s]*\)?/g);
         if (match) {
           match.forEach(link => {
             const linkTo = /\](\(<?|:\s+)(.*?)(>?\)|$|#)/.exec(link)[2];

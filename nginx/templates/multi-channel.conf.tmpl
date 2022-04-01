@@ -94,6 +94,9 @@ server {
     listen 80;
   {{- end }}
 
+    access_log /var/log/nginx-access.log {{ getenv "LOGFORMAT" }};
+    access_log /dev/stdout {{ getenv "LOGFORMAT" }};
+
     include /etc/nginx/conf.d/cache-blacklist.conf;
 
 

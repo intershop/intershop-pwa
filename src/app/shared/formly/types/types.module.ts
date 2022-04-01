@@ -1,15 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import {
+  NgbDateAdapter,
+  NgbDateParserFormatter,
+  NgbDatepickerI18n,
+  NgbDatepickerModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
+import { TranslateService } from '@ngx-translate/core';
 import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
 import { DirectivesModule } from 'ish-core/directives.module';
+import { IconModule } from 'ish-core/icon.module';
 import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
 import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './checkbox-field/checkbox-field.component';
+import { DatePickerFieldComponent } from './date-picker-field/date-picker-field.component';
+import { FixedFormatAdapter } from './date-picker-field/fixed-format-adapter';
+import { IshDatepickerI18n } from './date-picker-field/ish-datepicker-i18n';
+import { LocalizedParserFormatter } from './date-picker-field/localized-parser-formatter';
 import { FieldsetFieldComponent } from './fieldset-field/fieldset-field.component';
 import { PlainTextFieldComponent } from './plain-text-field/plain-text-field.component';
 import { RadioFieldComponent } from './radio-field/radio-field.component';
@@ -20,6 +32,7 @@ import { TextareaFieldComponent } from './textarea-field/textarea-field.componen
 const fieldComponents = [
   CaptchaFieldComponent,
   CheckboxFieldComponent,
+  DatePickerFieldComponent,
   FieldsetFieldComponent,
   PlainTextFieldComponent,
   RadioFieldComponent,
@@ -34,6 +47,8 @@ const fieldComponents = [
     CommonModule,
     DirectivesModule,
     FormlySelectModule,
+    IconModule,
+    NgbDatepickerModule,
     ReactiveFormsModule,
 
     FormlyBaseModule.forChild({
@@ -129,8 +144,18 @@ const fieldComponents = [
           component: RadioFieldComponent,
           wrappers: ['form-field-checkbox-horizontal'],
         },
+        {
+          name: 'ish-date-picker-field',
+          component: DatePickerFieldComponent,
+          wrappers: ['form-field-horizontal', 'validation'],
+        },
       ],
     }),
+  ],
+  providers: [
+    { provide: NgbDateParserFormatter, useClass: LocalizedParserFormatter, deps: [TranslateService] },
+    { provide: NgbDateAdapter, useClass: FixedFormatAdapter },
+    { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },
   ],
   declarations: [...fieldComponents],
   exports: [...fieldComponents],

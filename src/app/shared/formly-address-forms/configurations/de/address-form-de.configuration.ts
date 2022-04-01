@@ -2,22 +2,17 @@ import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
-import { of } from 'rxjs';
 
 import { Address } from 'ish-core/models/address/address.model';
 import {
   AddressFormConfiguration,
   addressesFieldConfiguration,
 } from 'ish-shared/formly-address-forms/configurations/address-form.configuration';
-import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 @Injectable()
 export class AddressFormDEConfiguration extends AddressFormConfiguration {
   countryCode = 'DE';
 
-  constructor(private formsService: FormsService) {
-    super();
-  }
   getModel(model: Partial<Address> = {}): Partial<Address> {
     return pick(
       model,
@@ -38,19 +33,7 @@ export class AddressFormDEConfiguration extends AddressFormConfiguration {
   getFieldConfiguration(): FormlyFieldConfig[] {
     return addressesFieldConfiguration([
       this.businessCustomer && !this.shortForm && ['companyName1', 'companyName2'],
-      !this.shortForm && [
-        {
-          key: 'title',
-          type: 'ish-select-field',
-          templateOptions: {
-            label: 'account.default_address.title.label',
-            options: of(this.formsService.getSalutationOptionsForCountryCode(this.countryCode)),
-            placeholder: 'account.option.select.text',
-          },
-        },
-        'firstName',
-        'lastName',
-      ],
+      !this.shortForm && ['title', 'firstName', 'lastName'],
       [
         'addressLine1',
         'addressLine2',
@@ -58,7 +41,7 @@ export class AddressFormDEConfiguration extends AddressFormConfiguration {
           key: 'addressLine3',
           type: 'ish-text-input-field',
           templateOptions: {
-            label: 'account.default_address.street3.label',
+            label: 'account.address.street3.label',
             required: false,
           },
         },
@@ -66,10 +49,8 @@ export class AddressFormDEConfiguration extends AddressFormConfiguration {
       [
         {
           key: 'postalCode',
-          type: 'ish-text-input-field',
+          type: '#postalCode',
           templateOptions: {
-            label: 'account.default_address.postalcode.label',
-            required: true,
             maxLength: 5,
           },
           validators: {
@@ -77,7 +58,6 @@ export class AddressFormDEConfiguration extends AddressFormConfiguration {
           },
           validation: {
             messages: {
-              required: 'account.address.postalcode.missing.error',
               pattern: 'account.address.de.postalcode.error.regexp',
             },
           },

@@ -18,7 +18,6 @@ import {
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { serverError } from 'ish-core/store/core/error';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { getPGID } from 'ish-core/store/customer/user';
 
 import { ApiService, unpackEnvelope } from './api.service';
@@ -554,11 +553,7 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
-        imports: [
-          CoreStoreModule.forTesting(['configuration', 'serverConfig']),
-          CustomerStoreModule.forTesting('user'),
-          HttpClientTestingModule,
-        ],
+        imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig']), HttpClientTestingModule],
       });
 
       apiService = TestBed.inject(ApiService);

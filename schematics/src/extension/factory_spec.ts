@@ -1,5 +1,6 @@
+import { noop } from '@angular-devkit/core/node_modules/rxjs';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom, noop } from 'rxjs';
+import { PWAExtensionOptionsSchema as Options } from 'schemas/extension/schema';
 
 import {
   createAppLastRoutingModule,
@@ -7,8 +8,6 @@ import {
   createModule,
   createSchematicRunner,
 } from '../utils/testHelper';
-
-import { PWAExtensionOptionsSchema as Options } from './schema';
 
 describe('Extension Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -23,7 +22,7 @@ describe('Extension Schematic', () => {
       createModule(schematicRunner, { name: 'shared' }),
       createAppLastRoutingModule(schematicRunner)
     );
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
   });
 
   it('should create an extension', async () => {

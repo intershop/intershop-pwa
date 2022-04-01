@@ -7,7 +7,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { Quote, QuoteRequest } from '../../models/quoting/quoting.model';
@@ -30,7 +29,6 @@ describe('Product Add To Quote Dialog Component', () => {
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
         MockComponent(QuoteEditComponent),
         MockComponent(QuoteInteractionsComponent),
         MockComponent(QuoteViewComponent),

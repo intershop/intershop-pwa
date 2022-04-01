@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -77,8 +76,6 @@ describe('User Effects', () => {
     user: {},
   } as CustomerUserType;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
   const customer = {
     customerNo: '4711',
     isBusinessCustomer: true,
@@ -103,11 +100,10 @@ describe('User Effects', () => {
     when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },

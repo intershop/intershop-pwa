@@ -7,6 +7,42 @@ kb_everyone
 
 # Changelog
 
+## [2.2.0](https://github.com/releases/tag/2.2.0) (2022-04-01)
+
+**required Intershop Commerce Management version: 7.10.38.0-LTS**
+
+**required/tested Node.js version: 16.14.2 - LTS (including npm 8.5.0)**
+
+### Features
+
+- introduce formly field reusability feature (#1017) ([0889f38](https://github.com/intershop/intershop-pwa/commit/0889f38))
+- add desired delivery date with NgbDatePicker & date-fns (#1056) ([638609e](https://github.com/intershop/intershop-pwa/commit/638609e))
+- display feedback when product is out of stock on order templates (#1067) ([7c84791](https://github.com/intershop/intershop-pwa/commit/7c84791))
+- enable nginx access logging in json format (#1086) ([099af1f](https://github.com/intershop/intershop-pwa/commit/099af1f))
+- handle and display scaled prices (#1030) ([699b260](https://github.com/intershop/intershop-pwa/commit/699b260))
+- support Payone Eps payment method (#1053) ([efe7884](https://github.com/intershop/intershop-pwa/commit/efe7884))
+- **eslint:** rules for customization (#1055) ([8107fcf](https://github.com/intershop/intershop-pwa/commit/8107fcf))
+
+### Bug Fixes
+
+- support the character sequence 'sku' in product SKUs (#963) ([a22a56d](https://github.com/intershop/intershop-pwa/commit/a22a56d))
+- improve product tile actions visibility + improve compare icon (#1082) ([dc36f5c](https://github.com/intershop/intershop-pwa/commit/dc36f5c))
+- repair cleanup testbed script with parallel execution and apply changes (#1072) ([32953c1](https://github.com/intershop/intershop-pwa/commit/32953c1))
+- display addToQuote and addToOrderTemplate buttons on cart page even in case the cart contains quote items (#1054) ([1f0bb53](https://github.com/intershop/intershop-pwa/commit/1f0bb53))
+- quote items on cart UI issues (#1054) ([c9769c2](https://github.com/intershop/intershop-pwa/commit/c9769c2))
+- don't display 'UNDEFINED' in case the promotion title is missing for the current locale (#1054) ([71a845d](https://github.com/intershop/intershop-pwa/commit/71a845d))
+- repair cleanup testbed script and apply changes (#1057) ([a4e403c](https://github.com/intershop/intershop-pwa/commit/a4e403c))
+
+### Code Refactoring
+
+- compare as extension (#1069) ([3332337](https://github.com/intershop/intershop-pwa/commit/3332337))
+
+### BREAKING CHANGES
+
+- Angular 13.3.0 and dependecies update (see [Migrations / 2.1 to 2.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#21-to-22) for more details).
+- Node.js 16 is now used for development and deployment.
+- The compare functionality was moved into an extension (see [Migrations / 2.1 to 2.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#21-to-22) for more details).
+
 ## [2.1.0](https://github.com/releases/tag/2.1.0) (2022-03-08)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**

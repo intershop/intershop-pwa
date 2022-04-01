@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMapTo, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService, BasketUpdateType } from 'ish-core/services/basket/basket.service';
@@ -118,20 +118,16 @@ export class BasketAddressesEffects {
       mergeMap(([address, customer]) => {
         // create address at customer for logged in user
         if (customer) {
-          return this.addressService
-            .updateCustomerAddress('-', address)
-            .pipe(
-              concatMapTo([updateCustomerAddressSuccess({ address }), loadBasket(), resetBasketErrors()]),
-              mapErrorToAction(updateCustomerAddressFail)
-            );
+          return this.addressService.updateCustomerAddress('-', address).pipe(
+            mergeMap(() => [updateCustomerAddressSuccess({ address }), loadBasket(), resetBasketErrors()]),
+            mapErrorToAction(updateCustomerAddressFail)
+          );
           // create address at basket for anonymous user
         } else {
-          return this.basketService
-            .updateBasketAddress(address)
-            .pipe(
-              concatMapTo([updateCustomerAddressSuccess({ address }), loadBasket(), resetBasketErrors()]),
-              mapErrorToAction(updateCustomerAddressFail)
-            );
+          return this.basketService.updateBasketAddress(address).pipe(
+            mergeMap(() => [updateCustomerAddressSuccess({ address }), loadBasket(), resetBasketErrors()]),
+            mapErrorToAction(updateCustomerAddressFail)
+          );
         }
       })
     )
@@ -145,12 +141,10 @@ export class BasketAddressesEffects {
       ofType(deleteBasketShippingAddress),
       mapToPayloadProperty('addressId'),
       mergeMap(addressId =>
-        this.addressService
-          .deleteCustomerAddress('-', addressId)
-          .pipe(
-            concatMapTo([deleteCustomerAddressSuccess({ addressId }), loadBasket()]),
-            mapErrorToAction(deleteCustomerAddressFail)
-          )
+        this.addressService.deleteCustomerAddress('-', addressId).pipe(
+          mergeMap(() => [deleteCustomerAddressSuccess({ addressId }), loadBasket()]),
+          mapErrorToAction(deleteCustomerAddressFail)
+        )
       )
     )
   );

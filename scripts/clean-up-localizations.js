@@ -27,7 +27,7 @@ filesToBeSearched.forEach(filePath => {
   if (fileContent.includes('keep-localization-pattern:')) {
     const regex = /keep-localization-pattern:(.*)/g;
     for (let match; (match = regex.exec(fileContent)); ) {
-      keeper = match[1].replace('-->', '').replace('*/', '').trim();
+      const keeper = match[1].replace('-->', '').replace('*/', '').trim();
       const regex = new RegExp(keeper);
       console.log(filePath, regex);
       regExps.push(regex);

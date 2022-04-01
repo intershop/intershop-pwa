@@ -9,11 +9,10 @@ import {
   move,
   url,
 } from '@angular-devkit/schematics';
+import { PWAModuleOptionsSchema as Options } from 'schemas/module/schema';
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
-
-import { PWAModuleOptionsSchema as Options } from './schema';
 
 export function createModule(options: Options): Rule {
   return async host => {
@@ -31,7 +30,7 @@ export function createModule(options: Options): Rule {
           applyTemplates({
             ...strings,
             ...options,
-            'if-flat': s => (options.flat ? '' : s),
+            'if-flat': (s: unknown) => (options.flat ? '' : s),
           }),
           move(options.path),
         ])

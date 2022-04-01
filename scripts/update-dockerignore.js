@@ -15,7 +15,7 @@ const content = glob
     part += fs
       .readFileSync(gitignore, { encoding: 'utf-8' })
       .split('\n')
-      .filter(line => !/^\#|^\s*$/.test(line))
+      .filter(line => !/^#|^\s*$/.test(line))
       .map(line => {
         let linePart = '';
         if (line.startsWith('!')) {

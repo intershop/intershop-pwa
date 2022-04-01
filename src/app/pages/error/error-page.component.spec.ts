@@ -6,7 +6,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 
 import { ErrorPageComponent } from './error-page.component';
 import { ErrorComponent } from './error/error.component';
-import { ServerErrorComponent } from './server-error/server-error.component';
 
 describe('Error Page Component', () => {
   let component: ErrorPageComponent;
@@ -15,7 +14,7 @@ describe('Error Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ErrorPageComponent, MockComponent(ErrorComponent), MockComponent(ServerErrorComponent)],
+      declarations: [ErrorPageComponent, MockComponent(ErrorComponent)],
       providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
     }).compileComponents();
   });

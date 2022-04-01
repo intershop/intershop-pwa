@@ -17,7 +17,9 @@ export class PaymentPayoneInterceptor implements HttpInterceptor {
       return {
         ...body,
         data: body.data.map(paymentMethod =>
-          paymentMethod.serviceID === 'Payone_IDeal' ? this.mapPayoneIDealParameters(paymentMethod) : paymentMethod
+          paymentMethod.serviceID === 'Payone_IDeal' || paymentMethod.serviceID === 'Payone_Eps'
+            ? this.mapPayoneBankGroupParameters(paymentMethod)
+            : paymentMethod
         ),
       };
     }
@@ -26,16 +28,17 @@ export class PaymentPayoneInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Map Payone Ideal Bank group options, provide an error message key for the required validator
+   * Map Payone Ideal and EPS Bank group options, provide an error message key for the required validator
    * This workaround will be obsolete if the REST api comply with the correct data format
    *
-   * @param paymentMethod The iDeal payment method data
+   * @param paymentMethod The iDeal or EPS payment method data
    * @returns The mapped payment method data
    */
-  private mapPayoneIDealParameters(paymentMethod: PaymentMethodBaseData): PaymentMethodBaseData {
-    const options = paymentMethod.hostedPaymentPageParameters?.map(param => {
-      return { displayName: param.value, id: param.name };
-    });
+  private mapPayoneBankGroupParameters(paymentMethod: PaymentMethodBaseData): PaymentMethodBaseData {
+    const options = paymentMethod.hostedPaymentPageParameters?.map(param => ({
+      displayName: param.value,
+      id: param.name,
+    }));
 
     const parameterDefinitions = paymentMethod.parameterDefinitions?.map(data => {
       const constraints = data.constraints.required
