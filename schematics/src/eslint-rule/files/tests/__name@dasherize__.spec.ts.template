@@ -3,7 +3,6 @@ import <%= camelize(name) %>Rule from '../src/rules/<%= dasherize(name) %>';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 const config: RuleTestConfig = {
-  ruleName: '<%= dasherize(name) %>',
   rule: <%= camelize(name) %>Rule,
   tests: {
     valid: [

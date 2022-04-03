@@ -5,7 +5,6 @@ import privateDestroyFieldRule from '../src/rules/private-destroy-field';
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'private-destroy-field',
   rule: privateDestroyFieldRule,
   tests: {
     valid: [

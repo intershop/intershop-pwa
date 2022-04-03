@@ -5,7 +5,6 @@ import useCamelCaseEnvironmentPropertiesRule from '../src/rules/use-camel-case-e
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'use-camel-case-environment-properties-rule',
   rule: useCamelCaseEnvironmentPropertiesRule,
   tests: {
     valid: [

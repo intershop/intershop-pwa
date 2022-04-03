@@ -5,7 +5,6 @@ import useComponentChangeDetectionRule from '../src/rules/use-component-change-d
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'use-component-change-detection',
   rule: useComponentChangeDetectionRule,
   tests: {
     valid: [

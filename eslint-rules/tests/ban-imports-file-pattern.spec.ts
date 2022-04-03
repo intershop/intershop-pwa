@@ -5,7 +5,6 @@ import banImportsFilePatternRule, { RuleSetting } from '../src/rules/ban-imports
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig<[RuleSetting[]]> = {
-  ruleName: 'ban-imports-file-pattern',
   rule: banImportsFilePatternRule,
   tests: {
     valid: [

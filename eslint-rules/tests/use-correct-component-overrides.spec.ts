@@ -10,7 +10,6 @@ const fs = require('fs');
 fs.existsSync = () => true;
 
 const config: RuleTestConfig = {
-  ruleName: 'use-correct-component-overrides',
   rule: useCorrectComponentOverridesRule,
   tests: {
     valid: [

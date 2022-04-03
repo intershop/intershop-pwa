@@ -5,7 +5,6 @@ import useAsyncSynchronizationInTestsRule from '../src/rules/use-async-synchroni
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'use-async-synchronization-in-tests',
   rule: useAsyncSynchronizationInTestsRule,
   tests: {
     valid: [

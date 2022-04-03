@@ -34,7 +34,6 @@ const starImportTest: { code: string; output: string; errors: { messageId: strin
 };
 
 const config: RuleTestConfig = {
-  ruleName: 'no-star-imports-in-store',
   rule: noStarImportsInStoreRule,
   tests: {
     valid: [

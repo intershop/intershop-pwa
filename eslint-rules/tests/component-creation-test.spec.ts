@@ -7,7 +7,6 @@ import { RuleTestConfig } from './_execute-tests';
 const SHOULD_BE_CREATED_NAME = 'should be created';
 
 const config: RuleTestConfig = {
-  ruleName: 'component-creation-test',
   rule: componentCreationTestRule,
   tests: {
     valid: [

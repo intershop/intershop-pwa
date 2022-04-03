@@ -5,7 +5,6 @@ import sortTestbedMetadataArraysRule from '../src/rules/sort-testbed-metadata-ar
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'sort-testbed-metadata-arrays',
   rule: sortTestbedMetadataArraysRule,
   tests: {
     valid: [

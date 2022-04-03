@@ -5,7 +5,6 @@ import noFormlyExplicitPseudoTypeRule from '../src/rules/no-formly-explicit-pseu
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'no-formly-explicit-pseudo-type',
   rule: noFormlyExplicitPseudoTypeRule,
   tests: {
     valid: [

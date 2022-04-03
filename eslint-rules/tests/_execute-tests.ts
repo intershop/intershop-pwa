@@ -1,11 +1,10 @@
 import { TSESLint } from '@typescript-eslint/utils';
 import { RuleTester, RunTests } from '@typescript-eslint/utils/dist/ts-eslint';
 import { readdirSync } from 'fs';
-import { join, normalize } from 'path';
+import { basename, join, normalize } from 'path';
 import { throwError } from 'rxjs';
 
 export type RuleTestConfig<TOptions extends readonly unknown[] = []> = {
-  ruleName: string;
   rule: TSESLint.RuleModule<string, TOptions, TSESLint.RuleListener>;
   tests: RunTests<string, Readonly<unknown[]>>;
 };
@@ -47,19 +46,19 @@ function runTests(paths: string[]) {
     return;
   }
   import(`./${paths[0]}`)
-    .then(runSingleTest)
+    .then(config => runSingleTest(basename(paths[0]).replace('.spec.ts', ''), config))
     .catch(handleError)
     .finally(() => runTests(paths.slice(1)));
 }
 
 /* eslint-disable no-console */
-function runSingleTest(ruleFile: { default: RuleTestConfig }) {
+function runSingleTest(ruleName: string, ruleFile: { default: RuleTestConfig }) {
   const ruleConfig = ruleFile.default;
-  process.stdout.write(`Testing ${ruleConfig.ruleName}...  `);
+  process.stdout.write(`Testing ${ruleName}...  `);
 
-  ruleTester.run(ruleConfig.ruleName, ruleConfig.rule, ruleConfig.tests);
+  ruleTester.run(ruleName, ruleConfig.rule, ruleConfig.tests);
   // colorful aligned checkmark magic
-  console.log('\x1b[32m%s\x1b[0m', `\u2713`.padStart(longestFilePath - ruleConfig.ruleName.length));
+  console.log('\x1b[32m%s\x1b[0m', `\u2713`.padStart(longestFilePath - ruleName.length));
 }
 
 function handleError(error: unknown) {

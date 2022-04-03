@@ -3,7 +3,6 @@ import meaningfulDescribeInTestsRule from '../src/rules/meaningful-describe-in-t
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'meaningful-describe-in-tests',
   rule: meaningfulDescribeInTestsRule,
   tests: {
     valid: [

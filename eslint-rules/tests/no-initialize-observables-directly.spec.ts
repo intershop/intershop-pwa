@@ -5,7 +5,6 @@ import noInitializeObservablesDirectlyRule from '../src/rules/no-initialize-obse
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'no-initialize-observables-directly',
   rule: noInitializeObservablesDirectlyRule,
   tests: {
     valid: [

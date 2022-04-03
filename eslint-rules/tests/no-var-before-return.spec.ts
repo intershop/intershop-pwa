@@ -3,7 +3,6 @@ import noVarBeforeReturnRule from '../src/rules/no-var-before-return';
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'no-var-before-return',
   rule: noVarBeforeReturnRule,
   tests: {
     valid: [

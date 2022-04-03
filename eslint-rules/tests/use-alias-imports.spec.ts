@@ -6,7 +6,6 @@ import { RuleTestConfig } from './_execute-tests';
 
 // Attention: This test is an integration test. Results can be influenced by changes in ./tsconfig.json
 const config: RuleTestConfig = {
-  ruleName: 'use-alias-imports',
   rule: useAliasImportsRule,
   tests: {
     valid: [

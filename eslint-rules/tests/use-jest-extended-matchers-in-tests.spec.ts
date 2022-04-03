@@ -5,7 +5,6 @@ import useJestExtendedMatchersInTestsRule from '../src/rules/use-jest-extended-m
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'use-jest-extended-matchers-in-tests',
   rule: useJestExtendedMatchersInTestsRule,
   tests: {
     valid: [

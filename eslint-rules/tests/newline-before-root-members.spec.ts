@@ -3,7 +3,6 @@ import newlineBeforeRootMembersRule from '../src/rules/newline-before-root-membe
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'newline-before-root-members',
   rule: newlineBeforeRootMembersRule,
   tests: {
     valid: [

@@ -5,7 +5,6 @@ import noReturnUndefinedRule from '../src/rules/no-return-undefined';
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'no-return-undefined',
   rule: noReturnUndefinedRule,
   tests: {
     valid: [

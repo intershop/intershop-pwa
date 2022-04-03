@@ -21,7 +21,6 @@ const options = {
 };
 
 const config: RuleTestConfig<[RuleSetting]> = {
-  ruleName: 'project-structure',
   rule: projectStructureRule,
   tests: {
     valid: [

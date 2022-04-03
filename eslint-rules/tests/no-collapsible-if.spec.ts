@@ -5,7 +5,6 @@ import noCollapsibleIfRule from '../src/rules/no-collapsible-if';
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'no-collapsible-if',
   rule: noCollapsibleIfRule,
   tests: {
     valid: [

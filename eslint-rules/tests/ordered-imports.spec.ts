@@ -78,7 +78,6 @@ const invalidTests: { code: string; output: string }[] = [
 ];
 
 const config: RuleTestConfig = {
-  ruleName: 'ordered-imports',
   rule: orderedImportsRule,
   tests: {
     valid: [

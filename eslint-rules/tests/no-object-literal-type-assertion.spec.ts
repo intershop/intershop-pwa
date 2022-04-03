@@ -5,7 +5,6 @@ import noObjectLiteralTypeAssertionRule from '../src/rules/no-object-literal-typ
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig = {
-  ruleName: 'no-object-literal-type-assertion',
   rule: noObjectLiteralTypeAssertionRule,
   tests: {
     valid: [

@@ -3,7 +3,6 @@ import doNotUseThemeIdentifierRule from '../src/rules/do-not-use-theme-identifie
 import { RuleTestConfig } from './_execute-tests';
 
 const config: RuleTestConfig<[string]> = {
-  ruleName: 'do-not-use-theme-identifier',
   rule: doNotUseThemeIdentifierRule,
   tests: {
     valid: [
