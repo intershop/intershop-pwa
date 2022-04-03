@@ -2,15 +2,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import useAsyncSynchronizationInTestsRule from '../src/rules/use-async-synchronization-in-tests';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  rule: useAsyncSynchronizationInTestsRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.spec.ts',
-        code: `
+testRule(useAsyncSynchronizationInTestsRule, {
+  valid: [
+    {
+      filename: 'test.spec.ts',
+      code: `
         it('should do test', done => {
           testObs.subscribe(value => {
             expect(value).toBe('value');
@@ -18,34 +16,34 @@ const config: RuleTestConfig = {
           })
         })
         `,
-      },
-      {
-        filename: 'test.spec.ts',
-        code: `
+    },
+    {
+      filename: 'test.spec.ts',
+      code: `
         it('should do test', done => {
           testObs.subscribe(done,fail,fail);
         })
         `,
-      },
-      {
-        filename: 'test.spec.ts',
-        code: `
+    },
+    {
+      filename: 'test.spec.ts',
+      code: `
         it('should do test', done => {
           testObs.subscribe({complete: done});
         })
         `,
-      },
-      {
-        filename: 'test.spec.ts',
-        code: `
+    },
+    {
+      filename: 'test.spec.ts',
+      code: `
         it('should do test', fakeAsync(() => {
           testObs.subscribe();
         }))
         `,
-      },
-      {
-        filename: 'test.spec.ts',
-        code: `
+    },
+    {
+      filename: 'test.spec.ts',
+      code: `
         it('should do test', done => {
           testObs.subscribe(fail,fail,fail);
           setTimeout(() => {
@@ -54,31 +52,28 @@ const config: RuleTestConfig = {
           }, 2000);
         })
         `,
-      },
-      {
-        filename: 'test.spec.ts',
-        code: `
+    },
+    {
+      filename: 'test.spec.ts',
+      code: `
         it('should do test', done => {
           testObs.subscribe(fail,fail,fail);
           done();
         })
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.spec.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.spec.ts',
+      code: `
         it('should do test', done => {
           testObs.subscribe(value => {
             expect(value).toBe('value');
           })
         })
         `,
-        errors: [{ messageId: 'noDoneError', type: AST_NODE_TYPES.CallExpression }],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [{ messageId: 'noDoneError', type: AST_NODE_TYPES.CallExpression }],
+    },
+  ],
+});

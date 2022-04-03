@@ -1,6 +1,6 @@
 import orderedImportsRule from '../src/rules/ordered-imports';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
 const invalidTests: { code: string; output: string }[] = [
   // standard sorting
@@ -77,13 +77,11 @@ const invalidTests: { code: string; output: string }[] = [
   },
 ];
 
-const config: RuleTestConfig = {
-  rule: orderedImportsRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.ts',
-        code: formatter(`
+testRule(orderedImportsRule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      code: formatter(`
           import { ab } from '@ab';
           import def from '@default';
           import '@sideeffect/init';
@@ -98,10 +96,10 @@ const config: RuleTestConfig = {
 
           import { x } from './x';
         `),
-      },
-      {
-        filename: 'test.ts',
-        code: formatter(`
+    },
+    {
+      filename: 'test.ts',
+      code: formatter(`
 
           import { ab } from '@ab';
 
@@ -110,26 +108,25 @@ const config: RuleTestConfig = {
           import { x } from './x';
 
         `),
+    },
+  ],
+  /**
+   * simplify tests:
+   * - errors will always be on the same line starting at 1
+   * - code is formatted so we can write it more easily
+   */
+  invalid: invalidTests.map(testConf => ({
+    filename: 'test.ts',
+    code: formatter(testConf.code),
+    output: formatter(testConf.output),
+    errors: [
+      {
+        line: 1,
+        messageId: 'unorderedImports',
       },
     ],
-    /**
-     * simplify tests:
-     * - errors will always be on the same line starting at 1
-     * - code is formatted so we can write it more easily
-     */
-    invalid: invalidTests.map(testConf => ({
-      filename: 'test.ts',
-      code: formatter(testConf.code),
-      output: formatter(testConf.output),
-      errors: [
-        {
-          line: 1,
-          messageId: 'unorderedImports',
-        },
-      ],
-    })),
-  },
-};
+  })),
+});
 
 /**
  * make formatting test code easier:
@@ -140,5 +137,3 @@ const config: RuleTestConfig = {
 function formatter(input: string): string {
   return input.replace(/^([^\S\r\n]*)(?=import.*\n)/gm, '').trim();
 }
-
-export default config;

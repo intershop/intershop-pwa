@@ -23,7 +23,7 @@
     "ngcc": "ngcc",
     "test": "jest --ci",
     "test:watch": "jest --watch -i",
-    "test:eslint-rules": "npx ts-node eslint-rules/tests/_execute-tests.ts",
+    "test:eslint-rules": "cd eslint-rules && npm run test -- --ci",
     "test:schematics": "cd schematics && npm run test -- --ci",
     "e2e": "cd e2e && npm install && node open-cypress",
     "lint": "ng lint",

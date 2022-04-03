@@ -1,21 +1,18 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as fs from 'fs';
 
 import useCorrectComponentOverridesRule from '../src/rules/use-correct-component-overrides';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = require('fs');
+jest.spyOn(fs, 'existsSync').mockImplementation(() => true);
 
-fs.existsSync = () => true;
-
-const config: RuleTestConfig = {
-  rule: useCorrectComponentOverridesRule,
-  tests: {
-    valid: [
-      {
-        filename: 'footer.component.override.ts',
-        code: `
+testRule(useCorrectComponentOverridesRule, {
+  valid: [
+    {
+      name: 'should not report if component overrides are correct',
+      filename: 'footer.component.override.ts',
+      code: `
           @Component({
             selector: 'ish-footer',
             templateUrl: './footer.component.html',
@@ -23,10 +20,11 @@ const config: RuleTestConfig = {
             styleUrls: ['./footer.component.scss'],
           })
           export class FooterComponent {}`,
-      },
-      {
-        filename: 'footer.component.override.spec.ts',
-        code: `
+    },
+    {
+      name: 'should not report if test is using override',
+      filename: 'footer.component.override.spec.ts',
+      code: `
           import { FooterComponent } from './footer.component.override';
 
           await TestBed.configureTestingModule({})
@@ -36,12 +34,13 @@ const config: RuleTestConfig = {
               },
             })
             .compileComponents();`,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'footer.component.override.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report if overriden component uses override template and css',
+      filename: 'footer.component.override.ts',
+      code: `
           @Component({
             selector: 'ish-footer',
             templateUrl: './footer.component.override.html',
@@ -49,14 +48,14 @@ const config: RuleTestConfig = {
             styleUrls: ['./footer.component.override.scss'],
           })
           export class FooterComponent {}`,
-        errors: [
-          {
-            type: AST_NODE_TYPES.Literal,
-            messageId: 'shouldPointToBasicFile',
-            suggestions: [
-              {
-                messageId: 'pointToBasicFile',
-                output: `
+      errors: [
+        {
+          type: AST_NODE_TYPES.Literal,
+          messageId: 'shouldPointToBasicFile',
+          suggestions: [
+            {
+              messageId: 'pointToBasicFile',
+              output: `
           @Component({
             selector: 'ish-footer',
             templateUrl: './footer.component.html',
@@ -64,16 +63,16 @@ const config: RuleTestConfig = {
             styleUrls: ['./footer.component.override.scss'],
           })
           export class FooterComponent {}`,
-              },
-            ],
-          },
-          {
-            type: AST_NODE_TYPES.ArrayExpression,
-            messageId: 'shouldPointToBasicFile',
-            suggestions: [
-              {
-                messageId: 'pointToBasicFile',
-                output: `
+            },
+          ],
+        },
+        {
+          type: AST_NODE_TYPES.ArrayExpression,
+          messageId: 'shouldPointToBasicFile',
+          suggestions: [
+            {
+              messageId: 'pointToBasicFile',
+              output: `
           @Component({
             selector: 'ish-footer',
             templateUrl: './footer.component.override.html',
@@ -81,14 +80,15 @@ const config: RuleTestConfig = {
             styleUrls: ['./footer.component.scss'],
           })
           export class FooterComponent {}`,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        filename: 'footer.component.ts',
-        code: `
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'should report if base component uses override template and css',
+      filename: 'footer.component.ts',
+      code: `
           @Component({
             selector: 'ish-footer',
             templateUrl: './footer.component.override.html',
@@ -96,14 +96,14 @@ const config: RuleTestConfig = {
             styleUrls: ['./footer.component.override.scss'],
           })
           export class FooterComponent {}`,
-        errors: [
-          {
-            type: AST_NODE_TYPES.Literal,
-            messageId: 'shouldPointToBasicFile',
-            suggestions: [
-              {
-                messageId: 'pointToBasicFile',
-                output: `
+      errors: [
+        {
+          type: AST_NODE_TYPES.Literal,
+          messageId: 'shouldPointToBasicFile',
+          suggestions: [
+            {
+              messageId: 'pointToBasicFile',
+              output: `
           @Component({
             selector: 'ish-footer',
             templateUrl: './footer.component.html',
@@ -111,16 +111,16 @@ const config: RuleTestConfig = {
             styleUrls: ['./footer.component.override.scss'],
           })
           export class FooterComponent {}`,
-              },
-            ],
-          },
-          {
-            type: AST_NODE_TYPES.ArrayExpression,
-            messageId: 'shouldPointToBasicFile',
-            suggestions: [
-              {
-                messageId: 'pointToBasicFile',
-                output: `
+            },
+          ],
+        },
+        {
+          type: AST_NODE_TYPES.ArrayExpression,
+          messageId: 'shouldPointToBasicFile',
+          suggestions: [
+            {
+              messageId: 'pointToBasicFile',
+              output: `
           @Component({
             selector: 'ish-footer',
             templateUrl: './footer.component.override.html',
@@ -128,26 +128,24 @@ const config: RuleTestConfig = {
             styleUrls: ['./footer.component.scss'],
           })
           export class FooterComponent {}`,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        filename: 'footer.component.override.spec.ts',
-        code: `
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'should report if override component test does not use html override',
+      filename: 'footer.component.override.spec.ts',
+      code: `
           await TestBed.configureTestingModule({}).compileComponents();`,
-        errors: [
-          {
-            messageId: 'testOverrideTemplateMissing',
-          },
-          {
-            messageId: 'testOverrideTSMissing',
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'testOverrideTemplateMissing',
+        },
+        {
+          messageId: 'testOverrideTSMissing',
+        },
+      ],
+    },
+  ],
+});

@@ -2,43 +2,38 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import noReturnUndefinedRule from '../src/rules/no-return-undefined';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  rule: noReturnUndefinedRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.ts',
-        code: `
+testRule(noReturnUndefinedRule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      code: `
         function testFunction() {
           return;
         }
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      code: `
         function testFunction() {
           return undefined;
         }
         `,
-        output: `
+      output: `
         function testFunction() {
           return ;
         }
         `,
-        errors: [
-          {
-            messageId: 'undefinedError',
-            type: AST_NODE_TYPES.ReturnStatement,
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'undefinedError',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+  ],
+});

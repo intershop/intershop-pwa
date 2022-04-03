@@ -2,23 +2,21 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import noCollapsibleIfRule from '../src/rules/no-collapsible-if';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  rule: noCollapsibleIfRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+testRule(noCollapsibleIfRule, {
+  valid: [
+    {
+      filename: 'test.component.ts',
+      code: `
         if(a === b && c === d) {
           const foo = bar;
         }
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+    {
+      filename: 'test.component.ts',
+      code: `
         if(a === b && c === d) {
           if(foo.bar()) {
             const foo = bar;
@@ -26,10 +24,10 @@ const config: RuleTestConfig = {
           return test;
         }
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+    {
+      filename: 'test.component.ts',
+      code: `
         if(a === b && c === d) {
           if(foo.bar()) {
             const foo = bar;
@@ -38,10 +36,10 @@ const config: RuleTestConfig = {
           return foo;
         }
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+    {
+      filename: 'test.component.ts',
+      code: `
         if(a === b && c === d) {
           if(foo.bar()) {
             const foo = bar;
@@ -50,12 +48,12 @@ const config: RuleTestConfig = {
         }
         }
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.component.ts',
+      code: `
         let test = foo;
         if(a === b) {
           if(c=== d) {
@@ -65,7 +63,7 @@ const config: RuleTestConfig = {
           }
         }
         `,
-        output: `
+      output: `
         let test = foo;
         if((a === b) && (c=== d)){
                       const foo = bar;
@@ -73,15 +71,12 @@ const config: RuleTestConfig = {
             return test;
           }
         `,
-        errors: [
-          {
-            messageId: 'noCollapsibleIfError',
-            type: AST_NODE_TYPES.IfStatement,
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'noCollapsibleIfError',
+          type: AST_NODE_TYPES.IfStatement,
+        },
+      ],
+    },
+  ],
+});

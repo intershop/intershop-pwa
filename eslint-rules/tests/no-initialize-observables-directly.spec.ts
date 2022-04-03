@@ -2,15 +2,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import noInitializeObservablesDirectlyRule from '../src/rules/no-initialize-observables-directly';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  rule: noInitializeObservablesDirectlyRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+testRule(noInitializeObservablesDirectlyRule, {
+  valid: [
+    {
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent implements OnInit {
           observable$: Observable<any>;
@@ -19,35 +17,32 @@ const config: RuleTestConfig = {
           }
         }
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+    {
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent {
           observable$ = new Subject<any>()
         }
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent {
           observable$ = new Observable<any>()
         }
         `,
-        errors: [
-          {
-            messageId: 'wrongInitializeError',
-            type: AST_NODE_TYPES.PropertyDefinition,
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'wrongInitializeError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+    },
+  ],
+});
