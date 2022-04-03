@@ -4,7 +4,7 @@ import { normalizePath } from '../helpers';
 
 const DEFAULT_FILE_PATTERN = '.*\\.(component|directive|pipe)\\.ts';
 
-export const doNotUseThemeIdentifierRule: TSESLint.RuleModule<string, [string]> = {
+const doNotUseThemeIdentifierRule: TSESLint.RuleModule<string, [string]> = {
   meta: {
     docs: {
       description: `Using the THEME variable in Angular artifacts directly bypasses the concept of component overrides and leads to bad practice. This rule warns about the use. The pattern for files can be configured. Default is "${DEFAULT_FILE_PATTERN}"`,
@@ -39,3 +39,5 @@ export const doNotUseThemeIdentifierRule: TSESLint.RuleModule<string, [string]> 
     };
   },
 };
+
+export default doNotUseThemeIdentifierRule;

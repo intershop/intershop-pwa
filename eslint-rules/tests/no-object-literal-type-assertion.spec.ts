@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noObjectLiteralTypeAssertionRule } from '../src/rules/no-object-literal-type-assertion';
+import noObjectLiteralTypeAssertionRule from '../src/rules/no-object-literal-type-assertion';
 
 import { RuleTestConfig } from './_execute-tests';
 

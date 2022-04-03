@@ -2,7 +2,7 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { getClosestAncestorByKind } from '../helpers';
 
-export const requireFormlyCodeDocumentationRule: TSESLint.RuleModule<string, []> = {
+const requireFormlyCodeDocumentationRule: TSESLint.RuleModule<string, []> = {
   meta: {
     messages: {
       missingDocumentationError: `Missing documentation for {{ artifactName }}. \n Please provide documentation for all Formly types, wrappers and extensions.`,
@@ -64,3 +64,5 @@ function isFormlyArtifactClass(node: TSESTree.ClassDeclaration): boolean {
     )
   );
 }
+
+export default requireFormlyCodeDocumentationRule;

@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noInitializeObservablesDirectlyRule } from '../src/rules/no-initialize-observables-directly';
+import noInitializeObservablesDirectlyRule from '../src/rules/no-initialize-observables-directly';
 
 import { RuleTestConfig } from './_execute-tests';
 

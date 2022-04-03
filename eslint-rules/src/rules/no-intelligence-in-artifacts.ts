@@ -15,7 +15,7 @@ export type RuleSetting = {
  * Each key of the configuration object is a regular expression.
  * It will be matched to check for the unwanted code artifacts and provide a specific error message.
  */
-export const noIntelligenceInArtifactsRule: TSESLint.RuleModule<string, Record<string, RuleSetting>[]> = {
+const noIntelligenceInArtifactsRule: TSESLint.RuleModule<string, Record<string, RuleSetting>[]> = {
   meta: {
     messages: {
       noIntelligenceError: `{{ error }}`,
@@ -106,3 +106,5 @@ export const noIntelligenceInArtifactsRule: TSESLint.RuleModule<string, Record<s
     };
   },
 };
+
+export default noIntelligenceInArtifactsRule;

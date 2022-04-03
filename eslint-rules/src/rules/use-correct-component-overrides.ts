@@ -6,7 +6,7 @@ import * as path from 'path';
 
 import { normalizePath } from '../helpers';
 
-export const useCorrectComponentOverridesRule: TSESLint.RuleModule<string, []> = {
+const useCorrectComponentOverridesRule: TSESLint.RuleModule<string, []> = {
   meta: {
     docs: {
       description:
@@ -140,3 +140,5 @@ export const useCorrectComponentOverridesRule: TSESLint.RuleModule<string, []> =
     return {};
   },
 };
+
+export default useCorrectComponentOverridesRule;

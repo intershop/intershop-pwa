@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { useAliasImportsRule } from '../src/rules/use-alias-imports';
+import useAliasImportsRule from '../src/rules/use-alias-imports';
 
 import { RuleTestConfig } from './_execute-tests';
 

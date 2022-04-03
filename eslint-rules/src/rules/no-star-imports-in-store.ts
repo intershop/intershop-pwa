@@ -9,7 +9,7 @@ import { normalizePath } from '../helpers';
  *
  * `import { firstAction, secondAction } from './example.actions'`
  */
-export const noStarImportsInStoreRule: TSESLint.RuleModule<string, []> = {
+const noStarImportsInStoreRule: TSESLint.RuleModule<string, []> = {
   meta: {
     messages: {
       starImportError: `Don't use star imports in store files. Import what you need individually instead. `,
@@ -87,3 +87,5 @@ export const noStarImportsInStoreRule: TSESLint.RuleModule<string, []> = {
     };
   },
 };
+
+export default noStarImportsInStoreRule;

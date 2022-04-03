@@ -2,7 +2,7 @@ import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
 
-export const sortTestbedMetadataArraysRule: TSESLint.RuleModule<string, []> = {
+const sortTestbedMetadataArraysRule: TSESLint.RuleModule<string, []> = {
   meta: {
     type: 'suggestion',
     fixable: 'code',
@@ -45,3 +45,5 @@ export const sortTestbedMetadataArraysRule: TSESLint.RuleModule<string, []> = {
     };
   },
 };
+
+export default sortTestbedMetadataArraysRule;

@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { banImportsFilePatternRule } from '../src/rules/ban-imports-file-pattern';
+import banImportsFilePatternRule from '../src/rules/ban-imports-file-pattern';
 
 import { RuleTestConfig } from './_execute-tests';
 

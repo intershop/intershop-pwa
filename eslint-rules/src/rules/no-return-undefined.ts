@@ -3,7 +3,7 @@ import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 /**
  * Disallows explicitly returning `undefined`. Use an empty return instead.
  */
-export const noReturnUndefinedRule: TSESLint.RuleModule<string, []> = {
+const noReturnUndefinedRule: TSESLint.RuleModule<string, []> = {
   meta: {
     messages: {
       undefinedError: `Don't return undefined explicitly. Use an empty return instead.`,
@@ -24,3 +24,5 @@ export const noReturnUndefinedRule: TSESLint.RuleModule<string, []> = {
     },
   }),
 };
+
+export default noReturnUndefinedRule;

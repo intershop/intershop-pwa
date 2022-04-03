@@ -2,7 +2,7 @@ import { strings } from '@angular-devkit/core';
 import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { basename } from 'path';
 
-export const meaningfulDescribeInTestsRule: TSESLint.RuleModule<string, []> = {
+const meaningfulDescribeInTestsRule: TSESLint.RuleModule<string, []> = {
   meta: {
     docs: {
       description:
@@ -40,3 +40,5 @@ export const meaningfulDescribeInTestsRule: TSESLint.RuleModule<string, []> = {
     };
   },
 };
+
+export default meaningfulDescribeInTestsRule;

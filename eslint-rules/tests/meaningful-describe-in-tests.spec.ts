@@ -1,4 +1,4 @@
-import { meaningfulDescribeInTestsRule } from '../src/rules/meaningful-describe-in-tests';
+import meaningfulDescribeInTestsRule from '../src/rules/meaningful-describe-in-tests';
 
 import { RuleTestConfig } from './_execute-tests';
 

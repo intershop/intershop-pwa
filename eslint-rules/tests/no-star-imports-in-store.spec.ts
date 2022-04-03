@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noStarImportsInStoreRule } from '../src/rules/no-star-imports-in-store';
+import noStarImportsInStoreRule from '../src/rules/no-star-imports-in-store';
 
 import { RuleTestConfig } from './_execute-tests';
 

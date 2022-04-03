@@ -5,7 +5,7 @@ import { normalizePath } from '../helpers';
 /**
  * Enforces the usage of a done() callback in tests that rely on asynchronous logic (subscribe calls).
  */
-export const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<string, []> = {
+const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<string, []> = {
   meta: {
     messages: {
       noDoneError: `asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html`,
@@ -102,3 +102,5 @@ export const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<string, []>
     };
   },
 };
+
+export default useAsyncSynchronizationInTestsRule;

@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noReturnUndefinedRule } from '../src/rules/no-return-undefined';
+import noReturnUndefinedRule from '../src/rules/no-return-undefined';
 
 import { RuleTestConfig } from './_execute-tests';
 

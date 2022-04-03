@@ -2,7 +2,7 @@ import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
 
-export interface RuleSetting {
+interface RuleSetting {
   filePattern: string;
   name: string;
   importNamePattern?: string;
@@ -19,7 +19,7 @@ export interface RuleSetting {
  * starImport         validate the no import * as from given name are contained
  * message            error message, which should be displayed, when the validation failed
  */
-export const banImportsFilePatternRule: TSESLint.RuleModule<string, RuleSetting[][]> = {
+const banImportsFilePatternRule: TSESLint.RuleModule<string, RuleSetting[][]> = {
   meta: {
     messages: {
       banImportsFilePatternError: `{{message}}`,
@@ -81,3 +81,5 @@ const checkValidityOfSpecifiers = (
   (!importName && !starImport) ||
   (importName && specifiers.some(specifier => new RegExp(importName).test(specifier.local.name))) ||
   (starImport && specifiers.some(specifier => specifier.type === TSESTree.AST_NODE_TYPES.ImportNamespaceSpecifier));
+
+export default banImportsFilePatternRule;

@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { useComponentChangeDetectionRule } from '../src/rules/use-component-change-detection';
+import useComponentChangeDetectionRule from '../src/rules/use-component-change-detection';
 
 import { RuleTestConfig } from './_execute-tests';
 

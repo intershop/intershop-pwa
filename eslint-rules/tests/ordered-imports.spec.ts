@@ -1,4 +1,4 @@
-import { orderedImportsRule } from '../src/rules/ordered-imports';
+import orderedImportsRule from '../src/rules/ordered-imports';
 
 import { RuleTestConfig } from './_execute-tests';
 

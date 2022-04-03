@@ -23,7 +23,7 @@ const REPLACEMENTS = [
  * text:        String which will be displayed in the eslint error message.
  *
  */
-export const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<
+const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<
   string,
   { pattern: string; replacement: string; text: string }[][]
 > = {
@@ -85,3 +85,5 @@ export const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<
     };
   },
 };
+
+export default useJestExtendedMatchersInTestsRule;

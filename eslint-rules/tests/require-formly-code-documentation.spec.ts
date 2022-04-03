@@ -1,4 +1,4 @@
-import { requireFormlyCodeDocumentationRule } from '../src/rules/require-formly-code-documentation';
+import requireFormlyCodeDocumentationRule from '../src/rules/require-formly-code-documentation';
 
 import { RuleTestConfig } from './_execute-tests';
 

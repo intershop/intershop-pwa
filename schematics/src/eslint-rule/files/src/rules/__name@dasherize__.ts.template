@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-export const <%= camelize(name) %>Rule: TSESLint.RuleModule<string, []> = {
+const <%= camelize(name) %>Rule: TSESLint.RuleModule<string, []> = {
   meta: {
     messages: {
       PLACEHOLDER_ERROR: ``,
@@ -12,3 +12,5 @@ export const <%= camelize(name) %>Rule: TSESLint.RuleModule<string, []> = {
 
   }),
 };
+
+export default <%= camelize(name) %>Rule;

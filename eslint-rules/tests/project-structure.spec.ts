@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { projectStructureRule } from '../src/rules/project-structure';
+import projectStructureRule from '../src/rules/project-structure';
 
 import { RuleTestConfig } from './_execute-tests';
 

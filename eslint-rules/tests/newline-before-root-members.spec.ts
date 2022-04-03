@@ -1,4 +1,4 @@
-import { newlineBeforeRootMembersRule } from '../src/rules/newline-before-root-members';
+import newlineBeforeRootMembersRule from '../src/rules/newline-before-root-members';
 
 import { RuleTestConfig } from './_execute-tests';
 

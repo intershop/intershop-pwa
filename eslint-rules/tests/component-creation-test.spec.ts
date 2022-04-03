@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { componentCreationTestRule } from '../src/rules/component-creation-test';
+import componentCreationTestRule from '../src/rules/component-creation-test';
 
 import { RuleTestConfig } from './_execute-tests';
 

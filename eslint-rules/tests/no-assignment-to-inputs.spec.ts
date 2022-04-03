@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noAssignmentToInputsRule } from '../src/rules/no-assignment-to-inputs';
+import noAssignmentToInputsRule from '../src/rules/no-assignment-to-inputs';
 
 import { RuleTestConfig } from './_execute-tests';
 

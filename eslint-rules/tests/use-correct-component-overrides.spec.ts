@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { useCorrectComponentOverridesRule } from '../src/rules/use-correct-component-overrides';
+import useCorrectComponentOverridesRule from '../src/rules/use-correct-component-overrides';
 
 import { RuleTestConfig } from './_execute-tests';
 

@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noFormlyExplicitPseudoTypeRule } from '../src/rules/no-formly-explicit-pseudo-type';
+import noFormlyExplicitPseudoTypeRule from '../src/rules/no-formly-explicit-pseudo-type';
 
 import { RuleTestConfig } from './_execute-tests';
 

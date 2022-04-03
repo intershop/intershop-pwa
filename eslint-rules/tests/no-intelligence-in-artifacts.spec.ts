@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { RuleSetting, noIntelligenceInArtifactsRule } from '../src/rules/no-intelligence-in-artifacts';
+import noIntelligenceInArtifactsRule, { RuleSetting } from '../src/rules/no-intelligence-in-artifacts';
 
 import { RuleTestConfig } from './_execute-tests';
 

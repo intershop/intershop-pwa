@@ -7,7 +7,7 @@ import { isComponent } from '../helpers';
  * Don't initialize observable class properties directly, for example through `new Observable()`.
  *  Use `ngOnInit` instead.
  */
-export const noInitializeObservablesDirectlyRule: TSESLint.RuleModule<string, []> = {
+const noInitializeObservablesDirectlyRule: TSESLint.RuleModule<string, []> = {
   meta: {
     messages: {
       wrongInitializeError: 'Observable stream should be initialized in ngOnInit',
@@ -35,3 +35,5 @@ export const noInitializeObservablesDirectlyRule: TSESLint.RuleModule<string, []
     },
   }),
 };
+
+export default noInitializeObservablesDirectlyRule;

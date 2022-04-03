@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noCollapsibleIfRule } from '../src/rules/no-collapsible-if';
+import noCollapsibleIfRule from '../src/rules/no-collapsible-if';
 
 import { RuleTestConfig } from './_execute-tests';
 

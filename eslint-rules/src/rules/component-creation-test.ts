@@ -7,7 +7,7 @@ const SHOULD_BE_CREATED_NAME = 'should be created';
 /**
  * Checks whether component tests contain at least a few standard test cases.
  */
-export const componentCreationTestRule: TSESLint.RuleModule<string, []> = {
+const componentCreationTestRule: TSESLint.RuleModule<string, []> = {
   meta: {
     messages: {
       noDescribe: 'All component test files have to include a describe block.',
@@ -127,3 +127,5 @@ export const componentCreationTestRule: TSESLint.RuleModule<string, []> = {
     };
   },
 };
+
+export default componentCreationTestRule;

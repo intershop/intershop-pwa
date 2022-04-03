@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { useCamelCaseEnvironmentPropertiesRule } from '../src/rules/use-camel-case-environment-properties';
+import useCamelCaseEnvironmentPropertiesRule from '../src/rules/use-camel-case-environment-properties';
 
 import { RuleTestConfig } from './_execute-tests';
 

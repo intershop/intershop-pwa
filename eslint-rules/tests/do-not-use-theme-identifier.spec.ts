@@ -1,4 +1,4 @@
-import { doNotUseThemeIdentifierRule } from '../src/rules/do-not-use-theme-identifier';
+import doNotUseThemeIdentifierRule from '../src/rules/do-not-use-theme-identifier';
 
 import { RuleTestConfig } from './_execute-tests';
 

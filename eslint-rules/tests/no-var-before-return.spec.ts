@@ -1,4 +1,4 @@
-import { noVarBeforeReturnRule } from '../src/rules/no-var-before-return';
+import noVarBeforeReturnRule from '../src/rules/no-var-before-return';
 
 import { RuleTestConfig } from './_execute-tests';
 

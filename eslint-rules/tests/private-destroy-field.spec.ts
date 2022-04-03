@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { privateDestroyFieldRule } from '../src/rules/private-destroy-field';
+import privateDestroyFieldRule from '../src/rules/private-destroy-field';
 
 import { RuleTestConfig } from './_execute-tests';
 

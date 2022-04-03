@@ -3,7 +3,7 @@ import { kebabCase } from 'lodash';
 
 import { normalizePath } from '../helpers';
 
-export interface RuleSetting {
+interface RuleSetting {
   warnUnmatched: boolean;
   ignoredFiles: string[];
   pathPatterns: string[];
@@ -28,7 +28,7 @@ export interface RuleSetting {
  * ignoredFiles: RegExp patterns files which should be ignored.
  * allowedNumberWords: List of words containing numbers that will be treated as normal for the sake of kebab-case. Usually, numbers are treated as their own words.
  */
-export const projectStructureRule: TSESLint.RuleModule<string, RuleSetting[]> = {
+const projectStructureRule: TSESLint.RuleModule<string, RuleSetting[]> = {
   meta: {
     messages: {
       projectStructureError: `{{message}}`,
@@ -223,3 +223,5 @@ const kebabCaseFromPascalCase = (
   const match = k.match(kebabRegex);
   return match?.[1] ? k.replace(match[1], kebabSubstitutionDict[match[1]]) : k;
 };
+
+export default projectStructureRule;

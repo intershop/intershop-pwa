@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { sortTestbedMetadataArraysRule } from '../src/rules/sort-testbed-metadata-arrays';
+import sortTestbedMetadataArraysRule from '../src/rules/sort-testbed-metadata-arrays';
 
 import { RuleTestConfig } from './_execute-tests';
 

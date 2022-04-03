@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { useAsyncSynchronizationInTestsRule } from '../src/rules/use-async-synchronization-in-tests';
+import useAsyncSynchronizationInTestsRule from '../src/rules/use-async-synchronization-in-tests';
 
 import { RuleTestConfig } from './_execute-tests';
 
