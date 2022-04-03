@@ -7,6 +7,7 @@ import testRule from './rule-tester';
 testRule(useComponentChangeDetectionRule, {
   valid: [
     {
+      name: 'should not report on non-component files',
       filename: 'test.service.ts',
       code: `
         @Injectable({})
@@ -14,6 +15,7 @@ testRule(useComponentChangeDetectionRule, {
         `,
     },
     {
+      name: 'should not report if component change detection is used',
       filename: 'test.component.ts',
       code: `
         @Component({
@@ -25,6 +27,7 @@ testRule(useComponentChangeDetectionRule, {
   ],
   invalid: [
     {
+      name: 'should report if component change detection is not used',
       filename: 'test.component.ts',
       code: `
         @Component({})

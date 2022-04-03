@@ -7,6 +7,7 @@ import testRule from './rule-tester';
 testRule(noInitializeObservablesDirectlyRule, {
   valid: [
     {
+      name: 'should not report when observables are initialized in ngOnInit',
       filename: 'test.component.ts',
       code: `
         @Component({})
@@ -19,6 +20,7 @@ testRule(noInitializeObservablesDirectlyRule, {
         `,
     },
     {
+      name: 'should not report when Subjects are initialized directly',
       filename: 'test.component.ts',
       code: `
         @Component({})
@@ -30,6 +32,7 @@ testRule(noInitializeObservablesDirectlyRule, {
   ],
   invalid: [
     {
+      name: 'should report when observables are initialized in field declarations',
       filename: 'test.component.ts',
       code: `
         @Component({})

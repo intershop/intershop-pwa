@@ -7,6 +7,7 @@ import testRule from './rule-tester';
 testRule(useAsyncSynchronizationInTestsRule, {
   valid: [
     {
+      name: 'should not report if subscribe is used with done invocation',
       filename: 'test.spec.ts',
       code: `
         it('should do test', done => {
@@ -18,6 +19,7 @@ testRule(useAsyncSynchronizationInTestsRule, {
         `,
     },
     {
+      name: 'should not report if subscribe is used with done as a parameter to subscribe',
       filename: 'test.spec.ts',
       code: `
         it('should do test', done => {
@@ -26,6 +28,7 @@ testRule(useAsyncSynchronizationInTestsRule, {
         `,
     },
     {
+      name: 'should not report if subscribe is used with done as partial subscriber',
       filename: 'test.spec.ts',
       code: `
         it('should do test', done => {
@@ -34,6 +37,7 @@ testRule(useAsyncSynchronizationInTestsRule, {
         `,
     },
     {
+      name: 'should not report if subscribe is used inside fakeAsync',
       filename: 'test.spec.ts',
       code: `
         it('should do test', fakeAsync(() => {
@@ -42,6 +46,7 @@ testRule(useAsyncSynchronizationInTestsRule, {
         `,
     },
     {
+      name: 'should not report if done is used inside setTimeout',
       filename: 'test.spec.ts',
       code: `
         it('should do test', done => {
@@ -54,6 +59,7 @@ testRule(useAsyncSynchronizationInTestsRule, {
         `,
     },
     {
+      name: 'should not report if done is used directly',
       filename: 'test.spec.ts',
       code: `
         it('should do test', done => {
@@ -65,6 +71,7 @@ testRule(useAsyncSynchronizationInTestsRule, {
   ],
   invalid: [
     {
+      name: 'should report if subscribe is used without done',
       filename: 'test.spec.ts',
       code: `
         it('should do test', done => {

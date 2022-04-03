@@ -25,9 +25,10 @@ testRule(useAliasImportsRule, {
         `,
     },
     {
+      name: 'should not report if import cannot be aliased',
       filename: 'test/src/app/foo/test/test.component.ts',
       code: `
-        import { SharedModule } from '../../shared.module';
+        import { OtherModule } from '../../other.module';
         `,
     },
   ],

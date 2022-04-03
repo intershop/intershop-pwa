@@ -7,6 +7,7 @@ import testRule from './rule-tester';
 testRule(sortTestbedMetadataArraysRule, {
   valid: [
     {
+      name: 'should not report if imports are sorted correctly (simple)',
       filename: 'test.component.spec.ts',
       code: `
           TestBed.configureTestingModule({
@@ -15,6 +16,7 @@ testRule(sortTestbedMetadataArraysRule, {
         `,
     },
     {
+      name: 'should not report if imports are sorted correctly (complex)',
       filename: 'test.component.spec.ts',
       code: `
           TestBed.configureTestingModule({
@@ -28,6 +30,7 @@ testRule(sortTestbedMetadataArraysRule, {
   ],
   invalid: [
     {
+      name: 'should sort imports (simple)',
       filename: 'test.component.spec.ts',
       code: `
           TestBed.configureTestingModule({
@@ -47,6 +50,7 @@ testRule(sortTestbedMetadataArraysRule, {
         `,
     },
     {
+      name: 'should sort imports (complex)',
       filename: 'test.component.spec.ts',
       code: `
           TestBed.configureTestingModule({

@@ -7,6 +7,7 @@ import testRule from './rule-tester';
 testRule(privateDestroyFieldRule, {
   valid: [
     {
+      name: 'should not report if destroy$ subject is initialized correctly',
       filename: 'test.component.ts',
       code: `
         @Component({})
@@ -18,6 +19,7 @@ testRule(privateDestroyFieldRule, {
   ],
   invalid: [
     {
+      name: 'should report if destroy$ subject is implicitely public',
       filename: 'test.component.ts',
       code: `
         @Component({})
@@ -39,6 +41,7 @@ testRule(privateDestroyFieldRule, {
         `,
     },
     {
+      name: 'should report if destroy$ subject is explicitely public',
       filename: 'test.component.ts',
       code: `
         @Component({})

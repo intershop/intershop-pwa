@@ -7,6 +7,7 @@ import testRule from './rule-tester';
 testRule(noObjectLiteralTypeAssertionRule, {
   valid: [
     {
+      name: 'should not report if there are no object literal type assertions',
       filename: 'test.ts',
       code: `
         interface Test {
@@ -18,6 +19,7 @@ testRule(noObjectLiteralTypeAssertionRule, {
   ],
   invalid: [
     {
+      name: 'should report if there is an object literal type assertion',
       filename: 'test.ts',
       code: `
         interface Test {

@@ -5,6 +5,7 @@ import testRule from './rule-tester';
 testRule(newlineBeforeRootMembersRule, {
   valid: [
     {
+      name: 'should not report on root members with proper newline usage',
       filename: 'test.ts',
       code: `
         const x = 10;
@@ -13,6 +14,7 @@ testRule(newlineBeforeRootMembersRule, {
         `,
     },
     {
+      name: 'should not report on import statements',
       filename: 'test.ts',
       code: `
         import { bla } from '@bla';
@@ -22,6 +24,7 @@ testRule(newlineBeforeRootMembersRule, {
         `,
     },
     {
+      name: 'should not report when export statements are properly separated',
       filename: 'test.ts',
       code: `
         import { bla } from '@bla';
@@ -31,6 +34,7 @@ testRule(newlineBeforeRootMembersRule, {
         `,
     },
     {
+      name: 'should not report when export statements and star export statements are properly separated',
       filename: 'test.ts',
       code: `
         import { bla } from '@bla';
@@ -44,6 +48,7 @@ testRule(newlineBeforeRootMembersRule, {
   ],
   invalid: [
     {
+      name: 'should report when root members are not separated by newline',
       filename: 'test.ts',
       code: `
         const x = 10;
@@ -61,6 +66,7 @@ testRule(newlineBeforeRootMembersRule, {
         `,
     },
     {
+      name: 'should report when imports and root members are not separated by newline',
       filename: 'test.ts',
       code: `
         import { Component } from '@angular';
@@ -80,6 +86,7 @@ testRule(newlineBeforeRootMembersRule, {
         `,
     },
     {
+      name: 'should report when import, export and normal statements are not separated by newline',
       filename: 'test.ts',
       code: `
         import { Component } from '@angular';

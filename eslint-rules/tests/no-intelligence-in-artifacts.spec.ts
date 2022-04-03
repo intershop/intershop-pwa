@@ -8,6 +8,7 @@ testRule(noIntelligenceInArtifactsRule, {
   valid: [],
   invalid: [
     {
+      name: 'should report service and ngrx usage in components when configured',
       filename: 'test.component.ts',
       options: [
         {
@@ -47,6 +48,7 @@ testRule(noIntelligenceInArtifactsRule, {
       ],
     },
     {
+      name: 'should report facade usage in effects when configured',
       filename: 'test.effects.ts',
       options: [
         {
@@ -71,6 +73,7 @@ testRule(noIntelligenceInArtifactsRule, {
       ],
     },
     {
+      name: 'should report router usage in services when configured',
       filename: 'test.service.ts',
       options: [
         {

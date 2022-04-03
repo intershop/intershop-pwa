@@ -7,6 +7,7 @@ import testRule from './rule-tester';
 testRule(useCamelCaseEnvironmentPropertiesRule, {
   valid: [
     {
+      name: 'should not report on files other than environment',
       filename: 'src/test.component.ts',
       code: `
         @Component({})
@@ -16,7 +17,8 @@ testRule(useCamelCaseEnvironmentPropertiesRule, {
         `,
     },
     {
-      filename: 'src\\environment.test.ts',
+      name: 'should not report if proper camel casing is used',
+      filename: 'src/environment.test.ts',
       code: `
         export interface environment {
           someIdentifier: string;
@@ -27,7 +29,8 @@ testRule(useCamelCaseEnvironmentPropertiesRule, {
   ],
   invalid: [
     {
-      filename: 'src\\environment.test.ts',
+      name: 'should report if proper camel casing is not used',
+      filename: 'src/environment.test.ts',
       code: `
         export interface environment {
           SomeIdentifier: string;

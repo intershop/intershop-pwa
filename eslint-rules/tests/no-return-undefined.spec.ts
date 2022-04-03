@@ -7,6 +7,7 @@ import testRule from './rule-tester';
 testRule(noReturnUndefinedRule, {
   valid: [
     {
+      name: 'should not report on empty return statements',
       filename: 'test.ts',
       code: `
         function testFunction() {
@@ -17,6 +18,7 @@ testRule(noReturnUndefinedRule, {
   ],
   invalid: [
     {
+      name: 'should report if return statement returns undefined',
       filename: 'test.ts',
       code: `
         function testFunction() {

@@ -5,6 +5,7 @@ import testRule from './rule-tester';
 testRule(noVarBeforeReturnRule, {
   valid: [
     {
+      name: 'should not report if there is a declaration with deconstruction',
       filename: 'test.ts',
       code: `
       function testFunction() {
@@ -15,6 +16,7 @@ testRule(noVarBeforeReturnRule, {
       `,
     },
     {
+      name: 'should not report if there is a modification before return',
       filename: 'test.ts',
       code: `
       function testFunction() {
@@ -27,6 +29,7 @@ testRule(noVarBeforeReturnRule, {
   ],
   invalid: [
     {
+      name: 'should report if there is a declaration right before return (primitive data type)',
       filename: 'test.ts',
       code: `
         function testFunction() {
@@ -47,6 +50,7 @@ testRule(noVarBeforeReturnRule, {
       ],
     },
     {
+      name: 'should report if there is a declaration right before return (complex data type)',
       filename: 'test.ts',
       code: `
         function testFunction() {

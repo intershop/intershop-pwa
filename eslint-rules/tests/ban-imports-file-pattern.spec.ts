@@ -7,6 +7,7 @@ import testRule from './rule-tester';
 testRule(banImportsFilePatternRule, {
   valid: [
     {
+      name: 'should not report on file not included in file pattern',
       filename: 'test.component.ts',
       options: [
         [
@@ -25,6 +26,7 @@ testRule(banImportsFilePatternRule, {
   ],
   invalid: [
     {
+      name: 'should report on file included in file pattern',
       filename: 'test.component.spec.ts',
       options: [
         [
@@ -50,6 +52,7 @@ testRule(banImportsFilePatternRule, {
       ],
     },
     {
+      name: 'should report when detecting disallowed start pattern',
       filename: 'test.component.ts',
       options: [
         [
