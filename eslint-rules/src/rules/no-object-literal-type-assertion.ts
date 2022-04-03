@@ -5,7 +5,7 @@ import { normalizePath } from '../helpers';
 /**
  * Disallows type assertions (`exampleObject as ExampleType`) on object literals.
  */
-const noObjectLiteralTypeAssertionRule: TSESLint.RuleModule<string, []> = {
+const noObjectLiteralTypeAssertionRule: TSESLint.RuleModule<string> = {
   meta: {
     messages: {
       noObjectLiteralTypeAssertionError: `Type assertion on object literals is forbidden, use a type annotation instead.`,

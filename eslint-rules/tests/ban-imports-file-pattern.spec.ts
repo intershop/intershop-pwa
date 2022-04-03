@@ -1,10 +1,10 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import banImportsFilePatternRule from '../src/rules/ban-imports-file-pattern';
+import banImportsFilePatternRule, { RuleSetting } from '../src/rules/ban-imports-file-pattern';
 
 import { RuleTestConfig } from './_execute-tests';
 
-const config: RuleTestConfig = {
+const config: RuleTestConfig<[RuleSetting[]]> = {
   ruleName: 'ban-imports-file-pattern',
   rule: banImportsFilePatternRule,
   tests: {

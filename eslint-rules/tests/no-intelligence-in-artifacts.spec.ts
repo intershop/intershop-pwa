@@ -4,7 +4,7 @@ import noIntelligenceInArtifactsRule, { RuleSetting } from '../src/rules/no-inte
 
 import { RuleTestConfig } from './_execute-tests';
 
-const config: RuleTestConfig<Record<string, RuleSetting>[]> = {
+const config: RuleTestConfig<[Record<string, RuleSetting>]> = {
   ruleName: 'no-intelligence-in-artifacts',
   rule: noIntelligenceInArtifactsRule,
   tests: {

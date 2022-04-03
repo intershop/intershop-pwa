@@ -7,7 +7,7 @@ import { normalizePath } from '../helpers';
 /**
  * Finds and replaces import paths which can be simplified by import aliases.
  */
-const useAliasImportsRule: TSESLint.RuleModule<string, []> = {
+const useAliasImportsRule: TSESLint.RuleModule<string> = {
   meta: {
     messages: {
       noAlias: `Import path should rely on {{alias}}`,

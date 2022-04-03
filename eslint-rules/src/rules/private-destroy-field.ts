@@ -5,7 +5,7 @@ import { isType } from '../helpers';
 /**
  * Validates and fixes missing private accessibility for the destroy$ property in components, directives and pipes.
  */
-const privateDestroyFieldRule: TSESLint.RuleModule<string, []> = {
+const privateDestroyFieldRule: TSESLint.RuleModule<string> = {
   meta: {
     messages: {
       privateDestroyError: `Property should be private.`,

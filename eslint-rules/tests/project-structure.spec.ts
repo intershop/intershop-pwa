@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import projectStructureRule from '../src/rules/project-structure';
+import projectStructureRule, { RuleSetting } from '../src/rules/project-structure';
 
 import { RuleTestConfig } from './_execute-tests';
 
@@ -20,7 +20,7 @@ const options = {
   ignoredFiles: ['foo.ts$'],
 };
 
-const config: RuleTestConfig = {
+const config: RuleTestConfig<[RuleSetting]> = {
   ruleName: 'project-structure',
   rule: projectStructureRule,
   tests: {

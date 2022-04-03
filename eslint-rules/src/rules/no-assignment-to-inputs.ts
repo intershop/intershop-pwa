@@ -4,7 +4,7 @@ import { normalizePath } from '../helpers';
 
 /** Disallows the reassignment of properties marked with angular's `@Input` decorator.
  */
-const noAssignmentToInputsRule: TSESLint.RuleModule<string, []> = {
+const noAssignmentToInputsRule: TSESLint.RuleModule<string> = {
   meta: {
     messages: {
       inputAssignmentError: `Assigning to @Input decorated properties is forbidden.`,

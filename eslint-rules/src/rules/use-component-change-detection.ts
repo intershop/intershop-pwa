@@ -5,7 +5,7 @@ import { normalizePath, objectContainsProperty } from '../helpers';
 /**
  * Enforces the explicit declaration of `changeDetection` in component decorators.
  */
-const useComponentChangeDetectionRule: TSESLint.RuleModule<string, []> = {
+const useComponentChangeDetectionRule: TSESLint.RuleModule<string> = {
   meta: {
     messages: {
       noChangeDetectionError: `Components should explicitly declare "changeDetection", preferably "ChangeDetectionStrategy.OnPush"`,

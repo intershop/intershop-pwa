@@ -23,10 +23,7 @@ const REPLACEMENTS = [
  * text:        String which will be displayed in the eslint error message.
  *
  */
-const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<
-  string,
-  { pattern: string; replacement: string; text: string }[][]
-> = {
+const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<string, typeof REPLACEMENTS[]> = {
   meta: {
     messages: {
       alternative: `use {{alternative}}`,

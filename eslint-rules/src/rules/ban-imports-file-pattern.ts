@@ -2,7 +2,7 @@ import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
 
-interface RuleSetting {
+export interface RuleSetting {
   filePattern: string;
   name: string;
   importNamePattern?: string;
@@ -19,7 +19,7 @@ interface RuleSetting {
  * starImport         validate the no import * as from given name are contained
  * message            error message, which should be displayed, when the validation failed
  */
-const banImportsFilePatternRule: TSESLint.RuleModule<string, RuleSetting[][]> = {
+const banImportsFilePatternRule: TSESLint.RuleModule<string, [RuleSetting[]]> = {
   meta: {
     messages: {
       banImportsFilePatternError: `{{message}}`,

@@ -5,7 +5,7 @@ import { normalizePath } from '../helpers';
 /**
  * Validates and fixes the environment.*.ts files to contain only property signatures in camelCase format.
  */
-const useCamelCaseEnvironmentPropertiesRule: TSESLint.RuleModule<string, []> = {
+const useCamelCaseEnvironmentPropertiesRule: TSESLint.RuleModule<string> = {
   meta: {
     messages: {
       camelCaseError: `Property {{property}} is not camelCase formatted.`,

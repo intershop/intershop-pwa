@@ -6,7 +6,7 @@ import { normalizePath } from '../helpers';
  * Disallows chaining off TestBed.configureTestingModule.
  * Use another beforeEach block instead.
  */
-const noTestbedWithThenRule: TSESLint.RuleModule<string, []> = {
+const noTestbedWithThenRule: TSESLint.RuleModule<string> = {
   meta: {
     messages: {
       testbedWithThenError: `Chaining off TestBed.configureTestingModule can be replaced by adding another beforeEach block without async.`,

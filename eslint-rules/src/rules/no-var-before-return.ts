@@ -17,7 +17,7 @@ function checkNoVarBeforeReturn(node: TSESTree.ReturnStatement): boolean {
   );
 }
 
-const noVarBeforeReturnRule: TSESLint.RuleModule<string, []> = {
+const noVarBeforeReturnRule: TSESLint.RuleModule<string> = {
   meta: {
     messages: {
       varError: `Don't return a variable, which is declared right before. Return the variable value instead.`,

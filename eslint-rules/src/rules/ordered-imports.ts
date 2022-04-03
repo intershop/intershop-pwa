@@ -11,7 +11,7 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
  *    - relative imports starting with `../`
  *    - relative imports from the same folder, starting with `./`
  */
-const orderedImportsRule: TSESLint.RuleModule<string, []> = {
+const orderedImportsRule: TSESLint.RuleModule<string> = {
   meta: {
     messages: {
       unorderedImports: `Imports are not ordered correctly.`,
