@@ -1,13 +1,15 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+const messages = {
+  noCollapsibleIfError: `If-statements can be merged.`,
+};
+
 /**
  * Finds and merges collapsible if statements.
  */
-const noCollapsibleIfRule: TSESLint.RuleModule<string> = {
+const noCollapsibleIfRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      noCollapsibleIfError: `If-statements can be merged.`,
-    },
+    messages,
     fixable: 'code',
     type: 'problem',
     schema: [],

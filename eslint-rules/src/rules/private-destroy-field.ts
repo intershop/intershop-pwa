@@ -2,14 +2,16 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { isType } from '../helpers';
 
+const messages = {
+  privateDestroyError: `Property should be private.`,
+};
+
 /**
  * Validates and fixes missing private accessibility for the destroy$ property in components, directives and pipes.
  */
-const privateDestroyFieldRule: TSESLint.RuleModule<string> = {
+const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      privateDestroyError: `Property should be private.`,
-    },
+    messages,
     fixable: 'code',
     type: 'problem',
     schema: [],

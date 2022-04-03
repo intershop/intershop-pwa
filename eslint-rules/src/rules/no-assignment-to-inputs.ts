@@ -2,13 +2,15 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
 
+const messages = {
+  inputAssignmentError: `Assigning to @Input decorated properties is forbidden.`,
+};
+
 /** Disallows the reassignment of properties marked with angular's `@Input` decorator.
  */
-const noAssignmentToInputsRule: TSESLint.RuleModule<string> = {
+const noAssignmentToInputsRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      inputAssignmentError: `Assigning to @Input decorated properties is forbidden.`,
-    },
+    messages,
     type: 'problem',
     schema: [],
   },

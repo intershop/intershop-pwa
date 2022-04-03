@@ -1,13 +1,15 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+const messages = {
+  newLineBeforeRootMembers: `New line missing`,
+};
+
 /**
  * Checks whether root members of a typescript file (except for imports) are preceded by an empty line.
  */
-const newlineBeforeRootMembersRule: TSESLint.RuleModule<string> = {
+const newlineBeforeRootMembersRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      newLineBeforeRootMembers: `New line missing`,
-    },
+    messages,
     type: 'problem',
     fixable: 'code',
     schema: [],

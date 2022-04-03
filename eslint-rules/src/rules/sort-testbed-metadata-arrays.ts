@@ -2,14 +2,16 @@ import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
 
-const sortTestbedMetadataArraysRule: TSESLint.RuleModule<string> = {
+const messages = {
+  sortTestBedMetadataArrays: '`TestBed` metadata arrays should be sorted in ASC alphabetical order',
+};
+
+const sortTestbedMetadataArraysRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     type: 'suggestion',
     fixable: 'code',
     schema: [],
-    messages: {
-      sortTestBedMetadataArrays: '`TestBed` metadata arrays should be sorted in ASC alphabetical order',
-    },
+    messages,
   },
   create(context) {
     function getText(node) {

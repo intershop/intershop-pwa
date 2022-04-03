@@ -4,7 +4,7 @@ import { kebabCase } from 'lodash';
 import { normalizePath } from '../helpers';
 
 export interface RuleSetting {
-  warnUnmatched: boolean;
+  warnUnmatched?: boolean;
   ignoredFiles: string[];
   pathPatterns: string[];
   reusePatterns: {
@@ -15,8 +15,12 @@ export interface RuleSetting {
     name: string;
     file: string;
   }[];
-  allowedNumberWords: string[];
+  allowedNumberWords?: string[];
 }
+
+const messages = {
+  projectStructureError: `{{message}}`,
+};
 
 /**
  * Allows you to check file paths, file names and containing class names against specified patterns.
@@ -28,11 +32,9 @@ export interface RuleSetting {
  * ignoredFiles: RegExp patterns files which should be ignored.
  * allowedNumberWords: List of words containing numbers that will be treated as normal for the sake of kebab-case. Usually, numbers are treated as their own words.
  */
-const projectStructureRule: TSESLint.RuleModule<string, [RuleSetting]> = {
+const projectStructureRule: TSESLint.RuleModule<keyof typeof messages, [RuleSetting]> = {
   meta: {
-    messages: {
-      projectStructureError: `{{message}}`,
-    },
+    messages,
     type: 'problem',
     schema: [
       {

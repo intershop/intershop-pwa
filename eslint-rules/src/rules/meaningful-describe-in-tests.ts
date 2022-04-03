@@ -2,7 +2,11 @@ import { strings } from '@angular-devkit/core';
 import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { basename } from 'path';
 
-const meaningfulDescribeInTestsRule: TSESLint.RuleModule<string> = {
+const messages = {
+  meaningfulDescribeInTests: 'The top level describes of the test should be constructed out of the file name.',
+};
+
+const meaningfulDescribeInTestsRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     docs: {
       description:
@@ -10,9 +14,7 @@ const meaningfulDescribeInTestsRule: TSESLint.RuleModule<string> = {
       recommended: 'warn',
       url: '',
     },
-    messages: {
-      meaningfulDescribeInTests: 'The top level describes of the test should be constructed out of the file name.',
-    },
+    messages,
     type: 'suggestion',
     fixable: 'code',
     schema: [],

@@ -2,16 +2,18 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { isComponent } from '../helpers';
 
+const messages = {
+  wrongInitializeError: 'Observable stream should be initialized in ngOnInit',
+};
+
 /**
  * Forbids the direct initialization of observables .
  * Don't initialize observable class properties directly, for example through `new Observable()`.
  *  Use `ngOnInit` instead.
  */
-const noInitializeObservablesDirectlyRule: TSESLint.RuleModule<string> = {
+const noInitializeObservablesDirectlyRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      wrongInitializeError: 'Observable stream should be initialized in ngOnInit',
-    },
+    messages,
     type: 'problem',
     schema: [],
   },

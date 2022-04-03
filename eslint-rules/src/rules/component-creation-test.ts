@@ -2,20 +2,22 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
 
-const SHOULD_BE_CREATED_NAME = 'should be created';
+export const SHOULD_BE_CREATED_NAME = 'should be created';
+
+const messages = {
+  noDescribe: 'All component test files have to include a describe block.',
+  noCreationTest: `The component does not have an active '${SHOULD_BE_CREATED_NAME}' test`,
+  noComponentTruthyTest: `'${SHOULD_BE_CREATED_NAME}' block does not test if component is truthy`,
+  noElementTruthyTest: `'${SHOULD_BE_CREATED_NAME}' block does not test if html element is truthy`,
+  noFixtureDetectChangesTest: `'${SHOULD_BE_CREATED_NAME}' block does not test if feature.detectChanges does not throw`,
+};
 
 /**
  * Checks whether component tests contain at least a few standard test cases.
  */
-const componentCreationTestRule: TSESLint.RuleModule<string> = {
+const componentCreationTestRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      noDescribe: 'All component test files have to include a describe block.',
-      noCreationTest: `The component does not have an active '${SHOULD_BE_CREATED_NAME}' test`,
-      noComponentTruthyTest: `'${SHOULD_BE_CREATED_NAME}' block does not test if component is truthy`,
-      noElementTruthyTest: `'${SHOULD_BE_CREATED_NAME}' block does not test if html element is truthy`,
-      noFixtureDetectChangesTest: `'${SHOULD_BE_CREATED_NAME}' block does not test if feature.detectChanges does not throw`,
-    },
+    messages,
     fixable: 'code',
     type: 'problem',
     schema: [],

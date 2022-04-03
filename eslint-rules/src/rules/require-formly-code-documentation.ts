@@ -2,11 +2,13 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { getClosestAncestorByKind } from '../helpers';
 
-const requireFormlyCodeDocumentationRule: TSESLint.RuleModule<string> = {
+const messages = {
+  missingDocumentationError: `Missing documentation for {{ artifactName }}. \n Please provide documentation for all Formly types, wrappers and extensions.`,
+};
+
+const requireFormlyCodeDocumentationRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      missingDocumentationError: `Missing documentation for {{ artifactName }}. \n Please provide documentation for all Formly types, wrappers and extensions.`,
-    },
+    messages,
     type: 'problem',
     schema: [],
   },
