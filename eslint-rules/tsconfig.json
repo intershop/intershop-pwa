@@ -12,6 +12,6 @@
     "target": "es2015",
     "types": ["node"]
   },
-  "include": ["src/*.ts"],
-  "exclude": ["src/*.spec.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
 }
