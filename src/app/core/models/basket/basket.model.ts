@@ -27,6 +27,13 @@ export interface AbstractBasket<T> {
   infos?: BasketInfo[];
   approval?: BasketApproval;
   attributes?: Attribute[];
+  taxationId?: string;
+  user?: {
+    companyName?: string;
+    companyName2?: string;
+    firstName: string;
+    lastName: string;
+  };
 }
 
 export type Basket = AbstractBasket<LineItem>;

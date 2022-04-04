@@ -1,10 +1,5 @@
 <div *ngIf="object">
-  <ng-container *ngIf="customer$ | async as customer; else companyFromInvoice">
-    {{ customer.companyName }} {{ customer.companyName2 }}
-  </ng-container>
-  <ng-template #companyFromInvoice>
-    {{ object.invoiceToAddress.companyName1 }} {{ object.invoiceToAddress.companyName2 }}
-  </ng-template>
+  {{ companyName1 }} {{ companyName2 }}
   <span *ngIf="taxationID" data-testing-id="taxationID">
     <br />{{ 'checkout.widget.buyer.TaxationID' | translate }} {{ taxationID }}
   </span>

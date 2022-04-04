@@ -5,7 +5,6 @@ import { AbstractBasket } from 'ish-core/models/basket/basket.model';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
-import { User } from 'ish-core/models/user/user.model';
 
 export type RequisitionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
@@ -43,7 +42,6 @@ export interface Requisition extends RequisitionBasket {
   creationDate: number;
   lineItemCount: number;
 
-  user: User;
   userBudget: RequisitionUserBudget;
   approval: RequisitionApproval;
   systemRejected?: boolean;
