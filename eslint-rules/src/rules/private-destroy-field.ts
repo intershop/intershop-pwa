@@ -1,9 +1,11 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { once } from 'lodash';
 
 import { isType } from '../helpers';
 
 const messages = {
   privateDestroyError: `Property should be private.`,
+  voidSubjectError: `Property should use Subject<void>.`,
 };
 
 /**
@@ -22,21 +24,42 @@ const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
         return;
       }
 
+      const usesVoidType = once(
+        () =>
+          node.value.type === AST_NODE_TYPES.NewExpression &&
+          node.value.typeParameters.params[0].type === AST_NODE_TYPES.TSVoidKeyword
+      );
+
+      const usesSubjectType = once(
+        () =>
+          node.value.type === AST_NODE_TYPES.NewExpression &&
+          node.value.callee.type === AST_NODE_TYPES.Identifier &&
+          node.value.callee.name === 'Subject'
+      );
+
       if (
         node.key.type === AST_NODE_TYPES.Identifier &&
         node.key.name.match(/^destroy(\$|)$/) &&
-        node.accessibility !== 'private'
+        (node.accessibility !== 'private' || !usesVoidType() || !usesSubjectType())
       ) {
-        // replace access modifier or lack thereof with private
-        const replaceText = context
-          .getSourceCode()
-          .getText(node)
-          .replace(/^(.*)(?=destroy\$)/, 'private ');
-        context.report({
-          node,
-          messageId: 'privateDestroyError',
-          fix: fixer => fixer.replaceText(node, replaceText),
-        });
+        if (usesSubjectType()) {
+          // replace access modifier or lack thereof with private
+          const replaceText = context
+            .getSourceCode()
+            .getText(node)
+            .replace(/^(.*)(?=destroy\$)/, 'private ')
+            .replace(/Subject<.*?>/, 'Subject<void>');
+          context.report({
+            node,
+            messageId: usesVoidType() ? 'privateDestroyError' : 'voidSubjectError',
+            fix: fixer => fixer.replaceText(node, replaceText),
+          });
+        } else {
+          context.report({
+            node,
+            messageId: 'voidSubjectError',
+          });
+        }
       }
     },
   }),
