@@ -250,7 +250,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get submitDisabled() {
-    return this.paymentForm.invalid && this.formSubmitted;
+    return this.paymentForm.invalid || this.formSubmitted;
   }
 
   ngOnDestroy() {
