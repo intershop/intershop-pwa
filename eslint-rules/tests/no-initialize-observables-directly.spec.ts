@@ -47,5 +47,24 @@ testRule(noInitializeObservablesDirectlyRule, {
         },
       ],
     },
+    {
+      name: 'should report when observables are initialized in constructors',
+      filename: 'test.component.ts',
+      code: `
+        @Component({})
+        export class TestComponent {
+          observable$: Observable<any>;
+          constructor() {
+            observable$ = new Observable<any>();
+          }
+        }
+        `,
+      errors: [
+        {
+          messageId: 'wrongInitializeError',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
   ],
 });

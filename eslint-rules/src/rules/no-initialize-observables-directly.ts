@@ -35,6 +35,16 @@ const noInitializeObservablesDirectlyRule: TSESLint.RuleModule<keyof typeof mess
         });
       }
     },
+    'MethodDefinition[key.name="constructor"] AssignmentExpression[right.type="NewExpression"]'(
+      node: TSESTree.AssignmentExpression
+    ) {
+      if (node.left.type === AST_NODE_TYPES.Identifier && node.left.name.match(/\w*\$$/)) {
+        context.report({
+          node,
+          messageId: 'wrongInitializeError',
+        });
+      }
+    },
   }),
 };
 
