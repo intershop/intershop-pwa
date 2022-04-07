@@ -71,22 +71,9 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
         }[];
       }[] = httpError.error?.errors;
       if (errors?.length) {
-        if (errors.length > 1) {
-          return {
-            ...responseError,
-            causes: httpError.error?.errors,
-          };
-        }
-        const error = errors[0];
-        if (error.causes?.length) {
-          return {
-            ...responseError,
-            message: [error.message].concat(...error.causes.map(c => c.message)).join(' '),
-          };
-        }
         return {
           ...responseError,
-          message: error.message,
+          causes: httpError.error?.errors,
         };
       } else {
         return {
