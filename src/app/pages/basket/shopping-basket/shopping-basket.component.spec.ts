@@ -10,6 +10,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BasketCostCenterSelectionComponent } from 'ish-shared/components/basket/basket-cost-center-selection/basket-cost-center-selection.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
 import { BasketInfoComponent } from 'ish-shared/components/basket/basket-info/basket-info.component';
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
@@ -33,6 +34,7 @@ describe('Shopping Basket Component', () => {
       declarations: [
         MockComponent(BasketCostCenterSelectionComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketErrorMessageComponent),
         MockComponent(BasketInfoComponent),
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketValidationResultsComponent),
@@ -73,7 +75,7 @@ describe('Shopping Basket Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = makeHttpError({ status: 404 });
+    component.error = makeHttpError({ status: 404, message: 'error message' });
     fixture.detectChanges();
     expect(element.querySelector('ish-error-message')).toBeTruthy();
   });

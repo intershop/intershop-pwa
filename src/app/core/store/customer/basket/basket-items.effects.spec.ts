@@ -90,7 +90,9 @@ describe('Basket Items Effects', () => {
 
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of({ lineItems: [], info: undefined }));
+      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(
+        of({ lineItems: [], info: undefined, error: undefined })
+      );
     });
 
     it('should call the basketService for addItemsToBasket', done => {
