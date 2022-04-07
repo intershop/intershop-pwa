@@ -24,7 +24,7 @@ testRule(privateDestroyFieldRule, {
       code: `
         @Component({})
         export class TestComponent  {
-          protected destroy$ = new BehaviorSubject<void>(null);
+          private destroy$ = new BehaviorSubject<void>(null);
         }
         `,
       errors: [
@@ -40,7 +40,7 @@ testRule(privateDestroyFieldRule, {
       code: `
         @Component({})
         export class TestComponent  {
-          protected destroy$ = new Subject<any>();
+          private destroy$ = new Subject<any>();
         }
         `,
       errors: [
@@ -121,6 +121,44 @@ testRule(privateDestroyFieldRule, {
           private destroy$ = new Subject<void>();
         }
         `,
+    },
+    {
+      name: 'should report if destroy$ subject is not private and does not use void',
+      filename: 'test.component.ts',
+      code: `
+        @Component({})
+        export class TestComponent  {
+          destroy$ = new Subject();
+        }
+        `,
+      errors: [
+        {
+          messageId: 'bothError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+      output: `
+        @Component({})
+        export class TestComponent  {
+          private destroy$ = new Subject<void>();
+        }
+        `,
+    },
+    {
+      name: 'should report if destroy$ subject is not private and does not use Subject',
+      filename: 'test.component.ts',
+      code: `
+        @Component({})
+        export class TestComponent  {
+          destroy$ = new BehaviorSubject<void>(null);
+        }
+        `,
+      errors: [
+        {
+          messageId: 'bothError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
     },
   ],
 });

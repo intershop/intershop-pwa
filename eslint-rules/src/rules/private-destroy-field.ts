@@ -6,6 +6,7 @@ import { isType } from '../helpers';
 const messages = {
   privateDestroyError: `Property should be private.`,
   voidSubjectError: `Property should use Subject<void>.`,
+  bothError: `Property should be private and use Subject<void>.`,
 };
 
 /**
@@ -19,15 +20,18 @@ const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
     schema: [],
   },
   create: context => ({
+    // eslint-disable-next-line complexity
     'PropertyDefinition[value.type="NewExpression"]'(node: TSESTree.PropertyDefinition) {
       if (!isType(node.parent.parent as TSESTree.ClassDeclaration, ['Component', 'Directive', 'Pipe'])) {
         return;
       }
 
-      const usesVoidType = once(
+      const usesPrivateAccessibility = once(() => node.accessibility === 'private');
+
+      const usesVoidTypeParam = once(
         () =>
           node.value.type === AST_NODE_TYPES.NewExpression &&
-          node.value.typeParameters.params[0].type === AST_NODE_TYPES.TSVoidKeyword
+          node.value.typeParameters?.params[0].type === AST_NODE_TYPES.TSVoidKeyword
       );
 
       const usesSubjectType = once(
@@ -40,7 +44,7 @@ const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
       if (
         node.key.type === AST_NODE_TYPES.Identifier &&
         node.key.name.match(/^destroy(\$|)$/) &&
-        (node.accessibility !== 'private' || !usesVoidType() || !usesSubjectType())
+        (!usesPrivateAccessibility() || !usesVoidTypeParam() || !usesSubjectType())
       ) {
         if (usesSubjectType()) {
           // replace access modifier or lack thereof with private
@@ -48,16 +52,20 @@ const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
             .getSourceCode()
             .getText(node)
             .replace(/^(.*)(?=destroy\$)/, 'private ')
-            .replace(/Subject<.*?>/, 'Subject<void>');
+            .replace(/Subject(<.*?>|)/, 'Subject<void>');
           context.report({
             node,
-            messageId: usesVoidType() ? 'privateDestroyError' : 'voidSubjectError',
+            messageId: usesVoidTypeParam()
+              ? 'privateDestroyError'
+              : usesPrivateAccessibility()
+              ? 'voidSubjectError'
+              : 'bothError',
             fix: fixer => fixer.replaceText(node, replaceText),
           });
         } else {
           context.report({
             node,
-            messageId: 'voidSubjectError',
+            messageId: usesPrivateAccessibility() ? 'voidSubjectError' : 'bothError',
           });
         }
       }
