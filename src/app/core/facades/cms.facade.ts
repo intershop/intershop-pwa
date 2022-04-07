@@ -7,7 +7,7 @@ import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.
 import { CategoryHelper } from 'ish-core/models/category/category.helper';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
 import { getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-tree';
-import { getContentPagelet } from 'ish-core/store/content/pagelets';
+import { getContentPagelet, getSelectedPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getParametersProductList, loadParametersProductListFilter } from 'ish-core/store/content/parameters';
 import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
@@ -21,6 +21,7 @@ export class CMSFacade {
 
   contentPage$ = this.store.pipe(select(getSelectedContentPage));
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
+  contentPagelet$ = this.store.pipe(select(getSelectedPagelet));
 
   contentInclude$(includeId$: Observable<string>) {
     return combineLatest([includeId$.pipe(whenTruthy()), this.store.pipe(select(getPGID))]).pipe(
@@ -30,8 +31,8 @@ export class CMSFacade {
     );
   }
 
-  pagelet$(id: string) {
-    return this.store.pipe(select(getContentPagelet(id)));
+  pagelet$(pageletId: string) {
+    return this.store.pipe(select(getContentPagelet(pageletId)));
   }
 
   viewContext$(viewContextId: string, callParameters: CallParameters) {
