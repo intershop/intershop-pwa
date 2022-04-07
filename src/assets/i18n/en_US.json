@@ -27,7 +27,7 @@
   "account.address.taxation.label": "Taxation ID",
   "account.address.title.error.required": "Salutation is mandatory. Please provide a Salutation.",
   "account.address.title.label": "Salutation",
-  "account.address.uk.locality.label": "Locality",
+  "account.address.uk.locality.label": "District",
   "account.address.uk.postalcode.error.regexp": "Please enter a valid UK ZIP code (including the whitespace).",
   "account.address.us.postalcode.error.regexp": "Please enter a valid US ZIP code.",
   "account.addresses.add_address.button.text": "Add Address",
