@@ -72,7 +72,10 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
       }[] = httpError.error?.errors;
       if (errors?.length) {
         if (errors.length > 1) {
-          console.warn(`ignoring errors${JSON.stringify(errors.slice(1))}`);
+          return {
+            ...responseError,
+            causes: httpError.error?.errors,
+          };
         }
         const error = errors[0];
         if (error.causes?.length) {

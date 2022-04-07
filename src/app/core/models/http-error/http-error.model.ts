@@ -1,3 +1,5 @@
+import { ErrorFeedback } from 'ish-core/models/error-feedback/basket-error.model';
+
 export interface HttpError {
   /** name for distinguishing with other errors */
   name: 'HttpErrorResponse';
@@ -10,4 +12,6 @@ export interface HttpError {
 
   /** human readable (and localized) error message */
   message?: string;
+
+  causes?: ErrorFeedback[];
 }

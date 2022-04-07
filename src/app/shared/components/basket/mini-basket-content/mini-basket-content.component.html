@@ -1,7 +1,13 @@
-<ng-container *ngIf="basketError$ | async as error">
-  <p *ngIf="error" role="alert" class="text-danger">
-    <span>{{ error.message }}</span>
-  </p>
+<ng-container *ngIf="basketError$ | async as errors">
+  <ng-container *ngIf="errors.causes as productCauses">
+    <div *ngFor="let productCause of productCauses">
+      <ng-container *ngIf="productCause.causes as causes">
+        <p *ngFor="let cause of causes" role="alert" class="text-danger">
+          <span> {{ cause.message }}</span>
+        </p>
+      </ng-container>
+    </div>
+  </ng-container>
 </ng-container>
 
 <ng-container *ngIf="lineItems$ | async as lineItems; else emptyBlock">
