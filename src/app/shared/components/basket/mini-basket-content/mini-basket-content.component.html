@@ -1,11 +1,10 @@
-<ng-container *ngIf="basketError$ | async as error">
-  <p *ngIf="error" role="alert" class="text-danger">
-    <span>{{ error.message }}</span>
-  </p>
-</ng-container>
-
 <ng-container *ngIf="lineItems$ | async as lineItems; else emptyBlock">
   <div class="product-rows-block">
+    <ish-basket-error-message
+      *ngIf="basketError$ | async as basketError"
+      [error]="basketError"
+      cssClass="text-danger"
+    ></ish-basket-error-message>
     <div *ngFor="let lineItem of lineItems | slice: 0:maxItemNumber" class="product-row">
       <ng-container ishProductContext [sku]="lineItem.productSKU">
         <div class="mini-product-img">
@@ -34,4 +33,11 @@
   </a>
 </ng-container>
 
-<ng-template #emptyBlock> {{ 'shopping_cart.ministatus.empty_cart.text' | translate }} </ng-template>
+<ng-template #emptyBlock>
+  <ish-basket-error-message
+    *ngIf="basketError$ | async as basketError"
+    [error]="basketError"
+    cssClass="text-danger"
+  ></ish-basket-error-message>
+  {{ 'shopping_cart.ministatus.empty_cart.text' | translate }}
+</ng-template>

@@ -22,14 +22,21 @@ export class ErrorMessageComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.toast) {
-      this.displayToast();
+      this.displayToast(this.error);
     }
   }
 
-  private displayToast() {
-    if (this.error) {
+  private displayToast(err: HttpError) {
+    if (err && !err.errors) {
       this.messageFacade.error({
-        message: this.error.message || this.error.code,
+        message: err.message || err.code,
+      });
+    }
+    if (err?.errors) {
+      err?.errors.map(cause => {
+        this.messageFacade.error({
+          message: cause.message,
+        });
       });
     }
   }

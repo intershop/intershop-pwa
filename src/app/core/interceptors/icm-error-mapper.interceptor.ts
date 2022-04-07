@@ -71,19 +71,19 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
         }[];
       }[] = httpError.error?.errors;
       if (errors?.length) {
-        if (errors.length > 1) {
-          console.warn(`ignoring errors${JSON.stringify(errors.slice(1))}`);
-        }
-        const error = errors[0];
-        if (error.causes?.length) {
-          return {
-            ...responseError,
-            message: [error.message].concat(...error.causes.map(c => c.message)).join(' '),
-          };
+        if (errors.length === 1) {
+          const error = errors[0];
+          if (error.causes?.length) {
+            return {
+              ...responseError,
+              errors: httpError.error?.errors,
+              message: [error.message].concat(...error.causes.map(c => c.message)).join(' '),
+            };
+          }
         }
         return {
           ...responseError,
-          message: error.message,
+          errors: httpError.error?.errors,
         };
       } else {
         return {

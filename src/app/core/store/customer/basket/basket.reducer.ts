@@ -145,9 +145,8 @@ export const basketReducer = createReducer(
     startCheckout,
     mergeBasketInProgress
   ),
-  unsetLoadingOn(addPromotionCodeToBasketSuccess, addPromotionCodeToBasketFail),
+  unsetLoadingOn(addPromotionCodeToBasketSuccess, addPromotionCodeToBasketFail, loadBasketSuccess),
   unsetLoadingAndErrorOn(
-    loadBasketSuccess,
     mergeBasketSuccess,
     updateBasketItemSuccess,
     updateBasketItemsSuccess,
@@ -226,6 +225,7 @@ export const basketReducer = createReducer(
     ...state,
     basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
     info: action.payload.info,
+    error: action.payload.error,
     lastTimeProductAdded: new Date().getTime(),
     submittedBasket: undefined,
   })),

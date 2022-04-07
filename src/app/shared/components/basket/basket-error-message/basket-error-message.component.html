@@ -1,0 +1,17 @@
+<ng-container *ngIf="error as basketError">
+  <ng-container *ngIf="basketError.errors as errors">
+    <div *ngFor="let error of errors" [class]="cssClass" data-testing-id="basket-errors">
+      <strong>{{ error.message }}</strong>
+      <ng-container *ngIf="error.causes as causes">
+        <p *ngFor="let cause of causes" role="alert">
+          <span> {{ cause.message }}</span>
+          <span *ngIf="cause.parameters?.sku" class="product-id"
+            ><br />
+            <label>{{ 'product.itemNumber.label' | translate }}</label>
+            <span itemprop="sku">{{ cause.parameters.sku }}</span>
+          </span>
+        </p>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>
