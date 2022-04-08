@@ -108,9 +108,10 @@ describe('Product Price Component', () => {
       expect(element.querySelector('.old-price').textContent.trim()).toEqual('$11.00');
     });
 
-    it('should show price saving when showPriceSavings = true and sale price < list price', () => {
+    it('should show price saving when showInformationalPrice and showPriceSavings = true and sale price < list price', () => {
       translate.set('product.price.savingsFallback.text', 'you saved {{0}}');
       when(context.select('prices')).thenReturn(of(dummyPricing(11, 10)));
+      component.showInformationalPrice = true;
       component.showPriceSavings = true;
       fixture.detectChanges();
 

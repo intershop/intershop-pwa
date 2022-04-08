@@ -8,21 +8,21 @@
 }
 
 .sale-price {
-  font-family: $font-family-condensedbold;
-  font-size: $font-size-lg;
   color: $text-color-special;
 }
 
 .old-price {
-  margin: -5px 0;
+  margin-bottom: $space-default * 0.5;
   font-family: $font-family-condensedregular;
   color: $text-color-tertiary;
-  text-decoration: line-through;
-}
 
-.price-savings {
-  font-family: $font-family-condensedregular;
-  color: $text-color-tertiary;
+  .price-value {
+    text-decoration: line-through;
+  }
+
+  .price-savings {
+    display: block;
+  }
 }
 
 .secondary-actions {
