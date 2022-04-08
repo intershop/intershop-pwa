@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from 'ish-core/guards/auth.guard';
+import { ErrorStatusGuard } from 'ish-core/guards/error-status.guard';
 import { IdentityProviderInviteGuard } from 'ish-core/guards/identity-provider-invite.guard';
 import { IdentityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
 import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
@@ -26,6 +27,17 @@ const routes: Routes = [
     data: {
       meta: {
         title: 'seo.title.error',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
+  {
+    path: 'maintenance',
+    loadChildren: () => import('./maintenance/maintenance-page.module').then(m => m.MaintenancePageModule),
+    canActivate: [ErrorStatusGuard],
+    data: {
+      meta: {
+        title: 'seo.title.maintenance',
         robots: 'noindex, nofollow',
       },
     },

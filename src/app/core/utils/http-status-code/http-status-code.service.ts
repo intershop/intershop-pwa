@@ -19,10 +19,13 @@ export class HttpStatusCodeService {
       this.response.status(status);
     }
     if (redirect && status >= 400) {
+      // 503: server is unavailable
+      const route = status === 503 ? '/maintenance' : '/error';
+
       if (SSR) {
-        return this.router.navigateByUrl('/error');
+        return this.router.navigateByUrl(route);
       } else {
-        return this.router.navigateByUrl('/error', { skipLocationChange: status < 500 });
+        return this.router.navigateByUrl(route, { skipLocationChange: status < 500 });
       }
     }
     return Promise.resolve(true);
