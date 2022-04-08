@@ -170,6 +170,7 @@ export function app() {
         UserAgent: '*',
         Disallow: [
           '/error',
+          '/maintenance',
           '/account',
           '/compare',
           '/recently',
