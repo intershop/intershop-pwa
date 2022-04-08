@@ -70,7 +70,8 @@ describe('Requisition Cost Center Approval Component', () => {
           } as CostCenter,
         },
       },
-      user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+      email: 'pmiller@test.intershop.de',
+      user: { firstName: 'Patricia', lastName: 'Miller' },
       totals: {
         total: { gross: 2000, net: 1800, currency: 'USD' },
       } as BasketTotal,

@@ -23,7 +23,8 @@ describe('Requisitions List Component', () => {
       approval: {
         approvalDate: 76543627,
       },
-      user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+      email: 'pmiller@test.intershop.de',
+      user: { firstName: 'Patricia', lastName: 'Miller' },
       totals: {},
     },
     {
@@ -33,7 +34,8 @@ describe('Requisitions List Component', () => {
       approval: {
         approvalDate: 76543628,
       },
-      user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+      email: 'pmiller@test.intershop.de',
+      user: { firstName: 'Patricia', lastName: 'Miller' },
       totals: {},
     },
   ] as Requisition[];

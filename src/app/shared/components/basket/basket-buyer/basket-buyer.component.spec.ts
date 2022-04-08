@@ -5,7 +5,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { User } from 'ish-core/models/user/user.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketBuyerComponent } from './basket-buyer.component';
@@ -35,7 +34,6 @@ describe('Basket Buyer Component', () => {
 
     component.object = BasketMockData.getBasket();
 
-    when(accountFacade.user$).thenReturn(of({ firstName: 'Patricia', lastName: 'Miller' } as User));
     when(accountFacade.customer$).thenReturn(of({ companyName: 'OilCorp', taxationID: '1234' } as Customer));
   });
 
@@ -45,7 +43,14 @@ describe('Basket Buyer Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display the taxation id of the customer', () => {
+  it('should display the taxation id of the object', () => {
+    component.object.taxationId = '5678';
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id="taxationID"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="taxationID"]').innerHTML).toContain('5678');
+  });
+
+  it('should display the taxation id of the customer if basket/order has no taxation Id', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="taxationID"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="taxationID"]').innerHTML).toContain('1234');
