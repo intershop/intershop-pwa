@@ -1,44 +1,40 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noTestbedWithThenRule } from '../src/rules/no-testbed-with-then';
+import noTestbedWithThenRule from '../src/rules/no-testbed-with-then';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'no-testbed-with-then',
-  rule: noTestbedWithThenRule,
-  tests: {
-    valid: [
-      {
-        filename: 'demo.component.spec.ts',
-        code: `
+testRule(noTestbedWithThenRule, {
+  valid: [
+    {
+      name: 'should not report if there is no testbed with then',
+      filename: 'demo.component.spec.ts',
+      code: `
         beforeEach(() => {
           TestBed.configureTestingModule({});
         });
         `,
-      },
-      {
-        filename: 'demo.component.ts',
-        code: ``,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'demo.component.spec.ts',
-        code: `
+    },
+    {
+      filename: 'demo.component.ts',
+      code: ``,
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report if there is a testbed with then',
+      filename: 'demo.component.spec.ts',
+      code: `
         beforeEach(() => {
-          TestBed.configureTestingModule({});
-        }).then(() => {});
+          TestBed.configureTestingModule({}).then(() => {});
+        })
         `,
-        errors: [
-          {
-            type: AST_NODE_TYPES.Identifier,
-            messageId: 'testbedWithThenError',
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          type: AST_NODE_TYPES.Identifier,
+          messageId: 'testbedWithThenError',
+        },
+      ],
+    },
+  ],
+});

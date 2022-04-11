@@ -2,11 +2,15 @@ import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
 
-export type RuleSetting = {
+export type RuleSetting = Partial<{
   ngrx: string;
   service: string;
   router: string;
   facade: string;
+}>;
+
+const messages = {
+  noIntelligenceError: `{{ error }}`,
 };
 
 /**
@@ -15,11 +19,9 @@ export type RuleSetting = {
  * Each key of the configuration object is a regular expression.
  * It will be matched to check for the unwanted code artifacts and provide a specific error message.
  */
-export const noIntelligenceInArtifactsRule: TSESLint.RuleModule<string, Record<string, RuleSetting>[]> = {
+const noIntelligenceInArtifactsRule: TSESLint.RuleModule<keyof typeof messages, [Record<string, RuleSetting>]> = {
   meta: {
-    messages: {
-      noIntelligenceError: `{{ error }}`,
-    },
+    messages,
     type: 'problem',
     schema: [
       {
@@ -106,3 +108,5 @@ export const noIntelligenceInArtifactsRule: TSESLint.RuleModule<string, Record<s
     };
   },
 };
+
+export default noIntelligenceInArtifactsRule;

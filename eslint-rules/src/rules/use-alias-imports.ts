@@ -4,14 +4,16 @@ import * as fs from 'fs';
 
 import { normalizePath } from '../helpers';
 
+const messages = {
+  noAlias: `Import path should rely on {{alias}}`,
+};
+
 /**
  * Finds and replaces import paths which can be simplified by import aliases.
  */
-export const useAliasImportsRule: TSESLint.RuleModule<string, []> = {
+const useAliasImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      noAlias: `Import path should rely on {{alias}}`,
-    },
+    messages,
     type: 'problem',
     fixable: 'code',
     schema: [],
@@ -85,3 +87,5 @@ function getAliasImports(): { pattern: string; alias: string }[] {
     console.warn(err);
   }
 }
+
+export default useAliasImportsRule;

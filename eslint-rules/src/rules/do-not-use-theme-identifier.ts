@@ -4,16 +4,18 @@ import { normalizePath } from '../helpers';
 
 const DEFAULT_FILE_PATTERN = '.*\\.(component|directive|pipe)\\.ts';
 
-export const doNotUseThemeIdentifierRule: TSESLint.RuleModule<string, [string]> = {
+const messages = {
+  doNotUseThemeIdentifier: 'Do not use THEME variable here. Instead use correctly named overrides.',
+};
+
+const doNotUseThemeIdentifierRule: TSESLint.RuleModule<keyof typeof messages, [string]> = {
   meta: {
     docs: {
       description: `Using the THEME variable in Angular artifacts directly bypasses the concept of component overrides and leads to bad practice. This rule warns about the use. The pattern for files can be configured. Default is "${DEFAULT_FILE_PATTERN}"`,
       recommended: 'warn',
       url: '',
     },
-    messages: {
-      doNotUseThemeIdentifier: 'Do not use THEME variable here. Instead use correctly named overrides.',
-    },
+    messages,
     type: 'problem',
     schema: [
       {
@@ -39,3 +41,5 @@ export const doNotUseThemeIdentifierRule: TSESLint.RuleModule<string, [string]> 
     };
   },
 };
+
+export default doNotUseThemeIdentifierRule;

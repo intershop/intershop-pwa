@@ -1,25 +1,24 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { sortTestbedMetadataArraysRule } from '../src/rules/sort-testbed-metadata-arrays';
+import sortTestbedMetadataArraysRule from '../src/rules/sort-testbed-metadata-arrays';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'sort-testbed-metadata-arrays',
-  rule: sortTestbedMetadataArraysRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.component.spec.ts',
-        code: `
+testRule(sortTestbedMetadataArraysRule, {
+  valid: [
+    {
+      name: 'should not report if imports are sorted correctly (simple)',
+      filename: 'test.component.spec.ts',
+      code: `
           TestBed.configureTestingModule({
             imports: [A,B]
           })
         `,
-      },
-      {
-        filename: 'test.component.spec.ts',
-        code: `
+    },
+    {
+      name: 'should not report if imports are sorted correctly (complex)',
+      filename: 'test.component.spec.ts',
+      code: `
           TestBed.configureTestingModule({
             imports: [
               MockComponent(A),
@@ -27,31 +26,33 @@ const config: RuleTestConfig = {
             ]
           })
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.component.spec.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      name: 'should sort imports (simple)',
+      filename: 'test.component.spec.ts',
+      code: `
           TestBed.configureTestingModule({
             imports: [B,A]
           })
         `,
-        errors: [
-          {
-            messageId: 'sortTestBedMetadataArrays',
-            type: AST_NODE_TYPES.Identifier,
-          },
-        ],
-        output: `
+      errors: [
+        {
+          messageId: 'sortTestBedMetadataArrays',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      output: `
           TestBed.configureTestingModule({
             imports: [A,B]
           })
         `,
-      },
-      {
-        filename: 'test.component.spec.ts',
-        code: `
+    },
+    {
+      name: 'should sort imports (complex)',
+      filename: 'test.component.spec.ts',
+      code: `
           TestBed.configureTestingModule({
             imports: [
               MockComponent(B),
@@ -59,13 +60,13 @@ const config: RuleTestConfig = {
             ]
           })
         `,
-        errors: [
-          {
-            messageId: 'sortTestBedMetadataArrays',
-            type: AST_NODE_TYPES.CallExpression,
-          },
-        ],
-        output: `
+      errors: [
+        {
+          messageId: 'sortTestBedMetadataArrays',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: `
           TestBed.configureTestingModule({
             imports: [
               MockComponent(A),
@@ -73,9 +74,6 @@ const config: RuleTestConfig = {
             ]
           })
         `,
-      },
-    ],
-  },
-};
-
-export default config;
+    },
+  ],
+});

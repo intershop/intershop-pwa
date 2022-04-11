@@ -10,8 +10,7 @@
     "outDir": "./dist",
     "removeComments": true,
     "target": "es2015",
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
-  "include": ["src/*.ts"],
-  "exclude": ["src/*.spec.ts"]
+  "include": ["src/**/*.ts"]
 }

@@ -1,19 +1,21 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+const messages = {
+  explicitPseudoTypeError: `Don't define types prefixed by '#', as this is reserved for reusable configuration pseudo-types.`,
+};
+
 /**
  * Disallows explicitly prefixing formly field types with '#',
  * as this is reserved for reusable configuration pseudo-types.
  */
-export const noFormlyExplicitPseudoTypeRule: TSESLint.RuleModule<string, []> = {
+const noFormlyExplicitPseudoTypeRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      explicitPseudoTypeError: `Don't define types prefixed by '#', as this is reserved for reusable configuration pseudo-types.`,
-    },
+    messages,
     type: 'problem',
     schema: [],
   },
   create: context => {
-    if (!context.getFilename().endsWith('types.module.ts')) {
+    if (!context.getFilename().endsWith('module.ts')) {
       return {};
     }
     return {
@@ -46,3 +48,5 @@ function hasPrefixedNameProperty(node: TSESTree.Expression) {
     )
   );
 }
+
+export default noFormlyExplicitPseudoTypeRule;
