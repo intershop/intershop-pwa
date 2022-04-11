@@ -24,5 +24,5 @@ export interface HttpError {
   /** human readable (and localized) error message */
   message?: string;
 
-  causes?: ErrorFeedback[];
+  cause?: ErrorFeedback[];
 }

@@ -1,5 +1,5 @@
 <ng-container *ngIf="basketError$ | async as errors">
-  <ng-container *ngIf="errors.causes as productCauses">
+  <ng-container *ngIf="errors.cause as productCauses">
     <div *ngFor="let productCause of productCauses">
       <ng-container *ngIf="productCause.causes as causes">
         <p *ngFor="let cause of causes" role="alert" class="text-danger">

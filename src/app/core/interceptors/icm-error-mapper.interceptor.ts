@@ -73,7 +73,7 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
       if (errors?.length) {
         return {
           ...responseError,
-          causes: httpError.error?.errors,
+          cause: httpError.error?.errors,
         };
       } else {
         return {
