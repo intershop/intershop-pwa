@@ -15,7 +15,7 @@ const noFormlyExplicitPseudoTypeRule: TSESLint.RuleModule<keyof typeof messages>
     schema: [],
   },
   create: context => {
-    if (!context.getFilename().endsWith('types.module.ts')) {
+    if (!context.getFilename().endsWith('module.ts')) {
       return {};
     }
     return {

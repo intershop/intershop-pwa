@@ -6,25 +6,8 @@ import testRule from './rule-tester';
 
 testRule(noFormlyExplicitPseudoTypeRule, {
   valid: [
-    // this will probably never happen but it's tested nontheless
     {
-      filename: 'test.module.ts',
-      code: `
-      @NgModule({
-        imports: [
-          FormlyBaseModule.forChild({
-            types: [
-              {
-                name: '#test'
-              }
-            ]
-          })
-        ]
-      })
-      export class TestModule {}
-      `,
-    },
-    {
+      name: 'should not report when types are named without #',
       filename: 'types.module.ts',
       code: `
         @NgModule({
@@ -44,6 +27,7 @@ testRule(noFormlyExplicitPseudoTypeRule, {
   ],
   invalid: [
     {
+      name: 'should report when type starts with #',
       filename: 'types.module.ts',
       code: `
         @NgModule({
