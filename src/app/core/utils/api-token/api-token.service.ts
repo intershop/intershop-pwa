@@ -72,6 +72,14 @@ export class ApiTokenService {
               return { type: 'basket', apiToken };
             } else if (orderId) {
               return { type: 'order', apiToken, orderId };
+            } else {
+              const apiTokenCookieString = this.cookiesService.get('apiToken');
+              const apiTokenCookie: ApiTokenCookie = apiTokenCookieString
+                ? JSON.parse(apiTokenCookieString)
+                : undefined;
+              if (apiToken && apiTokenCookie) {
+                return { ...apiTokenCookie, apiToken };
+              }
             }
           }),
           distinctUntilChanged<ApiTokenCookie>(isEqual)
