@@ -1,10 +1,19 @@
-import { Injectable, Injector, isDevMode } from '@angular/core';
+import { Injectable, Injector, isDevMode, ɵgetLocalePluralCase } from '@angular/core';
 import { TranslateCompiler, TranslateService } from '@ngx-translate/core';
 import { once } from 'lodash-es';
 
 import { Translations } from './translations.type';
 
 const cache: Record<string, Function> = {};
+
+enum PluralCases {
+  zero = 0,
+  one = 1,
+  two = 2,
+  few = 3,
+  many = 4,
+  other = 5,
+}
 
 @Injectable()
 export class PWATranslateCompiler implements TranslateCompiler {
@@ -43,7 +52,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
    * - "\s*" captures (and ignores) additional whitespace
    * - global matching ("/g") must be active to iterate over matches
    */
-  private static CASE_REGEX = /(other|=\w+)\s*\{(.*?)\}/g;
+  private static CASE_REGEX = /(zero|one|two|few|many|other|=\w+)\s*\{(.*?)\}/g;
 
   /**
    * regular expression for matching simple variables that
@@ -89,13 +98,18 @@ export class PWATranslateCompiler implements TranslateCompiler {
         if (c.startsWith('=')) {
           casesMap[c.substring(1)] = cm[2];
         } else if (c === 'other') {
+          casesMap[`plural-${c}`] = cm[2];
           defaultCase = cm[2];
+        } else {
+          casesMap[`plural-${c}`] = cm[2];
         }
       }
 
       return (args: Record<string, unknown>) => {
         const value = args?.[variable] ?? '';
-        const caseTemplate = casesMap[value?.toString()] ?? defaultCase;
+        const pluralCase = ɵgetLocalePluralCase(this.translate().currentLang)(+value);
+        const caseTemplate =
+          casesMap[value?.toString()] ?? casesMap[`plural-${PluralCases[pluralCase]}`] ?? defaultCase;
         const caseOutput = caseTemplate?.replace(/#/, value?.toString());
         const result = `${match[1]}${caseOutput}${match[5]}`;
 
