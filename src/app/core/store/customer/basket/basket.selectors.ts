@@ -32,6 +32,10 @@ export const getBasketValidationResults = createSelector(getBasketState, (basket
 
 export const getBasketInfo = createSelector(getBasketState, basket => basket.info);
 
+export const getBasketInfoErrors = createSelector(getBasketState, basket =>
+  basket?.info ? basket?.info[0]?.error : undefined
+);
+
 export const getCurrentBasket = createSelector(
   getBasketState,
   getBasketValidationResults,

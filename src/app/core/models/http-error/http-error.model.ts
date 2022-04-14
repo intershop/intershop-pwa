@@ -5,7 +5,7 @@ interface ErrorCauseFeedback {
   };
 }
 
-interface ErrorFeedback {
+export interface ErrorFeedback {
   causes?: ErrorCauseFeedback[];
   code: string;
   message: string;

@@ -1,7 +1,9 @@
+import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
+
 import { BasketInfo } from './basket-info.model';
 
 export class BasketInfoMapper {
-  static fromInfo(payload: { infos: BasketInfo[]; itemId?: string }): BasketInfo[] {
+  static fromInfo(payload: { infos: BasketInfo[]; itemId?: string; errors?: ErrorFeedback[] }): BasketInfo[] {
     // minor infos, that should not be displayed at the moment
     const minorInfos = ['basket.line_item.deletion.info'];
 
@@ -12,7 +14,11 @@ export class BasketInfoMapper {
       ? infos?.map(info => ({
           ...info,
           causes: info?.causes?.map(cause => ({ ...cause, parameters: { ...cause.parameters, lineItemId: itemId } })),
+          error: payload.errors,
         }))
-      : infos;
+      : infos?.map(info => ({
+          ...info,
+          error: payload.errors,
+        }));
   }
 }
