@@ -80,6 +80,41 @@
                 }
               ]
             },
+            "integration": {
+              "outputHashing": "all",
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "commonChunk": false,
+              "budgets": [
+                {
+                  "type": "bundle",
+                  "name": "main",
+                  "baseline": "350kb",
+                  "warning": "100kb",
+                  "error": "200kb"
+                },
+                {
+                  "type": "bundle",
+                  "name": "vendor",
+                  "baseline": "800kb",
+                  "warning": "100kb",
+                  "error": "300kb"
+                },
+                {
+                  "type": "initial",
+                  "maximumWarning": "1500kb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": false,
+              "ngswConfigPath": "ngsw-config.json"
+            },
             "development": {
               "optimization": false,
               "sourceMap": true,
@@ -107,6 +142,9 @@
           "configurations": {
             "production": {
               "browserTarget": "intershop-pwa:build:production"
+            },
+            "integration": {
+              "browserTarget": "intershop-pwa:build:integration"
             },
             "development": {
               "browserTarget": "intershop-pwa:build:development"
@@ -151,6 +189,9 @@
             "production": {
               "outputHashing": "media",
               "sourceMap": false
+            },
+            "integration": {
+              "sourceMap": true
             },
             "development": {
               "sourceMap": true

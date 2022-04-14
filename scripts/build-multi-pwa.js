@@ -8,6 +8,8 @@ const configurations = (
   .split(',')
   .map((theme, index) => ({ theme, port: 4000 + index }));
 
+const environment = process.env.npm_config_environment || process.env.npm_package_config_environment || 'production';
+
 const builds = [];
 
 const processArgs = process.argv.slice(2);
@@ -16,14 +18,14 @@ const extraArgs = processArgs.filter(a => a !== 'client' && a !== 'server').join
 if (processArgs.includes('client') || !processArgs.includes('server'))
   builds.push(
     ...configurations.map(({ theme }) =>
-      `build client --configuration=${theme},production -- --output-path=dist/${theme}/browser --progress=false ${extraArgs}`.trim()
+      `build client --configuration=${theme},${environment} -- --output-path=dist/${theme}/browser --progress=false ${extraArgs}`.trim()
     )
   );
 
 if (processArgs.includes('server') || !processArgs.includes('client'))
   builds.push(
     ...configurations.map(({ theme }) =>
-      `build server --configuration=${theme},production -- --output-path=dist/${theme}/server --progress=false ${extraArgs}`.trim()
+      `build server --configuration=${theme},${environment} -- --output-path=dist/${theme}/server --progress=false ${extraArgs}`.trim()
     )
   );
 

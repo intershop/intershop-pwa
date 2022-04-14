@@ -52,7 +52,7 @@ To work with and develop new custom ESLint rules, follow these steps:
 
 1. Generate a new rule using our schematic: `ng g eslint-rule` (alias `er`). This generates a new rule file at `eslint-rules/src/rules`, a test file at `eslint-rules/tests` and adds the rule to `index.ts`. `index.ts` exports the rules to be consumed in the `.eslintrc.json` configuration file.
 2. Write the rule code. Refer to [Working with Rules](https://eslint.org/docs/developer-guide/working-with-rules) as well as examples from available rules to understand how. Add reusable helper functions to `helpers.ts` to reduce repetition.
-3. Write rule tests. Refer to [Testing](https://typescript-eslint.io/docs/development/custom-rules#testing) for documentation on the `RuleTester` API that is used in tests. Use `npm run test:eslint-rules` to execute your tests - under the hood, this runs the [`_execute-tests.ts`](../../eslint-rules/tests/_execute-tests.ts) script.
+3. Write rule tests. Refer to [Testing](https://typescript-eslint.io/docs/development/custom-rules#testing) for documentation on the `RuleTester` API that is used in tests. Use `npm run test:eslint-rules` to execute your tests - under the hood, this runs the [`_execute-tests.ts`] script.
 4. Build the `eslint-rules` project with your changes using `npm run build:eslint-rules`. The resulting JavaScript files will be located in the `eslint-rules/dist` folder.
 5. Add the new rule to the ESLint configuration in [`.eslintrc.json`](../../.eslintrc.json).
 6. _Optional_: Restart the ESLint server using the `ESLint: Restart ESLint server` command to see your new configuration applied in VSCode. You can access the command via the editor commands (default keybinding: `ctrl + shift + p`).

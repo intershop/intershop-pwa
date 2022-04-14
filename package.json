@@ -50,7 +50,7 @@
     "synchronize-lazy-components": "ng g lazy-components",
     "build:watch": "npm run build client -- --watch",
     "build": "node scripts/build-pwa",
-    "build:multi": "node scripts/build-multi-pwa",
+    "build:multi": "node scripts/build-multi-pwa NODE_ENV=$npm_config_environment",
     "analyze": "npm run build client -- --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
     "serve": "node dist/server/main.js",
     "start": "npm-run-all build serve",

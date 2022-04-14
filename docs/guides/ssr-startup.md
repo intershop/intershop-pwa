@@ -25,6 +25,8 @@ To run multiple themes with [PM2][pm2] the script `dist/build-ecosystem` can be 
 If only one theme is active, the theme-specific SSR process will be run in cluster mode on the default port.
 If more themes are active, PM2 is provisioned to run a distributor process in front of all theme-specific processes, to direct incoming traffic to the correct SSR process.
 
+The deployment for integration test servers (deployed from branch integration or develop) will use the integration configuration store in `angular.json`
+
 The preferred way for **production deployments** is to build the `Dockerfile` in the project root and run the created image.
 This will automatically build all active themes and configure [PM2][pm2] for running multiple themes in parallel.
 

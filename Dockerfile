@@ -21,9 +21,11 @@ ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=
 RUN if [ ! -z "${activeThemes}" ]; then npm config set active-themes="${activeThemes}"; fi
-RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
+ARG branchName=
+LABEL branchName="${branchName}"
+RUN if [ "${branchName}" = "integration" ] || [ "${branchName}" = "develop" ]; then npm run build:multi --environment=integration client -- --deploy-url=DEPLOY_URL_PLACEHOLDER; else npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER; fi
 COPY tsconfig.server.json server.ts /workspace/
-RUN npm run build:multi server
+RUN if [ "${branchName}" = "integration" ] || [ "${branchName}" = "develop" ]; then npm run build:multi --environment=integration server; else npm run build:multi server; fi
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 

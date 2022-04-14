@@ -72,7 +72,11 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
       'b2b,production';
   }
 
-  if (targetOptions.configuration === 'development' || targetOptions.configuration === 'production') {
+  if (
+    targetOptions.configuration === 'development' ||
+    targetOptions.configuration === 'integration' ||
+    targetOptions.configuration === 'production'
+  ) {
     console.error(
       `configuration cannot just be ${targetOptions.configuration}, it has to be used with a theme (--configuration=<theme>,${targetOptions.configuration})`
     );
@@ -81,9 +85,9 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
 
   const availableThemes = Object.keys(angularJson.projects[angularJson.defaultProject].architect.build.configurations);
 
-  const normalConfigTest = (x: string) => x !== 'development' && x !== 'production';
+  const normalConfigTest = (x: string) => x !== 'development' && x !== 'integration' && x !== 'production';
 
-  const configRegex = `^(${availableThemes.filter(normalConfigTest).join('|')}),(development|production)$`;
+  const configRegex = `^(${availableThemes.filter(normalConfigTest).join('|')}),(development|integration|production)$`;
   if (!new RegExp(configRegex).test(targetOptions.configuration)) {
     console.error(`requested configuration does not match pattern '${configRegex}'`);
     process.exit(1);

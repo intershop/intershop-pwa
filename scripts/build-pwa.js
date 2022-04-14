@@ -41,10 +41,13 @@ if (configuration) {
   configString = '-c ' + configuration;
 }
 
+// Regex to filter Node Variables "NODE_ENV="
+const nodeEnvRegex = new RegExp('NODE_ENV=');
+
 const processArgs = process.argv.slice(2);
 const client = processArgs.includes('client') || !processArgs.includes('server');
 const server = processArgs.includes('server') || !processArgs.includes('client');
-const remainingArgs = processArgs.filter(a => a !== 'client' && a !== 'server');
+const remainingArgs = processArgs.filter(a => a !== 'client' && a !== 'server' && !nodeEnvRegex.test(a));
 
 if (client) {
   execSync(`npm run ng -- build ${configString} ${remainingArgs.join(' ')}`, {
