@@ -33,7 +33,7 @@
                 </p>
                 <ng-template #displayPaymentCosts>
                   <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
-                    <p *ngIf="paymentMethod.paymentCosts && paymentMethod.paymentCosts[priceType]">
+                    <p *ngIf="paymentMethod.paymentCosts?.[priceType]">
                       {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
                         paymentMethod.paymentCosts | ishPrice
                       }}&nbsp;
@@ -69,7 +69,7 @@
               </div>
               <!-- Payment parameter form -->
               <div
-                *ngIf="paymentMethod.parameters && paymentMethod.parameters.length"
+                *ngIf="paymentMethod.parameters?.length"
                 [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
               >
                 <li *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel section">
@@ -120,8 +120,8 @@
                       <ish-payment-concardis-creditcard
                         [paymentMethod]="paymentMethod"
                         [activated]="formIsOpen(i)"
-                        (submit)="createNewPaymentInstrument($event)"
-                        (cancel)="cancelNewPaymentInstrument()"
+                        (submitPayment)="createNewPaymentInstrument($event)"
+                        (cancelPayment)="cancelNewPaymentInstrument()"
                       ></ish-payment-concardis-creditcard>
                     </ng-template>
 
@@ -129,8 +129,8 @@
                       <ish-payment-concardis-directdebit
                         [paymentMethod]="paymentMethod"
                         [activated]="formIsOpen(i)"
-                        (submit)="createNewPaymentInstrument($event)"
-                        (cancel)="cancelNewPaymentInstrument()"
+                        (submitPayment)="createNewPaymentInstrument($event)"
+                        (cancelPayment)="cancelNewPaymentInstrument()"
                       ></ish-payment-concardis-directdebit>
                     </ng-template>
 
@@ -138,8 +138,8 @@
                       <ish-payment-cybersource-creditcard
                         [paymentMethod]="paymentMethod"
                         [activated]="formIsOpen(i)"
-                        (submit)="createNewPaymentInstrument($event)"
-                        (cancel)="cancelNewPaymentInstrument()"
+                        (submitPayment)="createNewPaymentInstrument($event)"
+                        (cancelPayment)="cancelNewPaymentInstrument()"
                       ></ish-payment-cybersource-creditcard>
                     </ng-template>
 
@@ -147,8 +147,8 @@
                       <ish-payment-payone-creditcard
                         [paymentMethod]="paymentMethod"
                         [activated]="formIsOpen(i)"
-                        (submit)="createNewPaymentInstrument($event)"
-                        (cancel)="cancelNewPaymentInstrument()"
+                        (submitPayment)="createNewPaymentInstrument($event)"
+                        (cancelPayment)="cancelNewPaymentInstrument()"
                       ></ish-payment-payone-creditcard>
                     </ng-template>
 
@@ -157,8 +157,9 @@
                         [paymentMethod]="paymentMethod"
                         [parentForm]="paymentForm"
                         [submitDisabled]="submitDisabled"
-                        (cancel)="cancelNewPaymentInstrument()"
-                        (submit)="submitParameterForm()"
+                        [activated]="formIsOpen(i)"
+                        (cancelPayment)="cancelNewPaymentInstrument()"
+                        (submitPayment)="submitParameterForm()"
                       ></ish-payment-parameter-form>
                     </ng-template>
                   </ng-container>

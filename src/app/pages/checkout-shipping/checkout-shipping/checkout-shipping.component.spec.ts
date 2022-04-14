@@ -19,7 +19,7 @@ describe('Checkout Shipping Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [CheckoutShippingComponent, DummyWrapperComponent],
+      declarations: [CheckoutShippingComponent],
       imports: [
         FormlyModule.forChild({
           wrappers: [{ name: 'shipping-radio-wrapper', component: DummyWrapperComponent }],
@@ -56,7 +56,7 @@ describe('Checkout Shipping Component', () => {
 
     component.shippingForm.get('shippingMethod').setValue('testShipping');
 
-    verify(checkoutFacade.updateBasketShippingMethod(anything())).once();
+    verify(checkoutFacade.updateBasketShippingMethod(anything())).twice();
     const [arg] = capture(checkoutFacade.updateBasketShippingMethod).last();
     expect(arg).toMatchInlineSnapshot(`"testShipping"`);
   });
@@ -64,7 +64,7 @@ describe('Checkout Shipping Component', () => {
   it('should update basket if current shippingMethod is invalid', () => {
     when(checkoutFacade.getValidShippingMethod$()).thenReturn(of('other'));
     fixture.detectChanges();
-    verify(checkoutFacade.updateBasketShippingMethod(anything())).once();
+    verify(checkoutFacade.updateBasketShippingMethod(anything())).twice();
     const [arg] = capture(checkoutFacade.updateBasketShippingMethod).last();
     expect(arg).toMatchInlineSnapshot(`"other"`);
   });

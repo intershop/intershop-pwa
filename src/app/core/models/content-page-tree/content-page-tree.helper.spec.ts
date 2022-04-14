@@ -346,7 +346,6 @@ describe('Content Page Tree Helper', () => {
       let contentPageTreeMapper: ContentPageTreeMapper;
 
       beforeEach(() => {
-        TestBed.configureTestingModule({});
         contentPageTreeMapper = TestBed.inject(ContentPageTreeMapper);
 
         tree = [elARaw, elBRaw].reduce(

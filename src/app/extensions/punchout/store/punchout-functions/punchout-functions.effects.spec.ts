@@ -33,9 +33,9 @@ describe('Punchout Functions Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting([])],
       providers: [
-        PunchoutFunctionsEffects,
-        provideMockActions(() => actions$),
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
+        provideMockActions(() => actions$),
+        PunchoutFunctionsEffects,
       ],
     });
 
@@ -77,7 +77,7 @@ describe('Punchout Functions Effects', () => {
 
     it('should dispatch a transferPunchoutBasketFail action in case of an error', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(punchoutService.transferPunchoutBasket()).thenReturn(throwError(error));
+      when(punchoutService.transferPunchoutBasket()).thenReturn(throwError(() => error));
 
       const action = transferPunchoutBasket();
       const completion = transferPunchoutBasketFail({ error });

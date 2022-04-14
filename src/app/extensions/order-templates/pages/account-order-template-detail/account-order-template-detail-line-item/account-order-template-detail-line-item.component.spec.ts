@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -28,7 +29,7 @@ describe('Account Order Template Detail Line Item Component', () => {
 
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
-    when(context.select('quantity')).thenReturn(EMPTY);
+    when(context.select(anything())).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -45,7 +46,7 @@ describe('Account Order Template Detail Line Item Component', () => {
         MockComponent(SelectOrderTemplateModalComponent),
         MockPipe(DatePipe),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },

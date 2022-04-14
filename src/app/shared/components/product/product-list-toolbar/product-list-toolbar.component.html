@@ -8,7 +8,7 @@
       </div>
       <div class="col-sm-9 col-8">
         <ish-product-list-paging
-          *ngIf="pageIndices && pageIndices.length && currentPage"
+          *ngIf="pageIndices?.length && currentPage"
           [currentPage]="currentPage"
           [pageIndices]="pageIndices"
           [fragmentOnRouting]="fragmentOnRouting"

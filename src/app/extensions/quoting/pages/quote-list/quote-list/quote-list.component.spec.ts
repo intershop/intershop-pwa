@@ -1,18 +1,9 @@
-import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-
-import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { QuotingFacade } from '../../../facades/quoting.facade';
 import { Quote } from '../../../models/quoting/quoting.model';
-import { QuoteExpirationDateComponent } from '../../../shared/quote-expiration-date/quote-expiration-date.component';
-import { QuoteStateComponent } from '../../../shared/quote-state/quote-state.component';
 
 import { QuoteListComponent } from './quote-list.component';
 
@@ -25,15 +16,8 @@ describe('Quote List Component', () => {
   beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockComponent(ModalDialogComponent),
-        MockComponent(QuoteExpirationDateComponent),
-        MockComponent(QuoteStateComponent),
-        MockPipe(DatePipe),
-        QuoteListComponent,
-      ],
-      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [QuoteListComponent],
+      imports: [TranslateModule.forRoot()],
       providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
     }).compileComponents();
   });

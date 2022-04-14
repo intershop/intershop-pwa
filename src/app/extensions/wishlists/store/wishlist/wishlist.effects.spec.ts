@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -72,24 +71,21 @@ describe('Wishlist Effects', () => {
       public: false,
     },
   ];
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
 
   beforeEach(() => {
     wishlistServiceMock = mock(WishlistService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([{ path: 'account/wishlists/:wishlistName', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'account/wishlists/:wishlistName', children: [] }]),
         WishlistsStoreModule.forTesting('wishlists'),
       ],
       providers: [
-        WishlistEffects,
-        provideMockActions(() => actions$),
         { provide: WishlistService, useFactory: () => instance(wishlistServiceMock) },
+        provideMockActions(() => actions$),
+        WishlistEffects,
       ],
     });
 
@@ -127,7 +123,7 @@ describe('Wishlist Effects', () => {
 
     it('should map failed calls to actions of type LoadWishlistsFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(wishlistServiceMock.getWishlists()).thenReturn(throwError(error));
+      when(wishlistServiceMock.getWishlists()).thenReturn(throwError(() => error));
       const action = loadWishlists();
       const completion = loadWishlistsFail({
         error,
@@ -182,7 +178,7 @@ describe('Wishlist Effects', () => {
     });
     it('should map failed calls to actions of type CreateWishlistFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(wishlistServiceMock.createWishlist(anything())).thenReturn(throwError(error));
+      when(wishlistServiceMock.createWishlist(anything())).thenReturn(throwError(() => error));
       const action = createWishlist({ wishlist: createWishlistData });
       const completion = createWishlistFail({
         error,
@@ -241,7 +237,7 @@ describe('Wishlist Effects', () => {
     });
     it('should map failed calls to actions of type DeleteWishlistFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(wishlistServiceMock.deleteWishlist(anyString())).thenReturn(throwError(error));
+      when(wishlistServiceMock.deleteWishlist(anyString())).thenReturn(throwError(() => error));
       const action = deleteWishlist({ wishlistId: id });
       const completion = deleteWishlistFail({
         error,
@@ -292,7 +288,7 @@ describe('Wishlist Effects', () => {
     });
     it('should map failed calls to actions of type UpdateWishlistFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(wishlistServiceMock.updateWishlist(anything())).thenReturn(throwError(error));
+      when(wishlistServiceMock.updateWishlist(anything())).thenReturn(throwError(() => error));
       const action = updateWishlist({ wishlist: wishlistDetailData[0] });
       const completion = updateWishlistFail({
         error,
@@ -354,7 +350,7 @@ describe('Wishlist Effects', () => {
     it('should map failed calls to actions of type AddProductToWishlistFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(wishlistServiceMock.addProductToWishlist(anyString(), anyString(), anything())).thenReturn(
-        throwError(error)
+        throwError(() => error)
       );
       const action = addProductToWishlist(payload);
       const completion = addProductToWishlistFail({
@@ -394,7 +390,7 @@ describe('Wishlist Effects', () => {
     });
     it('should map failed calls to actions of type CreateWishlistFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(wishlistServiceMock.createWishlist(anything())).thenReturn(throwError(error));
+      when(wishlistServiceMock.createWishlist(anything())).thenReturn(throwError(() => error));
       const action = addProductToNewWishlist(payload);
       const completion = createWishlistFail({
         error,
@@ -479,7 +475,7 @@ describe('Wishlist Effects', () => {
     });
     it('should map failed calls to actions of type RemoveItemFromWishlistFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(wishlistServiceMock.removeProductFromWishlist(anyString(), anyString())).thenReturn(throwError(error));
+      when(wishlistServiceMock.removeProductFromWishlist(anyString(), anyString())).thenReturn(throwError(() => error));
       const action = removeItemFromWishlist(payload);
       const completion = removeItemFromWishlistFail({
         error,
@@ -526,7 +522,7 @@ describe('Wishlist Effects', () => {
     });
 
     it('should set the breadcrumb of the selected wishlist in my account area', done => {
-      router.navigateByUrl('/account/wishlists/' + wishlists[0].id);
+      router.navigateByUrl(`/account/wishlists/${wishlists[0].id}`);
       actions$ = of(routerTestNavigatedAction({}));
 
       effects.setWishlistBreadcrumb$.subscribe(action => {
@@ -548,7 +544,7 @@ describe('Wishlist Effects', () => {
     });
 
     it('should not set the breadcrumb of the selected wishlist when on another url', fakeAsync(() => {
-      effects.setWishlistBreadcrumb$.subscribe(fail, fail, fail);
+      effects.setWishlistBreadcrumb$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

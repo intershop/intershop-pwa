@@ -1,16 +1,16 @@
 import { strings } from '@angular-devkit/core';
-import { Rule, SchematicsException } from '@angular-devkit/schematics';
+import { Rule, SchematicsException, chain } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { basename, join } from 'path';
+import { CustomizedCopyOptionsSchema as Options } from 'schemas/helpers/customized-copy/schema';
 import * as ts from 'typescript';
 
 import { applyNameAndPath, determineArtifactName, findDeclaringModule } from '../../utils/common';
 import { readIntoSourceFile } from '../../utils/filesystem';
+import { applyLintFix } from '../../utils/lint-fix';
 import { addDeclarationToNgModule } from '../../utils/registration';
 import { updateComponentClassName, updateComponentDecorator, updateComponentSelector } from '../move-component/factory';
-
-import { CustomizedCopyOptionsSchema as Options } from './schema';
 
 export function customize(options: Options): Rule {
   return async host => {
@@ -30,7 +30,7 @@ export function customize(options: Options): Rule {
     const project = workspace.projects.get(options.project);
     const sourceRoot = project.sourceRoot;
     const from = `${
-      options.path ? options.path + '/' : !options.from?.startsWith(sourceRoot + '/app/') ? sourceRoot + '/app/' : ''
+      options.path ? `${options.path}/` : !options.from?.startsWith(`${sourceRoot}/app/`) ? `${sourceRoot}/app/` : ''
     }${options.from.replace(/\/$/, '')}`;
     const dir = host.getDir(from);
 
@@ -58,8 +58,8 @@ export function customize(options: Options): Rule {
           updateComponentClassName(
             host,
             file,
-            strings.classify(fromName) + 'Component',
-            strings.classify(toName) + 'Component'
+            `${strings.classify(fromName)}Component`,
+            `${strings.classify(toName)}Component`
           );
 
           const imports = tsquery(
@@ -97,6 +97,6 @@ export function customize(options: Options): Rule {
     options2 = determineArtifactName('component', host, options2);
     options2 = findDeclaringModule(host, options2);
 
-    return addDeclarationToNgModule(options2);
+    return chain([addDeclarationToNgModule(options2), applyLintFix()]);
   };
 }

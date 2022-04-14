@@ -4,7 +4,6 @@ import { MockComponent } from 'ng-mocks';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { FilterCheckboxComponent } from 'ish-shared/components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsibleComponent } from 'ish-shared/components/filter/filter-collapsible/filter-collapsible.component';
 import { FilterDropdownComponent } from 'ish-shared/components/filter/filter-dropdown/filter-dropdown.component';
 import { FilterSwatchImagesComponent } from 'ish-shared/components/filter/filter-swatch-images/filter-swatch-images.component';
@@ -21,7 +20,6 @@ describe('Filter Navigation Sidebar Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         FilterNavigationSidebarComponent,
-        MockComponent(FilterCheckboxComponent),
         MockComponent(FilterCollapsibleComponent),
         MockComponent(FilterDropdownComponent),
         MockComponent(FilterSwatchImagesComponent),

@@ -4,7 +4,7 @@ import { getCoreState } from 'ish-core/store/core/core-store';
 
 const getServerConfigState = createSelector(getCoreState, state => state.serverConfig);
 
-const getServerConfig = createSelector(getServerConfigState, state => state._config);
+export const getServerConfig = createSelector(getServerConfigState, state => state._config);
 
 export const isServerConfigurationLoaded = createSelector(getServerConfig, serverConfig => !!serverConfig);
 

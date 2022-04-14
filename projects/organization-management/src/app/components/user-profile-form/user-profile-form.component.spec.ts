@@ -2,11 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
-import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
@@ -16,15 +14,14 @@ describe('User Profile Form Component', () => {
   let component: UserProfileFormComponent;
   let fixture: ComponentFixture<UserProfileFormComponent>;
   let element: HTMLElement;
-  let formsService: FormsService;
 
   beforeEach(async () => {
-    formsService = mock(FormsService);
-
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [
+        FormlyTestingModule.withPresetMocks(['title', 'firstName', 'lastName', 'phoneHome']),
+        TranslateModule.forRoot(),
+      ],
       declarations: [MockComponent(ErrorMessageComponent), UserProfileFormComponent],
-      providers: [{ provide: FormsService, useFactory: () => instance(formsService) }],
     }).compileComponents();
   });
 

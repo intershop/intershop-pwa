@@ -1,4 +1,4 @@
-import { Compiler, Injectable, InjectionToken, Injector, Type } from '@angular/core';
+import { Injectable, InjectionToken, Injector, Type, createNgModuleRef } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
@@ -16,7 +16,7 @@ export const LAZY_FEATURE_MODULE = new InjectionToken<LazyModuleType>('lazyModul
 export class ModuleLoaderService {
   private loadedModules: Type<unknown>[] = [];
 
-  constructor(private compiler: Compiler, private featureToggleService: FeatureToggleService, private store: Store) {}
+  constructor(private featureToggleService: FeatureToggleService, private store: Store) {}
 
   init(injector: Injector) {
     this.store.pipe(select(getFeatures), whenTruthy()).subscribe(() => {
@@ -26,8 +26,7 @@ export class ModuleLoaderService {
         .forEach(async mod => {
           const loaded = await mod.location();
           if (!this.loadedModules.includes(loaded)) {
-            const moduleFactory = await this.compiler.compileModuleAsync(loaded);
-            moduleFactory.create(injector);
+            createNgModuleRef(loaded, injector);
             this.loadedModules.push(loaded);
           }
         });

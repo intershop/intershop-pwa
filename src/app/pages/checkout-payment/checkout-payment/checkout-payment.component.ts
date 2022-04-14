@@ -56,7 +56,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   private openFormIndex = -1; // index of the open parameter form
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private route: ActivatedRoute) {}
 
@@ -93,7 +93,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getBasketPayment(): string {
-    return this.basket && this.basket.payment ? this.basket.payment.paymentInstrument.id : '';
+    return this.basket?.payment ? this.basket.payment.paymentInstrument.id : '';
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -101,7 +101,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     if (c.paymentMethods) {
       // copy objects for runtime checks because formly modifies them, TODO: refactor
-      this.filteredPaymentMethods = this.paymentMethods && this.paymentMethods.map(x => JSON.parse(JSON.stringify(x)));
+      this.filteredPaymentMethods = this.paymentMethods?.map(x => JSON.parse(JSON.stringify(x)));
     }
   }
 
@@ -122,6 +122,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Determine whether payment parameter form for a payment method is opened or not
+   *
    * @param index Numerical index of the parameter form to get info from
    */
   formIsOpen(index: number): boolean {
@@ -202,7 +203,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     const paymentMethod = this.filteredPaymentMethods[this.openFormIndex];
     const parameters = Object.entries(this.parameterForm.controls)
       .filter(([, control]) => control.enabled && control.value)
-      .map(([key, control]) => ({ name: key, value: control.value }));
+      .map(([key, control]) => ({
+        name: key,
+        value: typeof control.value === 'string' ? control.value.trim() : control.value,
+      }));
 
     this.createNewPaymentInstrument({
       parameters,
@@ -234,8 +238,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   get paymentRedirectRequired() {
     if (this.basket.payment) {
       return (
-        this.basket.payment.capabilities &&
-        this.basket.payment.capabilities.includes('RedirectBeforeCheckout') &&
+        this.basket.payment.capabilities?.includes('RedirectBeforeCheckout') &&
         this.basket.payment.redirectUrl &&
         this.basket.payment.redirectRequired
       );

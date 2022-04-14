@@ -1,6 +1,6 @@
 <ish-product-detail-actions></ish-product-detail-actions>
 
-<div class="row product-details">
+<div *ngIf="product$ | async as product" class="row product-details">
   <div class="col-12 col-md-6 col-lg-8"><ish-product-images></ish-product-images></div>
 
   <div class="col-12 col-md-6 col-lg-4">
@@ -18,9 +18,9 @@
 
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price [showInformationalPrice]="true" [showPriceSavings]="true"></ish-product-price>
-
-        <ish-product-inventory></ish-product-inventory>
       </div>
+
+      <ish-product-inventory></ish-product-inventory>
 
       <ish-product-shipment></ish-product-shipment>
 
@@ -37,15 +37,21 @@
         </div>
       </div>
 
-      <ish-product-add-to-basket [class]="'btn-lg btn-block'"></ish-product-add-to-basket>
+      <ish-product-add-to-basket [cssClass]="'btn-lg btn-block'"></ish-product-add-to-basket>
 
       <ish-lazy-product-add-to-order-template
-        [class]="'btn btn-secondary btn-block'"
+        [cssClass]="'btn btn-secondary btn-block'"
       ></ish-lazy-product-add-to-order-template>
 
-      <ish-lazy-product-add-to-quote [class]="'btn-block'"></ish-lazy-product-add-to-quote>
+      <ish-lazy-product-add-to-quote [cssClass]="'btn-secondary btn-block'"></ish-lazy-product-add-to-quote>
     </div>
 
-    <ish-product-detail-info-accordion></ish-product-detail-info-accordion>
+    <div class="marketing-area">
+      <ish-content-viewcontext
+        viewContextId="viewcontext.include.product.productinfo"
+        [callParameters]="{ Product: product.sku }"
+      ></ish-content-viewcontext>
+    </div>
   </div>
 </div>
+<ish-product-detail-info></ish-product-detail-info>

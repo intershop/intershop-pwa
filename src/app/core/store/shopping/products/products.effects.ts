@@ -8,16 +8,13 @@ import { combineLatest, from, identity } from 'rxjs';
 import {
   concatMap,
   distinct,
-  distinctUntilChanged,
   exhaustMap,
   filter,
   first,
   groupBy,
   map,
-  mapTo,
   mergeMap,
   switchMap,
-  switchMapTo,
   take,
   throttleTime,
   withLatestFrom,
@@ -29,10 +26,13 @@ import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { loadProductPrices } from 'ish-core/store/shopping/product-prices';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
+  delayUntil,
   mapErrorToAction,
   mapToPayload,
   mapToPayloadProperty,
@@ -82,6 +82,7 @@ export class ProductsEffects {
   loadProduct$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadProduct),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
       mapToPayloadProperty('sku'),
       groupBy(identity),
       mergeMap(group$ =>
@@ -105,6 +106,16 @@ export class ProductsEffects {
       withLatestFrom(this.store.pipe(select(getProductEntities))),
       filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
       map(([{ sku }]) => loadProduct({ sku }))
+    )
+  );
+
+  loadProductPricesAfterProductSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadProductSuccess),
+      mapToPayloadProperty('product'),
+      mapToProperty('sku'),
+      whenTruthy(),
+      map(sku => loadProductPrices({ skus: [sku] }))
     )
   );
 
@@ -238,7 +249,7 @@ export class ProductsEffects {
               select(getProductVariationSKUs(sku)),
               first(),
               filter(variations => !variations?.length),
-              mapTo(sku)
+              map(() => sku)
             )
           ),
           exhaustMap(sku =>
@@ -291,7 +302,6 @@ export class ProductsEffects {
       filter(p => !ProductHelper.isFailedLoading(p)),
       mapToProperty('defaultCategoryId'),
       whenTruthy(),
-      distinctUntilChanged(),
       map(categoryId => loadCategory({ categoryId }))
     )
   );
@@ -347,7 +357,7 @@ export class ProductsEffects {
   setBreadcrumbForProductPage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofProductUrl(),
           select(getBreadcrumbForProductPage),

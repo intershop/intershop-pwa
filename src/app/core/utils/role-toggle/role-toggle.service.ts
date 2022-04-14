@@ -7,7 +7,7 @@ import { getUserRoles } from 'ish-core/store/customer/authorization';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 export function checkRole(roleIds: string[], roleId: string | string[]): boolean {
-  // tslint:disable-next-line: no-parameter-reassignment
+  // eslint-disable-next-line no-param-reassign
   roleId = typeof roleId === 'string' ? [roleId] : typeof roleId === 'undefined' ? [] : roleId;
   return roleId.some(id => roleIds.includes(id));
 }

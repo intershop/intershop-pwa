@@ -1,26 +1,27 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import * as fs from 'fs';
-import * as glob from 'glob';
-import { basename, join, sep } from 'path';
+import { basename, join, resolve } from 'path';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const purgecssPlugin = require('purgecss-webpack-plugin');
+
+const glob = require('glob');
 
 class Logger {
   constructor(private target: string, private config: string, progressActive: boolean) {
     if (progressActive) {
-      // tslint:disable-next-line: no-console
       console.log('\n');
     }
   }
 
   log(...txt: unknown[]) {
-    // tslint:disable-next-line: no-console
     console.log(`${this.target}@${this.config}:`, ...txt);
   }
 
   warn(...txt: unknown[]) {
-    // tslint:disable-next-line: no-console
     console.warn(`${this.target}@${this.config}:`, ...txt);
   }
 }
@@ -47,16 +48,16 @@ function crawlFiles(folder: string, callback: (files: string[]) => void) {
   }
 }
 
-// tslint:disable-next-line: no-any
-function traverse(obj: object, test: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function traverse(obj: object, ftest: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
   Object.entries(obj).forEach(([k, v]) => {
-    if (test(v)) {
+    if (ftest(v)) {
       func(obj, k);
     }
   });
   Object.values(obj).forEach(v => {
     if (v && typeof v === 'object') {
-      traverse(v, test, func);
+      traverse(v, ftest, func);
     }
   });
 }
@@ -68,7 +69,7 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
   if (!targetOptions.configuration) {
     targetOptions.configuration =
       angularJson.projects[targetOptions.project].architect[targetOptions.target].defaultConfiguration ||
-      'default,production';
+      'b2b,production';
   }
 
   if (targetOptions.configuration === 'development' || targetOptions.configuration === 'production') {
@@ -106,19 +107,17 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
  * - no elvis operators
  * - no instanceof checks
  */
+// eslint-disable-next-line complexity
 export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
   const { theme, production, availableThemes } = determineConfiguration(angularJsonConfig, targetOptions);
 
   const angularCompilerPlugin = config.plugins.find(
-    (pl: AngularPlugin) => pl.options && pl.options.directTemplateLoading !== undefined
+    (pl: AngularPlugin) => pl.options?.directTemplateLoading !== undefined
   ) as AngularPlugin;
 
   if (angularCompilerPlugin.options.directTemplateLoading) {
     // deactivate directTemplateLoading so that webpack loads html files
     angularCompilerPlugin.options.directTemplateLoading = false;
-
-    // needed after deactivating directTemplateLoading
-    config.module.rules.push({ test: /\.html$/, loader: 'raw-loader' });
 
     logger.log('deactivated directTemplateLoading');
   }
@@ -146,7 +145,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   if (production) {
     // keep module names for debugging
     config.optimization.minimizer.forEach((m: WebpackPluginInstance) => {
-      if (m.options && m.options.terserOptions) {
+      if (m.options?.terserOptions) {
         m.options.terserOptions.keep_classnames = /.*Module$/;
       }
     });
@@ -183,18 +182,18 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
           // move translation files into own bundles
           const i18nMatch = /[\\/]assets[\\/]i18n[\\/](.*?)\.json/.exec(identifier);
-          const locale = i18nMatch && i18nMatch[1];
+          const locale = i18nMatch?.[1];
 
           if (locale) {
             return locale.replace('_', '-');
           }
 
           const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
-          const feature = match && match[2];
+          const feature = match?.[2];
 
           if (feature) {
             // include core functionality in common bundle
-            if (['captcha', 'seo', 'tracking'].some(f => f === feature)) {
+            if (['captcha', 'seo', 'tracking', 'recently'].some(f => f === feature)) {
               return 'common';
             }
 
@@ -246,8 +245,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     );
   }
 
-  logger.log(`setting up replacements for "${theme}"`);
-
   crawlFiles(join(process.cwd()), files => {
     const themes = [...availableThemes, 'all'];
 
@@ -292,22 +289,43 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
     replacements.forEach(replacement => {
       angularCompilerPlugin.options.fileReplacements[replacement.original] = replacement.replacement;
-      logger.warn('using', replacement.replacement.replace(process.cwd() + sep, ''));
     });
   });
+  const noOfReplacements = Object.keys(angularCompilerPlugin.options.fileReplacements).length;
+  logger.log(`using ${noOfReplacements} replacement${noOfReplacements === 1 ? '' : 's'} for "${theme}"`);
 
-  if (theme !== 'default') {
-    const defaultThemePath = join('src', 'styles', 'themes', 'default');
-    const newThemePath = join('src', 'styles', 'themes', theme);
+  config.module.rules.push({
+    test: /\.component\.(html|scss)$/,
+    loader: 'file-replace-loader',
+    options: {
+      condition: 'always',
+      replacement(resourcePath: string) {
+        return resolve(angularCompilerPlugin.options.fileReplacements[resourcePath] ?? resourcePath);
+      },
+      async: true,
+    },
+  });
 
-    traverse(
-      config,
-      v => typeof v === 'string' && v.includes(defaultThemePath),
-      (obj, key) => {
-        obj[key] = (obj[key] as string).replace(defaultThemePath, newThemePath);
-      }
-    );
-  }
+  const defaultThemePath = join('src', 'styles', 'themes', 'placeholder');
+  const newThemePath = join('src', 'styles', 'themes', theme);
+
+  traverse(
+    config,
+    v => typeof v === 'string' && v.includes(defaultThemePath),
+    (obj, key) => {
+      obj[key] = (obj[key] as string).replace(defaultThemePath, newThemePath);
+    }
+  );
+
+  // set theme specific angular cache directory
+  const cacheDir = join('.angular', 'cache');
+  traverse(
+    config,
+    v => typeof v === 'string' && v.includes(cacheDir),
+    (obj, key) => {
+      obj[key] = (obj[key] as string).replace(cacheDir, join(cacheDir, theme));
+    }
+  );
 
   if (angularJsonConfig.tsConfig.endsWith('tsconfig.app-no-checks.json')) {
     logger.warn('using tsconfig without compile checks');
@@ -316,7 +334,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     }
   }
 
-  // tslint:disable-next-line: no-commented-out-code
+  // eslint-disable-next-line etc/no-commented-out-code
   // fs.writeFileSync('effective.config.json', JSON.stringify(config, undefined, 2), { encoding: 'utf-8' });
 
   return config;

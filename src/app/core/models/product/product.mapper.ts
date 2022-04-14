@@ -107,11 +107,6 @@ export class ProductMapper {
       completenessLevel: 1,
     };
   }
-
-  private calculateAvailable(availability: boolean, inStock: boolean) {
-    return !!availability && (inStock !== undefined ? inStock : true);
-  }
-
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
@@ -124,17 +119,10 @@ export class ProductMapper {
 
     const promotionLinks = retrieveStubAttributeValue<{ elements: Link[] }>(data, 'promotions')?.elements ?? [];
 
-    const mastered = retrieveStubAttributeValue<boolean>(data, 'mastered');
-    const productMaster = retrieveStubAttributeValue<boolean>(data, 'productMaster');
-    const productMasterSKU = retrieveStubAttributeValue<string>(data, 'productMasterSKU');
-    const retailSet = retrieveStubAttributeValue<boolean>(data, 'retailSet');
-
     const product: Partial<Product> = {
       shortDescription: data.description,
       name: data.title,
       sku,
-      listPrice: PriceMapper.fromData(retrieveStubAttributeValue(data, 'listPrice')),
-      salePrice: PriceMapper.fromData(retrieveStubAttributeValue(data, 'salePrice')),
       images: this.imageMapper.fromImages([
         {
           effectiveUrl: retrieveStubAttributeValue(data, 'image'),
@@ -163,9 +151,9 @@ export class ProductMapper {
         retrieveStubAttributeValue(data, 'inStock')
       ),
       longDescription: undefined,
-      minOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'minOrderQuantity')?.value || 1,
-      maxOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'maxOrderQuantity')?.value || 100,
-      stepOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'stepOrderQuantity')?.value || 1,
+      minOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'minOrderQuantity')?.value,
+      maxOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'maxOrderQuantity')?.value,
+      stepOrderQuantity: retrieveStubAttributeValue<{ value: number }>(data, 'stepOrderQuantity')?.value,
       packingUnit: retrieveStubAttributeValue(data, 'packingUnit'),
       attributeGroups: data.attributeGroup && mapAttributeGroups(data),
       readyForShipmentMin: undefined,
@@ -177,6 +165,63 @@ export class ProductMapper {
       completenessLevel: 2,
       failed: false,
     };
+    return this.appendProductTypeForStubData(data, product);
+  }
+  /**
+   * map API Response to fully qualified {@link Product}s
+   */
+  fromData(data: ProductData): AllProductTypes {
+    const product: Product = {
+      type: 'Product',
+      name: data.productName,
+      shortDescription: data.shortDescription,
+      longDescription: data.longDescription,
+      available: this.calculateAvailable(data.availability, data.inStock),
+      minOrderQuantity: data.minOrderQuantity,
+      maxOrderQuantity: data.maxOrderQuantity,
+      stepOrderQuantity: data.stepOrderQuantity,
+      packingUnit: data.packingUnit,
+      availableStock: data.availableStock,
+      attributes: data.attributeGroups?.PRODUCT_DETAIL_ATTRIBUTES?.attributes || data.attributes,
+      attributeGroups: data.attributeGroups,
+      attachments: this.attachmentMapper.fromAttachments(data.attachments),
+      images: this.imageMapper.fromImages(data.images),
+      manufacturer: data.manufacturer,
+      readyForShipmentMin: data.readyForShipmentMin,
+      readyForShipmentMax: data.readyForShipmentMax,
+      roundedAverageRating: +data.roundedAverageRating || 0,
+      sku: data.sku,
+      defaultCategoryId: data.defaultCategory
+        ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
+        : undefined,
+      promotionIds: mapPromotionIds(data.promotions),
+      completenessLevel: 3,
+      failed: false,
+      seoAttributes: SeoAttributesMapper.fromData(data.seoAttributes),
+    };
+
+    return this.appendProductTypeForData(data, product);
+  }
+
+  private calculateAvailable(availability: boolean, inStock: boolean) {
+    return !!availability && (inStock !== undefined ? inStock : true);
+  }
+
+  /**
+   * map product bundle API Response to a link / quantity type
+   */
+  fromProductBundleData(links: Link[]): SkuQuantityType[] {
+    return links.map(link => ({
+      sku: ProductMapper.parseSkuFromURI(link.uri),
+      quantity: AttributeHelper.getAttributeValueByAttributeName<{ value: number }>(link.attributes, 'quantity').value,
+    }));
+  }
+
+  private appendProductTypeForStubData(data: ProductDataStub, product: Partial<Product>): Partial<AllProductTypes> {
+    const mastered = retrieveStubAttributeValue<boolean>(data, 'mastered');
+    const productMaster = retrieveStubAttributeValue<boolean>(data, 'productMaster');
+    const productMasterSKU = retrieveStubAttributeValue<string>(data, 'productMasterSKU');
+    const retailSet = retrieveStubAttributeValue<boolean>(data, 'retailSet');
 
     if (productMaster) {
       return {
@@ -199,45 +244,7 @@ export class ProductMapper {
     }
   }
 
-  /**
-   * map API Response to fully qualified {@link Product}s
-   */
-  fromData(data: ProductData): AllProductTypes {
-    const product: Product = {
-      type: 'Product',
-      name: data.productName,
-      shortDescription: data.shortDescription,
-      longDescription: data.longDescription,
-      available: this.calculateAvailable(data.availability, data.inStock),
-      minOrderQuantity: data.minOrderQuantity || 1,
-      maxOrderQuantity: data.maxOrderQuantity || 100,
-      stepOrderQuantity: data.stepOrderQuantity || 1,
-      packingUnit: data.packingUnit,
-      availableStock: data.availableStock,
-      attributes:
-        (data.attributeGroups &&
-          data.attributeGroups.PRODUCT_DETAIL_ATTRIBUTES &&
-          data.attributeGroups.PRODUCT_DETAIL_ATTRIBUTES.attributes) ||
-        data.attributes,
-      attributeGroups: data.attributeGroups,
-      attachments: this.attachmentMapper.fromAttachments(data.attachments),
-      images: this.imageMapper.fromImages(data.images),
-      listPrice: PriceMapper.fromData(data.listPrice),
-      salePrice: PriceMapper.fromData(data.salePrice),
-      manufacturer: data.manufacturer,
-      readyForShipmentMin: data.readyForShipmentMin,
-      readyForShipmentMax: data.readyForShipmentMax,
-      roundedAverageRating: +data.roundedAverageRating || 0,
-      sku: data.sku,
-      defaultCategoryId: data.defaultCategory
-        ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
-        : undefined,
-      promotionIds: mapPromotionIds(data.promotions),
-      completenessLevel: 3,
-      failed: false,
-      seoAttributes: SeoAttributesMapper.fromData(data.seoAttributes),
-    };
-
+  private appendProductTypeForData(data: ProductData, product: Product): AllProductTypes {
     if (data.productMaster) {
       return {
         ...product,
@@ -255,7 +262,7 @@ export class ProductMapper {
         variableVariationAttributes: data.variableVariationAttributes,
         type: 'VariationProduct',
       };
-    } else if ((data.productTypes && data.productTypes.includes('BUNDLE')) || data.productBundle) {
+    } else if (data.productTypes?.includes('BUNDLE') || data.productBundle) {
       return {
         ...product,
         type: 'Bundle',
@@ -272,12 +279,5 @@ export class ProductMapper {
     } else {
       return product;
     }
-  }
-
-  fromProductBundleData(links: Link[]): SkuQuantityType[] {
-    return links.map(link => ({
-      sku: ProductMapper.parseSkuFromURI(link.uri),
-      quantity: AttributeHelper.getAttributeValueByAttributeName<{ value: number }>(link.attributes, 'quantity').value,
-    }));
   }
 }

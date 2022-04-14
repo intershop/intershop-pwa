@@ -27,21 +27,20 @@ function generateProductSlug(product: ProductView) {
       .replace(/-+/g, '-');
   }
 
-  return slug;
+  return slug.replace('-cat', '-Cat');
 }
 
-const productRouteFormat = new RegExp('^/(.*)?sku(.*?)(-cat(.*))?$');
+const productRouteFormat = new RegExp('/(?!cat)((?!.*-cat.*-sku).*-)?sku(.*?)(-cat(.*))?$');
 
 export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
   const isSimpleProduct = segments && segments.length > 0 && segments[0].path === 'product';
-  const isContextProduct =
-    segments && segments.length > 2 && segments[0].path === 'category' && segments[2].path === 'product';
+  const isContextProduct = segments?.length > 2 && segments[0].path === 'category' && segments[2].path === 'product';
   if (isSimpleProduct || isContextProduct) {
     return { consumed: [] };
   }
 
-  const url = '/' + segments.map(s => s.path).join('/');
+  const url = `/${segments.map(s => s.path).join('/')}`;
   if (productRouteFormat.test(url)) {
     const match = productRouteFormat.exec(url);
     const posParams: { [id: string]: UrlSegment } = {};

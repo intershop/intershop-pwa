@@ -39,8 +39,8 @@ describe('Basket Cost Center Selection Component', () => {
       declarations: [BasketCostCenterSelectionComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
     }).compileComponents();
   });

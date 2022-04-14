@@ -1,10 +1,9 @@
 import { Rule, SchematicsException, Tree, UpdateRecorder } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
+import { Decontainerize as Options } from 'schemas/migration/decontainerize-0.16-to-0.17/schema';
 import * as ts from 'typescript';
 
 import { readIntoSourceFile } from '../../utils/filesystem';
-
-import { Decontainerize as Options } from './schema';
 
 function checkNoCollisions(host: Tree): boolean {
   const moving: { [path: string]: string[] } = {};
@@ -18,11 +17,11 @@ function checkNoCollisions(host: Tree): boolean {
         target = target.replace('/shared/', '/shared/components/');
       }
 
-      moving[target] = moving[target] ? [...moving[target], path.substr(1)] : [path.substr(1)];
+      moving[target] = moving[target] ? [...moving[target], path.substring(1)] : [path.substring(1)];
 
       const name = path.replace(/.*\//, '').replace(/\..*/, '');
 
-      naming[name] = naming[name] ? [...naming[name], path.substr(1)] : [path.substr(1)];
+      naming[name] = naming[name] ? [...naming[name], path.substring(1)] : [path.substring(1)];
     }
   });
 

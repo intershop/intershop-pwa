@@ -55,7 +55,8 @@ describe('Requisition Buyer Approval Component', () => {
         approvers: [{ firstName: 'Bernhard', lastName: 'Boldner' }],
         approvalDate: 76543627,
       },
-      user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+      email: 'pmiller@test.intershop.de',
+      user: { firstName: 'Patricia', lastName: 'Miller' },
       userBudget: {
         budgetPeriod: 'weekly',
         orderSpentLimit: { currency: 'USD', value: 500, type: 'Money' },
@@ -80,37 +81,17 @@ describe('Requisition Buyer Approval Component', () => {
   it('should display budget information if created', () => {
     component.ngOnChanges();
     fixture.detectChanges();
-    expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(`
-      "approval.detailspage.buyer.label
-      Patricia Miller
-      approval.detailspage.order_spend_limit.label
-      $500.00
-      account.budget.label
-      $3,000.00
-      account.budget.already_spent.label
-      $300.00 (10%)
-      account.budget.left.label
-      $2,700.00 (90%)
-      "
-    `);
+    expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(
+      `"approval.detailspage.buyer.labelPatricia Millerapproval.detailspage.order_spend_limit.label $500.00 account.budget.label $3,000.00 account.budget.already_spent.label $300.00 (10%)account.budget.left.label $2,700.00 (90%) "`
+    );
   });
 
   it('should display budget including this order information if approval status pending', () => {
     component.requisition.approval.statusCode = 'PENDING';
     component.ngOnChanges();
     fixture.detectChanges();
-    expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(`
-      "approval.detailspage.buyer.label
-      Patricia Miller
-      approval.detailspage.order_spend_limit.label
-      $500.00
-      account.budget.label
-      $3,000.00
-      account.budget.already_spent.label
-      $300.00 (10%)
-      approval.detailspage.budget.including_order.label
-      $2,300.00 (77%)
-      "
-    `);
+    expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(
+      `"approval.detailspage.buyer.labelPatricia Millerapproval.detailspage.order_spend_limit.label $500.00 account.budget.label $3,000.00 account.budget.already_spent.label $300.00 (10%)approval.detailspage.budget.including_order.label $2,300.00 (77%)"`
+    );
   });
 });

@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Product } from 'ish-core/models/product/product.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -13,6 +14,7 @@ import { ProductsService } from './products.service';
 describe('Products Service', () => {
   let productsService: ProductsService;
   let apiServiceMock: ApiService;
+  let appFacadeMock: AppFacade;
 
   const productSku = 'SKU';
   const categoryId = 'CategoryID';
@@ -61,14 +63,21 @@ describe('Products Service', () => {
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
+    appFacadeMock = mock(AppFacade);
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['configuration'], [ProductListingEffects]),
         ShoppingStoreModule.forTesting('productListing'),
       ],
-      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
+      ],
     });
     productsService = TestBed.inject(ProductsService);
+
+    when(appFacadeMock.serverSetting$(anyString())).thenReturn(of(false));
   });
 
   it("should get Product data when 'getProduct' is called", done => {
@@ -109,20 +118,22 @@ describe('Products Service', () => {
   });
 
   it("should get product variations data when 'getProductVariations' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(of({ elements: [] }));
+    when(apiServiceMock.get(`products/${productSku}/variations`, anything())).thenReturn(of({ elements: [] }));
     productsService.getProductVariations(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/variations`)).once();
+      verify(apiServiceMock.get(`products/${productSku}/variations`, anything())).once();
       done();
     });
   });
 
   it("should get all product variations data when 'getProductVariations' is called and more than 50 variations exist", done => {
     const total = 156;
-    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(of({ elements: [], amount: 40, total }));
-    when(apiServiceMock.get(`products/${productSku}/variations`, anything())).thenReturn(of({ elements: [], total }));
+    when(apiServiceMock.get(`products/${productSku}/variations`, anything())).thenCall((_, opts) =>
+      !opts.params ? of({ elements: [], amount: 40, total }) : of({ elements: [], total })
+    );
+
     productsService.getProductVariations(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/variations`)).once();
-      verify(apiServiceMock.get(`products/${productSku}/variations`, anything())).thrice();
+      verify(apiServiceMock.get(`products/${productSku}/variations`, anything())).times(4);
+      expect(capture<string, AvailableOptions>(apiServiceMock.get).byCallIndex(0)?.[1]?.params).toBeUndefined();
       expect(
         capture<string, AvailableOptions>(apiServiceMock.get).byCallIndex(1)?.[1]?.params?.toString()
       ).toMatchInlineSnapshot(`"amount=40&offset=40"`);
@@ -137,31 +148,31 @@ describe('Products Service', () => {
   });
 
   it("should get product bundles data when 'getProductBundles' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/bundles`)).thenReturn(of([]));
+    when(apiServiceMock.get(`products/${productSku}/bundles`, anything())).thenReturn(of([]));
     productsService.getProductBundles(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/bundles`)).once();
+      verify(apiServiceMock.get(`products/${productSku}/bundles`, anything())).once();
       done();
     });
   });
 
   it("should get retail set parts data when 'getRetailSetParts' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/partOfRetailSet`)).thenReturn(of([]));
+    when(apiServiceMock.get(`products/${productSku}/partOfRetailSet`, anything())).thenReturn(of([]));
     productsService.getRetailSetParts(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/partOfRetailSet`)).once();
+      verify(apiServiceMock.get(`products/${productSku}/partOfRetailSet`, anything())).once();
       done();
     });
   });
 
   it("should get product links data when 'getProductLinks' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/links`)).thenReturn(of([]));
+    when(apiServiceMock.get(`products/${productSku}/links`, anything())).thenReturn(of([]));
     productsService.getProductLinks(productSku).subscribe(() => {
-      verify(apiServiceMock.get(`products/${productSku}/links`)).once();
+      verify(apiServiceMock.get(`products/${productSku}/links`, anything())).once();
       done();
     });
   });
 
   it("should get map product links data when 'getProductLinks' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/links`)).thenReturn(
+    when(apiServiceMock.get(`products/${productSku}/links`, anything())).thenReturn(
       of({
         elements: [
           {

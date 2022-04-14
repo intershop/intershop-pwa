@@ -10,6 +10,7 @@ import { RegistrationHeadingFieldComponent } from './formly/registration-heading
 import { RegistrationTacFieldComponent } from './formly/registration-tac-field/registration-tac-field.component';
 import { RegistrationPageComponent } from './registration-page.component';
 import { RegistrationPageGuard } from './registration-page.guard';
+import { RegistrationFormConfigurationService } from './services/registration-form-configuration/registration-form-configuration.service';
 
 const registrationPageRoutes: Routes = [
   { path: '', component: RegistrationPageComponent, canDeactivate: [RegistrationPageGuard] },
@@ -44,6 +45,6 @@ const registrationFormlyConfig: ConfigOption = {
     RegistrationPageComponent,
     RegistrationTacFieldComponent,
   ],
-  providers: [RegistrationPageGuard],
+  providers: [RegistrationFormConfigurationService, RegistrationPageGuard],
 })
 export class RegistrationPageModule {}

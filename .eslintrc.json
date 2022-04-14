@@ -1,0 +1,901 @@
+{
+  "root": true,
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json",
+          "e2e/cypress/tsconfig.json",
+          "schematics/tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:prettier/recommended"
+      ],
+      "plugins": [
+        "rxjs",
+        "rxjs-angular",
+        "ngrx",
+        "ban",
+        "etc",
+        "jest",
+        "jsdoc",
+        "unicorn",
+        "unused-imports",
+        "ish-custom-rules"
+      ],
+      "rules": {
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": ["ish"],
+            "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": ["ish"],
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/sort-ngmodule-metadata-arrays": "warn",
+        "@typescript-eslint/ban-tslint-comment": "error",
+        "@typescript-eslint/ban-types": [
+          "error",
+          {
+            "types": {
+              "Object": {
+                "message": "Use {} instead."
+              },
+              "Array": {
+                "message": "Use [] instead."
+              },
+              "String": {
+                "message": "Use 'string'"
+              },
+              "Boolean": {
+                "message": "Use 'boolean'"
+              },
+              "Number": {
+                "message": "Use 'number'"
+              },
+              "HttpErrorResponse": {
+                "message": "HttpErrorResponse should not be used directly."
+              }
+            },
+            "extendDefaults": false
+          }
+        ],
+        "@typescript-eslint/dot-notation": "warn",
+        "@typescript-eslint/explicit-member-accessibility": [
+          "error",
+          {
+            "accessibility": "no-public"
+          }
+        ],
+        "@typescript-eslint/member-ordering": [
+          "warn",
+          {
+            "default": [
+              "public-static-field",
+              "static-field",
+              "instance-field",
+              "public-static-method",
+              "static-method",
+              "instance-method"
+            ]
+          }
+        ],
+        "@typescript-eslint/method-signature-style": ["warn", "method"],
+        "@typescript-eslint/naming-convention": [
+          "warn",
+          {
+            "selector": "variable",
+            "modifiers": ["const"],
+            "format": ["camelCase", "UPPER_CASE"]
+          },
+          {
+            "selector": "typeLike",
+            "format": ["PascalCase"]
+          },
+          {
+            "selector": "function",
+            "format": ["camelCase"]
+          }
+        ],
+        "@typescript-eslint/no-empty-function": "warn",
+        "@typescript-eslint/no-empty-interface": "warn",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-inferrable-types": [
+          "warn",
+          {
+            "ignoreParameters": true
+          }
+        ],
+        "@typescript-eslint/no-throw-literal": "warn",
+        "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
+        "@typescript-eslint/no-unused-expressions": [
+          "warn",
+          {
+            "allowTernary": true
+          }
+        ],
+        "@typescript-eslint/no-var-requires": "error",
+        "@typescript-eslint/prefer-optional-chain": "warn",
+        "arrow-body-style": ["warn", "as-needed"],
+        "arrow-parens": ["warn", "as-needed"],
+        "ban/ban": [
+          "error",
+          {
+            "name": ["*", "ngOnInit"],
+            "message": "Use fixture.detectChanges instead!"
+          },
+          {
+            "name": ["*", "unsubscribe"],
+            "message": "Do it another way: https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87"
+          },
+          {
+            "name": ["Object", "assign"],
+            "message": "Use spread operator instead!"
+          },
+          {
+            "name": ["*", "toBeDefined"],
+            "message": "Most of the time this is the wrong assertion in tests!"
+          },
+          {
+            "name": "spyOn",
+            "message": "Use ts-mockito instead!"
+          },
+          {
+            "name": "atob",
+            "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"
+          },
+          {
+            "name": "btoa",
+            "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"
+          }
+        ],
+        "complexity": [
+          "warn",
+          {
+            "max": 10
+          }
+        ],
+        "dot-notation": "off", // disabled in favor of @typescript-eslint/dot-notation
+        "eqeqeq": ["error", "always"],
+        "etc/no-commented-out-code": "warn",
+        "etc/no-deprecated": "warn",
+        "id-blacklist": [
+          "error",
+          "any",
+          "Number",
+          "String",
+          "string",
+          "Boolean",
+          "boolean",
+          "Undefined",
+          "undefined"
+        ],
+        "ish-custom-rules/ban-imports-file-pattern": [
+          "warn",
+          [
+            {
+              "name": ".*/dev/.*",
+              "filePattern": "^((?!\\.spec\\.ts).)*$",
+              "message": "Importing dev utility is only allowed in tests."
+            },
+            {
+              "name": "@angular/common/http",
+              "message": "http classes are not serializable and should therefore not be stored in ngrx related files",
+              "filePattern": "(?!.*.spec.ts$).*/store/.*"
+            },
+            {
+              "name": "@angular/common/http",
+              "message": "http classes should not propagate to components",
+              "filePattern": ".*\\.component\\..*ts"
+            },
+            {
+              "starImport": true,
+              "name": "^(\\.\\.|ish).*",
+              "filePattern": ".*src/app.*",
+              "message": "use star imports only for aggregation of deeper lying imports"
+            },
+            {
+              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick)$).*",
+              "name": "lodash.*",
+              "filePattern": "^(?!.*.spec.ts$).*.ts$",
+              "message": "importing (range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick) from lodash is forbidden"
+            },
+            {
+              "importNamePattern": "CookiesService",
+              "name": "ngx-utils-cookies-port",
+              "filePattern": "^((?!src/app/core/utils/cookies/cookies\\.service(\\.spec)?\\.ts).)*$",
+              "message": "Use CookiesService from ish-core instead."
+            },
+            {
+              "name": "^(?!.*(\\.module|environments\\/environment)$)\\.\\..*$",
+              "filePattern": "^(?!.*-routing\\.module\\.ts$).*\\.module\\.ts$",
+              "message": "Modules should only aggregate deeper lying artifacts."
+            },
+            {
+              "name": "^(?!.*\\.(module|guard)$)\\.\\..*$",
+              "filePattern": ".*-routing\\.module\\.ts",
+              "message": "Modules should only aggregate deeper lying artifacts."
+            },
+            {
+              "name": ".*/extensions/.*",
+              "filePattern": "^((?!(module|spec|environment\\.model)\\.ts).)*$",
+              "message": "Imports from (other) extensions are not allowed here."
+            },
+            {
+              "name": ".*/projects/.*",
+              "filePattern": "^((?!(module|spec)\\.ts).)*$",
+              "message": "Imports from (other) projects are not allowed here."
+            },
+            {
+              "name": ".*/pages/[a-z][a-z0-9-]+/.*",
+              "filePattern": "^((?!\\.module\\.ts$).)*$",
+              "message": "Imports from pages are not allowed."
+            },
+            {
+              "importNamePattern": "^SharedModule$",
+              "name": "\\..*",
+              "filePattern": "^(?!.+(page|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module|projects/[a-z][a-z0-9-]+/src/app(/[a-z][a-z0-9-]+)?\\.module)).+\\.module\\.ts$",
+              "message": "SharedModule must only be imported in page, extension or project modules."
+            },
+            {
+              "importNamePattern": ".*",
+              "name": ".*environments/environment.*",
+              "filePattern": "^.*/app/((?!(app(.server)?.module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service|injection-keys)\\.ts).)*$",
+              "message": "Importing environment is not allowed. Inject needed properties instead."
+            },
+            {
+              "importNamePattern": "^(StoreModule|EffectsModule)$",
+              "name": "ngrx",
+              "filePattern": "^.*\\.spec\\.ts*$",
+              "message": "Use the testing helpers \"*StoreModule.forTesting\" in tests instead."
+            },
+            {
+              "importNamePattern": "^Effect$",
+              "name": "@ngrx/effects",
+              "filePattern": "^.*(\\.spec|\\.effects)\\.ts*$",
+              "message": "The old way of declaring effects is deprecated, use \"createEffect\"."
+            },
+            {
+              "importNamePattern": "^Action$",
+              "name": "@ngrx/store",
+              "filePattern": "^(?!.*\\.spec\\.ts$).*\\.actions\\.ts*$",
+              "message": "The old way of declaring actions is deprecated, use \"createAction\"."
+            },
+            {
+              "importNamePattern": "^props$",
+              "name": "@ngrx/store",
+              "filePattern": "^.*\\.actions\\.ts*$",
+              "message": "Do not use \"props\" directly with \"createAction\", use our helper functions \"payload\" and \"httpError\" from \"ish-core/utils/action-creators\" instead."
+            },
+            {
+              "importNamePattern": "^HttpError$",
+              "name": ".*http-error.model",
+              "filePattern": "^.*\\.actions\\.ts*$",
+              "message": "Do not use \"HttpError\" explicitly, please use \"httpError\" from \"ish-core/utils/action-creators\" instead."
+            },
+            {
+              "importNamePattern": "^IconModule$",
+              "name": "ish-core/icon.module",
+              "filePattern": "^.*\\.spec\\.ts*$",
+              "message": "Use MockComponent(FaIconComponent) in tests instead."
+            },
+            {
+              "importNamePattern": "^FormsSharedModule$",
+              "name": "ish-shared/forms/forms.module",
+              "filePattern": "^.*\\.spec\\.ts*$",
+              "message": "Performance: Use MockComponent for individual components in tests instead."
+            },
+            {
+              "importNamePattern": "^NO_ERRORS_SCHEMA$",
+              "name": "@angular/core",
+              "filePattern": "^.*\\.spec\\.ts*$",
+              "message": "Use MockComponent for individual components in tests instead."
+            },
+            {
+              "importNamePattern": "^MockComponents$",
+              "name": "ng-mocks",
+              "filePattern": "^.*\\.spec\\.ts*$",
+              "message": "Use MockComponent for individual components in tests instead."
+            },
+            {
+              "importNamePattern": "^PipesModule$",
+              "name": "ish-core/pipes.module",
+              "filePattern": "^.*\\.spec\\.ts*$",
+              "message": "Performance: Use MockPipe or declare it individually in tests instead."
+            },
+            {
+              "importNamePattern": ".*",
+              "name": "@ngx-meta.*",
+              "filePattern": "^(?!.*/extensions/seo/.*$).*$",
+              "message": "Imports from @ngx-meta are only allowed in SEO extension."
+            },
+            {
+              "importNamePattern": "^createProductView$",
+              "name": ".*/product-view.model",
+              "filePattern": "^(?!.*/(.*\\.spec|products\\.selectors)\\.ts$).*$",
+              "message": "Product views should not be attached to other entities. Use ShoppingFacade.product$ in components."
+            },
+            {
+              "importNamePattern": "routerNavigatedAction|routerNavigationAction|ROUTER_NAVIGATED|ROUTER_NAVIGATION",
+              "name": "@ngrx/router-store",
+              "filePattern": "^.*\\.spec\\.ts*$",
+              "message": "We customized the serialization of the router state. Use router actions from \"ish-core/utils/dev/routing\" in tests."
+            },
+            {
+              "importNamePattern": "tap",
+              "name": "rxjs/operators",
+              "filePattern": "^(?!.*/store/(sentry-config/sentry-config|seo/seo|core/messages/messages)\\.effects\\.ts$).*\\.effects\\.ts*$",
+              "message": "The usage of \"tap\" in effects, if not related to 3rd party integrations, can usually be transformed properly into RxJS stream code."
+            },
+            {
+              "name": "@typescript-eslint/experimental-utils",
+              "filePattern": ".*eslint-rules/.*",
+              "message": "Change to \"@typescript-eslint/utils\"."
+            }
+          ]
+        ],
+        "ish-custom-rules/component-creation-test": "error",
+        "ish-custom-rules/do-not-use-theme-identifier": "warn",
+        "ish-custom-rules/meaningful-describe-in-tests": "warn",
+        "ish-custom-rules/newline-before-root-members": "warn",
+        "ish-custom-rules/no-assignment-to-inputs": "error",
+        "ish-custom-rules/no-collapsible-if": "warn",
+        "ish-custom-rules/no-formly-explicit-pseudo-type": "error",
+        "ish-custom-rules/no-initialize-observables-directly": "warn",
+        "ish-custom-rules/no-intelligence-in-artifacts": [
+          "warn",
+          {
+            "(component|pipe|directive)(\\.spec)?\\.ts$": {
+              // "router": "Angular artifacts should rely use the Router directly.",
+              "ngrx": "Angular artifacts should rely on facades only.",
+              "service": "Angular artifacts should rely on facades only."
+            },
+            "effects.ts$": {
+              "facade": "Effects should not use facades."
+            },
+            "^(?!.*/(utils)/.*$).*service.ts$": {
+              // "ngrx": "Services should not use NgRx.",
+              "router": "Services should not use the Angular Router."
+            }
+          }
+        ],
+        "ish-custom-rules/no-object-literal-type-assertion": "warn",
+        "ish-custom-rules/no-return-undefined": "error",
+        "ish-custom-rules/no-star-imports-in-store": "error",
+        "ish-custom-rules/no-testbed-with-then": "error",
+        "ish-custom-rules/no-var-before-return": "warn",
+        "ish-custom-rules/ordered-imports": "warn",
+        "ish-custom-rules/private-destroy-field": "error",
+        "ish-custom-rules/project-structure": [
+          "warn",
+          {
+            "warnUnmatched": false,
+            "reusePatterns": {
+              "name": "[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*",
+              "theme": "(?:(?:\\.(?:b2b|b2c))*|\\.all)"
+            },
+            "pathPatterns": [
+              "^.*/src/environments/environment(\\.\\w+)?\\.ts$",
+              "^.*/src/hybrid/default-url-mapping-table.ts$",
+              // core
+              "^.*/src/app/core/<name>\\.module(<theme>)?\\.ts",
+              "^.*/src/app/core/configurations/.*",
+              // custom routes
+              "^.*/src/app/core/routing/(<name>)/\\1\\.route(<theme>)?\\.ts",
+              "^.*/src/app/core/routing/(<name>)/\\1\\-route\\.pipe(<theme>)?\\.ts",
+              // extra artifacts
+              "^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/(service)s/(<name>)/\\3(\\-<name>)?\\.\\2(<theme>)?\\.ts",
+              "^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/(interceptor|guard|directive|pipe|animation)s/<name>.\\2(<theme>)?\\.ts",
+              "^.*projects/<name>/src/app/exports/index.ts",
+              // models
+              "^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/models/(<name>)/\\2\\.(pipe|helper|interface|mapper|types)(<theme>)?\\.ts$",
+              // facades
+              "^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/facades/(index|<name>\\.facade)(<theme>)?\\.ts$",
+              // ngrx
+              "^.*/store/(<name>/)?(<name>)/\\2(\\-<name>)?\\.(actions|effects|reducer|selectors)(<theme>)?\\.ts",
+              "^.*/store/(<name>/)?<name>/index\\.ts",
+              "^.*/store/(<name>)/\\1-store(\\.module)?(<theme>)?\\.ts",
+              "^.*/(<name>)(/src/app)?/store/\\1-store(\\.module)?(<theme>)?\\.ts",
+              // ngrx router-store
+              "^.*/src/app/core/store/core/router/router\\.(operators|serializer)(<theme>)?\\.ts",
+              "^.*/src/app/core/routing/\\.serializer()?\\.ts",
+              // allow only app related content directly in src/app
+              "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
+              // application shell
+              "^.*/src/app/shell/(header|footer|application)/(<name>)/\\2\\.component(<theme>)?\\.ts$",
+              "^.*/src/app/shell/<name>/configurations/.*\\.ts$",
+              // specific (lazy loaded) page modules
+              "^.*(/src/app|/src/app/extensions/<name>|projects/<name>/src/app)/pages/(<name>)/\\2-page\\.(module|component|guard)(<theme>)?\\.ts$",
+              "^.*(/src/app|/src/app/extensions/<name>|projects/<name>/src/app)/pages/<name>/(<name>)/\\2\\.component(<theme>)?\\.ts$",
+              "^.*/src/app/extensions/(<name>)/pages/\\1(.*)-routing\\.module(<theme>)?\\.ts$",
+              "^.*/projects/(<name>)/src/app/pages/\\1-routing\\.module(<theme>)?\\.ts$",
+              "^.*/src/app/pages/app(-<name>)*-routing\\.module(<theme>)?\\.ts$",
+              // enforce folder structure for shared components
+              "^.*/src/app/extensions/<name>/shared/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+              "^.*/src/app/extensions/<name>/shared/formly/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+              "^.*/src/app/shared/components/<name>/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+              "^.*/src/app/shared/components/<name>/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+              "^.*/src/app/shared/(<name>)/\\1\\.module(<theme>)?\\.ts$",
+              "^.*/src/app/shared/<name>/(configurations|pipes|utils|validators|directives)/.*$",
+              "^.*/src/app/shared/<name>/components/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+              "^.*/projects/<name>/src/app/components/(<name>)/\\1\\.component(<theme>)?\\.ts$",
+              "^.*/src/app/shared/address-forms/components/(<name>)/\\1\\.factory(<theme>)?\\.ts$",
+              // formly
+              "^.*/src/app/shared/formly/(components|wrappers|types|extensions|utils|dev)/.*$",
+              "^.*/src/app/pages/<name>/formly/.*$",
+              // identity providers
+              "^.*/src/app/core/identity-provider/.*$",
+              // aggregation modules
+              "^.*/src/app/(shell|shared)/\\1\\.module(<theme>)?\\.ts$",
+              "^.*/src/app/extensions/(<name>)/\\1\\.module(<theme>)?\\.ts$",
+              "^.*/projects/(<name>)/src/app/\\1\\.module(<theme>)?\\.ts$",
+              // extension/projects exports
+              "^.*(src/app/extensions/<name>/exports|projects/<name>/src/app/exports|src/app/shell/shared)/(lazy-<name>)/\\2\\.component(<theme>)?\\.ts$",
+              "^.*/src/app/extensions/(<name>)/exports/\\1-product-context-display-properties/\\1-product-context-display-properties\\.service(<theme>)?\\.ts$",
+              "^.*/src/app/extensions/(<name>)/exports/\\1-exports\\.module(<theme>)?\\.ts$",
+              "^.*/src/app/extensions/<name>/exports/(<name>)/\\1\\.service(<theme>)?\\.ts$",
+              "^.*/projects/(<name>)/src/app/exports/\\1-exports\\.module(<theme>)?\\.ts$",
+              // eslint rules
+              "^.*[/eslint\\-rules/src/rules/].*\\.ts$"
+            ],
+            "patterns": [
+              // root components
+              {
+                "name": "^(AppComponent)$",
+                "file": "[src/app/app/.component](<theme>)?\\.ts$"
+              },
+              {
+                "name": "^(AppServerModule)$",
+                "file": "src/app/app\\.server\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^(App.*Routing)Module$",
+                "file": "src/app/pages/<kebab>\\.module(<theme>)?\\.ts$"
+              },
+              // cms
+              {
+                "name": "^(CMS[A-Z].*Page)Component$",
+                "file": ".*/<kebab>/<kebab>\\.component(<theme>)?\\.ts$"
+              },
+              // custom routing
+              {
+                "name": "^([A-Z].*)RoutePipe$",
+                "file": ".*/core/routing/<kebab>/<kebab>-route\\.pipe(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^generate([A-Z].*)Url$",
+                "file": ".*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^match([A-Z].*)Route$",
+                "file": ".*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^of([A-Z].*)Route$",
+                "file": ".*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$"
+              },
+              // angular components
+              {
+                "name": "^([A-Z].*)PageComponent$",
+                "file": ".*/pages/<kebab>/<kebab>-page\\.component(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^(Test|Dummy)Component$",
+                "file": ".*.ts$"
+              },
+              {
+                "name": "^([A-Z].*)Component$",
+                "file": ".*/<kebab>/<kebab>\\.component(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)Directive$",
+                "file": ".*/directives/<kebab>\\.directive(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)PageGuard$",
+                "file": ".*/pages/<kebab>/<kebab>-page\\.guard(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)Guard$",
+                "file": ".*/guards/<kebab>\\.guard(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)Interceptor$",
+                "file": ".*/interceptors/<kebab>\\.interceptor(<theme>)?\\.ts$"
+              },
+              // services
+              {
+                "name": "^([A-Z].*)ProductContextDisplayPropertiesService",
+                "file": ".*/extensions/<kebab>/exports/<kebab>-product-context-display-properties/<kebab>-product-context-display-properties\\.service(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)Service$",
+                "file": "(/utils.*|/services/<kebab>|/exports/<kebab>)/<kebab>\\.service(<theme>)?\\.ts$"
+              },
+              // modules and routing
+              {
+                "name": "^([A-Z].+)ExportsModule$",
+                "file": ".*(/extensions/<kebab>|/projects/<kebab>/src/app)/exports/<kebab>-exports\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].+)SharedModule$",
+                "file": ".*/shared/<name>/<kebab>\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)PageModule$",
+                "file": ".*/<kebab>/<kebab>-page\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)RoutingModule$",
+                "file": ".*/pages/<kebab>-routing\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^CoreStoreModule$",
+                "file": ".*/core/store/core-store\\.module\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)StoreModule$",
+                "file": ".*/(<kebab>|store)/<kebab>-store\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)ComponentModule$",
+                "file": ".*/<kebab>\\.component(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)IdentityProviderModule$",
+                "file": ".*/(<kebab>|identity-provider)/<kebab>-identity-provider\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^(.*)Module$",
+                "file": ".*(/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/<name>)\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^(.*)Routes$",
+                "file": ".*/<kebab>\\.module(<theme>)?\\.ts$"
+              },
+              // factory pattern
+              {
+                "name": "^([A-Z].*)Helper$",
+                "file": ".*/models/<kebab>/<kebab>\\.helper(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)Mapper$",
+                "file": ".*/models/<kebab>/<kebab>\\.mapper(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)BaseData$",
+                "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*)Data$",
+                "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$"
+              },
+              // facades
+              {
+                "name": "^([A-Z].*)Facade$",
+                "file": ".*(/src/app/core|/src/app/extensions/<name>|/projects/<name>/src/app)/facades/<kebab>\\.facade(<theme>)?\\.ts$"
+              },
+              // ngrx
+              {
+                "name": "^([A-Z].*)Effects$",
+                "file": ".*/store/(<name>/)?<name>/<kebab>\\.effects(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([a-z].*)Effects$",
+                "file": ".*/store/(<kebab>/)?<kebab>-store\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^get(.*?)(Internal)?State$",
+                "file": ".*/store/(<name>/)?(<kebab>/<kebab>\\.selectors|<kebab>-store)(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([A-Z].*?)(Internal)?State$",
+                "file": ".*/store/(<name>/)?(<kebab>/<kebab>\\.reducer|(<kebab>/)?<kebab>-store)(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^(initialState)$",
+                "file": ".*/store/.*\\.reducer(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([a-z].*)Reducer$",
+                "file": ".*/store/(<name>/)?<kebab>/<kebab>\\.reducer(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^(metaReducers|[a-z]+MetaReducers)$",
+                "file": ".*\\.module(<theme>)?\\.ts$"
+              },
+              {
+                "name": "^([a-z].*)Reducers$",
+                "file": ".*/store/(<kebab>/)?<kebab>-store\\.module(<theme>)?\\.ts$"
+              },
+              // environments
+              {
+                "name": "^(environment)$",
+                "file": "src/environments/environment(\\.[a-z]+)?\\.ts$"
+              },
+              // formly
+              {
+                "name": "^([A-Z].*)Configuration$",
+                "file": "src/app/shared/(formly-address-forms|formly/field-library)/configurations/(.+/)*<kebab>.configuration.ts$"
+              }
+            ],
+            "ignoredFiles": [
+              "server.ts$",
+              "src/ssr/.*.ts",
+              "src/[^/]*.ts$",
+              ".*.spec.ts$",
+              "tslint-rules/",
+              "scripts/",
+              "templates/",
+              "utils/dev/",
+              "core/utils/",
+              ".*.actions.ts$",
+              ".*.model.ts$",
+              "store-devtools.module"
+            ],
+            "allowedNumberWords": ["b2b", "v2", "v3", "auth0"]
+          }
+        ],
+        "ish-custom-rules/sort-testbed-metadata-arrays": "warn",
+        "ish-custom-rules/use-alias-imports": "error",
+        "ish-custom-rules/use-async-synchronization-in-tests": "warn",
+        "ish-custom-rules/use-camel-case-environment-properties": "error",
+        "ish-custom-rules/use-component-change-detection": "warn",
+        "ish-custom-rules/use-correct-component-overrides": "warn",
+        "ish-custom-rules/use-jest-extended-matchers-in-tests": "warn",
+        "ish-custom-rules/require-formly-code-documentation": "warn",
+        "jest/no-commented-out-tests": "warn",
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "warn",
+        "jest/valid-title": [
+          "warn",
+          {
+            "mustMatch": {
+              "it": "^should",
+              "test": "[sS]*"
+            }
+          }
+        ],
+        "jsdoc/check-alignment": "warn",
+        "jsdoc/check-types": "warn",
+        "jsdoc/check-values": "warn",
+        "jsdoc/empty-tags": "warn",
+        "jsdoc/implements-on-classes": "warn",
+        "jsdoc/newline-after-description": ["warn", "always"],
+        "jsdoc/no-undefined-types": "warn",
+        "jsdoc/require-property-description": "warn",
+        "jsdoc/require-property-name": "warn",
+        "jsdoc/require-property-type": "warn",
+        "jsdoc/require-property": "warn",
+        "jsdoc/valid-types": "warn",
+        "ngrx/no-typed-global-store": "error",
+        "no-console": [
+          "warn",
+          {
+            "allow": ["error", "warn"]
+          }
+        ],
+        "no-duplicate-imports": "error",
+        "no-empty": "warn",
+        "no-extra-boolean-cast": "error",
+        "no-irregular-whitespace": "error",
+        "no-multiple-empty-lines": "warn",
+        "no-param-reassign": "error",
+        "no-restricted-imports": [
+          "warn",
+          {
+            "paths": [
+              {
+                "name": "cluster",
+                "importNames": ["Address"],
+                "message": "Most likely you would've wanted to import the model instead."
+              },
+              {
+                "name": "express",
+                "importNames": ["Router"],
+                "message": "Most likely you would've wanted to import from @angular/router instead."
+              },
+              {
+                "name": "@angular/forms",
+                "importNames": ["FormsModule"],
+                "message": "This module is for the template-driven approach which we don't use."
+              },
+              {
+                "name": "rxjs/operators",
+                "importNames": ["pluck"],
+                "message": "This operator is not typesafe. Use 'mapToProperty' instead."
+              },
+              {
+                "name": "(?!.*environments/environment.model)(.*environments/environment).+",
+                "message": "Importing specific environments is not allowed. Use the default one."
+              },
+              {
+                "name": "@sentry/browser",
+                "importNames": ["User"],
+                "message": "You probably meant to import the ISH PWA user model."
+              },
+              {
+                "name": "@ngrx/router-store",
+                "importNames": ["SerializedRouterStateSnapshot"],
+                "message": "We customized the serialization of the router state. Use 'RouterState' from 'ish-core/store/core/router/router.reducer'."
+              },
+              {
+                "name": "lodash.*"
+              },
+              {
+                "name": "ts-mockito/lib/ts-mockito",
+                "message": "use import from 'ts-mockito'"
+              },
+              {
+                "name": "*/src/.*",
+                "message": "Import with 'src' seems to be wrong. Transform into relative import, please."
+              },
+              {
+                "name": ".*node_modules/(.*)",
+                "message": "import with 'node_modules' seems to be wrong"
+              },
+              {
+                "name": "^(app|src)/.*",
+                "message": "Transform into relative import, please."
+              },
+              {
+                "name": "^[\\./]*/core/(.*)$",
+                "message": "Use import alias ish-core"
+              },
+              {
+                "name": "(.*)/$",
+                "message": "trailing '/' seems to be wrong"
+              },
+              {
+                "name": "^\\.\\/(\\..*$)",
+                "message": "unnecessary local folder reference"
+              },
+              {
+                "name": "^(.*store\\/)(.*)\\/\\2.(actions|selectors)$",
+                "message": "use aggregation import instead."
+              },
+              {
+                "name": "rxjs(?!($|/operators$))",
+                "message": "deep import from rxjs seems to be wrong, use 'rxjs' or 'rxjs/operators'"
+              }
+            ]
+          }
+        ],
+        "no-restricted-syntax": [
+          "error",
+          {
+            "selector": "MethodDefinition[static = true] ThisExpression",
+            "message": "Static this usage can be confusing for newcomers. It can also become imprecise when used with extended classes when a static this of a parent class no longer specifically refers to the parent class."
+          }
+        ],
+        "no-sequences": "error",
+        "no-template-curly-in-string": "error",
+        "no-throw-literal": "off", // disabled in favor of @typescript-eslint/no-throw-literal
+        "no-unused-vars": [
+          "warn",
+          {
+            "vars": "all",
+            "varsIgnorePattern": "[_]",
+            "args": "after-used",
+            "argsIgnorePattern": "^_",
+            "ignoreRestSiblings": false,
+            "caughtErrors": "none"
+          }
+        ],
+        "object-shorthand": "error",
+        "prefer-arrow-callback": "warn",
+        "prefer-template": "warn",
+        "prettier/prettier": "warn",
+        "rxjs-angular/prefer-takeuntil": [
+          "error",
+          {
+            "checkDestroy": true,
+            "checkComplete": true,
+            "checkDecorators": ["Component", "Pipe", "Directive"]
+          }
+        ],
+        "rxjs/finnish": [
+          "error",
+          {
+            "functions": false,
+            "methods": false,
+            "parameters": false,
+            "properties": false,
+            "variables": true
+          }
+        ],
+        "rxjs/no-create": "error",
+        "rxjs/no-ignored-replay-buffer": "error",
+        "rxjs/no-ignored-subscribe": "error",
+        "rxjs/no-internal": "error",
+        "rxjs/no-nested-subscribe": "warn",
+        "rxjs/no-subclass": "error",
+        "rxjs/no-subject-unsubscribe": "error",
+        "rxjs/no-subject-value": "error",
+        "rxjs/no-unsafe-catch": "error",
+        "rxjs/no-unsafe-subject-next": "error",
+        "rxjs/no-unsafe-switchmap": "error",
+        "rxjs/no-unsafe-takeuntil": "error",
+        "unicorn/no-null": [
+          "warn",
+          {
+            "checkStrictEquality": true
+          }
+        ],
+        "unicorn/prefer-switch": [
+          "warn",
+          {
+            "minimumCases": 3
+          }
+        ],
+        "unused-imports/no-unused-imports": "error"
+      }
+    },
+    {
+      "files": ["*.js"],
+      "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+      "env": {
+        "es6": true,
+        "node": true
+      },
+      "parserOptions": {
+        "ecmaVersion": "latest"
+      },
+      "rules": {
+        "arrow-body-style": ["warn", "as-needed"],
+        "prefer-arrow-callback": "warn",
+        "prettier/prettier": "warn"
+      }
+    },
+    {
+      "files": ["*.mjs"],
+      "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+      "env": {
+        "es6": true,
+        "node": true
+      },
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+      },
+      "rules": {
+        "arrow-body-style": ["warn", "as-needed"],
+        "ish-custom-rules/ordered-imports": "warn",
+        "prefer-arrow-callback": "warn",
+        "prefer-template": "warn",
+        "prettier/prettier": "warn"
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {}
+    },
+    {
+      "files": ["*.html"],
+      "excludedFiles": ["*inline-template-*.component.html"],
+      "extends": ["plugin:prettier/recommended"],
+      "rules": {
+        "prettier/prettier": [
+          "warn",
+          {
+            "parser": "angular"
+          }
+        ]
+      }
+    }
+  ]
+}

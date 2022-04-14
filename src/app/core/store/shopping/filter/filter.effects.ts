@@ -8,7 +8,7 @@ import { Product } from 'ish-core/models/product/product.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { loadProductFail, loadProductSuccess } from 'ish-core/store/shopping/products';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
 
 import {
   applyFilter,
@@ -31,38 +31,21 @@ export class FilterEffects {
     private store: Store
   ) {}
 
-  loadAvailableFilterForCategories$ = createEffect(() =>
+  loadAvailableFilters$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadFilterForCategory),
-      mapToPayloadProperty('uniqueId'),
-      mergeMap(uniqueId =>
-        this.filterService.getFilterForCategory(uniqueId).pipe(
-          map(filterNavigation => loadFilterSuccess({ filterNavigation })),
-          mapErrorToAction(loadFilterFail)
-        )
-      )
-    )
-  );
-
-  loadFilterForSearch$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadFilterForSearch),
-      mapToPayloadProperty('searchTerm'),
-      mergeMap(searchTerm =>
-        this.filterService.getFilterForSearch(searchTerm).pipe(
-          map(filterNavigation => loadFilterSuccess({ filterNavigation })),
-          mapErrorToAction(loadFilterFail)
-        )
-      )
-    )
-  );
-
-  loadFilterForMaster$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadFilterForMaster),
-      mapToPayloadProperty('masterSKU'),
-      mergeMap(masterSKU =>
-        this.filterService.getFilterForMaster(masterSKU).pipe(
+      ofType(loadFilterForCategory, loadFilterForSearch, loadFilterForMaster),
+      map(action => {
+        switch (action.type) {
+          case loadFilterForCategory.type:
+            return this.filterService.getFilterForCategory(action.payload.uniqueId);
+          case loadFilterForSearch.type:
+            return this.filterService.getFilterForSearch(action.payload.searchTerm);
+          case loadFilterForMaster.type:
+            return this.filterService.getFilterForMaster(action.payload.masterSKU);
+        }
+      }),
+      switchMap(observable$ =>
+        observable$.pipe(
           map(filterNavigation => loadFilterSuccess({ filterNavigation })),
           mapErrorToAction(loadFilterFail)
         )

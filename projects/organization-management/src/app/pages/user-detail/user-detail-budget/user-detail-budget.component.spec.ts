@@ -59,12 +59,12 @@ describe('User Detail Budget Component', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('[data-testing-id=user-budget]')).toMatchInlineSnapshot(`
-      <div class="col-md-12" data-testing-id="user-budget">
+      <div data-testing-id="user-budget" class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">account.user.new.order_spend_limit.label</dt>
-          <dd class="col-md-8" data-testing-id="order-spend-limit-field">USD 100</dd>
+          <dd data-testing-id="order-spend-limit-field" class="col-md-8">USD 100</dd>
           <dt class="col-md-4">account.budget.label</dt>
-          <dd class="col-md-8" data-testing-id="budget-field">USD 5000</dd>
+          <dd data-testing-id="budget-field" class="col-md-8">USD 5000</dd>
         </dl>
       </div>
     `);
@@ -75,9 +75,9 @@ describe('User Detail Budget Component', () => {
 
     expect(element.querySelector('[data-testing-id=edit-budget]')).toMatchInlineSnapshot(`
       <a
-        class="btn-tool"
-        data-testing-id="edit-budget"
         routerlink="budget"
+        data-testing-id="edit-budget"
+        class="btn-tool"
         title="account.profile.update.link"
         ><fa-icon ng-reflect-icon="fas,pencil-alt"></fa-icon
       ></a>

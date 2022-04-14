@@ -6,7 +6,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { AccountProfileCompanyPageComponent } from './account-profile-company-page.component';
 import { AccountProfileCompanyComponent } from './account-profile-company/account-profile-company.component';
@@ -23,11 +22,7 @@ describe('Account Profile Company Page Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [
-        AccountProfileCompanyPageComponent,
-        MockComponent(AccountProfileCompanyComponent),
-        MockComponent(LoadingComponent),
-      ],
+      declarations: [AccountProfileCompanyPageComponent, MockComponent(AccountProfileCompanyComponent)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

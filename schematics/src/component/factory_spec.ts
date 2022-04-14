@@ -1,9 +1,8 @@
 import { noop } from '@angular-devkit/schematics';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { PWAComponentOptionsSchema as Options } from 'schemas/component/schema';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAComponentOptionsSchema as Options } from './schema';
 
 describe('Component Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -17,7 +16,8 @@ describe('Component Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner).toPromise();
+    const appTree$ = createApplication(schematicRunner);
+    appTree = await appTree$.toPromise();
   });
 
   it('should create a component', async () => {
@@ -145,8 +145,10 @@ describe('Component Schematic', () => {
 
   it('should fail if specified module does not exist', done => {
     const options = { ...defaultOptions, module: '/src/app.moduleXXX.ts' };
-    schematicRunner.runSchematicAsync('component', options, appTree).subscribe(noop, err => {
-      expect(err).toMatchInlineSnapshot(`
+    schematicRunner.runSchematicAsync('component', options, appTree).subscribe({
+      next: noop,
+      error: err => {
+        expect(err).toMatchInlineSnapshot(`
         [Error: Specified module '/src/app.moduleXXX.ts' does not exist.
         Looked in the following directories:
             /src/app/src/app.moduleXXX.ts
@@ -155,7 +157,8 @@ describe('Component Schematic', () => {
             /src/app
             /src]
       `);
-      done();
+        done();
+      },
     });
   });
 
@@ -193,7 +196,7 @@ describe('Component Schematic', () => {
   });
 
   it('should use the default project prefix if none is passed', async () => {
-    const options = { ...defaultOptions, prefix: undefined };
+    const options = { ...defaultOptions, prefix: undefined as string };
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     const content = tree.readContent('/src/app/foo/foo.component.ts');
@@ -261,5 +264,32 @@ describe('Component Schematic', () => {
     appTree = await schematicRunner.runSchematicAsync('component', defaultOptions, appTree).toPromise();
 
     expect(appTree.files).toContain('/projects/bar/custom/app/foo/foo.component.ts');
+  });
+
+  it('should find the closest module respecting all override', async () => {
+    const options = { ...defaultOptions };
+    const fooModules = ['/src/app/foo/foo.module.ts', '/src/app/foo/foo.module.all.ts'];
+    fooModules.forEach(fooModule =>
+      appTree.create(
+        fooModule,
+        `
+      import { NgModule } from '@angular/core';
+
+      @NgModule({
+        imports: [],
+        declarations: []
+      })
+      export class FooModule { }
+    `
+      )
+    );
+
+    const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
+    expect(tree.readContent('/src/app/foo/foo.module.ts')).not.toMatch(
+      /import { FooComponent } from '.\/foo.component'/
+    );
+    expect(tree.readContent('/src/app/foo/foo.module.all.ts')).toMatch(
+      /import { FooComponent } from '.\/foo.component'/
+    );
   });
 });

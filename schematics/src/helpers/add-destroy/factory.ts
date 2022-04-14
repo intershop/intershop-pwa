@@ -1,11 +1,10 @@
 import { Rule, SchematicsException, chain } from '@angular-devkit/schematics';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWAAddDestroySubjectToComponentOptionsSchema as Options } from 'schemas/helpers/add-destroy/schema';
 import { Scope } from 'ts-morph';
 
 import { applyLintFix } from '../../utils/lint-fix';
 import { createTsMorphProject } from '../../utils/ts-morph';
-
-import { PWAAddDestroySubjectToComponentOptionsSchema as Options } from './schema';
 
 export function add(options: Options): Rule {
   return async host => {
@@ -40,7 +39,7 @@ export function add(options: Options): Rule {
         if (!classDeclaration.getProperty('destroy$')) {
           classDeclaration.insertProperty(classDeclaration.getProperties().length, {
             name: 'destroy$',
-            initializer: 'new Subject()',
+            initializer: 'new Subject<void>()',
             scope: Scope.Private,
           });
         }
@@ -76,9 +75,7 @@ this.destroy$.complete();`);
     host.overwrite(path, sourceFile.getText());
 
     const operations = [];
-    if (!options.ci) {
-      operations.push(applyLintFix());
-    }
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

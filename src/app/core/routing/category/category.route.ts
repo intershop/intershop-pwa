@@ -8,7 +8,13 @@ import { selectRouteParam, selectRouteParamAorB } from 'ish-core/store/core/rout
 import { reservedCharactersRegEx } from 'ish-core/utils/routing';
 
 export function generateLocalizedCategorySlug(category: Category) {
-  return category?.name?.replace(reservedCharactersRegEx, '-').replace(/-+/g, '-').replace(/-+$/, '') || '';
+  return (
+    category?.name
+      ?.replace(reservedCharactersRegEx, '-')
+      .replace(/-+/g, '-')
+      .replace(/-+$/, '')
+      .replace('-cat', '-Cat') || ''
+  );
 }
 
 const categoryRouteFormat = /^\/(?!category|categoryref\/.*$)(.*-)?cat(.*)$/;
@@ -19,7 +25,7 @@ export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
     return { consumed: [] };
   }
 
-  const url = '/' + segments.map(s => s.path).join('/');
+  const url = `/${segments.map(s => s.path).join('/')}`;
   if (categoryRouteFormat.test(url)) {
     const match = categoryRouteFormat.exec(url);
     const posParams: { [id: string]: UrlSegment } = {};

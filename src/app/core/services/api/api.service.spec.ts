@@ -18,13 +18,12 @@ import {
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { serverError } from 'ish-core/store/core/error';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { getPGID } from 'ish-core/store/customer/user';
 
 import { ApiService, unpackEnvelope } from './api.service';
 
 // testing here is handled by http testing controller
-// tslint:disable: use-async-synchronization-in-tests
+/* eslint-disable ish-custom-rules/use-async-synchronization-in-tests */
 
 describe('Api Service', () => {
   describe('API Service Methods', () => {
@@ -76,7 +75,7 @@ describe('Api Service', () => {
     it('should create Error Action if httpClient.options throws Error.', () => {
       const statusText = 'ERROR';
 
-      apiService.options('data').subscribe(fail, fail);
+      apiService.options('data').subscribe({ next: fail, error: fail });
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
 
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation(noop);
@@ -105,7 +104,7 @@ describe('Api Service', () => {
     it('should create Error Action if httpClient.get throws Error.', () => {
       const statusText = 'ERROR';
 
-      apiService.get('data').subscribe(fail, fail);
+      apiService.get('data').subscribe({ next: fail, error: fail });
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
 
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation(noop);
@@ -286,8 +285,8 @@ describe('Api Service', () => {
 
       const req = httpTestingController.expectOne(`${REST_URL}/something`);
       req.flush([
-        { uri: REST_URL_PART + '/dummy1' },
-        { type: 'Link', uri: REST_URL_PART + '/dummy2' },
+        { uri: `${REST_URL_PART}/dummy1` },
+        { type: 'Link', uri: `${REST_URL_PART}/dummy2` },
         { type: 'Link' },
       ] as Link[]);
 
@@ -331,7 +330,7 @@ describe('Api Service', () => {
           done();
         });
 
-      httpTestingController.expectOne(`${REST_URL}/something`).flush({ type: 'Link', uri: REST_URL_PART + '/dummy' });
+      httpTestingController.expectOne(`${REST_URL}/something`).flush({ type: 'Link', uri: `${REST_URL_PART}/dummy` });
 
       httpTestingController.expectOne(`${REST_URL}/dummy`).flush({ data: 'dummy' });
     });
@@ -340,16 +339,16 @@ describe('Api Service', () => {
       apiService
         .get('something')
         .pipe(apiService.resolveLink())
-        .subscribe(
-          fail,
-          err => {
+        .subscribe({
+          next: fail,
+          error: err => {
             expect(err).toBeTruthy();
             done();
           },
-          fail
-        );
+          complete: fail,
+        });
 
-      httpTestingController.expectOne(`${REST_URL}/something`).flush({ uri: REST_URL_PART + '/dummy' });
+      httpTestingController.expectOne(`${REST_URL}/something`).flush({ uri: `${REST_URL_PART}/dummy` });
 
       httpTestingController.expectNone(`${REST_URL}/dummy`);
     });
@@ -357,11 +356,14 @@ describe('Api Service', () => {
     it('should append additional headers when resolveLink is used with header options', () => {
       const someHeader = { headers: new HttpHeaders({ dummy: 'linkHeaderTest' }) };
 
-      apiService.get('something', someHeader).pipe(apiService.resolveLink(someHeader)).subscribe(fail, fail, fail);
+      apiService
+        .get('something', someHeader)
+        .pipe(apiService.resolveLink(someHeader))
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/something`);
       expect(req.request.headers.get('dummy')).toEqual('linkHeaderTest');
-      req.flush({ type: 'Link', uri: REST_URL_PART + '/dummy' });
+      req.flush({ type: 'Link', uri: `${REST_URL_PART}/dummy` });
 
       const req2 = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req2.request.headers.get('dummy')).toEqual('linkHeaderTest');
@@ -370,13 +372,16 @@ describe('Api Service', () => {
     it('should append additional headers to all link requests when resolveLinks is used with header options', () => {
       const someHeader = { headers: new HttpHeaders({ dummy: 'linkHeaderTest' }) };
 
-      apiService.get('something', someHeader).pipe(apiService.resolveLinks(someHeader)).subscribe(fail, fail, fail);
+      apiService
+        .get('something', someHeader)
+        .pipe(apiService.resolveLinks(someHeader))
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/something`);
       expect(req.request.headers.get('dummy')).toEqual('linkHeaderTest');
       req.flush([
-        { type: 'Link', uri: REST_URL_PART + '/dummy1' },
-        { type: 'Link', uri: REST_URL_PART + '/dummy2' },
+        { type: 'Link', uri: `${REST_URL_PART}/dummy1` },
+        { type: 'Link', uri: `${REST_URL_PART}/dummy2` },
       ] as Link[]);
 
       const req2 = httpTestingController.expectOne(`${REST_URL}/dummy1`);
@@ -418,19 +423,21 @@ describe('Api Service', () => {
     });
 
     it('should bypass URL construction when path is an external link', () => {
-      apiService.get('http://google.de').subscribe(fail, fail, fail);
+      apiService.get('http://google.de').subscribe({ next: fail, error: fail, complete: fail });
 
       httpTestingController.expectOne('http://google.de');
     });
 
     it('should bypass URL construction when path is an external secure link', () => {
-      apiService.get('https://google.de').subscribe(fail, fail, fail);
+      apiService.get('https://google.de').subscribe({ next: fail, error: fail, complete: fail });
 
       httpTestingController.expectOne('https://google.de');
     });
 
     it('should construct a URL based on ICM REST API when supplying a relative URL without sending locale or currency', () => {
-      apiService.get('relative', { sendLocale: false, sendCurrency: false }).subscribe(fail, fail, fail);
+      apiService
+        .get('relative', { sendLocale: false, sendCurrency: false })
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const requests = httpTestingController.match(x => !!x);
       expect(requests).toHaveLength(1);
@@ -444,7 +451,7 @@ describe('Api Service', () => {
           sendLocale: false,
           sendCurrency: false,
         })
-        .subscribe(fail, fail, fail);
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const requests = httpTestingController.match(x => !!x);
       expect(requests).toHaveLength(1);
@@ -454,7 +461,9 @@ describe('Api Service', () => {
     });
 
     it('should construct a URL based on ICM REST API when supplying a deep relative URL', () => {
-      apiService.get('very/deep/relative/url', { sendLocale: false, sendCurrency: false }).subscribe(fail, fail, fail);
+      apiService
+        .get('very/deep/relative/url', { sendLocale: false, sendCurrency: false })
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const requests = httpTestingController.match(x => !!x);
       expect(requests).toHaveLength(1);
@@ -467,7 +476,7 @@ describe('Api Service', () => {
       store$.overrideSelector(getCurrentLocale, 'en_US');
       store$.overrideSelector(getCurrentCurrency, 'USD');
 
-      apiService.get('relative').subscribe(fail, fail, fail);
+      apiService.get('relative').subscribe({ next: fail, error: fail, complete: fail });
 
       const requests = httpTestingController.match(x => !!x);
       expect(requests).toHaveLength(1);
@@ -481,7 +490,7 @@ describe('Api Service', () => {
 
       apiService
         .get('relative', { sendPGID: true, sendLocale: false, sendCurrency: false })
-        .subscribe(fail, fail, fail);
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const requests = httpTestingController.match(x => !!x);
       expect(requests).toHaveLength(1);
@@ -495,7 +504,7 @@ describe('Api Service', () => {
 
       apiService
         .get('relative', { sendSPGID: true, sendLocale: false, sendCurrency: false })
-        .subscribe(fail, fail, fail);
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const requests = httpTestingController.match(x => !!x);
       expect(requests).toHaveLength(1);
@@ -509,7 +518,7 @@ describe('Api Service', () => {
 
       apiService
         .get('very/deep/relative', { sendPGID: true, sendLocale: false, sendCurrency: false })
-        .subscribe(fail, fail, fail);
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const requests = httpTestingController.match(x => !!x);
       expect(requests).toHaveLength(1);
@@ -525,7 +534,7 @@ describe('Api Service', () => {
 
       apiService
         .get('very/deep/relative', { sendPGID: true, params: new HttpParams().set('view', 'grid').set('depth', '3') })
-        .subscribe(fail, fail, fail);
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const requests = httpTestingController.match(x => !!x);
       expect(requests).toHaveLength(1);
@@ -544,11 +553,7 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
-        imports: [
-          CoreStoreModule.forTesting(['configuration', 'serverConfig']),
-          CustomerStoreModule.forTesting('user'),
-          HttpClientTestingModule,
-        ],
+        imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig']), HttpClientTestingModule],
       });
 
       apiService = TestBed.inject(ApiService);
@@ -581,7 +586,7 @@ describe('Api Service', () => {
     });
 
     it('should always have default headers', () => {
-      apiService.get('dummy').subscribe(fail, fail, fail);
+      apiService.get('dummy').subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.keys()).not.toBeEmpty();
@@ -596,7 +601,7 @@ describe('Api Service', () => {
             dummy: 'test',
           }),
         })
-        .subscribe(fail, fail, fail);
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.keys()).not.toBeEmpty();
@@ -613,7 +618,7 @@ describe('Api Service', () => {
             'content-type': 'application/xml',
           }),
         })
-        .subscribe(fail, fail, fail);
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.keys()).not.toBeEmpty();
@@ -622,7 +627,7 @@ describe('Api Service', () => {
     });
 
     it('should set Captcha V2 authorization header key when captcha is supplied without captchaAction', () => {
-      apiService.get('dummy', { captcha: { captcha: 'token' } }).subscribe(fail, fail, fail);
+      apiService.get('dummy', { captcha: { captcha: 'token' } }).subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toMatchInlineSnapshot(
@@ -633,7 +638,7 @@ describe('Api Service', () => {
     it('should set Captcha V3 authorization header key when captcha is supplied', () => {
       apiService
         .get('dummy', { captcha: { captcha: 'token', captchaAction: 'create_account' } })
-        .subscribe(fail, fail, fail);
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toMatchInlineSnapshot(
@@ -642,21 +647,21 @@ describe('Api Service', () => {
     });
 
     it('should not set header when captcha config object is empty', () => {
-      apiService.get('dummy', { captcha: {} }).subscribe(fail, fail, fail);
+      apiService.get('dummy', { captcha: {} }).subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toBeFalsy();
     });
 
     it('should have default response type of "json" if no other is provided', () => {
-      apiService.get('dummy').subscribe(fail, fail, fail);
+      apiService.get('dummy').subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.responseType).toEqual('json');
     });
 
     it('should append specific response type of "text" if provided', () => {
-      apiService.get('dummy', { responseType: 'text' }).subscribe(fail, fail, fail);
+      apiService.get('dummy', { responseType: 'text' }).subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.responseType).toEqual('text');
@@ -695,7 +700,7 @@ describe('Api Service', () => {
     });
 
     it('should dispatch communication timeout errors when getting status 0', done => {
-      apiService.get('route').subscribe(fail, fail, done);
+      apiService.get('route').subscribe({ next: fail, error: fail, complete: done });
 
       httpTestingController
         .expectOne(() => true)
@@ -712,7 +717,7 @@ describe('Api Service', () => {
     });
 
     it('should dispatch general errors when getting status 500', done => {
-      apiService.get('route').subscribe(fail, fail, done);
+      apiService.get('route').subscribe({ next: fail, error: fail, complete: done });
 
       httpTestingController
         .expectOne(() => true)
@@ -729,14 +734,14 @@ describe('Api Service', () => {
     });
 
     it('should not dispatch errors when getting status 404', done => {
-      apiService.get('route').subscribe(
-        fail,
-        err => {
+      apiService.get('route').subscribe({
+        next: fail,
+        error: err => {
           expect(err).toBeInstanceOf(HttpErrorResponse);
           done();
         },
-        fail
-      );
+        complete: fail,
+      });
 
       httpTestingController
         .expectOne(() => true)

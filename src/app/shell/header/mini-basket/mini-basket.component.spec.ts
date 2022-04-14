@@ -36,9 +36,9 @@ describe('Mini Basket Component', () => {
       ],
       imports: [TranslateModule.forRoot()],
       providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
     }).compileComponents();
   });

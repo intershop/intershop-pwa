@@ -147,6 +147,10 @@
         text-transform: uppercase;
       }
 
+      .form-group {
+        margin-bottom: 0;
+      }
+
       &:last-child {
         padding-right: 0;
       }
@@ -163,7 +167,7 @@
         display: none !important;
       }
 
-      @media (max-width: $screen-xs-max) {
+      @media (max-width: $screen-sm-max) {
         label {
           margin-right: $space-default * 0.5;
         }
@@ -256,6 +260,10 @@
 
     .product-title {
       text-align: left;
+    }
+
+    .scaled-prices {
+      margin-bottom: 0;
     }
 
     .no-border {

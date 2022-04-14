@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,6 +9,7 @@ import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -38,7 +38,7 @@ describe('Search Effects', () => {
     when(productsServiceMock.searchProducts(anyString(), anyNumber(), anything(), anyNumber())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {
         if (!searchTerm) {
-          return throwError(makeHttpError({ message: 'ERROR' }));
+          return throwError(() => makeHttpError({ message: 'ERROR' }));
         } else {
           const currentSlice = skus.slice(offset, amount + offset);
           return of({
@@ -50,24 +50,20 @@ describe('Search Effects', () => {
       }
     );
 
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router'], [SearchEffects, ProductListingEffects]),
         RouterTestingModule.withRoutes([
-          { path: 'error', component: DummyComponent },
-          { path: 'search/:searchTerm', component: DummyComponent },
+          { path: 'error', children: [] },
+          { path: 'search/:searchTerm', children: [] },
         ]),
         ShoppingStoreModule.forTesting('productListing'),
         TranslateModule.forRoot(),
       ],
       providers: [
-        provideStoreSnapshots(),
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
+        provideStoreSnapshots(),
       ],
     });
 
@@ -77,20 +73,25 @@ describe('Search Effects', () => {
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
 
     store$.dispatch(setProductListingPageSize({ itemsPerPage: 12 }));
+    store$.dispatch(personalizationStatusDetermined());
   });
 
   describe('triggerSearch$', () => {
-    it('should trigger action if search URL is matched', done => {
+    it('should trigger actions if search URL is matched', fakeAsync(() => {
       router.navigateByUrl('/search/dummy');
 
-      effects.triggerSearch$.subscribe(data => {
-        expect(data).toMatchInlineSnapshot(`
-          [Product Listing] Load More Products:
-            id: {"type":"search","value":"dummy"}
-        `);
-        done();
-      });
-    });
+      tick(200);
+
+      expect(store$.actionsArray(/Load More Products/)).toMatchInlineSnapshot(`
+        [Product Listing] Load More Products:
+          id: {"type":"search","value":"dummy"}
+        [Product Listing Internal] Load More Products For Params:
+          id: {"type":"search","value":"dummy"}
+          filters: undefined
+          sorting: undefined
+          page: undefined
+      `);
+    }));
   });
 
   describe('suggestSearch$', () => {
@@ -146,12 +147,12 @@ describe('Search Effects', () => {
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
-      when(suggestServiceMock.search(anyString())).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(suggestServiceMock.search(anyString())).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(4000);
 
-      effects.suggestSearch$.subscribe(fail, fail, fail);
+      effects.suggestSearch$.subscribe({ next: fail, error: fail });
 
       verify(suggestServiceMock.search('good')).once();
     }));

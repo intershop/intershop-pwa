@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,27 +10,23 @@ describe('Authorization Toggle Guard', () => {
   let router: Router;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         AuthorizationToggleModule.forTesting('DO_THIS'),
         RouterTestingModule.withRoutes([
           {
             path: 'error',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'page1',
-            component: DummyComponent,
+            children: [],
             canActivate: [AuthorizationToggleGuard],
             data: { permission: 'DO_THIS' },
           },
           {
             path: 'page2',
-            component: DummyComponent,
+            children: [],
             canActivate: [AuthorizationToggleGuard],
             data: { permission: 'DO_THAT' },
           },

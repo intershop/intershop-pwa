@@ -11,12 +11,11 @@ import {
   url,
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWAExtensionOptionsSchema as Options } from 'schemas/extension/schema';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 import { addExportToNgModule, addImportToNgModule, addImportToNgModuleBefore } from '../utils/registration';
-
-import { PWAExtensionOptionsSchema as Options } from './schema';
 
 export function createExtension(options: Options): Rule {
   return async host => {
@@ -46,7 +45,7 @@ export function createExtension(options: Options): Rule {
     const projectRoot = buildDefaultPath(project);
 
     const moduleImportOptions = {
-      artifactName: strings.classify(options.name) + 'ExportsModule',
+      artifactName: `${strings.classify(options.name)}ExportsModule`,
       moduleImportPath: `${projectRoot}/extensions/${strings.dasherize(options.name)}/exports/${strings.dasherize(
         options.name
       )}-exports.module`,
@@ -61,7 +60,7 @@ export function createExtension(options: Options): Rule {
 
     const appModuleOptions = {
       module: `${projectRoot}/app.module.ts`,
-      artifactName: strings.classify(options.name) + 'RoutingModule',
+      artifactName: `${strings.classify(options.name)}RoutingModule`,
       moduleImportPath: `${projectRoot}/extensions/${strings.dasherize(options.name)}/pages/${strings.dasherize(
         options.name
       )}-routing.module`,

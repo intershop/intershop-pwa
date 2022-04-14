@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,9 +9,9 @@ import { Observable, noop, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { Basket } from 'ish-core/models/basket/basket.model';
+import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { getCurrentBasketId } from 'ish-core/store/customer/basket';
+import { getCurrentBasket, getCurrentBasketId } from 'ish-core/store/customer/basket';
 
 import { QuoteRequest, QuoteStub } from '../../models/quoting/quoting.model';
 import { QuotingService } from '../../services/quoting/quoting.service';
@@ -24,6 +23,7 @@ import {
   createQuoteRequestFromQuote,
   createQuoteRequestFromQuoteRequest,
   createQuoteRequestFromQuoteSuccess,
+  deleteQuoteFromBasket,
   deleteQuotingEntity,
   loadQuoting,
   loadQuotingDetail,
@@ -43,21 +43,17 @@ describe('Quoting Effects', () => {
   let router: Router;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     quotingService = mock(QuotingService);
     basketService = mock(BasketService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [RouterTestingModule.withRoutes([{ path: 'account/quotes/:id', component: DummyComponent }])],
+      imports: [RouterTestingModule.withRoutes([{ path: 'account/quotes/:id', children: [] }])],
       providers: [
-        QuotingEffects,
+        { provide: BasketService, useFactory: () => instance(basketService) },
+        { provide: QuotingService, useFactory: () => instance(quotingService) },
         provideMockActions(() => actions$),
         provideMockStore(),
-        { provide: QuotingService, useFactory: () => instance(quotingService) },
-        { provide: BasketService, useFactory: () => instance(basketService) },
+        QuotingEffects,
       ],
     });
 
@@ -91,7 +87,7 @@ describe('Quoting Effects', () => {
     it('should navigate to created quote request 2', fakeAsync(() => {
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
-      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+      effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(0);
 
@@ -101,7 +97,7 @@ describe('Quoting Effects', () => {
     it('should navigate to created quote request 3', done => {
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
-      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+      effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
       setTimeout(() => {
         expect(location.path()).toMatchInlineSnapshot(`"/account/quotes/123"`);
@@ -115,7 +111,7 @@ describe('Quoting Effects', () => {
 
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
-      effects.redirectToNewQuoteRequest$.subscribe(noop, fail, noop);
+      effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
       verify(routerSpy.navigateByUrl(anything())).once();
 
@@ -180,7 +176,7 @@ describe('Quoting Effects', () => {
 
   describe('addQuoteToBasket$', () => {
     beforeEach(() => {
-      when(quotingService.addQuoteToBasket(anything())).thenReturn(of(''));
+      when(quotingService.addQuoteToBasket(anything(), anything())).thenReturn(of(''));
     });
 
     describe('with basket', () => {
@@ -192,7 +188,7 @@ describe('Quoting Effects', () => {
         actions$ = of(addQuoteToBasket({ id: 'quoteID' }));
 
         effects.addQuoteToBasket$.subscribe(() => {
-          verify(quotingService.addQuoteToBasket('quoteID')).once();
+          verify(quotingService.addQuoteToBasket('basketID', 'quoteID')).once();
           verify(basketService.createBasket()).never();
           done();
         });
@@ -209,7 +205,7 @@ describe('Quoting Effects', () => {
         actions$ = of(addQuoteToBasket({ id: 'quoteID' }));
 
         effects.addQuoteToBasket$.subscribe(() => {
-          verify(quotingService.addQuoteToBasket('quoteID')).once();
+          verify(quotingService.addQuoteToBasket('basketID', 'quoteID')).once();
           verify(basketService.createBasket()).once();
           done();
         });
@@ -277,7 +273,6 @@ describe('Quoting Effects', () => {
 
   describe('submitQuoteRequest$', () => {
     beforeEach(() => {
-      // tslint:disable-next-line: no-unnecessary-callback-wrapper
       when(quotingService.submitQuoteRequest(anything())).thenCall(id => of(id));
       when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
         of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
@@ -344,7 +339,6 @@ describe('Quoting Effects', () => {
 
   describe('updateQuoteRequest$', () => {
     beforeEach(() => {
-      // tslint:disable-next-line: no-unnecessary-callback-wrapper
       when(quotingService.updateQuoteRequest(anything(), anything())).thenCall(id => of(id));
       when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
         of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
@@ -380,6 +374,55 @@ describe('Quoting Effects', () => {
             entity: {"id":"quoteRequestID","type":"QuoteRequest","completenessLe...
         `);
         done();
+      });
+    });
+  });
+
+  describe('deleteQuoteFromBasket$', () => {
+    it('should dispatch deleteBasketItem action for quote related item', done => {
+      actions$ = of(deleteQuoteFromBasket({ id: 'QUOTE' }));
+
+      store$.overrideSelector(getCurrentBasket, {
+        lineItems: [
+          { id: '1' },
+          { id: '2', quote: 'QUOTE' },
+          { id: '3', quote: 'QUOTE' },
+          { id: '4', quote: 'QUOTE2' },
+        ],
+      } as BasketView);
+
+      effects.deleteQuoteFromBasket$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Basket] Delete Basket Item:
+            itemId: "2"
+        `);
+        done();
+      });
+    });
+
+    it('should do nothing when quote is not in the basket', done => {
+      actions$ = of(deleteQuoteFromBasket({ id: 'QUOTE' }));
+
+      store$.overrideSelector(getCurrentBasket, {
+        lineItems: [{ id: '1' }],
+      } as BasketView);
+
+      effects.deleteQuoteFromBasket$.subscribe({
+        next: fail,
+        error: fail,
+        complete: done,
+      });
+    });
+
+    it('should do nothing when there is no basket', done => {
+      actions$ = of(deleteQuoteFromBasket({ id: 'QUOTE' }));
+
+      store$.overrideSelector(getCurrentBasket, undefined);
+
+      effects.deleteQuoteFromBasket$.subscribe({
+        next: fail,
+        error: fail,
+        complete: done,
       });
     });
   });

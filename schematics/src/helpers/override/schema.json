@@ -3,6 +3,7 @@
   "$id": "Override",
   "title": "Override Options Schema",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",
@@ -27,7 +28,7 @@
     },
     "theme": {
       "type": "string",
-      "enum": ["default", "blue", "all"],
+      "enum": ["b2b", "b2c", "all"],
       "x-prompt": "For which theme?"
     },
     "ts": {

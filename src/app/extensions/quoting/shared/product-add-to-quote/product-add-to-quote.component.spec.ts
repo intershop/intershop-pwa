@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -24,15 +23,12 @@ describe('Product Add To Quote Component', () => {
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToQuote')).thenReturn(of(true));
 
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     const accountFacade = mock(AccountFacade);
     when(accountFacade.isLoggedIn$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]), TranslateModule.forRoot()],
-      declarations: [DummyComponent, MockComponent(FaIconComponent), ProductAddToQuoteComponent],
+      imports: [RouterTestingModule.withRoutes([{ path: '**', children: [] }]), TranslateModule.forRoot()],
+      declarations: [MockComponent(FaIconComponent), ProductAddToQuoteComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });

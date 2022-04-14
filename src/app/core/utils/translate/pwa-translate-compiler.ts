@@ -1,14 +1,22 @@
-import { Injectable, Injector, isDevMode } from '@angular/core';
+import { Injectable, Injector, isDevMode, ɵgetLocalePluralCase } from '@angular/core';
 import { TranslateCompiler, TranslateService } from '@ngx-translate/core';
+import { once } from 'lodash-es';
 
 import { Translations } from './translations.type';
 
 const cache: Record<string, Function> = {};
 
+enum PluralCases {
+  zero = 0,
+  one = 1,
+  two = 2,
+  few = 3,
+  many = 4,
+  other = 5,
+}
+
 @Injectable()
 export class PWATranslateCompiler implements TranslateCompiler {
-  constructor(private injector: Injector) {}
-
   private static MAX_COMPILATION_LENGTH = 1000;
 
   /**
@@ -44,13 +52,20 @@ export class PWATranslateCompiler implements TranslateCompiler {
    * - "\s*" captures (and ignores) additional whitespace
    * - global matching ("/g") must be active to iterate over matches
    */
-  private static CASE_REGEX = /(other|=\w+)\s*\{(.*?)\}/g;
+  private static CASE_REGEX = /(zero|one|two|few|many|other|=\w+)\s*\{(.*?)\}/g;
 
   /**
    * regular expression for matching simple variables that
    * have to be replaced
    */
   private static SIMPLE_VARIABLE_REGEX = /\{\{\s*(\w+)\s*\}\}/g;
+
+  private translate: () => TranslateService;
+
+  constructor(injector: Injector) {
+    // cache TranslateService reference to avoid repeated calls to injector
+    this.translate = once(() => injector.get(TranslateService));
+  }
 
   private checkIfCompileNeeded(value: string | Function): boolean {
     return (
@@ -83,13 +98,18 @@ export class PWATranslateCompiler implements TranslateCompiler {
         if (c.startsWith('=')) {
           casesMap[c.substring(1)] = cm[2];
         } else if (c === 'other') {
+          casesMap[`plural-${c}`] = cm[2];
           defaultCase = cm[2];
+        } else {
+          casesMap[`plural-${c}`] = cm[2];
         }
       }
 
       return (args: Record<string, unknown>) => {
         const value = args?.[variable] ?? '';
-        const caseTemplate = casesMap[value?.toString()] ?? defaultCase;
+        const pluralCase = ɵgetLocalePluralCase(this.translate().currentLang)(+value);
+        const caseTemplate =
+          casesMap[value?.toString()] ?? casesMap[`plural-${PluralCases[pluralCase]}`] ?? defaultCase;
         const caseOutput = caseTemplate?.replace(/#/, value?.toString());
         const result = `${match[1]}${caseOutput}${match[5]}`;
 
@@ -105,7 +125,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
         if (rename) {
           args[rename] = args[variable];
         }
-        const delegate = this.injector.get(TranslateService).instant(key, args);
+        const delegate = this.translate().instant(key, args);
         const result = `${match[1]}${delegate}${match[4]}`;
 
         return this.recurse(result, args);
@@ -140,8 +160,11 @@ export class PWATranslateCompiler implements TranslateCompiler {
   }
 
   compileTranslations(translations: Translations): Translations {
+    // be sure translate dependency is initialized on the first run
+    this.translate();
+
     // This implementation is mutable by intention
-    // tslint:disable-next-line: forin - object does not have inherited properties
+    // eslint-disable-next-line guard-for-in
     for (const key in translations) {
       translations[key] = this.compile(translations[key] as string);
     }

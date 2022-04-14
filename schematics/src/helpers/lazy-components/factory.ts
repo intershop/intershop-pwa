@@ -1,7 +1,6 @@
 import { Rule, SchematicsException, chain, schematic } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
-
-import { PWALazyComponentsOptionsSchema as Options } from './schema';
+import { PWALazyComponentsOptionsSchema as Options } from 'schemas/helpers/lazy-components/schema';
 
 export function createLazyComponents(options: Options): Rule {
   return async host => {
@@ -10,7 +9,7 @@ export function createLazyComponents(options: Options): Rule {
     }
     const workspace = await getWorkspace(host);
     const project = workspace.projects.get(options.project);
-    const operations = [];
+    const operations: Rule[] = [];
 
     const fileVisitor = (file: string) => {
       if (file.endsWith('.component.ts')) {

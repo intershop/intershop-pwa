@@ -14,6 +14,7 @@ export class OrderTemplateService {
 
   /**
    * Gets a list of order template for the current user.
+   *
    * @returns           The customer's order templates.
    */
   getOrderTemplates(): Observable<OrderTemplate[]> {
@@ -27,12 +28,13 @@ export class OrderTemplateService {
 
   /**
    * Gets a order template of the given id for the current user.
+   *
    * @param orderTemplateId  The order template id.
    * @returns           The order template.
    */
   getOrderTemplate(orderTemplateId: string): Observable<OrderTemplate> {
     if (!orderTemplateId) {
-      return throwError('getOrderTemplate() called without orderTemplateId');
+      return throwError(() => new Error('getOrderTemplate() called without orderTemplateId'));
     }
     return this.apiService
       .get<OrderTemplateData>(`customers/-/users/-/wishlists/${orderTemplateId}`)
@@ -41,6 +43,7 @@ export class OrderTemplateService {
 
   /**
    * Creates a order template for the current user.
+   *
    * @param OrderTemplateDetails   The order template data.
    * @returns                 The created order template.
    */
@@ -52,18 +55,20 @@ export class OrderTemplateService {
 
   /**
    * Deletes a order template of the given id.
+   *
    * @param orderTemplateId   The order template id.
    * @returns            The order template.
    */
   deleteOrderTemplate(orderTemplateId: string): Observable<void> {
     if (!orderTemplateId) {
-      return throwError('deleteOrderTemplate() called without orderTemplateId');
+      return throwError(() => new Error('deleteOrderTemplate() called without orderTemplateId'));
     }
     return this.apiService.delete(`customers/-/users/-/wishlists/${orderTemplateId}`);
   }
 
   /**
    * Updates a order template of the given id.
+   *
    * @param orderTemplate   The order template to be updated.
    * @returns          The updated order template.
    */
@@ -75,6 +80,7 @@ export class OrderTemplateService {
 
   /**
    * Adds a product to the order template with the given id and reloads the order template.
+   *
    * @param orderTemplate Id   The order template id.
    * @param sku           The product sku.
    * @param quantity      The product quantity (default = 1).
@@ -82,10 +88,10 @@ export class OrderTemplateService {
    */
   addProductToOrderTemplate(orderTemplateId: string, sku: string, quantity: number): Observable<OrderTemplate> {
     if (!orderTemplateId) {
-      return throwError('addProductToOrderTemplate() called without orderTemplateId');
+      return throwError(() => new Error('addProductToOrderTemplate() called without orderTemplateId'));
     }
     if (!sku) {
-      return throwError('addProductToOrderTemplate() called without sku');
+      return throwError(() => new Error('addProductToOrderTemplate() called without sku'));
     }
     return this.apiService
       .post(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}?quantity=${quantity}`)
@@ -94,16 +100,17 @@ export class OrderTemplateService {
 
   /**
    * Removes a product from the order template with the given id. Returns an error observable if parameters are falsy.
+   *
    * @param wishlist Id   The order template id.
    * @param sku           The product sku.
    * @returns             The changed order template.
    */
   removeProductFromOrderTemplate(orderTemplateId: string, sku: string): Observable<OrderTemplate> {
     if (!orderTemplateId) {
-      return throwError('removeProductFromOrderTemplate() called without orderTemplateId');
+      return throwError(() => new Error('removeProductFromOrderTemplate() called without orderTemplateId'));
     }
     if (!sku) {
-      return throwError('removeProductFromOrderTemplate() called without sku');
+      return throwError(() => new Error('removeProductFromOrderTemplate() called without sku'));
     }
     return this.apiService
       .delete(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}`)

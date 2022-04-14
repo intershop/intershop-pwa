@@ -19,8 +19,9 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
   basket$: Observable<BasketView>;
   shippingMethods$: Observable<ShippingMethod[]>;
   isBusinessCustomer$: Observable<boolean>;
+  isDesiredDeliveryDate$: Observable<boolean>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   nextDisabled = false;
 
@@ -35,6 +36,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
     this.loading$ = this.checkoutFacade.basketLoading$;
     this.basketError$ = this.checkoutFacade.basketError$;
     this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethods$().pipe(shareReplay(1));
+    this.isDesiredDeliveryDate$ = this.checkoutFacade.isDesiredDeliveryDateEnabled$;
     this.isBusinessCustomer$ = this.accountFacade.isBusinessCustomer$;
   }
 

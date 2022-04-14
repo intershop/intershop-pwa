@@ -30,10 +30,11 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * Pipeable operator for elements translation (removing the envelope).
+ *
  * @param key the name of the envelope (default 'elements')
  * @returns The items of an elements array without the elements wrapper.
  */
-// tslint:disable-next-line: no-any - any to avoid having to type everything before
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, -- any to avoid having to type everything before
 export function unpackEnvelope<T>(key: string = 'elements'): OperatorFunction<any, T[]> {
   return map(data => (data?.[key]?.length ? data[key] : []));
 }
@@ -116,7 +117,7 @@ export class ApiService {
           return EMPTY;
         }
       }
-      return throwError(error);
+      return throwError(() => error);
     });
   }
 
@@ -156,7 +157,7 @@ export class ApiService {
         map(pgid => (options?.sendPGID && pgid ? `;pgid=${pgid}` : options?.sendSPGID && pgid ? `;spgid=${pgid}` : ''))
       ),
       // remaining path
-      of(path.includes('/') ? path.substr(path.indexOf('/')) : ''),
+      of(path.includes('/') ? path.substring(path.indexOf('/')) : ''),
     ]).pipe(
       first(),
       map(arr => arr.join(''))
@@ -255,6 +256,7 @@ export class ApiService {
 
   /**
    * Pipeable operator for link translation (resolving one single link).
+   *
    * @returns The link resolved to its actual REST response data.
    */
   resolveLink<T>(options?: AvailableOptions): OperatorFunction<Link, T> {
@@ -268,7 +270,7 @@ export class ApiService {
             // flat map to API request
             this.get<T>(`${icmServerURL}/${link.uri}`, options),
             // throw if link is not properly supplied
-            throwError(new Error('link was not properly formatted'))
+            throwError(() => new Error('link was not properly formatted'))
           )
         )
       );
@@ -276,6 +278,7 @@ export class ApiService {
 
   /**
    * Pipeable operator for link translation (resolving multiple links).
+   *
    * @returns The links resolved to their actual REST response data.
    */
   resolveLinks<T>(options?: AvailableOptions): OperatorFunction<Link[], T[]> {

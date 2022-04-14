@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
-import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-navigation/sub-category-navigation.component';
+import { LazyContentIncludeComponent } from 'ish-shell/shared/lazy-content-include/lazy-content-include.component';
 
 import { HeaderNavigationComponent } from './header-navigation.component';
 
@@ -22,11 +21,7 @@ describe('Header Navigation Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [
-        HeaderNavigationComponent,
-        MockComponent(FaIconComponent),
-        MockComponent(SubCategoryNavigationComponent),
-      ],
+      declarations: [HeaderNavigationComponent, MockComponent(LazyContentIncludeComponent)],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });
@@ -51,20 +46,24 @@ describe('Header Navigation Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="navbar-nav main-navigation-list">
         <li class="dropdown">
-          <a style="width: 100%" ng-reflect-router-link="/cat/A" data-testing-id="A-link" href="/cat/A">
+          <a ng-reflect-router-link="/cat/A" data-testing-id="A-link" style="width: 100%" href="/cat/A">
             CAT_A
           </a>
         </li>
         <li class="dropdown">
-          <a style="width: 100%" ng-reflect-router-link="/cat/B" data-testing-id="B-link" href="/cat/B">
+          <a ng-reflect-router-link="/cat/B" data-testing-id="B-link" style="width: 100%" href="/cat/B">
             CAT_B
           </a>
         </li>
         <li class="dropdown">
-          <a style="width: 100%" ng-reflect-router-link="/cat/C" data-testing-id="C-link" href="/cat/C">
+          <a ng-reflect-router-link="/cat/C" data-testing-id="C-link" style="width: 100%" href="/cat/C">
             CAT_C
           </a>
         </li>
+        <ish-lazy-content-include
+          includeid="include.header.navigation.pagelet2-Include"
+          ng-reflect-include-id="include.header.navigation.page"
+        ></ish-lazy-content-include>
       </ul>
     `);
   });

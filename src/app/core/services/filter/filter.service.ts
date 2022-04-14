@@ -1,8 +1,9 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, identity } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
@@ -14,7 +15,6 @@ import { ProductMapper } from 'ish-core/models/product/product.mapper';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { omit } from 'ish-core/utils/functions';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
 
@@ -24,25 +24,29 @@ export class FilterService {
     private apiService: ApiService,
     private filterNavigationMapper: FilterNavigationMapper,
     private productMapper: ProductMapper,
-    private featureToggleService: FeatureToggleService
+    private appFacade: AppFacade
   ) {}
 
   getFilterForCategory(categoryUniqueId: string): Observable<FilterNavigation> {
     const category = CategoryHelper.getCategoryPath(categoryUniqueId);
     return this.apiService
-      .get<FilterNavigationData>(`categories/${category}/productfilters`)
+      .get<FilterNavigationData>(`categories/${category}/productfilters`, { sendSPGID: true })
       .pipe(map(filter => this.filterNavigationMapper.fromData(filter)));
   }
 
   getFilterForSearch(searchTerm: string): Observable<FilterNavigation> {
     return this.apiService
-      .get<FilterNavigationData>(`productfilters`, { params: new HttpParams().set('searchTerm', searchTerm) })
+      .get<FilterNavigationData>(`productfilters`, {
+        sendSPGID: true,
+        params: new HttpParams().set('searchTerm', searchTerm),
+      })
       .pipe(map(filter => this.filterNavigationMapper.fromData(filter)));
   }
 
   getFilterForMaster(masterSKU: string): Observable<FilterNavigation> {
     return this.apiService
       .get<FilterNavigationData>(`productfilters`, {
+        sendSPGID: true,
         params: new HttpParams().set('MasterSKU', masterSKU),
       })
       .pipe(map(filter => this.filterNavigationMapper.fromData(filter)));
@@ -84,20 +88,21 @@ export class FilterService {
         total: number;
         elements: ProductDataStub[];
         sortableAttributes: { [id: string]: SortableAttributesType };
-      }>(resource, { params })
+      }>(resource, { params, sendSPGID: true })
       .pipe(
         map(x => ({
           products: x.elements.map(stub => this.productMapper.fromStubData(stub)),
           total: x.total,
           sortableAttributes: Object.values(x.sortableAttributes || {}),
         })),
-        params.has('MasterSKU')
-          ? identity
-          : map(({ products, sortableAttributes, total }) => ({
-              products: this.postProcessMasters(products),
-              sortableAttributes,
-              total,
-            }))
+        withLatestFrom(
+          this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
+        ),
+        map(([{ products, sortableAttributes, total }, advancedVariationHandling]) => ({
+          products: params.has('MasterSKU') ? products : this.postProcessMasters(products, advancedVariationHandling),
+          sortableAttributes,
+          total,
+        }))
       );
   }
 
@@ -105,8 +110,8 @@ export class FilterService {
    * exchange single-return variation products to master products for B2B
    * TODO: this is a work-around
    */
-  private postProcessMasters(products: Partial<Product>[]): Product[] {
-    if (this.featureToggleService.enabled('advancedVariationHandling')) {
+  private postProcessMasters(products: Partial<Product>[], advancedVariationHandling: boolean): Product[] {
+    if (advancedVariationHandling) {
       return products.map(p =>
         ProductHelper.isVariationProduct(p) ? { sku: p.productMasterSKU, completenessLevel: 0 } : p
       ) as Product[];

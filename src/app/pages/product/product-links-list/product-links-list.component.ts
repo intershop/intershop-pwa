@@ -10,7 +10,7 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper
  * The Product Link List Component
  *
  * Displays the products which are assigned to a specific type as an list.
- * It uses the {@link ProductItemContainerComponent} for the rendering of products.
+ * It uses the {@link ProductItemComponent} for the rendering of products.
  *
  * @example
  * <ish-product-links-list [links]="links.upselling" [productLinkTitle]="'product.product_links.upselling.title' | translate"></ish-product-links-list>

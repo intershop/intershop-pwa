@@ -15,16 +15,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Install root dependencies
         run: npm ci
 
       - name: Find Unused TestBed declarations
-        run: |
-          npx ts-node scripts/cleanup-testbed
-          git diff --exit-code --raw -p --stat
+        run: npm exec npm-run-all cleanup-testbed check-no-changes

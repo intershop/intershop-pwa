@@ -7,7 +7,6 @@ describe('Requisition Mapper', () => {
   let requisitionMapper: RequisitionMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     requisitionMapper = TestBed.inject(RequisitionMapper);
   });
 
@@ -48,6 +47,7 @@ describe('Requisition Mapper', () => {
             approvalDate: 76543627,
           },
         ],
+        systemRejected: true,
         userInformation: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
         userBudgets: {
           budgetPeriod: 'weekly',
@@ -107,6 +107,8 @@ describe('Requisition Mapper', () => {
           "promotionCodes": undefined,
           "purchaseCurrency": "USD",
           "requisitionNo": "0001",
+          "systemRejected": true,
+          "taxationId": undefined,
           "totalProductQuantity": undefined,
           "totals": Object {
             "bucketSurchargeTotalsByType": undefined,

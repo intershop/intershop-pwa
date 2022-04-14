@@ -43,7 +43,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
   editAddress: Partial<Address>;
   emptyOptionLabel = 'checkout.addresses.select_shipping_address.button';
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade, private checkoutFacade: CheckoutFacade) {
     this.form = new FormGroup({
@@ -70,10 +70,8 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
 
     // prepare data for shipping select drop down
     this.addresses$ = combineLatest([this.customerAddresses$, this.shippingAddress$]).pipe(
-      map(
-        ([addresses, shippingAddress]) =>
-          addresses &&
-          addresses.filter(address => address.shipToAddress).filter(address => address.id !== shippingAddress?.id)
+      map(([addresses, shippingAddress]) =>
+        addresses?.filter(address => address.shipToAddress).filter(address => address.id !== shippingAddress?.id)
       )
     );
 

@@ -39,7 +39,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
   editAddress: Partial<Address>;
   emptyOptionLabel = 'checkout.addresses.select_invoice_address.button';
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
 
@@ -60,10 +60,8 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
 
     // prepare data for invoice select drop down
     this.addresses$ = combineLatest([this.customerAddresses$, this.invoiceAddress$]).pipe(
-      map(
-        ([addresses, invoiceAddress]) =>
-          addresses &&
-          addresses.filter(address => address.invoiceToAddress).filter(address => address.id !== invoiceAddress?.id)
+      map(([addresses, invoiceAddress]) =>
+        addresses?.filter(address => address.invoiceToAddress).filter(address => address.id !== invoiceAddress?.id)
       )
     );
 

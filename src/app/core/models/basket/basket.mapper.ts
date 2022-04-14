@@ -11,6 +11,7 @@ import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-m
 import { Basket } from './basket.model';
 
 export class BasketMapper {
+  // eslint-disable-next-line complexity
   static fromData(payload: BasketData): Basket {
     const { data, included, infos } = payload;
 
@@ -23,26 +24,26 @@ export class BasketMapper {
 
     return {
       id: data.id,
-      bucketId: data.buckets && data.buckets.length === 1 && data.buckets[0],
+      bucketId: (data.buckets?.length === 1 && data.buckets[0]) || undefined,
       purchaseCurrency: data.purchaseCurrency,
       dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
       invoiceToAddress:
-        included && included.invoiceToAddress && data.invoiceToAddress
+        included?.invoiceToAddress && data.invoiceToAddress
           ? AddressMapper.fromData(included.invoiceToAddress[data.invoiceToAddress])
           : undefined,
       commonShipToAddress:
-        included && included.commonShipToAddress && data.commonShipToAddress
+        included?.commonShipToAddress && data.commonShipToAddress
           ? AddressMapper.fromData(included.commonShipToAddress[data.commonShipToAddress])
           : undefined,
       commonShippingMethod:
-        included && included.commonShippingMethod && data.commonShippingMethod
+        included?.commonShippingMethod && data.commonShippingMethod
           ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
           : undefined,
       costCenter: data.costCenter,
       customerNo: data.customer,
       email: data.user,
       lineItems:
-        included && included.lineItems && data.lineItems && data.lineItems.length
+        included?.lineItems && data.lineItems?.length
           ? data.lineItems.map(lineItemId =>
               LineItemMapper.fromData(included.lineItems[lineItemId], included.lineItems_discounts)
             )
@@ -52,8 +53,7 @@ export class BasketMapper {
         included?.payments && data.payments?.length && included.payments[data.payments[0]]
           ? PaymentMapper.fromIncludeData(
               included.payments[data.payments[0]],
-              included.payments_paymentMethod &&
-                included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
+              included.payments_paymentMethod?.[included.payments[data.payments[0]].paymentMethod]
                 ? included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
                 : undefined,
               included.payments[data.payments[0]].paymentInstrument && included.payments_paymentInstrument
@@ -63,14 +63,17 @@ export class BasketMapper {
           : undefined,
       promotionCodes: data.promotionCodes,
       totals,
-      infos: infos && infos.filter(info => info.code !== 'include.not_resolved.error'),
+      infos: infos?.filter(info => info.code !== 'include.not_resolved.error'),
       approval: data.approval,
       attributes: data.attributes,
+      taxationId: data.attributes?.find(attr => attr.name === 'taxationID')?.value as string,
+      user: data.buyer,
     };
   }
 
   /**
    * Helper method to determine a basket(order) total on the base of row data.
+   *
    * @returns         The basket total.
    */
   static getTotals(data: BasketBaseData, discounts?: { [id: string]: BasketRebateData }): BasketTotal {
@@ -90,35 +93,33 @@ export class BasketMapper {
           itemRebatesTotal: PriceItemMapper.fromPriceItem(totalsData.itemValueDiscountsTotal),
           valueRebatesTotal: PriceItemMapper.fromPriceItem(totalsData.basketValueDiscountsTotal),
           valueRebates:
-            data.discounts && data.discounts.valueBasedDiscounts && discounts
+            data.discounts?.valueBasedDiscounts && discounts
               ? data.discounts.valueBasedDiscounts.map(discountId => BasketRebateMapper.fromData(discounts[discountId]))
               : undefined,
 
           itemShippingRebatesTotal: PriceItemMapper.fromPriceItem(totalsData.itemShippingDiscountsTotal),
           shippingRebatesTotal: PriceItemMapper.fromPriceItem(totalsData.basketShippingDiscountsTotal),
           shippingRebates:
-            data.discounts && data.discounts.shippingBasedDiscounts && discounts
+            data.discounts?.shippingBasedDiscounts && discounts
               ? data.discounts.shippingBasedDiscounts.map(discountId =>
                   BasketRebateMapper.fromData(discounts[discountId])
                 )
               : undefined,
 
-          itemSurchargeTotalsByType:
-            data.surcharges && data.surcharges.itemSurcharges
-              ? data.surcharges.itemSurcharges.map(surcharge => ({
-                  amount: PriceItemMapper.fromPriceItem(surcharge.amount),
-                  displayName: surcharge.name,
-                  description: surcharge.description,
-                }))
-              : undefined,
-          bucketSurchargeTotalsByType:
-            data.surcharges && data.surcharges.bucketSurcharges
-              ? data.surcharges.bucketSurcharges.map(surcharge => ({
-                  amount: PriceItemMapper.fromPriceItem(surcharge.amount),
-                  displayName: surcharge.name,
-                  description: surcharge.description,
-                }))
-              : undefined,
+          itemSurchargeTotalsByType: data.surcharges?.itemSurcharges
+            ? data.surcharges.itemSurcharges.map(surcharge => ({
+                amount: PriceItemMapper.fromPriceItem(surcharge.amount),
+                displayName: surcharge.name,
+                description: surcharge.description,
+              }))
+            : undefined,
+          bucketSurchargeTotalsByType: data.surcharges?.bucketSurcharges
+            ? data.surcharges.bucketSurcharges.map(surcharge => ({
+                amount: PriceItemMapper.fromPriceItem(surcharge.amount),
+                displayName: surcharge.name,
+                description: surcharge.description,
+              }))
+            : undefined,
           isEstimated: false,
         }
       : undefined;

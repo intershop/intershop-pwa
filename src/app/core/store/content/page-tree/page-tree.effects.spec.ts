@@ -22,9 +22,9 @@ describe('Page Tree Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
         PageTreeEffects,
         provideMockActions(() => actions$),
-        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
       ],
     });
 
@@ -33,7 +33,9 @@ describe('Page Tree Effects', () => {
 
   describe('loadContentPageTree$', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
-      when(cmsServiceMock.getContentPageTree('dummy', 2)).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentPageTree('dummy', 2)).thenReturn(
+        throwError(() => makeHttpError({ message: 'ERROR' }))
+      );
 
       actions$ = of(loadContentPageTree({ rootId: 'dummy', depth: 2 }));
 
@@ -48,7 +50,9 @@ describe('Page Tree Effects', () => {
     });
 
     it('should not die when encountering an error', () => {
-      when(cmsServiceMock.getContentPageTree('dummy', 2)).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentPageTree('dummy', 2)).thenReturn(
+        throwError(() => makeHttpError({ message: 'ERROR' }))
+      );
 
       actions$ = hot('a-a-a-a', { a: loadContentPageTree({ rootId: 'dummy', depth: 2 }) });
 

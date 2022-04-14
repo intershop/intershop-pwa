@@ -1,5 +1,6 @@
+import { mergeMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { mergeMap } from 'rxjs/operators';
+import { PWAStoreOptionsSchema as Options } from 'schemas/store/schema';
 
 import {
   copyFileFromPWA,
@@ -10,7 +11,6 @@ import {
 } from '../utils/testHelper';
 
 import { determineStoreLocation } from './factory';
-import { PWAStoreOptionsSchema as Options } from './schema';
 
 describe('Store Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -21,17 +21,16 @@ describe('Store Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner)
-      .pipe(
-        createModule(schematicRunner, { name: 'shared' }),
-        createAppLastRoutingModule(schematicRunner),
-        mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree)),
-        copyFileFromPWA('src/app/core/store/core/core-store.module.ts'),
-        copyFileFromPWA('src/app/core/store/core/core-store.ts'),
-        copyFileFromPWA('src/app/core/state-management.module.ts'),
-        mergeMap(tree => schematicRunner.runSchematicAsync('store-group', { ...defaultOptions, name: 'bar' }, tree))
-      )
-      .toPromise();
+    const appTree$ = createApplication(schematicRunner).pipe(
+      createModule(schematicRunner, { name: 'shared' }),
+      createAppLastRoutingModule(schematicRunner),
+      mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree)),
+      copyFileFromPWA('src/app/core/store/core/core-store.module.ts'),
+      copyFileFromPWA('src/app/core/store/core/core-store.ts'),
+      copyFileFromPWA('src/app/core/state-management.module.ts'),
+      mergeMap(tree => schematicRunner.runSchematicAsync('store-group', { ...defaultOptions, name: 'bar' }, tree))
+    );
+    appTree = await appTree$.toPromise();
   });
 
   it('should create a store in core store by default', async () => {
@@ -133,16 +132,19 @@ describe('Store Schematic', () => {
   it('should throw if both feature and extension are supplied', done => {
     const options = { ...defaultOptions, extension: 'feature', feature: 'bar' };
 
-    schematicRunner.runSchematicAsync('store', options, appTree).subscribe(fail, err => {
-      expect(err).toMatchInlineSnapshot(`[Error: cannot add feature store in extension]`);
-      done();
+    schematicRunner.runSchematicAsync('store', options, appTree).subscribe({
+      next: fail,
+      error: err => {
+        expect(err).toMatchInlineSnapshot(`[Error: cannot add feature store in extension]`);
+        done();
+      },
     });
   });
 
   describe('determineStoreLocation', () => {
     it('should handle simple stores', async () => {
       const config = {
-        extension: undefined,
+        extension: undefined as string,
         feature: 'core',
         name: 'foobar',
         parent: 'core',
@@ -159,7 +161,7 @@ describe('Store Schematic', () => {
 
     it('should handle feature stores', async () => {
       const config = {
-        extension: undefined,
+        extension: undefined as string,
         feature: 'bar',
         name: 'foobar',
         parent: 'bar',
@@ -180,7 +182,7 @@ describe('Store Schematic', () => {
     it('should handle extension stores', async () => {
       const config = {
         extension: 'bar',
-        feature: undefined,
+        feature: undefined as string,
         name: 'foobar',
         parent: 'bar',
         parentStorePath: 'src/app/extensions/bar/store/bar',

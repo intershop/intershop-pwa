@@ -5,9 +5,9 @@ exports[`Header Default Component should render normal header adequately for des
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
     <li class="d-none d-md-block">
-      <ish-product-compare-status
+      <ish-lazy-product-compare-status
         data-testing-id="compare-status-desktop"
-      ></ish-product-compare-status>
+      ></ish-lazy-product-compare-status>
     </li>
   </ul>
   <div class="header-utility">
@@ -16,28 +16,28 @@ exports[`Header Default Component should render normal header adequately for des
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
     <ish-mini-basket
-      class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-ng-class="d-md-block"
+      class="d-none d-md-block"
       ng-reflect-view="full"
+      ng-reflect-ng-class="d-md-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      class="d-md-none"
-      ng-reflect-ng-class="d-md-none"
       ng-reflect-view="small"
+      ng-reflect-ng-class="d-md-none"
+      class="d-md-none"
     ></ish-mini-basket>
   </div>
   <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
-          class="logo"
-          data-testing-id="header-home-link-desktop"
           rel="home"
           routerlink="/home"
+          data-testing-id="header-home-link-desktop"
+          class="logo"
         ></a>
       </div>
     </div>
@@ -48,13 +48,13 @@ exports[`Header Default Component should render normal header adequately for des
       </div>
     </div>
   </div>
-  <button class="navbar-toggler" type="button">
+  <button type="button" class="navbar-toggler">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="false">
-      <div class="main-navigation" role="navigation">
+      <div role="navigation" class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -67,9 +67,9 @@ exports[`Header Default Component should render normal header adequately for mob
 <div class="header container mobile" ng-reflect-ng-class="mobile">
   <ul class="user-links">
     <li class="d-none d-md-block">
-      <ish-product-compare-status
+      <ish-lazy-product-compare-status
         data-testing-id="compare-status-desktop"
-      ></ish-product-compare-status>
+      ></ish-lazy-product-compare-status>
     </li>
   </ul>
   <div class="header-utility">
@@ -82,41 +82,41 @@ exports[`Header Default Component should render normal header adequately for mob
     </div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
-      class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-ng-class="d-md-block"
+      class="d-none d-md-block"
       ng-reflect-view="full"
+      ng-reflect-ng-class="d-md-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      class="d-md-none"
-      ng-reflect-ng-class="d-md-none"
       ng-reflect-view="small"
+      ng-reflect-ng-class="d-md-none"
+      class="d-md-none"
     ></ish-mini-basket>
   </div>
   <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
-          class="mobile-logo"
-          data-testing-id="header-home-link-mobile"
           rel="home"
           routerlink="/home"
+          data-testing-id="header-home-link-mobile"
+          class="mobile-logo"
         ></a>
       </div>
     </div>
     <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
-  <button class="navbar-toggler" type="button">
+  <button type="button" class="navbar-toggler">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
-      <div class="main-navigation" role="navigation">
+      <div role="navigation" class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -130,9 +130,9 @@ exports[`Header Default Component should render normal header adequately for tab
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
     <li class="d-none d-md-block">
-      <ish-product-compare-status
+      <ish-lazy-product-compare-status
         data-testing-id="compare-status-desktop"
-      ></ish-product-compare-status>
+      ></ish-lazy-product-compare-status>
     </li>
   </ul>
   <div class="header-utility">
@@ -141,28 +141,28 @@ exports[`Header Default Component should render normal header adequately for tab
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
     <ish-mini-basket
-      class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-ng-class="d-md-block"
+      class="d-none d-md-block"
       ng-reflect-view="full"
+      ng-reflect-ng-class="d-md-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      class="d-md-none"
-      ng-reflect-ng-class="d-md-none"
       ng-reflect-view="small"
+      ng-reflect-ng-class="d-md-none"
+      class="d-md-none"
     ></ish-mini-basket>
   </div>
   <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
-          class="logo"
-          data-testing-id="header-home-link-desktop"
           rel="home"
           routerlink="/home"
+          data-testing-id="header-home-link-desktop"
+          class="logo"
         ></a>
       </div>
     </div>
@@ -173,13 +173,13 @@ exports[`Header Default Component should render normal header adequately for tab
       </div>
     </div>
   </div>
-  <button class="navbar-toggler" type="button">
+  <button type="button" class="navbar-toggler">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="false">
-      <div class="main-navigation" role="navigation">
+      <div role="navigation" class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -199,41 +199,41 @@ exports[`Header Default Component should render sticky header adequately for des
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
-      class="d-none d-lg-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-ng-class="d-lg-block"
+      class="d-none d-lg-block"
       ng-reflect-view="full"
+      ng-reflect-ng-class="d-lg-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      class="d-lg-none"
-      ng-reflect-ng-class="d-lg-none"
       ng-reflect-view="small"
+      ng-reflect-ng-class="d-lg-none"
+      class="d-lg-none"
     ></ish-mini-basket>
   </div>
   <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
-          class="logo"
-          data-testing-id="header-home-link-desktop"
           rel="home"
           routerlink="/home"
+          data-testing-id="header-home-link-desktop"
+          class="logo"
         ></a>
       </div>
     </div>
     <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
-  <button class="navbar-toggler" type="button">
+  <button type="button" class="navbar-toggler">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="false">
-      <div class="main-navigation" role="navigation">
+      <div role="navigation" class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -253,41 +253,41 @@ exports[`Header Default Component should render sticky header adequately for mob
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
-      class="d-none d-lg-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-ng-class="d-lg-block"
+      class="d-none d-lg-block"
       ng-reflect-view="full"
+      ng-reflect-ng-class="d-lg-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      class="d-lg-none"
-      ng-reflect-ng-class="d-lg-none"
       ng-reflect-view="small"
+      ng-reflect-ng-class="d-lg-none"
+      class="d-lg-none"
     ></ish-mini-basket>
   </div>
   <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
-          class="mobile-logo"
-          data-testing-id="header-home-link-mobile"
           rel="home"
           routerlink="/home"
+          data-testing-id="header-home-link-mobile"
+          class="mobile-logo"
         ></a>
       </div>
     </div>
     <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
-  <button class="navbar-toggler" type="button">
+  <button type="button" class="navbar-toggler">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
-      <div class="main-navigation" role="navigation">
+      <div role="navigation" class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -307,41 +307,41 @@ exports[`Header Default Component should render sticky header adequately for tab
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
-      class="d-none d-lg-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-ng-class="d-lg-block"
+      class="d-none d-lg-block"
       ng-reflect-view="full"
+      ng-reflect-ng-class="d-lg-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      class="d-lg-none"
-      ng-reflect-ng-class="d-lg-none"
       ng-reflect-view="small"
+      ng-reflect-ng-class="d-lg-none"
+      class="d-lg-none"
     ></ish-mini-basket>
   </div>
   <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
-          class="mobile-logo"
-          data-testing-id="header-home-link-mobile"
           rel="home"
           routerlink="/home"
+          data-testing-id="header-home-link-mobile"
+          class="mobile-logo"
         ></a>
       </div>
     </div>
     <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
-  <button class="navbar-toggler" type="button">
+  <button type="button" class="navbar-toggler">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
-      <div class="main-navigation" role="navigation">
+      <div role="navigation" class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>

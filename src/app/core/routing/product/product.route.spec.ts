@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -28,7 +27,7 @@ describe('Product Route', () => {
   } as Category;
 
   expect.addSnapshotSerializer({
-    test: val => val && val.consumed && val.posParams,
+    test: val => val?.consumed && val.posParams,
     print: (val: UrlMatchResult, serialize) =>
       serialize(
         Object.keys(val.posParams)
@@ -299,8 +298,7 @@ describe('Product Route', () => {
       const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
       const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product);
 
-      expect(matchProductRoute(wrap(generateProductUrl(product, category) + ';lang=de_DE;redirect=1')))
-        .toMatchInlineSnapshot(`
+      expect(matchProductRoute(wrap(`${generateProductUrl(product, category)};lang=de_DE`))).toMatchInlineSnapshot(`
         Object {
           "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
           "sku": "A",
@@ -315,15 +313,8 @@ describe('Product Route', () => {
   let store$: Store;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
-      ],
+      imports: [CoreStoreModule.forTesting(['router']), RouterTestingModule.withRoutes([{ path: '**', children: [] }])],
     });
 
     router = TestBed.inject(Router);
@@ -361,7 +352,7 @@ describe('Product Route', () => {
     it('should not detect product route when sku is missing', fakeAsync(() => {
       router.navigateByUrl('/other');
 
-      store$.pipe(ofProductUrl()).subscribe(fail, fail, fail);
+      store$.pipe(ofProductUrl()).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

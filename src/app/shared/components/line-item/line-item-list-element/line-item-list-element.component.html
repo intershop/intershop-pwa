@@ -1,4 +1,4 @@
-<div class="row list-item-row list-item-row-big" data-testing-id="product-list-item">
+<div class="row list-item-row" data-testing-id="product-list-item">
   <!-- Errors and Infos -->
   <div *ngIf="pli.validationError?.message" class="alert alert-inline alert-danger col-12">
     {{ pli.validationError.message }}
@@ -40,7 +40,7 @@
           <!-- edit variation & quantity -->
           <ng-container *ngIf="editable">
             <ish-line-item-edit
-              *ishNotFeature="'advancedVariationHandling'"
+              *ngIf="!('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting)"
               ishProductContext
               [sku]="pli.productSKU"
               [quantity]="pli.quantity.value"
@@ -74,7 +74,7 @@
       </ng-container>
 
       <!-- promotions -->
-      <div *ngIf="pli.valueRebates && pli.valueRebates.length">
+      <div *ngIf="pli.valueRebates?.length">
         <ng-container *ngFor="let rebate of pli.valueRebates">
           <ish-basket-promotion [rebate]="rebate" class="list-item-promo"></ish-basket-promotion>
         </ng-container>
@@ -82,18 +82,18 @@
       <div class="d-flex align-items-end">
         <ish-lazy-product-add-to-order-template
           *ngIf="editable"
-          [class]="'btn-link btn-tool pl-0 add-to-order-template'"
+          [cssClass]="'btn-link btn-tool pl-0 add-to-order-template'"
           displayType="icon"
         ></ish-lazy-product-add-to-order-template>
         <ish-lazy-product-add-to-wishlist
           *ngIf="editable"
-          [class]="'btn-link btn-tool pl-0'"
+          [cssClass]="'btn-link btn-tool pl-0'"
           displayType="icon"
         ></ish-lazy-product-add-to-wishlist>
         <a
           class="btn-tool"
           *ngIf="!pli.isFreeGift && editable"
-          [attr.data-testing-id]="'remove-pli-' + pli.id + '-element'"
+          [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="pli.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem(pli.id)"
@@ -115,7 +115,7 @@
 
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
-    <div class="form-group w-100" [ngClass]="{ 'text-right': editable }">
+    <div class="form-group w-100 text-right" [ngClass]="{ 'pr-2': !editable }">
       <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
       <ish-product-quantity *ngIf="editable; else readonly"></ish-product-quantity>
       <ng-template #readonly>{{ pli.quantity.value | number }}</ng-template>

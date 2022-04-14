@@ -1,7 +1,7 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockModule } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { of } from 'rxjs';
 import { deepEqual, instance, mock, when } from 'ts-mockito';
@@ -9,7 +9,6 @@ import { deepEqual, instance, mock, when } from 'ts-mockito';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductListPagingComponent } from 'ish-shared/components/product/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from 'ish-shared/components/product/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from 'ish-shared/components/product/product-list/product-list.component';
@@ -37,9 +36,8 @@ describe('Product Listing Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [InfiniteScrollModule, RouterTestingModule],
+      imports: [MockModule(InfiniteScrollModule), RouterTestingModule],
       declarations: [
-        MockComponent(LoadingComponent),
         MockComponent(ProductListComponent),
         MockComponent(ProductListPagingComponent),
         MockComponent(ProductListToolbarComponent),

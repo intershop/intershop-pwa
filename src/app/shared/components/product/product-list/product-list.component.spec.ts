@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -22,7 +21,6 @@ describe('Product List Component', () => {
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(LoadingComponent),
         MockComponent(ProductItemComponent),

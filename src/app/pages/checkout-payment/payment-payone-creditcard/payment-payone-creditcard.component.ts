@@ -17,9 +17,10 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
+// spell-checker: disable
 // allows access to Payone js functionality
-// tslint:disable-next-line:no-any
-declare var Payone: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare let Payone: any;
 
 @Component({
   selector: 'ish-payment-payone-creditcard',
@@ -41,17 +42,17 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
    */
   @Input() activated = false;
 
-  @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() cancelPayment = new EventEmitter<void>();
+  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   /**
    * flag to make sure that the init script is executed only once
    */
   scriptLoaded = false;
 
-  // tslint:disable-next-line: no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   iframes: any;
 
   /**
@@ -64,8 +65,8 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
     const thisComp = this;
 
     // register helper function to call the callback function of this component
-    // tslint:disable-next-line:no-string-literal only-arrow-functions no-any
-    (window as any)['payoneCreditCardCallback'] = function (response: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).payoneCreditCardCallback = function (response: {
       status: string;
       pseudocardpan: string;
       truncatedcardpan: string;
@@ -85,8 +86,8 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
 
   ngOnDestroy() {
     // unregister helper function again
-    // tslint:disable-next-line:no-string-literal no-any
-    (window as any)['payoneCreditCardCallback'] = undefined;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).payoneCreditCardCallback = undefined;
 
     this.destroy$.next();
     this.destroy$.complete();
@@ -113,8 +114,8 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           // append localization language: Payone.ClientApi.Language.en, Language to display error-messages (default:Payone.ClientApi.Language.en)
-          const avoidEvalCheck = eval;
-          config.language = avoidEvalCheck(this.getParamValue('language', ''));
+          // eslint-disable-next-line no-eval
+          config.language = eval(this.getParamValue('language', ''));
 
           // setup
           this.iframes = new Payone.ClientApi.HostedIFrames(config, request);
@@ -126,7 +127,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
    * cancel new payment instrument and hides the form
    */
   cancelNewPaymentInstrument() {
-    this.cancel.emit();
+    this.cancelPayment.emit();
   }
 
   /**
@@ -147,7 +148,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
 
   submitCallback(response: { status: string; pseudocardpan: string; truncatedcardpan: string }) {
     if (response.status === 'VALID' && !this.payoneCreditCardForm.invalid) {
-      this.submit.emit({
+      this.submitPayment.emit({
         parameters: [
           { name: 'pseudocardpan', value: response.pseudocardpan },
           { name: 'truncatedcardpan', value: response.truncatedcardpan },

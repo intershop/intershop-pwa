@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -25,7 +24,6 @@ describe('Product Attachments Component', () => {
       },
     ];
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       declarations: [ProductAttachmentsComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }],
     }).compileComponents();

@@ -2,7 +2,7 @@
 <ish-error-message [error]="orderTemplateError$ | async"></ish-error-message>
 
 <ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
-  <h1>
+  <h1 class="clearfix">
     {{ orderTemplate?.title }}
     <a
       (click)="editOrderTemplateDialog.show()"
@@ -12,6 +12,14 @@
       >{{ 'account.order_template.order_template.edit.rename' | translate }}</a
     >
   </h1>
+
+  <p
+    *ngIf="noOfUnavailableProducts$ | async as noOfUnavailableProducts"
+    data-testing-id="out-of-stock-warning"
+    class="alert alert-info"
+  >
+    {{ 'account.order_template.out_of_stock.warning' | translate: { num: noOfUnavailableProducts } }}
+  </p>
 
   <div class="section">
     <ng-container *ngIf="orderTemplate.itemsCount && orderTemplate.itemsCount > 0; else noItems" class="section">
@@ -45,7 +53,7 @@
   </div>
   <ish-product-add-to-basket
     *ngIf="orderTemplate.itemsCount"
-    [class]="'btn btn-primary float-right'"
+    [cssClass]="'btn btn-primary float-right'"
   ></ish-product-add-to-basket>
 
   <ng-template #noItems>
@@ -55,7 +63,7 @@
   <ish-order-template-preferences-dialog
     #editOrderTemplateDialog
     [orderTemplate]="orderTemplate"
-    (submit)="editPreferences($event, orderTemplate.id)"
+    (submitOrderTemplate)="editPreferences($event, orderTemplate.id)"
   ></ish-order-template-preferences-dialog>
 </ng-container>
 

@@ -1,0 +1,16 @@
+node_modules
+
+/src/polyfills.ts
+
+/src/environments/environment.development.ts
+
+**/index.html
+
+/dist/**
+
+/e2e/cypress/**/*.js
+
+/eslint-rules/dist/**
+
+/schematics/dist/**
+/schematics/migration/**

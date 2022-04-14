@@ -41,7 +41,7 @@ This will:
 - Add style files for customization under `src/styles/themes/<prefix>`
 - Add the theme as an active theme in `package.json`. (It will replace all active themes if `--default` is used.)
 - Add a prefix `custom` for new Angular artifacts.
-- Customize TSLint to support your new theme files.
+- Customize ESLint to support your new theme files (specifically, the `project-structure` rule).
 
 After that we recommend to additionally use the prefix `custom` in every component to further help identifying customized components.
 

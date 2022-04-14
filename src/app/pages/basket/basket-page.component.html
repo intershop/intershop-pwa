@@ -1,3 +1,7 @@
+<div class="marketing-area">
+  <ish-content-include includeId="include.basket.base.top.pagelet2-Include"></ish-content-include>
+</div>
+
 <ng-container *ngIf="basket$ | async as basket; else emptyBasket">
   <ng-container *ngIf="basket.lineItems.length; else emptyBasket">
     <ish-shopping-basket [basket]="basket" [error]="basketError$ | async" (nextStep)="nextStep()"></ish-shopping-basket>
@@ -10,4 +14,8 @@
 
 <ish-loading *ngIf="basketLoading$ | async"></ish-loading>
 
-<ish-recently-viewed *ishFeature="'recently'"></ish-recently-viewed>
+<ish-lazy-recently-viewed></ish-lazy-recently-viewed>
+
+<div class="marketing-area">
+  <ish-content-include includeId="include.basket.base.bottom.pagelet2-Include"></ish-content-include>
+</div>

@@ -1,6 +1,7 @@
 export class LinkParser {
   private static linkRegexp = /^(unsafe:)?([a-z]+):\/\/(.*?)(@.*)?$/;
 
+  // eslint-disable-next-line complexity
   static parseLink(link: string, baseHref?: string): string {
     if (LinkParser.linkRegexp.test(link)) {
       const [, , protocol, value, unitName] = LinkParser.linkRegexp.exec(link);
@@ -28,7 +29,7 @@ export class LinkParser {
           // external links are not changed
           return link;
         default:
-          // tslint:disable-next-line:no-console
+          // eslint-disable-next-line no-console
           console.log('Unknown link type:', link);
       }
     }

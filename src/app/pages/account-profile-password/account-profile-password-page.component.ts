@@ -5,7 +5,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 /**
- * The Account Profile Password Page Container Component renders a page where the user can change his password using the {@link AccountProfilePasswordPageComponent}
+ * The Account Profile Password Page Component renders a page where the user can change his password.
  *
  */
 @Component({

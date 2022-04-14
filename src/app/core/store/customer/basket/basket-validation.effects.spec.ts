@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -40,26 +39,22 @@ describe('Basket Validation Effects', () => {
   let store$: Store;
   let location: Location;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['serverConfig']),
         CustomerStoreModule.forTesting('user', 'basket'),
         RouterTestingModule.withRoutes([
-          { path: 'checkout', children: [{ path: 'address', component: DummyComponent }] },
-          { path: 'checkout', children: [{ path: 'review', component: DummyComponent }] },
+          { path: 'checkout', children: [{ path: 'address', children: [] }] },
+          { path: 'checkout', children: [{ path: 'review', children: [] }] },
         ]),
       ],
       providers: [
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketValidationEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
       ],
     });
 
@@ -121,7 +116,9 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map invalid request to action of type startCheckoutFail', () => {
-      when(basketServiceMock.validateBasket(anything())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.validateBasket(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
 
       const action = startCheckout();
       const completion = startCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -186,13 +183,13 @@ describe('Basket Validation Effects', () => {
       });
       actions$ = of(action);
 
-      effects.continueCheckoutWithAcceleration$.subscribe(
-        () => {
+      effects.continueCheckoutWithAcceleration$.subscribe({
+        next: () => {
           verify(basketServiceMock.validateBasket(anything())).never();
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should not call the basketService if validation results are adjusted', done => {
@@ -201,13 +198,13 @@ describe('Basket Validation Effects', () => {
       });
       actions$ = of(action);
 
-      effects.continueCheckoutWithAcceleration$.subscribe(
-        () => {
+      effects.continueCheckoutWithAcceleration$.subscribe({
+        next: () => {
           verify(basketServiceMock.validateBasket(anything())).never();
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
@@ -254,7 +251,9 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map invalid request to action of type ContinueCheckoutFail', () => {
-      when(basketServiceMock.validateBasket(anything())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.validateBasket(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
 
       const action = validateBasket({ scopes: ['Products'] });
       const completion = continueCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -347,7 +346,9 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map invalid request to action of type ContinueCheckoutFail', () => {
-      when(basketServiceMock.validateBasket(anything())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.validateBasket(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
 
       const action = continueCheckout({ targetStep: 1 });
       const completion = continueCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -361,7 +362,7 @@ describe('Basket Validation Effects', () => {
       const action = continueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation });
       actions$ = of(action);
 
-      effects.jumpToNextCheckoutStep$.subscribe(noop, fail, noop);
+      effects.jumpToNextCheckoutStep$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 
@@ -383,7 +384,7 @@ describe('Basket Validation Effects', () => {
       });
       actions$ = of(action);
 
-      effects.jumpToNextCheckoutStep$.subscribe(noop, fail, noop);
+      effects.jumpToNextCheckoutStep$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 

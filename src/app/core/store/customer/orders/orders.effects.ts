@@ -6,23 +6,20 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { EMPTY, from, iif, race } from 'rxjs';
+import { EMPTY, from, iif, merge, race } from 'rxjs';
 import {
   concatMap,
-  concatMapTo,
   distinctUntilChanged,
   filter,
   map,
-  mapTo,
   mergeMap,
   switchMap,
-  switchMapTo,
   take,
   withLatestFrom,
 } from 'rxjs/operators';
 
 import { OrderService } from 'ish-core/services/order/order.service';
-import { ofUrl, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
+import { ofUrl, selectQueryParam, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { continueCheckoutWithIssues, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
@@ -91,7 +88,7 @@ export class OrdersEffects {
             location.assign(order.orderCreation.stopAction.redirectUrl);
             return EMPTY;
           } else {
-            return from(this.router.navigate(['/checkout/receipt']));
+            return from(this.router.navigate(['/checkout/receipt'], { queryParams: { orderId: order.id } }));
           }
         })
       ),
@@ -105,7 +102,7 @@ export class OrdersEffects {
       filter(order => order.orderCreation && order.orderCreation.status === 'ROLLED_BACK'),
       concatMap(order =>
         from(this.router.navigate(['/checkout/payment'], { queryParams: { error: true } })).pipe(
-          concatMapTo([
+          mergeMap(() => [
             loadBasket(),
             continueCheckoutWithIssues({
               targetRoute: undefined,
@@ -176,17 +173,19 @@ export class OrdersEffects {
         mapToPayloadProperty('orderId'),
         whenTruthy(),
         map(orderId => loadOrder({ orderId }))
-      )
+      ),
+      EMPTY
     )
   );
 
   /**
-   * Triggers a SelectOrder action if route contains orderId parameter ( for order detail page ).
+   * Triggers a SelectOrder action if route contains orderId query or route parameter.
    */
   routeListenerForSelectingOrder$ = createEffect(() =>
-    this.store.pipe(
-      ofUrl(/^\/(account\/orders.*|checkout\/receipt)/),
-      select(selectRouteParam('orderId')),
+    merge(
+      this.store.pipe(ofUrl(/^\/account\/orders.*/), select(selectRouteParam('orderId'))),
+      this.store.pipe(ofUrl(/^\/checkout\/receipt/), select(selectQueryParam('orderId')))
+    ).pipe(
       withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
       filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
       map(([orderId]) => orderId),
@@ -209,7 +208,7 @@ export class OrdersEffects {
         race([
           this.store.pipe(select(getLoggedInUser), whenTruthy(), take(1)),
           this.store.pipe(select(getOrder(queryParams.orderId)), whenTruthy(), take(1)),
-        ]).pipe(mapTo(selectOrderAfterRedirect({ params: queryParams })))
+        ]).pipe(map(() => selectOrderAfterRedirect({ params: queryParams })))
       )
     )
   );
@@ -245,7 +244,7 @@ export class OrdersEffects {
           this.router.navigate(['/checkout/payment'], {
             queryParams: { redirect: 'failure' },
           })
-        ).pipe(mapTo(loadBasket()))
+        ).pipe(map(() => loadBasket()))
       )
     )
   );
@@ -253,7 +252,7 @@ export class OrdersEffects {
   setOrderBreadcrumb$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofUrl(/^\/account\/orders\/.*/),
           select(getSelectedOrder),

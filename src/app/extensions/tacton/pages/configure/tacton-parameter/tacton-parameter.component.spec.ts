@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { TactonFacade } from '../../../facades/tacton.facade';
 import { TactonProductConfigurationParameter } from '../../../models/tacton-product-configuration/tacton-product-configuration.model';
 import { TactonImageTextButtonsComponent } from '../tacton-image-text-buttons/tacton-image-text-buttons.component';
-import { TactonNumberInputComponent } from '../tacton-number-input/tacton-number-input.component';
 import { TactonRadioInputComponent } from '../tacton-radio-input/tacton-radio-input.component';
 import { TactonReadonlyComponent } from '../tacton-readonly/tacton-readonly.component';
 import { TactonSelectInputComponent } from '../tacton-select-input/tacton-select-input.component';
@@ -26,15 +23,12 @@ describe('Tacton Parameter Component', () => {
   beforeEach(async () => {
     tactonFacade = mock(TactonFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       declarations: [
-        FaIconComponent,
         MockComponent(TactonImageTextButtonsComponent),
-        MockComponent(TactonNumberInputComponent),
         MockComponent(TactonRadioInputComponent),
         MockComponent(TactonReadonlyComponent),
-        MockComponent(TactonSelectInputComponent),
         MockComponent(TactonSelectedImageComponent),
+        MockComponent(TactonSelectInputComponent),
         MockComponent(TactonTextButtonsComponent),
         MockComponent(TactonTextInputComponent),
         TactonParameterComponent,

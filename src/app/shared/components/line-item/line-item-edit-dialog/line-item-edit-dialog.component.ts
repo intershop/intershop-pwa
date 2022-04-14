@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { Price } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 /**
@@ -14,12 +15,14 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 })
 export class LineItemEditDialogComponent implements OnInit {
   variation$: Observable<ProductView>;
+  variationSalePrice$: Observable<Price>;
   loading$: Observable<boolean>;
 
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
     this.variation$ = this.context.select('product');
+    this.variationSalePrice$ = this.context.select('prices').pipe(map(prices => prices?.salePrice));
 
     this.loading$ = this.context.select('loading');
   }

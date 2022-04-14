@@ -11,7 +11,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
- * The Checkout Address Page Container Component renders the checkout address page of a logged in user using the {@link CheckoutAddressComponent}
+ * The Checkout Address Page Component renders the checkout address page of a logged in user.
  *
  */
 @Component({
@@ -34,7 +34,7 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
    */
   validBasketAddresses$: Observable<boolean>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade, private router: Router) {}
 

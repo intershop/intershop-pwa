@@ -1,11 +1,11 @@
-// tslint:disable:ish-ordered-imports
 require('jest-preset-angular/setup-jest');
 
 import { CompilerOptions } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
-import * as matchers from 'jest-extended';
+import '@angular/localize/init';
 
-expect.extend(matchers);
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+expect.extend(require('jest-extended'));
 
 beforeEach(() => {
   const compilerOptions: CompilerOptions = { preserveWhitespaces: false };
@@ -23,12 +23,8 @@ beforeEach(() => {
     logFunction(...args);
   };
 
-  const errorFunction = global.console.error;
   global.console.error = (...args: unknown[]) => {
-    if (args?.some(arg => arg instanceof Error)) {
-      fail(...args);
-    }
-    errorFunction(...args);
+    fail(...args);
   };
 
   jest.spyOn(global.console, 'warn').mockImplementation(arg => {
@@ -39,7 +35,7 @@ beforeEach(() => {
         arg.startsWith('A router outlet has not been instantiated during routes activation. URL Segment:')
       )
     ) {
-      // tslint:disable-next-line:no-console
+      // eslint-disable-next-line no-console
       console.log(arg);
     }
   });

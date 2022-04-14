@@ -1,4 +1,4 @@
-<ng-container *ngIf="pagelet && pagelet.hasParam('Link'); else image">
+<ng-container *ngIf="pagelet?.hasParam('Link'); else image">
   <ng-container *ngIf="isRouterLink(pagelet, 'Link'); else externalLink">
     <a [routerLink]="routerLink(pagelet, 'Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
       <ng-container *ngTemplateOutlet="image"></ng-container>
@@ -12,16 +12,7 @@
 </ng-container>
 
 <ng-template #image>
-  <div (deferLoad)="showImage = true" class="defer-load">
-    <img
-      *ngIf="showImage"
-      [src]="pagelet.stringParam('Image')"
-      [attr.alt]="pagelet.stringParam('AlternateText')"
-      [ngClass]="pagelet.stringParam('CSSClass')"
-    />
+  <div (deferLoad)="showImage = true" class="defer-load" [ngClass]="pagelet.stringParam('CSSClass')">
+    <img *ngIf="showImage" [src]="pagelet.stringParam('Image')" [attr.alt]="pagelet.stringParam('AlternateText')" />
   </div>
 </ng-template>
-
-<!-- TODO: (CMS Component Configuration)
-  Picture
--->

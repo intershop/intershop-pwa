@@ -4,13 +4,14 @@ import { FileSystemHost, Project } from 'ts-morph';
 
 export function createTsMorphProject(host: Tree) {
   return new Project({
-    // tslint:disable-next-line: ish-no-object-literal-type-assertion
+    // eslint-disable-next-line ish-custom-rules/no-object-literal-type-assertion
     fileSystem: {
       getCurrentDirectory: () => '',
-      directoryExistsSync: p => host.exists(p) || existsSync(p),
-      fileExistsSync: p => host.exists(p) || existsSync(p),
-      readFileSync: (p, encoding) => (host.read(p) || readFileSync(p)).toString(encoding as BufferEncoding),
-      readDirSync: dirPath => host.getDir(dirPath).subfiles.map(sf => sf as string),
-    } as FileSystemHost,
+      directoryExistsSync: (p: string) => host.exists(p) || existsSync(p),
+      fileExistsSync: (p: string) => host.exists(p) || existsSync(p),
+      readFileSync: (p: string, encoding: string) =>
+        (host.read(p) || readFileSync(p)).toString(encoding as BufferEncoding),
+      readDirSync: (dirPath: string) => host.getDir(dirPath).subfiles.map(sf => sf as string),
+    } as unknown as FileSystemHost,
   });
 }

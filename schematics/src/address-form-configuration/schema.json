@@ -4,6 +4,7 @@
   "title": "PWA Address Form Configuration Options Schema",
   "type": "object",
   "description": "Creates a new address form configuration.",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",
@@ -25,6 +26,14 @@
         "index": 0
       },
       "x-prompt": "What country code would you like to generate a configuration for?"
+    },
+    "module": {
+      "type": "string",
+      "visible": false
+    },
+    "artifactPath": {
+      "type": "string",
+      "visible": false
     }
   }
 }

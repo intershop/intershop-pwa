@@ -15,7 +15,7 @@ const content = glob
     part += fs
       .readFileSync(gitignore, { encoding: 'utf-8' })
       .split('\n')
-      .filter(line => !/^\#|^\s*$/.test(line))
+      .filter(line => !/^#|^\s*$/.test(line))
       .map(line => {
         let linePart = '';
         if (line.startsWith('!')) {
@@ -47,7 +47,7 @@ if (!regex.test(dockerIgnore)) {
   process.exit(1);
 }
 const sync =
-  "# The content between these markers is generated.\n# It can be synchronized using 'node scripts/update-dockerignore'";
+  "# The content between these markers is generated.\n# It can be synchronized using 'npm run update-dockerignore'";
 const newDockerIgnore = dockerIgnore.replace(regex, (_, b, e) => `${b}\n\n${sync}\n\n${content}\n\n${sync}\n\n# ${e}`);
 
 if (dockerIgnore !== newDockerIgnore) {

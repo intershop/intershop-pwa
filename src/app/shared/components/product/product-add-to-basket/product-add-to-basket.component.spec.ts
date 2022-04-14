@@ -24,6 +24,8 @@ describe('Product Add To Basket Component', () => {
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToBasket')).thenReturn(of(true));
     when(context.select('product')).thenReturn(of({} as ProductView));
+    when(context.select('hasQuantityError')).thenReturn(of(false));
+    when(context.select('hasProductError')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -53,19 +55,25 @@ describe('Product Add To Basket Component', () => {
     expect(element.querySelector('button')).toBeFalsy();
   });
 
-  it('should show button when display type is not icon ', () => {
+  it('should show button when display type is not icon', () => {
     fixture.detectChanges();
     expect(element.querySelector('button').className).toContain('btn-primary');
   });
 
-  it('should show icon button when display type is icon ', () => {
+  it('should show icon button when display type is icon', () => {
     component.displayType = 'icon';
     fixture.detectChanges();
     expect(element.querySelector('fa-icon')).toBeTruthy();
   });
 
-  it('should show disabled button when add to cart is not possible', () => {
+  it('should show disabled button when context has quantity error', () => {
     when(context.select('hasQuantityError')).thenReturn(of(true));
+    fixture.detectChanges();
+    expect(element.querySelector('button').disabled).toBeTruthy();
+  });
+
+  it('should show disabled button when context has product error', () => {
+    when(context.select('hasProductError')).thenReturn(of(true));
     fixture.detectChanges();
     expect(element.querySelector('button').disabled).toBeTruthy();
   });

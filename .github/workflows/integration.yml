@@ -35,10 +35,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Install root dependencies
@@ -66,10 +66,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Download Build Output
@@ -85,12 +85,12 @@ jobs:
       - name: Set B2C Environment
         if: matrix.test == 'b2c'
         run: |
-          echo "THEME=default" >> $GITHUB_ENV
+          echo "THEME=b2c" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
         run: |
-          echo "THEME=blue" >> $GITHUB_ENV
+          echo "THEME=b2b" >> $GITHUB_ENV
 
       - name: Test Universal
         run: |
@@ -111,9 +111,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install e2e dependencies
-        run: |
-          cd e2e
-          npm i
+        run: cd e2e && npm i
 
       - name: Download Build Output
         uses: actions/download-artifact@v2
@@ -130,12 +128,12 @@ jobs:
       - name: Set B2C Environment
         if: matrix.test == 'b2c'
         run: |
-          echo "THEME=default" >> $GITHUB_ENV
+          echo "THEME=b2c" >> $GITHUB_ENV
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
         run: |
-          echo "THEME=blue" >> $GITHUB_ENV
+          echo "THEME=b2b" >> $GITHUB_ENV
 
       - name: Start SSR
         run: |

@@ -8,6 +8,7 @@ import { CookiesService } from './cookies.service';
 const mockDocument = () => ({
   cookie: undefined as string,
   getElementById: noop,
+  querySelectorAll: jest.fn,
 });
 
 describe('Cookies Service', () => {

@@ -1,11 +1,14 @@
 # To build this report image, you will have to temporarily truncate the .dockerignore
 
-FROM node:14-alpine as reporting
+# synchronize-marker:docker-cache-share:begin
+FROM node:16-alpine as buildstep
+ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
-RUN npm i --ignore-scripts
+RUN npm ci --prefer-offline --no-audit --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
-ENV CI=true
+RUN npm run ngcc
+# synchronize-marker:docker-cache-share:end
 ENV NODE_OPTIONS="--max_old_space_size=8192"
 COPY . /workspace/
 RUN npm run postinstall
@@ -17,5 +20,5 @@ RUN npm i -g webpack-bundle-analyzer
 RUN rm -Rf dist && npm run build client -- --progress false --stats-json && webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_prod/index.html -m static
 
 FROM danjellz/http-server
-COPY --from=reporting /workspace/reports /public
-COPY --from=reporting /workspace/docs /public/docs
+COPY --from=buildstep /workspace/reports /public
+COPY --from=buildstep /workspace/docs /public/docs

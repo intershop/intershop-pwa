@@ -6,7 +6,7 @@
     padding: divide($space-default * 2, 3) divide($space-default * 2, 3) ($space-default * 0.5);
     background: $color-tertiary;
     border: $border-width-default solid $border-color-lighter;
-    border-width: 0 1px 1px 1px;
+    border-width: 0 1px 1px;
 
     &.collapse,
     &.collapsing {
@@ -27,7 +27,7 @@
     .ng-fa-icon {
       margin-right: ($space-default * 0.5);
       font-size: 14px;
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
     }
 
     p {

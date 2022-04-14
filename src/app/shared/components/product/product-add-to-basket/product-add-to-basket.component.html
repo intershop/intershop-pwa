@@ -3,14 +3,14 @@
     type="submit"
     name="addProduct"
     class="btn"
-    [ngClass]="class"
+    [ngClass]="cssClass"
     [class.btn-primary]="!displayIcon"
-    [disabled]="(hasQuantityError$ | async) || (displaySpinner$ | async)"
+    [disabled]="buttonDisabled$ | async"
     [attr.title]="translationKey$ | async | translate"
     data-testing-id="addToCartButton"
     (click)="addToBasket()"
   >
-    <ng-container *ngIf="!(displaySpinner$ | async); else spinning">
+    <ng-container *ngIf="(displaySpinner$ | async) !== true; else spinning">
       <!-- Add to Cart button -->
       <ng-container *ngIf="displayIcon; else defaultButton">
         <fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon>

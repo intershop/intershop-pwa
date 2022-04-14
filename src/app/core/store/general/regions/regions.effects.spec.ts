@@ -22,8 +22,8 @@ describe('Regions Effects', () => {
   const countryCode = 'US';
 
   const regions = [
-    { name: 'Iowa', regionCode: 'Io', countryCode, id: 'Io' + countryCode },
-    { name: 'Alabama', regionCode: 'Al', countryCode: 'US', id: 'Al' + countryCode },
+    { name: 'Iowa', regionCode: 'Io', countryCode, id: `Io${countryCode}` },
+    { name: 'Alabama', regionCode: 'Al', countryCode: 'US', id: `Al${countryCode}` },
   ] as Region[];
 
   beforeEach(() => {
@@ -33,9 +33,9 @@ describe('Regions Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), GeneralStoreModule.forTesting('regions')],
       providers: [
-        RegionsEffects,
-        provideMockActions(() => actions$),
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
+        provideMockActions(() => actions$),
+        RegionsEffects,
       ],
     });
 
@@ -62,7 +62,7 @@ describe('Regions Effects', () => {
     });
     it('should map invalid request to action of type LoadRegionsFail', () => {
       when(countryServiceMock.getRegionsByCountry(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = loadRegions({ countryCode });
       const error = makeHttpError({ message: 'invalid' });

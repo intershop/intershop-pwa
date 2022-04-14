@@ -11,6 +11,7 @@ import {
   noop,
   url,
 } from '@angular-devkit/schematics';
+import { PWACMSComponentOptionsSchema as Options } from 'schemas/cms-component/schema';
 
 import {
   applyNameAndPath,
@@ -22,8 +23,6 @@ import {
 import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addImportToFile, addProviderToNgModule } from '../utils/registration';
 
-import { PWACMSComponentOptionsSchema as Options } from './schema';
-
 export function createCMSComponent(options: Options): Rule {
   return async host => {
     if (!options.project) {
@@ -34,11 +33,11 @@ export function createCMSComponent(options: Options): Rule {
     options = await detectExtension('cms', host, options);
     options = await applyNameAndPath('component', host, options);
     if (!options.noCMSPrefixing) {
-      options.name = 'cms-' + options.name;
+      options.name = `cms-${options.name}`;
     }
     options = determineArtifactName('component', host, options);
     if (!options.noCMSPrefixing) {
-      options.artifactName = 'CMS' + options.artifactName.replace('Cms', '');
+      options.artifactName = `CMS${options.artifactName.replace('Cms', '')}`;
     }
     options = await generateSelector(host, options);
     options.module = 'shared/shared.module';
@@ -71,7 +70,7 @@ export function createCMSComponent(options: Options): Rule {
           applyTemplates({
             ...strings,
             ...options,
-            'if-flat': s => (options.flat ? '' : s),
+            'if-flat': (s: unknown) => (options.flat ? '' : s),
           }),
           move(options.path),
         ])

@@ -43,9 +43,9 @@ describe('Budget Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: UsersService, useFactory: () => instance(usersService) },
         BudgetEffects,
         provideMockActions(() => actions$),
-        { provide: UsersService, useFactory: () => instance(usersService) },
       ],
     });
 

@@ -19,10 +19,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Install root dependencies
@@ -34,15 +34,11 @@ jobs:
       - name: Check Documentation Overview
         run: node docs/check-documentation-overview
 
+      - name: Synchronize Automated Formly Documentation
+        run: npx ts-node docs/sync-formly-docs.ts --ci
+
       - name: Run Formatting
-        run: npm run format
-
-      - name: Check No Changes
-        run: git diff --exit-code --raw -p --stat
-
-      - name: Check Dead Links For All Files
-        if: github.ref == 'refs/heads/develop'
-        run: node docs/check-dead-links
+        run: npm exec npm-run-all format check-no-changes
 
       - name: Check Dead Links For Changed Files
         if: github.ref != 'refs/heads/develop'

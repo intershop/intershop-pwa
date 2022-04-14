@@ -31,9 +31,9 @@ describe('Countries Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), GeneralStoreModule.forTesting('countries')],
       providers: [
+        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         CountriesEffects,
         provideMockActions(() => actions$),
-        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
       ],
     });
 
@@ -51,7 +51,7 @@ describe('Countries Effects', () => {
     });
 
     it('should dispatch a LoadCountriesFail action if a load error occurs', () => {
-      when(countryServiceMock.getCountries()).thenReturn(throwError(makeHttpError({ message: 'error' })));
+      when(countryServiceMock.getCountries()).thenReturn(throwError(() => makeHttpError({ message: 'error' })));
 
       const action = { type: loadCountries.type } as Action;
       const expected = loadCountriesFail({ error: makeHttpError({ message: 'error' }) });

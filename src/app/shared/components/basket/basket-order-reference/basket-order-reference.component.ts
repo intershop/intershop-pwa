@@ -43,6 +43,8 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
           customDescription: {
             key: 'checkout.orderReferenceId.note',
           },
+          labelClass: 'col-md-6',
+          fieldClass: 'col-md-6',
         },
         validators: {
           validation: [SpecialValidators.noSpecialChars],
@@ -59,7 +61,7 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (this.basket) {
       this.successMessage(changes.basket);
-      this.model.orderReferenceId = this.getOrderReferenceId(this.basket);
+      this.model = { ...this.model, orderReferenceId: this.getOrderReferenceId(this.basket) };
     }
   }
 

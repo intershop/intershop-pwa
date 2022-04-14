@@ -1,7 +1,7 @@
 <ish-error-message [error]="error$ | async"></ish-error-message>
 <ish-info-box heading="account.requisitions.widget.budget_title" class="infobox-wrapper" cssClass="infobox-widget">
   <div class="loading-container">
-    <div *ngIf="!(budgetLoading$ | async); else loading">
+    <div *ngIf="(budgetLoading$ | async) !== true; else loading">
       <div class="row">
         <div class="col-12">
           <ish-user-budget progressBarClass="background-inverse" [budget]="userBudget$ | async"></ish-user-budget>

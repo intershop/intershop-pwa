@@ -5,7 +5,6 @@ import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { QuickorderAddProductsFormComponent } from '../../shared/quickorder-add-products-form/quickorder-add-products-form.component';
 import { QuickorderCsvFormComponent } from '../../shared/quickorder-csv-form/quickorder-csv-form.component';
@@ -22,7 +21,6 @@ describe('Quickorder Page Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(BreadcrumbComponent),
-        MockComponent(LoadingComponent),
         MockComponent(QuickorderAddProductsFormComponent),
         MockComponent(QuickorderCsvFormComponent),
         QuickorderPageComponent,

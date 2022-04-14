@@ -2,11 +2,10 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { flatten, pick } from 'lodash-es';
 import { EMPTY, Observable, concat, defer, forkJoin, iif, of, throwError } from 'rxjs';
-import { concatMap, defaultIfEmpty, expand, filter, last, map, mapTo, take } from 'rxjs/operators';
+import { concatMap, defaultIfEmpty, expand, filter, last, map, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { BasketService } from 'ish-core/services/basket/basket.service';
 
 import { QuoteRequestUpdate } from '../../models/quote-request-update/quote-request-update.model';
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
@@ -22,11 +21,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class QuotingService {
-  constructor(
-    private apiService: ApiService,
-    private basketService: BasketService,
-    private quoteMapper: QuotingMapper
-  ) {}
+  constructor(private apiService: ApiService, private quoteMapper: QuotingMapper) {}
 
   getQuotes() {
     return forkJoin([
@@ -90,7 +85,7 @@ export class QuotingService {
     return this.apiService
       .b2bUserEndpoint()
       .delete(`${entity.type === 'Quote' ? 'quotes' : 'quoterequests'}/${entity.id}`)
-      .pipe(mapTo(entity.id));
+      .pipe(map(() => entity.id));
   }
 
   rejectQuote(quoteId: string) {
@@ -100,8 +95,9 @@ export class QuotingService {
       .pipe(map(data => this.quoteMapper.fromData(data, 'Quote')));
   }
 
-  addQuoteToBasket(quoteID: string) {
-    return this.basketService.currentBasketEndpoint().post('items', { quoteID }).pipe(mapTo(quoteID));
+  addQuoteToBasket(basketId: string, quoteID: string) {
+    // ToDo: remove parameter basketId and delegate addQuoteToBasket to the basket service if the basket REST api 1.0 provides this functionality, see #70533
+    return this.apiService.post(`baskets/${basketId}/items`, { quoteID }).pipe(map(() => quoteID));
   }
 
   createQuoteRequestFromQuote(quoteID: string) {
@@ -126,7 +122,10 @@ export class QuotingService {
   }
 
   submitQuoteRequest(quoteRequestID: string) {
-    return this.apiService.b2bUserEndpoint().post<Link>('quotes', { quoteRequestID }).pipe(mapTo(quoteRequestID));
+    return this.apiService
+      .b2bUserEndpoint()
+      .post<Link>('quotes', { quoteRequestID })
+      .pipe(map(() => quoteRequestID));
   }
 
   private createQuoteRequest(): Observable<QuoteStub> {
@@ -184,14 +183,14 @@ export class QuotingService {
               value: quantity,
             },
           })
-          .pipe(mapTo(quoteRequest.id))
+          .pipe(map(() => quoteRequest.id))
       )
     );
   }
 
   updateQuoteRequest(quoteRequestId: string, changes: QuoteRequestUpdate[]) {
     if (!changes?.length) {
-      return throwError(new Error('updateQuoteRequest called without changes'));
+      return throwError(() => new Error('updateQuoteRequest called without changes'));
     }
     return concat(
       ...changes.map(change =>
@@ -205,6 +204,9 @@ export class QuotingService {
               .put(`quoterequests/${quoteRequestId}/items/${change.itemId}`, { quantity: { value: change.quantity } })
           : this.apiService.b2bUserEndpoint().delete(`quoterequests/${quoteRequestId}/items/${change.itemId}`)
       )
-    ).pipe(last(), mapTo(quoteRequestId));
+    ).pipe(
+      last(),
+      map(() => quoteRequestId)
+    );
   }
 }

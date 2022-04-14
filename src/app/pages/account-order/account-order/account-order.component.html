@@ -61,7 +61,7 @@
   <div class="row d-flex">
     <!-- Shipping Method -->
     <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
-      <p>{{ order.commonShippingMethod.name }}</p>
+      <ish-basket-shipping-method [data]="order"></ish-basket-shipping-method>
     </ish-info-box>
     <!-- Payment -->
     <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">

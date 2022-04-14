@@ -1,0 +1,76 @@
+<h1 class="mt-5">{{ 'store_locator.title' | translate }}</h1>
+
+<p>{{ 'store_locator.description' | translate }}</p>
+<p>{{ 'store_locator.howto' | translate }}</p>
+<form [formGroup]="form" (ngSubmit)="submitForm()">
+  <div class="row">
+    <fieldset class="col-sm-8">
+      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+      <div class="form-group row align-items-baseline">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-offset-4 col-sm-8">
+          <button class="btn btn-primary" type="submit" name="search">
+            {{ 'store_locator.form.submit.label' | translate }}
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</form>
+
+<ng-container *ngIf="(loading$ | async) === false && submitted">
+  <ng-container *ngIf="empty(stores$ | async); else storesFound">
+    <div [ishServerHtml]="'store_locator.notFound' | translate: { '0': '/home' }"></div>
+  </ng-container>
+  <ng-template #storesFound>
+    <p>
+      {{
+        ((stores$ | async).length > 1 ? 'store_locator.results.multiple' : 'store_locator.results.single')
+          | translate: { '0': (stores$ | async).length }
+      }}
+    </p>
+    <ng-container *ishNotFeature="'maps'">
+      <div class="row">
+        <div *ngFor="let store of stores$ | async" class="col-md-4 col-xs-12 col-sm-6">
+          <ish-store-address [store]="store"></ish-store-address>
+        </div>
+      </div>
+    </ng-container>
+    <div *ishFeature="'maps'">
+      <div class="row">
+        <div class="col-3 pr-0 overflow-auto d-none d-lg-block map-height">
+          <div
+            *ngFor="let store of stores$ | async"
+            class="store-entry"
+            (click)="highlight(store)"
+            [class.highlight-store]="highlighted$(store) | async"
+            [ishScroll]="highlighted$(store) | async"
+            scrollContainer="parent"
+            [scrollDuration]="500"
+          >
+            <ish-store-address [store]="store"></ish-store-address>
+          </div>
+        </div>
+        <div class="col-12 col-lg-9 pl-lg-0 map-height">
+          <ish-stores-map #map></ish-stores-map>
+        </div>
+        <div class="col-12 d-lg-none">
+          <div class="row container p-0">
+            <div
+              *ngFor="let store of stores$ | async"
+              class="col-md-4 col-sm-6 col-xs-12 store-entry"
+              (click)="highlight(store)"
+              [class.highlight-store]="highlighted$(store) | async"
+            >
+              <ish-store-address [store]="store"></ish-store-address>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>
+
+<ish-error-message [error]="error$ | async"></ish-error-message>

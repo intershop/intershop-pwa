@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 /**
  * The Search No Result Component informs the user that no result has been found for his search and provides an input field for a new search.
- * It uses the {@link SearchBoxContainerComponent}.
+ * It uses the {@link SearchBoxComponent}.
  *
  * @example
  * <ish-search-no-result

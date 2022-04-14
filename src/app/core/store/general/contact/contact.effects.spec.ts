@@ -31,9 +31,9 @@ describe('Contact Effects', () => {
     contactServiceMock = mock(ContactService);
     TestBed.configureTestingModule({
       providers: [
+        { provide: ContactService, useFactory: () => instance(contactServiceMock) },
         ContactEffects,
         provideMockActions(() => actions$),
-        { provide: ContactService, useFactory: () => instance(contactServiceMock) },
       ],
     });
 
@@ -52,7 +52,7 @@ describe('Contact Effects', () => {
     });
 
     it('should dispatch a LoadContactFail action if a load error occurs', () => {
-      when(contactServiceMock.getContactSubjects()).thenReturn(throwError(makeHttpError({ message: 'error' })));
+      when(contactServiceMock.getContactSubjects()).thenReturn(throwError(() => makeHttpError({ message: 'error' })));
 
       const action = { type: loadContact.type } as Action;
       const expected = loadContactFail({ error: makeHttpError({ message: 'error' }) });

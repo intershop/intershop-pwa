@@ -95,7 +95,7 @@ Following the ideas of the article [RxJS: Don’t Unsubscribe](https://benlesh.m
 ```typescript
 export class AnyComponent implements OnInit, OnDestroy {
   ...
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
   ...
   ngOnInit() {
     ...
@@ -110,7 +110,7 @@ export class AnyComponent implements OnInit, OnDestroy {
 }
 ```
 
-The TSLint rule `rxjs-prefer-angular-takeuntil` enforces the usage of a `destroy$` Subject with `takeUntil` when subscribing in an Angular artifact.
+The ESLint rule `rxjs-angular/prefer-takeuntil` enforces the usage of a `destroy$` Subject with `takeUntil` when subscribing in an Angular artifact.
 You can use the schematic `add-destroy` to automatically generate the required logic:
 
 ```
@@ -140,7 +140,7 @@ Single-use dumb components are always okay if it improves readability.
 ## Mock Facades in Tests
 
 Angular Artifacts like Components, Directives and Pipes should solely depend on facades to interact with the [State Management](../concepts/state-management.md).
-This is enforced with the TSLint rule `no-intelligence-in-artifacts` which rejects every usage of REST API Services and NgRx Artifacts.
+This is enforced with the ESLint rule `no-intelligence-in-artifacts` which rejects every usage of REST API Services and NgRx Artifacts.
 
 Use [ts-mockito](https://github.com/NagRock/ts-mockito) for creating and managing these mocks.
 Providers for Facades can easily be added by using the VSCode snippet `ish-provider-ts-mockito`:

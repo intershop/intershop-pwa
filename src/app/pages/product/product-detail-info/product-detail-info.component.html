@@ -1,0 +1,26 @@
+<div *ngIf="product$ | async as product" class="section">
+  <ul ngbNav #nav="ngbNav" class="nav-tabs w-100" [(activeId)]="active">
+    <li [ngbNavItem]="'DESCRIPTION'">
+      <a ngbNavLink>{{ 'product.description.heading' | translate }}</a>
+      <ng-template ngbNavContent>
+        <div [innerHTML]="product.longDescription"></div>
+      </ng-template>
+    </li>
+
+    <li *ngIf="product.attributes?.length" [ngbNavItem]="'DETAILS'">
+      <a ngbNavLink>{{ 'product.details.heading' | translate }}</a>
+      <ng-template ngbNavContent>
+        <ish-product-attributes [product]="product"></ish-product-attributes>
+      </ng-template>
+    </li>
+
+    <li *ngIf="product.attachments?.length" [ngbNavItem]="'ATTACHMENTS'">
+      <a ngbNavLink>{{ 'product.attachments.heading' | translate }}</a>
+      <ng-template ngbNavContent>
+        <ish-product-attachments></ish-product-attachments>
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav"></div>
+</div>

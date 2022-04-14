@@ -28,7 +28,6 @@ describe('Lazy Captcha Component', () => {
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      declarations: [LazyCaptchaComponent],
       providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     })
       .overrideModule(CaptchaV2ComponentModule, { set: { entryComponents: [CaptchaV2Component] } })
@@ -83,7 +82,7 @@ describe('Lazy Captcha Component', () => {
       <ish-captcha-v3
         ><div class="row">
           <div class="offset-md-4 col-md-8">
-            <p class="validation-message" data-testing-id="recaptcha-v3-info"></p>
+            <p data-testing-id="recaptcha-v3-info" class="validation-message"></p>
           </div></div
       ></ish-captcha-v3>
     `);
@@ -100,6 +99,7 @@ describe('Lazy Captcha Component', () => {
   });
 
   it('should throw an error if there is no control "captcha" in the given form', () => {
+    component.form = component.form as FormGroup;
     delete component.form.controls.captcha;
     expect(() => fixture.detectChanges()).toThrowErrorMatchingInlineSnapshot(
       `"form control 'captcha' does not exist in the given form for LazyCaptchaComponent"`
@@ -107,6 +107,7 @@ describe('Lazy Captcha Component', () => {
   });
 
   it('should throw an error if there is no control "captchaAction" in the given form', () => {
+    component.form = component.form as FormGroup;
     delete component.form.controls.captchaAction;
     expect(() => fixture.detectChanges()).toThrowErrorMatchingInlineSnapshot(
       `"form control 'captchaAction' does not exist in the given form for LazyCaptchaComponent"`

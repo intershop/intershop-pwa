@@ -25,6 +25,7 @@ describe('Authorization Effects', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: AuthorizationService, useFactory: () => instance(authorizationService) },
         AuthorizationEffects,
         provideMockActions(() => actions$),
         provideMockStore({
@@ -33,7 +34,6 @@ describe('Authorization Effects', () => {
             { selector: getLoggedInUser, value: {} },
           ],
         }),
-        { provide: AuthorizationService, useFactory: () => instance(authorizationService) },
       ],
     });
 
@@ -67,7 +67,7 @@ describe('Authorization Effects', () => {
 
     it('should map to error action when service call fails', done => {
       when(authorizationService.getRolesAndPermissions(anything(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'ERROR' }))
+        throwError(() => makeHttpError({ message: 'ERROR' }))
       );
 
       actions$ = of(loadRolesAndPermissions());

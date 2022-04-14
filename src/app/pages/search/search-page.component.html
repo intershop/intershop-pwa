@@ -10,6 +10,6 @@
 
   <!-- empty search result -->
   <ng-template #noResult>
-    <ish-search-no-result *ngIf="!(searchLoading$ | async)" [searchTerm]="searchTerm"></ish-search-no-result>
+    <ish-search-no-result *ngIf="(searchLoading$ | async) === false" [searchTerm]="searchTerm"></ish-search-no-result>
   </ng-template>
 </ng-container>

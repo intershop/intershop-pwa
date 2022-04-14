@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -24,7 +22,7 @@ describe('Input Addon Wrapper Component', () => {
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [InputAddonWrapperComponent, MockPipe(TranslatePipe)],
+      declarations: [InputAddonWrapperComponent],
     }).compileComponents();
   });
 

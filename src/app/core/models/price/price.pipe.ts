@@ -11,15 +11,15 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { Price } from './price.model';
 
 export function formatPrice(price: Price, lang: string): string {
-  const symbol = getCurrencySymbol(price.currency, 'wide', lang);
-  return formatCurrency(price.value, lang, symbol);
+  const symbol = getCurrencySymbol(price.currency, 'narrow', lang);
+  return symbol ? formatCurrency(price.value, lang, symbol) : price.value?.toString();
 }
 
 @Pipe({ name: 'ishPrice', pure: false })
 export class PricePipe implements PipeTransform, OnDestroy {
   displayText: string;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private translateService: TranslateService,

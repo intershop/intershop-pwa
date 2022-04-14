@@ -56,7 +56,7 @@ describe('Cms Container Component', () => {
         class="content-container col-12 col-md-6 col-lg-4 float-left foo-class"
         ng-reflect-ng-class="col-12 col-md-6 col-lg-4 float"
       >
-        <ish-content-slot ng-reflect-slot="app_sf_base_cm:slot.container." ng-reflect-wrapper="true"
+        <ish-content-slot ng-reflect-wrapper="true" ng-reflect-slot="app_sf_base_cm:slot.container."
           ><ish-content-pagelet ng-reflect-pagelet-id="slide1"></ish-content-pagelet
           ><ish-content-pagelet ng-reflect-pagelet-id="slide2"></ish-content-pagelet
         ></ish-content-slot>

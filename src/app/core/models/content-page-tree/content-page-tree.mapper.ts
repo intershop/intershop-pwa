@@ -34,7 +34,7 @@ export class ContentPageTreeMapper {
    * Maps the incoming raw page tree path to a path with unique IDs.
    */
   mapContentPageTreeElementPath(path: Link[]) {
-    if (path && path.length) {
+    if (path?.length) {
       return path.map(x => x?.itemId);
     }
     throw new Error('input is falsy');
@@ -101,7 +101,7 @@ export class ContentPageTreeMapper {
         treeData.path = [...treeData.path, treeData.page];
       }
 
-      if (treeData.elements && treeData.elements.length) {
+      if (treeData.elements?.length) {
         /**
          * check type of available elements: {@link ContentPageTreeData} or {@link Link}.
          */

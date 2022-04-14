@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, SimpleChange, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,12 +21,8 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
 
 import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
-import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concardis-creditcard-cvc-detail/payment-concardis-creditcard-cvc-detail.component';
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
-import { PaymentConcardisDirectdebitComponent } from '../payment-concardis-directdebit/payment-concardis-directdebit.component';
-import { PaymentCybersourceCreditcardComponent } from '../payment-cybersource-creditcard/payment-cybersource-creditcard.component';
 import { PaymentParameterFormComponent } from '../payment-parameter-form/payment-parameter-form.component';
-import { PaymentPayoneCreditcardComponent } from '../payment-payone-creditcard/payment-payone-creditcard.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 
@@ -37,13 +33,9 @@ describe('Checkout Payment Component', () => {
   let paymentMethodChange: SimpleChanges;
 
   beforeEach(async () => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutPaymentComponent,
-        DummyComponent,
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
@@ -52,20 +44,16 @@ describe('Checkout Payment Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
         MockComponent(InfoMessageComponent),
-        MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
-        MockComponent(PaymentConcardisCreditcardCvcDetailComponent),
-        MockComponent(PaymentConcardisDirectdebitComponent),
-        MockComponent(PaymentCybersourceCreditcardComponent),
-        MockComponent(PaymentPayoneCreditcardComponent),
         MockComponent(PaymentSaveCheckboxComponent),
+        MockDirective(NgbCollapse),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
         PaymentParameterFormComponent,
       ],
       imports: [
         ReactiveFormsModule,
-        RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'checkout/review', children: [] }]),
         TranslateModule.forRoot(),
       ],
     })

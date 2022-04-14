@@ -50,7 +50,7 @@ describe('Account Profile Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display customer data and edit links after creation ', () => {
+  it('should display customer data and edit links after creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="email-field"]').innerHTML).toBe('patricia@test.intershop.de');
     expect(element.querySelector('[data-testing-id="edit-email"]')).toBeTruthy();
@@ -61,7 +61,7 @@ describe('Account Profile Component', () => {
     expect(element.querySelector('[data-testing-id="edit-company"]')).toBeFalsy();
   });
 
-  it('should display company section and link for a business customer ', () => {
+  it('should display company section and link for a business customer', () => {
     component.customer = { isBusinessCustomer: true } as Customer;
     fixture.detectChanges();
 

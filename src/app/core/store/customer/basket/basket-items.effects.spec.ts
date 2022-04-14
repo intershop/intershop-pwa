@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -44,23 +43,19 @@ describe('Basket Items Effects', () => {
   let location: Location;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     basketServiceMock = mock(BasketService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(),
         CustomerStoreModule.forTesting('basket'),
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
         ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketItemsEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
       ],
     });
 
@@ -150,7 +145,7 @@ describe('Basket Items Effects', () => {
 
     it('should map invalid request to action of type AddItemsToBasketFail', () => {
       when(basketServiceMock.addItemsToBasket(anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       store$.dispatch(
@@ -311,8 +306,7 @@ describe('Basket Items Effects', () => {
         ],
       };
       const action = updateBasketItems(payload);
-      // tslint:disable-next-line: no-null-keyword
-      const completion = updateBasketItemsSuccess({ info: null });
+      const completion = updateBasketItemsSuccess({ info: undefined });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -321,7 +315,7 @@ describe('Basket Items Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketItemsFail', () => {
       when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const payload = {
@@ -400,7 +394,7 @@ describe('Basket Items Effects', () => {
 
     it('should map invalid request to action of type DeleteBasketItemFail', () => {
       when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const itemId = 'BIID';
@@ -428,7 +422,7 @@ describe('Basket Items Effects', () => {
     it('should navigate to basket if interaction has info', fakeAsync(() => {
       actions$ = of(deleteBasketItemSuccess({ info: [{ message: 'INFO' } as BasketInfo] }));
 
-      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe(noop, fail, noop);
+      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 
@@ -438,7 +432,7 @@ describe('Basket Items Effects', () => {
     it('should not navigate to basket if interaction had no info', fakeAsync(() => {
       actions$ = of(deleteBasketItemSuccess({ info: undefined }));
 
-      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe(noop, fail, noop);
+      effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe({ next: noop, error: fail, complete: noop });
 
       tick(500);
 

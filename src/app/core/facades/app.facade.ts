@@ -1,8 +1,9 @@
+import { getCurrencySymbol } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
-import { filter, map, mapTo, sample, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
+import { filter, map, sample, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import {
   getAvailableLocales,
@@ -19,6 +20,7 @@ import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } fro
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
@@ -61,15 +63,15 @@ export class AppFacade {
   routingInProgress$ = merge(
     this.router.events.pipe(
       filter(event => event instanceof NavigationStart),
-      mapTo(true)
+      map(() => true)
     ),
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
-      mapTo(false)
+      map(() => false)
     ),
     this.router.events.pipe(
       filter(event => event instanceof NavigationCancel),
-      mapTo(false)
+      map(() => false)
     )
   ).pipe(startWith(true), shareReplay(1));
   path$ = this.store.pipe(select(selectPath));
@@ -104,10 +106,25 @@ export class AppFacade {
 
   /**
    * extracts a specific server setting from the store.
+   *
    * @param path the path to the server setting, starting from the serverConfig/_config store.
    */
   serverSetting$<T>(path: string) {
     return this.store.pipe(select(getServerConfigParameter<T>(path)));
+  }
+
+  /**
+   * returns the currency symbol for the currency parameter in the current locale.
+   * If no parameter is given, the the default currency is taken instead of it.
+   *
+   * @param currency The currency
+   */
+  currencySymbol$(currency?: string) {
+    return this.currentLocale$.pipe(
+      whenTruthy(),
+      withLatestFrom(this.currentCurrency$),
+      map(([locale, defaultCurrency]) => getCurrencySymbol(currency || defaultCurrency, 'narrow', locale))
+    );
   }
 
   countries$() {

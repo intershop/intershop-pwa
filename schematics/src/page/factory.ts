@@ -12,6 +12,7 @@ import {
   url,
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWAPageOptionsSchema as Options } from 'schemas/page/schema';
 import { forEachToken, getChildOfKind } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -19,8 +20,6 @@ import { applyNameAndPath, detectExtension, determineArtifactName } from '../uti
 import { readIntoSourceFile } from '../utils/filesystem';
 import { applyLintFix } from '../utils/lint-fix';
 import { addImportToFile } from '../utils/registration';
-
-import { PWAPageOptionsSchema as Options } from './schema';
 
 function addRouteToArray(
   options: { name?: string; routingModule?: string; child?: string; lazy?: boolean },
@@ -48,6 +47,7 @@ function addRouteToArray(
   }
 }
 
+// eslint-disable-next-line complexity
 async function determineRoutingModule(
   host: Tree,
   options: { name?: string; project?: string; extension?: string; lazy?: boolean }
@@ -77,10 +77,15 @@ async function determineRoutingModule(
   if (!subPaging) {
     routingModuleLocation = options.extension
       ? `extensions/${options.extension}/pages/${options.extension}-routing.module.ts`
-      : (project.root ? 'pages/' + project.root.replace(/^.*?\//g, '') : 'pages/app') + '-routing.module.ts';
+      : `${project.root ? `pages/${project.root.replace(/^.*?\//g, '')}` : 'pages/app'}-routing.module.ts`;
   }
 
-  const routingModule = normalize(`${buildDefaultPath(project)}/${routingModuleLocation}`);
+  let routingModule: string = normalize(`${buildDefaultPath(project)}/${routingModuleLocation}`);
+  const alternateModule = routingModule.replace('.ts', '.all.ts');
+  if (host.exists(alternateModule)) {
+    routingModule = alternateModule;
+  }
+
   return {
     ...options,
     routingModule,
@@ -147,7 +152,7 @@ export function createPage(options: Options): Rule {
 
     operations.push(
       schematic('component', {
-        ...options,
+        project: options.project,
         name: `${options.name}-page`,
         path: `${options.path}${options.name}`,
         flat: true,

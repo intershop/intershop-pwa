@@ -1,0 +1,121 @@
+<div *ngIf="costCenter">
+  <ng-container *ngIf="costCenter.buyers?.length > 0; else emptyList">
+    <table
+      cdk-table
+      [dataSource]="costCenter.buyers"
+      class="table table-lg mobile-optimized"
+      data-testing-id="costCenterBuyers-list"
+    >
+      <!-- Buyer Name -->
+      <ng-container cdkColumnDef="buyerName">
+        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer-name">
+          {{ 'account.costcenter.details.buyers.list.header.name' | translate }}
+        </th>
+        <td
+          cdk-cell
+          *cdkCellDef="let buyer"
+          [attr.data-label]="'account.costcenter.details.buyers.list.header.name' | translate"
+        >
+          <a *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'" [routerLink]="'../../users/' + buyer.login"
+            >{{ buyer.firstName }} {{ buyer.lastName }}</a
+          >
+          <ng-container *ishHasNotRole="'APP_B2B_ACCOUNT_OWNER'">
+            {{ buyer.firstName }} {{ buyer.lastName }}
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <!-- Orders -->
+      <ng-container cdkColumnDef="orders">
+        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-orders">
+          {{ 'account.costcenter.details.buyers.list.header.approvedorders' | translate }}
+        </th>
+        <td
+          cdk-cell
+          *cdkCellDef="let buyer"
+          [attr.data-label]="'account.costcenter.details.buyers.list.header.approvedorders' | translate"
+        >
+          {{ buyer.approvedOrders }}
+        </td>
+      </ng-container>
+
+      <!-- Pending Orders -->
+      <ng-container cdkColumnDef="pendingOrders">
+        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-pending-orders">
+          {{ 'account.costcenter.details.buyers.list.header.pendingorders' | translate }}
+        </th>
+        <td
+          cdk-cell
+          *cdkCellDef="let buyer"
+          [attr.data-label]="'account.costcenter.details.buyers.list.header.pendingorders' | translate"
+        >
+          {{ buyer.pendingOrders }}
+        </td>
+      </ng-container>
+
+      <!-- Budget -->
+      <ng-container cdkColumnDef="budget">
+        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-user-budget">
+          {{ 'account.costcenter.details.buyers.list.header.orderspendlimit' | translate }}
+        </th>
+        <td
+          cdk-cell
+          *cdkCellDef="let buyer"
+          [attr.data-label]="'account.costcenter.details.buyers.list.header.orderspendlimit' | translate"
+        >
+          {{ buyer.budget | ishPrice }} ({{
+            'account.costcenter.details.buyers.list.orderspendlimit.period' | translate: { '0': buyer.budgetPeriod }
+          }})
+        </td>
+      </ng-container>
+
+      <ng-container cdkColumnDef="actions">
+        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-cost-center-buyers-actions"></th>
+        <td cdk-cell *cdkCellDef="let buyer" class="column-price">
+          <a
+            class="btn-tool"
+            [title]="'account.costcenter.details.action.edit' | translate"
+            [routerLink]=""
+            data-testing-id="cost-center-buyer-edit"
+            (click)="openEditCostCenterBuyerDialog(buyer, editCostCenterBuyerDialog)"
+            ><fa-icon icon="pencil-alt"></fa-icon
+          ></a>
+
+          <!-- Remove buyer -->
+          <a
+            class="btn-tool"
+            title="{{ 'account.costcenter.remove.button.label' | translate }}"
+            (click)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
+            data-testing-id="cost-center-buyer-remove"
+            ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
+          ></a>
+        </td>
+      </ng-container>
+
+      <!-- Header and Row Declarations -->
+      <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+  </ng-container>
+
+  <ish-cost-center-buyer-edit-dialog #editCostCenterBuyerDialog></ish-cost-center-buyer-edit-dialog>
+
+  <!-- Empty List -->
+  <ng-template #emptyList>
+    <p data-testing-id="emptyBuyerList">{{ 'account.costcenter.details.buyers.list.nobuyers' | translate }}</p>
+  </ng-template>
+</div>
+
+<ish-modal-dialog
+  #removeBuyerDialog
+  [options]="{
+    confirmText: 'account.costcenter.remove.button.label' | translate,
+    rejectText: 'account.cancel.button.label' | translate,
+    titleText:
+      'account.costcenter.remove_buyer_dialog.header'
+      | translate: { '0': selectedBuyer?.firstName + ' ' + selectedBuyer?.lastName }
+  }"
+  (confirmed)="removeBuyerFromCostCenter()"
+>
+  <p [ishServerHtml]="'account.costcenter.remove_buyer.question' | translate"></p>
+</ish-modal-dialog>

@@ -66,7 +66,7 @@ For usage instructions, check the comments in that file.
 
 The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS and other files.
 In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](https://editorconfig.org) configuration of the project to help maintain consistent coding styles.
-Besides that, the project has [TSLint](https://palantir.github.io/tslint/) and [Stylelint](https://stylelint.io) rules configured to unify the coding style even further.
+Besides that the project has [ESLint](https://eslint.org) and [Stylelint](https://stylelint.io) configured to unify the coding style even further.
 
 The recommended IDE for the Intershop PWA development is
 
@@ -134,3 +134,11 @@ This can be done by setting the environment variable `NODE_OPTIONS=--max_old_spa
 [Debug Angular apps in production without revealing source maps](https://medium.com/angular-in-depth/debug-angular-apps-in-production-without-revealing-source-maps-ab4a235edd85)
 
 - If you also generate the source maps for production builds, you can load them in the browser development tools and use them for debugging production setups.
+
+## Parallelism
+
+The parallelism of `npm run test` and `npm run build:multi` can be customized with environment variables.
+
+The environment variable `JEST_MAX_WORKERS` is deferred to [`maxWorkers`](https://jestjs.io/docs/configuration#maxworkers-number--string) of `jest`.
+
+The environment variable `PWA_BUILD_MAX_WORKERS` is deferred to [`--max-parallel`](https://github.com/mysticatea/npm-run-all/blob/master/docs/npm-run-all.md#npm-run-all-command) of `npm-run-all`.

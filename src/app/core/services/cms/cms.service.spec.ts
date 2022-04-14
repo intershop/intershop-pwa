@@ -19,8 +19,8 @@ describe('Cms Service', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: ContentPageletEntryPointMapper, useFactory: () => instance(cpepMapper) },
         { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: ContentPageletEntryPointMapper, useFactory: () => instance(cpepMapper) },
       ],
     });
 
@@ -36,8 +36,8 @@ describe('Cms Service', () => {
       when(apiService.get(anything(), anything())).thenReturn(of('My Data'));
       when(cpepMapper.fromData(anything())).thenReturn([undefined, undefined]);
 
-      cmsService.getContentInclude('ID').subscribe(
-        data => {
+      cmsService.getContentInclude('ID').subscribe({
+        next: data => {
           verify(apiService.get(anything(), anything())).once();
 
           const args = capture(apiService.get).first();
@@ -57,9 +57,9 @@ describe('Cms Service', () => {
             }
           `);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
   });
 
@@ -94,9 +94,12 @@ describe('Cms Service', () => {
     });
 
     it('should throw error when contentPageId is not set', done => {
-      cmsService.getContentPageTree(undefined).subscribe(fail, err => {
-        expect(err).toBeTruthy();
-        done();
+      cmsService.getContentPageTree(undefined).subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toBeTruthy();
+          done();
+        },
       });
 
       verify(apiService.get(anything())).never();

@@ -29,7 +29,7 @@ export class MockInterceptor implements HttpInterceptor {
 
     const newUrl = `${MOCK_DATA_ROOT}/${this.getRestPath(req.url)}/${req.method.toLocaleLowerCase()}.json`;
 
-    // tslint:disable-next-line:no-console
+    // eslint-disable-next-line no-console
     console.log(`redirecting '${req.url}' to '${newUrl}'`);
 
     return next.handle(req.clone({ url: newUrl, method: 'GET' }));

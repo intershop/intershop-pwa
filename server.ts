@@ -1,4 +1,4 @@
-// tslint:disable: no-console ish-ordered-imports force-jsdoc-comments ban-specific-imports
+/* eslint-disable no-console, ish-custom-rules/ordered-imports, no-restricted-imports, complexity, @typescript-eslint/no-var-requires */
 import 'zone.js/node';
 
 import * as express from 'express';
@@ -10,6 +10,28 @@ import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment, APP_BA
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 
+const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
+
+if (PM2) {
+  const logOriginal = console.log;
+
+  console.log = (...args: unknown[]) => {
+    logOriginal(PM2, ...args);
+  };
+
+  const warnOriginal = console.warn;
+
+  console.warn = (...args: unknown[]) => {
+    warnOriginal(PM2, ...args);
+  };
+
+  const errorOriginal = console.error;
+
+  console.error = (...args: unknown[]) => {
+    errorOriginal(PM2, ...args);
+  };
+}
+
 const PORT = process.env.PORT || 4200;
 
 const DEPLOY_URL = getDeployURLFromEnv();
@@ -19,19 +41,23 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
 
 // uncomment this block to prevent ssr issues with third-party libraries regarding window, document, HTMLElement and navigator
-// tslint:disable-next-line: no-commented-out-code
+// eslint-disable-next-line etc/no-commented-out-code
 /*
 const domino = require('domino');
+
 const template = fs.readFileSync(join(BROWSER_FOLDER, 'index.html')).toString();
+
 const win = domino.createWindow(template);
 
-// tslint:disable:no-string-literal
 global['window'] = win;
+
 global['document'] = win.document;
+
 global['HTMLElement'] = win.HTMLElement;
+
 global['navigator'] = win.navigator;
-// tslint:enable:no-string-literal
 */
+
 // The Express app is exported so that it can be used by serverless Functions.
 // not-dead-code
 export function app() {
@@ -122,8 +148,14 @@ export function app() {
   server.set('views', BROWSER_FOLDER);
 
   if (logging) {
+    const morgan = require('morgan');
+    // see https://github.com/expressjs/morgan#predefined-formats
+    let logFormat = morgan.tiny;
+    if (PM2) {
+      logFormat = `${PM2} ${logFormat}`;
+    }
     server.use(
-      require('morgan')('tiny', {
+      morgan(logFormat, {
         skip: (req: express.Request) => req.originalUrl.startsWith('/INTERSHOP/static'),
       })
     );
@@ -156,13 +188,25 @@ export function app() {
 
   // Serve static files from browser folder
   server.get(/\/.*\.(js|css)$/, (req, res) => {
-    const path = req.originalUrl.substring(1);
+    // remove all parameters
+    const path = req.originalUrl.substring(1).replace(/[;?&].*$/, '');
+
     fs.readFile(join(BROWSER_FOLDER, path), { encoding: 'utf-8' }, (err, data) => {
       if (err) {
         res.sendStatus(404);
       } else {
-        res.set('Content-Type', (path.endsWith('css') ? 'text/css' : 'application/javascript') + '; charset=UTF-8');
+        res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
         res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
+      }
+    });
+  });
+  server.get(/\/ngsw\.json/, (_, res) => {
+    fs.readFile(join(BROWSER_FOLDER, 'ngsw.json'), { encoding: 'utf-8' }, (err, data) => {
+      if (err) {
+        res.sendStatus(404);
+      } else {
+        res.set('Content-Type', 'application/json; charset=UTF-8');
+        res.send(data);
       }
     });
   });
@@ -191,7 +235,7 @@ export function app() {
   const icmProxy = proxy(ICM_BASE_URL, {
     // preserve original path
     proxyReqPathResolver: (req: express.Request) => req.originalUrl,
-    // tslint:disable-next-line: no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     proxyReqOptDecorator: (options: any) => {
       if (process.env.TRUST_ICM) {
         // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
@@ -274,7 +318,7 @@ export function app() {
       const icmUrlRegex = new RegExp(entry.icm);
       const pwaUrlRegex = new RegExp(entry.pwa);
       if (icmUrlRegex.exec(url) && entry.handledBy === 'pwa') {
-        newUrl = url.replace(icmUrlRegex, '/' + entry.pwaBuild);
+        newUrl = url.replace(icmUrlRegex, `/${entry.pwaBuild}`);
         break;
       } else if (pwaUrlRegex.exec(url) && entry.handledBy === 'icm') {
         const config: { [is: string]: string } = {};
@@ -394,11 +438,12 @@ function run() {
 // Webpack will replace 'require' with '__webpack_require__'
 // '__non_webpack_require__' is a proxy to Node 'require'
 // The below code is to ensure that the server is run only when not requiring the bundle.
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const __non_webpack_require__: NodeRequire;
 
 const mainModule = __non_webpack_require__.main;
 
-const moduleFilename = (mainModule && mainModule.filename) || '';
+const moduleFilename = mainModule?.filename || '';
 
 if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run();

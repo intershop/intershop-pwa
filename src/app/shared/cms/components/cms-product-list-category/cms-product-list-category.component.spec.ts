@@ -1,8 +1,4 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyNumber, anyString, instance, mock, when } from 'ts-mockito';
 
@@ -10,12 +6,8 @@ import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { CMSProductListCategoryComponent } from './cms-product-list-category.component';
-
-@Component({ template: 'dummy' })
-class DummyComponent {}
 
 describe('Cms Product List Category Component', () => {
   let component: CMSProductListCategoryComponent;
@@ -29,12 +21,11 @@ describe('Cms Product List Category Component', () => {
     shoppingFacade = mock(ShoppingFacade);
     cmsFacade = mock(CMSFacade);
     await TestBed.configureTestingModule({
-      declarations: [CMSProductListCategoryComponent, DummyComponent, MockComponent(ProductsListComponent)],
+      declarations: [CMSProductListCategoryComponent],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
-      imports: [RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]), TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -110,10 +101,13 @@ describe('Cms Product List Category Component', () => {
       component.ngOnChanges();
 
       let count = 0;
-      component.productSKUs$.subscribe(() => {
-        count++;
-        done();
-      }, done());
+      component.productSKUs$.subscribe({
+        next: () => {
+          count++;
+          done();
+        },
+        error: done(),
+      });
 
       expect(count).toEqual(0);
     });

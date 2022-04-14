@@ -14,7 +14,7 @@ describe('Make Href Pipe', () => {
   beforeEach(() => {
     multiSiteService = mock(MultiSiteService);
     TestBed.configureTestingModule({
-      providers: [MakeHrefPipe, { provide: MultiSiteService, useFactory: () => instance(multiSiteService) }],
+      providers: [{ provide: MultiSiteService, useFactory: () => instance(multiSiteService) }, MakeHrefPipe],
     });
     makeHrefPipe = TestBed.inject(MakeHrefPipe);
     when(multiSiteService.getLangUpdatedUrl(anything(), anything(), anything())).thenCall(
@@ -26,7 +26,7 @@ describe('Make Href Pipe', () => {
     expect(makeHrefPipe).toBeTruthy();
   });
   // workaround for https://github.com/DefinitelyTyped/DefinitelyTyped/issues/34617
-  // tslint:disable-next-line: no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   it.each<any | jest.DoneCallback>([
     [undefined, undefined, 'undefined'],
     ['/test', undefined, '/test'],

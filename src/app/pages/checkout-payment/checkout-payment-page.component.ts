@@ -20,7 +20,7 @@ export class CheckoutPaymentPageComponent implements OnInit, OnDestroy {
   paymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<'gross' | 'net'>;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 

@@ -4,11 +4,12 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { RecentlyViewedComponent } from 'ish-shared/components/recently/recently-viewed/recently-viewed.component';
+
+import { LazyRecentlyViewedComponent } from '../../extensions/recently/exports/lazy-recently-viewed/lazy-recently-viewed.component';
 
 import { BasketPageComponent } from './basket-page.component';
 import { ShoppingBasketEmptyComponent } from './shopping-basket-empty/shopping-basket-empty.component';
@@ -25,12 +26,13 @@ describe('Basket Page Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         BasketPageComponent,
+        MockComponent(ContentIncludeComponent),
+        MockComponent(LazyRecentlyViewedComponent),
         MockComponent(LoadingComponent),
-        MockComponent(RecentlyViewedComponent),
+
         MockComponent(ShoppingBasketComponent),
         MockComponent(ShoppingBasketEmptyComponent),
       ],
-      imports: [FeatureToggleModule.forTesting('recently')],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });
@@ -72,6 +74,6 @@ describe('Basket Page Component', () => {
 
   it('should render recently viewed items on basket page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-recently-viewed')).toBeTruthy();
+    expect(element.querySelector('ish-lazy-recently-viewed')).toBeTruthy();
   });
 });

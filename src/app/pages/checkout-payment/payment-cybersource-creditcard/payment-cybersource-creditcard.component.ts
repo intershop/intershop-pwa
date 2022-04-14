@@ -16,12 +16,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
-// tslint:disable:no-any - allows access to cybersource js functionality
-declare var Flex: any;
+/* eslint-disable @typescript-eslint/no-explicit-any -- allows access to cybersource js functionality */
+declare let Flex: any;
 
 @Component({
   selector: 'ish-payment-cybersource-creditcard',
@@ -48,7 +48,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
   yearOptions: SelectOption[];
 
   /**
-   * concardis payment method, needed to get configuration parameters
+   * cybersource payment method, needed to get configuration parameters
    */
   @Input() paymentMethod: PaymentMethod;
 
@@ -57,10 +57,10 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
    */
   @Input() activated = false;
 
-  @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() cancelPayment = new EventEmitter<void>();
+  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   /**
    * flag to make sure that the init script is executed only once
@@ -185,7 +185,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
         jti: string;
       } = JSON.parse(window.atob(tokenSplit[1]));
 
-      this.submit.emit({
+      this.submitPayment.emit({
         parameters: [
           { name: 'token', value: token },
           { name: 'tokenExpiryTime', value: payloadJson.exp },
@@ -193,7 +193,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
           { name: 'maskedCardNumber', value: payloadJson.data.number },
           { name: 'expirationDate', value: `${this.expirationMonthVal}/${this.expirationYearVal}` },
         ],
-        saveAllowed: false,
+        saveAllowed: this.paymentMethod.saveAllowed && this.cyberSourceCreditCardForm.get('saveForLater').value,
       });
     }
     this.cd.detectChanges();
@@ -227,7 +227,11 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
    * cancel new payment instrument, hides and resets the parameter form
    */
   cancelNewPaymentInstrument() {
+    this.resetErrors();
     this.cyberSourceCreditCardForm.reset();
-    this.cancel.emit();
+    if (this.cyberSourceCreditCardForm.get('saveForLater')) {
+      this.cyberSourceCreditCardForm.get('saveForLater').setValue(true);
+    }
+    this.cancelPayment.emit();
   }
 }

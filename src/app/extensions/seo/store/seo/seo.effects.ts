@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Request } from 'express';
 import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
-import { distinctUntilChanged, filter, map, mapTo, switchMap, takeWhile, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -62,11 +62,14 @@ export class SeoEffects {
         switchMap(() =>
           race([
             // PRODUCT PAGE
-            this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substr(1))),
+            this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substring(1))),
             // CATEGORY / FAMILY PAGE
-            this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substr(1))),
+            this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substring(1))),
             // DEFAULT
-            this.appRef.isStable.pipe(whenTruthy(), mapTo(this.doc.URL.replace(/[;?].*/g, ''))),
+            this.appRef.isStable.pipe(
+              whenTruthy(),
+              map(() => this.doc.URL.replace(/[;?].*/g, ''))
+            ),
           ])
         ),
         distinctUntilChanged(),
@@ -187,7 +190,7 @@ export class SeoEffects {
     } else {
       url = this.doc.baseURI;
     }
-    return url.endsWith('/') ? url : url + '/';
+    return url.endsWith('/') ? url : `${url}/`;
   }
 
   private setCanonicalLink(url: string) {
@@ -219,7 +222,7 @@ export class SeoEffects {
             this.addOrModifyTag({ name: key, content: value });
             return;
         }
-        this.addOrModifyTag({ property: key.startsWith('og:') ? key : 'og:' + key, content: value });
+        this.addOrModifyTag({ property: key.startsWith('og:') ? key : `og:${key}`, content: value });
       });
     this.addOrModifyTag({ property: 'pwa-version', content: PWA_VERSION });
   }

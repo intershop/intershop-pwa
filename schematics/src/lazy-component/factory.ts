@@ -13,6 +13,7 @@ import {
 } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWALazyComponentOptionsSchema as Options } from 'schemas/lazy-component/schema';
 import * as ts from 'typescript';
 
 import { determineArtifactName, findDeclaringModule } from '../utils/common';
@@ -26,9 +27,8 @@ import {
   updateModule,
 } from '../utils/registration';
 
-import { PWALazyComponentOptionsSchema as Options } from './schema';
-
 export function createLazyComponent(options: Options): Rule {
+  // eslint-disable-next-line complexity
   return async host => {
     if (!options.project) {
       throw new SchematicsException('Option (project) is required.');
@@ -54,7 +54,7 @@ export function createLazyComponent(options: Options): Rule {
     }
 
     const originalName = /\/([a-z0-9-]+)\.component\.ts/.exec(originalPath)[1];
-    options.name = 'lazy-' + originalName;
+    options.name = `lazy-${originalName}`;
     if (isProject) {
       options.path = `${project.sourceRoot}/app/exports`;
     } else if (isShared) {
@@ -78,7 +78,7 @@ export function createLazyComponent(options: Options): Rule {
     options.selector = selectorPropertyAssignment.initializer
       .getText()
       .replace(/'/g, '')
-      .replace(originalName.replace(project.prefix + '-', ''), options.name.replace(project.prefix + '-', ''));
+      .replace(originalName.replace(`${project.prefix}-`, ''), options.name.replace(`${project.prefix}-`, ''));
 
     if (componentContent.includes('@Input(')) {
       const bindingNodes = tsquery(
@@ -138,18 +138,18 @@ export function createLazyComponent(options: Options): Rule {
       const pathFragments = originalPath.split('/');
       pathFragments.pop();
       pathFragments.pop();
-      componentImportPath = '../../../' + pathFragments.join('/');
+      componentImportPath = `../../../${pathFragments.join('/')}`;
     } else {
       componentImportPath = '../../shared';
     }
 
     const operations = [];
 
-    if (!options.ci) {
+    if (process.env.CI !== 'true') {
       if (!isShared && !exportsModuleExists) {
         operations.push(
           schematic('module', {
-            ...options,
+            project: options.project,
             name: exportsModuleName,
             flat: true,
           })
@@ -157,7 +157,7 @@ export function createLazyComponent(options: Options): Rule {
         operations.push(updateModule(options));
         operations.push(
           addExportToBarrelFile({
-            ...options,
+            path: options.path,
             artifactName: strings.classify(`${exportsModuleName}-module`),
             moduleImportPath: `/${options.path}/${exportsModuleName}.module`,
           })
@@ -168,7 +168,7 @@ export function createLazyComponent(options: Options): Rule {
         operations.push(addExportToNgModule(options));
       }
       if (!gitignoreExists) {
-        operations.push(generateGitignore({ ...options, content: '/lazy**' }));
+        operations.push(generateGitignore({ path: options.path, content: '/lazy**' }));
       }
 
       if (isProject) {
@@ -177,7 +177,7 @@ export function createLazyComponent(options: Options): Rule {
       operations.push(
         addDecoratorToClass(
           componentPath,
-          strings.classify(originalName + 'Component'),
+          strings.classify(`${originalName}Component`),
           'GenerateLazyComponent',
           'ish-core/utils/module-loader/generate-lazy-component.decorator'
         )
@@ -205,7 +205,7 @@ export function createLazyComponent(options: Options): Rule {
           forEach(fileEntry => {
             if (host.exists(fileEntry.path)) {
               host.overwrite(fileEntry.path, fileEntry.content);
-              // tslint:disable-next-line: no-null-keyword
+              // eslint-disable-next-line unicorn/no-null
               return null;
             } else {
               return fileEntry;
@@ -215,10 +215,7 @@ export function createLazyComponent(options: Options): Rule {
       )
     );
 
-    if (!options.ci) {
-      operations.push(applyLintFix());
-      operations.push(applyLintFix());
-    }
+    operations.push(applyLintFix());
 
     return chain(operations);
   };

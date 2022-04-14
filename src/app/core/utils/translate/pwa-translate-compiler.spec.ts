@@ -1,3 +1,4 @@
+import '@angular/common/locales/global/cy';
 import { TestBed } from '@angular/core/testing';
 import { TranslateCompiler, TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -16,6 +17,8 @@ describe('Pwa Translate Compiler', () => {
           },
         }),
       ],
+
+      teardown: { destroyAfterEach: false },
     });
 
     translate = TestBed.inject(TranslateService);
@@ -48,7 +51,6 @@ describe('Pwa Translate Compiler', () => {
     });
 
     it('should translate when "0" argument was given', () => {
-      // tslint:disable-next-line: use-shorthand-property-in-object-creation
       expect(translate.instant('plural', { 0: 0 })).toMatchInlineSnapshot(`"0 items"`);
     });
 
@@ -71,7 +73,6 @@ describe('Pwa Translate Compiler', () => {
     });
 
     it('should translate when "0" argument was given', () => {
-      // tslint:disable-next-line: use-shorthand-property-in-object-creation
       expect(translate.instant('plural', { 0: 0 })).toMatchInlineSnapshot(`"Content: 0 items!"`);
     });
 
@@ -204,6 +205,55 @@ describe('Pwa Translate Compiler', () => {
       ${'c'} | ${'You chose something else.'}
     `('should translate when $type was given as argument', ({ type, expected }) => {
       expect(translate.instant('message', { type })).toEqual(expected);
+    });
+  });
+});
+
+describe('Pwa Translate Compiler', () => {
+  let translate: TranslateService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        TranslateModule.forRoot({
+          compiler: {
+            provide: TranslateCompiler,
+            useClass: PWATranslateCompiler,
+          },
+        }),
+      ],
+
+      teardown: { destroyAfterEach: false },
+    });
+
+    translate = TestBed.inject(TranslateService);
+    translate.setDefaultLang('cy');
+    translate.use('cy');
+  });
+
+  describe('with pluralization in Welsh', () => {
+    beforeEach(() => {
+      translate.set('advanced', '{{items, plural, zero{zero} one{one} two{two} few{few} many{many} other{other}}}');
+    });
+
+    it.each`
+      items | expected
+      ${0}  | ${'zero'}
+      ${1}  | ${'one'}
+      ${2}  | ${'two'}
+      ${3}  | ${'few'}
+      ${4}  | ${'other'}
+      ${5}  | ${'other'}
+      ${6}  | ${'many'}
+      ${7}  | ${'other'}
+      ${8}  | ${'other'}
+      ${9}  | ${'other'}
+      ${10} | ${'other'}
+      ${11} | ${'other'}
+      ${12} | ${'other'}
+      ${13} | ${'other'}
+    `('should detect case "$expected" with $items item(s)', ({ items, expected }) => {
+      expect(translate.instant('advanced', { items })).toEqual(expected);
     });
   });
 });

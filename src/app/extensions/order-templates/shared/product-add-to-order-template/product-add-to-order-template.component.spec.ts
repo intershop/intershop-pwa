@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -51,15 +49,11 @@ describe('Product Add To Order Template Component', () => {
     when(productContext.get('quantity')).thenReturn(1);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockComponent(SelectOrderTemplateModalComponent),
-        ProductAddToOrderTemplateComponent,
-      ],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [MockComponent(SelectOrderTemplateModalComponent), ProductAddToOrderTemplateComponent],
+      imports: [RouterTestingModule],
       providers: [
-        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(productContext) },
       ],
     }).compileComponents();

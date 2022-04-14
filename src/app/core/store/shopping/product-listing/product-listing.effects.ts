@@ -2,13 +2,12 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { distinctUntilChanged, map, mapTo, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
-import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
@@ -27,10 +26,9 @@ import {
   loadMoreProducts,
   loadMoreProductsForParams,
   setProductListingPageSize,
-  setProductListingPages,
   setViewType,
 } from './product-listing.actions';
-import { getProductListingView, getProductListingViewType } from './product-listing.selectors';
+import { getProductListingViewType } from './product-listing.selectors';
 
 @Injectable()
 export class ProductListingEffects {
@@ -42,14 +40,17 @@ export class ProductListingEffects {
   ) {}
 
   initializePageSize$ = createEffect(() =>
-    this.actions$.pipe(take(1), mapTo(setProductListingPageSize({ itemsPerPage: this.itemsPerPage })))
+    this.actions$.pipe(
+      take(1),
+      map(() => setProductListingPageSize({ itemsPerPage: this.itemsPerPage }))
+    )
   );
 
   initializeDefaultViewType$ = createEffect(() =>
     this.store.pipe(
       select(getProductListingViewType),
       whenFalsy(),
-      mapTo(setViewType({ viewType: this.defaultViewType }))
+      map(() => setViewType({ viewType: this.defaultViewType }))
     )
   );
 
@@ -114,23 +115,8 @@ export class ProductListingEffects {
     this.actions$.pipe(
       ofType(loadMoreProductsForParams),
       mapToPayload(),
-      switchMap(({ id, sorting, page, filters }) =>
-        this.store.pipe(
-          select(getProductListingView({ ...id, sorting, page, filters })),
-          map((view: ProductListingView) => ({
-            id,
-            sorting,
-            page,
-            filters,
-            viewAvailable: !view.empty() && view.productsOfPage(page).length,
-          }))
-        )
-      ),
-      distinctUntilChanged((a, b) => isEqual({ ...a, viewAvailable: undefined }, { ...b, viewAvailable: undefined })),
-      map(({ id, sorting, page, filters, viewAvailable }) => {
-        if (viewAvailable) {
-          return setProductListingPages({ id: { page, sorting, filters, ...id } });
-        }
+      distinctUntilChanged(isEqual),
+      map(({ id, sorting, page, filters }) => {
         if (filters) {
           const searchParameter = filters;
           return loadProductsForFilter({ id: { ...id, filters }, searchParameter, page, sorting });

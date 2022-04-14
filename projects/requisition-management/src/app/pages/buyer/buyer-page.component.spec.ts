@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -39,6 +39,9 @@ describe('Buyer Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     when(reqFacade.requisitionsStatus$).thenReturn(of('PENDING'));
+    when(reqFacade.requisitionsLoading$).thenReturn(of(false));
+    when(reqFacade.requisitionsError$).thenReturn(EMPTY);
+    when(reqFacade.requisitionsByRoute$).thenReturn(of([]));
   });
 
   it('should be created', () => {

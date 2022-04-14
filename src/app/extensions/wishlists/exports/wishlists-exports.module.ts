@@ -19,7 +19,7 @@ import { LazyWishlistsLinkComponent } from './lazy-wishlists-link/lazy-wishlists
       multi: true,
     },
   ],
-  declarations: [LazyProductAddToWishlistComponent, LazyWishlistWidgetComponent, LazyWishlistsLinkComponent],
-  exports: [LazyProductAddToWishlistComponent, LazyWishlistWidgetComponent, LazyWishlistsLinkComponent],
+  declarations: [LazyProductAddToWishlistComponent, LazyWishlistsLinkComponent, LazyWishlistWidgetComponent],
+  exports: [LazyProductAddToWishlistComponent, LazyWishlistsLinkComponent, LazyWishlistWidgetComponent],
 })
 export class WishlistsExportsModule {}

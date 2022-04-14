@@ -35,7 +35,7 @@ describe('Date Pipe', () => {
     ${32452435234}                 | ${undefined}    | ${'Jan 11, 1971'} | ${'11.01.1971'}
     ${new Date(32452435234)}       | ${'shortDate'}  | ${'1/11/71'}      | ${'11.01.71'}
     ${'1971-01-11T14:33:55+00:00'} | ${'mediumTime'} | ${'2:33:55 PM'}   | ${'14:33:55'}
-  `('should transform $date to ', ({ date, format, EN, DE }) => {
+  `('should transform $date to', ({ date, format, EN, DE }) => {
     test(`${EN} with format ${format} for english local`, () => {
       translateService.use('en');
       expect(datePipe.transform(date, format)).toEqual(EN);

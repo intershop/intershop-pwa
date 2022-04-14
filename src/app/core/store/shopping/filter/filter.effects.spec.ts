@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, of, throwError } from 'rxjs';
-import { toArray } from 'rxjs/operators';
+import { Observable, merge, of, throwError } from 'rxjs';
+import { delay, toArray } from 'rxjs/operators';
 import { anyNumber, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -19,6 +19,7 @@ import {
   applyFilterSuccess,
   loadFilterFail,
   loadFilterForCategory,
+  loadFilterForMaster,
   loadFilterForSearch,
   loadFilterSuccess,
   loadProductsForFilter,
@@ -37,14 +38,21 @@ describe('Filter Effects', () => {
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError(makeHttpError({ message: 'invalid' }));
+        return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
         return of(filterNav);
       }
     });
     when(filterServiceMock.getFilterForCategory(anything())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError(makeHttpError({ message: 'invalid' }));
+        return throwError(() => makeHttpError({ message: 'invalid' }));
+      } else {
+        return of(filterNav);
+      }
+    });
+    when(filterServiceMock.getFilterForMaster(anything())).thenCall(a => {
+      if (a === 'invalid') {
+        return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
         return of(filterNav);
       }
@@ -52,7 +60,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.getFilteredProducts(anything(), anyNumber(), anything(), anyNumber())).thenCall(a => {
       if (a.name === 'invalid') {
-        return throwError(makeHttpError({ message: 'invalid' }));
+        return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
         return of({
           total: 2,
@@ -63,7 +71,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.applyFilter(anything())).thenCall(a => {
       if (a.param[0] === 'invalid') {
-        return throwError(makeHttpError({ message: 'invalid' }));
+        return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
         return of(filterNav);
       }
@@ -71,9 +79,9 @@ describe('Filter Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('productListing')],
       providers: [
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         FilterEffects,
         provideMockActions(() => actions$),
-        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
       ],
     });
 
@@ -82,13 +90,33 @@ describe('Filter Effects', () => {
     store$.dispatch(setProductListingPageSize({ itemsPerPage: 2 }));
   });
 
-  describe('loadAvailableFilterForCategories$', () => {
+  describe('loadAvailableFilters$', () => {
     it('should call the filterService for LoadFilterForCategories action', done => {
       const action = loadFilterForCategory({ uniqueId: 'c' });
       actions$ = of(action);
 
-      effects.loadAvailableFilterForCategories$.subscribe(() => {
+      effects.loadAvailableFilters$.subscribe(() => {
         verify(filterServiceMock.getFilterForCategory(anything())).once();
+        done();
+      });
+    });
+
+    it('should call the filterService for loadFilterForSearch action', done => {
+      const action = loadFilterForSearch({ searchTerm: 'c' });
+      actions$ = of(action);
+
+      effects.loadAvailableFilters$.subscribe(() => {
+        verify(filterServiceMock.getFilterForSearch(anything())).once();
+        done();
+      });
+    });
+
+    it('should call the filterService for loadFilterForMaster action', done => {
+      const action = loadFilterForMaster({ masterSKU: 'c' });
+      actions$ = of(action);
+
+      effects.loadAvailableFilters$.subscribe(() => {
+        verify(filterServiceMock.getFilterForMaster(anything())).once();
         done();
       });
     });
@@ -99,7 +127,7 @@ describe('Filter Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadAvailableFilterForCategories$).toBeObservable(expected$);
+      expect(effects.loadAvailableFilters$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type LoadFilterFail', () => {
@@ -108,10 +136,82 @@ describe('Filter Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadAvailableFilterForCategories$).toBeObservable(expected$);
+      expect(effects.loadAvailableFilters$).toBeObservable(expected$);
     });
-  });
 
+    it('should always have the latest filters emitting', fakeAsync(() => {
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      when(filterServiceMock.getFilterForMaster('master1')).thenReturn(of('filter master 1' as any).pipe(delay(10)));
+      when(filterServiceMock.getFilterForMaster('master2')).thenReturn(of('filter master 2' as any).pipe(delay(100)));
+      when(filterServiceMock.getFilterForCategory('category')).thenReturn(
+        of('filter categories' as any).pipe(delay(1000))
+      );
+      /* eslint-enable @typescript-eslint/no-explicit-any */
+
+      actions$ = merge(
+        // go to master 1
+        of(loadFilterForMaster({ masterSKU: 'master1' })),
+        // go to category
+        of(loadFilterForCategory({ uniqueId: 'category' })).pipe(delay(300)),
+        // go to master 2 before category filters are loaded
+        of(loadFilterForMaster({ masterSKU: 'master2' })).pipe(delay(500))
+      );
+
+      let lastAction;
+      effects.loadAvailableFilters$.subscribe(action => {
+        lastAction = action;
+      });
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 1"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 1"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+    }));
+  });
   describe('applyFilter$', () => {
     it('should call the filterService for ApplyFilter action', done => {
       const action = applyFilter({ searchParameter: { param: ['b'] } });
@@ -171,36 +271,6 @@ describe('Filter Effects', () => {
         `);
         done();
       });
-    });
-  });
-
-  describe('loadFilterForSearch$', () => {
-    it('should call the filterService for LoadFilterForSearch action', done => {
-      const action = loadFilterForSearch({ searchTerm: 'search' });
-      actions$ = of(action);
-
-      effects.loadFilterForSearch$.subscribe(() => {
-        verify(filterServiceMock.getFilterForSearch(anything())).once();
-        done();
-      });
-    });
-
-    it('should map to action of type LoadFilterSuccess', () => {
-      const action = loadFilterForSearch({ searchTerm: 'search' });
-      const completion = loadFilterSuccess({ filterNavigation: filterNav });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadFilterForSearch$).toBeObservable(expected$);
-    });
-
-    it('should map invalid request to action of type LoadFilterFail', () => {
-      const action = loadFilterForSearch({ searchTerm: 'invalid' });
-      const completion = loadFilterFail({ error: makeHttpError({ message: 'invalid' }) });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadFilterForSearch$).toBeObservable(expected$);
     });
   });
 });

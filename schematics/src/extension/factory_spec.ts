@@ -1,5 +1,6 @@
+import { noop } from '@angular-devkit/core/node_modules/rxjs';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { noop } from 'rxjs';
+import { PWAExtensionOptionsSchema as Options } from 'schemas/extension/schema';
 
 import {
   createAppLastRoutingModule,
@@ -7,8 +8,6 @@ import {
   createModule,
   createSchematicRunner,
 } from '../utils/testHelper';
-
-import { PWAExtensionOptionsSchema as Options } from './schema';
 
 describe('Extension Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -19,9 +18,11 @@ describe('Extension Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner)
-      .pipe(createModule(schematicRunner, { name: 'shared' }), createAppLastRoutingModule(schematicRunner))
-      .toPromise();
+    const appTree$ = createApplication(schematicRunner).pipe(
+      createModule(schematicRunner, { name: 'shared' }),
+      createAppLastRoutingModule(schematicRunner)
+    );
+    appTree = await appTree$.toPromise();
   });
 
   it('should create an extension', async () => {
@@ -122,9 +123,12 @@ export class AppModule { }
 
     const options = { ...defaultOptions };
 
-    schematicRunner.runSchematicAsync('extension', options, appTree).subscribe(noop, err => {
-      expect(err).toMatchInlineSnapshot(`[Error: did not find 'AppLastRoutingModule' in /src/app/app.module.ts]`);
-      done();
+    schematicRunner.runSchematicAsync('extension', options, appTree).subscribe({
+      next: noop,
+      error: err => {
+        expect(err).toMatchInlineSnapshot(`[Error: did not find 'AppLastRoutingModule' in /src/app/app.module.ts]`);
+        done();
+      },
     });
   });
 });

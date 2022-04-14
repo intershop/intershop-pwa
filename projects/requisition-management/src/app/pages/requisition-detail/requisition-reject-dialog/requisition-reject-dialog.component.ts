@@ -18,7 +18,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  *
  * @example
  * <ish-requisition-reject-dialog
-    (submit)="rejectRequisition($event)">
+    (submitRejectRequisition)="rejectRequisition($event)">
    </ish-requisition-reject-dialog>
  */
 @Component({
@@ -30,7 +30,7 @@ export class RequisitionRejectDialogComponent implements OnInit {
   /**
    * Emits the reject event with the reject comment.
    */
-  @Output() submit = new EventEmitter<string>();
+  @Output() submitRejectRequisition = new EventEmitter<string>();
 
   rejectForm = new FormGroup({});
   submitted = false;
@@ -80,7 +80,7 @@ export class RequisitionRejectDialogComponent implements OnInit {
       return;
     }
 
-    this.submit.emit(this.rejectForm.get('comment').value);
+    this.submitRejectRequisition.emit(this.rejectForm.get('comment').value);
     this.hide();
   }
 

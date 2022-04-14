@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -20,20 +19,16 @@ describe('Product Listing Effects', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router'], [ProductListingEffects]),
-        RouterTestingModule.withRoutes([{ path: 'some', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'some', children: [] }]),
         ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
-        provideStoreSnapshots(),
-        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
+        provideStoreSnapshots(),
       ],
     });
 

@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,6 +10,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { resetOrderErrors } from 'ish-core/store/customer/orders';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -56,21 +56,17 @@ describe('Basket Effects', () => {
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
 
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['router']),
+        CoreStoreModule.forTesting(['router', 'serverConfig', 'configuration']),
         CustomerStoreModule.forTesting('user', 'basket'),
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
       providers: [
+        { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
       ],
     });
 
@@ -105,13 +101,29 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketFail', () => {
-      when(basketServiceMock.getBasket()).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.getBasket()).thenReturn(throwError(() => makeHttpError({ message: 'invalid' })));
       const action = loadBasket();
       const completion = loadBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
+    });
+
+    describe('with basket-id in session storage', () => {
+      beforeEach(() => {
+        window.sessionStorage.clear();
+      });
+
+      it('should map to action of type LoadBasketWithId', () => {
+        window.sessionStorage.setItem('basket-id', 'BID');
+        const action = loadBasket();
+        const completion = loadBasketWithId({ basketId: 'BID' });
+        actions$ = hot('-a-a-a', { a: action });
+        const expected$ = cold('-c-c-c', { c: completion });
+
+        expect(effects.loadBasket$).toBeObservable(expected$);
+      });
     });
   });
 
@@ -141,7 +153,9 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketFail', () => {
-      when(basketServiceMock.getBasketWithId(basketId)).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.getBasketWithId(basketId)).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
       const action = loadBasketWithId({ basketId });
       const completion = loadBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
@@ -176,6 +190,37 @@ describe('Basket Effects', () => {
     });
   });
 
+  describe('recalculateBasketAfterCurrencyChange$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        loadServerConfigSuccess({
+          config: {
+            general: {
+              defaultLocale: 'de_DE',
+              defaultCurrency: 'EUR',
+              locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE'],
+              currencies: ['USD', 'EUR'],
+            },
+          },
+        })
+      );
+    });
+
+    it('should trigger a basket recalculation if the basket currency differs from current currency', done => {
+      const id = 'BID';
+
+      actions$ = of(loadBasketSuccess({ basket: { id, purchaseCurrency: 'USD' } as Basket }));
+
+      effects.recalculateBasketAfterCurrencyChange$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+        [Basket Internal] Update Basket:
+          update: {"calculated":true}
+        `);
+        done();
+      });
+    });
+  });
+
   describe('createBasket$', () => {
     beforeEach(() => {
       when(basketServiceMock.createBasket()).thenCall(() => of({ id: 'BID' } as Basket));
@@ -202,7 +247,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type CreateBasketFail', () => {
-      when(basketServiceMock.createBasket()).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.createBasket()).thenReturn(throwError(() => makeHttpError({ message: 'invalid' })));
       const action = createBasket();
       const completion = createBasketFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
@@ -251,7 +296,7 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type LoadBasketEligibleShippingMethodsFail', () => {
       when(basketServiceMock.getBasketEligibleShippingMethods(anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = loadBasketEligibleShippingMethods();
       const completion = loadBasketEligibleShippingMethodsFail({
@@ -302,7 +347,9 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketFail', () => {
       const update = { commonShippingMethod: 'shippingId' };
-      when(basketServiceMock.updateBasket(anything())).thenReturn(throwError(makeHttpError({ message: 'invalid' })));
+      when(basketServiceMock.updateBasket(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
 
       const action = updateBasket({ update });
       const completion = updateBasketFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -397,7 +444,7 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type SetBasketCustomAttributeFail', () => {
       when(basketServiceMock.createBasketAttribute(anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const attribute = { name: 'attr', value: 'xyz' };
@@ -446,13 +493,13 @@ describe('Basket Effects', () => {
       const action = deleteBasketAttribute({ attributeName });
       actions$ = of(action);
 
-      effects.deleteCustomAttributeFromBasket$.subscribe(
-        () => {
+      effects.deleteCustomAttributeFromBasket$.subscribe({
+        next: () => {
           verify(basketServiceMock.deleteBasketAttribute(attributeName)).never();
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should map to action of type DeleteBasketCustomAttributeSuccess and LoadBasket', () => {
@@ -470,7 +517,7 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type DeleteBasketCustomAttributeFail', () => {
       when(basketServiceMock.deleteBasketAttribute(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const attributeName = 'attr2';
@@ -553,7 +600,7 @@ describe('Basket Effects', () => {
 
     it('should map an invalid request to action of type SubmitBasketFail', () => {
       when(basketServiceMock.createRequisition(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = submitBasket();
       const completion = submitBasketFail({ error: makeHttpError({ message: 'invalid' }) });

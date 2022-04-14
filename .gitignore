@@ -1,9 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled or cached output
-/tslint*hard*
 *.xliff
-*.ut.spec.ts
+*.ut.spec.ts*
 
 # dependencies
 node_modules
@@ -21,6 +20,7 @@ node_modules
 /.nvmrc
 
 # misc
+/.angular/cache
 *.log
 /src/environments/environment.local.ts
 /src/environments/environment.development.ts

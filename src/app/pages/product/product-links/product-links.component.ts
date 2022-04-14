@@ -5,14 +5,14 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 
 /**
- * The Product Link Container Component
+ * The Product Links Component
  *
  * Collects all types of product links and prepares their rendering.
  * Product links can be displayed as product list (uses {@link ProductLinkListComponent}) or product carousel (uses  {@link ProductLinksCarouselComponent}).
  * For the carousel swiper is used.
  *
  * @example
- * <ish-product-links-list [links]="links.upselling" [productLinkTitle]="'product.product_links.upselling.title' | translate"></ish-product-links-list>
+ * <ish-product-links></ish-product-links>
  */
 @Component({
   selector: 'ish-product-links',

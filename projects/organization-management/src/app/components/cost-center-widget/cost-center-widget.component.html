@@ -1,0 +1,39 @@
+<ish-info-box heading="account.costcenter.widget.title" class="infobox-wrapper" cssClass="infobox-widget">
+  <div class="loading-container">
+    <div *ngIf="(loading$ | async) !== true; else loading">
+      <ng-container *ngIf="costCenters$ | async as costCenters; else emptyList">
+        <ng-container *ngIf="costCenters.length; else emptyList">
+          <ng-container *ngFor="let cc of costCenters$ | async">
+            <div class="row mt-0 mb-3">
+              <div class="col-12 col-md-5">
+                <a [routerLink]="['/account/organization/cost-centers/', cc.id]">
+                  {{ cc.costCenterId }} {{ cc.name }}
+                </a>
+              </div>
+              <div class="col-12 col-md-7">
+                <ish-cost-center-budget
+                  [costCenter]="cc"
+                  progressBarClass="background-inverse"
+                ></ish-cost-center-budget>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-template #emptyList>
+        <div class="pb-3">{{ 'account.costcenter.widget.noitems' | translate }}</div>
+      </ng-template>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <a routerLink="/account/organization/cost-centers">
+          {{ 'account.costcenter.widget.manage.link' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <ng-template #loading>
+      <ish-loading></ish-loading>
+    </ng-template>
+  </div>
+</ish-info-box>

@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { PunchoutFacade } from '../../facades/punchout.facade';
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
@@ -26,13 +25,13 @@ describe('Account Punchout Details Page Component', () => {
     } as PunchoutUser;
     when(punchoutFacade.selectedPunchoutUser$).thenReturn(of(user));
     when(punchoutFacade.updatePunchoutUser(anything())).thenReturn();
+    when(punchoutFacade.punchoutLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
         AccountPunchoutDetailsPageComponent,
         MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
         MockComponent(PunchoutUserFormComponent),
       ],
       providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],

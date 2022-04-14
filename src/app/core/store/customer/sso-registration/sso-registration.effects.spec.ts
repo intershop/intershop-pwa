@@ -37,9 +37,9 @@ describe('Sso Registration Effects', () => {
     TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('businessCustomerRegistration')],
       providers: [
-        SsoRegistrationEffects,
-        provideMockActions(() => actions$),
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        provideMockActions(() => actions$),
+        SsoRegistrationEffects,
       ],
     });
 
@@ -49,7 +49,7 @@ describe('Sso Registration Effects', () => {
   beforeEach(() => {
     when(userServiceMock.createUser(anything())).thenReturn(of(mockCustomerUserType));
   });
-  it('should call userService when registrationInfo is set ', done => {
+  it('should call userService when registrationInfo is set', done => {
     const action = setRegistrationInfo(mockRegistrationInfo);
     actions$ = of(action);
 

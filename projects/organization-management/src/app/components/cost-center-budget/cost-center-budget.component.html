@@ -1,0 +1,54 @@
+<div *ngIf="costCenter">
+  <div [ngbPopover]="BudgetPopover" placement="top" data-testing-id="cost-center-budget-popover">
+    <div class="progress" [ngClass]="progressBarClass">
+      <div
+        class="progress-bar"
+        [ngClass]="{ 'bg-danger': spentBudgetPercentage * 100 > 90 }"
+        [ngStyle]="{ width: progressBarWidth | percent }"
+        role="progressbar"
+      >
+        <span class="progress-display">{{ spentBudgetPercentage | percent }}</span>
+        <ng-template #BudgetPopover>
+          <div class="row">
+            <div class="col-md-6">
+              <label>{{ 'account.budget.label' | translate: { '0': costCenter.budgetPeriod } }}:</label>
+            </div>
+            <div class="col-md-6 text-right">{{ costCenter.budget | ishPrice }}</div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label>{{ 'account.budget.already_spent.label' | translate }}:</label>
+            </div>
+            <div class="col-md-6 text-right">
+              {{ costCenter.spentBudget | ishPrice }} ({{ spentBudgetPercentage | percent }})
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label>{{ 'account.budget.left.label' | translate }}:</label>
+            </div>
+            <div class="col-md-6 text-right">
+              {{ costCenter.remainingBudget | ishPrice }} ({{ remainingBudgetPercentage | percent }})
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label>{{ 'account.budget.pending_orders.label' | translate }}:</label>
+            </div>
+            <div class="col-md-6 text-right">
+              {{ costCenter.pendingOrders }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label>{{ 'account.budget.approved_orders.label' | translate }}:</label>
+            </div>
+            <div class="col-md-6 text-right">
+              {{ costCenter.approvedOrders }}
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

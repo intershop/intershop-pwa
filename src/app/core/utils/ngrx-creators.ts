@@ -10,7 +10,7 @@ export function httpError<P = {}>() {
   return (args: { error: HttpError } & P) => ({ payload: { ...args } });
 }
 
-// tslint:disable: no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export function setLoadingOn<S = any>(...actionCreators: any) {
   const stateFnc = (state: any) => ({

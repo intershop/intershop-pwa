@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
@@ -11,14 +13,27 @@ import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
-  constructor(private context: ProductContextFacade, private orderTemplatesFacade: OrderTemplatesFacade) {}
-
   @Input() orderTemplateItemData: OrderTemplateItem;
   @Input() currentOrderTemplate: OrderTemplate;
+
+  checkBox = new FormControl();
+
+  constructor(private context: ProductContextFacade, private orderTemplatesFacade: OrderTemplatesFacade) {}
 
   ngOnInit() {
     this.context.hold(this.context.validDebouncedQuantityUpdate$(), quantity => {
       this.updateProductQuantity(this.context.get('sku'), quantity);
+    });
+
+    this.context.connect('propagateActive', this.checkBox.valueChanges);
+
+    this.context.hold(this.context.select('product').pipe(map(product => product.available)), available => {
+      this.checkBox.setValue(available);
+      if (available) {
+        this.checkBox.enable();
+      } else {
+        this.checkBox.disable();
+      }
     });
   }
 
@@ -50,9 +65,5 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
 
   removeProductFromOrderTemplate(sku: string) {
     this.orderTemplatesFacade.removeProductFromOrderTemplate(this.currentOrderTemplate.id, sku);
-  }
-
-  setActive(target: EventTarget) {
-    this.context.set('propagateActive', () => (target as HTMLInputElement).checked);
   }
 }

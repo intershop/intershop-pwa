@@ -2,15 +2,21 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { from, iif, of } from 'rxjs';
-import { concatMap, filter, first, map, mergeMap, mergeMapTo, switchMap, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, from, iif, of } from 'rxjs';
+import { concatMap, filter, first, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getCurrentBasketId, updateBasket } from 'ish-core/store/customer/basket';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
+import { deleteBasketItem, getCurrentBasket, getCurrentBasketId, updateBasket } from 'ish-core/store/customer/basket';
+import {
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  mapToProperty,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuotingService } from '../../services/quoting/quoting.service';
@@ -40,6 +46,7 @@ import {
   submitQuoteRequestSuccess,
   updateQuoteRequest,
   updateQuoteRequestSuccess,
+  deleteQuoteFromBasket,
 } from './quoting.actions';
 import { getQuotingEntity } from './quoting.selectors';
 
@@ -56,7 +63,7 @@ export class QuotingEffects {
   loadQuoting$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadQuoting),
-      switchMap(() =>
+      mergeMap(() =>
         this.quotingService.getQuotes().pipe(
           map(quoting => loadQuotingSuccess({ quoting })),
           mapErrorToAction(loadQuotingFail)
@@ -111,19 +118,30 @@ export class QuotingEffects {
     )
   );
 
+  deleteQuoteFromBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteQuoteFromBasket),
+      mapToPayloadProperty('id'),
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      map(([quoteId, basket]) => basket?.lineItems?.find(li => li.quote === quoteId)?.id),
+      whenTruthy(),
+      map(itemId => deleteBasketItem({ itemId }))
+    )
+  );
+
   addQuoteToBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addQuoteToBasket),
       mapToPayloadProperty('id'),
-      concatMap(id =>
+      concatMap(quoteId =>
         this.store.pipe(
           select(getCurrentBasketId),
           first(),
           switchMap(basketId =>
             !basketId ? this.basketService.createBasket().pipe(map(basket => basket.id)) : of(basketId)
           ),
-          concatMap(() => this.quotingService.addQuoteToBasket(id)),
-          mergeMapTo([updateBasket({ update: { calculated: true } }), addQuoteToBasketSuccess({ id })]),
+          concatMap(basketId => this.quotingService.addQuoteToBasket(basketId, quoteId)),
+          mergeMap(() => [updateBasket({ update: { calculated: true } }), addQuoteToBasketSuccess({ id: quoteId })]),
           mapErrorToAction(loadQuotingFail)
         )
       )
@@ -176,7 +194,7 @@ export class QuotingEffects {
         ofType(createQuoteRequestFromQuoteSuccess, createQuoteRequestFromBasketSuccess),
         mapToPayloadProperty('entity'),
         mapToProperty('id'),
-        concatMap(id => from(this.router.navigateByUrl('/account/quotes/' + id)))
+        concatMap(id => from(this.router.navigateByUrl(`/account/quotes/${id}`)))
       ),
     { dispatch: false }
   );
@@ -189,7 +207,7 @@ export class QuotingEffects {
         mapToProperty('id'),
         withLatestFrom(this.store.pipe(select(selectUrl))),
         filter(([, url]) => url.startsWith('/account/quotes')),
-        concatMap(([id]) => from(this.router.navigateByUrl('/account/quotes/' + id)))
+        concatMap(([id]) => from(this.router.navigateByUrl(`/account/quotes/${id}`)))
       ),
     { dispatch: false }
   );
@@ -242,7 +260,8 @@ export class QuotingEffects {
                 },
               ]),
               map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
-            )
+            ),
+            EMPTY
           )
         )
       )

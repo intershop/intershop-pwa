@@ -1,8 +1,7 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { PWAStoreGroupOptionsSchema as Options } from 'schemas/store-group/schema';
 
 import { copyFileFromPWA, createApplication, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAStoreGroupOptionsSchema as Options } from './schema';
 
 describe('Store Group Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -13,12 +12,11 @@ describe('Store Group Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner)
-      .pipe(
-        copyFileFromPWA('src/app/core/state-management.module.ts'),
-        copyFileFromPWA('src/app/core/store/core/core-store.ts')
-      )
-      .toPromise();
+    const appTree$ = createApplication(schematicRunner).pipe(
+      copyFileFromPWA('src/app/core/state-management.module.ts'),
+      copyFileFromPWA('src/app/core/store/core/core-store.ts')
+    );
+    appTree = await appTree$.toPromise();
   });
 
   it('should create a store-group in core store by default', async () => {

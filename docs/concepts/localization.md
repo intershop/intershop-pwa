@@ -7,12 +7,14 @@ kb_sync_latest_only
 
 # Localization
 
-Intershop Progressive Web App uses a mix of Angular's internationalization tools (i18n) and the internationalization library ngx-translate for localization.
+Intershop Progressive Web App uses the internationalization library ngx-translate for localization.
+In addition the dependency to Angular's internationalization tools (i18n) is needed as a dependency for ng-bootstrap.
 
 For more information refer to:
 
-- [Angular - Internationalization (i18n)](https://angular.io/guide/i18n)
 - [NGX-Translate: The internationalization (i18n) library for Angular](http://www.ngx-translate.com/)
+- [Angular - Internationalization (i18n)](https://angular.io/guide/i18n)
+- [ng-bootstrap Angular 9 support](https://github.com/ng-bootstrap/ng-bootstrap/issues/3537#issuecomment-586472803)
 
 ## Usage Examples
 
@@ -147,7 +149,7 @@ If you want to get the translation for a key within a component file, you have t
 ```typescript
 export class ProductTileComponent implements OnDestroy {
   ...
-  destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
   constructor(protected translate: TranslateService) {}
   ...
   toggleCompare() {
@@ -162,6 +164,7 @@ export class ProductTileComponent implements OnDestroy {
   ...
   ngOnDestroy() {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 ```
@@ -259,12 +262,27 @@ Localization keys that are not available in these files - meaning they have no t
 
 Not explicitly used localization keys, such as dynamic created keys or error keys from REST calls, are handled separately.
 Their patterns are searched in all the localization keys of the default localization file and all matches will be included in the new cleaned up file.
-Therefore additional patterns have to be added for additional keys used in this way.
+
+Global patterns can be added to the [`clean-up-localizations` script](../../scripts/clean-up-localizations.js);
 
 ```javascript
-// regular expression for patterns of not explicitly used localization keys (dynamic created keys, error keys from REST calls)
-// ADDITIONAL PATTERNS HAVE TO BE ADDED HERE
-const regEx = /account\.login\..*\.message|.*\.error\..*/i;
+// ADDITIONAL GLOBAL PATTERNS HAVE TO BE ADDED HERE
+const regExps = [/.*\.error.*/i];
+```
+
+Localization patterns can also be defined where they are used.
+Add a comment with the keyword `keep-localization-pattern:` to the code to register a specific pattern for preservation.
+
+Javascript
+
+```javascript
+// keep-localization-pattern: ^account\.costcenter\.budget\.period\.value.*
+```
+
+HTML
+
+```html
+<!-- keep-localization-pattern: ^account\.login\..*\.message$ -->
 ```
 
 The clean up script is integrated in the full check run (`npm run check`) and will also be performed in continuous integration on the whole code base.

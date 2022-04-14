@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -35,7 +34,7 @@ describe('Category Route', () => {
   } as Category;
 
   expect.addSnapshotSerializer({
-    test: val => val && val.consumed && val.posParams,
+    test: val => val?.consumed && val.posParams,
     print: (val: UrlMatchResult, serialize) =>
       serialize(
         Object.keys(val.posParams)
@@ -136,7 +135,7 @@ describe('Category Route', () => {
   describe('additional URL params', () => {
     it('should ignore additional URL params when supplied', () => {
       const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
-      expect(matchCategoryRoute(wrap(generateCategoryUrl(category) + ';lang=de_DE;redirect=1'))).toMatchInlineSnapshot(`
+      expect(matchCategoryRoute(wrap(`${generateCategoryUrl(category)};lang=de_DE`))).toMatchInlineSnapshot(`
         Object {
           "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
         }
@@ -166,15 +165,8 @@ describe('Category Route', () => {
   let store$: Store;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
-      ],
+      imports: [CoreStoreModule.forTesting(['router']), RouterTestingModule.withRoutes([{ path: '**', children: [] }])],
     });
 
     router = TestBed.inject(Router);
@@ -198,7 +190,7 @@ describe('Category Route', () => {
     it('should not detect category route when sku and categoryUniqueId are params', fakeAsync(() => {
       router.navigateByUrl('/category;sku=123;categoryUniqueId=ABC');
 
-      store$.pipe(ofCategoryUrl()).subscribe(fail, fail, fail);
+      store$.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -206,7 +198,7 @@ describe('Category Route', () => {
     it('should not detect category route when categoryUniqueId is missing', fakeAsync(() => {
       router.navigateByUrl('/other');
 
-      store$.pipe(ofCategoryUrl()).subscribe(fail, fail, fail);
+      store$.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

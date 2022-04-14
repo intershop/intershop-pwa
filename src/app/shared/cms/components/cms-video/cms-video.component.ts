@@ -74,8 +74,8 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
   /**
    * process video URL with a YouTube video ID regex (https://github.com/regexhq/youtube-regex)
    */
+  // spell-checker: words mbed youtu
   tryProcessYouTubeVideo(): boolean {
-    // spell-checker: disable-next-line
     const youTubeVideoRegex =
       /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/i;
     if (youTubeVideoRegex.test(this.video)) {

@@ -6,7 +6,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 
 /**
- * The Account Overview Page Container Component renders the account overview page of a logged in user using the {@link AccountOverviewPageComponent}
+ * The Account Overview Page Component renders the account overview page of a logged in user.
  *
  */
 @Component({

@@ -48,8 +48,8 @@ describe('Tacton Self Service Api Service', () => {
 
   describe('startConfiguration', () => {
     it('should always call underlying service config/start endpoint with product id', done => {
-      tactonSelfServiceApiService.startConfiguration('123456').subscribe(
-        data => {
+      tactonSelfServiceApiService.startConfiguration('123456').subscribe({
+        next: data => {
           expect(data).toMatchInlineSnapshot(`
                       Object {
                         "configId": "Hello!",
@@ -57,9 +57,9 @@ describe('Tacton Self Service Api Service', () => {
                       }
                   `);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
 
       const req = controller.expectOne(() => true);
 
@@ -75,16 +75,16 @@ describe('Tacton Self Service Api Service', () => {
     });
 
     it('should return errors when something is wrong', done => {
-      tactonSelfServiceApiService.startConfiguration('123456').subscribe(
-        fail,
-        err => {
+      tactonSelfServiceApiService.startConfiguration('123456').subscribe({
+        next: fail,
+        error: err => {
           expect(err?.message).toMatchInlineSnapshot(
             `"Http failure response for http://example.com/self-service/self-service-api/config/start/123456: 400 ERROR"`
           );
           done();
         },
-        fail
-      );
+        complete: fail,
+      });
 
       const req = controller.expectOne(() => true);
 

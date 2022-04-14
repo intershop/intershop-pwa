@@ -10,15 +10,15 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
-// tslint:disable:no-any - allows access to concardis js functionality
-declare var PayEngine: any;
+/* eslint-disable @typescript-eslint/no-explicit-any -- allows access to concardis js functionality*/
+declare let PayEngine: any;
 
 @Component({
   selector: 'ish-payment-concardis-creditcard-cvc-detail',
   templateUrl: './payment-concardis-creditcard-cvc-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line: rxjs-prefer-angular-takeuntil
+// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input() paymentInstrument: PaymentInstrument;
 
@@ -72,16 +72,16 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
       this.scriptLoader
         .load(this.getPayEngineURL())
         .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          () => {
+        .subscribe({
+          next: () => {
             PayEngine.setPublishableKey(merchantId);
           },
-          error => {
+          error: error => {
             this.scriptLoaded = false;
             this.errorMessage.general.message = error;
             this.cd.detectChanges();
-          }
-        );
+          },
+        });
     }
     this.validityTimeInMinutes = this.getParamValue(
       'intershop.payment.Concardis_CreditCard.cvcmaxage',
@@ -93,9 +93,9 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
     let isExpired = true;
     // if cvc last updated timestamp is less than maximum validity in minutes then return false
     if (this.paymentInstrument.parameters) {
-      const cvcLastUpdatedAttr =
-        this.paymentInstrument.parameters &&
-        this.paymentInstrument.parameters.find(attribute => attribute.name === 'cvcLastUpdated');
+      const cvcLastUpdatedAttr = this.paymentInstrument.parameters?.find(
+        attribute => attribute.name === 'cvcLastUpdated'
+      );
 
       if (cvcLastUpdatedAttr) {
         const cvcLastUpdatedValue = cvcLastUpdatedAttr.value ? cvcLastUpdatedAttr.value.toString() : undefined;
@@ -118,9 +118,8 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
     if (error) {
       // map error messages
       if (typeof error.message !== 'string' && error.message.properties) {
-        this.errorMessage.cvc =
-          error.message.properties && error.message.properties.find((prop: any) => prop.key === 'verification');
-        if (this.errorMessage.cvc && this.errorMessage.cvc.code) {
+        this.errorMessage.cvc = error.message.properties?.find((prop: any) => prop.key === 'verification');
+        if (this.errorMessage.cvc?.code) {
           this.errorMessage.cvc.messageKey = this.getErrorMessage(
             this.errorMessage.cvc.code,
             'credit_card',
@@ -134,9 +133,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
       }
     } else {
       // update cvcLastUpdated to current timestamp
-      const param =
-        this.paymentInstrument.parameters &&
-        this.paymentInstrument.parameters.map(attr => ({ name: attr.name, value: attr.value }));
+      const param = this.paymentInstrument.parameters?.map(attr => ({ name: attr.name, value: attr.value }));
       if (param.find(attribute => attribute.name === 'cvcLastUpdated')) {
         param.find(attribute => attribute.name === 'cvcLastUpdated').value = new Date().toISOString();
       } else {

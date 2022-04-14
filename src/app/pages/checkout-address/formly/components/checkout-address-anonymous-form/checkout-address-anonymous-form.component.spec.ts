@@ -1,16 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock, when } from 'ts-mockito';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { FormlyAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-form/formly-address-form.component';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
-import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
-import { FormlyTestingFieldgroupExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-fieldgroup-example/formly-testing-fieldgroup-example.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { CheckoutAddressAnonymousFormComponent } from './checkout-address-anonymous-form.component';
 
@@ -19,26 +15,16 @@ describe('Checkout Address Anonymous Form Component', () => {
   let fixture: ComponentFixture<CheckoutAddressAnonymousFormComponent>;
   let element: HTMLElement;
   let fb: FormBuilder;
-  let featureToggleService: FeatureToggleService;
 
   beforeEach(async () => {
-    featureToggleService = mock(FeatureToggleService);
     await TestBed.configureTestingModule({
       declarations: [CheckoutAddressAnonymousFormComponent, MockComponent(FormlyAddressFormComponent)],
       imports: [
-        FormlyModule.forRoot({
-          types: [
-            { name: 'ish-text-input-field', component: FormlyTestingExampleComponent },
-            { name: 'ish-fieldset-field', component: FormlyTestingFieldgroupExampleComponent },
-            { name: 'ish-email-field', component: FormlyTestingExampleComponent },
-            { name: 'ish-radio-field', component: FormlyTestingExampleComponent },
-          ],
-        }),
-        FormlyTestingComponentsModule,
+        FeatureToggleModule.forTesting('businessCustomerRegistration'),
+        FormlyTestingModule.withPresetMocks(['taxationID']),
         NgbCollapseModule,
         TranslateModule.forRoot(),
       ],
-      providers: [{ provide: FeatureToggleService, useFactory: () => instance(featureToggleService) }],
     }).compileComponents();
   });
 
@@ -58,7 +44,6 @@ describe('Checkout Address Anonymous Form Component', () => {
   });
 
   it('should set input field for taxation-id, when businessCustomerRegistration feature is enabled', () => {
-    when(featureToggleService.enabled('businessCustomerRegistration')).thenReturn(true);
     fixture.detectChanges();
     expect(component.parentForm.get('additionalAddressAttributes').value).toContainKey('taxationID');
   });

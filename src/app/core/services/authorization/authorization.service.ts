@@ -14,10 +14,10 @@ export class AuthorizationService {
 
   getRolesAndPermissions(customer: Customer, user: User) {
     if (!customer?.customerNo) {
-      return throwError('getRolesAndPermissions() called without customer.customerNo');
+      return throwError(() => new Error('getRolesAndPermissions() called without customer.customerNo'));
     }
     if (!user?.login) {
-      return throwError('getRolesAndPermissions() called without user.login');
+      return throwError(() => new Error('getRolesAndPermissions() called without user.login'));
     }
 
     return this.apiService

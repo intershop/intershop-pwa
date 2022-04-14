@@ -29,8 +29,8 @@ describe('Category Page Component', () => {
         MockComponent(CategoryProductsComponent),
       ],
       providers: [
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
     }).compileComponents();
   });

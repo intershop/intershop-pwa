@@ -4,21 +4,8 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, from } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  concatMapTo,
-  exhaustMap,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  sample,
-  switchMap,
-  takeWhile,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { from } from 'rxjs';
+import { concatMap, delay, exhaustMap, filter, map, mergeMap, sample, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -26,8 +13,10 @@ import { PersonalizationService } from 'ish-core/services/personalization/person
 import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
+import { getPGID, personalizationStatusDetermined } from '.';
 import {
   createUser,
   createUserFail,
@@ -51,7 +40,8 @@ import {
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
-  setPGID,
+  loadPGID,
+  loadPGIDSuccess,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -77,6 +67,7 @@ export class UserEffects {
     private paymentService: PaymentService,
     private personalizationService: PersonalizationService,
     private router: Router,
+    private apiTokenService: ApiTokenService,
     @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
@@ -85,7 +76,7 @@ export class UserEffects {
       ofType(loginUser),
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
-        this.userService.signInUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+        this.userService.signInUser(credentials).pipe(map(loadPGID), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -95,7 +86,7 @@ export class UserEffects {
       ofType(loginUserWithToken),
       mapToPayloadProperty('token'),
       exhaustMap(token =>
-        this.userService.signInUserByToken(token).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+        this.userService.signInUserByToken(token).pipe(map(loadPGID), mapErrorToAction(loginUserFail))
       )
     )
   );
@@ -132,7 +123,7 @@ export class UserEffects {
       ofType(createUser),
       mapToPayload(),
       mergeMap((data: CustomerRegistrationType) =>
-        this.userService.createUser(data).pipe(map(loginUserSuccess), mapErrorToAction(createUserFail))
+        this.userService.createUser(data).pipe(map(loadPGID), mapErrorToAction(createUserFail))
       )
     )
   );
@@ -159,7 +150,7 @@ export class UserEffects {
       withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
       concatMap(([[payload, customer], user]) =>
         this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
-          mapTo(
+          map(() =>
             updateUserPasswordSuccess({
               successMessage: payload.successMessage || { message: 'account.profile.update_password.message' },
             })
@@ -210,7 +201,7 @@ export class UserEffects {
       ofType(routerNavigatedAction),
       withLatestFrom(this.store$.pipe(select(getUserError))),
       filter(([, error]) => !!error),
-      mapTo(userErrorReset())
+      map(() => userErrorReset())
     )
   );
 
@@ -219,26 +210,40 @@ export class UserEffects {
       ofType(loginUserSuccess),
       mapToPayload(),
       filter(payload => payload.customer.isBusinessCustomer),
-      mapTo(loadCompanyUser())
+      map(() => loadCompanyUser())
     )
   );
 
   loadUserByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
-      concatMap(() => this.userService.signInUserByToken().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail)))
+      concatMap(() => this.userService.signInUserByToken().pipe(map(loadPGID), mapErrorToAction(loginUserFail)))
     )
   );
 
   fetchPGID$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loginUserSuccess),
-      switchMap(() =>
+      ofType(loadPGID),
+      mapToPayload(),
+      concatMap(payload =>
         this.personalizationService.getPGID().pipe(
-          map(pgid => setPGID({ pgid })),
-          catchError(() => EMPTY)
+          concatMap(pgid => [loadPGIDSuccess({ pgid }), loginUserSuccess(payload)]),
+          mapErrorToAction(loginUserFail)
         )
       )
+    )
+  );
+
+  /**
+   * This effect emits the 'personalizationStatusDetermined' action once the PGID is fetched or there is no user apiToken cookie,
+   */
+  determinePersonalizationStatus$ = createEffect(() =>
+    this.store$.pipe(
+      select(getPGID),
+      map(pgid => !this.apiTokenService.hasUserApiTokenCookie() || pgid),
+      whenTruthy(),
+      delay(100),
+      map(() => personalizationStatusDetermined())
     )
   );
 
@@ -278,7 +283,7 @@ export class UserEffects {
       filter(([, customer]) => !!customer),
       concatMap(([id, customer]) =>
         this.paymentService.deleteUserPaymentInstrument(customer.customerNo, id).pipe(
-          concatMapTo([
+          mergeMap(() => [
             deleteUserPaymentInstrumentSuccess(),
             loadUserPaymentMethods(),
             displaySuccessMessage({

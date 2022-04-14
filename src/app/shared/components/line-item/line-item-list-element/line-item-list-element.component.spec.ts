@@ -9,12 +9,11 @@ import { instance, mock, when } from 'ts-mockito';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
 import { LineItemEditComponent } from 'ish-shared/components/line-item/line-item-edit/line-item-edit.component';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -36,21 +35,19 @@ describe('Line Item List Element Component', () => {
   let element: HTMLElement;
   let context: ProductContextFacade;
 
-  beforeEach(async () => {
+  async function prepareTestbed(serverSetting: boolean) {
     context = mock(ProductContextFacade);
     when(context.select('product')).thenReturn(of({} as ProductView));
     when(context.select('quantity')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         LineItemListElementComponent,
-        MockComponent(BasketPromotionComponent),
         MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(LineItemEditComponent),
-        MockComponent(NgbPopover),
         MockComponent(ProductBundleDisplayComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
@@ -59,76 +56,83 @@ describe('Line Item List Element Component', () => {
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductVariationDisplayComponent),
+        MockDirective(NgbPopover),
         MockDirective(ProductContextDirective),
         MockPipe(PricePipe),
+        MockPipe(ServerSettingPipe, () => serverSetting),
       ],
       providers: [
-        { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
     }).compileComponents();
-  });
+  }
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LineItemListElementComponent);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-    component.pli = BasketMockData.getBasketItem();
-  });
+  describe('b2c variation handling', () => {
+    beforeEach(async () => {
+      prepareTestbed(false);
+    });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-    expect(element).toBeTruthy();
-    expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  describe('editable', () => {
     beforeEach(() => {
-      component.editable = true;
+      fixture = TestBed.createComponent(LineItemListElementComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
+      component.pli = BasketMockData.getBasketItem();
     });
 
-    it('should render item quantity change input field if editable === true', () => {
+    it('should be created', () => {
+      expect(component).toBeTruthy();
+      expect(element).toBeTruthy();
+      expect(() => fixture.detectChanges()).not.toThrow();
+    });
+
+    describe('editable', () => {
+      beforeEach(() => {
+        component.editable = true;
+      });
+
+      it('should render item quantity change input field if editable === true', () => {
+        fixture.detectChanges();
+        expect(element.querySelector('ish-product-quantity')).toBeTruthy();
+      });
+
+      it('should not render item quantity change input field if editable === false', () => {
+        component.editable = false;
+        fixture.detectChanges();
+        expect(element.querySelector('ish-product-quantity')).not.toBeTruthy();
+      });
+
+      it('should render item delete button if editable === true', () => {
+        fixture.detectChanges();
+        expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeTruthy();
+      });
+
+      it('should not render item delete button if editable === false', () => {
+        component.editable = false;
+        fixture.detectChanges();
+        expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeFalsy();
+      });
+    });
+
+    it('should give correct sku to productIdComponent', () => {
       fixture.detectChanges();
-      expect(element.querySelector('ish-product-quantity')).toBeTruthy();
+      expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(`<ish-product-id></ish-product-id>`);
     });
 
-    it('should not render item quantity change input field if editable === false', () => {
-      component.editable = false;
+    it('should hold itemSurcharges for the line item', () => {
       fixture.detectChanges();
-      expect(element.querySelector('ish-product-quantity')).not.toBeTruthy();
+      expect(element.querySelectorAll('.details-tooltip')).toHaveLength(1);
     });
 
-    it('should render item delete button if editable === true', () => {
+    it('should not display itemSurcharges for the line item if not available', () => {
+      component.pli = { ...BasketMockData.getBasketItem(), itemSurcharges: undefined };
+      expect(() => fixture.detectChanges()).not.toThrow();
+      expect(element.querySelectorAll('.details-tooltip')).toHaveLength(0);
+    });
+
+    it('should display standard elements for normal products', () => {
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeTruthy();
-    });
-
-    it('should not render item delete button if editable === false', () => {
-      component.editable = false;
-      fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeFalsy();
-    });
-  });
-
-  it('should give correct sku to productIdComponent', () => {
-    fixture.detectChanges();
-    expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(`<ish-product-id></ish-product-id>`);
-  });
-
-  it('should hold itemSurcharges for the line item', () => {
-    fixture.detectChanges();
-    expect(element.querySelectorAll('.details-tooltip')).toHaveLength(1);
-  });
-
-  it('should not display itemSurcharges for the line item if not available', () => {
-    component.pli = { ...BasketMockData.getBasketItem(), itemSurcharges: undefined };
-    expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element.querySelectorAll('.details-tooltip')).toHaveLength(0);
-  });
-
-  it('should display standard elements for normal products', () => {
-    fixture.detectChanges();
-    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-product-image",
         "ish-product-name",
@@ -146,18 +150,38 @@ describe('Line Item List Element Component', () => {
         "ish-product-quantity",
       ]
     `);
+    });
+
+    it('should display bundle parts for bundle products', () => {
+      when(context.select('product')).thenReturn(of({ type: 'Bundle' } as ProductView));
+      fixture.detectChanges();
+      expect(findAllCustomElements(element)).toContain('ish-product-bundle-display');
+    });
   });
 
-  it('should display bundle parts for bundle products', () => {
-    when(context.select('product')).thenReturn(of({ type: 'Bundle' } as ProductView));
-    fixture.detectChanges();
-    expect(findAllCustomElements(element)).toContain('ish-product-bundle-display');
-  });
+  describe('advanced variation handling', () => {
+    beforeEach(async () => {
+      prepareTestbed(true);
+    });
 
-  it('should not display edit component for variation products with advanced variation handling', () => {
-    when(context.select('product')).thenReturn(of({ type: 'VariationProduct' } as ProductView));
-    FeatureToggleModule.switchTestingFeatures('advancedVariationHandling');
-    fixture.detectChanges();
-    expect(findAllCustomElements(element)).not.toContain('ish-line-item-edit');
+    beforeEach(() => {
+      fixture = TestBed.createComponent(LineItemListElementComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
+      component.pli = BasketMockData.getBasketItem();
+    });
+
+    it('should be created', () => {
+      expect(component).toBeTruthy();
+      expect(element).toBeTruthy();
+      expect(() => fixture.detectChanges()).not.toThrow();
+    });
+
+    it('should not display edit component for variation products with advanced variation handling', () => {
+      when(context.select('product')).thenReturn(of({ type: 'VariationProduct' } as ProductView));
+
+      fixture.detectChanges();
+      expect(findAllCustomElements(element)).not.toContain('ish-line-item-edit');
+    });
   });
 });

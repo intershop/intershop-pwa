@@ -1,11 +1,10 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, apply, applyTemplates, chain, mergeWith, move, url } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWAAddressFormConfigurationOptionsSchema as Options } from 'schemas/address-form-configuration/schema';
 
 import { applyLintFix } from '../utils/lint-fix';
 import { addTokenProviderToNgModule } from '../utils/registration';
-
-import { PWAAddressFormConfigurationOptionsSchema as Options } from './schema';
 
 export function createAddressFormConfiguration(options: Options): Rule {
   return async host => {
@@ -13,7 +12,6 @@ export function createAddressFormConfiguration(options: Options): Rule {
     const project = workspace.projects.get(options.project);
 
     options.path = `/${project.sourceRoot}/app/shared/formly-address-forms/configurations`;
-    options.countryCodeCaps = options.countryCode.toUpperCase();
     options.module = `/${project.sourceRoot}/app/shared/formly-address-forms/formly-address-forms.module.ts`;
     options.artifactPath = `/${project.sourceRoot}/app/shared/formly-address-forms/configurations/${strings.dasherize(
       options.countryCode
@@ -25,6 +23,7 @@ export function createAddressFormConfiguration(options: Options): Rule {
       mergeWith(
         apply(url('./files'), [
           applyTemplates({
+            toUpperCase: (str: string) => str.toUpperCase(),
             ...strings,
             ...options,
           }),
@@ -36,7 +35,7 @@ export function createAddressFormConfiguration(options: Options): Rule {
       addTokenProviderToNgModule({
         ...options,
         token: 'ADDRESS_FORM_CONFIGURATION',
-        class: `AddressForm${options.countryCodeCaps}Configuration`,
+        class: `AddressForm${options.countryCode.toUpperCase()}Configuration`,
         multi: true,
       })
     );

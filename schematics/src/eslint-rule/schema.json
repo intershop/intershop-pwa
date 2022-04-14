@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsPWAComponent",
+  "title": "PWA Eslint Rule Options Schema",
+  "type": "object",
+  "description": "Creates a eslint rule.",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the new rule.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What's the name of the new rule?"
+    }
+  }
+}

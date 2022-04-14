@@ -1,0 +1,24 @@
+<div class="section">
+  <h3>{{ 'checkout.desired_delivery_date.title' | translate }}</h3>
+
+  <form [formGroup]="form" (ngSubmit)="submitForm()">
+    <div class="row">
+      <div *ngIf="showSuccessMessage" class="col-md-12">
+        <ish-success-message
+          message="checkout.desired_delivery_date.success.message"
+          [toast]="false"
+        ></ish-success-message>
+      </div>
+
+      <div class="col-md-7">
+        <formly-form [form]="form" [fields]="fields" [model]="model"> </formly-form>
+      </div>
+
+      <div class="col-md-2 pl-md-0">
+        <button type="submit" class="btn btn-secondary" [disabled]="disabled">
+          {{ 'checkout.desired_delivery_date.apply.button.label' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

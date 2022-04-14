@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,7 +8,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Price } from 'ish-core/models/price/price.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -23,14 +21,13 @@ import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
+import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { loginUser } from 'ish-core/store/customer/user';
-import { UserEffects } from 'ish-core/store/customer/user/user.effects';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -38,6 +35,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
+import { loginUser, personalizationStatusDetermined } from './user';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -66,8 +64,6 @@ describe('Customer Store', () => {
     minOrderQuantity: 1,
     attributes: [],
     images: [],
-    listPrice: {} as Price,
-    salePrice: {} as Price,
     manufacturer: 'test',
     readyForShipmentMin: 1,
     readyForShipmentMax: 1,
@@ -109,9 +105,6 @@ describe('Customer Store', () => {
   } as Promotion;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     const categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
 
@@ -147,46 +140,49 @@ describe('Customer Store', () => {
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user }));
 
     const personalizationServiceMock = mock(PersonalizationService);
-    when(personalizationServiceMock.getPGID()).thenReturn(EMPTY);
+    when(personalizationServiceMock.getPGID()).thenReturn(of('spgid'));
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
     const authorizationServiceMock = mock(AuthorizationService);
 
+    const productPriceServiceMock = mock(PricesService);
+    when(productPriceServiceMock.getProductPrices(anything())).thenReturn(of([]));
+
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
-        CoreStoreModule.forTesting(['configuration', 'serverConfig'], [UserEffects]),
+        CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
         RouterTestingModule.withRoutes([
           {
             path: 'account',
-            component: DummyComponent,
+            children: [],
           },
           {
             path: 'checkout/address',
-            component: DummyComponent,
+            children: [],
           },
         ]),
         ShoppingStoreModule,
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
-        provideStoreSnapshots(),
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
+        { provide: AuthorizationService, useFactory: () => instance(authorizationServiceMock) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
+        { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
+        { provide: PersonalizationService, useFactory: () => instance(personalizationServiceMock) },
+        { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: UserService, useFactory: () => instance(userServiceMock) },
-        { provide: PersonalizationService, useFactory: () => instance(personalizationServiceMock) },
-        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: AuthorizationService, useFactory: () => instance(authorizationServiceMock) },
+        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
-        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
+        { provide: UserService, useFactory: () => instance(userServiceMock) },
+        provideStoreSnapshots(),
       ],
     });
 
@@ -205,33 +201,7 @@ describe('Customer Store', () => {
         })
       );
       store.dispatch(addProductToBasket({ sku: 'test', quantity: 1 }));
-    });
-
-    describe('and without basket', () => {
-      it('should initially load basket and basketItems on product add.', done => {
-        setTimeout(() => {
-          expect(store.actionsArray(/Basket|Products/)).toMatchInlineSnapshot(`
-            [Products API] Load Product Success:
-              product: {"sku":"test","packingUnit":"pcs.","completenessLevel":2}
-            [Basket] Add Product:
-              sku: "test"
-              quantity: 1
-            [Basket Internal] Add Items To Basket:
-              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            [Basket API] Add Items To Basket Success:
-              info: undefined
-              items: [{"sku":"test","quantity":1,"unit":"pcs."}]
-            [Products Internal] Load Product:
-              sku: "test"
-            [Basket Internal] Load Basket
-            [Products API] Load Product Success:
-              product: {"name":"test","shortDescription":"test","longDescription":"...
-            [Basket API] Load Basket Success:
-              basket: {"id":"test","lineItems":[1]}
-          `);
-          done();
-        }, 1000);
-      });
+      store.dispatch(personalizationStatusDetermined());
     });
 
     describe('and with basket', () => {
@@ -240,12 +210,18 @@ describe('Customer Store', () => {
 
         store.reset();
       });
+
       it('should merge basket on user login.', () => {
         store.dispatch(loginUser({ credentials: {} as Credentials }));
 
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           [User] Login User:
             credentials: {}
+          [User Internal] Load PGID:
+            customer: {"isBusinessCustomer":false,"customerNo":"test"}
+            user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
+          [User API] Load PGID Success:
+            pgid: "spgid"
           [User API] Login User Success:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...

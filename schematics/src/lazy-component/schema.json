@@ -4,6 +4,7 @@
   "title": "PWA Lazy Component Options Schema",
   "type": "object",
   "description": "Creates a new lazy component for an existing one in an extension.",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",
@@ -39,11 +40,6 @@
         "index": 0
       },
       "x-prompt": "What component is the base for generating a lazy component?"
-    },
-    "ci": {
-      "type": "boolean",
-      "default": false,
-      "visible": false
     }
   }
 }

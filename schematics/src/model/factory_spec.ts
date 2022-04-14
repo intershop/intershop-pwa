@@ -1,8 +1,7 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { PWAModelOptionsSchema as Options } from 'schemas/model/schema';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAModelOptionsSchema as Options } from './schema';
 
 describe('Model Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -13,7 +12,8 @@ describe('Model Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner).toPromise();
+    const appTree$ = createApplication(schematicRunner);
+    appTree = await appTree$.toPromise();
   });
 
   it('should create a model in core by default', async () => {

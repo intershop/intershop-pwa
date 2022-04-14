@@ -17,7 +17,7 @@ module.exports = {
       name: 'refactor: A code change that neither fixes a bug nor adds a feature',
     },
     { value: 'test', name: 'test:     Fixing or adding tests' },
-    { value: 'build', name: 'build:    Anything build-releated' },
+    { value: 'build', name: 'build:    Anything build related' },
     { value: 'deps', name: 'deps:     Dependency updates' },
     {
       value: 'chore',

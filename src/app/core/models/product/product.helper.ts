@@ -2,7 +2,9 @@ import { intersection } from 'lodash-es';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
+import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceHelper } from 'ish-core/models/price/price.model';
+import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import {
@@ -30,17 +32,18 @@ export type ProductPrices = Partial<
   Pick<ProductRetailSet, 'minListPrice' | 'minSalePrice' | 'summedUpListPrice' | 'summedUpSalePrice'>
 > &
   Partial<Pick<VariationProductMaster, 'minListPrice' | 'minSalePrice' | 'maxListPrice' | 'maxSalePrice'>> &
-  Partial<Pick<Product, 'salePrice' | 'listPrice'>>;
+  Partial<Pick<ProductPriceDetails, 'prices'>>;
 
 export class ProductHelper {
   /**
    * Get primary product image based on image type
+   *
    * @param product   The Product for which to get the primary image
    * @param imageType The wanted ImageType
    * @returns         The primary product image of the given ImageType
    */
   static getPrimaryImage(product: ProductView, imageType: string): Image {
-    if (!(product && product.images)) {
+    if (!product?.images) {
       return;
     }
     return product.images.find(image => image.typeID === imageType && image.primaryImage);
@@ -48,13 +51,14 @@ export class ProductHelper {
 
   /**
    * Get product image based on image type and image view
+   *
    * @param product   The Product for which to get the image
    * @param imageType The wanted ImageType
    * @param imageView The wanted ImageView
    * @returns         The matching product image
    */
   static getImageByImageTypeAndImageView(product: ProductView, imageType: string, imageView: string): Image {
-    if (!(product && product.images)) {
+    if (!product?.images) {
       return;
     }
     return product.images.find(image => image.typeID === imageType && image.viewID === imageView);
@@ -62,12 +66,13 @@ export class ProductHelper {
 
   /**
    * Get all product ImageView ids matching image type
+   *
    * @param product   The Product for which to get the image types
    * @param imageType The wanted ImageType
    * @returns         Array of available ImageView ids
    */
   static getImageViewIDs(product: ProductView, imageType: string): string[] {
-    if (!(product && product.images)) {
+    if (!product?.images) {
       return [];
     }
     return product.images
@@ -121,41 +126,50 @@ export class ProductHelper {
 
   /**
    * Get product attributes by attribute group id.
+   *
    * @param product           The Product for which to get the attributes
    * @param attributeGroupId  The attribute group id of the attributes to get
    * @returns                 The product attributes of the attribute group (if any)
    */
   static getAttributesOfGroup(product: ProductView, attributeGroupId: string): Attribute[] {
-    if (
-      product &&
-      product.attributeGroups &&
-      product.attributeGroups[attributeGroupId] &&
-      product.attributeGroups[attributeGroupId].attributes &&
-      product.attributeGroups[attributeGroupId].attributes.length > 0
-    ) {
+    if (product?.attributeGroups?.[attributeGroupId]?.attributes?.length > 0) {
       return product.attributeGroups[attributeGroupId].attributes;
     }
     return;
   }
 
   // not-dead-code
-  static calculatePriceRange(products: Product[]): ProductPrices {
-    if (!products || !products.length) {
+  static calculatePriceRange(
+    products: Product[],
+    productPrices: ProductPriceDetails[],
+    priceType: 'gross' | 'net'
+  ): ProductPrices {
+    if ((!products || !products.length) && (!productPrices || !productPrices.length)) {
       return {};
     } else if (products.length === 1) {
-      return products[0];
+      return productPrices.find(price => price.sku === products[0].sku);
     } else {
+      const prices = products.map(p => productPrices.find(productPrice => productPrice.sku === p.sku));
       return {
-        minListPrice: products.map(p => p.listPrice).reduce(PriceHelper.min),
-        minSalePrice: products.map(p => p.salePrice).reduce(PriceHelper.min),
-        summedUpListPrice: products.map(p => p.listPrice).reduce(PriceHelper.sum),
-        summedUpSalePrice: products.map(p => p.salePrice).reduce(PriceHelper.sum),
+        minListPrice: prices
+          .map(p => PriceItemHelper.selectType(p?.prices?.listPrice, priceType))
+          .reduce(PriceHelper.min),
+        minSalePrice: prices
+          .map(p => PriceItemHelper.selectType(p?.prices?.salePrice, priceType))
+          .reduce(PriceHelper.min),
+        summedUpListPrice: prices
+          .map(p => PriceItemHelper.selectType(p?.prices?.listPrice, priceType))
+          .reduce(PriceHelper.sum),
+        summedUpSalePrice: prices
+          .map(p => PriceItemHelper.selectType(p?.prices?.salePrice, priceType))
+          .reduce(PriceHelper.sum),
       };
     }
   }
 
   /**
    * Determines the set of common attribute names for the compare products.
+   *
    * @param products List of products to be compared
    * @returns        A set of the common attribute names
    */
@@ -169,6 +183,7 @@ export class ProductHelper {
 
   /**
    * Get a product with only specific attributes. All attributes that are common between the compare products are filtered out.
+   *
    * @param product         The product that should be stripped of its common attributes
    * @param visibleProducts List of products to be compared
    * @returns               A Product with specific attributes only compared to the common attributes

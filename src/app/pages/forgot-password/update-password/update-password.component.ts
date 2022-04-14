@@ -25,7 +25,7 @@ export class UpdatePasswordComponent implements OnInit, OnDestroy {
 
   errorTranslationCode: string;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade, private router: Router, private route: ActivatedRoute) {}
 

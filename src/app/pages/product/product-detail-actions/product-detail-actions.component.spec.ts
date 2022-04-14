@@ -3,14 +3,14 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { anyString, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 
-import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { LazyProductSendToCompareComponent } from '../../../extensions/compare/exports/lazy-product-send-to-compare/lazy-product-send-to-compare.component';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
@@ -27,7 +27,7 @@ describe('Product Detail Actions Component', () => {
       imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
-        MockComponent(LazyProductAddToWishlistComponent),
+        MockComponent(LazyProductSendToCompareComponent),
         ProductDetailActionsComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
@@ -72,11 +72,9 @@ describe('Product Detail Actions Component', () => {
     });
 
     it(`should show "compare" link when product information is available`, () => {
-      translate.set('product.compare.link', 'Compare');
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,columns"]').nextElementSibling.textContent).toContain(
-        'Compare'
-      );
+
+      expect(element.querySelector("[data-testing-id='compare-sku']")).toBeTruthy();
     });
 
     it('should not show "compare" link when product information is available and productMaster = true', () => {
@@ -87,13 +85,5 @@ describe('Product Detail Actions Component', () => {
 
       expect(element.querySelector("[data-testing-id='compare-sku']")).toBeFalsy();
     });
-  });
-
-  it('should emit "product to compare" event when compare link is clicked', () => {
-    fixture.detectChanges();
-
-    element.querySelector<HTMLElement>("[data-testing-id='compare-sku'] a").click();
-
-    verify(context.addToCompare()).once();
   });
 });

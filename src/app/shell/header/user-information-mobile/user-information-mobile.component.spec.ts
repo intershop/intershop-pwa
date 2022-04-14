@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
-import { ProductCompareStatusComponent } from 'ish-shell/header/product-compare-status/product-compare-status.component';
 
+import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
 import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
 import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/lazy-wishlists-link/lazy-wishlists-link.component';
 
@@ -19,14 +20,13 @@ describe('User Information Mobile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('compare', 'quickorder', 'wishlists'), TranslateModule.forRoot()],
       declarations: [
         MockComponent(LanguageSwitchComponent),
+        MockComponent(LazyProductCompareStatusComponent),
         MockComponent(LazyQuickorderLinkComponent),
         MockComponent(LazyWishlistsLinkComponent),
         MockComponent(LoginStatusComponent),
-        MockComponent(ProductCompareStatusComponent),
-        MockDirective(FeatureToggleDirective),
         UserInformationMobileComponent,
       ],
     }).compileComponents();
@@ -43,5 +43,19 @@ describe('User Information Mobile Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should create all elements on the component', () => {
+    fixture.detectChanges();
+
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-login-status",
+        "ish-lazy-product-compare-status",
+        "ish-lazy-quickorder-link",
+        "ish-lazy-wishlists-link",
+        "ish-language-switch",
+      ]
+    `);
   });
 });

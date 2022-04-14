@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -68,26 +67,21 @@ describe('Order Template Effects', () => {
       public: false,
     },
   ];
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
 
   beforeEach(() => {
     orderTemplateServiceMock = mock(OrderTemplateService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
         OrderTemplatesStoreModule.forTesting('orderTemplates'),
-        RouterTestingModule.withRoutes([
-          { path: 'account/order-templates/:orderTemplateName', component: DummyComponent },
-        ]),
+        RouterTestingModule.withRoutes([{ path: 'account/order-templates/:orderTemplateName', children: [] }]),
       ],
       providers: [
+        { provide: OrderTemplateService, useFactory: () => instance(orderTemplateServiceMock) },
         OrderTemplateEffects,
         provideMockActions(() => actions$),
-        { provide: OrderTemplateService, useFactory: () => instance(orderTemplateServiceMock) },
       ],
     });
 
@@ -125,7 +119,7 @@ describe('Order Template Effects', () => {
 
     it('should map failed calls to actions of type LoadOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(orderTemplateServiceMock.getOrderTemplates()).thenReturn(throwError(error));
+      when(orderTemplateServiceMock.getOrderTemplates()).thenReturn(throwError(() => error));
       const action = loadOrderTemplates();
       const completion = loadOrderTemplatesFail({
         error,
@@ -179,7 +173,7 @@ describe('Order Template Effects', () => {
     });
     it('should map failed calls to actions of type CreateOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(throwError(error));
+      when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(throwError(() => error));
       const action = createOrderTemplate({ orderTemplate: createOrderTemplateData });
       const completion = createOrderTemplateFail({
         error,
@@ -223,7 +217,7 @@ describe('Order Template Effects', () => {
     });
     it('should map failed calls to actions of type DeleteOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(orderTemplateServiceMock.deleteOrderTemplate(anyString())).thenReturn(throwError(error));
+      when(orderTemplateServiceMock.deleteOrderTemplate(anyString())).thenReturn(throwError(() => error));
       const action = deleteOrderTemplate({ orderTemplateId: id });
       const completion = deleteOrderTemplateFail({
         error,
@@ -273,7 +267,7 @@ describe('Order Template Effects', () => {
     });
     it('should map failed calls to actions of type UpdateOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(orderTemplateServiceMock.updateOrderTemplate(anything())).thenReturn(throwError(error));
+      when(orderTemplateServiceMock.updateOrderTemplate(anything())).thenReturn(throwError(() => error));
       const action = updateOrderTemplate({ orderTemplate: orderTemplateDetailData[0] });
       const completion = updateOrderTemplateFail({
         error,
@@ -321,7 +315,7 @@ describe('Order Template Effects', () => {
     it('should map failed calls to actions of type AddProductToOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.addProductToOrderTemplate(anyString(), anyString(), anything())).thenReturn(
-        throwError(error)
+        throwError(() => error)
       );
       const action = addProductToOrderTemplate(payload);
       const completion = addProductToOrderTemplateFail({
@@ -360,7 +354,7 @@ describe('Order Template Effects', () => {
     });
     it('should map failed calls to actions of type CreateOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(throwError(error));
+      when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(throwError(() => error));
       const action = addProductToNewOrderTemplate(payload);
       const completion = createOrderTemplateFail({
         error,
@@ -461,7 +455,7 @@ describe('Order Template Effects', () => {
     it('should map failed calls to actions of type RemoveItemFromOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.removeProductFromOrderTemplate(anyString(), anyString())).thenReturn(
-        throwError(error)
+        throwError(() => error)
       );
       const action = removeItemFromOrderTemplate(payload);
       const completion = removeItemFromOrderTemplateFail({
@@ -509,7 +503,7 @@ describe('Order Template Effects', () => {
     });
 
     it('should set the breadcrumb of the selected Order Template when on account url', done => {
-      router.navigateByUrl('/account/order-templates/' + orderTemplates[0].id);
+      router.navigateByUrl(`/account/order-templates/${orderTemplates[0].id}`);
       actions$ = of(routerTestNavigatedAction({}));
 
       effects.setOrderTemplateBreadcrumb$.subscribe(action => {
@@ -531,7 +525,7 @@ describe('Order Template Effects', () => {
     });
 
     it('should not set the breadcrumb of the selected Order Template when on another url', fakeAsync(() => {
-      effects.setOrderTemplateBreadcrumb$.subscribe(fail, fail, fail);
+      effects.setOrderTemplateBreadcrumb$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

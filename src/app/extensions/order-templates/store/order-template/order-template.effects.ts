@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
-import { concatMap, filter, last, map, mapTo, mergeMap, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, last, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
@@ -270,13 +270,17 @@ export class OrderTemplateEffects {
    * Trigger LoadOrderTemplates action after LoginUserSuccess.
    */
   loadOrderTemplatesAfterLogin$ = createEffect(() =>
-    this.store.pipe(select(getUserAuthorized), whenTruthy(), mapTo(loadOrderTemplates()))
+    this.store.pipe(
+      select(getUserAuthorized),
+      whenTruthy(),
+      map(() => loadOrderTemplates())
+    )
   );
 
   setOrderTemplateBreadcrumb$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofUrl(/^\/account\/order-templates\/.*/),
           select(getSelectedOrderTemplateDetails),

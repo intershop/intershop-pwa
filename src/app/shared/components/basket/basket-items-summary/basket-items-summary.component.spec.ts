@@ -6,8 +6,6 @@ import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
-import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 
@@ -20,9 +18,7 @@ describe('Basket Items Summary Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         BasketItemsSummaryComponent,
-        MockComponent(BasketPromotionComponent),
         MockComponent(FaIconComponent),
-        MockComponent(ProductNameComponent),
         MockDirective(ProductContextDirective),
         MockPipe(PricePipe),
       ],

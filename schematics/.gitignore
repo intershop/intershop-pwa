@@ -1,6 +1,5 @@
 # outputs
-src/**/*.js
-src/**/*.d.ts
+dist
 
 # dependencies
 package-lock.json

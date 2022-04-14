@@ -30,7 +30,7 @@ export class MessagesEffects {
     @Inject(DOCUMENT) private document: Document
   ) {}
 
-  private applyStyle$ = new Subject();
+  private applyStyle$ = new Subject<void>();
 
   infoToast$ = createEffect(
     () =>

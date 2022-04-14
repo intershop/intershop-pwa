@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 
 /**
  * Type for a basic input field
- * @templateOption type supports all text types; 'text' (default), 'email', 'password', 'tel'
+ *
+ * @templateOption **type** supports all text types; 'text' (default), 'email', 'password', 'tel'
  *
  * @defaultWrappers form-field-horizontal & validation
  */
@@ -13,9 +13,7 @@ import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
   templateUrl: './text-input-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextInputFieldComponent extends FieldType {
-  formControl: FormControl;
-
+export class TextInputFieldComponent extends FieldType<FieldTypeConfig> {
   textInputFieldTypes = ['text', 'email', 'password', 'tel'];
 
   onPopulate(field: FormlyFieldConfig) {

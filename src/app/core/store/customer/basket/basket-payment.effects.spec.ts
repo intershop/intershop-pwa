@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -50,20 +49,16 @@ describe('Basket Payment Effects', () => {
   beforeEach(() => {
     paymentServiceMock = mock(PaymentService);
 
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user', 'basket'),
-        RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'checkout/review', children: [] }]),
       ],
       providers: [
+        { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         BasketPaymentEffects,
         provideMockActions(() => actions$),
-        { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
       ],
     });
 
@@ -108,7 +103,7 @@ describe('Basket Payment Effects', () => {
 
     it('should map invalid request to action of type LoadBasketEligiblePaymentMethodsFail', () => {
       when(paymentServiceMock.getBasketEligiblePaymentMethods()).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = loadBasketEligiblePaymentMethods();
       const completion = loadBasketEligiblePaymentMethodsFail({
@@ -159,7 +154,7 @@ describe('Basket Payment Effects', () => {
 
     it('should map invalid request to action of type SetPaymentFail', () => {
       when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = setBasketPayment({ id: 'newPayment' });
       const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -200,7 +195,7 @@ describe('Basket Payment Effects', () => {
 
     it('should map invalid addBasketPayment request to action of type SetPaymentFail', () => {
       when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = setBasketPayment({ id: 'newPayment' });
       const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -279,7 +274,7 @@ describe('Basket Payment Effects', () => {
 
     it('should map invalid request to action of type CreateBasketPaymentFail', () => {
       when(paymentServiceMock.createBasketPayment(anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = createBasketPayment({ paymentInstrument, saveForLater: false });
       const completion = createBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -393,7 +388,7 @@ describe('Basket Payment Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketPaymentFail', () => {
       when(paymentServiceMock.updateBasketPayment(anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = updateBasketPayment({ params });
       const completion = updateBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
@@ -465,7 +460,7 @@ describe('Basket Payment Effects', () => {
 
     it('should map invalid request to action of type DeleteBasketPaymentFail', () => {
       when(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = deleteBasketPayment({ paymentInstrument });
       const completion = deleteBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });

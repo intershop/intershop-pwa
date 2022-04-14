@@ -18,7 +18,7 @@ import { takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class TextareaDescriptionWrapperComponent extends FieldWrapper implements OnInit, OnDestroy {
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
   description$: Observable<string>;
 
   constructor(private translate: TranslateService) {

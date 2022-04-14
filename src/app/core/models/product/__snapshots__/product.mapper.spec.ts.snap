@@ -39,14 +39,9 @@ Object {
       "viewID": "front",
     },
   ],
-  "listPrice": Object {
-    "currency": "USD",
-    "type": "Money",
-    "value": 132.24,
-  },
   "longDescription": undefined,
   "manufacturer": "Kodak",
-  "maxOrderQuantity": 100,
+  "maxOrderQuantity": undefined,
   "minOrderQuantity": 5,
   "name": "Kodak M series EasyShare M552",
   "packingUnit": "pcs.",
@@ -54,14 +49,9 @@ Object {
   "readyForShipmentMax": undefined,
   "readyForShipmentMin": undefined,
   "roundedAverageRating": 0,
-  "salePrice": Object {
-    "currency": "USD",
-    "type": "Money",
-    "value": 132.24,
-  },
   "shortDescription": "EasyShare M552, 14MP, 6.858 cm (2.7 \\") LCD, 4x, 28mm, HD 720p, Black",
   "sku": "7912057",
-  "stepOrderQuantity": 1,
+  "stepOrderQuantity": undefined,
   "type": "Product",
 }
 `;

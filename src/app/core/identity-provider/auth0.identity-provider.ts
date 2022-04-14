@@ -5,7 +5,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable, combineLatest, from, of, race, timer } from 'rxjs';
-import { catchError, filter, first, map, mapTo, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { catchError, filter, first, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { UserData } from 'ish-core/models/user/user.interface';
@@ -59,7 +59,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       clientId: config.clientID,
 
       // The app's redirectUri configured in Auth0
-      redirectUri: effectiveOrigin + '/loading',
+      redirectUri: `${effectiveOrigin}/loading`,
 
       // logout redirect URL
       postLogoutRedirectUri: effectiveOrigin,
@@ -83,7 +83,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       .restore$(['basket', 'order'])
       .pipe(
         switchMap(() => from(this.oauthService.loadDiscoveryDocumentAndTryLogin())),
-        switchMapTo(
+        switchMap(() =>
           timer(0, 200).pipe(
             map(() => this.oauthService.getIdToken()),
             take(100),
@@ -139,6 +139,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
                 : of(false)
             ),
             switchMap((navigated: boolean) =>
+              // eslint-disable-next-line unicorn/no-null
               navigated || navigated === null
                 ? race(
                     this.store.pipe(
@@ -151,7 +152,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
                     this.store.pipe(
                       select(getSsoRegistrationCancelled),
                       whenTruthy(),
-                      mapTo(false),
+                      map(() => false),
                       tap(() => this.router.navigateByUrl('/logout'))
                     )
                   )
@@ -159,7 +160,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
             )
           )
         ),
-        switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
+        switchMap(() => this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
         catchError((error: HttpError) => {
           this.apiTokenService.removeApiToken();
           this.triggerLogout();
@@ -182,7 +183,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
         tap(() => {
           this.store.dispatch(loadUserByAPIToken());
         }),
-        switchMapTo(this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
+        switchMap(() => this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
         catchError((error: HttpError) => {
           this.apiTokenService.removeApiToken();
           this.triggerLogout();
@@ -247,7 +248,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       !req.url.endsWith('users/processtoken') &&
       !req.headers.has(ApiService.TOKEN_HEADER_KEY)
         ? req.clone({
-            headers: req.headers.set(ApiService.AUTHORIZATION_HEADER_KEY, 'Bearer ' + this.oauthService.getIdToken()),
+            headers: req.headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `Bearer ${this.oauthService.getIdToken()}`),
           })
         : req;
     return next.handle(newRequest);

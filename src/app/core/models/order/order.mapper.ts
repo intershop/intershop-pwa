@@ -9,6 +9,7 @@ import { OrderData } from './order.interface';
 import { Order } from './order.model';
 
 export class OrderMapper {
+  // eslint-disable-next-line complexity
   static fromData(payload: OrderData): Order {
     if (!Array.isArray(payload.data)) {
       const { data, included, infos } = payload;
@@ -46,33 +47,32 @@ export class OrderMapper {
         purchaseCurrency: data.purchaseCurrency,
         dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
         invoiceToAddress:
-          included && included.invoiceToAddress && data.invoiceToAddress
+          included?.invoiceToAddress && data.invoiceToAddress
             ? AddressMapper.fromData(included.invoiceToAddress[data.invoiceToAddress])
             : undefined,
         commonShipToAddress:
-          included && included.commonShipToAddress && data.commonShipToAddress
+          included?.commonShipToAddress && data.commonShipToAddress
             ? AddressMapper.fromData(included.commonShipToAddress[data.commonShipToAddress])
             : undefined,
         commonShippingMethod:
-          included && included.commonShippingMethod && data.commonShippingMethod
+          included?.commonShippingMethod && data.commonShippingMethod
             ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
             : undefined,
         costCenter: data.costCenter,
         customerNo: data.customer,
         email: data.user,
         lineItems:
-          included && included.lineItems && data.lineItems && data.lineItems.length
+          included?.lineItems && data.lineItems?.length
             ? data.lineItems.map(lineItemId =>
                 LineItemMapper.fromOrderItemData(included.lineItems[lineItemId], included.lineItems_discounts)
               )
             : [],
         totalProductQuantity: data.totalProductQuantity,
         payment:
-          included && included.payments && data.payments && data.payments.length && included.payments[data.payments[0]]
+          included?.payments && data.payments?.length && included.payments[data.payments[0]]
             ? PaymentMapper.fromIncludeData(
                 included.payments[data.payments[0]],
-                included.payments_paymentMethod &&
-                  included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
+                included.payments_paymentMethod?.[included.payments[data.payments[0]].paymentMethod]
                   ? included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
                   : undefined,
                 included.payments[data.payments[0]].paymentInstrument && included.payments_paymentInstrument
@@ -83,6 +83,8 @@ export class OrderMapper {
         totals,
         infos,
         attributes: data.attributes,
+        taxationId: data.taxIdentificationNumber,
+        user: data.buyer,
       };
     }
   }

@@ -1,11 +1,18 @@
 import { normalize, strings } from '@angular-devkit/core';
-import { Tree } from '@angular-devkit/schematics';
+import { SchematicsException, Tree } from '@angular-devkit/schematics';
 import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
 import { parseName } from '@schematics/angular/utility/parse-name';
-import { validateHtmlSelector, validateName } from '@schematics/angular/utility/validation';
+import { validateHtmlSelector } from '@schematics/angular/utility/validation';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { buildSelector } from './selector';
+
+function validateName(name: string) {
+  if (name && /^\d/.test(name)) {
+    throw new SchematicsException(`name (${name})
+    can not start with a digit.`);
+  }
+}
 
 export async function applyNameAndPath(
   artifact: string,
@@ -26,8 +33,8 @@ export async function applyNameAndPath(
   const project = workspace.projects.get(options.project);
 
   // remove possible added path from root
-  if (name && name.startsWith('src/app/')) {
-    name = name.substr(8);
+  if (name?.startsWith('src/app/')) {
+    name = name.substring(8);
   }
 
   const parsedPath = parseName(path || buildDefaultPath(project), name);
@@ -126,7 +133,15 @@ export async function detectExtension(
 }
 
 export function findDeclaringModule(host: Tree, options: { name?: string }) {
-  const module = findModuleFromOptions(host, { ...options, name: options.name as string });
+  let module: string = findModuleFromOptions(host, { ...options, name: options.name as string });
+
+  if (module) {
+    const alternateModule = module.replace('.ts', '.all.ts');
+    if (host.exists(alternateModule)) {
+      module = alternateModule;
+    }
+  }
+
   return {
     ...options,
     module,

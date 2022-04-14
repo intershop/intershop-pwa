@@ -1,4 +1,4 @@
-import { at, waitLoadingEnd } from '../../framework';
+import { at } from '../../framework';
 import { HomePage } from '../../pages/home.page';
 import { FamilyPage } from '../../pages/shopping/family.page';
 import { NotFoundPage } from '../../pages/shopping/not-found.page';
@@ -9,7 +9,6 @@ describe('Page Meta', () => {
 
   it('should have all metadata set on product detail page', () => {
     at(ProductDetailPage, page => {
-      waitLoadingEnd(1000);
       page.metaData.check({
         title: 'Google Home - Smart Home | Intershop PWA',
         url: /.*\/Smart-Home\/Google-Home-sku201807171-catHome-Entertainment.SmartHome$/,
@@ -22,7 +21,6 @@ describe('Page Meta', () => {
   it('should switch to family page meta when navigating there', () => {
     at(ProductDetailPage, page => {
       page.breadcrumb.items.eq(2).click();
-      waitLoadingEnd(1000);
     });
     at(FamilyPage, page => {
       page.metaData.check({
@@ -36,7 +34,6 @@ describe('Page Meta', () => {
   it('should switch to home page meta when navigating there', () => {
     at(FamilyPage, page => {
       page.header.gotoHomePage();
-      waitLoadingEnd(1000);
     });
     at(HomePage, page => {
       page.metaData.check({
@@ -50,13 +47,12 @@ describe('Page Meta', () => {
   it('should switch to error page meta when navigating there', () => {
     at(HomePage, page => {
       page.footer.gotoErrorPage();
-      waitLoadingEnd(1000);
     });
     at(NotFoundPage, page => {
       page.metaData.check({
         title: 'Error | Intershop PWA',
         url: /.*\/error$/,
-        description: 'Intershop - Progressive Web App - Demo PWA',
+        description: 'Intershop - Progressive Web App',
       });
     });
   });

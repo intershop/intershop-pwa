@@ -11,7 +11,7 @@ a.product-title {
 
 .product-id {
   font-size: $font-size-corporate;
-  color: $text-color-quarternary;
+  color: $text-color-quaternary;
 
   label {
     padding-right: divide($space-default, 3);
@@ -20,7 +20,7 @@ a.product-title {
 
 .product-info {
   font-family: $font-family-condensedregular;
-  color: $text-color-quarternary;
+  color: $text-color-quaternary;
 
   label {
     text-transform: uppercase;
@@ -30,10 +30,10 @@ a.product-title {
     text-transform: uppercase;
 
     a {
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
 
       &:hover {
-        color: darken($text-color-quarternary, 10%);
+        color: darken($text-color-quaternary, 10%);
       }
     }
   }
@@ -46,20 +46,6 @@ a.product-title {
       margin-left: $space-default;
       font-size: $font-size-corporate;
     }
-  }
-
-  .sale-price {
-    font-size: 30px;
-  }
-
-  .old-price {
-    margin: 0;
-  }
-
-  .was-price {
-    font-size: 18px;
-    color: $text-color-quarternary;
-    text-decoration: line-through;
   }
 
   .ready-for-shipment,

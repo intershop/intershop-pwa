@@ -1,6 +1,6 @@
 import {
-  ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewContainerRef,
-  Compiler, Injector,
+  ChangeDetectionStrategy, Component, createNgModuleRef, OnInit, ViewChild, ViewContainerRef,
+  Injector,
   <% if (bindings.length) { %>ComponentRef, Input, OnChanges, <% } %>
   <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
@@ -14,7 +14,6 @@ import {
   templateUrl: './<%= dasherize(name) %>.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:component-creation-test
 export class <%= classify(name) %>Component implements OnInit <% if (bindings.length) { %>, OnChanges <% } %>{
   /*
    * WARNING!
@@ -29,12 +28,11 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
   <% if (bindings.length) { %><%= bindings.map(b => b.declaration).join('\n  ') %><% } %>
 
-  <% if (bindings.length) { %>// tslint:disable-next-line: no-any - access in on-changes required
+  <% if (bindings.length) { %>// eslint-disable-next-line @typescript-eslint/no-explicit-any -- access in on-changes required
   private component: ComponentRef<any>;<% } %>
 
   constructor(
     <% if(!isProject && !isShared) { %> private featureToggleService: FeatureToggleService, <% } %>
-    private compiler: Compiler,
     private injector: Injector
   ) {}
 
@@ -42,20 +40,19 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
     <% if(!isProject && !isShared) { %> if (this.featureToggleService.enabled('<%= camelize(extension) %>')) { <% } %>
       const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
 
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       const { <%= classify(originalName) %>Component } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
 
-      const moduleFactory = this.compiler.compileModuleSync(module);
-      const moduleRef = moduleFactory.create(this.injector);
-      const factory = moduleRef.componentFactoryResolver.resolveComponentFactory(<%= classify(originalName) %>Component);
+      const moduleRef = createNgModuleRef(module, this.injector);
 
     <% if (bindings.length) { %>
-      this.component = this.anchor.createComponent(factory);
+      this.component = this.anchor.createComponent(<%= classify(originalName) %>Component, { ngModuleRef: moduleRef });
       this.ngOnChanges(<% if (onChanges === 'complex') { %>{
           <%= bindings.map(b => `${b.name}: new SimpleChange(undefined, this.${b.name}, true),`).join('\n        ') %>
         }<% } %>);
       this.component.changeDetectorRef.markForCheck();
     <% } else { %>
-      this.anchor.createComponent(factory).changeDetectorRef.markForCheck();
+      this.anchor.createComponent(<%= classify(originalName) %>Component, { ngModuleRef: moduleRef }).changeDetectorRef.markForCheck();
     <% } %>
     <% if(!isProject && !isShared){ %> } <% } %>
   }

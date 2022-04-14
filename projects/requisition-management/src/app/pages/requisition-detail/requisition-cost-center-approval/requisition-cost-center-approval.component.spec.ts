@@ -70,7 +70,8 @@ describe('Requisition Cost Center Approval Component', () => {
           } as CostCenter,
         },
       },
-      user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+      email: 'pmiller@test.intershop.de',
+      user: { firstName: 'Patricia', lastName: 'Miller' },
       totals: {
         total: { gross: 2000, net: 1800, currency: 'USD' },
       } as BasketTotal,
@@ -108,15 +109,9 @@ describe('Requisition Cost Center Approval Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(`
-      "approval.detailspage.cost_center.label
-      100450 Headquarter
-      approval.detailspage.costcenter.budget.label
-      $3,000.00
-      account.budget.already_spent.label
-      $300.00 (10%)
-      "
-    `);
+    expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(
+      `"approval.detailspage.cost_center.label100450 Headquarterapproval.detailspage.costcenter.budget.label $3,000.00 account.budget.already_spent.label $300.00 (10%) "`
+    );
   });
 
   it('should display cost center buyer budget information if there are buyer data', () => {
@@ -134,12 +129,8 @@ describe('Requisition Cost Center Approval Component', () => {
 
     expect(
       element.querySelector('[data-testing-id="cost-center-buyer-budget"]').textContent.replace(/^\s*[\r\n]*/gm, '')
-    ).toMatchInlineSnapshot(`
-      "approval.detailspage.buyer.budget.label
-      $4,000.00
-      account.budget.already_spent.label
-      $200.00 (5%)
-      "
-    `);
+    ).toMatchInlineSnapshot(
+      `"approval.detailspage.buyer.budget.label $4,000.00 account.budget.already_spent.label $200.00 (5%) "`
+    );
   });
 });

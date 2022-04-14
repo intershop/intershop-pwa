@@ -33,6 +33,7 @@ export interface LineItem {
   isFreeGift: boolean;
 
   editable: boolean;
+  quote?: string;
 }
 
 export interface LineItemView extends LineItem {

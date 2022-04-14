@@ -1,40 +1,36 @@
 import { Rule } from '@angular-devkit/schematics';
-import { TslintFixTask } from '@angular-devkit/schematics/tasks';
+import { execSync } from 'child_process';
+import { once } from 'lodash';
 
-/**
- * adapted from @schematics/angular/utility/lint-fix
- */
+import { findProjectRoot } from './filesystem';
+
+const lintFiles: string[] = [];
+
+const registerLintAtEnd = once((root: string) => {
+  process.on('exit', () => {
+    if (process.env.CI !== 'true') {
+      if (lintFiles.length) {
+        console.log('LINTING', lintFiles.length, lintFiles.length === 1 ? 'file' : 'files');
+
+        execSync(`npx prettier --write --loglevel warn ${lintFiles.join(' ')}`, { cwd: root });
+        execSync(`npx eslint --fix ${lintFiles.join(' ')}`, { cwd: root });
+      }
+    } else {
+      console.log('LINTING skipped for CI=true');
+    }
+  });
+});
+
 export function applyLintFix(): Rule {
-  return (tree, context) => {
+  return tree => {
     // Only include files that have been touched.
-    const files = tree.actions.reduce((acc: Set<string>, action) => {
-      const path = action.path.substr(1); // Remove the starting '/'.
-      if (path.endsWith('.ts')) {
-        acc.add(path);
-      }
+    tree.actions
+      .map(action => action.path.substring(1))
+      .filter(path => path.endsWith('.ts') || path.endsWith('.html'))
+      .forEach(file => {
+        if (!lintFiles.includes(file)) lintFiles.push(file);
+      });
 
-      return acc;
-    }, new Set<string>());
-
-    // suppress warning for rules requiring type information, throw on other warnings
-    console.warn = message => {
-      if (typeof message === 'string') {
-        if (!/Warning: The '.*' rule requires type information./.test(message) && !message.startsWith('DEPRECATION')) {
-          throw new Error(message);
-        }
-      } else {
-        throw new Error(message);
-      }
-    };
-
-    context.addTask(
-      // tslint:disable-next-line: ish-deprecation
-      new TslintFixTask({
-        ignoreErrors: true,
-        silent: true,
-        tsConfigPath: 'tsconfig.json',
-        files: [...files],
-      })
-    );
+    registerLintAtEnd(findProjectRoot());
   };
 }

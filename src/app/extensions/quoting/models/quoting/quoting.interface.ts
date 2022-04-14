@@ -2,8 +2,6 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { PriceData } from 'ish-core/models/price/price.interface';
 
-// tslint:disable: project-structure
-
 interface QuoteBaseData<ItemType> {
   id: string;
   number: string;

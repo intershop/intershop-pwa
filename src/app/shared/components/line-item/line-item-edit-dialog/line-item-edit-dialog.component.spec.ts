@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -55,6 +55,7 @@ describe('Line Item Edit Dialog Component', () => {
         completenessLevel: ProductCompletenessLevel.List,
       } as ProductView)
     );
+    when(context.select('prices')).thenReturn(EMPTY);
 
     when(context.select('loading')).thenReturn(of(false));
   });

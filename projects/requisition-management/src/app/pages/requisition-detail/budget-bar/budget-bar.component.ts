@@ -37,7 +37,7 @@ export class BudgetBarComponent implements OnChanges {
 
   /**  calculates all displayed prices and percentages */
   private calculate() {
-    if (this.budget && this.budget.value) {
+    if (this.budget?.value) {
       this.budgetPercentage = this.spentBudget?.value ? (this.spentBudget.value / this.budget.value) * 100 : 0;
       this.displayClass = this.getDisplayColor(this.budgetPercentage);
 

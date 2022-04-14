@@ -12,10 +12,8 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
-import { BasketOrderReferenceComponent } from 'ish-shared/components/basket/basket-order-reference/basket-order-reference.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { CheckoutShippingPageComponent } from './checkout-shipping-page.component';
 import { CheckoutShippingComponent } from './checkout-shipping/checkout-shipping.component';
@@ -34,17 +32,15 @@ describe('Checkout Shipping Page Component', () => {
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
-        MockComponent(BasketOrderReferenceComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckoutShippingComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
         MockDirective(ServerHtmlDirective),
       ],
       imports: [TranslateModule.forRoot()],
       providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
     }).compileComponents();
   });

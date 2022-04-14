@@ -1,19 +1,46 @@
 <div class="product-page clearfix" data-testing-id="product-detail-page" itemscope itemtype="http://schema.org/Product">
   <ish-loading *ngIf="productLoading$ | async"></ish-loading>
+  <div *ngIf="product$ | async as product">
+    <div class="marketing-area">
+      <ish-content-viewcontext
+        viewContextId="viewcontext.include.product.base.top"
+        [callParameters]="{ Product: product.sku }"
+      ></ish-content-viewcontext>
+    </div>
 
-  <ish-breadcrumb></ish-breadcrumb>
+    <ish-breadcrumb></ish-breadcrumb>
 
-  <ish-product-detail></ish-product-detail>
+    <ish-product-detail></ish-product-detail>
 
-  <ish-product-master-variations></ish-product-master-variations>
+    <div class="marketing-area">
+      <ish-content-viewcontext
+        viewContextId="viewcontext.include.product.content.top"
+        [callParameters]="{ Product: product.sku }"
+      ></ish-content-viewcontext>
+    </div>
 
-  <ish-product-bundle-parts></ish-product-bundle-parts>
+    <ish-product-master-variations></ish-product-master-variations>
 
-  <ish-retail-set-parts></ish-retail-set-parts>
+    <ish-product-bundle-parts></ish-product-bundle-parts>
 
-  <ish-product-links></ish-product-links>
+    <ish-retail-set-parts></ish-retail-set-parts>
+
+    <ish-product-links></ish-product-links>
+
+    <div class="marketing-area">
+      <ish-content-viewcontext
+        viewContextId="viewcontext.include.product.content.bottom"
+        [callParameters]="{ Product: product.sku }"
+      ></ish-content-viewcontext>
+    </div>
+
+    <ish-lazy-recently-viewed *ngIf="(productLoading$ | async) !== true"></ish-lazy-recently-viewed>
+
+    <div class="marketing-area">
+      <ish-content-viewcontext
+        viewContextId="viewcontext.include.product.base.bottom"
+        [callParameters]="{ Product: product.sku }"
+      ></ish-content-viewcontext>
+    </div>
+  </div>
 </div>
-
-<ng-container *ishFeature="'recently'"
-  ><ish-recently-viewed *ngIf="!(productLoading$ | async)"></ish-recently-viewed
-></ng-container>

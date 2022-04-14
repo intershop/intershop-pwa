@@ -6,7 +6,7 @@ import { Observable, isObservable, of } from 'rxjs';
  * Truncates whenever no complete remaining slice could be constructed.
  */
 export const arraySlices = <T>(input: T[], sliceLength: number): T[][] =>
-  input && input.length && sliceLength > 0
+  input?.length && sliceLength > 0
     ? // determine slice indexes
       range(0, Math.ceil(input.length / sliceLength))
         // cut array into slices
@@ -22,7 +22,7 @@ function isObject(item: unknown) {
 /**
  * @see https://stackoverflow.com/a/37164538/13001898
  */
-// tslint:disable-next-line: no-any - utility function
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- utility function
 export function mergeDeep(target: any, source: any) {
   let output = { ...target };
   if (isObject(target) && isObject(source)) {
@@ -54,4 +54,14 @@ export function omit<T>(from: T, ...keys: (keyof T | string)[]) {
 
 export function isArrayEqual<T>(a1: T[], a2: T[]): boolean {
   return (!a1 && !a2) || (a1?.length === a2?.length && a1?.every((el, idx) => a2?.[idx] === el));
+}
+
+export function parseTimeToSeconds(timeString: string): number {
+  const match = /^([0-9]+)(s|m|h|d)?$/.exec(timeString.toLowerCase());
+  if (!match) {
+    throw new Error(`Cannot parse "${timeString}" as time.`);
+  }
+
+  const [, time, unit] = match;
+  return +time * (unit === 'd' ? 24 * 60 * 60 : unit === 'h' ? 60 * 60 : unit === 'm' ? 60 : 1);
 }

@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -6,12 +7,13 @@ import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+
 import {
   RegistrationConfigType,
   RegistrationFormConfigurationService,
-} from 'ish-core/services/registration-form-configuration/registration-form-configuration.service';
+} from './services/registration-form-configuration/registration-form-configuration.service';
 
-// tslint:disable:no-intelligence-in-artifacts
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
  *
@@ -56,9 +58,11 @@ export class RegistrationPageComponent implements OnInit {
 
   onCreate() {
     if (this.form.invalid) {
+      markAsDirtyRecursive(this.form);
       this.submitted = true;
       return;
     }
+    // keep-localization-pattern: ^customer\..*\.error$
     this.registrationFormConfiguration.submitRegistrationForm(this.form, this.registrationConfig, this.model);
   }
 

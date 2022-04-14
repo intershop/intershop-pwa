@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, spy, verify } from 'ts-mockito';
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 
 import { AccountProfileCompanyComponent } from './account-profile-company.component';
 
@@ -13,11 +14,29 @@ describe('Account Profile Company Component', () => {
   let component: AccountProfileCompanyComponent;
   let fixture: ComponentFixture<AccountProfileCompanyComponent>;
   let element: HTMLElement;
+  let fieldLibrary: FieldLibrary;
 
   beforeEach(async () => {
+    fieldLibrary = mock(FieldLibrary);
+    when(fieldLibrary.getConfigurationGroup(anything(), anything())).thenReturn([
+      {
+        key: 'companyName',
+        templateOptions: {
+          required: true,
+        },
+      },
+      {
+        key: 'companyName2',
+      },
+      {
+        key: 'taxationID',
+      },
+    ]);
+
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [AccountProfileCompanyComponent, MockComponent(ErrorMessageComponent)],
+      providers: [{ provide: FieldLibrary, useFactory: () => instance(fieldLibrary) }],
     }).compileComponents();
   });
 

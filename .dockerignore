@@ -1,12 +1,11 @@
 # dockerignore-update:start
 
 # The content between these markers is generated.
-# It can be synchronized using 'node scripts/update-dockerignore'
+# It can be synchronized using 'npm run update-dockerignore'
 
 # from .gitignore
-/tslint*hard*
 **/*.xliff
-**/*.ut.spec.ts
+**/*.ut.spec.ts*
 **/node_modules
 /.idea
 /.project
@@ -18,6 +17,7 @@
 /.nb-gradle
 /nbproject/
 /.nvmrc
+/.angular/cache
 **/*.log
 /src/environments/environment.local.ts
 /src/environments/environment.development.ts
@@ -43,34 +43,42 @@
 
 # from e2e/.gitignore
 /e2e/node_modules
-/e2e/out-tsc
 /e2e/reports
 /e2e/package-lock.json
+
+# from eslint-rules/.gitignore
+/eslint-rules/node_modules
+/eslint-rules/package-lock.json
+/eslint-rules/dist
 
 # from reports/.gitignore
 /reports/junit.xml
 /reports/unit-tests.html
 /reports/coverage
 /reports/e2e
-/reports/tslint
+/reports/eslint
 /reports/bundle
 /reports/jscpd
 /reports/licenses
 /reports/e2e-*.xml
 
 # from schematics/.gitignore
-/schematics/src/**/*.js
-/schematics/src/**/*.d.ts
+/schematics/dist
 /schematics/package-lock.json
-
-# from tslint-rules/.gitignore
-/tslint-rules/test
-/tslint-rules/package-lock.json
 
 # from e2e/cypress/.gitignore
 /e2e/cypress/videos
 /e2e/cypress/screenshots
 /e2e/cypress/logs
+
+# from node_modules/eslint-plugin-ish-custom-rules/.gitignore
+/node_modules/eslint-plugin-ish-custom-rules/node_modules
+/node_modules/eslint-plugin-ish-custom-rules/package-lock.json
+/node_modules/eslint-plugin-ish-custom-rules/dist
+
+# from node_modules/intershop-schematics/.gitignore
+/node_modules/intershop-schematics/dist
+/node_modules/intershop-schematics/package-lock.json
 
 # from src/ssr/server-scripts/.gitignore
 /src/ssr/server-scripts/ecosystem-ports.json
@@ -84,29 +92,35 @@
 # from projects/requisition-management/src/app/exports/.gitignore
 /projects/requisition-management/src/app/exports/lazy**
 
+# from src/app/extensions/compare/exports/.gitignore
+/src/app/extensions/compare/exports/**/lazy*
+
 # from src/app/extensions/order-templates/exports/.gitignore
-/src/app/extensions/order-templates/exports/*/**/*.*
+/src/app/extensions/order-templates/exports/**/lazy*
 
 # from src/app/extensions/punchout/exports/.gitignore
-/src/app/extensions/punchout/exports/*/**/lazy*.*
+/src/app/extensions/punchout/exports/**/lazy*
 
 # from src/app/extensions/quickorder/exports/.gitignore
-/src/app/extensions/quickorder/exports/*/**/*.*
+/src/app/extensions/quickorder/exports/**/lazy*
 
 # from src/app/extensions/quoting/exports/.gitignore
-/src/app/extensions/quoting/exports/*/**/*.*
+/src/app/extensions/quoting/exports/**/lazy*
+
+# from src/app/extensions/recently/exports/.gitignore
+/src/app/extensions/recently/exports/**/lazy*
 
 # from src/app/extensions/tacton/exports/.gitignore
-/src/app/extensions/tacton/exports/*/**/lazy*.*
+/src/app/extensions/tacton/exports/**/lazy*
 
 # from src/app/extensions/wishlists/exports/.gitignore
-/src/app/extensions/wishlists/exports/*/**/*.*
+/src/app/extensions/wishlists/exports/**/lazy*
 
 # from schematics/src/extension/files/__name@dasherize__/exports/.gitignore
-/schematics/src/extension/files/__name@dasherize__/exports/*/**/*.*
+/schematics/src/extension/files/__name@dasherize__/exports/**/lazy*
 
 # The content between these markers is generated.
-# It can be synchronized using 'node scripts/update-dockerignore'
+# It can be synchronized using 'npm run update-dockerignore'
 
 # dockerignore-update:end
 

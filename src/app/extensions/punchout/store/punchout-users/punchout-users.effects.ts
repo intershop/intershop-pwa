@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, concatMapTo, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
+import { concatMap, exhaustMap, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -81,7 +81,7 @@ export class PunchoutUsersEffects {
         this.punchoutService.createUser(newUser).pipe(
           concatMap(user =>
             from(this.router.navigate([`/account/punchout`, { format: user.punchoutType }])).pipe(
-              concatMapTo([
+              mergeMap(() => [
                 addPunchoutUserSuccess({ user }),
                 displaySuccessMessage({
                   message: 'account.punchout.user.created.message',
@@ -104,7 +104,7 @@ export class PunchoutUsersEffects {
         this.punchoutService.updateUser(changedUser).pipe(
           concatMap(user =>
             from(this.router.navigate([`/account/punchout`, { format: user.punchoutType }])).pipe(
-              concatMapTo([
+              mergeMap(() => [
                 updatePunchoutUserSuccess({ user }),
                 displaySuccessMessage({
                   message: 'account.punchout.user.updated.message',
@@ -125,7 +125,7 @@ export class PunchoutUsersEffects {
       mapToPayloadProperty('user'),
       exhaustMap(user =>
         this.punchoutService.deleteUser(user).pipe(
-          concatMapTo([
+          mergeMap(() => [
             deletePunchoutUserSuccess({ login: user.login }),
             displaySuccessMessage({
               message: 'account.punchout.user.delete.confirmation',

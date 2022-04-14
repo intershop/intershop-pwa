@@ -29,16 +29,24 @@
   <div class="form-horizontal">
     <div class="row">
       <div class="col-md-12 col-lg-8">
-        <ish-basket-cost-center-selection></ish-basket-cost-center-selection>
+        <div class="marketing-area">
+          <ish-content-include includeId="include.basket.content.top.pagelet2-Include"></ish-content-include>
+        </div>
 
+        <ish-basket-cost-center-selection></ish-basket-cost-center-selection>
         <div class="section">
-          <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
+          <ng-container *ishFeature="'quoting'; else elseTemplate">
+            <ish-lazy-quoting-basket-line-items></ish-lazy-quoting-basket-line-items>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
+          </ng-template>
 
           <div class="button-group">
             <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
             <ish-lazy-basket-create-order-template
               *ngIf="basket"
-              [class]="'btn btn-secondary'"
+              [cssClass]="'btn btn-secondary'"
               [products]="basket.lineItems"
             ></ish-lazy-basket-create-order-template>
           </div>
@@ -50,6 +58,10 @@
             'shopping_cart.detailed.continue_shopping.link' | translate
           }}</a>
         </p>
+
+        <div class="marketing-area">
+          <ish-content-include includeId="include.basket.content.bottom.pagelet2-Include"></ish-content-include>
+        </div>
       </div>
 
       <div class="col-md-12 col-lg-4 order-summary">
@@ -73,6 +85,10 @@
           <ish-lazy-punchout-transfer-basket
             *ishIsAuthorizedTo="'APP_B2B_SEND_PUNCHOUT_BASKET'"
           ></ish-lazy-punchout-transfer-basket>
+        </div>
+
+        <div class="marketing-area">
+          <ish-content-include includeId="include.basket.ordersummary.pagelet2-Include"></ish-content-include>
         </div>
       </div>
     </div>

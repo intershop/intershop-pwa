@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { timer } from 'rxjs';
-import { map, mapTo, sample, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { map, sample, switchMap, tap } from 'rxjs/operators';
 
 import { whenFalsy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
-import { QuotingEntity } from '../models/quoting/quoting.model';
+import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
   createQuoteRequestFromBasket,
+  deleteQuoteFromBasket,
   deleteQuotingEntity,
   getQuotingEntities,
   getQuotingEntity,
@@ -17,7 +18,7 @@ import {
   loadQuotingDetail,
 } from '../store/quoting';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
   constructor(private store: Store) {}
@@ -26,7 +27,7 @@ export class QuotingFacade {
 
   quotingEntities$() {
     // update on subscription
-    this.store.dispatch(loadQuoting());
+    this.loadQuoting();
 
     return this.store.pipe(
       select(getQuotingEntities),
@@ -36,10 +37,10 @@ export class QuotingFacade {
         timer(0, 60_000).pipe(
           tap(count => {
             if (count) {
-              this.store.dispatch(loadQuoting());
+              this.loadQuoting();
             }
           }),
-          mapTo(entities)
+          map(() => entities)
         )
       ),
       tap(entities => {
@@ -53,8 +54,15 @@ export class QuotingFacade {
 
   state$(quoteId: string) {
     return timer(0, 2000).pipe(
-      switchMapTo(this.store.pipe(select(getQuotingEntity(quoteId)))),
+      switchMap(() => this.store.pipe(select(getQuotingEntity(quoteId)))),
       map(QuotingHelper.state)
+    );
+  }
+
+  name$(quoteId: string) {
+    return this.store.pipe(
+      select(getQuotingEntity(quoteId)),
+      map((quote: Quote | QuoteRequest) => quote?.displayName)
     );
   }
 
@@ -64,5 +72,13 @@ export class QuotingFacade {
 
   createQuoteRequestFromBasket() {
     this.store.dispatch(createQuoteRequestFromBasket());
+  }
+
+  loadQuoting() {
+    this.store.dispatch(loadQuoting());
+  }
+
+  deleteQuoteFromBasket(quoteId: string) {
+    this.store.dispatch(deleteQuoteFromBasket({ id: quoteId }));
   }
 }

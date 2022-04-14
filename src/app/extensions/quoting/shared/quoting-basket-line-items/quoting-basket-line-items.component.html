@@ -1,0 +1,16 @@
+<ng-container *ngFor="let item of lineItems$ | async">
+  <div class="row" *ngIf="item[0] !== 'undefined'">
+    <h2 class="col-12">
+      {{ 'quote.basket_items.label' | translate: { '0': getName(item[0]) | async } }}
+      <a
+        class="float-md-right pt-2 d-block d-md-inline header-note"
+        title="{{ 'quote.basket_items.remove.button.label' | translate }}"
+        (click)="onDeleteQuote(item[0])"
+      >
+        <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+        <span class="pl-1">{{ 'quote.basket_items.remove.button.label' | translate }}</span>
+      </a>
+    </h2>
+  </div>
+  <ish-line-item-list [lineItems]="item[1]"></ish-line-item-list>
+</ng-container>

@@ -1,4 +1,4 @@
-<div class="row list-item-row list-item-row-big" data-testing-id="product-list-item">
+<div class="row list-item-row" data-testing-id="product-list-item">
   <!-- Product Image -->
   <div class="col-2 list-item">
     <ish-product-image imageType="S" [link]="true"></ish-product-image>
@@ -20,16 +20,16 @@
       <ish-product-inventory></ish-product-inventory>
       <div *ngIf="editable$ | async" class="d-flex align-items-center">
         <ish-lazy-product-add-to-order-template
-          [class]="'btn btn-link btn-tool add-to-order-template'"
+          [cssClass]="'btn btn-link btn-tool add-to-order-template'"
           displayType="icon"
         ></ish-lazy-product-add-to-order-template>
         <ish-lazy-product-add-to-wishlist
-          [class]="'btn-link btn-tool ml-0'"
+          [cssClass]="'btn-link btn-tool ml-0'"
           displayType="icon"
         ></ish-lazy-product-add-to-wishlist>
         <a
           class="btn-tool"
-          [attr.data-testing-id]="'remove-pli-' + lineItem.id + '-element'"
+          [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="lineItem.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem()"

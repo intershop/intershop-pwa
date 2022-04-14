@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError, concatMap, map, take } from 'rxjs/operators';
@@ -23,7 +23,7 @@ function filterAndTransformKeys(translations: Record<string, string>): Translati
 export class LocalizationsService {
   private icmEndpoint$: Observable<string>;
 
-  constructor(private httpClient: HttpClient, store: Store) {
+  constructor(private httpClient: HttpClient, private errorHandler: ErrorHandler, store: Store) {
     this.icmEndpoint$ = store.pipe(select(getRestEndpoint), whenTruthy(), take(1));
   }
 
@@ -36,7 +36,13 @@ export class LocalizationsService {
               searchKeys: 'pwa-',
             },
           })
-          .pipe(map(filterAndTransformKeys))
+          .pipe(
+            map(filterAndTransformKeys),
+            catchError(err => {
+              this.errorHandler.handleError(err);
+              return of({});
+            })
+          )
       )
     );
   }

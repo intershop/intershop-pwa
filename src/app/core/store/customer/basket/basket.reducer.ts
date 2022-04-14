@@ -215,14 +215,14 @@ export const basketReducer = createReducer(
   ),
   on(startCheckoutSuccess, continueCheckoutSuccess, continueCheckoutWithIssues, (state, action) => {
     const validation = action.payload.basketValidation;
-    const basket = validation && validation.results.adjusted && validation.basket ? validation.basket : state.basket;
+    const basket = validation?.results.adjusted && validation.basket ? validation.basket : state.basket;
 
     return {
       ...state,
       basket,
       info: undefined,
       submittedBasket: undefined,
-      validationResults: validation && validation.results,
+      validationResults: validation?.results,
     };
   }),
   on(loadBasketEligibleShippingMethodsSuccess, (state, action) => ({

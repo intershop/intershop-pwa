@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
-import { SwiperOptions } from 'swiper';
-import SwiperCore, { Navigation, Pagination } from 'swiper/core';
+import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
 
 import {
   LARGE_BREAKPOINT_WIDTH,
@@ -49,8 +48,9 @@ export class ProductsListComponent implements OnChanges {
   }
 
   /**
-   * Configure Swipers slidesPerView/slidesPerGroup settings
+   * Configure Swiper slidesPerView/slidesPerGroup settings
    * with breakpoint responsive design considerations based on the given slide items.
+   *
    * @param slideItems The amount of slide items that should be rendered if enough screen space is available.
    */
   configureSlides(slideItems: number) {

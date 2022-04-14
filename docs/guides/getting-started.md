@@ -10,7 +10,7 @@ kb_sync_latest_only
 ## Quick Start
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
-Currently Node.js 14.x LTS with the corresponding npm is required.
+Currently Node.js 16.x LTS with the corresponding npm is required.
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install`.
 

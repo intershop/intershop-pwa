@@ -9,12 +9,6 @@ describe('Payment Concardis Component', () => {
   let fixture: ComponentFixture<PaymentConcardisComponent>;
   let element: HTMLElement;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [PaymentConcardisComponent],
-    }).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentConcardisComponent);
     component = fixture.componentInstance;

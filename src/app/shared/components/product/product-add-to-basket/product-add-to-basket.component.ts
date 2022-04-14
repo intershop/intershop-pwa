@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -12,8 +12,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
  *
  * @example
  * <ish-product-add-to-basket
-    [class]="'btn-lg btn-block'"
-    [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
+    [cssClass]="'btn-lg btn-block'"
   ></ish-product-add-to-basket>
  */
 @Component({
@@ -29,24 +28,24 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   /**
    * additional css styling
    */
-  @Input() class?: string;
+  @Input() cssClass?: string;
 
   basketLoading$: Observable<boolean>;
-  hasQuantityError$: Observable<boolean>;
   visible$: Observable<boolean>;
   translationKey$: Observable<string>;
 
   constructor(private checkoutFacade: CheckoutFacade, private context: ProductContextFacade) {}
+
+  buttonDisabled$: Observable<boolean>;
 
   /**
    * fires 'true' after add To Cart is clicked and basket is loading
    */
   displaySpinner$ = new BehaviorSubject(false);
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   ngOnInit() {
-    this.hasQuantityError$ = this.context.select('hasQuantityError');
     this.visible$ = this.context.select('displayProperties', 'addToBasket');
     this.translationKey$ = this.context.select('product').pipe(
       map(product =>
@@ -59,6 +58,14 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
 
     // update emitted to display spinning animation
     this.basketLoading$.pipe(whenFalsy(), takeUntil(this.destroy$)).subscribe(this.displaySpinner$); // false
+
+    const hasQuantityError$ = this.context.select('hasQuantityError');
+    const hasProductError$ = this.context.select('hasProductError');
+    this.buttonDisabled$ = combineLatest([
+      this.displaySpinner$.pipe(startWith(false)),
+      hasQuantityError$.pipe(),
+      hasProductError$.pipe(),
+    ]).pipe(map(conditions => conditions.some(c => !!c)));
   }
 
   addToBasket() {

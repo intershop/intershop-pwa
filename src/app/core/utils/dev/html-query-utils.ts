@@ -5,6 +5,7 @@ function getAllElementTagsRecursively(el: Element) {
   const returnList: string[] = [];
   returnList.push(el.tagName);
 
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let index = 0; index < el.children.length; index++) {
     const cel = el.children[index];
     returnList.push(...getAllElementTagsRecursively(cel));
@@ -16,8 +17,7 @@ export function findAllCustomElements(el: HTMLElement): string[] {
   const returnList = [];
   const tagList = getAllElementTagsRecursively(el);
 
-  for (let index = 0; index < tagList.length; index++) {
-    const element = tagList[index];
+  for (const element of tagList) {
     const tagName = element.toLocaleLowerCase();
     // https://stackoverflow.com/a/47737765/13001898
     if (!tagName.includes('-')) {
@@ -33,7 +33,7 @@ export function findAllDataTestingIDs(fixture: ComponentFixture<unknown>): strin
   return fixture.debugElement.queryAll(By.css('[data-testing-id]')).map(el => el.attributes['data-testing-id']);
 }
 
-export function createDocumentFromHTML(html: string): HTMLDocument {
+export function createDocumentFromHTML(html: string): Document {
   const parser = new DOMParser();
   return parser.parseFromString(html, 'text/html');
 }

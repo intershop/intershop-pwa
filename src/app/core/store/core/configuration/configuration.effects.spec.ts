@@ -23,12 +23,13 @@ describe('Configuration Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserTransferStateModule,
-        CoreStoreModule.forTesting(['configuration', 'serverConfig'], [ConfigurationEffects]),
+        CoreStoreModule.forTesting(['configuration', 'serverConfig']),
         TranslateModule.forRoot(),
       ],
       providers: [
-        provideMockActions(() => actions$),
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
+        ConfigurationEffects,
+        provideMockActions(() => actions$),
       ],
     });
 
@@ -38,22 +39,22 @@ describe('Configuration Effects', () => {
 
   describe('setInitialRestEndpoint$', () => {
     it('should import settings on effects init and complete', done => {
-      // tslint:disable:use-async-synchronization-in-tests
+      /* eslint-disable ish-custom-rules/use-async-synchronization-in-tests */
       const testComplete$ = new Subject<void>();
 
       actions$ = of({ type: ROOT_EFFECTS_INIT });
 
       testComplete$.pipe(take(2)).subscribe({ complete: done });
 
-      effects.transferEnvironmentProperties$.subscribe(
-        data => {
+      effects.transferEnvironmentProperties$.subscribe({
+        next: data => {
           expect(data.type).toEqual(applyConfiguration.type);
           testComplete$.next();
         },
-        fail,
-        () => testComplete$.next()
-      );
-      // tslint:enable:use-async-synchronization-in-tests
+        error: fail,
+        complete: () => testComplete$.next(),
+      });
+      /* eslint-enable ish-custom-rules/use-async-synchronization-in-tests */
     });
   });
 

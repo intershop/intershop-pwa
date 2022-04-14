@@ -2,7 +2,9 @@ const cp = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const configurations = (process.env.npm_config_active_themes || process.env.npm_package_config_active_themes)
+const configurations = (
+  process.env.npm_config_active_themes || JSON.parse(fs.readFileSync('package.json')).config['active-themes']
+)
   .split(',')
   .map((theme, index) => ({ theme, port: 4000 + index }));
 
@@ -25,7 +27,7 @@ if (processArgs.includes('server') || !processArgs.includes('client'))
     )
   );
 
-const cores = Math.round(require('os').cpus().length / 3) || 1;
+const cores = +process.env.PWA_BUILD_MAX_WORKERS || Math.round(require('os').cpus().length / 3) || 1;
 const parallel = cores === 1 ? [] : ['--max-parallel', cores, '--parallel'];
 if (parallel) {
   console.log(`Using ${cores} cores for multi compile.`);

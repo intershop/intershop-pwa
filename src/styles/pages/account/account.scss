@@ -13,7 +13,8 @@
     padding: $space-default 0;
 
     h1,
-    h2 {
+    h2,
+    h3 {
       .btn {
         @media (max-width: $screen-xs-max) {
           display: block;
@@ -35,6 +36,7 @@
   }
 
   .progress {
+    min-width: 130px;
     height: 20px;
 
     &.background-inverse {

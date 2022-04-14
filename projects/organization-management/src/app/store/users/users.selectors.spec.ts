@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,6 +11,7 @@ import { OrganizationManagementStoreModule } from '../organization-management-st
 
 import { loadSystemUserRolesSuccess, loadUsers, loadUsersFail, loadUsersSuccess } from './users.actions';
 import {
+  getCostCenterManagers,
   getRole,
   getRoles,
   getSelectedUser,
@@ -21,20 +21,16 @@ import {
   isSystemUserRolesLoaded,
 } from './users.selectors';
 
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
 describe('Users Selectors', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         OrganizationManagementStoreModule.forTesting('users'),
-        RouterTestingModule.withRoutes([{ path: 'users/:B2BCustomerLogin', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'users/:B2BCustomerLogin', children: [] }]),
       ],
       providers: [provideStoreSnapshots()],
     });
@@ -71,9 +67,10 @@ describe('Users Selectors', () => {
     describe('LoadUsersSuccess', () => {
       const users = [
         { login: '1' },
-        { login: '2' },
+        { login: '2', roleIDs: ['APP_B2B_ACCOUNT_OWNER'] },
         { login: '3', roleIDs: ['APP_B2B_OCI_USER'] },
         { login: '3', roleIDs: ['APP_B2B_CXML_USER'] },
+        { login: '4', roleIDs: ['APP_B2B_COSTCENTER_OWNER'] },
       ] as User[];
       const successAction = loadUsersSuccess({ users });
 
@@ -90,7 +87,11 @@ describe('Users Selectors', () => {
       });
 
       it('should have entities when successfully loading', () => {
-        expect(getUsers(store$.state)).toHaveLength(2);
+        expect(getUsers(store$.state)).toHaveLength(3);
+      });
+
+      it('should have cost center admin entities when successfully loading', () => {
+        expect(getCostCenterManagers(store$.state)).toHaveLength(2);
       });
     });
 
@@ -112,6 +113,7 @@ describe('Users Selectors', () => {
 
       it('should not have entities when reducing error', () => {
         expect(getUsers(store$.state)).toBeEmpty();
+        expect(getCostCenterManagers(store$.state)).toBeEmpty();
       });
     });
   });

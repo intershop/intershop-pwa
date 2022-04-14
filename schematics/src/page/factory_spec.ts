@@ -1,15 +1,15 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { PWAPageOptionsSchema as Options } from 'schemas/page/schema';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAPageOptionsSchema as Options } from './schema';
 
 describe('Page Schematic', () => {
   const schematicRunner = createSchematicRunner();
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner).toPromise();
+    const appTree$ = createApplication(schematicRunner);
+    appTree = await appTree$.toPromise();
 
     appTree.create(
       '/src/app/pages/app-routing.module.ts',
@@ -101,6 +101,25 @@ describe('Page Schematic', () => {
       expect(appRoutingModule).toContain(`path: 'foo'`);
       expect(appRoutingModule).toContain('foo-page.module');
       expect(appRoutingModule).toContain('FooPageModule');
+    });
+
+    it('should lazily register route in app routing module override by default', async () => {
+      appTree.create(
+        '/src/app/pages/app-routing.module.all.ts',
+        appTree.readContent('/src/app/pages/app-routing.module.ts')
+      );
+
+      const tree = await schematicRunner.runSchematicAsync('page', defaultOptions, appTree).toPromise();
+
+      const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
+      expect(appRoutingModule).not.toContain(`path: 'foo'`);
+      expect(appRoutingModule).not.toContain('foo-page.module');
+      expect(appRoutingModule).not.toContain('FooPageModule');
+
+      const appRoutingModuleOverride = tree.readContent('/src/app/pages/app-routing.module.all.ts');
+      expect(appRoutingModuleOverride).toContain(`path: 'foo'`);
+      expect(appRoutingModuleOverride).toContain('foo-page.module');
+      expect(appRoutingModuleOverride).toContain('FooPageModule');
     });
 
     it('should create a page in extension if supplied', async () => {

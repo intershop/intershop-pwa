@@ -1,7 +1,7 @@
+import { switchMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { switchMap } from 'rxjs/operators';
+import { PWAComponentOptionsSchema } from 'schemas/component/schema';
 
-import { PWAComponentOptionsSchema } from '../../component/schema';
 import { createApplication, createSchematicRunner } from '../../utils/testHelper';
 
 describe('Lazy Component Schematic', () => {
@@ -9,20 +9,19 @@ describe('Lazy Component Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    appTree = await createApplication(schematicRunner)
-      .pipe(
-        switchMap(tree =>
-          schematicRunner.runSchematicAsync(
-            'component',
-            {
-              project: 'bar',
-              name: 'foo',
-            } as PWAComponentOptionsSchema,
-            tree
-          )
+    const appTree$ = createApplication(schematicRunner).pipe(
+      switchMap(tree =>
+        schematicRunner.runSchematicAsync(
+          'component',
+          {
+            project: 'bar',
+            name: 'foo',
+          } as PWAComponentOptionsSchema,
+          tree
         )
       )
-      .toPromise();
+    );
+    appTree = await appTree$.toPromise();
   });
 
   it('should be created', () => {
@@ -98,7 +97,7 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should add destroy$ subject', () => {
-      expect(content).toContain('destroy$ = new Subject();');
+      expect(content).toContain('destroy$ = new Subject<void>();');
     });
 
     it('should add ngOnDestroy method', () => {

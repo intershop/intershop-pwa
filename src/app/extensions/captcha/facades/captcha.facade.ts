@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { filter, map, switchMap, switchMapTo } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -13,7 +13,7 @@ export type CaptchaTopic =
   | 'redemptionOfGiftCardsAndCertificates'
   | 'register';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class CaptchaFacade {
   constructor(private store: Store) {}
@@ -27,9 +27,9 @@ export class CaptchaFacade {
     ),
     whenTruthy(),
     map(services =>
-      services.ReCaptchaV3ServiceDefinition && services.ReCaptchaV3ServiceDefinition.runnable
+      services.ReCaptchaV3ServiceDefinition?.runnable
         ? 3
-        : services.ReCaptchaV2ServiceDefinition && services.ReCaptchaV2ServiceDefinition.runnable
+        : services.ReCaptchaV2ServiceDefinition?.runnable
         ? 2
         : undefined
     )
@@ -51,9 +51,9 @@ export class CaptchaFacade {
   captchaActive$(key: CaptchaTopic): Observable<boolean> {
     return this.store.pipe(
       filter(() => !!key),
-      switchMapTo(this.captchaVersion$),
+      switchMap(() => this.captchaVersion$),
       whenTruthy(),
-      switchMapTo(this.store.pipe(select(getServerConfigParameter<boolean>('captcha.' + key))))
+      switchMap(() => this.store.pipe(select(getServerConfigParameter<boolean>(`captcha.${key}`))))
     );
   }
 }

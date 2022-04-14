@@ -1,0 +1,8 @@
+import <%= camelize(name) %>Rule from '../src/rules/<%= dasherize(name) %>';
+
+import testRule from './rule-tester';
+
+testRule(<%= camelize(name) %>Rule, {
+  valid: [],
+  invalid: [],
+});

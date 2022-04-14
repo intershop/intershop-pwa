@@ -8,7 +8,7 @@ import { submitTactonConfigurationFail, submitTactonConfigurationSuccess } from 
 
 import { saveTactonConfigurationReference } from './saved-tacton-configuration.actions';
 
-export interface SavedTactonConfigurationState extends EntityState<TactonSavedConfiguration> {}
+export type SavedTactonConfigurationState = EntityState<TactonSavedConfiguration>;
 
 export function makeTactonSavedConfigurationReference(user: string, productId: string): string {
   return `${user || 'anonymous'}:${productId}`;

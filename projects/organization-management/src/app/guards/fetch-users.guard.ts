@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { mapTo, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { getUserCount, loadUsers } from '../store/users';
 
@@ -18,7 +18,7 @@ export class FetchUsersGuard implements CanActivate {
           this.store.dispatch(loadUsers());
         }
       }),
-      mapTo(true)
+      map(() => true)
     );
   }
 }

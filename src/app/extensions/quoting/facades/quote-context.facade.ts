@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { RxState } from '@rx-angular/state';
 import { Observable, timer } from 'rxjs';
-import { distinctUntilChanged, filter, first, map, sample, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, first, map, sample, switchMap, tap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
@@ -88,7 +88,10 @@ export abstract class QuoteContextFacade
 
     this.connect(
       'state',
-      timer(0, 2000).pipe(switchMapTo(this.select('entity').pipe(map(QuotingHelper.state))), distinctUntilChanged())
+      timer(0, 2000).pipe(
+        switchMap(() => this.select('entity').pipe(map(QuotingHelper.state))),
+        distinctUntilChanged()
+      )
     );
 
     this.connect('editable', this.select('state').pipe(map(state => state === 'New')));

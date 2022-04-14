@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -36,9 +35,6 @@ import {
 } from './users.actions';
 import { UsersEffects } from './users.effects';
 
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
 const users = [
   {
     login: '1',
@@ -73,20 +69,19 @@ describe('Users Effects', () => {
     when(usersService.setUserBudget(anyString(), anything())).thenReturn(of(users[0].userBudget));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         OrganizationManagementStoreModule.forTesting('users'),
         RouterTestingModule.withRoutes([
-          { path: 'users/:B2BCustomerLogin', component: DummyComponent },
-          { path: 'users/:B2BCustomerLogin/edit', component: DummyComponent },
-          { path: '**', component: DummyComponent },
+          { path: 'users/:B2BCustomerLogin', children: [] },
+          { path: 'users/:B2BCustomerLogin/edit', children: [] },
+          { path: '**', children: [] },
         ]),
       ],
       providers: [
-        UsersEffects,
-        provideMockActions(() => actions$),
         { provide: UsersService, useFactory: () => instance(usersService) },
+        provideMockActions(() => actions$),
+        UsersEffects,
       ],
     });
 
@@ -120,7 +115,7 @@ describe('Users Effects', () => {
 
     it('should dispatch a loadUsersFail action on failed users load', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(usersService.getUsers()).thenReturn(throwError(error));
+      when(usersService.getUsers()).thenReturn(throwError(() => error));
 
       const action = loadUsers();
       const completion = loadUsersFail({ error });
@@ -173,8 +168,8 @@ describe('Users Effects', () => {
     it('should create a user when triggered', done => {
       actions$ = of(addUser({ user: users[0] }));
 
-      effects.addUser$.pipe(toArray()).subscribe(
-        actions => {
+      effects.addUser$.pipe(toArray()).subscribe({
+        next: actions => {
           expect(actions).toMatchInlineSnapshot(`
             [Users API] Add User Success:
               user: {"login":"1","firstName":"Patricia","lastName":"Miller","nam...
@@ -183,26 +178,26 @@ describe('Users Effects', () => {
               messageParams: {"0":"Patricia Miller"}
           `);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should navigate to user detail on success', done => {
       actions$ = of(addUser({ user: users[0] }));
 
-      effects.addUser$.subscribe(
-        () => {
+      effects.addUser$.subscribe({
+        next: () => {
           expect(location.path()).toMatchInlineSnapshot(`"/users/1"`);
         },
-        fail,
-        done
-      );
+        error: fail,
+        complete: done,
+      });
     });
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(usersService.addUser(anything())).thenReturn(throwError(error));
+      when(usersService.addUser(anything())).thenReturn(throwError(() => error));
 
       const action = addUser({ user: users[0] });
       const completion = addUserFail({ error });
@@ -237,7 +232,7 @@ describe('Users Effects', () => {
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(usersService.updateUser(anything())).thenReturn(throwError(error));
+      when(usersService.updateUser(anything())).thenReturn(throwError(() => error));
 
       const action = updateUser({ user: users[0] });
       const completion = updateUserFail({ error });
@@ -271,7 +266,7 @@ describe('Users Effects', () => {
 
     it('should dispatch an UpdateUserFail action on failed user update', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(usersService.setUserBudget(anyString(), anything())).thenReturn(throwError(error));
+      when(usersService.setUserBudget(anyString(), anything())).thenReturn(throwError(() => error));
 
       const action = setUserBudget({ login: users[0].login, budget: users[0].userBudget });
       const completion = setUserBudgetFail({ login: users[0].login, error });

@@ -14,12 +14,12 @@ import { routes } from '../../pages/requisition-management-routing.module';
 
 import { RequisitionManagementBreadcrumbService } from './requisition-management-breadcrumb.service';
 
-// tslint:disable-next-line: no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function adaptRoutes(rts: Route[], cmp: Type<any>): Route[] {
   return rts.map(r => ({
     ...r,
     loadChildren: undefined,
-    path: 'requisitions/' + r.path,
+    path: `requisitions/${r.path}`,
     component: (r.component || r.loadChildren) && cmp,
   }));
 }
@@ -34,7 +34,6 @@ describe('Requisition Management Breadcrumb Service', () => {
     class DummyComponent {}
     reqFacade = mock(RequisitionManagementFacade);
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration']),
         RouterTestingModule.withRoutes([
@@ -61,7 +60,9 @@ describe('Requisition Management Breadcrumb Service', () => {
     describe('unrelated routes', () => {
       it('should not report a breadcrumb for unrelated routes', fakeAsync(() => {
         router.navigateByUrl('/foobar');
-        requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(fail, fail, fail);
+        requisitionManagementBreadcrumbService
+          .breadcrumb$('/my-account')
+          .subscribe({ next: fail, error: fail, complete: fail });
 
         tick(2000);
       }));

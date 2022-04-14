@@ -4,15 +4,21 @@ import { Store, select } from '@ngrx/store';
 import { noop } from 'rxjs';
 import { first } from 'rxjs/operators';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { getIdentityProvider } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { IdentityProvider } from './identity-provider.interface';
 
-export const IDENTITY_PROVIDER_IMPLEMENTOR = new InjectionToken<{
+interface IdentityProviderImplementor {
   type: string;
   implementor: Type<IdentityProvider<unknown>>;
-}>('identityProviderImplementor');
+  feature?: string;
+}
+
+export const IDENTITY_PROVIDER_IMPLEMENTOR = new InjectionToken<IdentityProviderImplementor>(
+  'identityProviderImplementor'
+);
 
 @Injectable({ providedIn: 'root' })
 export class IdentityProviderFactory {
@@ -22,11 +28,17 @@ export class IdentityProviderFactory {
     type?: string;
   };
 
-  constructor(private store: Store, private injector: Injector, @Inject(PLATFORM_ID) platformId: string) {
+  constructor(
+    private store: Store,
+    private injector: Injector,
+    private featureToggleService: FeatureToggleService,
+    @Inject(PLATFORM_ID) platformId: string
+  ) {
     if (isPlatformBrowser(platformId)) {
       this.store.pipe(select(getIdentityProvider), whenTruthy(), first()).subscribe(config => {
         const provider = this.injector
-          .get<{ type: string; implementor: Type<IdentityProvider<unknown>> }[]>(IDENTITY_PROVIDER_IMPLEMENTOR, [])
+          .get<IdentityProviderImplementor[]>(IDENTITY_PROVIDER_IMPLEMENTOR, [])
+          .filter(p => (p.feature ? this.featureToggleService.enabled(p.feature) : true))
           .find(p => p.type === config?.type);
 
         if (!provider) {

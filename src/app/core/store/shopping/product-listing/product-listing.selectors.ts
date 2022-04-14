@@ -69,7 +69,7 @@ function calculatePageIndices(currentPage: number, itemCount: number, itemsPerPa
 
 const createView = (data: ProductListingType, itemsPerPage: number): ProductListingView => {
   const lastPage = data ? data.pages[data.pages.length - 1] : NaN;
-  const firstPage = (data && data.pages && data.pages[0]) || NaN;
+  const firstPage = data?.pages?.[0] || NaN;
   return {
     products: once(() => (data ? mergeAllPages(data) : [])),
     productsOfPage: memoize(page => (data && data[page || 1]) || [], identity),
@@ -79,6 +79,7 @@ const createView = (data: ProductListingType, itemsPerPage: number): ProductList
     itemCount: data ? data.itemCount : 0,
     sortableAttributes: data ? data.sortableAttributes : [],
     pageIndices: memoize(
+      // eslint-disable-next-line arrow-parens
       (currentPage?) => (data ? calculatePageIndices(currentPage || lastPage, data.itemCount, itemsPerPage) : []),
       identity
     ),

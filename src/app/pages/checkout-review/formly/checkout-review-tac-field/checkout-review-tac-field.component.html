@@ -7,7 +7,9 @@
         [formlyAttributes]="field"
         [attr.data-testing-id]="field.key"
       />
-      <span [ishServerHtml]="to.label | translate: getArgs"></span>
+      <span
+        [ishServerHtml]="'checkout.tac.text' | translate: { '0': 'page://page.termsAndConditions.pagelet2-Page' }"
+      ></span>
     </label>
   </div>
   <ng-container *ngIf="showError">

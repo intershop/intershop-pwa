@@ -42,9 +42,9 @@ describe('Addresses Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
       providers: [
+        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
         AddressesEffects,
         provideMockActions(() => actions$),
-        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
       ],
     });
 
@@ -103,7 +103,7 @@ describe('Addresses Effects', () => {
 
     it('should map invalid request to action of type CreateCustomerFail', () => {
       when(addressServiceMock.createCustomerAddress(anyString(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const address = { urn: '123' } as Address;
       const action = createCustomerAddress({ address });
@@ -143,7 +143,7 @@ describe('Addresses Effects', () => {
 
     it('should map invalid request to action of type DeleteCustomerFail', () => {
       when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const addressId = '123';
       const action = deleteCustomerAddress({ addressId });

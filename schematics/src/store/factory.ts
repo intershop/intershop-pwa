@@ -11,6 +11,7 @@ import {
   url,
 } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWAStoreOptionsSchema as Options } from 'schemas/store/schema';
 import { forEachToken } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -19,8 +20,7 @@ import { readIntoSourceFile } from '../utils/filesystem';
 import { applyLintFix } from '../utils/lint-fix';
 import { insertImport } from '../utils/registration';
 
-import { PWAStoreOptionsSchema as Options } from './schema';
-
+// eslint-disable-next-line complexity
 export async function determineStoreLocation(
   host: Tree,
   options: {

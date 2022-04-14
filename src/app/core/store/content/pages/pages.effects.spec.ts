@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -28,21 +27,18 @@ describe('Pages Effects', () => {
   let store$: Store;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         ContentStoreModule.forTesting('pagetree', 'pages'),
         CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', children: [] }]),
       ],
       providers: [
+        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
         PagesEffects,
         provideMockActions(() => actions$),
-        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
       ],
     });
 
@@ -53,7 +49,7 @@ describe('Pages Effects', () => {
 
   describe('loadPages$', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
-      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       actions$ = of(loadContentPage({ contentPageId: 'dummy' }));
 
@@ -68,7 +64,7 @@ describe('Pages Effects', () => {
     });
 
     it('should not die when encountering an error', () => {
-      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(makeHttpError({ message: 'ERROR' })));
+      when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       actions$ = hot('a-a-a-a', { a: loadContentPage({ contentPageId: 'dummy' }) });
 

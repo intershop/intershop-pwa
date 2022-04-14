@@ -2,12 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { ContentViewcontextComponent } from 'ish-shared/cms/components/content-viewcontext/content-viewcontext.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
 import { ProductListingComponent } from 'ish-shared/components/product/product-listing/product-listing.component';
@@ -28,10 +29,11 @@ describe('Category Products Component', () => {
         CategoryProductsComponent,
         MockComponent(BreadcrumbComponent),
         MockComponent(CategoryNavigationComponent),
+        MockComponent(ContentViewcontextComponent),
         MockComponent(FaIconComponent),
         MockComponent(FilterNavigationComponent),
-        MockComponent(NgbCollapse),
         MockComponent(ProductListingComponent),
+        MockDirective(NgbCollapse),
       ],
     }).compileComponents();
   });

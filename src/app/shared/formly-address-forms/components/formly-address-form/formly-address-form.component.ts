@@ -6,9 +6,25 @@ import { map } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-forms/configurations/address-form-configuration.provider';
-import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
+/**
+ * Address Form Component that reconfigures itself when a new country is selected.
+ * Gets field configurations from the `AddressFormConfigurationProvider`.
+ *
+ * @param parentForm - the parent FormGroup that the address form will belong to
+ * @param businessCustomer - whether the address form is for a business customer
+ * @param shortForm - whether the address form is in long or short format
+ * @param prefilledAddress - a collection of key-value pairs that will be used to prefill the form
+ *
+ * @example
+ * <ish-formly-address-form
+      [businessCustomer]="isBusinessCustomer$ | async"
+      [shortForm]="true"
+      [parentForm]="formGroup"
+   ></ish-formly-address-form>
+ */
 @Component({
   selector: 'ish-formly-address-form',
   templateUrl: './formly-address-form.component.html',

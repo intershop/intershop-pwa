@@ -57,8 +57,8 @@ describe('Quote Line Item List Element Component', () => {
         QuoteLineItemListElementComponent,
       ],
       providers: [
-        { provide: QuoteContextFacade, useFactory: () => instance(quoteContext) },
         { provide: ProductContextFacade, useFactory: () => instance(productContext) },
+        { provide: QuoteContextFacade, useFactory: () => instance(quoteContext) },
       ],
     }).compileComponents();
   });
@@ -123,7 +123,7 @@ describe('Quote Line Item List Element Component', () => {
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
       Array [
         "product-list-item",
-        "remove-pli-item123-element",
+        "remove-line-item",
         "total-price",
       ]
     `);

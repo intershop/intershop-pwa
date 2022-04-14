@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -13,6 +12,7 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { Category, CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -43,9 +43,6 @@ describe('Categories Effects', () => {
     { uniqueId: '456', categoryPath: ['456'] },
   ] as Category[]);
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   beforeEach(() => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getCategory('123')).thenReturn(
@@ -55,27 +52,26 @@ describe('Categories Effects', () => {
       of(categoryTree([{ uniqueId: '123', categoryRef: '123@domain', categoryPath: ['123'] } as Category]))
     );
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(
-      throwError(makeHttpError({ message: 'invalid category' }))
+      throwError(() => makeHttpError({ message: 'invalid category' }))
     );
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(TOP_LEVEL_CATEGORIES));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([
-          { path: 'category/:categoryUniqueId/product/:sku', component: DummyComponent },
-          { path: 'category/:categoryUniqueId', component: DummyComponent },
-          { path: 'categoryref/:categoryRefId', component: DummyComponent },
-          { path: '**', component: DummyComponent },
+          { path: 'category/:categoryUniqueId/product/:sku', children: [] },
+          { path: 'category/:categoryUniqueId', children: [] },
+          { path: 'categoryref/:categoryRefId', children: [] },
+          { path: '**', children: [] },
         ]),
         ShoppingStoreModule.forTesting('categories'),
       ],
       providers: [
-        CategoriesEffects,
-        provideMockActions(() => actions$),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
+        CategoriesEffects,
+        provideMockActions(() => actions$),
       ],
     });
 
@@ -93,6 +89,7 @@ describe('Categories Effects', () => {
         uniqueId: 'dummy',
         categoryRef: 'dummy@domain',
       } as CategoryView;
+      actions$ = of(personalizationStatusDetermined());
     });
     it('should trigger loadCategoryByRef when /categoryref/XXX is visited', done => {
       router.navigateByUrl('/categoryref/dummy@domain');
@@ -100,7 +97,7 @@ describe('Categories Effects', () => {
       effects.selectedCategoryRef$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Categories Internal] Load Category By Reference:
-            categoryRefId: "dummy@domain"
+            categoryId: "dummy@domain"
         `);
         done();
       });
@@ -111,7 +108,7 @@ describe('Categories Effects', () => {
       store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/categoryref/dummy@domain');
 
-      effects.selectedCategoryRef$.subscribe(fail, fail, fail);
+      effects.selectedCategoryRef$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -158,7 +155,7 @@ describe('Categories Effects', () => {
       store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/category/dummy');
 
-      effects.selectedCategory$.subscribe(fail, fail, fail);
+      effects.selectedCategory$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -194,31 +191,31 @@ describe('Categories Effects', () => {
     it('should not trigger LoadCategory when /something is visited', fakeAsync(() => {
       router.navigateByUrl('/something');
 
-      effects.selectedCategory$.subscribe(fail, fail, fail);
+      effects.selectedCategory$.subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
   });
 
-  describe('loadCategoryByRef$', () => {
+  describe('loadCategory$', () => {
     it('should call the categoriesService for LoadCategoryByRef action', done => {
-      const categoryRefId = '123@domain';
-      const action = loadCategoryByRef({ categoryRefId });
+      const categoryId = '123@domain';
+      const action = loadCategoryByRef({ categoryId });
       actions$ = of(action);
 
-      effects.loadCategoryByRef$.subscribe(() => {
-        verify(categoriesServiceMock.getCategory(categoryRefId)).once();
+      effects.loadCategory$.subscribe(() => {
+        verify(categoriesServiceMock.getCategory(categoryId)).once();
         done();
       });
     });
 
     it('should map to action of type LoadCategorySuccess', () => {
-      const categoryRefId = '123@domain';
-      const action = loadCategoryByRef({ categoryRefId });
+      const categoryId = '123@domain';
+      const action = loadCategoryByRef({ categoryId });
       const response = categoryTree([
         {
           uniqueId: '123',
-          categoryRef: categoryRefId,
+          categoryRef: categoryId,
           categoryPath: ['123'],
         } as Category,
       ]);
@@ -226,21 +223,19 @@ describe('Categories Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadCategoryByRef$).toBeObservable(expected$);
+      expect(effects.loadCategory$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type LoadCategoryFail', () => {
-      const categoryRefId = 'invalid';
-      const action = loadCategoryByRef({ categoryRefId });
+      const categoryId = 'invalid';
+      const action = loadCategoryByRef({ categoryId });
       const completion = loadCategoryFail({ error: makeHttpError({ message: 'invalid category' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadCategoryByRef$).toBeObservable(expected$);
+      expect(effects.loadCategory$).toBeObservable(expected$);
     });
-  });
 
-  describe('loadCategory$', () => {
     it('should call the categoriesService for LoadCategory action', done => {
       const categoryId = '123';
       const action = loadCategory({ categoryId });
@@ -282,7 +277,7 @@ describe('Categories Effects', () => {
   describe('loadTopLevelCategories$', () => {
     it('should call the categoriesService for LoadTopLevelCategories action', done => {
       const action = loadTopLevelCategories();
-      actions$ = of(action);
+      actions$ = of(personalizationStatusDetermined(), action);
 
       effects.loadTopLevelCategories$.subscribe(() => {
         verify(categoriesServiceMock.getTopLevelCategories(anyNumber())).once();
@@ -298,22 +293,22 @@ describe('Categories Effects', () => {
     it('should map to action of type LoadCategorySuccess', () => {
       const action = loadTopLevelCategories();
       const completion = loadTopLevelCategoriesSuccess({ categories: TOP_LEVEL_CATEGORIES });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined() });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadTopLevelCategories$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type LoadCategoryFail', () => {
       when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid number' }))
+        throwError(() => makeHttpError({ message: 'invalid number' }))
       );
       const action = loadTopLevelCategories();
       const completion = loadTopLevelCategoriesFail({
         error: makeHttpError({ message: 'invalid number' }),
       });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined() });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadTopLevelCategories$).toBeObservable(expected$);
     });
@@ -323,8 +318,8 @@ describe('Categories Effects', () => {
     it('should call error service if triggered', done => {
       actions$ = of(loadCategoryFail({ error: makeHttpError({ status: 404 }) }));
 
-      effects.redirectIfErrorInCategories$.subscribe(
-        () => {
+      effects.redirectIfErrorInCategories$.subscribe({
+        next: () => {
           verify(httpStatusCodeService.setStatus(anything())).once();
           expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
                       Array [
@@ -333,9 +328,9 @@ describe('Categories Effects', () => {
                   `);
           done();
         },
-        fail,
-        noop
-      );
+        error: fail,
+        complete: noop,
+      });
     });
   });
 });

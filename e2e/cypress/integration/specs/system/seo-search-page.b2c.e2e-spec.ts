@@ -1,4 +1,4 @@
-import { at, waitLoadingEnd } from '../../framework';
+import { at } from '../../framework';
 import { HomePage } from '../../pages/home.page';
 import { NotFoundPage } from '../../pages/shopping/not-found.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
@@ -9,11 +9,10 @@ describe('Page Meta', () => {
 
   it('should have all metadata set on search result page', () => {
     at(SearchResultPage, page => {
-      waitLoadingEnd(1000);
       page.metaData.check({
         title: "Search Result for 'kodak' | Intershop PWA",
         url: /.*\/search\/kodak$/,
-        description: 'Intershop - Progressive Web App - Demo PWA',
+        description: 'Intershop - Progressive Web App',
       });
     });
   });
@@ -21,7 +20,6 @@ describe('Page Meta', () => {
   it('should switch to product detail page meta when navigating there', () => {
     at(SearchResultPage, page => {
       page.productList.gotoProductDetailPageBySku('3957284');
-      waitLoadingEnd(1000);
     });
     at(ProductDetailPage, page => {
       page.metaData.check({
@@ -36,7 +34,6 @@ describe('Page Meta', () => {
   it('should switch to home page meta when navigating there', () => {
     at(ProductDetailPage, page => {
       page.header.gotoHomePage();
-      waitLoadingEnd(1000);
     });
     at(HomePage, page => {
       page.metaData.check({
@@ -50,13 +47,12 @@ describe('Page Meta', () => {
   it('should switch to error page meta when navigating there', () => {
     at(HomePage, page => {
       page.footer.gotoErrorPage();
-      waitLoadingEnd(1000);
     });
     at(NotFoundPage, page => {
       page.metaData.check({
         title: 'Error | Intershop PWA',
         url: /.*\/error$/,
-        description: 'Intershop - Progressive Web App - Demo PWA',
+        description: 'Intershop - Progressive Web App',
       });
     });
   });

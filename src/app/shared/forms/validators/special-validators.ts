@@ -1,13 +1,17 @@
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 
+import { DateHelper } from 'ish-core/utils/date-helper';
+
 /**
  * A helper function that transforms the special validators to a formly-usable function.
+ *
  * @param name the error to be extracted from the validator
  * @param validator the validator that should be transformed
  * @returns a function that conforms the type signature formly expects.
  *
  * @usageNotes
  * Refer to the [`FormlyFieldConfig.validators`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/fieldconfig.ts#L60) type definition for an explanation of the necessary validator format.
+ *
  */
 export function formlyValidation<T extends (control: FormControl) => { [error: string]: { valid: boolean } }>(
   name: string,
@@ -112,6 +116,20 @@ export class SpecialValidators {
 
   static moneyAmount(control: FormControl): { [error: string]: { valid: boolean } } {
     const moneyAmountPattern = /^$|^\d{1,9}(\.\d{1,2})?$/;
+    if (!control.value) {
+      return;
+    }
     return moneyAmountPattern.test(control.value) ? undefined : { moneyAmount: { valid: false } };
+  }
+  static noSunday(control: FormControl): boolean {
+    return SpecialValidators.noDay(control, 'sunday');
+  }
+
+  static noSaturday(control: FormControl): boolean {
+    return SpecialValidators.noDay(control, 'saturday');
+  }
+
+  private static noDay(control: FormControl, day: 'saturday' | 'sunday'): boolean {
+    return !(day === 'saturday' ? DateHelper.isSaturday(control.value) : DateHelper.isSunday(control.value));
   }
 }

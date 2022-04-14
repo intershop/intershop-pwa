@@ -12,4 +12,4 @@ const { selectEntities: getSuggestSearchEntities } = searchAdapter.getSelectors(
 export const getSearchTerm = selectRouteParam('searchTerm');
 
 export const getSuggestSearchResults = (searchTerm: string) =>
-  createSelector(getSuggestSearchEntities, entities => (entities[searchTerm] && entities[searchTerm].suggests) || []);
+  createSelector(getSuggestSearchEntities, entities => entities[searchTerm]?.suggests || []);

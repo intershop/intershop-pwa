@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { ContentViewcontextComponent } from 'ish-shared/cms/components/content-viewcontext/content-viewcontext.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
@@ -17,7 +22,7 @@ import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting/expo
 import { LazyTactonConfigureProductComponent } from '../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { ProductBrandComponent } from '../product-brand/product-brand.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
-import { ProductDetailInfoAccordionComponent } from '../product-detail-info-accordion/product-detail-info-accordion.component';
+import { ProductDetailInfoComponent } from '../product-detail-info/product-detail-info.component';
 import { ProductDetailVariationsComponent } from '../product-detail-variations/product-detail-variations.component';
 import { ProductImagesComponent } from '../product-images/product-images.component';
 
@@ -29,15 +34,19 @@ describe('Product Detail Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
+    const context = mock(ProductContextFacade);
+    when(context.select('product')).thenReturn(of({ sku: 'SKU' }));
+
     await TestBed.configureTestingModule({
       declarations: [
+        MockComponent(ContentViewcontextComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductBrandComponent),
         MockComponent(ProductDetailActionsComponent),
-        MockComponent(ProductDetailInfoAccordionComponent),
+        MockComponent(ProductDetailInfoComponent),
         MockComponent(ProductDetailVariationsComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImagesComponent),
@@ -51,6 +60,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductShipmentComponent),
         ProductDetailComponent,
       ],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -64,5 +74,32 @@ describe('Product Detail Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render standard elements', () => {
+    fixture.detectChanges();
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-product-detail-actions",
+        "ish-product-images",
+        "ish-product-rating",
+        "ish-product-name",
+        "ish-product-brand",
+        "ish-product-id",
+        "ish-product-promotion",
+        "ish-product-price",
+        "ish-product-inventory",
+        "ish-product-shipment",
+        "ish-product-detail-variations",
+        "ish-lazy-tacton-configure-product",
+        "ish-product-quantity-label",
+        "ish-product-quantity",
+        "ish-product-add-to-basket",
+        "ish-lazy-product-add-to-order-template",
+        "ish-lazy-product-add-to-quote",
+        "ish-content-viewcontext",
+        "ish-product-detail-info",
+      ]
+    `);
   });
 });

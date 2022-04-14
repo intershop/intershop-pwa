@@ -4,6 +4,7 @@
   "title": "PWA Add Destroy Subject To Component Options Schema",
   "type": "object",
   "description": "Adds destroy subject to an existing Angular artifact.",
+  "additionalProperties": false,
   "properties": {
     "project": {
       "type": "string",

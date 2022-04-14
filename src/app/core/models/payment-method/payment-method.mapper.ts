@@ -36,10 +36,10 @@ export class PaymentMethodMapper {
         paymentCosts: PriceItemMapper.fromPriceItem(data.paymentCosts),
         paymentCostsThreshold: PriceItemMapper.fromPriceItem(data.paymentCostsThreshold),
         paymentInstruments:
-          included && included.paymentInstruments && data.paymentInstruments
+          included?.paymentInstruments && data.paymentInstruments
             ? data.paymentInstruments.map(id => included.paymentInstruments[id])
             : undefined,
-        parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
+        parameters: PaymentMethodMapper.mapParameter(data.parameterDefinitions),
         hostedPaymentPageParameters:
           data.serviceID === 'Concardis_DirectDebit'
             ? PaymentMethodMapper.mapSEPAMandateInformation(data.hostedPaymentPageParameters)
@@ -78,7 +78,7 @@ export class PaymentMethodMapper {
             paymentMethod: pm.id,
           })),
       }))
-      .filter(x => x.paymentInstruments && x.paymentInstruments.length);
+      .filter(x => x.paymentInstruments?.length);
   }
 
   /**
@@ -160,6 +160,9 @@ export class PaymentMethodMapper {
    * maps form parameter if there are some (like credit card or direct debit)
    */
   private static mapParameter(parametersData: PaymentMethodParameterType[]): FormlyFieldConfig[] {
+    if (!parametersData) {
+      return;
+    }
     return parametersData.map(p => {
       const param: FormlyFieldConfig = {
         key: p.name,

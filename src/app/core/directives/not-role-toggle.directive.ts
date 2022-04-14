@@ -24,7 +24,7 @@ export class NotRoleToggleDirective implements OnDestroy {
   private subscription: Subscription;
   private enabled$ = new ReplaySubject<boolean>(1);
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private templateRef: TemplateRef<unknown>,
@@ -45,7 +45,7 @@ export class NotRoleToggleDirective implements OnDestroy {
   @Input() set ishHasNotRole(roleId: string | string[]) {
     // end previous subscription and newly subscribe
     if (this.subscription) {
-      // tslint:disable-next-line: ban
+      // eslint-disable-next-line ban/ban
       this.subscription.unsubscribe();
     }
     this.subscription = this.roleToggleService

@@ -46,12 +46,12 @@ ISREST
 
 Angular
 Angular's
-Codelyzer
 NgUniversal
 Mockito
 PWA's
 RxJS
 Grafana
+ngcc
 NgRx
 NgSW
 Formly
@@ -121,6 +121,9 @@ noindex
 minlength
 maxlength
 iframes
+tabindex
+dropup
+selectbox
 
 uncommit
 camelize
@@ -156,6 +159,35 @@ safelisting
 walkthrough
 mergeable
 gclid
+breakline
+condensedregular
+condensedbold
+robotoregular
+robotobold
+grecaptcha
+propertyeditor
+propertygroup
+propertygroups
+noneditable
+productdetail
+storefinder
+notselected
+topseller
+addtocart
+packslip
+giftwrap
+signup
+datepicker
+payone
+preselection
+costcenters
+categoryref
+hoverable
+unflatten
+setuprequest
+ruleset
+rulesets
+unpatched
 
 foo
 foos
@@ -165,3 +197,6 @@ foobar
 foobars
 asdf
 qwertz
+appr
+
+logformat

@@ -9,7 +9,7 @@ footer {
 }
 
 .footer-top {
-  padding: 40px 0 60px;
+  padding: 20px 0;
   background: $color-primary;
 
   h4 {
@@ -39,7 +39,7 @@ footer {
     a,
     a:not([href]):not([tabindex]) {
       font-family: $font-family-condensedregular;
-      color: $text-color-quarternary;
+      color: $text-color-quaternary;
       text-decoration: none;
     }
   }

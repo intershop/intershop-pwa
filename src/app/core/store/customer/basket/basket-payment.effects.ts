@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, mapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
@@ -59,9 +59,10 @@ export class BasketPaymentEffects {
       ofType(setBasketPayment),
       mapToPayloadProperty('id'),
       concatMap(paymentInstrumentId =>
-        this.paymentService
-          .setBasketPayment(paymentInstrumentId)
-          .pipe(mapTo(setBasketPaymentSuccess()), mapErrorToAction(setBasketPaymentFail))
+        this.paymentService.setBasketPayment(paymentInstrumentId).pipe(
+          map(() => setBasketPaymentSuccess()),
+          mapErrorToAction(setBasketPaymentFail)
+        )
       )
     )
   );
@@ -77,7 +78,7 @@ export class BasketPaymentEffects {
       map(([payload, customer]) => ({
         saveForLater: payload.saveForLater,
         paymentInstrument: payload.paymentInstrument,
-        customerNo: customer && customer.customerNo,
+        customerNo: customer?.customerNo,
       })),
       concatMap(payload => {
         const createPayment$ =
@@ -112,7 +113,7 @@ export class BasketPaymentEffects {
           select(getCurrentBasketId),
           whenTruthy(),
           take(1),
-          mapTo(updateBasketPayment({ params: routerState.queryParams }))
+          map(() => updateBasketPayment({ params: routerState.queryParams }))
         )
       )
     )
@@ -126,9 +127,10 @@ export class BasketPaymentEffects {
       ofType(updateBasketPayment),
       mapToPayloadProperty('params'),
       concatMap(params =>
-        this.paymentService
-          .updateBasketPayment(params)
-          .pipe(mapTo(updateBasketPaymentSuccess()), mapErrorToAction(updateBasketPaymentFail))
+        this.paymentService.updateBasketPayment(params).pipe(
+          map(() => updateBasketPaymentSuccess()),
+          mapErrorToAction(updateBasketPaymentFail)
+        )
       )
     )
   );
@@ -142,9 +144,10 @@ export class BasketPaymentEffects {
       mapToPayloadProperty('paymentInstrument'),
       withLatestFrom(this.store.pipe(select(getCurrentBasket))),
       concatMap(([paymentInstrument, basket]) =>
-        this.paymentService
-          .deleteBasketPaymentInstrument(basket, paymentInstrument)
-          .pipe(mapTo(deleteBasketPaymentSuccess()), mapErrorToAction(deleteBasketPaymentFail))
+        this.paymentService.deleteBasketPaymentInstrument(basket, paymentInstrument).pipe(
+          map(() => deleteBasketPaymentSuccess()),
+          mapErrorToAction(deleteBasketPaymentFail)
+        )
       )
     )
   );
@@ -155,7 +158,7 @@ export class BasketPaymentEffects {
   loadBasketAfterBasketChangeSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(setBasketPaymentSuccess, setBasketPaymentFail, updateBasketPaymentSuccess, deleteBasketPaymentSuccess),
-      mapTo(loadBasket())
+      map(() => loadBasket())
     )
   );
 
@@ -165,7 +168,7 @@ export class BasketPaymentEffects {
   loadBasketEligiblePaymentMethodsAfterChange$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteBasketPaymentSuccess, createBasketPaymentSuccess),
-      mapTo(loadBasketEligiblePaymentMethods())
+      map(() => loadBasketEligiblePaymentMethods())
     )
   );
   /**

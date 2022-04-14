@@ -6,7 +6,7 @@
     "dockerfile": "Dockerfile",
     // Update 'VARIANT' to pick a Node version: 10, 12, 14
     "args": {
-      "VARIANT": "14"
+      "VARIANT": "16"
     }
   },
   // https://paulhammond.org/2020/vscode-ramdisks
@@ -28,8 +28,8 @@
     // code style + formatting
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint",
+    "dbaeumer.vscode-eslint",
     "csstools.postcss",
-    "ms-vscode.vscode-typescript-tslint-plugin",
     // testing
     "andys8.jest-snippets",
     // documentation

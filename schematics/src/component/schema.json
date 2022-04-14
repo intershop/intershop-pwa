@@ -4,6 +4,7 @@
   "title": "PWA Component Options Schema",
   "type": "object",
   "description": "Creates a new presentational component.",
+  "additionalProperties": false,
   "properties": {
     "path": {
       "type": "string",

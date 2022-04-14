@@ -9,12 +9,11 @@ import {
   move,
   url,
 } from '@angular-devkit/schematics';
+import { PWAPipeOptionsSchema as Options } from 'schemas/pipe/schema';
 
 import { applyNameAndPath, detectExtension, determineArtifactName, findDeclaringModule } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addExportToNgModule, addProviderToNgModule } from '../utils/registration';
-
-import { PWAPipeOptionsSchema as Options } from './schema';
 
 export function createPipe(options: Options): Rule {
   return async host => {

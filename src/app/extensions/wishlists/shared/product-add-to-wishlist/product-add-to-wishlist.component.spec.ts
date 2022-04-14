@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -56,16 +54,12 @@ describe('Product Add To Wishlist Component', () => {
     when(context.get('sku')).thenReturn('test sku');
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockComponent(SelectWishlistModalComponent),
-        ProductAddToWishlistComponent,
-      ],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [MockComponent(SelectWishlistModalComponent), ProductAddToWishlistComponent],
+      imports: [RouterTestingModule],
       providers: [
-        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
         { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
       ],
     }).compileComponents();
   });

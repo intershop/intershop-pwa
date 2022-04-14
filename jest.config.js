@@ -1,11 +1,4 @@
-const esModules = [
-  'jest-test',
-  '@ngrx',
-  'ngx-bootstrap',
-  '@angular/common/locales',
-  'lodash-es/.*',
-  'ngx-utils-cookies-port',
-];
+const esModules = ['lodash-es/.*', 'swiper', 'ssr-window', 'dom7', '.*\\.mjs$'];
 
 module.exports = {
   globals: {
@@ -15,7 +8,7 @@ module.exports = {
   },
   preset: 'jest-preset-angular',
   testRunner: 'jest-jasmine2',
-  maxWorkers: '75%', // keep some cpu for moving the mouse
+  maxWorkers: process.env.JEST_MAX_WORKERS || '75%', // keep some cpu for moving the mouse
   roots: ['src', 'projects'],
   setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],

@@ -11,12 +11,11 @@ import {
   noop,
   url,
 } from '@angular-devkit/schematics';
+import { PWAComponentOptionsSchema as Options } from 'schemas/component/schema';
 
 import { applyNameAndPath, determineArtifactName, findDeclaringModule, generateSelector } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addExportToNgModule } from '../utils/registration';
-
-import { PWAComponentOptionsSchema as Options } from './schema';
 
 export function createComponent(options: Options): Rule {
   return async host => {
@@ -42,7 +41,7 @@ export function createComponent(options: Options): Rule {
           applyTemplates({
             ...strings,
             ...options,
-            'if-flat': s => (options.flat ? '' : s),
+            'if-flat': (s: unknown) => (options.flat ? '' : s),
           }),
           move(options.path),
         ])

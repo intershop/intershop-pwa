@@ -29,7 +29,7 @@
       &.list-view-link,
       &.list-view-link:hover,
       &.list-view-link:focus {
-        color: $text-color-quarternary;
+        color: $text-color-quaternary;
       }
 
       &.grid-view-link {
@@ -119,10 +119,4 @@
       color: $text-color-corporate;
     }
   }
-}
-
-.search-contentlist {
-  list-style-position: outside;
-  list-style-type: none;
-  list-style-image: none;
 }

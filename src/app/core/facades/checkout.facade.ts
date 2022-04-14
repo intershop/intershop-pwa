@@ -52,7 +52,7 @@ import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders
 import { getLoggedInUser, getUserCostCenters, loadUserCostCenters } from 'ish-core/store/customer/user';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
-// tslint:disable:member-ordering
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class CheckoutFacade {
   private basketChangeInternal$ = new Subject<void>();
@@ -87,11 +87,9 @@ export class CheckoutFacade {
   basketInfo$ = this.store.pipe(select(getBasketInfo));
   basketLoading$ = this.store.pipe(select(getBasketLoading));
   basketValidationResults$ = this.store.pipe(select(getBasketValidationResults));
-  basketItemCount$ = this.basket$.pipe(map(basket => (basket && basket.totalProductQuantity) || 0));
-  basketItemTotal$ = this.basket$.pipe(map(basket => basket && basket.totals && basket.totals.itemTotal));
-  basketLineItems$ = this.basket$.pipe(
-    map(basket => (basket && basket.lineItems && basket.lineItems.length ? basket.lineItems : undefined))
-  );
+  basketItemCount$ = this.basket$.pipe(map(basket => basket?.totalProductQuantity || 0));
+  basketItemTotal$ = this.basket$.pipe(map(basket => basket?.totals?.itemTotal));
+  basketLineItems$ = this.basket$.pipe(map(basket => (basket?.lineItems?.length ? basket.lineItems : undefined)));
   submittedBasket$ = this.store.pipe(select(getSubmittedBasket));
   basketMaxItemQuantity$ = this.store.pipe(
     select(getServerConfigParameter<number>('basket.maxItemQuantity')),
@@ -138,6 +136,26 @@ export class CheckoutFacade {
 
   // SHIPPING
 
+  isDesiredDeliveryDateEnabled$ = this.store.pipe(
+    select(getServerConfigParameter<boolean>('shipping.desiredDeliveryDate'))
+  );
+
+  isDesiredDeliveryExcludeSaturday$ = this.store.pipe(
+    select(getServerConfigParameter<boolean>('shipping.deliveryExcludeSaturday'))
+  );
+
+  isDesiredDeliveryExcludeSunday$ = this.store.pipe(
+    select(getServerConfigParameter<boolean>('shipping.deliveryExcludeSunday'))
+  );
+
+  desiredDeliveryDaysMax$ = this.store.pipe(
+    select(getServerConfigParameter<number>('shipping.desiredDeliveryDaysMax'))
+  );
+
+  desiredDeliveryDaysMin$ = this.store.pipe(
+    select(getServerConfigParameter<number>('shipping.desiredDeliveryDaysMin'))
+  );
+
   eligibleShippingMethods$() {
     return this.basket$.pipe(
       whenTruthy(),
@@ -148,6 +166,12 @@ export class CheckoutFacade {
   }
   eligibleShippingMethodsNoFetch$ = this.store.pipe(select(getBasketEligibleShippingMethods));
 
+  shippingMethod$(id: string) {
+    return this.eligibleShippingMethodsNoFetch$.pipe(
+      map(methods => (methods?.length ? methods.find(method => method.id === id) : undefined))
+    );
+  }
+
   getValidShippingMethod$() {
     return combineLatest([
       this.basket$.pipe(whenTruthy()),
@@ -155,6 +179,7 @@ export class CheckoutFacade {
     ]).pipe(
       // compare baskets only by shippingMethod
       distinctUntilChanged(
+        // spell-checker: words prevbasket prevship curbasket curship
         ([prevbasket, prevship], [curbasket, curship]) =>
           prevbasket.commonShippingMethod?.id === curbasket.commonShippingMethod?.id && prevship === curship
       ),

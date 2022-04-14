@@ -1,9 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import { HttpHandler, HttpRequest } from '@angular/common/http';
-import { NgModule, PLATFORM_ID } from '@angular/core';
+import { ModuleWithProviders, NgModule, PLATFORM_ID } from '@angular/core';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
-import { NgModuleWithProviders } from 'ng-mocks';
 import { noop } from 'rxjs';
+
+import { PunchoutIdentityProviderModule } from '../extensions/punchout/identity-provider/punchout-identity-provider.module';
 
 import { Auth0IdentityProvider } from './identity-provider/auth0.identity-provider';
 import { ICMIdentityProvider } from './identity-provider/icm.identity-provider';
@@ -21,7 +22,7 @@ export function storageFactory(platformId: string): OAuthStorage {
 }
 
 @NgModule({
-  imports: [OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } })],
+  imports: [OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } }), PunchoutIdentityProviderModule],
   providers: [
     { provide: OAuthStorage, useFactory: storageFactory, deps: [PLATFORM_ID] },
     {
@@ -45,7 +46,7 @@ export function storageFactory(platformId: string): OAuthStorage {
 export class IdentityProviderModule {
   static forTesting(
     capabilities: IdentityProviderCapabilities = { editEmail: true, editPassword: true, editProfile: true }
-  ): NgModuleWithProviders {
+  ): ModuleWithProviders<IdentityProviderModule> {
     return {
       ngModule: IdentityProviderModule,
       providers: [

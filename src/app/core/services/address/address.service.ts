@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { concatMap, first, map, mapTo } from 'rxjs/operators';
+import { concatMap, first, map } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
@@ -17,6 +17,7 @@ export class AddressService {
 
   /**
    * Gets the addresses for the given customer id. Falls back to '-' as customer id to get the addresses for the current user.
+   *
    * @param customerId  The customer id.
    * @returns           The customer's addresses.
    */
@@ -35,6 +36,7 @@ export class AddressService {
 
   /**
    * Creates an address for the given customer id. Falls back to '-' as customer id if no customer id is given
+   *
    * @param customerId  The customer id.
    * @param address     The address which should be created
    * @returns           The new customer's address.
@@ -57,6 +59,7 @@ export class AddressService {
 
   /**
    * Updates an address for the given customer id. Falls back to '-' as customer id if no customer id is given
+   *
    * @param customerId  The customer id.
    * @param address     The address
    */
@@ -78,6 +81,7 @@ export class AddressService {
 
   /**
    * Deletes an address for the given customer id. Falls back to '-' as customer id if no customer id is given
+   *
    * @param customerId  The customer id.
    * @param address     The address id
    * @returns           The id of the deleted address.
@@ -86,7 +90,7 @@ export class AddressService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.delete(`${restResource}/${customerId}/addresses/${addressId}`).pipe(mapTo(addressId))
+        this.apiService.delete(`${restResource}/${customerId}/addresses/${addressId}`).pipe(map(() => addressId))
       )
     );
   }

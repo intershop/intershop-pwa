@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsPWAComponent",
+  "title": "PWA Field Library Schema",
+  "type": "object",
+  "description": "Creates a new formly field library configuration entry.",
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the configuration.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What should the configuration be called?"
+    }
+  }
+}

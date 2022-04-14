@@ -3,17 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import {
-  concatMap,
-  exhaustMap,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  mergeMapTo,
-  switchMap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { concatMap, exhaustMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectPath, selectRouteParam } from 'ish-core/store/core/router';
@@ -98,8 +88,8 @@ export class UsersEffects {
       concatMap(newUser =>
         this.usersService.addUser(newUser).pipe(
           concatMap(user =>
-            this.navigateTo('../' + user.login).pipe(
-              mergeMapTo([
+            this.navigateTo(`../${user.login}`).pipe(
+              mergeMap(() => [
                 addUserSuccess({ user }),
                 displaySuccessMessage({
                   message: 'account.organization.user_management.new_user.confirmation',
@@ -166,7 +156,7 @@ export class UsersEffects {
       mapToPayloadProperty('login'),
       withLatestFrom(this.store.pipe(select(getLoggedInUser))),
       filter(([login, currentUser]) => login === currentUser.login),
-      mapTo(loadRolesAndPermissions())
+      map(() => loadRolesAndPermissions())
     )
   );
 
@@ -200,7 +190,7 @@ export class UsersEffects {
       mapToPayloadProperty('user'),
       withLatestFrom(this.store.pipe(select(getLoggedInUser), whenTruthy())),
       filter(([updatedUser, currentUser]) => updatedUser.login === currentUser.login),
-      mapTo(loadCompanyUser())
+      map(() => loadCompanyUser())
     )
   );
 
@@ -210,7 +200,7 @@ export class UsersEffects {
       mapToPayloadProperty('login'),
       withLatestFrom(this.store.pipe(select(getLoggedInUser))),
       filter(([login, currentUser]) => login === currentUser.login),
-      mapTo(loadRolesAndPermissions())
+      map(() => loadRolesAndPermissions())
     )
   );
 

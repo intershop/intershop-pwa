@@ -1,7 +1,14 @@
 <div class="row product-search-result" data-testing-id="search-result-page" id="search-page-top">
+  <div class="marketing-area col-12">
+    <ish-content-include includeId="include.searchresult.base.top.pagelet2-Include"></ish-content-include>
+  </div>
+
   <div class="col-md-3">
     <div class="navigation-panel" [ngbCollapse]="isCollapsed">
       <ish-filter-navigation></ish-filter-navigation>
+      <div class="marketing-area">
+        <ish-content-include includeId="include.searchresult.navigation.pagelet2-Include"></ish-content-include>
+      </div>
     </div>
     <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
       {{ 'search.mobile.filter.trigger' | translate }}
@@ -14,9 +21,19 @@
     <h1>
       {{ 'search.title.text' | translate: { '1': searchTerm, '2': totalItems } }}
     </h1>
+    <div class="marketing-area">
+      <ish-content-include includeId="include.searchresult.content.top.pagelet2-Include"></ish-content-include>
+    </div>
     <ish-product-listing
       [id]="{ type: 'search', value: searchTerm }"
       fragmentOnRouting="search-page-top"
     ></ish-product-listing>
+    <div class="marketing-area">
+      <ish-content-include includeId="include.searchresult.content.bottom.pagelet2-Include"></ish-content-include>
+    </div>
+  </div>
+
+  <div class="marketing-area col-12">
+    <ish-content-include includeId="include.searchresult.base.bottom.pagelet2-Include"></ish-content-include>
   </div>
 </div>

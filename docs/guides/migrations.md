@@ -7,6 +7,107 @@ kb_sync_latest_only
 
 # Migrations
 
+## 2.1 to 2.2
+
+The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependencies updates.<br/>
+These updates required some internal webpack handling changes especially for the template overloading.<br/>
+Also some test adaptions where necessary, so is it now necessary to mock the `SwiperComponent`.<br/>
+Another change is the [Formly](https://formly.dev/) downgrade from v6 pre-release to v5 that still works with Angular 13 with a changed `ngcc` setting.<br/>
+After the updates the deprecated RxJS MapTo operators (`mapTo`, `mergeMapTo`, `switchMapTo`) were replaced [Deprecating MapTo variants](https://github.com/ReactiveX/rxjs/issues/6399).
+Linting will point out these issues in custom code that can than easily be replaced.
+
+The Intershop PWA now uses Node.js 16 LTS with a corresponding npm version >=8.0.0.
+With this new npm, calls using `npx npm-run-all` in CI have to be changed to `npm run exec npm-run-all`.
+
+Changes with Angular 13 require to declare less dependencies in test beds than before.
+For that reason the PWA 2.2 contains two pull requests that cleanup a lot of test specs (see #1057 and #1072).
+It is not considered a breaking change but it might result in merge conflicts with customized Jest tests.
+To cleanup the own code base run `npm run cleanup-testbed`.
+Run `npm run cleanup-testbed -- --help` for more detailed options.
+
+The `shared/formly` folder - containing all custom types, wrappers, etc. - was updated.<br/>
+For a cleaner separation of code artifacts, there are now multiple subfolders declaring their own modules where formly is partly configured.
+The `FormlyModule` brings all these together so you can use it just like before.
+If you made any changes in `shared/formly`, you will have to adapt the corresponding modules.<br/>
+Additionally, we introduced a `formly/field-library` subfolder that contains a `FieldLibrary` service which enables you to define reusable `FormlyFieldConfig`s and access them easily.
+If you have customized anything in `shared/formly-address-forms/configurations/address-form-configuration.ts`, for example the `standardFields` variable, you will have to migrate these changes by defining new `FieldLibraryConfiguration`s.
+The address form configurations now use the new `FieldLibrary` functionality under the hood.<br/>
+For more information, read the new [Field Library](../guides/field-library.md) documentation.
+
+The compare products functionality was moved into an extension.
+The already existing `compare` feature toggle works as before but the compare components integration changed to lazy components, e.g. `<ish-product-add-to-compare displayType="icon"></ish-product-add-to-compare>` to `<ish-lazy-product-add-to-compare displayType="icon"></ish-lazy-product-add-to-compare>`.
+For other compare components check the compare-exports.module.ts file.
+
+# 2.0 to 2.1
+
+The recently viewed products functionality was moved into an extension.
+The already existing `recently` feature toggle works as before but the recently viewed component integration changed from `<ish-recently-viewed *ishFeature="'recently'"></ish-recently-viewed>` to `<ish-lazy-recently-viewed></ish-lazy-recently-viewed>`.
+This was already changed for the product detail page and the basket page but needs to be done for any customized usage of the recently viewed component.
+
+The `clean-localizations` functionality was changed so that `keep-localization-pattern` can be defined where they are used and do no longer need to be added directly to the [`clean-up-localizations` script](../../scripts/clean-up-localizations.js).
+It might be useful to move custom patterns according to the changes done for the standard code (for more information see [Localization File Clean Up Process](../concepts/localization.md#localization-file-clean-up-process)).
+
+TestBed configuration arrays are sorted again as of 2.1 This means a lot of (small, auto-fixable) changes across the codebase.
+Simply run `ng lint --fix` in order to sort your arrays.
+If you have a lot of migration changes, you might be required to run it more than once.
+
+With the introduction of personalized REST calls for categories and products, data in the ngrx store runs the risk of not being up-to-date after a login or logout.
+To fix this, a new `resetSubStatesOnActionsMeta` meta-reducer was introduced to remove potentially invalid data from the store.
+If the removal of previous data from the store is not wanted this meta reducer should not be used in customized projects.
+In addition a mechanism was introduced to trigger such personalized REST calls after loading the PGID if necessary.
+This way of loading personalized data might need to be added to any custom implementations that potentially fetch personalized data.
+To get an idea of the necessary mechanism search for the usage of `useCombinedObservableOnAction` and `personalizationStatusDetermined` in the source code.
+
+## 1.4 to 2.0
+
+Since [TSLint has been deprecated](https://blog.palantir.com/tslint-in-2019-1a144c2317a9) for a while now and Angular removed the TSLint support we had to migrate our project from TSLint to ESLint as well.
+This means in version 2.0 all TSLint rules and configurations were removed and where possible replaced by ESLint.
+
+This not only required configuration changes in the Intershop PWA project but also application code adaptions to comply with some of the new ESLint rules.
+To allow for an as easy as possible migration of existing PWA projects, we split the whole switch in separate commits that should make it easier to resolve potential merge conflicts by providing some context, e.g. changes to satisfy a specific rule or project configuration changes etc.
+We advise you to first cherry pick all the `eslint` commits provided by the PWA release before applying the lint rules to the project customizations to fix the issues that reside in the project code.
+If the found issues are too many to address them in an ordered manner, it is probably best to temporarily disable some of the failing rules in `.eslintrc.json` (see [Configuring ESLint](./eslint.md#configuring-eslint) and to only fix one after another.
+
+It is also probably a good idea to do the PWA 2.0 migration not in one go as described in [Import Changes from New PWA Release](./customizations.md#import-changes-from-new-pwa-release-migration) but to first do the commits before the linter switch and bring your project to a clean state (`npm run check`).
+After this all the linter switch commits should be applied and the project should be brought back to a clean state.
+Once this is done, subsequent commits should be migrated.
+If your project contains own custom TSLint rules you will have to re-implement them as ESLint rules to be able to apply them to your code base (see [Custom ESLint rules](./eslint.md#custom-eslint-rules)).
+
+With version 2.0 we introduce a renaming of the two standard PWA themes and change the default theme:
+
+- The previous B2B theme `blue` is now called `b2b` and is used as default theme from now on.
+- The previous B2C theme `default` is now called `b2c`.
+
+With this change the according folders and references had to be renamed/moved and need to be adapted in customer projects as well.
+In projects where the recommended procedure for using a custom theme has been followed (see [Customization Guide - Start Customization](./customizations.md#start-customization)), minimal migration effort should be required.
+
+We moved the model `SelectOption` from the select.component.ts to the `select-option.model.ts` and adapted all necessary imports.
+
+In the PWA 0.28 we introduced the usage of [Formly](https://formly.dev/) to generate and maintain our forms.
+Now we removed the obsolete form components.
+If you want to use the obsolete form components in your project nevertheless, skip the commit `remove obsolete form components`.
+For more information concerning Formly please refer to our [Formly - Guide](./formly.md)).
+
+The feature toggle 'advancedVariationHandling' has been removed.
+Instead the ICM channel preference 'AdvancedVariationHandling' is used to configure it.
+You will find this preference as 'List View' in the ICM backoffice under Channel Preferences -> Product Variations.
+
+The ICM channel preference 'basket.maxItemQuantity' is included to validate the product quantity if no specific setting is defined on the product.
+You find this preference as 'Maximum Quantity per Product in Cart' under the Application Settings -> Shopping Cart & Checkout.
+The default value is 100.
+
+The Intershop PWA 2.0 release includes the Angular 13 update and updates to a lot of other dependencies (NgRx, RxJS, Formly, Swiper).
+These dependencies updates require many necessary code adaptions that are included in additional commits.
+The following official guides might help to migrate custom code as well:
+
+- https://update.angular.io/?l=3&v=12.0-13.0
+- https://ngrx.io/guide/migration/v13
+- https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md
+- https://swiperjs.com/migration-guide
+
+To help with the necessary rxjs refactorings, consider using [rxjs-fixers-morph](https://github.com/timdeschryver/rxjs-fixers-morph).
+Simply run `npx rxjs-fixers-morph ./tsconfig.json`.
+
 ## 1.1 to 1.2
 
 The `dist` folder now only contains results of the build process (except for `healthcheck.js`).

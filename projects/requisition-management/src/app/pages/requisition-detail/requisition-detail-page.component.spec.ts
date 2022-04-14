@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterLinkWithHref } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -7,16 +7,16 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
+import { Requisition } from '../../models/requisition/requisition.model';
 
-import { RequisitionBuyerApprovalComponent } from './requisition-buyer-approval/requisition-buyer-approval.component';
 import { RequisitionCostCenterApprovalComponent } from './requisition-cost-center-approval/requisition-cost-center-approval.component';
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
 import { RequisitionRejectDialogComponent } from './requisition-reject-dialog/requisition-reject-dialog.component';
@@ -32,20 +32,19 @@ describe('Requisition Detail Page Component', () => {
     context = mock(RequisitionContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketShippingMethodComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
-        MockComponent(LineItemListComponent),
-        MockComponent(LoadingComponent),
-        MockComponent(RequisitionBuyerApprovalComponent),
         MockComponent(RequisitionCostCenterApprovalComponent),
         MockComponent(RequisitionRejectDialogComponent),
         MockComponent(RequisitionSummaryComponent),
         MockDirective(AuthorizationToggleDirective),
+        MockDirective(RouterLinkWithHref),
         RequisitionDetailPageComponent,
       ],
     })
@@ -60,7 +59,7 @@ describe('Requisition Detail Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    when(context.select('entity')).thenReturn(of());
+    when(context.select('entity')).thenReturn(of({ approval: {} } as Requisition));
     when(context.select('view')).thenReturn(of('approver'));
   });
 
@@ -70,23 +69,24 @@ describe('Requisition Detail Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display the requisition title for default', () => {
+  it('should display standard elements by default', () => {
     fixture.detectChanges();
-    expect(element).toMatchInlineSnapshot(`
-      <div>
-        <div class="float-right">
-          <ul class="share-tools">
-            <li>
-              <a class="link-print" href="javascript:window.print();" rel="nofollow"
-                ><fa-icon ng-reflect-icon="fas,print"></fa-icon
-                ><span class="share-label">account.orderdetails.print_link.text</span></a
-              >
-            </li>
-          </ul>
-        </div>
-        <h1>approval.detailspage.approval.heading</h1>
-        <ish-error-message></ish-error-message>
-      </div>
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "fa-icon",
+        "ish-error-message",
+        "ish-requisition-summary",
+        "ish-requisition-cost-center-approval",
+        "ish-info-box",
+        "ish-address",
+        "ish-info-box",
+        "ish-info-box",
+        "ish-address",
+        "ish-info-box",
+        "ish-basket-shipping-method",
+        "ish-basket-cost-summary",
+        "ish-requisition-reject-dialog",
+      ]
     `);
   });
 });

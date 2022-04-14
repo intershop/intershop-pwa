@@ -1,0 +1,19 @@
+@import 'variables';
+
+.store-entry {
+  padding: $space-default * 0.5;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+
+  &:hover {
+    background-color: #e6e6e6;
+  }
+}
+
+.highlight-store {
+  background-color: #e6e6e6;
+}
+
+:host ::ng-deep .map-height {
+  height: 400px;
+}

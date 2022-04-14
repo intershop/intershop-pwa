@@ -2,8 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
 import { ProductListingComponent } from 'ish-shared/components/product/product-listing/product-listing.component';
@@ -21,10 +22,11 @@ describe('Search Result Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(BreadcrumbComponent),
+        MockComponent(ContentIncludeComponent),
         MockComponent(FaIconComponent),
         MockComponent(FilterNavigationComponent),
-        MockComponent(NgbCollapse),
         MockComponent(ProductListingComponent),
+        MockDirective(NgbCollapse),
         SearchResultComponent,
       ],
     }).compileComponents();

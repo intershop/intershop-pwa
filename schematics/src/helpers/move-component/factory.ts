@@ -1,11 +1,10 @@
 import { strings } from '@angular-devkit/core';
-import { Rule, SchematicsException } from '@angular-devkit/schematics';
+import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
+import { MoveComponentOptionsSchema as Options } from 'schemas/helpers/move-component/schema';
 import * as ts from 'typescript';
 
 import { readIntoSourceFile } from '../../utils/filesystem';
-
-import { MoveComponentOptionsSchema as Options } from './schema';
 
 function similarIdx(str1: string, str2: string) {
   for (let index = 0; index < Math.min(str1.length, str2.length); index++) {
@@ -68,23 +67,23 @@ export function move(options: Options): Rule {
     host.getDir(from);
     const to = options.to.replace(/\/$/, '');
 
-    const renames = [];
+    const renames: unknown[] = [];
 
     const fromName = from.replace(/.*\//, '');
-    const fromClassName = strings.classify(fromName) + 'Component';
+    const fromClassName = `${strings.classify(fromName)}Component`;
     const toName = to.replace(/.*\//, '');
     if (toName.includes('.')) {
       throw new SchematicsException(`target must be a directory`);
     }
 
-    const toClassName = strings.classify(toName) + 'Component';
+    const toClassName = `${strings.classify(toName)}Component`;
 
     const similarIndex = Math.min(similarIdx(from, to), from.lastIndexOf('/') + 1, to.lastIndexOf('/') + 1);
 
     const replacePath = (path: string) =>
       path
-        .replace(from.substr(similarIndex), to.substr(similarIndex))
-        .replace(fromName + '.component', toName + '.component');
+        .replace(from.substring(similarIndex), to.substring(similarIndex))
+        .replace(`${fromName}.component`, `${toName}.component`);
 
     const replaceImportPath = (file: string, path: string) => {
       const newPath = replacePath(path);
@@ -105,9 +104,10 @@ export function move(options: Options): Rule {
     };
     console.log('moving', options.from, '\n    to', options.to);
 
+    /* eslint-disable-next-line complexity */
     host.visit(file => {
       if (file.startsWith(`/src/app/`) || file.startsWith(`/projects/`)) {
-        if (file.includes(from + '/')) {
+        if (file.includes(`${from}/`)) {
           renames.push([file, replacePath(file)]);
 
           if (fromName !== toName && file.endsWith('.component.ts')) {
@@ -154,7 +154,13 @@ export function move(options: Options): Rule {
   };
 }
 
-export function updateComponentSelector(host, file, fromName: string, toName: string, includePrefix: boolean = true) {
+export function updateComponentSelector(
+  host: Tree,
+  file: string,
+  fromName: string,
+  toName: string,
+  includePrefix: boolean = true
+) {
   const content = host.read(file).toString();
   const replacement = content.replace(
     new RegExp(`(?!.*${fromName}[a-z-]+.*)ish-${fromName}`, 'g'),
@@ -165,7 +171,7 @@ export function updateComponentSelector(host, file, fromName: string, toName: st
   }
 }
 
-export function updateComponentClassName(host, file, fromClassName: string, toClassName: string) {
+export function updateComponentClassName(host: Tree, file: string, fromClassName: string, toClassName: string) {
   const identifiers = tsquery(readIntoSourceFile(host, file), `Identifier[name=${fromClassName}]`);
   if (identifiers.length) {
     const updater = host.beginUpdate(file);
@@ -176,7 +182,7 @@ export function updateComponentClassName(host, file, fromClassName: string, toCl
   }
 }
 
-export function updateComponentDecorator(host, file, fromName: string, toName: string) {
+export function updateComponentDecorator(host: Tree, file: string, fromName: string, toName: string) {
   const updater = host.beginUpdate(file);
   tsquery(readIntoSourceFile(host, file), 'Decorator Identifier[name=Component]')
     .map(x => x.parent)

@@ -43,7 +43,7 @@ export class RequisitionManagementBreadcrumbService {
                 ? [
                     {
                       key: 'account.requisitions.approvals',
-                      link: [prefix + '/approver', { status }],
+                      link: [`${prefix}/approver`, { status }],
                     },
                     {
                       text: `${translation} - ${req.requisitionNo}`,
@@ -52,7 +52,7 @@ export class RequisitionManagementBreadcrumbService {
                 : [
                     {
                       key: 'account.requisitions.requisitions',
-                      link: [prefix + '/buyer', { status }],
+                      link: [`${prefix}/buyer`, { status }],
                     },
                     {
                       text: `${translation} - ${req.requisitionNo}`,

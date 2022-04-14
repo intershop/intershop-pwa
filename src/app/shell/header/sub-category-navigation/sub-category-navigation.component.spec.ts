@@ -38,8 +38,8 @@ describe('Sub Category Navigation Component', () => {
       imports: [RouterTestingModule],
       declarations: [MockComponent(FaIconComponent), SubCategoryNavigationComponent],
       providers: [
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
     }).compileComponents();
   });
@@ -67,7 +67,7 @@ describe('Sub Category Navigation Component', () => {
             ng-reflect-sub-categories-depth="2"
             ><ul class="category-level2">
               <li class="main-navigation-level2-item">
-                <a style="width: 100%" ng-reflect-router-link="/CAT_A1a-catA.1.a" href="/CAT_A1a-catA.1.a"
+                <a ng-reflect-router-link="/CAT_A1a-catA.1.a" style="width: 100%" href="/CAT_A1a-catA.1.a"
                   >CAT_A1a</a
                 >
               </li>
@@ -75,7 +75,7 @@ describe('Sub Category Navigation Component', () => {
           >
         </li>
         <li class="main-navigation-level1-item">
-          <a style="width: 100%" ng-reflect-router-link="/CAT_A2-catA.2" href="/CAT_A2-catA.2">CAT_A2</a>
+          <a ng-reflect-router-link="/CAT_A2-catA.2" style="width: 100%" href="/CAT_A2-catA.2">CAT_A2</a>
         </li>
       </ul>
     `);

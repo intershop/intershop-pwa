@@ -100,6 +100,10 @@ export class ProductDetailPage {
     return cy.get('ish-accordion-item a.accordion-toggle').contains(id);
   }
 
+  infoNav(id: string) {
+    return cy.get('ish-product-detail-info li.nav-item').contains(id);
+  }
+
   changeVariationWithSelect(id: string, value: string) {
     cy.get(`[data-testing-id="${id}"]`).select(value);
   }

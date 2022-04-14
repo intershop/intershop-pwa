@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { debounceTime, filter, map, mapTo, mergeMap, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
@@ -129,8 +129,8 @@ export class WishlistEffects {
     this.actions$.pipe(
       ofType(updateWishlistSuccess, createWishlistSuccess),
       mapToPayloadProperty('wishlist'),
-      filter(wishlist => wishlist && wishlist.preferred),
-      mapTo(loadWishlists())
+      filter(wishlist => wishlist?.preferred),
+      map(() => loadWishlists())
     )
   );
 
@@ -215,13 +215,18 @@ export class WishlistEffects {
    * Trigger LoadWishlists action after LoginUserSuccess.
    */
   loadWishlistsAfterLogin$ = createEffect(() =>
-    this.store.pipe(select(getUserAuthorized), whenTruthy(), debounceTime(1000), mapTo(loadWishlists()))
+    this.store.pipe(
+      select(getUserAuthorized),
+      whenTruthy(),
+      debounceTime(1000),
+      map(() => loadWishlists())
+    )
   );
 
   setWishlistBreadcrumb$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofUrl(/^\/account\/wishlists\/.*/),
           select(getSelectedWishlistDetails),

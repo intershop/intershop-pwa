@@ -27,12 +27,13 @@ export class CMSService {
 
   /**
    * Get the content for the given Content Include ID.
+   *
    * @param includeId The include ID.
    * @returns         The content data.
    */
   getContentInclude(includeId: string): Observable<{ include: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
     if (!includeId) {
-      return throwError('getContentInclude() called without an includeId');
+      return throwError(() => new Error('getContentInclude() called without an includeId'));
     }
 
     return this.apiService.get<ContentPageletEntryPointData>(`cms/includes/${includeId}`, { sendPGID: true }).pipe(
@@ -43,12 +44,13 @@ export class CMSService {
 
   /**
    * Get the content for the given Content Page ID.
+   *
    * @param includeId The page ID.
    * @returns         The content data.
    */
   getContentPage(pageId: string): Observable<{ page: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
     if (!pageId) {
-      return throwError('getContentPage() called without an pageId');
+      return throwError(() => new Error('getContentPage() called without an pageId'));
     }
 
     return this.apiService.get<ContentPageletEntryPointData>(`cms/pages/${pageId}`, { sendPGID: true }).pipe(
@@ -60,13 +62,14 @@ export class CMSService {
 
   /**
    * Get the page tree for the given root page with the given depth.
-   * @param rootId: The page tree root page id
-   * @param depth: Depth of returned page tree
-   * @returns Content page tree
+   *
+   * @param rootId  The page tree root page id
+   * @param depth   Depth of returned page tree
+   * @returns       Content page tree
    */
   getContentPageTree(rootId: string, depth?: number): Observable<ContentPageTree> {
     if (!rootId) {
-      return throwError('getContentPageTree() called without an rootId');
+      return throwError(() => new Error('getContentPageTree() called without an rootId'));
     }
 
     let params = new HttpParams();
@@ -88,6 +91,7 @@ export class CMSService {
 
   /**
    * Get the content for the given View Context with the given context (e.g. Product or Category).
+   *
    * @param viewContextId  The view context ID.
    * @param callParameters The call parameters to give the current context.
    * @returns              The view contexts entrypoint content data.
@@ -97,7 +101,7 @@ export class CMSService {
     callParameters: CallParameters
   ): Observable<{ entrypoint: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
     if (!viewContextId) {
-      return throwError('getViewContextContent() called without a viewContextId');
+      return throwError(() => new Error('getViewContextContent() called without a viewContextId'));
     }
 
     let params = new HttpParams();

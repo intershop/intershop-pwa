@@ -58,7 +58,7 @@ export class UserCreatePageComponent implements OnInit {
       active: formValue.profile.active,
       phoneHome: formValue.profile.phoneHome,
       birthday: formValue.profile.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
-      businessPartnerNo: 'U' + UUID.UUID(),
+      businessPartnerNo: `U${UUID.UUID()}`,
       roleIDs: formValue.roleIDs,
       userBudget: formValue.userBudget.currency
         ? {

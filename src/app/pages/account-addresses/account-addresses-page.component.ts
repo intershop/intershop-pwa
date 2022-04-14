@@ -5,7 +5,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 /**
- * The Account Addresses Page Container Component renders the account addresses page of a logged in user using the {@link AccountAddressesPageComponent}
+ * The Account Addresses Page Component renders the account addresses page of a logged in user.
  *
  */
 @Component({

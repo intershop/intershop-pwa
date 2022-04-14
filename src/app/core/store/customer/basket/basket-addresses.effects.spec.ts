@@ -46,10 +46,10 @@ describe('Basket Addresses Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
       providers: [
+        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketAddressesEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
       ],
     });
 
@@ -222,7 +222,7 @@ describe('Basket Addresses Effects', () => {
     it('should map invalid request to action of type UpdateCustomerAddressFail', () => {
       const address = BasketMockData.getAddress();
       when(addressServiceMock.updateCustomerAddress(anyString(), anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const action = updateBasketAddress({ address });
@@ -265,7 +265,7 @@ describe('Basket Addresses Effects', () => {
     it('should map invalid request to action of type UpdateCustomerAddressFail', () => {
       const address = BasketMockData.getAddress();
       when(basketServiceMock.updateBasketAddress(anything())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const action = updateBasketAddress({ address });
@@ -307,7 +307,7 @@ describe('Basket Addresses Effects', () => {
     it('should map invalid request to action of type DeleteCustomerAddressFail', () => {
       const addressId = 'addressId';
       when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
-        throwError(makeHttpError({ message: 'invalid' }))
+        throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
       const action = deleteBasketShippingAddress({ addressId });
