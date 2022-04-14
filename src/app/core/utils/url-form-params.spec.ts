@@ -107,6 +107,18 @@ describe('Url Form Params', () => {
         )
       ).toMatchInlineSnapshot(`"bar=d_or_e&foo=c"`);
     });
+
+    it('should url-encode the incoming val', () => {
+      expect(formParamsToString({ test: ['Laptops & Convertibles'] })).toMatchInlineSnapshot(
+        `"test=Laptops%20%26%20Convertibles"`
+      );
+    });
+
+    it('should not url-encode the given seperator', () => {
+      expect(formParamsToString({ test: ['Laptops & Convertibles', 'Desktop Computers'] })).toMatchInlineSnapshot(
+        `"test=Laptops%20%26%20Convertibles,Desktop%20Computers"`
+      );
+    });
   });
 
   describe('appendFormParamsToHttpParams', () => {
