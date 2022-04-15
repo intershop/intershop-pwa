@@ -24,7 +24,7 @@ interface UserBudgetModel {
 })
 export class UserBudgetFormComponent implements OnInit, OnDestroy {
   @Input() form: FormGroup;
-  @Input() budget?: UserBudget;
+  @Input() budget: UserBudget;
 
   fields: FormlyFieldConfig[];
   model: UserBudgetModel;

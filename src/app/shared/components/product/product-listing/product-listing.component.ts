@@ -14,7 +14,7 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() categoryId?: string;
+  @Input() categoryId: string;
   @Input() id: ProductListingID;
   @Input() mode: 'endless-scrolling' | 'paging' = 'endless-scrolling';
   @Input() fragmentOnRouting = 'product-list-top';

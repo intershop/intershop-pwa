@@ -373,6 +373,7 @@
           }
         ],
         "ish-custom-rules/no-object-literal-type-assertion": "warn",
+        "ish-custom-rules/no-optional-inputs": "warn",
         "ish-custom-rules/no-return-undefined": "error",
         "ish-custom-rules/no-star-imports-in-store": "error",
         "ish-custom-rules/no-testbed-with-then": "error",

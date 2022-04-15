@@ -14,7 +14,7 @@ import { OrderLineItem } from 'ish-core/models/order/order.model';
 export class LineItemListElementComponent implements OnInit {
   @Input() pli: Partial<LineItemView & OrderLineItem>;
   @Input() editable = true;
-  @Input() lineItemViewType?: 'simple' | 'availability';
+  @Input() lineItemViewType: 'simple' | 'availability';
 
   constructor(private context: ProductContextFacade, private checkoutFacade: CheckoutFacade) {}
 

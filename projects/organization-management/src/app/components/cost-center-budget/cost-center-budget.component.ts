@@ -9,7 +9,7 @@ import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 })
 export class CostCenterBudgetComponent implements OnChanges {
   @Input() costCenter: CostCenter;
-  @Input() progressBarClass?: string;
+  @Input() progressBarClass: string;
 
   spentBudgetPercentage: number;
   remainingBudgetPercentage: number;

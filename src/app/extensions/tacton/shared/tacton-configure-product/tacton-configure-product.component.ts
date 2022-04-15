@@ -12,7 +12,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 })
 @GenerateLazyComponent()
 export class TactonConfigureProductComponent implements OnInit {
-  @Input() displayType?: 'icon' | 'link' | 'list-button' = 'link';
+  @Input() displayType: 'icon' | 'link' | 'list-button' = 'link';
 
   sku$: Observable<string>;
 

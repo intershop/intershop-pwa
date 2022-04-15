@@ -16,8 +16,8 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 })
 @GenerateLazyComponent()
 export class ProductAddToQuoteComponent implements OnInit {
-  @Input() displayType?: 'icon' | 'link' = 'link';
-  @Input() cssClass?: string;
+  @Input() displayType: 'icon' | 'link' = 'link';
+  @Input() cssClass: string;
 
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;

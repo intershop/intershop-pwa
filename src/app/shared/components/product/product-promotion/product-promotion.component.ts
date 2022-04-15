@@ -10,7 +10,7 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPromotionComponent implements OnInit {
-  @Input() displayType?: string;
+  @Input() displayType: string;
 
   visible$: Observable<boolean>;
   promotions$: Observable<Promotion[]>;

@@ -21,8 +21,8 @@ import { Price } from 'ish-core/models/price/price.model';
 })
 export class BudgetBarComponent implements OnChanges {
   @Input() budget: Price;
-  @Input() spentBudget?: Price;
-  @Input() additionalAmount?: Price;
+  @Input() spentBudget: Price;
+  @Input() additionalAmount: Price;
 
   budgetPercentage: number;
   overflowPercentage: number;
