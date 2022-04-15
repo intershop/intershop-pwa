@@ -1,3 +1,5 @@
+const path = require('path');
+
 const esModules = ['lodash-es/.*', 'swiper', 'ssr-window', 'dom7', '.*\\.mjs$'];
 
 module.exports = {
@@ -23,4 +25,7 @@ module.exports = {
     './src/jest-serializer/NgrxActionSerializer.js',
     './src/jest-serializer/NgrxActionArraySerializer.js',
   ],
+  haste: {
+    hasteMapModulePath: path.join(__dirname, 'jest.config.haste-map.js'),
+  },
 };
