@@ -1,25 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { StoreLocatorFooterComponent } from './store-locator-footer.component';
 
-import { FooterTopComponent } from './footer-top.component';
-
-describe('Footer Top Component', () => {
-  let component: FooterTopComponent;
-  let fixture: ComponentFixture<FooterTopComponent>;
+describe('Store Locator Footer Component', () => {
+  let component: StoreLocatorFooterComponent;
+  let fixture: ComponentFixture<StoreLocatorFooterComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FooterTopComponent, MockComponent(FaIconComponent)],
-      imports: [FeatureToggleModule.forTesting('storeLocator')],
+      imports: [TranslateModule.forRoot()],
+      declarations: [MockComponent(FaIconComponent), StoreLocatorFooterComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FooterTopComponent);
+    fixture = TestBed.createComponent(StoreLocatorFooterComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
