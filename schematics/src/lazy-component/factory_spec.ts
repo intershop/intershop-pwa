@@ -137,6 +137,11 @@ describe('Lazy Component Schematic', () => {
         '@GenerateLazyComponent()'
       );
     });
+
+    it('should create a .gitignore file in the exports folder', () => {
+      const gitignore = tree.readContent('/src/app/extensions/ext/exports/.gitignore');
+      expect(gitignore.trim()).toMatchInlineSnapshot(`"**/lazy*"`);
+    });
   });
 
   describe('ci', () => {

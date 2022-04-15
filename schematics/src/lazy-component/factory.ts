@@ -168,7 +168,7 @@ export function createLazyComponent(options: Options): Rule {
         operations.push(addExportToNgModule(options));
       }
       if (!gitignoreExists) {
-        operations.push(generateGitignore({ path: options.path, content: '/lazy**' }));
+        operations.push(generateGitignore({ path: options.path, content: '**/lazy*\n' }));
       }
 
       if (isProject) {
