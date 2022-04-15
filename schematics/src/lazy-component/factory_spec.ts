@@ -225,14 +225,24 @@ export class DummyComponent {
       componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
     });
 
-    it('should copy inputs', () => {
-      expect(componentContent).toContain('@Input() simpleTyped: boolean;');
-      expect(componentContent).toContain('@Input() simpleTypedInitialized = true;');
-      expect(componentContent).toContain("@Input() complexTyped: 'a' | 'b';");
-      expect(componentContent).toContain("@Input() complexTypedInitialized: 'a' | 'b' = 'a';");
-      expect(componentContent).toContain('@Input() importTyped: Product;');
-      expect(componentContent).toContain('@Input() importComplexTyped: User[];');
-      expect(componentContent).toContain('@Input() importGenericTyped: Observable<Customer[]>;');
+    it('should import type of component which is lazy loaded', async () => {
+      expect(componentContent).toContain(
+        "import type { DummyComponent as OriginalComponent } from '../../shared/dummy/dummy.component';"
+      );
+    });
+
+    it('should delegate input types', () => {
+      expect(componentContent).toContain("@Input() simpleTyped: OriginalComponent['simpleTyped'];");
+      expect(componentContent).toContain(
+        "@Input() simpleTypedInitialized: OriginalComponent['simpleTypedInitialized'];"
+      );
+      expect(componentContent).toContain("@Input() complexTyped: OriginalComponent['complexTyped'];");
+      expect(componentContent).toContain(
+        "@Input() complexTypedInitialized: OriginalComponent['complexTypedInitialized'];"
+      );
+      expect(componentContent).toContain("@Input() importTyped: OriginalComponent['importTyped'];");
+      expect(componentContent).toContain("@Input() importComplexTyped: OriginalComponent['importComplexTyped'];");
+      expect(componentContent).toContain("@Input() importGenericTyped: OriginalComponent['importGenericTyped'];");
     });
 
     it('should transfer inputs', () => {
@@ -243,13 +253,6 @@ export class DummyComponent {
       expect(componentContent).toContain('component.instance.importTyped = this.importTyped');
       expect(componentContent).toContain('component.instance.importComplexTyped = this.importComplexTyped');
       expect(componentContent).toContain('component.instance.importGenericTyped = this.importGenericTyped');
-    });
-
-    it('should copy imports', () => {
-      expect(componentContent).toContain("import { Product } from 'ish-core/models/product/product.model';");
-      expect(componentContent).toContain("import { User } from 'ish-core/models/user/user.model';");
-      expect(componentContent).toContain("import { Observable } from 'rxjs';");
-      expect(componentContent).toContain("import { Customer } from 'ish-core/models/customer/customer.model';");
     });
   });
 
