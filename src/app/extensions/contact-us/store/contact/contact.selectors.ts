@@ -1,8 +1,10 @@
 import { createSelector } from '@ngrx/store';
 
-import { getGeneralState } from 'ish-core/store/general/general-store';
+import { getContactUsState } from '../contact-us-store';
 
-const getContactState = createSelector(getGeneralState, state => state.contact);
+import { initialState } from './contact.reducer';
+
+const getContactState = createSelector(getContactUsState, state => state?.contact || initialState);
 
 export const getContactSubjects = createSelector(getContactState, state => state.subjects);
 

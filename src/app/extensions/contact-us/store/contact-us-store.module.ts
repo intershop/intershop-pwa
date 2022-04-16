@@ -1,13 +1,17 @@
-import { NgModule, Type } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { ContactUsState } from './contact-us-store';
+import { ContactEffects } from './contact/contact.effects';
+import { contactReducer } from './contact/contact.reducer';
 
-const contactUsReducers: ActionReducerMap<ContactUsState> = {};
+const contactUsReducers: ActionReducerMap<ContactUsState> = {
+  contact: contactReducer,
+};
 
-const contactUsEffects: Type<unknown>[] = [];
+const contactUsEffects = [ContactEffects];
 
 // not-dead-code
 @NgModule({
