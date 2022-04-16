@@ -104,11 +104,6 @@
       "schema": "./migration/decontainerize-0.16-to-0.17/schema.json",
       "hidden": true
     },
-    "customized-copy": {
-      "factory": "./helpers/customized-copy/factory#customize",
-      "description": "Create a copy of Component for customization.",
-      "schema": "./helpers/customized-copy/schema.json"
-    },
     "add-destroy": {
       "factory": "./helpers/add-destroy/factory#add",
       "description": "Add destroy subject to an existing Angular artifact.",
