@@ -106,17 +106,6 @@ const routes: Routes = [
       },
     },
   },
-  {
-    path: 'contact',
-    loadChildren: () => import('./contact/contact-page.module').then(m => m.ContactPageModule),
-    data: {
-      meta: {
-        title: 'helpdesk.contact_us.heading',
-        robots: 'index, nofollow',
-      },
-      breadcrumbData: [{ key: 'helpdesk.contact_us.link' }],
-    },
-  },
   { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
 ];
 

@@ -26,6 +26,7 @@ export interface Environment {
     | 'rating'
     | 'recently'
     | 'storeLocator'
+    | 'contactUs'
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'

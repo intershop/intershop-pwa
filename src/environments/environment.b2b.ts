@@ -20,6 +20,7 @@ export const environment: Environment = {
     'punchout',
     'storeLocator',
     'maps',
+    'contactUs',
   ],
 
   ...overrides,

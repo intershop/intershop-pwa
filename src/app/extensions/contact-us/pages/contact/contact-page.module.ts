@@ -7,7 +7,19 @@ import { ContactConfirmationComponent } from './contact-confirmation/contact-con
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { ContactPageComponent } from './contact-page.component';
 
-const contactPageRoutes: Routes = [{ path: '', component: ContactPageComponent }];
+const contactPageRoutes: Routes = [
+  {
+    path: '',
+    component: ContactPageComponent,
+    data: {
+      meta: {
+        title: 'helpdesk.contact_us.heading',
+        robots: 'index, nofollow',
+      },
+      breadcrumbData: [{ key: 'helpdesk.contact_us.link' }],
+    },
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(contactPageRoutes), SharedModule],
