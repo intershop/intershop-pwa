@@ -124,7 +124,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   identityProvider: 'ICM',
 
   /* FEATURE TOGGLES */
-  features: ['compare', 'guestCheckout', 'recently', 'rating', 'wishlists'],
+  features: ['compare', 'recently', 'rating', 'storeLocator', 'contactUs'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,
