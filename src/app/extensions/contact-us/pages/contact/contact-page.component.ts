@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Contact } from 'ish-core/models/contact/contact.model';
+
+import { ContactUsFacade } from '../../facades/contact-us.facade';
 
 @Component({
   selector: 'ish-contact-page',
@@ -21,21 +22,21 @@ export class ContactPageComponent implements OnInit, OnDestroy {
    */
   success$: Observable<boolean>;
 
-  constructor(private accountFacade: AccountFacade, private router: Router) {}
+  constructor(private contactUsFacade: ContactUsFacade, private router: Router) {}
 
   ngOnInit() {
-    this.loading$ = this.accountFacade.contactLoading$;
-    this.success$ = this.accountFacade.contactSuccess$;
+    this.loading$ = this.contactUsFacade.contactLoading$;
+    this.success$ = this.contactUsFacade.contactSuccess$;
   }
 
   /** dispatch contact request */
   createRequest(contact: Contact) {
-    this.accountFacade.createContact(contact);
+    this.contactUsFacade.createContact(contact);
     this.router.navigate([], { queryParams: { submitted: true } });
   }
 
   ngOnDestroy() {
     // reset contact page if the user routes to 'contact' again
-    this.accountFacade.resetContactState();
+    this.contactUsFacade.resetContactState();
   }
 }

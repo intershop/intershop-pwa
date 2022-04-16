@@ -4,8 +4,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+
+import { ContactUsFacade } from '../../facades/contact-us.facade';
 
 import { ContactConfirmationComponent } from './contact-confirmation/contact-confirmation.component';
 import { ContactPageComponent } from './contact-page.component';
@@ -23,7 +24,7 @@ describe('Contact Page Component', () => {
         MockComponent(BreadcrumbComponent),
         MockComponent(ContactConfirmationComponent),
       ],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
+      providers: [{ provide: ContactUsFacade, useFactory: () => instance(mock(ContactUsFacade)) }],
     }).compileComponents();
   });
 

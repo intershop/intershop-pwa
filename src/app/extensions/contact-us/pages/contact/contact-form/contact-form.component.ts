@@ -8,6 +8,8 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Contact } from 'ish-core/models/contact/contact.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
+import { ContactUsFacade } from '../../../facades/contact-us.facade';
+
 /**
  * The Contact Form Component show the customer a form to contact the shop
  *
@@ -29,7 +31,7 @@ export class ContactFormComponent implements OnInit {
   model$: Observable<Partial<Contact>>;
   fields: FormlyFieldConfig[];
 
-  constructor(private accountFacade: AccountFacade) {}
+  constructor(private accountFacade: AccountFacade, private contactUsFacade: ContactUsFacade) {}
 
   ngOnInit() {
     this.model$ = this.accountFacade.user$.pipe(
@@ -83,7 +85,7 @@ export class ContactFormComponent implements OnInit {
         templateOptions: {
           label: 'helpdesk.contactus.subject.label',
           required: true,
-          options: this.accountFacade.contactSubjects$().pipe(
+          options: this.contactUsFacade.contactSubjects$().pipe(
             startWith([] as string[]),
             map(subjects => subjects.map(subject => ({ value: subject, label: subject }))),
             shareReplay(1)

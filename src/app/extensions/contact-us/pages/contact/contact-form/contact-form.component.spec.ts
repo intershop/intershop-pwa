@@ -6,6 +6,8 @@ import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
+import { ContactUsFacade } from '../../../facades/contact-us.facade';
+
 import { ContactFormComponent } from './contact-form.component';
 
 describe('Contact Form Component', () => {
@@ -16,12 +18,17 @@ describe('Contact Form Component', () => {
   beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.user$).thenReturn(EMPTY);
-    when(accountFacade.contactSubjects$()).thenReturn(of(['subject1', 'subject2']));
+
+    const contactUsFacade = mock(ContactUsFacade);
+    when(contactUsFacade.contactSubjects$()).thenReturn(of(['subject1', 'subject2']));
 
     await TestBed.configureTestingModule({
       declarations: [ContactFormComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: ContactUsFacade, useFactory: () => instance(contactUsFacade) },
+      ],
     }).compileComponents();
   });
 
