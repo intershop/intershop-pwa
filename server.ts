@@ -264,7 +264,19 @@ export function app() {
     server.use('/INTERSHOP', icmProxy);
   }
 
+  const SOURCE_MAPS_ACTIVE = /on|1|true|yes/.test(process.env.SOURCE_MAPS?.toLowerCase());
+  if (SOURCE_MAPS_ACTIVE) {
+    console.warn('SOURCE_MAPS are active - never use this in production!');
+  }
+
   // Serve static files from browser folder
+  server.get(/\/.*\.js\.map$/, (req, res, next) => {
+    if (SOURCE_MAPS_ACTIVE) {
+      return express.static(BROWSER_FOLDER)(req, res, next);
+    } else {
+      return res.sendStatus(404);
+    }
+  });
   server.get(/\/.*\.(js|css)$/, (req, res) => {
     // remove all parameters
     const path = req.originalUrl.substring(1).replace(/[;?&].*$/, '');

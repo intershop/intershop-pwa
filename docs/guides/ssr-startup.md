@@ -59,6 +59,7 @@ Make sure to use them as written in the table below.
 |                     | DEPLOY_URL            | string               | Set a [Deploy URL][concept-deploy-url] (default `/`)                                         |
 | **Debug** :warning: | TRUST_ICM             | any                  | Use this if ICM is deployed with an insecure certificate                                     |
 |                     | LOGGING               | switch               | Enables extra log output                                                                     |
+|                     | SOURCE_MAPS           | switch               | Exposes source maps if activated                                                             |
 | **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in [Hybrid Mode][concept-hybrid]                                 |
 |                     | PROXY_ICM             | any \| URL           | Proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                                 |
 | **Third party**     | GTM_TOKEN             | string               | Token for Google Tag Manager                                                                 |

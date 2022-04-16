@@ -35,7 +35,8 @@
             "styles": ["src/styles/themes/placeholder/style.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles/themes/placeholder"]
-            }
+            },
+            "sourceMap": true
           },
           "defaultConfiguration": "b2b,production",
           "configurations": {
@@ -82,7 +83,6 @@
             },
             "development": {
               "optimization": false,
-              "sourceMap": true,
               "buildOptimizer": false,
               "tsConfig": "tsconfig.app-no-checks.json",
               "budgets": [
