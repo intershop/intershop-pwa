@@ -1,17 +1,20 @@
-<ng-container *ngIf="isLoggedIn$ | async; else elseTemplate">
+<ng-container *ngIf="isLoggedIn$ | async; else disabled">
   <a
     *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
     class="btn btn-secondary"
-    id="createQuote"
-    name="createQuote"
+    data-testing-id="create-quote-from-basket"
     (click)="addToQuote()"
   >
     {{ 'shopping_cart.quote.create.button' | translate }}
   </a>
 </ng-container>
-<ng-template #elseTemplate>
-  <span (click)="login()" id="createQuote">
-    <button class="btn btn-secondary disabled" [title]="'account.login.quotes.message' | translate">
+<ng-template #disabled>
+  <span (click)="login()">
+    <button
+      data-testing-id="create-quote-from-basket"
+      class="btn btn-secondary disabled"
+      [title]="'account.login.quotes.message' | translate"
+    >
       {{ 'shopping_cart.quote.create.button' | translate }}
     </button>
   </span>
