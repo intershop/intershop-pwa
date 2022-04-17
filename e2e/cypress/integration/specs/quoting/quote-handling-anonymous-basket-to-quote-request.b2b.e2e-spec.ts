@@ -30,7 +30,7 @@ describe('Quote Handling as Anonymous User', () => {
         page.header.miniCart.goToCart();
       });
       at(CartPage, page => {
-        page.createQuoteRequest();
+        page.createQuoteRequest(false);
       });
     });
 
