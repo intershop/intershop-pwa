@@ -18,6 +18,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
   basketAnimation$: Observable<string>;
   itemTotal$: Observable<PriceItem>;
   itemCount$: Observable<number>;
+  basketLoading$: Observable<boolean>;
 
   isCollapsed = true;
 
@@ -42,6 +43,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
     this.itemCount$ = this.checkoutFacade.basketItemCount$;
     this.itemTotal$ = this.checkoutFacade.basketItemTotal$;
     this.basketError$ = this.checkoutFacade.basketError$;
+    this.basketLoading$ = this.checkoutFacade.basketLoading$;
 
     this.basketError$
       .pipe(
