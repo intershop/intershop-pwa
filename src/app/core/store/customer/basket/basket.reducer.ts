@@ -46,6 +46,7 @@ import {
   loadBasketSuccess,
   loadBasketWithId,
   mergeBasketFail,
+  mergeBasketInProgress,
   mergeBasketSuccess,
   removePromotionCodeFromBasket,
   removePromotionCodeFromBasketFail,
@@ -134,7 +135,8 @@ export const basketReducer = createReducer(
     deleteBasketPayment,
     submitBasket,
     updateConcardisCvcLastUpdated,
-    startCheckout
+    startCheckout,
+    mergeBasketInProgress
   ),
   unsetLoadingOn(addPromotionCodeToBasketSuccess, addPromotionCodeToBasketFail),
   unsetLoadingAndErrorOn(
