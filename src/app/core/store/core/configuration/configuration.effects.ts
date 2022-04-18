@@ -17,6 +17,7 @@ import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-prop
 
 import {
   applyConfiguration,
+  ConfigurationType,
   loadSingleServerTranslation,
   loadSingleServerTranslationSuccess,
 } from './configuration.actions';
@@ -73,20 +74,14 @@ export class ConfigurationEffects {
           this.stateProperties
             .getStateOrEnvOrDefault<string>('ICM_IDENTITY_PROVIDER', 'identityProvider')
             .pipe(map(x => x || 'ICM')),
-          this.stateProperties
-            .getStateOrEnvOrDefault<string | object>('IDENTITY_PROVIDERS', 'identityProviders')
-            .pipe(map(config => (typeof config === 'string' ? JSON.parse(config) : config))),
-          this.stateProperties
-            .getStateOrEnvOrDefault<Record<string, unknown> | string | false>(
-              'MULTI_SITE_LOCALE_MAP',
-              'multiSiteLocaleMap'
-            )
-            .pipe(
-              map(multiSiteLocaleMap => (multiSiteLocaleMap === false ? undefined : multiSiteLocaleMap)),
-              map(multiSiteLocaleMap =>
-                typeof multiSiteLocaleMap === 'string' ? JSON.parse(multiSiteLocaleMap) : multiSiteLocaleMap
-              )
-            )
+          this.stateProperties.getStateOrEnvOrDefault<ConfigurationType['identityProviders']>(
+            'IDENTITY_PROVIDERS',
+            'identityProviders'
+          ),
+          this.stateProperties.getStateOrEnvOrDefault<ConfigurationType['multiSiteLocaleMap']>(
+            'MULTI_SITE_LOCALE_MAP',
+            'multiSiteLocaleMap'
+          )
         ),
         map(
           ([

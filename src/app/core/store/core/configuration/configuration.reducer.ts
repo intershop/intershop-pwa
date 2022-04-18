@@ -40,7 +40,7 @@ const initialState: ConfigurationState = {
   lang: undefined,
   currency: undefined,
   serverTranslations: {},
-  multiSiteLocaleMap: {},
+  multiSiteLocaleMap: undefined,
   _deviceType: environment.defaultDeviceType,
 };
 
