@@ -146,6 +146,7 @@ const importExportModules = [
   CdkTableModule,
   CommonModule,
   CompareExportsModule,
+  ContactUsExportsModule,
   DeferLoadModule,
   DirectivesModule,
   FeatureToggleModule,
@@ -284,9 +285,9 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  imports: [...importExportModules, ContactUsExportsModule],
+  imports: [...importExportModules],
   declarations: [...declaredComponents, ...exportedComponents],
-  exports: [...exportedComponents, ...importExportModules, ContactUsExportsModule],
+  exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {
   constructor(moduleLoader: ModuleLoaderService, injector: Injector) {
