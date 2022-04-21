@@ -16,11 +16,11 @@ import { CompareExportsModule } from '../extensions/compare/exports/compare-expo
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { SentryExportsModule } from '../extensions/sentry/exports/sentry-exports.module';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
+import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
 import { TrackingExportsModule } from '../extensions/tracking/exports/tracking-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
 import { CookiesBannerComponent } from './application/cookies-banner/cookies-banner.component';
-import { FooterTopComponent } from './footer/footer-top/footer-top.component';
 import { FooterComponent } from './footer/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from './header/header-default/header-default.component';
@@ -54,6 +54,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     RouterModule,
     SentryExportsModule,
     SeoExportsModule,
+    StoreLocatorExportsModule,
     TrackingExportsModule,
     TranslateModule,
     WishlistsExportsModule,
@@ -61,7 +62,6 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
   declarations: [
     ...exportedComponents,
     CookiesBannerComponent,
-    FooterTopComponent,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     HeaderNavigationComponent,
