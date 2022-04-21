@@ -6,9 +6,6 @@ on:
       - develop
   pull_request:
     types: [opened, synchronize]
-    paths:
-      - '**.md'
-      - 'docs/**'
 
 jobs:
   Docs:
@@ -40,6 +37,9 @@ jobs:
       - name: Run Formatting
         run: npm exec npm-run-all format check-no-changes
 
+      - name: Fast Check Dead Links For All Files
+        run: node docs/check-dead-links.mjs fast
+
       - name: Check Dead Links For Changed Files
         if: github.ref != 'refs/heads/develop'
-        run: node docs/check-dead-links origin/develop
+        run: node docs/check-dead-links.mjs origin/develop

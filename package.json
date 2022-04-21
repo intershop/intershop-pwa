@@ -187,7 +187,7 @@
   "lint-staged": {
     "docs/**/*.md": [
       "node docs/check-kb-labels",
-      "node docs/check-dead-links fast",
+      "node docs/check-dead-links.mjs fast",
       "node docs/check-documentation-overview",
       "node docs/check-sentence-newline",
       "cspell lint --no-summary --no-progress"
