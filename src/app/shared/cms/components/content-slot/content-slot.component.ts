@@ -36,5 +36,5 @@ export class ContentSlotComponent {
   /**
    * An optional flag that controls the rendering of the pagelets with the wrapped HTML content.
    */
-  @Input() wrapper?: boolean;
+  @Input() wrapper: boolean;
 }

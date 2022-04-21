@@ -12,7 +12,7 @@ type DisplayType = 'tile' | 'row';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RetailSetPartsComponent implements OnInit {
-  @Input() displayType?: DisplayType = 'row';
+  @Input() displayType: DisplayType = 'row';
 
   parts$: Observable<SkuQuantityType[]>;
   visible$: Observable<boolean>;

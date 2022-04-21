@@ -24,11 +24,11 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   /**
    * when 'icon', the button label is an icon, otherwise it is text
    */
-  @Input() displayType?: 'icon' | 'link' = 'link';
+  @Input() displayType: 'icon' | 'link' = 'link';
   /**
    * additional css styling
    */
-  @Input() cssClass?: string;
+  @Input() cssClass: string;
 
   basketLoading$: Observable<boolean>;
   visible$: Observable<boolean>;

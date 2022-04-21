@@ -28,7 +28,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   /**
    * the search box configuration for this component
    */
-  @Input() configuration?: SearchBoxConfiguration;
+  @Input() configuration: SearchBoxConfiguration;
 
   searchResults$: Observable<SuggestTerm[]>;
   inputSearchTerms$ = new ReplaySubject<string>(1);
