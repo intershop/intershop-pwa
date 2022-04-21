@@ -4,7 +4,7 @@
     [productSKUs]="productSKUs"
     [listStyle]="pagelet.stringParam('ListStyle')"
     [slideItems]="pagelet.numberParam('SlideItems')"
-    [listItemStyle]="pagelet.stringParam('ListItemStyle')"
+    [listItemStyle]="checkDisplayType(pagelet.stringParam('ListItemStyle'))"
     [listItemCSSClass]="pagelet.stringParam('ListItemCSSClass')"
   >
   </ish-products-list>

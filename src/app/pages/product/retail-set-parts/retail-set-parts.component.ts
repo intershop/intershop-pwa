@@ -3,8 +3,7 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
-
-type DisplayType = 'tile' | 'row';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 @Component({
   selector: 'ish-retail-set-parts',
@@ -12,7 +11,7 @@ type DisplayType = 'tile' | 'row';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RetailSetPartsComponent implements OnInit {
-  @Input() displayType: DisplayType = 'row';
+  @Input() displayType: ProductItemComponent['displayType'] = 'row';
 
   parts$: Observable<SkuQuantityType[]>;
   visible$: Observable<boolean>;

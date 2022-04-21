@@ -6,6 +6,7 @@ import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { checkDisplayType } from 'ish-shared/components/product/product-item/product-item.util';
 
 @Component({
   selector: 'ish-cms-product-list-filter',
@@ -16,6 +17,8 @@ export class CMSProductListFilterComponent implements CMSComponent, OnChanges {
   @Input() pagelet: ContentPageletView;
 
   productSKUs$: Observable<string[]>;
+
+  checkDisplayType = checkDisplayType;
 
   constructor(private cmsFacade: CMSFacade, private shoppingFacade: ShoppingFacade) {}
 
