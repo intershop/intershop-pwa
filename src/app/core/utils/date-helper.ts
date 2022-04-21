@@ -4,7 +4,7 @@ import { Observable, map } from 'rxjs';
 
 export class DateHelper {
   // format string for internal date representation, refer to https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
-  static readonly internalFormatString = 'yyyy-MM-dd';
+  private static readonly internalFormatString = 'yyyy-MM-dd';
 
   static addDays(date: Date, days: number) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
