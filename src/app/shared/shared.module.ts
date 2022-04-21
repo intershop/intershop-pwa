@@ -25,6 +25,7 @@ import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
+import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
@@ -145,6 +146,7 @@ const importExportModules = [
   CdkTableModule,
   CommonModule,
   CompareExportsModule,
+  ContactUsExportsModule,
   DeferLoadModule,
   DirectivesModule,
   FeatureToggleModule,

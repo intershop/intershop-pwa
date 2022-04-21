@@ -17,7 +17,7 @@ export interface ContactState {
   success: boolean;
 }
 
-const initialState: ContactState = {
+export const initialState: ContactState = {
   subjects: [],
   loading: false,
   success: undefined,

@@ -9,17 +9,14 @@ export const environment: Environment = {
   themeColor: '#688dc3',
 
   features: [
-    'compare',
-    'recently',
-    'rating',
+    ...ENVIRONMENT_DEFAULTS.features,
     'businessCustomerRegistration',
     'costCenters',
-    'quoting',
-    'quickorder',
-    'orderTemplates',
-    'punchout',
-    'storeLocator',
     'maps',
+    'punchout',
+    'quickorder',
+    'quoting',
+    'orderTemplates',
   ],
 
   ...overrides,

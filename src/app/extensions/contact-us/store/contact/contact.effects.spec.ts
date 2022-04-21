@@ -6,8 +6,9 @@ import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
-import { ContactService } from 'ish-core/services/contact/contact.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+
+import { ContactService } from '../../services/contact/contact.service';
 
 import { createContact, loadContact, loadContactFail, loadContactSuccess } from './contact.actions';
 import { ContactEffects } from './contact.effects';

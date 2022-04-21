@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Migrations
 
+## 2.2 to 2.3
+
+The 'contact us' functionality has been moved into an extension and we have introduced the feature toggle `contactUs` in the `environment.model.ts` that is switched on by default.
+
 ## 2.1 to 2.2
 
 The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependencies updates.<br/>

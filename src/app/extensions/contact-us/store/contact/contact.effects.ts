@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatMap, map } from 'rxjs/operators';
 
-import { ContactService } from 'ish-core/services/contact/contact.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+
+import { ContactService } from '../../services/contact/contact.service';
 
 import {
   createContact,
