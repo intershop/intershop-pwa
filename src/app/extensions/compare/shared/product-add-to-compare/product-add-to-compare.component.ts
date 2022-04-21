@@ -16,7 +16,7 @@ import { CompareFacade } from '../../facades/compare.facade';
 })
 @GenerateLazyComponent()
 export class ProductAddToCompareComponent implements OnInit {
-  @Input() displayType: string;
+  @Input() displayType: 'button' | 'icon' = 'button';
   @Input() cssClass: string;
 
   isInCompareList$: Observable<boolean>;
