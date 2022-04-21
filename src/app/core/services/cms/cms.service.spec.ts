@@ -4,6 +4,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ContentPageTreeData } from 'ish-core/models/content-page-tree/content-page-tree.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
+import { ContentPageletMapper } from 'ish-core/models/content-pagelet/content-pagelet.mapper';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 
 import { CMSService } from './cms.service';
@@ -12,15 +13,18 @@ describe('Cms Service', () => {
   let cmsService: CMSService;
   let apiService: ApiService;
   let cpepMapper: ContentPageletEntryPointMapper;
+  let cpMapper: ContentPageletMapper;
 
   beforeEach(() => {
     apiService = mock(ApiService);
     cpepMapper = mock(ContentPageletEntryPointMapper);
+    cpMapper = mock(ContentPageletMapper);
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: ContentPageletEntryPointMapper, useFactory: () => instance(cpepMapper) },
+        { provide: ContentPageletMapper, useFactory: () => instance(cpMapper) },
       ],
     });
 

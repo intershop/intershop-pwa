@@ -10,6 +10,8 @@ import { ContentPageTree } from 'ish-core/models/content-page-tree/content-page-
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
+import { ContentPageletData } from 'ish-core/models/content-pagelet/content-pagelet.interface';
+import { ContentPageletMapper } from 'ish-core/models/content-pagelet/content-pagelet.mapper';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -22,6 +24,7 @@ export class CMSService {
   constructor(
     private apiService: ApiService,
     private contentPageletEntryPointMapper: ContentPageletEntryPointMapper,
+    private contentPageletMapper: ContentPageletMapper,
     private contentPageTreeMapper: ContentPageTreeMapper
   ) {}
 
@@ -119,5 +122,21 @@ export class CMSService {
         map(entrypoint => this.contentPageletEntryPointMapper.fromData(entrypoint)),
         map(([entrypoint, pagelets]) => ({ entrypoint, pagelets }))
       );
+  }
+
+  /**
+   * Get the content for the given Pagelet ID.
+   *
+   * @param pageletId The pagelet ID.
+   * @returns         The content data.
+   */
+  getPagelet(pageletId: string): Observable<ContentPagelet> {
+    if (!pageletId) {
+      return throwError(() => new Error('getPagelet() called without an pageletId'));
+    }
+
+    return this.apiService
+      .get<ContentPageletData>(`cms/pagelets/${pageletId}`, { sendPGID: true })
+      .pipe(map(x => this.contentPageletMapper.fromData(x)[0]));
   }
 }

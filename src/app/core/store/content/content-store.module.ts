@@ -10,6 +10,7 @@ import { IncludesEffects } from './includes/includes.effects';
 import { includesReducer } from './includes/includes.reducer';
 import { PageTreeEffects } from './page-tree/page-tree.effects';
 import { pageTreeReducer } from './page-tree/page-tree.reducer';
+import { PageletsEffects } from './pagelets/pagelets.effects';
 import { pageletsReducer } from './pagelets/pagelets.reducer';
 import { PagesEffects } from './pages/pages.effects';
 import { pagesReducer } from './pages/pages.reducer';
@@ -27,7 +28,14 @@ const contentReducers: ActionReducerMap<ContentState> = {
   parameters: parametersReducer,
 };
 
-const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects, PageTreeEffects, ParametersEffects];
+const contentEffects = [
+  IncludesEffects,
+  PagesEffects,
+  ViewcontextsEffects,
+  PageTreeEffects,
+  ParametersEffects,
+  PageletsEffects,
+];
 
 @Injectable()
 export class ContentStoreConfig implements StoreConfig<ContentState> {
