@@ -1,8 +1,7 @@
 import { Injectable, ɵfindLocaleData } from '@angular/core';
 import { NgbDateStruct, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-
-import { DateHelper } from 'ish-core/utils/date-helper';
+import { format } from 'date-fns';
 
 @Injectable()
 export class IshDatepickerI18n extends NgbDatepickerI18n {
@@ -29,6 +28,6 @@ export class IshDatepickerI18n extends NgbDatepickerI18n {
     d.setFullYear(date.year);
     d.setMonth(date.month - 1);
     d.setDate(date.day);
-    return DateHelper.fromNgbDateStructToStringFormatted(date, this.localeData[10][0]);
+    return format(d, this.localeData[10][0]);
   }
 }
