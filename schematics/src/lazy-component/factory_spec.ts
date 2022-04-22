@@ -105,7 +105,7 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should check if extension is enabled', async () => {
-      expect(componentContent).toContain(".enabled('ext')");
+      expect(componentContent).toContain(".enabled$('ext')");
     });
 
     it('should generate right component selector', async () => {

@@ -159,6 +159,8 @@ export function createLazyComponent(options: Options): Rule {
       );
     }
 
+    const guardDisplay = !isProject && !isShared && extension;
+
     operations.push(
       mergeWith(
         apply(url('./files'), [
@@ -167,11 +169,10 @@ export function createLazyComponent(options: Options): Rule {
             ...options,
             inputNames,
             originalPath,
-            extension,
             originalName,
             onChanges,
-            isProject,
             isShared,
+            guardDisplay,
             componentImportPath,
             declaringModule,
           }),
@@ -188,6 +189,10 @@ export function createLazyComponent(options: Options): Rule {
         ])
       )
     );
+
+    if (guardDisplay) {
+      operations.push(schematic('add-destroy', { project: options.project, name: `${options.path}/${options.name}` }));
+    }
 
     operations.push(applyLintFix());
 
