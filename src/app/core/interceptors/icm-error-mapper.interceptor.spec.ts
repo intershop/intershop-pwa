@@ -74,7 +74,7 @@ describe('Icm Error Mapper Interceptor', () => {
       error: error => {
         expect(error).toMatchInlineSnapshot(`
           Object {
-            "cause": Array [
+            "causes": Array [
               Object {
                 "causes": Array [
                   Object {
@@ -137,7 +137,7 @@ describe('Icm Error Mapper Interceptor', () => {
       error: error => {
         expect(error).toMatchInlineSnapshot(`
           Object {
-            "cause": Array [
+            "causes": Array [
               Object {
                 "code": "basket.add_line_item_not_successful.error",
                 "message": "The product could not be added to your cart.",
