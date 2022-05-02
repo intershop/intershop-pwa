@@ -84,7 +84,7 @@ export interface Environment {
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
 
-  // default locale that is used as fallback if no default locale from the ICM REST call is available
+  // default locale that is used as fallback if no default locale from the ICM REST call is available (should only be set for local development)
   defaultLocale?: string;
 
   // configuration filtering available locales and their active currencies
@@ -139,7 +139,6 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   },
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
-  defaultLocale: 'en_US',
   multiSiteLocaleMap: {
     en_US: '/en',
     de_DE: '/de',

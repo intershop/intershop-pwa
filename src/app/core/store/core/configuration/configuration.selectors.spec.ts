@@ -19,6 +19,15 @@ import {
   getRestEndpoint,
 } from './configuration.selectors';
 
+// mock `isDevMode` to return `false`
+jest.mock('@angular/core', () => {
+  const originalModule = jest.requireActual('@angular/core');
+  return {
+    ...originalModule,
+    isDevMode: jest.fn(() => false),
+  };
+});
+
 describe('Configuration Selectors', () => {
   let store$: StoreWithSnapshots;
 
