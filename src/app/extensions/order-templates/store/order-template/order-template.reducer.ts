@@ -10,7 +10,7 @@ import {
   addBasketToNewOrderTemplate,
   addBasketToNewOrderTemplateFail,
   addBasketToNewOrderTemplateSuccess,
-  addProductToOrderTemplateSuccess,
+  addProductsToOrderTemplateSuccess,
   createOrderTemplate,
   createOrderTemplateFail,
   createOrderTemplateSuccess,
@@ -57,7 +57,7 @@ export const orderTemplateReducer = createReducer(
     addBasketToNewOrderTemplateSuccess,
     createOrderTemplateSuccess,
     updateOrderTemplateSuccess,
-    addProductToOrderTemplateSuccess,
+    addProductsToOrderTemplateSuccess,
     removeItemFromOrderTemplateSuccess,
     deleteOrderTemplateSuccess
   ),
@@ -87,7 +87,7 @@ export const orderTemplateReducer = createReducer(
     addBasketToNewOrderTemplateSuccess,
     createOrderTemplateSuccess,
     updateOrderTemplateSuccess,
-    addProductToOrderTemplateSuccess,
+    addProductsToOrderTemplateSuccess,
     removeItemFromOrderTemplateSuccess,
     (state, action) => {
       const { orderTemplate } = action.payload;

@@ -5,7 +5,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -20,10 +20,10 @@ import { OrderTemplateService } from '../../services/order-template/order-templa
 import { OrderTemplatesStoreModule } from '../order-templates-store.module';
 
 import {
-  addProductToNewOrderTemplate,
-  addProductToOrderTemplate,
-  addProductToOrderTemplateFail,
-  addProductToOrderTemplateSuccess,
+  addProductsToNewOrderTemplate,
+  addProductsToOrderTemplate,
+  addProductsToOrderTemplateFail,
+  addProductsToOrderTemplateSuccess,
   createOrderTemplate,
   createOrderTemplateFail,
   createOrderTemplateSuccess,
@@ -278,60 +278,57 @@ describe('Order Template Effects', () => {
       expect(effects.updateOrderTemplate$).toBeObservable(expected$);
     });
   });
-  describe('addProductToOrderTemplate$', () => {
+  describe('addProductsToOrderTemplate$', () => {
     const payload = {
       orderTemplateId: '.SKsEQAE4FIAAAFuNiUBWx0d',
-      sku: 'sku',
-      quantity: 2,
+      items: [{ sku: 'sku', quantity: 2 }],
     };
 
     beforeEach(() => {
       store.dispatch(loginUserSuccess({ customer }));
-      when(orderTemplateServiceMock.addProductToOrderTemplate(anyString(), anyString(), anyNumber())).thenReturn(
+      when(orderTemplateServiceMock.addProductsToOrderTemplate(anyString(), anything())).thenReturn(
         of(orderTemplates[0])
       );
     });
 
-    it('should call the OrderTemplateService for addProductToOrderTemplate', done => {
-      const action = addProductToOrderTemplate(payload);
+    it('should call the OrderTemplateService for addProductsToOrderTemplate', done => {
+      const action = addProductsToOrderTemplate(payload);
       actions$ = of(action);
 
-      effects.addProductToOrderTemplate$.subscribe(() => {
-        verify(
-          orderTemplateServiceMock.addProductToOrderTemplate(payload.orderTemplateId, payload.sku, payload.quantity)
-        ).once();
+      effects.addProductsToOrderTemplate$.subscribe(() => {
+        verify(orderTemplateServiceMock.addProductsToOrderTemplate(payload.orderTemplateId, payload.items)).once();
         done();
       });
     });
 
-    it('should map to actions of type AddProductToOrderTemplateSuccess', () => {
-      const action = addProductToOrderTemplate(payload);
-      const completion = addProductToOrderTemplateSuccess({ orderTemplate: orderTemplates[0] });
+    it('should map to actions of type addProductsToOrderTemplateSuccess', () => {
+      const action = addProductsToOrderTemplate(payload);
+      const completion = addProductsToOrderTemplateSuccess({ orderTemplate: orderTemplates[0] });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
-      expect(effects.addProductToOrderTemplate$).toBeObservable(expected$);
+      expect(effects.addProductsToOrderTemplate$).toBeObservable(expected$);
     });
 
-    it('should map failed calls to actions of type AddProductToOrderTemplateFail', () => {
+    it('should map failed calls to actions of type addProductsToOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(orderTemplateServiceMock.addProductToOrderTemplate(anyString(), anyString(), anything())).thenReturn(
+      when(orderTemplateServiceMock.addProductsToOrderTemplate(anyString(), anything())).thenReturn(
         throwError(() => error)
       );
-      const action = addProductToOrderTemplate(payload);
-      const completion = addProductToOrderTemplateFail({
+      const action = addProductsToOrderTemplate(payload);
+      const completion = addProductsToOrderTemplateFail({
         error,
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.addProductToOrderTemplate$).toBeObservable(expected$);
+      expect(effects.addProductsToOrderTemplate$).toBeObservable(expected$);
     });
   });
 
-  describe('addProductToNewOrderTemplate$', () => {
+  describe('addProductsToNewOrderTemplate$', () => {
     const payload = {
       title: 'new Order Template',
-      sku: 'sku',
+      items: [{ sku: 'sku', quantity: 2 }],
     };
     const orderTemplate = {
       title: 'testing order template',
@@ -343,26 +340,26 @@ describe('Order Template Effects', () => {
       store.dispatch(loginUserSuccess({ customer }));
       when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(of(orderTemplate));
     });
-    it('should map to actions of types CreateOrderTemplateSuccess and AddProductToOrderTemplate', () => {
-      const action = addProductToNewOrderTemplate(payload);
+    it('should map to actions of types CreateOrderTemplateSuccess and addProductsToOrderTemplate', () => {
+      const action = addProductsToNewOrderTemplate(payload);
       const completion1 = createOrderTemplateSuccess({ orderTemplate });
-      const completion2 = addProductToOrderTemplate({ orderTemplateId: orderTemplate.id, sku: payload.sku });
+      const completion2 = addProductsToOrderTemplate({ orderTemplateId: orderTemplate.id, items: payload.items });
       const completion3 = selectOrderTemplate({ id: orderTemplate.id });
       actions$ = hot('-a-----a-----a', { a: action });
       const expected$ = cold('-(bcd)-(bcd)-(bcd)', { b: completion1, c: completion2, d: completion3 });
-      expect(effects.addProductToNewOrderTemplate$).toBeObservable(expected$);
+      expect(effects.addProductsToNewOrderTemplate$).toBeObservable(expected$);
     });
     it('should map failed calls to actions of type CreateOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(throwError(() => error));
-      const action = addProductToNewOrderTemplate(payload);
+      const action = addProductsToNewOrderTemplate(payload);
       const completion = createOrderTemplateFail({
         error,
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.addProductToNewOrderTemplate$).toBeObservable(expected$);
+      expect(effects.addProductsToNewOrderTemplate$).toBeObservable(expected$);
     });
   });
 
@@ -385,12 +382,11 @@ describe('Order Template Effects', () => {
       store.dispatch(loginUserSuccess({ customer }));
       when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(of(orderTemplate));
     });
-    it('should map to actions of types AddProductToNewOrderTemplate and RemoveItemFromOrderTemplate if there is no target id given', () => {
+    it('should map to actions of types addProductsToNewOrderTemplate and RemoveItemFromOrderTemplate if there is no target id given', () => {
       const action = moveItemToOrderTemplate(payload1);
-      const completion1 = addProductToNewOrderTemplate({
+      const completion1 = addProductsToNewOrderTemplate({
         title: payload1.target.title,
-        sku: payload1.target.sku,
-        quantity: payload1.target.quantity,
+        items: [{ sku: payload1.target.sku, quantity: payload1.target.quantity }],
       });
       const completion2 = removeItemFromOrderTemplate({
         orderTemplateId: payload1.source.id,
@@ -400,12 +396,11 @@ describe('Order Template Effects', () => {
       const expected$ = cold('-(bc)-(bc)-(bc)', { b: completion1, c: completion2 });
       expect(effects.moveItemToOrderTemplate$).toBeObservable(expected$);
     });
-    it('should map to actions of types AddProductToOrderTemplate and RemoveItemFromOrderTemplate if there is a target id given', () => {
+    it('should map to actions of types addProductsToOrderTemplate and RemoveItemFromOrderTemplate if there is a target id given', () => {
       const action = moveItemToOrderTemplate(payload2);
-      const completion1 = addProductToOrderTemplate({
+      const completion1 = addProductsToOrderTemplate({
         orderTemplateId: orderTemplate.id,
-        sku: payload1.target.sku,
-        quantity: payload1.target.quantity,
+        items: [{ sku: payload1.target.sku, quantity: payload1.target.quantity }],
       });
       const completion2 = removeItemFromOrderTemplate({
         orderTemplateId: payload1.source.id,

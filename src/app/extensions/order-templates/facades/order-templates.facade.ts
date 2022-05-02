@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { map, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
 import { OrderTemplate, OrderTemplateHeader } from '../models/order-template/order-template.model';
 import {
   addBasketToNewOrderTemplate,
-  addProductToNewOrderTemplate,
-  addProductToOrderTemplate,
+  addProductsToNewOrderTemplate,
+  addProductsToOrderTemplate,
   createOrderTemplate,
   deleteOrderTemplate,
   getAllOrderTemplates,
@@ -70,12 +71,12 @@ export class OrderTemplatesFacade {
     this.store.dispatch(updateOrderTemplate({ orderTemplate }));
   }
 
-  addProductToNewOrderTemplate(title: string, sku: string, quantity?: number): void {
-    this.store.dispatch(addProductToNewOrderTemplate({ title, sku, quantity }));
+  addProductsToNewOrderTemplate(title: string, items: SkuQuantityType[]): void {
+    this.store.dispatch(addProductsToNewOrderTemplate({ title, items }));
   }
 
-  addProductToOrderTemplate(orderTemplateId: string, sku: string, quantity?: number): void {
-    this.store.dispatch(addProductToOrderTemplate({ orderTemplateId, sku, quantity }));
+  addProductsToOrderTemplate(orderTemplateId: string, items: SkuQuantityType[]): void {
+    this.store.dispatch(addProductsToOrderTemplate({ orderTemplateId, items }));
   }
 
   moveItemToOrderTemplate(

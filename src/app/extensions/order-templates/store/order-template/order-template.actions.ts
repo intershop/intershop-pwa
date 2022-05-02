@@ -1,5 +1,6 @@
 import { createAction } from '@ngrx/store';
 
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/order-template.model';
@@ -49,24 +50,24 @@ export const deleteOrderTemplateSuccess = createAction(
 
 export const deleteOrderTemplateFail = createAction('[Order Templates API] Delete Order Template Fail', httpError());
 
-export const addProductToOrderTemplate = createAction(
-  '[Order Templates] Add Item to Order Template',
-  payload<{ orderTemplateId: string; sku: string; quantity?: number }>()
+export const addProductsToOrderTemplate = createAction(
+  '[Order Templates] Add Items to Order Template',
+  payload<{ orderTemplateId: string; items: SkuQuantityType[] }>()
 );
 
-export const addProductToOrderTemplateSuccess = createAction(
+export const addProductsToOrderTemplateSuccess = createAction(
   '[Order Templates API] Add Item to Order Template Success',
   payload<{ orderTemplate: OrderTemplate }>()
 );
 
-export const addProductToOrderTemplateFail = createAction(
+export const addProductsToOrderTemplateFail = createAction(
   '[Order Templates API] Add Item to Order Template Fail',
   httpError()
 );
 
-export const addProductToNewOrderTemplate = createAction(
-  '[Order Templates Internal] Add Product To New Order Template',
-  payload<{ title: string; sku: string; quantity?: number }>()
+export const addProductsToNewOrderTemplate = createAction(
+  '[Order Templates Internal] Add Products To New Order Template',
+  payload<{ title: string; items: SkuQuantityType[] }>()
 );
 
 export const moveItemToOrderTemplate = createAction(

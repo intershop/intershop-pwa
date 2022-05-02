@@ -56,11 +56,9 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
   }
 
   updateProductQuantity(sku: string, quantity: number) {
-    this.orderTemplatesFacade.addProductToOrderTemplate(
-      this.currentOrderTemplate.id,
-      sku,
-      quantity - this.orderTemplateItemData.desiredQuantity.value
-    );
+    this.orderTemplatesFacade.addProductsToOrderTemplate(this.currentOrderTemplate.id, [
+      { sku, quantity: quantity - this.orderTemplateItemData.desiredQuantity.value },
+    ]);
   }
 
   removeProductFromOrderTemplate(sku: string) {
