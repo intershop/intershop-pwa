@@ -87,7 +87,7 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
     const previous = this.getDesiredDeliveryDate(changes.basket?.previousValue);
     const current = this.getDesiredDeliveryDate(changes.basket?.currentValue);
 
-    // we only care about the add, so only do anything if it has changed
+    // we only care about the ddd, so only do anything if it has changed
     if (current && !isEqual(previous, current)) {
       if (!changes.basket.isFirstChange()) {
         this.displaySuccessMessage();
@@ -105,6 +105,7 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
       'desiredDeliveryDate'
     );
     if (valueInBasket) {
+      // "Z" is added to set the timezone as constant UTC: https://en.wikipedia.org/wiki/ISO_8601#Time_zone_designators
       const input = `${valueInBasket}Z`;
       return parseISO(input);
     }
