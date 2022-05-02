@@ -87,9 +87,6 @@ CREATE src/app/cms/components/cms-inventory/cms-inventory.component.spec.ts (795
 UPDATE src/app/cms/cms.module.ts (4956 bytes)
 ```
 
-> **Visual Studio Code Integration**  
-> For Visual Studio Code there is an extension that offers comfortable usage options for the schematics, see [Angular Schematics](https://marketplace.visualstudio.com/items?itemName=cyrilletuzi.angular-schematics).
-
 ## Integration with an External CMS
 
 Since the Intershop PWA can integrate any other REST API in addition to the ICM REST API, it should not be a problem to integrate an external 3rd party CMS that provides an own REST API, instead of using the integrated ICM CMS.
