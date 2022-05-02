@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
+export type ProductItemDisplayType = 'tile' | 'row';
+
 /**
  * The Product Item Component renders the product either as 'tile' or 'row'.
  * The 'tile' rendering is the default if no value is provided for the displayType.
@@ -14,7 +16,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductItemComponent implements OnInit {
-  @Input() displayType: 'tile' | 'row' | string = 'tile';
+  @Input() displayType: ProductItemDisplayType = 'tile';
 
   product$: Observable<ProductView>;
   loading$: Observable<boolean>;
