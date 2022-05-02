@@ -42,7 +42,7 @@ export const deleteWishlistFail = createAction('[Wishlist API] Delete Wishlist F
 
 export const addProductToWishlist = createAction(
   '[Wishlist] Add Item to Wishlist',
-  payload<{ wishlistId: string; sku: string; quantity?: number }>()
+  payload<{ wishlistId: string; sku: string }>()
 );
 
 export const addProductToWishlistSuccess = createAction(

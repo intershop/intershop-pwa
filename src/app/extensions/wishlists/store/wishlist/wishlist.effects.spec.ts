@@ -5,7 +5,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -319,14 +319,11 @@ describe('Wishlist Effects', () => {
     const payload = {
       wishlistId: '.SKsEQAE4FIAAAFuNiUBWx0d',
       sku: 'sku',
-      quantity: 2,
     };
 
     beforeEach(() => {
       store.dispatch(loginUserSuccess({ customer }));
-      when(wishlistServiceMock.addProductToWishlist(anyString(), anyString(), anyNumber())).thenReturn(
-        of(wishlists[0])
-      );
+      when(wishlistServiceMock.addProductToWishlist(anyString(), anyString())).thenReturn(of(wishlists[0]));
     });
 
     it('should call the wishlistService for addProductToWishlist', done => {
@@ -334,7 +331,7 @@ describe('Wishlist Effects', () => {
       actions$ = of(action);
 
       effects.addProductToWishlist$.subscribe(() => {
-        verify(wishlistServiceMock.addProductToWishlist(payload.wishlistId, payload.sku, payload.quantity)).once();
+        verify(wishlistServiceMock.addProductToWishlist(payload.wishlistId, payload.sku)).once();
         done();
       });
     });
@@ -349,9 +346,7 @@ describe('Wishlist Effects', () => {
 
     it('should map failed calls to actions of type AddProductToWishlistFail', () => {
       const error = makeHttpError({ message: 'invalid' });
-      when(wishlistServiceMock.addProductToWishlist(anyString(), anyString(), anything())).thenReturn(
-        throwError(() => error)
-      );
+      when(wishlistServiceMock.addProductToWishlist(anyString(), anyString())).thenReturn(throwError(() => error));
       const action = addProductToWishlist(payload);
       const completion = addProductToWishlistFail({
         error,

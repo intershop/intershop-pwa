@@ -69,8 +69,8 @@ export class WishlistsFacade {
     this.store.dispatch(addProductToNewWishlist({ title, sku }));
   }
 
-  addProductToWishlist(wishlistId: string, sku: string, quantity?: number): void {
-    this.store.dispatch(addProductToWishlist({ wishlistId, sku, quantity }));
+  addProductToWishlist(wishlistId: string, sku: string): void {
+    this.store.dispatch(addProductToWishlist({ wishlistId, sku }));
   }
 
   moveItemToWishlist(sourceWishlistId: string, targetWishlistId: string, sku: string): void {

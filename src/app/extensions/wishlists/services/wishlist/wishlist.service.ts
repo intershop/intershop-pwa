@@ -107,10 +107,9 @@ export class WishlistService {
    *
    * @param wishlist Id   The wishlist id.
    * @param sku           The product sku.
-   * @param quantity      The product quantity (default = 1).
    * @returns             The changed wishlist.
    */
-  addProductToWishlist(wishlistId: string, sku: string, quantity = 1): Observable<Wishlist> {
+  addProductToWishlist(wishlistId: string, sku: string): Observable<Wishlist> {
     if (!wishlistId) {
       return throwError(() => new Error('addProductToWishlist() called without wishlistId'));
     }
@@ -121,7 +120,7 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .post(`${restResource}/-/wishlists/${wishlistId}/products/${sku}`, { quantity })
+          .post(`${restResource}/-/wishlists/${wishlistId}/products/${sku}`)
           .pipe(concatMap(() => this.getWishlist(wishlistId)))
       )
     );
