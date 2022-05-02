@@ -6,7 +6,7 @@ import {
   MEDIUM_BREAKPOINT_WIDTH,
   SMALL_BREAKPOINT_WIDTH,
 } from 'ish-core/configurations/injection-keys';
-import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
+import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.util';
 
 SwiperCore.use([Pagination, Navigation]);
 
@@ -19,7 +19,7 @@ export class ProductsListComponent implements OnChanges {
   @Input() productSKUs: string[];
   @Input() listStyle: string;
   @Input() slideItems: number;
-  @Input() listItemStyle: ProductItemComponent['displayType'];
+  @Input() listItemStyle: ProductItemDisplayType;
   @Input() listItemCSSClass: string;
 
   /**
