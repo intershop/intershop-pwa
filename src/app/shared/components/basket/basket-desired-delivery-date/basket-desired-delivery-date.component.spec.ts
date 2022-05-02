@@ -49,13 +49,13 @@ describe('Basket Desired Delivery Date Component', () => {
 
   it('should show current desired delivery date from the store', () => {
     component.basket = {
-      attributes: [{ name: 'desiredDeliveryDate', value: '2022-3-17' }],
+      attributes: [{ name: 'desiredDeliveryDate', value: '2022-03-17' }],
     } as Basket;
 
     fixture.detectChanges();
     component.ngOnChanges({ basket: new SimpleChange(undefined, component.basket, false) });
 
-    expect(component.model.desiredDeliveryDate).toBe('2022-3-17');
+    expect(component.model.desiredDeliveryDate?.toISOString()).toMatch(/^2022-03-17/);
   });
 
   it('should show success message after successful delivery date change', () => {
