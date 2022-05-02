@@ -11,6 +11,9 @@ kb_sync_latest_only
 
 The 'contact us' functionality has been moved into an extension and we have introduced the feature toggle `contactUs` in the `environment.model.ts` that is switched on by default.
 
+The `getFilteredProducts` method has been moved from the `FilterService` to the `ProductsService`, since the `/products` API is used.
+Together with this change the default products attributes for product listings are externalized and and are now easily overridable.
+
 ## 2.1 to 2.2
 
 The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependencies updates.<br/>
@@ -42,7 +45,7 @@ The compare products functionality was moved into an extension.
 The already existing `compare` feature toggle works as before but the compare components integration changed to lazy components, e.g. `<ish-product-add-to-compare displayType="icon"></ish-product-add-to-compare>` to `<ish-lazy-product-add-to-compare displayType="icon"></ish-lazy-product-add-to-compare>`.
 For other compare components check the compare-exports.module.ts file.
 
-# 2.0 to 2.1
+## 2.0 to 2.1
 
 The recently viewed products functionality was moved into an extension.
 The already existing `recently` feature toggle works as before but the recently viewed component integration changed from `<ish-recently-viewed *ishFeature="'recently'"></ish-recently-viewed>` to `<ish-lazy-recently-viewed></ish-lazy-recently-viewed>`.
