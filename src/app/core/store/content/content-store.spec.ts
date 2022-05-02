@@ -6,7 +6,7 @@ import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { FilterService } from 'ish-core/services/filter/filter.service';
+import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -27,7 +27,7 @@ describe('Content Store', () => {
 
   beforeEach(() => {
     const cmsService = mock(CMSService);
-    const filterService = mock(FilterService);
+    const productsService = mock(ProductsService);
     when(cmsService.getContentInclude('id')).thenReturn(
       of({ include: { ...include }, pagelets: [{ ...pagelet, id: '1' }] })
     );
@@ -36,7 +36,7 @@ describe('Content Store', () => {
       imports: [ContentStoreModule, CoreStoreModule.forTesting([], true)],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsService) },
-        { provide: FilterService, useFactory: () => instance(filterService) },
+        { provide: ProductsService, useFactory: () => instance(productsService) },
       ],
     });
 

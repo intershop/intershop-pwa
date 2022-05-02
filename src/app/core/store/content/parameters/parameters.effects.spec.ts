@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { FilterService } from 'ish-core/services/filter/filter.service';
+import { ProductsService } from 'ish-core/services/products/products.service';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
@@ -16,13 +16,13 @@ import { ParametersEffects } from './parameters.effects';
 describe('Parameters Effects', () => {
   let actions$: Observable<Action>;
   let effects: ParametersEffects;
-  let filterServiceMock: FilterService;
+  let productsServiceMock: ProductsService;
 
   beforeEach(() => {
-    filterServiceMock = mock(FilterService);
+    productsServiceMock = mock(ProductsService);
     TestBed.configureTestingModule({
       providers: [
-        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         ParametersEffects,
         provideMockActions(() => actions$),
       ],
@@ -33,7 +33,7 @@ describe('Parameters Effects', () => {
 
   describe('loadParameters$', () => {
     it('should dispatch multiple actions when getFilteredProducts service is succesful', () => {
-      when(filterServiceMock.getFilteredProducts(anything(), anything())).thenReturn(
+      when(productsServiceMock.getFilteredProducts(anything(), anything())).thenReturn(
         of({ total: 1, products: [{ name: 'test', sku: 'sku' } as Product], sortableAttributes: [] })
       );
       const action = loadParametersProductListFilter({
