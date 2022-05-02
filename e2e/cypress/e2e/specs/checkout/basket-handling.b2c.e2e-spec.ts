@@ -125,6 +125,7 @@ describe('Basket Handling', () => {
     at(ProductDetailPage, page => {
       page.addProductToCart().its('response.statusCode').should('equal', 422);
       waitLoadingEnd(1000);
+      page.header.miniCart.error.should('contain', 'could not be added');
       page.header.miniCart.error.should('contain', 'has exceeded our Maximum Purchasing Policy');
     });
   });

@@ -28,13 +28,13 @@ export class ErrorMessageComponent implements OnChanges {
   }
 
   private displayToast() {
-    if (this.error && !this.error.cause) {
+    if (this.error && !this.error.causes) {
       this.messageFacade.error({
         message: this.error.message || this.error.code,
       });
     }
-    if (this.error?.cause) {
-      this.error?.cause.map(cause => {
+    if (this.error?.causes) {
+      this.error?.causes.map(cause => {
         this.messageFacade.error({
           message: cause.message,
         });

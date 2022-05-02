@@ -1,9 +1,15 @@
-<ng-container *ngIf="basketError$ | async as errors">
-  <ng-container *ngIf="errors.causes as productCauses">
-    <div *ngFor="let productCause of productCauses">
+<ng-container *ngIf="basketError$ | async as error">
+  <ng-container *ngIf="error.causes as productCauses">
+    <div *ngFor="let productCause of productCauses" class="text-danger">
+      <strong>{{ productCause.message }}</strong>
       <ng-container *ngIf="productCause.causes as causes">
-        <p *ngFor="let cause of causes" role="alert" class="text-danger">
+        <p *ngFor="let cause of causes" role="alert">
           <span> {{ cause.message }}</span>
+          <span *ngIf="cause.parameters.sku" class="product-id"
+            ><br />
+            <label>{{ 'product.itemNumber.label' | translate }}</label>
+            <span itemprop="sku">{{ cause.parameters.sku }}</span>
+          </span>
         </p>
       </ng-container>
     </div>

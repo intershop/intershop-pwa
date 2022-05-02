@@ -1,7 +1,7 @@
 interface ErrorCauseFeedback {
   message: string;
   parameters?: {
-    sku?: string;
+    [id: string]: string;
   };
 }
 
