@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
-import { ProductItemDisplayType } from './product-item.util';
+export type ProductItemDisplayType = 'tile' | 'row';
 
 /**
  * The Product Item Component renders the product either as 'tile' or 'row'.

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
-import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
+import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
 
 @Component({
   selector: 'ish-retail-set-parts',
@@ -11,7 +11,7 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RetailSetPartsComponent implements OnInit {
-  @Input() displayType: ProductItemComponent['displayType'] = 'row';
+  @Input() displayType: ProductItemDisplayType = 'row';
 
   parts$: Observable<SkuQuantityType[]>;
   visible$: Observable<boolean>;

@@ -6,7 +6,7 @@ import {
   MEDIUM_BREAKPOINT_WIDTH,
   SMALL_BREAKPOINT_WIDTH,
 } from 'ish-core/configurations/injection-keys';
-import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.util';
+import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
 
 SwiperCore.use([Pagination, Navigation]);
 
