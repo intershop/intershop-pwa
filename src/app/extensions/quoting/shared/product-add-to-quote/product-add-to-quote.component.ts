@@ -31,7 +31,10 @@ export class ProductAddToQuoteComponent implements OnInit {
 
   addToQuote() {
     this.router.navigate(['/addProductToQuoteRequest'], {
-      queryParams: { sku: this.context.get('sku'), quantity: this.context.get('quantity') },
+      queryParams: this.context
+        .getItems()
+        .filter(item => !!item.quantity)
+        .reduce((acc, item) => ({ ...acc, [`sku${item.sku}`]: item.quantity }), {}),
     });
   }
 }
