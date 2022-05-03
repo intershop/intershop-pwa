@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, identity } from 'rxjs';
 import { debounce, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
+import { PRICE_UPDATE } from 'ish-core/configurations/injection-keys';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
+import { PriceUpdateType } from 'ish-core/models/price/price.model';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -24,6 +26,7 @@ import {
   getProductListingViewType,
   loadMoreProducts,
 } from 'ish-core/store/shopping/product-listing';
+import { loadProductPrices } from 'ish-core/store/shopping/product-prices';
 import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
 import {
   getProduct,
@@ -43,7 +46,7 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class ShoppingFacade {
-  constructor(private store: Store) {}
+  constructor(private store: Store, @Inject(PRICE_UPDATE) private priceUpdate: PriceUpdateType) {}
 
   // CATEGORY
 
@@ -105,11 +108,22 @@ export class ShoppingFacade {
     );
   }
 
-  productPrices$(sku: string | Observable<string>) {
+  productPrices$(sku: string | Observable<string>, fresh = false) {
     return toObservable(sku).pipe(
+      whenTruthy(),
       switchMap(plainSKU =>
         combineLatest([
-          this.store.pipe(select(getProductPrice(plainSKU))),
+          this.store.pipe(
+            select(getProductPrice(plainSKU)),
+            // reset state when updates are forced
+            this.priceUpdate === 'always' || fresh ? startWith(undefined) : identity,
+            tap(prices => {
+              if (!prices) {
+                this.store.dispatch(loadProductPrices({ skus: [plainSKU] }));
+              }
+            }),
+            whenTruthy()
+          ),
           this.store.pipe(select(getPriceDisplayType)),
         ]).pipe(map(args => PriceItemHelper.selectPricing(...args)))
       )

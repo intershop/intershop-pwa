@@ -402,9 +402,20 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
       case 'prices':
         wrap(
           'prices',
-          combineLatest([this.select('displayProperties', 'price'), this.select('product', 'sku')]).pipe(
+          combineLatest([
+            this.select('displayProperties', 'price'),
+            this.select('product').pipe(
+              filter(p => !!p && !p.failed),
+              mapToProperty('sku'),
+              distinctUntilChanged()
+            ),
+            this.select('requiredCompletenessLevel').pipe(
+              map(completeness => completeness === true),
+              distinctUntilChanged()
+            ),
+          ]).pipe(
             filter(([visible]) => !!visible),
-            switchMap(([, ids]) => this.shoppingFacade.productPrices$(ids))
+            switchMap(([, sku, fresh]) => this.shoppingFacade.productPrices$(sku, fresh))
           )
         );
         break;

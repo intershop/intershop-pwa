@@ -17,7 +17,6 @@ import { loadCategory } from 'ish-core/store/shopping/categories';
 import { loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
-import { loadProductPrices } from 'ish-core/store/shopping/product-prices/product-prices.actions';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -197,18 +196,6 @@ describe('Products Effects', () => {
 
       expect(actions.every(a => a.type === loadProductFail.type));
     }));
-  });
-
-  describe('loadProductPricesAfterProductSuccess$', () => {
-    it('should trigger action to load product prices after successful load product action', () => {
-      const sku = 'sku123';
-      const action = loadProductSuccess({ product: { sku } as Product });
-      const completion = loadProductPrices({ skus: [sku] });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadProductPricesAfterProductSuccess$).toBeObservable(expected$);
-    });
   });
 
   describe('loadProductsForCategory$', () => {

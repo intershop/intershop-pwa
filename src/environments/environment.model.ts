@@ -1,5 +1,6 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
+import { PriceUpdateType } from 'ish-core/models/price/price.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
@@ -113,6 +114,12 @@ export interface Environment {
 
   // enable and configure data persistence for specific stores (compare, recently, tacton)
   dataRetention: DataRetentionPolicy;
+
+  /** Price update mechanism:
+   * - 'always': fetch fresh price information all the time
+   * - 'stable': only fetch prices once per application lifetime
+   */
+  priceUpdate: PriceUpdateType;
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
@@ -171,4 +178,5 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     recently: 60 * 24 * 7, // 1 week
     tacton: 'forever',
   },
+  priceUpdate: 'always',
 };
