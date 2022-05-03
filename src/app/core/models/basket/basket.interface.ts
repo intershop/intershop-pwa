@@ -46,6 +46,12 @@ export interface BasketBaseData {
   };
   approval?: BasketApproval;
   attributes?: Attribute[];
+  buyer?: {
+    companyName?: string;
+    companyName2?: string;
+    firstName: string;
+    lastName: string;
+  };
 }
 
 export interface BasketData {

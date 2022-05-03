@@ -2,7 +2,13 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { getClosestAncestorByKind, normalizePath } from '../helpers';
 
-const REPLACEMENTS = [
+interface RuleSetting {
+  pattern: string | RegExp;
+  replacement: string;
+  text: string;
+}
+
+const REPLACEMENTS: RuleSetting[] = [
   { pattern: /(toBe|toEqual)\(false\)$/, replacement: 'toBeFalse()', text: 'toBeFalse' },
   { pattern: /(toBe|toEqual)\(true\)$/, replacement: 'toBeTrue()', text: 'toBeTrue' },
   { pattern: /(toBe|toEqual)\(undefined\)$/, replacement: 'toBeUndefined()', text: 'toBeUndefined' },
@@ -12,6 +18,10 @@ const REPLACEMENTS = [
   { pattern: /\.length\)\.(toBe|toEqual)\(([0-9]+)\)$/, replacement: ').toHaveLength($2)', text: 'toHaveLength' },
   { pattern: /(toBe|toEqual)\(NaN\)$/, replacement: 'toBeNaN()', text: 'toBeNaN' },
 ];
+
+const messages = {
+  alternative: `use {{alternative}}`,
+};
 
 /**
  * Enforces a consistent coding style in jest tests by disallowing certain matchers and offering replacements.
@@ -23,14 +33,9 @@ const REPLACEMENTS = [
  * text:        String which will be displayed in the eslint error message.
  *
  */
-export const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<
-  string,
-  { pattern: string; replacement: string; text: string }[][]
-> = {
+const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<keyof typeof messages, [RuleSetting[]]> = {
   meta: {
-    messages: {
-      alternative: `use {{alternative}}`,
-    },
+    messages,
     type: 'problem',
     fixable: 'code',
     schema: [
@@ -85,3 +90,5 @@ export const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<
     };
   },
 };
+
+export default useJestExtendedMatchersInTestsRule;

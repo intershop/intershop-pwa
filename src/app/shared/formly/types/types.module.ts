@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   NgbDateAdapter,
+  NgbDateNativeAdapter,
   NgbDateParserFormatter,
   NgbDatepickerI18n,
   NgbDatepickerModule,
@@ -19,7 +20,6 @@ import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators
 import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './checkbox-field/checkbox-field.component';
 import { DatePickerFieldComponent } from './date-picker-field/date-picker-field.component';
-import { FixedFormatAdapter } from './date-picker-field/fixed-format-adapter';
 import { IshDatepickerI18n } from './date-picker-field/ish-datepicker-i18n';
 import { LocalizedParserFormatter } from './date-picker-field/localized-parser-formatter';
 import { FieldsetFieldComponent } from './fieldset-field/fieldset-field.component';
@@ -154,7 +154,7 @@ const fieldComponents = [
   ],
   providers: [
     { provide: NgbDateParserFormatter, useClass: LocalizedParserFormatter, deps: [TranslateService] },
-    { provide: NgbDateAdapter, useClass: FixedFormatAdapter },
+    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
     { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },
   ],
   declarations: [...fieldComponents],

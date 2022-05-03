@@ -8,7 +8,7 @@ export function formParamsToString(object: URLFormParams, separator = ','): stri
   return object
     ? Object.entries(object)
         .filter(([, value]) => Array.isArray(value) && value.length)
-        .map(([key, val]) => `${key}=${val.join(separator)}`)
+        .map(([key, val]) => `${key}=${val.map(encodeURIComponent).join(separator)}`)
         .join('&')
     : '';
 }

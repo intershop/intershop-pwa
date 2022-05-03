@@ -79,9 +79,20 @@ export class Component {
 <div>{{ 'product.items.label' | translate:{'0': param} }}</div>
 ```
 
+---
+
 ### Localization with Pluralization
 
 The PWA uses an [ICU Message Format](https://unicode-org.github.io/icu/userguide/format_parse/messages/) inspired way of supporting pluralization in translation keys.
+
+In addition to using pluralization for specific numbers, the Intershop PWA supports the following [pluralization cases](https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html): `zero`, `one`, `two`, `few`, `many` and `other`.
+You can use these cases in your pluralizable translation definitions like this:
+
+```json
+"shopping_cart.ministatus.items.text": "{{0, plural, one{# item} other{# items}}}",
+```
+
+Refer to [this explanation](https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Plural-forms.html) if you want to learn more about pluralization rules and why they are necessary for inclusive, multi-language applications.
 
 Have a look at the spec for [PWATranslateCompiler](../../src/app/core/utils/translate/pwa-translate-compiler.spec.ts) for an overview of supported methods.
 
@@ -286,6 +297,10 @@ HTML
 ```
 
 The clean up script is integrated in the full check run (`npm run check`) and will also be performed in continuous integration on the whole code base.
+
+The cleanup script also supports a build argument: `npm run clean-localizations --build`.
+When supplied, an Angular build with source maps is performed to limit the project to sources that are actually used before performing a cleanup.
+With this, project customizations can clean-up keys from features that are not required in the project.
 
 ## Extend Locales
 

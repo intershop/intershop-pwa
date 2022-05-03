@@ -13,7 +13,6 @@ import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/m
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -22,7 +21,6 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
-import { loadPGID } from '.';
 import {
   createUser,
   createUserFail,
@@ -108,7 +106,6 @@ describe('User Effects', () => {
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
-        { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideMockActions(() => actions$),
         UserEffects,
@@ -146,7 +143,7 @@ describe('User Effects', () => {
 
     it('should dispatch a loadPGID action on successful login', () => {
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
-      const completion = loadPGID(loginResponseData);
+      const completion = loginUserSuccess(loginResponseData);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -267,7 +264,7 @@ describe('User Effects', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
 
       const action = createUser({ credentials } as CustomerRegistrationType);
-      const completion = loadPGID({} as CustomerUserType);
+      const completion = loginUserSuccess({} as CustomerUserType);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -522,8 +519,8 @@ describe('User Effects', () => {
       effects.loadUserByAPIToken$.subscribe(action => {
         verify(userServiceMock.signInUserByToken()).once();
         expect(action).toMatchInlineSnapshot(`
-        [User Internal] Load PGID:
-          user: {"email":"test@intershop.de"}
+          [User API] Login User Success:
+            user: {"email":"test@intershop.de"}
         `);
         done();
       });

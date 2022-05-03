@@ -1,10 +1,10 @@
-import { orderedImportsRule } from '../src/rules/ordered-imports';
+import orderedImportsRule from '../src/rules/ordered-imports';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const invalidTests: { code: string; output: string }[] = [
-  // standard sorting
+const invalidTests: { code: string; output: string; name: string }[] = [
   {
+    name: 'should sort regular imports',
     code: `
       import { d } from '@test/d';
       import { b } from '@test/b';
@@ -16,8 +16,8 @@ const invalidTests: { code: string; output: string }[] = [
       import { d } from '@test/d';
       `,
   },
-  // with namespace, default or sideeffect imports
   {
+    name: 'should sort imports with namespace or side effects',
     code: `
       import * as d from '@test/d';
       import def from '@default';
@@ -31,8 +31,8 @@ const invalidTests: { code: string; output: string }[] = [
       import * as d from '@test/d';
     `,
   },
-  // correct grouping
   {
+    name: 'should sort imports in correct groups',
     code: `
       import { aa } from 'ish-aa';
       import { ab } from '@ab';
@@ -49,8 +49,8 @@ const invalidTests: { code: string; output: string }[] = [
       import { d } from './d';
     `,
   },
-  // grouping and sorting
   {
+    name: 'should sort and order imports with groups',
     code: `
       import { bb } from 'ish-ab';
       import { aa } from 'ish-aa';
@@ -65,26 +65,24 @@ const invalidTests: { code: string; output: string }[] = [
       import { bb } from 'ish-ab';
     `,
   },
-  // import member sorting
   {
+    name: 'should sort named imports',
     code: `import { c, b, a } from '@test'`,
     output: `import { a, b, c } from '@test'`,
   },
-  // import member sorting with alias
   {
+    name: 'should sort named imports using aliases',
     code: `import { xyz as a, b } from '@test'`,
     output: `import { b, xyz as a } from '@test'`,
   },
 ];
 
-const config: RuleTestConfig = {
-  ruleName: 'ordered-imports',
-  rule: orderedImportsRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.ts',
-        code: formatter(`
+testRule(orderedImportsRule, {
+  valid: [
+    {
+      name: 'should not report if imports are sorted and grouped correctly (complex)',
+      filename: 'test.ts',
+      code: formatter(`
           import { ab } from '@ab';
           import def from '@default';
           import '@sideeffect/init';
@@ -99,10 +97,11 @@ const config: RuleTestConfig = {
 
           import { x } from './x';
         `),
-      },
-      {
-        filename: 'test.ts',
-        code: formatter(`
+    },
+    {
+      name: 'should not report if imports are sorted and grouped correctly (simple)',
+      filename: 'test.ts',
+      code: formatter(`
 
           import { ab } from '@ab';
 
@@ -111,26 +110,26 @@ const config: RuleTestConfig = {
           import { x } from './x';
 
         `),
+    },
+  ],
+  /**
+   * simplify tests:
+   * - errors will always be on the same line starting at 1
+   * - code is formatted so we can write it more easily
+   */
+  invalid: invalidTests.map(testConf => ({
+    name: testConf.name,
+    filename: 'test.ts',
+    code: formatter(testConf.code),
+    output: formatter(testConf.output),
+    errors: [
+      {
+        line: 1,
+        messageId: 'unorderedImports',
       },
     ],
-    /**
-     * simplify tests:
-     * - errors will always be on the same line starting at 1
-     * - code is formatted so we can write it more easily
-     */
-    invalid: invalidTests.map(testConf => ({
-      filename: 'test.ts',
-      code: formatter(testConf.code),
-      output: formatter(testConf.output),
-      errors: [
-        {
-          line: 1,
-          messageId: 'unorderedImports',
-        },
-      ],
-    })),
-  },
-};
+  })),
+});
 
 /**
  * make formatting test code easier:
@@ -141,5 +140,3 @@ const config: RuleTestConfig = {
 function formatter(input: string): string {
   return input.replace(/^([^\S\r\n]*)(?=import.*\n)/gm, '').trim();
 }
-
-export default config;

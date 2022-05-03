@@ -10,7 +10,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { selectQueryParam } from 'ish-core/store/core/router';
-import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { ApiTokenCookieType, ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -19,8 +19,6 @@ import { PunchoutSession } from '../models/punchout-session/punchout-session.mod
 import { PunchoutService } from '../services/punchout/punchout.service';
 
 import { PunchoutIdentityProvider } from './punchout-identity-provider';
-
-type ApiTokenCookieType = 'user' | 'basket' | 'order';
 
 function getSnapshot(queryParams: Params): ActivatedRouteSnapshot {
   return {

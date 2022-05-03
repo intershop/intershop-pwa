@@ -13,10 +13,10 @@ import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PunchoutUserFormComponent implements OnInit {
-  @Input() punchoutUser?: PunchoutUser;
+  @Input() punchoutUser: PunchoutUser;
 
   /** for new users the punchout type is required */
-  @Input() punchoutType?: PunchoutType;
+  @Input() punchoutType: PunchoutType;
   @Output() submitUser = new EventEmitter<PunchoutUser>();
 
   submitted = false;

@@ -26,7 +26,7 @@ type QuoteColumnsType =
 })
 export class QuoteListComponent {
   @Input() quotes: (Quote | QuoteRequest | QuoteStubFromAttributes)[] = [];
-  @Input() columnsToDisplay?: QuoteColumnsType[] = [
+  @Input() columnsToDisplay: QuoteColumnsType[] = [
     'quoteNo',
     'displayName',
     'lineItems',

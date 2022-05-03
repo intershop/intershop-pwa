@@ -1,6 +1,7 @@
 import { InjectionToken } from '@angular/core';
 
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
+import { PriceUpdateType } from 'ish-core/models/price/price.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 
@@ -56,6 +57,13 @@ export const COOKIE_CONSENT_OPTIONS = new InjectionToken<CookieConsentOptions>('
  */
 export const DATA_RETENTION_POLICY = new InjectionToken<DataRetentionPolicy>('dataRetentionPolicy', {
   factory: () => environment.dataRetention,
+});
+
+/**
+ * the configured price update policy for the application
+ */
+export const PRICE_UPDATE = new InjectionToken<PriceUpdateType>('priceUpdate', {
+  factory: () => environment.priceUpdate,
 });
 
 /**

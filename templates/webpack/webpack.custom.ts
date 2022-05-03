@@ -1,5 +1,6 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import * as fs from 'fs';
+import { flatten } from 'lodash';
 import { basename, join, resolve } from 'path';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
@@ -334,8 +335,91 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     }
   }
 
-  // eslint-disable-next-line etc/no-commented-out-code
-  // fs.writeFileSync('effective.config.json', JSON.stringify(config, undefined, 2), { encoding: 'utf-8' });
+  process.on('exit', () => {
+    fs.mkdirSync(config.output.path, { recursive: true });
+
+    const l = process.cwd().length + 1;
+    const logOutputFile = (file: string) => file.substring(l).replace(/\\/g, '/');
+
+    // write replacements json with relative parts for script use
+    const relativeReplacements = Object.entries(angularCompilerPlugin.options.fileReplacements).reduce<
+      Record<string, string>
+    >((acc, [k, v]) => ({ ...acc, [k.substring(l).replace(/\\/g, '/')]: v.substring(l).replace(/\\/g, '/') }), {});
+
+    const replacementsPath = join(config.output.path, 'replacements.json');
+    logger.log('writing', logOutputFile(replacementsPath));
+    fs.writeFileSync(replacementsPath, JSON.stringify(relativeReplacements, undefined, 2));
+
+    const outputFolder = fs.readdirSync(config.output.path);
+    const sourceMaps = outputFolder.filter(f => f.endsWith('.js.map'));
+    if (sourceMaps.length) {
+      const activeFilesPath = join(config.output.path, 'active-files.json');
+      logger.log('writing', logOutputFile(activeFilesPath));
+
+      // write active file report
+      const activeFiles = flatten(
+        sourceMaps.map(sourceMapPath => {
+          const sourceMap: { sources: string[] } = JSON.parse(
+            fs.readFileSync(join(config.output.path, sourceMapPath), { encoding: 'utf-8' })
+          );
+          // replacements needed because html overrides are not swapped in source maps
+          return (
+            sourceMap.sources
+              // source map entries start with './
+              .map(path => path.substring(2))
+              .filter(path => path.startsWith('src') || path.startsWith('projects'))
+              .map(path => relativeReplacements[path] ?? path)
+              .filter(path => {
+                // TODO: handle lazy sources whenever this becomes a problem
+                if (path.includes('|lazy|')) {
+                  logger.warn('cannot handle lazy source:', path);
+                  return false;
+                }
+                return true;
+              })
+          );
+        })
+      )
+        .filter((v, i, a) => a.indexOf(v) === i)
+        .sort();
+      fs.writeFileSync(activeFilesPath, JSON.stringify(activeFiles, undefined, 2));
+    }
+
+    if (process.env.npm_config_dry_run) {
+      const effectiveConfigPath = join(config.output.path, 'effective.config.json');
+      logger.log('writing', logOutputFile(effectiveConfigPath));
+      fs.writeFileSync(effectiveConfigPath, JSON.stringify(config, undefined, 2));
+
+      const normalDefaultThemePath = defaultThemePath.replace(/\\/g, '/');
+      const normalNewThemePath = newThemePath.replace(/\\/g, '/');
+
+      traverse(
+        angularJsonConfig,
+        v => typeof v === 'string' && v.includes(normalDefaultThemePath),
+        (obj, key) => {
+          obj[key] = (obj[key] as string).replace(normalDefaultThemePath, normalNewThemePath);
+        }
+      );
+
+      Object.entries(angularCompilerPlugin.options.fileReplacements).map(([original, replacement]) => {
+        angularJsonConfig.fileReplacements.push({
+          replace: original,
+          with: replacement,
+        });
+      });
+
+      const effectiveAngularPath = join(config.output.path, 'effective.angular.json');
+      logger.log('writing', logOutputFile(effectiveAngularPath));
+      fs.writeFileSync(effectiveAngularPath, JSON.stringify(angularJsonConfig, undefined, 2));
+    }
+  });
+
+  // do not execute the build if npm was started with --dry-run
+  // useful for debugging config and reusing replacement logic in other places
+  if (process.env.npm_config_dry_run) {
+    logger.warn('got --dry-run -- EXITING!');
+    process.exit(0);
+  }
 
   return config;
 };

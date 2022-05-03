@@ -1,5 +1,6 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
+import { PriceUpdateType } from 'ish-core/models/price/price.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
@@ -26,6 +27,7 @@ export interface Environment {
     | 'rating'
     | 'recently'
     | 'storeLocator'
+    | 'contactUs'
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'
@@ -83,7 +85,7 @@ export interface Environment {
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
 
-  // default locale that is used as fallback if no default locale from the ICM REST call is available
+  // default locale that is used as fallback if no default locale from the ICM REST call is available (should only be set for local development)
   defaultLocale?: string;
 
   // configuration filtering available locales and their active currencies
@@ -112,6 +114,12 @@ export interface Environment {
 
   // enable and configure data persistence for specific stores (compare, recently, tacton)
   dataRetention: DataRetentionPolicy;
+
+  /** Price update mechanism:
+   * - 'always': fetch fresh price information all the time
+   * - 'stable': only fetch prices once per application lifetime
+   */
+  priceUpdate: PriceUpdateType;
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
@@ -123,7 +131,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   identityProvider: 'ICM',
 
   /* FEATURE TOGGLES */
-  features: ['compare', 'guestCheckout', 'recently', 'rating', 'wishlists'],
+  features: ['compare', 'contactUs', 'rating', 'recently', 'storeLocator'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,
@@ -138,7 +146,6 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   },
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
-  defaultLocale: 'en_US',
   multiSiteLocaleMap: {
     en_US: '/en',
     de_DE: '/de',
@@ -170,4 +177,5 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     recently: 60 * 24 * 7, // 1 week
     tacton: 'forever',
   },
+  priceUpdate: 'always',
 };

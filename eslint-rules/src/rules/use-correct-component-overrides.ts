@@ -6,7 +6,14 @@ import * as path from 'path';
 
 import { normalizePath } from '../helpers';
 
-export const useCorrectComponentOverridesRule: TSESLint.RuleModule<string, []> = {
+const messages = {
+  shouldPointToBasicFile: 'Override should point to basic component file.',
+  testOverrideTemplateMissing: 'Did not find template override ({{ expectedTemplate }}) this spec is supposed to test.',
+  testOverrideTSMissing: 'Did not find TS import ({{ expectedTS }}) this spec is supposed to test.',
+  pointToBasicFile: 'Replace with basic component file.',
+};
+
+const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     docs: {
       description:
@@ -15,13 +22,7 @@ export const useCorrectComponentOverridesRule: TSESLint.RuleModule<string, []> =
       url: '',
       suggestion: true,
     },
-    messages: {
-      shouldPointToBasicFile: 'Override should point to basic component file.',
-      testOverrideTemplateMissing:
-        'Did not find template override ({{ expectedTemplate }}) this spec is supposed to test.',
-      testOverrideTSMissing: 'Did not find TS import ({{ expectedTS }}) this spec is supposed to test.',
-      pointToBasicFile: 'Replace with basic component file.',
-    },
+    messages,
     type: 'problem',
     schema: [],
     hasSuggestions: true,
@@ -140,3 +141,5 @@ export const useCorrectComponentOverridesRule: TSESLint.RuleModule<string, []> =
     return {};
   },
 };
+
+export default useCorrectComponentOverridesRule;

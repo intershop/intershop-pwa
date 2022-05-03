@@ -1,9 +1,20 @@
-import { Injectable, InjectionToken, Injector } from '@angular/core';
+import { Injectable, InjectionToken, Injector, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { isEqual } from 'lodash-es';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, first, map, skip, startWith, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest, race } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+  skip,
+  skipWhile,
+  startWith,
+  switchMap,
+  take,
+} from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
@@ -101,11 +112,11 @@ export interface ProductContext {
 
   // child contexts
   propagateActive: boolean;
-  children: ProductContext[];
+  children: Record<string | number, ProductContext>;
 }
 
 @Injectable()
-export class ProductContextFacade extends RxState<ProductContext> {
+export class ProductContextFacade extends RxState<ProductContext> implements OnDestroy {
   private privateConfig$ = new BehaviorSubject<Partial<ProductContextDisplayProperties>>({});
   private loggingActive: boolean;
   private lazyFieldsInitialized: string[] = [];
@@ -131,6 +142,7 @@ export class ProductContextFacade extends RxState<ProductContext> {
       requiredCompletenessLevel: ProductCompletenessLevel.List,
       propagateActive: true,
       allowZeroQuantity: false,
+      children: {},
       // eslint-disable-next-line unicorn/no-null
       categoryId: null,
     });
@@ -146,7 +158,6 @@ export class ProductContextFacade extends RxState<ProductContext> {
             map(product => ({
               product,
               loading: false,
-              children: undefined,
             })),
             startWith({ loading: true })
           )
@@ -163,7 +174,10 @@ export class ProductContextFacade extends RxState<ProductContext> {
       combineLatest([
         this.select('product'),
         this.select('categoryId').pipe(switchMap(categoryId => this.shoppingFacade.category$(categoryId))),
-      ]).pipe(map(args => generateProductUrl(...args)))
+      ]).pipe(
+        map(args => generateProductUrl(...args)),
+        distinctUntilChanged()
+      )
     );
 
     this.connect(
@@ -174,17 +188,26 @@ export class ProductContextFacade extends RxState<ProductContext> {
     this.connect(
       'minQuantity',
       combineLatest([this.select('product'), this.select('allowZeroQuantity')]).pipe(
-        map(([product, allowZeroQuantity]) => (allowZeroQuantity ? 0 : product.minOrderQuantity || 1))
+        map(([product, allowZeroQuantity]) => (allowZeroQuantity ? 0 : product.minOrderQuantity || 1)),
+        distinctUntilChanged()
       )
     );
 
     this.connect(
       'maxQuantity',
       combineLatest([this.select('product'), this.appFacade.serverSetting$<number>('basket.maxItemQuantity')]).pipe(
-        map(([product, fromConfig]) => product?.maxOrderQuantity || fromConfig || 100)
+        map(([product, fromConfig]) => product?.maxOrderQuantity || fromConfig || 100),
+        distinctUntilChanged()
       )
     );
-    this.connect('stepQuantity', this.select('product').pipe(map(product => product?.stepOrderQuantity || 1)));
+
+    this.connect(
+      'stepQuantity',
+      this.select('product').pipe(
+        map(product => product?.stepOrderQuantity || 1),
+        distinctUntilChanged()
+      )
+    );
 
     this.connect(
       combineLatest([
@@ -219,10 +242,10 @@ export class ProductContextFacade extends RxState<ProductContext> {
     this.connect(
       'hasQuantityError',
       this.select('children').pipe(
-        map(
-          children =>
-            !children?.filter(x => !!x).length || children.filter(x => !!x).some(child => child.hasQuantityError)
-        )
+        map(children => Object.values(children)),
+        skipWhile(children => !children?.length),
+        map(children => !children.length || children.some(child => child.hasQuantityError)),
+        distinctUntilChanged()
       )
     );
 
@@ -238,16 +261,19 @@ export class ProductContextFacade extends RxState<ProductContext> {
 
     this.connect(
       'hasProductError',
-      this.select('product').pipe(map(product => !!product && (!!product.failed || !product.available)))
+      this.select('product').pipe(
+        map(product => !!product && (!!product.failed || !product.available)),
+        distinctUntilChanged()
+      )
     );
 
     this.connect(
       'hasProductError',
       this.select('children').pipe(
-        map(
-          children =>
-            !children?.filter(x => !!x).length || children.filter(x => !!x).some(child => child.hasProductError)
-        )
+        map(children => Object.values(children)),
+        skipWhile(children => !children?.length),
+        map(children => !children.length || children.some(child => child.hasProductError)),
+        distinctUntilChanged()
       )
     );
 
@@ -258,7 +284,8 @@ export class ProductContextFacade extends RxState<ProductContext> {
           product =>
             // eslint-disable-next-line unicorn/no-null
             ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name || null
-        )
+        ),
+        distinctUntilChanged()
       )
     );
 
@@ -288,6 +315,30 @@ export class ProductContextFacade extends RxState<ProductContext> {
       combineLatest([internalDisplayProperty$, ...externalDisplayPropertyProviders]).pipe(
         map(props => props.reduce((acc, p) => ({ ...acc, ...p }), {}))
       )
+    );
+
+    // set display properties for a parent context
+    this.connect(
+      'displayProperties',
+      race(
+        this.select('children').pipe(
+          skipWhile(children => !children || !Object.values(children)?.length),
+          map(() => true)
+        ),
+        this.select('parts').pipe(
+          skipWhile(parts => !parts?.length),
+          map(() => true)
+        ),
+        this.select('sku').pipe(map(() => false))
+      ).pipe(take(1)),
+      (state, setStandaloneProperties) =>
+        setStandaloneProperties
+          ? {
+              ...state.displayProperties,
+              readOnly: state.displayProperties.readOnly ?? true,
+              addToBasket: state.displayProperties.addToBasket ?? true,
+            }
+          : state.displayProperties
     );
   }
 
@@ -351,9 +402,20 @@ export class ProductContextFacade extends RxState<ProductContext> {
       case 'prices':
         wrap(
           'prices',
-          combineLatest([this.select('displayProperties', 'price'), this.select('product', 'sku')]).pipe(
+          combineLatest([
+            this.select('displayProperties', 'price'),
+            this.select('product').pipe(
+              filter(p => !!p && !p.failed),
+              mapToProperty('sku'),
+              distinctUntilChanged()
+            ),
+            this.select('requiredCompletenessLevel').pipe(
+              map(completeness => completeness === true),
+              distinctUntilChanged()
+            ),
+          ]).pipe(
             filter(([visible]) => !!visible),
-            switchMap(([, ids]) => this.shoppingFacade.productPrices$(ids))
+            switchMap(([, sku, fresh]) => this.shoppingFacade.productPrices$(sku, fresh))
           )
         );
         break;
@@ -375,29 +437,20 @@ export class ProductContextFacade extends RxState<ProductContext> {
   }
 
   addToBasket() {
-    const items: SkuQuantityType[] = this.get('children') || this.get('parts');
-    if (items && !ProductHelper.isProductBundle(this.get('product'))) {
-      items
-        .filter(x => !!x && !!x.quantity)
-        .forEach(child => {
-          this.shoppingFacade.addProductToBasket(child.sku, child.quantity);
-        });
+    let items: SkuQuantityType[];
+    if (Object.values(this.get('children'))?.length) {
+      items = Object.values(this.get('children'));
+    } else if (this.get('parts')?.length && !ProductHelper.isProductBundle(this.get('product'))) {
+      items = this.get('parts');
     } else {
-      this.shoppingFacade.addProductToBasket(this.get('sku'), this.get('quantity'));
+      items = [this.get()];
     }
-  }
 
-  propagate(index: number, childState: ProductContext) {
-    this.set('children', state => {
-      const current = [...(state.children || [])];
-      current[index] = childState;
-      return current;
-    });
-    this.set('displayProperties', state => ({
-      ...state.displayProperties,
-      readOnly: true,
-      addToBasket: true,
-    }));
+    items
+      .filter(x => !!x && !!x.quantity)
+      .forEach(child => {
+        this.shoppingFacade.addProductToBasket(child.sku, child.quantity);
+      });
   }
 
   validDebouncedQuantityUpdate$(time = 800) {
@@ -418,5 +471,12 @@ export class ProductContextFacade extends RxState<ProductContext> {
           : ProductHelper.getPrimaryImage(product, imageType)
       )
     );
+  }
+
+  ngOnDestroy(): void {
+    if (this.get('propagateActive')) {
+      this.set('propagateActive', () => false);
+    }
+    super.ngOnDestroy();
   }
 }

@@ -41,6 +41,7 @@ describe('Basket Handling', () => {
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
       page.addProductToCart().its('response.statusCode').should('equal', 201);
+      waitLoadingEnd();
       page.header.miniCart.total.should('contain', _.product.price);
       page.header.logout();
     });

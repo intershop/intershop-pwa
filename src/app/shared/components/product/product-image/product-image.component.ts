@@ -24,7 +24,7 @@ export class ProductImageComponent implements OnInit {
    * If true, a product link is generated around the component or the given link target is taken
    */
   @Input() link = false;
-  @Input() linkTarget?: string;
+  @Input() linkTarget: string;
 
   @Input() queryParamsHandling: QueryParamsHandling = 'merge';
   /**
@@ -34,11 +34,11 @@ export class ProductImageComponent implements OnInit {
   /**
    * The image view, e.g. 'front', 'back'.
    */
-  @Input() imageView?: string;
+  @Input() imageView: string;
   /**
    * A custom alt text for the img tag.
    */
-  @Input() altText?: string;
+  @Input() altText: string;
 
   productURL$: Observable<string>;
   productImage$: Observable<Image>;

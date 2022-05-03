@@ -28,12 +28,14 @@ import { getLoggedInUser, getUserAuthorized, loadUserByAPIToken } from 'ish-core
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
-type ApiTokenCookieType = 'user' | 'basket' | 'order';
+export type ApiTokenCookieType = 'user' | 'order';
 
 interface ApiTokenCookie {
   apiToken: string;
   type: ApiTokenCookieType;
+  isAnonymous?: boolean;
   orderId?: string;
+  creator?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -67,11 +69,19 @@ export class ApiTokenService {
         .pipe(
           map(([user, basket, orderId, apiToken]): ApiTokenCookie => {
             if (user) {
-              return { type: 'user', apiToken };
+              return { apiToken, type: 'user', isAnonymous: false, creator: 'pwa' };
             } else if (basket) {
-              return { type: 'basket', apiToken };
+              return { apiToken, type: 'user', isAnonymous: true, creator: 'pwa' };
             } else if (orderId) {
-              return { type: 'order', apiToken, orderId };
+              return { apiToken, type: 'order', orderId, creator: 'pwa' };
+            } else {
+              const apiTokenCookieString = this.cookiesService.get('apiToken');
+              const apiTokenCookie: ApiTokenCookie = apiTokenCookieString
+                ? JSON.parse(apiTokenCookieString)
+                : undefined;
+              if (apiToken && apiTokenCookie) {
+                return { ...apiTokenCookie, apiToken };
+              }
             }
           }),
           distinctUntilChanged<ApiTokenCookie>(isEqual)
@@ -131,10 +141,10 @@ export class ApiTokenService {
 
   hasUserApiTokenCookie() {
     const apiTokenCookie = this.parseCookie();
-    return apiTokenCookie?.type === 'user';
+    return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
   }
 
-  restore$(types: ApiTokenCookieType[] = ['user', 'basket', 'order']): Observable<boolean> {
+  restore$(types: ApiTokenCookieType[] = ['user', 'order']): Observable<boolean> {
     if (isPlatformServer(this.platformId)) {
       return of(true);
     }
@@ -145,23 +155,25 @@ export class ApiTokenService {
         if (types.includes(cookie?.type)) {
           switch (cookie?.type) {
             case 'user': {
-              this.store.dispatch(loadUserByAPIToken());
-              return race(
-                this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
-                timer(5000).pipe(map(() => false))
-              );
+              if (cookie.isAnonymous) {
+                this.store.dispatch(loadBasketByAPIToken({ apiToken: cookie.apiToken }));
+                return race(
+                  this.store.pipe(
+                    select(getCurrentBasketId),
+                    whenTruthy(),
+                    take(1),
+                    map(() => true)
+                  ),
+                  timer(5000).pipe(map(() => false))
+                );
+              } else {
+                this.store.dispatch(loadUserByAPIToken());
+                return race(
+                  this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
+                  timer(5000).pipe(map(() => false))
+                );
+              }
             }
-            case 'basket':
-              this.store.dispatch(loadBasketByAPIToken({ apiToken: cookie.apiToken }));
-              return race(
-                this.store.pipe(
-                  select(getCurrentBasketId),
-                  whenTruthy(),
-                  take(1),
-                  map(() => true)
-                ),
-                timer(5000).pipe(map(() => false))
-              );
             case 'order': {
               this.store.dispatch(loadOrderByAPIToken({ orderId: cookie.orderId, apiToken: cookie.apiToken }));
               return race(

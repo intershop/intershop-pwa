@@ -27,7 +27,7 @@ export class LineItemListComponent {
   @Input() lineItems: Partial<LineItemView & OrderLineItem>[];
   @Input() editable = true;
   @Input() total: Price;
-  @Input() lineItemViewType?: 'simple' | 'availability';
+  @Input() lineItemViewType: 'simple' | 'availability';
 
   trackByFn(_: number, item: Partial<LineItemView & OrderLineItem>) {
     return item.productSKU;

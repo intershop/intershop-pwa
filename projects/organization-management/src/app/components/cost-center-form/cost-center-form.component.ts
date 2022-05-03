@@ -20,7 +20,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 })
 export class CostCenterFormComponent implements OnInit {
   @Input() form: FormGroup;
-  @Input() costCenter?: CostCenter;
+  @Input() costCenter: CostCenter;
 
   fields$: Observable<FormlyFieldConfig[]>;
   model$: Observable<{ budgetValue?: number; currency: string; costCenterManager?: string } & Partial<CostCenterBase>>;

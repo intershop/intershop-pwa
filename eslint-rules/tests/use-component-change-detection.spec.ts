@@ -1,47 +1,44 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { useComponentChangeDetectionRule } from '../src/rules/use-component-change-detection';
+import useComponentChangeDetectionRule from '../src/rules/use-component-change-detection';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'use-component-change-detection',
-  rule: useComponentChangeDetectionRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.service.ts',
-        code: `
+testRule(useComponentChangeDetectionRule, {
+  valid: [
+    {
+      name: 'should not report on non-component files',
+      filename: 'test.service.ts',
+      code: `
         @Injectable({})
         export class TestService {}
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+    {
+      name: 'should not report if component change detection is used',
+      filename: 'test.component.ts',
+      code: `
         @Component({
           changeDetection: ChangeDetectionStrategy.OnPush
         })
         export class TestComponent {}
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report if component change detection is not used',
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent {}
         `,
-        errors: [
-          {
-            messageId: 'noChangeDetectionError',
-            type: AST_NODE_TYPES.Decorator,
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'noChangeDetectionError',
+          type: AST_NODE_TYPES.Decorator,
+        },
+      ],
+    },
+  ],
+});

@@ -2,12 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbDate, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 
-import { DateHelper } from 'ish-core/utils/date-helper';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
@@ -17,6 +16,7 @@ describe('Date Picker Field Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
+  let calendar: NgbCalendar;
 
   const templateOptionsVal = {
     minDays: of(2),
@@ -36,6 +36,8 @@ describe('Date Picker Field Component', () => {
         ReactiveFormsModule,
       ],
     }).compileComponents();
+
+    calendar = TestBed.inject(NgbCalendar);
   });
 
   beforeEach(() => {
@@ -83,7 +85,7 @@ describe('Date Picker Field Component', () => {
       .query(By.directive(NgbInputDatepicker))
       .injector.get(NgbInputDatepicker) as NgbInputDatepicker;
 
-    expect(datePickerDirective.minDate).toEqual(DateHelper.addDaysToGivenDate(2, new Date()));
+    expect(datePickerDirective.minDate).toEqual(calendar.getNext(calendar.getToday(), 'd', 2));
   });
 
   it('should not set max date because property is invalid', () => {

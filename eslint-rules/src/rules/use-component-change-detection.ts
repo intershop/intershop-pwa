@@ -2,14 +2,16 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath, objectContainsProperty } from '../helpers';
 
+const messages = {
+  noChangeDetectionError: `Components should explicitly declare "changeDetection", preferably "ChangeDetectionStrategy.OnPush"`,
+};
+
 /**
  * Enforces the explicit declaration of `changeDetection` in component decorators.
  */
-export const useComponentChangeDetectionRule: TSESLint.RuleModule<string, []> = {
+const useComponentChangeDetectionRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      noChangeDetectionError: `Components should explicitly declare "changeDetection", preferably "ChangeDetectionStrategy.OnPush"`,
-    },
+    messages,
     type: 'problem',
     schema: [],
   },
@@ -44,3 +46,5 @@ function configurationArgumentsContainChangeDetection(config: TSESTree.CallExpre
     config && config[0].type === AST_NODE_TYPES.ObjectExpression && objectContainsProperty(config[0], 'changeDetection')
   );
 }
+
+export default useComponentChangeDetectionRule;

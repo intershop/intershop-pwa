@@ -21,8 +21,8 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 })
 export class ProductListComponent implements OnInit {
   @Input() products: string[];
-  @Input() categoryId?: string;
-  @Input() viewType?: ViewType = 'grid';
+  @Input() categoryId: string;
+  @Input() viewType: ViewType = 'grid';
 
   listingLoading$: Observable<boolean>;
 

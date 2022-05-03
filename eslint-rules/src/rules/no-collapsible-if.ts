@@ -1,13 +1,15 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+const messages = {
+  noCollapsibleIfError: `If-statements can be merged.`,
+};
+
 /**
  * Finds and merges collapsible if statements.
  */
-export const noCollapsibleIfRule: TSESLint.RuleModule<string, []> = {
+const noCollapsibleIfRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      noCollapsibleIfError: `If-statements can be merged.`,
-    },
+    messages,
     fixable: 'code',
     type: 'problem',
     schema: [],
@@ -75,3 +77,5 @@ function collapseIf({
   consequent = consequent.replace(consequent.substring(reg.lastIndex, consequent.lastIndexOf('}') + 1), '');
   return `if((${firstIfCondition}) && (${secondIfCondition}))${consequent}`;
 }
+
+export default noCollapsibleIfRule;

@@ -9,8 +9,10 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { formatISO, isEqual, parseISO } from 'date-fns';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
@@ -25,7 +27,7 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
   form = new FormGroup({});
   fields: FormlyFieldConfig[];
 
-  model: { desiredDeliveryDate: string };
+  model: { desiredDeliveryDate: Date };
 
   showSuccessMessage = false;
 
@@ -82,11 +84,11 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    const previous = this.getDesiredDeliveryDate(changes.basket?.previousValue);
+    const current = this.getDesiredDeliveryDate(changes.basket?.currentValue);
+
     // we only care about the ddd, so only do anything if it has changed
-    if (
-      this.getDesiredDeliveryDate(changes.basket?.previousValue) !==
-      this.getDesiredDeliveryDate(changes.basket?.currentValue)
-    ) {
+    if (current && !isEqual(previous, current)) {
       if (!changes.basket.isFirstChange()) {
         this.displaySuccessMessage();
       }
@@ -97,8 +99,16 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
     }
   }
 
-  private getDesiredDeliveryDate(basket: Basket): string | undefined {
-    return basket?.attributes?.find(attr => attr.name === 'desiredDeliveryDate')?.value as string | undefined;
+  private getDesiredDeliveryDate(basket: Basket): Date | undefined {
+    const valueInBasket = AttributeHelper.getAttributeValueByAttributeName<string>(
+      basket?.attributes,
+      'desiredDeliveryDate'
+    );
+    if (valueInBasket) {
+      // "Z" is added to set the timezone as constant UTC: https://en.wikipedia.org/wiki/ISO_8601#Time_zone_designators
+      const input = `${valueInBasket}Z`;
+      return parseISO(input);
+    }
   }
 
   private displaySuccessMessage() {
@@ -118,8 +128,12 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
     if (this.disabled) {
       return;
     }
+    const value = this.form.get('desiredDeliveryDate').value;
 
-    const desiredDeliveryDate = this.form.get('desiredDeliveryDate').value;
+    let desiredDeliveryDate;
+    if (value) {
+      desiredDeliveryDate = formatISO(this.form.get('desiredDeliveryDate').value, { representation: 'date' });
+    }
 
     this.checkoutFacade.setBasketCustomAttribute({
       name: 'desiredDeliveryDate',

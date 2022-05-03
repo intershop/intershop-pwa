@@ -50,7 +50,7 @@ export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges
 
       this.buyer =
         this.costCenter.buyers?.length &&
-        this.costCenter.buyers?.find(buyer => buyer.email === this.requisition?.user.email);
+        this.costCenter.buyers?.find(buyer => buyer.email === this.requisition?.email);
       this.bVal = this.determineBudgetValues(this.buyer);
     }
   }

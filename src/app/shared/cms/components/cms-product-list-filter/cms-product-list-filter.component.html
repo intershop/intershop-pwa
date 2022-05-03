@@ -5,7 +5,7 @@
       [productSKUs]="productSKUs"
       [listStyle]="pagelet.stringParam('ListStyle')"
       [slideItems]="pagelet.numberParam('SlideItems')"
-      [listItemStyle]="pagelet.stringParam('ListItemStyle')"
+      [listItemStyle]="$any(pagelet.stringParam('ListItemStyle'))"
       [listItemCSSClass]="pagelet.stringParam('ListItemCSSClass')"
     >
     </ish-products-list>

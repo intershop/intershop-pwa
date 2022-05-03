@@ -2,14 +2,16 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
 
+const messages = {
+  noObjectLiteralTypeAssertionError: `Type assertion on object literals is forbidden, use a type annotation instead.`,
+};
+
 /**
  * Disallows type assertions (`exampleObject as ExampleType`) on object literals.
  */
-export const noObjectLiteralTypeAssertionRule: TSESLint.RuleModule<string, []> = {
+const noObjectLiteralTypeAssertionRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      noObjectLiteralTypeAssertionError: `Type assertion on object literals is forbidden, use a type annotation instead.`,
-    },
+    messages,
     type: 'problem',
     schema: [],
   },
@@ -30,3 +32,5 @@ export const noObjectLiteralTypeAssertionRule: TSESLint.RuleModule<string, []> =
     return {};
   },
 };
+
+export default noObjectLiteralTypeAssertionRule;

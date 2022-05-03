@@ -25,6 +25,7 @@ export interface OrderBaseData extends BasketBaseData {
   basket: string;
   requisitionDocumentNo?: string;
   attributes?: Attribute[];
+  taxIdentificationNumber?: string;
 }
 
 export interface OrderData {

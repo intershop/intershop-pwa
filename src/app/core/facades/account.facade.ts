@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { Contact } from 'ish-core/models/contact/contact.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -53,13 +52,6 @@ import {
   updateUserPassword,
   updateUserPasswordByPasswordReminder,
 } from 'ish-core/store/customer/user';
-import {
-  createContact,
-  getContactLoading,
-  getContactSubjects,
-  getContactSuccess,
-  loadContact,
-} from 'ish-core/store/general/contact';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -195,22 +187,6 @@ export class AccountFacade {
 
   deleteCustomerAddress(addressId: string) {
     this.store.dispatch(deleteCustomerAddress({ addressId }));
-  }
-
-  // CONTACT US
-
-  contactSubjects$() {
-    this.store.dispatch(loadContact());
-    return this.store.pipe(select(getContactSubjects));
-  }
-  contactLoading$ = this.store.pipe(select(getContactLoading));
-  contactSuccess$ = this.store.pipe(select(getContactSuccess));
-
-  resetContactState() {
-    this.store.dispatch(loadContact());
-  }
-  createContact(contact: Contact) {
-    this.store.dispatch(createContact({ contact }));
   }
 
   // SSO

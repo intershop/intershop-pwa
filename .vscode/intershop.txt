@@ -188,6 +188,7 @@ setuprequest
 ruleset
 rulesets
 unpatched
+pluralizable
 
 foo
 foos

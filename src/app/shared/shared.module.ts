@@ -25,6 +25,7 @@ import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
+import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
@@ -41,7 +42,6 @@ import { CMSDialogComponent } from './cms/components/cms-dialog/cms-dialog.compo
 import { CMSFreestyleComponent } from './cms/components/cms-freestyle/cms-freestyle.component';
 import { CMSImageEnhancedComponent } from './cms/components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './cms/components/cms-image/cms-image.component';
-import { CMSLandingPageComponent } from './cms/components/cms-landing-page/cms-landing-page.component';
 import { CMSProductListCategoryComponent } from './cms/components/cms-product-list-category/cms-product-list-category.component';
 import { CMSProductListFilterComponent } from './cms/components/cms-product-list-filter/cms-product-list-filter.component';
 import { CMSProductListManualComponent } from './cms/components/cms-product-list-manual/cms-product-list-manual.component';
@@ -146,6 +146,7 @@ const importExportModules = [
   CdkTableModule,
   CommonModule,
   CompareExportsModule,
+  ContactUsExportsModule,
   DeferLoadModule,
   DirectivesModule,
   FeatureToggleModule,
@@ -185,7 +186,6 @@ const declaredComponents = [
   CMSFreestyleComponent,
   CMSImageComponent,
   CMSImageEnhancedComponent,
-  CMSLandingPageComponent,
   CMSProductListCategoryComponent,
   CMSProductListFilterComponent,
   CMSProductListManualComponent,

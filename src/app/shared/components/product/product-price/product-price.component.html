@@ -30,12 +30,13 @@
       class="old-price"
       data-testing-id="old-price"
     >
-      {{ 'product.price.listPriceFallback.text' | translate: { '0': d.listPrice | ishPrice } }}
+      <span class="price-value">
+        {{ 'product.price.listPriceFallback.text' | translate: { '0': d.listPrice | ishPrice } }}
+      </span>
+      <span *ngIf="showPriceSavings" class="price-savings">
+        {{ 'product.price.savingsFallback.text' | translate: { '0': d.priceSavings | ishPrice } }}
+      </span>
     </div>
-
-    <span *ngIf="showPriceSavings && d.isListPriceGreaterThanSalePrice" class="price-savings">
-      {{ 'product.price.savingsFallback.text' | translate: { '0': d.priceSavings | ishPrice } }}
-    </span>
 
     <div *ngIf="showScaledPrices && d.scaledPrices?.length" class="scaled-prices" data-testing-id="scaled-prices">
       <ng-container *ngFor="let scaledPrice of d.scaledPrices; index as i; last as lastscaledPrice">

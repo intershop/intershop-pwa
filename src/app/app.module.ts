@@ -11,6 +11,7 @@ import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { CompareRoutingModule } from './extensions/compare/pages/compare-routing.module';
+import { ContactUsRoutingModule } from './extensions/contact-us/pages/contact-us-routing.module';
 import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-routing.module';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
 import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing.module';
@@ -37,6 +38,7 @@ import { ShellModule } from './shell/shell.module';
     StoreLocatorRoutingModule,
     RecentlyRoutingModule,
     CompareRoutingModule,
+    ContactUsRoutingModule,
     AppLastRoutingModule,
   ],
   /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */

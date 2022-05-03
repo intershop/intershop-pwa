@@ -1,7 +1,7 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
   "keywords": [
     "intershop"
@@ -23,7 +23,7 @@
     "ngcc": "ngcc",
     "test": "jest --ci",
     "test:watch": "jest --watch -i",
-    "test:eslint-rules": "npx ts-node eslint-rules/tests/_execute-tests.ts",
+    "test:eslint-rules": "cd eslint-rules && npm run test -- --ci",
     "test:schematics": "cd schematics && npm run test -- --ci",
     "e2e": "cd e2e && npm install && node open-cypress",
     "lint": "ng lint",
@@ -187,7 +187,7 @@
   "lint-staged": {
     "docs/**/*.md": [
       "node docs/check-kb-labels",
-      "node docs/check-dead-links fast",
+      "node docs/check-dead-links.mjs fast",
       "node docs/check-documentation-overview",
       "node docs/check-sentence-newline",
       "cspell lint --no-summary --no-progress"

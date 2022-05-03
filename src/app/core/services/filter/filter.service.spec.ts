@@ -15,13 +15,6 @@ describe('Filter Service', () => {
   let filterService: FilterService;
   let appFacadeMock: AppFacade;
 
-  const productsMock = {
-    elements: [
-      { uri: 'products/123', attributes: [{ name: 'sku', value: '123' }] },
-      { uri: 'products/234', attributes: [{ name: 'sku', value: '234' }] },
-    ],
-    total: 2,
-  };
   const filterMock = {
     elements: [
       {
@@ -43,10 +36,7 @@ describe('Filter Service', () => {
 
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['configuration'])],
-      providers: [
-        { provide: ApiService, useFactory: () => instance(apiService) },
-        { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
-      ],
+      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
     });
     filterService = TestBed.inject(FilterService);
 
@@ -91,30 +81,6 @@ describe('Filter Service', () => {
       const [resource, params] = capture(apiService.get).last();
       expect(resource).toMatchInlineSnapshot(`"productfilters"`);
       expect((params as AvailableOptions)?.params?.toString()).toMatchInlineSnapshot(`"SearchParameter=b"`);
-
-      done();
-    });
-  });
-
-  it("should get Product SKUs when 'getFilteredProducts' is called", done => {
-    when(apiService.get(anything(), anything())).thenReturn(of(productsMock));
-
-    filterService.getFilteredProducts({ SearchParameter: ['b'] } as URLFormParams, 2).subscribe(data => {
-      expect(data?.products?.map(p => p.sku)).toMatchInlineSnapshot(`
-        Array [
-          "123",
-          "234",
-        ]
-      `);
-      expect(data?.total).toMatchInlineSnapshot(`2`);
-      expect(data?.sortableAttributes).toMatchInlineSnapshot(`Array []`);
-
-      verify(apiService.get(anything(), anything())).once();
-      const [resource, params] = capture(apiService.get).last();
-      expect(resource).toMatchInlineSnapshot(`"products"`);
-      expect((params as AvailableOptions)?.params?.toString()).toMatchInlineSnapshot(
-        `"amount=2&offset=0&attrs=sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet,defaultCategory&attributeGroup=PRODUCT_LABEL_ATTRIBUTES&returnSortKeys=true&SearchParameter=b"`
-      );
 
       done();
     });

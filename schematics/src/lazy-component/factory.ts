@@ -65,8 +65,7 @@ export function createLazyComponent(options: Options): Rule {
     options = findDeclaringModule(host, options);
     options = determineArtifactName('component', host, options);
 
-    let bindings: { declaration: string; name: string }[] = [];
-    let imports: { types: string[]; from: string }[] = [];
+    let inputNames: string[] = [];
 
     const componentContent = host.read(componentPath).toString('utf-8');
     const componentSource = ts.createSourceFile(componentPath, componentContent, ts.ScriptTarget.Latest, true);
@@ -81,33 +80,9 @@ export function createLazyComponent(options: Options): Rule {
       .replace(originalName.replace(`${project.prefix}-`, ''), options.name.replace(`${project.prefix}-`, ''));
 
     if (componentContent.includes('@Input(')) {
-      const bindingNodes = tsquery(
-        componentSource,
-        'PropertyDeclaration:has(Decorator Identifier[text=Input])'
-      ) as ts.PropertyDeclaration[];
-
-      bindings = bindingNodes.map(node => ({
-        declaration: node.getText(),
-        name: node.name.getText(),
-      }));
-
-      const importTypes = bindingNodes
-        .map(node => tsquery(node, 'TypeReference > Identifier').map(identifier => identifier.getText()))
-        .reduce((acc, val) => acc.concat(...val), []);
-
-      if (importTypes.length) {
-        const importDeclarations = tsquery(componentSource, 'ImportDeclaration') as ts.ImportDeclaration[];
-        imports = importDeclarations
-          .map(decl => ({
-            from: decl.moduleSpecifier.getText(),
-            types: decl.importClause.namedBindings
-              ? tsquery(decl.importClause.namedBindings, 'Identifier')
-                  .map(n => n.getText())
-                  .filter(importType => importTypes.includes(importType))
-              : [],
-          }))
-          .filter(decl => decl.types.length);
-      }
+      inputNames = tsquery(componentSource, 'PropertyDeclaration:has(Decorator Identifier[text=Input])').map(
+        (node: ts.PropertyDeclaration) => node.name.getText()
+      );
     }
 
     let onChanges: 'simple' | 'complex';
@@ -184,20 +159,20 @@ export function createLazyComponent(options: Options): Rule {
       );
     }
 
+    const guardDisplay = !isProject && !isShared && extension;
+
     operations.push(
       mergeWith(
         apply(url('./files'), [
           applyTemplates({
             ...strings,
             ...options,
-            bindings,
-            imports,
+            inputNames,
             originalPath,
-            extension,
             originalName,
             onChanges,
-            isProject,
             isShared,
+            guardDisplay,
             componentImportPath,
             declaringModule,
           }),
@@ -214,6 +189,10 @@ export function createLazyComponent(options: Options): Rule {
         ])
       )
     );
+
+    if (guardDisplay) {
+      operations.push(schematic('add-destroy', { project: options.project, name: `${options.path}/${options.name}` }));
+    }
 
     operations.push(applyLintFix());
 

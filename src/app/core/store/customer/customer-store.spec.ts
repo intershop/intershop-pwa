@@ -20,7 +20,6 @@ import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
@@ -29,7 +28,7 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
-import { SHOPPING_STORE_CONFIG, ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -90,6 +89,8 @@ describe('Customer Store', () => {
     birthday: 'test',
   } as User;
 
+  const pgid = 'spgid';
+
   const promotion = {
     id: 'PROMO_UUID',
     name: 'MyPromotion',
@@ -137,10 +138,7 @@ describe('Customer Store', () => {
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
     const userServiceMock = mock(UserService);
-    when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user }));
-
-    const personalizationServiceMock = mock(PersonalizationService);
-    when(personalizationServiceMock.getPGID()).thenReturn(of('spgid'));
+    when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
@@ -175,11 +173,9 @@ describe('Customer Store', () => {
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
-        { provide: PersonalizationService, useFactory: () => instance(personalizationServiceMock) },
         { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: SHOPPING_STORE_CONFIG, useValue: {} },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideStoreSnapshots(),
@@ -217,14 +213,11 @@ describe('Customer Store', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           [User] Login User:
             credentials: {}
-          [User Internal] Load PGID:
-            customer: {"isBusinessCustomer":false,"customerNo":"test"}
-            user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
-          [User API] Load PGID Success:
-            pgid: "spgid"
           [User API] Login User Success:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
+            pgid: "spgid"
+          [Basket API] Merge two baskets in progress
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
         `);

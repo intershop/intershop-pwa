@@ -49,14 +49,16 @@ describe('User Service', () => {
       when(apiServiceMock.get('privatecustomers/-')).thenReturn(
         of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
       );
+      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '6FGMJtFU2xuRpG9I3CpTS7fc0000' }));
 
       userService.signInUser(loginDetail).subscribe(data => {
-        const [, options] = capture<{}, { headers: HttpHeaders }>(apiServiceMock.get).beforeLast();
+        const [, options] = capture<{}, { headers: HttpHeaders }>(apiServiceMock.get).first();
         const headers = options?.headers;
         expect(headers).toBeTruthy();
         expect(headers.get('Authorization')).toEqual('BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==');
 
         expect(data).toHaveProperty('customer.customerNo', 'PC');
+        expect(data).toHaveProperty('pgid', '6FGMJtFU2xuRpG9I3CpTS7fc0000');
         done();
       });
     });
@@ -67,10 +69,12 @@ describe('User Service', () => {
         of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
       );
       when(apiServiceMock.get('privatecustomers/-')).thenReturn(of({ customerNo: 'PC' } as CustomerData));
+      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '123' }));
 
       userService.signInUser(loginDetail).subscribe(() => {
         verify(apiServiceMock.get(`customers/-`, anything())).once();
         verify(apiServiceMock.get(`privatecustomers/-`)).once();
+        verify(apiServiceMock.get('personalization')).once();
         done();
       });
     });
@@ -80,10 +84,12 @@ describe('User Service', () => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(
         of({ customerNo: 'PC', customerType: 'SMBCustomer' } as CustomerData)
       );
+      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '123' }));
 
       userService.signInUser(loginDetail).subscribe(() => {
         verify(apiServiceMock.get(`customers/-`, anything())).once();
         verify(apiServiceMock.get(`privatecustomers/-`, anything())).never();
+        verify(apiServiceMock.get('personalization')).once();
         done();
       });
     });
@@ -106,11 +112,13 @@ describe('User Service', () => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(
         of({ customerNo: '4711', type: 'SMBCustomer', customerType: 'SMBCustomer' } as CustomerData)
       );
+      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '1234' }));
 
       userService.signInUserByToken().subscribe(() => {
         verify(apiServiceMock.get('customers/-', anything())).once();
         verify(apiServiceMock.get('privatecustomers/-', anything())).never();
-        const [path] = capture<string>(apiServiceMock.get).last();
+        verify(apiServiceMock.get('personalization')).once();
+        const [path] = capture<string>(apiServiceMock.get).first();
         expect(path).toEqual('customers/-');
         done();
       });
@@ -120,11 +128,13 @@ describe('User Service', () => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(
         of({ customerNo: '4711', type: 'SMBCustomer', customerType: 'SMBCustomer' } as CustomerData)
       );
+      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '1234' }));
 
       userService.signInUserByToken('12345').subscribe(() => {
         verify(apiServiceMock.get('customers/-', anything())).once();
         verify(apiServiceMock.get('privatecustomers/-', anything())).never();
-        const [path, options] = capture<string, AvailableOptions>(apiServiceMock.get).last();
+        verify(apiServiceMock.get('personalization')).once();
+        const [path, options] = capture<string, AvailableOptions>(apiServiceMock.get).first();
         expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toMatchInlineSnapshot(`"12345"`);
         expect(path).toEqual('customers/-');
         done();

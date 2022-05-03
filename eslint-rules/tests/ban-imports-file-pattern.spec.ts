@@ -1,84 +1,81 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { banImportsFilePatternRule } from '../src/rules/ban-imports-file-pattern';
+import banImportsFilePatternRule from '../src/rules/ban-imports-file-pattern';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'ban-imports-file-pattern',
-  rule: banImportsFilePatternRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.component.ts',
-        options: [
-          [
-            {
-              importNamePattern: 'foo|bar|baz',
-              name: '@foobar',
-              filePattern: '^.*\\.spec\\.ts*$',
-              message: 'Test Message',
-            },
-          ],
-        ],
-        code: `
-        import { foo } from '@foobar'
-      `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.component.spec.ts',
-        options: [
-          [
-            {
-              importNamePattern: 'foo|bar|baz',
-              name: '@foobar',
-              filePattern: '^.*\\.spec\\.ts*$',
-              message: 'Test Message',
-            },
-          ],
-        ],
-        code: `
-        import { foo } from '@foobar'
-      `,
-        errors: [
+testRule(banImportsFilePatternRule, {
+  valid: [
+    {
+      name: 'should not report on file not included in file pattern',
+      filename: 'test.component.ts',
+      options: [
+        [
           {
-            messageId: 'banImportsFilePatternError',
-            data: {
-              message: 'Test Message',
-            },
-            type: AST_NODE_TYPES.ImportDeclaration,
+            importNamePattern: 'foo|bar|baz',
+            name: '@foobar',
+            filePattern: '^.*\\.spec\\.ts*$',
+            message: 'Test Message',
           },
         ],
-      },
-      {
-        filename: 'test.component.ts',
-        options: [
-          [
-            {
-              starImport: true,
-              name: 'foobar',
-              filePattern: '^.*\\.component\\.ts*$',
-              message: 'Test Star Import.',
-            },
-          ],
+      ],
+      code: `
+        import { foo } from '@foobar'
+      `,
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report on file included in file pattern',
+      filename: 'test.component.spec.ts',
+      options: [
+        [
+          {
+            importNamePattern: 'foo|bar|baz',
+            name: '@foobar',
+            filePattern: '^.*\\.spec\\.ts*$',
+            message: 'Test Message',
+          },
         ],
-        code: `
+      ],
+      code: `
+        import { foo } from '@foobar'
+      `,
+      errors: [
+        {
+          messageId: 'banImportsFilePatternError',
+          data: {
+            message: 'Test Message',
+          },
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      name: 'should report when detecting disallowed start pattern',
+      filename: 'test.component.ts',
+      options: [
+        [
+          {
+            starImport: true,
+            name: 'foobar',
+            filePattern: '^.*\\.component\\.ts*$',
+            message: 'Test Star Import.',
+          },
+        ],
+      ],
+      code: `
         import * as foo from 'foobar'
       `,
-        errors: [
-          {
-            messageId: 'banImportsFilePatternError',
-            data: {
-              message: 'Test Star Import.',
-            },
-            type: AST_NODE_TYPES.ImportDeclaration,
+      errors: [
+        {
+          messageId: 'banImportsFilePatternError',
+          data: {
+            message: 'Test Star Import.',
           },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+  ],
+});

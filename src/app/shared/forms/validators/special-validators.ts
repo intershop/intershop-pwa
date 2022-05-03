@@ -1,7 +1,5 @@
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-import { DateHelper } from 'ish-core/utils/date-helper';
-
 /**
  * A helper function that transforms the special validators to a formly-usable function.
  *
@@ -130,6 +128,8 @@ export class SpecialValidators {
   }
 
   private static noDay(control: FormControl, day: 'saturday' | 'sunday'): boolean {
-    return !(day === 'saturday' ? DateHelper.isSaturday(control.value) : DateHelper.isSunday(control.value));
+    const date = control.value as Date;
+
+    return !(day === 'saturday' ? date?.getDay() === 6 : date?.getDate() === 0);
   }
 }

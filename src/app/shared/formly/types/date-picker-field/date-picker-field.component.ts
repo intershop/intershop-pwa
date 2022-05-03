@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
-
-import { DateHelper } from 'ish-core/utils/date-helper';
 
 /**
  * Type for a  date-picker field.
@@ -26,14 +24,26 @@ import { DateHelper } from 'ish-core/utils/date-helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DatePickerFieldComponent extends FieldType<FieldTypeConfig> {
+  constructor(private calendar: NgbCalendar) {
+    super();
+  }
+
+  addDaysToToday$(days$: Observable<number | undefined>): Observable<NgbDateStruct | undefined> {
+    return days$.pipe(
+      map(daysLoc =>
+        typeof daysLoc === 'number' ? this.calendar.getNext(this.calendar.getToday(), 'd', daysLoc) : undefined
+      )
+    );
+  }
+
   get minDate$(): Observable<NgbDateStruct> {
     const minDays$ = this.toObservableNumber('minDays');
-    return DateHelper.addDaysToToday$(minDays$);
+    return this.addDaysToToday$(minDays$);
   }
 
   get maxDate$(): Observable<NgbDateStruct> {
     const maxDays$ = this.toObservableNumber('maxDays');
-    return DateHelper.addDaysToToday$(maxDays$);
+    return this.addDaysToToday$(maxDays$);
   }
 
   get markDateDisable$() {
@@ -42,8 +52,8 @@ export class DatePickerFieldComponent extends FieldType<FieldTypeConfig> {
 
     return combineLatest([isSatExcluded$, isSunExcluded$]).pipe(
       map(([isSatExcluded, isSunExcluded]) => (date: NgbDate) => {
-        const disableSaturday = isSatExcluded === true ? DateHelper.isSaturday(date) : false;
-        const disableSunday = isSunExcluded === true ? DateHelper.isSunday(date) : false;
+        const disableSaturday = isSatExcluded === true ? this.calendar.getWeekday(date) === 6 : false;
+        const disableSunday = isSunExcluded === true ? this.calendar.getWeekday(date) === 7 : false;
         return disableSaturday || disableSunday;
       })
     );

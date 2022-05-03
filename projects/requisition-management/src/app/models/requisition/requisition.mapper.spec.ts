@@ -108,6 +108,7 @@ describe('Requisition Mapper', () => {
           "purchaseCurrency": "USD",
           "requisitionNo": "0001",
           "systemRejected": true,
+          "taxationId": undefined,
           "totalProductQuantity": undefined,
           "totals": Object {
             "bucketSurchargeTotalsByType": undefined,

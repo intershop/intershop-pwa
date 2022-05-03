@@ -58,6 +58,7 @@ describe('Product Context Facade', () => {
       Object {
         "allowZeroQuantity": false,
         "categoryId": null,
+        "children": Object {},
         "displayProperties": Object {},
         "propagateActive": true,
         "requiredCompletenessLevel": 2,
@@ -104,7 +105,7 @@ describe('Product Context Facade', () => {
         Object {
           "allowZeroQuantity": false,
           "categoryId": null,
-          "children": undefined,
+          "children": Object {},
           "hasProductError": true,
           "hasQuantityError": false,
           "label": null,
@@ -175,7 +176,7 @@ describe('Product Context Facade', () => {
         Object {
           "allowZeroQuantity": false,
           "categoryId": null,
-          "children": undefined,
+          "children": Object {},
           "hasProductError": false,
           "hasQuantityError": false,
           "label": null,

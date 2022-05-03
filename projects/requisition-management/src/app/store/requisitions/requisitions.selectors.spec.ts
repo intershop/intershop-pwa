@@ -154,7 +154,7 @@ describe('Requisitions Selectors', () => {
       {
         id: '1',
         lineItems: [{ id: 'test1', productSKU: 'sku1', quantity: { value: 5 } } as LineItem],
-        user: { email: 'testmail@intershop.de' },
+        email: 'testmail@intershop.de',
         approval: {
           statusCode: 'PENDING',
           status: 'pending',
@@ -163,7 +163,7 @@ describe('Requisitions Selectors', () => {
       {
         id: '2',
         lineItems: [{ id: 'test2', productSKU: 'sku2', quantity: { value: 1 } } as LineItem],
-        user: { email: 'testmail@intershop.de' },
+        email: 'testmail@intershop.de',
         approval: {
           statusCode: 'PENDING',
           status: 'pending',
