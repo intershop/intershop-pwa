@@ -12,7 +12,9 @@
         <span> {{ 'checkout.pli.qty.label' | translate }} {{ pli.quantity.value }} </span>
       </div>
       <div class="col-4 text-right">
-        <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">{{ pli.totals.undiscountedTotal | ishPrice }}</div>
+        <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">
+          <span class="price-value">{{ pli.totals.undiscountedTotal | ishPrice }}</span>
+        </div>
         <div *ngIf="pli.isFreeGift" class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
       </div>
 
