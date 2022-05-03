@@ -1,3 +1,4 @@
+import { isDevMode } from '@angular/core';
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
@@ -59,10 +60,12 @@ export const getCurrentLocale = createSelector(
   internalDefaultLocale,
   getServerConfigParameter<string>('general.defaultLocale'),
   (available, requested, defaultLocale, configuredDefault) =>
-    available?.find(l => l === requested) ??
-    available?.find(l => l === configuredDefault) ??
-    available?.find(l => l === defaultLocale) ??
-    available?.[0]
+    isDevMode() && defaultLocale
+      ? defaultLocale
+      : available?.find(l => l === requested) ??
+        available?.find(l => l === configuredDefault) ??
+        available?.find(l => l === defaultLocale) ??
+        available?.[0]
 );
 
 export const getAvailableCurrencies = createSelector(
