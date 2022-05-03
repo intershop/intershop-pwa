@@ -137,7 +137,7 @@
 
     <!-- Value Rebates Total -->
     <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">
-      {{ pli.totals.undiscountedTotal | ishPrice }}
+      <span class="price-value">{{ pli.totals.undiscountedTotal | ishPrice }}</span>
     </div>
 
     <!-- Gift -->
