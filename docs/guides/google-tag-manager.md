@@ -17,4 +17,3 @@ Prefer configuration via system environment variables.
 Please refer to the [angulartics2 documentation](https://github.com/angulartics/angulartics2#usage) for information on how to enable tracking for additional events.
 
 For GDPR compliance the tracked IPs have to be anonymized.
-See [How to turn on IP anonymization in Google Analytics and Google Tag Manager](https://www.optimizesmart.com/how-to-turn-on-ip-anonymization-in-google-analytics-and-google-tag-manager/).

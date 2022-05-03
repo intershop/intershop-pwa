@@ -985,7 +985,7 @@
 "inquirer@8.2.0","MIT","Copyright (c) 2012 Simon Boudrias","https://github.com/SBoudrias/Inquirer.js"
 "inside@1.0.0","Public Domain","","https://github.com/aantthony/node-self"
 "internal-slot@1.0.3","MIT","Copyright (c) 2019 Jordan Harband","https://github.com/ljharb/internal-slot"
-"intershop-pwa@2.2.0","UNLICENSED","Copyright (c) 2022 Intershop Communications AG, http://www.intershop.de",""
+"intershop-pwa@2.3.0","UNLICENSED","Copyright (c) 2022 Intershop Communications AG, http://www.intershop.de",""
 "intershop-schematics@0.0.1","UNKNOWN","","https://github.com/intershop/intershop-pwa"
 "ip@1.1.5","MIT","Copyright Fedor Indutny, 2012.","https://github.com/indutny/node-ip"
 "ipaddr.js@1.9.1","MIT","Copyright (C) 2011-2017 whitequark <whitequark@whitequark.org>","https://github.com/whitequark/ipaddr.js"

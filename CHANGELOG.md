@@ -7,6 +7,55 @@ kb_everyone
 
 # Changelog
 
+## [2.3.0](https://github.com/releases/tag/2.3.0) (2022-05-03)
+
+**required Intershop Commerce Management version: 7.10.38.0-LTS**
+
+### Features
+
+- introduce price update strategies (#1089) ([c980cbe](https://github.com/intershop/intershop-pwa/commit/c980cbe))
+- make products service default attrs easily overridable (#1098) ([78ef2e1](https://github.com/intershop/intershop-pwa/commit/78ef2e1))
+- clean-localizations on used sources (#1047) ([bf81099](https://github.com/intershop/intershop-pwa/commit/bf81099))
+- display loading overlay for basket merge ([811b540](https://github.com/intershop/intershop-pwa/commit/811b540))
+- allow strings as propagate index ([fc19edd](https://github.com/intershop/intershop-pwa/commit/fc19edd))
+- export product context for debug usage ([036602b](https://github.com/intershop/intershop-pwa/commit/036602b))
+- support language plural rules for translations (#1073) ([af747b0](https://github.com/intershop/intershop-pwa/commit/af747b0))
+- **eslint:** add rule disallowing optional inputs (#1121) ([e4121a4](https://github.com/intershop/intershop-pwa/commit/e4121a4))
+
+### Bug Fixes
+
+- enable locale override for development mode (#1139) ([ae7237b](https://github.com/intershop/intershop-pwa/commit/ae7237b))
+- allow same product list call after a specified time (#1140) ([c4bfe88](https://github.com/intershop/intershop-pwa/commit/c4bfe88))
+- URL encode formParamsToString values (#1115) ([269bf72](https://github.com/intershop/intershop-pwa/commit/269bf72))
+- use feature subscription instead of static check in lazy components (#1138) ([a8c75ac](https://github.com/intershop/intershop-pwa/commit/a8c75ac))
+- handle ICM static files with the ICM proxy configuration (#1105) ([29be2c1](https://github.com/intershop/intershop-pwa/commit/29be2c1))
+- pin usage of ubuntu focal ([0ddcb74](https://github.com/intershop/intershop-pwa/commit/0ddcb74))
+- add missing feature guards to feature routing modules ([5eef759](https://github.com/intershop/intershop-pwa/commit/5eef759))
+- re-implement tracking of anonymous basket for merge basket logic (#1130) ([b9ff6cb](https://github.com/intershop/intershop-pwa/commit/b9ff6cb))
+- login gets lost after a link is opened in a different tab (#938, #1109) ([2daea47](https://github.com/intershop/intershop-pwa/commit/2daea47))
+- display buyer information for orders based on order data and not based on data of the logged in customer (#1104) ([85888d9](https://github.com/intershop/intershop-pwa/commit/85888d9))
+- remove equal character from url slugs (#1112) ([26c61d6](https://github.com/intershop/intershop-pwa/commit/26c61d6))
+- fix spacing for old prices and scaled prices ([8b9a10c](https://github.com/intershop/intershop-pwa/commit/8b9a10c))
+- **schematics:** add feature toggle guard to new pages if required ([fcd0ac5](https://github.com/intershop/intershop-pwa/commit/fcd0ac5))
+
+### Performance Improvements
+
+- debounce changes made to the context ([8aee8b1](https://github.com/intershop/intershop-pwa/commit/8aee8b1))
+
+### Documentation
+
+- debugging flaky cypress tests ([7d442b7](https://github.com/intershop/intershop-pwa/commit/7d442b7))
+- documentation adjustments (#1116) ([c3251bd](https://github.com/intershop/intershop-pwa/commit/c3251bd))
+
+### Code Refactoring
+
+- adapt 'apiToken' cookie handling after ICM api token changes (#1105) ([7e24ba1](https://github.com/intershop/intershop-pwa/commit/7e24ba1))
+
+### BREAKING CHANGES
+
+- For a working hybrid approach ICM 7.10.32.16-LTS or 7.10.38.6-LTS or newer is required. The changes in the PWA should not be incompatible with older ICM version if no hybrid approach is needed.
+- The method `getFilteredProducts` was moved from `FilterService` to `ProductsService`.
+
 ## [2.2.0](https://github.com/releases/tag/2.2.0) (2022-04-01)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
