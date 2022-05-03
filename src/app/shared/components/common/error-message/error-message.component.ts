@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { MessageFacade } from 'ish-core/facades/message.facade';
-import { ErrorFeedback, HttpError } from 'ish-core/models/http-error/http-error.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 /**
  * The Error Message Component displays an error message for an {@link HttpError}.
@@ -16,7 +16,6 @@ import { ErrorFeedback, HttpError } from 'ish-core/models/http-error/http-error.
 })
 export class ErrorMessageComponent implements OnChanges {
   @Input() error: HttpError;
-  @Input() infoError: ErrorFeedback[];
   @Input() toast = true;
 
   constructor(private messageFacade: MessageFacade) {}
@@ -28,25 +27,9 @@ export class ErrorMessageComponent implements OnChanges {
   }
 
   private displayToast() {
-    if (this.error && !this.error.causes) {
+    if (this.error) {
       this.messageFacade.error({
         message: this.error.message || this.error.code,
-      });
-    }
-    if (this.error?.causes) {
-      this.error?.causes.map(cause => {
-        this.messageFacade.error({
-          message: cause.message,
-        });
-      });
-    }
-    if (this.infoError) {
-      this.infoError?.map(causes => {
-        causes.causes.map(cause => {
-          this.messageFacade.error({
-            message: cause.message,
-          });
-        });
       });
     }
   }

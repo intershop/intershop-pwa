@@ -13,13 +13,13 @@ import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-
 import { BasketInfoComponent } from 'ish-shared/components/basket/basket-info/basket-info.component';
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { LazyBasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
 import { LazyDirectOrderComponent } from '../../../extensions/quickorder/exports/lazy-direct-order/lazy-direct-order.component';
 import { LazyBasketAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
+import { ShoppingBasketErrorMessageComponent } from '../shopping-basket-error-message/shopping-basket-error-message.component';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
 
@@ -37,12 +37,12 @@ describe('Shopping Basket Component', () => {
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeComponent),
-        MockComponent(ErrorMessageComponent),
         MockComponent(LazyBasketAddToQuoteComponent),
         MockComponent(LazyBasketCreateOrderTemplateComponent),
         MockComponent(LazyDirectOrderComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(ShoppingBasketErrorMessageComponent),
         ShoppingBasketComponent,
       ],
       imports: [
@@ -75,6 +75,6 @@ describe('Shopping Basket Component', () => {
   it('should render an error if an error occurs', () => {
     component.error = makeHttpError({ status: 404 });
     fixture.detectChanges();
-    expect(element.querySelector('ish-error-message')).toBeTruthy();
+    expect(element.querySelector('ish-shopping-basket-error-message')).toBeTruthy();
   });
 });

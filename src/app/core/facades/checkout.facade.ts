@@ -25,7 +25,6 @@ import {
   getBasketEligibleShippingMethods,
   getBasketError,
   getBasketInfo,
-  getBasketInfoErrors,
   getBasketInvoiceAddress,
   getBasketLastTimeProductAdded,
   getBasketLoading,
@@ -85,7 +84,7 @@ export class CheckoutFacade {
   basketChange$ = this.basketChangeInternal$.asObservable();
   basketError$ = this.store.pipe(select(getBasketError));
   basketInfo$ = this.store.pipe(select(getBasketInfo));
-  basketInfoErrors$ = this.store.pipe(select(getBasketInfoErrors));
+  basketInfoError$ = this.basketInfo$.pipe(map(info => (info?.length ? info[0].error : undefined)));
   basketLoading$ = this.store.pipe(select(getBasketLoading));
   basketValidationResults$ = this.store.pipe(select(getBasketValidationResults));
   basketItemCount$ = this.basket$.pipe(map(basket => basket?.totalProductQuantity || 0));

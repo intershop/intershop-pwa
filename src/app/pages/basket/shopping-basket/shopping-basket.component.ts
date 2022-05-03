@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
-import { ErrorFeedback, HttpError } from 'ish-core/models/http-error/http-error.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 /**
  * The Shopping Basket Component displays the users basket items, cost summary
@@ -29,7 +29,6 @@ export class ShoppingBasketComponent {
   @Input() basket: BasketView;
   @Input() error: HttpError;
   @Input() loading = false;
-  @Input() infoError: ErrorFeedback[];
 
   @Output() nextStep = new EventEmitter<void>();
 
