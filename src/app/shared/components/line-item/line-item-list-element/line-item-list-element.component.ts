@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { isEqual } from 'lodash-es';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -22,6 +23,12 @@ export class LineItemListElementComponent implements OnInit {
     this.context.hold(this.context.validDebouncedQuantityUpdate$(), quantity => {
       this.checkoutFacade.updateBasketItem({ itemId: this.pli.id, quantity });
     });
+  }
+
+  get oldPrice() {
+    return isEqual(this.pli.singleBasePrice, this.pli.undiscountedSingleBasePrice)
+      ? undefined
+      : this.pli.undiscountedSingleBasePrice;
   }
 
   onUpdateItem(update: LineItemUpdate) {

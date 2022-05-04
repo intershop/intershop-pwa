@@ -14,6 +14,7 @@ export interface LineItem {
   productSKU: string;
   price: PriceItem;
   singleBasePrice: PriceItem;
+  undiscountedSingleBasePrice?: PriceItem;
   itemSurcharges?: {
     amount: PriceItem;
     description?: string;

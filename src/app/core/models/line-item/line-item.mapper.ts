@@ -9,6 +9,7 @@ import { LineItemData } from './line-item.interface';
 import { LineItem } from './line-item.model';
 
 export class LineItemMapper {
+  // eslint-disable-next-line complexity
   static fromData(data: LineItemData, rebateData?: { [id: string]: BasketRebateData }): LineItem {
     if (data) {
       return {
@@ -17,6 +18,9 @@ export class LineItemMapper {
         quantity: data.quantity,
         price: data.pricing ? PriceItemMapper.fromPriceItem(data.pricing.price) : undefined,
         singleBasePrice: data.pricing ? PriceItemMapper.fromPriceItem(data.pricing.singleBasePrice) : undefined,
+        undiscountedSingleBasePrice: data.pricing
+          ? PriceItemMapper.fromPriceItem(data.pricing.undiscountedSingleBasePrice)
+          : undefined,
         itemSurcharges: data.surcharges
           ? data.surcharges.map(surcharge => ({
               amount: PriceItemMapper.fromPriceItem(surcharge.amount),
