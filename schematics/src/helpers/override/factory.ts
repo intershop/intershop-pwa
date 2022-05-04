@@ -1,5 +1,6 @@
 import { Rule, SchematicsException, chain } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { normalize, sep } from 'path';
 import { OverrideOptionsSchema as Options } from 'schemas/helpers/override/schema';
 
 import { copyFile } from '../../utils/filesystem';
@@ -19,9 +20,15 @@ export function override(options: Options): Rule {
     const workspace = await getWorkspace(host);
     const project = workspace.projects.get(options.project);
     const sourceRoot = project.sourceRoot;
-    const from = `${
-      options.path ? `${options.path}/` : !options.from?.startsWith(`${sourceRoot}/app/`) ? `${sourceRoot}/app/` : ''
-    }${options.from.replace(/\/$/, '')}`;
+    const from = normalize(
+      `${
+        options.path
+          ? `${options.path}${sep}`
+          : !options.from?.startsWith(`${sourceRoot}${sep}app${sep}`)
+          ? `${sourceRoot}${sep}app${sep}`
+          : ''
+      }${options.from.replace(/\/$/, '')}`
+    );
     if (!host.exists(from) || !from.endsWith('.ts')) {
       throw new SchematicsException('Input does not point to an existing TypeScript file.');
     }
