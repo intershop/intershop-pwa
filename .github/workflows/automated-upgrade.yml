@@ -27,6 +27,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        if: github.ref != 'refs/heads/develop'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/checkout@v2
+        if: github.ref == 'refs/heads/develop'
+        with:
+          ref: develop
 
       - name: Use Node.js 16
         uses: actions/setup-node@v2
