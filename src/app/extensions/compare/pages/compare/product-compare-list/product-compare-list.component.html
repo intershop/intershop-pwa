@@ -82,15 +82,6 @@
             <td *ngFor="let product of visibleProducts">{{ product.manufacturer }}</td>
           </tr>
 
-          <!-- TODO: Manufacturer SKU
-        <tr>
-          <th>{{'product.manufacturer_sku.label' | translate}}
-          </th>
-          <td *ngFor="let product of visibleProducts">
-          </td>
-        </tr>
-        -->
-
           <tr *ngFor="let commonAttributeName of commonAttributeNames$ | async">
             <th>{{ commonAttributeName }}</th>
             <td *ngFor="let product of visibleProducts">
