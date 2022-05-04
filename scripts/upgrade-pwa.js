@@ -58,7 +58,7 @@ execute('npm ci');
 let install;
 modifyPackageJson(packageJson => {
   install = packageJson.scripts.postinstall;
-  packageJson.scripts.postinstall = 'postinstall';
+  packageJson.scripts.postinstall = '';
   return packageJson;
 });
 commit('chore: temporarily deactivate full postinstall');
