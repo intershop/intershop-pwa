@@ -23,9 +23,9 @@ describe('Changing User', () => {
       page.fillForm(_.user.login, _.user.password).submit().its('response.statusCode').should('equal', 200)
     );
     at(ProfilePage, page => {
-      page.name.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
-      page.phone.should('have.text', _.user.phoneHome);
-      page.companyName.should('have.text', _.user.companyName1);
+      page.name.should('contain', `${_.user.firstName} ${_.user.lastName}`);
+      page.phone.should('contain', _.user.phoneHome);
+      page.companyName.should('contain', _.user.companyName1);
       page.taxationId.should('be.empty');
     });
   });
@@ -37,8 +37,8 @@ describe('Changing User', () => {
       page.fillForm(_.newDetails).submit().its('response.statusCode').should('equal', 200)
     );
     at(ProfilePage, page => {
-      page.companyName.should('have.text', `${_.newDetails.companyName}${_.newDetails.companyName2}`);
-      page.taxationId.should('have.text', _.newDetails.taxationID);
+      page.companyName.should('contain', `${_.newDetails.companyName}${_.newDetails.companyName2}`);
+      page.taxationId.should('contain', _.newDetails.taxationID);
     });
   });
 });

@@ -25,9 +25,7 @@
 
   <div *ngIf="total?.value && lineItems.length > 0" class="clearfix section">
     <div class="row justify-content-end list-body">
-      <!-- TODO: remove style attribute -->
       <div class="col-sm-4 col-md-3 col-lg-2 text-right pr-0">{{ 'quote.items.total.label' | translate }}</div>
-      <!-- TODO: remove style attribute -->
       <div class="col-sm-4 col-md-2 pr-0">
         <div class="total-price text-right">{{ total | ishPrice }}</div>
       </div>
