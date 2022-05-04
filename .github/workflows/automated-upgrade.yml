@@ -1,0 +1,66 @@
+name: AutomatedUpgrade
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - scripts/upgrade-pwa.js
+  schedule:
+    - cron: '0 0 * * 1'
+
+jobs:
+  CancelPrevious:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Old Pipeline
+        if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
+        uses: rokroskar/workflow-run-cleanup-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  AutomatedUpgrade:
+    needs: [CancelPrevious]
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v2
+        if: github.ref != 'refs/heads/develop'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/checkout@v2
+        if: github.ref == 'refs/heads/develop'
+        with:
+          ref: develop
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: npm
+
+      - name: Create Upgrade Branch
+        run: |
+          git config --global user.email "pwa@intershop.de"
+          git config --global user.name "GitHub CI"
+          git switch -c upgrade/automated-upgrade
+
+      - name: Run Upgrade Script
+        run: node scripts/upgrade-pwa
+
+      - name: Run Automated Fixes
+        run: |
+          npm run lint -- --fix
+          npm run format
+          git add .
+          git commit -m "chore: post upgrade fixes" --allow-empty
+
+      - name: Run Tests
+        run: npm run test
+
+      - name: Push Upgrade Branch
+        if: always()
+        run: git push --force origin upgrade/automated-upgrade
