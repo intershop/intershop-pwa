@@ -49,6 +49,9 @@ jobs:
           git add .
           git commit -m "chore: post upgrade fixes" --allow-empty
 
+      - name: Run Tests
+        run: npm run test
+
       - name: Push Upgrade Branch
         if: always()
         run: git push --force origin upgrade/automated-upgrade
