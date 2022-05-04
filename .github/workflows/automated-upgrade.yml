@@ -30,9 +30,6 @@ jobs:
           git config --global user.name "GitHub CI"
           git switch -c upgrade/automated-upgrade
 
-      - name: Install root dependencies
-        run: npm ci
-
       - name: Run Upgrade Script
         run: node scripts/upgrade-pwa
 
