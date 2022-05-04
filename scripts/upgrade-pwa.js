@@ -151,7 +151,7 @@ modifyPackageJson(packageJson => {
 commit('chore: synchronize package.json with used pinned versions');
 
 console.warn('###### Known dependency incompatibilities:');
-spawnSync(NPM, ['ls'])
+spawnSync(NPM, ['ls', '-a'])
   .stderr.toString('utf-8')
   .split('\n')
   .filter((v, i, a) => a.indexOf(v) === i)
