@@ -2,9 +2,9 @@ name: AutomatedUpgrade
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - chore/automated-upgrades
+  push:
+    branches:
+      - fix/pwa-upgrade-script
   schedule:
     - cron: '0 0 * * 1'
 
