@@ -283,7 +283,7 @@ describe('override Schematic', () => {
     `);
   });
 
-  it('should override file if path contains backslashes', async () => {
+  it('should override file if path is windows-styled', async () => {
     const tree = await runOverride({
       from: 'core\\routing\\product.route.ts',
       theme: 'b2b',
