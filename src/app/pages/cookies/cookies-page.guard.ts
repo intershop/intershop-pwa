@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CanActivate, NavigationEnd, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { filter, first } from 'rxjs/operators';
@@ -9,9 +10,17 @@ import { CookiesModalComponent } from './cookies-modal/cookies-modal.component';
 export class CookiesPageGuard implements CanActivate {
   private currentDialog: NgbModalRef;
 
-  constructor(private modalService: NgbModal, private router: Router) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: string,
+    private modalService: NgbModal,
+    private router: Router
+  ) {}
 
   async canActivate() {
+    if (isPlatformServer(this.platformId)) {
+      return this.router.parseUrl('/loading');
+    }
+
     this.currentDialog = this.modalService.open(CookiesModalComponent, {
       centered: true,
       size: 'lg',
