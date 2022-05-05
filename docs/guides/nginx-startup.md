@@ -125,7 +125,6 @@ Built-in features can be enabled and disabled:
 
 - `SSR=off` effectively disables SSR rendering for browsers (default `on`)
 - `CACHE=off` disables caching (default `on`)
-- `PAGESPEED=off` disables pagespeed optimizations (default `on`)
 - `COMPRESSION=off` disables compression (default `on`)
 - `DEVICE_DETECTION=off` disables user-agent detection (default `on`)
 - `PROMETHEUS=on` enables [Prometheus](https://prometheus.io) metrics exports on port `9113` (default `off`)
