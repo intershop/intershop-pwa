@@ -39,7 +39,6 @@ import {
   selectOrderAfterRedirectFail,
 } from './orders.actions';
 import { OrdersEffects } from './orders.effects';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 
 describe('Orders Effects', () => {
   let actions$: Observable<Action>;
@@ -48,7 +47,6 @@ describe('Orders Effects', () => {
   let store$: Store;
   let location: Location;
   let router: Router;
-  let tracker: MatomoTracker;
 
   const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
   const orders = [order, { id: '2', documentNo: '00000002' }] as Order[];
@@ -87,7 +85,6 @@ describe('Orders Effects', () => {
     store$ = TestBed.inject(Store);
     location = TestBed.inject(Location);
     router = TestBed.inject(Router);
-    tracker = TestBed.inject(MatomoTracker);
   });
 
   describe('createOrder$', () => {
