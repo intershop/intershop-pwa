@@ -97,10 +97,11 @@ describe('Icm Error Mapper Interceptor', () => {
                 "status": "422",
               },
             ],
+            "message": "The promotion code could not be added. The promotion code could not be found. Some other error.",
             "name": "HttpErrorResponse",
             "status": 422,
           }
-        `);
+          `);
         done();
       },
     });
