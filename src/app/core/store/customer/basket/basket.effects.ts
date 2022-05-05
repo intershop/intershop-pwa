@@ -56,6 +56,7 @@ import {
   updateBasketShippingMethod,
 } from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 
 @Injectable()
 export class BasketEffects {
@@ -64,7 +65,8 @@ export class BasketEffects {
     private basketService: BasketService,
     private apiTokenService: ApiTokenService,
     private router: Router,
-    private store: Store
+    private store: Store,
+    private readonly tracker: MatomoTracker
   ) {}
 
   /**
@@ -305,6 +307,30 @@ export class BasketEffects {
       filter(routerState => /^\/(basket|checkout.*)/.test(routerState.url) && !routerState.queryParams?.error),
       mergeMap(() => [resetBasketErrors(), resetOrderErrors()])
     )
+  );
+
+  /**
+   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
+   * Add queryParam error=true to the route to prevent resetting errors.
+   *
+   */
+  orderSubmitTrackingMatomo$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(submitBasket),
+        switchMap(() => {
+
+          this.store.pipe(select(getCurrentBasket)).subscribe(b => {
+            this.tracker.trackEcommerceOrder(b?.id, b?.totals.total.gross);
+            this.tracker.trackPageView();
+            console.log(`Tracked order with id ${b?.id} and total amount of ${b?.totals.total.gross}`);
+          });
+
+          return EMPTY;
+        })
+      ),
+
+    { dispatch: false }
   );
 
   /**
