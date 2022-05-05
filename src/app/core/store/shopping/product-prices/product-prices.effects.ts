@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 import { debounceTime, filter, map, mergeMap, toArray, window } from 'rxjs/operators';
 
 import { PricesService } from 'ish-core/services/prices/prices.service';
@@ -9,7 +10,11 @@ import { loadProductPrices, loadProductPricesSuccess } from '.';
 
 @Injectable()
 export class ProductPricesEffects {
-  constructor(private actions$: Actions, private pricesService: PricesService) {}
+  constructor(
+    private actions$: Actions,
+    private pricesService: PricesService,
+    private readonly tracker: MatomoTracker
+  ) {}
 
   loadProductPrices$ = createEffect(() =>
     this.actions$.pipe(
@@ -29,5 +34,21 @@ export class ProductPricesEffects {
         this.pricesService.getProductPrices(skus).pipe(map(prices => loadProductPricesSuccess({ prices })))
       )
     )
+  );
+
+  sendProductToMatomo$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loadProductPricesSuccess),
+        map(action => {
+          const prices = action.payload.prices;
+          this.tracker.setEcommerceView(prices[0].sku, 'name1', 'category', prices[0].prices.salePrice.net);
+          this.tracker.trackPageView();
+          console.log(`View product with sku ${prices[0].sku} and price of ${prices[0].prices.salePrice.net}`);
+          return action;
+        })
+      ),
+
+    { dispatch: false }
   );
 }

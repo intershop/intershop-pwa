@@ -17,16 +17,6 @@ export class ProductDetailComponent implements OnInit {
   constructor(private context: ProductContextFacade, private readonly tracker: MatomoTracker) {}
   ngOnInit() {
     this.product$ = this.context.select('product');
-    this.product$
-      .pipe(
-        switchMap(async product => {
-          this.tracker.setEcommerceView(product.sku, product.name, 'hackathon', 0.0);
-          this.tracker.trackPageView();
-        }),
-        takeUntil(this.destroy)
-      )
-      // eslint-disable-next-line rxjs/no-ignored-subscribe
-      .subscribe();
   }
 
   ngOnDestroy() {
