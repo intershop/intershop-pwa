@@ -19,11 +19,20 @@
     <!-- Error message -->
     <ish-error-message [error]="error"></ish-error-message>
 
-    <!-- Info messages -->
+    <!-- Basket Info messages -->
     <ish-basket-info></ish-basket-info>
 
     <!-- Validation messages-->
     <ish-basket-validation-results></ish-basket-validation-results>
+
+    <!-- Dynamic Promotion Message -->
+    <div *ngIf="basket?.dynamicMessages?.length" class="alert alert-info">
+      <ul class="list-unstyled">
+        <li *ngFor="let msg of basket.dynamicMessages">
+          <span *ngIf="msg" [ishServerHtml]="msg"></span>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div class="form-horizontal">
