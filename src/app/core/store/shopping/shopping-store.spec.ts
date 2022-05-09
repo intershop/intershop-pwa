@@ -287,9 +287,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should load the product for the search results', fakeAsync(() => {
-        const newLocal = getProductIds(store.state);
-        console.log(newLocal);
-        expect(newLocal).toEqual(['P2']);
+        expect(getProductIds(store.state)).toEqual(['P2']);
       }));
 
       it('should trigger required actions when searching', fakeAsync(() => {
