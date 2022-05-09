@@ -125,6 +125,7 @@ import { ProductQuantityLabelComponent } from './components/product/product-quan
 import { ProductQuantityComponent } from './components/product/product-quantity/product-quantity.component';
 import { ProductRatingStarComponent } from './components/product/product-rating-star/product-rating-star.component';
 import { ProductRatingComponent } from './components/product/product-rating/product-rating.component';
+import { ProductReviewsComponent } from './components/product/product-reviews/product-reviews.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
@@ -274,6 +275,7 @@ const exportedComponents = [
   ProductQuantityComponent,
   ProductQuantityLabelComponent,
   ProductRatingComponent,
+  ProductReviewsComponent,
   ProductShipmentComponent,
   ProductVariationDisplayComponent,
   ProductVariationSelectComponent,
@@ -286,7 +288,7 @@ const exportedComponents = [
 
 @NgModule({
   imports: [...importExportModules],
-  declarations: [...declaredComponents, ...exportedComponents],
+  declarations: [...declaredComponents, ...exportedComponents, ProductReviewsComponent],
   exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {

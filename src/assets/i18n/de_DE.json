@@ -1072,5 +1072,6 @@
   "tacton.submit.error.message": "Beim Verarbeiten Ihrer Anfrage ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
   "tacton.submit.success.message": "Ihre Anfrage wurde erfolgreich versendet. Wir werden <strong>{{0}}</strong> per E-Mail über den Status Ihrer Anfrage informieren.",
   "tacton.undo.tooltip": "Wiederherstellen",
-  "textarea.max_limit": "Ihre Nachricht: {{0}} Zeichen verbleibend."
+  "textarea.max_limit": "Ihre Nachricht: {{0}} Zeichen verbleibend.",
+  "product.review.heading": "Bewertungen"
 }

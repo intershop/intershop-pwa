@@ -18,6 +18,7 @@ import { FilterService } from 'ish-core/services/filter/filter.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { ReviewsService } from 'ish-core/services/reviews/reviews.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -44,6 +45,7 @@ describe('Shopping Store', () => {
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
   let priceServiceMock: PricesService;
+  let reviewsServiceMock: ReviewsService;
 
   beforeEach(() => {
     const catA = { uniqueId: 'A', categoryPath: ['A'], name: 'nA' } as Category;
@@ -141,6 +143,8 @@ describe('Shopping Store', () => {
     priceServiceMock = mock(PricesService);
     when(priceServiceMock.getProductPrices(anything())).thenReturn(of([]));
 
+    reviewsServiceMock = mock(ReviewsService);
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
@@ -184,6 +188,7 @@ describe('Shopping Store', () => {
         { provide: PricesService, useFactory: () => instance(priceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
+        { provide: ReviewsService, useFactory: () => instance(reviewsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
@@ -282,7 +287,9 @@ describe('Shopping Store', () => {
       }));
 
       it('should load the product for the search results', fakeAsync(() => {
-        expect(getProductIds(store.state)).toEqual(['P2']);
+        const newLocal = getProductIds(store.state);
+        console.log(newLocal);
+        expect(newLocal).toEqual(['P2']);
       }));
 
       it('should trigger required actions when searching', fakeAsync(() => {
@@ -316,6 +323,12 @@ describe('Shopping Store', () => {
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
+          [Product Price Internal] Load Product Prices:
+            skus: ["P2"]
+          [Product Review] Load Product Reviews:
+            skus: ["P2"]
+          [Products API] Load Product Prices Success:
+            prices: []
         `);
       }));
 
@@ -334,6 +347,10 @@ describe('Shopping Store', () => {
               sku: "P2"
             [Products API] Load Product Success:
               product: {"sku":"P2","name":"nP2"}
+            [Product Price Internal] Load Product Prices:
+              skus: ["P2"]
+            [Product Review] Load Product Reviews:
+              skus: ["P2"]
             @ngrx/router-store/navigated: /product/P2
           `);
         }));
@@ -459,6 +476,16 @@ describe('Shopping Store', () => {
           sortableAttributes: []
         [Filter API] Load Filter Success:
           filterNavigation: {}
+        [Product Price Internal] Load Product Prices:
+          skus: ["P1"]
+        [Product Review] Load Product Reviews:
+          skus: ["P1"]
+        [Product Price Internal] Load Product Prices:
+          skus: ["P2"]
+        [Product Review] Load Product Reviews:
+          skus: ["P2"]
+        [Products API] Load Product Prices Success:
+          prices: []
       `);
     }));
 
@@ -477,6 +504,10 @@ describe('Shopping Store', () => {
             sku: "P1"
           [Products API] Load Product Success:
             product: {"sku":"P1","name":"nP1"}
+          [Product Price Internal] Load Product Prices:
+            skus: ["P1"]
+          [Product Review] Load Product Reviews:
+            skus: ["P1"]
           @ngrx/router-store/navigated: /category/A.123.456/product/P1
         `);
       }));
@@ -544,6 +575,12 @@ describe('Shopping Store', () => {
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
+          [Product Price Internal] Load Product Prices:
+            skus: ["P2"]
+          [Product Review] Load Product Reviews:
+            skus: ["P2"]
+          [Products API] Load Product Prices Success:
+            prices: []
         `);
       }));
 
@@ -584,6 +621,14 @@ describe('Shopping Store', () => {
               sortableAttributes: []
             [Filter API] Load Filter Success:
               filterNavigation: {}
+            [Product Price Internal] Load Product Prices:
+              skus: ["P1"]
+            [Product Review] Load Product Reviews:
+              skus: ["P1"]
+            [Product Price Internal] Load Product Prices:
+              skus: ["P2"]
+            [Product Review] Load Product Reviews:
+              skus: ["P2"]
             @ngrx/router-store/navigated: /category/A.123.456
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
@@ -657,6 +702,10 @@ describe('Shopping Store', () => {
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
+        [Product Price Internal] Load Product Prices:
+          skus: ["P1"]
+        [Product Review] Load Product Reviews:
+          skus: ["P1"]
         @ngrx/router-store/navigated: /category/A.123.456/product/P1
       `);
     }));
@@ -709,6 +758,14 @@ describe('Shopping Store', () => {
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
+          [Product Price Internal] Load Product Prices:
+            skus: ["P1"]
+          [Product Review] Load Product Reviews:
+            skus: ["P1"]
+          [Product Price Internal] Load Product Prices:
+            skus: ["P2"]
+          [Product Review] Load Product Reviews:
+            skus: ["P2"]
           @ngrx/router-store/navigated: /category/A.123.456
           [Product Listing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
@@ -771,6 +828,10 @@ describe('Shopping Store', () => {
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
+        [Product Price Internal] Load Product Prices:
+          skus: ["P1"]
+        [Product Review] Load Product Reviews:
+          skus: ["P1"]
         @ngrx/router-store/navigated: /product/P1
       `);
     }));
@@ -919,6 +980,12 @@ describe('Shopping Store', () => {
           sortableAttributes: []
         [Filter API] Load Filter Success:
           filterNavigation: {}
+        [Product Price Internal] Load Product Prices:
+          skus: ["P2"]
+        [Product Review] Load Product Reviews:
+          skus: ["P2"]
+        [Products API] Load Product Prices Success:
+          prices: []
       `);
     }));
   });

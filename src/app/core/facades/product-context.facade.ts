@@ -20,6 +20,7 @@ import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-g
 import { Image } from 'ish-core/models/image/image.model';
 import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
+import { ProductReviewData } from 'ish-core/models/product-reviews/product-reviews.interface';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
@@ -51,6 +52,7 @@ export interface ProductContextDisplayProperties<T = boolean> {
   addToOrderTemplate: T;
   addToCompare: T;
   addToQuote: T;
+  reviews: T;
 }
 
 const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined> = {
@@ -71,6 +73,7 @@ const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined
   addToOrderTemplate: true,
   addToCompare: true,
   addToQuote: true,
+  reviews: true,
 };
 
 export interface ExternalDisplayPropertiesProvider {
@@ -113,6 +116,8 @@ export interface ProductContext {
   // child contexts
   propagateActive: boolean;
   children: Record<string | number, ProductContext>;
+
+  reviews: ProductReviewData[];
 }
 
 @Injectable()
@@ -416,6 +421,15 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
           ]).pipe(
             filter(([visible]) => !!visible),
             switchMap(([, sku, fresh]) => this.shoppingFacade.productPrices$(sku, fresh))
+          )
+        );
+        break;
+      case 'reviews':
+        wrap(
+          'reviews',
+          combineLatest([this.select('displayProperties', 'reviews'), this.select('product', 'sku')]).pipe(
+            filter(([visible]) => !!visible),
+            switchMap(([, sku]) => this.shoppingFacade.getProductReviews$(sku))
           )
         );
         break;
