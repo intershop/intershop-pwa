@@ -157,10 +157,7 @@ div.rating-description {
 
   .review-item-header-title {
     font-size: $font-size-lg;
-  }
-
-  .review-item-text {
-    margin-bottom: $space-default;
+    line-height: $line-height-base * 1.5;
   }
 
   + .pagination {
