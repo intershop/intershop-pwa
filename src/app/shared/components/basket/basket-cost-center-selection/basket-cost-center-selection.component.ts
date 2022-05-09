@@ -59,7 +59,7 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(([costCenter, basket]) => {
-        if (costCenter !== basket.costCenter) {
+        if (costCenter !== basket.costCenter && !!costCenter) {
           this.checkoutFacade.updateBasketCostCenter(costCenter);
         }
       });
