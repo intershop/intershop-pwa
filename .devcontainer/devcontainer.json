@@ -17,11 +17,9 @@
   "extensions": [
     // general
     "eamodio.gitlens",
-    "coenraads.bracket-pair-colorizer",
     "vincaslt.highlight-matching-tag",
     // code assist
     "visualstudioexptteam.vscodeintellicode",
-    "cyrilletuzi.angular-schematics",
     "angular.ng-template",
     "mikael.angular-beastcode",
     "formulahendry.auto-rename-tag",
