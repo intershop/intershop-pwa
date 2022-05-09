@@ -21,7 +21,7 @@ describe('Product Reviews Selectors', () => {
 
   describe('initial state', () => {
     it('should not be loading when in initial state', () => {
-      expect(getProductReviewBySku('123')).toBeFalsy();
+      expect(getProductReviewBySku('123')(store$.state)).toBeFalsy();
     });
   });
 

@@ -23,8 +23,8 @@ describe('Product Reviews Mapper', () => {
         localeID: '',
       };
       const mapped = ProductReviewsMapper.fromData([data], '123');
-      expect(mapped).toHaveProperty([], data);
-      expect(mapped).not.toHaveProperty('otherField');
+      expect(mapped).toHaveProperty('reviews', [data]);
+      expect(mapped).toHaveProperty('sku', '123');
     });
   });
 });
