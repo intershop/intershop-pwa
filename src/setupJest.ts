@@ -61,10 +61,3 @@ Object.defineProperty(document.body.style, 'transform', {
     configurable: true,
   }),
 });
-
-// fix for TypeError, see https://github.com/telerik/kendo-angular/issues/1505#issuecomment-385882188
-Object.defineProperty(window, 'getComputedStyle', {
-  value: () => ({
-    getPropertyValue: () => '',
-  }),
-});
