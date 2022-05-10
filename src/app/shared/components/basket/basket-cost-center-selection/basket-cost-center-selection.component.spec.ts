@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { EMPTY, of } from 'rxjs';
+import { BehaviorSubject, EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -63,54 +63,89 @@ describe('Basket Cost Center Selection Component', () => {
     expect(element.querySelector('select[data-testing-id=cost-center-select]')).toBeFalsy();
   });
 
-  it('should be rendered with correct option and no placeholder, when isBusinessCustomer is true and cost center options with one option are receiving', () => {
-    when(accountFacade.isBusinessCustomer$).thenReturn(of(true));
-    when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of([mockCostCenterOptions[0]]));
-    fixture.detectChanges();
+  describe('with isBusinessCustomer = true', () => {
+    beforeEach(() => {
+      when(accountFacade.isBusinessCustomer$).thenReturn(of(true));
+    });
+    it('should be rendered with correct option and no placeholder for single cost center option', () => {
+      when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of([mockCostCenterOptions[0]]));
+      fixture.detectChanges();
 
-    expect(element.querySelectorAll('formly-field')).toHaveLength(1);
-    expect(element.querySelector('formly-field').textContent).toMatchInlineSnapshot(`
-      "SelectFieldComponent: costCenter ish-select-field {
-        \\"label\\": \\"checkout.cost_center.select.label\\",
-        \\"required\\": true,
-        \\"hideRequiredMarker\\": true,
-        \\"options\\": [
-          {
-            \\"label\\": \\"Cost Center 1\\",
-            \\"value\\": \\"1\\"
-          }
-        ],
-        \\"placeholder\\": \\"\\",
-        \\"focus\\": false,
-        \\"disabled\\": false
-      }"
-    `);
-  });
+      expect(element.querySelectorAll('formly-field')).toHaveLength(1);
+      expect(element.querySelector('formly-field').textContent).toMatchInlineSnapshot(`
+        "SelectFieldComponent: costCenter ish-select-field {
+          \\"label\\": \\"checkout.cost_center.select.label\\",
+          \\"required\\": true,
+          \\"hideRequiredMarker\\": true,
+          \\"options\\": [
+            {
+              \\"label\\": \\"Cost Center 1\\",
+              \\"value\\": \\"1\\"
+            }
+          ],
+          \\"placeholder\\": \\"\\",
+          \\"focus\\": false,
+          \\"disabled\\": false
+        }"
+      `);
+    });
 
-  it('should be rendered with correct options and placeholder, when isBusinessCustomer is true and cost center options with multiple options are receiving', () => {
-    when(accountFacade.isBusinessCustomer$).thenReturn(of(true));
-    when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of(mockCostCenterOptions));
-    fixture.detectChanges();
-    expect(element.querySelectorAll('formly-field')).toHaveLength(1);
-    expect(element.querySelector('formly-field').textContent).toMatchInlineSnapshot(`
-      "SelectFieldComponent: costCenter ish-select-field {
-        \\"label\\": \\"checkout.cost_center.select.label\\",
-        \\"required\\": true,
-        \\"hideRequiredMarker\\": true,
-        \\"options\\": [
-          {
-            \\"label\\": \\"Cost Center 1\\",
-            \\"value\\": \\"1\\"
-          },
-          {
-            \\"label\\": \\"Cost Center 2\\",
-            \\"value\\": \\"2\\"
-          }
-        ],
-        \\"placeholder\\": \\"account.option.select.text\\",
-        \\"focus\\": false,
-        \\"disabled\\": false
-      }"
-    `);
+    it('should be rendered with correct options and placeholder for multiple cost center options', () => {
+      when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of(mockCostCenterOptions));
+      fixture.detectChanges();
+      expect(element.querySelectorAll('formly-field')).toHaveLength(1);
+      expect(element.querySelector('formly-field').textContent).toMatchInlineSnapshot(`
+        "SelectFieldComponent: costCenter ish-select-field {
+          \\"label\\": \\"checkout.cost_center.select.label\\",
+          \\"required\\": true,
+          \\"hideRequiredMarker\\": true,
+          \\"options\\": [
+            {
+              \\"label\\": \\"Cost Center 1\\",
+              \\"value\\": \\"1\\"
+            },
+            {
+              \\"label\\": \\"Cost Center 2\\",
+              \\"value\\": \\"2\\"
+            }
+          ],
+          \\"placeholder\\": \\"account.option.select.text\\",
+          \\"focus\\": false,
+          \\"disabled\\": false
+        }"
+      `);
+    });
+
+    it('should be rendered with correct options and no placeholder after cost center is selected', () => {
+      const subject$ = new BehaviorSubject(BasketMockData.getBasket());
+      when(checkoutFacade.basket$).thenReturn(subject$.asObservable());
+      when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of(mockCostCenterOptions));
+      fixture.detectChanges();
+      component.form.get('costCenter').setValue('2');
+      subject$.next({ ...BasketMockData.getBasket(), costCenter: '2' });
+      fixture.detectChanges();
+
+      expect(element.querySelectorAll('formly-field')).toHaveLength(1);
+      expect(element.querySelector('formly-field').textContent).toMatchInlineSnapshot(`
+        "SelectFieldComponent: costCenter ish-select-field {
+          \\"label\\": \\"checkout.cost_center.select.label\\",
+          \\"required\\": true,
+          \\"hideRequiredMarker\\": true,
+          \\"options\\": [
+            {
+              \\"label\\": \\"Cost Center 1\\",
+              \\"value\\": \\"1\\"
+            },
+            {
+              \\"label\\": \\"Cost Center 2\\",
+              \\"value\\": \\"2\\"
+            }
+          ],
+          \\"placeholder\\": \\"\\",
+          \\"focus\\": false,
+          \\"disabled\\": false
+        }"
+      `);
+    });
   });
 });
