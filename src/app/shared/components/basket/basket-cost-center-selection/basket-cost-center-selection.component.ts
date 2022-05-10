@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -39,7 +39,15 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
       switchMap(() => this.checkoutFacade.eligibleCostCenterSelectOptions$())
     );
 
-    this.fields$ = this.costCenterOptions$.pipe(
+    this.fields$ = combineLatest([
+      this.costCenterOptions$,
+      // retrigger field render when cost center is updated (maybe we don't need the placeholder anymore)
+      this.checkoutFacade.basket$.pipe(
+        map(basket => basket?.costCenter),
+        distinctUntilChanged()
+      ),
+    ]).pipe(
+      map(([options]) => options),
       map(options => (options.length ? this.getFields(options) : undefined)),
       whenTruthy()
     );
@@ -82,6 +90,9 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
   }
 
   private getFields(options: SelectOption[]): FormlyFieldConfig[] {
+    if (options.length === 1 && options[0].value && !this.model?.costCenter) {
+      this.model = { ...this.model, costCenter: options[0].value };
+    }
     return [
       {
         key: 'costCenter',
@@ -92,14 +103,6 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
           hideRequiredMarker: true,
           options,
           placeholder: options.length > 1 && !this.model?.costCenter ? 'account.option.select.text' : undefined,
-        },
-        hooks: {
-          // set automatically a cost center at basket if there is only 1 cost center assigned to this user
-          onInit: () => {
-            if (options.length === 1 && options[0].value && !this.model?.costCenter) {
-              this.form.get('costCenter').setValue(options[0].value);
-            }
-          },
         },
       },
     ];
