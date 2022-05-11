@@ -27,6 +27,7 @@ export class AccountPaymentComponent implements OnChanges {
   preferredPaymentInstrument: PaymentInstrument;
   preferredPaymentMethod: PaymentMethod;
   savedPaymentMethods: PaymentMethod[];
+  standardPaymentMethods: PaymentMethod[];
 
   /**
    * refresh the display of the preferred payment instrument and the shown further addresses.
@@ -37,7 +38,9 @@ export class AccountPaymentComponent implements OnChanges {
   }
 
   determineFurtherPaymentMethods() {
-    this.savedPaymentMethods = this.paymentMethods;
+    this.savedPaymentMethods = this.paymentMethods?.length
+      ? this.paymentMethods.filter(pm => pm.paymentInstruments?.length)
+      : [];
     if (this.preferredPaymentInstrument) {
       this.savedPaymentMethods = this.savedPaymentMethods
         .map(pm => ({
@@ -46,6 +49,9 @@ export class AccountPaymentComponent implements OnChanges {
         }))
         .filter(pm => pm.paymentInstruments?.length);
     }
+    this.standardPaymentMethods = this.paymentMethods?.length
+      ? this.paymentMethods.filter(pm => !pm.paymentInstruments?.length)
+      : [];
   }
 
   determinePreferredPaymentInstrument() {
