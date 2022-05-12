@@ -7,7 +7,12 @@ import { ContentPageComponent } from './content-page.component';
 
 const contentPageRoutes: Routes = [
   {
-    path: ':contentPageId',
+    // compatibility to old routes
+    path: 'page/:contentPageId',
+    component: ContentPageComponent,
+  },
+  {
+    path: '**',
     component: ContentPageComponent,
   },
 ];

@@ -6,6 +6,7 @@ import { ContentPageTree, ContentPageTreeElement } from 'ish-core/models/content
 export interface ContentPageTreeView extends ContentPageTreeElement {
   parent: string;
   children: ContentPageTreeView[];
+  pathElements: ContentPageTreeElement[];
 }
 
 /**
@@ -38,10 +39,12 @@ function getContentPageTreeElements(
   }
 
   const parent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
+
   treeElements.push({
     ...tree.nodes[elementId],
     parent,
     children: [],
+    pathElements: tree.nodes[elementId].path.map(p => tree.nodes[p]),
   });
 
   return treeElements;

@@ -67,10 +67,6 @@ const routes: Routes = [
     },
   },
   {
-    path: 'page',
-    loadChildren: () => import('./content/content-page.module').then(m => m.ContentPageModule),
-  },
-  {
     path: 'register',
     loadChildren: () => import('./registration/registration-page.module').then(m => m.RegistrationPageModule),
     canActivate: [IdentityProviderRegisterGuard],

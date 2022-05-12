@@ -17,6 +17,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 import { generateCategoryUrl, ofCategoryUrl } from 'ish-core/routing/category/category.route';
+import { ofContentPageUrl } from 'ish-core/routing/content-page/content-page.route';
 import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
@@ -54,6 +55,8 @@ export class SeoEffects {
     select(getSelectedCategory),
     filter(CategoryHelper.isCategoryCompletelyLoaded)
   );
+
+  private contentPage$ = this.store.pipe(ofContentPageUrl(), select(getSelectedContentPage));
 
   seoCanonicalLink$ = createEffect(
     () =>
@@ -113,12 +116,7 @@ export class SeoEffects {
                 map<string, Partial<SeoAttributes>>(title => ({ title }))
               ),
               // CONTENT PAGE
-              this.store.pipe(
-                ofUrl(/^\/page.*/),
-                select(getSelectedContentPage),
-                mapToProperty('seoAttributes'),
-                whenTruthy()
-              ),
+              this.contentPage$.pipe(mapToProperty('seoAttributes'), whenTruthy()),
             ])
           )
         )

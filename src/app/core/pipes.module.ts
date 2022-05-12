@@ -9,11 +9,13 @@ import { MakeHrefPipe } from './pipes/make-href.pipe';
 import { SanitizePipe } from './pipes/sanitize.pipe';
 import { ServerSettingPipe } from './pipes/server-setting.pipe';
 import { CategoryRoutePipe } from './routing/category/category-route.pipe';
+import { ContentPageRoutePipe } from './routing/content-page/content-page-route.pipe';
 import { ProductRoutePipe } from './routing/product/product-route.pipe';
 
 const pipes = [
   AttributeToStringPipe,
   CategoryRoutePipe,
+  ContentPageRoutePipe,
   DatePipe,
   FeatureTogglePipe,
   HighlightPipe,

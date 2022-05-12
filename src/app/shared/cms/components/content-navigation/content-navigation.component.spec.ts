@@ -5,7 +5,9 @@ import { anyNumber, instance, mock, when } from 'ts-mockito';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
+import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
+import { ContentPageRoutePipe } from 'ish-core/routing/content-page/content-page-route.pipe';
 
 import { ContentNavigationComponent } from './content-navigation.component';
 
@@ -20,7 +22,7 @@ describe('Content Navigation Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [ContentNavigationComponent],
+      declarations: [ContentNavigationComponent, ContentPageRoutePipe],
       providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
     }).compileComponents();
   });
@@ -46,38 +48,68 @@ describe('Content Navigation Component', () => {
       component.root = '1';
       component.depth = 10;
 
+      const pageTreeElement1: ContentPageTreeElement = {
+        contentPageId: '1',
+        name: 'Page 1',
+        path: [],
+      };
+
+      const pageTreeElement1a: ContentPageTreeElement = {
+        contentPageId: '1.A',
+        name: 'Page 1.A',
+        path: [],
+      };
+
+      const pageTreeElement1aa: ContentPageTreeElement = {
+        contentPageId: '1.A.a',
+        name: 'Page 1.A.a',
+        path: [],
+      };
+
+      const pageTreeElement1ab: ContentPageTreeElement = {
+        contentPageId: '1.A.b',
+        name: 'Page 1.A.b',
+        path: [],
+      };
+
+      const pageTreeElement1b: ContentPageTreeElement = {
+        contentPageId: '1.B',
+        name: 'Page 1.B',
+        path: [],
+      };
+
       when(cmsFacade.contentPageTree$('1', anyNumber())).thenReturn(
         of({
-          contentPageId: '1',
-          name: 'Page 1',
+          ...pageTreeElement1,
           parent: undefined,
           children: [
             {
-              contentPageId: '1.A',
-              name: 'Page 1.A',
+              ...pageTreeElement1a,
               parent: '1',
               children: [
                 {
-                  contentPageId: '1.A.a',
-                  name: 'Page 1.A.a',
+                  ...pageTreeElement1aa,
                   parent: '1.A',
                   children: [],
+                  pathElements: [pageTreeElement1, pageTreeElement1a, pageTreeElement1aa],
                 },
                 {
-                  contentPageId: '1.A.b',
-                  name: 'Page 1.A.b',
+                  ...pageTreeElement1ab,
                   parent: '1.A',
                   children: [],
+                  pathElements: [pageTreeElement1, pageTreeElement1a, pageTreeElement1ab],
                 },
               ],
+              pathElements: [pageTreeElement1, pageTreeElement1a],
             },
             {
-              contentPageId: '1.B',
-              name: 'Page 1.B',
+              ...pageTreeElement1b,
               parent: '1',
               children: [],
+              pathElements: [pageTreeElement1, pageTreeElement1b],
             },
           ],
+          pathElements: [pageTreeElement1],
         } as ContentPageTreeView)
       );
     });
@@ -88,11 +120,25 @@ describe('Content Navigation Component', () => {
 
       expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
         NodeList [
-          <a ng-reflect-router-link="/page,1" title="Page 1" href="/page/1">Page 1</a>,
-          <a ng-reflect-router-link="/page,1.A" title="Page 1.A" href="/page/1.A">Page 1.A</a>,
-          <a ng-reflect-router-link="/page,1.A.a" title="Page 1.A.a" href="/page/1.A.a">Page 1.A.a</a>,
-          <a ng-reflect-router-link="/page,1.A.b" title="Page 1.A.b" href="/page/1.A.b">Page 1.A.b</a>,
-          <a ng-reflect-router-link="/page,1.B" title="Page 1.B" href="/page/1.B">Page 1.B</a>,
+          <a ng-reflect-router-link="/page-1-pg1" title="Page 1" href="/page-1-pg1">Page 1</a>,
+          <a ng-reflect-router-link="/page-1/page-1.a-pg1.A" title="Page 1.A" href="/page-1/page-1.a-pg1.A"
+          >Page 1.A</a
+        >,
+          <a
+          ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
+          title="Page 1.A.a"
+          href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
+          >Page 1.A.a</a
+        >,
+          <a
+          ng-reflect-router-link="/page-1/page-1.a/page-1.a.b-pg"
+          title="Page 1.A.b"
+          href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
+          >Page 1.A.b</a
+        >,
+          <a ng-reflect-router-link="/page-1/page-1.b-pg1.B" title="Page 1.B" href="/page-1/page-1.b-pg1.B"
+          >Page 1.B</a
+        >,
         ]
       `);
     });
@@ -105,9 +151,13 @@ describe('Content Navigation Component', () => {
 
       expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
         NodeList [
-          <a ng-reflect-router-link="/page,1" title="Page 1" href="/page/1">Page 1</a>,
-          <a ng-reflect-router-link="/page,1.A" title="Page 1.A" href="/page/1.A">Page 1.A</a>,
-          <a ng-reflect-router-link="/page,1.B" title="Page 1.B" href="/page/1.B">Page 1.B</a>,
+          <a ng-reflect-router-link="/page-1-pg1" title="Page 1" href="/page-1-pg1">Page 1</a>,
+          <a ng-reflect-router-link="/page-1/page-1.a-pg1.A" title="Page 1.A" href="/page-1/page-1.a-pg1.A"
+          >Page 1.A</a
+        >,
+          <a ng-reflect-router-link="/page-1/page-1.b-pg1.B" title="Page 1.B" href="/page-1/page-1.b-pg1.B"
+          >Page 1.B</a
+        >,
         ]
       `);
     });
@@ -131,13 +181,25 @@ describe('Content Navigation Component', () => {
         expect(element.querySelectorAll('.page-navigation-active')).toMatchInlineSnapshot(`
           NodeList [
             <li class="page-navigation-active">
-            <a ng-reflect-router-link="/page,1.A" title="Page 1.A" href="/page/1.A">Page 1.A</a>
+            <a ng-reflect-router-link="/page-1/page-1.a-pg1.A" title="Page 1.A" href="/page-1/page-1.a-pg1.A"
+              >Page 1.A</a
+            >
             <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
               <li>
-                <a ng-reflect-router-link="/page,1.A.a" title="Page 1.A.a" href="/page/1.A.a">Page 1.A.a</a>
+                <a
+                  ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
+                  title="Page 1.A.a"
+                  href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
+                  >Page 1.A.a</a
+                >
               </li>
               <li>
-                <a ng-reflect-router-link="/page,1.A.b" title="Page 1.A.b" href="/page/1.A.b">Page 1.A.b</a>
+                <a
+                  ng-reflect-router-link="/page-1/page-1.a/page-1.a.b-pg"
+                  title="Page 1.A.b"
+                  href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
+                  >Page 1.A.b</a
+                >
               </li>
             </ul>
           </li>,
@@ -157,17 +219,39 @@ describe('Content Navigation Component', () => {
           NodeList [
             <ul ng-reflect-ng-class="page-navigation-0" class="page-navigation-0">
             <li>
-              <a ng-reflect-router-link="/page,1.A" title="Page 1.A" href="/page/1.A">Page 1.A</a>
+              <a
+                ng-reflect-router-link="/page-1/page-1.a-pg1.A"
+                title="Page 1.A"
+                href="/page-1/page-1.a-pg1.A"
+                >Page 1.A</a
+              >
               <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
                 <li>
-                  <a ng-reflect-router-link="/page,1.A.a" title="Page 1.A.a" href="/page/1.A.a">Page 1.A.a</a>
+                  <a
+                    ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
+                    title="Page 1.A.a"
+                    href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
+                    >Page 1.A.a</a
+                  >
                 </li>
                 <li>
-                  <a ng-reflect-router-link="/page,1.A.b" title="Page 1.A.b" href="/page/1.A.b">Page 1.A.b</a>
+                  <a
+                    ng-reflect-router-link="/page-1/page-1.a/page-1.a.b-pg"
+                    title="Page 1.A.b"
+                    href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
+                    >Page 1.A.b</a
+                  >
                 </li>
               </ul>
             </li>
-            <li><a ng-reflect-router-link="/page,1.B" title="Page 1.B" href="/page/1.B">Page 1.B</a></li>
+            <li>
+              <a
+                ng-reflect-router-link="/page-1/page-1.b-pg1.B"
+                title="Page 1.B"
+                href="/page-1/page-1.b-pg1.B"
+                >Page 1.B</a
+              >
+            </li>
           </ul>,
           ]
         `);
@@ -178,10 +262,20 @@ describe('Content Navigation Component', () => {
           NodeList [
             <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
             <li>
-              <a ng-reflect-router-link="/page,1.A.a" title="Page 1.A.a" href="/page/1.A.a">Page 1.A.a</a>
+              <a
+                ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
+                title="Page 1.A.a"
+                href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
+                >Page 1.A.a</a
+              >
             </li>
             <li>
-              <a ng-reflect-router-link="/page,1.A.b" title="Page 1.A.b" href="/page/1.A.b">Page 1.A.b</a>
+              <a
+                ng-reflect-router-link="/page-1/page-1.a/page-1.a.b-pg"
+                title="Page 1.A.b"
+                href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
+                >Page 1.A.b</a
+              >
             </li>
           </ul>,
           ]

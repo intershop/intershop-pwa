@@ -147,7 +147,7 @@ describe('Pages Effects', () => {
       effects.setBreadcrumbForContentPage$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"key":"page 1","link":"/page/1"},{"key":"page 1.1"}]
+            breadcrumbData: [{"key":"page 1","link":"/page-1-pg1"},{"key":"page 1.1"}]
         `);
         done();
       });
