@@ -85,6 +85,23 @@ describe('Page Tree Selectors', () => {
                   "1",
                   "1.1",
                 ],
+                "pathElements": Array [
+                  Object {
+                    "contentPageId": "1",
+                    "name": "1",
+                    "path": Array [
+                      "1",
+                    ],
+                  },
+                  Object {
+                    "contentPageId": "1.1",
+                    "name": "1.1",
+                    "path": Array [
+                      "1",
+                      "1.1",
+                    ],
+                  },
+                ],
               },
             ],
             "contentPageId": "1",
@@ -92,6 +109,15 @@ describe('Page Tree Selectors', () => {
             "parent": undefined,
             "path": Array [
               "1",
+            ],
+            "pathElements": Array [
+              Object {
+                "contentPageId": "1",
+                "name": "1",
+                "path": Array [
+                  "1",
+                ],
+              },
             ],
           }
         `);
@@ -115,6 +141,32 @@ describe('Page Tree Selectors', () => {
                       "1.1",
                       "1.1.1",
                     ],
+                    "pathElements": Array [
+                      Object {
+                        "contentPageId": "1",
+                        "name": "1",
+                        "path": Array [
+                          "1",
+                        ],
+                      },
+                      Object {
+                        "contentPageId": "1.1",
+                        "name": "1.1",
+                        "path": Array [
+                          "1",
+                          "1.1",
+                        ],
+                      },
+                      Object {
+                        "contentPageId": "1.1.1",
+                        "name": "1.1.1",
+                        "path": Array [
+                          "1",
+                          "1.1",
+                          "1.1.1",
+                        ],
+                      },
+                    ],
                   },
                   Object {
                     "children": Array [],
@@ -126,6 +178,32 @@ describe('Page Tree Selectors', () => {
                       "1.1",
                       "1.1.2",
                     ],
+                    "pathElements": Array [
+                      Object {
+                        "contentPageId": "1",
+                        "name": "1",
+                        "path": Array [
+                          "1",
+                        ],
+                      },
+                      Object {
+                        "contentPageId": "1.1",
+                        "name": "1.1",
+                        "path": Array [
+                          "1",
+                          "1.1",
+                        ],
+                      },
+                      Object {
+                        "contentPageId": "1.1.2",
+                        "name": "1.1.2",
+                        "path": Array [
+                          "1",
+                          "1.1",
+                          "1.1.2",
+                        ],
+                      },
+                    ],
                   },
                 ],
                 "contentPageId": "1.1",
@@ -135,6 +213,23 @@ describe('Page Tree Selectors', () => {
                   "1",
                   "1.1",
                 ],
+                "pathElements": Array [
+                  Object {
+                    "contentPageId": "1",
+                    "name": "1",
+                    "path": Array [
+                      "1",
+                    ],
+                  },
+                  Object {
+                    "contentPageId": "1.1",
+                    "name": "1.1",
+                    "path": Array [
+                      "1",
+                      "1.1",
+                    ],
+                  },
+                ],
               },
             ],
             "contentPageId": "1",
@@ -142,6 +237,15 @@ describe('Page Tree Selectors', () => {
             "parent": undefined,
             "path": Array [
               "1",
+            ],
+            "pathElements": Array [
+              Object {
+                "contentPageId": "1",
+                "name": "1",
+                "path": Array [
+                  "1",
+                ],
+              },
             ],
           }
         `);
@@ -168,6 +272,42 @@ describe('Page Tree Selectors', () => {
                           "1.1.1",
                           "1.1.1.1",
                         ],
+                        "pathElements": Array [
+                          Object {
+                            "contentPageId": "1",
+                            "name": "1",
+                            "path": Array [
+                              "1",
+                            ],
+                          },
+                          Object {
+                            "contentPageId": "1.1",
+                            "name": "1.1",
+                            "path": Array [
+                              "1",
+                              "1.1",
+                            ],
+                          },
+                          Object {
+                            "contentPageId": "1.1.1",
+                            "name": "1.1.1",
+                            "path": Array [
+                              "1",
+                              "1.1",
+                              "1.1.1",
+                            ],
+                          },
+                          Object {
+                            "contentPageId": "1.1.1.1",
+                            "name": "1.1.1.1",
+                            "path": Array [
+                              "1",
+                              "1.1",
+                              "1.1.1",
+                              "1.1.1.1",
+                            ],
+                          },
+                        ],
                       },
                     ],
                     "contentPageId": "1.1.1",
@@ -177,6 +317,32 @@ describe('Page Tree Selectors', () => {
                       "1",
                       "1.1",
                       "1.1.1",
+                    ],
+                    "pathElements": Array [
+                      Object {
+                        "contentPageId": "1",
+                        "name": "1",
+                        "path": Array [
+                          "1",
+                        ],
+                      },
+                      Object {
+                        "contentPageId": "1.1",
+                        "name": "1.1",
+                        "path": Array [
+                          "1",
+                          "1.1",
+                        ],
+                      },
+                      Object {
+                        "contentPageId": "1.1.1",
+                        "name": "1.1.1",
+                        "path": Array [
+                          "1",
+                          "1.1",
+                          "1.1.1",
+                        ],
+                      },
                     ],
                   },
                   Object {
@@ -189,6 +355,32 @@ describe('Page Tree Selectors', () => {
                       "1.1",
                       "1.1.2",
                     ],
+                    "pathElements": Array [
+                      Object {
+                        "contentPageId": "1",
+                        "name": "1",
+                        "path": Array [
+                          "1",
+                        ],
+                      },
+                      Object {
+                        "contentPageId": "1.1",
+                        "name": "1.1",
+                        "path": Array [
+                          "1",
+                          "1.1",
+                        ],
+                      },
+                      Object {
+                        "contentPageId": "1.1.2",
+                        "name": "1.1.2",
+                        "path": Array [
+                          "1",
+                          "1.1",
+                          "1.1.2",
+                        ],
+                      },
+                    ],
                   },
                 ],
                 "contentPageId": "1.1",
@@ -198,6 +390,23 @@ describe('Page Tree Selectors', () => {
                   "1",
                   "1.1",
                 ],
+                "pathElements": Array [
+                  Object {
+                    "contentPageId": "1",
+                    "name": "1",
+                    "path": Array [
+                      "1",
+                    ],
+                  },
+                  Object {
+                    "contentPageId": "1.1",
+                    "name": "1.1",
+                    "path": Array [
+                      "1",
+                      "1.1",
+                    ],
+                  },
+                ],
               },
             ],
             "contentPageId": "1",
@@ -205,6 +414,15 @@ describe('Page Tree Selectors', () => {
             "parent": undefined,
             "path": Array [
               "1",
+            ],
+            "pathElements": Array [
+              Object {
+                "contentPageId": "1",
+                "name": "1",
+                "path": Array [
+                  "1",
+                ],
+              },
             ],
           }
         `);

@@ -17,6 +17,7 @@ export class LinkParser {
           return `${prefix}/categoryref/${value}${unitName}`;
         case 'page':
           // CMS managed pages link
+          // TODO: use ContentPageRoutePipe for SEO URLs
           return `${prefix}/page/${value}`;
         case 'route':
           // direct router links for the PWA

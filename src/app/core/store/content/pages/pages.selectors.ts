@@ -2,11 +2,13 @@ import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/stor
 import { isEqual } from 'lodash-es';
 
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
+import { createContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageTree } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import {
   ContentPageletEntryPointView,
   createContentPageletEntryPointView,
 } from 'ish-core/models/content-view/content-view.model';
+import { generateContentPageUrl } from 'ish-core/routing/content-page/content-page.route';
 import { getContentState } from 'ish-core/store/content/content-store';
 import { getPageTree } from 'ish-core/store/content/page-tree';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -29,7 +31,8 @@ export const getBreadcrumbForContentPage = createSelectorFactory<object, Breadcr
   pagetree.nodes[contentPage?.id]
     ? (pagetree.nodes[contentPage.id].path.map((item, i, path) => ({
         key: pagetree.nodes[item].name,
-        link: i !== path.length - 1 ? `/page/${item}` : undefined,
+        link:
+          i !== path.length - 1 ? generateContentPageUrl(createContentPageTreeView(pagetree, item, item)) : undefined,
       })) as BreadcrumbItem[])
     : ([{ key: contentPage?.displayName }] as BreadcrumbItem[])
 );

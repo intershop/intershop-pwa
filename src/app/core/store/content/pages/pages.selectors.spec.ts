@@ -101,7 +101,7 @@ describe('Pages Selectors', () => {
         Array [
           Object {
             "key": "1",
-            "link": "/page/1",
+            "link": "/1-pg1",
           },
           Object {
             "key": "1.1",
