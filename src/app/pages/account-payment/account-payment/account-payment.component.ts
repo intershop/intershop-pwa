@@ -1,13 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Subject, filter, takeUntil } from 'rxjs';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
 
 /**
- * The Account Payment Component displays the preferred payment instrument of the user
- * and any further payment instruments. The user can delete payment instruments and change the preferred payment instrument.
+ * The Account Payment Component displays the preferred payment method/instrument of the user
+ * and any further payment options. The user can delete payment instruments and change the preferred payment method/instrument.
  * Adding a payment instrument is only possible during the checkout.
  * see also: {@link AccountPaymentPageComponent}
  */
@@ -16,28 +18,58 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './account-payment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountPaymentComponent implements OnChanges {
+export class AccountPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() paymentMethods: PaymentMethod[];
   @Input() user: User;
-  @Input() error: HttpError;
-
-  @Output() deletePaymentInstrument = new EventEmitter<string>();
-  @Output() updateDefaultPaymentInstrument = new EventEmitter<User>();
 
   preferredPaymentInstrument: PaymentInstrument;
-  preferredPaymentMethod: PaymentMethod;
   savedPaymentMethods: PaymentMethod[];
   standardPaymentMethods: PaymentMethod[];
 
+  paymentForm: FormGroup;
+
+  private destroy$ = new Subject<void>();
+
+  constructor(private accountFacade: AccountFacade) {}
+
+  ngOnInit() {
+    this.paymentForm = new FormGroup({
+      id: new FormControl(this.user?.preferredPaymentInstrumentId),
+    });
+
+    // trigger update preferred payment method if payment selection changes
+    this.paymentForm
+      .get('id')
+      .valueChanges.pipe(
+        filter(paymentInstrumentId => paymentInstrumentId !== this.user.preferredPaymentInstrumentId),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(id => {
+        this.setAsDefaultPayment(id);
+      });
+  }
+
   /**
-   * refresh the display of the preferred payment instrument and the shown further addresses.
+   * refreshes the display of the preferred payment instrument and the further payment options.
    */
   ngOnChanges() {
     this.determinePreferredPaymentInstrument();
     this.determineFurtherPaymentMethods();
   }
 
-  determineFurtherPaymentMethods() {
+  private determinePreferredPaymentInstrument() {
+    this.preferredPaymentInstrument = undefined;
+    if (this.paymentMethods && this.user) {
+      this.paymentMethods.forEach(pm => {
+        this.preferredPaymentInstrument =
+          pm.paymentInstruments?.find(pi => pi.id === this.user.preferredPaymentInstrumentId) ||
+          this.preferredPaymentInstrument;
+      });
+      this.paymentForm?.get('id').setValue(this.preferredPaymentInstrument?.id, { emitEvent: false }); // update form value
+    }
+  }
+
+  private determineFurtherPaymentMethods() {
     this.savedPaymentMethods = this.paymentMethods?.length
       ? this.paymentMethods.filter(pm => pm.paymentInstruments?.length)
       : [];
@@ -54,39 +86,40 @@ export class AccountPaymentComponent implements OnChanges {
       : [];
   }
 
-  determinePreferredPaymentInstrument() {
-    this.preferredPaymentInstrument = undefined;
-    this.preferredPaymentMethod = undefined;
-    if (this.paymentMethods && this.user) {
-      this.paymentMethods.forEach(pm => {
-        this.preferredPaymentInstrument =
-          pm.paymentInstruments?.find(pi => pi.id === this.user.preferredPaymentInstrumentId) ||
-          this.preferredPaymentInstrument;
-      });
-      this.preferredPaymentMethod =
-        this.preferredPaymentInstrument &&
-        this.paymentMethods.find(pm => pm.id === this.preferredPaymentInstrument.paymentMethod);
-    }
+  /**
+   *  determines the preferred payment method
+   */
+  getPreferredPaymentMethod() {
+    return (
+      this.preferredPaymentInstrument &&
+      this.paymentMethods.find(pm => pm.id === this.preferredPaymentInstrument.paymentMethod)
+    );
   }
 
   /**
-   * deletes a user payment instrument
+   * deletes a user payment instrument and triggers a toast in case of success
    */
   deleteUserPayment(paymentInstrumentId: string) {
     if (paymentInstrumentId) {
-      this.deletePaymentInstrument.emit(paymentInstrumentId);
+      this.accountFacade.deletePaymentInstrument(paymentInstrumentId, {
+        message: 'account.payment.payment_deleted.message',
+      });
     }
   }
 
   /**
    * change the user's preferred payment instrument
    */
-  setAsDefaultPayment(paymentInstrumentId: string) {
-    if (paymentInstrumentId) {
-      this.updateDefaultPaymentInstrument.emit({
-        ...this.user,
-        preferredPaymentInstrumentId: paymentInstrumentId,
-      });
+  setAsDefaultPayment(id: string) {
+    if (id && this.standardPaymentMethods?.some(pm => pm.id === id)) {
+      this.accountFacade.updateUserPreferredPaymentMethod(this.user, id, this.preferredPaymentInstrument);
+    } else {
+      this.accountFacade.updateUserPreferredPaymentInstrument(this.user, id, this.preferredPaymentInstrument);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

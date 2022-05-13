@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, capture, spy, verify } from 'ts-mockito';
+import { anything, instance, mock, verify } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { User } from 'ish-core/models/user/user.model';
-import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { AccountPaymentConcardisDirectdebitComponent } from '../account-payment-concardis-directdebit/account-payment-concardis-directdebit.component';
 
@@ -17,16 +17,18 @@ describe('Account Payment Component', () => {
   let component: AccountPaymentComponent;
   let fixture: ComponentFixture<AccountPaymentComponent>;
   let element: HTMLElement;
+  let accountFacade: AccountFacade;
 
   beforeEach(async () => {
+    accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         AccountPaymentComponent,
         MockComponent(AccountPaymentConcardisDirectdebitComponent),
-        MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
       ],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
 
@@ -54,7 +56,7 @@ describe('Account Payment Component', () => {
     component.user = {
       firstName: 'Paticia',
       lastName: 'Miller',
-      preferredPaymentInstrumentId: '123',
+      preferredPaymentInstrumentId: '456',
     } as User;
   });
 
@@ -84,6 +86,8 @@ describe('Account Payment Component', () => {
     it('should render a preferred payment instrument if there is one', () => {
       component.ngOnChanges();
       fixture.detectChanges();
+
+      expect(component.preferredPaymentInstrument.id).toEqual(component.user.preferredPaymentInstrumentId);
       expect(element.querySelector('[data-testing-id="preferred-payment-instrument"]')).toBeTruthy();
     });
 
@@ -95,46 +99,24 @@ describe('Account Payment Component', () => {
     });
   });
 
-  describe('error display', () => {
-    it('should not render an error if no error occurs', () => {
-      fixture.detectChanges();
-      expect(element.querySelector('[role="alert"]')).toBeFalsy();
-    });
-
-    it('should render an error if an error occurs', () => {
-      component.error = makeHttpError({ status: 404 });
-      fixture.detectChanges();
-      expect(element.querySelector('ish-error-message')).toBeTruthy();
-    });
-  });
-
   describe('delete payment instrument', () => {
-    it('should throw deletePaymentInstrument event when the user deletes a payment instrument', () => {
+    it('should call deletePaymentInstrument event the user deletes a payment instrument', () => {
       fixture.detectChanges();
-
-      const emitter = spy(component.deletePaymentInstrument);
 
       component.deleteUserPayment('paymentInstrumentId');
 
-      verify(emitter.emit(anything())).once();
-      const [arg] = capture(emitter.emit).last();
-      expect(arg).toMatchInlineSnapshot(`"paymentInstrumentId"`);
+      verify(accountFacade.deletePaymentInstrument('paymentInstrumentId', anything())).once();
     });
   });
 
   describe('update default payment instrument', () => {
-    it('should throw updateDefaultPaymentInstrument event when the user changes his preferred payment instrument', () => {
+    it('should call updateDefaultPaymentInstrument when the user changes his preferred payment instrument', () => {
       component.user = { firstName: 'Patricia', lastName: 'Miller' } as User;
 
       fixture.detectChanges();
 
-      const emitter = spy(component.updateDefaultPaymentInstrument);
-
       component.setAsDefaultPayment('paymentInstrumentId');
-
-      verify(emitter.emit(anything())).once();
-      const [user] = capture(emitter.emit).last();
-      expect(user?.preferredPaymentInstrumentId).toMatchInlineSnapshot(`"paymentInstrumentId"`);
+      verify(accountFacade.updateUserPreferredPaymentInstrument(anything(), anything(), anything())).once();
     });
   });
 });

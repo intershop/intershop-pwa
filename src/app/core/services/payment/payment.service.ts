@@ -273,12 +273,8 @@ export class PaymentService {
     if (!customerNo) {
       return throwError(() => new Error('createUserPayment called without required customer number'));
     }
-    if (!paymentInstrument) {
-      return throwError(() => new Error('createUserPayment called without required payment instrument'));
-    }
-
-    if (!paymentInstrument.parameters || !paymentInstrument.parameters.length) {
-      return throwError(() => new Error('createUserPayment called without required payment parameters'));
+    if (!paymentInstrument?.paymentMethod) {
+      return throwError(() => new Error('createUserPayment called without required valid payment instrument'));
     }
 
     const body: {
@@ -289,7 +285,9 @@ export class PaymentService {
       }[];
     } = {
       name: paymentInstrument.paymentMethod,
-      parameters: paymentInstrument.parameters.map(attr => ({ key: attr.name, property: attr.value })),
+      parameters: paymentInstrument.parameters?.length
+        ? paymentInstrument.parameters.map(attr => ({ key: attr.name, property: attr.value }))
+        : undefined,
     };
 
     return this.appFacade.customerRestResource$.pipe(

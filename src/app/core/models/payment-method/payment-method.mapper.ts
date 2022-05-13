@@ -71,7 +71,7 @@ export class PaymentMethodMapper {
         serviceId: pm.id, // is missing
         displayName: pm.displayName,
         restrictionCauses: pm.restrictions,
-        paymentParameters: pm.paymentParameters,
+        hasParameters: !!pm.paymentParameters?.length,
         paymentInstruments: options.instruments
           .filter(i => i.name === pm.id)
           .map(i => ({
@@ -82,7 +82,7 @@ export class PaymentMethodMapper {
           })),
       }))
       .filter(pm => !pmBlacklist.includes(pm.serviceId))
-      .filter(pm => !pm.paymentParameters?.length || pm.paymentInstruments?.length);
+      .filter(pm => !pm.hasParameters || pm.paymentInstruments?.length);
   }
 
   /**
