@@ -5,6 +5,7 @@
 >
   <div class="marketing-area">
     <ish-content-viewcontext
+      *ngIf="category.categoryRef"
       viewContextId="viewcontext.include.family.base.top"
       [callParameters]="{ Category: category.categoryRef }"
     ></ish-content-viewcontext>
@@ -25,6 +26,7 @@
 
       <div class="marketing-area">
         <ish-content-viewcontext
+          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.family.navigation"
           [callParameters]="{ Category: category.categoryRef }"
         ></ish-content-viewcontext>
@@ -36,6 +38,7 @@
 
       <div class="marketing-area">
         <ish-content-viewcontext
+          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.family.content.top"
           [callParameters]="{ Category: category.categoryRef }"
         ></ish-content-viewcontext>
@@ -49,6 +52,7 @@
 
       <div class="marketing-area">
         <ish-content-viewcontext
+          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.family.content.bottom"
           [callParameters]="{ Category: category.categoryRef }"
         ></ish-content-viewcontext>
@@ -58,6 +62,7 @@
 
   <div class="marketing-area">
     <ish-content-viewcontext
+      *ngIf="category.categoryRef"
       viewContextId="viewcontext.include.family.base.bottom"
       [callParameters]="{ Category: category.categoryRef }"
     ></ish-content-viewcontext>
