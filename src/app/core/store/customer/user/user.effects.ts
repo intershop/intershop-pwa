@@ -49,6 +49,7 @@ import {
   updateUserPasswordByPasswordReminderSuccess,
   updateUserPasswordFail,
   updateUserPasswordSuccess,
+  updateUserPreferredPayment,
   updateUserSuccess,
   userErrorReset,
 } from './user.actions';
@@ -259,20 +260,45 @@ export class UserEffects {
   deleteUserPayment$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteUserPaymentInstrument),
-      mapToPayloadProperty('id'),
+      mapToPayload(),
       withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
       filter(([, customer]) => !!customer),
-      concatMap(([id, customer]) =>
-        this.paymentService.deleteUserPaymentInstrument(customer.customerNo, id).pipe(
+      concatMap(([payload, customer]) =>
+        this.paymentService.deleteUserPaymentInstrument(customer.customerNo, payload.id).pipe(
           mergeMap(() => [
             deleteUserPaymentInstrumentSuccess(),
             loadUserPaymentMethods(),
-            displaySuccessMessage({
-              message: 'account.payment.payment_deleted.message',
-            }),
+            displaySuccessMessage(payload.successMessage),
           ]),
           mapErrorToAction(deleteUserPaymentInstrumentFail)
         )
+      )
+    )
+  );
+
+  /**
+   * Creates a payment instrument for an unparametrized payment method (like invoice)  and assigns it as preferred instrument at the user.
+   * This is necessary due to limitations of the payment user REST interface.
+   */
+  updatePreferredUserPayment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUserPreferredPayment),
+      mapToPayload(),
+      withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+      filter(([, customer]) => !!customer),
+      concatMap(([payload, customer]) =>
+        this.paymentService
+          .createUserPayment(customer.customerNo, { id: undefined, paymentMethod: payload.paymentMethodId })
+          .pipe(
+            mergeMap(pi => [
+              updateUser({
+                user: { ...payload.user, preferredPaymentInstrumentId: pi.id },
+                successMessage: payload.successMessage,
+              }),
+              loadUserPaymentMethods(),
+            ]),
+            mapErrorToAction(updateUserFail)
+          )
       )
     )
   );

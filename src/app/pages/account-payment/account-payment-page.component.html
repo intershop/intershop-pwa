@@ -1,13 +1,10 @@
 <div class="clearfix">
   <ng-container>
-    <ish-account-payment
-      [paymentMethods]="paymentMethods$ | async"
-      [user]="user$ | async"
-      [error]="error$ | async"
-      (deletePaymentInstrument)="deletePaymentInstrument($event)"
-      (updateDefaultPaymentInstrument)="updateDefaultPaymentInstrument($event)"
-    >
-    </ish-account-payment>
+    <h1>{{ 'account.payment.heading' | translate }}</h1>
+
+    <ish-error-message [error]="error$ | async"></ish-error-message>
+
+    <ish-account-payment [paymentMethods]="paymentMethods$ | async" [user]="user$ | async"> </ish-account-payment>
   </ng-container>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>

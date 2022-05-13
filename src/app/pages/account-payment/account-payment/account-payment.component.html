@@ -1,70 +1,100 @@
-<h1>{{ 'account.payment.heading' | translate }}</h1>
-
-<ish-error-message [error]="error"></ish-error-message>
-
-<!-- Preferred Payment Method -->
 <ng-container *ngIf="paymentMethods?.length; else noPaymentMethods">
-  <p>{{ 'account.payment.message' | translate }}</p>
+  <form [formGroup]="paymentForm" class="form-horizontal">
+    <p>{{ 'account.payment.message' | translate }}</p>
 
-  <div *ngIf="preferredPaymentInstrument && preferredPaymentMethod" class="payment-methods">
-    <h3>{{ 'account.payment.preferred_method' | translate }}</h3>
-    <div class="panel">
-      <h4>
-        <b>{{ preferredPaymentMethod.displayName }}</b>
-      </h4>
-      <div class="row" data-testing-id="preferred-payment-instrument">
-        <ng-container
-          *ngTemplateOutlet="paymentWidget; context: { pi: preferredPaymentInstrument, isPreferred: true }"
-        ></ng-container>
-      </div>
-    </div>
-  </div>
-
-  <!-- Further Payment Methods -->
-  <div *ngIf="savedPaymentMethods?.length || standardPaymentMethods?.length" class="payment-methods">
-    <h3>{{ 'account.payment.further_payments.heading' | translate }}</h3>
-    <div *ngFor="let method of savedPaymentMethods" class="panel section" data-testing-id="paymentMethodList">
-      <h4>
-        <b>{{ method.displayName }}</b>
-      </h4>
-
-      <div *ngFor="let payment of method.paymentInstruments" class="row">
-        <ng-container *ngTemplateOutlet="paymentWidget; context: { pi: payment, isPreferred: false }"></ng-container>
-      </div>
-    </div>
-
-    <ng-container *ngIf="standardPaymentMethods?.length">
+    <!-- Preferred Payment Method -->
+    <div class="section payment-methods">
+      <h3>{{ 'account.payment.preferred_method' | translate }}</h3>
       <div class="panel">
-        <h4>
-          <b>{{ 'account.payment.standard_methods' | translate }}</b>
+        <ng-container *ngIf="preferredPaymentInstrument; else noPreferredPayment">
+          <h4
+            [ngClass]="{ 'font-weight-bold': preferredPaymentInstrument.accountIdentifier }"
+            data-testing-id="preferred-payment-method"
+          >
+            {{ getPreferredPaymentMethod()?.displayName }}
+          </h4>
+          <div
+            *ngIf="preferredPaymentInstrument.accountIdentifier"
+            class="row"
+            data-testing-id="preferred-payment-instrument"
+          >
+            <ng-container
+              *ngTemplateOutlet="paymentWidget; context: { pi: preferredPaymentInstrument, isPreferred: true }"
+            ></ng-container>
+          </div>
+        </ng-container>
+        <ng-template #noPreferredPayment>{{ 'account.payment.no_preferred_method' | translate }}</ng-template>
+      </div>
+    </div>
+
+    <!-- Further Payment Methods -->
+    <div *ngIf="savedPaymentMethods?.length || standardPaymentMethods?.length" class="payment-methods">
+      <h3>{{ 'account.payment.further_payments.heading' | translate }}</h3>
+      <div *ngFor="let method of savedPaymentMethods" class="panel section" data-testing-id="paymentMethodList">
+        <h4 class="font-weight-bold">
+          {{ method.displayName }}
         </h4>
-        <div *ngFor="let method of standardPaymentMethods" data-testing-id="standardPaymentMethodList">
-          <p>{{ method.displayName }}</p>
+
+        <div *ngFor="let payment of method.paymentInstruments" class="row">
+          <ng-container *ngTemplateOutlet="paymentWidget; context: { pi: payment, isPreferred: false }"></ng-container>
         </div>
       </div>
-    </ng-container>
-  </div>
+
+      <div *ngIf="standardPaymentMethods?.length" class="panel" data-testing-id="standardPaymentMethodList">
+        <h4 class="font-weight-bold">
+          {{ 'account.payment.standard_methods' | translate }}
+        </h4>
+        <div *ngFor="let method of standardPaymentMethods" class="pb-2">
+          <input
+            type="radio"
+            formControlName="id"
+            class="form-check-input"
+            [id]="'paymentOption_' + method.id"
+            [value]="method.id"
+          />
+          <label class="form-check-label" [for]="'paymentOption_' + method.id">
+            {{ method.displayName }}
+          </label>
+        </div>
+      </div>
+
+      <div *ngIf="preferredPaymentInstrument" class="panel">
+        <input type="radio" formControlName="id" class="form-check-input" [id]="'paymentOption_empty'" value="" />
+        <label class="form-check-label" [for]="'paymentOption_empty'">
+          {{ 'account.payment.no_preferred_method' | translate }}
+        </label>
+      </div>
+    </div>
+
+    <ng-template #paymentWidget let-pi="pi" let-isPreferred="isPreferred">
+      <div class="col-sm-7 col-md-5 pb-2">
+        <div class="float-right">
+          <a
+            class="btn-tool"
+            title="{{ 'checkout.payment.method.delete.link' | translate }}"
+            (click)="deleteUserPayment(pi.id)"
+          >
+            <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+          </a>
+        </div>
+        <input
+          *ngIf="!isPreferred"
+          type="radio"
+          formControlName="id"
+          class="form-check-input"
+          [id]="'paymentOption_' + pi.id"
+          [value]="pi.id"
+        />
+        <label class="form-check-label" [ngClass]="{ 'ml-0': isPreferred }" [for]="'paymentOption_' + pi.id">
+          {{ pi.accountIdentifier }}
+        </label>
+
+        <ish-account-payment-concardis-directdebit [paymentInstrument]="pi"></ish-account-payment-concardis-directdebit>
+      </div>
+    </ng-template>
+  </form>
 </ng-container>
 
 <ng-template #noPaymentMethods>
   <p data-testing-id="emptyMessage">{{ 'account.payment.no_entries' | translate }}</p>
-</ng-template>
-
-<ng-template #paymentWidget let-pi="pi" let-isPreferred="isPreferred">
-  <div class="col-sm-7 col-md-5">
-    <div class="float-right">
-      <a
-        class="btn-tool"
-        title="{{ 'checkout.payment.method.delete.link' | translate }}"
-        (click)="deleteUserPayment(pi.id)"
-      >
-        <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
-      </a>
-    </div>
-    <p>{{ pi.accountIdentifier }}</p>
-    <p *ngIf="!isPreferred">
-      <a (click)="setAsDefaultPayment(pi.id)">{{ 'account.payment.preferred.link' | translate }}</a>
-    </p>
-    <ish-account-payment-concardis-directdebit [paymentInstrument]="pi"></ish-account-payment-concardis-directdebit>
-  </div>
 </ng-template>
