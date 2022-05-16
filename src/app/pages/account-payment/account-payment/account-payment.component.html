@@ -7,15 +7,15 @@
       <h3>{{ 'account.payment.preferred_method' | translate }}</h3>
       <div class="panel">
         <ng-container *ngIf="preferredPaymentInstrument; else noPreferredPayment">
-          <h4
+          <div
             [ngClass]="{ 'font-weight-bold': preferredPaymentInstrument.accountIdentifier }"
             data-testing-id="preferred-payment-method"
           >
             {{ getPreferredPaymentMethod()?.displayName }}
-          </h4>
+          </div>
           <div
             *ngIf="preferredPaymentInstrument.accountIdentifier"
-            class="row"
+            class="row mt-2"
             data-testing-id="preferred-payment-instrument"
           >
             <ng-container
@@ -31,9 +31,9 @@
     <div *ngIf="savedPaymentMethods?.length || standardPaymentMethods?.length" class="payment-methods">
       <h3>{{ 'account.payment.further_payments.heading' | translate }}</h3>
       <div *ngFor="let method of savedPaymentMethods" class="panel section" data-testing-id="paymentMethodList">
-        <h4 class="font-weight-bold">
+        <div class="font-weight-bold">
           {{ method.displayName }}
-        </h4>
+        </div>
 
         <div *ngFor="let payment of method.paymentInstruments" class="row">
           <ng-container *ngTemplateOutlet="paymentWidget; context: { pi: payment, isPreferred: false }"></ng-container>
@@ -41,9 +41,9 @@
       </div>
 
       <div *ngIf="standardPaymentMethods?.length" class="panel" data-testing-id="standardPaymentMethodList">
-        <h4 class="font-weight-bold">
+        <p class="font-weight-bold">
           {{ 'account.payment.standard_methods' | translate }}
-        </h4>
+        </p>
         <div *ngFor="let method of standardPaymentMethods" class="pb-2">
           <input
             type="radio"
@@ -67,7 +67,7 @@
     </div>
 
     <ng-template #paymentWidget let-pi="pi" let-isPreferred="isPreferred">
-      <div class="col-sm-7 col-md-5 pb-2">
+      <div class="col-sm-7 col-md-5" [ngClass]="{ 'pt-2': !isPreferred }">
         <div class="float-right">
           <a
             class="btn-tool"

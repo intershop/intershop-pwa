@@ -170,11 +170,16 @@ export class AccountFacade {
     this.store.dispatch(deleteUserPaymentInstrument({ id: paymentInstrumentId, successMessage }));
   }
 
-  updateUserPreferredPaymentMethod(
+  async updateUserPreferredPaymentMethod(
     user: User,
     paymentMethodId: string,
     currentPreferredPaymentInstrument: PaymentInstrument
   ) {
+    if (currentPreferredPaymentInstrument && !currentPreferredPaymentInstrument.parameters?.length) {
+      this.deletePaymentInstrument(currentPreferredPaymentInstrument.id);
+      await new Promise(resolve => setTimeout(resolve, 600)); // prevent server conflicts
+    }
+
     this.store.dispatch(
       updateUserPreferredPayment({
         user,
@@ -184,30 +189,23 @@ export class AccountFacade {
         },
       })
     );
-    this.deletePreferredPaymentInstrument(currentPreferredPaymentInstrument);
   }
 
-  updateUserPreferredPaymentInstrument(
+  async updateUserPreferredPaymentInstrument(
     user: User,
     paymentInstrumentId: string,
     currentPreferredPaymentInstrument: PaymentInstrument
   ) {
+    if (currentPreferredPaymentInstrument && !currentPreferredPaymentInstrument.parameters?.length) {
+      this.deletePaymentInstrument(currentPreferredPaymentInstrument.id);
+      await new Promise(resolve => setTimeout(resolve, 600)); // prevent server conflicts
+    }
     this.store.dispatch(
       updateUser({
         user: { ...user, preferredPaymentInstrumentId: paymentInstrumentId },
         successMessage: { message: 'account.payment.payment_created.message' },
       })
     );
-    this.deletePreferredPaymentInstrument(currentPreferredPaymentInstrument);
-  }
-
-  // cleanup unparametrized payment instrument
-  private deletePreferredPaymentInstrument(pi: PaymentInstrument) {
-    if (pi && !pi.parameters?.length) {
-      setTimeout(() => {
-        this.deletePaymentInstrument(pi.id);
-      }, 500); // prevent server conflicts
-    }
   }
 
   // ADDRESSES
