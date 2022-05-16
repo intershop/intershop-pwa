@@ -884,6 +884,7 @@
   "product.ready_for_shipment.within24": "Usually ready for shipment within 24 hours",
   "product.remove_all_product_filters.text": "Reset all filters",
   "product.retailSet.products.heading": "This retail set contains",
+  "product.review.heading": "Reviews",
   "product.short_description.label": "Short Description",
   "product.specific_attributes.label": "Specific Attributes",
   "product.variations.text": "Variations",
@@ -1072,6 +1073,5 @@
   "tacton.submit.error.message": "A technical error occurred while processing your request. Please try again later.",
   "tacton.submit.success.message": "Your request has been successfully submitted. We will e-mail <strong>{{0}}</strong> to keep you updated on the status of your request.",
   "tacton.undo.tooltip": "Undo",
-  "textarea.max_limit": "Your message: {{0}} characters remaining.",
-  "product.review.heading": "Reviews"
+  "textarea.max_limit": "Your message: {{0}} characters remaining."
 }

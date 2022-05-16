@@ -884,6 +884,7 @@
   "product.ready_for_shipment.within24": "Gewöhnlich lieferbar in 24 Stunden",
   "product.remove_all_product_filters.text": "Alle Filter zurücksetzen",
   "product.retailSet.products.heading": "Dieses Retail-Set enthält",
+  "product.review.heading": "Bewertungen",
   "product.short_description.label": "Kurzbeschreibung",
   "product.specific_attributes.label": "Spezifische Attribute",
   "product.variations.text": "Variationen",
@@ -1072,6 +1073,5 @@
   "tacton.submit.error.message": "Beim Verarbeiten Ihrer Anfrage ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
   "tacton.submit.success.message": "Ihre Anfrage wurde erfolgreich versendet. Wir werden <strong>{{0}}</strong> per E-Mail über den Status Ihrer Anfrage informieren.",
   "tacton.undo.tooltip": "Wiederherstellen",
-  "textarea.max_limit": "Ihre Nachricht: {{0}} Zeichen verbleibend.",
-  "product.review.heading": "Bewertungen"
+  "textarea.max_limit": "Ihre Nachricht: {{0}} Zeichen verbleibend."
 }
