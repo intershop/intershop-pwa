@@ -11,7 +11,7 @@ describe('Page Meta', () => {
     at(ProductDetailPage, page => {
       page.metaData.check({
         title: 'Google Home - Smart Home | Intershop PWA',
-        url: /.*\/Smart-Home\/Google-Home-sku201807171-catHome-Entertainment.SmartHome$/,
+        url: /.*\/smart-home\/Google-Home-sku201807171-ctgHome-Entertainment.SmartHome$/,
         description: 'Google Home - Hands-free help from the Google Assistant',
         'og:image': /.*201807171_front.*/,
       });
@@ -25,7 +25,7 @@ describe('Page Meta', () => {
     at(FamilyPage, page => {
       page.metaData.check({
         title: 'Smart Home - Home Entertainment | Intershop PWA',
-        url: /.*\/Smart-Home-catHome-Entertainment.SmartHome$/,
+        url: /.*\/smart-home-ctgHome-Entertainment.SmartHome$/,
         description: 'Smart Home, Hands-free help from the Google AssistantSmart HomeHome Entertainment',
       });
     });

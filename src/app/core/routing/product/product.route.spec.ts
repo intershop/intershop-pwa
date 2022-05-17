@@ -123,7 +123,7 @@ describe('Product Route', () => {
         const product = createProductView({ sku: 'A' } as Product, specials);
 
         it('should be created', () => {
-          expect(generateProductUrl(product, category)).toMatchInlineSnapshot(`"/Spezielles/skuA-catSpecials"`);
+          expect(generateProductUrl(product, category)).toMatchInlineSnapshot(`"/spezielles/skuA-ctgSpecials"`);
         });
 
         it('should be a match for matcher', () => {
@@ -141,7 +141,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
-            `"/Spezielles/Das-neue-Surface-Pro-7-skuA-catSpecials"`
+            `"/spezielles/Das-neue-Surface-Pro-7-skuA-ctgSpecials"`
           );
         });
 
@@ -161,7 +161,7 @@ describe('Product Route', () => {
         const product = createProductView({ sku: 'A' } as Product, specials);
 
         it('should be created', () => {
-          expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/Spezielles/skuA-catSpecials"`);
+          expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/spezielles/skuA-ctgSpecials"`);
         });
 
         it('should be a match for matcher', () => {
@@ -179,7 +179,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
-            `"/Spezielles/Das-neue-Surface-Pro-7-skuA-catSpecials"`
+            `"/spezielles/Das-neue-Surface-Pro-7-skuA-ctgSpecials"`
           );
         });
 
@@ -205,7 +205,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
-            `"/Black-Friday/skuA-catSpecials.TopSeller.LimitedOffer"`
+            `"/black-friday/skuA-ctgSpecials.TopSeller.LimitedOffer"`
           );
         });
 
@@ -224,7 +224,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
-            `"/Black-Friday/Das-neue-Surface-Pro-7-skuA-catSpecials.TopSeller.LimitedOffer"`
+            `"/black-friday/Das-neue-Surface-Pro-7-skuA-ctgSpecials.TopSeller.LimitedOffer"`
           );
         });
 
@@ -245,7 +245,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
-            `"/Black-Friday/skuA-catSpecials.TopSeller.LimitedOffer"`
+            `"/black-friday/skuA-ctgSpecials.TopSeller.LimitedOffer"`
           );
         });
 
@@ -264,7 +264,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
-            `"/Black-Friday/Das-neue-Surface-Pro-7-skuA-catSpecials.TopSeller.LimitedOffer"`
+            `"/black-friday/Das-neue-Surface-Pro-7-skuA-ctgSpecials.TopSeller.LimitedOffer"`
           );
         });
 

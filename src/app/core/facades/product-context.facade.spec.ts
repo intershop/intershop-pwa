@@ -395,7 +395,7 @@ describe('Product Context Facade', () => {
       });
 
       it('should calculate the url property of the product with default category', () => {
-        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catABC"`);
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-ctgABC"`);
       });
     });
 
@@ -416,7 +416,7 @@ describe('Product Context Facade', () => {
       });
 
       it('should calculate the url property of the product with context category', () => {
-        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catASDF"`);
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-ctgASDF"`);
       });
     });
 
@@ -438,7 +438,7 @@ describe('Product Context Facade', () => {
       });
 
       it('should calculate the url property of the product with context category', () => {
-        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catASDF"`);
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-ctgASDF"`);
       });
     });
   });

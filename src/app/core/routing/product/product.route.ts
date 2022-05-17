@@ -30,7 +30,8 @@ function generateProductSlug(product: ProductView) {
   return slug.replace('-cat', '-Cat');
 }
 
-const productRouteFormat = new RegExp('/(?!cat)((?!.*-cat.*-sku).*-)?sku(.*?)(-cat(.*))?$');
+// matcher to check if a given url is a product url
+const productRouteFormat = /\/(?!ctg)(?!.*-ctg.*-sku)(.*?)-?sku(.*?)(-ctg(.*))?$/;
 
 export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
@@ -78,7 +79,7 @@ export function generateProductUrl(product: ProductView, category?: Category): s
   route += `sku${product.sku}`;
 
   if (contextCategory) {
-    route += `-cat${contextCategory.uniqueId}`;
+    route += `-ctg${contextCategory.uniqueId}`;
   }
 
   return route;

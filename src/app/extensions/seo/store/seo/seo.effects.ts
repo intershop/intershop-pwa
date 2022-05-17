@@ -11,6 +11,7 @@ import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
 
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
@@ -63,7 +64,9 @@ export class SeoEffects {
             // PRODUCT PAGE
             this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substring(1))),
             // CATEGORY / FAMILY PAGE
-            this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substring(1))),
+            this.categoryPage$.pipe(
+              map((category: CategoryView) => this.baseURL + generateCategoryUrl(category).substring(1))
+            ),
             // DEFAULT
             this.appRef.isStable.pipe(
               whenTruthy(),

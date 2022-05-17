@@ -15,6 +15,6 @@ export class FamilyPage {
   readonly filterNavigation = new FilterNavigationModule();
 
   static navigateTo(categoryUniqueId: string, page?: number) {
-    cy.visit(`/cat${categoryUniqueId}${page ? `?page=${page}` : ''}`);
+    cy.visit(`/ctg${categoryUniqueId}${page ? `?page=${page}` : ''}`);
   }
 }
