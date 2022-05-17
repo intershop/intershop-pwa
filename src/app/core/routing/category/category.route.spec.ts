@@ -68,10 +68,10 @@ describe('Category Route', () => {
     const category = createCategoryView(categoryTree([{ ...specials, name: undefined }]), specials.uniqueId);
 
     it('should be created', () => {
-      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/catSpecials"`);
+      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/ctgSpecials"`);
     });
 
-    it('should not be a match for matcher', () => {
+    it('should be a match for matcher', () => {
       expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
         Object {
           "categoryUniqueId": "Specials",
@@ -84,10 +84,10 @@ describe('Category Route', () => {
     const category = createCategoryView(categoryTree([specials]), specials.uniqueId);
 
     it('should be created', () => {
-      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/Spezielles-1/2-Preis-Aktion-mehr-catSpecials"`);
+      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/spezielles-1/2-preis-aktion-mehr-ctgSpecials"`);
     });
 
-    it('should not be a match for matcher', () => {
+    it('should be a match for matcher', () => {
       expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
         Object {
           "categoryUniqueId": "Specials",
@@ -100,10 +100,12 @@ describe('Category Route', () => {
     const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
 
     it('should be created', () => {
-      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/Black-Friday-catSpecials.TopSeller.LimitedOffer"`);
+      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(
+        `"/spezielles-1/2-preis-aktion-mehr/angebote/black-friday-ctgSpecials.TopSeller.LimitedOffer"`
+      );
     });
 
-    it('should not be a match for matcher', () => {
+    it('should be a match for matcher', () => {
       expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
         Object {
           "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
@@ -146,12 +148,12 @@ describe('Category Route', () => {
   describe('generateLocalizedCategorySlug', () => {
     it('should generate slug for top level category', () => {
       const category = createCategoryView(categoryTree([specials]), specials.uniqueId);
-      expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"Spezielles-1/2-Preis-Aktion-mehr"`);
+      expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"spezielles-1/2-preis-aktion-mehr"`);
     });
 
     it('should generate slug for deep category', () => {
       const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
-      expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"Black-Friday"`);
+      expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"black-friday"`);
     });
 
     it('should return empty string when category is unavailable', () => {

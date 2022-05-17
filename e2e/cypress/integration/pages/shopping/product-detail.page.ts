@@ -23,7 +23,7 @@ export class ProductDetailPage {
 
   static navigateTo(sku: string, categoryUniqueId?: string) {
     if (categoryUniqueId) {
-      cy.visit(`/sku${sku}-cat${categoryUniqueId}`);
+      cy.visit(`/sku${sku}-ctg${categoryUniqueId}`);
     } else {
       cy.visit(`/sku${sku}`);
     }

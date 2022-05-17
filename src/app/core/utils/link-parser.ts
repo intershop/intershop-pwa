@@ -14,8 +14,7 @@ export class LinkParser {
           // TODO: use ProductRoutePipe
           return `${prefix}/sku${value}`;
         case 'category':
-          // TODO: the configuration parameter currently only works for first level categories
-          // TODO: use CategoryRoutePipe
+          // TODO: use CategoryRoutePipe for SEO URLs
           return `${prefix}/categoryref/${value}${unitName}`;
         case 'page':
           // CMS managed pages link

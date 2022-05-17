@@ -7,6 +7,7 @@ import { Category } from 'ish-core/models/category/category.model';
 export interface CategoryView extends Category {
   children: string[];
   hasChildren: boolean;
+  pathElements: Category[];
 }
 
 export function createCategoryView(tree: CategoryTree, uniqueId: string): CategoryView {
@@ -21,6 +22,9 @@ export function createCategoryView(tree: CategoryTree, uniqueId: string): Catego
     ...tree.nodes[translateRef(tree, uniqueId)],
     children: tree.edges[translateRef(tree, uniqueId)] || [],
     hasChildren: !!tree.edges[translateRef(tree, uniqueId)] && !!tree.edges[translateRef(tree, uniqueId)].length,
+    pathElements: (tree.nodes[translateRef(tree, uniqueId)]?.categoryPath || [])
+      .map(path => tree.nodes[translateRef(tree, path)])
+      .filter(x => !!x),
   };
 }
 

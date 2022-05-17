@@ -4,7 +4,8 @@ import { isEqual } from 'lodash-es';
 import { identity } from 'rxjs';
 
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
-import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import {
@@ -22,7 +23,7 @@ import {
 } from 'ish-core/models/product/product.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { getCategoryEntities, getSelectedCategory } from 'ish-core/store/shopping/categories';
+import { getCategoryEntities, getCategoryTree, getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
@@ -126,11 +127,11 @@ export const getBreadcrumbForProductPage = createSelectorFactory<object, Breadcr
 )(
   getSelectedProduct,
   getSelectedCategory,
-  getCategoryEntities,
-  (product: ProductView, category: CategoryView, entities: Dictionary<Category>): BreadcrumbItem[] =>
+  getCategoryTree,
+  (product: ProductView, category: CategoryView, tree: CategoryTree): BreadcrumbItem[] =>
     ProductHelper.isSufficientlyLoaded(product, ProductCompletenessLevel.Detail)
       ? (category?.categoryPath || product.defaultCategory?.categoryPath || [])
-          .map(id => entities[id])
+          .map(id => createCategoryView(tree, id))
           .filter(x => !!x)
           .map(cat => ({
             text: cat.name,

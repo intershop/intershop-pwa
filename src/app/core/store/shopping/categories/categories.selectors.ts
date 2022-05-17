@@ -1,11 +1,10 @@
-import { Dictionary } from '@ngrx/entity';
 import { createSelector, createSelectorFactory, defaultMemoize, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
 import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
-import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
+import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParamAorB } from 'ish-core/store/core/router';
@@ -22,15 +21,10 @@ export const getCategoryEntities = createSelector(getCategoryTree, tree => tree.
 
 export const getCategoryRefs = createSelector(getCategoryTree, tree => tree.categoryRefs);
 
-const getCategorySubTree = (uniqueId: string) =>
-  createSelectorFactory<object, CategoryTree>(projector =>
-    defaultMemoize(projector, CategoryTreeHelper.equals, CategoryTreeHelper.equals)
-  )(getCategoryTree, (tree: CategoryTree) => CategoryTreeHelper.subTree(tree, uniqueId));
-
 export const getCategory = (uniqueId: string) =>
   createSelectorFactory<object, CategoryView>(projector =>
     defaultMemoize(projector, CategoryTreeHelper.equals, isEqual)
-  )(getCategorySubTree(uniqueId), (tree: CategoryTree) => createCategoryView(tree, uniqueId));
+  )(getCategoryTree, (tree: CategoryTree) => createCategoryView(tree, uniqueId));
 
 export const getCategoryIdByRefId = (categoryRefId: string) =>
   createSelectorFactory<object, string>(projector => defaultMemoize(projector, isEqual))(
@@ -47,10 +41,10 @@ export const getSelectedCategory = createSelectorFactory<object, CategoryView>(p
 
 export const getBreadcrumbForCategoryPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
   resultMemoize(projector, isEqual)
-)(getSelectedCategory, getCategoryEntities, (category: CategoryView, entities: Dictionary<Category>) =>
+)(getSelectedCategory, getCategoryTree, (category: CategoryView, tree: CategoryTree) =>
   CategoryHelper.isCategoryCompletelyLoaded(category)
     ? (category.categoryPath || [])
-        .map(id => entities[id])
+        .map(id => createCategoryView(tree, id))
         .filter(x => !!x)
         .map((cat, idx, arr) => ({
           text: cat.name,
@@ -59,12 +53,13 @@ export const getBreadcrumbForCategoryPage = createSelectorFactory<object, Breadc
     : undefined
 );
 
-function mapNavigationCategoryFromId(uniqueId: string): NavigationCategory {
+function mapNavigationCategoryFromId(uniqueId: string, tree: CategoryTree, subTree?: CategoryTree): NavigationCategory {
+  const selected = subTree || tree;
   return {
     uniqueId,
-    name: this.nodes[uniqueId].name,
-    url: generateCategoryUrl(this.nodes[uniqueId]),
-    hasChildren: !!this.edges[uniqueId]?.length,
+    name: selected.nodes[uniqueId].name,
+    url: generateCategoryUrl(createCategoryView(tree, uniqueId)),
+    hasChildren: !!selected?.edges[uniqueId]?.length,
   };
 }
 
@@ -73,8 +68,10 @@ export const getNavigationCategories = (uniqueId: string) =>
     defaultMemoize(projector, CategoryTreeHelper.equals, isEqual)
   )(getCategoryTree, (tree: CategoryTree): NavigationCategory[] => {
     if (!uniqueId) {
-      return tree.rootIds.map(mapNavigationCategoryFromId.bind(tree));
+      return tree.rootIds.map(id => mapNavigationCategoryFromId(id, tree));
     }
     const subTree = CategoryTreeHelper.subTree(tree, uniqueId);
-    return subTree.edges[uniqueId] ? subTree.edges[uniqueId].map(mapNavigationCategoryFromId.bind(subTree)) : [];
+    return subTree.edges[uniqueId]
+      ? subTree.edges[uniqueId].map(id => mapNavigationCategoryFromId(id, tree, subTree))
+      : [];
   });
