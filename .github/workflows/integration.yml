@@ -16,6 +16,8 @@ env:
   NODE_VERSION: 16.16.0
   NODE_OPTIONS: --max_old_space_size=8192
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  COMPOSE_PROJECT_NAME: intershop-pwa-e2e
+  COMPOSE_FILE: e2e/docker-compose.yml
 
 jobs:
   CancelPrevious:
@@ -41,58 +43,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build Cypress image
+      - name: Build Compose
         run: |
-          docker build \
-            --build-arg cypressVersion=$(node -p -e 'require("./e2e/package.json").dependencies.cypress') \
-            --build-arg user=$UID \
-            -f e2e/Dockerfile_test_cypress \
-            -t cypress \
-            e2e
-
-      - name: Build Universal image
-        run: |
-          docker build \
-            -f e2e/Dockerfile_test_universal \
-            -t universal \
-            e2e
-
-      - name: Build PWA in TESTING mode
-        run: |
-          docker build \
-            --build-arg testing=true \
+          docker compose build \
             --build-arg activeThemes=${{ matrix.test }} \
-            -t pwa \
-            .
+            --build-arg user=$UID \
+            --build-arg cypressVersion=$(node -p -e 'require("./e2e/package.json").dependencies.cypress')
 
       - name: Start PWA
-        run: |
-          docker run \
-            -d \
-            --rm \
-            -e ICM_BASE_URL=${{ env.ICM_BASE_URL }} \
-            -e CACHE_ICM_CALLS="{\".*\": \"30m\"}" \
-            --name pwa \
-            pwa
+        run: docker compose up -d pwa
 
       - name: Universal
-        run: |
-          docker run \
-            --rm \
-            -e PWA_BASE_URL=http://pwa:4200 \
-            --link pwa \
-            universal
+        run: docker compose run universal
 
       - name: Cypress
         run: |
-          docker run \
-            --rm \
+          docker compose run \
             --user $UID \
             -w /e2e \
             -v $PWD/e2e/cypress:/e2e/cypress \
-            -e PWA_BASE_URL=http://pwa:4200 \
-            --link pwa \
-            -e ICM_BASE_URL=${{ env.ICM_BASE_URL }} \
             cypress '**/*${{ matrix.test }}*.e2e-spec.ts'
 
       - name: Upload Screenshots

@@ -1,4 +1,5 @@
-FROM node:alpine
+FROM node:16-alpine
 RUN apk add --no-cache curl wget
+RUN npm install -g wait-on
 COPY test-universal.sh /
 ENTRYPOINT ["sh", "/test-universal.sh"]

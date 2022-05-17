@@ -1,0 +1,26 @@
+services:
+  pwa:
+    build:
+      context: ..
+      args:
+        - testing=true
+    environment:
+      ICM_BASE_URL:
+      LOGGING: true
+      CACHE_ICM_CALLS: |
+        { ".* ":  "30m" }
+
+  universal:
+    build:
+      context: .
+      dockerfile: Dockerfile_test_universal
+    environment:
+      PWA_BASE_URL: http://pwa:4200
+
+  cypress:
+    build:
+      context: .
+      dockerfile: Dockerfile_test_cypress
+    environment:
+      ICM_BASE_URL:
+      PWA_BASE_URL: http://pwa:4200
