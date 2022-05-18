@@ -1,18 +1,24 @@
-<h3>{{ 'product.review.heading' | translate | uppercase }}</h3>
+<h3>{{ 'product.review.section.heading' | translate | uppercase }}</h3>
 
-<div *ngFor="let review of productReviews$ | async">
-  <div class="row pb-3">
-    <div class="col-md-3 text-muted small">
-      {{ review.authorFirstName }}
-      <br />
-      {{ review.creationDate | date: 'MMM d, y, h:mm:ss a' }}
-    </div>
-    <div class="col-md-9">
-      <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
-        <ish-product-rating-star [filled]="fill" [lastStar]="lastStar"></ish-product-rating-star>
-        <span *ngIf="lastStar" class="mb-0 h5 font-weight-light"> {{ review.title }}</span>
-      </ng-container>
-      <p>{{ review.content }}</p>
+<div *ngIf="(productReviews$ | async)?.length < 0; else noReviews">
+  <div *ngFor="let review of productReviews$ | async">
+    <div class="row pb-3">
+      <div class="col-md-3 text-muted small">
+        {{ review.authorFirstName }}
+        <br />
+        {{ review.creationDate | date: 'MMM d, y, h:mm:ss a' }}
+      </div>
+      <div class="col-md-9">
+        <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
+          <ish-product-rating-star [filled]="fill" [lastStar]="lastStar"></ish-product-rating-star>
+          <span *ngIf="lastStar" class="mb-0 h5 font-weight-light"> {{ review.title }}</span>
+        </ng-container>
+        <p>{{ review.content }}</p>
+      </div>
     </div>
   </div>
 </div>
+
+<ng-template #noReviews>
+  {{ 'product.review.no_reviews_yet.text' | translate }}
+</ng-template>

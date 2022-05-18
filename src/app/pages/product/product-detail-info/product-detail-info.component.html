@@ -21,7 +21,7 @@
       </ng-template>
     </li>
 
-    <li *ngIf="productReviews$ | async" [ngbNavItem]="'REVIEWS'">
+    <li [ngbNavItem]="'REVIEWS'">
       <a ngbNavLink>{{ 'product.review.heading' | translate }} ({{ (productReviews$ | async)?.length }})</a>
       <ng-template ngbNavContent>
         <ish-product-reviews></ish-product-reviews>

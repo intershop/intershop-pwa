@@ -885,6 +885,8 @@
   "product.remove_all_product_filters.text": "Alle Filter zurücksetzen",
   "product.retailSet.products.heading": "Dieses Retail-Set enthält",
   "product.review.heading": "Bewertungen",
+  "product.review.section.heading": "Neueste Produktbewertungen",
+  "product.review.no_reviews_yet.text": "Es wurden noch keine Bewertungen abgegeben.",
   "product.short_description.label": "Kurzbeschreibung",
   "product.specific_attributes.label": "Spezifische Attribute",
   "product.variations.text": "Variationen",

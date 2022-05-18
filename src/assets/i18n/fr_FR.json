@@ -885,6 +885,7 @@
   "product.remove_all_product_filters.text": "Réinitialiser tous les filtres",
   "product.retailSet.products.heading": "Ce jeu de produits contient",
   "product.review.heading": "Notations",
+  "product.review.section.heading": "Derniers avis sur les produits",
   "product.short_description.label": "Description courte",
   "product.specific_attributes.label": "Attributs spécifiques",
   "product.variations.text": "Variations",
@@ -1073,5 +1074,6 @@
   "tacton.submit.error.message": "Une erreur technique s’est produite lors du traitement de votre demande. Veuillez réessayer plus tard.",
   "tacton.submit.success.message": "Votre demande de devis a été soumise avec succès. Nous vous enverrons un courriel à <strong>{{0}}</strong> pour vous tenir au courant du statut de votre demande.",
   "tacton.undo.tooltip": "Annuler",
-  "textarea.max_limit": "Votre message : {{0}} caractères restants."
+  "textarea.max_limit": "Votre message : {{0}} caractères restants.",
+  "product.review.no_reviews_yet.text": "Aucune critique n'a encore été soumise."
 }
