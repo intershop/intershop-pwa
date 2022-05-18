@@ -2,8 +2,6 @@ import { ProductReview } from './product-review.model';
 import { ProductReviewsMapper } from './product-reviews.mapper';
 
 describe('Product Reviews Mapper', () => {
-  beforeEach(() => {});
-
   describe('fromData', () => {
     it('should throw when input is falsy', () => {
       expect(() => ProductReviewsMapper.fromData('', undefined)).toThrow();
