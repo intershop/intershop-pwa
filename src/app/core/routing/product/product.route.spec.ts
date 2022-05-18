@@ -49,12 +49,12 @@ describe('Product Route', () => {
 
   describe('without anything', () => {
     it('should be created', () => {
-      expect(generateProductUrl(undefined)).toMatchInlineSnapshot(`"/"`);
+      expect(generateProductUrl(undefined, undefined)).toMatchInlineSnapshot(`"/"`);
       expect(generateProductUrl(undefined, undefined)).toMatchInlineSnapshot(`"/"`);
     });
 
     it('should not be a match for matcher', () => {
-      expect(matchProductRoute(wrap(generateProductUrl(undefined)))).toMatchInlineSnapshot(`undefined`);
+      expect(matchProductRoute(wrap(generateProductUrl(undefined, undefined)))).toMatchInlineSnapshot(`undefined`);
     });
   });
 
@@ -62,11 +62,11 @@ describe('Product Route', () => {
     describe('without product name', () => {
       const product = createProductView({ sku: 'A' } as Product);
       it('should create simple link when just sku is supplied', () => {
-        expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/skuA"`);
+        expect(generateProductUrl(product, undefined)).toMatchInlineSnapshot(`"/prdA"`);
       });
 
       it('should be a match for matcher', () => {
-        expect(matchProductRoute(wrap(generateProductUrl(product)))).toMatchInlineSnapshot(`
+        expect(matchProductRoute(wrap(generateProductUrl(product, undefined)))).toMatchInlineSnapshot(`
           Object {
             "sku": "A",
           }
@@ -78,16 +78,18 @@ describe('Product Route', () => {
       const product = createProductView({ sku: 'A', name: 'some example name' } as Product);
 
       it('should include slug when product has a name', () => {
-        expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/some-example-name-skuA"`);
+        expect(generateProductUrl(product, undefined)).toMatchInlineSnapshot(`"/some-example-name-prdA"`);
       });
 
       it('should include filtered slug when product has a name with special characters', () => {
         const product2 = { ...product, name: 'name & speci@l char$ - 1/2 price - (RETAIL)' };
-        expect(generateProductUrl(product2)).toMatchInlineSnapshot(`"/name-speci@l-char$-1/2-price-RETAIL-skuA"`);
+        expect(generateProductUrl(product2, undefined)).toMatchInlineSnapshot(
+          `"/name-speci@l-char$-1/2-price-retail-prdA"`
+        );
       });
 
       it('should be a match for matcher', () => {
-        expect(matchProductRoute(wrap(generateProductUrl(product)))).toMatchInlineSnapshot(`
+        expect(matchProductRoute(wrap(generateProductUrl(product, undefined)))).toMatchInlineSnapshot(`
           Object {
             "sku": "A",
           }
@@ -108,8 +110,8 @@ describe('Product Route', () => {
       } as VariationProduct);
 
       it('should include attribute values in slug when product is a variation', () => {
-        expect(generateProductUrl(product)).toMatchInlineSnapshot(
-          `"/some-example-name-SSD-HDD-Cobalt-Blue-Yellow-500-r/min-skuA"`
+        expect(generateProductUrl(product, undefined)).toMatchInlineSnapshot(
+          `"/some-example-name-ssd-hdd-cobalt-blue-yellow-500-r/min-prdA"`
         );
       });
     });
@@ -120,10 +122,10 @@ describe('Product Route', () => {
 
     describe('as context', () => {
       describe('without product name', () => {
-        const product = createProductView({ sku: 'A' } as Product, specials);
+        const product = createProductView({ sku: 'A' } as Product, category);
 
         it('should be created', () => {
-          expect(generateProductUrl(product, category)).toMatchInlineSnapshot(`"/spezielles/skuA-ctgSpecials"`);
+          expect(generateProductUrl(product, category)).toMatchInlineSnapshot(`"/spezielles/prdA-ctgSpecials"`);
         });
 
         it('should be a match for matcher', () => {
@@ -137,11 +139,11 @@ describe('Product Route', () => {
       });
 
       describe('with product name', () => {
-        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, specials);
+        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, category);
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
-            `"/spezielles/Das-neue-Surface-Pro-7-skuA-ctgSpecials"`
+            `"/spezielles/das-neue-surface-pro-7-prdA-ctgSpecials"`
           );
         });
 
@@ -158,10 +160,10 @@ describe('Product Route', () => {
 
     describe('as default category', () => {
       describe('without product name', () => {
-        const product = createProductView({ sku: 'A' } as Product, specials);
+        const product = createProductView({ sku: 'A' } as Product, category);
 
         it('should be created', () => {
-          expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/spezielles/skuA-ctgSpecials"`);
+          expect(generateProductUrl(product)).toMatchInlineSnapshot(`"/spezielles/prdA-ctgSpecials"`);
         });
 
         it('should be a match for matcher', () => {
@@ -175,11 +177,11 @@ describe('Product Route', () => {
       });
 
       describe('with product name', () => {
-        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, specials);
+        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, category);
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
-            `"/spezielles/Das-neue-Surface-Pro-7-skuA-ctgSpecials"`
+            `"/spezielles/das-neue-surface-pro-7-prdA-ctgSpecials"`
           );
         });
 
@@ -201,11 +203,11 @@ describe('Product Route', () => {
 
     describe('as context', () => {
       describe('without product name', () => {
-        const product = createProductView({ sku: 'A' } as Product, specials);
+        const product = createProductView({ sku: 'A' } as Product, category);
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
-            `"/black-friday/skuA-ctgSpecials.TopSeller.LimitedOffer"`
+            `"/spezielles/angebote/black-friday/prdA-ctgSpecials.TopSeller.LimitedOffer"`
           );
         });
 
@@ -220,11 +222,11 @@ describe('Product Route', () => {
       });
 
       describe('with product name', () => {
-        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, specials);
+        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, category);
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
-            `"/black-friday/Das-neue-Surface-Pro-7-skuA-ctgSpecials.TopSeller.LimitedOffer"`
+            `"/spezielles/angebote/black-friday/das-neue-surface-pro-7-prdA-ctgSpecials.TopSeller.LimitedOffer"`
           );
         });
 
@@ -241,11 +243,11 @@ describe('Product Route', () => {
 
     describe('as default category', () => {
       describe('without product name', () => {
-        const product = createProductView({ sku: 'A' } as Product, limitedOffer);
+        const product = createProductView({ sku: 'A' } as Product, category);
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
-            `"/black-friday/skuA-ctgSpecials.TopSeller.LimitedOffer"`
+            `"/spezielles/angebote/black-friday/prdA-ctgSpecials.TopSeller.LimitedOffer"`
           );
         });
 
@@ -260,11 +262,11 @@ describe('Product Route', () => {
       });
 
       describe('with product name', () => {
-        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, limitedOffer);
+        const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product, category);
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
-            `"/black-friday/Das-neue-Surface-Pro-7-skuA-ctgSpecials.TopSeller.LimitedOffer"`
+            `"/spezielles/angebote/black-friday/das-neue-surface-pro-7-prdA-ctgSpecials.TopSeller.LimitedOffer"`
           );
         });
 

@@ -23,22 +23,12 @@ const productPageRoutes: Routes = [
   {
     // compatibility to old routes
     path: 'product/:sku',
-    children: [
-      {
-        path: '**',
-        component: ProductPageComponent,
-      },
-    ],
+    component: ProductPageComponent,
   },
   {
     // compatibility to old routes
     path: 'category/:categoryUniqueId/product/:sku',
-    children: [
-      {
-        path: '**',
-        component: ProductPageComponent,
-      },
-    ],
+    component: ProductPageComponent,
   },
   { path: '**', component: ProductPageComponent },
 ];

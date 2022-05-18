@@ -6,7 +6,7 @@ describe('Content View Helper', () => {
     it.each([
       ['route://category/Computers', '/category/Computers'],
       ['route://category/Home-Entertainment.SmartHome', '/category/Home-Entertainment.SmartHome'],
-      ['product://201807195@inSPIRED-inTRONICS', '/sku201807195'],
+      ['product://201807195@inSPIRED-inTRONICS', '/product/201807195'],
     ])(`should transform %s to %s`, (input, expected) => {
       const pagelet = createContentPageletView({
         definitionQualifiedName: 'fq',

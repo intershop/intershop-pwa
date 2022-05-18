@@ -24,7 +24,7 @@ describe('Page Meta', () => {
     at(ProductDetailPage, page => {
       page.metaData.check({
         title: 'Kodak Slice  - Digital Cameras | Intershop PWA',
-        url: /.*\/digital-cameras\/Kodak-Slice-sku3957284-ctgCameras-Camcorders.575$/,
+        url: /.*\/digital-cameras\/kodak-slice-prd3957284-ctgCameras-Camcorders.575$/,
         description: 'Kodak Slice  - Slice - 14MP, 5x optisch, 16:9, nickel',
         'og:image': /.*3957284-5640.jpg.*/,
       });

@@ -41,7 +41,7 @@ describe('Server Html Directive', () => {
     it('should transform the given links to routing links', () => {
       expect(element).toMatchInlineSnapshot(`
         <div>
-          <div><a href="/sku8182790134362">Product</a></div>
+          <div><a href="/product/8182790134362">Product</a></div>
           <div><a href="http://google.de">Google</a></div>
           <div><a href="/basket">Basket</a></div>
         </div>

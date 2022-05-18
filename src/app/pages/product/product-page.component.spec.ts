@@ -4,7 +4,7 @@ import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -76,7 +76,7 @@ describe('Product Page Component', () => {
 
   it('should display product page components when product is available', () => {
     const product = { sku: 'dummy', completenessLevel: ProductCompletenessLevel.Detail } as Product;
-    const category = { uniqueId: 'A', categoryPath: ['A'] } as Category;
+    const category = { uniqueId: 'A', categoryPath: ['A'] } as CategoryView;
     when(context.select('product')).thenReturn(of(createProductView(product, category)));
 
     fixture.detectChanges();

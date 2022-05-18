@@ -1,4 +1,4 @@
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 
 import { createProductView } from './product-view.model';
@@ -25,7 +25,7 @@ describe('Product View Model', () => {
       uniqueId: '123',
       name: 'test',
       categoryPath: ['123'],
-    } as Category;
+    } as CategoryView;
 
     const view = createProductView({ sku: 'some', defaultCategoryId: '123' } as Product, category);
 

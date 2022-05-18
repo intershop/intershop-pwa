@@ -1,4 +1,3 @@
-import { Dictionary } from '@ngrx/entity';
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { identity } from 'rxjs';
@@ -6,7 +5,6 @@ import { identity } from 'rxjs';
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
-import { Category } from 'ish-core/models/category/category.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import {
   ProductView,
@@ -23,7 +21,7 @@ import {
 } from 'ish-core/models/product/product.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { getCategoryEntities, getCategoryTree, getSelectedCategory } from 'ish-core/store/shopping/categories';
+import { getCategoryTree, getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
@@ -46,10 +44,10 @@ const internalRawProduct = (sku: string) =>
 
 const internalProductDefaultCategory = (sku: string) =>
   /* memoization manually by output: category object changes as CategoryTree does deep merges */
-  createSelectorFactory<object, Category>(projector => resultMemoize(projector, isEqual))(
-    getCategoryEntities,
+  createSelectorFactory<object, CategoryView>(projector => resultMemoize(projector, isEqual))(
+    getCategoryTree,
     internalRawProduct(sku),
-    (categories: Dictionary<Category>, product: AllProductTypes) => categories[product?.defaultCategoryId]
+    (tree: CategoryTree, product: AllProductTypes) => createCategoryView(tree, product?.defaultCategoryId)
   );
 
 const internalProductDefaultVariationSKU = (sku: string) =>

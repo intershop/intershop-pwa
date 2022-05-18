@@ -6,7 +6,7 @@ describe('Link Parser', () => {
   it.each([
     ['route://category/Computers', '/category/Computers'],
     ['route://category/Home-Entertainment.SmartHome', '/category/Home-Entertainment.SmartHome'],
-    ['product://201807195@inSPIRED-inTRONICS', '/sku201807195'],
+    ['product://201807195@inSPIRED-inTRONICS', '/product/201807195'],
     ['http://google.de', 'http://google.de'],
     ['https://google.de', 'https://google.de'],
     ['page://my-page', '/page/my-page'],
@@ -20,7 +20,7 @@ describe('Link Parser', () => {
   it.each([
     ['route://category/Computers', '/us/category/Computers'],
     ['route://category/Home-Entertainment.SmartHome', '/us/category/Home-Entertainment.SmartHome'],
-    ['product://201807195@inSPIRED-inTRONICS', '/us/sku201807195'],
+    ['product://201807195@inSPIRED-inTRONICS', '/us/product/201807195'],
     ['http://google.de', 'http://google.de'],
     ['https://google.de', 'https://google.de'],
     ['page://my-page', '/us/page/my-page'],
