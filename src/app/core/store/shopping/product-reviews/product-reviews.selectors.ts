@@ -6,9 +6,7 @@ import { productReviewsAdapter } from './product-reviews.reducer';
 
 const getProductReviewsState = createSelector(getShoppingState, state => state.productReviews);
 
-const { selectAll, selectEntities } = productReviewsAdapter.getSelectors(getProductReviewsState);
+const { selectEntities } = productReviewsAdapter.getSelectors(getProductReviewsState);
 
 export const getProductReviewsBySku = (sku: string) =>
   createSelector(selectEntities, entities => entities[sku]?.reviews);
-
-export const getProductReviews = selectAll;

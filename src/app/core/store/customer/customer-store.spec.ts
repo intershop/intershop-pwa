@@ -23,6 +23,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { ReviewsService } from 'ish-core/services/reviews/reviews.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -35,7 +36,6 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
 import { loginUser, personalizationStatusDetermined } from './user';
-import { ReviewsService } from 'ish-core/services/reviews/reviews.service';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -180,9 +180,9 @@ describe('Customer Store', () => {
         { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
+        { provide: ReviewsService, useFactory: () => instance(reviewServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
-        { provide: ReviewsService, useFactory: () => instance(reviewServiceMock) },
         provideStoreSnapshots(),
       ],
     });
