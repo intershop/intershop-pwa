@@ -1,6 +1,5 @@
-export interface ProductReviewData {
+export interface ProductReview {
   id: string;
-  type: string;
   authorFirstName: string;
   authorLastName: string;
   title: string;

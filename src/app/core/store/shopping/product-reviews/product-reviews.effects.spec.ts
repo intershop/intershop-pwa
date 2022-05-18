@@ -31,7 +31,7 @@ describe('Product Reviews Effects', () => {
 
   describe('loadProductReviews$', () => {
     it('should not dispatch actions when encountering loadProductReviews', () => {
-      const action = loadProductReviews({ skus: ['123'] });
+      const action = loadProductReviews({ sku: '123' });
       actions$ = of(action);
 
       effects.loadProductReviews$.subscribe(() => {

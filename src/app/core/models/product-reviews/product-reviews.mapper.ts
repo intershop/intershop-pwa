@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { ProductReviewData } from './product-reviews.interface';
+import { ProductReview } from './product-review.model';
 import { ProductReviews } from './product-reviews.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductReviewsMapper {
-  static fromData(productReviewsData: ProductReviewData[], sku: string): ProductReviews {
-    if (productReviewsData) {
-      return { sku, reviews: productReviewsData };
+  static fromData(sku: string, productReviews: ProductReview[]): ProductReviews {
+    if (productReviews) {
+      return { sku, reviews: productReviews };
     } else {
       throw new Error(`productReviewsData is required`);
     }

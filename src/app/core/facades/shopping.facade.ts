@@ -28,7 +28,7 @@ import {
 } from 'ish-core/store/shopping/product-listing';
 import { loadProductPrices } from 'ish-core/store/shopping/product-prices';
 import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
-import { getProductReviewBySku } from 'ish-core/store/shopping/product-reviews';
+import { getProductReviewsBySku, loadProductReviews } from 'ish-core/store/shopping/product-reviews';
 import {
   getProduct,
   getProductLinks,
@@ -226,6 +226,7 @@ export class ShoppingFacade {
 
   // REVIEWS
   getProductReviews$(sku: string) {
-    return this.store.pipe(select(getProductReviewBySku(sku)));
+    this.store.dispatch(loadProductReviews({ sku }));
+    return this.store.pipe(select(getProductReviewsBySku(sku)));
   }
 }

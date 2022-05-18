@@ -1,11 +1,10 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
-import { ProductReviewData } from 'ish-core/models/product-reviews/product-reviews.interface';
+import { ProductReview } from 'ish-core/models/product-reviews/product-review.model';
 import { ProductReviewsMapper } from 'ish-core/models/product-reviews/product-reviews.mapper';
 import { ProductReviews } from 'ish-core/models/product-reviews/product-reviews.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
@@ -22,20 +21,12 @@ export class ReviewsService {
       return throwError(() => new Error('getProductReviews() called without sku'));
     }
 
-    let params = new HttpParams();
-    params.append('sku', sku);
-
     return this.currentCustomer$.pipe(
-      tap(customer => {
-        if (customer?.customerNo) {
-          params = params.set('customerID', customer.customerNo);
-        }
-      }),
       switchMap(() =>
         this.apiService.get(`/products/${sku}/reviews`, { sendSPGID: true }).pipe(
           unpackEnvelope<Link>(),
-          this.apiService.resolveLinks<ProductReviewData>(),
-          map(reviews => ProductReviewsMapper.fromData(reviews, sku))
+          this.apiService.resolveLinks<ProductReview>(),
+          map(reviews => ProductReviewsMapper.fromData(sku, reviews))
         )
       )
     );

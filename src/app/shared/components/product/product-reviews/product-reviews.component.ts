@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductReviewData } from 'ish-core/models/product-reviews/product-reviews.interface';
+import { ProductReview } from 'ish-core/models/product-reviews/product-review.model';
 
 @Component({
   selector: 'ish-product-reviews',
@@ -12,7 +12,7 @@ import { ProductReviewData } from 'ish-core/models/product-reviews/product-revie
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductReviewsComponent implements OnInit {
-  productReviews$: Observable<ProductReviewData[]>;
+  productReviews$: Observable<ProductReview[]>;
   stars$: Observable<('full' | 'half' | 'empty')[]>;
   rating$: Observable<number>;
 

@@ -31,7 +31,6 @@ import { loadCategory } from 'ish-core/store/shopping/categories';
 import { loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { loadProductPrices } from 'ish-core/store/shopping/product-prices';
-import { loadProductReviews } from 'ish-core/store/shopping/product-reviews';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
   delayUntil,
@@ -51,14 +50,14 @@ import {
   loadProductLinksSuccess,
   loadProductParts,
   loadProductPartsSuccess,
-  loadProductSuccess,
-  loadProductVariationsFail,
-  loadProductVariationsIfNotLoaded as loadProductVariationsIfNotLoaded,
-  loadProductVariationsSuccess,
   loadProductsForCategory,
   loadProductsForCategoryFail,
   loadProductsForMaster,
   loadProductsForMasterFail,
+  loadProductSuccess,
+  loadProductVariationsFail,
+  loadProductVariationsIfNotLoaded,
+  loadProductVariationsSuccess,
 } from './products.actions';
 import {
   getBreadcrumbForProductPage,
@@ -118,16 +117,6 @@ export class ProductsEffects {
       mapToProperty('sku'),
       whenTruthy(),
       map(sku => loadProductPrices({ skus: [sku] }))
-    )
-  );
-
-  loadProductReviewsAfterProductSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadProductSuccess),
-      mapToPayloadProperty('product'),
-      mapToProperty('sku'),
-      whenTruthy(),
-      map(sku => loadProductReviews({ skus: [sku] }))
     )
   );
 

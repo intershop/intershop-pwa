@@ -14,10 +14,10 @@ export class ProductReviewsEffects {
   loadProductReviews$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadProductReviews),
-      mapToPayloadProperty('skus'),
+      mapToPayloadProperty('sku'),
       whenTruthy(),
-      mergeMap(skus =>
-        this.reviewService.getProductReviews(skus[0]).pipe(map(reviews => loadProductReviewsSuccess({ reviews })))
+      mergeMap(sku =>
+        this.reviewService.getProductReviews(sku).pipe(map(reviews => loadProductReviewsSuccess({ reviews })))
       )
     )
   );

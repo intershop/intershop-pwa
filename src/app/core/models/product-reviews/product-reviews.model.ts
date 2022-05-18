@@ -1,6 +1,6 @@
-import { ProductReviewData } from './product-reviews.interface';
+import { ProductReview } from './product-review.model';
 
 export interface ProductReviews {
   sku: string;
-  reviews: ProductReviewData[];
+  reviews: ProductReview[];
 }

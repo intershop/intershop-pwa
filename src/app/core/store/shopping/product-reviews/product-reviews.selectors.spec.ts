@@ -5,7 +5,7 @@ import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.modu
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadProductReviews } from './product-reviews.actions';
-import { getProductReviewBySku } from './product-reviews.selectors';
+import { getProductReviewsBySku } from './product-reviews.selectors';
 
 describe('Product Reviews Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -21,19 +21,19 @@ describe('Product Reviews Selectors', () => {
 
   describe('initial state', () => {
     it('should not be loading when in initial state', () => {
-      expect(getProductReviewBySku('123')(store$.state)).toBeFalsy();
+      expect(getProductReviewsBySku('123')(store$.state)).toBeFalsy();
     });
   });
 
   describe('loadProductReviews', () => {
-    const action = loadProductReviews({ skus: ['123'] });
+    const action = loadProductReviews({ sku: '123' });
 
     beforeEach(() => {
       store$.dispatch(action);
     });
 
     it('should set loading to true', () => {
-      expect(getProductReviewBySku('123')).toBeTruthy();
+      expect(getProductReviewsBySku('123')).toBeTruthy();
     });
   });
 });

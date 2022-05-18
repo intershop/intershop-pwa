@@ -5,7 +5,7 @@ import { CategoryData } from 'ish-core/models/category/category.interface';
 import { Image } from 'ish-core/models/image/image.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { PriceData } from 'ish-core/models/price/price.interface';
-import { ProductReviewData } from 'ish-core/models/product-reviews/product-reviews.interface';
+import { ProductReview } from 'ish-core/models/product-reviews/product-review.model';
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
 import { SeoAttributesData } from 'ish-core/models/seo-attributes/seo-attributes.interface';
 import { Warranty } from 'ish-core/models/warranty/warranty.model';
@@ -76,7 +76,7 @@ export interface ProductData {
 
   seoAttributes: SeoAttributesData;
 
-  reviews?: ProductReviewData[];
+  reviews?: ProductReview[];
 }
 
 export interface ProductDataStub {

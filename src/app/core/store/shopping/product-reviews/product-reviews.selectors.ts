@@ -8,7 +8,7 @@ const getProductReviewsState = createSelector(getShoppingState, state => state.p
 
 const { selectAll, selectEntities } = productReviewsAdapter.getSelectors(getProductReviewsState);
 
-export const getProductReviewBySku = (sku: string) =>
+export const getProductReviewsBySku = (sku: string) =>
   createSelector(selectEntities, entities => entities[sku]?.reviews);
 
 export const getProductReviews = selectAll;

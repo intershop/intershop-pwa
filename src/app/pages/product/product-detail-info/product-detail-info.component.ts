@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductReviewData } from 'ish-core/models/product-reviews/product-reviews.interface';
+import { ProductReview } from 'ish-core/models/product-reviews/product-review.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
@@ -12,7 +12,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 })
 export class ProductDetailInfoComponent implements OnInit {
   product$: Observable<ProductView>;
-  productReviews$: Observable<ProductReviewData[]>;
+  productReviews$: Observable<ProductReview[]>;
 
   active = 'DESCRIPTION';
 
