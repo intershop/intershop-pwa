@@ -35,6 +35,7 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
 import { loginUser, personalizationStatusDetermined } from './user';
+import { ReviewsService } from 'ish-core/services/reviews/reviews.service';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -140,6 +141,9 @@ describe('Customer Store', () => {
     const userServiceMock = mock(UserService);
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
 
+    const reviewServiceMock = mock(ReviewsService);
+    when(reviewServiceMock.getProductReviews(anything())).thenReturn(of({ sku: '123', reviews: [] }));
+
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
     const authorizationServiceMock = mock(AuthorizationService);
@@ -178,6 +182,7 @@ describe('Customer Store', () => {
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        { provide: ReviewsService, useFactory: () => instance(reviewServiceMock) },
         provideStoreSnapshots(),
       ],
     });
