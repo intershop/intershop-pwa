@@ -10,9 +10,8 @@ export class LinkParser {
 
       switch (protocol) {
         case 'product':
-          // TODO: for consistent product links it should have the default category in the route
-          // TODO: use ProductRoutePipe
-          return `${prefix}/sku${value}`;
+          // TODO: use ProductRoutePipe for SEO URLs
+          return `${prefix}/product/${value}`;
         case 'category':
           // TODO: use CategoryRoutePipe for SEO URLs
           return `${prefix}/categoryref/${value}${unitName}`;

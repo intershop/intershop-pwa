@@ -42,7 +42,7 @@ export function sanitizeSlugData(slugData: string) {
       .replace(/-+$/, '')
       .toLowerCase()
       .replace('pg', 'Pg')
-      .replace('sku', 'Sku')
+      .replace('prd', 'Prd')
       .replace('ctg', 'Ctg') || ''
   );
 }

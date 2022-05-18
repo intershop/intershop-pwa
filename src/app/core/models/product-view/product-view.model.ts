@@ -1,4 +1,4 @@
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Product, VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 
 export type ProductView = Partial<SimpleProductView> &
@@ -6,7 +6,7 @@ export type ProductView = Partial<SimpleProductView> &
   Partial<Omit<VariationProductMasterView, 'type'>>;
 
 interface SimpleProductView extends Product {
-  defaultCategory: Category;
+  defaultCategory: CategoryView;
 }
 
 interface VariationProductView extends VariationProduct, SimpleProductView {
@@ -21,7 +21,7 @@ interface VariationProductMasterView extends VariationProductMaster, SimpleProdu
   defaultVariationSKU: string;
 }
 
-export function createProductView(product: Product, defaultCategory?: Category): SimpleProductView {
+export function createProductView(product: Product, defaultCategory?: CategoryView): SimpleProductView {
   return (
     product && {
       ...product,
@@ -34,7 +34,7 @@ export function createVariationProductMasterView(
   product: VariationProductMaster,
   defaultVariationSKU: string,
   variations: VariationProduct[],
-  defaultCategory?: Category
+  defaultCategory?: CategoryView
 ): VariationProductMasterView {
   return (
     product &&
@@ -51,7 +51,7 @@ export function createVariationProductView(
   product: VariationProduct,
   variations: VariationProduct[],
   productMaster: VariationProductMaster,
-  defaultCategory?: Category
+  defaultCategory?: CategoryView
 ): VariationProductView {
   return (
     product &&
