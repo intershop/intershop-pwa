@@ -22,7 +22,7 @@
     </li>
 
     <li [ngbNavItem]="'REVIEWS'">
-      <a ngbNavLink>{{ 'product.review.heading' | translate }} ({{ (productReviews$ | async)?.length }})</a>
+      <a ngbNavLink>{{ 'product.reviews.heading' | translate }} ({{ (productReviews$ | async)?.length }})</a>
       <ng-template ngbNavContent>
         <ish-product-reviews></ish-product-reviews>
       </ng-template>

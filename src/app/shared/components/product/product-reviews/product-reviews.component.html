@@ -1,6 +1,6 @@
-<h3>{{ 'product.review.section.heading' | translate | uppercase }}</h3>
+<h3>{{ 'product.reviews.section.heading' | translate | uppercase }}</h3>
 
-<div *ngIf="(productReviews$ | async)?.length < 0; else noReviews">
+<div *ngIf="(productReviews$ | async)?.length > 0; else noReviews">
   <div *ngFor="let review of productReviews$ | async">
     <div class="row pb-3">
       <div class="col-md-3 text-muted small">
@@ -20,5 +20,5 @@
 </div>
 
 <ng-template #noReviews>
-  {{ 'product.review.no_reviews_yet.text' | translate }}
+  {{ 'product.reviews.no_reviews_yet.text' | translate }}
 </ng-template>
