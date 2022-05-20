@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 import { RxState } from '@rx-angular/state';
-import { Observable, combineLatest, of } from 'rxjs';
+import { EMPTY, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
 
@@ -48,6 +48,11 @@ export class ProductLinksCarouselComponent {
   productSKUs$ = this.state.select('products$');
 
   /**
+   * track already fetched SKUs
+   */
+  private fetchedSKUs = new Set<Observable<string>>();
+
+  /**
    * configuration of swiper carousel
    * https://swiperjs.com/swiper-api
    */
@@ -92,35 +97,43 @@ export class ProductLinksCarouselComponent {
       },
     };
 
-    this.state.connect(
-      'products$',
-      combineLatest([
-        this.state.select('products'),
-        this.state.select('displayOnlyAvailableProducts'),
-        this.state.select('hiddenSlides'),
-      ]).pipe(
-        map(([products, displayOnlyAvailableProducts, hiddenSlides]) => {
+    const filteredProducts$ = combineLatest([
+      combineLatest([this.state.select('products'), this.state.select('displayOnlyAvailableProducts')]).pipe(
+        map(([products, displayOnlyAvailableProducts]) => {
+          // prepare lazy observables for all products
           if (displayOnlyAvailableProducts) {
-            return products
-              .map((sku, index) =>
-                this.shoppingFacade.product$(sku, ProductCompletenessLevel.List).pipe(
-                  tap(product => {
-                    if (!product.available || product.failed) {
-                      this.state.set('hiddenSlides', () =>
-                        [...this.state.get('hiddenSlides'), index].filter((v, i, a) => a.indexOf(v) === i)
-                      );
-                    }
-                  }),
-                  filter(product => product.available && !product.failed),
-                  mapToProperty('sku')
-                )
+            return products.map((sku, index) =>
+              this.shoppingFacade.product$(sku, ProductCompletenessLevel.List).pipe(
+                tap(product => {
+                  // add slide to the hidden list if product is not available
+                  if (!product.available || product.failed) {
+                    this.state.set('hiddenSlides', () =>
+                      [...this.state.get('hiddenSlides'), index].filter((v, i, a) => a.indexOf(v) === i)
+                    );
+                  }
+                }),
+                filter(product => product.available && !product.failed),
+                mapToProperty('sku')
               )
-              .filter((_, index) => !hiddenSlides.includes(index));
+            );
           } else {
             return products.map(sku => of(sku));
           }
         })
-      )
-    );
+      ),
+      this.state.select('hiddenSlides'),
+    ]).pipe(map(([products, hiddenSlides]) => products.filter((_, index) => !hiddenSlides.includes(index))));
+
+    this.state.connect('products$', filteredProducts$);
+  }
+
+  lazyFetch(fetch: boolean, sku$: Observable<string>): Observable<string> {
+    if (fetch) {
+      this.fetchedSKUs.add(sku$);
+    }
+    if (this.fetchedSKUs.has(sku$)) {
+      return sku$;
+    }
+    return EMPTY;
   }
 }

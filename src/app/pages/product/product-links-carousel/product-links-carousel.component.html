@@ -6,7 +6,7 @@
       <swiper [config]="swiperConfig">
         <ng-template *ngFor="let sku$ of productSKUs" swiperSlide let-data>
           <ish-product-item
-            *ngIf="data.isVisible && sku$ | async as sku"
+            *ngIf="lazyFetch(data.isVisible, sku$) | async as sku"
             ishProductContext
             [sku]="sku"
           ></ish-product-item>
