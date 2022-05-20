@@ -1,10 +1,22 @@
 <div class="header header-simple container">
   <div class="mid-header">
     <div class="logo-wrapper d-none d-md-block">
-      <a rel="home" routerLink="/home" class="logo" data-testing-id="header-home-link-desktop"></a>
+      <a
+        rel="home"
+        routerLink="/home"
+        class="logo"
+        [attr.aria-label]="'common.home.link' | translate"
+        data-testing-id="header-home-link-desktop"
+      ></a>
     </div>
     <div class="logo-wrapper d-md-none">
-      <a rel="home" routerLink="/home" class="mobile-logo" data-testing-id="link-home"></a>
+      <a
+        rel="home"
+        routerLink="/home"
+        class="mobile-logo"
+        [attr.aria-label]="'common.home.link' | translate"
+        data-testing-id="link-home"
+      ></a>
     </div>
   </div>
 </div>

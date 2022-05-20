@@ -1,4 +1,4 @@
-<a *ngIf="fragmentOnRouting === 'product-list-top'" id="product-list-top"></a>
+<a *ngIf="fragmentOnRouting === 'product-list-top'" id="product-list-top" title="top"></a>
 <ng-container *ngIf="productListingView$ | async as listing">
   <div
     *ngIf="isEndlessScrolling"
