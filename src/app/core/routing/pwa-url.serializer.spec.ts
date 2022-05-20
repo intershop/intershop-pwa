@@ -29,9 +29,21 @@ describe('Pwa Url Serializer', () => {
     expect(result).toMatchInlineSnapshot(`"/path/a/b/c"`);
   });
 
-  it('should remove matrix parameters from and keep query params in URL', () => {
+  it('should remove multiple matrix parameters from URL', () => {
+    const tree = urlSerializer.parse('/path/a/b/c;matrix=value;matrix2=value2');
+    const result = urlSerializer.serialize(tree);
+    expect(result).toMatchInlineSnapshot(`"/path/a/b/c"`);
+  });
+
+  it('should remove matrix parameters and keep query params in URL', () => {
     const tree = urlSerializer.parse('/path/a/b/c;matrix=value?test=dummy&foo=bar');
     const result = urlSerializer.serialize(tree);
     expect(result).toMatchInlineSnapshot(`"/path/a/b/c?test=dummy&foo=bar"`);
+  });
+
+  it('should remove matrix parameters and keep query params in URL preserving semicolons in query params', () => {
+    const tree = urlSerializer.parse('/path/a/b/c;matrix=value?test=dummy%3btest&foo=bar');
+    const result = urlSerializer.serialize(tree);
+    expect(result).toMatchInlineSnapshot(`"/path/a/b/c?test=dummy;test&foo=bar"`);
   });
 });
