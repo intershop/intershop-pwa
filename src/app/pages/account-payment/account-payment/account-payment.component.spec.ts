@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
@@ -23,11 +22,7 @@ describe('Account Payment Component', () => {
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        AccountPaymentComponent,
-        MockComponent(AccountPaymentConcardisDirectdebitComponent),
-        MockComponent(FaIconComponent),
-      ],
+      declarations: [AccountPaymentComponent, MockComponent(AccountPaymentConcardisDirectdebitComponent)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

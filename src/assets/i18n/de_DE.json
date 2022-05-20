@@ -280,6 +280,7 @@
   "account.payment.link": "Zahlung",
   "account.payment.message": "Wählen Sie eine bevorzugte Zahlungsmethode für eine schnellere Zahlung bei zukünftigen Einkäufen.",
   "account.payment.no_entries": "Derzeit haben Sie keine Zahlungsmethoden.",
+  "account.payment.no_preferred.message": "Sie haben keine bevorzugte Zahlungsmethode mehr ausgewählt.",
   "account.payment.no_preferred_method": "Keine bevorzugte Zahlungmethode",
   "account.payment.payment_created.message": "Ihre bevorzugte Zahlungsmethode wurde in Ihrem Konto gespeichert.",
   "account.payment.payment_deleted.message": "Ihr Zahlungsmittel wurde gelöscht.",
