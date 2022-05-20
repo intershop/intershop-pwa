@@ -4,8 +4,12 @@
 
     <div class="product-list">
       <swiper [config]="swiperConfig">
-        <ng-template *ngFor="let sku of productSKUs" swiperSlide>
-          <ish-product-item ishProductContext [sku]="sku"></ish-product-item>
+        <ng-template *ngFor="let sku$ of productSKUs" swiperSlide let-data>
+          <ish-product-item
+            *ngIf="lazyFetch(data.isVisible, sku$) | async as sku"
+            ishProductContext
+            [sku]="sku"
+          ></ish-product-item>
         </ng-template>
       </swiper>
     </div>
