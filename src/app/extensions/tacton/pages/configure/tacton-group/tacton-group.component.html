@@ -4,7 +4,11 @@
     <span class="anchor" [id]="'anchor-' + group.name"></span>
     <h3 ishIntersectionObserver (visibilityChange)="onIntersection(group.name, $event)">{{ group.description }}</h3>
   </ng-template>
-  <img *ngIf="group.properties?.tc_group_picture" [src]="getImageUrl(group.properties?.tc_group_picture) | async" />
+  <img
+    *ngIf="group.properties?.tc_group_picture"
+    [src]="getImageUrl(group.properties?.tc_group_picture) | async"
+    [attr.alt]="group.name"
+  />
 
   <ng-container *ngFor="let item of group?.members; let last = last">
     <ish-tacton-group *ngIf="isGroup(item); else parameter" [group]="item" [level]="level + 1"></ish-tacton-group>
