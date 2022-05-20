@@ -203,7 +203,11 @@ export class AccountFacade {
     this.store.dispatch(
       updateUser({
         user: { ...user, preferredPaymentInstrumentId: paymentInstrumentId },
-        successMessage: { message: 'account.payment.payment_created.message' },
+        successMessage: {
+          message: paymentInstrumentId
+            ? 'account.payment.payment_created.message'
+            : 'account.payment.no_preferred.message',
+        },
       })
     );
   }

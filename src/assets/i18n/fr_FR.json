@@ -277,6 +277,7 @@
   "account.payment.link": "Paiement",
   "account.payment.message": "Choisissez un mode de paiement par défaut pour un paiement plus rapide de vos achats futurs.",
   "account.payment.no_entries": "Actuellement, vous n’avez aucun mode de paiement.",
+  "account.payment.no_preferred.message": "Vous n'avez plus sélectionné de mode de paiement préféré.",
   "account.payment.no_preferred_method": "Pas de mode de paiement par défaut",
   "account.payment.payment_created.message": "Votre mode de paiement par défaut a été enregistré sur votre compte.",
   "account.payment.payment_deleted.message": "Votre moyen de paiement a été supprimé.",
