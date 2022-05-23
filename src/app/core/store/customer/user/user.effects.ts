@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, delay, exhaustMap, filter, map, mergeMap, sample, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { concatMap, delay, exhaustMap, filter, map, mergeMap, sample, withLatestFrom } from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -101,16 +101,17 @@ export class UserEffects {
    * redirects to the returnUrl after successful login
    * does not redirect at all, if no returnUrl is defined
    */
-  redirectAfterLogin$ = createEffect(
-    () =>
-      this.store$.pipe(select(selectQueryParam('returnUrl'))).pipe(
-        takeWhile(() => !SSR),
-        whenTruthy(),
-        sample(this.actions$.pipe(ofType(loginUserSuccess))),
-        concatMap(navigateTo => from(this.router.navigateByUrl(navigateTo)))
-      ),
-    { dispatch: false }
-  );
+  redirectAfterLogin$ =
+    !SSR &&
+    createEffect(
+      () =>
+        this.store$.pipe(select(selectQueryParam('returnUrl'))).pipe(
+          whenTruthy(),
+          sample(this.actions$.pipe(ofType(loginUserSuccess))),
+          concatMap(navigateTo => from(this.router.navigateByUrl(navigateTo)))
+        ),
+      { dispatch: false }
+    );
 
   createUser$ = createEffect(() =>
     this.actions$.pipe(

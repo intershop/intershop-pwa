@@ -12,12 +12,13 @@ export class HybridEffects {
     transferState: TransferState,
     @Optional() @Inject('SSR_HYBRID') ssrHybridState: boolean
   ) {
-    actions
-      .pipe(
-        take(1),
-        filter(() => SSR),
-        filter(() => !!ssrHybridState)
-      )
-      .subscribe(() => transferState.set(SSR_HYBRID_STATE, true));
+    if (SSR) {
+      actions
+        .pipe(
+          take(1),
+          filter(() => !!ssrHybridState)
+        )
+        .subscribe(() => transferState.set(SSR_HYBRID_STATE, true));
+    }
   }
 }

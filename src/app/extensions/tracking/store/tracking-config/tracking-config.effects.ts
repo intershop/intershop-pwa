@@ -36,16 +36,18 @@ export class TrackingConfigEffects {
     }
   }
 
-  setGTMToken$ = createEffect(() =>
-    this.actions$.pipe(
-      takeWhile(() => SSR && this.featureToggleService.enabled('tracking')),
-      take(1),
-      withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
-      map(([, gtmToken]) => gtmToken),
-      whenTruthy(),
-      map(gtmToken => setGTMToken({ gtmToken }))
-    )
-  );
+  setGTMToken$ =
+    SSR &&
+    createEffect(() =>
+      this.actions$.pipe(
+        takeWhile(() => this.featureToggleService.enabled('tracking')),
+        take(1),
+        withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
+        map(([, gtmToken]) => gtmToken),
+        whenTruthy(),
+        map(gtmToken => setGTMToken({ gtmToken }))
+      )
+    );
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- gtm library access
   private gtm(w: any, l: string, i: string) {

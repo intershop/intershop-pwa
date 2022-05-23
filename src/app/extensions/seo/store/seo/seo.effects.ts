@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Request } from 'express';
 import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -136,26 +136,27 @@ export class SeoEffects {
     { dispatch: false }
   );
 
-  seoLanguages$ = createEffect(
-    () =>
-      combineLatest([
-        this.store.pipe(select(getCurrentLocale)),
-        this.store.pipe(select(getAvailableLocales), whenTruthy()),
-      ]).pipe(
-        takeWhile(() => SSR),
-        tap(([current, locales]) => {
-          this.metaService.addTag({ property: 'og:locale', content: current });
+  seoLanguages$ =
+    SSR &&
+    createEffect(
+      () =>
+        combineLatest([
+          this.store.pipe(select(getCurrentLocale)),
+          this.store.pipe(select(getAvailableLocales), whenTruthy()),
+        ]).pipe(
+          tap(([current, locales]) => {
+            this.metaService.addTag({ property: 'og:locale', content: current });
 
-          this.metaService
-            .getTags('property="og:locale:alternate"')
-            .forEach(el => this.metaService.removeTagElement(el));
-          locales
-            .filter(lang => lang !== current)
-            .forEach(lang => this.metaService.addTag({ property: 'og:locale:alternate', content: lang }, true));
-        })
-      ),
-    { dispatch: false }
-  );
+            this.metaService
+              .getTags('property="og:locale:alternate"')
+              .forEach(el => this.metaService.removeTagElement(el));
+            locales
+              .filter(lang => lang !== current)
+              .forEach(lang => this.metaService.addTag({ property: 'og:locale:alternate', content: lang }, true));
+          })
+        ),
+      { dispatch: false }
+    );
 
   seoTitle$ = createEffect(
     () =>

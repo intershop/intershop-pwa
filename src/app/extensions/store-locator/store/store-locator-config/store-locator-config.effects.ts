@@ -1,4 +1,4 @@
-import { Injectable, isDevMode } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect } from '@ngrx/effects';
 import { map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 
@@ -16,14 +16,16 @@ export class StoreLocatorConfigEffects {
     private stateProperties: StatePropertiesService
   ) {}
 
-  setGMAKey$ = createEffect(() =>
-    this.actions$.pipe(
-      takeWhile(() => (SSR || isDevMode()) && this.featureToggleService.enabled('storeLocator')),
-      take(1),
-      withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GMA_KEY', 'gmaKey')),
-      map(([, gmaKey]) => gmaKey),
-      whenTruthy(),
-      map(gmaKey => setGMAKey({ gmaKey }))
-    )
-  );
+  setGMAKey$ =
+    SSR &&
+    createEffect(() =>
+      this.actions$.pipe(
+        takeWhile(() => this.featureToggleService.enabled('storeLocator')),
+        take(1),
+        withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GMA_KEY', 'gmaKey')),
+        map(([, gmaKey]) => gmaKey),
+        whenTruthy(),
+        map(gmaKey => setGMAKey({ gmaKey }))
+      )
+    );
 }

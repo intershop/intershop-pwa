@@ -12,7 +12,6 @@ import {
   map,
   sample,
   switchMap,
-  takeWhile,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -104,22 +103,23 @@ export class SearchEffects {
     )
   );
 
-  suggestSearch$ = createEffect(() =>
-    this.actions$.pipe(
-      takeWhile(() => !SSR),
-      ofType(suggestSearch),
-      mapToPayloadProperty('searchTerm'),
-      debounceTime(400),
-      distinctUntilChanged(),
-      whenTruthy(),
-      switchMap(searchTerm =>
-        this.suggestService.search(searchTerm).pipe(
-          map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
-          catchError(() => EMPTY)
+  suggestSearch$ =
+    !SSR &&
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(suggestSearch),
+        mapToPayloadProperty('searchTerm'),
+        debounceTime(400),
+        distinctUntilChanged(),
+        whenTruthy(),
+        switchMap(searchTerm =>
+          this.suggestService.search(searchTerm).pipe(
+            map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
+            catchError(() => EMPTY)
+          )
         )
       )
-    )
-  );
+    );
 
   redirectIfSearchProductFail$ = createEffect(
     () =>

@@ -29,16 +29,18 @@ export class SentryConfigEffects {
     private cookiesService: CookiesService
   ) {}
 
-  setSentryConfig$ = createEffect(() =>
-    this.actions$.pipe(
-      takeWhile(() => SSR && this.featureToggleService.enabled('sentry')),
-      take(1),
-      withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('SENTRY_DSN', 'sentryDSN')),
-      map(([, sentryDSN]) => sentryDSN),
-      whenTruthy(),
-      map(dsn => setSentryConfig({ dsn }))
-    )
-  );
+  setSentryConfig$ =
+    SSR &&
+    createEffect(() =>
+      this.actions$.pipe(
+        takeWhile(() => this.featureToggleService.enabled('sentry')),
+        take(1),
+        withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('SENTRY_DSN', 'sentryDSN')),
+        map(([, sentryDSN]) => sentryDSN),
+        whenTruthy(),
+        map(dsn => setSentryConfig({ dsn }))
+      )
+    );
 
   configureSentry$ = createEffect(
     () =>

@@ -4,8 +4,8 @@ import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { EMPTY, defer, fromEvent, iif, merge } from 'rxjs';
-import { distinctUntilChanged, map, mergeMap, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, fromEvent, iif, merge } from 'rxjs';
+import { distinctUntilChanged, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
@@ -36,23 +36,19 @@ export class ConfigurationEffects {
     appRef: ApplicationRef,
     private localizationsService: LocalizationsService
   ) {
-    appRef.isStable
-      .pipe(takeWhile(() => !SSR))
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- window can only be used with any here
-      .subscribe(stable => ((window as any).angularStable = stable));
+    if (!SSR) {
+      appRef.isStable
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- window can only be used with any here
+        .subscribe(stable => ((window as any).angularStable = stable));
+    }
 
-    store
-      .pipe(
-        takeWhile(() => SSR || isDevMode()),
-        select(getCurrentLocale),
-        whenTruthy(),
-        distinctUntilChanged()
-      )
-      .subscribe(lang => {
+    if (SSR || isDevMode()) {
+      store.pipe(select(getCurrentLocale), whenTruthy(), distinctUntilChanged()).subscribe(lang => {
         this.transferState.set(SSR_LOCALE, lang);
         translateService.use(lang);
         document.querySelector('html').setAttribute('lang', lang.replace('_', '-'));
       });
+    }
   }
 
   transferEnvironmentProperties$ = createEffect(() =>
@@ -118,27 +114,23 @@ export class ConfigurationEffects {
     )
   );
 
-  setDeviceType$ = createEffect(() =>
-    iif(
-      () => !SSR,
-      defer(() =>
-        merge(this.actions$.pipe(ofType(ROOT_EFFECTS_INIT)), fromEvent(window, 'resize')).pipe(
-          map<unknown, DeviceType>(() => {
-            if (window.innerWidth < this.mediumBreakpointWidth) {
-              return 'mobile';
-            } else if (window.innerWidth < this.largeBreakpointWidth) {
-              return 'tablet';
-            } else {
-              return 'desktop';
-            }
-          }),
-          distinctCompareWith(this.store.pipe(select(getDeviceType))),
-          map(deviceType => applyConfiguration({ _deviceType: deviceType }))
-        )
-      ),
-      EMPTY
-    )
-  );
+  setDeviceType$ =
+    !SSR &&
+    createEffect(() =>
+      merge(this.actions$.pipe(ofType(ROOT_EFFECTS_INIT)), fromEvent(window, 'resize')).pipe(
+        map<unknown, DeviceType>(() => {
+          if (window.innerWidth < this.mediumBreakpointWidth) {
+            return 'mobile';
+          } else if (window.innerWidth < this.largeBreakpointWidth) {
+            return 'tablet';
+          } else {
+            return 'desktop';
+          }
+        }),
+        distinctCompareWith(this.store.pipe(select(getDeviceType))),
+        map(deviceType => applyConfiguration({ _deviceType: deviceType }))
+      )
+    );
 
   loadSingleServerTranslation$ = createEffect(() =>
     this.actions$.pipe(

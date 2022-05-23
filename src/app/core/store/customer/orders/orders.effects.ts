@@ -5,7 +5,7 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { EMPTY, from, iif, merge, race } from 'rxjs';
+import { EMPTY, from, merge, race } from 'rxjs';
 import {
   concatMap,
   distinctUntilChanged,
@@ -163,18 +163,16 @@ export class OrdersEffects {
   /**
    * Selects and loads an order.
    */
-  loadOrderForSelectedOrder$ = createEffect(() =>
-    iif(
-      () => !SSR,
+  loadOrderForSelectedOrder$ =
+    !SSR &&
+    createEffect(() =>
       this.actions$.pipe(
         ofType(selectOrder),
         mapToPayloadProperty('orderId'),
         whenTruthy(),
         map(orderId => loadOrder({ orderId }))
-      ),
-      EMPTY
-    )
-  );
+      )
+    );
 
   /**
    * Triggers a SelectOrder action if route contains orderId query or route parameter.
