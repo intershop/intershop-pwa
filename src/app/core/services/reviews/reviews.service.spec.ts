@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -27,7 +26,7 @@ describe('Reviews Service', () => {
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
-      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, provideMockStore({})],
+      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
     reviewsService = TestBed.inject(ReviewsService);
   });
