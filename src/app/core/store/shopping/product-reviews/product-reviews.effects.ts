@@ -3,9 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs/operators';
 
 import { ReviewsService } from 'ish-core/services/reviews/reviews.service';
-import { mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import { loadProductReviews, loadProductReviewsSuccess } from './product-reviews.actions';
+import { loadProductReviews, loadProductReviewsFail, loadProductReviewsSuccess } from './product-reviews.actions';
 
 @Injectable()
 export class ProductReviewsEffects {
@@ -17,7 +17,10 @@ export class ProductReviewsEffects {
       mapToPayloadProperty('sku'),
       whenTruthy(),
       mergeMap(sku =>
-        this.reviewService.getProductReviews(sku).pipe(map(reviews => loadProductReviewsSuccess({ reviews })))
+        this.reviewService.getProductReviews(sku).pipe(
+          map(reviews => loadProductReviewsSuccess({ reviews })),
+          mapErrorToAction(loadProductReviewsFail)
+        )
       )
     )
   );

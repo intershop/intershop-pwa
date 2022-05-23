@@ -21,7 +21,7 @@
       </ng-template>
     </li>
 
-    <li [ngbNavItem]="'REVIEWS'">
+    <li *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'">
       <a ngbNavLink>{{ 'product.reviews.heading' | translate }} ({{ (productReviews$ | async)?.length }})</a>
       <ng-template ngbNavContent>
         <ish-product-reviews></ish-product-reviews>

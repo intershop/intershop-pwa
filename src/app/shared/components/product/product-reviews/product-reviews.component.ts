@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ProductReview } from 'ish-core/models/product-reviews/product-review.model';
 
 @Component({
@@ -15,6 +16,8 @@ export class ProductReviewsComponent implements OnInit {
   productReviews$: Observable<ProductReview[]>;
   stars$: Observable<('full' | 'half' | 'empty')[]>;
   rating$: Observable<number>;
+  error$: Observable<HttpError>;
+  loading$: Observable<boolean>;
 
   constructor(private context: ProductContextFacade) {}
 
@@ -24,5 +27,7 @@ export class ProductReviewsComponent implements OnInit {
     this.stars$ = this.rating$.pipe(
       map(rate => range(1, 6).map(index => (index <= rate ? 'full' : index - 0.5 === rate ? 'half' : 'empty')))
     );
+    this.error$ = this.context.productReviewsError$;
+    this.loading$ = this.context.productReviewsLoading$;
   }
 }

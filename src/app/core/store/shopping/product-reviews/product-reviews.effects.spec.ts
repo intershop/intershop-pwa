@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { cold, hot } from 'jest-marbles';
+import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, when } from 'ts-mockito';
 
 import { ReviewsService } from 'ish-core/services/reviews/reviews.service';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
-import { loadProductReviews } from './product-reviews.actions';
+import { loadProductReviews, loadProductReviewsFail } from './product-reviews.actions';
 import { ProductReviewsEffects } from './product-reviews.effects';
 
 describe('Product Reviews Effects', () => {
@@ -30,7 +32,7 @@ describe('Product Reviews Effects', () => {
   });
 
   describe('loadProductReviews$', () => {
-    it('should not dispatch actions when encountering loadProductReviews', () => {
+    it('should not dispatch actions when encountering loadProductReviews', done => {
       const action = loadProductReviews({ sku: '123' });
       actions$ = of(action);
 
@@ -40,9 +42,17 @@ describe('Product Reviews Effects', () => {
         done();
       });
     });
+
+    it('should map invalid request to action of type loadProductReviewsFail', () => {
+      when(reviewsServiceMock.getProductReviews(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = loadProductReviews({ sku: '123' });
+      const completion = loadProductReviewsFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductReviews$).toBeObservable(expected$);
+    });
   });
 });
-
-function done() {
-  throw new Error('Function not implemented.');
-}

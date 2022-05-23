@@ -4,6 +4,7 @@ import { Observable, combineLatest, identity } from 'rxjs';
 import { debounce, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { PRICE_UPDATE } from 'ish-core/configurations/injection-keys';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceUpdateType } from 'ish-core/models/price/price.model';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
@@ -28,7 +29,12 @@ import {
 } from 'ish-core/store/shopping/product-listing';
 import { loadProductPrices } from 'ish-core/store/shopping/product-prices';
 import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
-import { getProductReviewsBySku, loadProductReviews } from 'ish-core/store/shopping/product-reviews';
+import {
+  getProductReviewsBySku,
+  getProductReviewsError,
+  getProductReviewsLoading,
+  loadProductReviews,
+} from 'ish-core/store/shopping/product-reviews';
 import {
   getProduct,
   getProductLinks,
@@ -47,7 +53,11 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class ShoppingFacade {
-  constructor(private store: Store, @Inject(PRICE_UPDATE) private priceUpdate: PriceUpdateType) {}
+  constructor(
+    private store: Store,
+    @Inject(PRICE_UPDATE) private priceUpdate: PriceUpdateType,
+    private featureToggleService: FeatureToggleService
+  ) {}
 
   // CATEGORY
 
@@ -226,7 +236,12 @@ export class ShoppingFacade {
 
   // REVIEWS
   getProductReviews$(sku: string) {
-    this.store.dispatch(loadProductReviews({ sku }));
+    if (this.featureToggleService.enabled('rating')) {
+      this.store.dispatch(loadProductReviews({ sku }));
+    }
     return this.store.pipe(select(getProductReviewsBySku(sku)));
   }
+
+  productReviewsError$ = this.store.pipe(select(getProductReviewsError));
+  productReviewsLoading$ = this.store.pipe(select(getProductReviewsLoading));
 }

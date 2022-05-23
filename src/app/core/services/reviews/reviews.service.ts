@@ -16,6 +16,12 @@ export class ReviewsService {
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), take(1));
 
+  /**
+   * Gets the reviews for a given product
+   *
+   * @param sku The product sku
+   * @returns   The available reviews of a product
+   */
   getProductReviews(sku: string): Observable<ProductReviews> {
     if (!sku) {
       return throwError(() => new Error('getProductReviews() called without sku'));
@@ -23,7 +29,7 @@ export class ReviewsService {
 
     return this.currentCustomer$.pipe(
       switchMap(() =>
-        this.apiService.get(`/products/${sku}/reviews`, { sendSPGID: true }).pipe(
+        this.apiService.get(`products/${sku}/reviews`).pipe(
           unpackEnvelope<Link>(),
           this.apiService.resolveLinks<ProductReview>(),
           map(reviews => ProductReviewsMapper.fromData(sku, reviews))

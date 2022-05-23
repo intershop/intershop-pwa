@@ -216,6 +216,7 @@ const declaredComponents = [
   ProductListPagingComponent,
   ProductListToolbarComponent,
   ProductRatingStarComponent,
+  ProductReviewsComponent,
   ProductRowComponent,
   ProductTileComponent,
 ];
@@ -288,7 +289,7 @@ const exportedComponents = [
 
 @NgModule({
   imports: [...importExportModules],
-  declarations: [...declaredComponents, ...exportedComponents, ProductReviewsComponent],
+  declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {

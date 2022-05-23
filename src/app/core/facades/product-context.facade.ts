@@ -17,6 +17,7 @@ import {
 } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Image } from 'ish-core/models/image/image.model';
 import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
@@ -123,6 +124,9 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
   private privateConfig$ = new BehaviorSubject<Partial<ProductContextDisplayProperties>>({});
   private loggingActive: boolean;
   private lazyFieldsInitialized: string[] = [];
+
+  productReviewsLoading$: Observable<boolean> = this.shoppingFacade.productReviewsLoading$;
+  productReviewsError$: Observable<HttpError> = this.shoppingFacade.productReviewsError$;
 
   set config(config: Partial<ProductContextDisplayProperties>) {
     this.privateConfig$.next(config);
