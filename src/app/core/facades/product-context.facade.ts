@@ -125,7 +125,6 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
   private loggingActive: boolean;
   private lazyFieldsInitialized: string[] = [];
 
-  productReviewsLoading$: Observable<boolean> = this.shoppingFacade.productReviewsLoading$;
   productReviewsError$: Observable<HttpError> = this.shoppingFacade.productReviewsError$;
 
   set config(config: Partial<ProductContextDisplayProperties>) {

@@ -216,7 +216,6 @@ const declaredComponents = [
   ProductListPagingComponent,
   ProductListToolbarComponent,
   ProductRatingStarComponent,
-  ProductReviewsComponent,
   ProductRowComponent,
   ProductTileComponent,
 ];

@@ -71,8 +71,10 @@ describe('Product Reviews Selectors', () => {
     });
 
     describe('loadProductReviewsFail', () => {
+      const failAction = loadProductReviewsFail({ error: makeHttpError({ message: 'invalid' }) });
+
       beforeEach(() => {
-        store$.dispatch(loadProductReviewsFail({ error: makeHttpError({ message: 'invalid' }) }));
+        store$.dispatch(failAction);
       });
 
       it('should set loading to false', () => {

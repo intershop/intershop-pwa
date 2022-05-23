@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductReview } from 'ish-core/models/product-reviews/product-review.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -18,6 +19,7 @@ describe('Product Reviews Component', () => {
   let element: HTMLElement;
   let review: ProductReview;
   let context: ProductContextFacade;
+  let shoppingFacade: ShoppingFacade;
 
   review = {
     id: '1',
@@ -33,6 +35,7 @@ describe('Product Reviews Component', () => {
 
   beforeEach(async () => {
     context = mock(ProductContextFacade);
+    shoppingFacade = mock(ShoppingFacade);
     when(context.select('product', 'roundedAverageRating')).thenReturn(of(5));
     when(context.select('reviews')).thenReturn(of([review]));
 
@@ -44,7 +47,10 @@ describe('Product Reviews Component', () => {
         MockPipe(TranslatePipe),
         ProductReviewsComponent,
       ],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      providers: [
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+      ],
     }).compileComponents();
   });
 

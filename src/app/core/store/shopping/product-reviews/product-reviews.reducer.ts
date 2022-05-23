@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ProductReviews as ProductReviewsModel } from 'ish-core/models/product-reviews/product-reviews.model';
-import { setErrorOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import { loadProductReviews, loadProductReviewsFail, loadProductReviewsSuccess } from './product-reviews.actions';
 
@@ -23,9 +23,10 @@ const initialState: ProductReviewsState = productReviewsAdapter.getInitialState(
 
 export const productReviewsReducer = createReducer(
   initialState,
-  on(loadProductReviews, state => ({ ...state, loading: true })),
+  setLoadingOn(loadProductReviews),
   on(loadProductReviewsSuccess, (state, action) =>
     productReviewsAdapter.upsertOne(action.payload.reviews, { ...state, loading: false, error: undefined })
   ),
+  unsetLoadingAndErrorOn(loadProductReviewsSuccess, loadProductReviewsFail),
   setErrorOn(loadProductReviewsFail)
 );
