@@ -2,22 +2,22 @@
 
 <ish-error-message [error]="error$ | async"></ish-error-message>
 
-<div *ngIf="(loading$ | async) !== true; else loading">
+<div class="section pb-4">
   <div *ngIf="(productReviews$ | async)?.length > 0; else noReviews">
-    <div *ngFor="let review of productReviews$ | async">
-      <div class="row review-item">
-        <div class="col-md-3 review-item-created">
-          {{ review.authorFirstName }}
-          <br />
-          {{ review.creationDate | ishDate: 'medium' }}
-        </div>
-        <div class="col-md-9">
-          <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
+    <div *ngFor="let review of productReviews$ | async" class="row review-item">
+      <div class="col-md-3 review-item-created">
+        {{ review.authorFirstName }}
+        <br />
+        {{ review.creationDate | ishDate: 'medium' }}
+      </div>
+      <div class="col-md-9">
+        <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
+          <span class="review-item-header-title">
             <ish-product-rating-star [filled]="fill" [lastStar]="lastStar"></ish-product-rating-star>
-            <span *ngIf="lastStar" class="review-item-header-title">{{ review.title }}</span>
-          </ng-container>
-          <p class="review-item-text">{{ review.content }}</p>
-        </div>
+            <span *ngIf="lastStar" class="pl-2">{{ review.title }}</span>
+          </span>
+        </ng-container>
+        <div>{{ review.content }}</div>
       </div>
     </div>
   </div>
@@ -27,6 +27,6 @@
   {{ 'product.reviews.no_reviews_yet.text' | translate }}
 </ng-template>
 
-<ng-template #loading>
+<div *ngIf="(loading$ | async) === true">
   <ish-loading></ish-loading>
-</ng-template>
+</div>
