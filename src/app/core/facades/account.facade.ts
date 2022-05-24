@@ -21,6 +21,11 @@ import {
   loadAddresses,
 } from 'ish-core/store/customer/addresses';
 import { getUserRoles } from 'ish-core/store/customer/authorization';
+import {
+  firstGDPRDataRequest,
+  getDataRequestError,
+  getDataRequestLoading,
+} from 'ish-core/store/customer/data-requests';
 import { getOrders, getOrdersLoading, getSelectedOrder, loadOrders } from 'ish-core/store/customer/orders';
 import {
   cancelRegistration,
@@ -232,6 +237,13 @@ export class AccountFacade {
   deleteCustomerAddress(addressId: string) {
     this.store.dispatch(deleteCustomerAddress({ addressId }));
   }
+
+  // DATA REQUESTS
+
+  dataRequestLoading$ = this.store.pipe(select(getDataRequestLoading));
+  dataRequestError$ = this.store.pipe(select(getDataRequestError));
+  // boolean to check wether the GDPR data request is dispatched for the first time
+  isFirstGDPRDataRequest$ = this.store.pipe(select(firstGDPRDataRequest));
 
   // SSO
 

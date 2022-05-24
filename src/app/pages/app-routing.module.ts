@@ -114,6 +114,17 @@ const routes: Routes = [
       },
     },
   },
+  {
+    // route for handling confirmation of user data and account deletion requests
+    path: 'gdpr-requests',
+    loadChildren: () => import('./data-request/data-request-page.module').then(m => m.DataRequestPageModule),
+    data: {
+      meta: {
+        title: 'personal.data.request.title',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
   { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
 ];
 

@@ -18,6 +18,7 @@ node_modules
 /.nb-gradle
 /nbproject/
 /.nvmrc
+/.vim/
 
 # misc
 /.angular/cache
