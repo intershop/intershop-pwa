@@ -17,6 +17,7 @@
 /.nb-gradle
 /nbproject/
 /.nvmrc
+/.vim/
 /.angular/cache
 **/*.log
 /src/environments/environment.local.ts

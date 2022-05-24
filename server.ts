@@ -187,6 +187,7 @@ export function app() {
           '/login',
           '/logout',
           '/forgotPassword',
+          '/gdpr-requests',
           '/contact',
         ],
       })

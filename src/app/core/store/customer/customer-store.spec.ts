@@ -17,6 +17,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
+import { DataRequestsService } from 'ish-core/services/data-requests/data-requests.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -140,6 +141,7 @@ describe('Customer Store', () => {
     const userServiceMock = mock(UserService);
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
 
+    const dataRequestsServiceMock = mock(DataRequestsService);
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
     const authorizationServiceMock = mock(AuthorizationService);
@@ -170,6 +172,7 @@ describe('Customer Store', () => {
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
+        { provide: DataRequestsService, useFactory: () => instance(dataRequestsServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
