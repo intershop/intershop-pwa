@@ -7,6 +7,7 @@ const pinned = {
   '@types/node': '16', // LTS
   '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
   jest: '27',
+  'jest-preset-angular': '11',
 };
 
 // <HELPERS>
