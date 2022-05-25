@@ -35,7 +35,7 @@ const noFormlyExplicitPseudoTypeRule: TSESLint.RuleModule<keyof typeof messages>
   },
 };
 
-function hasPrefixedNameProperty(node: TSESTree.Expression) {
+function hasPrefixedNameProperty(node: TSESTree.Node) {
   return (
     node.type === AST_NODE_TYPES.ObjectExpression &&
     node.properties.find(
