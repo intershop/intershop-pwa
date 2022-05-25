@@ -90,7 +90,7 @@
     "angular-oauth2-oidc": "13.0.1",
     "angular2-uuid": "^1.1.1",
     "angulartics2": "^12.1.0",
-    "bootstrap": "^4.0.0",
+    "bootstrap": "^4.6.1",
     "date-fns": "^2.28.0",
     "express": "^4.18.1",
     "express-http-proxy": "^1.6.3",
@@ -101,13 +101,13 @@
     "ng-recaptcha": "^9.0.0",
     "ngx-infinite-scroll": "^13.0.2",
     "ngx-toastr": "^14.3.0",
-    "rxjs": "~7.5.0",
+    "rxjs": "~7.5.5",
     "swiper": "^8.1.5",
     "tslib": "^2.4.0",
     "typeface-roboto": "1.1.13",
     "typeface-roboto-condensed": "1.1.13",
     "xliff": "^6.0.3",
-    "zone.js": "~0.11.0"
+    "zone.js": "~0.11.5"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "13.1.0",
@@ -158,7 +158,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "husky": "^8.0.1",
     "intershop-schematics": "file:schematics",
-    "jest": "^27.0.0",
+    "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
     "jest-marbles": "^3.0.2",
     "jest-preset-angular": "^11.1.2",
