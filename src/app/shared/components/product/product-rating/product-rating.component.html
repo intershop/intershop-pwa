@@ -1,6 +1,0 @@
-<div *ishFeature="'rating'">
-  <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
-    <ish-product-rating-star [filled]="fill" [lastStar]="lastStar"></ish-product-rating-star>
-    <span *ngIf="lastStar" class="product-info ml-1">({{ rating$ | async }})</span>
-  </ng-container>
-</div>

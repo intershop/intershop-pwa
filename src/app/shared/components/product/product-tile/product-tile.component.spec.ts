@@ -13,11 +13,11 @@ import { ProductLabelComponent } from 'ish-shared/components/product/product-lab
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 import { ProductPromotionComponent } from 'ish-shared/components/product/product-promotion/product-promotion.component';
-import { ProductRatingComponent } from 'ish-shared/components/product/product-rating/product-rating.component';
 
 import { LazyProductAddToCompareComponent } from '../../../../extensions/compare/exports/lazy-product-add-to-compare/lazy-product-add-to-compare.component';
 import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { LazyProductRatingComponent } from '../../../../extensions/rating/exports/lazy-product-rating/lazy-product-rating.component';
 import { LazyTactonConfigureProductComponent } from '../../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
@@ -41,6 +41,7 @@ describe('Product Tile Component', () => {
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductAddToWishlistComponent),
+        MockComponent(LazyProductRatingComponent),
         MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductImageComponent),
@@ -49,7 +50,6 @@ describe('Product Tile Component', () => {
         MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductPromotionComponent),
-        MockComponent(ProductRatingComponent),
         ProductTileComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
@@ -75,7 +75,7 @@ describe('Product Tile Component', () => {
         "ish-product-image",
         "ish-product-label",
         "ish-product-name",
-        "ish-product-rating",
+        "ish-lazy-product-rating",
         "ish-product-promotion",
         "ish-product-price",
         "ish-product-item-variations",

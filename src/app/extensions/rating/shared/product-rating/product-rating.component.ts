@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 /**
  * The Product Rating Component renders rating stars for a product with rounded average rating as number.
@@ -13,6 +14,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   templateUrl: './product-rating.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+@GenerateLazyComponent()
 export class ProductRatingComponent implements OnInit {
   stars$: Observable<('full' | 'half' | 'empty')[]>;
   rating$: Observable<number>;

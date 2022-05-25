@@ -9,11 +9,15 @@ kb_sync_latest_only
 
 ## 2.3 to 2.4
 
-The PWA 2.4 contains Angular updates up to version 13.3.10 and many other dependencies updates.<br/>
+The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.
 These updates did not require any updates to the PWA source code.
 But it needs to be checked if this is true for your projects customizations as well.
 
 We introduced a checkout guard that protects the checkout routes in case no shopping cart is available and navigates back to the empty basket page.
+
+Routes to non-existing CMS content pages now result in a "Page Not Found" error page.
+
+The 'ratings' functionality (components concerning the display of product ratings) has been moved into an extension using the existing feature toggle 'ratings'.
 
 ## 2.2 to 2.3
 
