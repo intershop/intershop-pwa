@@ -11,13 +11,15 @@
         {{ review.creationDate | ishDate: 'medium' }}
       </div>
       <div class="col-md-9">
-        <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
-          <span class="review-item-header-title">
-            <ish-product-rating-star [filled]="fill" [lastStar]="lastStar"></ish-product-rating-star>
-            <span *ngIf="lastStar" class="pl-2">{{ review.title }}</span>
-          </span>
-        </ng-container>
-        <div>{{ review.content }}</div>
+        <div class="review-item-header-title">
+          <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
+            <span class="">
+              <ish-product-rating-star [filled]="fill" [lastStar]="lastStar"></ish-product-rating-star>
+            </span>
+          </ng-container>
+          <span class="pl-2">{{ review.title }}</span>
+        </div>
+        <div class="review-item-text">{{ review.content }}</div>
       </div>
     </div>
   </div>

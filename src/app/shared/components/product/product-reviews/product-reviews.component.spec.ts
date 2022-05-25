@@ -89,7 +89,7 @@ describe('Product Reviews Component', () => {
 
   it('should render title of review', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.review-item-header-title').textContent).toBe('Nice');
+    expect(element.querySelector('.review-item-header-title').textContent).toContain('Nice');
   });
 
   it('should render author review', () => {
