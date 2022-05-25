@@ -122,7 +122,7 @@ jobs:
         run: npm run dead-code
 
       - name: Find Unused TestBed declarations
-        run: npm exec npm-run-all "cleanup-testbed origin/develop" check-no-changes
+        run: npm exec npm-run-all "cleanup-testbed --related origin/develop" check-no-changes
 
   Schematics:
     needs: [Quality, Jest]
