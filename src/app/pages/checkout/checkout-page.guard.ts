@@ -17,7 +17,7 @@ export class CheckoutPageGuard implements CanActivate {
         whenTruthy(),
         map(() => true)
       ),
-      timer(4000).pipe(map(() => this.router.parseUrl('/')))
+      timer(4000).pipe(map(() => this.router.parseUrl('/basket')))
     );
   }
 }

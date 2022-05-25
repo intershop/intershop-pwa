@@ -13,6 +13,8 @@ The PWA 2.4 contains an Angular update to version 13.3.9 and many other dependen
 These updates did not require any updates to the PWA source code.
 But it needs to be checked if this is true for your projects customizations as well.
 
+We introduced a checkout guard that protects the checkout routes in case no shopping cart is available and navigates back to the empty basket page.
+
 ## 2.2 to 2.3
 
 The 'contact us' functionality has been moved into an extension and we have introduced the feature toggle `contactUs` in the `environment.model.ts` that is switched on by default.
