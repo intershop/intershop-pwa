@@ -19,8 +19,8 @@ export interface ProductData {
   inStock: boolean;
   availableStock?: number;
 
-  averageRating: string;
   roundedAverageRating: string;
+  numberOfReviews: number;
 
   images: Image[];
 

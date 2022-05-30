@@ -190,6 +190,7 @@ export class ProductMapper {
       readyForShipmentMin: data.readyForShipmentMin,
       readyForShipmentMax: data.readyForShipmentMax,
       roundedAverageRating: +data.roundedAverageRating || 0,
+      numberOfReviews: data.numberOfReviews || 0,
       sku: data.sku,
       defaultCategoryId: data.defaultCategory
         ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
