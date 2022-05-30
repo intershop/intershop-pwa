@@ -19,6 +19,8 @@ Routes to non-existing CMS content pages now result in a "Page Not Found" error 
 
 The 'ratings' functionality (components concerning the display of product ratings) has been moved into an extension using the existing feature toggle 'ratings'.
 
+With the display of product reviews the attribute 'numberOfReviews' has been added to the product model and the number of reviews is now displayed behind the product rating stars instead of the average rating that is already depicted in the stars.
+
 ## 2.2 to 2.3
 
 The 'contact us' functionality has been moved into an extension and we have introduced the feature toggle `contactUs` in the `environment.model.ts` that is switched on by default.

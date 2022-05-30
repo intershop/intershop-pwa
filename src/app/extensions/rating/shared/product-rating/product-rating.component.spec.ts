@@ -18,6 +18,7 @@ describe('Product Rating Component', () => {
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
     when(context.select('product', 'roundedAverageRating')).thenReturn(of(3.5));
+    when(context.select('product', 'numberOfReviews')).thenReturn(of(2));
 
     await TestBed.configureTestingModule({
       declarations: [MockComponent(ProductRatingStarComponent), ProductRatingComponent],
@@ -40,7 +41,7 @@ describe('Product Rating Component', () => {
   it('should always display rating as text', () => {
     fixture.detectChanges();
 
-    expect(element?.textContent).toMatchInlineSnapshot(`"(3.5)"`);
+    expect(element?.textContent).toMatchInlineSnapshot(`"(2)"`);
   });
 
   it('should display rating stars for rating', () => {

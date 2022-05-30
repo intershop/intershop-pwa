@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { range } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -16,8 +16,11 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 })
 @GenerateLazyComponent()
 export class ProductRatingComponent implements OnInit {
+  @Input() hideNumberOfReviews = false;
+
   stars$: Observable<('full' | 'half' | 'empty')[]>;
   rating$: Observable<number>;
+  numberOfReviews$: Observable<number>;
 
   constructor(private context: ProductContextFacade) {}
 
@@ -26,5 +29,6 @@ export class ProductRatingComponent implements OnInit {
     this.stars$ = this.rating$.pipe(
       map(rate => range(1, 6).map(index => (index <= rate ? 'full' : index - 0.5 === rate ? 'half' : 'empty')))
     );
+    this.numberOfReviews$ = this.context.select('product', 'numberOfReviews');
   }
 }
