@@ -28,7 +28,7 @@ export class ProductReviewsComponent implements OnInit {
     this.stars$ = this.rating$.pipe(
       map(rate => range(1, 6).map(index => (index <= rate ? 'full' : index - 0.5 === rate ? 'half' : 'empty')))
     );
-    this.error$ = this.context.productReviewsError$;
+    this.error$ = this.shoppingFacade.productReviewsError$;
     this.loading$ = this.shoppingFacade.productReviewsLoading$;
   }
 }

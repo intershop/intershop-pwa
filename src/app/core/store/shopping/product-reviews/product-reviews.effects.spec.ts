@@ -5,10 +5,11 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, when } from 'ts-mockito';
 
+import { ProductReviews } from 'ish-core/models/product-reviews/product-reviews.model';
 import { ReviewsService } from 'ish-core/services/reviews/reviews.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
-import { loadProductReviews, loadProductReviewsFail } from './product-reviews.actions';
+import { loadProductReviews, loadProductReviewsFail, loadProductReviewsSuccess } from './product-reviews.actions';
 import { ProductReviewsEffects } from './product-reviews.effects';
 
 describe('Product Reviews Effects', () => {
@@ -18,7 +19,7 @@ describe('Product Reviews Effects', () => {
 
   beforeEach(() => {
     reviewsServiceMock = mock(ReviewsService);
-    when(reviewsServiceMock.getProductReviews(anything())).thenCall((sku: string) => of({ sku }));
+    when(reviewsServiceMock.getProductReviews(anything())).thenCall((sku: string) => of({ sku, reviews: [] }));
 
     TestBed.configureTestingModule({
       providers: [
@@ -49,6 +50,20 @@ describe('Product Reviews Effects', () => {
       );
       const action = loadProductReviews({ sku: '123' });
       const completion = loadProductReviewsFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductReviews$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type loadProductReviewsSuccess', () => {
+      let reviews: ProductReviews = {
+        sku: '123',
+        reviews: [],
+      };
+
+      const action = loadProductReviews({ sku: '123' });
+      const completion = loadProductReviewsSuccess({ reviews });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
