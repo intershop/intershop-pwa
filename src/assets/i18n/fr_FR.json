@@ -287,7 +287,7 @@
   "account.payment.preferred_method": "Votre mode de paiement par défaut",
   "account.payment.sepa_accepted_on": "Accepté le",
   "account.payment.sepa_mandate_Reference": "Référence du mandat",
-  "account.payment.standard_methods": "Méthodes de paiement standard",
+  "account.payment.standard_methods": "Modes de paiement standard",
   "account.payment.view_sepa_mandate.link": "Voir le mandat SEPA",
   "account.payment.view_sepa_mandate_text.link": "Mandat de prélèvement SEPA",
   "account.profile.birthday.label": "Date de naissance",
