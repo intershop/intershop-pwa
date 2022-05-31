@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 ## 2.3 to 2.4
 
-The PWA 2.4 contains an Angular update to version 13.3.9 and many other dependencies updates.<br/>
+The PWA 2.4 contains Angular updates up to version 13.3.10 and many other dependencies updates.<br/>
 These updates did not require any updates to the PWA source code.
 But it needs to be checked if this is true for your projects customizations as well.
 
