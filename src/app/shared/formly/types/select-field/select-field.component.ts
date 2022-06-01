@@ -3,6 +3,14 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
+// taken from formly's select-options.pipe.ts
+interface ISelectOption {
+  label: string;
+  disabled?: boolean;
+  value?: any;
+  group?: ISelectOption[];
+}
+
 /**
  * Type for a basic select field
  *
@@ -36,5 +44,13 @@ export class SelectFieldComponent extends FieldType<FieldTypeConfig> {
 
   get selectOptions() {
     return this.to.processedOptions ?? this.to.options;
+  }
+
+  useFixedDisplay(opts: ISelectOption[]): boolean {
+    return this.to.required ? (this.to.placeholder ? opts.length === 2 : opts.length === 1) : false;
+  }
+
+  getFixedOption(opts: ISelectOption[]): ISelectOption {
+    return this.to.placeholder ? opts[1] : opts[0];
   }
 }

@@ -45,7 +45,10 @@ describe('Select Field Component', () => {
           templateOptions: {
             label: 'test label',
             required: true,
-            options: [{ value: 1, label: 'test' }],
+            options: [
+              { value: 1, label: 'test' },
+              { value: 2, label: 'test' },
+            ],
           },
         } as FormlyFieldConfig,
       ],
@@ -63,6 +66,57 @@ describe('Select Field Component', () => {
   });
 
   it('should be rendered after creation', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-select-field > select')).toBeTruthy();
+  });
+  it('should be rendered as fixed string if required with only one option', () => {
+    component.testComponentInputs = {
+      fields: [
+        {
+          key: 'select',
+          type: 'ish-select-field',
+          templateOptions: {
+            label: 'test label',
+            required: true,
+            placeholder: 'test placeholder',
+            processedOptions: [
+              { value: 1, label: 'test' },
+              // mocks what the translate-select-options extension would return
+              { value: undefined, label: 'placeholder' },
+            ],
+          },
+        } as FormlyFieldConfig,
+      ],
+      form: new FormGroup({}),
+      model: {
+        select: undefined,
+      },
+    };
+    fixture.detectChanges();
+    expect(element.querySelector('ish-select-field > select')).toBeFalsy();
+  });
+  it('should not be rendered as fixed string if not required with only one option', () => {
+    component.testComponentInputs = {
+      fields: [
+        {
+          key: 'select',
+          type: 'ish-select-field',
+          templateOptions: {
+            label: 'test label',
+            placeholder: 'test placeholder',
+            processedOptions: [
+              { value: 1, label: 'test' },
+              // mocks what the translate-select-options extension would return
+              { value: undefined, label: 'placeholder' },
+            ],
+          },
+        } as FormlyFieldConfig,
+      ],
+      form: new FormGroup({}),
+      model: {
+        select: undefined,
+      },
+    };
     fixture.detectChanges();
     expect(element.querySelector('ish-select-field > select')).toBeTruthy();
   });
