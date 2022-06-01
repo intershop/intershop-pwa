@@ -7,7 +7,7 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 interface ISelectOption {
   label: string;
   disabled?: boolean;
-  value?: any;
+  value?: unknown;
   group?: ISelectOption[];
 }
 
