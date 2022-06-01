@@ -146,8 +146,40 @@ server {
         proxy_busy_buffers_size 256k;
     }
 
+    {{ if getenv "SOURCE_MAPS" | strings.ToLower | regexp.Match "on|1|true|yes" }}
+      location ~* ^/(ngx_pagespeed_beacon|metrics|assets|.*\.js\.map)(.*)$ {
+        allow all;
+        auth_basic off;
+
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass {{ $UPSTREAM_PWA }};
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+      }
+    {{- else -}}
+      location ~* ^/(ngx_pagespeed_beacon|metrics|assets|.*\.js\.map)(.*)$ {
+        deny all;
+        auth_basic off;
+
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass {{ $UPSTREAM_PWA }};
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+      }
+    {{- end }}
+
     # respect cache entries of static assets
-    location ~* ^/(?!ngsw\.json)(ngx_pagespeed_beacon|metrics|assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
+    location ~* ^/(?!ngsw\.json)(ngx_pagespeed_beacon|metrics|assets|.*\.(css|ico|json|txt|webmanifest|woff|woff2|js|!js\.map))(.*)$ {
         allow all;
         auth_basic off;
 
