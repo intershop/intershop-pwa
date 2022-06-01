@@ -1,0 +1,8 @@
+<div class="payment-methods">
+  <div class="panel section">
+    <p class="font-weight-bold" *ngIf="to.label">
+      {{ to.label | translate }}
+    </p>
+    <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
+  </div>
+</div>

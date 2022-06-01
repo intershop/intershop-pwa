@@ -1,11 +1,24 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Subject, filter, takeUntil } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import {
+  Observable,
+  Subject,
+  combineLatest,
+  distinctUntilChanged,
+  filter,
+  map,
+  shareReplay,
+  takeUntil,
+  withLatestFrom,
+  startWith,
+} from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
+import { log } from 'ish-core/utils/dev/operators';
 
 /**
  * The Account Payment Component displays the preferred payment method/instrument of the user
@@ -18,84 +31,138 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './account-payment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountPaymentComponent implements OnInit, OnChanges, OnDestroy {
+export class AccountPaymentComponent implements OnInit, OnDestroy {
   @Input() paymentMethods: PaymentMethod[];
   @Input() user: User;
 
+  paymentMethods$: Observable<PaymentMethod[]>;
+  user$: Observable<User>;
+
+  fieldConfig$: Observable<FormlyFieldConfig[]>;
+  paymentFormGroup: FormGroup = new FormGroup({});
+
+  preferredPaymentInstrument$: Observable<PaymentInstrument>;
+  preferredPayment$: Observable<{ instrument: PaymentInstrument; method?: PaymentMethod }>;
+
+  // to remove
   preferredPaymentInstrument: PaymentInstrument;
   savedPaymentMethods: PaymentMethod[];
   standardPaymentMethods: PaymentMethod[];
-
-  paymentForm: FormGroup;
 
   private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.paymentForm = new FormGroup({
-      id: new FormControl(this.user?.preferredPaymentInstrumentId),
-    });
+    this.paymentMethods$ = this.accountFacade.paymentMethods$();
+    this.user$ = this.accountFacade.user$;
 
-    // trigger update preferred payment method if payment selection changes
-    this.paymentForm
-      .get('id')
-      .valueChanges.pipe(
-        filter(paymentInstrumentId => paymentInstrumentId !== this.user.preferredPaymentInstrumentId),
+    const preferredPaymentInstrument$ = combineLatest([
+      this.paymentMethods$,
+      this.user$,
+      this.paymentFormGroup.valueChanges.pipe(startWith({})),
+    ]).pipe(
+      map(([pms, user]) => {
+        if (!pms?.length || !user) {
+          return;
+        }
+        return pms
+          .map(pm => pm.paymentInstruments)
+          .flat()
+          .find(pi => pi.id === user.preferredPaymentInstrumentId);
+      }),
+      distinctUntilChanged(),
+      shareReplay(1)
+    );
+
+    this.preferredPayment$ = combineLatest([preferredPaymentInstrument$, this.paymentMethods$]).pipe(
+      filter(([preferredInstrument]) => !!preferredInstrument),
+      map(([preferredInstrument, methods]) => ({
+        instrument: preferredInstrument,
+        method: methods?.find(pm => pm.id === preferredInstrument.paymentMethod),
+      })),
+      log('preferred payment')
+    );
+
+    // TODO: USE FORMLY FOR RESETTING PAYMENT METHOD
+    this.fieldConfig$ = combineLatest([preferredPaymentInstrument$, this.paymentMethods$]).pipe(
+      map<[PaymentInstrument, PaymentMethod[]], FormlyFieldConfig[]>(([preferredPaymentInstrument, paymentMethods]) => {
+        console.log('trigger', paymentMethods);
+        const standardPaymentMethods =
+          paymentMethods?.filter(pm => !pm.paymentInstruments?.length) ?? ([] as PaymentMethod[]);
+        const savedPaymentMethods =
+          paymentMethods?.filter(
+            pm => pm.paymentInstruments?.length && !(preferredPaymentInstrument?.paymentMethod === pm.id)
+          ) ?? ([] as PaymentMethod[]);
+
+        return [
+          ...savedPaymentMethods.map(paymentMethod => ({
+            type: 'ish-panel-group',
+            templateOptions: {
+              label: paymentMethod.displayName,
+              childClass: 'panel',
+              fieldsetClass: 'payment-methods',
+            },
+            fieldGroup: paymentMethod.paymentInstruments.map(pi => ({
+              type: 'ish-radio-field',
+              key: 'preferred-payment',
+              templateOptions: {
+                fieldClass: ' ',
+                value: `pi_${pi.id}`,
+                label: pi.accountIdentifier,
+              },
+            })),
+          })),
+          {
+            type: 'ish-panel-group',
+            templateOptions: { label: 'saved', childClass: 'panel', fieldsetClass: 'payment-methods' },
+            fieldGroup: standardPaymentMethods.map(toRadioField),
+          },
+          preferredPaymentInstrument
+            ? {
+                type: 'ish-panel-group',
+                templateOptions: { label: 'none' },
+                fieldGroup: [
+                  {
+                    type: 'ish-radio-field',
+                    key: 'preferred-payment',
+                    templateOptions: {
+                      fieldClass: ' ',
+                      value: '',
+                      label: 'account.payment.no_preferred_method',
+                    },
+                  },
+                ],
+              }
+            : {},
+        ];
+
+        function toRadioField(paymentMethod: PaymentMethod): FormlyFieldConfig {
+          return {
+            type: 'ish-radio-field',
+            key: 'preferred-payment',
+            templateOptions: {
+              fieldClass: ' ',
+              value: `pm_${paymentMethod.id}`,
+              label: paymentMethod.displayName,
+            },
+          };
+        }
+      })
+    );
+
+    this.paymentFormGroup.valueChanges
+      .pipe(
+        map(values => values['preferred-payment'] as string),
+        distinctUntilChanged(),
+        filter(v => !!v || v === ''),
+        withLatestFrom(preferredPaymentInstrument$),
         takeUntil(this.destroy$)
       )
-      .subscribe(id => {
-        this.setAsDefaultPayment(id);
+      .subscribe(([id, preferred]) => {
+        this.setAsDefaultPayment(id, preferred);
       });
   }
-
-  /**
-   * refreshes the display of the preferred payment instrument and the further payment options.
-   */
-  ngOnChanges() {
-    this.determinePreferredPaymentInstrument();
-    this.determineFurtherPaymentMethods();
-  }
-
-  private determinePreferredPaymentInstrument() {
-    this.preferredPaymentInstrument = undefined;
-    if (this.paymentMethods && this.user) {
-      this.paymentMethods.forEach(pm => {
-        this.preferredPaymentInstrument =
-          pm.paymentInstruments?.find(pi => pi.id === this.user.preferredPaymentInstrumentId) ||
-          this.preferredPaymentInstrument;
-      });
-      this.paymentForm?.get('id').setValue(this.preferredPaymentInstrument?.id, { emitEvent: false }); // update form value
-    }
-  }
-
-  private determineFurtherPaymentMethods() {
-    this.savedPaymentMethods = this.paymentMethods?.length
-      ? this.paymentMethods.filter(pm => pm.paymentInstruments?.length)
-      : [];
-    if (this.preferredPaymentInstrument) {
-      this.savedPaymentMethods = this.savedPaymentMethods
-        .map(pm => ({
-          ...pm,
-          paymentInstruments: pm.paymentInstruments.filter(pi => pi.id !== this.preferredPaymentInstrument.id),
-        }))
-        .filter(pm => pm.paymentInstruments?.length);
-    }
-    this.standardPaymentMethods = this.paymentMethods?.length
-      ? this.paymentMethods.filter(pm => !pm.paymentInstruments?.length)
-      : [];
-  }
-
-  /**
-   *  determines the preferred payment method
-   */
-  getPreferredPaymentMethod() {
-    return (
-      this.preferredPaymentInstrument &&
-      this.paymentMethods.find(pm => pm.id === this.preferredPaymentInstrument.paymentMethod)
-    );
-  }
-
   /**
    * deletes a user payment instrument and triggers a toast in case of success
    */
@@ -110,11 +177,23 @@ export class AccountPaymentComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * change the user's preferred payment instrument
    */
-  setAsDefaultPayment(id: string) {
-    if (id && this.standardPaymentMethods?.some(pm => pm.id === id)) {
-      this.accountFacade.updateUserPreferredPaymentMethod(this.user, id, this.preferredPaymentInstrument);
+  setAsDefaultPayment(value: string, preferredPaymentInstrument?: PaymentInstrument) {
+    // TODO: MAKE READABLE
+    const { id, artifact } =
+      value === ''
+        ? { id: '', artifact: 'none' }
+        : value.startsWith('pi_')
+        ? { id: value.replace('pi_', ''), artifact: 'instrument' }
+        : { id: value.replace('pm_', ''), artifact: 'method' };
+    // TODO: CORRECTLY HANDLE REMOVAL CASE
+    // TODO: REFACTOR FACADE AND REMOVE 3rd ARG
+    if (value === preferredPaymentInstrument?.id) {
+      return;
+    }
+    if (id && artifact === 'method') {
+      this.accountFacade.updateUserPreferredPaymentMethod(this.user, id, preferredPaymentInstrument);
     } else {
-      this.accountFacade.updateUserPreferredPaymentInstrument(this.user, id, this.preferredPaymentInstrument);
+      this.accountFacade.updateUserPreferredPaymentInstrument(this.user, id, preferredPaymentInstrument);
     }
   }
 
