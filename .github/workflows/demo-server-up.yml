@@ -2,11 +2,6 @@ name: DemoServerUp
 
 on:
   workflow_dispatch:
-# only enable manual review server deployments while we work to improve performance and reliability
-#  pull_request:
-#    paths-ignore:
-#      - '**.md'
-#      - 'docs/**'
 
 # CONFIGURATION
 # For help, go to https://github.com/Azure/Actions
