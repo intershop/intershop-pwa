@@ -22,7 +22,6 @@ import { LazyProductRatingComponent } from '../../../extensions/rating/exports/l
 import { LazyTactonConfigureProductComponent } from '../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { ProductBrandComponent } from '../product-brand/product-brand.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
-import { ProductDetailInfoComponent } from '../product-detail-info/product-detail-info.component';
 import { ProductDetailVariationsComponent } from '../product-detail-variations/product-detail-variations.component';
 import { ProductImagesComponent } from '../product-images/product-images.component';
 
@@ -47,7 +46,6 @@ describe('Product Detail Component', () => {
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductBrandComponent),
         MockComponent(ProductDetailActionsComponent),
-        MockComponent(ProductDetailInfoComponent),
         MockComponent(ProductDetailVariationsComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImagesComponent),
@@ -98,7 +96,6 @@ describe('Product Detail Component', () => {
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-quote",
         "ish-content-viewcontext",
-        "ish-product-detail-info",
       ]
     `);
   });
