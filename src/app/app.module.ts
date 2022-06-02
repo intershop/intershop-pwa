@@ -42,7 +42,7 @@ import { ShellModule } from './shell/shell.module';
     CompareRoutingModule,
     ContactUsRoutingModule,
     AppLastRoutingModule,
-    NgxMatomoTrackerModule.forRoot({ trackerUrl: 'http://localhost', siteId: '1' }),
+    NgxMatomoTrackerModule.forRoot({ trackerUrl: 'http://localhost:8080', siteId: '2' }),
     NgxMatomoRouterModule,
   ],
   /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */

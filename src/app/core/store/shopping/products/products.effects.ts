@@ -15,6 +15,7 @@ import {
   mergeMap,
   switchMap,
   take,
+  tap,
   throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -65,6 +66,7 @@ import {
   getProductVariationSKUs,
   getSelectedProduct,
 } from './products.selectors';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 
 @Injectable()
 export class ProductsEffects {
@@ -74,7 +76,8 @@ export class ProductsEffects {
     private productsService: ProductsService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
-    private router: Router
+    private router: Router,
+    private readonly tracker: MatomoTracker
   ) {}
 
   loadProduct$ = createEffect(() =>
@@ -393,6 +396,22 @@ export class ProductsEffects {
         )
       )
     )
+  );
+
+  trackProductCategory$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loadProductSuccess),
+        mapToPayloadProperty('product'),
+        withLatestFrom(this.store.pipe(ofProductUrl(), select(getSelectedProduct))),
+        filter(([payloadProd, product]) => !!product && payloadProd?.sku === product?.sku),
+        tap(([, product]) => {
+          const category = product.defaultCategoryId;
+          this.tracker.trackEvent('TrackCategory', category);
+          console.log('Category is ' + category);
+        })
+      ),
+    { dispatch: false }
   );
 
   private throttleOnBrowser<T>() {

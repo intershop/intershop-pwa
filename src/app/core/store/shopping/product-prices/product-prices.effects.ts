@@ -51,4 +51,17 @@ export class ProductPricesEffects {
 
     { dispatch: false }
   );
+
+  clickedOnProductPage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadProductPricesSuccess),
+      map(action => {
+        const prices = action.payload.prices;
+        this.tracker.trackEvent('ProductPageView', 'viewProduct', '', Number(prices[0].sku));
+        console.log(`Viewed product with sku ${prices[0].sku}`);
+        return action;
+        })
+      ),
+    {dispatch: false}
+  );
 }
