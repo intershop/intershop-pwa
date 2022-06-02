@@ -31,6 +31,7 @@ import {
   validateBasket,
 } from './basket.actions';
 import { getCurrentBasket } from './basket.selectors';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 
 @Injectable()
 export class BasketValidationEffects {
@@ -38,7 +39,8 @@ export class BasketValidationEffects {
     private actions$: Actions,
     private store: Store,
     private router: Router,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private readonly tracker: MatomoTracker
   ) {}
 
   private validationSteps: { scopes: BasketValidationScopeType[]; route: string }[] = [

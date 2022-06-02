@@ -136,8 +136,8 @@ export class BasketEffects {
       mergeMap(() =>
         this.basketService.createBasket().pipe(
           map(basket => createBasketSuccess({ basket })),
-          mapErrorToAction(createBasketFail)
-        )
+          mapErrorToAction(createBasketFail),
+        ),
       )
     )
   );
