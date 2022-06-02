@@ -140,8 +140,8 @@ export class BasketEffects {
       mergeMap(() =>
         this.basketService.createBasket().pipe(
           map(basket => createBasketSuccess({ basket })),
-          mapErrorToAction(createBasketFail)
-        )
+          mapErrorToAction(createBasketFail),
+        ),
       )
     )
   );
@@ -334,6 +334,14 @@ export class BasketEffects {
 
     { dispatch: false }
   );
+
+  /**
+   * Add Ecommerce Item --> add item to basket
+   * Remove Ecommerce Item --> remove item from basket
+   * Check Abandoned Basket
+   * Check Order Generation --> If order is approved
+   * DeleteItem --> SKU instead of ID, Make an own action to get sku
+   */
 
   /**
    * Creates a requisition based on the given basket, if approval is required

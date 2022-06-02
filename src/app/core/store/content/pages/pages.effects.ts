@@ -10,10 +10,11 @@ import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/uti
 
 import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
 import { getBreadcrumbForContentPage } from './pages.selectors';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 
 @Injectable()
 export class PagesEffects {
-  constructor(private actions$: Actions, private store: Store, private cmsService: CMSService) {}
+  constructor(private actions$: Actions, private store: Store, private cmsService: CMSService, private readonly tracker: MatomoTracker) {}
 
   loadContentPage$ = createEffect(() =>
     this.actions$.pipe(
