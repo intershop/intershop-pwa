@@ -18,6 +18,7 @@ import {
 
 import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
 import { getBreadcrumbForContentPage } from './pages.selectors';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 
 @Injectable()
 export class PagesEffects {
@@ -25,7 +26,8 @@ export class PagesEffects {
     private actions$: Actions,
     private store: Store,
     private cmsService: CMSService,
-    private httpStatusCodeService: HttpStatusCodeService
+    private httpStatusCodeService: HttpStatusCodeService,
+    private readonly tracker: MatomoTracker
   ) {}
 
   loadContentPage$ = createEffect(() =>
