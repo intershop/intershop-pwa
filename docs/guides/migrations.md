@@ -7,12 +7,31 @@ kb_sync_latest_only
 
 # Migrations
 
+## 2.3 to 2.4
+
+The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.
+These updates did not require any updates to the PWA source code.
+But it needs to be checked if this is true for your projects customizations as well.
+
+We introduced a checkout guard that protects the checkout routes in case no shopping cart is available and navigates back to the empty basket page.
+
+Routes to non-existing CMS content pages now result in a "Page Not Found" error page.
+
+The 'ratings' functionality (components concerning the display of product ratings) has been moved into an extension using the existing feature toggle 'ratings'.
+
+With the display of product reviews the attribute 'numberOfReviews' has been added to the product model and the number of reviews is now displayed behind the product rating stars instead of the average rating that is already depicted in the stars.
+
 ## 2.2 to 2.3
 
 The 'contact us' functionality has been moved into an extension and we have introduced the feature toggle `contactUs` in the `environment.model.ts` that is switched on by default.
 
 The `getFilteredProducts` method has been moved from the `FilterService` to the `ProductsService`, since the `/products` API is used.
 Together with this change the default products attributes for product listings are externalized and and are now easily overridable.
+
+With [#1135](https://github.com/intershop/intershop-pwa/pull/1135), the default model representation used by `NgbDatepicker` is now the native ES6 `Date`.
+During this refactoring, the `DateHelper` class has been removed. **This will not concern you if you use `ish-date-picker-field` directly**.
+However, if you use `NgbDatepicker` outside of formly, some helpers you might have used are gone.
+Please use the underlying functions from `Date`, [`NgbCalendar`](https://ng-bootstrap.github.io/#/components/datepicker/api#NgbCalendar) and [`date-fns`](https://date-fns.org) directly or create your own `DateHelper`.
 
 ## 2.1 to 2.2
 

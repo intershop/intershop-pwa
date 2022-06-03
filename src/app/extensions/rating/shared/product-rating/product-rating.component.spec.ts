@@ -5,8 +5,8 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { ProductRatingStarComponent } from 'ish-shared/components/product/product-rating-star/product-rating-star.component';
+
+import { ProductRatingStarComponent } from '../product-rating-star/product-rating-star.component';
 
 import { ProductRatingComponent } from './product-rating.component';
 
@@ -18,9 +18,9 @@ describe('Product Rating Component', () => {
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
     when(context.select('product', 'roundedAverageRating')).thenReturn(of(3.5));
+    when(context.select('product', 'numberOfReviews')).thenReturn(of(2));
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('rating')],
       declarations: [MockComponent(ProductRatingStarComponent), ProductRatingComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
@@ -41,7 +41,7 @@ describe('Product Rating Component', () => {
   it('should always display rating as text', () => {
     fixture.detectChanges();
 
-    expect(element?.textContent).toMatchInlineSnapshot(`"(3.5)"`);
+    expect(element?.textContent).toMatchInlineSnapshot(`"(2)"`);
   });
 
   it('should display rating stars for rating', () => {

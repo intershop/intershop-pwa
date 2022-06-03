@@ -125,9 +125,13 @@
   <!-- Prices -->
   <div class="col-md-2 d-none d-md-block list-item column-price single-price">
     <!-- (Suggested) Single Base Price  -->
-    <p>
+    <div>
       {{ pli.singleBasePrice | ishPrice }}
-    </p>
+    </div>
+    <!-- Undiscounted single price -->
+    <div *ngIf="oldPrice" class="old-price">
+      <span class="price-value">{{ oldPrice | ishPrice }}</span>
+    </div>
   </div>
   <div *ngIf="pli.totals" class="col-3 col-md-2 list-item column-price">
     <div>

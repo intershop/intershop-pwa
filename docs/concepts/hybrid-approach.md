@@ -13,8 +13,8 @@ A possible scenario would be to have the shopping experience with all its SEO op
 
 ## Requirements
 
-- ICM 7.10.16.6
-- PWA 0.18
+- ICM 7.10.32.16-LTS or 7.10.38.6-LTS
+- PWA 2.3.0
 
 > **NOTE:** The feature is based on the assumption that the PWA and the ICM can read and write each other's cookies. That means that both cookies must have the same domain and the same path. Therefore, the feature only works if the PWA and the ICM are running in the same domain.
 

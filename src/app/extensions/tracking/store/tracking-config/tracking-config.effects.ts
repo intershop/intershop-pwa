@@ -1,4 +1,4 @@
-import { isPlatformServer } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
@@ -24,7 +24,7 @@ export class TrackingConfigEffects {
     store: Store,
     cookiesService: CookiesService
   ) {
-    if (cookiesService.cookieConsentFor('tracking')) {
+    if (isPlatformBrowser(this.platformId) && cookiesService.cookieConsentFor('tracking')) {
       store
         .pipe(
           select(getGTMToken),

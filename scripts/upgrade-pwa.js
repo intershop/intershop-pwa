@@ -6,6 +6,8 @@ const pinned = {
   '@ng-bootstrap/ng-bootstrap': '11', // 12 requires Bootstrap 5
   '@types/node': '16', // LTS
   '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
+  jest: '27',
+  'jest-preset-angular': '11',
 };
 
 // <HELPERS>
@@ -58,7 +60,7 @@ execute('npm ci');
 let install;
 modifyPackageJson(packageJson => {
   install = packageJson.scripts.postinstall;
-  packageJson.scripts.postinstall = 'postinstall';
+  packageJson.scripts.postinstall = '';
   return packageJson;
 });
 commit('chore: temporarily deactivate full postinstall');
@@ -126,7 +128,7 @@ execute(
   'npx rimraf package-lock.json ' +
     (process.platform === 'win32' ? '\\"node_modules/!(rimraf|.bin)\\"' : 'node_modules')
 );
-execute('npm install');
+execute('npm install --force');
 commit('chore: synchronize package-lock.json');
 
 // set pinned version in package.json with used values
@@ -151,7 +153,7 @@ modifyPackageJson(packageJson => {
 commit('chore: synchronize package.json with used pinned versions');
 
 console.warn('###### Known dependency incompatibilities:');
-spawnSync(NPM, ['ls'])
+spawnSync(NPM, ['ls', '-a'])
   .stderr.toString('utf-8')
   .split('\n')
   .filter((v, i, a) => a.indexOf(v) === i)

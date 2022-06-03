@@ -282,4 +282,19 @@ describe('override Schematic', () => {
       ]
     `);
   });
+
+  it('should override file if path is windows-styled', async () => {
+    const tree = await runOverride({
+      from: 'core\\routing\\product.route.ts',
+      theme: 'b2b',
+      ts: true,
+    });
+
+    expect(tree.files.filter(x => x.includes('product.route'))).toMatchInlineSnapshot(`
+      Array [
+        "/src/app/core/routing/product.route.ts",
+        "/src/app/core/routing/product.route.b2b.ts",
+      ]
+    `);
+  });
 });

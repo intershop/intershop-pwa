@@ -1,6 +1,7 @@
 <div class="category-page" [attr.data-testing-id]="category.uniqueId">
   <div class="marketing-area">
     <ish-content-viewcontext
+      *ngIf="category.categoryRef"
       viewContextId="viewcontext.include.category.base.top"
       [callParameters]="{ Category: category.categoryRef }"
     ></ish-content-viewcontext>
@@ -11,6 +12,7 @@
         <ish-category-navigation [uniqueId]="category.categoryPath[0]"></ish-category-navigation>
         <div class="marketing-area">
           <ish-content-viewcontext
+            *ngIf="category.categoryRef"
             viewContextId="viewcontext.include.category.navigation"
             [callParameters]="{ Category: category.categoryRef }"
           ></ish-content-viewcontext>
@@ -28,6 +30,7 @@
 
       <div class="marketing-area">
         <ish-content-viewcontext
+          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.category.content.top"
           [callParameters]="{ Category: category.categoryRef }"
         ></ish-content-viewcontext>
@@ -37,6 +40,7 @@
 
       <div class="marketing-area">
         <ish-content-viewcontext
+          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.category.content.bottom"
           [callParameters]="{ Category: category.categoryRef }"
         ></ish-content-viewcontext>
@@ -45,6 +49,7 @@
   </div>
   <div class="marketing-area">
     <ish-content-viewcontext
+      *ngIf="category.categoryRef"
       viewContextId="viewcontext.include.category.base.bottom"
       [callParameters]="{ Category: category.categoryRef }"
     ></ish-content-viewcontext>

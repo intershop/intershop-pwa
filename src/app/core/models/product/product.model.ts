@@ -21,6 +21,7 @@ export interface Product {
   images: Image[];
   manufacturer: string;
   roundedAverageRating: number;
+  numberOfReviews: number;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
   sku: string;

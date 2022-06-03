@@ -20,6 +20,13 @@
         <ish-product-attachments></ish-product-attachments>
       </ng-template>
     </li>
+
+    <li *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'">
+      <a ngbNavLink>{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a>
+      <ng-template ngbNavContent>
+        <ish-lazy-product-reviews></ish-lazy-product-reviews>
+      </ng-template>
+    </li>
   </ul>
 
   <div [ngbNavOutlet]="nav"></div>

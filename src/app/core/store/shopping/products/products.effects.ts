@@ -49,14 +49,14 @@ import {
   loadProductLinksSuccess,
   loadProductParts,
   loadProductPartsSuccess,
-  loadProductSuccess,
-  loadProductVariationsFail,
-  loadProductVariationsIfNotLoaded as loadProductVariationsIfNotLoaded,
-  loadProductVariationsSuccess,
   loadProductsForCategory,
   loadProductsForCategoryFail,
   loadProductsForMaster,
   loadProductsForMasterFail,
+  loadProductSuccess,
+  loadProductVariationsFail,
+  loadProductVariationsIfNotLoaded,
+  loadProductVariationsSuccess,
 } from './products.actions';
 import {
   getBreadcrumbForProductPage,

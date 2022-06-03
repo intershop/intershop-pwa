@@ -257,7 +257,7 @@ describe('Component Schematic', () => {
       error = err;
     }
     expect(error?.message).toMatchInlineSnapshot(
-      `"Could not find an NgModule. Use the skip-import option to skip importing in NgModule."`
+      `"Could not find an NgModule. Use the '--skip-import' option to skip importing in NgModule."`
     );
 
     appTree.rename('/src/app/app.module.ts', '/projects/bar/custom/app/app.module.ts');

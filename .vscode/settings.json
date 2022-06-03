@@ -12,7 +12,6 @@
 
   "git.rebaseWhenSync": true,
   "git.autoStash": true,
-  "ngschematics.schematics": ["intershop-schematics"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.iconTheme": "vscode-icons",
 

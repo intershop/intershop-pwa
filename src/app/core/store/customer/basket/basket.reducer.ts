@@ -36,6 +36,7 @@ import {
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
   loadBasket,
+  loadBasketByAPIToken,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
   loadBasketEligiblePaymentMethodsSuccess,
@@ -115,6 +116,7 @@ export const basketReducer = createReducer(
   setLoadingOn(
     loadBasket,
     loadBasketWithId,
+    loadBasketByAPIToken,
     assignBasketAddress,
     updateBasketShippingMethod,
     updateBasket,

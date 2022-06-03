@@ -10,6 +10,7 @@ import { CheckoutReviewPageModule } from '../checkout-review/checkout-review-pag
 import { CheckoutShippingPageModule } from '../checkout-shipping/checkout-shipping-page.module';
 
 import { CheckoutPageComponent } from './checkout-page.component';
+import { CheckoutPageGuard } from './checkout-page.guard';
 import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-progress-bar.component';
 
 const checkoutPageRoutes: Routes = [
@@ -48,6 +49,7 @@ const checkoutPageRoutes: Routes = [
         redirectTo: 'address',
       },
     ],
+    canActivate: [CheckoutPageGuard],
   },
 ];
 

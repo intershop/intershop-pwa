@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { of } from 'rxjs';
+import { forkJoin, of, switchMap } from 'rxjs';
 import { SwiperComponent } from 'swiper/angular';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -37,16 +37,14 @@ describe('Product Links Carousel Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element.querySelector('swiper')).toBeTruthy();
   });
 
   it('should render all product slides if stocks filtering is off', done => {
     component.displayOnlyAvailableProducts = false;
-    component.ngOnChanges();
 
-    component.productSKUs$.subscribe(products => {
+    component.productSKUs$.pipe(switchMap(products$ => forkJoin(products$))).subscribe(products => {
       expect(products).toHaveLength(3);
       done();
     });
@@ -58,9 +56,8 @@ describe('Product Links Carousel Component', () => {
     );
 
     component.displayOnlyAvailableProducts = true;
-    component.ngOnChanges();
 
-    component.productSKUs$.subscribe(products => {
+    component.productSKUs$.pipe(switchMap(products$ => forkJoin(products$))).subscribe(products => {
       expect(products).toHaveLength(2);
       done();
     });

@@ -84,13 +84,13 @@
 /src/ssr/server-scripts/ecosystem-ports.json
 
 # from src/app/shell/shared/.gitignore
-/src/app/shell/shared/lazy**
+/src/app/shell/shared/**/lazy*
 
 # from projects/organization-management/src/app/exports/.gitignore
-/projects/organization-management/src/app/exports/lazy**
+/projects/organization-management/src/app/exports/**/lazy*
 
 # from projects/requisition-management/src/app/exports/.gitignore
-/projects/requisition-management/src/app/exports/lazy**
+/projects/requisition-management/src/app/exports/**/lazy*
 
 # from src/app/extensions/compare/exports/.gitignore
 /src/app/extensions/compare/exports/**/lazy*
@@ -106,6 +106,9 @@
 
 # from src/app/extensions/quoting/exports/.gitignore
 /src/app/extensions/quoting/exports/**/lazy*
+
+# from src/app/extensions/rating/exports/.gitignore
+/src/app/extensions/rating/exports/**/lazy*
 
 # from src/app/extensions/recently/exports/.gitignore
 /src/app/extensions/recently/exports/**/lazy*

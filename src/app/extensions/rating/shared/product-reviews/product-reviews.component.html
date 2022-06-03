@@ -1,0 +1,36 @@
+<h3>{{ 'product.reviews.section.heading' | translate | uppercase }}</h3>
+
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<div class="section pb-4">
+  <ng-container *ngIf="productReviews$ | async as productReviews">
+    <div *ngIf="productReviews?.length > 0; else noReviews">
+      <div *ngFor="let review of productReviews" class="row review-item">
+        <div class="col-md-3 review-item-created">
+          {{ review.authorFirstName }}
+          <br />
+          {{ review.creationDate | ishDate: 'medium' }}
+        </div>
+        <div class="col-md-9">
+          <div class="review-item-header-title">
+            <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
+              <span class="">
+                <ish-product-rating-star [filled]="fill" [lastStar]="lastStar"></ish-product-rating-star>
+              </span>
+            </ng-container>
+            <span class="pl-2">{{ review.title }}</span>
+          </div>
+          <div class="review-item-text">{{ review.content }}</div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #noReviews>
+  {{ 'product.reviews.no_reviews_yet.text' | translate }}
+</ng-template>
+
+<div *ngIf="(loading$ | async) === true">
+  <ish-loading></ish-loading>
+</div>

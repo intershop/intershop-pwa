@@ -1,4 +1,4 @@
-<ng-container *ngIf="(costCenterOptions$ | async)?.length" data-testing-id="cost-center-select">
+<ng-container *ngIf="fields$ | async as fields" data-testing-id="cost-center-select">
   <h3>{{ 'checkout.cost_center.select.heading' | translate }}</h3>
   <form [formGroup]="form">
     <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>

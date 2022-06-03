@@ -17,12 +17,12 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 import { ProductPromotionComponent } from 'ish-shared/components/product/product-promotion/product-promotion.component';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
-import { ProductRatingComponent } from 'ish-shared/components/product/product-rating/product-rating.component';
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 
 import { LazyProductAddToCompareComponent } from '../../../../extensions/compare/exports/lazy-product-add-to-compare/lazy-product-add-to-compare.component';
 import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { LazyProductRatingComponent } from '../../../../extensions/rating/exports/lazy-product-rating/lazy-product-rating.component';
 import { LazyTactonConfigureProductComponent } from '../../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
@@ -46,6 +46,7 @@ describe('Product Row Component', () => {
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductAddToWishlistComponent),
+        MockComponent(LazyProductRatingComponent),
         MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductChooseVariationComponent),
@@ -58,7 +59,6 @@ describe('Product Row Component', () => {
         MockComponent(ProductPriceComponent),
         MockComponent(ProductPromotionComponent),
         MockComponent(ProductQuantityComponent),
-        MockComponent(ProductRatingComponent),
         MockComponent(ProductShipmentComponent),
         ProductRowComponent,
       ],
@@ -85,7 +85,7 @@ describe('Product Row Component', () => {
         "ish-product-image",
         "ish-product-label",
         "ish-product-name",
-        "ish-product-rating",
+        "ish-lazy-product-rating",
         "ish-product-id",
         "ish-product-promotion",
         "ish-lazy-product-add-to-quote",

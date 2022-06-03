@@ -1,10 +1,7 @@
 name: DemoServerUp
 
 on:
-  pull_request:
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
+  workflow_dispatch:
 
 # CONFIGURATION
 # For help, go to https://github.com/Azure/Actions

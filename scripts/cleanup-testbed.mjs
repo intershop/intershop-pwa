@@ -4,15 +4,19 @@ import glob from 'glob';
 import minimatch from 'minimatch';
 import runAll from 'npm-run-all';
 import { cpus } from 'os';
-import { basename, dirname, join, normalize } from 'path';
+import { basename, dirname, join, normalize, sep } from 'path';
 import rimraf from 'rimraf';
 import { Node, Project } from 'ts-morph';
 
 /* eslint-disable no-console */
 
-const args = process.argv.splice(2);
+const args = process.argv.splice(2).filter(a => !a.startsWith('--'));
 
-if (args.includes('--help')) {
+const isHelp = args.includes('--help') || args.includes('-h');
+
+const isRelated = args.includes('--related') || process.env.npm_config_related === 'true';
+
+if (isHelp) {
   process.stderr.write(`  Utility for removing unused TestBed declarations.
 
   Usage: npm run cleanup-testbed [git-rev|folder|file [file...]]
@@ -53,9 +57,23 @@ const jestPattern = '**/*.spec.ts';
 const jestPathPattern = jestProjects.substring(0, jestProjects.lastIndexOf('/') + 1) + jestPattern;
 
 function findTests(args) {
-  return args
-    .map(f => normalize(f))
-    .map(f => (f.endsWith('.spec.ts') ? f : f.replace(/\.(ts|html)$/, '.spec.ts')))
+  const normalizedArgs = args.map(f => normalize(f));
+  let interpolatedTests;
+  if (isRelated) {
+    interpolatedTests = spawnSync('npx', [
+      'jest',
+      '--findRelatedTests',
+      '--listTests',
+      ...normalizedArgs.map(f => (f.endsWith('.html') ? f.replace(/\.html$/, '.ts') : f)),
+    ])
+      .stdout.toString()
+      .split('\n')
+      .filter(f => !!f.trim())
+      .map(f => f.replace(process.cwd() + sep, ''));
+  } else {
+    interpolatedTests = normalizedArgs.map(f => (f.endsWith('.spec.ts') ? f : f.replace(/\.(ts|html)$/, '.spec.ts')));
+  }
+  return interpolatedTests
     .filter(f => minimatch(f, jestPathPattern) && existsSync(f) && statSync(f).isFile())
     .filter((v, i, a) => a.indexOf(v) === i);
 }
@@ -80,8 +98,8 @@ if (args.length === 0) {
   } else if (statSync(normalize(args[0])).isDirectory()) {
     console.log('using', args[0], 'as folder');
     files = glob.sync(join(args[0], jestPattern));
-  } else if (statSync(normalize(args[0])).isFile() && args[0].endsWith('.spec.ts')) {
-    files = args;
+  } else if (statSync(normalize(args[0])).isFile()) {
+    files = findTests(args);
   } else {
     console.error('cannot interpret argument as git revision, folder or test file');
     process.exit(1);

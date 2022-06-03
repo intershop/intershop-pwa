@@ -25,8 +25,8 @@ describe('Changing User', () => {
     );
 
     at(ProfilePage, page => {
-      page.name.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
-      page.phone.should('have.text', _.user.phoneHome);
+      page.name.should('contain', `${_.user.firstName} ${_.user.lastName}`);
+      page.phone.should('contain', _.user.phoneHome);
     });
   });
 
@@ -38,8 +38,8 @@ describe('Changing User', () => {
     );
     at(ProfilePage, page => {
       page.header.myAccountLink.should('have.text', `${_.newDetails.firstName} ${_.newDetails.lastName}`);
-      page.name.should('have.text', `${_.newDetails.title} ${_.newDetails.firstName} ${_.newDetails.lastName}`);
-      page.phone.should('have.text', _.newDetails.phoneHome);
+      page.name.should('contain', `${_.newDetails.title} ${_.newDetails.firstName} ${_.newDetails.lastName}`);
+      page.phone.should('contain', _.newDetails.phoneHome);
     });
   });
 });

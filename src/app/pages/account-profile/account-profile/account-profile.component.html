@@ -1,6 +1,6 @@
 <h1>{{ 'account.profile.heading' | translate }}</h1>
 
-<!-- Email Template -->
+<!-- Email -->
 <div class="row section">
   <div class="col-10 col-lg-8">
     <h3>{{ 'account.profile.email.heading' | translate }}</h3>
@@ -9,20 +9,6 @@
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">{{ 'account.profile.email.label' | translate }}</dt>
           <dd class="col-md-8" data-testing-id="email-field">{{ user.email }}</dd>
-          <!-- TODO: implement logic (extend REST response) to present email subscriptions
-          cSpell: disable
-          <dt>{{'account.profile.order_confirmation_subscription.text' | translate}}</dt>
-          <dd>
-
-              <isif condition="#Preferences:OrderConfirmationEmails#">
-                {{'account.profile.order_confirmation_email.text' | translate}}&nbsp;
-              </isif>
-              <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#">
-                {{'account.profile.newsletter.text' | translate}}
-              </isif>
-          </dd>
-          cSpell: enable
-          -->
         </dl>
       </div>
     </div>
@@ -40,7 +26,7 @@
   </div>
 </div>
 
-<!-- Password Template -->
+<!-- Password -->
 <div class="row section" *ishIdentityProviderCapability="'editPassword'">
   <div class="col-10 col-lg-8">
     <h3>{{ 'account.profile.password.heading' | translate }}</h3>
@@ -72,10 +58,9 @@
       <div class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">{{ 'account.company_profile.name.label' | translate }}</dt>
-          <!-- display: inline -->
-          <dd class="col-md-8" data-testing-id="company-field"
-            >{{ customer.companyName }}<br />{{ customer.companyName2 }}</dd
-          >
+          <dd class="col-md-8" data-testing-id="company-field">
+            {{ customer.companyName }}<br />{{ customer.companyName2 }}
+          </dd>
           <ng-container *ngIf="customer.industry">
             <dt class="col-md-4">{{ 'account.company_profile.industry.label' | translate }}</dt>
             <dd class="col-md-8">{{ customer.industry }}</dd>
@@ -99,7 +84,7 @@
   </div>
 </div>
 
-<!-- Profile Template -->
+<!-- Profile -->
 <div class="row section">
   <div class="col-10 col-lg-8">
     <h3>{{ 'account.profile.detail.heading' | translate }}</h3>
@@ -107,19 +92,18 @@
       <div class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">{{ 'account.profile.name.label' | translate }}</dt>
-          <!-- display: inline -->
-          <dd class="col-md-8" data-testing-id="name-field"
-            >{{ user.title ? user.title + ' ' : '' }}{{ user.firstName }} {{ user.lastName }}</dd
-          >
+          <dd class="col-md-8" data-testing-id="name-field">
+            {{ user.title ? user.title + ' ' : '' }}{{ user.firstName }} {{ user.lastName }}
+          </dd>
           <!-- Phone -->
           <dt class="col-md-4">{{ 'account.profile.phone.label' | translate }}</dt>
           <dd class="col-md-8" data-testing-id="phone-field">{{ user.phoneHome }}</dd>
 
           <!-- Birthday
           <dt class="col-md-4">{{ 'account.profile.birthday.label' | translate }}</dt>
-          <dd class="col-md-8" data-testing-id="birthday-field">{{
-            user.birthday ? (user.birthday | ishDate) : ('account.profile.birthday.not_available' | translate)
-          }}</dd>
+          <dd class="col-md-8" data-testing-id="birthday-field">
+            {{ user.birthday ? (user.birthday | ishDate) : ('account.profile.birthday.not_available' | translate) }}
+          </dd>
           -->
         </dl>
       </div>
@@ -137,32 +121,6 @@
     </a>
   </div>
 </div>
-
-<!-- Newsletter Template -->
-<!--
-  cSpell: disable-next-line
-  TODO: Newsletter configuration currently not available via REST API, need to get information for <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#"><istext key="account.newsletter.subscribed"/><iselse> <istext key="account.newsletter.unsubscribed"/></isif>
-<div class="row section">
-  <div class="col-10 col-lg-8">
-    <h3>{{'account.newsletter.label' | translate}}</h3>
-    <div class="row">
-      <div class="col-md-12">
-        <dl class="row">
-          <dt class="col-md-4">{{'account.newsletter.label' | translate}}</dt>
-          <dd class="col-md-8">
-
-          </dd>
-        </dl>
-      </div>
-    </div>
-  </div>
-  <div class="col-2 col-lg-4">
-    <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
-      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
-    </a>
-  </div>
-</div>
--->
 
 <!-- Note -->
 <p class="form-text">
