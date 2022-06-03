@@ -564,6 +564,8 @@
   "approval.rejectform.button.reject.label": "Reject",
   "approval.rejectform.invalid_comment.error": "Comment is required and cannot be empty",
   "approval.rejectform.reject_order.heading": "Reject Requisition",
+  "back_to_top.text": "Back To Top",
+  "back_to_top.title": "Scroll back to the top",
   "basket.add_quote.error": "The quote could not be added to the cart.",
   "basket.add_quotelineitem.error": "The quote cannot be added to the shopping cart. It contains invalid products.",
   "basket.not_found.error": "The shopping cart could not be found.",

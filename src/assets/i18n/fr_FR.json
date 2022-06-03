@@ -564,6 +564,8 @@
   "approval.rejectform.button.reject.label": "Rejeter",
   "approval.rejectform.invalid_comment.error": "Le commentaire est obligatoire et ne peut pas être vide",
   "approval.rejectform.reject_order.heading": "Rejeter la demande d’achat",
+  "back_to_top.text": "Revenir en haut",
+  "back_to_top.title": "Revenir en haut",
   "basket.add_quote.error": "Le devis n’a pas pu être ajouté au panier.",
   "basket.add_quotelineitem.error": "Le devis ne peut pas être ajouté au panier. Il contient des produits non valides.",
   "basket.not_found.error": "Le panier n’a pas pu être trouvé.",

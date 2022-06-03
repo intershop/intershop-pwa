@@ -564,6 +564,8 @@
   "approval.rejectform.button.reject.label": "Ablehnen",
   "approval.rejectform.invalid_comment.error": "Ein Kommentar muss angegeben werden.",
   "approval.rejectform.reject_order.heading": "Bestellanfrage ablehnen",
+  "back_to_top.text": "Nach Oben",
+  "back_to_top.title": "Nach oben scrollen",
   "basket.add_quote.error": "Das Preisangebot konnte nicht in den Warenkorb gelegt werden.",
   "basket.add_quotelineitem.error": "Das Preisangebot kann nicht in den Warenkorb gelegt werden. Es enthält ungültige Produkte.",
   "basket.not_found.error": "Der Warenkorb konnte nicht gefunden werden.",
