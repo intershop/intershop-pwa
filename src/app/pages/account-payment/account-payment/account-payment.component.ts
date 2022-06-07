@@ -36,7 +36,6 @@ export class AccountPaymentComponent implements OnInit, OnDestroy {
   @Input() user: User;
 
   paymentMethods$: Observable<PaymentMethod[]>;
-  user$: Observable<User>;
 
   fieldConfig$: Observable<FormlyFieldConfig[]>;
   paymentFormGroup: FormGroup = new FormGroup({});
@@ -54,12 +53,11 @@ export class AccountPaymentComponent implements OnInit, OnDestroy {
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.paymentMethods$ = this.accountFacade.paymentMethods$();
-    this.user$ = this.accountFacade.user$;
+    this.paymentMethods$ = this.accountFacade.paymentMethods$().pipe(shareReplay(1), log('pm'));
 
     const preferredPaymentInstrument$ = combineLatest([
       this.paymentMethods$,
-      this.user$,
+      this.accountFacade.user$,
       this.paymentFormGroup.valueChanges.pipe(startWith({})),
     ]).pipe(
       map(([pms, user]) => {
@@ -72,7 +70,8 @@ export class AccountPaymentComponent implements OnInit, OnDestroy {
           .find(pi => pi.id === user.preferredPaymentInstrumentId);
       }),
       distinctUntilChanged(),
-      shareReplay(1)
+      shareReplay(1),
+      log('pfi')
     );
 
     this.preferredPayment$ = combineLatest([preferredPaymentInstrument$, this.paymentMethods$]).pipe(
