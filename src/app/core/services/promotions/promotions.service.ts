@@ -19,6 +19,6 @@ export class PromotionsService {
       return throwError(() => new Error('getPromotion() called without a id'));
     }
 
-    return this.apiService.get<Promotion>(`promotions/${id}`);
+    return this.apiService.get<Promotion>(`promotions/${id}`, { sendSPGID: true });
   }
 }
