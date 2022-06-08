@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockPipe } from 'ng-mocks';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -18,13 +16,8 @@ describe('Requisition Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockPipe(DatePipe),
-        MockPipe(PricePipe),
-        RequisitionSummaryComponent,
-      ],
+      imports: [TranslateModule.forRoot()],
+      declarations: [MockPipe(DatePipe), MockPipe(PricePipe), RequisitionSummaryComponent],
     }).compileComponents();
   });
 

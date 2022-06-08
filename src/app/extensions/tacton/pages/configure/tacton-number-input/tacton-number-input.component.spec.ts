@@ -16,7 +16,6 @@ describe('Tacton Number Input Component', () => {
   beforeEach(async () => {
     tactonFacade = mock(TactonFacade);
     await TestBed.configureTestingModule({
-      declarations: [TactonNumberInputComponent],
       providers: [{ provide: TactonFacade, useFactory: () => instance(tactonFacade) }],
     }).compileComponents();
   });

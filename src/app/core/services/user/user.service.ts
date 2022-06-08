@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { pick } from 'lodash-es';
-import { Observable, combineLatest, of, throwError } from 'rxjs';
+import { Observable, combineLatest, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -11,7 +11,12 @@ import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData, CustomerType } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
-import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
+import {
+  Customer,
+  CustomerLoginType,
+  CustomerRegistrationType,
+  CustomerUserType,
+} from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
@@ -54,7 +59,7 @@ export class UserService {
    *                          For private customers user data are also returned.
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
-  signInUser(loginCredentials: Credentials): Observable<CustomerUserType> {
+  signInUser(loginCredentials: Credentials): Observable<CustomerLoginType> {
     const headers = new HttpHeaders().set(
       ApiService.AUTHORIZATION_HEADER_KEY,
       `BASIC ${window.btoa(`${loginCredentials.login}:${loginCredentials.password}`)}`
@@ -70,7 +75,7 @@ export class UserService {
    *                          For private customers user data are also returned.
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
-  signInUserByToken(token?: string): Observable<CustomerUserType> {
+  signInUserByToken(token?: string): Observable<CustomerLoginType> {
     if (token) {
       return this.fetchCustomer({
         headers: new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, token),
@@ -80,15 +85,18 @@ export class UserService {
     }
   }
 
-  private fetchCustomer(options?: AvailableOptions): Observable<CustomerUserType> {
+  private fetchCustomer(options?: AvailableOptions): Observable<CustomerLoginType> {
     return this.apiService.get<CustomerData>('customers/-', options).pipe(
       withLatestFrom(this.appFacade.isAppTypeREST$),
       concatMap(([data, isAppTypeRest]) =>
-        isAppTypeRest && data.customerType === 'PRIVATE'
-          ? this.apiService.get<CustomerData>('privatecustomers/-')
-          : of(data)
+        forkJoin([
+          isAppTypeRest && data.customerType === 'PRIVATE'
+            ? this.apiService.get<CustomerData>('privatecustomers/-')
+            : of(data),
+          this.apiService.get<{ pgid: string }>('personalization').pipe(map(data => data.pgid)),
+        ])
       ),
-      map(CustomerMapper.mapLoginData)
+      map(([data, pgid]) => ({ ...CustomerMapper.mapLoginData(data), pgid }))
     );
   }
 
@@ -97,7 +105,7 @@ export class UserService {
    *
    * @param body  The user data (customer, user, credentials, address) to create a new user.
    */
-  createUser(body: CustomerRegistrationType): Observable<CustomerUserType> {
+  createUser(body: CustomerRegistrationType): Observable<CustomerLoginType> {
     if (!body || !body.customer || (!body.user && !body.userId) || !body.address) {
       return throwError(() => new Error('createUser() called without required body data'));
     }

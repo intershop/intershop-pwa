@@ -1,25 +1,24 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noCollapsibleIfRule } from '../src/rules/no-collapsible-if';
+import noCollapsibleIfRule from '../src/rules/no-collapsible-if';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'no-collapsible-if',
-  rule: noCollapsibleIfRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+testRule(noCollapsibleIfRule, {
+  valid: [
+    {
+      name: 'should not report on collapsed if statements',
+      filename: 'test.component.ts',
+      code: `
         if(a === b && c === d) {
           const foo = bar;
         }
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+    {
+      name: 'should not report when a block comes after a if statement',
+      filename: 'test.component.ts',
+      code: `
         if(a === b && c === d) {
           if(foo.bar()) {
             const foo = bar;
@@ -27,10 +26,11 @@ const config: RuleTestConfig = {
           return test;
         }
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+    {
+      name: 'should not report when else is used',
+      filename: 'test.component.ts',
+      code: `
         if(a === b && c === d) {
           if(foo.bar()) {
             const foo = bar;
@@ -39,50 +39,49 @@ const config: RuleTestConfig = {
           return foo;
         }
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+    {
+      name: 'should not report when nested else is used',
+      filename: 'test.component.ts',
+      code: `
         if(a === b && c === d) {
           if(foo.bar()) {
             const foo = bar;
           } else {
-          return foo;
-        }
+            return foo;
+          }
         }
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report if conditions can be collapsed',
+      filename: 'test.component.ts',
+      code: `
         let test = foo;
         if(a === b) {
-          if(c=== d) {
+          if(c === d) {
             const foo = bar;
             test = foo.baz();
             return test;
           }
         }
         `,
-        output: `
+      output: `
         let test = foo;
-        if((a === b) && (c=== d)){
+        if((a === b) && (c === d)){
                       const foo = bar;
             test = foo.baz();
             return test;
           }
         `,
-        errors: [
-          {
-            messageId: 'noCollapsibleIfError',
-            type: AST_NODE_TYPES.IfStatement,
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'noCollapsibleIfError',
+          type: AST_NODE_TYPES.IfStatement,
+        },
+      ],
+    },
+  ],
+});

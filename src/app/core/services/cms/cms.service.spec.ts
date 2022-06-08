@@ -19,8 +19,8 @@ describe('Cms Service', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: ContentPageletEntryPointMapper, useFactory: () => instance(cpepMapper) },
         { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: ContentPageletEntryPointMapper, useFactory: () => instance(cpepMapper) },
       ],
     });
 

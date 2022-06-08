@@ -24,10 +24,13 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
+import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
+import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
+import { RatingExportsModule } from '../extensions/rating/exports/rating-exports.module';
 import { RecentlyExportsModule } from '../extensions/recently/exports/recently-exports.module';
 import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
 import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
@@ -40,7 +43,6 @@ import { CMSDialogComponent } from './cms/components/cms-dialog/cms-dialog.compo
 import { CMSFreestyleComponent } from './cms/components/cms-freestyle/cms-freestyle.component';
 import { CMSImageEnhancedComponent } from './cms/components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './cms/components/cms-image/cms-image.component';
-import { CMSLandingPageComponent } from './cms/components/cms-landing-page/cms-landing-page.component';
 import { CMSProductListCategoryComponent } from './cms/components/cms-product-list-category/cms-product-list-category.component';
 import { CMSProductListFilterComponent } from './cms/components/cms-product-list-filter/cms-product-list-filter.component';
 import { CMSProductListManualComponent } from './cms/components/cms-product-list-manual/cms-product-list-manual.component';
@@ -59,11 +61,13 @@ import { BasketApprovalInfoComponent } from './components/basket/basket-approval
 import { BasketBuyerComponent } from './components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostCenterSelectionComponent } from './components/basket/basket-cost-center-selection/basket-cost-center-selection.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketDesiredDeliveryDateComponent } from './components/basket/basket-desired-delivery-date/basket-desired-delivery-date.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
 import { BasketOrderReferenceComponent } from './components/basket/basket-order-reference/basket-order-reference.component';
 import { BasketPromotionCodeComponent } from './components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketPromotionComponent } from './components/basket/basket-promotion/basket-promotion.component';
+import { BasketShippingMethodComponent } from './components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationItemsComponent } from './components/basket/basket-validation-items/basket-validation-items.component';
 import { BasketValidationProductsComponent } from './components/basket/basket-validation-products/basket-validation-products.component';
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
@@ -101,7 +105,6 @@ import { LoginModalComponent } from './components/login/login-modal/login-modal.
 import { OrderListComponent } from './components/order/order-list/order-list.component';
 import { OrderWidgetComponent } from './components/order/order-widget/order-widget.component';
 import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
-import { ProductAddToCompareComponent } from './components/product/product-add-to-compare/product-add-to-compare.component';
 import { ProductAttachmentsComponent } from './components/product/product-attachments/product-attachments.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductBundleDisplayComponent } from './components/product/product-bundle-display/product-bundle-display.component';
@@ -121,8 +124,6 @@ import { ProductPriceComponent } from './components/product/product-price/produc
 import { ProductPromotionComponent } from './components/product/product-promotion/product-promotion.component';
 import { ProductQuantityLabelComponent } from './components/product/product-quantity-label/product-quantity-label.component';
 import { ProductQuantityComponent } from './components/product/product-quantity/product-quantity.component';
-import { ProductRatingStarComponent } from './components/product/product-rating-star/product-rating-star.component';
-import { ProductRatingComponent } from './components/product/product-rating/product-rating.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
@@ -143,6 +144,8 @@ const importExportModules = [
   CaptchaExportsModule,
   CdkTableModule,
   CommonModule,
+  CompareExportsModule,
+  ContactUsExportsModule,
   DeferLoadModule,
   DirectivesModule,
   FeatureToggleModule,
@@ -161,6 +164,7 @@ const importExportModules = [
   PunchoutExportsModule,
   QuickorderExportsModule,
   QuotingExportsModule,
+  RatingExportsModule,
   ReactiveFormsModule,
   RecentlyExportsModule,
   RoleToggleModule,
@@ -182,7 +186,6 @@ const declaredComponents = [
   CMSFreestyleComponent,
   CMSImageComponent,
   CMSImageEnhancedComponent,
-  CMSLandingPageComponent,
   CMSProductListCategoryComponent,
   CMSProductListFilterComponent,
   CMSProductListManualComponent,
@@ -211,7 +214,6 @@ const declaredComponents = [
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
-  ProductRatingStarComponent,
   ProductRowComponent,
   ProductTileComponent,
 ];
@@ -225,6 +227,7 @@ const exportedComponents = [
   BasketBuyerComponent,
   BasketCostCenterSelectionComponent,
   BasketCostSummaryComponent,
+  BasketDesiredDeliveryDateComponent,
   BasketInfoComponent,
   BasketInvoiceAddressWidgetComponent,
   BasketItemsSummaryComponent,
@@ -232,6 +235,7 @@ const exportedComponents = [
   BasketPromotionCodeComponent,
   BasketPromotionComponent,
   BasketShippingAddressWidgetComponent,
+  BasketShippingMethodComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
   ConfirmLeaveModalComponent,
@@ -254,7 +258,6 @@ const exportedComponents = [
   OrderListComponent,
   OrderWidgetComponent,
   ProductAddToBasketComponent,
-  ProductAddToCompareComponent,
   ProductAttachmentsComponent,
   ProductAttributesComponent,
   ProductBundleDisplayComponent,
@@ -269,7 +272,6 @@ const exportedComponents = [
   ProductPromotionComponent,
   ProductQuantityComponent,
   ProductQuantityLabelComponent,
-  ProductRatingComponent,
   ProductShipmentComponent,
   ProductVariationDisplayComponent,
   ProductVariationSelectComponent,

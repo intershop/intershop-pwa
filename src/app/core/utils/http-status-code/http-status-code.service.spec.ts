@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, PLATFORM_ID } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
@@ -14,9 +14,6 @@ describe('Http Status Code Service', () => {
   let resSpy: { status(status: number): void };
   let location: Location;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   beforeEach(() => {
     RES = {
       status: noop,
@@ -29,8 +26,7 @@ describe('Http Status Code Service', () => {
   describe('on browser', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [DummyComponent],
-        imports: [RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }])],
+        imports: [RouterTestingModule.withRoutes([{ path: 'error', children: [] }])],
       });
       httpStatusCodeService = TestBed.inject(HttpStatusCodeService);
       location = TestBed.inject(Location);
@@ -67,11 +63,10 @@ describe('Http Status Code Service', () => {
   describe('on server', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [DummyComponent],
-        imports: [RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }])],
+        imports: [RouterTestingModule.withRoutes([{ path: 'error', children: [] }])],
         providers: [
-          { provide: RESPONSE, useValue: RES },
           { provide: PLATFORM_ID, useValue: 'server' },
+          { provide: RESPONSE, useValue: RES },
         ],
       });
       httpStatusCodeService = TestBed.inject(HttpStatusCodeService);

@@ -10,6 +10,18 @@ on:
 
 env:
   NODE_OPTIONS: --max_old_space_size=8192
+  JEST_MAX_WORKERS: 1
+  CI: false
+  SCRIPT: |
+    npm run clean
+    npm run build client --configuration=b2b,development
+    npm run test products.service
+    npm run test shell
+    npm run format
+    npm run lint
+    npm run clean-localizations
+    npx ng g c shared/dummy
+    npx ng g override src/app/shared/dummy/dummy.component.ts --theme b2b --html --defaults
 
 jobs:
   CancelPrevious:
@@ -23,15 +35,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Check:
+    if: github.ref == 'refs/heads/develop'
     needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Install root dependencies
@@ -40,22 +53,66 @@ jobs:
       - run: npm run check
 
       - name: Check No Changes
-        run: git diff --exit-code --raw -p --stat
+        run: npm run check-no-changes
 
-  Local:
+  CommandLine:
     needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
-      - name: Install Clean Repository
-        run: npm run clean
+      - uses: 1arp/create-a-file-action@0.2
+        with:
+          path: '.'
+          file: 'script.bat'
+          content: ${{ env.SCRIPT }}
 
-      - name: Build with development environment
-        run: npm run build --configuration=b2b,development
+      - name: Add call to every line
+        shell: cmd
+        run: perl -pi -e "s/(.*)/call $1/" script.bat
+
+      - name: Stage script file
+        shell: cmd
+        run: git add script.bat
+
+      - name: Run developer workflow
+        shell: cmd
+        run: script.bat
+
+  Powershell:
+    needs: [CancelPrevious]
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: npm
+
+      - name: Run developer workflow
+        shell: powershell
+        run: ${{ env.SCRIPT }}
+
+  GitBash:
+    needs: [CancelPrevious]
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: npm
+
+      - name: Run developer workflow
+        shell: bash
+        run: ${{ env.SCRIPT }}

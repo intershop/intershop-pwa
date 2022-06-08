@@ -25,8 +25,8 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
 })
 @GenerateLazyComponent()
 export class ProductAddToOrderTemplateComponent implements OnDestroy, OnInit {
-  @Input() displayType?: 'icon' | 'link' | 'animated' = 'link';
-  @Input() cssClass?: string;
+  @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
+  @Input() cssClass: string;
 
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;

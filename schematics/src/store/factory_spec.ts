@@ -1,6 +1,6 @@
+import { mergeMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { PWAStoreOptionsSchema as Options } from 'schemas/store/schema';
 
 import {
   copyFileFromPWA,
@@ -11,7 +11,6 @@ import {
 } from '../utils/testHelper';
 
 import { determineStoreLocation } from './factory';
-import { PWAStoreOptionsSchema as Options } from './schema';
 
 describe('Store Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -31,7 +30,7 @@ describe('Store Schematic', () => {
       copyFileFromPWA('src/app/core/state-management.module.ts'),
       mergeMap(tree => schematicRunner.runSchematicAsync('store-group', { ...defaultOptions, name: 'bar' }, tree))
     );
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
   });
 
   it('should create a store in core store by default', async () => {
@@ -145,7 +144,7 @@ describe('Store Schematic', () => {
   describe('determineStoreLocation', () => {
     it('should handle simple stores', async () => {
       const config = {
-        extension: undefined,
+        extension: undefined as string,
         feature: 'core',
         name: 'foobar',
         parent: 'core',
@@ -162,7 +161,7 @@ describe('Store Schematic', () => {
 
     it('should handle feature stores', async () => {
       const config = {
-        extension: undefined,
+        extension: undefined as string,
         feature: 'bar',
         name: 'foobar',
         parent: 'bar',
@@ -183,7 +182,7 @@ describe('Store Schematic', () => {
     it('should handle extension stores', async () => {
       const config = {
         extension: 'bar',
-        feature: undefined,
+        feature: undefined as string,
         name: 'foobar',
         parent: 'bar',
         parentStorePath: 'src/app/extensions/bar/store/bar',

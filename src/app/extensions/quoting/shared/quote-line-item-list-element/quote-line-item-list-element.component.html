@@ -1,4 +1,4 @@
-<div class="row list-item-row list-item-row-big" data-testing-id="product-list-item">
+<div class="row list-item-row" data-testing-id="product-list-item">
   <!-- Product Image -->
   <div class="col-2 list-item">
     <ish-product-image imageType="S" [link]="true"></ish-product-image>
@@ -29,7 +29,7 @@
         ></ish-lazy-product-add-to-wishlist>
         <a
           class="btn-tool"
-          [attr.data-testing-id]="'remove-pli-' + lineItem.id + '-element'"
+          [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="lineItem.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem()"

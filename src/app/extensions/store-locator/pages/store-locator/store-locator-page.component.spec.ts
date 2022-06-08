@@ -1,18 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { StoreLocatorFacade } from '../../facades/store-locator.facade';
-import { StoreAddressComponent } from '../../shared/store-address/store-address.component';
-import { StoresMapComponent } from '../../shared/stores-map/stores-map.component';
 
 import { StoreLocatorPageComponent } from './store-locator-page.component';
 
@@ -25,17 +21,11 @@ describe('Store Locator Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule, FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(StoreAddressComponent),
-        MockComponent(StoresMapComponent),
-        MockComponent(ErrorMessageComponent),
-        MockDirective(ScrollDirective),
-        StoreLocatorPageComponent,
-      ],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      declarations: [MockComponent(ErrorMessageComponent), StoreLocatorPageComponent],
       providers: [
-        { provide: StoreLocatorFacade, useFactory: () => instance(storeLocatorFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: StoreLocatorFacade, useFactory: () => instance(storeLocatorFacade) },
       ],
     }).compileComponents();
   });

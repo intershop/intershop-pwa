@@ -1,28 +1,27 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noAssignmentToInputsRule } from '../src/rules/no-assignment-to-inputs';
+import noAssignmentToInputsRule from '../src/rules/no-assignment-to-inputs';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'no-assignment-to-inputs',
-  rule: noAssignmentToInputsRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+testRule(noAssignmentToInputsRule, {
+  valid: [
+    {
+      name: 'should not report when no assignments are found',
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent  {
           @Input() testInput;
         }
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report when assignments to input fields are found',
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent  {
           @Input() testInput;
@@ -32,34 +31,12 @@ const config: RuleTestConfig = {
           }
         }
         `,
-        errors: [
-          {
-            messageId: 'inputAssignmentError',
-            type: AST_NODE_TYPES.AssignmentExpression,
-          },
-        ],
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
-        @Component({})
-        export class TestComponent  {
-         @Output() @Input() testInput;
-
-          testFunction() {
-            this.testInput = variable;
-          }
-        }
-        `,
-        errors: [
-          {
-            messageId: 'inputAssignmentError',
-            type: AST_NODE_TYPES.AssignmentExpression,
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'inputAssignmentError',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+  ],
+});

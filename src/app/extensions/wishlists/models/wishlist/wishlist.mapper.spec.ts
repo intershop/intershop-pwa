@@ -8,7 +8,6 @@ describe('Wishlist Mapper', () => {
   let wishlistMapper: WishlistMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     wishlistMapper = TestBed.inject(WishlistMapper);
   });
 

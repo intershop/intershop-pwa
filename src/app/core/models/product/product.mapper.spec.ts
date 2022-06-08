@@ -188,14 +188,6 @@ describe('Product Mapper', () => {
         attributes: [
           { name: 'sku', value: '7912057' },
           { name: 'image', value: '/assets/product_img/a.jpg' },
-          {
-            name: 'listPrice',
-            value: { currency: 'USD', type: 'Money', value: 132.24 },
-          },
-          {
-            name: 'salePrice',
-            value: { currency: 'USD', type: 'Money', value: 132.24 },
-          },
           { name: 'availability', value: true },
           { name: 'manufacturer', value: 'Kodak' },
           { name: 'minOrderQuantity', value: { value: 5 } },

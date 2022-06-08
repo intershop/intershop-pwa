@@ -51,6 +51,7 @@ Mockito
 PWA's
 RxJS
 Grafana
+ngcc
 NgRx
 NgSW
 Formly
@@ -187,6 +188,7 @@ setuprequest
 ruleset
 rulesets
 unpatched
+pluralizable
 
 foo
 foos
@@ -197,3 +199,5 @@ foobars
 asdf
 qwertz
 appr
+
+logformat

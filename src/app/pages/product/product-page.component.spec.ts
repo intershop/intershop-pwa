@@ -15,6 +15,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 import { LazyRecentlyViewedComponent } from '../../extensions/recently/exports/lazy-recently-viewed/lazy-recently-viewed.component';
 
 import { ProductBundlePartsComponent } from './product-bundle-parts/product-bundle-parts.component';
+import { ProductDetailInfoComponent } from './product-detail-info/product-detail-info.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductLinksComponent } from './product-links/product-links.component';
 import { ProductMasterVariationsComponent } from './product-master-variations/product-master-variations.component';
@@ -36,13 +37,14 @@ describe('Product Page Component', () => {
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(ContentViewcontextComponent),
+        MockComponent(LazyRecentlyViewedComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductBundlePartsComponent),
         MockComponent(ProductDetailComponent),
+        MockComponent(ProductDetailInfoComponent),
         MockComponent(ProductLinksComponent),
         MockComponent(ProductMasterVariationsComponent),
         MockComponent(RetailSetPartsComponent),
-        MockComponent(LazyRecentlyViewedComponent),
         ProductPageComponent,
       ],
     })
@@ -85,9 +87,10 @@ describe('Product Page Component', () => {
         "ish-breadcrumb",
         "ish-product-detail",
         "ish-content-viewcontext",
-        "ish-product-master-variations",
         "ish-product-bundle-parts",
         "ish-retail-set-parts",
+        "ish-product-detail-info",
+        "ish-product-master-variations",
         "ish-product-links",
         "ish-content-viewcontext",
         "ish-lazy-recently-viewed",

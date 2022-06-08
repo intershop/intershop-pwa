@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -68,26 +67,21 @@ describe('Order Template Effects', () => {
       public: false,
     },
   ];
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
 
   beforeEach(() => {
     orderTemplateServiceMock = mock(OrderTemplateService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
         OrderTemplatesStoreModule.forTesting('orderTemplates'),
-        RouterTestingModule.withRoutes([
-          { path: 'account/order-templates/:orderTemplateName', component: DummyComponent },
-        ]),
+        RouterTestingModule.withRoutes([{ path: 'account/order-templates/:orderTemplateName', children: [] }]),
       ],
       providers: [
+        { provide: OrderTemplateService, useFactory: () => instance(orderTemplateServiceMock) },
         OrderTemplateEffects,
         provideMockActions(() => actions$),
-        { provide: OrderTemplateService, useFactory: () => instance(orderTemplateServiceMock) },
       ],
     });
 

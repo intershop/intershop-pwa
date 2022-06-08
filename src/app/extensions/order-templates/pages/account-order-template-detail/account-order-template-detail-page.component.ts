@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { mapToProperty } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -16,12 +17,17 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit {
   orderTemplateError$: Observable<HttpError>;
   orderTemplateLoading$: Observable<boolean>;
 
+  noOfUnavailableProducts$: Observable<number>;
+
   constructor(private orderTemplatesFacade: OrderTemplatesFacade) {}
 
   ngOnInit() {
     this.orderTemplate$ = this.orderTemplatesFacade.currentOrderTemplate$;
     this.orderTemplateLoading$ = this.orderTemplatesFacade.orderTemplateLoading$;
     this.orderTemplateError$ = this.orderTemplatesFacade.orderTemplateError$;
+    this.noOfUnavailableProducts$ = this.orderTemplatesFacade.currentOrderTemplateOutOfStockItems$.pipe(
+      mapToProperty('length')
+    );
   }
 
   editPreferences(orderTemplate: OrderTemplate, orderTemplateName: string) {

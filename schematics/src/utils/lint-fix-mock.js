@@ -1,5 +1,5 @@
 function applyLintFix() {
-  return tree => tree
+  return tree => tree;
 }
 
-exports.applyLintFix = applyLintFix
+exports.applyLintFix = applyLintFix;

@@ -1,42 +1,38 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noObjectLiteralTypeAssertionRule } from '../src/rules/no-object-literal-type-assertion';
+import noObjectLiteralTypeAssertionRule from '../src/rules/no-object-literal-type-assertion';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'no-object-literal-type-assertion',
-  rule: noObjectLiteralTypeAssertionRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.ts',
-        code: `
+testRule(noObjectLiteralTypeAssertionRule, {
+  valid: [
+    {
+      name: 'should not report if there are no object literal type assertions',
+      filename: 'test.ts',
+      code: `
         interface Test {
           foo: string;
         }
         const bar: Test;
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report if there is an object literal type assertion',
+      filename: 'test.ts',
+      code: `
         interface Test {
           foo: string;
         }
         return {} as Test;
         `,
-        errors: [
-          {
-            messageId: 'noObjectLiteralTypeAssertionError',
-            type: AST_NODE_TYPES.TSAsExpression,
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'noObjectLiteralTypeAssertionError',
+          type: AST_NODE_TYPES.TSAsExpression,
+        },
+      ],
+    },
+  ],
+});

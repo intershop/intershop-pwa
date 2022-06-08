@@ -37,9 +37,9 @@ describe('Sso Registration Effects', () => {
     TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('businessCustomerRegistration')],
       providers: [
-        SsoRegistrationEffects,
-        provideMockActions(() => actions$),
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        provideMockActions(() => actions$),
+        SsoRegistrationEffects,
       ],
     });
 

@@ -65,7 +65,7 @@
         editRouterLink="/checkout/shipping"
         class="infobox-wrapper col-md-6"
       >
-        <p>{{ basket.commonShippingMethod?.name }}</p>
+        <ish-basket-shipping-method [data]="basket"></ish-basket-shipping-method>
       </ish-info-box>
 
       <!-- Payment Method -->

@@ -30,7 +30,6 @@ import {
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
   resetPasswordReminder,
-  setPGID,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -128,12 +127,14 @@ export const userReducer = createReducer(
   on(loginUserSuccess, (state: UserState, action) => {
     const customer = action.payload.customer;
     const user = action.payload.user;
+    const pgid = action.payload.pgid;
 
     return {
       ...state,
       authorized: true,
       customer,
       user,
+      pgid,
       loading: false,
       error: undefined,
     };
@@ -165,10 +166,6 @@ export const userReducer = createReducer(
       customer,
     };
   }),
-  on(setPGID, (state, action) => ({
-    ...state,
-    pgid: action.payload.pgid,
-  })),
   on(loadUserCostCentersSuccess, (state, action) => ({
     ...state,
     costCenters: action.payload.costCenters,

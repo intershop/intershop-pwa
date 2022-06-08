@@ -1,9 +1,7 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
+import { PWAPageOptionsSchema as Options } from 'schemas/page/schema';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAPageOptionsSchema as Options } from './schema';
 
 describe('Page Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -11,7 +9,7 @@ describe('Page Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     const appTree$ = createApplication(schematicRunner);
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
 
     appTree.create(
       '/src/app/pages/app-routing.module.ts',
@@ -260,7 +258,9 @@ describe('Page Schematic', () => {
 
       const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
       const appRoutingModule = tree.readContent('/src/app/extensions/feature/pages/feature-routing.module.ts');
-      expect(appRoutingModule).toContain(`{ path: 'foo', component: FooPageComponent }`);
+      expect(appRoutingModule).toContain(
+        `{ path: 'foo', component: FooPageComponent, canActivate: [FeatureToggleGuard], data: { feature: 'feature' } }`
+      );
       expect(appRoutingModule).toContain("import { FooPageComponent } from './foo/foo-page.component'");
     });
 
@@ -269,7 +269,9 @@ describe('Page Schematic', () => {
 
       const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
       const appRoutingModule = tree.readContent('/src/app/extensions/feature2/pages/feature2-routing.module.ts');
-      expect(appRoutingModule).toContain(`{ path: 'foo', component: FooPageComponent }`);
+      expect(appRoutingModule).toContain(
+        `{ path: 'foo', component: FooPageComponent, canActivate: [FeatureToggleGuard], data: { feature: 'feature2' } }`
+      );
       expect(appRoutingModule).toContain("import { FooPageComponent } from './foo/foo-page.component'");
     });
 

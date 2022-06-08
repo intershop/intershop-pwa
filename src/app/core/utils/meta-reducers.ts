@@ -4,6 +4,8 @@ import { identity } from 'rxjs';
 
 import { logoutUser } from 'ish-core/store/customer/user';
 
+import { omit } from './functions';
+
 export function resetOnLogoutMeta<S>(reducer: ActionReducer<S>): ActionReducer<S> {
   return (state: S, action: Action) => {
     if (action.type === logoutUser.type) {
@@ -11,6 +13,16 @@ export function resetOnLogoutMeta<S>(reducer: ActionReducer<S>): ActionReducer<S
     }
     return reducer(state, action);
   };
+}
+
+export function resetSubStatesOnActionsMeta<S>(subStates: (keyof S)[], actions: Action[]): MetaReducer<S, Action> {
+  return (reducer): ActionReducer<S> =>
+    (state: S, action: Action) => {
+      if (actions?.some(a => a.type === action.type)) {
+        return reducer(omit<S>(state, ...subStates) as S, action);
+      }
+      return reducer(state, action);
+    };
 }
 
 function saveMeta<S>(

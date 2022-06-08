@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, of, throwError } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { Observable, noop, of, throwError } from 'rxjs';
+import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
@@ -16,6 +15,7 @@ import { loadContentPageTreeSuccess } from 'ish-core/store/content/page-tree';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
+import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 
 import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
 import { PagesEffects } from './pages.effects';
@@ -26,29 +26,31 @@ describe('Pages Effects', () => {
   let cmsServiceMock: CMSService;
   let router: Router;
   let store$: Store;
+  let httpStatusCodeService: HttpStatusCodeService;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         ContentStoreModule.forTesting('pagetree', 'pages'),
         CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([
+          { path: 'page/:contentPageId', children: [] },
+          { path: '**', children: [] },
+        ]),
       ],
       providers: [
+        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
         PagesEffects,
         provideMockActions(() => actions$),
-        { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
       ],
     });
 
     effects = TestBed.inject(PagesEffects);
     router = TestBed.inject(Router);
     store$ = TestBed.inject(Store);
+    httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
   });
 
   describe('loadPages$', () => {
@@ -75,6 +77,26 @@ describe('Pages Effects', () => {
       expect(effects.loadContentPage$).toBeObservable(
         cold('a-a-a-a', { a: loadContentPageFail({ error: makeHttpError({ message: 'ERROR' }) }) })
       );
+    });
+  });
+
+  describe('redirectIfErrorInContentPage$', () => {
+    it('should call error service if triggered', done => {
+      actions$ = of(loadContentPageFail({ error: makeHttpError({ message: 'ERROR' }) }));
+
+      effects.redirectIfErrorInContentPage$.subscribe({
+        next: () => {
+          verify(httpStatusCodeService.setStatus(anything())).once();
+          expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
+                        Array [
+                          404,
+                        ]
+                    `);
+          done();
+        },
+        error: fail,
+        complete: noop,
+      });
     });
   });
 

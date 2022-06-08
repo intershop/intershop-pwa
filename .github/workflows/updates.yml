@@ -16,19 +16,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Install root dependencies
         run: npm ci
 
       - name: Install e2e dependencies
-        run: |
-          cd e2e
-          npm i
+        run: cd e2e && npm i
 
       - name: Possible Angular Updates
         if: always()
@@ -44,7 +42,7 @@ jobs:
 
       - name: Peer Dependency Incompatibilities
         if: always()
-        run: npm ls >/dev/null || true
+        run: npm ls -a >/dev/null || true
 
       - name: npm audit -- PWA
         if: always()

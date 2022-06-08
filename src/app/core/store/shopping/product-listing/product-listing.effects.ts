@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { distinctUntilChanged, map, mapTo, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
@@ -19,7 +19,7 @@ import {
 } from 'ish-core/store/shopping/filter';
 import { loadProductsForCategory, loadProductsForMaster } from 'ish-core/store/shopping/products';
 import { searchProducts } from 'ish-core/store/shopping/search';
-import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { mapToPayload, throttleOrChanged, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { stringToFormParams } from 'ish-core/utils/url-form-params';
 
 import {
@@ -40,14 +40,17 @@ export class ProductListingEffects {
   ) {}
 
   initializePageSize$ = createEffect(() =>
-    this.actions$.pipe(take(1), mapTo(setProductListingPageSize({ itemsPerPage: this.itemsPerPage })))
+    this.actions$.pipe(
+      take(1),
+      map(() => setProductListingPageSize({ itemsPerPage: this.itemsPerPage }))
+    )
   );
 
   initializeDefaultViewType$ = createEffect(() =>
     this.store.pipe(
       select(getProductListingViewType),
       whenFalsy(),
-      mapTo(setViewType({ viewType: this.defaultViewType }))
+      map(() => setViewType({ viewType: this.defaultViewType }))
     )
   );
 
@@ -103,7 +106,7 @@ export class ProductListingEffects {
           })
         );
       }),
-      distinctUntilChanged(isEqual),
+      throttleOrChanged(5000),
       map(({ id, filters, sorting, page }) => loadMoreProductsForParams({ id, filters, sorting, page }))
     )
   );
@@ -112,7 +115,6 @@ export class ProductListingEffects {
     this.actions$.pipe(
       ofType(loadMoreProductsForParams),
       mapToPayload(),
-      distinctUntilChanged(isEqual),
       map(({ id, sorting, page, filters }) => {
         if (filters) {
           const searchParameter = filters;
@@ -130,8 +132,7 @@ export class ProductListingEffects {
           }
         }
       }),
-      whenTruthy(),
-      distinctUntilChanged(isEqual)
+      whenTruthy()
     )
   );
 

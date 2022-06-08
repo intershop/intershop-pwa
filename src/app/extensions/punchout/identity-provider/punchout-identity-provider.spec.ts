@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, Router, UrlTree, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,9 +9,8 @@ import { anyString, anything, capture, instance, mock, resetCalls, spy, verify, 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { ApiService } from 'ish-core/services/api/api.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
-import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { ApiTokenCookieType, ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -22,11 +20,6 @@ import { PunchoutService } from '../services/punchout/punchout.service';
 
 import { PunchoutIdentityProvider } from './punchout-identity-provider';
 
-@Component({ template: 'dummy' })
-class DummyComponent {}
-
-type ApiTokenCookieType = 'user' | 'basket' | 'order';
-
 function getSnapshot(queryParams: Params): ActivatedRouteSnapshot {
   return {
     queryParamMap: convertToParamMap(queryParams),
@@ -35,7 +28,6 @@ function getSnapshot(queryParams: Params): ActivatedRouteSnapshot {
 
 describe('Punchout Identity Provider', () => {
   const punchoutService = mock(PunchoutService);
-  const apiService = mock(ApiService);
   const apiTokenService = mock(ApiTokenService);
   const appFacade = mock(AppFacade);
   const accountFacade = mock(AccountFacade);
@@ -50,22 +42,20 @@ describe('Punchout Identity Provider', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'home', component: DummyComponent },
-          { path: 'logout', component: DummyComponent },
-          { path: 'error', component: DummyComponent },
+          { path: 'home', children: [] },
+          { path: 'logout', children: [] },
+          { path: 'error', children: [] },
         ]),
       ],
       providers: [
-        { provide: ApiService, useFactory: () => instance(apiService) },
-        { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
-        { provide: PunchoutService, useFactory: () => instance(punchoutService) },
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: CookiesService, useFactory: () => instance(cookiesService) },
+        { provide: PunchoutService, useFactory: () => instance(punchoutService) },
         provideMockStore(),
       ],
     }).compileComponents();
@@ -82,7 +72,6 @@ describe('Punchout Identity Provider', () => {
     when(checkoutFacade.basket$).thenReturn(EMPTY);
     when(apiTokenService.cookieVanishes$).thenReturn(cookieVanishes$);
 
-    resetCalls(apiService);
     resetCalls(apiTokenService);
     resetCalls(punchoutService);
     resetCalls(appFacade);

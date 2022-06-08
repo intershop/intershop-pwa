@@ -1,13 +1,15 @@
-import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+
+const messages = {
+  undefinedError: `Don't return undefined explicitly. Use an empty return instead.`,
+};
 
 /**
  * Disallows explicitly returning `undefined`. Use an empty return instead.
  */
-export const noReturnUndefinedRule: TSESLint.RuleModule<string, []> = {
+const noReturnUndefinedRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      undefinedError: `Don't return undefined explicitly. Use an empty return instead.`,
-    },
+    messages,
     fixable: 'code',
     type: 'problem',
     schema: [],
@@ -24,3 +26,5 @@ export const noReturnUndefinedRule: TSESLint.RuleModule<string, []> = {
     },
   }),
 };
+
+export default noReturnUndefinedRule;

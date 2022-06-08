@@ -1,4 +1,4 @@
-FROM ubuntu:latest as buildstep
+FROM ubuntu:focal as buildstep
 RUN apt-get update
 RUN apt-get install -y curl build-essential zlib1g-dev libpcre3-dev unzip wget uuid-dev sudo openssl libssl-dev
 RUN curl -kfL -sS https://ngxpagespeed.com/install > install.sh
@@ -13,7 +13,7 @@ COPY entrypoint.sh *.yaml /
 COPY 50x.html /usr/share/nginx/html/
 ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.8.0/gomplate_linux-amd64-slim /gomplate
 
-FROM ubuntu:latest
+FROM ubuntu:focal
 RUN apt-get update && \
   apt-get install -y gettext-base libssl1.1 apache2-utils && \
   apt-get -y autoremove && \
@@ -34,6 +34,7 @@ ENV DEVICE_DETECTION=on
 ENV SSR=on
 ENV CACHE_DURATION_NGINX_OK=10m
 ENV CACHE_DURATION_NGINX_NF=60m
+ENV LOGFORMAT=main
 
 EXPOSE 80 443 9113
 

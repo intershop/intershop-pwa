@@ -10,7 +10,6 @@ describe('Quoting Mapper', () => {
   let quoteMapper: QuotingMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     quoteMapper = TestBed.inject(QuotingMapper);
   });
 

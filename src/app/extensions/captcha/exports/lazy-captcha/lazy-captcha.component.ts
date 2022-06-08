@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { switchMapTo, take, takeUntil } from 'rxjs/operators';
+import { switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -68,7 +68,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
       .captchaActive$(this.topic)
       .pipe(
         whenTruthy(),
-        switchMapTo(this.captchaFacade.captchaVersion$),
+        switchMap(() => this.captchaFacade.captchaVersion$),
         whenTruthy(),
         take(1),
         takeUntil(this.destroy$)

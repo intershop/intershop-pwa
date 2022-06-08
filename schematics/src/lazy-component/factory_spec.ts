@@ -1,6 +1,6 @@
+import { switchMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { PWALazyComponentOptionsSchema as Options } from 'schemas/lazy-component/schema';
 
 import {
   createAppLastRoutingModule,
@@ -8,8 +8,6 @@ import {
   createModule,
   createSchematicRunner,
 } from '../utils/testHelper';
-
-import { PWALazyComponentOptionsSchema as Options } from './schema';
 
 describe('Lazy Component Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -23,12 +21,14 @@ describe('Lazy Component Schematic', () => {
     const appTree$ = createApplication(schematicRunner).pipe(
       createModule(schematicRunner, { name: 'shared' }),
       createAppLastRoutingModule(schematicRunner),
-      switchMap(tree => schematicRunner.runSchematicAsync('extension', { ...defaultOptions, name: 'ext' }, tree)),
+      switchMap(tree =>
+        schematicRunner.runSchematicAsync('extension', { project: defaultOptions.project, name: 'ext' }, tree)
+      ),
       switchMap(tree =>
         schematicRunner.runSchematicAsync('component', { ...defaultOptions, name: 'extensions/ext/shared/dummy' }, tree)
       )
     );
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
   });
 
   it('should be created', () => {
@@ -105,7 +105,7 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should check if extension is enabled', async () => {
-      expect(componentContent).toContain(".enabled('ext')");
+      expect(componentContent).toContain(".enabled$('ext')");
     });
 
     it('should generate right component selector', async () => {
@@ -137,18 +137,33 @@ describe('Lazy Component Schematic', () => {
         '@GenerateLazyComponent()'
       );
     });
+
+    it('should create a .gitignore file in the exports folder', () => {
+      const gitignore = tree.readContent('/src/app/extensions/ext/exports/.gitignore');
+      expect(gitignore.trim()).toMatchInlineSnapshot(`"**/lazy*"`);
+    });
   });
 
   describe('ci', () => {
     let tree: UnitTestTree;
     let exportsModuleContent: string;
     let originalComponent: string;
+    let storedCI: string;
+
+    beforeAll(() => {
+      storedCI = process.env.CI;
+      process.env.CI = 'true';
+    });
+
+    afterAll(() => {
+      process.env.CI = storedCI;
+    });
 
     beforeEach(async () => {
       tree = await schematicRunner
         .runSchematicAsync(
           'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts', ci: true },
+          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
           appTree
         )
         .toPromise();
@@ -215,14 +230,24 @@ export class DummyComponent {
       componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
     });
 
-    it('should copy inputs', () => {
-      expect(componentContent).toContain('@Input() simpleTyped: boolean;');
-      expect(componentContent).toContain('@Input() simpleTypedInitialized = true;');
-      expect(componentContent).toContain("@Input() complexTyped: 'a' | 'b';");
-      expect(componentContent).toContain("@Input() complexTypedInitialized: 'a' | 'b' = 'a';");
-      expect(componentContent).toContain('@Input() importTyped: Product;');
-      expect(componentContent).toContain('@Input() importComplexTyped: User[];');
-      expect(componentContent).toContain('@Input() importGenericTyped: Observable<Customer[]>;');
+    it('should import type of component which is lazy loaded', async () => {
+      expect(componentContent).toContain(
+        "import type { DummyComponent as OriginalComponent } from '../../shared/dummy/dummy.component';"
+      );
+    });
+
+    it('should delegate input types', () => {
+      expect(componentContent).toContain("@Input() simpleTyped: OriginalComponent['simpleTyped'];");
+      expect(componentContent).toContain(
+        "@Input() simpleTypedInitialized: OriginalComponent['simpleTypedInitialized'];"
+      );
+      expect(componentContent).toContain("@Input() complexTyped: OriginalComponent['complexTyped'];");
+      expect(componentContent).toContain(
+        "@Input() complexTypedInitialized: OriginalComponent['complexTypedInitialized'];"
+      );
+      expect(componentContent).toContain("@Input() importTyped: OriginalComponent['importTyped'];");
+      expect(componentContent).toContain("@Input() importComplexTyped: OriginalComponent['importComplexTyped'];");
+      expect(componentContent).toContain("@Input() importGenericTyped: OriginalComponent['importGenericTyped'];");
     });
 
     it('should transfer inputs', () => {
@@ -233,13 +258,6 @@ export class DummyComponent {
       expect(componentContent).toContain('component.instance.importTyped = this.importTyped');
       expect(componentContent).toContain('component.instance.importComplexTyped = this.importComplexTyped');
       expect(componentContent).toContain('component.instance.importGenericTyped = this.importGenericTyped');
-    });
-
-    it('should copy imports', () => {
-      expect(componentContent).toContain("import { Product } from 'ish-core/models/product/product.model';");
-      expect(componentContent).toContain("import { User } from 'ish-core/models/user/user.model';");
-      expect(componentContent).toContain("import { Observable } from 'rxjs';");
-      expect(componentContent).toContain("import { Customer } from 'ish-core/models/customer/customer.model';");
     });
   });
 

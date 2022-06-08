@@ -7,6 +7,180 @@ kb_everyone
 
 # Changelog
 
+## [2.4.0](https://github.com/releases/tag/2.4.0) (2022-06-03)
+
+**required Intershop Commerce Management version: 7.10.38.0-LTS**
+
+### Features
+
+- display product reviews on product detail page (#1174) ([8a2d88d](https://github.com/intershop/intershop-pwa/commit/8a2d88d))
+- selectively activate source maps on runtime (#1127) ([aeb39f5](https://github.com/intershop/intershop-pwa/commit/aeb39f5))
+- load only visible products in the product links carousel (#1162) ([e44ee3e](https://github.com/intershop/intershop-pwa/commit/e44ee3e))
+- display dynamic promotion messages on shopping cart (#1145) ([ffafdc5](https://github.com/intershop/intershop-pwa/commit/ffafdc5))
+
+### Bug Fixes
+
+- window object can only be used on browser side (#1178) ([1b9fc1b](https://github.com/intershop/intershop-pwa/commit/1b9fc1b))
+- rearange the display of product tabs for retail sets and product bundles ([f8cf5c1](https://github.com/intershop/intershop-pwa/commit/f8cf5c1))
+- display the number of reviews behind the product rating stars instead of the average rating (#1174) ([604f387](https://github.com/intershop/intershop-pwa/commit/604f387))
+- preserve semicolons in query params (#1167) ([e776e14](https://github.com/intershop/intershop-pwa/commit/e776e14))
+- prevent View Context REST API calls with an undefined CategoryRefID value ([f7e0de7](https://github.com/intershop/intershop-pwa/commit/f7e0de7))
+- only update cost center when it actually changes (#1153) ([f00e626](https://github.com/intershop/intershop-pwa/commit/f00e626))
+- display undiscounted single base price on shopping basket if it differs from single base price (#1149) ([02cdb78](https://github.com/intershop/intershop-pwa/commit/02cdb78))
+- non-existing content pages should result in a "Page Not Found" page (#1152) ([7ccd223](https://github.com/intershop/intershop-pwa/commit/7ccd223))
+- cookie page guard results in error with SSR (#1148) ([dc92011](https://github.com/intershop/intershop-pwa/commit/dc92011))
+- **schematics:** make override schematic robust to path seperators (#1146) ([8f28705](https://github.com/intershop/intershop-pwa/commit/8f28705))
+- **schematics:** create gitignore with correct ignore path (#1124) ([3eb320f](https://github.com/intershop/intershop-pwa/commit/3eb320f))
+
+### Performance Improvements
+
+- **test:** local jest speedup with custom haste map (#1119) ([7564b01](https://github.com/intershop/intershop-pwa/commit/7564b01))
+
+### Documentation
+
+- add 2.3 datepicker migration note and hybrid approach requirements ([4d9b009](https://github.com/intershop/intershop-pwa/commit/4d9b009))
+
+### Code Refactoring
+
+- move rating components to an extension (#1174) ([96c1dbe](https://github.com/intershop/intershop-pwa/commit/96c1dbe))
+
+### Chores
+
+- clean up obsolete html comments and removed unused localization keys ([652195e](https://github.com/intershop/intershop-pwa/commit/652195e))
+
+### BREAKING CHANGES
+
+- Angular 13.3.10 and dependencies update (see [Migrations / 2.3 to 2.4](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#23-to-24) for more details).
+- The ratings & reviews functionality was moved into an extension (see [Migrations / 2.3 to 2.4](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#23-to-24) for more details).
+- Removed unused newsletter localization keys.
+
+## [2.3.0](https://github.com/releases/tag/2.3.0) (2022-05-03)
+
+**required Intershop Commerce Management version: 7.10.38.0-LTS**
+
+### Features
+
+- introduce price update strategies (#1089) ([c980cbe](https://github.com/intershop/intershop-pwa/commit/c980cbe))
+- make products service default attrs easily overridable (#1098) ([78ef2e1](https://github.com/intershop/intershop-pwa/commit/78ef2e1))
+- clean-localizations on used sources (#1047) ([bf81099](https://github.com/intershop/intershop-pwa/commit/bf81099))
+- display loading overlay for basket merge ([811b540](https://github.com/intershop/intershop-pwa/commit/811b540))
+- allow strings as propagate index ([fc19edd](https://github.com/intershop/intershop-pwa/commit/fc19edd))
+- export product context for debug usage ([036602b](https://github.com/intershop/intershop-pwa/commit/036602b))
+- support language plural rules for translations (#1073) ([af747b0](https://github.com/intershop/intershop-pwa/commit/af747b0))
+- **eslint:** add rule disallowing optional inputs (#1121) ([e4121a4](https://github.com/intershop/intershop-pwa/commit/e4121a4))
+
+### Bug Fixes
+
+- enable locale override for development mode (#1139) ([ae7237b](https://github.com/intershop/intershop-pwa/commit/ae7237b))
+- allow same product list call after a specified time (#1140) ([c4bfe88](https://github.com/intershop/intershop-pwa/commit/c4bfe88))
+- URL encode formParamsToString values (#1115) ([269bf72](https://github.com/intershop/intershop-pwa/commit/269bf72))
+- use feature subscription instead of static check in lazy components (#1138) ([a8c75ac](https://github.com/intershop/intershop-pwa/commit/a8c75ac))
+- handle ICM static files with the ICM proxy configuration (#1105) ([29be2c1](https://github.com/intershop/intershop-pwa/commit/29be2c1))
+- pin usage of ubuntu focal ([0ddcb74](https://github.com/intershop/intershop-pwa/commit/0ddcb74))
+- add missing feature guards to feature routing modules ([5eef759](https://github.com/intershop/intershop-pwa/commit/5eef759))
+- re-implement tracking of anonymous basket for merge basket logic (#1130) ([b9ff6cb](https://github.com/intershop/intershop-pwa/commit/b9ff6cb))
+- login gets lost after a link is opened in a different tab (#938, #1109) ([2daea47](https://github.com/intershop/intershop-pwa/commit/2daea47))
+- display buyer information for orders based on order data and not based on data of the logged in customer (#1104) ([85888d9](https://github.com/intershop/intershop-pwa/commit/85888d9))
+- remove equal character from url slugs (#1112) ([26c61d6](https://github.com/intershop/intershop-pwa/commit/26c61d6))
+- fix spacing for old prices and scaled prices ([8b9a10c](https://github.com/intershop/intershop-pwa/commit/8b9a10c))
+- **schematics:** add feature toggle guard to new pages if required ([fcd0ac5](https://github.com/intershop/intershop-pwa/commit/fcd0ac5))
+
+### Performance Improvements
+
+- debounce changes made to the context ([8aee8b1](https://github.com/intershop/intershop-pwa/commit/8aee8b1))
+
+### Documentation
+
+- debugging flaky cypress tests ([7d442b7](https://github.com/intershop/intershop-pwa/commit/7d442b7))
+- documentation adjustments (#1116) ([c3251bd](https://github.com/intershop/intershop-pwa/commit/c3251bd))
+
+### Code Refactoring
+
+- adapt 'apiToken' cookie handling after ICM api token changes (#1105) ([7e24ba1](https://github.com/intershop/intershop-pwa/commit/7e24ba1))
+
+### BREAKING CHANGES
+
+- For a working hybrid approach ICM 7.10.32.16-LTS or 7.10.38.6-LTS or newer is required. The changes in the PWA should not be incompatible with older ICM version if no hybrid approach is needed.
+- The method `getFilteredProducts` was moved from `FilterService` to `ProductsService`.
+
+## [2.2.0](https://github.com/releases/tag/2.2.0) (2022-04-01)
+
+**required Intershop Commerce Management version: 7.10.38.0-LTS**
+
+**required/tested Node.js version: 16.14.2 - LTS (including npm 8.5.0)**
+
+### Features
+
+- introduce formly field reusability feature (#1017) ([0889f38](https://github.com/intershop/intershop-pwa/commit/0889f38))
+- add desired delivery date with NgbDatePicker & date-fns (#1056) ([638609e](https://github.com/intershop/intershop-pwa/commit/638609e))
+- display feedback when product is out of stock on order templates (#1067) ([7c84791](https://github.com/intershop/intershop-pwa/commit/7c84791))
+- enable nginx access logging in json format (#1086) ([099af1f](https://github.com/intershop/intershop-pwa/commit/099af1f))
+- handle and display scaled prices (#1030) ([699b260](https://github.com/intershop/intershop-pwa/commit/699b260))
+- support Payone Eps payment method (#1053) ([efe7884](https://github.com/intershop/intershop-pwa/commit/efe7884))
+- **eslint:** rules for customization (#1055) ([8107fcf](https://github.com/intershop/intershop-pwa/commit/8107fcf))
+
+### Bug Fixes
+
+- support the character sequence 'sku' in product SKUs (#963) ([a22a56d](https://github.com/intershop/intershop-pwa/commit/a22a56d))
+- improve product tile actions visibility + improve compare icon (#1082) ([dc36f5c](https://github.com/intershop/intershop-pwa/commit/dc36f5c))
+- repair cleanup testbed script with parallel execution and apply changes (#1072) ([32953c1](https://github.com/intershop/intershop-pwa/commit/32953c1))
+- display addToQuote and addToOrderTemplate buttons on cart page even in case the cart contains quote items (#1054) ([1f0bb53](https://github.com/intershop/intershop-pwa/commit/1f0bb53))
+- quote items on cart UI issues (#1054) ([c9769c2](https://github.com/intershop/intershop-pwa/commit/c9769c2))
+- don't display 'UNDEFINED' in case the promotion title is missing for the current locale (#1054) ([71a845d](https://github.com/intershop/intershop-pwa/commit/71a845d))
+- repair cleanup testbed script and apply changes (#1057) ([a4e403c](https://github.com/intershop/intershop-pwa/commit/a4e403c))
+
+### Code Refactoring
+
+- compare as extension (#1069) ([3332337](https://github.com/intershop/intershop-pwa/commit/3332337))
+
+### BREAKING CHANGES
+
+- Angular 13.3.0 and dependencies update (see [Migrations / 2.1 to 2.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#21-to-22) for more details).
+- Node.js 16 is now used for development and deployment.
+- The compare functionality was moved into an extension (see [Migrations / 2.1 to 2.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#21-to-22) for more details).
+
+## [2.1.0](https://github.com/releases/tag/2.1.0) (2022-03-08)
+
+**required Intershop Commerce Management version: 7.10.38.0-LTS**
+
+### Features
+
+- fetch product price information with new productprice REST API (#1018) ([26ebdf2](https://github.com/intershop/intershop-pwa/commit/26ebdf2))
+- fetch and display personalized category and product data (#1021) ([fd08931](https://github.com/intershop/intershop-pwa/commit/fd08931))
+- remove quote items from cart (#1029) ([84c449e](https://github.com/intershop/intershop-pwa/commit/84c449e))
+- use demo content artifact in header navigation (#1038) ([e065b3f](https://github.com/intershop/intershop-pwa/commit/e065b3f))
+- support payone iDeal payment method (#974) ([06a25c4](https://github.com/intershop/intershop-pwa/commit/06a25c4))
+- move localization keep patterns where they are needed (#960) ([9b6a996](https://github.com/intershop/intershop-pwa/commit/9b6a996))
+- context with propagateActive as input (#1007) ([a4c1c16](https://github.com/intershop/intershop-pwa/commit/a4c1c16))
+- recalculate basket after currency change (#1005) ([04b44bc](https://github.com/intershop/intershop-pwa/commit/04b44bc))
+
+### Bug Fixes
+
+- repair service worker (#1045) ([2a7a47d](https://github.com/intershop/intershop-pwa/commit/2a7a47d))
+- prevent out of stock products from being added to basket on order templates (#1031) ([5f85f9d](https://github.com/intershop/intershop-pwa/commit/5f85f9d))
+- prevent console error messages on checkout shipping page (#1040) ([7af76a6](https://github.com/intershop/intershop-pwa/commit/7af76a6))
+- render content of product detail description tab as html (#1037) ([147b07c](https://github.com/intershop/intershop-pwa/commit/147b07c))
+- checkout payment parameter form validation (#1035) ([4dbccaf](https://github.com/intershop/intershop-pwa/commit/4dbccaf))
+- update propagation of parent context if child context is removed (#1022) ([61cb60a](https://github.com/intershop/intershop-pwa/commit/61cb60a))
+- product search is cached in PWA and does not trigger a new REST call (#983, #1024) ([db38c8a](https://github.com/intershop/intershop-pwa/commit/db38c8a))
+- trim payment parameter form values (#1013) ([507966f](https://github.com/intershop/intershop-pwa/commit/507966f))
+- include 'all' theme in allowed overrides (#1014) ([302285f](https://github.com/intershop/intershop-pwa/commit/302285f))
+- payment & order redirect respects baseHref (#1010) ([d29c1ec](https://github.com/intershop/intershop-pwa/commit/d29c1ec))
+
+### Performance Improvements
+
+- **schematics:** better linter performance (#1044) ([49497c9](https://github.com/intershop/intershop-pwa/commit/49497c9))
+
+### Code Refactoring
+
+- recently viewed products as extension (#1034) ([d7a8613](https://github.com/intershop/intershop-pwa/commit/d7a8613))
+
+### BREAKING CHANGES
+
+- Product prices are now fetched by separate `productprices` REST calls instead of using the information fetched with the products REST call.
+- Handling personalized REST calls for category and product data required some possibly breaking changes (see [Migrations / 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#20-to-21) for more details).
+- The recently viewed products functionality was moved into an extension (see [Migrations / 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#20-to-21) for more details).
+
 ## [2.0.0](https://github.com/releases/tag/2.0.0) (2022-02-08)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
@@ -91,7 +265,7 @@ kb_everyone
 - Switch linting from `tslint` to `eslint` (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
 - Swiper 7 upgrade (see [Migration Guide to Swiper 7](https://swiperjs.com/migration-guide) for more details).
 - Formly 6 upgrade (see [upgrade from 5.0 to 6.0](https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md) for more details).
-- Angular 13 and dependecies update (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
+- Angular 13 and dependencies update (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
 - Angular 13 removes support for IE 11 (see [Internet Explorer 11 support deprecation and removal](https://github.com/angular/angular/issues/41840) for more details).
 - The feature toggle 'advancedVariationHandling' has been removed. Use the ICM channel preference for 'Variations List View' now. (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details.
 - The input parameter `class` was changed to `cssClass` for the following components: `ish-basket-create-order-template`,`ish-lazy-basket-create-order-template`, `ish-lazy-product-add-to-order-template`,`ish-lazy-product-add-to-quote`, `ish-lazy-product-add-to-wishlist`, `ish-product-add-to-basket`, `ish-product-add-to-compare`, `ish-product-add-to-order-template`, `ish-product-add-to-quote`, `ish-product-add-to-wishlist`. All uses of these components need to be adapted in custom code.

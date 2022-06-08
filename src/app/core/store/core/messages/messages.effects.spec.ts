@@ -24,9 +24,9 @@ describe('Messages Effects', () => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
+        { provide: ToastrService, useFactory: () => instance(toastrServiceMock) },
         MessagesEffects,
         provideMockActions(() => actions$),
-        { provide: ToastrService, useFactory: () => instance(toastrServiceMock) },
         provideMockStore({
           selectors: [
             { selector: isStickyHeader, value: false },

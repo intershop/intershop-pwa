@@ -5,7 +5,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { DatePipe } from 'ish-core/pipes/date.pipe';
 
 import { Requisition } from '../../models/requisition/requisition.model';
 
@@ -24,7 +23,8 @@ describe('Requisitions List Component', () => {
       approval: {
         approvalDate: 76543627,
       },
-      user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+      email: 'pmiller@test.intershop.de',
+      user: { firstName: 'Patricia', lastName: 'Miller' },
       totals: {},
     },
     {
@@ -34,7 +34,8 @@ describe('Requisitions List Component', () => {
       approval: {
         approvalDate: 76543628,
       },
-      user: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
+      email: 'pmiller@test.intershop.de',
+      user: { firstName: 'Patricia', lastName: 'Miller' },
       totals: {},
     },
   ] as Requisition[];
@@ -42,7 +43,7 @@ describe('Requisitions List Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [MockPipe(DatePipe), MockPipe(PricePipe), RequisitionsListComponent],
+      declarations: [MockPipe(PricePipe), RequisitionsListComponent],
     }).compileComponents();
   });
 

@@ -4,6 +4,7 @@
   "title": "PWA Store Options Schema",
   "type": "object",
   "description": "Creates a new store.",
+  "additionalProperties": false,
   "properties": {
     "path": {
       "type": "string",

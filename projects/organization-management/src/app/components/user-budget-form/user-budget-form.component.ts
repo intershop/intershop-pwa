@@ -24,7 +24,7 @@ interface UserBudgetModel {
 })
 export class UserBudgetFormComponent implements OnInit, OnDestroy {
   @Input() form: FormGroup;
-  @Input() budget?: UserBudget;
+  @Input() budget: UserBudget;
 
   fields: FormlyFieldConfig[];
   model: UserBudgetModel;
@@ -133,6 +133,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
                   fieldClass: 'col-12 label-empty',
                   options: this.periods.map(period => ({
                     value: period,
+                    // keep-localization-pattern: ^account\.user\.new\.budget\.period\.value.*
                     label: `account.user.new.budget.period.value.${period}`,
                   })),
                 },

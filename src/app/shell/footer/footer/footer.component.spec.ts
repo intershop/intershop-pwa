@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
-import { FooterTopComponent } from 'ish-shell/footer/footer-top/footer-top.component';
+
+import { LazyStoreLocatorFooterComponent } from '../../../extensions/store-locator/exports/lazy-store-locator-footer/lazy-store-locator-footer.component';
 
 import { FooterComponent } from './footer.component';
 
@@ -16,8 +15,8 @@ describe('Footer Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BrowserTransferStateModule, RoleToggleModule.forTesting(), TranslateModule.forRoot()],
-      declarations: [FooterComponent, MockComponent(FooterTopComponent), MockDirective(ServerHtmlDirective)],
+      imports: [BrowserTransferStateModule, RoleToggleModule.forTesting()],
+      declarations: [FooterComponent, MockComponent(LazyStoreLocatorFooterComponent)],
     }).compileComponents();
   });
 

@@ -20,16 +20,17 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
+import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
+
+import STUB_ATTRS from './products-list-attributes';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  static STUB_ATTRS =
-    'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet';
-
   constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
 
   /**
@@ -46,7 +47,7 @@ export class ProductsService {
     const params = new HttpParams().set('allImages', 'true');
 
     return this.apiService
-      .get<ProductData>(`products/${sku}`, { params })
+      .get<ProductData>(`products/${sku}`, { sendSPGID: true, params })
       .pipe(map(element => this.productMapper.fromData(element)));
   }
 
@@ -69,7 +70,7 @@ export class ProductsService {
     }
 
     let params = new HttpParams()
-      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
@@ -85,7 +86,7 @@ export class ProductsService {
         sortableAttributes: { [id: string]: SortableAttributesType };
         categoryUniqueId: string;
         total: number;
-      }>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}/products`, { params })
+      }>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}/products`, { sendSPGID: true, params })
       .pipe(
         map(response => ({
           products: response.elements.map((element: ProductDataStub) => this.productMapper.fromStubData(element)),
@@ -125,7 +126,7 @@ export class ProductsService {
       .set('searchTerm', searchTerm)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
-      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
@@ -138,7 +139,7 @@ export class ProductsService {
         sortKeys: string[];
         sortableAttributes: { [id: string]: SortableAttributesType };
         total: number;
-      }>('products', { params })
+      }>('products', { sendSPGID: true, params })
       .pipe(
         map(response => ({
           products: response.elements.map(element => this.productMapper.fromStubData(element)),
@@ -170,7 +171,7 @@ export class ProductsService {
       .set('MasterSKU', masterSKU)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
-      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
@@ -182,12 +183,54 @@ export class ProductsService {
         elements: ProductDataStub[];
         sortableAttributes: { [id: string]: SortableAttributesType };
         total: number;
-      }>('products', { params })
+      }>('products', { sendSPGID: true, params })
       .pipe(
         map(response => ({
           products: response.elements.map(element => this.productMapper.fromStubData(element)) as Product[],
           sortableAttributes: Object.values(response.sortableAttributes || {}),
           total: response.total ? response.total : response.elements.length,
+        }))
+      );
+  }
+
+  getFilteredProducts(
+    searchParameter: URLFormParams,
+    amount: number,
+    sortKey?: string,
+    offset = 0
+  ): Observable<{ total: number; products: Partial<Product>[]; sortableAttributes: SortableAttributesType[] }> {
+    let params = new HttpParams()
+      .set('amount', amount ? amount.toString() : '')
+      .set('offset', offset.toString())
+      .set('attrs', STUB_ATTRS)
+      .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
+      .set('returnSortKeys', 'true');
+    if (sortKey) {
+      params = params.set('sortKey', sortKey);
+    }
+    params = appendFormParamsToHttpParams(omit(searchParameter, 'category'), params);
+
+    const resource = searchParameter.category ? `categories/${searchParameter.category[0]}/products` : 'products';
+
+    return this.apiService
+      .get<{
+        total: number;
+        elements: ProductDataStub[];
+        sortableAttributes: { [id: string]: SortableAttributesType };
+      }>(resource, { params, sendSPGID: true })
+      .pipe(
+        map(x => ({
+          products: x.elements.map(stub => this.productMapper.fromStubData(stub)),
+          total: x.total,
+          sortableAttributes: Object.values(x.sortableAttributes || {}),
+        })),
+        withLatestFrom(
+          this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
+        ),
+        map(([{ products, sortableAttributes, total }, advancedVariationHandling]) => ({
+          products: params.has('MasterSKU') ? products : this.postProcessMasters(products, advancedVariationHandling),
+          sortableAttributes,
+          total,
         }))
       );
   }
@@ -217,38 +260,41 @@ export class ProductsService {
       return throwError(() => new Error('getProductVariations() called without a sku'));
     }
 
-    return this.apiService.get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`).pipe(
-      switchMap(resp =>
-        !resp.total
-          ? of(resp.elements)
-          : of(resp).pipe(
-              mergeMap(res => {
-                const amount = res.amount;
-                const chunks = Math.ceil((res.total - amount) / amount);
-                return from(
-                  range(1, chunks + 1)
-                    .map(i => [i * amount, Math.min(amount, res.total - amount * i)])
-                    .map(([offset, length]) =>
-                      this.apiService
-                        .get<{ elements: Link[] }>(`products/${sku}/variations`, {
-                          params: new HttpParams().set('amount', length).set('offset', offset),
-                        })
-                        .pipe(mapToProperty('elements'))
-                    )
-                );
-              }),
-              mergeMap(identity, 2),
-              toArray(),
-              map(resp2 => [...resp.elements, ...flatten(resp2)])
-            )
-      ),
-      map((links: ProductVariationLink[]) => ({
-        products: links.map(link => this.productMapper.fromVariationLink(link, sku)),
-        defaultVariation: ProductMapper.findDefaultVariation(links),
-      })),
-      map(data => ({ ...data, masterProduct: ProductMapper.constructMasterStub(sku, data.products) })),
-      defaultIfEmpty({ products: [], defaultVariation: undefined, masterProduct: undefined })
-    );
+    return this.apiService
+      .get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`, { sendSPGID: true })
+      .pipe(
+        switchMap(resp =>
+          !resp.total
+            ? of(resp.elements)
+            : of(resp).pipe(
+                mergeMap(res => {
+                  const amount = res.amount;
+                  const chunks = Math.ceil((res.total - amount) / amount);
+                  return from(
+                    range(1, chunks + 1)
+                      .map(i => [i * amount, Math.min(amount, res.total - amount * i)])
+                      .map(([offset, length]) =>
+                        this.apiService
+                          .get<{ elements: Link[] }>(`products/${sku}/variations`, {
+                            sendSPGID: true,
+                            params: new HttpParams().set('amount', length).set('offset', offset),
+                          })
+                          .pipe(mapToProperty('elements'))
+                      )
+                  );
+                }),
+                mergeMap(identity, 2),
+                toArray(),
+                map(resp2 => [...resp.elements, ...flatten(resp2)])
+              )
+        ),
+        map((links: ProductVariationLink[]) => ({
+          products: links.map(link => this.productMapper.fromVariationLink(link, sku)),
+          defaultVariation: ProductMapper.findDefaultVariation(links),
+        })),
+        map(data => ({ ...data, masterProduct: ProductMapper.constructMasterStub(sku, data.products) })),
+        defaultIfEmpty({ products: [], defaultVariation: undefined, masterProduct: undefined })
+      );
   }
 
   /**
@@ -259,7 +305,7 @@ export class ProductsService {
       return throwError(() => new Error('getProductBundles() called without a sku'));
     }
 
-    return this.apiService.get(`products/${sku}/bundles`).pipe(
+    return this.apiService.get(`products/${sku}/bundles`, { sendSPGID: true }).pipe(
       unpackEnvelope<Link>(),
       map(links => ({
         stubs: links.map(link => this.productMapper.fromLink(link)),
@@ -276,7 +322,7 @@ export class ProductsService {
       return throwError(() => new Error('getRetailSetParts() called without a sku'));
     }
 
-    return this.apiService.get(`products/${sku}/partOfRetailSet`).pipe(
+    return this.apiService.get(`products/${sku}/partOfRetailSet`, { sendSPGID: true }).pipe(
       unpackEnvelope<Link>(),
       map(links => links.map(link => this.productMapper.fromRetailSetLink(link))),
       defaultIfEmpty([])
@@ -284,7 +330,7 @@ export class ProductsService {
   }
 
   getProductLinks(sku: string): Observable<ProductLinksDictionary> {
-    return this.apiService.get(`products/${sku}/links`).pipe(
+    return this.apiService.get(`products/${sku}/links`, { sendSPGID: true }).pipe(
       unpackEnvelope<{ linkType: string; categoryLinks: Link[]; productLinks: Link[] }>(),
       map(links =>
         links.reduce(

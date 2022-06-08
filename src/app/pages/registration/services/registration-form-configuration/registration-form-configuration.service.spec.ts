@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { instance, mock } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { extractKeys } from 'ish-shared/formly/dev/testing/formly-testing-utils';
-import { FormsService } from 'ish-shared/forms/utils/forms.service';
+import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 
 import {
   RegistrationConfigType,
@@ -16,15 +16,46 @@ import {
 describe('Registration Form Configuration Service', () => {
   let registrationConfigurationService: RegistrationFormConfigurationService;
   let accountFacade: AccountFacade;
+  let fieldLibrary: FieldLibrary;
 
   beforeEach(() => {
     accountFacade = mock(AccountFacade);
+    fieldLibrary = mock(FieldLibrary);
+    when(fieldLibrary.getConfigurationGroup('companyInfo')).thenReturn([
+      {
+        key: 'companyName1',
+        templateOptions: {
+          required: true,
+        },
+      },
+      {
+        key: 'companyName2',
+      },
+      {
+        key: 'taxationID',
+      },
+    ]);
+    when(fieldLibrary.getConfigurationGroup('personalInfo')).thenReturn([
+      {
+        key: 'title',
+      },
+      {
+        key: 'firstName',
+      },
+      {
+        key: 'lastName',
+      },
+      {
+        key: 'phoneHome',
+      },
+    ]);
+
     TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting(), RouterTestingModule],
       providers: [
-        RegistrationFormConfigurationService,
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-        { provide: FormsService, useFactory: () => instance(mock(FormsService)) },
+        { provide: FieldLibrary, useFactory: () => instance(fieldLibrary) },
+        RegistrationFormConfigurationService,
       ],
     });
     registrationConfigurationService = TestBed.inject(RegistrationFormConfigurationService);

@@ -14,6 +14,7 @@ export interface LineItem {
   productSKU: string;
   price: PriceItem;
   singleBasePrice: PriceItem;
+  undiscountedSingleBasePrice?: PriceItem;
   itemSurcharges?: {
     amount: PriceItem;
     description?: string;
@@ -33,6 +34,7 @@ export interface LineItem {
   isFreeGift: boolean;
 
   editable: boolean;
+  quote?: string;
 }
 
 export interface LineItemView extends LineItem {

@@ -8,7 +8,7 @@ import { StoreLocatorStoreModule } from '../store-locator-store.module';
 import { setGMAKey } from './store-locator-config.actions';
 import { getGMAKey } from './store-locator-config.selectors';
 
-describe('StoreLocatorConfig Selectors', () => {
+describe('Store Locator Config Selectors', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {

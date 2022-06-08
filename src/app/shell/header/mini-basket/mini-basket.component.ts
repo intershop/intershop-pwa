@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, concat, of, timer } from 'rxjs';
-import { filter, mapTo, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -18,6 +18,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
   basketAnimation$: Observable<string>;
   itemTotal$: Observable<PriceItem>;
   itemCount$: Observable<number>;
+  basketLoading$: Observable<boolean>;
 
   isCollapsed = true;
 
@@ -42,6 +43,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
     this.itemCount$ = this.checkoutFacade.basketItemCount$;
     this.itemTotal$ = this.checkoutFacade.basketItemTotal$;
     this.basketError$ = this.checkoutFacade.basketError$;
+    this.basketLoading$ = this.checkoutFacade.basketLoading$;
 
     this.basketError$
       .pipe(
@@ -53,7 +55,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
 
     this.basketAnimation$ = this.checkoutFacade.basketChange$.pipe(
       filter(() => !this.location.path().startsWith('/basket')),
-      switchMap(() => concat(of('mini-basket-animation'), timer(2500).pipe(mapTo(''))))
+      switchMap(() => concat(of('mini-basket-animation'), timer(2500).pipe(map(() => ''))))
     );
 
     this.basketAnimation$.pipe(takeUntil(this.destroy$)).subscribe(animation => {

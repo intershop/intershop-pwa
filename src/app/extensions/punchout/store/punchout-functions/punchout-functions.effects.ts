@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, mapTo } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 
 import { displayErrorMessage } from 'ish-core/store/core/messages';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -21,9 +21,10 @@ export class PunchoutFunctionsEffects {
     this.actions$.pipe(
       ofType(transferPunchoutBasket),
       concatMap(() =>
-        this.punchoutService
-          .transferPunchoutBasket()
-          .pipe(mapTo(transferPunchoutBasketSuccess()), mapErrorToAction(transferPunchoutBasketFail))
+        this.punchoutService.transferPunchoutBasket().pipe(
+          map(() => transferPunchoutBasketSuccess()),
+          mapErrorToAction(transferPunchoutBasketFail)
+        )
       )
     )
   );

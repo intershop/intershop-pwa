@@ -79,9 +79,20 @@ export class Component {
 <div>{{ 'product.items.label' | translate:{'0': param} }}</div>
 ```
 
+---
+
 ### Localization with Pluralization
 
 The PWA uses an [ICU Message Format](https://unicode-org.github.io/icu/userguide/format_parse/messages/) inspired way of supporting pluralization in translation keys.
+
+In addition to using pluralization for specific numbers, the Intershop PWA supports the following [pluralization cases](https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html): `zero`, `one`, `two`, `few`, `many` and `other`.
+You can use these cases in your pluralizable translation definitions like this:
+
+```json
+"shopping_cart.ministatus.items.text": "{{0, plural, one{# item} other{# items}}}",
+```
+
+Refer to [this explanation](https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Plural-forms.html) if you want to learn more about pluralization rules and why they are necessary for inclusive, multi-language applications.
 
 Have a look at the spec for [PWATranslateCompiler](../../src/app/core/utils/translate/pwa-translate-compiler.spec.ts) for an overview of supported methods.
 
@@ -262,15 +273,34 @@ Localization keys that are not available in these files - meaning they have no t
 
 Not explicitly used localization keys, such as dynamic created keys or error keys from REST calls, are handled separately.
 Their patterns are searched in all the localization keys of the default localization file and all matches will be included in the new cleaned up file.
-Therefore additional patterns have to be added for additional keys used in this way.
+
+Global patterns can be added to the [`clean-up-localizations` script](../../scripts/clean-up-localizations.js);
 
 ```javascript
-// regular expression for patterns of not explicitly used localization keys (dynamic created keys, error keys from REST calls)
-// ADDITIONAL PATTERNS HAVE TO BE ADDED HERE
-const regEx = /account\.login\..*\.message|.*\.error\..*/i;
+// ADDITIONAL GLOBAL PATTERNS HAVE TO BE ADDED HERE
+const regExps = [/.*\.error.*/i];
+```
+
+Localization patterns can also be defined where they are used.
+Add a comment with the keyword `keep-localization-pattern:` to the code to register a specific pattern for preservation.
+
+Javascript
+
+```javascript
+// keep-localization-pattern: ^account\.costcenter\.budget\.period\.value.*
+```
+
+HTML
+
+```html
+<!-- keep-localization-pattern: ^account\.login\..*\.message$ -->
 ```
 
 The clean up script is integrated in the full check run (`npm run check`) and will also be performed in continuous integration on the whole code base.
+
+The cleanup script also supports a build argument: `npm run clean-localizations --build`.
+When supplied, an Angular build with source maps is performed to limit the project to sources that are actually used before performing a cleanup.
+With this, project customizations can clean-up keys from features that are not required in the project.
 
 ## Extend Locales
 

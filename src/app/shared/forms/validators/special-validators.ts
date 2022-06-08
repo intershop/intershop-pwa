@@ -119,4 +119,17 @@ export class SpecialValidators {
     }
     return moneyAmountPattern.test(control.value) ? undefined : { moneyAmount: { valid: false } };
   }
+  static noSunday(control: FormControl): boolean {
+    return SpecialValidators.noDay(control, 'sunday');
+  }
+
+  static noSaturday(control: FormControl): boolean {
+    return SpecialValidators.noDay(control, 'saturday');
+  }
+
+  private static noDay(control: FormControl, day: 'saturday' | 'sunday'): boolean {
+    const date = control.value as Date;
+
+    return !(day === 'saturday' ? date?.getDay() === 6 : date?.getDate() === 0);
+  }
 }

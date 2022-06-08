@@ -1,17 +1,15 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { noInitializeObservablesDirectlyRule } from '../src/rules/no-initialize-observables-directly';
+import noInitializeObservablesDirectlyRule from '../src/rules/no-initialize-observables-directly';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'no-initialize-observables-directly',
-  rule: noInitializeObservablesDirectlyRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+testRule(noInitializeObservablesDirectlyRule, {
+  valid: [
+    {
+      name: 'should not report when observables are initialized in ngOnInit',
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent implements OnInit {
           observable$: Observable<any>;
@@ -20,35 +18,53 @@ const config: RuleTestConfig = {
           }
         }
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+    {
+      name: 'should not report when Subjects are initialized directly',
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent {
           observable$ = new Subject<any>()
         }
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report when observables are initialized in field declarations',
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent {
           observable$ = new Observable<any>()
         }
         `,
-        errors: [
-          {
-            messageId: 'wrongInitializeError',
-            type: AST_NODE_TYPES.PropertyDefinition,
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'wrongInitializeError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+    },
+    {
+      name: 'should report when observables are initialized in constructors',
+      filename: 'test.component.ts',
+      code: `
+        @Component({})
+        export class TestComponent {
+          observable$: Observable<any>;
+          constructor() {
+            observable$ = new Observable<any>();
+          }
+        }
+        `,
+      errors: [
+        {
+          messageId: 'wrongInitializeError',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+  ],
+});

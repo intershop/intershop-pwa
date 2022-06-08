@@ -28,8 +28,10 @@ export interface LineItemData {
     price: PriceItemData;
     undiscountedPrice: PriceItemData;
     singleBasePrice: PriceItemData;
+    undiscountedSingleBasePrice?: PriceItemData;
   };
   hiddenGift: boolean;
   freeGift: boolean;
   quantityFixed?: boolean;
+  quote?: string;
 }

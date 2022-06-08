@@ -1,76 +1,74 @@
-import { noVarBeforeReturnRule } from '../src/rules/no-var-before-return';
+import noVarBeforeReturnRule from '../src/rules/no-var-before-return';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'no-var-before-return',
-  rule: noVarBeforeReturnRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.ts',
-        code: `
+testRule(noVarBeforeReturnRule, {
+  valid: [
+    {
+      name: 'should not report if there is a declaration with deconstruction',
+      filename: 'test.ts',
+      code: `
       function testFunction() {
         const obj =  { a: 12, b: 'abc' };
         const { a, b } = obj;
         return a;
       }
       `,
-      },
-      {
-        filename: 'test.ts',
-        code: `
+    },
+    {
+      name: 'should not report if there is a modification before return',
+      filename: 'test.ts',
+      code: `
       function testFunction() {
         let a = 23;
         a += 1;
         return a;
       }
       `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.ts',
-        code: `
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report if there is a declaration right before return (primitive data type)',
+      filename: 'test.ts',
+      code: `
         function testFunction() {
           let abc = '123';
           return abc;
         }
         `,
-        output: `
+      output: `
         function testFunction() {
           return '123';
         }
         `,
-        errors: [
-          {
-            messageId: 'varError',
-            line: 3,
-          },
-        ],
-      },
-      {
-        filename: 'test.ts',
-        code: `
+      errors: [
+        {
+          messageId: 'varError',
+          line: 3,
+        },
+      ],
+    },
+    {
+      name: 'should report if there is a declaration right before return (complex data type)',
+      filename: 'test.ts',
+      code: `
         function testFunction() {
           let abc = new RegExp('ab+c', 'i');
           return abc;
         }
         `,
-        output: `
+      output: `
         function testFunction() {
           return new RegExp('ab+c', 'i');
         }
         `,
-        errors: [
-          {
-            messageId: 'varError',
-            line: 3,
-          },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'varError',
+          line: 3,
+        },
+      ],
+    },
+  ],
+});

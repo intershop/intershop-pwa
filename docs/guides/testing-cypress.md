@@ -43,6 +43,29 @@ So do not use HTML-specific selectors or exposed cypress functionality in tests 
 Also do not hide too much actions with the [PageObject Pattern][concept-testing-pageobject].
 As a rule of thumb, whenever the user triggers an action, it should be represented by a line of code in the spec.
 
+## Debugging Flaky Cypress Tests
+
+It can happen that tests fail on CI environments but run smooth on local machines.
+Most often the cause is the difference in computing power between the two environments, as CI environments tend to be significantly less powerful.
+
+To simulate slow computing and bad network, the easiest way is to introduce an interceptor in the PWA that randomly slows down network traffic.
+Add the following to the [CoreModule providers](../../src/app/core/core.module.ts):
+
+```ts
+    {
+      provide: HTTP_INTERCEPTORS,
+      useValue: {
+        intercept(req: HttpRequest<unknown>, next: HttpHandler) {
+          return next.handle(req).pipe(delay(Math.random() * 1500 + 500));
+        },
+      },
+      multi: true,
+    },
+```
+
+That way each network response will be delayed randomly from 500 to 2000 ms.
+To be able to run tests locally now, the `defaultCommandTimeout` in [cypress.json](../../e2e/cypress.json) probably has to be increased.
+
 # Further References
 
 - [Concept - Testing the PWA][concept-testing]

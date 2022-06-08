@@ -1,9 +1,10 @@
-FROM node:14 as buildstep
+FROM node:16 as buildstep
+ENV CI=true
 COPY . /workspace/
 WORKDIR /workspace
 RUN npm ci
 RUN ./node_modules/.bin/ngcc
 RUN npm run build:schematics
-RUN npm run synchronize-lazy-components -- --ci
+RUN npm run synchronize-lazy-components
 EXPOSE 8080
 CMD npx ng serve --port 8080

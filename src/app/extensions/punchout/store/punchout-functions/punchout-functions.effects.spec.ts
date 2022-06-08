@@ -33,9 +33,9 @@ describe('Punchout Functions Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting([])],
       providers: [
-        PunchoutFunctionsEffects,
-        provideMockActions(() => actions$),
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
+        provideMockActions(() => actions$),
+        PunchoutFunctionsEffects,
       ],
     });
 

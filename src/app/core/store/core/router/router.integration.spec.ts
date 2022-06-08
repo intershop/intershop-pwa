@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -22,11 +21,7 @@ describe('Router Integration', () => {
   let router: Router;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router'], true),
         RouterTestingModule.withRoutes([
@@ -44,7 +39,7 @@ describe('Router Integration', () => {
                     children: [
                       {
                         path: 'routes',
-                        component: DummyComponent,
+                        children: [],
                         data: { level: 4 },
                       },
                     ],
@@ -53,7 +48,7 @@ describe('Router Integration', () => {
               },
             ],
           },
-          { path: '**', component: DummyComponent },
+          { path: '**', children: [] },
         ]),
       ],
       providers: [provideStoreSnapshots()],

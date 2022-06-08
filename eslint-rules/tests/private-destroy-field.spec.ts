@@ -1,69 +1,164 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { privateDestroyFieldRule } from '../src/rules/private-destroy-field';
+import privateDestroyFieldRule from '../src/rules/private-destroy-field';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
-const config: RuleTestConfig = {
-  ruleName: 'private-destroy-field',
-  rule: privateDestroyFieldRule,
-  tests: {
-    valid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+testRule(privateDestroyFieldRule, {
+  valid: [
+    {
+      name: 'should not report if destroy$ subject is used correctly',
+      filename: 'test.component.ts',
+      code: `
+        @Component({})
+        export class TestComponent  {
+          private destroy$ = new Subject<void>();
+        }
+        `,
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report if destroy$ is not used with Subject',
+      filename: 'test.component.ts',
+      code: `
+        @Component({})
+        export class TestComponent  {
+          private destroy$ = new BehaviorSubject<void>(null);
+        }
+        `,
+      errors: [
+        {
+          messageId: 'voidSubjectError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+    },
+    {
+      name: 'should report if destroy$ subject is not used with void',
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent  {
           private destroy$ = new Subject<any>();
         }
         `,
-      },
-    ],
-    invalid: [
-      {
-        filename: 'test.component.ts',
-        code: `
+      errors: [
+        {
+          messageId: 'voidSubjectError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+      output: `
         @Component({})
         export class TestComponent  {
-          destroy$ = new Subject<any>();
+          private destroy$ = new Subject<void>();
         }
         `,
-        errors: [
-          {
-            messageId: 'privateDestroyError',
-            type: AST_NODE_TYPES.PropertyDefinition,
-          },
-        ],
-        output: `
+    },
+    {
+      name: 'should report if destroy$ subject is implicitely public',
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent  {
-          private destroy$ = new Subject<any>();
+          destroy$ = new Subject<void>();
         }
         `,
-      },
-      {
-        filename: 'test.component.ts',
-        code: `
+      errors: [
+        {
+          messageId: 'privateDestroyError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+      output: `
         @Component({})
         export class TestComponent  {
-          public destroy$ = new Subject<any>();
+          private destroy$ = new Subject<void>();
         }
         `,
-        errors: [
-          {
-            messageId: 'privateDestroyError',
-            type: AST_NODE_TYPES.PropertyDefinition,
-          },
-        ],
-        output: `
+    },
+    {
+      name: 'should report if destroy$ subject is explicitely public',
+      filename: 'test.component.ts',
+      code: `
         @Component({})
         export class TestComponent  {
-          private destroy$ = new Subject<any>();
+          public destroy$ = new Subject<void>();
         }
         `,
-      },
-    ],
-  },
-};
-
-export default config;
+      errors: [
+        {
+          messageId: 'privateDestroyError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+      output: `
+        @Component({})
+        export class TestComponent  {
+          private destroy$ = new Subject<void>();
+        }
+        `,
+    },
+    {
+      name: 'should report if destroy$ subject is explicitely protected',
+      filename: 'test.component.ts',
+      code: `
+        @Component({})
+        export class TestComponent  {
+          protected destroy$ = new Subject<void>();
+        }
+        `,
+      errors: [
+        {
+          messageId: 'privateDestroyError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+      output: `
+        @Component({})
+        export class TestComponent  {
+          private destroy$ = new Subject<void>();
+        }
+        `,
+    },
+    {
+      name: 'should report if destroy$ subject is not private and does not use void',
+      filename: 'test.component.ts',
+      code: `
+        @Component({})
+        export class TestComponent  {
+          destroy$ = new Subject();
+        }
+        `,
+      errors: [
+        {
+          messageId: 'bothError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+      output: `
+        @Component({})
+        export class TestComponent  {
+          private destroy$ = new Subject<void>();
+        }
+        `,
+    },
+    {
+      name: 'should report if destroy$ subject is not private and does not use Subject',
+      filename: 'test.component.ts',
+      code: `
+        @Component({})
+        export class TestComponent  {
+          destroy$ = new BehaviorSubject<void>(null);
+        }
+        `,
+      errors: [
+        {
+          messageId: 'bothError',
+          type: AST_NODE_TYPES.PropertyDefinition,
+        },
+      ],
+    },
+  ],
+});

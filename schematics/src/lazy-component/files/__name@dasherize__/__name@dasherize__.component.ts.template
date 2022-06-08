@@ -1,20 +1,24 @@
 import {
   ChangeDetectionStrategy, Component, createNgModuleRef, OnInit, ViewChild, ViewContainerRef,
   Injector,
-  <% if (bindings.length) { %>ComponentRef, Input, OnChanges, <% } %>
+  ComponentRef,
+  <% if (inputNames.length) { %>Input, OnChanges, <% } %>
   <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
 
-<% if(!isProject && !isShared) { %> import { FeatureToggleService } from 'ish-core/feature-toggle.module'; <% } %>
+<% if(guardDisplay) { %>
+  import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+  import { takeUntil } from 'rxjs/operators';
+<% } %>
 
-<% if (imports.length) { %><%= imports.map(i => `import { ${i.types.join(', ')} } from ${i.from};`).join('\n') %><% } %>
+import type { <%= classify(originalName) %>Component as OriginalComponent } from '<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
 
 @Component({
   selector: '<%= selector %>',
   templateUrl: './<%= dasherize(name) %>.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class <%= classify(name) %>Component implements OnInit <% if (bindings.length) { %>, OnChanges <% } %>{
+export class <%= classify(name) %>Component implements OnInit <% if (inputNames.length) { %>, OnChanges <% } %>{
   /*
    * WARNING!
    *
@@ -26,42 +30,66 @@ export class <%= classify(name) %>Component implements OnInit <% if (bindings.le
    */
 
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
-  <% if (bindings.length) { %><%= bindings.map(b => b.declaration).join('\n  ') %><% } %>
 
-  <% if (bindings.length) { %>// eslint-disable-next-line @typescript-eslint/no-explicit-any -- access in on-changes required
-  private component: ComponentRef<any>;<% } %>
+<% for (let name of inputNames) { %>
+  @Input() <%= name %>: OriginalComponent['<%= name %>'];
+<% } %>
+
+  private component: ComponentRef<OriginalComponent>;
 
   constructor(
-    <% if(!isProject && !isShared) { %> private featureToggleService: FeatureToggleService, <% } %>
+    <% if(guardDisplay) { %>private featureToggleService: FeatureToggleService,<% } %>
     private injector: Injector
   ) {}
 
-  async ngOnInit() {
-    <% if(!isProject && !isShared) { %> if (this.featureToggleService.enabled('<%= camelize(extension) %>')) { <% } %>
-      const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
-
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { <%= classify(originalName) %>Component } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
-
-      const moduleRef = createNgModuleRef(module, this.injector);
-
-    <% if (bindings.length) { %>
-      this.component = this.anchor.createComponent(<%= classify(originalName) %>Component, { ngModuleRef: moduleRef });
-      this.ngOnChanges(<% if (onChanges === 'complex') { %>{
-          <%= bindings.map(b => `${b.name}: new SimpleChange(undefined, this.${b.name}, true),`).join('\n        ') %>
-        }<% } %>);
-      this.component.changeDetectorRef.markForCheck();
-    <% } else { %>
-      this.anchor.createComponent(<%= classify(originalName) %>Component, { ngModuleRef: moduleRef }).changeDetectorRef.markForCheck();
+  <% if(!guardDisplay) { %>async<% } %> ngOnInit() {
+    <% if(guardDisplay) { %> this.featureToggleService.enabled$('<%= camelize(guardDisplay) %>').pipe(takeUntil(this.destroy$)).subscribe(async enabled => {
+      if (enabled) {
     <% } %>
-    <% if(!isProject && !isShared){ %> } <% } %>
+
+      await this.renderComponent();
+
+    <% if(guardDisplay){ %>
+        } else {
+          this.anchor.clear();
+        }
+      })
+    <% } %>
   }
 
-<% if (bindings.length) { %>
+  private async renderComponent() {
+    const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
+
+    const { <%= classify(originalName) %>Component: originalComponent } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
+
+    const ngModuleRef = createNgModuleRef(module, this.injector);
+
+    this.component = this.anchor.createComponent(originalComponent, { ngModuleRef });
+  <% if (inputNames.length) { %>
+    this.ngOnChanges(
+      <% if (onChanges === 'complex') { %>{
+        <% for (let name of inputNames) { %>
+          <%= name %>: new SimpleChange(undefined, this.<%= name %>, true),
+        <% } %>
+        }
+      <% } %>
+    );
+  <% } %>
+    this.component.changeDetectorRef.markForCheck();
+  }
+
+<% if (inputNames.length) { %>
   ngOnChanges(<% if (onChanges === 'complex') { %>changes: SimpleChanges<% } %>) {
     if (this.component) {
-      <%= bindings.map(b => `this.component.instance.${b.name} = this.${b.name};`).join('\n    ') %>
-      <% if (onChanges === 'simple') { %>this.component.instance.ngOnChanges();<% } else if (onChanges === 'complex') { %>this.component.instance.ngOnChanges(changes);<% } %>
+      <% for (let name of inputNames) { %>
+        this.component.instance.<%= name %> = this.<%= name %>;
+      <% } %>
+
+      <% if (onChanges === 'simple') { %>
+        this.component.instance.ngOnChanges();
+      <% } else if (onChanges === 'complex') { %>
+        this.component.instance.ngOnChanges(changes);
+      <% } %>
     }
   }
 <% } %>

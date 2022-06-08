@@ -1,4 +1,4 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
 
@@ -10,6 +10,10 @@ export interface RuleSetting {
   message: string;
 }
 
+const messages = {
+  banImportsFilePatternError: `{{message}}`,
+};
+
 /**
  * Allows you to specify imports that you don't want to use in files specified by a pattern.
  *
@@ -19,11 +23,9 @@ export interface RuleSetting {
  * starImport         validate the no import * as from given name are contained
  * message            error message, which should be displayed, when the validation failed
  */
-export const banImportsFilePatternRule: TSESLint.RuleModule<string, RuleSetting[][]> = {
+const banImportsFilePatternRule: TSESLint.RuleModule<keyof typeof messages, [RuleSetting[]]> = {
   meta: {
-    messages: {
-      banImportsFilePatternError: `{{message}}`,
-    },
+    messages,
     type: 'problem',
     schema: [
       {
@@ -81,3 +83,5 @@ const checkValidityOfSpecifiers = (
   (!importName && !starImport) ||
   (importName && specifiers.some(specifier => new RegExp(importName).test(specifier.local.name))) ||
   (starImport && specifiers.some(specifier => specifier.type === TSESTree.AST_NODE_TYPES.ImportNamespaceSpecifier));
+
+export default banImportsFilePatternRule;

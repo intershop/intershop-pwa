@@ -13,6 +13,7 @@ services:
         # activeThemes: b2c
     environment:
       - LOGGING=on
+      - SOURCE_MAPS=on
       - ICM_BASE_URL
       # - PROXY_ICM=true
       - TRUST_ICM=true

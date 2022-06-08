@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyNumber, instance, mock, when } from 'ts-mockito';
 
@@ -7,7 +6,6 @@ import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { CMSProductListFilterComponent } from './cms-product-list-filter.component';
 
@@ -24,7 +22,7 @@ describe('Cms Product List Filter Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [CMSProductListFilterComponent, MockComponent(ProductsListComponent)],
+      declarations: [CMSProductListFilterComponent],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },

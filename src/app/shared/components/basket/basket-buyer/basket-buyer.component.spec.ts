@@ -1,14 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { User } from 'ish-core/models/user/user.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketBuyerComponent } from './basket-buyer.component';
@@ -23,8 +19,8 @@ describe('Basket Buyer Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [BasketBuyerComponent, MockComponent(FaIconComponent)],
+      imports: [TranslateModule.forRoot()],
+      declarations: [BasketBuyerComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
@@ -38,7 +34,6 @@ describe('Basket Buyer Component', () => {
 
     component.object = BasketMockData.getBasket();
 
-    when(accountFacade.user$).thenReturn(of({ firstName: 'Patricia', lastName: 'Miller' } as User));
     when(accountFacade.customer$).thenReturn(of({ companyName: 'OilCorp', taxationID: '1234' } as Customer));
   });
 
@@ -48,7 +43,14 @@ describe('Basket Buyer Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display the taxation id of the customer', () => {
+  it('should display the taxation id of the object', () => {
+    component.object.taxationId = '5678';
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id="taxationID"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="taxationID"]').innerHTML).toContain('5678');
+  });
+
+  it('should display the taxation id of the customer if basket/order has no taxation Id', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="taxationID"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="taxationID"]').innerHTML).toContain('1234');

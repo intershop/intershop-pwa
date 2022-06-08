@@ -13,7 +13,6 @@ import {
   map,
   sample,
   switchMap,
-  switchMapTo,
   takeWhile,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -23,6 +22,7 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import {
   getProductListingItemsPerPage,
   loadMoreProducts,
@@ -30,7 +30,13 @@ import {
 } from 'ish-core/store/shopping/product-listing';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import {
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  useCombinedObservableOnAction,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 
 import { searchProducts, searchProductsFail, suggestSearch, suggestSearchSuccess } from './search.actions';
 
@@ -52,7 +58,14 @@ export class SearchEffects {
    */
   triggerSearch$ = createEffect(() =>
     this.store.pipe(
-      sample(this.actions$.pipe(ofType(routerNavigatedAction))),
+      sample(
+        this.actions$.pipe(
+          useCombinedObservableOnAction(
+            this.actions$.pipe(ofType(routerNavigatedAction)),
+            personalizationStatusDetermined
+          )
+        )
+      ),
       ofUrl(/^\/search.*/),
       withLatestFrom(this.store.pipe(select(selectRouteParam('searchTerm')))),
       map(([, searchTerm]) => searchTerm),
@@ -122,7 +135,7 @@ export class SearchEffects {
   setSearchBreadcrumb$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      switchMapTo(
+      switchMap(() =>
         this.store.pipe(
           ofUrl(/^\/search.*/),
           select(selectRouteParam('searchTerm')),

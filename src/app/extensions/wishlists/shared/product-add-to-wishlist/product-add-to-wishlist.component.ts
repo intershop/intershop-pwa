@@ -25,8 +25,8 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
  */
 @GenerateLazyComponent()
 export class ProductAddToWishlistComponent implements OnDestroy, OnInit {
-  @Input() displayType?: 'icon' | 'link' | 'animated' = 'link';
-  @Input() cssClass?: string;
+  @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
+  @Input() cssClass: string;
 
   visible$: Observable<boolean>;
 

@@ -6,7 +6,6 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { WishlistPreferencesDialogComponent } from '../../shared/wishlist-preferences-dialog/wishlist-preferences-dialog.component';
@@ -29,7 +28,6 @@ describe('Account Wishlist Page Component', () => {
         MockComponent(AccountWishlistListComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
-        MockComponent(LoadingComponent),
         MockComponent(WishlistPreferencesDialogComponent),
       ],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistsFacade) }],

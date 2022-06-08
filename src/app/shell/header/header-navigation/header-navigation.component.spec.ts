@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
-import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-navigation/sub-category-navigation.component';
+import { LazyContentIncludeComponent } from 'ish-shell/shared/lazy-content-include/lazy-content-include.component';
 
 import { HeaderNavigationComponent } from './header-navigation.component';
 
@@ -22,11 +21,7 @@ describe('Header Navigation Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [
-        HeaderNavigationComponent,
-        MockComponent(FaIconComponent),
-        MockComponent(SubCategoryNavigationComponent),
-      ],
+      declarations: [HeaderNavigationComponent, MockComponent(LazyContentIncludeComponent)],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });
@@ -65,6 +60,10 @@ describe('Header Navigation Component', () => {
             CAT_C
           </a>
         </li>
+        <ish-lazy-content-include
+          includeid="include.header.navigation.pagelet2-Include"
+          ng-reflect-include-id="include.header.navigation.page"
+        ></ish-lazy-content-include>
       </ul>
     `);
   });

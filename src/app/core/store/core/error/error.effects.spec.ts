@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
@@ -14,15 +13,11 @@ describe('Error Effects', () => {
   let store$: Store;
   let location: Location;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['error'], [ErrorEffects]),
-        RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'error', children: [] }]),
       ],
     });
 

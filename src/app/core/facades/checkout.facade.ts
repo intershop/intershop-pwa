@@ -136,6 +136,26 @@ export class CheckoutFacade {
 
   // SHIPPING
 
+  isDesiredDeliveryDateEnabled$ = this.store.pipe(
+    select(getServerConfigParameter<boolean>('shipping.desiredDeliveryDate'))
+  );
+
+  isDesiredDeliveryExcludeSaturday$ = this.store.pipe(
+    select(getServerConfigParameter<boolean>('shipping.deliveryExcludeSaturday'))
+  );
+
+  isDesiredDeliveryExcludeSunday$ = this.store.pipe(
+    select(getServerConfigParameter<boolean>('shipping.deliveryExcludeSunday'))
+  );
+
+  desiredDeliveryDaysMax$ = this.store.pipe(
+    select(getServerConfigParameter<number>('shipping.desiredDeliveryDaysMax'))
+  );
+
+  desiredDeliveryDaysMin$ = this.store.pipe(
+    select(getServerConfigParameter<number>('shipping.desiredDeliveryDaysMin'))
+  );
+
   eligibleShippingMethods$() {
     return this.basket$.pipe(
       whenTruthy(),
@@ -145,6 +165,12 @@ export class CheckoutFacade {
     );
   }
   eligibleShippingMethodsNoFetch$ = this.store.pipe(select(getBasketEligibleShippingMethods));
+
+  shippingMethod$(id: string) {
+    return this.eligibleShippingMethodsNoFetch$.pipe(
+      map(methods => (methods?.length ? methods.find(method => method.id === id) : undefined))
+    );
+  }
 
   getValidShippingMethod$() {
     return combineLatest([

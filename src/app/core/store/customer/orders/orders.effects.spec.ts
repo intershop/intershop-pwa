@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -49,9 +48,6 @@ describe('Orders Effects', () => {
   let location: Location;
   let router: Router;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
-
   const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
   const orders = [order, { id: '2', documentNo: '00000002' }] as Order[];
 
@@ -62,7 +58,6 @@ describe('Orders Effects', () => {
     when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(of(order));
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user', 'orders', 'basket'),
@@ -70,19 +65,19 @@ describe('Orders Effects', () => {
           {
             path: 'checkout',
             children: [
-              { path: 'receipt', component: DummyComponent },
-              { path: 'payment', component: DummyComponent },
+              { path: 'receipt', children: [] },
+              { path: 'payment', children: [] },
             ],
           },
-          { path: 'account/orders/:orderId', component: DummyComponent },
-          { path: '**', component: DummyComponent },
+          { path: 'account/orders/:orderId', children: [] },
+          { path: '**', children: [] },
         ]),
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         OrdersEffects,
         provideMockActions(() => actions$),
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
       ],
     });
 

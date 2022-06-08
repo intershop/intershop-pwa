@@ -10,6 +10,8 @@ import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
+import { CompareRoutingModule } from './extensions/compare/pages/compare-routing.module';
+import { ContactUsRoutingModule } from './extensions/contact-us/pages/contact-us-routing.module';
 import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-routing.module';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
 import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing.module';
@@ -35,9 +37,11 @@ import { ShellModule } from './shell/shell.module';
     TactonRoutingModule,
     StoreLocatorRoutingModule,
     RecentlyRoutingModule,
+    CompareRoutingModule,
+    ContactUsRoutingModule,
     AppLastRoutingModule,
   ],
-  /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
+  /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],
   providers: [{ provide: UrlSerializer, useClass: PWAUrlSerializer }],
 })

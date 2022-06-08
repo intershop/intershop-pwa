@@ -42,9 +42,9 @@ describe('Addresses Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
       providers: [
+        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
         AddressesEffects,
         provideMockActions(() => actions$),
-        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
       ],
     });
 

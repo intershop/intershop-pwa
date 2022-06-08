@@ -19,7 +19,7 @@ export class AccountOrderTemplateListComponent {
    * The list of order templates of the customer.
    */
   @Input() orderTemplates: OrderTemplate[];
-  @Input() columnsToDisplay?: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
+  @Input() columnsToDisplay: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
 
   constructor(private orderTemplatesFacade: OrderTemplatesFacade, private translate: TranslateService) {}
 

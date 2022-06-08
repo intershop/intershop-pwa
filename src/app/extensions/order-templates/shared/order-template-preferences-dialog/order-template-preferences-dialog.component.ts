@@ -36,7 +36,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
    */
   @Input() orderTemplate: OrderTemplate;
 
-  @Input() modalTitle?: string;
+  @Input() modalTitle: string;
   /**
    * Emits the data of the new order template to create.
    */

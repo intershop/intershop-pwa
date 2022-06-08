@@ -83,6 +83,8 @@ export class OrderMapper {
         totals,
         infos,
         attributes: data.attributes,
+        taxationId: data.taxIdentificationNumber,
+        user: data.buyer,
       };
     }
   }

@@ -7,7 +7,6 @@ describe('Authorization Mapper', () => {
   let authorizationMapper: AuthorizationMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     authorizationMapper = TestBed.inject(AuthorizationMapper);
   });
 

@@ -5,7 +5,7 @@
 
 # from .gitignore
 **/*.xliff
-**/*.ut.spec.ts
+**/*.ut.spec.ts*
 **/node_modules
 /.idea
 /.project
@@ -43,7 +43,6 @@
 
 # from e2e/.gitignore
 /e2e/node_modules
-/e2e/out-tsc
 /e2e/reports
 /e2e/package-lock.json
 
@@ -64,9 +63,7 @@
 /reports/e2e-*.xml
 
 # from schematics/.gitignore
-/schematics/src/**/*.js
-!/schematics/src/utils/lint-fix-mock.js
-/schematics/src/**/*.d.ts
+/schematics/dist
 /schematics/package-lock.json
 
 # from e2e/cypress/.gitignore
@@ -79,41 +76,54 @@
 /node_modules/eslint-plugin-ish-custom-rules/package-lock.json
 /node_modules/eslint-plugin-ish-custom-rules/dist
 
+# from node_modules/intershop-schematics/.gitignore
+/node_modules/intershop-schematics/dist
+/node_modules/intershop-schematics/package-lock.json
+
 # from src/ssr/server-scripts/.gitignore
 /src/ssr/server-scripts/ecosystem-ports.json
 
 # from src/app/shell/shared/.gitignore
-/src/app/shell/shared/lazy**
+/src/app/shell/shared/**/lazy*
 
 # from projects/organization-management/src/app/exports/.gitignore
-/projects/organization-management/src/app/exports/lazy**
+/projects/organization-management/src/app/exports/**/lazy*
 
 # from projects/requisition-management/src/app/exports/.gitignore
-/projects/requisition-management/src/app/exports/lazy**
+/projects/requisition-management/src/app/exports/**/lazy*
+
+# from src/app/extensions/compare/exports/.gitignore
+/src/app/extensions/compare/exports/**/lazy*
 
 # from src/app/extensions/order-templates/exports/.gitignore
-/src/app/extensions/order-templates/exports/*/**/*.*
+/src/app/extensions/order-templates/exports/**/lazy*
 
 # from src/app/extensions/punchout/exports/.gitignore
-/src/app/extensions/punchout/exports/*/**/lazy*.*
+/src/app/extensions/punchout/exports/**/lazy*
 
 # from src/app/extensions/quickorder/exports/.gitignore
-/src/app/extensions/quickorder/exports/*/**/*.*
+/src/app/extensions/quickorder/exports/**/lazy*
 
 # from src/app/extensions/quoting/exports/.gitignore
-/src/app/extensions/quoting/exports/*/**/*.*
+/src/app/extensions/quoting/exports/**/lazy*
+
+# from src/app/extensions/rating/exports/.gitignore
+/src/app/extensions/rating/exports/**/lazy*
 
 # from src/app/extensions/recently/exports/.gitignore
-/src/app/extensions/recently/exports/*/**/*.*
+/src/app/extensions/recently/exports/**/lazy*
+
+# from src/app/extensions/store-locator/exports/.gitignore
+/src/app/extensions/store-locator/exports/**/lazy*
 
 # from src/app/extensions/tacton/exports/.gitignore
-/src/app/extensions/tacton/exports/*/**/lazy*.*
+/src/app/extensions/tacton/exports/**/lazy*
 
 # from src/app/extensions/wishlists/exports/.gitignore
-/src/app/extensions/wishlists/exports/*/**/*.*
+/src/app/extensions/wishlists/exports/**/lazy*
 
 # from schematics/src/extension/files/__name@dasherize__/exports/.gitignore
-/schematics/src/extension/files/__name@dasherize__/exports/*/**/*.*
+/schematics/src/extension/files/__name@dasherize__/exports/**/lazy*
 
 # The content between these markers is generated.
 # It can be synchronized using 'npm run update-dockerignore'

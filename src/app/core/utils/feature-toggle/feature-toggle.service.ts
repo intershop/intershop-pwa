@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
 
@@ -38,6 +38,9 @@ export class FeatureToggleService {
    * Asynchronously check if {@param feature} is active.
    */
   enabled$(feature: string): Observable<boolean> {
-    return this.featureToggles$.pipe(map(featureToggles => checkFeature(featureToggles, feature)));
+    return this.featureToggles$.pipe(
+      map(featureToggles => checkFeature(featureToggles, feature)),
+      distinctUntilChanged()
+    );
   }
 }

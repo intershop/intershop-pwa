@@ -12,6 +12,7 @@ import {
   url,
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
+import { PWAPageOptionsSchema as Options } from 'schemas/page/schema';
 import { forEachToken, getChildOfKind } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -20,29 +21,35 @@ import { readIntoSourceFile } from '../utils/filesystem';
 import { applyLintFix } from '../utils/lint-fix';
 import { addImportToFile } from '../utils/registration';
 
-import { PWAPageOptionsSchema as Options } from './schema';
-
 function addRouteToArray(
-  options: { name?: string; routingModule?: string; child?: string; lazy?: boolean },
+  options: { name?: string; routingModule?: string; child?: string; lazy?: boolean; extension?: string },
   host: Tree,
   position: number,
   insertComma: boolean
 ) {
   const dasherizedName = strings.dasherize(options.name);
   const path = options.child ? options.child : options.lazy ? dasherizedName : dasherizedName.replace(/-/g, '/');
+
+  const guard = options.extension
+    ? `, canActivate: [FeatureToggleGuard], data: { feature: '${strings.camelize(options.extension)}' }`
+    : '';
+
   if (options.lazy) {
     const loadChildren = `() => import('${
       options.child ? '..' : '.'
     }/${dasherizedName}/${dasherizedName}-page.module').then(m => m.${strings.classify(dasherizedName)}PageModule)`;
 
     const recorder = host.beginUpdate(options.routingModule);
-    recorder.insertRight(position, `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: ${loadChildren} }`);
+    recorder.insertRight(
+      position,
+      `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: ${loadChildren}${guard} }`
+    );
     host.commitUpdate(recorder);
   } else {
     const recorder = host.beginUpdate(options.routingModule);
     recorder.insertRight(
       position,
-      `${insertComma ? ', ' : ''}{ path: '${path}', component: ${strings.classify(options.name)}PageComponent }`
+      `${insertComma ? ', ' : ''}{ path: '${path}', component: ${strings.classify(options.name)}PageComponent${guard} }`
     );
     host.commitUpdate(recorder);
   }
@@ -153,7 +160,7 @@ export function createPage(options: Options): Rule {
 
     operations.push(
       schematic('component', {
-        ...options,
+        project: options.project,
         name: `${options.name}-page`,
         path: `${options.path}${options.name}`,
         flat: true,
@@ -161,6 +168,15 @@ export function createPage(options: Options): Rule {
     );
 
     operations.push(addRouteToRoutingModule(options));
+    if (options.extension && !new String(host.read(options.routingModule)).includes('ish-core/feature-toggle.module')) {
+      operations.push(
+        addImportToFile({
+          module: options.routingModule,
+          artifactName: 'FeatureToggleGuard',
+          moduleImportPath: '/src/app/core/feature-toggle.module',
+        })
+      );
+    }
     operations.push(applyLintFix());
 
     return chain(operations);

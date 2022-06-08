@@ -3,9 +3,9 @@ require('jest-preset-angular/setup-jest');
 import { CompilerOptions } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
 import '@angular/localize/init';
-import * as matchers from 'jest-extended';
 
-expect.extend(matchers);
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+expect.extend(require('jest-extended'));
 
 beforeEach(() => {
   const compilerOptions: CompilerOptions = { preserveWhitespaces: false };
@@ -23,12 +23,8 @@ beforeEach(() => {
     logFunction(...args);
   };
 
-  const errorFunction = global.console.error;
   global.console.error = (...args: unknown[]) => {
-    if (args?.some(arg => arg instanceof Error)) {
-      fail(...args);
-    }
-    errorFunction(...args);
+    fail(...args);
   };
 
   jest.spyOn(global.console, 'warn').mockImplementation(arg => {
@@ -63,12 +59,5 @@ Object.defineProperty(document.body.style, 'transform', {
   value: () => ({
     enumerable: true,
     configurable: true,
-  }),
-});
-
-// fix for TypeError, see https://github.com/telerik/kendo-angular/issues/1505#issuecomment-385882188
-Object.defineProperty(window, 'getComputedStyle', {
-  value: () => ({
-    getPropertyValue: () => '',
   }),
 });

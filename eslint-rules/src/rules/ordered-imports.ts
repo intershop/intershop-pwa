@@ -1,4 +1,8 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+const messages = {
+  unorderedImports: `Imports are not ordered correctly.`,
+};
 
 /**
  * Enforces a certain ordering and grouping of imports:
@@ -11,11 +15,9 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimen
  *    - relative imports starting with `../`
  *    - relative imports from the same folder, starting with `./`
  */
-export const orderedImportsRule: TSESLint.RuleModule<string, []> = {
+const orderedImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      unorderedImports: `Imports are not ordered correctly.`,
-    },
+    messages,
     type: 'problem',
     fixable: 'code',
     schema: [],
@@ -126,3 +128,5 @@ function isDefaultOrNamespaceOrSideeffectImport(node: TSESTree.ImportDeclaration
     node.specifiers[0].type === AST_NODE_TYPES.ImportDefaultSpecifier
   );
 }
+
+export default orderedImportsRule;

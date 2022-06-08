@@ -17,7 +17,7 @@ Object.keys(defaultFile).forEach(key => {
 const fileNames = fs.readdirSync(translationFilesPath);
 const conversions = {};
 
-for (fileName of fileNames) {
+for (let fileName of fileNames) {
   console.log(fileName);
   var file = JSON.parse(fs.readFileSync(path.join(translationFilesPath, fileName), { encoding: 'utf8' }));
 
@@ -29,7 +29,7 @@ for (fileName of fileNames) {
 
   // make sure objects are stringified
   for (let key in prefixedFile) {
-    value = prefixedFile[key];
+    const value = prefixedFile[key];
     if (typeof value !== 'string') {
       prefixedFile[key] = JSON.stringify(value);
     }

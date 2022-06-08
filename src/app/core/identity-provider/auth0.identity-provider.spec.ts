@@ -1,5 +1,4 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -16,9 +15,6 @@ import { getLoggedInCustomer, getUserAuthorized, getUserLoading } from 'ish-core
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
 import { Auth0Config, Auth0IdentityProvider } from './auth0.identity-provider';
-
-@Component({ template: 'dummy' })
-class DummyComponent {}
 
 const idToken = 'abc123';
 
@@ -47,20 +43,19 @@ describe('Auth0 Identity Provider', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'register', component: DummyComponent },
-          { path: 'register/sso', component: DummyComponent },
-          { path: 'account', component: DummyComponent },
-          { path: 'logout', component: DummyComponent },
+          { path: 'register', children: [] },
+          { path: 'register/sso', children: [] },
+          { path: 'account', children: [] },
+          { path: 'logout', children: [] },
         ]),
       ],
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
-        { provide: OAuthService, useFactory: () => instance(oAuthService) },
         { provide: APP_BASE_HREF, useValue: baseHref },
+        { provide: OAuthService, useFactory: () => instance(oAuthService) },
         provideMockStore(),
       ],
     }).compileComponents();

@@ -19,10 +19,9 @@ export interface Product {
   attributeGroups?: { [id: string]: AttributeGroup };
   attachments?: Attachment[];
   images: Image[];
-  listPrice: Price;
-  salePrice: Price;
   manufacturer: string;
   roundedAverageRating: number;
+  numberOfReviews: number;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
   sku: string;

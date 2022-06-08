@@ -35,7 +35,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
   /**
    * Predefined wishlist to fill the form with, if there is no wishlist a new wishlist will be created
    */
-  @Input() wishlist?: Wishlist;
+  @Input() wishlist: Wishlist;
 
   /**
    * Emits the data of the new wishlist to create.

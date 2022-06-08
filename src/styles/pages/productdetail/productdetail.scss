@@ -11,33 +11,11 @@
   .label-quantity {
     padding-top: 7px;
   }
+}
 
-  .bundled-product-list,
-  .retail-product-list {
-    margin-bottom: $space-default;
-
-    .quantity {
-      font-family: $font-family-condensedregular;
-      font-size: $font-size-lg;
-    }
-
-    .bundled-product-list-item,
-    .retail-product-list-item {
-      list-style: none;
-    }
-  }
-
-  .bundled-product-list-actions {
-    form {
-      display: inline;
-    }
-
-    .add-to-wishlist,
-    .price-notification {
-      display: inline;
-      padding-left: 0;
-    }
-  }
+.bundled-product-list,
+.retail-product-list {
+  margin-bottom: $space-default;
 }
 
 .product-details-top-line {
@@ -75,6 +53,10 @@
       border: 1px solid $border-color-lighter;
     }
   }
+}
+
+.tab-pane {
+  padding-top: $space-default;
 }
 
 .panel-group {

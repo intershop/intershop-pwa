@@ -11,7 +11,7 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { Price } from './price.model';
 
 export function formatPrice(price: Price, lang: string): string {
-  const symbol = getCurrencySymbol(price.currency, 'wide', lang);
+  const symbol = getCurrencySymbol(price.currency, 'narrow', lang);
   return symbol ? formatCurrency(price.value, lang, symbol) : price.value?.toString();
 }
 

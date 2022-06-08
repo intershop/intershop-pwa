@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,7 +10,6 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous/checkout-address-anonymous.component';
 import { CheckoutAddressPageComponent } from './checkout-address-page.component';
@@ -24,9 +22,6 @@ describe('Checkout Address Page Component', () => {
   let accountFacade: AccountFacade;
 
   beforeEach(async () => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(of({ lineItems: [BasketMockData.getBasketItem()] } as BasketView));
 
@@ -35,19 +30,13 @@ describe('Checkout Address Page Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressPageComponent,
-        DummyComponent,
         MockComponent(CheckoutAddressAnonymousComponent),
         MockComponent(CheckoutAddressComponent),
-        MockComponent(LoadingComponent),
       ],
-
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'basket', component: DummyComponent }]),
-        TranslateModule.forRoot(),
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'basket', children: [] }]), TranslateModule.forRoot()],
       providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
     }).compileComponents();
   });

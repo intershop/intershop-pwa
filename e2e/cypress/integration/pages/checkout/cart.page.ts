@@ -10,17 +10,21 @@ export class CartPage {
   readonly addToWishlist = new AddToWishlistModule();
   readonly addToOrderTemplate = new AddToOrderTemplateModule();
 
-  private saveQuoteRequestButton = () => cy.get('[id="createQuote"]');
+  private saveQuoteRequestButton = () => cy.get('[data-testing-id="create-quote-from-basket"]');
 
   beginCheckout() {
     cy.wait(1000);
     cy.get(this.tag).find('button').contains('Checkout').click();
   }
 
-  createQuoteRequest() {
-    waitLoadingEnd(1000);
+  createQuoteRequest(waitEnabled = true) {
+    if (waitEnabled) {
+      this.saveQuoteRequestButton().should('not.have.class', 'disabled');
+      cy.wait(3000);
+      waitLoadingEnd();
+    }
     this.saveQuoteRequestButton().click();
-    waitLoadingEnd(1000);
+    waitLoadingEnd();
   }
 
   private addToWishlistButton = () => cy.get('ish-shopping-basket').find('[data-testing-id="addToWishlistButton"]');
@@ -104,7 +108,7 @@ export class CartPage {
             .invoke('val')
             .then(v => +v),
       },
-      remove: () => cy.get(this.tag).find('svg[data-icon="trash-alt"]').eq(idx).click(),
+      remove: () => cy.get(this.tag).find('[data-testing-id="remove-line-item"]').eq(idx).click(),
       sku: cy.get(this.tag).find('.product-id').eq(idx),
       openVariationEditDialog: () =>
         cy.get(this.tag).find('ish-line-item-edit').eq(idx).find('a.line-item-edit-link').click(),

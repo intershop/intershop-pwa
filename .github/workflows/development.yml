@@ -32,31 +32,29 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Install root dependencies
         run: npm ci
+        # disable CI mode so lazy components are linted
+        env:
+          CI: false
 
       - name: Install e2e dependencies
-        run: |
-          cd e2e
-          npm i
+        run: cd e2e && npm i
 
       - name: Code Formatting
-        run: npm run format
-
-      - name: Check No Changes from Formatting
-        run: git diff --exit-code --raw -p --stat
+        run: npm exec npm-run-all format check-no-changes
 
       - name: .dockerignore Sync
-        run: npm run update-dockerignore
+        run: npm exec npm-run-all update-dockerignore check-no-changes
 
-      - name: Check No Changes from .dockerignore Sync
-        run: git diff --exit-code --raw -p --stat
+      - name: Clean Localizations
+        run: npm exec npm-run-all clean-localizations check-no-changes
 
       - name: Compile Angular
         run: npm run build client
@@ -64,16 +62,16 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=8192
 
       - name: Compile Unit Tests
-        run: npx tsc -p tsconfig.all.json
+        run: npm run compile
 
       - name: Compile Cypress Tests
-        run: (cd e2e && npx tsc -p cypress/tsconfig.json)
+        run: cd e2e && npm run build
 
       - name: Run Escalated ESLint Rules
         run: npm run lint-hard
 
       - name: Check File Synchronization Status
-        run: node scripts/check-file-synchronization
+        run: npm run check-file-synchronization
 
   Jest:
     needs: [CancelPrevious]
@@ -81,10 +79,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Install root dependencies
@@ -97,7 +95,9 @@ jobs:
         run: npm run test:eslint-rules
 
       - name: schematics Jest
-        run: cd schematics && npm run test -- --ci
+        run: npm run test:schematics
+        env:
+          CI: false
 
   DeadCode:
     needs: [Quality, Jest]
@@ -109,26 +109,26 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Install root dependencies
         run: npm ci
 
       - name: Find Dead Code
-        run: npx ts-node scripts/find-dead-code
+        run: npm run dead-code
 
       - name: Find Unused TestBed declarations
-        run: |
-          npx ts-node scripts/cleanup-testbed origin/develop
-          git diff --exit-code --raw -p --stat
+        run: npm exec npm-run-all "cleanup-testbed --related origin/develop" check-no-changes
 
   Schematics:
     needs: [Quality, Jest]
     runs-on: ubuntu-latest
+    env:
+      CI: false
 
     strategy:
       fail-fast: false
@@ -137,10 +137,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
           cache: npm
 
       - name: Install root dependencies

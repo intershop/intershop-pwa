@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
 import { IdentityProviderInviteGuard } from 'ish-core/guards/identity-provider-invite.guard';
 import { IdentityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
@@ -38,18 +37,6 @@ const routes: Routes = [
     data: {
       meta: {
         title: 'account.my_account.heading',
-        robots: 'noindex, nofollow',
-      },
-    },
-  },
-  {
-    path: 'compare',
-    loadChildren: () => import('./compare/compare-page.module').then(m => m.ComparePageModule),
-    canActivate: [FeatureToggleGuard],
-    data: {
-      feature: 'compare',
-      meta: {
-        title: 'product.compare.link',
         robots: 'noindex, nofollow',
       },
     },
@@ -117,17 +104,6 @@ const routes: Routes = [
         title: 'account.forgotdata.password_retrieval.heading',
         robots: 'noindex, nofollow',
       },
-    },
-  },
-  {
-    path: 'contact',
-    loadChildren: () => import('./contact/contact-page.module').then(m => m.ContactPageModule),
-    data: {
-      meta: {
-        title: 'helpdesk.contact_us.heading',
-        robots: 'index, nofollow',
-      },
-      breadcrumbData: [{ key: 'helpdesk.contact_us.link' }],
     },
   },
   { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },

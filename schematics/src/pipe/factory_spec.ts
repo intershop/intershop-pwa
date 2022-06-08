@@ -1,9 +1,7 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
+import { PWAPipeOptionsSchema as Options } from 'schemas/pipe/schema';
 
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
-
-import { PWAPipeOptionsSchema as Options } from './schema';
 
 describe('Pipe Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -17,7 +15,7 @@ describe('Pipe Schematic', () => {
     const appTree$ = createApplication(schematicRunner).pipe(
       createModule(schematicRunner, { name: 'extensions/feature/feature', flat: true })
     );
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
     appTree.create(
       '/src/app/core/pipes.module.ts',
       `

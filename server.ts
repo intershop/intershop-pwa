@@ -186,15 +186,117 @@ export function app() {
     );
   }
 
+  const hybridRedirect = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const url = req.originalUrl;
+    let newUrl: string;
+    for (const entry of HYBRID_MAPPING_TABLE) {
+      const icmUrlRegex = new RegExp(entry.icm);
+      const pwaUrlRegex = new RegExp(entry.pwa);
+      if (icmUrlRegex.exec(url) && entry.handledBy === 'pwa') {
+        newUrl = url.replace(icmUrlRegex, `/${entry.pwaBuild}`);
+        break;
+      } else if (pwaUrlRegex.exec(url) && entry.handledBy === 'icm') {
+        const config: { [is: string]: string } = {};
+        if (/;lang=[\w_]+/.test(url)) {
+          const [, lang] = /;lang=([\w_]+)/.exec(url);
+          config.lang = lang;
+        }
+        if (!config.lang) {
+          config.lang = environment.defaultLocale;
+        }
+
+        if (/;currency=[\w_]+/.test(url)) {
+          const [, currency] = /;currency=([\w_]+)/.exec(url);
+          config.currency = currency;
+        }
+
+        if (/;channel=[^;]*/.test(url)) {
+          config.channel = /;channel=([^;]*)/.exec(url)[1];
+        } else {
+          config.channel = environment.icmChannel;
+        }
+
+        if (/;application=[^;]*/.test(url)) {
+          config.application = /;application=([^;]*)/.exec(url)[1];
+        } else {
+          config.application = environment.icmApplication || '-';
+        }
+
+        const build = [ICM_WEB_URL, entry.icmBuild]
+          .join('/')
+          .replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
+        newUrl = url.replace(pwaUrlRegex, build).replace(/;.*/g, '');
+        break;
+      }
+    }
+    if (newUrl) {
+      if (logging) {
+        console.log('RED', newUrl);
+      }
+      res.redirect(301, newUrl);
+    } else {
+      next();
+    }
+  };
+
+  if (process.env.SSR_HYBRID) {
+    server.use('*', hybridRedirect);
+  }
+
+  const icmProxy = proxy(ICM_BASE_URL, {
+    // preserve original path
+    proxyReqPathResolver: (req: express.Request) => req.originalUrl,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    proxyReqOptDecorator: (options: any) => {
+      if (process.env.TRUST_ICM) {
+        // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
+        options.rejectUnauthorized = false;
+      }
+      return options;
+    },
+    // fool ICM so it thinks it's running here
+    // https://www.npmjs.com/package/express-http-proxy#preservehosthdr
+    preserveHostHdr: true,
+  });
+
+  if (process.env.PROXY_ICM || process.env.SSR_HYBRID) {
+    console.log("making ICM available for all requests to '/INTERSHOP'");
+    server.use('/INTERSHOP', icmProxy);
+  }
+
+  const SOURCE_MAPS_ACTIVE = /on|1|true|yes/.test(process.env.SOURCE_MAPS?.toLowerCase());
+  if (SOURCE_MAPS_ACTIVE) {
+    console.warn('SOURCE_MAPS are active - never use this in production!');
+  }
+
   // Serve static files from browser folder
+  server.get(/\/.*\.js\.map$/, (req, res, next) => {
+    if (SOURCE_MAPS_ACTIVE) {
+      return express.static(BROWSER_FOLDER)(req, res, next);
+    } else {
+      return res.sendStatus(404);
+    }
+  });
   server.get(/\/.*\.(js|css)$/, (req, res) => {
-    const path = req.originalUrl.substring(1);
+    // remove all parameters
+    const path = req.originalUrl.substring(1).replace(/[;?&].*$/, '');
+
     fs.readFile(join(BROWSER_FOLDER, path), { encoding: 'utf-8' }, (err, data) => {
       if (err) {
         res.sendStatus(404);
       } else {
         res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
         res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
+      }
+    });
+  });
+  server.get(/\/ngsw\.json/, (_, res) => {
+    fs.readFile(join(BROWSER_FOLDER, 'ngsw.json'), { encoding: 'utf-8' }, (err, data) => {
+      if (err) {
+        res.sendStatus(404);
+      } else {
+        res.set('Content-Type', 'application/json; charset=UTF-8');
+        res.send(data);
       }
     });
   });
@@ -219,22 +321,6 @@ export function app() {
       },
     })
   );
-
-  const icmProxy = proxy(ICM_BASE_URL, {
-    // preserve original path
-    proxyReqPathResolver: (req: express.Request) => req.originalUrl,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    proxyReqOptDecorator: (options: any) => {
-      if (process.env.TRUST_ICM) {
-        // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
-        options.rejectUnauthorized = false;
-      }
-      return options;
-    },
-    // fool ICM so it thinks it's running here
-    // https://www.npmjs.com/package/express-http-proxy#preservehosthdr
-    preserveHostHdr: true,
-  });
 
   const angularUniversal = (req: express.Request, res: express.Response) => {
     if (logging) {
@@ -298,68 +384,6 @@ export function app() {
       }
     );
   };
-
-  const hybridRedirect = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const url = req.originalUrl;
-    let newUrl: string;
-    for (const entry of HYBRID_MAPPING_TABLE) {
-      const icmUrlRegex = new RegExp(entry.icm);
-      const pwaUrlRegex = new RegExp(entry.pwa);
-      if (icmUrlRegex.exec(url) && entry.handledBy === 'pwa') {
-        newUrl = url.replace(icmUrlRegex, `/${entry.pwaBuild}`);
-        break;
-      } else if (pwaUrlRegex.exec(url) && entry.handledBy === 'icm') {
-        const config: { [is: string]: string } = {};
-        if (/;lang=[\w_]+/.test(url)) {
-          const [, lang] = /;lang=([\w_]+)/.exec(url);
-          config.lang = lang;
-        }
-        if (!config.lang) {
-          config.lang = environment.defaultLocale;
-        }
-
-        if (/;currency=[\w_]+/.test(url)) {
-          const [, currency] = /;currency=([\w_]+)/.exec(url);
-          config.currency = currency;
-        }
-
-        if (/;channel=[^;]*/.test(url)) {
-          config.channel = /;channel=([^;]*)/.exec(url)[1];
-        } else {
-          config.channel = environment.icmChannel;
-        }
-
-        if (/;application=[^;]*/.test(url)) {
-          config.application = /;application=([^;]*)/.exec(url)[1];
-        } else {
-          config.application = environment.icmApplication || '-';
-        }
-
-        const build = [ICM_WEB_URL, entry.icmBuild]
-          .join('/')
-          .replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
-        newUrl = url.replace(pwaUrlRegex, build).replace(/;.*/g, '');
-        break;
-      }
-    }
-    if (newUrl) {
-      if (logging) {
-        console.log('RED', newUrl);
-      }
-      res.redirect(301, newUrl);
-    } else {
-      next();
-    }
-  };
-
-  if (process.env.SSR_HYBRID) {
-    server.use('*', hybridRedirect);
-  }
-
-  if (process.env.PROXY_ICM || process.env.SSR_HYBRID) {
-    console.log("making ICM available for all requests to '/INTERSHOP'");
-    server.use('/INTERSHOP', icmProxy);
-  }
 
   if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
     const axios = require('axios');

@@ -1,11 +1,16 @@
 node_modules
 
-*.d.ts
+/src/polyfills.ts
 
-polyfills.ts
-
-environment.development.ts
-
-**/lazy-*.component.ts
+/src/environments/environment.development.ts
 
 **/index.html
+
+/dist/**
+
+/e2e/cypress/**/*.js
+
+/eslint-rules/dist/**
+
+/schematics/dist/**
+/schematics/migration/**

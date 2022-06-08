@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { anything, capture, spy, verify } from 'ts-mockito';
-
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { WishlistPreferencesDialogComponent } from './wishlist-preferences-dialog.component';
 
@@ -11,13 +8,6 @@ describe('Wishlist Preferences Dialog Component', () => {
   let component: WishlistPreferencesDialogComponent;
   let fixture: ComponentFixture<WishlistPreferencesDialogComponent>;
   let element: HTMLElement;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WishlistPreferencesDialogComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-    }).compileComponents();
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WishlistPreferencesDialogComponent);

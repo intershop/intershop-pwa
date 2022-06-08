@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -24,8 +23,7 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
     organizationManagementFacade = mock(organizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [CostCenterBuyerEditDialogComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },

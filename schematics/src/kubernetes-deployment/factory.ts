@@ -1,8 +1,7 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException, apply, mergeWith, move, template, url } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
-
-import { PWAKubernetesDeploymentOptionsSchema as Options } from './schema';
+import { PWAKubernetesDeploymentOptionsSchema as Options } from 'schemas/kubernetes-deployment/schema';
 
 export function createKubernetesDeployment(options: Options): Rule {
   return async host => {

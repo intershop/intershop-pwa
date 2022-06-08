@@ -1,6 +1,10 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
+
+const messages = {
+  starImportError: `Don't use star imports in store files. Import what you need individually instead. `,
+};
 
 /**
  * Disallows the usage of star/namespace imports (`import * as exampleActions from './example.actions`).
@@ -9,11 +13,9 @@ import { normalizePath } from '../helpers';
  *
  * `import { firstAction, secondAction } from './example.actions'`
  */
-export const noStarImportsInStoreRule: TSESLint.RuleModule<string, []> = {
+const noStarImportsInStoreRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      starImportError: `Don't use star imports in store files. Import what you need individually instead. `,
-    },
+    messages,
     type: 'problem',
     fixable: 'code',
     schema: [],
@@ -87,3 +89,5 @@ export const noStarImportsInStoreRule: TSESLint.RuleModule<string, []> = {
     };
   },
 };
+
+export default noStarImportsInStoreRule;

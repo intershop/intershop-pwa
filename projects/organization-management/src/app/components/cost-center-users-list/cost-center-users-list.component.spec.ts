@@ -1,7 +1,5 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -12,7 +10,6 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CostCenter, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -45,12 +42,10 @@ describe('Cost Center Users List Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, TranslateModule.forRoot()],
       declarations: [
         CostCenterUsersListComponent,
         MockComponent(CostCenterBuyerEditDialogComponent),
-        MockComponent(FaIconComponent),
-        MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
         MockDirective(AuthorizationToggleDirective),
         MockDirective(NotRoleToggleDirective),

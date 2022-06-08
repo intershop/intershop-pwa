@@ -2,7 +2,7 @@
 
 # compiled or cached output
 *.xliff
-*.ut.spec.ts
+*.ut.spec.ts*
 
 # dependencies
 node_modules

@@ -14,7 +14,6 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
 import { LineItemEditComponent } from 'ish-shared/components/line-item/line-item-edit/line-item-edit.component';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -45,12 +44,10 @@ describe('Line Item List Element Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [
         LineItemListElementComponent,
-        MockComponent(BasketPromotionComponent),
         MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(LineItemEditComponent),
-        MockComponent(NgbPopover),
         MockComponent(ProductBundleDisplayComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
@@ -59,13 +56,14 @@ describe('Line Item List Element Component', () => {
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductVariationDisplayComponent),
+        MockDirective(NgbPopover),
         MockDirective(ProductContextDirective),
-        MockPipe(ServerSettingPipe, () => serverSetting),
         MockPipe(PricePipe),
+        MockPipe(ServerSettingPipe, () => serverSetting),
       ],
       providers: [
-        { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
     }).compileComponents();
   }

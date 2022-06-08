@@ -7,6 +7,29 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "tsc"
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "postbuild": "node scripts/write-rule-index.mjs",
+    "test": "jest -i"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "isolatedModules": true
+      }
+    },
+    "testRunner": "jest-jasmine2",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": ".*\\.spec\\.ts$",
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
   }
 }

@@ -33,9 +33,9 @@ describe('Regions Effects', () => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), GeneralStoreModule.forTesting('regions')],
       providers: [
-        RegionsEffects,
-        provideMockActions(() => actions$),
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
+        provideMockActions(() => actions$),
+        RegionsEffects,
       ],
     });
 

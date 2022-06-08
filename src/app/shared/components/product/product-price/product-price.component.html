@@ -30,13 +30,50 @@
       class="old-price"
       data-testing-id="old-price"
     >
-      {{ 'product.price.listPriceFallback.text' | translate: { '0': d.listPrice | ishPrice } }}
+      <span class="price-value">
+        {{ 'product.price.listPriceFallback.text' | translate: { '0': d.listPrice | ishPrice } }}
+      </span>
+      <span *ngIf="showPriceSavings" class="price-savings">
+        {{ 'product.price.savingsFallback.text' | translate: { '0': d.priceSavings | ishPrice } }}
+      </span>
     </div>
 
-    <span *ngIf="showPriceSavings && d.isListPriceGreaterThanSalePrice" class="price-savings">
-      {{ 'product.price.savingsFallback.text' | translate: { '0': d.priceSavings | ishPrice } }}
-    </span></ng-container
-  >
+    <div *ngIf="showScaledPrices && d.scaledPrices?.length" class="scaled-prices" data-testing-id="scaled-prices">
+      <ng-container *ngFor="let scaledPrice of d.scaledPrices; index as i; last as lastscaledPrice">
+        <div *ngIf="lastscaledPrice; else showRange">
+          {{
+            'product.price.scaledPrice.text.last'
+              | translate: { '0': scaledPrice.minQuantity, '1': scaledPrice | ishPrice }
+          }}
+        </div>
+        <ng-template #showRange>
+          <div *ngIf="scaledPrice.minQuantity !== d.scaledPrices[i + 1].minQuantity - 1; else singleScaledPrice">
+            {{
+              'product.price.scaledPrice.text'
+                | translate
+                  : {
+                      '0': scaledPrice.minQuantity,
+                      '1': d.scaledPrices[i + 1].minQuantity - 1,
+                      '2': scaledPrice | ishPrice
+                    }
+            }}
+          </div>
+          <ng-template #singleScaledPrice>
+            <div>
+              {{
+                'product.price.scaledPrice.single.text'
+                  | translate
+                    : {
+                        '0': scaledPrice.minQuantity,
+                        '1': scaledPrice | ishPrice
+                      }
+              }}
+            </div>
+          </ng-template>
+        </ng-template>
+      </ng-container>
+    </div>
+  </ng-container>
 </ng-template>
 
 <ng-template #priceRange>

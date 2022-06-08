@@ -7,7 +7,6 @@ describe('B2b Role Mapper', () => {
   let b2bRoleMapper: B2bRoleMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     b2bRoleMapper = TestBed.inject(B2bRoleMapper);
   });
 

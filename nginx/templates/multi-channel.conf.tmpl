@@ -94,6 +94,9 @@ server {
     listen 80;
   {{- end }}
 
+    access_log /var/log/nginx-access.log {{ getenv "LOGFORMAT" }};
+    access_log /dev/stdout {{ getenv "LOGFORMAT" }};
+
     include /etc/nginx/conf.d/cache-blacklist.conf;
 
 
@@ -144,7 +147,7 @@ server {
     }
 
     # respect cache entries of static assets
-    location ~* ^/(ngx_pagespeed_beacon|metrics|assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
+    location ~* ^/(?!ngsw\.json)(ngx_pagespeed_beacon|metrics|assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
         allow all;
         auth_basic off;
 

@@ -10,7 +10,6 @@ import {
   filter,
   last,
   map,
-  mapTo,
   mergeMap,
   switchMap,
   toArray,
@@ -148,7 +147,7 @@ export class BasketItemsEffects {
       ofType(updateBasketItemsFail),
       mapToPayload(),
       withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-      mapTo(validateBasket({ scopes: ['Products'] }))
+      map(() => validateBasket({ scopes: ['Products'] }))
     )
   );
 
@@ -174,7 +173,7 @@ export class BasketItemsEffects {
   loadBasketAfterBasketItemsChangeSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addItemsToBasketSuccess, updateBasketItemsSuccess, deleteBasketItemSuccess),
-      mapTo(loadBasket())
+      map(() => loadBasket())
     )
   );
 

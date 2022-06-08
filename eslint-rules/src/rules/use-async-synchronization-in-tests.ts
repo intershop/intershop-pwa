@@ -1,15 +1,17 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
+
+const messages = {
+  noDoneError: `asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html`,
+};
 
 /**
  * Enforces the usage of a done() callback in tests that rely on asynchronous logic (subscribe calls).
  */
-export const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<string, []> = {
+const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      noDoneError: `asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html`,
-    },
+    messages,
     type: 'problem',
     schema: [],
   },
@@ -102,3 +104,5 @@ export const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<string, []>
     };
   },
 };
+
+export default useAsyncSynchronizationInTestsRule;

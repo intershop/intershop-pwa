@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, mapTo } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -27,9 +27,10 @@ export class BasketPromotionCodeEffects {
       ofType(addPromotionCodeToBasket),
       mapToPayloadProperty('code'),
       concatMap(code =>
-        this.basketService
-          .addPromotionCodeToBasket(code)
-          .pipe(mapTo(addPromotionCodeToBasketSuccess()), mapErrorToAction(addPromotionCodeToBasketFail))
+        this.basketService.addPromotionCodeToBasket(code).pipe(
+          map(() => addPromotionCodeToBasketSuccess()),
+          mapErrorToAction(addPromotionCodeToBasketFail)
+        )
       )
     )
   );
@@ -38,7 +39,10 @@ export class BasketPromotionCodeEffects {
    * Reload basket after successfully adding a promo code
    */
   loadBasketAfterAddPromotionCodeToBasketChangeSuccess$ = createEffect(() =>
-    this.actions$.pipe(ofType(addPromotionCodeToBasketSuccess), mapTo(loadBasket()))
+    this.actions$.pipe(
+      ofType(addPromotionCodeToBasketSuccess),
+      map(() => loadBasket())
+    )
   );
 
   /**
@@ -49,9 +53,10 @@ export class BasketPromotionCodeEffects {
       ofType(removePromotionCodeFromBasket),
       mapToPayloadProperty('code'),
       concatMap(code =>
-        this.basketService
-          .removePromotionCodeFromBasket(code)
-          .pipe(mapTo(removePromotionCodeFromBasketSuccess()), mapErrorToAction(removePromotionCodeFromBasketFail))
+        this.basketService.removePromotionCodeFromBasket(code).pipe(
+          map(() => removePromotionCodeFromBasketSuccess()),
+          mapErrorToAction(removePromotionCodeFromBasketFail)
+        )
       )
     )
   );
@@ -60,6 +65,9 @@ export class BasketPromotionCodeEffects {
    * Reload basket after successfully removing a promo code
    */
   loadBasketAfterRemovePromotionCodeFromBasketChangeSuccess$ = createEffect(() =>
-    this.actions$.pipe(ofType(removePromotionCodeFromBasketSuccess), mapTo(loadBasket()))
+    this.actions$.pipe(
+      ofType(removePromotionCodeFromBasketSuccess),
+      map(() => loadBasket())
+    )
   );
 }

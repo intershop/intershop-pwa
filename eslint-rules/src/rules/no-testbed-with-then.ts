@@ -1,16 +1,18 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
+
+const messages = {
+  testbedWithThenError: `Chaining off TestBed.configureTestingModule can be replaced by adding another beforeEach block without async.`,
+};
 
 /**
  * Disallows chaining off TestBed.configureTestingModule.
  * Use another beforeEach block instead.
  */
-export const noTestbedWithThenRule: TSESLint.RuleModule<string, []> = {
+const noTestbedWithThenRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      testbedWithThenError: `Chaining off TestBed.configureTestingModule can be replaced by adding another beforeEach block without async.`,
-    },
+    messages,
     type: 'problem',
     schema: [],
   },
@@ -39,3 +41,5 @@ export const noTestbedWithThenRule: TSESLint.RuleModule<string, []> = {
     };
   },
 };
+
+export default noTestbedWithThenRule;

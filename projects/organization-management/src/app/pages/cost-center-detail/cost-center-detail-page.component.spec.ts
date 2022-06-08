@@ -48,8 +48,8 @@ describe('Cost Center Detail Page Component', () => {
       declarations: [
         CostCenterDetailPageComponent,
         MockComponent(CostCenterBudgetComponent),
-        MockComponent(ErrorMessageComponent),
         MockComponent(CostCenterUsersListComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
         MockComponent(OrderListComponent),
         MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),

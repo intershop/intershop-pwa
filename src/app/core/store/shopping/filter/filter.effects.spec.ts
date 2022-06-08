@@ -1,16 +1,15 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jest-marbles';
-import { Observable, of, throwError } from 'rxjs';
-import { toArray } from 'rxjs/operators';
-import { anyNumber, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
+import { Observable, merge, of, throwError } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import {
@@ -19,9 +18,9 @@ import {
   applyFilterSuccess,
   loadFilterFail,
   loadFilterForCategory,
+  loadFilterForMaster,
   loadFilterForSearch,
   loadFilterSuccess,
-  loadProductsForFilter,
 } from './filter.actions';
 import { FilterEffects } from './filter.effects';
 
@@ -49,15 +48,11 @@ describe('Filter Effects', () => {
         return of(filterNav);
       }
     });
-
-    when(filterServiceMock.getFilteredProducts(anything(), anyNumber(), anything(), anyNumber())).thenCall(a => {
-      if (a.name === 'invalid') {
+    when(filterServiceMock.getFilterForMaster(anything())).thenCall(a => {
+      if (a === 'invalid') {
         return throwError(() => makeHttpError({ message: 'invalid' }));
       } else {
-        return of({
-          total: 2,
-          products: [{ sku: '123' }, { sku: '234' }],
-        });
+        return of(filterNav);
       }
     });
 
@@ -69,11 +64,11 @@ describe('Filter Effects', () => {
       }
     });
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('productListing')],
       providers: [
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         FilterEffects,
         provideMockActions(() => actions$),
-        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        provideMockStore(),
       ],
     });
 
@@ -82,13 +77,33 @@ describe('Filter Effects', () => {
     store$.dispatch(setProductListingPageSize({ itemsPerPage: 2 }));
   });
 
-  describe('loadAvailableFilterForCategories$', () => {
+  describe('loadAvailableFilters$', () => {
     it('should call the filterService for LoadFilterForCategories action', done => {
       const action = loadFilterForCategory({ uniqueId: 'c' });
       actions$ = of(action);
 
-      effects.loadAvailableFilterForCategories$.subscribe(() => {
+      effects.loadAvailableFilters$.subscribe(() => {
         verify(filterServiceMock.getFilterForCategory(anything())).once();
+        done();
+      });
+    });
+
+    it('should call the filterService for loadFilterForSearch action', done => {
+      const action = loadFilterForSearch({ searchTerm: 'c' });
+      actions$ = of(action);
+
+      effects.loadAvailableFilters$.subscribe(() => {
+        verify(filterServiceMock.getFilterForSearch(anything())).once();
+        done();
+      });
+    });
+
+    it('should call the filterService for loadFilterForMaster action', done => {
+      const action = loadFilterForMaster({ masterSKU: 'c' });
+      actions$ = of(action);
+
+      effects.loadAvailableFilters$.subscribe(() => {
+        verify(filterServiceMock.getFilterForMaster(anything())).once();
         done();
       });
     });
@@ -99,7 +114,7 @@ describe('Filter Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadAvailableFilterForCategories$).toBeObservable(expected$);
+      expect(effects.loadAvailableFilters$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type LoadFilterFail', () => {
@@ -108,10 +123,82 @@ describe('Filter Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadAvailableFilterForCategories$).toBeObservable(expected$);
+      expect(effects.loadAvailableFilters$).toBeObservable(expected$);
     });
-  });
 
+    it('should always have the latest filters emitting', fakeAsync(() => {
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      when(filterServiceMock.getFilterForMaster('master1')).thenReturn(of('filter master 1' as any).pipe(delay(10)));
+      when(filterServiceMock.getFilterForMaster('master2')).thenReturn(of('filter master 2' as any).pipe(delay(100)));
+      when(filterServiceMock.getFilterForCategory('category')).thenReturn(
+        of('filter categories' as any).pipe(delay(1000))
+      );
+      /* eslint-enable @typescript-eslint/no-explicit-any */
+
+      actions$ = merge(
+        // go to master 1
+        of(loadFilterForMaster({ masterSKU: 'master1' })),
+        // go to category
+        of(loadFilterForCategory({ uniqueId: 'category' })).pipe(delay(300)),
+        // go to master 2 before category filters are loaded
+        of(loadFilterForMaster({ masterSKU: 'master2' })).pipe(delay(500))
+      );
+
+      let lastAction;
+      effects.loadAvailableFilters$.subscribe(action => {
+        lastAction = action;
+      });
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 1"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 1"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+
+      tick(200);
+
+      expect(lastAction).toMatchInlineSnapshot(`
+        [Filter API] Load Filter Success:
+          filterNavigation: "filter master 2"
+      `);
+    }));
+  });
   describe('applyFilter$', () => {
     it('should call the filterService for ApplyFilter action', done => {
       const action = applyFilter({ searchParameter: { param: ['b'] } });
@@ -142,65 +229,6 @@ describe('Filter Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.applyFilter$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadFilteredProducts$', () => {
-    it('should trigger product actions for ApplyFilterSuccess action', done => {
-      const action = loadProductsForFilter({
-        id: {
-          type: 'search',
-          value: 'test',
-          filters: { searchTerm: ['b*'] },
-        },
-        searchParameter: { param: ['b'] },
-      });
-
-      actions$ = of(action);
-      effects.loadFilteredProducts$.pipe(toArray()).subscribe(actions => {
-        expect(actions).toMatchInlineSnapshot(`
-          [Products API] Load Product Success:
-            product: {"sku":"123"}
-          [Products API] Load Product Success:
-            product: {"sku":"234"}
-          [Product Listing Internal] Set Product Listing Pages:
-            1: ["123","234"]
-            id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
-            itemCount: 2
-            sortableAttributes: []
-        `);
-        done();
-      });
-    });
-  });
-
-  describe('loadFilterForSearch$', () => {
-    it('should call the filterService for LoadFilterForSearch action', done => {
-      const action = loadFilterForSearch({ searchTerm: 'search' });
-      actions$ = of(action);
-
-      effects.loadFilterForSearch$.subscribe(() => {
-        verify(filterServiceMock.getFilterForSearch(anything())).once();
-        done();
-      });
-    });
-
-    it('should map to action of type LoadFilterSuccess', () => {
-      const action = loadFilterForSearch({ searchTerm: 'search' });
-      const completion = loadFilterSuccess({ filterNavigation: filterNav });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadFilterForSearch$).toBeObservable(expected$);
-    });
-
-    it('should map invalid request to action of type LoadFilterFail', () => {
-      const action = loadFilterForSearch({ searchTerm: 'invalid' });
-      const completion = loadFilterFail({ error: makeHttpError({ message: 'invalid' }) });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadFilterForSearch$).toBeObservable(expected$);
     });
   });
 });

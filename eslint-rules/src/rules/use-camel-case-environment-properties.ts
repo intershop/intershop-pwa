@@ -1,15 +1,17 @@
-import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
 import { normalizePath } from '../helpers';
+
+const messages = {
+  camelCaseError: `Property {{property}} is not camelCase formatted.`,
+};
 
 /**
  * Validates and fixes the environment.*.ts files to contain only property signatures in camelCase format.
  */
-export const useCamelCaseEnvironmentPropertiesRule: TSESLint.RuleModule<string, []> = {
+const useCamelCaseEnvironmentPropertiesRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      camelCaseError: `Property {{property}} is not camelCase formatted.`,
-    },
+    messages,
     type: 'problem',
     fixable: 'code',
     schema: [],
@@ -45,3 +47,5 @@ export const useCamelCaseEnvironmentPropertiesRule: TSESLint.RuleModule<string, 
     return {};
   },
 };
+
+export default useCamelCaseEnvironmentPropertiesRule;

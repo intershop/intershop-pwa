@@ -9,7 +9,7 @@ if (files.length === 0) {
 
 files.forEach(file => {
   const fileContent = fs.readFileSync(file, { encoding: 'utf-8' });
-  newContent = fileContent
+  const newContent = fileContent
     .split('\n')
     .map(line => {
       if (/^(>|#|\||\s*-|\s*[0-9]+\.)/.test(line)) {

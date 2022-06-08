@@ -22,7 +22,12 @@ interface VariationProductMasterView extends VariationProductMaster, SimpleProdu
 }
 
 export function createProductView(product: Product, defaultCategory?: Category): SimpleProductView {
-  return product && { ...product, defaultCategory };
+  return (
+    product && {
+      ...product,
+      defaultCategory,
+    }
+  );
 }
 
 export function createVariationProductMasterView(

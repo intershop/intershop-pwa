@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,11 +13,11 @@ import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/m
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
@@ -63,6 +62,7 @@ describe('User Effects', () => {
   let store$: Store;
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
+  let apiTokenServiceMock: ApiTokenService;
   let router: Router;
   let location: Location;
 
@@ -74,8 +74,6 @@ describe('User Effects', () => {
     user: {},
   } as CustomerUserType;
 
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
   const customer = {
     customerNo: '4711',
     isBusinessCustomer: true,
@@ -84,6 +82,8 @@ describe('User Effects', () => {
   beforeEach(() => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
+    apiTokenServiceMock = mock(ApiTokenService);
+
     when(userServiceMock.signInUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.signInUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
@@ -95,20 +95,20 @@ describe('User Effects', () => {
     when(userServiceMock.getEligibleCostCenters()).thenReturn(of([]));
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
+    when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
       providers: [
-        UserEffects,
-        provideMockActions(() => actions$),
-        { provide: UserService, useFactory: () => instance(userServiceMock) },
+        { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
-        { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
+        { provide: UserService, useFactory: () => instance(userServiceMock) },
+        provideMockActions(() => actions$),
+        UserEffects,
       ],
     });
 
@@ -141,7 +141,7 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a LoginUserSuccess action on successful login', () => {
+    it('should dispatch a loadPGID action on successful login', () => {
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
       const completion = loginUserSuccess(loginResponseData);
 
@@ -260,7 +260,7 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a LoginUserSuccess action on successful user creation', () => {
+    it('should dispatch a loadPGID action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
 
       const action = createUser({ credentials } as CustomerRegistrationType);
@@ -509,7 +509,7 @@ describe('User Effects', () => {
   });
 
   describe('loadUserByAPIToken$', () => {
-    it('should call the user service on LoadUserByAPIToken action and load user on success', done => {
+    it('should call the user service on LoadUserByAPIToken action and set pgid on success', done => {
       when(userServiceMock.signInUserByToken()).thenReturn(
         of({ user: { email: 'test@intershop.de' } } as CustomerUserType)
       );

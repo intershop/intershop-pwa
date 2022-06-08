@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, noop, of, race, throwError } from 'rxjs';
-import { catchError, concatMap, delay, first, map, mapTo, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, concatMap, delay, first, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -157,7 +157,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
       // TODO: if loadBasketWithId is faster then the initial loading of the 'current' basket after login the wrong 'current' basket might be used (the additional delay is the current work around)
       delay(500),
       tap(data => this.checkoutFacade.loadBasketWithId(data.basketId)),
-      mapTo(this.router.parseUrl('/home'))
+      map(() => this.router.parseUrl('/home'))
     );
   }
 
@@ -186,14 +186,14 @@ export class PunchoutIdentityProvider implements IdentityProvider {
         .getOciPunchoutProductData(route.queryParamMap.get('PRODUCTID'), route.queryParamMap.get('QUANTITY') || '1')
         .pipe(
           tap(data => this.punchoutService.submitOciPunchoutData(data)),
-          mapTo(false)
+          map(() => false)
         );
 
       // Background Search
     } else if (route.queryParamMap.get('FUNCTION') === 'BACKGROUND_SEARCH' && route.queryParamMap.get('SEARCHSTRING')) {
       return this.punchoutService.getOciPunchoutSearchData(route.queryParamMap.get('SEARCHSTRING')).pipe(
         tap(data => this.punchoutService.submitOciPunchoutData(data, false)),
-        mapTo(false)
+        map(() => false)
       );
 
       // Login

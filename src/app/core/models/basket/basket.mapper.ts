@@ -66,6 +66,8 @@ export class BasketMapper {
       infos: infos?.filter(info => info.code !== 'include.not_resolved.error'),
       approval: data.approval,
       attributes: data.attributes,
+      taxationId: data.attributes?.find(attr => attr.name === 'taxationID')?.value as string,
+      user: data.buyer,
     };
   }
 

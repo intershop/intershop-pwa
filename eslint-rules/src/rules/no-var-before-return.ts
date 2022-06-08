@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 function getElementBeforeReturnStatement(node: TSESTree.ReturnStatement): TSESTree.Statement {
   if (node.parent.type === AST_NODE_TYPES.BlockStatement) {
@@ -17,11 +17,13 @@ function checkNoVarBeforeReturn(node: TSESTree.ReturnStatement): boolean {
   );
 }
 
-export const noVarBeforeReturnRule: TSESLint.RuleModule<string, []> = {
+const messages = {
+  varError: `Don't return a variable, which is declared right before. Return the variable value instead.`,
+};
+
+const noVarBeforeReturnRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      varError: `Don't return a variable, which is declared right before. Return the variable value instead.`,
-    },
+    messages,
     fixable: 'code',
     type: 'problem',
     schema: [],
@@ -49,3 +51,5 @@ export const noVarBeforeReturnRule: TSESLint.RuleModule<string, []> = {
     },
   }),
 };
+
+export default noVarBeforeReturnRule;

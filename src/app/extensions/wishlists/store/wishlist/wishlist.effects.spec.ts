@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -72,24 +71,21 @@ describe('Wishlist Effects', () => {
       public: false,
     },
   ];
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
 
   beforeEach(() => {
     wishlistServiceMock = mock(WishlistService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([{ path: 'account/wishlists/:wishlistName', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'account/wishlists/:wishlistName', children: [] }]),
         WishlistsStoreModule.forTesting('wishlists'),
       ],
       providers: [
-        WishlistEffects,
-        provideMockActions(() => actions$),
         { provide: WishlistService, useFactory: () => instance(wishlistServiceMock) },
+        provideMockActions(() => actions$),
+        WishlistEffects,
       ],
     });
 

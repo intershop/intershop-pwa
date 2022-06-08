@@ -44,7 +44,7 @@ export class OrderListComponent implements OnInit {
    * The columns to be displayed.
    * Default: All columns besides the buyer
    */
-  @Input() columnsToDisplay?: OrderColumnsType[] = [
+  @Input() columnsToDisplay: OrderColumnsType[] = [
     'creationDate',
     'orderNo',
     'lineItems',
@@ -57,7 +57,7 @@ export class OrderListComponent implements OnInit {
    * The orders to be displayed.
    * Default: Orders of the current user are shown.
    */
-  @Input() orders?: Partial<Order>[];
+  @Input() orders: Partial<Order>[];
 
   orders$: Observable<Partial<Order>[]>;
   loading$: Observable<boolean>;

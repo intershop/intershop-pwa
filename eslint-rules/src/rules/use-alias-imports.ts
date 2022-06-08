@@ -1,17 +1,19 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { parse } from 'comment-json';
 import * as fs from 'fs';
 
 import { normalizePath } from '../helpers';
 
+const messages = {
+  noAlias: `Import path should rely on {{alias}}`,
+};
+
 /**
  * Finds and replaces import paths which can be simplified by import aliases.
  */
-export const useAliasImportsRule: TSESLint.RuleModule<string, []> = {
+const useAliasImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
-    messages: {
-      noAlias: `Import path should rely on {{alias}}`,
-    },
+    messages,
     type: 'problem',
     fixable: 'code',
     schema: [],
@@ -72,7 +74,8 @@ function calculateAbsolutePath(basePath: string, literal: string): string {
  */
 function getAliasImports(): { pattern: string; alias: string }[] {
   try {
-    const config = parse(fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- revert strongly typed CommentJSONValue (since version 4.2.0)
+    const config = parse(fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' })) as any;
     if (config?.compilerOptions?.paths) {
       const paths = config.compilerOptions.paths;
       return Object.keys(paths).map(key => ({
@@ -84,3 +87,5 @@ function getAliasImports(): { pattern: string; alias: string }[] {
     console.warn(err);
   }
 }
+
+export default useAliasImportsRule;

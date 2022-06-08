@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,9 +9,9 @@ import { Observable, noop, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { Basket } from 'ish-core/models/basket/basket.model';
+import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { getCurrentBasketId } from 'ish-core/store/customer/basket';
+import { getCurrentBasket, getCurrentBasketId } from 'ish-core/store/customer/basket';
 
 import { QuoteRequest, QuoteStub } from '../../models/quoting/quoting.model';
 import { QuotingService } from '../../services/quoting/quoting.service';
@@ -24,6 +23,7 @@ import {
   createQuoteRequestFromQuote,
   createQuoteRequestFromQuoteRequest,
   createQuoteRequestFromQuoteSuccess,
+  deleteQuoteFromBasket,
   deleteQuotingEntity,
   loadQuoting,
   loadQuotingDetail,
@@ -43,21 +43,17 @@ describe('Quoting Effects', () => {
   let router: Router;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
-    class DummyComponent {}
-
     quotingService = mock(QuotingService);
     basketService = mock(BasketService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [RouterTestingModule.withRoutes([{ path: 'account/quotes/:id', component: DummyComponent }])],
+      imports: [RouterTestingModule.withRoutes([{ path: 'account/quotes/:id', children: [] }])],
       providers: [
-        QuotingEffects,
+        { provide: BasketService, useFactory: () => instance(basketService) },
+        { provide: QuotingService, useFactory: () => instance(quotingService) },
         provideMockActions(() => actions$),
         provideMockStore(),
-        { provide: QuotingService, useFactory: () => instance(quotingService) },
-        { provide: BasketService, useFactory: () => instance(basketService) },
+        QuotingEffects,
       ],
     });
 
@@ -378,6 +374,55 @@ describe('Quoting Effects', () => {
             entity: {"id":"quoteRequestID","type":"QuoteRequest","completenessLe...
         `);
         done();
+      });
+    });
+  });
+
+  describe('deleteQuoteFromBasket$', () => {
+    it('should dispatch deleteBasketItem action for quote related item', done => {
+      actions$ = of(deleteQuoteFromBasket({ id: 'QUOTE' }));
+
+      store$.overrideSelector(getCurrentBasket, {
+        lineItems: [
+          { id: '1' },
+          { id: '2', quote: 'QUOTE' },
+          { id: '3', quote: 'QUOTE' },
+          { id: '4', quote: 'QUOTE2' },
+        ],
+      } as BasketView);
+
+      effects.deleteQuoteFromBasket$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Basket] Delete Basket Item:
+            itemId: "2"
+        `);
+        done();
+      });
+    });
+
+    it('should do nothing when quote is not in the basket', done => {
+      actions$ = of(deleteQuoteFromBasket({ id: 'QUOTE' }));
+
+      store$.overrideSelector(getCurrentBasket, {
+        lineItems: [{ id: '1' }],
+      } as BasketView);
+
+      effects.deleteQuoteFromBasket$.subscribe({
+        next: fail,
+        error: fail,
+        complete: done,
+      });
+    });
+
+    it('should do nothing when there is no basket', done => {
+      actions$ = of(deleteQuoteFromBasket({ id: 'QUOTE' }));
+
+      store$.overrideSelector(getCurrentBasket, undefined);
+
+      effects.deleteQuoteFromBasket$.subscribe({
+        next: fail,
+        error: fail,
+        complete: done,
       });
     });
   });

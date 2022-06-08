@@ -19,7 +19,7 @@ describe('Checkout Shipping Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [CheckoutShippingComponent, DummyWrapperComponent],
+      declarations: [CheckoutShippingComponent],
       imports: [
         FormlyModule.forChild({
           wrappers: [{ name: 'shipping-radio-wrapper', component: DummyWrapperComponent }],
@@ -48,7 +48,7 @@ describe('Checkout Shipping Component', () => {
 
   it('should render available shipping methods on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('formly-field').querySelectorAll('formly-field')).toHaveLength(1);
+    expect(element.querySelectorAll('formly-field')).toHaveLength(1);
   });
 
   it('should throw updateShippingMethod event when the user changes payment selection', () => {

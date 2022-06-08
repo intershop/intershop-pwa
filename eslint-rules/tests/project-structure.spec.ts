@@ -1,11 +1,10 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { projectStructureRule } from '../src/rules/project-structure';
+import projectStructureRule from '../src/rules/project-structure';
 
-import { RuleTestConfig } from './_execute-tests';
+import testRule from './rule-tester';
 
 const options = {
-  warnUnmatched: false,
   reusePatterns: {
     name: '[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*',
     theme: '(?:\\.(?:foo|bar))*',
@@ -14,121 +13,162 @@ const options = {
   patterns: [
     {
       name: '^(TestComponent)$',
-      file: '.*[src/test/test.component](<theme>)?\\.ts$',
+      file: '.*src/test/test.component(<theme>)?\\.ts$',
     },
   ],
   ignoredFiles: ['foo.ts$'],
 };
 
-const config: RuleTestConfig = {
-  ruleName: 'project-structure',
-  rule: projectStructureRule,
-  tests: {
-    valid: [
-      // files which matches the ignored list don't need to match any following pattern
-      {
-        options: [options],
-        filename: 'path/src/baz/whatever/foo.ts',
-        code: `
+testRule(projectStructureRule, {
+  valid: [
+    {
+      name: 'should not report if file is ignored',
+      options: [options],
+      filename: 'path/src/baz/whatever/foo.ts',
+      code: `
         @Component({})
         export class FooComponent {
         }
         `,
-      },
-      // files which matches path pattern is valid, when warnUnmatched is false
-      {
-        options: [{ ...options, warnUnmatched: false }],
-        filename: 'path/src/test/bar.ts',
-        code: `
+    },
+    {
+      name: 'should not report if file is expected and contains the correct artifacts',
+      options: [{ ...options, warnUnmatched: true }],
+      filename: 'path/src/test/test.component.ts',
+      code: `
         @Component({})
         export class TestComponent {
         }
         `,
-      },
-      // files which matches path pattern and class name pattern are valid
-      {
-        options: [{ ...options, warnUnmatched: true }],
-        filename: 'path/src/test/test.ts',
-        code: `
-        @Component({})
-        export class TestComponent {
-        }
-        `,
-      },
-      // extending a class should not impact validity
-      {
-        options: [{ ...options, warnUnmatched: true }],
-        filename: 'path/src/test/test.ts',
-        code: `
-        @Component({})
-        export class TestComponent extends OtherComponent {
-        }
-        `,
-      },
-      // kebab conversion should work
-      {
-        options: [
-          {
-            ...options,
-            pathPatterns: ['^.*/src/pages/foo-bar/foo-bar-page.component.ts$'],
-            patterns: [
-              {
-                name: '^([A-Z].*)PageComponent$',
-                file: '.*/pages/<kebab>/<kebab>-page\\.component(<theme>)?\\.ts$',
-              },
-            ],
-            warnUnmatched: true,
-          },
-        ],
-        filename: 'path/src/pages/foo-bar/foo-bar-page.component.ts',
-        code: `
+    },
+    {
+      name: 'should not report as long as kebab conversion works correctly',
+      options: [
+        {
+          ...options,
+          pathPatterns: ['^.*/src/pages/foo-bar/foo-bar-page.component.ts$'],
+          patterns: [
+            {
+              name: '^([A-Z].*)PageComponent$',
+              file: '.*/pages/<kebab>/<kebab>-page\\.component(<theme>)?\\.ts$',
+            },
+          ],
+        },
+      ],
+      filename: 'path/src/pages/foo-bar/foo-bar-page.component.ts',
+      code: `
         @Component({})
         export class FooBarPageComponent {
         }
         `,
-      },
-    ],
-    invalid: [
-      // files doesn't match path pattern when path is invalid and warnUnmatched is false
-      {
-        options: [{ ...options, warnUnmatched: false }],
-        filename: 'path/baz/test.component.ts',
-        code: `
+    },
+    {
+      name: 'should not report as long as kebab conversion with allowed number words works correctly',
+      options: [
+        {
+          ...options,
+          patterns: [
+            {
+              name: '^([A-Z].*)Component$',
+              file: 'src/test/<kebab>.component.ts$',
+            },
+          ],
+          allowedNumberWords: ['b2b'],
+        },
+      ],
+      filename: 'src/test/test-b2b.component.ts',
+      code: `
+        @Component({})
+        export class TestB2BComponent {
+        }
+        `,
+    },
+  ],
+  invalid: [
+    {
+      name: 'should report if artifact is not in the right file',
+      options: [options],
+      filename: 'path/src/test/bar.ts',
+      code: `
+        @Component({})
+        export class TestComponent {
+        }
+        `,
+      errors: [
+        {
+          messageId: 'projectStructureError',
+          data: {
+            message: `'TestComponent' is not in the correct file (expected '/.*src\\/test\\/test.component((?:\\.(?:foo|bar))*)?\\.ts$/')`,
+          },
+        },
+      ],
+    },
+    {
+      name: 'should report if file is not expected',
+      options: [options],
+      filename: 'path/baz/test.component.ts',
+      code: `
         @Component({})
         export class TestFooComponent {
         }
         `,
-        errors: [
-          {
-            messageId: 'projectStructureError',
-            data: {
-              message: 'path/baz/test.component.ts this file path does not match any defined patterns.',
-            },
-            type: AST_NODE_TYPES.ExportNamedDeclaration,
+      errors: [
+        {
+          messageId: 'projectStructureError',
+          data: {
+            message: 'path/baz/test.component.ts this file path does not match any defined patterns.',
           },
-        ],
-      },
-      // files doesn't match class name pattern when path is valid, class name is invalid and warnUnmatched is true
-      {
-        options: [{ ...options, warnUnmatched: true }],
-        filename: 'path/src/test/test.component.bar.ts',
-        code: `
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
+        },
+      ],
+    },
+    {
+      name: 'should report if artifact is not expected and warnUnmatched is true',
+      options: [{ ...options, warnUnmatched: true }],
+      filename: 'path/src/test/test.component.bar.ts',
+      code: `
         @Component({})
         export class TestFooComponent {
         }
         `,
-        errors: [
-          {
-            messageId: 'projectStructureError',
-            data: {
-              message: 'no pattern match for TestFooComponent in file path/src/test/test.component.bar.ts',
-            },
-            type: AST_NODE_TYPES.Identifier,
+      errors: [
+        {
+          messageId: 'projectStructureError',
+          data: {
+            message: 'no pattern match for TestFooComponent in file path/src/test/test.component.bar.ts',
           },
-        ],
-      },
-    ],
-  },
-};
-
-export default config;
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      name: 'should report if artifact is not correctly named considering number word kebab casing',
+      options: [
+        {
+          ...options,
+          patterns: [
+            {
+              name: '^([A-Z].*)Component$',
+              file: 'src/test/<kebab>.component.ts$',
+            },
+          ],
+        },
+      ],
+      filename: 'src/test/test-b2b.component.ts',
+      code: `
+        @Component({})
+        export class TestB2BComponent {
+        }
+        `,
+      errors: [
+        {
+          type: AST_NODE_TYPES.Identifier,
+          messageId: 'projectStructureError',
+          data: {
+            message: `'TestB2BComponent' is not in the correct file (expected '/src\\/test\\/test-b-2-b.component.ts$/')`,
+          },
+        },
+      ],
+    },
+  ],
+});

@@ -157,6 +157,7 @@
                         [paymentMethod]="paymentMethod"
                         [parentForm]="paymentForm"
                         [submitDisabled]="submitDisabled"
+                        [activated]="formIsOpen(i)"
                         (cancelPayment)="cancelNewPaymentInstrument()"
                         (submitPayment)="submitParameterForm()"
                       ></ish-payment-parameter-form>

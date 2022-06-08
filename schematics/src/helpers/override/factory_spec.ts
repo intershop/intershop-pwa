@@ -1,10 +1,8 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
-import { lastValueFrom } from 'rxjs';
+import { PWAComponentOptionsSchema } from 'schemas/component/schema';
+import { OverrideOptionsSchema as Options } from 'schemas/helpers/override/schema';
 
-import { PWAComponentOptionsSchema } from '../../component/schema';
 import { componentDecorator, createApplication, createModule, createSchematicRunner } from '../../utils/testHelper';
-
-import { OverrideOptionsSchema as Options } from './schema';
 
 describe('override Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -14,7 +12,7 @@ describe('override Schematic', () => {
 
   beforeEach(async () => {
     const appTree$ = createApplication(schematicRunner).pipe(createModule(schematicRunner, { name: 'shared' }));
-    appTree = await lastValueFrom(appTree$);
+    appTree = await appTree$.toPromise();
     appTree = await schematicRunner
       .runSchematicAsync('component', { project: 'bar', name: 'foo/dummy' }, appTree)
       .toPromise();
@@ -273,6 +271,21 @@ describe('override Schematic', () => {
   it('should override any ts if requested', async () => {
     const tree = await runOverride({
       from: 'core/routing/product.route.ts',
+      theme: 'b2b',
+      ts: true,
+    });
+
+    expect(tree.files.filter(x => x.includes('product.route'))).toMatchInlineSnapshot(`
+      Array [
+        "/src/app/core/routing/product.route.ts",
+        "/src/app/core/routing/product.route.b2b.ts",
+      ]
+    `);
+  });
+
+  it('should override file if path is windows-styled', async () => {
+    const tree = await runOverride({
+      from: 'core\\routing\\product.route.ts',
       theme: 'b2b',
       ts: true,
     });

@@ -1,8 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { anything, capture, spy, verify } from 'ts-mockito';
-
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatePreferencesDialogComponent } from './order-template-preferences-dialog.component';
 
@@ -10,13 +7,6 @@ describe('Order Template Preferences Dialog Component', () => {
   let component: OrderTemplatePreferencesDialogComponent;
   let fixture: ComponentFixture<OrderTemplatePreferencesDialogComponent>;
   let element: HTMLElement;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [OrderTemplatePreferencesDialogComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-    }).compileComponents();
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrderTemplatePreferencesDialogComponent);
