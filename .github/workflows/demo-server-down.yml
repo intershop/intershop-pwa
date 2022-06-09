@@ -25,27 +25,11 @@ jobs:
           else
             REF=${{ github.event.ref  }}
           fi
-          APP_NAME=$(printf '%.60s' "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-$REF" | sed -e 's/refs\/heads\///' | sed -e 's/\//-/g')
-          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
-          echo "APP_NAME_B2C=$APP_NAME-${{ env.B2C_APP_SUFFIX }}" >> $GITHUB_ENV
-          echo "APP_NAME_B2B=$APP_NAME-${{ env.B2B_APP_SUFFIX }}" >> $GITHUB_ENV
+          printf 'AZURE_WEBAPP_NAME=%.60s' "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-$REF" | sed -e 's/refs\/heads\///' | sed -e 's/\//-/g' >> $GITHUB_ENV
       - name: Login to Azure
         run: az login --service-principal --username ${{ secrets.AZURE_SP_USERNAME }} --password ${{ secrets.AZURE_SP_PASSWORD }} --tenant ${{ secrets.AZURE_SP_TENANT }}
-
-      - name: Remove Universal B2C App
-        env:
-          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2C_APP_SUFFIX }}'
-          GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: test -z "$(az webapp show -g $GROUP -n $APP_NAME_B2C)" || az webapp delete -g $GROUP --name $APP_NAME_B2C
-
-      - name: Remove Universal B2B App
-        env:
-          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2B_APP_SUFFIX }}'
-          GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: test -z "$(az webapp show -g $GROUP -n $APP_NAME_B2B)" || az webapp delete -g $GROUP --name $APP_NAME_B2B
-
       - name: Remove containerized WebApp
         env:
           APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: test -z "$(az webapp show -g $GROUP -n $APP_NAME)" || az webapp delete -g $GROUP --name $APP_NAME
+        run: test -z "$(az webapp show -g $GROUP -n $AZURE_WEBAPP_NAME)" || az webapp delete -g $GROUP --name $AZURE_WEBAPP_NAME
