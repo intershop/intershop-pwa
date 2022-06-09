@@ -46,7 +46,7 @@ jobs:
       - name: Set Environment
         run: |
           echo "DOCKER_IMAGE_UNIVERSAL=${{ steps.universal.outputs.digest }}"  >> $GITHUB_ENV
-          printf 'AZURE_WEBAPP_NAME=%.60s\n' "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.ref }}" | sed -e 's/refs\/heads\///' | sed -e 's/\//-/g' >> $GITHUB_ENV
+          printf 'AZURE_WEBAPP_NAME=%.60s' "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.ref }}" | sed -e 's/refs\/heads\///' | sed -e 's/\//-/g' >> $GITHUB_ENV
       - name: Login via Azure CLI
         run: az login --service-principal --username ${{ secrets.AZURE_SP_USERNAME }} --password ${{ secrets.AZURE_SP_PASSWORD }} --tenant ${{ secrets.AZURE_SP_TENANT }}
       - name: Create or Update containerized WebApp
