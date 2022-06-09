@@ -11,7 +11,6 @@ on:
 #
 # 2. Change these variables for your configuration:
 env:
-  AZURE_WEBAPP_NAME: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
 
 jobs:
@@ -22,10 +21,9 @@ jobs:
         uses: rokroskar/workflow-run-cleanup-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   build-and-deploy:
     needs: [CancelPrevious]
-    if: github.event.pull_request.head.repo.owner.login == 'intershop'
+    if: github.event.repository.full_name == 'intershop/intershop-pwa'
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
@@ -48,6 +46,7 @@ jobs:
       - name: Set Environment
         run: |
           echo "DOCKER_IMAGE_UNIVERSAL=${{ steps.universal.outputs.digest }}"  >> $GITHUB_ENV
+          printf 'AZURE_WEBAPP_NAME=%.60s\n' "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.ref }}" | sed -e 's/refs\/heads\///' | sed -e 's/\//-/g' >> $GITHUB_ENV
       - name: Login via Azure CLI
         run: az login --service-principal --username ${{ secrets.AZURE_SP_USERNAME }} --password ${{ secrets.AZURE_SP_PASSWORD }} --tenant ${{ secrets.AZURE_SP_TENANT }}
       - name: Create or Update containerized WebApp
@@ -55,6 +54,7 @@ jobs:
           APP: ${{ env.AZURE_WEBAPP_NAME }}
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
         run: |
+
           az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
           az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL
           az webapp deployment container config -g $GROUP -n $APP --enable-cd true
