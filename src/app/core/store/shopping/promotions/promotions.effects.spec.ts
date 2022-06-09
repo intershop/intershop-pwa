@@ -2,11 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, merge, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadPromotion, loadPromotionFail, loadPromotionSuccess } from './promotions.actions';
@@ -39,10 +40,11 @@ describe('Promotions Effects', () => {
   });
 
   describe('loadPromotion$', () => {
+    const waitAction = personalizationStatusDetermined();
     it('should call the promotionsService for LoadPromotion action', done => {
       const promoId = 'P123';
       const action = loadPromotion({ promoId });
-      actions$ = of(action);
+      actions$ = merge(of(personalizationStatusDetermined()), of(action));
 
       effects.loadPromotion$.subscribe(() => {
         verify(promotionsServiceMock.getPromotion(promoId)).once();
@@ -55,8 +57,8 @@ describe('Promotions Effects', () => {
       const promoId = 'P123';
       const action = loadPromotion({ promoId });
       const completion = loadPromotionSuccess({ promotion: { id } as Promotion });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-----', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: waitAction });
+      const expected$ = cold('--c-----', { c: completion });
 
       expect(effects.loadPromotion$).toBeObservable(expected$);
     });
@@ -65,8 +67,8 @@ describe('Promotions Effects', () => {
       const promoId = 'invalid';
       const action = loadPromotion({ promoId });
       const completion = loadPromotionFail({ error: makeHttpError({ message: 'invalid' }), promoId });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-----', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: waitAction });
+      const expected$ = cold('--c-----', { c: completion });
 
       expect(effects.loadPromotion$).toBeObservable(expected$);
     });

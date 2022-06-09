@@ -3,7 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { distinct, map, mergeMap } from 'rxjs/operators';
 
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { delayUntil, mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { loadPromotion, loadPromotionFail, loadPromotionSuccess } from './promotions.actions';
 
@@ -14,6 +15,7 @@ export class PromotionsEffects {
   loadPromotion$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadPromotion),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
       mapToPayloadProperty('promoId'),
       // trigger the promotion REST call only once for each distinct promotion id (per application session)
       distinct(),
