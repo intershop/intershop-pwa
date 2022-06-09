@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - '**.md'
       - 'docs/**'
+  workflow_dispatch:
 
 env:
   B2C_APP_SUFFIX: universal-b2c
@@ -13,9 +14,20 @@ env:
 
 jobs:
   RemoveDemoServer:
-    if: github.event.pull_request.head.repo.owner.login == 'intershop'
+    if: github.event.repository.full_name == 'intershop/intershop-pwa'
     runs-on: ubuntu-latest
     steps:
+      - name: Determine App Names
+        run: |
+          if [[ ${{ github.event.pull_request.head.ref }} -n ]]
+          then
+            APP_NAME=$(printf '%.60s' "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.head.ref  }}" | sed -e 's/refs\/heads\///' | sed -e 's/\//-/g')
+          else
+            APP_NAME=$(printf '%.60s' "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.ref  }}" | sed -e 's/refs\/heads\///' | sed -e 's/\//-/g')
+          fi
+          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
+          echo "APP_NAME_B2C=$APP_NAME_B2C-${{ env.B2C_APP_SUFFIX }}" >> $GITHUB_ENV
+          echo "APP_NAME_B2B=$APP_NAME_B2B-${{ env.B2B_APP_SUFFIX }}" >> $GITHUB_ENV
       - name: Login to Azure
         run: az login --service-principal --username ${{ secrets.AZURE_SP_USERNAME }} --password ${{ secrets.AZURE_SP_PASSWORD }} --tenant ${{ secrets.AZURE_SP_TENANT }}
 
@@ -23,16 +35,16 @@ jobs:
         env:
           APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2C_APP_SUFFIX }}'
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: test -z "$(az webapp show -g $GROUP -n $APP)" || az webapp delete -g $GROUP --name $APP
+        run: test -z "$(az webapp show -g $GROUP -n $APP_NAME_B2C)" || az webapp delete -g $GROUP --name $APP_NAME_B2C
 
       - name: Remove Universal B2B App
         env:
           APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2B_APP_SUFFIX }}'
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: test -z "$(az webapp show -g $GROUP -n $APP)" || az webapp delete -g $GROUP --name $APP
+        run: test -z "$(az webapp show -g $GROUP -n $APP_NAME_B2B)" || az webapp delete -g $GROUP --name $APP_NAME_B2B
 
       - name: Remove containerized WebApp
         env:
           APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: test -z "$(az webapp show -g $GROUP -n $APP)" || az webapp delete -g $GROUP --name $APP
+        run: test -z "$(az webapp show -g $GROUP -n $APP_NAME)" || az webapp delete -g $GROUP --name $APP_NAME
