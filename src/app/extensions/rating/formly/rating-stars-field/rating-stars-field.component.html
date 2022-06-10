@@ -1,0 +1,10 @@
+<div class="pt-1" data-testing-id="rating-stars-field">
+  <ng-container *ngFor="let fill of stars; index as i">
+    <a
+      [title]="'product.review.rating.tooltip' | translate: { '0': i + 1 }"
+      class="text-muted mt-4"
+      (click)="setStars(i + 1)"
+      ><ish-product-rating-star [filled]="fill"></ish-product-rating-star
+    ></a>
+  </ng-container>
+</div>

@@ -1,11 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ProductReviews } from '../../models/product-reviews/product-reviews.model';
-import { ProductReviewStoreModule } from '../product-review-store.module';
+import {
+  PRODUCT_REVIEW_STORE_CONFIG,
+  ProductReviewStoreModule,
+  ReviewsStoreConfig,
+} from '../product-review-store.module';
 
 import { loadProductReviews, loadProductReviewsFail, loadProductReviewsSuccess } from './product-reviews.actions';
 import { getProductReviewsBySku, getProductReviewsError, getProductReviewsLoading } from './product-reviews.selectors';
@@ -33,7 +38,7 @@ describe('Product Reviews Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(), ProductReviewStoreModule.forTesting('productReviews')],
-      providers: [provideStoreSnapshots()],
+      providers: [{ provide: PRODUCT_REVIEW_STORE_CONFIG, useClass: ReviewsStoreConfig }, provideStoreSnapshots()],
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);
@@ -41,7 +46,9 @@ describe('Product Reviews Selectors', () => {
 
   describe('initial state', () => {
     it('should not be loading when in initial state', () => {
-      expect(getProductReviewsBySku('123')(store$.state)).toBeFalsy();
+      expect(getProductReviewsBySku('123')(store$.state)).toBeUndefined();
+      expect(getProductReviewsLoading(store$.state)).toBeFalse();
+      expect(getProductReviewsError(store$.state)).toBeUndefined();
     });
   });
 
@@ -89,6 +96,17 @@ describe('Product Reviews Selectors', () => {
             "name": "HttpErrorResponse",
           }
         `);
+      });
+    });
+
+    describe('personalizationStatusDetermined', () => {
+      it('should empty the review store after personalization changes (login/logout)', () => {
+        store$.dispatch(loadProductReviewsSuccess({ reviews }));
+
+        expect(getProductReviewsBySku('123')(store$.state)).toEqual([reviews.reviews[0]]);
+
+        store$.dispatch(personalizationStatusDetermined());
+        expect(getProductReviewsBySku('123')(store$.state)).toBeUndefined();
       });
     });
   });
