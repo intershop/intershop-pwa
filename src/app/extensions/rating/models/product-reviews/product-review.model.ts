@@ -4,8 +4,12 @@ export interface ProductReview {
   authorLastName: string;
   title: string;
   content: string;
-  creationDate: number;
   rating: number;
-  showAuthorNameFlag: boolean;
-  localeID: string;
+  creationDate?: number;
+  showAuthorNameFlag?: boolean;
+  localeID?: string;
+  own?: boolean;
+  status?: 'NEW' | 'REJECTED';
 }
+
+export type ProductReviewCreationType = Pick<ProductReview, 'title' | 'content' | 'rating' | 'showAuthorNameFlag'>;

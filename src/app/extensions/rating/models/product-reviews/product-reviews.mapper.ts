@@ -7,9 +7,14 @@ import { ProductReviews } from './product-reviews.model';
 export class ProductReviewsMapper {
   static fromData(sku: string, productReviews: ProductReview[]): ProductReviews {
     if (productReviews) {
-      return { sku, reviews: productReviews };
+      const reviews = productReviews.map(review => ({
+        ...review,
+        status: review.status?.startsWith('NEW') ? 'NEW' : review.status,
+      }));
+
+      return { sku, reviews };
     } else {
-      throw new Error(`productReviewsData is required`);
+      throw new Error(`productReviews data is required`);
     }
   }
 }

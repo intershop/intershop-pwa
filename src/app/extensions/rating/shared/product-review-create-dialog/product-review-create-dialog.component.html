@@ -1,0 +1,48 @@
+<ng-template #modal let-reviewModal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">{{ 'product.reviews.create.dialog.heading' | translate }}</h2>
+      <button
+        type="button"
+        class="close"
+        [title]="'dialog.close.text' | translate"
+        [attr.aria-label]="'dialog.close.text' | translate"
+        (click)="hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <ng-container *ishProductContextAccess="let product = product">
+        <div class="d-flex">
+          <ish-product-image imageType="S" [link]="true"></ish-product-image>
+          <div>
+            <ish-product-name [link]="false"></ish-product-name>
+            <ish-product-id></ish-product-id>
+            <ish-product-variation-display></ish-product-variation-display>
+          </div>
+        </div>
+
+        <p>{{ 'product.reviews.create.dialog.description.text' | translate }}</p>
+
+        <form
+          id="createProductReviewForm"
+          class="form-horizontal"
+          [formGroup]="form"
+          (ngSubmit)="submitForm(product.sku)"
+        >
+          <formly-form [form]="form" [fields]="fields" [model]="model$ | async"></formly-form>
+        </form>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" form="createProductReviewForm" class="btn btn-primary" [disabled]="formDisabled">
+        {{ 'product.reviews.create.dialog.confirm.button.label' | translate }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="hide()">
+        {{ 'product.reviews.create.dialog.cancel.button.label' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>

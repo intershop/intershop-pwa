@@ -6,6 +6,7 @@ import { HeaderModule } from '../header.module';
 import { MetaDataModule } from '../meta-data.module';
 
 import { ProductListModule } from './product-list.module';
+import { ProductReviewModule } from './product-review.module';
 
 export class ProductDetailPage {
   readonly tag = 'ish-product-page';
@@ -20,6 +21,8 @@ export class ProductDetailPage {
 
   readonly addToWishlist = new AddToWishlistModule();
   readonly addToOrderTemplate = new AddToOrderTemplateModule();
+
+  reviewTab = new ProductReviewModule();
 
   static navigateTo(sku: string, categoryUniqueId?: string) {
     if (categoryUniqueId) {
@@ -84,6 +87,10 @@ export class ProductDetailPage {
     this.quantityInput().type(quantity.toString());
   }
 
+  get infoText() {
+    return cy.get('.toast-container .toast-info');
+  }
+
   get recentlyViewedItems() {
     return cy.get('[data-testing-id="recently-viewed"] ish-product-tile');
   }
@@ -96,14 +103,9 @@ export class ProductDetailPage {
     cy.get('[data-testing-id="recently-viewed"] [data-testing-id=view-all]').click();
   }
 
-  accordionItem(id: string) {
-    return cy.get('ish-accordion-item a.accordion-toggle').contains(id);
-  }
-
   infoNav(id: string) {
     return cy.get('ish-product-detail-info li.nav-item').contains(id);
   }
-
   changeVariationWithSelect(id: string, value: string) {
     cy.get(`[data-testing-id="${id}"]`).select(value);
   }
