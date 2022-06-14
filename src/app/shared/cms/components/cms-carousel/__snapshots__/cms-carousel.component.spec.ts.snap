@@ -2,7 +2,7 @@
 
 exports[`Cms Carousel Component should be created 1`] = `
 <div ng-reflect-ng-class="foo-class" class="foo-class">
-  <ish-content-slot ng-reflect-wrapper="true" ng-reflect-slot="app_sf_base_cm:slot.carousel.i"
+  <ish-content-slot ng-reflect-wrapper="true" ng-reflect-slot="app_sf_responsive_cm:slot.carousel.i"
     ><div>
       <ngb-carousel
         tabindex="0"
