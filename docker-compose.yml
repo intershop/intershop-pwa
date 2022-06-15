@@ -1,77 +1,76 @@
-# export appropriate ICM_BASE_URL and use with
-# docker compose up --build
+# example docker compose that should provide a working hybrid approach for development
+# 'jshaukenb' and IPs needs to be replaced with the correct values
+# docker compose -f docker-compose_hybrid.yml up --build
 
 version: '3'
 services:
+  icm:
+    image: registry.intershop.de/ispwa/intershop7-devenv/hybrid-approach/a_responsive
+    environment:
+      - HOST=jmetznernb.localdev.intershop.de
+      - HTTP_PORT=5322
+      - HTTPS_PORT=5300
+      - SECURE_ONLY=true
+    ports:
+      - '5322:8081'
+      - '5323:8444'
+    stdin_open: true
+    tty: true
+    extra_hosts:
+      - 'jmetznernb.localdev.intershop.de:10.0.206.205'
+  #    restart: always
+
   pwa:
     build:
       context: .
       # dockerfile: Dockerfile_noSSR
       args:
         serviceWorker: 'false'
-        # activeThemes: b2b
+        activeThemes: b2b
         # activeThemes: b2c
     environment:
-      - LOGGING=on
-      - SOURCE_MAPS=on
-      - ICM_BASE_URL
-      # - PROXY_ICM=true
+      - ICM_BASE_URL=https://jmetznernb.localdev.intershop.de:5323
+      - SSL=true
+      - SSR_HYBRID=true
       - TRUST_ICM=true
-      # - PROMETHEUS=on
-      # - MULTI_SITE_LOCALE_MAP={"en_US":"/en","de_DE":"/de","fr_FR":"/fr"}
-
-  # <CDN-Example>
-  # add 127.0.0.1 mypwa.net to your hosts file and
-  # uncomment the following lines
-  #
-  #     - DEPLOY_URL=http://mypwa.net:4222
-  # cdn:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile_noSSR
-  #     args:
-  #       configuration: production
-  #       serviceWorker: 'false'
-  #       deployUrl: http://mypwa.net:4222
-  #   ports:
-  #     - '4222:4200'
-  #
-  # </CDN-Example>
+      - LOGGING=true
+    ports:
+      - '5301:4200'
+    extra_hosts:
+      - 'jmetznernb.localdev.intershop.de:10.0.206.205'
+  #    restart: always
 
   nginx:
     build: nginx
     depends_on:
       - pwa
     ports:
-      - '4200:80'
+      - '5300:443'
       # - '9113:9113'
     environment:
-      UPSTREAM_PWA: 'http://pwa:4200'
-      # DEBUG: 1
-      CACHE: 0
-      PAGESPEED: 0
-      SSR: 1
-      # PROMETHEUS: 1
-      # COMPRESSION: 0
-      # DEVICE_DETECTION: 0
-      # CACHING_IGNORE_PARAMS: |
-      #   params:
-      # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
-      # BASIC_AUTH: 'developer:!InterShop00!'
-      # BASIC_AUTH_IP_WHITELIST: |
-      #   # - 172.22.0.1
-      #   - 1.2.3.4
+      UPSTREAM_PWA: https://jmetznernb.localdev.intershop.de:5301
+      ICM_BASE_URL: https://jmetznernb.localdev.intershop.de:5323
+      LOGFORMAT: json
       MULTI_CHANNEL: |
         .+:
-          - baseHref: /en
-            channel: default
-            lang: en_US
-          - baseHref: /de
-            channel: default
-            lang: de_DE
-          - baseHref: /fr
-            channel: default
-            lang: fr_FR
-          - baseHref: /b2c
-            channel: default
-            theme: b2c
+          channel: inSPIRED-inTRONICS_Business-Site
+          application: '-'
+          theme: b2b
+    volumes:
+      - /home/jmetzner/work/server.crt:/etc/nginx/server.crt
+      - /home/jmetzner/work/server.key:/etc/nginx/server.key
+    extra_hosts:
+      - 'jmetznernb.localdev.intershop.de:10.0.206.205'
+  #    restart: always
+
+  solr:
+    image: solr:8
+    environment:
+      SOLR_OPTS: '$SOLR_OPTS -Dsolr.disableConfigSetsCreateAuthChecks=true'
+    ports:
+      - '8983:8983'
+      - '9983:9983'
+    command:
+      - 'solr-foreground'
+      - '-cloud'
+  #    restart: always
