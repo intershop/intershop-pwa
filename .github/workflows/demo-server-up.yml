@@ -54,11 +54,9 @@ jobs:
           APP: ${{ env.AZURE_WEBAPP_NAME }}
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
         run: |
-
           az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_UNIVERSAL || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_UNIVERSAL
           az webapp config appsettings set -g $GROUP -n $APP --settings LOGGING=true ICM_BASE_URL=$ICM_BASE_URL
           az webapp deployment container config -g $GROUP -n $APP --enable-cd true
-
       - name: Create Commit Comment
         uses: peter-evans/commit-comment@v1
         with:
