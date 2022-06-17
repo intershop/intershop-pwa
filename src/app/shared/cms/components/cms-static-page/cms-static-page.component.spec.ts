@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { anyNumber, anyString, instance, mock, when } from 'ts-mockito';
 
+import { CMSFacade } from 'ish-core/facades/cms.facade';
+import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -17,8 +21,11 @@ describe('Cms Static Page Component', () => {
   let element: HTMLElement;
   let pageletView: ContentPageletView;
   let pagelet: ContentPagelet;
+  let cmsFacade: CMSFacade;
 
   beforeEach(async () => {
+    cmsFacade = mock(CMSFacade);
+
     await TestBed.configureTestingModule({
       declarations: [
         CMSStaticPageComponent,
@@ -26,6 +33,7 @@ describe('Cms Static Page Component', () => {
         MockComponent(ContentNavigationComponent),
         MockComponent(ContentSlotComponent),
       ],
+      providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
     }).compileComponents();
   });
 
@@ -57,6 +65,15 @@ describe('Cms Static Page Component', () => {
         configurationParameters: { ShowNavigation: 'true', NavigationRoot: 'page-1', NavigationDepth: '2' },
       });
 
+      when(cmsFacade.contentPageTree$(anyString(), anyNumber())).thenReturn(
+        of({
+          contentPageId: 'page-1',
+          name: 'page',
+          path: ['page-1'],
+        } as ContentPageTreeView)
+      );
+
+      component.ngOnChanges();
       fixture.detectChanges();
     });
 
@@ -70,7 +87,6 @@ describe('Cms Static Page Component', () => {
       const navigation = fixture.debugElement.query(By.css('ish-content-navigation'))
         .componentInstance as ContentNavigationComponent;
 
-      expect(navigation.root).toEqual('page-1');
       expect(navigation.depth).toEqual(2);
     });
 
