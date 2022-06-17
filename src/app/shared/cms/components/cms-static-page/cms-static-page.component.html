@@ -5,10 +5,12 @@
     >
       <div class="page-navigation col-md-3">
         <div *ngIf="pagelet.booleanParam('ShowNavigation')" class="page-navigation-contents">
-          <ish-content-navigation
-            [root]="pagelet.stringParam('NavigationRoot')"
-            [depth]="pagelet.numberParam('NavigationDepth')"
-          ></ish-content-navigation>
+          <ng-container *ngIf="contentPageTree$ | async as contentPageTree">
+            <ish-content-navigation
+              [contentPageTree]="contentPageTree"
+              [depth]="pagelet.numberParam('NavigationDepth')"
+            ></ish-content-navigation>
+          </ng-container>
         </div>
         <div class="marketing-area">
           <ish-content-slot

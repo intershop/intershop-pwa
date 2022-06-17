@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { anyNumber, instance, mock, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
@@ -28,10 +28,6 @@ describe('Content Navigation Component', () => {
   });
 
   beforeEach(() => {
-    when(cmsFacade.contentPage$).thenReturn(of({ id: 'page-1' } as ContentPageletEntryPointView));
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ContentNavigationComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
@@ -45,7 +41,6 @@ describe('Content Navigation Component', () => {
 
   describe('Page Tree Links', () => {
     beforeEach(() => {
-      component.root = '1';
       component.depth = 10;
 
       const pageTreeElement1: ContentPageTreeElement = {
@@ -78,44 +73,43 @@ describe('Content Navigation Component', () => {
         path: [],
       };
 
-      when(cmsFacade.contentPageTree$('1', anyNumber())).thenReturn(
-        of({
-          ...pageTreeElement1,
-          parent: undefined,
-          children: [
-            {
-              ...pageTreeElement1a,
-              parent: '1',
-              children: [
-                {
-                  ...pageTreeElement1aa,
-                  parent: '1.A',
-                  children: [],
-                  pathElements: [pageTreeElement1, pageTreeElement1a, pageTreeElement1aa],
-                },
-                {
-                  ...pageTreeElement1ab,
-                  parent: '1.A',
-                  children: [],
-                  pathElements: [pageTreeElement1, pageTreeElement1a, pageTreeElement1ab],
-                },
-              ],
-              pathElements: [pageTreeElement1, pageTreeElement1a],
-            },
-            {
-              ...pageTreeElement1b,
-              parent: '1',
-              children: [],
-              pathElements: [pageTreeElement1, pageTreeElement1b],
-            },
-          ],
-          pathElements: [pageTreeElement1],
-        } as ContentPageTreeView)
-      );
+      component.contentPageTree = {
+        ...pageTreeElement1,
+        parent: undefined,
+        children: [
+          {
+            ...pageTreeElement1a,
+            parent: '1',
+            children: [
+              {
+                ...pageTreeElement1aa,
+                parent: '1.A',
+                children: [],
+                pathElements: [pageTreeElement1, pageTreeElement1a, pageTreeElement1aa],
+              },
+              {
+                ...pageTreeElement1ab,
+                parent: '1.A',
+                children: [],
+                pathElements: [pageTreeElement1, pageTreeElement1a, pageTreeElement1ab],
+              },
+            ],
+            pathElements: [pageTreeElement1, pageTreeElement1a],
+          },
+          {
+            ...pageTreeElement1b,
+            parent: '1',
+            children: [],
+            pathElements: [pageTreeElement1, pageTreeElement1b],
+          },
+        ],
+        pathElements: [pageTreeElement1],
+      } as ContentPageTreeView;
+
+      when(cmsFacade.contentPage$).thenReturn(of({ id: 'page-1' } as ContentPageletEntryPointView));
     });
 
     it('should get whole page tree, when maxDepth is greater than depth of actual page tree', () => {
-      component.ngOnChanges();
       fixture.detectChanges();
 
       expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
@@ -145,8 +139,6 @@ describe('Content Navigation Component', () => {
 
     it('should split page tree, when given maxDepth is smaller than page tree depth', () => {
       component.depth = 0;
-
-      component.ngOnChanges();
       fixture.detectChanges();
 
       expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
@@ -165,8 +157,6 @@ describe('Content Navigation Component', () => {
     describe('filter-selected', () => {
       it('should set no filter-selected class if no contentPageId equals the currentContentPageId', () => {
         when(cmsFacade.contentPage$).thenReturn(of({ id: 'xxx' } as ContentPageletEntryPointView));
-
-        component.ngOnChanges();
         fixture.detectChanges();
 
         expect(element.querySelectorAll('.page-navigation-active')).toHaveLength(0);
@@ -174,8 +164,6 @@ describe('Content Navigation Component', () => {
 
       it('should set filter-selected class just for root element', () => {
         when(cmsFacade.contentPage$).thenReturn(of({ id: '1.A' } as ContentPageletEntryPointView));
-
-        component.ngOnChanges();
         fixture.detectChanges();
 
         expect(element.querySelectorAll('.page-navigation-active')).toMatchInlineSnapshot(`
@@ -210,7 +198,6 @@ describe('Content Navigation Component', () => {
 
     describe('navigation-depth', () => {
       beforeEach(() => {
-        component.ngOnChanges();
         fixture.detectChanges();
       });
 
