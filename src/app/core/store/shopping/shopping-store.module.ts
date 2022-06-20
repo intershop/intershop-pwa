@@ -46,7 +46,7 @@ const shoppingEffects = [
 export class DefaultShoppingStoreConfig implements StoreConfig<ShoppingState> {
   metaReducers = [
     resetSubStatesOnActionsMeta<ShoppingState>(
-      ['categories', 'products', 'search', 'filter', 'productPrices'],
+      ['categories', 'products', 'search', 'filter', 'productPrices', 'promotions'],
       [personalizationStatusDetermined]
     ),
   ];
