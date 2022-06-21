@@ -31,7 +31,9 @@ export const getICMStaticURL = createSelector(getConfigurationState, getICMAppli
 
 export const getICMBaseURL = createSelector(getConfigurationState, state => state.baseURL);
 
-export const getFeatures = createSelector(getConfigurationState, state => state.features);
+export const getFeatures = createSelector(getConfigurationState, state =>
+  state.features ? [...state.features, ...state.addFeatures] : undefined
+);
 
 const internalDefaultLocale = createSelector(getConfigurationState, state => state.defaultLocale);
 
