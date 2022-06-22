@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Determine App Names
         run: |
-          if [[ -n ${{ github.event.pull_request.head.ref }} ]]
+          if [[ -n "${{ github.event.pull_request.head.ref }}" ]]
           then
             REF=${{ github.event.pull_request.head.ref }}
           else
