@@ -24,6 +24,14 @@
           <ish-basket-promotion [rebate]="rebate" />
         </ng-container>
       </div>
+
+      <!-- warranty -->
+      <div *ngIf="pli.warranty" class="col-12">
+        {{ pli.warranty.sku }}
+        <div>
+          <ish-product-warranty-details></ish-product-warranty-details>
+        </div>
+      </div>
     </ng-container>
   </div>
 

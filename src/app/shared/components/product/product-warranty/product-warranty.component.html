@@ -1,0 +1,61 @@
+<ng-container *ngIf="warranties$ | async as warranties">
+  <div class="product-warranty" *ngIf="warranties.length">
+    <ng-container [ngSwitch]="viewType">
+      <!-- default display option is radio-buttons -->
+      <ng-template ngSwitchDefault>
+        <div class="product-warranty-title">{{ 'product.warranty.heading.text' | translate }}</div>
+        <dl class="product-warranty-list">
+          <!-- display a no-warranty option -->
+          <dd>
+            <label>
+              <input
+                type="radio"
+                [name]="'warranty_' + uuid"
+                value="noWarranty"
+                [checked]="selected === 'noWarranty'"
+                (change)="submitSelectedWarranty(undefined)"
+              />
+              <span>{{ 'product.warranty.no_protection_plan' | translate }}</span>
+            </label>
+          </dd>
+          <!-- generate all available warranties with radio-buttons -->
+          <dd *ngFor="let warranty of warranties">
+            <label>
+              <input
+                type="radio"
+                [name]="'warranty_' + uuid"
+                [value]="warranty.id"
+                [checked]="selected === warranty.id"
+                (change)="submitSelectedWarranty(warranty.id)"
+              />
+              <span class="product-warranty-name">{{ warranty.name }}</span>
+              <span class="product-warranty-cost">{{ warranty.price | ishPrice }}</span>
+              <ish-product-warranty-details [warranty]="warranty"></ish-product-warranty-details>
+            </label>
+          </dd>
+        </dl>
+      </ng-template>
+
+      <!-- viewType select-box -->
+      <ng-template ngSwitchCase="select">
+        <select class="form-control d-inline-block w-auto" (change)="submitSelectedWarranty($event.target)">
+          <!-- display a no-warranty option -->
+          <option value="" [selected]="selected === 'noWarranty'">
+            {{ 'product.warranty.no_protection_plan' | translate }}
+          </option>
+          <!-- generate all available warranties in a select box -->
+          <option
+            *ngFor="let warranty of warranties$ | async"
+            [value]="warranty.id"
+            [selected]="selected === warranty.id"
+          >
+            {{ warranty.name }} - {{ warranty.price | ishPrice }}
+          </option>
+        </select>
+        <ish-product-warranty-details
+          [warranty]="{ id: 'unknown', name: 'determineSelected', price: undefined }"
+        ></ish-product-warranty-details>
+      </ng-template>
+    </ng-container>
+  </div>
+</ng-container>

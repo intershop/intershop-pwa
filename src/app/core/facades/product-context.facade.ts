@@ -116,6 +116,9 @@ export interface ProductContext {
   // child contexts
   propagateActive: boolean;
   children: Record<string | number, ProductContext>;
+
+  // selected warranty
+  selectedWarranty: string;
 }
 
 @Injectable()
@@ -502,7 +505,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     items
       .filter(x => !!x && !!x.quantity)
       .forEach(child => {
-        this.shoppingFacade.addProductToBasket(child.sku, child.quantity);
+        this.shoppingFacade.addProductToBasket(child.sku, child.quantity, this.get('selectedWarranty'));
       });
   }
 
@@ -524,6 +527,10 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
           : ProductHelper.getPrimaryImage(product, imageType)
       )
     );
+  }
+
+  setSelectedWarranty(selectedWarranty: string) {
+    this.set('selectedWarranty', () => selectedWarranty);
   }
 
   ngOnDestroy(): void {

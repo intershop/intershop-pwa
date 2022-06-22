@@ -13,7 +13,12 @@ export class ProductDetailComponent implements OnInit {
   product$: Observable<ProductView>;
 
   constructor(private context: ProductContextFacade) {}
+
   ngOnInit() {
     this.product$ = this.context.select('product');
+  }
+
+  setSelectedWarranty(selectedWarranty: string) {
+    this.context.setSelectedWarranty(selectedWarranty);
   }
 }

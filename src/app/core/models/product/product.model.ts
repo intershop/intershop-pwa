@@ -4,6 +4,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
+import { Warranty } from 'ish-core/models/warranty/warranty.model';
 
 export interface Product {
   name: string;
@@ -26,6 +27,8 @@ export interface Product {
   sku: string;
   defaultCategoryId?: string;
   packingUnit: string;
+
+  availableWarranties?: Warranty[];
 
   // properties added in model
   type: string;

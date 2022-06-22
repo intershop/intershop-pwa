@@ -21,6 +21,8 @@ import { promotionsReducer } from './promotions/promotions.reducer';
 import { SearchEffects } from './search/search.effects';
 import { searchReducer } from './search/search.reducer';
 import { ShoppingState } from './shopping-store';
+import { WarrantiesEffects } from './warranties/warranties.effects';
+import { warrantiesReducer } from './warranties/warranties.reducer';
 
 const shoppingReducers: ActionReducerMap<ShoppingState> = {
   categories: categoriesReducer,
@@ -30,6 +32,7 @@ const shoppingReducers: ActionReducerMap<ShoppingState> = {
   promotions: promotionsReducer,
   productListing: productListingReducer,
   productPrices: productPricesReducer,
+  warranties: warrantiesReducer,
 };
 
 const shoppingEffects = [
@@ -40,6 +43,7 @@ const shoppingEffects = [
   PromotionsEffects,
   ProductListingEffects,
   ProductPricesEffects,
+  WarrantiesEffects,
 ];
 
 @Injectable()

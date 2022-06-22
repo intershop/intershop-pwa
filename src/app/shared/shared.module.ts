@@ -141,6 +141,8 @@ import { ProductVariationSelectDefaultComponent } from './components/product/pro
 import { ProductVariationSelectEnhancedComponent } from './components/product/product-variation-select-enhanced/product-variation-select-enhanced.component';
 import { ProductVariationSelectSwatchComponent } from './components/product/product-variation-select-swatch/product-variation-select-swatch.component';
 import { ProductVariationSelectComponent } from './components/product/product-variation-select/product-variation-select.component';
+import { ProductWarrantyDetailsComponent } from './components/product/product-warranty-details/product-warranty-details.component';
+import { ProductWarrantyComponent } from './components/product/product-warranty/product-warranty.component';
 import { ProductsListComponent } from './components/product/products-list/products-list.component';
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
@@ -303,6 +305,8 @@ const exportedComponents = [
   PromotionRemoveComponent,
   SearchBoxComponent,
   SuccessMessageComponent,
+  ProductWarrantyComponent,
+  ProductWarrantyDetailsComponent,
 ];
 
 @NgModule({

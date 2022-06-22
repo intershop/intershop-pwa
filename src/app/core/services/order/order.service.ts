@@ -16,8 +16,9 @@ type OrderIncludeType =
   | 'commonShipToAddress'
   | 'commonShippingMethod'
   | 'discounts'
-  | 'lineItems_discounts'
   | 'lineItems'
+  | 'lineItems_discounts'
+  | 'lineItems_warranty'
   | 'payments'
   | 'payments_paymentMethod'
   | 'payments_paymentInstrument';
@@ -39,8 +40,9 @@ export class OrderService {
     'commonShipToAddress',
     'commonShippingMethod',
     'discounts',
-    'lineItems_discounts',
     'lineItems',
+    'lineItems_discounts',
+    'lineItems_warranty',
     'payments',
     'payments_paymentMethod',
     'payments_paymentInstrument',

@@ -130,6 +130,10 @@ export class CheckoutFacade {
     }
   }
 
+  updateBasketItemWarranty(lineItemUpdate: LineItemUpdate) {
+    this.store.dispatch(updateBasketItem({ lineItemUpdate }));
+  }
+
   updateBasketShippingMethod(shippingId: string) {
     this.store.dispatch(updateBasketShippingMethod({ shippingId }));
   }

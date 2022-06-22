@@ -1,0 +1,39 @@
+<!--
+<ish-modal-dialog-link
+  *ngIf="warranty"
+  linkText="product.warranty.detail.text"
+  [options]="{ titleText: warranty.name }"
+  [ngClass]="'details-link'"
+></ish-modal-dialog-link>
+-->
+
+<ish-modal-dialog-link
+  linkText="product.warranty.detail.text"
+  (click)="getFullWarrantyData(warranty.id)"
+  [options]="{ titleText: warranty.name }"
+  [ngClass]="'details-link'"
+>
+  <ish-error-message [error]="error$ | async" [toast]="false"></ish-error-message>
+  <div *ngIf="(loading$ | async) === true">
+    <ish-loading></ish-loading>
+  </div>
+  <ng-container *ngIf="warrantyFullData$ | async as warranty">
+    <div
+      [ishServerHtml]="
+        'In addition to the statutory warranty, we offer an extra warranty for this item for an additional charge: ' +
+        '<strong>' +
+        warranty.shortDescription +
+        '</strong>'
+      "
+    ></div>
+    <br />
+
+    This includes:
+    <div [ishServerHtml]="warranty.longDescription"></div>
+    <br />
+
+    <div>{{ 'product.warranty.type.text' | translate }} {{ warranty.type }}</div>
+    <div>{{ 'product.warranty.code.text' | translate }} {{ warranty.code }}</div>
+    <div>{{ 'product.warranty.expire_date.text' | translate }} {{ warranty.timePeriod }}</div>
+  </ng-container>
+</ish-modal-dialog-link>

@@ -37,8 +37,9 @@ type BasketIncludeType =
   | 'commonShipToAddress'
   | 'commonShippingMethod'
   | 'discounts'
-  | 'lineItems_discounts'
   | 'lineItems'
+  | 'lineItems_discounts'
+  | 'lineItems_warranty'
   | 'payments'
   | 'payments_paymentMethod'
   | 'payments_paymentInstrument';
@@ -49,8 +50,9 @@ type MergeBasketIncludeType =
   | 'targetBasket_commonShipToAddress'
   | 'targetBasket_commonShippingMethod'
   | 'targetBasket_discounts'
-  | 'targetBasket_lineItems_discounts'
   | 'targetBasket_lineItems'
+  | 'targetBasket_lineItems_discounts'
+  | 'targetBasket_lineItems_warranty'
   | 'targetBasket_payments'
   | 'targetBasket_payments_paymentMethod'
   | 'targetBasket_payments_paymentInstrument';
@@ -61,8 +63,9 @@ type ValidationBasketIncludeType =
   | 'basket_commonShipToAddress'
   | 'basket_commonShippingMethod'
   | 'basket_discounts'
-  | 'basket_lineItems_discounts'
   | 'basket_lineItems'
+  | 'basket_lineItems_discounts'
+  | 'basket_lineItems_warranty'
   | 'basket_payments'
   | 'basket_payments_paymentMethod'
   | 'basket_payments_paymentInstrument';
@@ -89,8 +92,9 @@ export class BasketService {
     'commonShipToAddress',
     'commonShippingMethod',
     'discounts',
-    'lineItems_discounts',
     'lineItems',
+    'lineItems_discounts',
+    'lineItems_warranty',
     'payments',
     'payments_paymentMethod',
     'payments_paymentInstrument',
@@ -102,8 +106,9 @@ export class BasketService {
     'targetBasket_commonShipToAddress',
     'targetBasket_commonShippingMethod',
     'targetBasket_discounts',
-    'targetBasket_lineItems_discounts',
     'targetBasket_lineItems',
+    'targetBasket_lineItems_discounts',
+    'targetBasket_lineItems_warranty',
     'targetBasket_payments',
     'targetBasket_payments_paymentMethod',
     'targetBasket_payments_paymentInstrument',
@@ -115,8 +120,9 @@ export class BasketService {
     'basket_commonShipToAddress',
     'basket_commonShippingMethod',
     'basket_discounts',
-    'basket_lineItems_discounts',
     'basket_lineItems',
+    'basket_lineItems_discounts',
+    'basket_lineItems_warranty',
     'basket_payments',
     'basket_payments_paymentMethod',
     'basket_payments_paymentInstrument',

@@ -45,7 +45,11 @@ export class BasketMapper {
       lineItems:
         included?.lineItems && data.lineItems?.length
           ? data.lineItems.map(lineItemId =>
-              LineItemMapper.fromData(included.lineItems[lineItemId], included.lineItems_discounts)
+              LineItemMapper.fromData(
+                included.lineItems[lineItemId],
+                included.lineItems_discounts,
+                included.lineItems_warranty
+              )
             )
           : [],
       totalProductQuantity: data.totalProductQuantity,
