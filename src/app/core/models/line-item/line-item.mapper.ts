@@ -1,5 +1,7 @@
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketRebateMapper } from 'ish-core/models/basket-rebate/basket-rebate.mapper';
+import { BasketWarrantyData } from 'ish-core/models/basket-warranty/basket-warranty.interface';
+import { BasketWarrantyMapper } from 'ish-core/models/basket-warranty/basket-warranty.mapper';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
 import { OrderLineItem } from 'ish-core/models/order/order.model';
 import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
@@ -10,7 +12,11 @@ import { LineItem } from './line-item.model';
 
 export class LineItemMapper {
   // eslint-disable-next-line complexity
-  static fromData(data: LineItemData, rebateData?: { [id: string]: BasketRebateData }): LineItem {
+  static fromData(
+    data: LineItemData,
+    rebateData?: { [id: string]: BasketRebateData },
+    warrantyData?: { [id: string]: BasketWarrantyData }
+  ): LineItem {
     if (data) {
       return {
         id: data.id,
@@ -50,15 +56,21 @@ export class LineItemMapper {
         editable: !data.quantityFixed,
         quote: data.quote ? data.quote : undefined,
         desiredDeliveryDate: data.desiredDelivery,
+        warranty:
+          data.warranty && warrantyData ? BasketWarrantyMapper.fromData(warrantyData[data.warranty]) : undefined,
       };
     } else {
       throw new Error(`'LineItemData' is required for the mapping`);
     }
   }
 
-  static fromOrderItemData(data: OrderItemData, rebateData?: { [id: string]: BasketRebateData }): OrderLineItem {
+  static fromOrderItemData(
+    data: OrderItemData,
+    rebateData?: { [id: string]: BasketRebateData },
+    warrantyData?: { [id: string]: BasketWarrantyData }
+  ): OrderLineItem {
     if (data) {
-      const orderItem = LineItemMapper.fromData(data, rebateData);
+      const orderItem = LineItemMapper.fromData(data, rebateData, warrantyData);
 
       return {
         ...orderItem,

@@ -10,8 +10,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
-import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { SkuQuantityType } from 'ish-core/models/product/product.model';
+import { AddLineItemType, LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 
@@ -19,7 +18,8 @@ export type BasketItemUpdateType =
   | { quantity?: { value: number; unit: string }; product?: string }
   | { shippingMethod?: { id: string } }
   | { desiredDelivery?: string }
-  | { calculated: boolean };
+  | { calculated: boolean }
+  | { warranty?: string };
 
 /**
  * The Basket-Items Service handles basket line-item related calls for the 'baskets/items' REST API.
@@ -45,7 +45,7 @@ export class BasketItemsService {
    *          errors      Errors responded by the server.
    */
   addItemsToBasket(
-    items: SkuQuantityType[]
+    items: AddLineItemType[]
   ): Observable<{ lineItems: LineItem[]; info: BasketInfo[]; errors: ErrorFeedback[] }> {
     if (!items) {
       return throwError(() => new Error('addItemsToBasket() called without items'));
@@ -73,7 +73,7 @@ export class BasketItemsService {
     );
   }
 
-  private mapItemsToAdd(basket: Basket, items: SkuQuantityType[]) {
+  private mapItemsToAdd(basket: Basket, items: AddLineItemType[]) {
     return items.map(item => ({
       product: item.sku,
       quantity: {
@@ -82,6 +82,7 @@ export class BasketItemsService {
       },
       // ToDo: if multi buckets will be supported setting the shipping method to the common shipping method has to be reworked
       shippingMethod: basket?.commonShippingMethod?.id,
+      warranty: item.warrantySku,
     }));
   }
 

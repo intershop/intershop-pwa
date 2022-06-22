@@ -3,4 +3,5 @@ export interface LineItemUpdate {
   quantity?: number;
   sku?: string;
   unit?: string;
+  warrantySku?: string;
 }

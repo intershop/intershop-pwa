@@ -15,6 +15,7 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LineItemEditComponent } from 'ish-shared/components/line-item/line-item-edit/line-item-edit.component';
+import { LineItemWarrantyComponent } from 'ish-shared/components/line-item/line-item-warranty/line-item-warranty.component';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
@@ -49,6 +50,7 @@ describe('Line Item List Element Component', () => {
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(LineItemEditComponent),
+        MockComponent(LineItemWarrantyComponent),
         MockComponent(ProductBundleDisplayComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
@@ -151,6 +153,7 @@ describe('Line Item List Element Component', () => {
           "ish-product-quantity-label",
           "ish-product-quantity",
           "ish-product-quantity",
+          "ish-line-item-warranty",
         ]
       `);
     });

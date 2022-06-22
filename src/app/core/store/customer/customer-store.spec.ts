@@ -30,6 +30,7 @@ import { PromotionsService } from 'ish-core/services/promotions/promotions.servi
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
+import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
@@ -144,14 +145,14 @@ describe('Customer Store', () => {
     const promotionsServiceMock = mock(PromotionsService);
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
+    const userServiceMock = mock(UserService);
+    when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
+
     const productPriceServiceMock = mock(PricesService);
     when(productPriceServiceMock.getProductPrices(anything())).thenReturn(of([]));
 
     const oAuthService = mock(OAuthService);
     when(oAuthService.events).thenReturn(of());
-
-    const userServiceMock = mock(UserService);
-    when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
 
     TestBed.configureTestingModule({
       imports: [
@@ -188,6 +189,7 @@ describe('Customer Store', () => {
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        { provide: WarrantyService, useFactory: () => instance(mock(WarrantyService)) },
         provideStoreSnapshots(),
       ],
     });

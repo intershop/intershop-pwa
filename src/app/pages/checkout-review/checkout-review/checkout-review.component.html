@@ -81,7 +81,7 @@
         class="infobox-wrapper col-md-6"
       >
         <p>
-          {{ basket.payment.displayName }}<br />{{ basket.payment.paymentInstrument.accountIdentifier }}
+          {{ basket.payment?.displayName }}<br />{{ basket.payment.paymentInstrument.accountIdentifier }}
           <ng-container *ngIf="!basket.payment.displayName && !basket.payment.paymentInstrument.accountIdentifier">{{
             basket.payment.paymentInstrument
           }}</ng-container>

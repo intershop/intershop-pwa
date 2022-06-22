@@ -9,6 +9,7 @@ import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
 import { VariationAttributeMapper } from 'ish-core/models/product-variation/variation-attribute.mapper';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
+import { WarrantyMapper } from 'ish-core/models/warranty/warranty.mapper';
 
 import { SkuQuantityType } from './product.helper';
 import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
@@ -184,6 +185,7 @@ export class ProductMapper {
       completenessLevel: 3,
       failed: false,
       seoAttributes: SeoAttributesMapper.fromData(data.seoAttributes),
+      availableWarranties: WarrantyMapper.fromLinkData(data.availableWarranties),
     };
 
     return this.appendProductTypeForData(data, product);

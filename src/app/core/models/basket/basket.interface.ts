@@ -4,6 +4,7 @@ import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from 'ish-core/models/basket-total/basket-total.interface';
+import { BasketWarrantyData } from 'ish-core/models/basket-warranty/basket-warranty.interface';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
@@ -56,18 +57,21 @@ export interface BasketBaseData {
   };
 }
 
+export interface BasketIncludedData {
+  invoiceToAddress?: { [urn: string]: AddressData };
+  lineItems?: { [id: string]: LineItemData };
+  discounts?: { [id: string]: BasketRebateData };
+  lineItems_discounts?: { [id: string]: BasketRebateData };
+  lineItems_warranty?: { [id: string]: BasketWarrantyData };
+  commonShipToAddress?: { [urn: string]: AddressData };
+  commonShippingMethod?: { [id: string]: ShippingMethodData };
+  payments?: { [id: string]: PaymentData };
+  payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
+  payments_paymentInstrument?: { [id: string]: PaymentInstrument };
+}
+
 export interface BasketData {
   data: BasketBaseData;
-  included?: {
-    invoiceToAddress?: { [urn: string]: AddressData };
-    lineItems?: { [id: string]: LineItemData };
-    discounts?: { [id: string]: BasketRebateData };
-    lineItems_discounts?: { [id: string]: BasketRebateData };
-    commonShipToAddress?: { [urn: string]: AddressData };
-    commonShippingMethod?: { [id: string]: ShippingMethodData };
-    payments?: { [id: string]: PaymentData };
-    payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
-    payments_paymentInstrument?: { [id: string]: PaymentInstrument };
-  };
+  included?: BasketIncludedData;
   infos?: BasketInfo[];
 }

@@ -17,4 +17,8 @@ export class CheckoutReviewPage {
     cy.get('button').contains('Submit order').click();
     waitLoadingEnd(1000);
   }
+
+  lineItemWarranty() {
+    return cy.get('ish-line-item-list-element').find('ish-line-item-warranty');
+  }
 }
