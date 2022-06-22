@@ -125,4 +125,13 @@ export class ProductDetailPage {
   gotoMasterProduct() {
     cy.get('a.all-variations-link').click();
   }
+
+  get warranties() {
+    return cy.get('[data-testing-id="product-warranties"]');
+  }
+
+  selectWarranty(id: string) {
+    cy.get('[data-testing-id="product-warranties"]').find(`input[value="${id}"]`).check();
+    cy.wait(500);
+  }
 }

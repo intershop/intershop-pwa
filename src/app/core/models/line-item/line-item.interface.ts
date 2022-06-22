@@ -35,4 +35,5 @@ export interface LineItemData {
   quantityFixed?: boolean;
   quote?: string;
   desiredDelivery?: string;
+  warranty?: string;
 }

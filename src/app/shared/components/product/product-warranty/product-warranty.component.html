@@ -1,0 +1,58 @@
+<ng-container *ngIf="warranties$ | async as warranties">
+  <div class="product-warranty" *ngIf="warranties.length">
+    <ng-container [ngSwitch]="viewType">
+      <!-- default display option is radio-buttons -->
+      <ng-template ngSwitchDefault>
+        <div class="product-warranty-title">{{ 'product.warranty.heading.text' | translate }}</div>
+        <div class="product-warranty-list" data-testing-id="product-warranties">
+          <div class="mb-2" *ngFor="let warranty of warranties">
+            <input
+              type="radio"
+              [id]="'warranty_' + uuid + warranty.id"
+              [name]="'warranty_' + uuid"
+              [value]="warranty.id"
+              class="form-check-input"
+              [checked]="selectedWarrantySku ? selectedWarrantySku === warranty.id : !warranty.id"
+              (change)="updateWarranty(warranty.id)"
+            />
+            <label class="form-check-label" [for]="'warranty_' + uuid + warranty.id">
+              {{ warranty.name
+              }}<span *ngIf="warranty.id"
+                ><span class="product-warranty-price"> {{ warranty.price | ishPrice }}</span>
+                <ish-product-warranty-details [warranty]="warranty"
+              /></span>
+            </label>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- viewType select-box -->
+      <ng-template ngSwitchCase="select">
+        <select
+          class="form-control d-inline-block w-auto"
+          (change)="updateWarranty($event.target)"
+          data-testing-id="product-warranties"
+        >
+          <!-- generate all available warranties in a select box -->
+          <option
+            *ngFor="let warranty of warranties$ | async"
+            [value]="warranty.id"
+            [selected]="selectedWarrantySku ? selectedWarrantySku === warranty.id : warranty.id === ''"
+          >
+            {{ warranty.name }}<span *ngIf="warranty.id"> - {{ warranty.price | ishPrice }}</span>
+          </option>
+        </select>
+        <ish-product-warranty-details
+          *ngIf="selectedWarrantySku"
+          [warranty]="getSelectedWarranty$(selectedWarrantySku) | async"
+        />
+      </ng-template>
+      <ng-template ngSwitchCase="display">
+        <ng-container *ngIf="getSelectedWarranty$(selectedWarrantySku) | async as selectedWarranty">
+          {{ selectedWarranty.name }}
+          <ish-product-warranty-details [warranty]="selectedWarranty" />
+        </ng-container>
+      </ng-template>
+    </ng-container>
+  </div>
+</ng-container>

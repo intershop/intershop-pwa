@@ -9,10 +9,9 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { AddLineItemType, LineItem } from 'ish-core/models/line-item/line-item.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { SkuQuantityType } from 'ish-core/models/product/product.helper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from 'ish-core/services/basket/basket.service';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
@@ -82,11 +81,11 @@ export const deleteBasketShippingAddress = createAction(
   payload<{ addressId: string }>()
 );
 
-export const addProductToBasket = createAction('[Basket] Add Product', payload<SkuQuantityType>());
+export const addProductToBasket = createAction('[Basket] Add Product', payload<AddLineItemType>());
 
 export const addItemsToBasket = createAction(
   '[Basket Internal] Add Items To Basket',
-  payload<{ items: SkuQuantityType[] }>()
+  payload<{ items: AddLineItemType[] }>()
 );
 
 export const addItemsToBasketFail = createAction('[Basket API] Add Items To Basket Fail', httpError());
