@@ -39,7 +39,6 @@ describe('Product Image Component', () => {
     translate.use('en');
     translate.set('product.image.text.alttext', 'product photo');
 
-    component.showImage$.next();
     component.imageType = 'S';
   });
 
@@ -58,6 +57,7 @@ describe('Product Image Component', () => {
         "alt": "product photo",
         "class": "product-image",
         "itemprop": "image",
+        "loading": "lazy",
         "src": "/assets/img/not_available.png",
       }
     `);
@@ -86,6 +86,7 @@ describe('Product Image Component', () => {
         "data-view": "front",
         "height": "110",
         "itemprop": "image",
+        "loading": "lazy",
         "src": "/assets/product_img/a.jpg",
         "width": "110",
       }

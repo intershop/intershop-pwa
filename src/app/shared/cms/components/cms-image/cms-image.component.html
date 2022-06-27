@@ -12,7 +12,7 @@
 </ng-container>
 
 <ng-template #image>
-  <div (deferLoad)="showImage = true" class="defer-load" [ngClass]="pagelet.stringParam('CSSClass')">
-    <img *ngIf="showImage" [src]="pagelet.stringParam('Image')" [attr.alt]="pagelet.stringParam('AlternateText')" />
+  <div [ngClass]="pagelet.stringParam('CSSClass')">
+    <img loading="lazy" [src]="pagelet.stringParam('Image')" [attr.alt]="pagelet.stringParam('AlternateText')" />
   </div>
 </ng-template>

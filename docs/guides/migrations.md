@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Migrations
 
+## 2.4 to 3.0
+
+Since the used deferred load library is no longer maintained it is removed and replaced with similar standard browser functionality [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#images_and_iframes).
+All uses of the `(deferLoad)` directive in custom code need to be replaced.
+
 ## 2.3 to 2.4
 
 The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.
