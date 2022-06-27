@@ -19,11 +19,10 @@ describe('Product Reviews Component', () => {
   let component: ProductReviewsComponent;
   let fixture: ComponentFixture<ProductReviewsComponent>;
   let element: HTMLElement;
-  let review: ProductReview;
   let context: ProductContextFacade;
   let reviewsFacade: ProductReviewsFacade;
 
-  review = {
+  const review: ProductReview = {
     id: '1',
     authorFirstName: 'Foo',
     authorLastName: 'Bar',

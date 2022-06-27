@@ -13,7 +13,7 @@ import { getProductReviewsBySku, getProductReviewsError, getProductReviewsLoadin
 describe('Product Reviews Selectors', () => {
   let store$: StoreWithSnapshots;
 
-  let reviews: ProductReviews = {
+  const reviews: ProductReviews = {
     sku: '123',
     reviews: [
       {

@@ -12,7 +12,7 @@ describe('Reviews Service', () => {
   let apiServiceMock: ApiService;
   let reviewsService: ReviewsService;
 
-  let review: ProductReview = {
+  const review: ProductReview = {
     id: '1',
     authorFirstName: 'Foo',
     authorLastName: 'Bar',
