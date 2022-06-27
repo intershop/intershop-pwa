@@ -796,8 +796,10 @@
             "caughtErrors": "none"
           }
         ],
+        "no-var": "warn",
         "object-shorthand": "error",
         "prefer-arrow-callback": "warn",
+        "prefer-const": "warn",
         "prefer-template": "warn",
         "prettier/prettier": "warn",
         "rxjs-angular/prefer-takeuntil": [

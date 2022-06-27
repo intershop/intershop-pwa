@@ -58,7 +58,7 @@ describe('Product Reviews Effects', () => {
     });
 
     it('should map to action of type loadProductReviewsSuccess', () => {
-      let reviews: ProductReviews = {
+      const reviews: ProductReviews = {
         sku: '123',
         reviews: [],
       };
