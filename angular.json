@@ -30,7 +30,14 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "assets": ["src/assets"],
+            "assets": [
+              "src/assets",
+              {
+                "glob": "favicon.ico",
+                "input": "src/assets/themes/placeholder/img/",
+                "output": "/"
+              }
+            ],
             "scripts": [],
             "styles": ["src/styles/themes/placeholder/style.scss"],
             "stylePreprocessorOptions": {

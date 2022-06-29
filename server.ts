@@ -300,6 +300,10 @@ export function app() {
       }
     });
   });
+  server.get(/.*\/favicon.ico.*/, (req, _, next) => {
+    req.url = req.originalUrl.replace(/[;?&].*$/, '').replace(/^.*\//g, '/');
+    next();
+  });
   server.get(
     '*.*',
     express.static(BROWSER_FOLDER, {
