@@ -13,6 +13,7 @@ import { CMSService } from 'ish-core/services/cms/cms.service';
 import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
 import { loadContentPageTreeSuccess } from 'ish-core/store/content/page-tree';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -57,7 +58,9 @@ describe('Pages Effects', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
       when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
-      actions$ = of(loadContentPage({ contentPageId: 'dummy' }));
+      const action = loadContentPage({ contentPageId: 'dummy' });
+
+      actions$ = of(personalizationStatusDetermined, action);
 
       effects.loadContentPage$.subscribe(action => {
         verify(cmsServiceMock.getContentPage('dummy')).once();
@@ -72,10 +75,10 @@ describe('Pages Effects', () => {
     it('should not die when encountering an error', () => {
       when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
-      actions$ = hot('a-a-a-a', { a: loadContentPage({ contentPageId: 'dummy' }) });
+      actions$ = hot('b-a-a', { a: loadContentPage({ contentPageId: 'dummy' }), b: personalizationStatusDetermined });
 
       expect(effects.loadContentPage$).toBeObservable(
-        cold('a-a-a-a', { a: loadContentPageFail({ error: makeHttpError({ message: 'ERROR' }) }) })
+        cold('--a-a', { a: loadContentPageFail({ error: makeHttpError({ message: 'ERROR' }) }) })
       );
     });
   });
