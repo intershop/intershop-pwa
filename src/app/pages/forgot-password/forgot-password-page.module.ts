@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { IdentityProviderPasswordGuard } from 'ish-core/guards/identity-provider-password.guard';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { RequestReminderFormComponent } from './request-reminder-form/request-reminder-form.component';
@@ -16,6 +17,7 @@ const forgotPasswordPageRoutes: Routes = [
   {
     path: 'updatePassword',
     component: UpdatePasswordComponent,
+    canActivate: [IdentityProviderPasswordGuard],
   },
 ];
 
