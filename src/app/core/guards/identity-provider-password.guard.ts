@@ -8,7 +8,7 @@ export class IdentityProviderPasswordGuard implements CanActivate {
   constructor(private identityProviderFactory: IdentityProviderFactory) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.identityProviderFactory.getType() !== 'ICM'
+    return this.identityProviderFactory.getType() !== 'ICM' && this.identityProviderFactory.getInstance().triggerInvite
       ? this.identityProviderFactory.getInstance().triggerInvite(route, state)
       : true;
   }

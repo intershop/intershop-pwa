@@ -58,6 +58,7 @@ export class IdentityProviderModule {
               intercept: (req: HttpRequest<unknown>, next: HttpHandler) => next.handle(req),
               triggerLogin: () => true,
               triggerLogout: () => true,
+              triggerInvite: () => true,
               getCapabilities: () => capabilities,
             }),
             getType: () => 'ICM',
