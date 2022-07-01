@@ -4,7 +4,7 @@ RUN apt-get update \
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY features /etc/nginx/features/
 COPY templates /etc/nginx/templates/
-COPY docker-entrypoint.d /docker-entrypoint.d/
+COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
 COPY *.yaml /
 COPY 50x.html /usr/share/nginx/html/
 ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.8.0/gomplate_linux-amd64-slim /gomplate

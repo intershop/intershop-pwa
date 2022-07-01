@@ -8,4 +8,4 @@ set -e
 
 [ -z "$ICM_BASE_URL" ] && echo "ICM_BASE_URL is not set. Cannot use sitemap proxy feature."
 
-[ -z "$OVERRIDE_IDENTITY_PROVIDERS" ] && echo "OVERRIDE_IDENTITY_PROVIDER is not set. Cannot use override identity provider feature."
+[ -z "$OVERRIDE_IDENTITY_PROVIDERS" ] && echo "OVERRIDE_IDENTITY_PROVIDERS is not set. Cannot use override identity provider feature."
