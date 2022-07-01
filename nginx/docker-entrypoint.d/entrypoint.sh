@@ -11,6 +11,7 @@ fi
 if env | grep -iqE "^DEBUG=(on|1|true|yes)$"
 then
   find /etc/nginx -name '*.conf' -print -exec cat '{}' \;
+  nginx -V
 fi
 
 if env | grep -iqE "^PROMETHEUS=(on|1|true|yes)$"
