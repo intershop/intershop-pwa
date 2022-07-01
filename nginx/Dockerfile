@@ -10,7 +10,6 @@ COPY 50x.html /usr/share/nginx/html/
 ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.8.0/gomplate_linux-amd64-slim /gomplate
 RUN chmod 700 /gomplate
 COPY --from=nginx/nginx-prometheus-exporter:0.10.0 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
-ARG QUIET=1
 ENV CACHE=on
 ENV COMPRESSION=on
 ENV DEVICE_DETECTION=on
@@ -18,6 +17,5 @@ ENV SSR=on
 ENV CACHE_DURATION_NGINX_OK=10m
 ENV CACHE_DURATION_NGINX_NF=60m
 ENV LOGFORMAT=main
-ENV NGINX_ENTRYPOINT_QUIET_LOGS=${QUIET}
 
 EXPOSE 80 443 9113
