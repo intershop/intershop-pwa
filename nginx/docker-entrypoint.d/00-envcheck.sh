@@ -2,10 +2,23 @@
 
 set -e
 
-[ -f "/etc/nginx/conf.d/default.conf" ] && rm /etc/nginx/conf.d/default.conf
+if [ -f "/etc/nginx/conf.d/default.conf" ]
+then
+  rm /etc/nginx/conf.d/default.conf
+fi
 
-[ -z "$UPSTREAM_PWA" ] && echo "UPSTREAM_PWA is not set" && exit 1
+if [ -z "$UPSTREAM_PWA" ]
+then
+  echo "UPSTREAM_PWA is not set"
+  exit 1
+fi
 
-[ -z "$ICM_BASE_URL" ] && echo "ICM_BASE_URL is not set. Cannot use sitemap proxy feature."
+if [ -z "$ICM_BASE_URL" ]
+then
+  echo "ICM_BASE_URL is not set. Cannot use sitemap proxy feature."
+fi
 
-[ -z "$OVERRIDE_IDENTITY_PROVIDERS" ] && echo "OVERRIDE_IDENTITY_PROVIDERS is not set. Cannot use override identity provider feature."
+if [ -z "$OVERRIDE_IDENTITY_PROVIDERS" ]
+then
+  echo "OVERRIDE_IDENTITY_PROVIDERS is not set. Cannot use override identity provider feature."
+fi
