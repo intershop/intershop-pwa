@@ -15,6 +15,8 @@ All uses of the `(deferLoad)` directive in custom code need to be replaced.
 We removed the unmaintained `angular2-uuid` library in favor of the standard `uuid` library that is already included as an Angular dependency.
 In order to match our changes, replace all occurrences of `angular2-uuid` in your custom code (see #1203).
 
+The [pagespeed module](https://www.modpagespeed.com) of NGINX has been removed without replacement.
+
 ## 2.3 to 2.4
 
 The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.
