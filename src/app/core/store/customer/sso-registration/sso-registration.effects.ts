@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { UUID } from 'angular2-uuid';
 import { map, mergeMap } from 'rxjs/operators';
+import { v4 as uuid } from 'uuid';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { SsoRegistrationType } from 'ish-core/models/customer/customer.model';
@@ -27,7 +27,7 @@ export class SsoRegistrationEffects {
           .createUser({
             address: data.address,
             customer: {
-              customerNo: UUID.UUID(),
+              customerNo: uuid(),
               companyName: data.companyInfo.companyName1,
               companyName2: data.companyInfo.companyName2,
               isBusinessCustomer: this.featureToggleService.enabled('businessCustomerRegistration'),
