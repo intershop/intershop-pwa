@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { UUID } from 'angular2-uuid';
+import { v4 as uuid } from 'uuid';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -15,7 +15,7 @@ export const getSelfServiceApiConfiguration = createSelector(getTactonConfig, co
 export const getNewExternalId = createSelector(
   getLoggedInCustomer,
   getLoggedInUser,
-  (customer: Customer, user: User) => customer && user && `${customer.companyName}(${user.login}) - ${UUID.UUID()}`
+  (customer: Customer, user: User) => customer && user && `${customer.companyName}(${user.login}) - ${uuid()}`
 );
 
 const productMappings = createSelector(getTactonConfig, state => state?.productMappings || {});

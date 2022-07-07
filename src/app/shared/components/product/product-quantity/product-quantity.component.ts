@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { UUID } from 'angular2-uuid';
 import { range } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { v4 as uuid } from 'uuid';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
@@ -14,7 +14,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 })
 export class ProductQuantityComponent implements OnInit {
   @Input() type: 'input' | 'select' | 'counter' = 'counter';
-  @Input() id: string = UUID.UUID();
+  @Input() id: string = uuid();
 
   visible$: Observable<boolean>;
   quantity$: Observable<number>;
