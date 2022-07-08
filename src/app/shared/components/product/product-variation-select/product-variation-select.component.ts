@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { v4 as uuid } from 'uuid';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
@@ -13,7 +13,7 @@ import { VariationOptionGroup } from 'ish-core/models/product-variation/variatio
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationSelectComponent implements OnInit {
-  uuid = UUID.UUID();
+  uuid = uuid();
   variationOptions$: Observable<VariationOptionGroup[]>;
   visible$: Observable<boolean>;
 

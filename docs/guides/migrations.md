@@ -12,6 +12,9 @@ kb_sync_latest_only
 Since the used deferred load library is no longer maintained it is removed and replaced with similar standard browser functionality [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#images_and_iframes).
 All uses of the `(deferLoad)` directive in custom code need to be replaced.
 
+We removed the unmaintained `angular2-uuid` library in favor of the standard `uuid` library that is already included as an Angular dependency.
+In order to match our changes, replace all occurrences of `angular2-uuid` in your custom code (see #1203).
+
 ## 2.3 to 2.4
 
 The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.
