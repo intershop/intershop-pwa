@@ -10,8 +10,8 @@ const _ = {
   category: 'Cameras-Camcorders.585',
   product: {
     sku: '457595',
-    dollarPrice: '35.78',
-    euroPrice: '26,50',
+    dollarPrice: '33.75',
+    euroPrice: '25,00',
   },
 };
 

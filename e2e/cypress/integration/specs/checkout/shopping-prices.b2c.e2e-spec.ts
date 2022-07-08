@@ -13,9 +13,8 @@ const _ = {
   },
   product: {
     sku: '3468826',
-    priceNet: 19.5,
-    tax: 1.17,
-    shippingTax: 0.18,
+    priceGross: 19.5,
+    tax: 1.27,
   },
 };
 
@@ -27,21 +26,21 @@ describe('Price Display B2C', () => {
   });
 
   it('should display gross price on PDP', () => {
-    at(ProductDetailPage, page => page.price.should('contain', (_.product.priceNet + _.product.tax).toFixed(2)));
+    at(ProductDetailPage, page => page.price.should('contain', _.product.priceGross.toFixed(2)));
   });
 
   it('adding to cart should display with tax', () => {
     at(ProductDetailPage, page => {
       page.addProductToCart();
-      page.header.miniCart.total.should('contain', (_.product.priceNet + _.product.tax).toFixed(2));
+      page.header.miniCart.total.should('contain', _.product.priceGross.toFixed(2));
     });
   });
 
   it('should display tax on cart page', () => {
     at(ProductDetailPage, page => page.header.miniCart.goToCart());
     at(CartPage, page => {
-      page.subtotal.should('contain', (_.product.priceNet + _.product.tax).toFixed(2));
-      page.tax.should('contain', (_.product.tax + _.product.shippingTax).toFixed(2));
+      page.subtotal.should('contain', _.product.priceGross.toFixed(2));
+      page.tax.should('contain', _.product.tax.toFixed(2));
     });
   });
 
@@ -56,8 +55,8 @@ describe('Price Display B2C', () => {
   it('should see the same prices', () => {
     at(MyAccountPage, page => page.header.miniCart.goToCart());
     at(CartPage, page => {
-      page.subtotal.should('contain', (_.product.priceNet + _.product.tax).toFixed(2));
-      page.tax.should('contain', (_.product.tax + _.product.shippingTax).toFixed(2));
+      page.subtotal.should('contain', _.product.priceGross.toFixed(2));
+      page.tax.should('contain', _.product.tax.toFixed(2));
     });
   });
 });

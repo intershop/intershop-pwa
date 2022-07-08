@@ -8,7 +8,7 @@ const _ = {
   filter: {
     name: 'Brand',
     entryName: 'ManufacturerName_Microsoft',
-    results: 8,
+    results: 13,
   },
 };
 
