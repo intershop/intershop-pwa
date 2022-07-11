@@ -25,7 +25,7 @@ const _ = {
   },
   product: {
     sku: '201807171',
-    price: 185.5,
+    price: 175.0,
   },
 };
 
