@@ -45,6 +45,7 @@
   }
 }
 
+/* purgecss start ignore */
 .filter-group {
   position: relative;
   padding-bottom: $space-default;
@@ -117,7 +118,6 @@
 
       .filter-item-name,
       a.filter-item-name {
-        //font-weight: bold; // todo?
         color: $text-color-primary;
       }
 
@@ -202,6 +202,8 @@
     }
   }
 }
+
+/* purgecss end ignore */
 
 .filter-dropdown {
   position: relative;
