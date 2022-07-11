@@ -7,7 +7,7 @@ kb_sync_latest_only
 
 # Building and Running NGINX Docker Image
 
-We provide a docker image based on [nginx](https://www.nginx.com/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx).
+We provide a docker image based on [nginx](https://nginx.org/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx).
 
 ## Building
 
@@ -22,6 +22,10 @@ Mandatory environment variables:
 For HTTP, the server will run on default port 80.
 If HTTPS is chosen as an upstream, it will run on default port 443.
 In the latter case the files `server.key` and `server.crt` have to be supplied in the container folder `/etx/nginx` (either by volume mapping with `docker run` or in the image itself by `docker build`).
+
+We're using the standard NGinx Docker image.
+Therefore we inherit all their configuration capabilities.
+For further information please refer to [the official NGinx Docker image page](https://hub.docker.com/_/nginx?tab=description)
 
 ### Basic Auth
 
@@ -117,15 +121,10 @@ If no environment variable is set, this feature is disabled.
 
 ### Other
 
-The page speed configuration can also be overridden:
-
-- Set the environment variable `NPSC_ENABLE_FILTERS` to a comma-separated list of active [Page Speed Filters](https://www.modpagespeed.com/examples/) to override our carefully chosen defaults. Do this at your own risk.
-
 Built-in features can be enabled and disabled:
 
 - `SSR=off` effectively disables SSR rendering for browsers (default `on`)
 - `CACHE=off` disables caching (default `on`)
-- `PAGESPEED=off` disables pagespeed optimizations (default `on`)
 - `COMPRESSION=off` disables compression (default `on`)
 - `DEVICE_DETECTION=off` disables user-agent detection (default `on`)
 - `PROMETHEUS=on` enables [Prometheus](https://prometheus.io) metrics exports on port `9113` (default `off`)
@@ -140,7 +139,6 @@ The feature name must only contain word characters (letters, numbers and undersc
 ### Cache
 
 If the cache feature is switched off, all caching for pre-rendered pages is disabled.
-If the cache should also be disabled for static resources, the page speed feature has to be switched off as well as it caches optimized images individually.
 
 The cache duration for pre-rendered pages can be customized using `CACHE_DURATION_NGINX_OK` (for successful responses) and `CACHE_DURATION_NGINX_NF` (for 404 responses).
 The value supplied must be in the `time` format that is supported by [nginx proxy_cache_valid](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid)
@@ -152,3 +150,4 @@ The value supplied must be in the `time` format that is supported by [nginx prox
 - [Concept - Logging](../concepts/logging.md)
 - [Concept - Single Sign-On (SSO) for PWA](../concepts/sso.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
+- [README of official NGinx Docker image](https://hub.docker.com/_/nginx?tab=description)

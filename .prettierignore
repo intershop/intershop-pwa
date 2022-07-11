@@ -44,6 +44,7 @@ node_modules
 nginx.conf
 /nginx/**/*.conf
 /nginx/**/*.tmpl
+/nginx/docker-entrypoint.d/.shellspec
 /.idea/
 /charts/**/templates/*
 *~

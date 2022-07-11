@@ -34,7 +34,6 @@ Each of these is separately configurable (see [Building and Running nginx Docker
 Nginx enables the following features to be used in an Intershop PWA deployment:
 
 - Uncomplicated caching of PWA server-side rendering responses provided by the upstream Angular Universal server.
-- Integration of the [PageSpeed Module](https://www.modpagespeed.com/) for access to different browser optimizations.
 - Handling of multiple channels via URL parameters in conjunction with SSR (see [Multi-Site Handling](multi-site-handling.md)).
 - Customizable compression for downstream services
 - Device type detection to ensure a correct pre-render, adapted to the incoming user agent.
