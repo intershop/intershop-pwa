@@ -20,6 +20,8 @@ The [pagespeed module](https://www.modpagespeed.com) of NGINX has been removed w
 The [@ngx-translate/http-loader](https://github.com/ngx-translate/core) dependency was removed since we did not use it.
 You might need to keep this dependency if you are loading translations differently from the standard Intershop PWA in your customization.
 
+The deprecated `customized-copy` schematic for copying components and replacing all usages was removed.
+
 ## 2.3 to 2.4
 
 The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.
