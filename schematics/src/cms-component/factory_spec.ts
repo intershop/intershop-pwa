@@ -74,7 +74,7 @@ describe('CMS Component Schematic', () => {
   });
 
   it('should create a component in cms module without added name prefix if requested', async () => {
-    const options = { ...defaultOptions, noCMSPrefixing: true };
+    const options = { ...defaultOptions, cmsPrefixing: false };
     const tree = await schematicRunner.runSchematicAsync('cms-component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
       Array [
