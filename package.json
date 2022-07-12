@@ -83,7 +83,6 @@
     "@nguniversal/express-engine": "13.1.1",
     "@ngx-formly/core": "^5.12.3",
     "@ngx-translate/core": "^14.0.0",
-    "@ngx-translate/http-loader": "^7.0.0",
     "@rx-angular/state": "1.6.0",
     "@sentry/browser": "^6.19.7",
     "angular-oauth2-oidc": "13.0.1",

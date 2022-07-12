@@ -260,6 +260,11 @@ This has to fit to your PWA environment.
 This allows to enable easy filtering.
 The prefixes will be removed when the translations are loaded into the PWA.
 
+## External Localization Sources
+
+The Intershop PWA presents no native way to use a different external source for loading translations in JSON format.
+The pull request [feat: allow translations to be loaded from an external source](https://github.com/intershop/intershop-pwa/pull/927) presents a way how such an external service could be integrated and configured in the Intershop PWA.
+
 ## Localization File Clean Up Process
 
 Localization files require constant maintenance to keep them up to date.
