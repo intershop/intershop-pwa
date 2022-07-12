@@ -32,11 +32,11 @@ export function createCMSComponent(options: Options): Rule {
     }
     options = await detectExtension('cms', host, options);
     options = await applyNameAndPath('component', host, options);
-    if (!options.noCMSPrefixing) {
+    if (options.cmsPrefixing) {
       options.name = `cms-${options.name}`;
     }
     options = determineArtifactName('component', host, options);
-    if (!options.noCMSPrefixing) {
+    if (options.cmsPrefixing) {
       options.artifactName = `CMS${options.artifactName.replace('Cms', '')}`;
     }
     options = await generateSelector(host, options);

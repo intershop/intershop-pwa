@@ -89,7 +89,7 @@ test -f src/app/shared/cms/components/cms-inventory/cms-inventory.component.ts
 grep "CMSInventoryComponent" src/app/shared/cms/cms.module.ts
 grep "CMSInventoryComponent" src/app/shared/shared.module.ts
 
-npx ng g cms --definition-qualified-name app:component.custom.audio.pagelet2-Component --noCMSPrefixing audio
+npx ng g cms --definition-qualified-name app:component.custom.audio.pagelet2-Component --cms-prefixing=false audio
 test -f src/app/shared/cms/components/audio/audio.component.ts
 grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
