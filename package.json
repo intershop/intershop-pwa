@@ -1,14 +1,14 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
   "keywords": [
     "intershop"
   ],
   "engines": {
-    "node": ">=16.14.2",
-    "npm": ">=8.5.0"
+    "node": "16.16.0",
+    "npm": "8.11.0"
   },
   "private": true,
   "scripts": {

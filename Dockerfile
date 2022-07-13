@@ -1,5 +1,5 @@
 # synchronize-marker:docker-cache-share:begin
-FROM node:16-alpine as buildstep
+FROM node:16.16.0-alpine as buildstep
 ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
@@ -27,7 +27,7 @@ RUN npm run build:multi server
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
-FROM node:16-alpine
+FROM node:16.16.0-alpine
 COPY --from=buildstep /workspace/dist /dist
 RUN cd dist && npm install
 ARG displayVersion=

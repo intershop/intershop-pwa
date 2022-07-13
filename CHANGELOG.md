@@ -7,6 +7,20 @@ kb_everyone
 
 # Changelog
 
+## [2.4.1](https://github.com/releases/tag/2.4.1) (2022-07-13)
+
+**required Intershop Commerce Management version: 7.10.38.0-LTS**
+
+### Bug Fixes
+
+- dependencies and package-lock fixes (#1182) ([5f22ccc](https://github.com/intershop/intershop-pwa/commit/5f22ccc))
+- pin nginx version to 1.21.6 instead of using latest (#1188) ([c983feb](https://github.com/intershop/intershop-pwa/commit/c983feb))
+- use a fixed node.js version to prevent build issues with unknown versions (#1208) ([841feba](https://github.com/intershop/intershop-pwa/commit/841feba))
+- purgecss exeption for generated filter-layer CSS classes (#1204, #1207) ([0105006](https://github.com/intershop/intershop-pwa/commit/0105006))
+- make default favicon accessible from root (#1194, #1199) ([893bfd2](https://github.com/intershop/intershop-pwa/commit/893bfd2))
+- don't display the review tab on product master variation page (#1193) ([8a0a265](https://github.com/intershop/intershop-pwa/commit/8a0a265))
+- content page not found when reloading a page with an authenticated user (#1198) ([401b393](https://github.com/intershop/intershop-pwa/commit/401b393))
+
 ## [2.4.0](https://github.com/releases/tag/2.4.0) (2022-06-03)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
