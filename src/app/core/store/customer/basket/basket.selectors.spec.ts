@@ -18,6 +18,7 @@ import {
   addItemsToBasketSuccess,
   addPromotionCodeToBasketFail,
   continueCheckoutSuccess,
+  createBasketSuccess,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -272,14 +273,19 @@ describe('Basket Selectors', () => {
 
   describe('loading last time and info when a product has been added to basket', () => {
     beforeEach(() => {
-      store$.dispatch(addItemsToBasketSuccess({ info: [{ message: 'info' } as BasketInfo], items: [] }));
+      store$.dispatch(
+        createBasketSuccess({
+          basket: { id: 'test', lineItems: [{ id: 'test', productSKU: 'sku' } as LineItem] } as Basket,
+        })
+      );
+      store$.dispatch(addItemsToBasketSuccess({ info: [{ message: 'info' } as BasketInfo], lineItems: [] }));
     });
 
     it('should get the last time when a product was added', () => {
       const firstTimeAdded = new Date(getBasketLastTimeProductAdded(store$.state));
 
       expect(firstTimeAdded).toBeDate();
-      store$.dispatch(addItemsToBasketSuccess({ info: undefined, items: [] }));
+      store$.dispatch(addItemsToBasketSuccess({ info: undefined, lineItems: [] }));
       expect(getBasketLastTimeProductAdded(store$.state)).not.toEqual(firstTimeAdded);
     });
 

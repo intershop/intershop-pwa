@@ -23,7 +23,7 @@ export class QuotingBasketLineItemsComponent implements OnInit {
     this.quotingFacade.loadQuoting();
     this.lineItems$ = this.checkoutFacade.basket$.pipe(
       map(basket =>
-        Object.entries(groupBy(basket.lineItems, 'quote')).sort((a, b) =>
+        Object.entries(groupBy(basket?.lineItems, 'quote')).sort((a, b) =>
           a[0] === 'undefined' ? -1 : b[0] === 'undefined' ? 1 : 0
         )
       )

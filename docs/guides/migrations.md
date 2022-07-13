@@ -59,6 +59,10 @@ All these routes now contain hierarchies and have different id markers.
 For categories it was changed from `cat` to `ctg` and for products from `sku`to `prd`.
 This way, it is intended to have less conflicts and limitations with potential category/product ids, e.g., 'cats' or 'skunks'.
 
+To improve the support of large baskets we update the ngrx store immediately after adding, updating and deleting basket items now.
+Therefore we had to change the return values of the corresponding basket service functions as well as the payload of the success actions.
+We also limited the number of displayed line items in the mini basket and introduced a paging bar on the basket page to speed up the rendering of these components.
+
 ## 2.3 to 2.4
 
 The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.

@@ -29,9 +29,12 @@ import {
   deleteBasketItemSuccess,
   loadBasket,
   loadBasketSuccess,
+  updateBasketItem,
+  updateBasketItemFail,
   updateBasketItems,
   updateBasketItemsFail,
   updateBasketItemsSuccess,
+  updateBasketItemSuccess,
   validateBasket,
 } from './basket.actions';
 
@@ -87,7 +90,7 @@ describe('Basket Items Effects', () => {
 
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
+      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of({ lineItems: [], info: undefined }));
     });
 
     it('should call the basketService for addItemsToBasket', done => {
@@ -136,7 +139,10 @@ describe('Basket Items Effects', () => {
 
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = addItemsToBasket({ items });
-      const completion = addItemsToBasketSuccess({ info: undefined, items });
+      const completion = addItemsToBasketSuccess({
+        info: undefined,
+        lineItems: [],
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -184,7 +190,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadBasketAfterAddItemsToBasket$', () => {
     it('should map to action of type LoadBasket if AddItemsToBasketSuccess action triggered', () => {
-      const action = addItemsToBasketSuccess({ info: undefined, items: [] });
+      const action = addItemsToBasketSuccess({ info: undefined, lineItems: [] });
       const completion = loadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
@@ -193,9 +199,76 @@ describe('Basket Items Effects', () => {
     });
   });
 
+  describe('updateBasketItem$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
+        of({ lineItem: undefined, info: undefined })
+      );
+
+      store$.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+    });
+
+    const itemId = 'BIID';
+    const updateItemAction = updateBasketItem({
+      lineItemUpdate: {
+        itemId,
+        quantity: 2,
+      },
+    });
+
+    it('should call the basketService for UpdateBasketItem action', done => {
+      actions$ = of(updateItemAction);
+
+      effects.updateBasketItem$.subscribe(() => {
+        verify(basketServiceMock.updateBasketItem(itemId, anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type UpdateBasketItemSuccess', () => {
+      const completion = updateBasketItemSuccess({ lineItem: undefined, info: undefined });
+      actions$ = hot('-a-a-a', { a: updateItemAction });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketItem$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type UpdateBasketItemFail', () => {
+      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+
+      const completion = updateBasketItemFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: updateItemAction });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketItem$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadBasketAfterUpdateBasketItem$', () => {
+    it('should map to action of type LoadBasket if UpdateBasketItemSuccess action triggered', () => {
+      const action = updateBasketItemSuccess({ lineItem: anything(), info: undefined });
+      const completion = loadBasket();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketAfterBasketItemsChangeSuccess$).toBeObservable(expected$);
+    });
+  });
+
   describe('updateBasketItems$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(of([{} as BasketInfo]));
+      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
+        of({ lineItem: undefined, info: undefined })
+      );
 
       store$.dispatch(
         loadBasketSuccess({
@@ -385,7 +458,7 @@ describe('Basket Items Effects', () => {
     it('should map to action of type DeleteBasketItemSuccess', () => {
       const itemId = 'BIID';
       const action = deleteBasketItem({ itemId });
-      const completion = deleteBasketItemSuccess({ info: undefined });
+      const completion = deleteBasketItemSuccess({ itemId, info: undefined });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -409,7 +482,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadBasketAfterDeleteBasketItem$', () => {
     it('should map to action of type LoadBasket if DeleteBasketItemSuccess action triggered', () => {
-      const action = deleteBasketItemSuccess({ info: undefined });
+      const action = deleteBasketItemSuccess({ itemId: '123', info: undefined });
       const completion = loadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -420,7 +493,7 @@ describe('Basket Items Effects', () => {
 
   describe('redirectToBasketIfBasketInteractionHasInfo$', () => {
     it('should navigate to basket if interaction has info', fakeAsync(() => {
-      actions$ = of(deleteBasketItemSuccess({ info: [{ message: 'INFO' } as BasketInfo] }));
+      actions$ = of(deleteBasketItemSuccess({ itemId: '123', info: [{ message: 'INFO' } as BasketInfo] }));
 
       effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe({ next: noop, error: fail, complete: noop });
 
@@ -430,7 +503,7 @@ describe('Basket Items Effects', () => {
     }));
 
     it('should not navigate to basket if interaction had no info', fakeAsync(() => {
-      actions$ = of(deleteBasketItemSuccess({ info: undefined }));
+      actions$ = of(deleteBasketItemSuccess({ itemId: '123', info: undefined }));
 
       effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe({ next: noop, error: fail, complete: noop });
 

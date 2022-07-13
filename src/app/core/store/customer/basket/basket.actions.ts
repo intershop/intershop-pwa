@@ -7,6 +7,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { SkuQuantityType } from 'ish-core/models/product/product.helper';
@@ -83,7 +84,7 @@ export const addItemsToBasketFail = createAction('[Basket API] Add Items To Bask
 
 export const addItemsToBasketSuccess = createAction(
   '[Basket API] Add Items To Basket Success',
-  payload<{ info: BasketInfo[]; items: SkuQuantityType[] }>()
+  payload<{ info: BasketInfo[]; lineItems: LineItem[] }>()
 );
 
 export const mergeBasketInProgress = createAction('[Basket API] Merge two baskets in progress');
@@ -126,6 +127,18 @@ export const continueCheckoutWithIssues = createAction(
   payload<{ targetRoute: string; basketValidation: BasketValidation }>()
 );
 
+export const updateBasketItem = createAction(
+  '[Basket] Update Basket Item',
+  payload<{ lineItemUpdate: LineItemUpdate }>()
+);
+
+export const updateBasketItemFail = createAction('[Basket API] Update Basket Item Fail', httpError());
+
+export const updateBasketItemSuccess = createAction(
+  '[Basket API] Update Basket Item Success',
+  payload<{ lineItem: LineItem; info: BasketInfo[] }>()
+);
+
 export const updateBasketItems = createAction(
   '[Basket] Update Basket Items',
   payload<{ lineItemUpdates: LineItemUpdate[] }>()
@@ -144,7 +157,7 @@ export const deleteBasketItemFail = createAction('[Basket API] Delete Basket Ite
 
 export const deleteBasketItemSuccess = createAction(
   '[Basket API] Delete Basket Item Success',
-  payload<{ info: BasketInfo[] }>()
+  payload<{ itemId: string; info: BasketInfo[] }>()
 );
 
 export const removePromotionCodeFromBasket = createAction(

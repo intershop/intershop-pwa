@@ -6,6 +6,7 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketData } from 'ish-core/models/basket/basket.interface';
+import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
@@ -147,7 +148,7 @@ describe('Basket Service', () => {
   });
 
   it("should post item to basket when 'addItemsToBasket' is called", done => {
-    when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
+    when(apiService.post(anything(), anything(), anything())).thenReturn(of({ data: [], infos: undefined }));
 
     basketService.addItemsToBasket([itemMockData]).subscribe(() => {
       verify(apiService.post(`baskets/current/items`, anything(), anything())).once();
@@ -192,7 +193,9 @@ describe('Basket Service', () => {
   });
 
   it("should patch updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
-    when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
+    when(apiService.patch(anyString(), anything(), anything())).thenReturn(
+      of({ data: { id: lineItemData.id, calculated: false } as LineItemData, infos: undefined })
+    );
 
     const payload = { quantity: { value: 2 } } as BasketItemUpdateType;
     basketService.updateBasketItem(lineItemData.id, payload).subscribe(() => {
