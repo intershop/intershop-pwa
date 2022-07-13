@@ -2,7 +2,7 @@ FROM ubuntu:focal as buildstep
 RUN apt-get update
 RUN apt-get install -y curl build-essential zlib1g-dev libpcre3-dev unzip wget uuid-dev sudo openssl libssl-dev
 RUN curl -kfL -sS https://ngxpagespeed.com/install > install.sh
-RUN bash install.sh --nginx-version latest --additional-nginx-configure-arguments '--with-http_ssl_module --with-http_stub_status_module'
+RUN bash install.sh --ngx-pagespeed-version v1.13.35.2-stable --nginx-version 1.21.6 --additional-nginx-configure-arguments '--with-http_ssl_module --with-http_stub_status_module'
 
 FROM scratch as configstep
 COPY --from=nginx:mainline /etc/nginx /etc/nginx

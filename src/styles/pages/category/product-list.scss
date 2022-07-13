@@ -204,53 +204,6 @@
   }
 }
 
-.express-shop {
-  .product-img-thumbs {
-    width: auto;
-  }
-
-  .product-thumb-set {
-    margin-right: $space-default;
-  }
-}
-
-.product-image-container {
-  position: relative;
-
-  &:hover {
-    .express-shop-trigger {
-      display: block;
-    }
-  }
-}
-
-.express-shop-trigger {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: none;
-  width: 80px;
-  height: 80px;
-  margin: auto;
-  color: $text-color-inverse;
-  text-align: center;
-  cursor: pointer;
-  background-color: $CORPORATE-PRIMARY;
-  border-radius: 50%;
-  opacity: 0.93;
-
-  &:hover {
-    background-color: $CORPORATE-SECONDARY;
-  }
-
-  .ng-fa-icon {
-    padding: 25px 0;
-    font-size: 30px;
-  }
-}
-
 /* purgecss start ignore */
 
 .product-label {

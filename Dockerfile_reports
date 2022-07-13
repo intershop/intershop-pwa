@@ -1,7 +1,7 @@
 # To build this report image, you will have to temporarily truncate the .dockerignore
 
 # synchronize-marker:docker-cache-share:begin
-FROM node:16-alpine as buildstep
+FROM node:16.16.0-alpine as buildstep
 ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
