@@ -13,6 +13,11 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 })
 @GenerateLazyComponent()
 export class MiniBasketContentComponent implements OnInit {
+  /**
+   maximum number of displayed items, undefined = display always all items
+   */
+  maxItemNumber = 25;
+
   basketError$: Observable<HttpError>;
   lineItems$: Observable<LineItemView[]>;
 

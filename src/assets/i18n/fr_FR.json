@@ -1055,6 +1055,7 @@
   "shopping_cart.heading": "Votre panier",
   "shopping_cart.ministatus.empty_cart.text": "Votre panier est actuellement vide.",
   "shopping_cart.ministatus.items.text": "{{0, plural, one{# article} other{# articles}}}",
+  "shopping_cart.ministatus.show_all_items.text": "Accédez au panier pour afficher tous vos articles.",
   "shopping_cart.ministatus.view_cart.link": "Afficher le panier",
   "shopping_cart.oci.transfer_basket.button": "Transférer le panier",
   "shopping_cart.payment.creditCardExpiryDate.invalid.error": "La date d’expiration de la carte de crédit doit contenir 5 caractères et être au format nn/nn, où n est un nombre.",

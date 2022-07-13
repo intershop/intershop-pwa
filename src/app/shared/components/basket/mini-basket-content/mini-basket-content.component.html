@@ -6,7 +6,7 @@
 
 <ng-container *ngIf="lineItems$ | async as lineItems; else emptyBlock">
   <div class="product-rows-block">
-    <div *ngFor="let lineItem of lineItems" class="product-row">
+    <div *ngFor="let lineItem of lineItems | slice: 0:maxItemNumber" class="product-row">
       <ng-container ishProductContext [sku]="lineItem.productSKU">
         <div class="mini-product-img">
           <ish-product-image imageType="S" [link]="true"></ish-product-image>
@@ -19,6 +19,13 @@
           </div>
         </div>
       </ng-container>
+    </div>
+    <div
+      *ngIf="maxItemNumber && lineItems.length >= maxItemNumber + 1"
+      class="alert alert-info mb-0"
+      data-testing-id="show-all-cart-items-hint"
+    >
+      {{ 'shopping_cart.ministatus.show_all_items.text' | translate }}
     </div>
   </div>
 
