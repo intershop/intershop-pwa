@@ -1055,6 +1055,7 @@
   "shopping_cart.heading": "Ihr Warenkorb",
   "shopping_cart.ministatus.empty_cart.text": "Ihr Warenkorb ist leer.",
   "shopping_cart.ministatus.items.text": "{{0}} Artikel",
+  "shopping_cart.ministatus.show_all_items.text": "Gehen Sie zum Warenkorb, um alle Ihre Artikel anzusehen.",
   "shopping_cart.ministatus.view_cart.link": "Warenkorb ansehen",
   "shopping_cart.oci.transfer_basket.button": "Warenkorb übertragen",
   "shopping_cart.payment.creditCardExpiryDate.invalid.error": "Das Ablaufdatum der Kreditkarte muss eine Länge von 5 Zeichen und das Format nn/nn haben, wobei n eine Zahl ist.",

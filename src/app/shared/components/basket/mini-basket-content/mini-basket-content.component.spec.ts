@@ -51,10 +51,25 @@ describe('Mini Basket Content Component', () => {
   it('should render product rows if expanded', () => {
     fixture.detectChanges();
     expect(element.getElementsByClassName('product-row')).toHaveLength(3);
+    expect(element.querySelector('[data-testing-id=show-all-cart-items-hint]')).toBeFalsy();
   });
 
   it('should render product image component on expanded component', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('ish-product-image')).toHaveLength(3);
+  });
+
+  it('should not render all product rows if maxItemNumber is exceeded', () => {
+    component.maxItemNumber = 2;
+    fixture.detectChanges();
+    expect(element.getElementsByClassName('product-row')).toHaveLength(2);
+    expect(element.querySelector('[data-testing-id=show-all-cart-items-hint]')).toBeTruthy();
+  });
+
+  it('should render all product rows if maxItemNumber is undefined', () => {
+    component.maxItemNumber = undefined;
+    fixture.detectChanges();
+    expect(element.getElementsByClassName('product-row')).toHaveLength(3);
+    expect(element.querySelector('[data-testing-id=show-all-cart-items-hint]')).toBeFalsy();
   });
 });
