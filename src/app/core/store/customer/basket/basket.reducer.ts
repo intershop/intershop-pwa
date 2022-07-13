@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { unionBy } from 'lodash-es';
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
@@ -67,9 +68,12 @@ import {
   submitBasketSuccess,
   updateBasket,
   updateBasketFail,
+  updateBasketItem,
+  updateBasketItemFail,
   updateBasketItems,
   updateBasketItemsFail,
   updateBasketItemsSuccess,
+  updateBasketItemSuccess,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -125,6 +129,7 @@ export const basketReducer = createReducer(
     removePromotionCodeFromBasket,
     addItemsToBasket,
     continueCheckout,
+    updateBasketItem,
     updateBasketItems,
     deleteBasketItem,
     setBasketAttribute,
@@ -144,6 +149,7 @@ export const basketReducer = createReducer(
   unsetLoadingAndErrorOn(
     loadBasketSuccess,
     mergeBasketSuccess,
+    updateBasketItemSuccess,
     updateBasketItemsSuccess,
     deleteBasketItemSuccess,
     addItemsToBasketSuccess,
@@ -167,6 +173,7 @@ export const basketReducer = createReducer(
     continueCheckoutFail,
     addItemsToBasketFail,
     removePromotionCodeFromBasketFail,
+    updateBasketItemFail,
     updateBasketItemsFail,
     deleteBasketItemFail,
     setBasketAttributeFail,
@@ -193,13 +200,31 @@ export const basketReducer = createReducer(
       submittedBasket: undefined,
     };
   }),
-  on(updateBasketItemsSuccess, deleteBasketItemSuccess, (state, action) => ({
+  on(updateBasketItemSuccess, (state, action) => ({
     ...state,
+    basket: {
+      ...state.basket,
+      lineItems: state.basket.lineItems.map(item =>
+        item.id === action.payload.lineItem.id ? action.payload.lineItem : item
+      ),
+    },
+    info: action.payload.info,
+    validationResults: initialValidationResults,
+  })),
+  on(updateBasketItemsSuccess, (state, action) => ({
+    ...state,
+    info: action.payload.info,
+    validationResults: initialValidationResults,
+  })),
+  on(deleteBasketItemSuccess, (state, action) => ({
+    ...state,
+    basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
     info: action.payload.info,
     validationResults: initialValidationResults,
   })),
   on(addItemsToBasketSuccess, (state, action) => ({
     ...state,
+    basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
     info: action.payload.info,
     lastTimeProductAdded: new Date().getTime(),
     submittedBasket: undefined,

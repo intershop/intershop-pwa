@@ -43,7 +43,7 @@ import {
   startCheckout,
   updateBasketAddress,
   updateBasketCostCenter,
-  updateBasketItems,
+  updateBasketItem,
   updateBasketShippingMethod,
   updateConcardisCvcLastUpdated,
 } from 'ish-core/store/customer/basket';
@@ -108,7 +108,11 @@ export class CheckoutFacade {
   }
 
   updateBasketItem(update: LineItemUpdate) {
-    this.store.dispatch(updateBasketItems({ lineItemUpdates: [update] }));
+    if (update.quantity) {
+      this.store.dispatch(updateBasketItem({ lineItemUpdate: update }));
+    } else {
+      this.store.dispatch(deleteBasketItem({ itemId: update.itemId }));
+    }
   }
 
   updateBasketShippingMethod(shippingId: string) {
