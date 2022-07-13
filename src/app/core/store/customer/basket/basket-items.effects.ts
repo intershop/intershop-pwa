@@ -62,7 +62,7 @@ export class BasketItemsEffects {
       withLatestFrom(this.store.pipe(select(getProductEntities))),
       map(([val, entities]) => ({ ...val, unit: entities[val.sku]?.packingUnit })),
       // accumulate all actions
-      window(this.actions$.pipe(ofType(addProductToBasket), debounceTime(1000))),
+      window(this.actions$.pipe(ofType(addProductToBasket), debounceTime(500))),
       mergeMap(window$ => window$.pipe(toArray())),
       map(items => addItemsToBasket({ items }))
     )
