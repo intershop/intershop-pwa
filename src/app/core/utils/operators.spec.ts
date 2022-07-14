@@ -1,5 +1,5 @@
 import { createAction } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { of } from 'rxjs';
 
 import { httpError } from 'ish-core/utils/ngrx-creators';
@@ -50,7 +50,7 @@ describe('Operators', () => {
       const error = new Error('other error');
 
       const input$ = hot('  ---#', undefined, error);
-      const result$ = cold('---#');
+      const result$ = cold('---#', undefined, error);
 
       expect(input$.pipe(mapErrorToAction(dummyFail))).toBeObservable(result$);
     });

@@ -7,7 +7,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Observable, noop, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -108,6 +108,8 @@ describe('Quoting Effects', () => {
 
     it('should navigate to created quote request 4', done => {
       const routerSpy = spy(router);
+
+      when(routerSpy.navigateByUrl(anyString())).thenReturn(Promise.resolve(true));
 
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 

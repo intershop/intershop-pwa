@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
-import { cold } from 'jest-marbles';
+import { cold } from 'jasmine-marbles';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadRolesAndPermissionsSuccess } from 'ish-core/store/customer/authorization';
