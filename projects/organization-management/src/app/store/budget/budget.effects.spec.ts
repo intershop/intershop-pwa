@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
-import { Observable, of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { cold, hot } from 'jasmine-marbles';
+import { Observable, of, throwError } from 'rxjs';
+import { instance, mock, verify, when } from 'ts-mockito';
 
 import { Price } from 'ish-core/models/price/price.model';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { UsersService } from '../../services/users/users.service';
 
@@ -53,13 +54,48 @@ describe('Budget Effects', () => {
   });
 
   describe('loadBudget$', () => {
-    it('should dispatch actions when encountering loadBudget', () => {
-      const action = loadBudget();
-      const response = loadBudgetSuccess({ budget });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-b-b-b', { b: response });
+    it('should call the usersService for loadBudget', done => {
+      actions$ = of(loadBudget());
 
-      expect(effects.loadBudget$).toBeObservable(expected$);
+      effects.loadBudget$.subscribe(() => {
+        verify(usersService.getCurrentUserBudget()).once();
+        done();
+      });
+    });
+    it('should dispatch loadBudgetSuccess when encountering loadBudget', done => {
+      actions$ = of(loadBudget());
+
+      effects.loadBudget$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Budget API] Load Budget Success:
+            budget: {"orderSpentLimit":{"currency":"USD","value":500},"remaining...
+        `);
+        done();
+      });
+    });
+
+    describe('loadBudget$', () => {
+      it('should dispatch actions when encountering loadBudget', () => {
+        const action = loadBudget();
+        const response = loadBudgetSuccess({ budget });
+        actions$ = hot('-a-a-a', { a: action });
+        const expected$ = cold('-b-b-b', { b: response });
+
+        expect(effects.loadBudget$).toBeObservable(expected$);
+      });
+    });
+
+    it('should map an invalid request to action of type LoadBudgetFail', done => {
+      when(usersService.getCurrentUserBudget()).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
+      actions$ = of(loadBudget());
+
+      effects.loadBudget$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Budget API] Load Budget Fail:
+            error: {"name":"HttpErrorResponse","message":"ERROR"}
+        `);
+        done();
+      });
     });
   });
 });

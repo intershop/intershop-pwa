@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { cold } from 'jest-marbles';
+import { cold } from 'jasmine-marbles';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { getFeatures } from 'ish-core/store/core/configuration';

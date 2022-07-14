@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { BehaviorSubject, Observable, merge, noop, of, throwError } from 'rxjs';
 import { delay, toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';

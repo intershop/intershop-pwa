@@ -1,4 +1,4 @@
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { Subject, noop } from 'rxjs';
 
 import { log } from './operators';
