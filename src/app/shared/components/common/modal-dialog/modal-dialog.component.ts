@@ -82,6 +82,7 @@ export class ModalDialogComponent<T> {
    */
   hide() {
     this.ngbModalRef.close();
+    this.closed.emit(this.data);
   }
 
   /**
