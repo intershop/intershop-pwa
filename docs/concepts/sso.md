@@ -28,6 +28,22 @@ For development purposes the configuration can be added to the Angular CLI envir
 For production, this configuration should be provided to the SSR process via environment variables (see [Building and Running Server-Side Rendering][ssr-startup]).
 The usage of identity providers can also be set in the multi-channel configuration (see [Building and Running nginx Docker Image][nginx-startup]).
 
+## Business cases
+
+### Create new user
+
+| Authentication Provider | Route in ICM email | Behavior of PWA                            |
+| ----------------------- | ------------------ | ------------------------------------------ |
+| ICM                     | /invite            | Redirect to /forgotPassword/updatePassword |
+| SSO                     | /invite            | Redirect to SSO provider                   |
+
+### User forgot password
+
+| Authentication Provider | Route in ICM email             | Behavior of PWA           |
+| ----------------------- | ------------------------------ | ------------------------- |
+| ICM                     | /forgotPassword/updatePassword | Show change password form |
+| SSO                     | /forgotPassword/updatePassword | Redirect to SSO provider  |
+
 # Further References
 
 - PWA

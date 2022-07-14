@@ -57,6 +57,7 @@ export class IdentityProviderFactory {
         intercept: (req, next) => next.handle(req),
         triggerLogin: () => true,
         triggerLogout: () => true,
+        triggerInvite: () => true,
         getCapabilities: () => ({}),
       };
     }
