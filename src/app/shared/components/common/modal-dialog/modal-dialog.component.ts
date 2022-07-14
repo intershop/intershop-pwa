@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, last, map } from 'rxjs';
 
 export interface ModalOptions {
   /**
@@ -56,6 +57,8 @@ export class ModalDialogComponent<T> {
 
   constructor(private ngbModal: NgbModal) {}
 
+  shown$: Observable<boolean>;
+
   /**
    * Configure and show modal dialog.
    */
@@ -67,6 +70,11 @@ export class ModalDialogComponent<T> {
     const size = this.options?.size ? this.options.size : undefined;
 
     this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, { size });
+
+    this.shown$ = this.ngbModalRef.shown.pipe(
+      last(),
+      map(() => true)
+    );
   }
 
   /**
@@ -74,7 +82,6 @@ export class ModalDialogComponent<T> {
    */
   hide() {
     this.ngbModalRef.close();
-    this.closed.emit(this.data);
   }
 
   /**

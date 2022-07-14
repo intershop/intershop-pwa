@@ -8,7 +8,9 @@
         [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
         class="details-link"
       >
-        <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include"></ish-content-include>
+        <ng-container *ishLazyContent>
+          <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include"></ish-content-include>
+        </ng-container>
       </ish-modal-dialog-link>
     </span>
   </h1>

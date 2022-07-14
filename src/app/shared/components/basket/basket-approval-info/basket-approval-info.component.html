@@ -8,58 +8,61 @@
     [options]="{ titleText: 'approval.details.heading' | translate }"
     [ngClass]="'details-link'"
   >
-    <p>
-      {{ 'approval.details.conditions' | translate }}
-    </p>
-    <ul>
-      <li>{{ 'approval.details.conditions.order_spend_limit' | translate }}</li>
-      <li>{{ 'approval.details.conditions.budget_limit' | translate }}</li>
-      <li *ngIf="approval.costCenterApproval">{{ 'approval.details.conditions.cost_center' | translate }}</li>
-    </ul>
-    <p>
-      {{ 'approval.details.place_order' | translate }}
-    </p>
-    <p
-      [ishServerHtml]="
-        'approval.details.after' | translate: { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
-      "
-      [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
-    ></p>
-
-    <!-- display approvers -->
-    <h3 *ngIf="approval.customerApproval?.approvers?.length || approval.costCenterApproval?.approvers?.length">
-      {{ 'approval.details.contacts.heading' | translate }}
-    </h3>
-
-    <ng-container *ngIf="approval.customerApproval?.approvers?.length">
-      <p>{{ 'approval.details.customer_approvers.people_allowed' | translate }}</p>
-
-      <table class="table table-sm">
-        <tr *ngFor="let approver of approval.customerApproval.approvers">
-          <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
-          <td>
-            <a href="mailto:{{ approver.email }}">{{ approver.email }}</a>
-          </td>
-        </tr>
-      </table>
-    </ng-container>
-
-    <ng-container *ngIf="approval.costCenterApproval?.approvers?.length">
+    <ng-container *ishLazyContent>
       <p>
-        {{
-          'approval.details.cost_center_approvers.people_allowed'
-            | translate: { '0': approval.costCenterApproval.costCenterName || approval.costCenterApproval.costCenterID }
-        }}
+        {{ 'approval.details.conditions' | translate }}
       </p>
+      <ul>
+        <li>{{ 'approval.details.conditions.order_spend_limit' | translate }}</li>
+        <li>{{ 'approval.details.conditions.budget_limit' | translate }}</li>
+        <li *ngIf="approval.costCenterApproval">{{ 'approval.details.conditions.cost_center' | translate }}</li>
+      </ul>
+      <p>
+        {{ 'approval.details.place_order' | translate }}
+      </p>
+      <p
+        [ishServerHtml]="
+          'approval.details.after' | translate: { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
+        "
+        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
+      ></p>
 
-      <table class="table table-sm">
-        <tr *ngFor="let approver of approval.costCenterApproval.approvers">
-          <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
-          <td>
-            <a href="mailto:{{ approver.email }}">{{ approver.email }}</a>
-          </td>
-        </tr>
-      </table>
+      <!-- display approvers -->
+      <h3 *ngIf="approval.customerApproval?.approvers?.length || approval.costCenterApproval?.approvers?.length">
+        {{ 'approval.details.contacts.heading' | translate }}
+      </h3>
+
+      <ng-container *ngIf="approval.customerApproval?.approvers?.length">
+        <p>{{ 'approval.details.customer_approvers.people_allowed' | translate }}</p>
+
+        <table class="table table-sm">
+          <tr *ngFor="let approver of approval.customerApproval.approvers">
+            <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
+            <td>
+              <a href="mailto:{{ approver.email }}">{{ approver.email }}</a>
+            </td>
+          </tr>
+        </table>
+      </ng-container>
+
+      <ng-container *ngIf="approval.costCenterApproval?.approvers?.length">
+        <p>
+          {{
+            'approval.details.cost_center_approvers.people_allowed'
+              | translate
+                : { '0': approval.costCenterApproval.costCenterName || approval.costCenterApproval.costCenterID }
+          }}
+        </p>
+
+        <table class="table table-sm">
+          <tr *ngFor="let approver of approval.costCenterApproval.approvers">
+            <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
+            <td>
+              <a href="mailto:{{ approver.email }}">{{ approver.email }}</a>
+            </td>
+          </tr>
+        </table>
+      </ng-container>
     </ng-container>
   </ish-modal-dialog-link>
 </div>

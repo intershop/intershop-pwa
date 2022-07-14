@@ -1,4 +1,6 @@
 <a (click)="modalDialog.show()" rel="nofollow">{{ linkText | translate }}</a>
 <ish-modal-dialog #modalDialog [options]="options">
-  <ng-content></ng-content>
+  <div *ngIf="modalDialog.shown$ | async">
+    <ng-container *ngTemplateOutlet="template"></ng-container>
+  </div>
 </ish-modal-dialog>

@@ -18,16 +18,18 @@
       [options]="{ titleText: 'promotion.detaillist.title' | translate }"
       [ngClass]="'details-link promotion-details-link'"
     >
-      <ng-container *ngIf="promotion.longTitle; else title">
-        <h3 [ishServerHtml]="promotion.longTitle"></h3>
-      </ng-container>
-      <ng-template #title> <h3 [ishServerHtml]="promotion.title"></h3> </ng-template>
+      <ng-container *ishLazyContent>
+        <ng-container *ngIf="promotion.longTitle; else title">
+          <h3 [ishServerHtml]="promotion.longTitle"></h3>
+        </ng-container>
+        <ng-template #title> <h3 [ishServerHtml]="promotion.title"></h3> </ng-template>
 
-      <p *ngIf="promotion.ruleDescription" [ishServerHtml]="promotion.ruleDescription"></p>
-      <p *ngIf="promotion.legalContentMessage" class="text-muted" [ishServerHtml]="promotion.legalContentMessage"></p>
-      <p *ngIf="promotion.externalUrl">
-        <a [href]="promotion.externalUrl" rel="nofollow" target="_blank">{{ promotion.externalUrl }}</a>
-      </p>
+        <p *ngIf="promotion.ruleDescription" [ishServerHtml]="promotion.ruleDescription"></p>
+        <p *ngIf="promotion.legalContentMessage" class="text-muted" [ishServerHtml]="promotion.legalContentMessage"></p>
+        <p *ngIf="promotion.externalUrl">
+          <a [href]="promotion.externalUrl" rel="nofollow" target="_blank">{{ promotion.externalUrl }}</a>
+        </p>
+      </ng-container>
     </ish-modal-dialog-link>
   </ng-template>
 </ng-container>
