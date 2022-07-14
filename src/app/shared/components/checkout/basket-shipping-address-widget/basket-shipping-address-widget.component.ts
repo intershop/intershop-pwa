@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core/lib/core';
 import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
@@ -38,7 +38,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
   basketInvoiceAndShippingAddressEqual$: Observable<boolean>;
   basketShippingAddressDeletable$: Observable<boolean>;
 
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
   editAddress: Partial<Address>;
   emptyOptionLabel = 'checkout.addresses.select_shipping_address.button';
@@ -46,8 +46,8 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade, private checkoutFacade: CheckoutFacade) {
-    this.form = new FormGroup({
-      id: new FormControl(''),
+    this.form = new UntypedFormGroup({
+      id: new UntypedFormControl(''),
     });
   }
 
@@ -132,7 +132,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
       this.collapse = true;
     } else {
       this.checkoutFacade.createBasketAddress(address, 'shipping');
-      (this.form.get('id') as FormControl).setValue('', { emitEvent: false });
+      (this.form.get('id') as UntypedFormControl).setValue('', { emitEvent: false });
     }
   }
 

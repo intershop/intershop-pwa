@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UntypedFormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
@@ -45,9 +46,11 @@ describe('Account Profile Email Component', () => {
     const eventEmitter$ = spy(component.updateEmail);
     fixture.detectChanges();
 
-    component.form.get('email').setValue('patricia@test.intershop.de');
-    component.form.get('emailConfirmation').setValue('patricia@test.intershop.de');
-    component.form.get('currentPassword').setValue('!InterShop00!');
+    const form = component.form as UntypedFormGroup;
+
+    form.get('email').setValue('patricia@test.intershop.de');
+    form.get('emailConfirmation').setValue('patricia@test.intershop.de');
+    form.get('currentPassword').setValue('!InterShop00!');
     component.submit();
 
     verify(eventEmitter$.emit(anything())).once();

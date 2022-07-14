@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, map, tap } from 'rxjs';
@@ -23,7 +23,7 @@ export class ProductReviewCreateDialogComponent implements OnInit {
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   submitted = false;
   fields: FormlyFieldConfig[];
   model$: Observable<Partial<ProductReview>>;

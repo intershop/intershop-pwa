@@ -3,7 +3,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Action, Store, select } from '@ngrx/store';
-import { Severity, addBreadcrumb, captureEvent, configureScope, init } from '@sentry/browser';
+import { addBreadcrumb, captureEvent, configureScope, init } from '@sentry/browser';
 import { EMPTY, iif } from 'rxjs';
 import { distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -89,7 +89,7 @@ export class SentryConfigEffects {
         distinctUntilChanged(),
         tap(error => {
           captureEvent({
-            level: Severity.Error,
+            level: 'error',
             message: typeof error === 'string' ? error : `${error.code} - ${error.message}`,
             extra: { error },
             tags: { origin: 'Error Page' },
@@ -106,7 +106,7 @@ export class SentryConfigEffects {
         tap(action => {
           const err = action.payload.error;
           captureEvent({
-            level: Severity.Error,
+            level: 'error',
             message: err.message,
             extra: {
               error: err,

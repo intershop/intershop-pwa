@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -20,7 +20,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 })
 @GenerateLazyComponent()
 export class DirectOrderComponent implements OnInit, AfterViewInit {
-  directOrderForm = new FormGroup({});
+  directOrderForm = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
   model = { sku: '' };
 

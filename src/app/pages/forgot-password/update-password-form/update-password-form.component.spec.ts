@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UntypedFormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -44,8 +45,10 @@ describe('Update Password Form Component', () => {
     const eventEmitter$ = spy(component.submitPassword);
     fixture.detectChanges();
 
-    component.updatePasswordForm.get('password').setValue('!Password01!');
-    component.updatePasswordForm.get('passwordConfirmation').setValue('!Password01!');
+    const form = component.updatePasswordForm as UntypedFormGroup;
+
+    form.get('password').setValue('!Password01!');
+    form.get('passwordConfirmation').setValue('!Password01!');
     component.submitPasswordForm();
 
     verify(eventEmitter$.emit(anything())).once();

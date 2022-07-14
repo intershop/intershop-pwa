@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   fields$: Observable<FormlyFieldConfig[]>;
   model: { costCenter: string };
 

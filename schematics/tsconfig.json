@@ -20,7 +20,8 @@
     "noUnusedParameters": true,
     // "noUnusedLocals": true,
     "paths": {
-      "schemas/*": ["dist/*"]
+      "schemas/*": ["dist/*"],
+      "tslib": ["node_modules/tslib/tslib.d.ts"]
     }
   },
   "include": ["src/**/*.ts"],

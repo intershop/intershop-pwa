@@ -12,6 +12,14 @@ kb_sync_latest_only
 The Intershop PWA 3.0 release includes a Jest Update to version 28, see also https://jestjs.io/docs/upgrading-to-jest28.
 The jest-marbles package has been replaced by jasmine-marbles.
 
+It also contains the Angular 14 update and updates to a lot of other dependencies (NgRx, Typescript).
+These updates require some code adaptions, e.g. form classes have been prefixed with _Untyped_ wherever necessary.
+The following official guides might help to migrate custom code as well:
+
+- https://update.angular.io/?v=13.0-14.0
+- https://ngrx.io/guide/migration/v14
+- https://angular.io/guide/typed-forms
+
 Since the used deferred load library is no longer maintained it is removed and replaced with similar standard browser functionality [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#images_and_iframes).
 All uses of the `(deferLoad)` directive in custom code need to be replaced.
 
