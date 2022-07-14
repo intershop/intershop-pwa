@@ -1,6 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, UntypedFormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -61,7 +61,7 @@ describe('Basket Order Reference Component', () => {
   it('should emit form when a valid form is submitted', () => {
     fixture.detectChanges();
 
-    component.form = new FormGroup({
+    component.form = new UntypedFormGroup({
       orderReferenceId: new FormControl('xxx', SpecialValidators.noSpecialChars),
     });
     component.submitForm();
@@ -72,7 +72,7 @@ describe('Basket Order Reference Component', () => {
   it('should not emit form when an invalid form is submitted', () => {
     fixture.detectChanges();
 
-    component.form = new FormGroup({
+    component.form = new UntypedFormGroup({
       orderReferenceId: new FormControl('%%%', SpecialValidators.noSpecialChars),
     });
     component.submitForm();

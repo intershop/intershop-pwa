@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
@@ -18,7 +18,7 @@ export class CostCenterCreatePageComponent implements OnInit {
   error$: Observable<HttpError>;
 
   submitted = false;
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
 
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 

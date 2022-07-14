@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -54,7 +54,7 @@ describe('Cost Center Form Component', () => {
       of([{ value: 'bboldner@test.intershop.de', label: 'Bernhard Boldner' }])
     );
 
-    component.form = new FormGroup({});
+    component.form = new UntypedFormGroup({});
   });
 
   it('should be created', () => {

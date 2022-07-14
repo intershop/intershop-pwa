@@ -13,7 +13,7 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2020",
     "paths": {
       "ish-core/*": ["src/app/core/*"],
       "ish-shared/*": ["src/app/shared/*"],

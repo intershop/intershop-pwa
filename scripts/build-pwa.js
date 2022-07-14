@@ -53,8 +53,12 @@ if (client) {
   removeServiceWorkerCacheCheck(remainingArgs);
 }
 
+if (configuration) {
+  configString = ':' + configuration;
+}
+
 if (server) {
-  execSync(`npm run ng -- run intershop-pwa:server ${configString} ${remainingArgs.join(' ')}`, {
+  execSync(`npm run ng -- run intershop-pwa:server${configString} ${remainingArgs.join(' ')}`, {
     stdio: 'inherit',
   });
 }

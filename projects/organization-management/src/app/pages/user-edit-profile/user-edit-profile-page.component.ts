@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -19,7 +19,7 @@ export class UserEditProfilePageComponent implements OnInit {
   selectedUser$: Observable<B2bUser>;
 
   submitted = false;
-  profileForm = new FormGroup({});
+  profileForm = new UntypedFormGroup({});
 
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 

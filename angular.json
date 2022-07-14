@@ -6,7 +6,7 @@
     "intershop-pwa": {
       "projectType": "application",
       "cli": {
-        "defaultCollection": "intershop-schematics"
+        "schematicCollections": ["intershop-schematics"]
       },
       "schematics": {
         "@schematics/angular:component": {
@@ -185,7 +185,7 @@
     "organization-management": {
       "projectType": "application",
       "cli": {
-        "defaultCollection": "intershop-schematics"
+        "schematicCollections": ["intershop-schematics"]
       },
       "root": "projects/organization-management",
       "sourceRoot": "projects/organization-management/src",
@@ -234,7 +234,7 @@
     "requisition-management": {
       "projectType": "application",
       "cli": {
-        "defaultCollection": "intershop-schematics"
+        "schematicCollections": ["intershop-schematics"]
       },
       "root": "projects/requisition-management",
       "sourceRoot": "projects/requisition-management/src",

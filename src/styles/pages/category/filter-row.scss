@@ -109,7 +109,7 @@
   padding-right: $space-default;
 
   a,
-  a:not([href]):not([tabindex]) {
+  a:not([href], [tabindex]) {
     color: $text-color-primary;
     white-space: nowrap;
 

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -20,7 +20,7 @@ export class PunchoutUserFormComponent implements OnInit {
   @Output() submitUser = new EventEmitter<PunchoutUser>();
 
   submitted = false;
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
   model = {};
 

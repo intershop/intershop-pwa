@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormGroupDirective } from '@angular/forms';
+import { FormGroupDirective, UntypedFormGroup } from '@angular/forms';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -30,7 +30,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
 
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
 
   submitted = false;
   isAddressFormCollapsed = true;

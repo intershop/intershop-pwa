@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -76,7 +76,10 @@ describe('Checkout Review Component', () => {
     const emitter = spy(component.createOrder);
 
     fixture.detectChanges();
-    component.form.get('termsAndConditions').setValue('true');
+
+    const form = component.form as UntypedFormGroup;
+
+    form.get('termsAndConditions').setValue('true');
     component.submitOrder();
     verify(emitter.emit()).once();
   });

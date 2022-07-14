@@ -37,7 +37,7 @@ footer {
 
   li {
     a,
-    a:not([href]):not([tabindex]) {
+    a:not([href], [tabindex]) {
       font-family: $font-family-condensedregular;
       color: $text-color-quaternary;
       text-decoration: none;

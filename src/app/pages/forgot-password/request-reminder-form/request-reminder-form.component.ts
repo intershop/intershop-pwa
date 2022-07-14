@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
@@ -26,7 +26,7 @@ export class RequestReminderFormComponent implements OnInit {
 
   submitted = false;
 
-  requestReminderForm = new FormGroup({});
+  requestReminderForm = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
 
   ngOnInit() {
