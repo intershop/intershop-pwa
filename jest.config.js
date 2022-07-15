@@ -1,4 +1,3 @@
-const path = require('path');
 const fs = require('fs');
 const { pathsToModuleNameMapper } = require('ts-jest');
 
@@ -31,7 +30,5 @@ module.exports = {
     './src/jest-serializer/NgrxActionSerializer.js',
     './src/jest-serializer/NgrxActionArraySerializer.js',
   ],
-  haste: {
-    hasteImplModulePath: path.join(__dirname, 'jest.config.haste-map.js'),
-  },
+  dependencyExtractor: '<rootDir>/jest.dependency-extractor.js',
 };
