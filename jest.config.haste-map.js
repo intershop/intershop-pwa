@@ -12,4 +12,4 @@ class CustomHasteMap extends HasteMap {
   }
 }
 
-module.exports = CustomHasteMap;
+module.exports.default = CustomHasteMap;
