@@ -4,19 +4,17 @@
   linkText="account.payment.view_sepa_mandate.link"
   [options]="{ titleText: 'account.payment.view_sepa_mandate_text.link' | translate }"
 >
-  <ng-container *ishLazyContent>
-    <div class="col-md-12">
-      <dl class="row dl-horizontal dl-separator">
-        <dt class="col-md-4">{{ 'account.payment.sepa_mandate_Reference' | translate }}</dt>
-        <dd class="col-md-8">{{ mandateReference }}</dd>
-      </dl>
-      <dl data-testing-id="mandate-text">
-        <dd>{{ mandateText }}</dd>
-      </dl>
-      <dl class="row dl-horizontal dl-separator">
-        <dt class="col-md-4">{{ 'account.payment.sepa_accepted_on' | translate }}</dt>
-        <dd class="col-md-8">{{ mandateCreatedDateTime | ishDate }}</dd>
-      </dl>
-    </div>
-  </ng-container>
+  <div class="col-md-12">
+    <dl class="row dl-horizontal dl-separator">
+      <dt class="col-md-4">{{ 'account.payment.sepa_mandate_Reference' | translate }}</dt>
+      <dd class="col-md-8">{{ mandateReference }}</dd>
+    </dl>
+    <dl data-testing-id="mandate-text">
+      <dd>{{ mandateText }}</dd>
+    </dl>
+    <dl class="row dl-horizontal dl-separator">
+      <dt class="col-md-4">{{ 'account.payment.sepa_accepted_on' | translate }}</dt>
+      <dd class="col-md-8">{{ mandateCreatedDateTime | ishDate }}</dd>
+    </dl>
+  </div>
 </ish-modal-dialog-link>

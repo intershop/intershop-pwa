@@ -12,7 +12,6 @@ export class ProductShipmentComponent implements OnInit {
   visible$: Observable<boolean>;
   readyForShipmentMin$: Observable<number>;
   readyForShipmentMax$: Observable<number>;
-
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
