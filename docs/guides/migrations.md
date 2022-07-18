@@ -9,6 +9,11 @@ kb_sync_latest_only
 
 ## 2.4 to 3.0
 
+With the 2.4.1 Hotfix we introduced a more fixed Node.js version handling to the version used and tested by us.
+We set Node.js 16.16.0 and npm 8.11.0 as our application runtime and package management versions.
+This is supposed to prevent unexpected build issues in the future but requires manual updating of Node.js to newer versions if tested successfully.
+Other Node.js versions might still work but you might get warnings regarding the projects recommended settings.
+
 The Intershop PWA 3.0 release includes a Jest Update to version 28, see also https://jestjs.io/docs/upgrading-to-jest28.
 The jest-marbles package has been replaced by jasmine-marbles.
 

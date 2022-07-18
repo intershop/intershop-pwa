@@ -11,6 +11,8 @@ kb_everyone
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
 
+**required/tested Node.js version: 16.16.0 LTS (including npm 8.11.0)**
+
 ### Bug Fixes
 
 - dependencies and package-lock fixes (#1182) ([5f22ccc](https://github.com/intershop/intershop-pwa/commit/5f22ccc))
@@ -121,7 +123,7 @@ kb_everyone
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
 
-**required/tested Node.js version: 16.14.2 - LTS (including npm 8.5.0)**
+**required/tested Node.js version: 16.14.2 LTS (including npm 8.5.0)**
 
 ### Features
 
