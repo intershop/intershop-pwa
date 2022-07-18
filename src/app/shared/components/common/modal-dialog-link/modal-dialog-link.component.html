@@ -2,7 +2,7 @@
 <ish-modal-dialog #modalDialog [options]="options">
   <ng-container *ngIf="lazyLoading; else contentProjection">
     <div *ngIf="modalDialog.shown$ | async">
-      <ng-container *ngTemplateOutlet="template"></ng-container>
+      <ng-container *ngTemplateOutlet="content.templateRef"></ng-container>
     </div>
   </ng-container>
   <ng-template #contentProjection>

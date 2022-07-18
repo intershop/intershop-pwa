@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ContentChild, Input, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input, ViewChild } from '@angular/core';
 
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -44,7 +44,7 @@ export class ModalDialogLinkComponent {
 
   @ViewChild('modalDialog') modal: ModalDialogComponent<unknown>;
 
-  @ContentChild(LazyLoadingContentDirective, { read: TemplateRef, static: true }) template: TemplateRef<any>;
+  @ContentChild(LazyLoadingContentDirective) content: LazyLoadingContentDirective;
 
   /** enable parent components to close the modal */
   hide() {
