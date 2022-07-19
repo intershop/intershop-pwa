@@ -1,9 +1,9 @@
 export class FooterModule {
   gotoErrorPage() {
-    cy.get('ish-footer a[title="Error Page"]').click();
+    cy.get('ish-footer').contains('Error').click();
   }
 
   manageCookies() {
-    cy.get('ish-footer a[title="Manage Cookies"]').click();
+    cy.get('ish-footer').contains('Cookie').click();
   }
 }

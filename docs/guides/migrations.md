@@ -47,6 +47,8 @@ With the method `encodeResourceID` we provide a central place that implements th
 In the PWA this was applied to all user logins in REST API calls.
 For project customizations the usage of the native `encodeURIComponent` functionality should be replaced with `encodeResourceID` for user logins in REST calls as well.
 
+The `footer.content` localization key was replaced for most of its content by a CMS manageable content include `include.footer.content.pagelet2-Include` that is available from ICM 7.10.38.9-LTS.
+
 ## 2.3 to 2.4
 
 The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.
