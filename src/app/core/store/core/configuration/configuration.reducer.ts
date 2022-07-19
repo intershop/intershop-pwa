@@ -16,6 +16,7 @@ export interface ConfigurationState {
   identityProvider?: string;
   identityProviders?: { [id: string]: { type?: string; [key: string]: unknown } };
   features?: string[];
+  addFeatures?: string[];
   defaultLocale?: string;
   localeCurrencyOverride?: { [locale: string]: string | string[] };
   lang?: string;
@@ -33,6 +34,7 @@ const initialState: ConfigurationState = {
   channel: undefined,
   application: undefined,
   features: undefined,
+  addFeatures: [],
   defaultLocale: environment.defaultLocale,
   localeCurrencyOverride: environment.localeCurrencyOverride,
   lang: undefined,

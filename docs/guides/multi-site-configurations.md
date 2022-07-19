@@ -44,6 +44,7 @@ All other properties are optional:
 - **application**: The ICM application
 - **identityProvider**: The active identity provider for this site
 - **features**: Comma-separated list of activated features
+- **addFeatures**: Comma-separated list of additional features extending defaults
 - **lang**: The default language as defined in the Angular CLI environment
 - **currency**: The default currency for this channel
 - **theme**: The theme used for the channel (see [Guide - Multiple Themes](./multiple-themes.md))

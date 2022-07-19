@@ -18,6 +18,7 @@ class SimpleParamMap {
   }
 }
 
+// eslint-disable-next-line complexity
 function extractConfigurationParameters(state: ConfigurationState, paramMap: SimpleParamMap) {
   const keys: (keyof ConfigurationState)[] = ['channel', 'application', 'lang', 'currency', 'identityProvider'];
   const properties: Partial<ConfigurationState> = keys
@@ -37,6 +38,10 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
     } else {
       properties.features = paramMap.get<string>('features').split(/,/g);
     }
+  }
+
+  if (paramMap.has('addFeatures')) {
+    properties.addFeatures = paramMap.get<string>('addFeatures').split(/,/g);
   }
 
   if (paramMap.has('device')) {
