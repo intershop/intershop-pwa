@@ -28,9 +28,10 @@
       [ngClass]="'details-link'"
       [lazyLoading]="true"
     >
-      <ng-container *ishLazyLoadingContent>
-        <ish-content-include includeId="include.dialog.readyForShipment.pagelet2-Include"></ish-content-include>
-      </ng-container>
+      <ish-content-include
+        includeId="include.dialog.readyForShipment.pagelet2-Include"
+        *ishLazyLoadingContent
+      ></ish-content-include>
     </ish-modal-dialog-link>
   </div>
 </ng-container>

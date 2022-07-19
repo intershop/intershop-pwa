@@ -10,7 +10,7 @@ import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common
  * The component is not designed or intended to contain any logic, but only to display text.
  *
  * The dynamic input content could be loaded on initialization (default) or on demand with lazy loading. This can be set via the lazyLoading input parameter.
- * If the content should be loaded on demand, then the input content must be wrapped within a ng-container, which uses the LazyLoadingContentDirective.
+ * If the content should be loaded on demand, then the input content must apply the structural directive LazyLoadingContentDirective.
  * The component has now access to the template reference and can lazy load the input content, when the modal is opened.
  *
  * @example
@@ -19,9 +19,7 @@ import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common
     [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, size: 'lg' }"
     [lazyLoading]="true"
   >
-    <ng-container *ishLazyLoadingContent>
-      <ish-content-include includeId="include.dialog.privacyPolicy.pagelet2-Include"></ish-content-include>
-    </ng-container>
+    <ish-content-include includeId="include.dialog.privacyPolicy.pagelet2-Include" *ishLazyLoadingContent></ish-content-include>
   </ish-modal-dialog-link>
  */
 @Component({
