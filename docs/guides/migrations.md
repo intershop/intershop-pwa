@@ -42,6 +42,11 @@ We no longer use the verbose way of injecting the `PLATFORM_ID` and check it wit
 This way still works but it is discouraged by a new ESLint rule that suggests using the new `SSR` variable instead.
 So running `npm run lint` will help with finding custom code that still relies on the platform checks.
 
+To support e.g. special characters in email addresses with newer versions of ICM (7.10.38.x), like `+`, double encoding of resource ids in the REST API calls is necessary.
+With the method `encodeResourceID` we provide a central place that implements the fitting resource encoding.
+In the PWA this was applied to all user logins in REST API calls.
+For project customizations the usage of the native `encodeURIComponent` functionality should be replaced with `encodeResourceID` for user logins in REST calls as well.
+
 ## 2.3 to 2.4
 
 The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.

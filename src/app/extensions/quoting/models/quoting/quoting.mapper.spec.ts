@@ -21,7 +21,7 @@ describe('Quoting Mapper', () => {
     it('should map incoming quote request link to model data', () => {
       const data: QuoteData = {
         type: 'Link',
-        uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink@test.intershop.de/quoterequests/ioMKCgoEcC4AAAF0BEAGFSQ5',
+        uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink%2540test.intershop.de/quoterequests/ioMKCgoEcC4AAAF0BEAGFSQ5',
         title: 'ioMKCgoEcC4AAAF0BEAGFSQ5',
       };
       const mapped = quoteMapper.fromData(data, 'QuoteRequest');
@@ -37,7 +37,7 @@ describe('Quoting Mapper', () => {
     it('should map incoming quote link to model data', () => {
       const data: QuoteData = {
         type: 'Link',
-        uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink@test.intershop.de/quotes/IpMKCgoEYBcAAAF0TgwGFSQd',
+        uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink%2540test.intershop.de/quotes/IpMKCgoEYBcAAAF0TgwGFSQd',
         title: 'IpMKCgoEYBcAAAF0TgwGFSQd',
       };
       const mapped = quoteMapper.fromData(data, 'Quote');
@@ -53,7 +53,7 @@ describe('Quoting Mapper', () => {
     it('should map incoming quote request link with attributes to model data', () => {
       const data: QuoteData = {
         type: 'Link',
-        uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink@test.intershop.de/quoterequests/ioMKCgoEcC4AAAF0BEAGFSQ5',
+        uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink%2540test.intershop.de/quoterequests/ioMKCgoEcC4AAAF0BEAGFSQ5',
         title: 'ioMKCgoEcC4AAAF0BEAGFSQ5',
         attributes: [
           { name: 'number', type: 'String', value: '0000003' },
@@ -84,7 +84,7 @@ describe('Quoting Mapper', () => {
     it('should map incoming quote link with attributes to model data', () => {
       const data: QuoteData = {
         type: 'Link',
-        uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink@test.intershop.de/quotes/IpMKCgoEYBcAAAF0TgwGFSQd',
+        uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink%2540test.intershop.de/quotes/IpMKCgoEYBcAAAF0TgwGFSQd',
         title: 'IpMKCgoEYBcAAAF0TgwGFSQd',
         attributes: [
           { name: 'number', type: 'String', value: '0000003' },
@@ -268,7 +268,7 @@ describe('Quoting Mapper', () => {
         items: [
           {
             type: 'Link',
-            uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink@test.intershop.de/quoterequests/Of4KCgoEGrcAAAF0kM8GFSQc/items/yMUKCgoEgGkAAAF0AdEGFSQc',
+            uri: 'inSPIRED-inTRONICS_Business-Site/-;loc=en_US;cur=USD/customers/OilCorp/users/jlink%2540test.intershop.de/quoterequests/Of4KCgoEGrcAAAF0kM8GFSQc/items/yMUKCgoEgGkAAAF0AdEGFSQc',
             title: 'yMUKCgoEgGkAAAF0AdEGFSQc',
           },
         ],
