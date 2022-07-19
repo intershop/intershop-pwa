@@ -47,11 +47,11 @@ h4,
 }
 
 a,
-a:not([href], [tabindex]) {
+a:not([href]):not([tabindex]) {
   color: $CORPORATE-PRIMARY;
 }
 
-a:not([href], [tabindex]) {
+a:not([href]):not([tabindex]) {
   &:hover {
     color: $CORPORATE-SECONDARY;
   }
