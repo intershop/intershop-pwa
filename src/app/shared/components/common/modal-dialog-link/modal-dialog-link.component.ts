@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ContentChild, Input, ViewChild } from '@angular/core';
+import { Observable, last, map } from 'rxjs';
 
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -44,8 +45,17 @@ export class ModalDialogLinkComponent {
 
   @ContentChild(LazyLoadingContentDirective) content: LazyLoadingContentDirective;
 
+  shown$: Observable<boolean>;
+
   /** enable parent components to close the modal */
   hide() {
     this.modal.hide();
+  }
+
+  shown(): void {
+    this.shown$ = this.modal.ngbModalRef.shown.pipe(
+      last(),
+      map(() => true)
+    );
   }
 }
