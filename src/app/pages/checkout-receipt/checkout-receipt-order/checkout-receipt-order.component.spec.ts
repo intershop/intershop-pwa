@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
 import { CheckoutReceiptOrderComponent } from './checkout-receipt-order.component';
@@ -16,11 +15,7 @@ describe('Checkout Receipt Order Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        CheckoutReceiptOrderComponent,
-        MockComponent(ContentIncludeComponent),
-        MockComponent(ModalDialogLinkComponent),
-      ],
+      declarations: [CheckoutReceiptOrderComponent, MockComponent(ModalDialogLinkComponent)],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });

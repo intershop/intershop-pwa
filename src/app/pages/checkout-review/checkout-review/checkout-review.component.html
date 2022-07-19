@@ -7,8 +7,12 @@
         linkText="shopping_cart.read_more.link"
         [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
         class="details-link"
+        [lazyLoading]="true"
       >
-        <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include"></ish-content-include>
+        <ish-content-include
+          includeId="include.dialog.safeAndSecure.pagelet2-Include"
+          *ishLazyLoadingContent
+        ></ish-content-include>
       </ish-modal-dialog-link>
     </span>
   </h1>
