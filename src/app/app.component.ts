@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -17,13 +16,11 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 })
 export class AppComponent implements OnInit {
   @ViewChild('cookie', { static: true })
-  isBrowser: boolean;
+  isBrowser = !SSR;
   wrapperClasses$: Observable<string[]>;
   deviceType$: Observable<DeviceType>;
 
-  constructor(private appFacade: AppFacade, @Inject(PLATFORM_ID) platformId: string) {
-    this.isBrowser = isPlatformBrowser(platformId);
-  }
+  constructor(private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.deviceType$ = this.appFacade.deviceType$;

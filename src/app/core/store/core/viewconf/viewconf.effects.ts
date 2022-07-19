@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerRequestAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
@@ -14,11 +13,11 @@ import { setBreadcrumbData, setStickyHeader } from './viewconf.actions';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(private store: Store, private actions$: Actions, @Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(private store: Store, private actions$: Actions) {}
 
   toggleStickyHeader$ = createEffect(() =>
     iif(
-      () => isPlatformBrowser(this.platformId),
+      () => !SSR,
       defer(() =>
         fromEvent(window, 'scroll').pipe(
           map(() => window.scrollY >= 170),

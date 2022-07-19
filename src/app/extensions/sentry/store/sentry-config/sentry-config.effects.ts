@@ -1,5 +1,4 @@
-import { isPlatformServer } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Action, Store, select } from '@ngrx/store';
@@ -27,13 +26,12 @@ export class SentryConfigEffects {
     private stateProperties: StatePropertiesService,
     private transferState: TransferState,
     private store: Store,
-    @Inject(PLATFORM_ID) private platformId: string,
     private cookiesService: CookiesService
   ) {}
 
   setSentryConfig$ = createEffect(() =>
     this.actions$.pipe(
-      takeWhile(() => isPlatformServer(this.platformId) && this.featureToggleService.enabled('sentry')),
+      takeWhile(() => SSR && this.featureToggleService.enabled('sentry')),
       take(1),
       withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('SENTRY_DSN', 'sentryDSN')),
       map(([, sentryDSN]) => sentryDSN),

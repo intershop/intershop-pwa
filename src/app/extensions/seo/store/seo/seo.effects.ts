@@ -1,5 +1,5 @@
-import { APP_BASE_HREF, DOCUMENT, isPlatformServer } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
+import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
+import { ApplicationRef, Inject, Injectable, Optional } from '@angular/core';
 import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
@@ -35,8 +35,7 @@ export class SeoEffects {
     @Inject(DOCUMENT) private doc: Document,
     @Optional() @Inject(REQUEST) private request: Request,
     @Inject(APP_BASE_HREF) private baseHref: string,
-    private appRef: ApplicationRef,
-    @Inject(PLATFORM_ID) private platformId: string
+    private appRef: ApplicationRef
   ) {}
 
   private pageTitle$ = new Subject<string>();
@@ -143,7 +142,7 @@ export class SeoEffects {
         this.store.pipe(select(getCurrentLocale)),
         this.store.pipe(select(getAvailableLocales), whenTruthy()),
       ]).pipe(
-        takeWhile(() => isPlatformServer(this.platformId)),
+        takeWhile(() => SSR),
         tap(([current, locales]) => {
           this.metaService.addTag({ property: 'og:locale', content: current });
 

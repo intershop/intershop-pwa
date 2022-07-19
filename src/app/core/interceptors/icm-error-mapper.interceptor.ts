@@ -1,6 +1,5 @@
-import { isPlatformBrowser } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { ErrorHandler, Inject, Injectable, InjectionToken, Injector, PLATFORM_ID } from '@angular/core';
+import { ErrorHandler, Injectable, InjectionToken, Injector } from '@angular/core';
 import { pick } from 'lodash-es';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -18,11 +17,7 @@ export const SPECIAL_HTTP_ERROR_HANDLER = new InjectionToken<SpecialHttpErrorHan
 
 @Injectable()
 export class ICMErrorMapperInterceptor implements HttpInterceptor {
-  constructor(
-    private injector: Injector,
-    @Inject(PLATFORM_ID) private platformId: string,
-    private errorHandler: ErrorHandler
-  ) {}
+  constructor(private injector: Injector, private errorHandler: ErrorHandler) {}
 
   // eslint-disable-next-line complexity
   private mapError(httpError: HttpErrorResponse, request: HttpRequest<unknown>): HttpError {
@@ -104,7 +99,7 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (!isPlatformBrowser(this.platformId)) {
+        if (SSR) {
           this.errorHandler.handleError(error);
         }
         if (error.name === 'HttpErrorResponse') {

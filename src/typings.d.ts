@@ -11,3 +11,5 @@ declare const NGRX_RUNTIME_CHECKS: boolean;
 declare const PWA_VERSION: string;
 
 declare const THEME: string;
+
+declare const SSR: boolean;

@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
@@ -13,8 +12,8 @@ import { HybridEffects, SSR_HYBRID_STATE } from './hybrid.effects';
   imports: [EffectsModule.forFeature([HybridEffects])],
 })
 export class HybridStoreModule {
-  constructor(router: Router, transferState: TransferState, @Inject(PLATFORM_ID) platformId: string) {
-    if (isPlatformBrowser(platformId) && transferState.get(SSR_HYBRID_STATE, false)) {
+  constructor(router: Router, transferState: TransferState) {
+    if (!SSR && transferState.get(SSR_HYBRID_STATE, false)) {
       addGlobalGuard(router, HybridRedirectGuard);
     }
   }

@@ -37,6 +37,11 @@ You might need to keep this dependency if you are loading translations different
 
 The deprecated `customized-copy` schematic for copying components and replacing all usages was removed.
 
+We introduced a build variable `SSR` that is now used for all checks if the application is running in SSR or Browser context.
+We no longer use the verbose way of injecting the `PLATFORM_ID` and check it with the methods `isPlatformBrowser` or `isPlatformServer`.
+This way still works but it is discouraged by a new ESLint rule that suggests using the new `SSR` variable instead.
+So running `npm run lint` will help with finding custom code that still relies on the platform checks.
+
 ## 2.3 to 2.4
 
 The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.

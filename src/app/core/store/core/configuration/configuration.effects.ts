@@ -1,5 +1,5 @@
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, PLATFORM_ID, isDevMode } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ApplicationRef, Inject, Injectable, isDevMode } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
@@ -29,7 +29,6 @@ export class ConfigurationEffects {
     private store: Store,
     private stateProperties: StatePropertiesService,
     private transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId: string,
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
     @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
     @Inject(DOCUMENT) document: Document,
@@ -38,13 +37,13 @@ export class ConfigurationEffects {
     private localizationsService: LocalizationsService
   ) {
     appRef.isStable
-      .pipe(takeWhile(() => isPlatformBrowser(platformId)))
+      .pipe(takeWhile(() => !SSR))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- window can only be used with any here
       .subscribe(stable => ((window as any).angularStable = stable));
 
     store
       .pipe(
-        takeWhile(() => isPlatformServer(this.platformId) || isDevMode()),
+        takeWhile(() => SSR || isDevMode()),
         select(getCurrentLocale),
         whenTruthy(),
         distinctUntilChanged()
@@ -121,7 +120,7 @@ export class ConfigurationEffects {
 
   setDeviceType$ = createEffect(() =>
     iif(
-      () => isPlatformBrowser(this.platformId),
+      () => !SSR,
       defer(() =>
         merge(this.actions$.pipe(ofType(ROOT_EFFECTS_INIT)), fromEvent(window, 'resize')).pipe(
           map<unknown, DeviceType>(() => {
