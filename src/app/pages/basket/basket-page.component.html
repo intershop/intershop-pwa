@@ -4,15 +4,20 @@
 
 <ng-container *ngIf="basket$ | async as basket; else emptyBasket">
   <ng-container *ngIf="basket.lineItems.length; else emptyBasket">
-    <ish-shopping-basket [basket]="basket" [error]="basketError$ | async" (nextStep)="nextStep()"></ish-shopping-basket>
+    <ish-shopping-basket
+      [basket]="basket"
+      [error]="basketError$ | async"
+      [loading]="basketLoading$ | async"
+      (nextStep)="nextStep()"
+    ></ish-shopping-basket>
   </ng-container>
 </ng-container>
 
 <ng-template #emptyBasket>
   <ish-shopping-basket-empty [error]="basketError$ | async"></ish-shopping-basket-empty>
-</ng-template>
 
-<ish-loading *ngIf="basketLoading$ | async"></ish-loading>
+  <ish-loading *ngIf="basketLoading$ | async"></ish-loading>
+</ng-template>
 
 <ish-lazy-recently-viewed></ish-lazy-recently-viewed>
 

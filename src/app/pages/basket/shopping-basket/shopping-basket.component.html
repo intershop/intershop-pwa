@@ -54,6 +54,8 @@
             <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
           </ng-template>
 
+          <ish-loading *ngIf="loading"></ish-loading>
+
           <div class="button-group">
             <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
             <ish-lazy-basket-create-order-template
