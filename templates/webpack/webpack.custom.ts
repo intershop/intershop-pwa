@@ -406,7 +406,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
                 .filter(path => path.startsWith('src') || path.startsWith('projects'))
                 .filter(path => {
                   // TODO: handle lazy sources whenever this becomes a problem
-                  if (path.includes('|lazy|')) {
+                  if (path.includes(' lazy ')) {
                     logger.warn('cannot handle lazy source:', path);
                     return false;
                   }
