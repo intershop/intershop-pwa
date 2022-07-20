@@ -1,0 +1,19 @@
+@import 'variables';
+
+.pagination {
+  margin: 0;
+  list-style: none;
+
+  li {
+    margin-right: ($space-default);
+
+    &.active a {
+      color: $text-color-primary;
+      cursor: unset;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
