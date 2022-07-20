@@ -133,7 +133,7 @@ This feature should only be used for edge cases, as it is very verbose and most 
 ## Linking Embedded Contexts
 
 There are cases where product contexts are used as meta contexts for handling add-to-cart functionality and validations thereof.
-For [product retail sets](https://intershoppwa.azurewebsites.net/skuM4548736000919) the surrounding product context is used as a meta context with two add-to-cart buttons (one at the detail on top, one at the button after the listing for contained items).
+For [product retail sets](https://intershoppwa.azurewebsites.net/prdM4548736000919) the surrounding product context is used as a meta context with two add-to-cart buttons (one at the detail on top, one at the button after the listing for contained items).
 If those buttons are pressed, the correct amount for quantities is used to perform the add-to-cart action.
 Those buttons also disable themselves if the quantity of one individual retail set part exceeds the maximum allowed order quantity.
 

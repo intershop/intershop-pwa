@@ -21,7 +21,7 @@ const _ = {
 
 describe('Shopping User B2B', () => {
   it('should proceed a checkout with cost center', () => {
-    LoginPage.navigateTo(`/sku${_.sku}`);
+    LoginPage.navigateTo(`/prd${_.sku}`);
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
       page.submit().its('response.statusCode').should('equal', 200);
