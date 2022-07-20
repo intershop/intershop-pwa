@@ -92,7 +92,7 @@ describe('Missing Data', () => {
     it('should lead straight to error page', () => {
       ProductDetailPage.navigateTo('ERROAR');
       at(NotFoundPage);
-      cy.url().should('contain', 'skuERROAR');
+      cy.url().should('contain', 'prdERROAR');
     });
   });
 
