@@ -1,4 +1,11 @@
 <a (click)="modalDialog.show()" rel="nofollow">{{ linkText | translate }}</a>
-<ish-modal-dialog #modalDialog [options]="options">
-  <ng-content></ng-content>
+<ish-modal-dialog #modalDialog [options]="options" (shown)="shown()" (closed)="closed()">
+  <ng-container *ngIf="lazyContent; else contentProjection">
+    <div *ngIf="shown$ | async">
+      <ng-container *ngTemplateOutlet="lazyContent.templateRef"></ng-container>
+    </div>
+  </ng-container>
+  <ng-template #contentProjection>
+    <ng-content></ng-content>
+  </ng-template>
 </ish-modal-dialog>

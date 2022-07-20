@@ -1,5 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, take, takeUntil } from 'rxjs';
 
 export interface ModalOptions {
   /**
@@ -41,18 +51,22 @@ export interface ModalOptions {
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ModalDialogComponent<T> {
+export class ModalDialogComponent<T> implements OnDestroy {
   @Input() options: ModalOptions;
 
   @Output() confirmed = new EventEmitter<T>();
 
   @Output() closed = new EventEmitter<T>();
 
+  @Output() shown = new EventEmitter<T>();
+
   @ViewChild('template') modalDialogTemplate: TemplateRef<unknown>;
 
   ngbModalRef: NgbModalRef;
 
   data: T;
+
+  private destroy$ = new Subject<void>();
 
   constructor(private ngbModal: NgbModal) {}
 
@@ -67,6 +81,10 @@ export class ModalDialogComponent<T> {
     const size = this.options?.size ? this.options.size : undefined;
 
     this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, { size });
+
+    this.ngbModalRef.dismissed.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => this.closed.emit(this.data));
+
+    this.shown.emit(this.data);
   }
 
   /**
@@ -74,6 +92,7 @@ export class ModalDialogComponent<T> {
    */
   hide() {
     this.ngbModalRef.close();
+    this.destroy$.next();
     this.closed.emit(this.data);
   }
 
@@ -83,5 +102,10 @@ export class ModalDialogComponent<T> {
   confirm() {
     this.confirmed.emit(this.data);
     this.hide();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
