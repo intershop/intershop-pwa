@@ -1058,6 +1058,7 @@
   "shopping_cart.ministatus.show_all_items.text": "Go to the shopping cart to view all your items.",
   "shopping_cart.ministatus.view_cart.link": "View Cart",
   "shopping_cart.oci.transfer_basket.button": "Transfer Cart",
+  "shopping_cart.paging.items.label": "{{0, plural, one{# line item} other{# line items}}}",
   "shopping_cart.payment.creditCardExpiryDate.invalid.error": "The credit card expiration date must be 5 characters long and in the format nn/nn, where n is a number.",
   "shopping_cart.payment.creditCardNumberRange.invalid.error": "You entered an invalid number for the selected card.",
   "shopping_cart.pli.qty.label": "Quantity:",

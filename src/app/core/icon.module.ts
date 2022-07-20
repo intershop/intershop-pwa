@@ -4,6 +4,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import {
   faAddressBook,
   faAngleDown,
+  faAngleLeft,
   faAngleRight,
   faAngleUp,
   faArrowAltCircleRight,
@@ -59,6 +60,7 @@ export class IconModule {
     library.addIcons(
       faAddressBook,
       faAngleDown,
+      faAngleLeft,
       faAngleRight,
       faAngleUp,
       faArrowsAlt,

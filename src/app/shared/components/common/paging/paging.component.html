@@ -1,0 +1,44 @@
+<nav *ngIf="currentPage && lastPage" aria-label="Pagination">
+  <ul class="pagination">
+    <li class="page-item">
+      <button
+        class="btn btn-primary mb-0"
+        [disabled]="currentPage === 1"
+        (click)="setPage(currentPage - 1)"
+        aria-label="Go To Previous Page"
+        [attr.aria-disabled]="currentPage === 1"
+        data-testing-id="paging-previous-button"
+      >
+        <fa-icon [icon]="['fas', 'angle-left']"></fa-icon>
+      </button>
+    </li>
+    <li
+      *ngFor="let p of pageIndices"
+      class="page-item pt-2"
+      [ngClass]="{ active: p === currentPage }"
+      data-testing-id="paging-link"
+    >
+      <a
+        *ngIf="p !== -1; else more"
+        [attr.aria-current]="p === currentPage ? 'page' : null"
+        [attr.aria-label]="p === currentPage ? 'Current Page, Page ' + p : 'Go to Page ' + p"
+        (click)="setPage(p)"
+        (keyup.enter)="setPage(p)"
+        >{{ p }}</a
+      >
+      <ng-template #more>...</ng-template>
+    </li>
+    <li class="page-item">
+      <button
+        class="btn btn-primary m-0"
+        [disabled]="currentPage === lastPage"
+        (click)="setPage(currentPage + 1)"
+        aria-label="Go To Next Page"
+        [attr.aria-disabled]="currentPage === lastPage"
+        data-testing-id="paging-next-button"
+      >
+        <fa-icon [icon]="['fas', 'angle-right']"></fa-icon>
+      </button>
+    </li>
+  </ul>
+</nav>
