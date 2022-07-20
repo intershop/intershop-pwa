@@ -20,6 +20,7 @@
     "no-duplicate-selectors": true,
     "property-no-vendor-prefix": true,
     "selector-no-vendor-prefix": true,
+    "selector-not-notation": "simple",
     "selector-pseudo-element-no-unknown": [
       true,
       { "ignorePseudoElements": ["ng-deep"] }
