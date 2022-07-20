@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Subject, noop, takeUntil, tap } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 export interface ModalOptions {
   /**
@@ -82,12 +82,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
     this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, { size });
 
-    this.ngbModalRef.dismissed
-      .pipe(
-        tap(() => this.closed.emit(this.data)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(noop);
+    this.ngbModalRef.dismissed.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => this.closed.emit(this.data));
 
     this.shown.emit(this.data);
   }
@@ -97,6 +92,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
    */
   hide() {
     this.ngbModalRef.close();
+    this.destroy$.next();
     this.closed.emit(this.data);
   }
 
