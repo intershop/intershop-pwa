@@ -9,6 +9,7 @@ import { Customer, CustomerRegistrationType, SsoRegistrationType } from 'ish-cor
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { User } from 'ish-core/models/user/user.model';
 import { MessagesPayloadType } from 'ish-core/store/core/messages';
 import {
@@ -51,6 +52,7 @@ import {
   updateUser,
   updateUserPassword,
   updateUserPasswordByPasswordReminder,
+  updateUserPreferredPayment,
 } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -164,8 +166,50 @@ export class AccountFacade {
     return this.eligiblePaymentMethods$;
   }
 
-  deletePaymentInstrument(paymentInstrumentId: string) {
-    this.store.dispatch(deleteUserPaymentInstrument({ id: paymentInstrumentId }));
+  deletePaymentInstrument(paymentInstrumentId: string, successMessage?: MessagesPayloadType) {
+    this.store.dispatch(deleteUserPaymentInstrument({ id: paymentInstrumentId, successMessage }));
+  }
+
+  async updateUserPreferredPaymentMethod(
+    user: User,
+    paymentMethodId: string,
+    currentPreferredPaymentInstrument: PaymentInstrument
+  ) {
+    if (currentPreferredPaymentInstrument && !currentPreferredPaymentInstrument.parameters?.length) {
+      this.deletePaymentInstrument(currentPreferredPaymentInstrument.id);
+      await new Promise(resolve => setTimeout(resolve, 600)); // prevent server conflicts
+    }
+
+    this.store.dispatch(
+      updateUserPreferredPayment({
+        user,
+        paymentMethodId,
+        successMessage: {
+          message: 'account.payment.payment_created.message',
+        },
+      })
+    );
+  }
+
+  async updateUserPreferredPaymentInstrument(
+    user: User,
+    paymentInstrumentId: string,
+    currentPreferredPaymentInstrument: PaymentInstrument
+  ) {
+    if (currentPreferredPaymentInstrument && !currentPreferredPaymentInstrument.parameters?.length) {
+      this.deletePaymentInstrument(currentPreferredPaymentInstrument.id);
+      await new Promise(resolve => setTimeout(resolve, 600)); // prevent server conflicts
+    }
+    this.store.dispatch(
+      updateUser({
+        user: { ...user, preferredPaymentInstrumentId: paymentInstrumentId },
+        successMessage: {
+          message: paymentInstrumentId
+            ? 'account.payment.payment_created.message'
+            : 'account.payment.no_preferred.message',
+        },
+      })
+    );
   }
 
   // ADDRESSES

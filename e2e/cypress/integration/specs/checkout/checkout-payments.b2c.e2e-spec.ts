@@ -37,13 +37,10 @@ describe('Checkout Payment', () => {
       });
     });
 
-    it('should set first addresses automatically', () => {
+    it('should continue checkout up to the payment page', () => {
       at(CheckoutAddressesPage, page => {
         page.continueCheckout();
       });
-    });
-
-    it('should accept default shipping option', () => {
       at(CheckoutShippingPage, page => page.continueCheckout());
     });
 
@@ -150,6 +147,32 @@ describe('Checkout Payment', () => {
         page.content.should('contain', '********1111');
         page.content.should('not.contain', '********4444');
         page.content.should('not.contain', '****************0000');
+        page.preferredPaymentMethod.should('not.exist');
+        page.noPreferredPaymentOption.should('not.exist');
+      });
+    });
+
+    it('should set a unparametrized payment method as preferred payment method', () => {
+      at(PaymentPage, page => {
+        page.selectPayment('INVOICE');
+        page.preferredPaymentMethod.should('contain', 'Invoice');
+        page.noPreferredPaymentOption.should('be.visible');
+      });
+    });
+
+    it('should set a parametrized payment method as preferred payment method', () => {
+      at(PaymentPage, page => {
+        page.selectCreditCard();
+        page.preferredPaymentMethod.should('contain', 'ISH Demo Credit Card');
+        page.noPreferredPaymentOption.should('be.visible');
+      });
+    });
+
+    it('should reset preferred payment method', () => {
+      at(PaymentPage, page => {
+        page.selectNoPreferredPayment();
+        page.preferredPaymentMethod.should('not.exist');
+        page.noPreferredPaymentOption.should('not.exist');
       });
     });
   });

@@ -18,7 +18,7 @@
     <!-- display all payment methods -->
     <ng-container *ngIf="basket.totals?.total?.net > 0 || !basket.payment; else zeroTotalInfo">
       <form [formGroup]="paymentForm" class="form-horizontal" (ngSubmit)="submitParameterForm()">
-        <ul *ngIf="hasPaymentMethods" id="payment-accordion" class="list-unstyled">
+        <ul *ngIf="hasPaymentMethods" id="payment-accordion" class="payment-methods list-unstyled">
           <ng-container *ngFor="let paymentMethod of filteredPaymentMethods; index as i">
             <li class="panel">
               <div [ngClass]="{ 'form-check': !paymentMethod.parameters }" role="tab">

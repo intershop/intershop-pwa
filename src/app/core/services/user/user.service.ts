@@ -192,7 +192,9 @@ export class UserService {
       ...body.user,
       preferredInvoiceToAddress: { urn: body.user.preferredInvoiceToAddressUrn },
       preferredShipToAddress: { urn: body.user.preferredShipToAddressUrn },
-      preferredPaymentInstrument: { id: body.user.preferredPaymentInstrumentId },
+      preferredPaymentInstrument: body.user.preferredPaymentInstrumentId
+        ? { id: body.user.preferredPaymentInstrumentId }
+        : {},
       preferredInvoiceToAddressUrn: undefined,
       preferredShipToAddressUrn: undefined,
       preferredPaymentInstrumentId: undefined,

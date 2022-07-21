@@ -52,6 +52,7 @@ import {
   updateUserPassword,
   updateUserPasswordFail,
   updateUserPasswordSuccess,
+  updateUserPreferredPayment,
   updateUserSuccess,
 } from './user.actions';
 import { UserEffects } from './user.effects';
@@ -94,6 +95,7 @@ describe('User Effects', () => {
     when(userServiceMock.requestPasswordReminder(anything())).thenReturn(of({}));
     when(userServiceMock.getEligibleCostCenters()).thenReturn(of([]));
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
+    when(paymentServiceMock.createUserPayment(anything(), anything())).thenReturn(of({ id: 'paymentInstrumentId' }));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
     when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
 
@@ -646,7 +648,10 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a DeleteUserPaymentSuccess action on successful', () => {
-      const action = deleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
+      const action = deleteUserPaymentInstrument({
+        id: 'paymentInstrumentId',
+        successMessage: { message: 'account.payment.payment_deleted.message' },
+      });
       const completion1 = deleteUserPaymentInstrumentSuccess();
       const completion2 = loadUserPaymentMethods();
       const completion3 = displaySuccessMessage({
@@ -675,6 +680,58 @@ describe('User Effects', () => {
       expect(effects.deleteUserPayment$).toBeObservable(expected$);
     });
   });
+
+  describe('updatePreferredUserPayment$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        loginUserSuccess({
+          customer,
+          user: {} as User,
+        })
+      );
+    });
+
+    it('should call the payment service when UpdateUserPreferredPayment event is called', done => {
+      const action = updateUserPreferredPayment({ user: {} as User, paymentMethodId: 'paymentInstrumentId' });
+      actions$ = of(action);
+      effects.updatePreferredUserPayment$.subscribe(() => {
+        verify(paymentServiceMock.createUserPayment(customer.customerNo, anything())).once();
+        done();
+      });
+    });
+
+    it('should dispatch a UpdateUser action on successful payment instrument creation', () => {
+      const action = updateUserPreferredPayment({
+        user: {} as User,
+        paymentMethodId: 'paymentInstrumentId',
+      });
+      const completion1 = updateUser({ user: { preferredPaymentInstrumentId: 'paymentInstrumentId' } as User });
+      const completion2 = loadUserPaymentMethods();
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.updatePreferredUserPayment$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a UpdateUserFail action on failed', () => {
+      const error = makeHttpError({ status: 401, code: 'error' });
+      when(paymentServiceMock.createUserPayment(anything(), anything())).thenReturn(throwError(() => error));
+
+      const action = updateUserPreferredPayment({
+        user: {} as User,
+        paymentMethodId: 'paymentInstrumentId',
+      });
+      const completion = updateUserFail({
+        error,
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+      expect(effects.updatePreferredUserPayment$).toBeObservable(expected$);
+    });
+  });
+
   describe('requestPasswordReminder$', () => {
     const data: PasswordReminder = {
       email: 'patricia@test.intershop.de',

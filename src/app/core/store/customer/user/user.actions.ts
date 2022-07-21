@@ -41,6 +41,11 @@ export const updateUserSuccess = createAction(
 
 export const updateUserFail = createAction('[User API] Update User Failed', httpError());
 
+export const updateUserPreferredPayment = createAction(
+  '[User] Update User Preferred Payment',
+  payload<{ user: User; paymentMethodId: string; successMessage?: MessagesPayloadType }>()
+);
+
 export const updateUserPassword = createAction(
   '[User] Update User Password',
   payload<{ password: string; currentPassword: string; successMessage?: MessagesPayloadType }>()
@@ -91,7 +96,7 @@ export const loadUserPaymentMethodsSuccess = createAction(
 
 export const deleteUserPaymentInstrument = createAction(
   '[User] Delete User Instrument Payment ',
-  payload<{ id: string }>()
+  payload<{ id: string; successMessage?: MessagesPayloadType }>()
 );
 
 export const deleteUserPaymentInstrumentFail = createAction(
