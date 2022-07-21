@@ -24,34 +24,37 @@ export class ContentConfigurationParameterMapper {
 
     if (data) {
       configurationParameters = Object.entries(data)
-        .map(([key, value]) => ({ [key]: value.value }))
+        .map(([key, value]) => ({ [key]: this.postProcessConfigurationParameterValue(value) }))
         .reduce((acc, val) => ({ ...acc, ...val }));
     }
-
-    this.postProcessFileReferences(configurationParameters);
 
     return configurationParameters;
   }
 
-  /**
-   * TODO: make this dependant on the type of the configuration parameter once the CMS REST API provides this information
-   * for now filter all configuration parameters that start with 'Image' or 'Video'
-   * and where the value does not start with 'http' but contains ':/'
-   + if the filter matches convert the CMS REST API value in a full server URL to the configured file
-   */
-  postProcessFileReferences(data: ContentConfigurationParameters): ContentConfigurationParameters {
-    Object.keys(data)
-      .filter(
-        key =>
-          (key.startsWith('Image') || key.startsWith('Video')) &&
-          data[key] &&
-          !data[key].toString().startsWith('http') &&
-          data[key].toString().includes(':/')
-      )
-      .forEach(key => {
-        const split = data[key].toString().split(':');
-        data[key] = encodeURI(`${this.staticURL}/${split[0]}/${this.lang}${split[1]}`);
-      });
-    return data;
+  resolveStaticURL(value: string): string {
+    if (value.startsWith('http')) {
+      return value;
+    }
+
+    if (!value.includes(':/')) {
+      return value;
+    }
+
+    const split = value.split(':');
+
+    return encodeURI(`${this.staticURL}/${split[0]}/${this.lang}${split[1]}`);
+  }
+
+  postProcessConfigurationParameterValue(data: ContentConfigurationParameterData): string | object | number {
+    switch (data.type) {
+      case 'bc_pmc:types.pagelet2-ImageFileRef':
+        if (Array.isArray(data.value)) {
+          return data.value.map(x => this.resolveStaticURL(x));
+        } else {
+          return this.resolveStaticURL(data.value.toString());
+        }
+      default:
+        return data.value;
+    }
   }
 }

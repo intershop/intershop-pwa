@@ -60,26 +60,54 @@ describe('Content Configuration Parameter Mapper', () => {
     `);
   });
 
-  describe('postProcessFileReferences', () => {
-    it.each([
-      ['assets/pwa/pwa_home_teaser_1.jpg', 'assets/pwa/pwa_home_teaser_1.jpg', 'Image'],
-      [
-        'site:/pwa/pwa_home_teaser_1.jpg',
-        'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
-        'Image',
-      ],
-      [
-        'site:/pwa/pwa_home_teaser_1.jpg',
-        'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
-        'ImageXS',
-      ],
-      ['site:/pwa/pwa_home_teaser_1.jpg', 'site:/pwa/pwa_home_teaser_1.jpg', 'Other'],
-      ['site:/video/video.mp4', 'http://www.example.org/static/channel/-/site/de_DE/video/video.mp4', 'Video'],
-      ['https://www.youtube.com/watch?v=ABCDEFG', 'https://www.youtube.com/watch?v=ABCDEFG', 'Video'],
-    ])(`should transform %s to %s for key %s`, (input, expected, key) => {
-      expect(contentConfigurationParameterMapper.postProcessFileReferences({ [key]: input })).toEqual({
-        [key]: expected,
-      });
-    });
+  it('should handle ImageFileReferences', () => {
+    const input: { [name: string]: ContentConfigurationParameterData } = {
+      key1: {
+        definitionQualifiedName: 'name1',
+        value: 'assets/pwa/pwa_home_teaser_1.jpg',
+        type: 'bc_pmc:types.pagelet2-ImageFileRef',
+      },
+      key2: {
+        definitionQualifiedName: 'name2',
+        value: 'site:/pwa/pwa_home_teaser_1.jpg',
+        type: 'bc_pmc:types.pagelet2-ImageFileRef',
+      },
+      key3: {
+        definitionQualifiedName: 'name3',
+        value: 'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
+        type: 'bc_pmc:types.pagelet2-ImageFileRef',
+      },
+      key4: {
+        definitionQualifiedName: 'name4',
+        value: 'https://www.youtube.com/watch?v=ABCDEFG',
+        type: 'bc_pmc:types.pagelet2-ImageFileRef',
+      },
+      key5: {
+        definitionQualifiedName: 'name5',
+        value: [
+          'assets/pwa/pwa_home_teaser_1.jpg',
+          'site:/pwa/pwa_home_teaser_1.jpg',
+          'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
+          'https://www.youtube.com/watch?v=ABCDEFG',
+        ],
+        type: 'bc_pmc:types.pagelet2-ImageFileRef',
+      },
+    };
+
+    const result = contentConfigurationParameterMapper.fromData(input);
+    expect(result).toMatchInlineSnapshot(`
+      Object {
+        "key1": "assets/pwa/pwa_home_teaser_1.jpg",
+        "key2": "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
+        "key3": "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
+        "key4": "https://www.youtube.com/watch?v=ABCDEFG",
+        "key5": Array [
+          "assets/pwa/pwa_home_teaser_1.jpg",
+          "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
+          "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
+          "https://www.youtube.com/watch?v=ABCDEFG",
+        ],
+      }
+    `);
   });
 });

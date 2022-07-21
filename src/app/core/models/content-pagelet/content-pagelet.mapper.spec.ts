@@ -166,6 +166,7 @@ describe('Content Pagelet Mapper', () => {
         Image: {
           value: 'inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg',
           definitionQualifiedName: 'app_sf_base_cm:component.common.image.pagelet2-Component-Image',
+          type: 'bc_pmc:types.pagelet2-ImageFileRef',
         },
       },
     } as ContentPageletData;
