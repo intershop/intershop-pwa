@@ -10,7 +10,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { IdentityProvider, TriggerReturnType } from 'ish-core/identity-provider/identity-provider.interface';
 import { selectQueryParam } from 'ish-core/store/core/router';
-import { logoutUser } from 'ish-core/store/customer/user';
+import { fetchAnonymousUserToken, logoutUser } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -41,6 +41,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
   init() {
     this.apiTokenService.restore$(['user', 'order']).subscribe(noop);
     this.apiTokenService.cookieVanishes$.subscribe(type => {
+      this.store.dispatch(fetchAnonymousUserToken());
       if (type === 'user') {
         this.store.dispatch(logoutUser());
       }
@@ -75,6 +76,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
         password: route.queryParamMap.get('PASSWORD'),
       });
     }
+
     return race(
       // throw an error if a user login error occurs
       this.accountFacade.userError$.pipe(
@@ -123,6 +125,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     window.sessionStorage.removeItem('basket-id');
     this.store.dispatch(logoutUser());
     this.apiTokenService.removeApiToken();
+    this.store.dispatch(fetchAnonymousUserToken());
     return this.store.pipe(
       select(selectQueryParam('returnUrl')),
       map(returnUrl => returnUrl || '/home'),

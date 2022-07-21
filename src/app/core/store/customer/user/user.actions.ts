@@ -133,3 +133,5 @@ export const updateUserPasswordByPasswordReminderFail = createAction(
   '[Password Reminder] Update User Password Failed',
   httpError()
 );
+
+export const fetchAnonymousUserToken = createAction('[Token API] Fetch Token');

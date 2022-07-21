@@ -22,6 +22,7 @@ export function storageFactory(): OAuthStorage {
 
 @NgModule({
   imports: [OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } }), PunchoutIdentityProviderModule],
+  /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
   providers: [
     { provide: OAuthStorage, useFactory: storageFactory },
     {

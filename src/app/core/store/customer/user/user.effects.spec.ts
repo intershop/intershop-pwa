@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { cold, hot } from 'jasmine-marbles';
 import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -20,6 +21,7 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 
 import {
   createUser,
@@ -64,6 +66,8 @@ describe('User Effects', () => {
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
   let apiTokenServiceMock: ApiTokenService;
+  let oAuthServiceMock: OAuthService;
+  let oAuthConfigurationServiceMock: OAuthConfigurationService;
   let router: Router;
   let location: Location;
 
@@ -80,12 +84,23 @@ describe('User Effects', () => {
     isBusinessCustomer: true,
   } as Customer;
 
+  const token = {
+    access_token: 'DEMO@access-token',
+    token_type: 'user',
+    expires_in: 3600,
+    refresh_token: 'DEMO@refresh-token',
+    id_token: 'DEMO@id-token',
+  } as TokenResponse;
+
   beforeEach(() => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
     apiTokenServiceMock = mock(ApiTokenService);
+    oAuthServiceMock = mock(OAuthService);
+    oAuthConfigurationServiceMock = mock(OAuthConfigurationService);
 
-    when(userServiceMock.signInUser(anything())).thenReturn(of(loginResponseData));
+    when(userServiceMock.fetchCustomer()).thenReturn(of(loginResponseData));
+    when(userServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
     when(userServiceMock.signInUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything(), anything())).thenReturn(of({ firstName: 'Patricia' } as User));
@@ -98,6 +113,8 @@ describe('User Effects', () => {
     when(paymentServiceMock.createUserPayment(anything(), anything())).thenReturn(of({ id: 'paymentInstrumentId' }));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
     when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+    when(oAuthServiceMock.events).thenReturn(of());
+    when(oAuthConfigurationServiceMock.config$).thenReturn(of());
 
     TestBed.configureTestingModule({
       imports: [
@@ -107,6 +124,8 @@ describe('User Effects', () => {
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationServiceMock) },
+        { provide: OAuthService, useFactory: () => instance(oAuthServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideMockActions(() => actions$),
@@ -127,7 +146,7 @@ describe('User Effects', () => {
       actions$ = of(action);
 
       effects.loginUser$.subscribe(() => {
-        verify(userServiceMock.signInUser(anything())).once();
+        verify(userServiceMock.fetchToken(anyString(), anything())).once();
         done();
       });
     });
@@ -143,7 +162,7 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a loadPGID action on successful login', () => {
+    it('should dispatch a fetchCustomer action on successful login', () => {
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
       const completion = loginUserSuccess(loginResponseData);
 
@@ -156,7 +175,7 @@ describe('User Effects', () => {
     it('should dispatch a LoginUserFail action on failed login', () => {
       const error = makeHttpError({ status: 401, code: 'error' });
 
-      when(userServiceMock.signInUser(anything())).thenReturn(throwError(() => error));
+      when(userServiceMock.fetchCustomer()).thenReturn(throwError(() => error));
 
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
       const completion = loginUserFail({ error });

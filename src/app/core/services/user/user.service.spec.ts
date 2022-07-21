@@ -1,6 +1,6 @@
-import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -13,51 +13,65 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { UserService } from './user.service';
 
 describe('User Service', () => {
+  const token = {
+    access_token: 'DEMO@access-token',
+    token_type: 'user',
+    expires_in: 3600,
+    refresh_token: 'DEMO@refresh-token',
+    id_token: 'DEMO@id-token',
+  } as TokenResponse;
+
   let userService: UserService;
   let apiServiceMock: ApiService;
+  let oAuthServiceMock: OAuthService;
+  let oAuthConfigurationServiceMock: OAuthConfigurationService;
   let appFacade: AppFacade;
   let store$: MockStore;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
     appFacade = mock(AppFacade);
+    oAuthServiceMock = mock(OAuthService);
+    oAuthConfigurationServiceMock = mock(OAuthConfigurationService);
+
+    when(oAuthConfigurationServiceMock.config$).thenReturn(of());
+    when(oAuthServiceMock.fetchTokenUsingGrant(anyString(), anything(), anything())).thenResolve(token);
+    when(appFacade.isAppTypeREST$).thenReturn(of(true));
+    when(appFacade.currentLocale$).thenReturn(of('en_US'));
+    when(appFacade.customerRestResource$).thenReturn(of('customers'));
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationServiceMock) },
+        { provide: OAuthService, useFactory: () => instance(oAuthServiceMock) },
         provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: undefined }] }),
       ],
     });
     userService = TestBed.inject(UserService);
-    when(appFacade.isAppTypeREST$).thenReturn(of(true));
-    when(appFacade.currentLocale$).thenReturn(of('en_US'));
-    when(appFacade.customerRestResource$).thenReturn(of('customers'));
     store$ = TestBed.inject(MockStore);
   });
 
   describe('SignIn a user', () => {
     it('should login a user when correct credentials are entered', done => {
-      const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
       when(apiServiceMock.get('customers/-', anything())).thenReturn(
         of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
       );
-      when(apiServiceMock.get('privatecustomers/-')).thenReturn(
+      when(apiServiceMock.get('privatecustomers/-', anything())).thenReturn(
         of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
       );
-      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '6FGMJtFU2xuRpG9I3CpTS7fc0000' }));
+      when(apiServiceMock.get('personalization', anything())).thenReturn(of({ pgid: '6FGMJtFU2xuRpG9I3CpTS7fc0000' }));
 
-      userService.signInUser(loginDetail).subscribe(data => {
-        const [, options] = capture<{}, { headers: HttpHeaders }>(apiServiceMock.get).first();
-        const headers = options?.headers;
-        expect(headers).toBeTruthy();
-        expect(headers.get('Authorization')).toEqual('BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==');
-
+      userService.fetchCustomer().subscribe(data => {
         expect(data).toHaveProperty('customer.customerNo', 'PC');
         expect(data).toHaveProperty('pgid', '6FGMJtFU2xuRpG9I3CpTS7fc0000');
         done();
@@ -65,41 +79,39 @@ describe('User Service', () => {
     });
 
     it('should login a private user when correct credentials are entered', done => {
-      const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
       when(apiServiceMock.get('customers/-', anything())).thenReturn(
         of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
       );
-      when(apiServiceMock.get('privatecustomers/-')).thenReturn(of({ customerNo: 'PC' } as CustomerData));
-      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '123' }));
+      when(apiServiceMock.get('privatecustomers/-', anything())).thenReturn(of({ customerNo: 'PC' } as CustomerData));
+      when(apiServiceMock.get('personalization', anything())).thenReturn(of({ pgid: '123' }));
 
-      userService.signInUser(loginDetail).subscribe(() => {
+      userService.fetchCustomer().subscribe(() => {
         verify(apiServiceMock.get(`customers/-`, anything())).once();
-        verify(apiServiceMock.get(`privatecustomers/-`)).once();
-        verify(apiServiceMock.get('personalization')).once();
+        verify(apiServiceMock.get(`privatecustomers/-`, anything())).once();
+        verify(apiServiceMock.get('personalization', anything())).once();
         done();
       });
     });
 
     it('should login a business user when correct credentials are entered', done => {
-      const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
-      when(apiServiceMock.get(anything(), anything())).thenReturn(
+      when(apiServiceMock.get('customers/-', anything())).thenReturn(
         of({ customerNo: 'PC', customerType: 'SMBCustomer' } as CustomerData)
       );
-      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '123' }));
 
-      userService.signInUser(loginDetail).subscribe(() => {
+      when(apiServiceMock.get('personalization', anything())).thenReturn(of({ pgid: '123' }));
+
+      userService.fetchCustomer().subscribe(() => {
         verify(apiServiceMock.get(`customers/-`, anything())).once();
         verify(apiServiceMock.get(`privatecustomers/-`, anything())).never();
-        verify(apiServiceMock.get('personalization')).once();
+        verify(apiServiceMock.get('personalization', anything())).once();
         done();
       });
     });
 
     it('should return error message when wrong credentials are entered', done => {
       const errorMessage = '401 and Unauthorized';
-      const userDetails = { login: 'intershop@123.com', password: 'wrong' };
       when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(() => new Error(errorMessage)));
-      userService.signInUser(userDetails).subscribe({
+      userService.fetchCustomer().subscribe({
         next: fail,
         error: error => {
           expect(error).toBeTruthy();
@@ -113,12 +125,12 @@ describe('User Service', () => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(
         of({ customerNo: '4711', type: 'SMBCustomer', customerType: 'SMBCustomer' } as CustomerData)
       );
-      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '1234' }));
+      when(apiServiceMock.get('personalization', anything())).thenReturn(of({ pgid: '1234' }));
 
       userService.signInUserByToken().subscribe(() => {
         verify(apiServiceMock.get('customers/-', anything())).once();
         verify(apiServiceMock.get('privatecustomers/-', anything())).never();
-        verify(apiServiceMock.get('personalization')).once();
+        verify(apiServiceMock.get('personalization', anything())).once();
         const [path] = capture<string>(apiServiceMock.get).first();
         expect(path).toEqual('customers/-');
         done();
@@ -129,14 +141,13 @@ describe('User Service', () => {
       when(apiServiceMock.get(anything(), anything())).thenReturn(
         of({ customerNo: '4711', type: 'SMBCustomer', customerType: 'SMBCustomer' } as CustomerData)
       );
-      when(apiServiceMock.get('personalization')).thenReturn(of({ pgid: '1234' }));
+      when(apiServiceMock.get('personalization', anything())).thenReturn(of({ pgid: '1234' }));
 
       userService.signInUserByToken('12345').subscribe(() => {
         verify(apiServiceMock.get('customers/-', anything())).once();
         verify(apiServiceMock.get('privatecustomers/-', anything())).never();
-        verify(apiServiceMock.get('personalization')).once();
-        const [path, options] = capture<string, AvailableOptions>(apiServiceMock.get).first();
-        expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toMatchInlineSnapshot(`"12345"`);
+        verify(apiServiceMock.get('personalization', anything())).once();
+        const [path] = capture<string, AvailableOptions>(apiServiceMock.get).first();
         expect(path).toEqual('customers/-');
         done();
       });
@@ -176,8 +187,9 @@ describe('User Service', () => {
 
       userService.createUser(payload).subscribe(() => {
         verify(apiServiceMock.post('privatecustomers', anything(), anything())).once();
+        verify(oAuthServiceMock.fetchTokenUsingGrant('password', anything(), anything())).once();
         verify(apiServiceMock.get('customers/-', anything())).once();
-        verify(apiServiceMock.get('privatecustomers/-')).once();
+        verify(apiServiceMock.get('privatecustomers/-', anything())).once();
         done();
       });
     });

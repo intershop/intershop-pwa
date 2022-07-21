@@ -21,12 +21,12 @@ export class LoginPage {
   }
 
   submit() {
-    cy.intercept('GET', /.*\/customers\/-.*/).as('currentCustomer');
+    cy.intercept('POST', /.*\/-\/token/).as('token');
     cy.wait(500);
 
     cy.get('button[name="login"]').click();
 
-    return cy.wait('@currentCustomer');
+    return cy.wait('@token');
   }
 
   get errorText() {

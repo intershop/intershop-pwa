@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { EMPTY, of } from 'rxjs';
-import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
@@ -32,6 +33,7 @@ import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.modu
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
 import { loginUser, personalizationStatusDetermined } from './user';
@@ -89,8 +91,6 @@ describe('Customer Store', () => {
     birthday: 'test',
   } as User;
 
-  const pgid = 'spgid';
-
   const promotion = {
     id: 'PROMO_UUID',
     name: 'MyPromotion',
@@ -104,6 +104,14 @@ describe('Customer Store', () => {
     title: 'MyPromotionTitle',
     useExternalUrl: false,
   } as Promotion;
+
+  const token = {
+    access_token: 'DEMO@access-token',
+    token_type: 'user',
+    expires_in: 3600,
+    refresh_token: 'DEMO@refresh-token',
+    id_token: 'DEMO@id-token',
+  } as TokenResponse;
 
   beforeEach(() => {
     const categoriesServiceMock = mock(CategoriesService);
@@ -138,7 +146,8 @@ describe('Customer Store', () => {
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
     const userServiceMock = mock(UserService);
-    when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
+    when(userServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
+    when(userServiceMock.fetchCustomer()).thenReturn(of({ customer, user }));
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
@@ -146,6 +155,12 @@ describe('Customer Store', () => {
 
     const productPriceServiceMock = mock(PricesService);
     when(productPriceServiceMock.getProductPrices(anything())).thenReturn(of([]));
+
+    const oAuthService = mock(OAuthService);
+    when(oAuthService.events).thenReturn(of());
+
+    const oAuthConfigurationService = mock(OAuthConfigurationService);
+    when(oAuthConfigurationService.config$).thenReturn(of());
 
     TestBed.configureTestingModule({
       imports: [
@@ -171,6 +186,8 @@ describe('Customer Store', () => {
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationService) },
+        { provide: OAuthService, useFactory: () => instance(oAuthService) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },
@@ -216,7 +233,6 @@ describe('Customer Store', () => {
           [User API] Login User Success:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
-            pgid: "spgid"
           [Basket API] Merge two baskets in progress
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}

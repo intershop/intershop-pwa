@@ -3,8 +3,20 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
+import { OAuthInfoEvent, OAuthService } from 'angular-oauth2-oidc';
 import { from } from 'rxjs';
-import { concatMap, delay, exhaustMap, filter, map, mergeMap, sample, takeWhile, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  delay,
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  sample,
+  switchMap,
+  takeWhile,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -12,6 +24,7 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { getPGID, personalizationStatusDetermined } from '.';
@@ -52,6 +65,7 @@ import {
   updateUserPreferredPayment,
   updateUserSuccess,
   userErrorReset,
+  fetchAnonymousUserToken,
 } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
@@ -63,17 +77,46 @@ export class UserEffects {
     private userService: UserService,
     private paymentService: PaymentService,
     private router: Router,
-    private apiTokenService: ApiTokenService
-  ) {}
+    private apiTokenService: ApiTokenService,
+    private oAuthService: OAuthService,
+    oAuthConfigurationService: OAuthConfigurationService
+  ) {
+    oAuthConfigurationService.config$.subscribe(config => this.oAuthService.configure(config));
+  }
 
   loginUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loginUser),
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
-        this.userService.signInUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+        this.userService.fetchToken('password', { username: credentials.login, password: credentials.password }).pipe(
+          switchMap(() =>
+            this.userService.fetchCustomer().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+          ),
+          mapErrorToAction(loginUserFail)
+        )
       )
     )
+  );
+
+  fetchAnonymousUserToken$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fetchAnonymousUserToken),
+        switchMap(() => this.userService.fetchToken('anonymous'))
+      ),
+    { dispatch: false }
+  );
+
+  refreshUserToken$ = createEffect(
+    () =>
+      this.oAuthService.events.pipe(
+        filter(
+          event => event instanceof OAuthInfoEvent && event.type === 'token_expires' && event.info === 'access_token'
+        ),
+        switchMap(() => from(this.oAuthService.refreshToken()))
+      ),
+    { dispatch: false }
   );
 
   loginUserWithToken$ = createEffect(() =>

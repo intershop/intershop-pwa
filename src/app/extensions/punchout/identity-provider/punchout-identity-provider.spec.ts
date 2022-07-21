@@ -10,7 +10,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { selectQueryParam } from 'ish-core/store/core/router';
-import { ApiTokenCookieType, ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -38,7 +38,6 @@ describe('Punchout Identity Provider', () => {
   let store$: MockStore;
   let storeSpy$: MockStore;
   let router: Router;
-  let cookieVanishes$: Subject<ApiTokenCookieType>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -67,10 +66,9 @@ describe('Punchout Identity Provider', () => {
   });
 
   beforeEach(() => {
-    cookieVanishes$ = new Subject<ApiTokenCookieType>();
     when(apiTokenService.restore$(anything())).thenReturn(of(true));
     when(checkoutFacade.basket$).thenReturn(EMPTY);
-    when(apiTokenService.cookieVanishes$).thenReturn(cookieVanishes$);
+    when(apiTokenService.cookieVanishes$).thenReturn(new Subject());
 
     resetCalls(apiTokenService);
     resetCalls(punchoutService);

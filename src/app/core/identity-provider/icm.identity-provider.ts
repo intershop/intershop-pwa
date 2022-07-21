@@ -6,7 +6,7 @@ import { Observable, noop } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { selectQueryParam } from 'ish-core/store/core/router';
-import { logoutUser } from 'ish-core/store/customer/user';
+import { fetchAnonymousUserToken, logoutUser } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
 import { IdentityProvider, TriggerReturnType } from './identity-provider.interface';
@@ -28,6 +28,7 @@ export class ICMIdentityProvider implements IdentityProvider {
 
     this.apiTokenService.cookieVanishes$.subscribe(type => {
       this.store.dispatch(logoutUser());
+      this.store.dispatch(fetchAnonymousUserToken());
       if (type === 'user') {
         this.router.navigate(['/login'], {
           queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
@@ -43,6 +44,7 @@ export class ICMIdentityProvider implements IdentityProvider {
   triggerLogout(): TriggerReturnType {
     this.apiTokenService.removeApiToken();
     this.store.dispatch(logoutUser());
+    this.store.dispatch(fetchAnonymousUserToken());
     return this.store.pipe(
       select(selectQueryParam('returnUrl')),
       map(returnUrl => returnUrl || '/home'),
