@@ -9,6 +9,7 @@ on:
       - 'docs/**'
 
 env:
+  NODE_VERSION: 16.16.0
   NODE_OPTIONS: --max_old_space_size=8192
   JEST_MAX_WORKERS: 1
   CI: false
@@ -44,7 +45,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Install root dependencies
@@ -64,7 +65,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - uses: 1arp/create-a-file-action@0.2
@@ -94,7 +95,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Run developer workflow
@@ -110,7 +111,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Run developer workflow

@@ -13,8 +13,9 @@ on:
       - 'docs/**'
 
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  NODE_VERSION: 16.16.0
   NODE_OPTIONS: --max_old_space_size=8192
+  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
 
 jobs:
   CancelPrevious:
@@ -38,7 +39,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Install root dependencies
@@ -69,7 +70,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Download Build Output
