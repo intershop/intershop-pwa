@@ -60,7 +60,7 @@ describe('Content Configuration Parameter Mapper', () => {
     `);
   });
 
-  it('should handle ImageFileReferences', () => {
+  it('should handle bc_pmc:types.pagelet2-ImageFileRef', () => {
     const input: { [name: string]: ContentConfigurationParameterData } = {
       key1: {
         definitionQualifiedName: 'name1',
@@ -91,6 +91,57 @@ describe('Content Configuration Parameter Mapper', () => {
           'https://www.youtube.com/watch?v=ABCDEFG',
         ],
         type: 'bc_pmc:types.pagelet2-ImageFileRef',
+      },
+    };
+
+    const result = contentConfigurationParameterMapper.fromData(input);
+    expect(result).toMatchInlineSnapshot(`
+      Object {
+        "key1": "assets/pwa/pwa_home_teaser_1.jpg",
+        "key2": "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
+        "key3": "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
+        "key4": "https://www.youtube.com/watch?v=ABCDEFG",
+        "key5": Array [
+          "assets/pwa/pwa_home_teaser_1.jpg",
+          "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
+          "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
+          "https://www.youtube.com/watch?v=ABCDEFG",
+        ],
+      }
+    `);
+  });
+
+  it('should handle bc_pmc:types.pagelet2-FileRef', () => {
+    const input: { [name: string]: ContentConfigurationParameterData } = {
+      key1: {
+        definitionQualifiedName: 'name1',
+        value: 'assets/pwa/pwa_home_teaser_1.jpg',
+        type: 'bc_pmc:types.pagelet2-FileRef',
+      },
+      key2: {
+        definitionQualifiedName: 'name2',
+        value: 'site:/pwa/pwa_home_teaser_1.jpg',
+        type: 'bc_pmc:types.pagelet2-FileRef',
+      },
+      key3: {
+        definitionQualifiedName: 'name3',
+        value: 'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
+        type: 'bc_pmc:types.pagelet2-FileRef',
+      },
+      key4: {
+        definitionQualifiedName: 'name4',
+        value: 'https://www.youtube.com/watch?v=ABCDEFG',
+        type: 'bc_pmc:types.pagelet2-FileRef',
+      },
+      key5: {
+        definitionQualifiedName: 'name5',
+        value: [
+          'assets/pwa/pwa_home_teaser_1.jpg',
+          'site:/pwa/pwa_home_teaser_1.jpg',
+          'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg',
+          'https://www.youtube.com/watch?v=ABCDEFG',
+        ],
+        type: 'bc_pmc:types.pagelet2-FileRef',
       },
     };
 

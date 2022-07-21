@@ -48,6 +48,7 @@ export class ContentConfigurationParameterMapper {
   postProcessConfigurationParameterValue(data: ContentConfigurationParameterData): string | object | number {
     switch (data.type) {
       case 'bc_pmc:types.pagelet2-ImageFileRef':
+      case 'bc_pmc:types.pagelet2-FileRef':
         if (Array.isArray(data.value)) {
           return data.value.map(x => this.resolveStaticURL(x));
         } else {
