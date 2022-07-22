@@ -12,13 +12,19 @@ services:
         # activeThemes: b2b
         # activeThemes: b2c
     environment:
-      - LOGGING=on
-      - SOURCE_MAPS=on
-      - ICM_BASE_URL
-      # - PROXY_ICM=true
-      - TRUST_ICM=true
-      # - PROMETHEUS=on
-      # - MULTI_SITE_LOCALE_MAP={"en_US":"/en","de_DE":"/de","fr_FR":"/fr"}
+      LOGGING: 'true'
+      SOURCE_MAPS: 'true'
+      ICM_BASE_URL:
+      # PROXY_ICM: 'true'
+      TRUST_ICM: 'true'
+      # PROMETHEUS: 'true'
+      # MULTI_SITE_LOCALE_MAP: |
+      #   en_US: /en
+      #   de_DE: /de
+      #   fr_FR: /fr
+      # FEATURES: |
+      #   - compare
+      #   - rating
 
   # <CDN-Example>
   # add 127.0.0.1 mypwa.net to your hosts file and

@@ -94,6 +94,7 @@
     "express-http-proxy": "^1.6.3",
     "express-robots-txt": "1.0.0",
     "file-replace-loader": "^1.4.0",
+    "js-yaml": "^4.1.0",
     "lodash-es": "^4.17.21",
     "morgan": "^1.10.0",
     "ng-recaptcha": "^10.0.0",

@@ -23,7 +23,10 @@ function isObject(item: unknown) {
  * @see https://stackoverflow.com/a/37164538/13001898
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- utility function
-export function mergeDeep(target: any, source: any) {
+export function mergeDeep(target: any, source: any): any {
+  if (target === undefined && source === undefined) {
+    return;
+  }
   let output = { ...target };
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach(key => {
@@ -37,6 +40,8 @@ export function mergeDeep(target: any, source: any) {
         output = { ...output, [key]: source[key] };
       }
     });
+  } else if (target === undefined) {
+    return mergeDeep({}, source);
   }
   return output;
 }
