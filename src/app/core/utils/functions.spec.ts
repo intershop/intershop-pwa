@@ -74,6 +74,60 @@ describe('Functions', () => {
         }
       `);
     });
+
+    it('should handle empty source objects', () => {
+      expect(mergeDeep({ a: 1, b: { c: 2 }, d: 11 }, {})).toMatchInlineSnapshot(`
+        Object {
+          "a": 1,
+          "b": Object {
+            "c": 2,
+          },
+          "d": 11,
+        }
+      `);
+    });
+
+    it('should handle undefined source objects', () => {
+      expect(mergeDeep({ a: 1, b: { c: 2 }, d: 11 }, undefined)).toMatchInlineSnapshot(`
+        Object {
+          "a": 1,
+          "b": Object {
+            "c": 2,
+          },
+          "d": 11,
+        }
+      `);
+    });
+
+    it('should handle empty target objects', () => {
+      expect(mergeDeep({}, { a: 4, b: { c: 5 } })).toMatchInlineSnapshot(`
+        Object {
+          "a": 4,
+          "b": Object {
+            "c": 5,
+          },
+        }
+      `);
+    });
+
+    it('should handle undefined target objects', () => {
+      expect(mergeDeep(undefined, { a: 4, b: { c: 5 } })).toMatchInlineSnapshot(`
+        Object {
+          "a": 4,
+          "b": Object {
+            "c": 5,
+          },
+        }
+      `);
+    });
+
+    it('should handle empty target and source objects', () => {
+      expect(mergeDeep({}, {})).toMatchInlineSnapshot(`Object {}`);
+    });
+
+    it('should handle undefined target and source objects', () => {
+      expect(mergeDeep(undefined, undefined)).toBeUndefined();
+    });
   });
 
   describe('omit', () => {
