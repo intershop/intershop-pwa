@@ -1,7 +1,9 @@
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
+import { tsquery } from '@phenomnomnominal/tsquery';
 import * as fs from 'fs';
-import { flatten } from 'lodash';
-import { basename, join, resolve } from 'path';
+import { flattenDeep } from 'lodash';
+import { basename, dirname, join, normalize, resolve } from 'path';
+import * as ts from 'typescript';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
 /* eslint-disable no-console */
@@ -367,32 +369,67 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     const outputFolder = fs.readdirSync(config.output.path);
     const sourceMaps = outputFolder.filter(f => f.endsWith('.js.map'));
     if (sourceMaps.length) {
+      const traverseStyleFile = (file: string): string[] => {
+        const fileWithExt = file.endsWith('.scss') ? file : `${file}.scss`;
+        const path = ['', 'src/styles/', `src/styles/themes/${theme}/`]
+          .map(p => normalize(p + fileWithExt))
+          .find(fs.existsSync);
+        if (!path) {
+          return [];
+        }
+
+        const paths = [path];
+
+        const regex = /@import '(.*?)'/g;
+        const content = fs.readFileSync(path, { encoding: 'utf-8' });
+        for (let match: RegExpExecArray; (match = regex.exec(content)); ) {
+          paths.push(...traverseStyleFile(match[1]));
+        }
+
+        return paths;
+      };
+
       const activeFilesPath = join(config.output.path, 'active-files.json');
       logger.log('writing', logOutputFile(activeFilesPath));
 
       // write active file report
-      const activeFiles = flatten(
-        sourceMaps.map(sourceMapPath => {
-          const sourceMap: { sources: string[] } = JSON.parse(
-            fs.readFileSync(join(config.output.path, sourceMapPath), { encoding: 'utf-8' })
-          );
-          // replacements needed because html overrides are not swapped in source maps
-          return (
-            sourceMap.sources
-              // source map entries start with './
-              .map(path => path.substring(2))
-              .filter(path => path.startsWith('src') || path.startsWith('projects'))
-              .map(path => relativeReplacements[path] ?? path)
-              .filter(path => {
-                // TODO: handle lazy sources whenever this becomes a problem
-                if (path.includes('|lazy|')) {
-                  logger.warn('cannot handle lazy source:', path);
-                  return false;
-                }
-                return true;
-              })
-          );
-        })
+      const activeFiles = flattenDeep(
+        sourceMaps
+          .map(sourceMapPath => {
+            const sourceMap: { sources: string[] } = JSON.parse(
+              fs.readFileSync(join(config.output.path, sourceMapPath), { encoding: 'utf-8' })
+            );
+            return (
+              sourceMap.sources
+                // source map entries start with './
+                .map(path => path.substring(2))
+                .filter(path => path.startsWith('src') || path.startsWith('projects'))
+                .filter(path => {
+                  // TODO: handle lazy sources whenever this becomes a problem
+                  if (path.includes(' lazy ')) {
+                    logger.warn('cannot handle lazy source:', path);
+                    return false;
+                  }
+                  return true;
+                })
+                .map(path => relativeReplacements[path] ?? path)
+                .map(path => {
+                  if (basename(path).includes('.component.') && path.endsWith('.ts')) {
+                    return tsquery(
+                      tsquery.ast(fs.readFileSync(path, { encoding: 'utf-8' })),
+                      'CallExpression:has(Identifier[name=Component]) PropertyAssignment:has(Identifier[name=styleUrls]) ArrayLiteralExpression > StringLiteral'
+                    )
+                      .map((styleUrl: ts.StringLiteral) => `${dirname(path)}/${styleUrl.text.substring(2)}`)
+                      .map(path => relativeReplacements[path] ?? path)
+                      .map(traverseStyleFile)
+                      .concat([path]);
+                  } else {
+                    return path;
+                  }
+                })
+            );
+          })
+          .concat(traverseStyleFile(`src/styles/themes/${theme}/style`))
       )
         .filter((v, i, a) => a.indexOf(v) === i)
         .sort();
