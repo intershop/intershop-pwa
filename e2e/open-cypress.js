@@ -1,4 +1,4 @@
-const cypress = require('cypress/lib/cli');
+const cypress = require('cypress');
 const fs = require('fs');
 
 let icmBaseUrl;
@@ -20,10 +20,9 @@ if (!icmBaseUrl) {
 
 console.log('using', icmBaseUrl, 'as ICM_BASE_URL');
 
-const args = process.argv.slice(0, 2);
-args.push('open', '-e', 'ICM_BASE_URL=' + icmBaseUrl);
-if (process.argv.length > 2) {
-  args.push(...process.argv.slice(2));
-}
-
-cypress.init(args);
+cypress.open({
+  env: {
+    ICM_BASE_URL: icmBaseUrl,
+  },
+  e2e: true,
+});

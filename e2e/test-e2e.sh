@@ -13,7 +13,7 @@ cd "$(dirname "$(readlink -f "$0")")"
 
 while true
 do
-  timeout 10m node cypress-ci-e2e "$files"
+  timeout 10m npx ts-node cypress-ci-e2e "$files"
   ret="$?"
   if [ "$ret" -eq "124" ]
   then

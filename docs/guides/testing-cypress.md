@@ -64,7 +64,7 @@ Add the following to the [CoreModule providers](../../src/app/core/core.module.t
 ```
 
 That way each network response will be delayed randomly from 500 to 2000 ms.
-To be able to run tests locally now, the `defaultCommandTimeout` in [cypress.json](../../e2e/cypress.json) probably has to be increased.
+To be able to run tests locally now, the `defaultCommandTimeout` in [cypress.config.ts](../../e2e/cypress.config.ts) probably has to be increased.
 
 # Further References
 

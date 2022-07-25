@@ -1,15 +1,19 @@
+/* eslint-disable */
 /*
  * adapted from https://gist.github.com/Bkucera/4ffd05f67034176a00518df251e19f58
  *
  * referenced by open cypress issue https://github.com/cypress-io/cypress/issues/1313
  */
 
-const _ = require('lodash');
-const fs = require('fs');
-const cypress = require('cypress');
+import * as cypress from 'cypress';
+import * as _ from 'lodash';
+
+import config from './cypress.config';
 
 const MAX_NUM_RUNS = 4;
+
 const BROWSER = process.env.BROWSER || 'chrome';
+
 const TEST_FILES = process.argv.length > 2 ? process.argv[2].split(',') : undefined;
 
 if (!process.env.PWA_BASE_URL) {
@@ -26,20 +30,22 @@ const DEFAULT_CONFIG = {
   browser: BROWSER,
   defaultCommandTimeout: 15000,
   reporter: 'junit',
-  reporterOptions: 'mochaFile=reports/e2e-remote-[hash]-report.xml,includePending=true',
+  reporterOptions: { mochaFile: 'reports/e2e-remote-[hash]-report.xml', includePending: true },
   numTestsKeptInMemory: 1,
   watchForFileChanges: false,
   config: {
-    ...JSON.parse(fs.readFileSync('cypress.json')),
-    baseUrl: process.env.PWA_BASE_URL,
+    ...config,
+    e2e: { ...config.e2e, baseUrl: process.env.PWA_BASE_URL },
     pageLoadTimeout: 180000,
     trashAssetsBeforeRuns: true,
     video: false,
   },
-  env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
+  group: undefined,
+  spec: undefined,
+  env: { ICM_BASE_URL: process.env.ICM_BASE_URL, numRuns: 0 },
 };
 
-const checkMaxRunsReached = (num, noOfSpecs) => {
+const checkMaxRunsReached = (num: number, noOfSpecs: number) => {
   // retry a single flaky test more often
   if ((num >= MAX_NUM_RUNS && noOfSpecs !== 1) || num >= 2 * MAX_NUM_RUNS) {
     console.log(`Ran a total of '${num}' times but still have failures. Exiting...`);
@@ -47,14 +53,18 @@ const checkMaxRunsReached = (num, noOfSpecs) => {
   }
 };
 
-const newGroupName = num => {
+const newGroupName = (num: unknown) => {
   // If we're using parallelization, set a new group name
   if (DEFAULT_CONFIG.group) {
     return `${DEFAULT_CONFIG.group}: retry #${num}`;
   }
 };
 
-const run = (num, spec, retryGroup) => {
+const run = (
+  num: number,
+  spec,
+  retryGroup?: string
+): Promise<CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult> => {
   num += 1;
   let config = _.cloneDeep(DEFAULT_CONFIG);
   config = { ...config, env: { ...config.env, numRuns: num } };
@@ -70,7 +80,7 @@ const run = (num, spec, retryGroup) => {
   return cypress
     .run(config)
     .then(results => {
-      if (results.failures) {
+      if (results.status == 'failed') {
         throw new Error(results.message);
       } else if (results.totalFailed) {
         // rerun again with only the failed tests
@@ -83,7 +93,7 @@ const run = (num, spec, retryGroup) => {
           .flatten()
           .filter('error')
           .value()
-          .map(result => ({ title: result.title.join(' > '), error: result.error }))
+          .map(result => ({ title: result.title.join(' > '), error: result.displayError }))
           .forEach(result => console.warn(result.title, '\n', result.error, '\n'));
 
         checkMaxRunsReached(num, specs.length);
