@@ -29,6 +29,10 @@ Because Angular 14 now uses `yargs` to parse CLI arguments (see [#22778](https:/
 With [#23405](https://github.com/angular/angular-cli/pull/23405), the Angular team has introduced a temporary workaround for this.
 In order to reliably maintain compatibility in the future, the `cms` schematic's `noCMSPrefixing` option has been renamed to `cmsPrefixing` with an inverted behavior.
 
+Cypress has been upgraded from version 9 to 10.
+We went through the interactive migration to move our spec files from cypress/integration folder to the cypress/e2e folder and updated the config file as well as some scripts.
+Find more information in the [Cypress Migration Guide](https://docs.cypress.io/guides/references/migration-guide#Migrating-to-Cypress-version-10-0).
+
 Since the used deferred load library is no longer maintained it is removed and replaced with similar standard browser functionality [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#images_and_iframes).
 All uses of the `(deferLoad)` directive in custom code need to be replaced.
 

@@ -12,7 +12,7 @@ export default defineConfig({
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
-    setupNodeEvents(on: unknown, config: unknown) {
+    setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions) {
       /* eslint-disable-next-line @typescript-eslint/no-var-requires */
       return require('./cypress/plugins/index.js')(on, config);
     },

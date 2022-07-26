@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-console */
 /*
  * adapted from https://gist.github.com/Bkucera/4ffd05f67034176a00518df251e19f58
  *
@@ -53,7 +53,7 @@ const checkMaxRunsReached = (num: number, noOfSpecs: number) => {
   }
 };
 
-const newGroupName = (num: unknown) => {
+const newGroupName = (num: number) => {
   // If we're using parallelization, set a new group name
   if (DEFAULT_CONFIG.group) {
     return `${DEFAULT_CONFIG.group}: retry #${num}`;
@@ -65,6 +65,7 @@ const run = (
   spec,
   retryGroup?: string
 ): Promise<CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult> => {
+  /* eslint-disable-next-line no-param-reassign  */
   num += 1;
   let config = _.cloneDeep(DEFAULT_CONFIG);
   config = { ...config, env: { ...config.env, numRuns: num } };
@@ -80,7 +81,7 @@ const run = (
   return cypress
     .run(config)
     .then(results => {
-      if (results.status == 'failed') {
+      if (results.status === 'failed') {
         throw new Error(results.message);
       } else if (results.totalFailed) {
         // rerun again with only the failed tests
