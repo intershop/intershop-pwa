@@ -47,7 +47,6 @@ import {
 } from './basket.actions';
 import { getBasketInfo, getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 import { update } from 'lodash-es';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 
 @Injectable()
 export class BasketItemsEffects {
@@ -56,7 +55,6 @@ export class BasketItemsEffects {
     private router: Router,
     private store: Store,
     private basketService: BasketService,
-    private readonly tracker: MatomoTracker
   ) {}
 
   /**
@@ -214,38 +212,6 @@ export class BasketItemsEffects {
         mapToPayloadProperty('info'),
         filter(info => !!info?.[0]?.message),
         concatMap(() => from(this.router.navigate(['/basket'], { queryParams: { error: true } })))
-      ),
-    { dispatch: false }
-  );
-
-  itemAddedTracking$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(addItemsToBasket),
-        mapToPayloadProperty('items'),
-        tap(items => {
-          this.tracker.addEcommerceItem(items[0].sku, undefined, undefined, undefined, items[0].quantity);
-          this.tracker.trackEcommerceCartUpdate(100);
-          console.log(`Item with ID: ${items[0].sku} has been added to the basket`);
-        })
-      ),
-    { dispatch: false }
-  );
-
-  itemDeleteTracking$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(deleteBasketItem),
-        mapToPayloadProperty('itemId'),
-        withLatestFrom(this.store.select(getCurrentBasket)),
-        map(([itemId, basket]) => basket.lineItems.filter(i => i.id === itemId)?.[0]),
-        tap(a => console.log('Delete Item ', a)),
-        filter(item => !!item),
-        tap(lineItem => {
-          this.tracker.removeEcommerceItem(lineItem.productSKU);
-          this.tracker.trackEcommerceCartUpdate(100);
-          console.log(`Item with ID:  ${lineItem.productSKU} has been deleted from the basket`);
-        })
       ),
     { dispatch: false }
   );
