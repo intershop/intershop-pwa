@@ -7,12 +7,13 @@ import { MatomoEffects } from '../../matomo/store/matomo/matomo.effects';
 import { TrackingConfigEffects } from './tracking-config/tracking-config.effects';
 import { trackingConfigReducer } from './tracking-config/tracking-config.reducer';
 import { TrackingState } from './tracking-store';
+import { MatomoEffects } from '../../matomo/matomo.effects';
 
 const trackingReducers: ActionReducerMap<TrackingState> = {
   gtmToken: trackingConfigReducer,
 };
 
-const trackingEffects = [TrackingConfigEffects];
+const trackingEffects = [TrackingConfigEffects, MatomoEffects];
 
 const matomoEffects = [MatomoEffects];
 

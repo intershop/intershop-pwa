@@ -31,6 +31,7 @@ import { setProductListingPageSize } from './product-listing';
 import { getProductEntities, getSelectedProduct } from './products';
 import { suggestSearch } from './search';
 import { ShoppingStoreModule } from './shopping-store.module';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
 
@@ -179,6 +180,7 @@ describe('Shopping Store', () => {
         ]),
         ShoppingStoreModule,
         TranslateModule.forRoot(),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
