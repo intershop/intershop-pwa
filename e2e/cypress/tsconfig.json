@@ -1,11 +1,5 @@
 {
-  "include": [
-    "pages/**/*.ts",
-    "framework/*.ts",
-    "support/*.ts",
-    "integration/**/*.ts",
-    "../node_modules/cypress"
-  ],
+  "include": ["pages/**/*.ts", "framework/*.ts", "support/*.ts", "e2e/**/*.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "outDir": "../node_modules/.out-tsc",

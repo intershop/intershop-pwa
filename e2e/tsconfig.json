@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "types": ["node"]
+  },
+  "files": ["cypress.config.ts", "cypress-ci-e2e.ts"]
+}
