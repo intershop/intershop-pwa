@@ -217,7 +217,7 @@
     ],
     "*.ts": [
       "eslint --fix",
-      "jest --ci --bail --findRelatedTests"
+      "jest --ci --bail --findRelatedTests --passWithNoTests"
     ],
     "src/assets/i18n/*.json": [
       "sort-json --indent-size=2"
