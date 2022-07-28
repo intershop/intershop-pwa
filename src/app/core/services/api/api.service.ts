@@ -23,6 +23,7 @@ import {
   getCurrentLocale,
   getICMServerURL,
   getRestEndpoint,
+  getRestEndpointWithoutApplication,
 } from 'ish-core/store/core/configuration';
 import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
@@ -132,13 +133,9 @@ export class ApiService {
       return of(path);
     }
     return combineLatest([
-      // base url
       this.getBaseUrl$(options),
-      // locale
       this.getLocale$(options),
-      // currency
       this.getCurrency$(options),
-      // first path segment
       of('/'),
       of(path.includes('/') ? path.split('/')[0] : path),
       // pgid
@@ -157,11 +154,7 @@ export class ApiService {
   private getBaseUrl$(options: AvailableOptions): Observable<string> {
     return options?.sendApplication === undefined || options.sendApplication
       ? this.store.pipe(select(getRestEndpoint))
-      : this.store.pipe(
-          select(getRestEndpoint),
-          whenTruthy(),
-          map(endpoint => /(.*)\//.exec(endpoint)[1]) // application identifier is last element in rest endpoint
-        );
+      : this.store.pipe(select(getRestEndpointWithoutApplication));
   }
 
   private getLocale$(options: AvailableOptions): Observable<string> {

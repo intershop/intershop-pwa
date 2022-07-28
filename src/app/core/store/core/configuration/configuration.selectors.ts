@@ -15,12 +15,16 @@ export const getICMServerURL = createSelector(getConfigurationState, state =>
   state.baseURL && state.server ? `${state.baseURL}/${state.server}` : undefined
 );
 
-export const getRestEndpoint = createSelector(
+export const getRestEndpointWithoutApplication = createSelector(
   getICMServerURL,
   getConfigurationState,
+  (serverUrl, state) => (serverUrl && state.channel ? `${serverUrl}/${state.channel}` : undefined)
+);
+
+export const getRestEndpoint = createSelector(
+  getRestEndpointWithoutApplication,
   getICMApplication,
-  (serverUrl, state, application) =>
-    serverUrl && state.channel ? `${serverUrl}/${state.channel}/${application}` : undefined
+  (endpoint, application) => (endpoint ? `${endpoint}/${application}` : undefined)
 );
 
 export const getICMStaticURL = createSelector(getConfigurationState, getICMApplication, (state, application) =>
