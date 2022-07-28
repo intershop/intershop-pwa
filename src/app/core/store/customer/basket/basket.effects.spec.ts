@@ -46,6 +46,7 @@ import {
   updateBasketShippingMethod,
 } from './basket.actions';
 import { BasketEffects } from './basket.effects';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Basket Effects', () => {
   let actions$: Observable<Action>;
@@ -63,6 +64,7 @@ describe('Basket Effects', () => {
         CustomerStoreModule.forTesting('user', 'basket'),
         NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
         RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },

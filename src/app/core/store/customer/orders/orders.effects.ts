@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { EMPTY, from, iif, merge, race } from 'rxjs';
@@ -50,7 +49,6 @@ export class OrdersEffects {
     private router: Router,
     private store: Store,
     private translateService: TranslateService,
-    private readonly tracker: MatomoTracker
   ) {}
 
   /**
@@ -67,30 +65,6 @@ export class OrdersEffects {
         )
       )
     )
-  );
-
-  /**
-   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
-   * Add queryParam error=true to the route to prevent resetting errors.
-   *
-   */
-  orderSubmitTrackingMatomo$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(createOrderSuccess),
-        // eslint-disable-next-line rxjs/no-unsafe-switchmap
-        switchMap(() => {
-          this.store.pipe(select(getSelectedOrder)).subscribe(b => {
-            this.tracker.trackEcommerceOrder(b.id, b.totals.total.gross);
-            this.tracker.trackPageView();
-            console.log(`Tracked order with id ${b.id} and total amount of ${b.totals.total.gross}`);
-          });
-
-          return EMPTY;
-        })
-      ),
-
-    { dispatch: false }
   );
 
   /**

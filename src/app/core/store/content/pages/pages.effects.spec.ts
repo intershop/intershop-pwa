@@ -21,6 +21,7 @@ import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-stat
 
 import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
 import { PagesEffects } from './pages.effects';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Pages Effects', () => {
   let actions$: Observable<Action>;
@@ -42,6 +43,7 @@ describe('Pages Effects', () => {
           { path: 'page/:contentPageId', children: [] },
           { path: '**', children: [] },
         ]),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsServiceMock) },

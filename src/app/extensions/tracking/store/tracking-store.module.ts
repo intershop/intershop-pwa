@@ -12,9 +12,7 @@ const trackingReducers: ActionReducerMap<TrackingState> = {
   gtmToken: trackingConfigReducer,
 };
 
-const trackingEffects = [TrackingConfigEffects];
-
-const matomoEffects = [MatomoEffects];
+const trackingEffects = [TrackingConfigEffects, MatomoEffects];
 
 const matomoEffects = [MatomoEffects];
 
