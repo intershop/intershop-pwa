@@ -20,21 +20,25 @@ const checkoutPageRoutes: Routes = [
     children: [
       {
         path: 'address',
+        canActivate: [CheckoutPageGuard],
         data: { checkoutStep: 1 },
         component: CheckoutAddressPageModule.component,
       },
       {
         path: 'shipping',
+        canActivate: [CheckoutPageGuard],
         data: { checkoutStep: 2 },
         component: CheckoutShippingPageModule.component,
       },
       {
         path: 'payment',
+        canActivate: [CheckoutPageGuard],
         data: { checkoutStep: 3 },
         component: CheckoutPaymentPageModule.component,
       },
       {
         path: 'review',
+        canActivate: [CheckoutPageGuard],
         data: { checkoutStep: 4 },
         component: CheckoutReviewPageModule.component,
       },
@@ -49,7 +53,6 @@ const checkoutPageRoutes: Routes = [
         redirectTo: 'address',
       },
     ],
-    canActivate: [CheckoutPageGuard],
   },
 ];
 
