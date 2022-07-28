@@ -18,6 +18,7 @@ import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
 import { PagesEffects } from './pages.effects';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Pages Effects', () => {
   let actions$: Observable<Action>;
@@ -34,6 +35,7 @@ describe('Pages Effects', () => {
         ContentStoreModule.forTesting('pagetree', 'pages'),
         CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', children: [] }]),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })
       ],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsServiceMock) },

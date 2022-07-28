@@ -336,14 +336,6 @@ export class BasketEffects {
   );
 
   /**
-   * Add Ecommerce Item --> add item to basket
-   * Remove Ecommerce Item --> remove item from basket
-   * Check Abandoned Basket
-   * Check Order Generation --> If order is approved
-   * DeleteItem --> SKU instead of ID, Make an own action to get sku
-   */
-
-  /**
    * Creates a requisition based on the given basket, if approval is required
    */
   createRequisition$ = createEffect(() =>

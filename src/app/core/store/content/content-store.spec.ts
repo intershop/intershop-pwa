@@ -12,6 +12,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ContentStoreModule } from './content-store.module';
 import { getContentInclude, loadContentInclude, loadContentIncludeSuccess } from './includes';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Content Store', () => {
   let store$: Store;
@@ -33,7 +34,9 @@ describe('Content Store', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [ContentStoreModule, CoreStoreModule.forTesting([], true)],
+      imports: [
+        ContentStoreModule, CoreStoreModule.forTesting([], true),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsService) },
         { provide: FilterService, useFactory: () => instance(filterService) },

@@ -9,6 +9,7 @@ import { Price, Pricing } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 import { ProductPriceComponent } from './product-price.component';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 function dummyPricing(list: number, sale: number, scale?: [number, number][]): Pricing {
   return {
@@ -44,7 +45,9 @@ describe('Product Price Component', () => {
     when(context.select('product')).thenReturn(of({ sku: '123' }));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [
+        TranslateModule.forRoot(),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })],
       declarations: [MockPipe(PricePipe, (price: Price) => `\$${price.value?.toFixed(2)}`), ProductPriceComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
