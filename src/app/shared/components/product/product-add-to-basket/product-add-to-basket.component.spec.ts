@@ -24,6 +24,7 @@ describe('Product Add To Basket Component', () => {
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToBasket')).thenReturn(of(true));
     when(context.select('product')).thenReturn(of({} as ProductView));
+    when(context.select('quantity')).thenReturn(of(1));
     when(context.select('hasQuantityError')).thenReturn(of(false));
     when(context.select('hasProductError')).thenReturn(of(false));
 
@@ -74,6 +75,12 @@ describe('Product Add To Basket Component', () => {
 
   it('should show disabled button when context has product error', () => {
     when(context.select('hasProductError')).thenReturn(of(true));
+    fixture.detectChanges();
+    expect(element.querySelector('button').disabled).toBeTruthy();
+  });
+
+  it('should show disabled button when context has no quantity', () => {
+    when(context.select('quantity')).thenReturn(of(0));
     fixture.detectChanges();
     expect(element.querySelector('button').disabled).toBeTruthy();
   });
