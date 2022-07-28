@@ -26,6 +26,7 @@ import { ProductDetailVariationsComponent } from '../product-detail-variations/p
 import { ProductImagesComponent } from '../product-images/product-images.component';
 
 import { ProductDetailComponent } from './product-detail.component';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Product Detail Component', () => {
   let component: ProductDetailComponent;
@@ -58,6 +59,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductShipmentComponent),
         ProductDetailComponent,
       ],
+      imports: [NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
