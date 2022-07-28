@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, Injector, Type, createNgModuleRef } from '@angular/core';
+import { Injectable, InjectionToken, Injector, Type, createNgModule } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
@@ -26,7 +26,7 @@ export class ModuleLoaderService {
         .forEach(async mod => {
           const loaded = await mod.location();
           if (!this.loadedModules.includes(loaded)) {
-            createNgModuleRef(loaded, injector);
+            createNgModule(loaded, injector);
             this.loadedModules.push(loaded);
           }
         });
