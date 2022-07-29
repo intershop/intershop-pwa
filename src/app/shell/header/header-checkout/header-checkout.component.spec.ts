@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 
 import { HeaderCheckoutComponent } from './header-checkout.component';
 
@@ -8,6 +11,13 @@ describe('Header Checkout Component', () => {
   let component: HeaderCheckoutComponent;
   let fixture: ComponentFixture<HeaderCheckoutComponent>;
   let element: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [HeaderCheckoutComponent, MockComponent(LoginStatusComponent)],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderCheckoutComponent);
