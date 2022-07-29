@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, Component, createNgModuleRef, OnInit, ViewChild, ViewContainerRef,
+  ChangeDetectionStrategy, Component, createNgModule, OnInit, ViewChild, ViewContainerRef,
   Injector,
   ComponentRef,
   <% if (inputNames.length) { %>Input, OnChanges, <% } %>
@@ -62,7 +62,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
 
     const { <%= classify(originalName) %>Component: originalComponent } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
 
-    const ngModuleRef = createNgModuleRef(module, this.injector);
+    const ngModuleRef = createNgModule(module, this.injector);
 
     this.component = this.anchor.createComponent(originalComponent, { ngModuleRef });
   <% if (inputNames.length) { %>
