@@ -40,6 +40,7 @@ describe('Content Pagelet Entry Point Mapper', () => {
             key1: {
               definitionQualifiedName: 'fq',
               value: 'hallo 1',
+              type: 'set-id:types.pagelet2-name',
             },
           },
           slots: {
@@ -56,6 +57,7 @@ describe('Content Pagelet Entry Point Mapper', () => {
                     key11: {
                       definitionQualifiedName: 'fq',
                       value: 'test',
+                      type: 'set-id:types.pagelet2-name',
                     },
                   },
                 },

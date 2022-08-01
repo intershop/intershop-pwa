@@ -35,6 +35,7 @@ describe('Content Pagelet Mapper', () => {
         key: {
           definitionQualifiedName: 'quali',
           value: 'test',
+          type: 'set-id:types.pagelet2-name',
         },
       },
     };
@@ -53,6 +54,7 @@ describe('Content Pagelet Mapper', () => {
         key: {
           definitionQualifiedName: 'quali',
           value: 'test',
+          type: 'set-id:types.pagelet2-name',
         },
       },
       slots: {
@@ -78,6 +80,7 @@ describe('Content Pagelet Mapper', () => {
         key: {
           definitionQualifiedName: 'quali',
           value: 'test',
+          type: 'set-id:types.pagelet2-name',
         },
       },
       slots: {
@@ -106,6 +109,7 @@ describe('Content Pagelet Mapper', () => {
                 key1: {
                   definitionQualifiedName: 'fq',
                   value: 'test-key1',
+                  type: 'set-id:types.pagelet2-name',
                 },
               },
               slots: {
@@ -122,6 +126,7 @@ describe('Content Pagelet Mapper', () => {
                         key3: {
                           definitionQualifiedName: 'fq',
                           value: '1',
+                          type: 'set-id:types.pagelet2-name',
                         },
                       },
                     },
@@ -134,10 +139,12 @@ describe('Content Pagelet Mapper', () => {
             key1: {
               definitionQualifiedName: 'name1',
               value: 'hallo',
+              type: 'set-id:types.pagelet2-name',
             },
             key2: {
               definitionQualifiedName: 'name2',
               value: ['hallo', 'welt'],
+              type: 'set-id:types.pagelet2-name',
             },
           },
         },

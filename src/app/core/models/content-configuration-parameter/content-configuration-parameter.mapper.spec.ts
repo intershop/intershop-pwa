@@ -35,14 +35,17 @@ describe('Content Configuration Parameter Mapper', () => {
       key1: {
         definitionQualifiedName: 'name1',
         value: '1',
+        type: 'set-id:types.pagelet2-name',
       },
       key2: {
         definitionQualifiedName: 'name2',
         value: 'hello',
+        type: 'set-id:types.pagelet2-name',
       },
       key3: {
         definitionQualifiedName: 'name3',
         value: ['hello', 'world'],
+        type: 'set-id:types.pagelet2-name',
       },
     };
 
