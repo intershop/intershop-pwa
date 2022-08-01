@@ -46,6 +46,9 @@ interface ApiTokenCookie {
 
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
+  // If no expiry date is supplied by the token endpoint, this value (in ms) is used
+  static DEFAULT_EXPIRY_TIME = 3600000;
+
   apiToken$ = new ReplaySubject<string>(1);
   cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
@@ -101,7 +104,7 @@ export class ApiTokenService {
           if (cookieContent) {
             if (!isEqual(apiToken, initialApiToken)) {
               cookiesService.put('apiToken', cookieContent, {
-                expires: apiToken.options?.expires ?? new Date(Date.now() + 3600000),
+                expires: apiToken.options?.expires ?? new Date(Date.now() + ApiTokenService.DEFAULT_EXPIRY_TIME),
                 secure: apiToken.options?.secure ?? true,
                 sameSite: 'Strict',
               });
