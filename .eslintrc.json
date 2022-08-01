@@ -99,7 +99,11 @@
           {
             "selector": "variable",
             "modifiers": ["const"],
-            "format": ["camelCase", "UPPER_CASE"]
+            "format": ["camelCase", "UPPER_CASE"],
+            "filter": {
+              "regex": "_",
+              "match": false
+            }
           },
           {
             "selector": "typeLike",
