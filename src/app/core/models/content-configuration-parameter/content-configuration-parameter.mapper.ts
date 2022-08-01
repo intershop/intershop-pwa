@@ -45,6 +45,10 @@ export class ContentConfigurationParameterMapper {
     return encodeURI(`${this.staticURL}/${split[0]}/${this.lang}${split[1]}`);
   }
 
+  /**
+   * TODO: Make this method use name-based plugin mechanism to delegate post processing of
+   * configuration parameter data to specific handler.
+   */
   private postProcessData(data: ContentConfigurationParameterData): string | object | number {
     switch (data.type) {
       case 'bc_pmc:types.pagelet2-ImageFileRef':
