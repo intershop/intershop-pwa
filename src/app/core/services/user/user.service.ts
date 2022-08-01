@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { pick } from 'lodash-es';
 import { Observable, combineLatest, forkJoin, from, of, throwError } from 'rxjs';
-import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -27,7 +27,6 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
-import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
@@ -58,7 +57,6 @@ export class UserService {
     private apiService: ApiService,
     private appFacade: AppFacade,
     private store: Store,
-    private apiTokenService: ApiTokenService,
     private oauthService: OAuthService,
     oauthConfigurationService: OAuthConfigurationService
   ) {
@@ -108,7 +106,7 @@ export class UserService {
         options ?? {},
         new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' })
       )
-    ).pipe(tap(tokenResponse => this.apiTokenService.setApiToken(tokenResponse.access_token)));
+    );
   }
 
   /**

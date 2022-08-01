@@ -140,24 +140,14 @@ describe('User Effects', () => {
   });
 
   describe('loginUser$', () => {
-    it('should call the api service when LoginUser event is called', done => {
+    it('should call the userService and apiTokenService when LoginUser event is called', done => {
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
 
       actions$ = of(action);
 
       effects.loginUser$.subscribe(() => {
         verify(userServiceMock.fetchToken(anyString(), anything())).once();
-        done();
-      });
-    });
-
-    it('should call the api service when LoginUserWithToken event is called', done => {
-      const action = loginUserWithToken({ token: '12345' });
-
-      actions$ = of(action);
-
-      effects.loginUserWithToken$.subscribe(() => {
-        verify(userServiceMock.signInUserByToken(anything())).once();
+        verify(apiTokenServiceMock.setApiToken(anyString())).once();
         done();
       });
     });
@@ -183,6 +173,32 @@ describe('User Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.loginUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loginUserWithToken$', () => {
+    it('should call the api service when LoginUserWithToken event is called', done => {
+      const action = loginUserWithToken({ token: '12345' });
+
+      actions$ = of(action);
+
+      effects.loginUserWithToken$.subscribe(() => {
+        verify(userServiceMock.signInUserByToken(anything())).once();
+        done();
+      });
+    });
+  });
+
+  describe('fetchAnonymousUserToken$', () => {
+    it('should call apiTokenService with token response', () => {
+      const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
+
+      actions$ = of(action);
+
+      effects.fetchAnonymousUserToken$.subscribe(() => {
+        verify(apiTokenServiceMock.setApiToken(anyString())).once();
+        done();
+      });
     });
   });
 

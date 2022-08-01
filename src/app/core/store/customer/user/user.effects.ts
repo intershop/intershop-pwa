@@ -90,6 +90,7 @@ export class UserEffects {
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
         this.userService.fetchToken('password', { username: credentials.login, password: credentials.password }).pipe(
+          map(tokenResponse => this.apiTokenService.setApiToken(tokenResponse.access_token)),
           switchMap(() =>
             this.userService.fetchCustomer().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
           ),
@@ -103,7 +104,8 @@ export class UserEffects {
     () =>
       this.actions$.pipe(
         ofType(fetchAnonymousUserToken),
-        switchMap(() => this.userService.fetchToken('anonymous'))
+        switchMap(() => this.userService.fetchToken('anonymous')),
+        map(tokenResponse => this.apiTokenService.setApiToken(tokenResponse.access_token))
       ),
     { dispatch: false }
   );
