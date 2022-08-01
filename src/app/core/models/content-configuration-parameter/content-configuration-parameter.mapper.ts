@@ -24,7 +24,7 @@ export class ContentConfigurationParameterMapper {
 
     if (data) {
       configurationParameters = Object.entries(data)
-        .map(([key, value]) => ({ [key]: this.postProcessConfigurationParameterValue(value) }))
+        .map(([key, value]) => ({ [key]: this.postProcessData(value) }))
         .reduce((acc, val) => ({ ...acc, ...val }));
     }
 
@@ -45,7 +45,7 @@ export class ContentConfigurationParameterMapper {
     return encodeURI(`${this.staticURL}/${split[0]}/${this.lang}${split[1]}`);
   }
 
-  postProcessConfigurationParameterValue(data: ContentConfigurationParameterData): string | object | number {
+  postProcessData(data: ContentConfigurationParameterData): string | object | number {
     switch (data.type) {
       case 'bc_pmc:types.pagelet2-ImageFileRef':
       case 'bc_pmc:types.pagelet2-FileRef':
