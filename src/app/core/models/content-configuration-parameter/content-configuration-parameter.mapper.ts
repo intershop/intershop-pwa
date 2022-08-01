@@ -31,7 +31,7 @@ export class ContentConfigurationParameterMapper {
     return configurationParameters;
   }
 
-  resolveStaticURL(value: string): string {
+  private resolveStaticURL(value: string): string {
     if (value.startsWith('http')) {
       return value;
     }
@@ -45,7 +45,7 @@ export class ContentConfigurationParameterMapper {
     return encodeURI(`${this.staticURL}/${split[0]}/${this.lang}${split[1]}`);
   }
 
-  postProcessData(data: ContentConfigurationParameterData): string | object | number {
+  private postProcessData(data: ContentConfigurationParameterData): string | object | number {
     switch (data.type) {
       case 'bc_pmc:types.pagelet2-ImageFileRef':
       case 'bc_pmc:types.pagelet2-FileRef':
