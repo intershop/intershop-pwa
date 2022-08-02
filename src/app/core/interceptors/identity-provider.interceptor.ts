@@ -12,7 +12,7 @@ export class IdentityProviderInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // TODO: check if this works with PROXY_ICM
     if (req.url.startsWith(this.appFacade.icmBaseUrl)) {
-      return this.identityProviderFactory.getInstance().intercept(req, next);
+      return this.identityProviderFactory.getInstance()?.intercept(req, next) ?? next.handle(req);
     }
     return next.handle(req);
   }
