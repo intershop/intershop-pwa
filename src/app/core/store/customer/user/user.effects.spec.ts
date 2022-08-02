@@ -190,7 +190,7 @@ describe('User Effects', () => {
   });
 
   describe('fetchAnonymousUserToken$', () => {
-    it('should call apiTokenService with token response', () => {
+    it('should call apiTokenService with token response', done => {
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
 
       actions$ = of(action);
