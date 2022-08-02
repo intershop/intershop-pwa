@@ -20,6 +20,6 @@ html {
   animation: back-to-top-btn-animation 0.15s ease-in-out;
 
   @media (max-width: $screen-xs-max) {
-    width: calc(100% - $space-default * 2);
+    width: auto;
   }
 }
