@@ -29,6 +29,7 @@ import {
   deleteUserPaymentInstrument,
   deleteUserPaymentInstrumentFail,
   deleteUserPaymentInstrumentSuccess,
+  fetchAnonymousUserToken,
   loadCompanyUser,
   loadCompanyUserFail,
   loadCompanyUserSuccess,
@@ -101,6 +102,7 @@ describe('User Effects', () => {
 
     when(userServiceMock.fetchCustomer()).thenReturn(of(loginResponseData));
     when(userServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
+    when(userServiceMock.fetchToken(anyString())).thenReturn(of(token));
     when(userServiceMock.signInUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything(), anything())).thenReturn(of({ firstName: 'Patricia' } as User));
@@ -191,7 +193,7 @@ describe('User Effects', () => {
 
   describe('fetchAnonymousUserToken$', () => {
     it('should call apiTokenService with token response', done => {
-      const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
+      const action = fetchAnonymousUserToken();
 
       actions$ = of(action);
 
