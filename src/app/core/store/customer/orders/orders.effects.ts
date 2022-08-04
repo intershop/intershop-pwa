@@ -57,7 +57,7 @@ export class OrdersEffects {
   createOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createOrder),
-      withLatestFrom(this.store.select(getCurrentBasketId)),
+      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
       mergeMap(([, basketId]) =>
         this.orderService.createOrder(basketId, true).pipe(
           map(order => createOrderSuccess({ order })),

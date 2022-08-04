@@ -14,12 +14,12 @@
       "extends": [
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@ngrx/recommended",
         "plugin:prettier/recommended"
       ],
       "plugins": [
         "rxjs",
         "rxjs-angular",
-        "ngrx",
         "ban",
         "etc",
         "jest",
@@ -46,6 +46,14 @@
           }
         ],
         "@angular-eslint/sort-ngmodule-metadata-arrays": "warn",
+        "@ngrx/avoid-mapping-selectors": "off",
+        "@ngrx/no-store-subscription": "off",
+        "@ngrx/on-function-explicit-return-type": "off",
+        "@ngrx/prefer-effect-callback-in-block-statement": "off",
+        "@ngrx/prefer-concat-latest-from": "off",
+        "@ngrx/prefix-selectors-with-select": "off",
+        "@ngrx/select-style": ["warn", "operator"],
+        "@ngrx/use-consistent-global-store-name": "off",
         "@typescript-eslint/ban-tslint-comment": "error",
         "@typescript-eslint/ban-types": [
           "error",
@@ -687,7 +695,6 @@
         "jsdoc/require-property-type": "warn",
         "jsdoc/require-property": "warn",
         "jsdoc/valid-types": "warn",
-        "ngrx/no-typed-global-store": "error",
         "no-console": [
           "warn",
           {

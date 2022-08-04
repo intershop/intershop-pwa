@@ -27,7 +27,7 @@ describe('Operators', () => {
   });
 
   describe('mapErrorToAction', () => {
-    const dummyFail = createAction('dummy', httpError());
+    const dummyFail = createAction('[] dummy', httpError());
 
     it('should catch HttpErrorResponse and convert them to Fail actions', () => {
       const error = makeHttpError({
@@ -39,7 +39,7 @@ describe('Operators', () => {
       const result$ = cold('---(a|)', {
         a: {
           payload: { error },
-          type: 'dummy',
+          type: '[] dummy',
         },
       });
 

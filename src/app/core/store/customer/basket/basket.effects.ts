@@ -120,7 +120,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(loadBasketSuccess),
       mapToPayloadProperty('basket'),
-      withLatestFrom(this.store.select(getCurrentCurrency)),
+      withLatestFrom(this.store.pipe(select(getCurrentCurrency))),
       filter(([basket, currency]) => basket.purchaseCurrency !== currency),
       take(1),
       map(() => updateBasket({ update: { calculated: true } }))
@@ -313,7 +313,7 @@ export class BasketEffects {
   createRequisition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitBasket),
-      withLatestFrom(this.store.select(getCurrentBasketId)),
+      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
       concatMap(([, basketId]) =>
         this.basketService.createRequisition(basketId).pipe(
           mergeMap(() => from(this.router.navigate(['/checkout/receipt'])).pipe(map(() => submitBasketSuccess()))),
