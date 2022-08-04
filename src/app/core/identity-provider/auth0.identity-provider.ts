@@ -1,6 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Injector } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -30,14 +30,19 @@ export interface Auth0Config {
 
 @Injectable({ providedIn: 'root' })
 export class Auth0IdentityProvider implements IdentityProvider {
+  private oauthService: OAuthService;
   constructor(
-    private oauthService: OAuthService,
+    private injector: Injector,
     private apiService: ApiService,
     private store: Store,
     private router: Router,
     private apiTokenService: ApiTokenService,
     @Inject(APP_BASE_HREF) private baseHref: string
-  ) {}
+  ) {
+    this.oauthService = Injector.create({ providers: [{ provide: OAuthService }], parent: this.injector }).get(
+      OAuthService
+    );
+  }
 
   getCapabilities() {
     return {
@@ -49,7 +54,6 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
   init(config: Auth0Config) {
     const effectiveOrigin = this.baseHref === '/' ? window.location.origin : window.location.origin + this.baseHref;
-
     this.oauthService.configure({
       // Your Auth0 app's domain
       // Important: Don't forget to start with https:// AND the trailing slash!
