@@ -8,9 +8,15 @@ import { BasketView, createBasketView } from 'ish-core/models/basket/basket.mode
 import { getCustomerState } from 'ish-core/store/customer/customer-store';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
+import { BasketState } from './basket.reducer';
+
 const getBasketState = createSelector(getCustomerState, state => state?.basket);
 
-export const getBasketValidationResults = createSelector(getBasketState, (basket): BasketValidationResultType => {
+const getInternalBasket = createSelector(getBasketState, basket => basket.basket);
+
+export const getBasketValidationResults = createSelectorFactory<object, BasketValidationResultType>(projector =>
+  resultMemoize(projector, isEqual)
+)(getBasketState, (basket: BasketState): BasketValidationResultType => {
   if (!basket || !basket.validationResults) {
     return;
   }
@@ -33,10 +39,10 @@ export const getBasketValidationResults = createSelector(getBasketState, (basket
 export const getBasketInfo = createSelector(getBasketState, basket => basket.info);
 
 export const getCurrentBasket = createSelector(
-  getBasketState,
+  getInternalBasket,
   getBasketValidationResults,
   getBasketInfo,
-  (basket, validationResults, basketInfo): BasketView => createBasketView(basket.basket, validationResults, basketInfo)
+  (basket, validationResults, basketInfo): BasketView => createBasketView(basket, validationResults, basketInfo)
 );
 
 export const getSubmittedBasket = createSelector(
