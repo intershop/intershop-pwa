@@ -103,10 +103,13 @@ export const usersReducer = createReducer(
       ...usersAdapter.removeOne(login, state),
     };
   }),
-  on(loadSystemUserRolesSuccess, (state, action) => ({
-    ...state,
-    roles: action.payload.roles,
-  })),
+  on(
+    loadSystemUserRolesSuccess,
+    (state, action): UsersState => ({
+      ...state,
+      roles: action.payload.roles,
+    })
+  ),
   on(setUserRolesSuccess, (state, action) =>
     usersAdapter.updateOne({ id: action.payload.login, changes: { roleIDs: action.payload.roles } }, state)
   ),

@@ -61,10 +61,16 @@ export const wishlistReducer = createReducer(
     loadWishlistsSuccess,
     deleteWishlistSuccess
   ),
-  on(loadWishlistsFail, deleteWishlistFail, createWishlistFail, updateWishlistFail, (state: WishlistState) => ({
-    ...state,
-    selected: undefined as string,
-  })),
+  on(
+    loadWishlistsFail,
+    deleteWishlistFail,
+    createWishlistFail,
+    updateWishlistFail,
+    (state: WishlistState): WishlistState => ({
+      ...state,
+      selected: undefined as string,
+    })
+  ),
   on(loadWishlistsSuccess, (state: WishlistState, action) => {
     const { wishlists } = action.payload;
     return wishlistsAdapter.setAll(wishlists, state);
@@ -84,7 +90,7 @@ export const wishlistReducer = createReducer(
     const { wishlistId } = action.payload;
     return wishlistsAdapter.removeOne(wishlistId, state);
   }),
-  on(selectWishlist, (state, action) => {
+  on(selectWishlist, (state, action): WishlistState => {
     const { id } = action.payload;
     return {
       ...state,

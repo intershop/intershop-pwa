@@ -27,15 +27,21 @@ export const contactReducer = createReducer(
   initialState,
   setLoadingOn(loadContact, createContact),
   unsetLoadingOn(loadContactFail, loadContactSuccess, createContactFail, createContactSuccess),
-  on(loadContact, state => ({
-    ...state,
-    success: undefined,
-  })),
-  on(loadContactFail, state => ({
-    ...state,
-    success: undefined,
-  })),
-  on(loadContactSuccess, (state, action) => {
+  on(
+    loadContact,
+    (state): ContactState => ({
+      ...state,
+      success: undefined,
+    })
+  ),
+  on(
+    loadContactFail,
+    (state): ContactState => ({
+      ...state,
+      success: undefined,
+    })
+  ),
+  on(loadContactSuccess, (state, action): ContactState => {
     const { subjects } = action.payload;
     return {
       ...state,
@@ -43,16 +49,25 @@ export const contactReducer = createReducer(
       success: undefined,
     };
   }),
-  on(createContact, state => ({
-    ...state,
-    success: undefined,
-  })),
-  on(createContactFail, state => ({
-    ...state,
-    success: false,
-  })),
-  on(createContactSuccess, state => ({
-    ...state,
-    success: true,
-  }))
+  on(
+    createContact,
+    (state): ContactState => ({
+      ...state,
+      success: undefined,
+    })
+  ),
+  on(
+    createContactFail,
+    (state): ContactState => ({
+      ...state,
+      success: false,
+    })
+  ),
+  on(
+    createContactSuccess,
+    (state): ContactState => ({
+      ...state,
+      success: true,
+    })
+  )
 );

@@ -10,6 +10,6 @@ const initialState: RecentlyViewedProducts = [];
 
 export const recentlyReducer = createReducer(
   [],
-  on(addToRecently, (state, action) => [action.payload, ...state]),
-  on(clearRecently, () => initialState)
+  on(addToRecently, (state, action): RecentlyViewedProducts => [action.payload, ...state]),
+  on(clearRecently, (): RecentlyViewedProducts => initialState)
 );

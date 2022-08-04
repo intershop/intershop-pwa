@@ -40,10 +40,13 @@ export const ordersReducer = createReducer(
   setLoadingOn(createOrder, loadOrder, loadOrders),
   unsetLoadingAndErrorOn(createOrderSuccess, loadOrderSuccess, loadOrdersSuccess),
   setErrorOn(loadOrdersFail, loadOrderFail, createOrderFail),
-  on(selectOrder, (state, action) => ({
-    ...state,
-    selected: action.payload.orderId,
-  })),
+  on(
+    selectOrder,
+    (state, action): OrdersState => ({
+      ...state,
+      selected: action.payload.orderId,
+    })
+  ),
 
   on(createOrderSuccess, loadOrderSuccess, (state, action) => {
     const { order } = action.payload;
@@ -60,8 +63,11 @@ export const ordersReducer = createReducer(
     };
   }),
 
-  on(resetOrderErrors, state => ({
-    ...state,
-    error: undefined,
-  }))
+  on(
+    resetOrderErrors,
+    (state): OrdersState => ({
+      ...state,
+      error: undefined,
+    })
+  )
 );

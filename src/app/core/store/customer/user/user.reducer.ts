@@ -73,10 +73,13 @@ const initialState: UserState = {
 
 export const userReducer = createReducer(
   initialState,
-  on(userErrorReset, state => ({
-    ...state,
-    error: undefined,
-  })),
+  on(
+    userErrorReset,
+    (state): UserState => ({
+      ...state,
+      error: undefined,
+    })
+  ),
   setLoadingOn(
     loadCompanyUser,
     loadUserByAPIToken,
@@ -105,7 +108,7 @@ export const userReducer = createReducer(
     deleteUserPaymentInstrumentFail,
     loadRolesAndPermissionsFail
   ),
-  on(loginUserFail, loadCompanyUserFail, createUserFail, (_, action) => {
+  on(loginUserFail, loadCompanyUserFail, createUserFail, (_, action): UserState => {
     const error = action.payload.error;
 
     return {
@@ -124,7 +127,7 @@ export const userReducer = createReducer(
     loadUserPaymentMethodsSuccess,
     deleteUserPaymentInstrumentSuccess
   ),
-  on(loginUserSuccess, (state: UserState, action) => {
+  on(loginUserSuccess, (state: UserState, action): UserState => {
     const customer = action.payload.customer;
     const user = action.payload.user;
     const pgid = action.payload.pgid;
@@ -139,7 +142,7 @@ export const userReducer = createReducer(
       error: undefined,
     };
   }),
-  on(loadCompanyUserSuccess, (state, action) => {
+  on(loadCompanyUserSuccess, (state, action): UserState => {
     const user = action.payload.user;
 
     return {
@@ -147,7 +150,7 @@ export const userReducer = createReducer(
       user,
     };
   }),
-  on(updateUserSuccess, (state, action) => {
+  on(updateUserSuccess, (state, action): UserState => {
     const user = action.payload.user;
 
     return {
@@ -155,10 +158,13 @@ export const userReducer = createReducer(
       user,
     };
   }),
-  on(updateUserPasswordSuccess, state => ({
-    ...state,
-  })),
-  on(updateCustomerSuccess, (state, action) => {
+  on(
+    updateUserPasswordSuccess,
+    (state): UserState => ({
+      ...state,
+    })
+  ),
+  on(updateCustomerSuccess, (state, action): UserState => {
     const customer = action.payload.customer;
 
     return {
@@ -166,35 +172,59 @@ export const userReducer = createReducer(
       customer,
     };
   }),
-  on(loadUserCostCentersSuccess, (state, action) => ({
-    ...state,
-    costCenters: action.payload.costCenters,
-  })),
-  on(loadUserPaymentMethodsSuccess, (state, action) => ({
-    ...state,
-    paymentMethods: action.payload.paymentMethods,
-  })),
-  on(deleteUserPaymentInstrumentSuccess, state => ({
-    ...state,
-  })),
-  on(updateUserPasswordByPasswordReminder, requestPasswordReminder, state => ({
-    ...state,
-    passwordReminderSuccess: undefined,
-    passwordReminderError: undefined,
-  })),
-  on(updateUserPasswordByPasswordReminderSuccess, requestPasswordReminderSuccess, state => ({
-    ...state,
-    passwordReminderSuccess: true,
-    passwordReminderError: undefined,
-  })),
-  on(updateUserPasswordByPasswordReminderFail, requestPasswordReminderFail, (state, action) => ({
-    ...state,
-    passwordReminderSuccess: false,
-    passwordReminderError: action.payload.error,
-  })),
-  on(resetPasswordReminder, state => ({
-    ...state,
-    passwordReminderSuccess: undefined,
-    passwordReminderError: undefined,
-  }))
+  on(
+    loadUserCostCentersSuccess,
+    (state, action): UserState => ({
+      ...state,
+      costCenters: action.payload.costCenters,
+    })
+  ),
+  on(
+    loadUserPaymentMethodsSuccess,
+    (state, action): UserState => ({
+      ...state,
+      paymentMethods: action.payload.paymentMethods,
+    })
+  ),
+  on(
+    deleteUserPaymentInstrumentSuccess,
+    (state): UserState => ({
+      ...state,
+    })
+  ),
+  on(
+    updateUserPasswordByPasswordReminder,
+    requestPasswordReminder,
+    (state): UserState => ({
+      ...state,
+      passwordReminderSuccess: undefined,
+      passwordReminderError: undefined,
+    })
+  ),
+  on(
+    updateUserPasswordByPasswordReminderSuccess,
+    requestPasswordReminderSuccess,
+    (state): UserState => ({
+      ...state,
+      passwordReminderSuccess: true,
+      passwordReminderError: undefined,
+    })
+  ),
+  on(
+    updateUserPasswordByPasswordReminderFail,
+    requestPasswordReminderFail,
+    (state, action): UserState => ({
+      ...state,
+      passwordReminderSuccess: false,
+      passwordReminderError: action.payload.error,
+    })
+  ),
+  on(
+    resetPasswordReminder,
+    (state): UserState => ({
+      ...state,
+      passwordReminderSuccess: undefined,
+      passwordReminderError: undefined,
+    })
+  )
 );

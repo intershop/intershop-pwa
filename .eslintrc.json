@@ -48,7 +48,6 @@
         "@angular-eslint/sort-ngmodule-metadata-arrays": "warn",
         "@ngrx/avoid-mapping-selectors": "off",
         "@ngrx/no-store-subscription": "off",
-        "@ngrx/on-function-explicit-return-type": "off",
         "@ngrx/prefer-effect-callback-in-block-statement": "off",
         "@ngrx/prefer-concat-latest-from": "off",
         "@ngrx/prefix-selectors-with-select": "off",
