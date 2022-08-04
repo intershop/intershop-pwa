@@ -82,8 +82,10 @@ export const quotingReducer = createReducer(
   ),
   setErrorOn(loadQuotingFail, deleteQuotingEntityFail, rejectQuoteFail),
   // initialized
+  // eslint-disable-next-line @ngrx/avoid-duplicate-actions-in-reducer
   on(loadQuotingSuccess, state => ({ ...state, initialized: true })),
   // entities
+  // eslint-disable-next-line @ngrx/avoid-duplicate-actions-in-reducer
   on(loadQuotingSuccess, (state, action) =>
     action.payload.quoting.reduce(
       (acc, val) =>
