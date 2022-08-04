@@ -24,9 +24,9 @@ export const initialState: StoresState = storesAdapter.getInitialState({
 
 export const storesReducer = createReducer(
   initialState,
-  on(loadStores, state => ({ ...state, loading: true })),
+  on(loadStores, (state): StoresState => ({ ...state, loading: true })),
   setErrorOn(loadStoresFail),
-  on(highlightStore, (state, action) => {
+  on(highlightStore, (state, action): StoresState => {
     const { storeId } = action.payload;
     return { ...state, highlighted: storeId };
   }),

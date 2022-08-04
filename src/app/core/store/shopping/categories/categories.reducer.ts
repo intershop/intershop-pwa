@@ -26,8 +26,11 @@ function mergeCategories(
 
 export const categoriesReducer = createReducer(
   initialState,
-  on(loadCategoryFail, state => ({
-    ...state,
-  })),
+  on(
+    loadCategoryFail,
+    (state): CategoriesState => ({
+      ...state,
+    })
+  ),
   on(loadCategorySuccess, loadTopLevelCategoriesSuccess, mergeCategories)
 );

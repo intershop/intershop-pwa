@@ -12,7 +12,7 @@ export const initialState: StoreLocatorConfigState = {
 
 export const storeLocatorConfigReducer = createReducer(
   initialState,
-  on(setGMAKey, (state, action) => {
+  on(setGMAKey, (state, action): StoreLocatorConfigState => {
     const { gmaKey } = action.payload;
     return { ...state, gmaKey };
   })

@@ -15,9 +15,12 @@ const initialState: CountriesState = countryAdapter.getInitialState({});
 
 export const countriesReducer = createReducer(
   initialState,
-  on(loadCountriesFail, state => ({
-    ...state,
-  })),
+  on(
+    loadCountriesFail,
+    (state): CountriesState => ({
+      ...state,
+    })
+  ),
   on(loadCountriesSuccess, (state, action) => {
     const { countries } = action.payload;
 

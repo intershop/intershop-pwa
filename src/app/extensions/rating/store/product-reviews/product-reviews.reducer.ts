@@ -38,7 +38,7 @@ export const productReviewsReducer = createReducer(
   setLoadingOn(loadProductReviews, createProductReview, deleteProductReview),
   unsetLoadingAndErrorOn(loadProductReviewsSuccess, createProductReviewSuccess, deleteProductReviewSuccess),
   setErrorOn(loadProductReviewsFail, createProductReviewFail, deleteProductReviewFail),
-  on(resetProductReviewError, loadProductReviews, state => ({ ...state, error: undefined })),
+  on(resetProductReviewError, loadProductReviews, (state): ProductReviewsState => ({ ...state, error: undefined })),
   on(loadProductReviewsSuccess, (state, action) => productReviewsAdapter.upsertOne(action.payload.reviews, state)),
   on(createProductReviewSuccess, (state, action) => {
     const productReviews: ProductReviewsModel = {
