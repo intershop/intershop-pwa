@@ -48,7 +48,7 @@ describe('Wishlist Effects', () => {
   let actions$: Observable<Action>;
   let wishlistServiceMock: WishlistService;
   let effects: WishlistEffects;
-  let store$: Store;
+  let store: Store;
   let router: Router;
 
   const customer = { customerNo: 'CID', isBusinessCustomer: true } as Customer;
@@ -90,13 +90,13 @@ describe('Wishlist Effects', () => {
     });
 
     effects = TestBed.inject(WishlistEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     router = TestBed.inject(Router);
   });
 
   describe('loadWishlists$', () => {
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.getWishlists()).thenReturn(of(wishlists));
     });
 
@@ -148,7 +148,7 @@ describe('Wishlist Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(of(wishlistData[0]));
     });
 
@@ -208,8 +208,8 @@ describe('Wishlist Effects', () => {
   describe('deleteWishlist$', () => {
     const id = wishlists[0].id;
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
-      store$.dispatch(createWishlistSuccess({ wishlist: wishlists[0] }));
+      store.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(createWishlistSuccess({ wishlist: wishlists[0] }));
       when(wishlistServiceMock.deleteWishlist(anyString())).thenReturn(of(undefined));
     });
 
@@ -260,7 +260,7 @@ describe('Wishlist Effects', () => {
       },
     ];
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.updateWishlist(anything())).thenReturn(of(wishlistDetailData[0]));
     });
 
@@ -323,7 +323,7 @@ describe('Wishlist Effects', () => {
     };
 
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.addProductToWishlist(anyString(), anyString(), anyNumber())).thenReturn(
         of(wishlists[0])
       );
@@ -376,7 +376,7 @@ describe('Wishlist Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(of(wishlist));
     });
     it('should map to actions of types CreateWishlistSuccess and AddProductToWishlist', () => {
@@ -419,7 +419,7 @@ describe('Wishlist Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.createWishlist(anything())).thenReturn(of(wishlist));
     });
     it('should map to actions of types AddProductToNewWishlist and RemoveItemFromWishlist if there is no target id given', () => {
@@ -453,7 +453,7 @@ describe('Wishlist Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.removeProductFromWishlist(anyString(), anyString())).thenReturn(of(wishlist));
     });
 
@@ -511,14 +511,14 @@ describe('Wishlist Effects', () => {
         done();
       });
 
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
     });
   });
 
   describe('setWishlistBreadcrumb$', () => {
     beforeEach(() => {
-      store$.dispatch(loadWishlistsSuccess({ wishlists }));
-      store$.dispatch(selectWishlist({ id: wishlists[0].id }));
+      store.dispatch(loadWishlistsSuccess({ wishlists }));
+      store.dispatch(selectWishlist({ id: wishlists[0].id }));
     });
 
     it('should set the breadcrumb of the selected wishlist in my account area', done => {

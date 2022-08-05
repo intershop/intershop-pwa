@@ -24,7 +24,7 @@ describe('Punchout Functions Effects', () => {
   let actions$: Observable<Action>;
   let effects: PunchoutFunctionsEffects;
   let punchoutService: PunchoutService;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     punchoutService = mock(PunchoutService);
@@ -40,12 +40,12 @@ describe('Punchout Functions Effects', () => {
     });
 
     effects = TestBed.inject(PunchoutFunctionsEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('transferPunchoutBasket$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',

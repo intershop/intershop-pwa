@@ -44,7 +44,7 @@ describe('Basket Payment Effects', () => {
   let actions$: Observable<Action>;
   let paymentServiceMock: PaymentService;
   let effects: BasketPaymentEffects;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     paymentServiceMock = mock(PaymentService);
@@ -63,14 +63,14 @@ describe('Basket Payment Effects', () => {
     });
 
     effects = TestBed.inject(BasketPaymentEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('loadBasketEligiblePaymentMethods$', () => {
     beforeEach(() => {
       when(paymentServiceMock.getBasketEligiblePaymentMethods()).thenReturn(of([BasketMockData.getPaymentMethod()]));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -120,7 +120,7 @@ describe('Basket Payment Effects', () => {
     beforeEach(() => {
       when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(of(undefined));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -169,7 +169,7 @@ describe('Basket Payment Effects', () => {
     beforeEach(() => {
       when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(of(undefined));
 
-      store$.dispatch(loadBasketSuccess({ basket: BasketMockData.getBasket() }));
+      store.dispatch(loadBasketSuccess({ basket: BasketMockData.getBasket() }));
     });
 
     it('should call the paymentService for setPaymentAtBasket', done => {
@@ -231,7 +231,7 @@ describe('Basket Payment Effects', () => {
         of({ id: 'newPaymentInstrumentId' } as PaymentInstrument)
       );
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -240,7 +240,7 @@ describe('Basket Payment Effects', () => {
           } as Basket,
         })
       );
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
     });
 
     it('should call the paymentService if payment instrument is saved at basket', done => {
@@ -296,7 +296,7 @@ describe('Basket Payment Effects', () => {
 
   describe('sendPaymentRedirectData$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -355,7 +355,7 @@ describe('Basket Payment Effects', () => {
     beforeEach(() => {
       when(paymentServiceMock.updateBasketPayment(anything())).thenReturn(of(payment));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -432,7 +432,7 @@ describe('Basket Payment Effects', () => {
     beforeEach(() => {
       when(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).thenReturn(of(undefined));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket,
         })

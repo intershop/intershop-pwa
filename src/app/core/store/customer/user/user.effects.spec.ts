@@ -60,7 +60,7 @@ import { UserEffects } from './user.effects';
 describe('User Effects', () => {
   let actions$: Observable<Action>;
   let effects: UserEffects;
-  let store$: Store;
+  let store: Store;
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
   let apiTokenServiceMock: ApiTokenService;
@@ -115,7 +115,7 @@ describe('User Effects', () => {
     });
 
     effects = TestBed.inject(UserEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
   });
@@ -235,7 +235,7 @@ describe('User Effects', () => {
       tick(500);
       expect(location.path()).toEqual('/home');
 
-      store$.dispatch(loginUserSuccess(loginResponseData));
+      store.dispatch(loginUserSuccess(loginResponseData));
 
       effects.redirectAfterLogin$.subscribe({ next: noop, error: fail, complete: noop });
 
@@ -290,7 +290,7 @@ describe('User Effects', () => {
 
   describe('updateUser$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loginUserSuccess({
           customer: {
             customerNo: '4711',
@@ -353,7 +353,7 @@ describe('User Effects', () => {
 
   describe('updateUserPassword$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loginUserSuccess({
           customer: {
             customerNo: '4711',
@@ -423,7 +423,7 @@ describe('User Effects', () => {
 
   describe('updateCustomer$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loginUserSuccess({
           customer,
           user: {} as User,
@@ -459,7 +459,7 @@ describe('User Effects', () => {
         customerNo: '4712',
         isBusinessCustomer: false,
       } as Customer;
-      store$.dispatch(
+      store.dispatch(
         loginUserSuccess({
           customer: privateCustomer,
           user: {} as User,
@@ -499,7 +499,7 @@ describe('User Effects', () => {
     }));
 
     it('should dispatch UserErrorReset action on router navigation if error was set', done => {
-      store$.dispatch(loginUserFail({ error: makeHttpError({ message: 'error' }) }));
+      store.dispatch(loginUserFail({ error: makeHttpError({ message: 'error' }) }));
 
       actions$ = of(routerTestNavigatedAction({}));
 
@@ -539,7 +539,7 @@ describe('User Effects', () => {
 
   describe('loadUserCostCenters$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loginUserSuccess({
           customer: {
             isBusinessCustomer: true,
@@ -586,7 +586,7 @@ describe('User Effects', () => {
 
   describe('loadUserPaymentMethods$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loginUserSuccess({
           customer,
           user: {} as User,
@@ -630,7 +630,7 @@ describe('User Effects', () => {
 
   describe('deleteUserPayment$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loginUserSuccess({
           customer,
           user: {} as User,
@@ -683,7 +683,7 @@ describe('User Effects', () => {
 
   describe('updatePreferredUserPayment$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loginUserSuccess({
           customer,
           user: {} as User,

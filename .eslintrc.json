@@ -52,7 +52,6 @@
         "@ngrx/prefer-concat-latest-from": "off",
         "@ngrx/prefix-selectors-with-select": "off",
         "@ngrx/select-style": ["warn", "operator"],
-        "@ngrx/use-consistent-global-store-name": "off",
         "@typescript-eslint/ban-tslint-comment": "error",
         "@typescript-eslint/ban-types": [
           "error",
@@ -828,7 +827,11 @@
             "methods": false,
             "parameters": false,
             "properties": false,
-            "variables": true
+            "variables": true,
+            "types": {
+              "^EventEmitter$": false,
+              "^Store": false
+            }
           }
         ],
         "rxjs/no-create": "error",

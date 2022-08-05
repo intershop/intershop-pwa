@@ -15,7 +15,7 @@ import { AuthGuard } from './auth.guard';
 describe('Auth Guard', () => {
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
-    let store$: Store;
+    let store: Store;
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
@@ -26,11 +26,11 @@ describe('Auth Guard', () => {
 
     beforeEach(() => {
       authGuard = TestBed.inject(AuthGuard);
-      store$ = TestBed.inject(Store);
+      store = TestBed.inject(Store);
     });
 
     it('should return true when user is authorized', done => {
-      store$.dispatch(loginUserSuccess({ customer: {} as Customer }));
+      store.dispatch(loginUserSuccess({ customer: {} as Customer }));
 
       authGuard
         .canActivate({} as ActivatedRouteSnapshot, { url: 'home' } as RouterStateSnapshot)

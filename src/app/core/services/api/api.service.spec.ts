@@ -29,7 +29,7 @@ describe('Api Service', () => {
   describe('API Service Methods', () => {
     const REST_URL = 'http://www.example.org/WFS/site/-;loc=en;cur=USD';
     let apiService: ApiService;
-    let storeSpy$: Store;
+    let store: Store;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
@@ -51,7 +51,7 @@ describe('Api Service', () => {
 
       apiService = TestBed.inject(ApiService);
       httpTestingController = TestBed.inject(HttpTestingController);
-      storeSpy$ = spy(TestBed.inject(Store));
+      store = spy(TestBed.inject(Store));
     });
 
     afterEach(() => {
@@ -82,8 +82,8 @@ describe('Api Service', () => {
       req.flush('err', { status: 500, statusText });
       consoleSpy.mockRestore();
 
-      verify(storeSpy$.dispatch(anything())).once();
-      const [action] = capture<Action & { payload: { error: HttpError } }>(storeSpy$.dispatch).last();
+      verify(store.dispatch(anything())).once();
+      const [action] = capture<Action & { payload: { error: HttpError } }>(store.dispatch).last();
       expect(action.type).toEqual(serverError.type);
       expect(action.payload.error).toHaveProperty('statusText', statusText);
     });
@@ -111,8 +111,8 @@ describe('Api Service', () => {
       req.flush('err', { status: 500, statusText });
       consoleSpy.mockRestore();
 
-      verify(storeSpy$.dispatch(anything())).once();
-      const [action] = capture<Action & { payload: { error: HttpError } }>(storeSpy$.dispatch).last();
+      verify(store.dispatch(anything())).once();
+      const [action] = capture<Action & { payload: { error: HttpError } }>(store.dispatch).last();
       expect(action.type).toEqual(serverError.type);
       expect(action.payload.error).toHaveProperty('statusText', statusText);
     });
@@ -393,7 +393,7 @@ describe('Api Service', () => {
 
   describe('API Service URL construction', () => {
     let apiService: ApiService;
-    let store$: MockStore;
+    let store: MockStore;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
@@ -414,7 +414,7 @@ describe('Api Service', () => {
 
       apiService = TestBed.inject(ApiService);
       httpTestingController = TestBed.inject(HttpTestingController);
-      store$ = TestBed.inject(MockStore);
+      store = TestBed.inject(MockStore);
     });
 
     afterEach(() => {
@@ -473,8 +473,8 @@ describe('Api Service', () => {
     });
 
     it('should include locale and currency when available in store', () => {
-      store$.overrideSelector(getCurrentLocale, 'en_US');
-      store$.overrideSelector(getCurrentCurrency, 'USD');
+      store.overrideSelector(getCurrentLocale, 'en_US');
+      store.overrideSelector(getCurrentCurrency, 'USD');
 
       apiService.get('relative').subscribe({ next: fail, error: fail, complete: fail });
 
@@ -486,7 +486,7 @@ describe('Api Service', () => {
     });
 
     it('should include pgid when available in store and requested', () => {
-      store$.overrideSelector(getPGID, 'ASDF');
+      store.overrideSelector(getPGID, 'ASDF');
 
       apiService
         .get('relative', { sendPGID: true, sendLocale: false, sendCurrency: false })
@@ -500,7 +500,7 @@ describe('Api Service', () => {
     });
 
     it('should include spgid when available in store and requested', () => {
-      store$.overrideSelector(getPGID, 'ASDF');
+      store.overrideSelector(getPGID, 'ASDF');
 
       apiService
         .get('relative', { sendSPGID: true, sendLocale: false, sendCurrency: false })
@@ -514,7 +514,7 @@ describe('Api Service', () => {
     });
 
     it('should include pgid on first path element when available in store and requested', () => {
-      store$.overrideSelector(getPGID, 'ASDF');
+      store.overrideSelector(getPGID, 'ASDF');
 
       apiService
         .get('very/deep/relative', { sendPGID: true, sendLocale: false, sendCurrency: false })
@@ -528,9 +528,9 @@ describe('Api Service', () => {
     });
 
     it('should include params, pgid and locale for complex example', () => {
-      store$.overrideSelector(getPGID, 'ASDF');
-      store$.overrideSelector(getCurrentLocale, 'en_US');
-      store$.overrideSelector(getCurrentCurrency, 'USD');
+      store.overrideSelector(getPGID, 'ASDF');
+      store.overrideSelector(getCurrentLocale, 'en_US');
+      store.overrideSelector(getCurrentCurrency, 'USD');
 
       apiService
         .get('very/deep/relative', { sendPGID: true, params: new HttpParams().set('view', 'grid').set('depth', '3') })
@@ -547,7 +547,7 @@ describe('Api Service', () => {
   describe('API Service Headers', () => {
     const REST_URL = 'http://www.example.org/WFS/site/-;loc=en_US;cur=USD';
     let apiService: ApiService;
-    let store$: Store;
+    let store: Store;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
@@ -558,9 +558,9 @@ describe('Api Service', () => {
 
       apiService = TestBed.inject(ApiService);
       httpTestingController = TestBed.inject(HttpTestingController);
-      store$ = TestBed.inject(Store);
+      store = TestBed.inject(Store);
 
-      store$.dispatch(
+      store.dispatch(
         applyConfiguration({
           baseURL: 'http://www.example.org',
           server: 'WFS',
@@ -568,7 +568,7 @@ describe('Api Service', () => {
           defaultLocale: 'en_US',
         })
       );
-      store$.dispatch(
+      store.dispatch(
         loadServerConfigSuccess({
           config: {
             general: {
@@ -671,7 +671,7 @@ describe('Api Service', () => {
   describe('API Service general error handling', () => {
     let apiService: ApiService;
     let httpTestingController: HttpTestingController;
-    let storeSpy$: Store;
+    let store: Store;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -691,7 +691,7 @@ describe('Api Service', () => {
 
       apiService = TestBed.inject(ApiService);
       httpTestingController = TestBed.inject(HttpTestingController);
-      storeSpy$ = spy(TestBed.inject(Store));
+      store = spy(TestBed.inject(Store));
     });
 
     afterEach(() => {
@@ -709,8 +709,8 @@ describe('Api Service', () => {
           statusText: 'Error',
         });
 
-      verify(storeSpy$.dispatch(anything())).once();
-      expect(capture(storeSpy$.dispatch).last()?.[0]).toMatchInlineSnapshot(`
+      verify(store.dispatch(anything())).once();
+      expect(capture(store.dispatch).last()?.[0]).toMatchInlineSnapshot(`
         [Error] Communication Timeout Error:
           error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
       `);
@@ -726,8 +726,8 @@ describe('Api Service', () => {
           statusText: 'Error',
         });
 
-      verify(storeSpy$.dispatch(anything())).once();
-      expect(capture(storeSpy$.dispatch).last()?.[0]).toMatchInlineSnapshot(`
+      verify(store.dispatch(anything())).once();
+      expect(capture(store.dispatch).last()?.[0]).toMatchInlineSnapshot(`
         [Error] Server Error (5xx):
           error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
       `);
@@ -750,7 +750,7 @@ describe('Api Service', () => {
           statusText: 'Error',
         });
 
-      verify(storeSpy$.dispatch(anything())).never();
+      verify(store.dispatch(anything())).never();
     });
   });
 });

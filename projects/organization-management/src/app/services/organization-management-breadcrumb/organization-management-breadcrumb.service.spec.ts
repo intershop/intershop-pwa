@@ -30,7 +30,7 @@ function adaptRoutes(rts: Route[], cmp: Type<unknown>): Route[] {
 describe('Organization Management Breadcrumb Service', () => {
   let organizationManagementBreadcrumbService: OrganizationManagementBreadcrumbService;
   let router: Router;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
@@ -51,7 +51,7 @@ describe('Organization Management Breadcrumb Service', () => {
 
     organizationManagementBreadcrumbService = TestBed.inject(OrganizationManagementBreadcrumbService);
     router = TestBed.inject(Router);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
 
     router.initialNavigation();
   });
@@ -109,7 +109,7 @@ describe('Organization Management Breadcrumb Service', () => {
       });
 
       it('should set breadcrumb for user detail page', done => {
-        store$.dispatch(loadUserSuccess({ user: { login: '1', firstName: 'John', lastName: 'Doe' } as B2bUser }));
+        store.dispatch(loadUserSuccess({ user: { login: '1', firstName: 'John', lastName: 'Doe' } as B2bUser }));
         router.navigateByUrl('/users/1');
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
@@ -129,7 +129,7 @@ describe('Organization Management Breadcrumb Service', () => {
       });
 
       it('should set breadcrumb for user detail edit page', done => {
-        store$.dispatch(loadUserSuccess({ user: { login: '1', firstName: 'John', lastName: 'Doe' } as B2bUser }));
+        store.dispatch(loadUserSuccess({ user: { login: '1', firstName: 'John', lastName: 'Doe' } as B2bUser }));
         router.navigateByUrl('/users/1/profile');
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
@@ -153,7 +153,7 @@ describe('Organization Management Breadcrumb Service', () => {
       });
 
       it('should set breadcrumb for user role edit page', done => {
-        store$.dispatch(loadUserSuccess({ user: { login: '1', firstName: 'John', lastName: 'Doe' } as B2bUser }));
+        store.dispatch(loadUserSuccess({ user: { login: '1', firstName: 'John', lastName: 'Doe' } as B2bUser }));
         router.navigateByUrl('/users/1/roles');
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
@@ -177,7 +177,7 @@ describe('Organization Management Breadcrumb Service', () => {
       });
 
       it('should set breadcrumb for user budget edit page', done => {
-        store$.dispatch(loadUserSuccess({ user: { login: '1', firstName: 'John', lastName: 'Doe' } as B2bUser }));
+        store.dispatch(loadUserSuccess({ user: { login: '1', firstName: 'John', lastName: 'Doe' } as B2bUser }));
         router.navigateByUrl('/users/1/budget');
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
@@ -237,7 +237,7 @@ describe('Organization Management Breadcrumb Service', () => {
       });
 
       it('should set breadcrumb for cost center detail page', done => {
-        store$.dispatch(
+        store.dispatch(
           loadCostCenterSuccess({ costCenter: { id: '1', costCenterId: '100400', name: 'Marketing' } as CostCenter })
         );
         router.navigateByUrl('/cost-centers/1');
@@ -259,7 +259,7 @@ describe('Organization Management Breadcrumb Service', () => {
       });
 
       it('should set breadcrumb for cost center edit page', done => {
-        store$.dispatch(
+        store.dispatch(
           loadCostCenterSuccess({ costCenter: { id: '1', costCenterId: '100400', name: 'Marketing' } as CostCenter })
         );
         router.navigateByUrl('/cost-centers/1/edit');
@@ -285,7 +285,7 @@ describe('Organization Management Breadcrumb Service', () => {
       });
 
       it('should set breadcrumb for cost center buyers page', done => {
-        store$.dispatch(
+        store.dispatch(
           loadCostCenterSuccess({ costCenter: { id: '1', costCenterId: '100400', name: 'Marketing' } as CostCenter })
         );
         router.navigateByUrl('/cost-centers/1/buyers');

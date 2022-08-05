@@ -164,7 +164,7 @@ describe('Category Route', () => {
 
 describe('Category Route', () => {
   let router: Router;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -172,14 +172,14 @@ describe('Category Route', () => {
     });
 
     router = TestBed.inject(Router);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('ofCategoryRoute', () => {
     it('should detect category route when categoryUniqueId is a param', done => {
       router.navigateByUrl('/category;categoryUniqueId=ABC');
 
-      store$.pipe(ofCategoryUrl(), select(selectRouter)).subscribe(data => {
+      store.pipe(ofCategoryUrl(), select(selectRouter)).subscribe(data => {
         expect(data.state.params).toMatchInlineSnapshot(`
             Object {
               "categoryUniqueId": "ABC",
@@ -192,7 +192,7 @@ describe('Category Route', () => {
     it('should not detect category route when sku and categoryUniqueId are params', fakeAsync(() => {
       router.navigateByUrl('/category;sku=123;categoryUniqueId=ABC');
 
-      store$.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
+      store.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));
@@ -200,7 +200,7 @@ describe('Category Route', () => {
     it('should not detect category route when categoryUniqueId is missing', fakeAsync(() => {
       router.navigateByUrl('/other');
 
-      store$.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
+      store.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

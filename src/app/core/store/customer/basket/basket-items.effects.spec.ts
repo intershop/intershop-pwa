@@ -42,7 +42,7 @@ describe('Basket Items Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
   let effects: BasketItemsEffects;
-  let store$: Store;
+  let store: Store;
   let location: Location;
 
   beforeEach(() => {
@@ -63,14 +63,14 @@ describe('Basket Items Effects', () => {
     });
 
     effects = TestBed.inject(BasketItemsEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     location = TestBed.inject(Location);
   });
 
   describe('addProductToBasket$', () => {
     it('should accumulate AddProductToBasket to a single action', () => {
-      store$.dispatch(loadProductSuccess({ product: { sku: 'SKU1', packingUnit: 'pcs.' } as Product }));
-      store$.dispatch(loadProductSuccess({ product: { sku: 'SKU2', packingUnit: 'pcs.' } as Product }));
+      store.dispatch(loadProductSuccess({ product: { sku: 'SKU1', packingUnit: 'pcs.' } as Product }));
+      store.dispatch(loadProductSuccess({ product: { sku: 'SKU2', packingUnit: 'pcs.' } as Product }));
       const action1 = addProductToBasket({ sku: 'SKU1', quantity: 1 });
       const action2 = addProductToBasket({ sku: 'SKU2', quantity: 1 });
       const completion = addItemsToBasket({
@@ -96,7 +96,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should call the basketService for addItemsToBasket', done => {
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -130,7 +130,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map to action of type AddItemsToBasketSuccess', () => {
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -156,7 +156,7 @@ describe('Basket Items Effects', () => {
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -207,7 +207,7 @@ describe('Basket Items Effects', () => {
         of({ lineItem: undefined, info: undefined })
       );
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -272,7 +272,7 @@ describe('Basket Items Effects', () => {
         of({ lineItem: undefined, info: undefined })
       );
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -436,7 +436,7 @@ describe('Basket Items Effects', () => {
     beforeEach(() => {
       when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(of(undefined));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',

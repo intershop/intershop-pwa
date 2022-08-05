@@ -44,7 +44,7 @@ describe('Orders Effects', () => {
   let actions$: Observable<Action>;
   let effects: OrdersEffects;
   let orderServiceMock: OrderService;
-  let store$: Store;
+  let store: Store;
   let location: Location;
   let router: Router;
 
@@ -82,14 +82,14 @@ describe('Orders Effects', () => {
     });
 
     effects = TestBed.inject(OrdersEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     location = TestBed.inject(Location);
     router = TestBed.inject(Router);
   });
 
   describe('createOrder$', () => {
     beforeEach(() => {
-      store$.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
+      store.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
     });
 
     it('should call the orderService for createOrder', done => {
@@ -342,7 +342,7 @@ describe('Orders Effects', () => {
     it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and a user is logged in', done => {
       const customer = { customerNo: 'patricia' } as Customer;
       const user = { firstName: 'patricia' } as User;
-      store$.dispatch(loginUserSuccess({ customer, user }));
+      store.dispatch(loginUserSuccess({ customer, user }));
 
       router.navigate(['checkout', 'receipt'], {
         queryParams: { redirect: 'success', param1: 123, orderId: order.id },
@@ -358,7 +358,7 @@ describe('Orders Effects', () => {
     });
 
     it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and an order is available', done => {
-      store$.dispatch(createOrderSuccess({ order }));
+      store.dispatch(createOrderSuccess({ order }));
 
       router.navigate(['checkout', 'receipt'], {
         queryParams: { redirect: 'success', param1: 123, orderId: order.id },
@@ -445,10 +445,10 @@ describe('Orders Effects', () => {
 
   describe('setOrderBreadcrumb$', () => {
     beforeEach(fakeAsync(() => {
-      store$.dispatch(loadOrdersSuccess({ orders }));
+      store.dispatch(loadOrdersSuccess({ orders }));
       router.navigateByUrl(`/account/orders/${orders[0].id}`);
       tick(500);
-      store$.dispatch(selectOrder({ orderId: orders[0].id }));
+      store.dispatch(selectOrder({ orderId: orders[0].id }));
     }));
 
     it('should set the breadcrumb of the selected order', done => {
