@@ -32,7 +32,7 @@ import { CategoriesEffects } from './categories.effects';
 describe('Categories Effects', () => {
   let actions$: Observable<Action>;
   let effects: CategoriesEffects;
-  let store$: Store;
+  let store: Store;
   let router: Router;
   let httpStatusCodeService: HttpStatusCodeService;
 
@@ -76,7 +76,7 @@ describe('Categories Effects', () => {
     });
 
     effects = TestBed.inject(CategoriesEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     router = TestBed.inject(Router);
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
   });
@@ -105,7 +105,7 @@ describe('Categories Effects', () => {
 
     it('should do nothing if category is completely loaded', fakeAsync(() => {
       category.completenessLevel = CategoryCompletenessLevel.Max;
-      store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
+      store.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/categoryref/dummy@domain');
 
       effects.selectedCategoryRef$.subscribe({ next: fail, error: fail });
@@ -138,7 +138,7 @@ describe('Categories Effects', () => {
 
     it('should trigger LoadCategory when /category/XXX is visited and category is not completely loaded', done => {
       category.completenessLevel = 0;
-      store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
+      store.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/category/dummy');
 
       effects.selectedCategory$.subscribe(action => {
@@ -152,7 +152,7 @@ describe('Categories Effects', () => {
 
     it('should do nothing if category is completely loaded', fakeAsync(() => {
       category.completenessLevel = CategoryCompletenessLevel.Max;
-      store$.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
+      store.dispatch(loadCategorySuccess({ categories: categoryTree([category]) }));
       router.navigateByUrl('/category/dummy');
 
       effects.selectedCategory$.subscribe({ next: fail, error: fail });
@@ -164,7 +164,7 @@ describe('Categories Effects', () => {
       category.completenessLevel = 0;
       const subcategory = { ...category, uniqueId: `${category.uniqueId}${CategoryHelper.uniqueIdSeparator}456` };
 
-      store$.dispatch(loadCategorySuccess({ categories: categoryTree([category, subcategory]) }));
+      store.dispatch(loadCategorySuccess({ categories: categoryTree([category, subcategory]) }));
       router.navigateByUrl('/category/dummy');
 
       effects.selectedCategory$.subscribe(action => {

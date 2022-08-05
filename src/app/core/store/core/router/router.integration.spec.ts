@@ -62,27 +62,27 @@ describe('Router Integration', () => {
   });
 
   describe('selectors', () => {
-    let store$: StoreWithSnapshots;
+    let store: StoreWithSnapshots;
     beforeEach(() => {
-      store$ = TestBed.inject(StoreWithSnapshots);
+      store = TestBed.inject(StoreWithSnapshots);
     });
 
     it('should be undefined on start', () => {
-      expect(selectRouter(store$.state)).toBeUndefined();
-      expect(selectQueryParams(store$.state)).toBeEmpty();
-      expect(selectQueryParam('foo')(store$.state)).toBeUndefined();
-      expect(selectRouteData('foo')(store$.state)).toBeUndefined();
-      expect(selectRouteParam('foo')(store$.state)).toBeUndefined();
-      expect(selectUrl(store$.state)).toBeUndefined();
-      expect(selectPath(store$.state)).toBeUndefined();
-      expect(store$.actionsArray()).toMatchInlineSnapshot(`Array []`);
+      expect(selectRouter(store.state)).toBeUndefined();
+      expect(selectQueryParams(store.state)).toBeEmpty();
+      expect(selectQueryParam('foo')(store.state)).toBeUndefined();
+      expect(selectRouteData('foo')(store.state)).toBeUndefined();
+      expect(selectRouteParam('foo')(store.state)).toBeUndefined();
+      expect(selectUrl(store.state)).toBeUndefined();
+      expect(selectPath(store.state)).toBeUndefined();
+      expect(store.actionsArray()).toMatchInlineSnapshot(`Array []`);
     });
 
     it('should be empty on initial navigation', fakeAsync(() => {
       router.initialNavigation();
       tick(500);
 
-      expect(selectRouter(store$.state)).toMatchInlineSnapshot(`
+      expect(selectRouter(store.state)).toMatchInlineSnapshot(`
         Object {
           "navigationId": 1,
           "state": Object {
@@ -94,13 +94,13 @@ describe('Router Integration', () => {
           },
         }
       `);
-      expect(selectQueryParams(store$.state)).toBeEmpty();
-      expect(selectQueryParam('foo')(store$.state)).toBeUndefined();
-      expect(selectRouteData('foo')(store$.state)).toBeUndefined();
-      expect(selectRouteParam('foo')(store$.state)).toBeUndefined();
-      expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/"`);
-      expect(selectPath(store$.state)).toMatchInlineSnapshot(`"**"`);
-      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+      expect(selectQueryParams(store.state)).toBeEmpty();
+      expect(selectQueryParam('foo')(store.state)).toBeUndefined();
+      expect(selectRouteData('foo')(store.state)).toBeUndefined();
+      expect(selectRouteParam('foo')(store.state)).toBeUndefined();
+      expect(selectUrl(store.state)).toMatchInlineSnapshot(`"/"`);
+      expect(selectPath(store.state)).toMatchInlineSnapshot(`"**"`);
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
         @ngrx/router-store/request: /
         @ngrx/router-store/navigation: /
         @ngrx/router-store/navigated: /
@@ -111,7 +111,7 @@ describe('Router Integration', () => {
       router.navigateByUrl('/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam');
       tick(500);
 
-      expect(selectRouter(store$.state)).toMatchInlineSnapshot(`
+      expect(selectRouter(store.state)).toMatchInlineSnapshot(`
         Object {
           "navigationId": 1,
           "state": Object {
@@ -129,18 +129,18 @@ describe('Router Integration', () => {
           },
         }
       `);
-      expect(selectQueryParams(store$.state)).toMatchInlineSnapshot(`
+      expect(selectQueryParams(store.state)).toMatchInlineSnapshot(`
         Object {
           "bar": "bar",
           "foo": "queryParam",
         }
       `);
-      expect(selectQueryParam('foo')(store$.state)).toMatchInlineSnapshot(`"queryParam"`);
-      expect(selectRouteData('foo')(store$.state)).toBeUndefined();
-      expect(selectRouteParam('foo')(store$.state)).toMatchInlineSnapshot(`"urlParam"`);
-      expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam"`);
-      expect(selectPath(store$.state)).toMatchInlineSnapshot(`"**"`);
-      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+      expect(selectQueryParam('foo')(store.state)).toMatchInlineSnapshot(`"queryParam"`);
+      expect(selectRouteData('foo')(store.state)).toBeUndefined();
+      expect(selectRouteParam('foo')(store.state)).toMatchInlineSnapshot(`"urlParam"`);
+      expect(selectUrl(store.state)).toMatchInlineSnapshot(`"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam"`);
+      expect(selectPath(store.state)).toMatchInlineSnapshot(`"**"`);
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
         @ngrx/router-store/request: /any;foo=urlParam;bar=bar?bar=bar&foo=queryParam
         @ngrx/router-store/navigation: /any;foo=urlParam;bar=bar?bar=bar&foo=queryParam
         @ngrx/router-store/navigated: /any;foo=urlParam;bar=bar?bar=bar&foo=queryParam
@@ -151,7 +151,7 @@ describe('Router Integration', () => {
       router.navigateByUrl('/test/very/deep/routes;bar=bar?bar=bar&foo=queryParam');
       tick(500);
 
-      expect(selectRouter(store$.state)).toMatchInlineSnapshot(`
+      expect(selectRouter(store.state)).toMatchInlineSnapshot(`
         Object {
           "navigationId": 1,
           "state": Object {
@@ -174,21 +174,21 @@ describe('Router Integration', () => {
           },
         }
       `);
-      expect(selectQueryParams(store$.state)).toMatchInlineSnapshot(`
+      expect(selectQueryParams(store.state)).toMatchInlineSnapshot(`
         Object {
           "bar": "bar",
           "foo": "queryParam",
         }
       `);
-      expect(selectQueryParam('foo')(store$.state)).toMatchInlineSnapshot(`"queryParam"`);
-      expect(selectRouteData('foo')(store$.state)).toMatchInlineSnapshot(`"data"`);
-      expect(selectRouteData('level')(store$.state)).toMatchInlineSnapshot(`4`);
-      expect(selectRouteData('leaf')(store$.state)).toMatchInlineSnapshot(`true`);
-      expect(selectRouteData('root')(store$.state)).toMatchInlineSnapshot(`true`);
-      expect(selectRouteParam('foo')(store$.state)).toMatchInlineSnapshot(`"very"`);
-      expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/test/very/deep/routes;bar=bar?bar=bar&foo=queryParam"`);
-      expect(selectPath(store$.state)).toMatchInlineSnapshot(`"test/:foo/deep/routes"`);
-      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+      expect(selectQueryParam('foo')(store.state)).toMatchInlineSnapshot(`"queryParam"`);
+      expect(selectRouteData('foo')(store.state)).toMatchInlineSnapshot(`"data"`);
+      expect(selectRouteData('level')(store.state)).toMatchInlineSnapshot(`4`);
+      expect(selectRouteData('leaf')(store.state)).toMatchInlineSnapshot(`true`);
+      expect(selectRouteData('root')(store.state)).toMatchInlineSnapshot(`true`);
+      expect(selectRouteParam('foo')(store.state)).toMatchInlineSnapshot(`"very"`);
+      expect(selectUrl(store.state)).toMatchInlineSnapshot(`"/test/very/deep/routes;bar=bar?bar=bar&foo=queryParam"`);
+      expect(selectPath(store.state)).toMatchInlineSnapshot(`"test/:foo/deep/routes"`);
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
         @ngrx/router-store/request: /test/very/deep/routes;bar=bar?bar=bar&foo=queryParam
         @ngrx/router-store/navigation: /test/very/deep/routes;bar=bar?bar=bar&foo=queryParam
         @ngrx/router-store/navigated: /test/very/deep/routes;bar=bar?bar=bar&foo=queryParam
@@ -197,10 +197,10 @@ describe('Router Integration', () => {
   });
 
   describe('ofUrl operator', () => {
-    let store$: Store;
+    let store: Store;
 
     beforeEach(() => {
-      store$ = TestBed.inject(Store);
+      store = TestBed.inject(Store);
     });
 
     beforeEach(fakeAsync(() => {
@@ -208,21 +208,21 @@ describe('Router Integration', () => {
     }));
 
     it('should pass through any matcher when used', done => {
-      store$.pipe(ofUrl(/.*/), select(selectUrl)).subscribe(url => {
+      store.pipe(ofUrl(/.*/), select(selectUrl)).subscribe(url => {
         expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
         done();
       });
     });
 
     it('should pass through specific matcher when used', done => {
-      store$.pipe(ofUrl(/view/), select(selectUrl)).subscribe(url => {
+      store.pipe(ofUrl(/view/), select(selectUrl)).subscribe(url => {
         expect(url).toMatchInlineSnapshot(`"/any?view=list"`);
         done();
       });
     });
 
     it('should not pass through exact matcher when used', fakeAsync(() => {
-      store$.pipe(ofUrl(/^\/any$/), select(selectUrl)).subscribe({ next: fail, error: fail });
+      store.pipe(ofUrl(/^\/any$/), select(selectUrl)).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

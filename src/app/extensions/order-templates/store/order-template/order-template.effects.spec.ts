@@ -48,7 +48,7 @@ describe('Order Template Effects', () => {
   let actions$: Observable<Action>;
   let orderTemplateServiceMock: OrderTemplateService;
   let effects: OrderTemplateEffects;
-  let store$: Store;
+  let store: Store;
   let router: Router;
 
   const customer = { customerNo: 'CID', isBusinessCustomer: true } as Customer;
@@ -86,13 +86,13 @@ describe('Order Template Effects', () => {
     });
 
     effects = TestBed.inject(OrderTemplateEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     router = TestBed.inject(Router);
   });
 
   describe('loadOrderTemplate$', () => {
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(orderTemplateServiceMock.getOrderTemplates()).thenReturn(of(orderTemplates));
     });
 
@@ -143,7 +143,7 @@ describe('Order Template Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(of(orderTemplateData[0]));
     });
 
@@ -188,8 +188,8 @@ describe('Order Template Effects', () => {
   describe('deleteOrderTemplate$', () => {
     const id = orderTemplates[0].id;
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
-      store$.dispatch(createOrderTemplateSuccess({ orderTemplate: orderTemplates[0] }));
+      store.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(createOrderTemplateSuccess({ orderTemplate: orderTemplates[0] }));
       when(orderTemplateServiceMock.deleteOrderTemplate(anyString())).thenReturn(of(undefined));
     });
 
@@ -239,7 +239,7 @@ describe('Order Template Effects', () => {
       },
     ];
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(orderTemplateServiceMock.updateOrderTemplate(anything())).thenReturn(of(orderTemplateDetailData[0]));
     });
 
@@ -286,7 +286,7 @@ describe('Order Template Effects', () => {
     };
 
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(orderTemplateServiceMock.addProductToOrderTemplate(anyString(), anyString(), anyNumber())).thenReturn(
         of(orderTemplates[0])
       );
@@ -340,7 +340,7 @@ describe('Order Template Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(of(orderTemplate));
     });
     it('should map to actions of types CreateOrderTemplateSuccess and AddProductToOrderTemplate', () => {
@@ -382,7 +382,7 @@ describe('Order Template Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(of(orderTemplate));
     });
     it('should map to actions of types AddProductToNewOrderTemplate and RemoveItemFromOrderTemplate if there is no target id given', () => {
@@ -430,7 +430,7 @@ describe('Order Template Effects', () => {
       public: false,
     };
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
       when(orderTemplateServiceMock.removeProductFromOrderTemplate(anyString(), anyString())).thenReturn(
         of(orderTemplate)
       );
@@ -492,14 +492,14 @@ describe('Order Template Effects', () => {
         done();
       });
 
-      store$.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loginUserSuccess({ customer }));
     });
   });
 
   describe('setOrderTemplateBreadcrumb$', () => {
     beforeEach(() => {
-      store$.dispatch(loadOrderTemplatesSuccess({ orderTemplates }));
-      store$.dispatch(selectOrderTemplate({ id: orderTemplates[0].id }));
+      store.dispatch(loadOrderTemplatesSuccess({ orderTemplates }));
+      store.dispatch(selectOrderTemplate({ id: orderTemplates[0].id }));
     });
 
     it('should set the breadcrumb of the selected Order Template when on account url', done => {

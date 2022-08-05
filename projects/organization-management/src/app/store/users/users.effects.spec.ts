@@ -56,7 +56,7 @@ describe('Users Effects', () => {
   let usersService: UsersService;
   let router: Router;
   let location: Location;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     usersService = mock(UsersService);
@@ -88,7 +88,7 @@ describe('Users Effects', () => {
     effects = TestBed.inject(UsersEffects);
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('loadUsers$', () => {
@@ -307,7 +307,7 @@ describe('Users Effects', () => {
 
   describe('successMessageAfterUpdate$', () => {
     beforeEach(() => {
-      store$.dispatch(loadUsersSuccess({ users }));
+      store.dispatch(loadUsersSuccess({ users }));
     });
 
     describe('on user edit', () => {

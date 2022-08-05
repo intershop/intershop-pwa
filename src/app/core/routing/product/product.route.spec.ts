@@ -312,7 +312,7 @@ describe('Product Route', () => {
 
 describe('Product Route', () => {
   let router: Router;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -320,14 +320,14 @@ describe('Product Route', () => {
     });
 
     router = TestBed.inject(Router);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('ofProductRoute', () => {
     it('should detect product route when sku is a param', done => {
       router.navigateByUrl('/product;sku=123');
 
-      store$.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
+      store.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
         expect(data.state.params).toMatchInlineSnapshot(`
             Object {
               "sku": "123",
@@ -340,7 +340,7 @@ describe('Product Route', () => {
     it('should detect product route when sku and categoryUniqueId are params', done => {
       router.navigateByUrl('/product;sku=123;categoryUniqueId=ABC');
 
-      store$.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
+      store.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
         expect(data.state.params).toMatchInlineSnapshot(`
             Object {
               "categoryUniqueId": "ABC",
@@ -354,7 +354,7 @@ describe('Product Route', () => {
     it('should not detect product route when sku is missing', fakeAsync(() => {
       router.navigateByUrl('/other');
 
-      store$.pipe(ofProductUrl()).subscribe({ next: fail, error: fail });
+      store.pipe(ofProductUrl()).subscribe({ next: fail, error: fail });
 
       tick(2000);
     }));

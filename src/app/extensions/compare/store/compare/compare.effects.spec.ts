@@ -14,7 +14,7 @@ import { CompareEffects } from './compare.effects';
 describe('Compare Effects', () => {
   let actions$: Observable<Action>;
   let effects: CompareEffects;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -23,7 +23,7 @@ describe('Compare Effects', () => {
     });
 
     effects = TestBed.inject(CompareEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('toggleCompare$', () => {
@@ -41,7 +41,7 @@ describe('Compare Effects', () => {
 
     it('should switch to REMOVE action', () => {
       const sku = '123';
-      store$.dispatch(addToCompare({ sku }));
+      store.dispatch(addToCompare({ sku }));
 
       const action = toggleCompare({ sku });
       const completion = removeFromCompare({ sku });

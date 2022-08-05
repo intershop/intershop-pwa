@@ -10,10 +10,10 @@ import { HYBRID_MAPPING_TABLE } from '../../../hybrid/default-url-mapping-table'
 
 @Injectable({ providedIn: 'root' })
 export class HybridRedirectGuard implements CanActivate, CanActivateChild {
-  constructor(private store$: Store) {}
+  constructor(private store: Store) {}
 
   private checkRedirect(url: string): boolean | Observable<boolean> {
-    return this.store$.pipe(
+    return this.store.pipe(
       select(getICMWebURL),
       map(icmWebUrl => {
         for (const entry of HYBRID_MAPPING_TABLE) {

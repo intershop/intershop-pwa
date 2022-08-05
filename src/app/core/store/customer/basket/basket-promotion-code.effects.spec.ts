@@ -26,7 +26,7 @@ describe('Basket Promotion Code Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
   let effects: BasketPromotionCodeEffects;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
@@ -40,7 +40,7 @@ describe('Basket Promotion Code Effects', () => {
     });
 
     effects = TestBed.inject(BasketPromotionCodeEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('loadBasketAfterAddPromotionCodeToBasket$', () => {
@@ -58,7 +58,7 @@ describe('Basket Promotion Code Effects', () => {
     beforeEach(() => {
       when(basketServiceMock.addPromotionCodeToBasket(anyString())).thenReturn(of(undefined));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -108,7 +108,7 @@ describe('Basket Promotion Code Effects', () => {
     beforeEach(() => {
       when(basketServiceMock.removePromotionCodeFromBasket(anyString())).thenReturn(of(undefined));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
