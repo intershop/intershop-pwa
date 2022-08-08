@@ -2,7 +2,7 @@
   <ng-template #fieldComponent></ng-template>
   <label class="form-check-label" [for]="to.id" [ngClass]="to.labelClass">
     <ish-shipping-info [shippingMethodId]="to.value"></ish-shipping-info>
-    <a class="details-tooltip" [ngbPopover]="ShippingMethodDescription" placement="top">
+    <a *ngIf="to.description" class="details-tooltip" [ngbPopover]="ShippingMethodDescription" placement="top">
       {{ 'checkout.detail.text' | translate }}
       <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
     </a>
