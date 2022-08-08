@@ -20,7 +20,7 @@ export class ProductContextDirective implements OnInit {
   @Output() skuChange = this.context.select('sku');
   @Output() quantityChange = this.context.select('quantity');
 
-  private propIndex = new ReplaySubject<IdType>(1);
+  private propIndex$ = new ReplaySubject<IdType>(1);
 
   constructor(@SkipSelf() @Optional() parentContext: ProductContextFacade, private context: ProductContextFacade) {
     if (parentContext) {
@@ -39,7 +39,7 @@ export class ProductContextDirective implements OnInit {
       parentContext.connect(
         'children',
         combineLatest([
-          this.propIndex.pipe(startWith(undefined), distinctUntilChanged(), pairwise()),
+          this.propIndex$.pipe(startWith(undefined), distinctUntilChanged(), pairwise()),
           this.context.select().pipe(debounceTime(0)),
         ]),
         (parent, [[prevId, currId], context]) => {
@@ -99,7 +99,7 @@ export class ProductContextDirective implements OnInit {
 
   @Input()
   set propagateIndex(index: number | string) {
-    this.propIndex.next(index);
+    this.propIndex$.next(index);
   }
 
   @Input()

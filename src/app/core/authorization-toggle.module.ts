@@ -11,7 +11,7 @@ import { whenTruthy } from './utils/operators';
   exports: [AuthorizationToggleDirective],
 })
 export class AuthorizationToggleModule {
-  private static permissions = new ReplaySubject<string[]>(1);
+  private static permissions$ = new ReplaySubject<string[]>(1);
 
   static forTesting(...permissions: string[]): ModuleWithProviders<AuthorizationToggleModule> {
     AuthorizationToggleModule.switchTestingPermissions(...permissions);
@@ -22,7 +22,7 @@ export class AuthorizationToggleModule {
           provide: AuthorizationToggleService,
           useValue: {
             isAuthorizedTo: (permission: string) =>
-              AuthorizationToggleModule.permissions.pipe(
+              AuthorizationToggleModule.permissions$.pipe(
                 whenTruthy(),
                 map(perms => checkPermission(perms, permission))
               ),
@@ -33,7 +33,7 @@ export class AuthorizationToggleModule {
   }
 
   static switchTestingPermissions(...permissions: string[]) {
-    AuthorizationToggleModule.permissions.next(permissions);
+    AuthorizationToggleModule.permissions$.next(permissions);
   }
 }
 

@@ -25,15 +25,15 @@ export class ContentIncludeComponent implements OnInit, OnChanges {
 
   contentInclude$: Observable<ContentPageletEntryPointView>;
 
-  private includeIdChange = new ReplaySubject<string>(1);
+  private includeIdChange$ = new ReplaySubject<string>(1);
 
   constructor(private cmsFacade: CMSFacade) {}
 
   ngOnInit() {
-    this.contentInclude$ = this.cmsFacade.contentInclude$(this.includeIdChange);
+    this.contentInclude$ = this.cmsFacade.contentInclude$(this.includeIdChange$);
   }
 
   ngOnChanges() {
-    this.includeIdChange.next(this.includeId);
+    this.includeIdChange$.next(this.includeId);
   }
 }
