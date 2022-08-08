@@ -16,7 +16,7 @@
     "update-dockerignore": "node scripts/update-dockerignore",
     "init-development-environment": "node scripts/init-development-environment",
     "check-file-synchronization": "node scripts/check-file-synchronization",
-    "postinstall": "",
+    "postinstall": "npm-run-all --silent build:eslint-rules build:schematics synchronize-lazy-components init-development-environment ngcc",
     "build:eslint-rules": "cd eslint-rules && npm run build",
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
