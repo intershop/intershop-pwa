@@ -853,6 +853,7 @@
   "product.instock.text": "In Stock",
   "product.itemNumber.label": "Product ID:",
   "product.items.label": "{{0, plural, one{# list item} other{# list items}}}",
+  "product.items.sorting.default.label": "Default Sorting",
   "product.manufacturer_name.label": "Manufacturer Name",
   "product.out_of_stock.text": "Out of Stock",
   "product.price.listPriceFallback.text": "{{0}}",
