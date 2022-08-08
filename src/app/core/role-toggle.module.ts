@@ -11,7 +11,7 @@ import { RoleToggleService, checkRole } from './utils/role-toggle/role-toggle.se
   exports: [NotRoleToggleDirective],
 })
 export class RoleToggleModule {
-  private static roleIds = new ReplaySubject<string[]>(1);
+  private static roleIds$ = new ReplaySubject<string[]>(1);
 
   static forTesting(...roleIds: string[]): ModuleWithProviders<RoleToggleModule> {
     RoleToggleModule.switchTestingRoles(...roleIds);
@@ -22,7 +22,7 @@ export class RoleToggleModule {
           provide: RoleToggleService,
           useValue: {
             hasRole: (roleId: string | string[]) =>
-              RoleToggleModule.roleIds.pipe(
+              RoleToggleModule.roleIds$.pipe(
                 whenTruthy(),
                 map(roles => checkRole(roles, roleId))
               ),
@@ -33,7 +33,7 @@ export class RoleToggleModule {
   }
 
   static switchTestingRoles(...roleIds: string[]) {
-    RoleToggleModule.roleIds.next(roleIds);
+    RoleToggleModule.roleIds$.next(roleIds);
   }
 }
 

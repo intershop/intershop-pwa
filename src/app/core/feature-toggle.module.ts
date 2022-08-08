@@ -11,7 +11,7 @@ import { FeatureToggleService, checkFeature } from './utils/feature-toggle/featu
   exports: [FeatureToggleDirective, NotFeatureToggleDirective],
 })
 export class FeatureToggleModule {
-  private static features = new BehaviorSubject<string[]>(undefined);
+  private static features$ = new BehaviorSubject<string[]>(undefined);
 
   static forTesting(...features: string[]): ModuleWithProviders<FeatureToggleModule> {
     FeatureToggleModule.switchTestingFeatures(...features);
@@ -22,9 +22,9 @@ export class FeatureToggleModule {
           provide: FeatureToggleService,
           useValue: {
             enabled$: (feature: string) =>
-              FeatureToggleModule.features.pipe(map(toggles => checkFeature(toggles, feature))),
+              FeatureToggleModule.features$.pipe(map(toggles => checkFeature(toggles, feature))),
             // eslint-disable-next-line rxjs/no-subject-value
-            enabled: (feature: string) => checkFeature(FeatureToggleModule.features.value, feature),
+            enabled: (feature: string) => checkFeature(FeatureToggleModule.features$.value, feature),
           },
         },
       ],
@@ -32,7 +32,7 @@ export class FeatureToggleModule {
   }
 
   static switchTestingFeatures(...features: string[]) {
-    FeatureToggleModule.features.next(features);
+    FeatureToggleModule.features$.next(features);
   }
 }
 
