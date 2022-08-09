@@ -1,6 +1,5 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { Router, UrlSerializer } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -30,7 +29,6 @@ describe('Configuration Integration', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        BrowserTransferStateModule,
         CoreStoreModule.forTesting(
           ['router', 'configuration', 'serverConfig'],
           [ConfigurationEffects],

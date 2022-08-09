@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
@@ -15,7 +14,7 @@ describe('Footer Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BrowserTransferStateModule, RoleToggleModule.forTesting()],
+      imports: [RoleToggleModule.forTesting()],
       declarations: [FooterComponent, MockComponent(LazyStoreLocatorFooterComponent)],
     }).compileComponents();
   });
