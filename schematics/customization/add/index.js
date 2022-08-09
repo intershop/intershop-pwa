@@ -21,8 +21,10 @@ execSync(`npx ncp src/styles/themes/b2b src/styles/themes/${theme} --stopOnErr`)
 // replace in angular.json
 const angularJson = parse(fs.readFileSync('./angular.json', { encoding: 'UTF-8' }));
 const project = angularJson.defaultProject;
-console.log('setting prefix for new components to "custom"');
-angularJson.projects[project].prefix = 'custom';
+console.log('setting prefix for new components to "custom" for all projects');
+for (const project in angularJson.projects) {
+  angularJson.projects[project].prefix = 'custom';
+}
 
 const architect = angularJson.projects[project].architect;
 architect.build.configurations[theme] = {};
