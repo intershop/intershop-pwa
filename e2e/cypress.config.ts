@@ -5,7 +5,7 @@ export default defineConfig({
   viewportHeight: 1500,
   video: false,
   videoUploadOnPasses: false,
-  defaultCommandTimeout: 8000,
+  defaultCommandTimeout: 15000,
   requestTimeout: 30000,
   responseTimeout: 30000,
   chromeWebSecurity: false,
