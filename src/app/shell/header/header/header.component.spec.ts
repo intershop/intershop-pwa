@@ -6,6 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { BackToTopComponent } from 'ish-shell/header/back-to-top/back-to-top.component';
 import { HeaderDefaultComponent } from 'ish-shell/header/header-default/header-default.component';
 import { HeaderSimpleComponent } from 'ish-shell/header/header-simple/header-simple.component';
 
@@ -23,7 +24,12 @@ describe('Header Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [HeaderComponent, MockComponent(HeaderDefaultComponent), MockComponent(HeaderSimpleComponent)],
+      declarations: [
+        HeaderComponent,
+        MockComponent(BackToTopComponent),
+        MockComponent(HeaderDefaultComponent),
+        MockComponent(HeaderSimpleComponent),
+      ],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });
@@ -45,6 +51,7 @@ describe('Header Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-header-default",
+        "ish-back-to-top",
       ]
     `);
   });
@@ -55,6 +62,7 @@ describe('Header Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-header-simple",
+        "ish-back-to-top",
       ]
     `);
   });

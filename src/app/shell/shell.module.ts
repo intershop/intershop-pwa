@@ -22,6 +22,7 @@ import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlist
 
 import { CookiesBannerComponent } from './application/cookies-banner/cookies-banner.component';
 import { FooterComponent } from './footer/footer/footer.component';
+import { BackToTopComponent } from './header/back-to-top/back-to-top.component';
 import { HeaderCheckoutComponent } from './header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from './header/header-default/header-default.component';
 import { HeaderNavigationComponent } from './header/header-navigation/header-navigation.component';
@@ -61,6 +62,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
   ],
   declarations: [
     ...exportedComponents,
+    BackToTopComponent,
     CookiesBannerComponent,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,

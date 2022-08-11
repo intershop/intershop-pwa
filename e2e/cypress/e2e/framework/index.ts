@@ -36,9 +36,9 @@ export function fillFormField(parent: string, key: string, value: number | strin
     cy.get(parent).within(() => {
       if (/^(INPUT|TEXTAREA)$/.test(tagName)) {
         const inputField = cy.get(`[data-testing-id="${key}"]`);
-        inputField.clear();
+        inputField.focus().clear();
         if (value) {
-          inputField.focus().type(value.toString());
+          inputField.type(value.toString());
         }
       } else if (tagName === 'SELECT') {
         if (typeof value === 'number') {

@@ -74,3 +74,9 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   // failing the test
   return false;
 });
+
+// mark the html tag with a Cypress specific CSS class for Cypress context specific styling
+Cypress.on('window:before:load', win => {
+  const htmlNode = win.document.querySelector('html');
+  htmlNode.classList.add('cypress-tests');
+});
