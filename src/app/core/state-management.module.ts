@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { BrowserTransferStateModule, TransferState } from '@angular/platform-browser';
+import { TransferState } from '@angular/platform-browser';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
@@ -14,7 +14,6 @@ import { storeDevtoolsModule } from './store/store-devtools.module';
 
 @NgModule({
   imports: [
-    BrowserTransferStateModule,
     ContentStoreModule,
     CoreStoreModule,
     CustomerStoreModule,

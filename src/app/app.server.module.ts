@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
-import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
+import { ServerModule } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
@@ -35,7 +35,7 @@ export class UniversalErrorHandler implements ErrorHandler {
 }
 
 @NgModule({
-  imports: [AppModule, ServerModule, ServerTransferStateModule],
+  imports: [AppModule, ServerModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: UniversalCacheInterceptor, multi: true },

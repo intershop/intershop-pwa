@@ -1,6 +1,5 @@
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { noop } from 'rxjs';
 
 import { CookiesService } from './cookies.service';
@@ -17,7 +16,6 @@ describe('Cookies Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserTransferStateModule],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/de' },
         { provide: DOCUMENT, useFactory: mockDocument },
