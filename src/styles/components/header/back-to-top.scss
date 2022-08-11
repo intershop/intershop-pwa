@@ -1,4 +1,5 @@
-html {
+// apply scroll-behavior except when running in Cypress context (it breaks a lot of tests)
+html:not(.cypress-tests) {
   scroll-behavior: smooth;
 }
 
