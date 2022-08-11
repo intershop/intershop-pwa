@@ -11,7 +11,7 @@ on:
 #
 # 2. Change these variables for your configuration:
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  ICM_BASE_URL: https://icm-hybrid.test.intershop.com
 
 jobs:
   CancelPrevious:

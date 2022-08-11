@@ -14,7 +14,7 @@ on:
 
 env:
   NODE_VERSION: 18.16.0
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  ICM_BASE_URL: https://icm-hybrid.test.intershop.com
 
 jobs:
   CancelPrevious:
