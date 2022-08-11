@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { ErrorHandler, Injectable, InjectionToken, Injector } from '@angular/core';
+import { Router } from '@angular/router';
 import { pick } from 'lodash-es';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -17,7 +18,7 @@ export const SPECIAL_HTTP_ERROR_HANDLER = new InjectionToken<SpecialHttpErrorHan
 
 @Injectable()
 export class ICMErrorMapperInterceptor implements HttpInterceptor {
-  constructor(private injector: Injector, private errorHandler: ErrorHandler) {}
+  constructor(private injector: Injector, private errorHandler: ErrorHandler, private router: Router) {}
 
   // eslint-disable-next-line complexity
   private mapError(httpError: HttpErrorResponse, request: HttpRequest<unknown>): HttpError {
@@ -99,13 +100,20 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (SSR) {
-          this.errorHandler.handleError(error);
-        }
-        if (error.name === 'HttpErrorResponse') {
+        // show Maintenance Page if configuration request is not valid
+        if (error.url.includes('rest/configurations')) {
+          this.router.navigateByUrl('/maintenance');
+          this.router.dispose();
           return throwError(() => this.mapError(error, req));
+        } else {
+          if (SSR) {
+            this.errorHandler.handleError(error);
+          }
+          if (error.name === 'HttpErrorResponse') {
+            return throwError(() => this.mapError(error, req));
+          }
+          return throwError(() => error);
         }
-        return throwError(() => error);
       })
     );
   }

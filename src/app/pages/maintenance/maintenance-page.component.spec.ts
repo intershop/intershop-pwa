@@ -1,23 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockDirective } from 'ng-mocks';
 
-import { HeaderSimpleComponent } from './header-simple.component';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
-describe('Header Simple Component', () => {
-  let fixture: ComponentFixture<HeaderSimpleComponent>;
+import { MaintenancePageComponent } from './maintenance-page.component';
+
+describe('Maintenance Page Component', () => {
+  let component: MaintenancePageComponent;
+  let fixture: ComponentFixture<MaintenancePageComponent>;
   let element: HTMLElement;
-  let component: HeaderSimpleComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [HeaderSimpleComponent],
+      declarations: [MaintenancePageComponent, MockDirective(ServerHtmlDirective)],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HeaderSimpleComponent);
+    fixture = TestBed.createComponent(MaintenancePageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

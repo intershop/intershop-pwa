@@ -4,6 +4,7 @@
       <a
         rel="home"
         routerLink="/home"
+        (click)="routeToHome()"
         class="logo"
         [attr.aria-label]="'common.home.link' | translate"
         data-testing-id="header-home-link-desktop"
@@ -13,6 +14,7 @@
       <a
         rel="home"
         routerLink="/home"
+        (click)="routeToHome()"
         class="mobile-logo"
         [attr.aria-label]="'common.home.link' | translate"
         data-testing-id="link-home"

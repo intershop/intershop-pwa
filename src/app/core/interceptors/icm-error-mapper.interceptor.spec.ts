@@ -1,6 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClient, HttpErrorResponse, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -16,7 +17,7 @@ describe('Icm Error Mapper Interceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [{ provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true }],
     });
 
@@ -302,7 +303,7 @@ describe('Icm Error Mapper Interceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
         { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
         { provide: SPECIAL_HTTP_ERROR_HANDLER, useClass: GrabAllErrorHandler, multi: true },
