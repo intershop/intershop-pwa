@@ -280,15 +280,19 @@ export function app() {
   server.get(/\/.*\.(js|css)$/, (req, res) => {
     // remove all parameters
     const path = req.originalUrl.substring(1).replace(/[;?&].*$/, '');
-
-    fs.readFile(join(BROWSER_FOLDER, path), { encoding: 'utf-8' }, (err, data) => {
-      if (err) {
-        res.sendStatus(404);
-      } else {
-        res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
-        res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
-      }
-    });
+    const filename = join(BROWSER_FOLDER, path);
+    if (filename.startsWith(BROWSER_FOLDER)) {
+      fs.readFile(filename, { encoding: 'utf-8' }, (err, data) => {
+        if (err) {
+          res.sendStatus(404);
+        } else {
+          res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
+          res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
+        }
+      });
+    } else {
+      res.sendStatus(404);
+    }
   });
   server.get(/\/ngsw\.json/, (_, res) => {
     fs.readFile(join(BROWSER_FOLDER, 'ngsw.json'), { encoding: 'utf-8' }, (err, data) => {
