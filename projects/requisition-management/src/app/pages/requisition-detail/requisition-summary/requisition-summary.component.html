@@ -105,7 +105,20 @@
       <dt class="col-6 col-sm-4 col-md-3 mt-3">{{ 'approval.detailspage.comment.label' | translate }}</dt>
       <dd class="col-6 col-sm-8 col-md-9 mt-3">
         <ng-container *ngIf="requisition.systemRejected">
-          <p>{{ 'approval.detailspage.approval_status.system_rejected.comment' | translate }}</p>
+          <p>
+            {{ 'approval.detailspage.approval_status.system_rejected.comment' | translate }}
+            <ng-container *ngIf="requisition.systemRejectErrors?.length">
+              {{
+                'approval.detailspage.approval_status.system_rejected.reasons.comment'
+                  | translate: { '0': requisition.systemRejectErrors.length }
+              }}
+            </ng-container>
+          </p>
+          <ul *ngIf="requisition.systemRejectErrors?.length">
+            <ng-container *ngFor="let err of requisition.systemRejectErrors">
+              <li>{{ err }}</li>
+            </ng-container>
+          </ul>
         </ng-container>
         {{ requisition.approval.approvalComment }}
       </dd>

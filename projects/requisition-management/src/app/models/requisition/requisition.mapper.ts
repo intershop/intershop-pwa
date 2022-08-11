@@ -51,6 +51,7 @@ export class RequisitionMapper {
             },
           },
           systemRejected: data.systemRejected,
+          systemRejectErrors: data.systemRejectErrors?.map(error => error.message || error.code),
         };
       } else {
         throw new Error(`requisitionData is required`);
