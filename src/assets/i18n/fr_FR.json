@@ -531,6 +531,7 @@
   "approval.detailspage.approval_date.label": "Date d’approbation",
   "approval.detailspage.approval_status.label": "Statut d’approbation",
   "approval.detailspage.approval_status.system_rejected.comment": "La commande n’a pas pu être passée car la demande n’était pas valide.",
+  "approval.detailspage.approval_status.system_rejected.reasons.comment": "{{ 0, plural, one{Ceci est causé par la raison suivante :} other{Ceci est causé par les raisons suivantes :} }}",
   "approval.detailspage.approval_status.system_rejected.status": "Rejeté par le système",
   "approval.detailspage.approve.button.label": "Approuver",
   "approval.detailspage.approver.label": "{{0, plural, one{Approbateur} other{Approbateurs}}}",
