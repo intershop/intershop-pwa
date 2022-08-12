@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { unionBy } from 'lodash-es';
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
@@ -67,9 +68,12 @@ import {
   submitBasketSuccess,
   updateBasket,
   updateBasketFail,
+  updateBasketItem,
+  updateBasketItemFail,
   updateBasketItems,
   updateBasketItemsFail,
   updateBasketItemsSuccess,
+  updateBasketItemSuccess,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -125,6 +129,7 @@ export const basketReducer = createReducer(
     removePromotionCodeFromBasket,
     addItemsToBasket,
     continueCheckout,
+    updateBasketItem,
     updateBasketItems,
     deleteBasketItem,
     setBasketAttribute,
@@ -140,10 +145,10 @@ export const basketReducer = createReducer(
     startCheckout,
     mergeBasketInProgress
   ),
-  unsetLoadingOn(addPromotionCodeToBasketSuccess, addPromotionCodeToBasketFail),
+  unsetLoadingOn(addPromotionCodeToBasketSuccess, addPromotionCodeToBasketFail, loadBasketSuccess),
   unsetLoadingAndErrorOn(
-    loadBasketSuccess,
     mergeBasketSuccess,
+    updateBasketItemSuccess,
     updateBasketItemsSuccess,
     deleteBasketItemSuccess,
     addItemsToBasketSuccess,
@@ -167,6 +172,7 @@ export const basketReducer = createReducer(
     continueCheckoutFail,
     addItemsToBasketFail,
     removePromotionCodeFromBasketFail,
+    updateBasketItemFail,
     updateBasketItemsFail,
     deleteBasketItemFail,
     setBasketAttributeFail,
@@ -182,7 +188,7 @@ export const basketReducer = createReducer(
     startCheckoutFail
   ),
 
-  on(loadBasketSuccess, createBasketSuccess, mergeBasketSuccess, (state, action) => {
+  on(loadBasketSuccess, createBasketSuccess, mergeBasketSuccess, (state, action): BasketState => {
     const basket = {
       ...action.payload.basket,
     };
@@ -193,14 +199,36 @@ export const basketReducer = createReducer(
       submittedBasket: undefined,
     };
   }),
-  on(updateBasketItemsSuccess, deleteBasketItemSuccess, (state, action) => ({
+  on(updateBasketItemSuccess, (state, action) => ({
     ...state,
+    basket: {
+      ...state.basket,
+      lineItems: state.basket.lineItems.map(item =>
+        item.id === action.payload.lineItem.id ? action.payload.lineItem : item
+      ),
+    },
+    info: action.payload.info,
+    validationResults: initialValidationResults,
+  })),
+  on(
+    updateBasketItemsSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      info: action.payload.info,
+      validationResults: initialValidationResults,
+    })
+  ),
+  on(deleteBasketItemSuccess, (state, action) => ({
+    ...state,
+    basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
     info: action.payload.info,
     validationResults: initialValidationResults,
   })),
   on(addItemsToBasketSuccess, (state, action) => ({
     ...state,
+    basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
     info: action.payload.info,
+    error: action.payload.error,
     lastTimeProductAdded: new Date().getTime(),
     submittedBasket: undefined,
   })),
@@ -212,12 +240,12 @@ export const basketReducer = createReducer(
     removePromotionCodeFromBasketSuccess,
     setBasketAttributeSuccess,
     deleteBasketAttributeSuccess,
-    state => ({
+    (state): BasketState => ({
       ...state,
       validationResults: initialValidationResults,
     })
   ),
-  on(startCheckoutSuccess, continueCheckoutSuccess, continueCheckoutWithIssues, (state, action) => {
+  on(startCheckoutSuccess, continueCheckoutSuccess, continueCheckoutWithIssues, (state, action): BasketState => {
     const validation = action.payload.basketValidation;
     const basket = validation?.results.adjusted && validation.basket ? validation.basket : state.basket;
 
@@ -229,30 +257,42 @@ export const basketReducer = createReducer(
       validationResults: validation?.results,
     };
   }),
-  on(loadBasketEligibleShippingMethodsSuccess, (state, action) => ({
-    ...state,
-    eligibleShippingMethods: action.payload.shippingMethods,
-  })),
-  on(loadBasketEligiblePaymentMethodsSuccess, (state, action) => ({
-    ...state,
-    eligiblePaymentMethods: action.payload.paymentMethods,
-  })),
-  on(updateConcardisCvcLastUpdatedSuccess, (state, action) => ({
-    ...state,
-    basket: {
-      ...state.basket,
-      payment: {
-        ...state.basket.payment,
-        paymentInstrument: action.payload.paymentInstrument,
+  on(
+    loadBasketEligibleShippingMethodsSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      eligibleShippingMethods: action.payload.shippingMethods,
+    })
+  ),
+  on(
+    loadBasketEligiblePaymentMethodsSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      eligiblePaymentMethods: action.payload.paymentMethods,
+    })
+  ),
+  on(
+    updateConcardisCvcLastUpdatedSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      basket: {
+        ...state.basket,
+        payment: {
+          ...state.basket.payment,
+          paymentInstrument: action.payload.paymentInstrument,
+        },
       },
-    },
-  })),
-  on(addPromotionCodeToBasketSuccess, state => ({
-    ...state,
-    promotionError: undefined,
-  })),
+    })
+  ),
+  on(
+    addPromotionCodeToBasketSuccess,
+    (state): BasketState => ({
+      ...state,
+      promotionError: undefined,
+    })
+  ),
 
-  on(addPromotionCodeToBasketFail, (state, action) => {
+  on(addPromotionCodeToBasketFail, (state, action): BasketState => {
     const { error } = action.payload;
 
     return {
@@ -261,21 +301,27 @@ export const basketReducer = createReducer(
     };
   }),
 
-  on(createOrderSuccess, () => initialState),
-  on(submitBasketSuccess, state => ({
-    ...state,
-    submittedBasket: state.basket,
-    basket: undefined,
-    info: undefined,
-    promotionError: undefined,
-    validationResults: initialValidationResults,
-  })),
+  on(createOrderSuccess, (): BasketState => initialState),
+  on(
+    submitBasketSuccess,
+    (state): BasketState => ({
+      ...state,
+      submittedBasket: state.basket,
+      basket: undefined,
+      info: undefined,
+      promotionError: undefined,
+      validationResults: initialValidationResults,
+    })
+  ),
 
-  on(resetBasketErrors, state => ({
-    ...state,
-    error: undefined,
-    info: undefined,
-    promotionError: undefined,
-    validationResults: initialValidationResults,
-  }))
+  on(
+    resetBasketErrors,
+    (state): BasketState => ({
+      ...state,
+      error: undefined,
+      info: undefined,
+      promotionError: undefined,
+      validationResults: initialValidationResults,
+    })
+  )
 );

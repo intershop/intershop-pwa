@@ -12,5 +12,5 @@ const initialState: Authorization = {
 
 export const authorizationReducer = createReducer(
   initialState,
-  on(loadRolesAndPermissionsSuccess, (_, action) => action.payload.authorization)
+  on(loadRolesAndPermissionsSuccess, (_, action): Authorization => action.payload.authorization)
 );

@@ -1,5 +1,4 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
@@ -18,13 +17,12 @@ export class TrackingConfigEffects {
   constructor(
     private actions$: Actions,
     private featureToggleService: FeatureToggleService,
-    @Inject(PLATFORM_ID) private platformId: string,
     private stateProperties: StatePropertiesService,
     angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
     store: Store,
     cookiesService: CookiesService
   ) {
-    if (isPlatformBrowser(this.platformId) && cookiesService.cookieConsentFor('tracking')) {
+    if (!SSR && cookiesService.cookieConsentFor('tracking')) {
       store
         .pipe(
           select(getGTMToken),
@@ -40,7 +38,7 @@ export class TrackingConfigEffects {
 
   setGTMToken$ = createEffect(() =>
     this.actions$.pipe(
-      takeWhile(() => isPlatformServer(this.platformId) && this.featureToggleService.enabled('tracking')),
+      takeWhile(() => SSR && this.featureToggleService.enabled('tracking')),
       take(1),
       withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
       map(([, gtmToken]) => gtmToken),

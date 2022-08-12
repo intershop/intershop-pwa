@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
@@ -27,7 +27,7 @@ export class ContactFormComponent implements OnInit {
 
   /** The form for customer message to the shop. */
   submitted = false;
-  contactForm = new FormGroup({});
+  contactForm = new UntypedFormGroup({});
   model$: Observable<Partial<Contact>>;
   fields: FormlyFieldConfig[];
 

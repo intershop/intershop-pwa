@@ -2,7 +2,7 @@
 // Payment
 // --------------------------------------------------
 
-#payment-accordion {
+.payment-methods {
   margin-bottom: $space-default * 2;
 
   & > .panel {
@@ -25,16 +25,6 @@
   .has-feedback {
     .form-control-feedback {
       display: none;
-    }
-  }
-
-  .propertygroup-property-noneditable {
-    margin: 0;
-
-    @media (max-width: $screen-xs-max) {
-      .propertygroup-property-content {
-        padding-left: 0;
-      }
     }
   }
 

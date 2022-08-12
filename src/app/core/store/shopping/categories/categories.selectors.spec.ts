@@ -160,7 +160,7 @@ describe('Categories Selectors', () => {
           expect(getBreadcrumbForCategoryPage(store$.state)).toMatchInlineSnapshot(`
             Array [
               Object {
-                "link": "/nA-catA",
+                "link": "/na-ctgA",
                 "text": "nA",
               },
               Object {
@@ -193,13 +193,13 @@ describe('Categories Selectors', () => {
               "hasChildren": true,
               "name": "name_A",
               "uniqueId": "A",
-              "url": "/name_A-catA",
+              "url": "/name_a-ctgA",
             },
             Object {
               "hasChildren": false,
               "name": "name_B",
               "uniqueId": "B",
-              "url": "/name_B-catB",
+              "url": "/name_b-ctgB",
             },
           ]
         `);
@@ -212,13 +212,13 @@ describe('Categories Selectors', () => {
               "hasChildren": true,
               "name": "name_A.1",
               "uniqueId": "A.1",
-              "url": "/name_A.1-catA.1",
+              "url": "/name_a/name_a.1-ctgA.1",
             },
             Object {
               "hasChildren": false,
               "name": "name_A.2",
               "uniqueId": "A.2",
-              "url": "/name_A.2-catA.2",
+              "url": "/name_a/name_a.2-ctgA.2",
             },
           ]
         `);
@@ -231,13 +231,13 @@ describe('Categories Selectors', () => {
               "hasChildren": false,
               "name": "name_A.1.a",
               "uniqueId": "A.1.a",
-              "url": "/name_A.1.a-catA.1.a",
+              "url": "/name_a/name_a.1/name_a.1.a-ctgA.1.a",
             },
             Object {
               "hasChildren": false,
               "name": "name_A.1.b",
               "uniqueId": "A.1.b",
-              "url": "/name_A.1.b-catA.1.b",
+              "url": "/name_a/name_a.1/name_a.1.b-ctgA.1.b",
             },
           ]
         `);

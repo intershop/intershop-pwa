@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { BehaviorSubject, Observable, merge, noop, of, throwError } from 'rxjs';
 import { delay, toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -39,7 +39,7 @@ import { ProductsEffects } from './products.effects';
 describe('Products Effects', () => {
   let actions$: Observable<Action>;
   let effects: ProductsEffects;
-  let store$: Store;
+  let store: Store;
   let productsServiceMock: ProductsService;
   let router: Router;
   let httpStatusCodeService: HttpStatusCodeService;
@@ -91,11 +91,11 @@ describe('Products Effects', () => {
     });
 
     effects = TestBed.inject(ProductsEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     router = TestBed.inject(Router);
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
 
-    store$.dispatch(setProductListingPageSize({ itemsPerPage: 9 }));
+    store.dispatch(setProductListingPageSize({ itemsPerPage: 9 }));
   });
 
   describe('loadProduct$', () => {
@@ -434,7 +434,7 @@ describe('Products Effects', () => {
   describe('loadProductParts$', () => {
     describe('with bundle', () => {
       beforeEach(() => {
-        store$.dispatch(loadProductSuccess({ product: { sku: 'ABC', type: 'Bundle' } as Product }));
+        store.dispatch(loadProductSuccess({ product: { sku: 'ABC', type: 'Bundle' } as Product }));
 
         when(productsServiceMock.getProductBundles('ABC')).thenReturn(of({ stubs: [], bundledProducts: [] }));
       });
@@ -481,7 +481,7 @@ describe('Products Effects', () => {
 
     describe('with retail set', () => {
       beforeEach(() => {
-        store$.dispatch(loadProductSuccess({ product: { sku: 'ABC', type: 'RetailSet' } as Product }));
+        store.dispatch(loadProductSuccess({ product: { sku: 'ABC', type: 'RetailSet' } as Product }));
       });
 
       it('should load stubs and retail set reference when queried', done => {
@@ -568,13 +568,13 @@ describe('Products Effects', () => {
 
   describe('loadDefaultCategoryContextForProduct$', () => {
     it('should load a default category for the product if none is selected and product has one', done => {
-      store$.dispatch(
+      store.dispatch(
         loadProductSuccess({
           product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
         })
       );
 
-      store$.dispatch(
+      store.dispatch(
         loadProductPricesSuccess({
           prices: [{ sku: 'ABC', prices: { salePrice: { currency: 'EUR', gross: 1 } } } as ProductPriceDetails],
         })
@@ -592,7 +592,7 @@ describe('Products Effects', () => {
     });
 
     it('should not load a default category for the product if none is selected and product has none', fakeAsync(() => {
-      store$.dispatch(
+      store.dispatch(
         loadProductSuccess({
           product: { sku: 'ABC', type: 'Product' } as Product,
         })
@@ -606,7 +606,7 @@ describe('Products Effects', () => {
     }));
 
     it('should not load a default category for the product if the product failed loading', fakeAsync(() => {
-      store$.dispatch(
+      store.dispatch(
         loadProductFail({
           sku: 'ABC',
           error: makeHttpError({ message: 'ERROR' }),
@@ -621,7 +621,7 @@ describe('Products Effects', () => {
     }));
 
     it('should not load a default category for the product if the category is taken from the context', fakeAsync(() => {
-      store$.dispatch(
+      store.dispatch(
         loadProductSuccess({
           product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
         })

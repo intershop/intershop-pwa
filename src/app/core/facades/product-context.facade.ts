@@ -260,6 +260,25 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     );
 
     this.connect(
+      'quantity',
+      this.select('children').pipe(
+        map(children => Object.values(children)),
+        skipWhile(children => !children?.length),
+        map(children =>
+          children.reduce(
+            (sum, child) =>
+              sum +
+              (Number.isInteger(child.quantity) && !child.hasQuantityError && !child.hasProductError
+                ? child.quantity
+                : 0),
+            0
+          )
+        ),
+        distinctUntilChanged()
+      )
+    );
+
+    this.connect(
       'hasProductError',
       this.select('product').pipe(
         map(product => !!product && (!!product.failed || !product.available)),

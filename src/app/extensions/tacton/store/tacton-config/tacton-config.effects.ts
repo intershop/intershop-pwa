@@ -7,6 +7,8 @@ import { getProductEntities, loadProductSuccess, productSpecialUpdate } from 'is
 import { mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
+import { TactonConfig } from '../../models/tacton-config/tacton-config.model';
+
 import { loadTactonConfig, setTactonConfig } from './tacton-config.actions';
 import { getTactonConfig } from './tacton-config.selectors';
 
@@ -22,10 +24,9 @@ export class TactonConfigEffects {
     this.actions$.pipe(
       ofType(loadTactonConfig),
       switchMap(() =>
-        this.statePropertiesService.getStateOrEnvOrDefault<string | object>('TACTON', 'tacton').pipe(
-          map(config => (typeof config === 'string' ? JSON.parse(config) : config)),
-          map(config => setTactonConfig({ config }))
-        )
+        this.statePropertiesService
+          .getStateOrEnvOrDefault<TactonConfig>('TACTON', 'tacton')
+          .pipe(map(config => setTactonConfig({ config })))
       )
     )
   );

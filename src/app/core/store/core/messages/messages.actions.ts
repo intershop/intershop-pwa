@@ -24,7 +24,7 @@ export interface MessagesPayloadType {
   titleParams?: { [id: string]: string };
 
   /**
-   * in ms
+   * duration in ms
    */
   duration?: number;
 }

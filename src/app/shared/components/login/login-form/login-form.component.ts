@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 
@@ -34,7 +34,7 @@ export class LoginFormComponent implements OnInit {
 
   loginError$: Observable<HttpError>;
 
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   submitted = false;
 
   fields: FormlyFieldConfig[];

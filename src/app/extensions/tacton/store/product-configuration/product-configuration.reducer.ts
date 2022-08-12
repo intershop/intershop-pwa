@@ -37,9 +37,12 @@ export const productConfigurationReducer = createReducer(
     submitTactonConfiguration
   ),
   unsetLoadingOn(setCurrentConfiguration),
-  on(setCurrentConfiguration, (state, action) => ({
-    ...state,
-    current: action.payload.configuration,
-  })),
-  on(clearTactonConfiguration, submitTactonConfigurationSuccess, () => initialState)
+  on(
+    setCurrentConfiguration,
+    (state, action): ProductConfigurationState => ({
+      ...state,
+      current: action.payload.configuration,
+    })
+  ),
+  on(clearTactonConfiguration, submitTactonConfigurationSuccess, (): ProductConfigurationState => initialState)
 );

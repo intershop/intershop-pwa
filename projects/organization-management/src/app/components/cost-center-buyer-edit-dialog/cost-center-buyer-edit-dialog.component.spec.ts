@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -16,7 +16,8 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
   let element: HTMLElement;
   let appFacade: AppFacade;
   let organizationManagementFacade: OrganizationManagementFacade;
-  let fb: FormBuilder;
+  let fb: UntypedFormBuilder;
+  let form: UntypedFormGroup;
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);
@@ -36,12 +37,15 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    fb = TestBed.inject(FormBuilder);
-    component.costCenterBuyerForm = fb.group({
+    fb = TestBed.inject(UntypedFormBuilder);
+
+    form = fb.group({
       login: ['jlink@test.intershop.de'],
       budgetValue: [123, [SpecialValidators.moneyAmount]],
       budgetPeriod: ['monthly'],
     });
+
+    component.costCenterBuyerForm = form;
   });
 
   it('should be created', () => {

@@ -1,6 +1,5 @@
 import { AnimationEvent } from '@angular/animations';
-import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 
 import bottomOutAnimation from 'ish-core/animations/bottom-out.animation';
@@ -21,11 +20,7 @@ export class CookiesBannerComponent implements OnInit {
   showBanner = false;
   transitionBanner: string = undefined;
 
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: string,
-    private transferState: TransferState,
-    private cookiesService: CookiesService
-  ) {}
+  constructor(private transferState: TransferState, private cookiesService: CookiesService) {}
 
   ngOnInit() {
     this.showBannerIfNecessary();
@@ -37,7 +32,7 @@ export class CookiesBannerComponent implements OnInit {
    * - consent outdated
    */
   showBannerIfNecessary() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (!SSR) {
       const cookieConsentSettings = JSON.parse(
         this.cookiesService.get('cookieConsent') || 'null'
       ) as CookieConsentSettings;

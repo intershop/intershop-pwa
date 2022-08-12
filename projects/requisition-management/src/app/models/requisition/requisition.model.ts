@@ -45,4 +45,5 @@ export interface Requisition extends RequisitionBasket {
   userBudget: RequisitionUserBudget;
   approval: RequisitionApproval;
   systemRejected?: boolean;
+  systemRejectErrors?: string[];
 }

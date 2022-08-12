@@ -17,6 +17,10 @@ import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/bas
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { ErrorFeedback, HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
+import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -323,9 +327,14 @@ export class BasketService {
   /**
    * Adds a list of items with the given sku and quantity to the currently used basket.
    *
-   * @param items     The list of product SKU and quantity pairs to be added to the basket.
+   * @param   items       The list of product SKU and quantity pairs to be added to the basket.
+   * @returns lineItems   The list of line items, that have been added to the basket.
+   *          info        Info responded by the server.
+   *          error       Errors responded by the server.
    */
-  addItemsToBasket(items: SkuQuantityType[]): Observable<BasketInfo[]> {
+  addItemsToBasket(
+    items: SkuQuantityType[]
+  ): Observable<{ lineItems: LineItem[]; info: BasketInfo[]; error: HttpError }> {
     if (!items) {
       return throwError(() => new Error('addItemsToBasket() called without items'));
     }
@@ -339,10 +348,16 @@ export class BasketService {
     }));
 
     return this.currentBasketEndpoint()
-      .post('items', body, {
+      .post<{ data: LineItemData[]; infos: BasketInfo[]; errors?: ErrorFeedback[] }>('items', body, {
         headers: this.basketHeaders,
       })
-      .pipe(map(BasketInfoMapper.fromInfo));
+      .pipe(
+        map(payload => ({
+          lineItems: payload.data.map(item => LineItemMapper.fromData(item)),
+          info: BasketInfoMapper.fromInfo({ infos: payload.infos }),
+          error: payload.errors ? { name: 'HttpErrorResponse', errors: payload.errors } : undefined,
+        }))
+      );
   }
 
   /**
@@ -372,20 +387,22 @@ export class BasketService {
   }
 
   /**
-   * Updates specific line items (quantity/shipping method) of the currently used basket.
+   * Updates a specific line item (quantity/shipping method) of the currently used basket.
    *
    * @param itemId    The id of the line item that should be updated.
    * @param body      request body
-   * @returns         Possible infos after the update.
+   * @returns         The line item and possible infos after the update.
    */
-  updateBasketItem(itemId: string, body: BasketItemUpdateType): Observable<BasketInfo[]> {
+  updateBasketItem(itemId: string, body: BasketItemUpdateType): Observable<{ lineItem: LineItem; info: BasketInfo[] }> {
     return this.currentBasketEndpoint()
-      .patch<{ infos: BasketInfo[] }>(`items/${itemId}`, body, {
+      .patch<{ data: LineItemData; infos: BasketInfo[] }>(`items/${itemId}`, body, {
         headers: this.basketHeaders,
       })
       .pipe(
-        map(payload => ({ ...payload, itemId })),
-        map(BasketInfoMapper.fromInfo)
+        map(payload => ({
+          lineItem: LineItemMapper.fromData(payload.data),
+          info: BasketInfoMapper.fromInfo({ infos: payload.infos }),
+        }))
       );
   }
 

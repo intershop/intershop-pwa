@@ -112,7 +112,7 @@ describe('Product Context Facade', () => {
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
-          "productURL": "/sku123",
+          "productURL": "/prd123",
           "propagateActive": true,
           "quantity": 10,
           "quantityError": undefined,
@@ -183,7 +183,7 @@ describe('Product Context Facade', () => {
           "loading": false,
           "maxQuantity": 100,
           "minQuantity": 10,
-          "productURL": "/sku123",
+          "productURL": "/prd123",
           "propagateActive": true,
           "quantity": 10,
           "quantityError": undefined,
@@ -385,8 +385,14 @@ describe('Product Context Facade', () => {
       beforeEach(() => {
         product = {
           sku: '123',
+          name: '123',
           completenessLevel: ProductCompletenessLevel.Detail,
-          defaultCategory: { uniqueId: 'ABC' } as Category,
+          defaultCategory: {
+            uniqueId: 'ABC',
+            name: 'ABC',
+            pathElements: [{ uniqueId: 'ABC', name: 'ABC' } as Category],
+          } as CategoryView,
+          defaultCategoryId: 'ABC',
         } as ProductView;
 
         when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
@@ -395,7 +401,7 @@ describe('Product Context Facade', () => {
       });
 
       it('should calculate the url property of the product with default category', () => {
-        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catABC"`);
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"/abc/123-prd123-ctgABC"`);
       });
     });
 
@@ -405,18 +411,21 @@ describe('Product Context Facade', () => {
       beforeEach(() => {
         product = {
           sku: '123',
+          name: '123',
           completenessLevel: ProductCompletenessLevel.Detail,
         } as ProductView;
 
         when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-        when(shoppingFacade.category$(anything())).thenReturn(of({ uniqueId: 'ASDF' } as CategoryView));
+        when(shoppingFacade.category$(anything())).thenReturn(
+          of({ uniqueId: 'ASDF', pathElements: [{ uniqueId: 'ASDF', name: 'ASDF' } as Category] } as CategoryView)
+        );
 
         context.set('categoryId', () => 'ASDF');
         context.set('sku', () => '123');
       });
 
       it('should calculate the url property of the product with context category', () => {
-        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catASDF"`);
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"/asdf/123-prd123-ctgASDF"`);
       });
     });
 
@@ -426,19 +435,25 @@ describe('Product Context Facade', () => {
       beforeEach(() => {
         product = {
           sku: '123',
+          name: 'abc123',
           completenessLevel: ProductCompletenessLevel.Detail,
-          defaultCategory: { uniqueId: 'ABC' } as Category,
+          defaultCategory: {
+            uniqueId: 'ABC',
+            name: 'ABC',
+            pathElements: [{ uniqueId: 'ABC', name: 'ABC' } as Category],
+          } as CategoryView,
         } as ProductView;
 
         when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-        when(shoppingFacade.category$(anything())).thenReturn(of({ uniqueId: 'ASDF' } as CategoryView));
-
+        when(shoppingFacade.category$(anything())).thenReturn(
+          of({ uniqueId: 'ASDF', pathElements: [{ uniqueId: 'ASDF', name: 'ASDF' } as Category] } as CategoryView)
+        );
         context.set('categoryId', () => 'ASDF');
         context.set('sku', () => '123');
       });
 
       it('should calculate the url property of the product with context category', () => {
-        expect(context.get('productURL')).toMatchInlineSnapshot(`"//sku123-catASDF"`);
+        expect(context.get('productURL')).toMatchInlineSnapshot(`"/asdf/abc123-prd123-ctgASDF"`);
       });
     });
   });

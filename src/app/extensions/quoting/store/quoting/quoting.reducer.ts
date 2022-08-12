@@ -82,8 +82,10 @@ export const quotingReducer = createReducer(
   ),
   setErrorOn(loadQuotingFail, deleteQuotingEntityFail, rejectQuoteFail),
   // initialized
-  on(loadQuotingSuccess, state => ({ ...state, initialized: true })),
+  // eslint-disable-next-line @ngrx/avoid-duplicate-actions-in-reducer
+  on(loadQuotingSuccess, (state): QuotingInternalState => ({ ...state, initialized: true })),
   // entities
+  // eslint-disable-next-line @ngrx/avoid-duplicate-actions-in-reducer
   on(loadQuotingSuccess, (state, action) =>
     action.payload.quoting.reduce(
       (acc, val) =>
@@ -110,9 +112,13 @@ export const quotingReducer = createReducer(
   ),
   on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state)),
   // active quote request
-  on(addProductToQuoteRequest, state => ({ ...state, activeQuoteRequest: undefined })),
-  on(addProductToQuoteRequestSuccess, createQuoteRequestFromQuoteRequestSuccess, (state, action) => ({
-    ...state,
-    activeQuoteRequest: action.payload.entity.id,
-  }))
+  on(addProductToQuoteRequest, (state): QuotingInternalState => ({ ...state, activeQuoteRequest: undefined })),
+  on(
+    addProductToQuoteRequestSuccess,
+    createQuoteRequestFromQuoteRequestSuccess,
+    (state, action): QuotingInternalState => ({
+      ...state,
+      activeQuoteRequest: action.payload.entity.id,
+    })
+  )
 );

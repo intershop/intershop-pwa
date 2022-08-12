@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { QueryParamsHandling } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, ReplaySubject, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -44,19 +44,11 @@ export class ProductImageComponent implements OnInit {
   productImage$: Observable<Image>;
   defaultAltText$: Observable<string>;
 
-  /**
-   * deferred loading flag
-   */
-  showImage$ = new ReplaySubject<void>(1);
-
   constructor(private translateService: TranslateService, private context: ProductContextFacade) {}
 
   ngOnInit() {
     this.productURL$ = this.context.select('productURL');
-    this.productImage$ = combineLatest([
-      this.context.getProductImage$(this.imageType, this.imageView),
-      this.showImage$,
-    ]).pipe(map(([i]) => i));
+    this.productImage$ = this.context.getProductImage$(this.imageType, this.imageView);
 
     this.defaultAltText$ = combineLatest([
       this.context.select('product').pipe(map(product => product?.name || product?.sku || '')),

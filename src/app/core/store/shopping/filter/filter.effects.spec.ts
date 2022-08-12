@@ -2,7 +2,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { Observable, merge, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -50,7 +50,7 @@ describe('Basket Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
   let effects: BasketEffects;
-  let store$: Store;
+  let store: Store;
   let router: Router;
 
   beforeEach(() => {
@@ -71,7 +71,7 @@ describe('Basket Effects', () => {
     });
 
     effects = TestBed.inject(BasketEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     router = TestBed.inject(Router);
   });
 
@@ -192,7 +192,7 @@ describe('Basket Effects', () => {
 
   describe('recalculateBasketAfterCurrencyChange$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loadServerConfigSuccess({
           config: {
             general: {
@@ -263,7 +263,7 @@ describe('Basket Effects', () => {
         of([BasketMockData.getShippingMethod()])
       );
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -313,7 +313,7 @@ describe('Basket Effects', () => {
     beforeEach(() => {
       when(basketServiceMock.updateBasket(anything())).thenReturn(of(BasketMockData.getBasket()));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -393,7 +393,7 @@ describe('Basket Effects', () => {
       when(basketServiceMock.createBasketAttribute(anything())).thenReturn(of(undefined));
       when(basketServiceMock.updateBasketAttribute(anything())).thenReturn(of(undefined));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -461,7 +461,7 @@ describe('Basket Effects', () => {
     beforeEach(() => {
       when(basketServiceMock.deleteBasketAttribute(anyString())).thenReturn(of(undefined));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',
@@ -572,7 +572,7 @@ describe('Basket Effects', () => {
 
   describe('createRequisition$', () => {
     beforeEach(() => {
-      store$.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
+      store.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
     });
 
     it('should call the basketService for submitBasket', done => {

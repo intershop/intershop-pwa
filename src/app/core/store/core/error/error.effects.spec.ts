@@ -10,7 +10,7 @@ import { communicationTimeoutError } from './error.actions';
 import { ErrorEffects } from './error.effects';
 
 describe('Error Effects', () => {
-  let store$: Store;
+  let store: Store;
   let location: Location;
 
   beforeEach(() => {
@@ -21,12 +21,12 @@ describe('Error Effects', () => {
       ],
     });
 
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     location = TestBed.inject(Location);
   });
 
   it('should redirect to error page when general errors are encountered', fakeAsync(() => {
-    store$.dispatch(communicationTimeoutError({ error: makeHttpError({}) }));
+    store.dispatch(communicationTimeoutError({ error: makeHttpError({}) }));
 
     tick(500);
 

@@ -14,12 +14,12 @@
       "extends": [
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@ngrx/recommended",
         "plugin:prettier/recommended"
       ],
       "plugins": [
         "rxjs",
         "rxjs-angular",
-        "ngrx",
         "ban",
         "etc",
         "jest",
@@ -46,6 +46,12 @@
           }
         ],
         "@angular-eslint/sort-ngmodule-metadata-arrays": "warn",
+        "@ngrx/avoid-mapping-selectors": "off",
+        "@ngrx/no-store-subscription": "off",
+        "@ngrx/prefer-effect-callback-in-block-statement": "off",
+        "@ngrx/prefer-concat-latest-from": "off",
+        "@ngrx/prefix-selectors-with-select": "off",
+        "@ngrx/select-style": ["warn", "operator"],
         "@typescript-eslint/ban-tslint-comment": "error",
         "@typescript-eslint/ban-types": [
           "error",
@@ -99,7 +105,11 @@
           {
             "selector": "variable",
             "modifiers": ["const"],
-            "format": ["camelCase", "UPPER_CASE"]
+            "format": ["camelCase", "UPPER_CASE"],
+            "filter": {
+              "regex": "_",
+              "match": false
+            }
           },
           {
             "selector": "typeLike",
@@ -657,6 +667,7 @@
         "ish-custom-rules/use-component-change-detection": "warn",
         "ish-custom-rules/use-correct-component-overrides": "warn",
         "ish-custom-rules/use-jest-extended-matchers-in-tests": "warn",
+        "ish-custom-rules/use-ssr-variable-instead-of-platform-id": "warn",
         "ish-custom-rules/require-formly-code-documentation": "warn",
         "jest/no-commented-out-tests": "warn",
         "jest/no-disabled-tests": "warn",
@@ -682,7 +693,6 @@
         "jsdoc/require-property-type": "warn",
         "jsdoc/require-property": "warn",
         "jsdoc/valid-types": "warn",
-        "ngrx/no-typed-global-store": "error",
         "no-console": [
           "warn",
           {
@@ -796,8 +806,10 @@
             "caughtErrors": "none"
           }
         ],
+        "no-var": "warn",
         "object-shorthand": "error",
         "prefer-arrow-callback": "warn",
+        "prefer-const": "warn",
         "prefer-template": "warn",
         "prettier/prettier": "warn",
         "rxjs-angular/prefer-takeuntil": [
@@ -815,7 +827,11 @@
             "methods": false,
             "parameters": false,
             "properties": false,
-            "variables": true
+            "variables": true,
+            "types": {
+              "^EventEmitter$": false,
+              "^Store": false
+            }
           }
         ],
         "rxjs/no-create": "error",
@@ -883,7 +899,11 @@
     {
       "files": ["*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended"],
-      "rules": {}
+      "rules": {
+        "@angular-eslint/template/accessibility-alt-text": "error",
+        "@angular-eslint/template/accessibility-elements-content": "error",
+        "@angular-eslint/template/no-positive-tabindex": "error"
+      }
     },
     {
       "files": ["*.html"],

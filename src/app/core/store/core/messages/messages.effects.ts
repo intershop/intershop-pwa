@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
 import { OperatorFunction, Subject, combineLatest } from 'rxjs';
-import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { getDeviceType } from 'ish-core/store/core/configuration';
 import { isStickyHeader } from 'ish-core/store/core/viewconf';
@@ -82,6 +82,7 @@ export class MessagesEffects {
       this.actions$.pipe(
         ofType(displaySuccessMessage),
         mapToPayload(),
+        filter(payload => !!payload?.message),
         this.composeToastServiceArguments(),
         map(args => this.toastr.success(...args)),
         tap(() => {
@@ -128,9 +129,9 @@ export class MessagesEffects {
         withLatestFrom(this.store.pipe(select(getDeviceType))),
         map(([payload, deviceType]) => {
           const timeOut = payload.duration ?? duration ?? 5000;
-
           return [
             // message translation
+
             this.translate.instant(payload.message, payload.messageParams),
             // title translation
             payload.title ? this.translate.instant(payload.title, payload.titleParams) : payload.title,

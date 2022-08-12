@@ -2,7 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  createNgModuleRef,
+  createNgModule,
   Injector,
   Input,
   OnDestroy,
@@ -82,7 +82,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
             '../../shared/captcha-v3/captcha-v3.component'
           );
 
-          const moduleRef = createNgModuleRef(CaptchaV3ComponentModule, this.injector);
+          const moduleRef = createNgModule(CaptchaV3ComponentModule, this.injector);
           const componentRef = this.anchor.createComponent(CaptchaV3Component, { ngModuleRef: moduleRef });
 
           componentRef.instance.parentForm = this.form as FormGroup;
@@ -96,7 +96,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
             '../../shared/captcha-v2/captcha-v2.component'
           );
 
-          const moduleRef = createNgModuleRef(CaptchaV2ComponentModule, this.injector);
+          const moduleRef = createNgModule(CaptchaV2ComponentModule, this.injector);
           const componentRef = this.anchor.createComponent(CaptchaV2Component, { ngModuleRef: moduleRef });
 
           componentRef.instance.cssClass = this.cssClass;

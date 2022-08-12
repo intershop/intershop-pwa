@@ -18,4 +18,5 @@ export interface PaymentMethod {
   paymentInstruments?: PaymentInstrument[];
   parameters?: FormlyFieldConfig[];
   hostedPaymentPageParameters?: { name: string; value: string }[];
+  hasParameters?: boolean; // Needed for old payment method user REST api
 }

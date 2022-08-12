@@ -52,7 +52,7 @@ As a basic rule of thumb we only test happy path functionality or workflows that
 
 Unit and module tests are closely located next to the production source code in the _src_ folder.
 
-Integration and end-to-end tests currently reside in _cypress/integration/specs_. _PageObjects_ are located in _cypress/integration/pages_.
+Integration and end-to-end tests currently reside in _cypress/e2e/specs_. _PageObjects_ are located in _cypress/e2e/pages_.
 If the filename of a spec contains the string `mock`, it is run as an integration test with mocked server API.
 If it (additionally) contains `b2c` or `b2b` the test also should run on the PWA set up with the corresponding channel.
 

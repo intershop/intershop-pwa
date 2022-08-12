@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -26,7 +26,7 @@ describe('Pages Effects', () => {
   let effects: PagesEffects;
   let cmsServiceMock: CMSService;
   let router: Router;
-  let store$: Store;
+  let store: Store;
   let httpStatusCodeService: HttpStatusCodeService;
 
   beforeEach(() => {
@@ -50,7 +50,7 @@ describe('Pages Effects', () => {
 
     effects = TestBed.inject(PagesEffects);
     router = TestBed.inject(Router);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
   });
 
@@ -124,7 +124,7 @@ describe('Pages Effects', () => {
     beforeEach(fakeAsync(() => {
       router.navigateByUrl('/page/1.1');
       tick(500);
-      store$.dispatch(
+      store.dispatch(
         loadContentPageSuccess({
           page: { id: '1.1', displayName: 'page 1.1' } as ContentPageletEntryPoint,
           pagelets: [],
@@ -143,11 +143,11 @@ describe('Pages Effects', () => {
     });
 
     it('should set page breadcrumb if selected content page is part of a page tree', done => {
-      store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
+      store.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
       effects.setBreadcrumbForContentPage$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"key":"page 1","link":"/page/1"},{"key":"page 1.1"}]
+            breadcrumbData: [{"key":"page 1","link":"/page-1-pg1"},{"key":"page 1.1"}]
         `);
         done();
       });

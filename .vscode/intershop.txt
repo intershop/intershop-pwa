@@ -165,9 +165,6 @@ condensedbold
 robotoregular
 robotobold
 grecaptcha
-propertyeditor
-propertygroup
-propertygroups
 noneditable
 productdetail
 storefinder

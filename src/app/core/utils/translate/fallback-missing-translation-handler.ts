@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { ErrorHandler, Inject, Injectable, InjectionToken, PLATFORM_ID } from '@angular/core';
+import { ErrorHandler, Inject, Injectable, InjectionToken } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {
   MissingTranslationHandler,
@@ -25,7 +24,6 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
     private translateParser: TranslateParser,
     private errorHandler: ErrorHandler,
     @Inject(FALLBACK_LANG) private fallback: string,
-    @Inject(PLATFORM_ID) private platformId: string,
     private store: Store
   ) {}
 
@@ -76,7 +74,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
         this.reportMissingTranslation(currentLang, params.key);
       }
 
-      const doSingleCheck = isPlatformBrowser(this.platformId) && /\berror\b/.test(params.key);
+      const doSingleCheck = !SSR && /\berror\b/.test(params.key);
       const isFallbackAvailable = currentLang !== this.fallback;
       return concat(
         // try API call with specific key

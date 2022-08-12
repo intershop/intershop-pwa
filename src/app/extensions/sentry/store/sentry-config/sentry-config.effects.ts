@@ -1,9 +1,8 @@
-import { isPlatformServer } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Action, Store, select } from '@ngrx/store';
-import { Severity, addBreadcrumb, captureEvent, configureScope, init } from '@sentry/browser';
+import { addBreadcrumb, captureEvent, configureScope, init } from '@sentry/browser';
 import { EMPTY, iif } from 'rxjs';
 import { distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -27,13 +26,12 @@ export class SentryConfigEffects {
     private stateProperties: StatePropertiesService,
     private transferState: TransferState,
     private store: Store,
-    @Inject(PLATFORM_ID) private platformId: string,
     private cookiesService: CookiesService
   ) {}
 
   setSentryConfig$ = createEffect(() =>
     this.actions$.pipe(
-      takeWhile(() => isPlatformServer(this.platformId) && this.featureToggleService.enabled('sentry')),
+      takeWhile(() => SSR && this.featureToggleService.enabled('sentry')),
       take(1),
       withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('SENTRY_DSN', 'sentryDSN')),
       map(([, sentryDSN]) => sentryDSN),
@@ -89,7 +87,7 @@ export class SentryConfigEffects {
         distinctUntilChanged(),
         tap(error => {
           captureEvent({
-            level: Severity.Error,
+            level: 'error',
             message: typeof error === 'string' ? error : `${error.code} - ${error.message}`,
             extra: { error },
             tags: { origin: 'Error Page' },
@@ -106,7 +104,7 @@ export class SentryConfigEffects {
         tap(action => {
           const err = action.payload.error;
           captureEvent({
-            level: Severity.Error,
+            level: 'error',
             message: err.message,
             extra: {
               error: err,

@@ -97,26 +97,6 @@ You can use the `override` schematic to introduce custom theme overrides:
 
 ![override](./customizations-ng-g-override-schematic.gif)
 
-#### Deep Copies with Replacements (DEPRECATED)
-
-We supply a schematic `customized-copy` for copying components and replacing all usages.
-This schematic should only be used in rare cases.
-Prefer using theme overrides
-
-```bash
-$ node schematics/customization/add brand
-$ ng g customized-copy shared/components/product/product-price
-CREATE src/app/shared/components/product/brand-product-price/brand-product-price.component.html (1591 bytes)
-CREATE src/app/shared/components/product/brand-product-price/brand-product-price.component.spec.ts (7632 bytes)
-CREATE src/app/shared/components/product/brand-product-price/brand-product-price.component.ts (1370 bytes)
-UPDATE src/app/shared/shared.module.ts (12676 bytes)
-UPDATE src/app/shared/components/product/product-row/product-row.component.html (4110 bytes)
-UPDATE src/app/shared/components/product/product-row/product-row.component.spec.ts (5038 bytes)
-UPDATE src/app/shared/components/product/product-tile/product-tile.component.html (2140 bytes)
-UPDATE src/app/shared/components/product/product-tile/product-tile.component.spec.ts (4223 bytes)
-...
-```
-
 ### Existing Features
 
 When you want to **disable code** provided by Intershop, it is better to **comment it out instead of deleting** it.

@@ -30,6 +30,7 @@ export interface PaymentMethodBaseData {
   paymentInstruments?: string[];
   parameterDefinitions?: PaymentMethodParameterType[];
   hostedPaymentPageParameters?: { name: string; value: string }[];
+  paymentParameters?: { name: string; key: string }[]; // Needed for old payment method user REST api
 }
 
 export interface PaymentMethodData {

@@ -28,12 +28,4 @@ export class AccountPaymentPageComponent implements OnInit {
     this.loading$ = this.accountFacade.userLoading$;
     this.user$ = this.accountFacade.user$;
   }
-
-  deletePaymentInstrument(instrumentId: string) {
-    this.accountFacade.deletePaymentInstrument(instrumentId);
-  }
-
-  updateDefaultPaymentInstrument(user: User) {
-    this.accountFacade.updateUser(user, { message: 'account.payment.payment_created.message' });
-  }
 }

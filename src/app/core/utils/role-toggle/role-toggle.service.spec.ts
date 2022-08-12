@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
-import { cold } from 'jest-marbles';
+import { cold } from 'jasmine-marbles';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadRolesAndPermissionsSuccess } from 'ish-core/store/customer/authorization';
@@ -9,7 +9,7 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { RoleToggleService } from './role-toggle.service';
 
 describe('Role Toggle Service', () => {
-  let store$: Store;
+  let store: Store;
   let roleToggleService: RoleToggleService;
 
   beforeEach(() => {
@@ -17,8 +17,8 @@ describe('Role Toggle Service', () => {
       imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('authorization')],
     });
 
-    store$ = TestBed.inject(Store);
-    store$.dispatch(
+    store = TestBed.inject(Store);
+    store.dispatch(
       loadRolesAndPermissionsSuccess({
         authorization: { roles: [{ roleId: 'ROLE1', displayName: 'Role 1' }], permissionIDs: [] },
       })

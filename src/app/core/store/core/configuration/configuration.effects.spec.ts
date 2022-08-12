@@ -1,5 +1,4 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -21,11 +20,7 @@ describe('Configuration Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BrowserTransferStateModule,
-        CoreStoreModule.forTesting(['configuration', 'serverConfig']),
-        TranslateModule.forRoot(),
-      ],
+      imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig']), TranslateModule.forRoot()],
       providers: [
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
         ConfigurationEffects,

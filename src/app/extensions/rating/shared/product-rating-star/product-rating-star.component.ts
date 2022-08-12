@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+export type RatingFilledType = 'full' | 'half' | 'empty';
 /**
  * The Product Rating Star Component renders a single rating star.
  *
  * @example
- * <ish-product-rating-star filled="full" [lastStar]="true"></ish-product-rating-star>
+ * <ish-product-rating-star filled="full"></ish-product-rating-star>
  */
 @Component({
   selector: 'ish-product-rating-star',
@@ -16,9 +17,5 @@ export class ProductRatingStarComponent {
   /**
    * filling state of the star
    */
-  @Input() filled: 'full' | 'half' | 'empty';
-  /**
-   * add space, when the star isn't the last one
-   */
-  @Input() lastStar = false;
+  @Input() filled: RatingFilledType;
 }

@@ -1,3 +1,4 @@
+import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -7,6 +8,7 @@ import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
 import { LineItemListElementComponent } from 'ish-shared/components/line-item/line-item-list-element/line-item-list-element.component';
 
 import { LineItemListComponent } from './line-item-list.component';
@@ -21,6 +23,7 @@ describe('Line Item List Component', () => {
       declarations: [
         LineItemListComponent,
         MockComponent(LineItemListElementComponent),
+        MockComponent(PagingComponent),
         MockDirective(ProductContextDirective),
         MockPipe(PricePipe),
       ],
@@ -42,12 +45,30 @@ describe('Line Item List Component', () => {
   });
 
   it('should render sub components if basket changes', () => {
+    const changes: SimpleChanges = {
+      lineItems: new SimpleChange(false, component.lineItems, false),
+    };
+
+    component.ngOnChanges(changes);
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-line-item-list-element",
       ]
     `);
+    expect(element.querySelector('ish-paging')).toBeFalsy();
+  });
+
+  it('should display the paging bar if the number of lineitems exceeds the page size', () => {
+    component.pageSize = 1;
+    component.lineItems = [BasketMockData.getBasketItem(), BasketMockData.getBasketItem()];
+    const changes: SimpleChanges = {
+      lineItems: new SimpleChange(false, component.lineItems, false),
+    };
+
+    component.ngOnChanges(changes);
+    fixture.detectChanges();
+    expect(element.querySelector('ish-paging')).toBeTruthy();
   });
 
   describe('totals', () => {

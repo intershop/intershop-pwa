@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -24,7 +24,7 @@ describe('Punchout Functions Effects', () => {
   let actions$: Observable<Action>;
   let effects: PunchoutFunctionsEffects;
   let punchoutService: PunchoutService;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     punchoutService = mock(PunchoutService);
@@ -40,12 +40,12 @@ describe('Punchout Functions Effects', () => {
     });
 
     effects = TestBed.inject(PunchoutFunctionsEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('transferPunchoutBasket$', () => {
     beforeEach(() => {
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: {
             id: 'BID',

@@ -186,7 +186,7 @@ describe('Products Selectors', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
               Array [
                 Object {
-                  "link": "/nA-catA",
+                  "link": "/na-ctgA",
                   "text": "nA",
                 },
                 Object {
@@ -208,7 +208,7 @@ describe('Products Selectors', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
               Array [
                 Object {
-                  "link": "/nB-catB",
+                  "link": "/nb-ctgB",
                   "text": "nB",
                 },
                 Object {
@@ -231,7 +231,7 @@ describe('Products Selectors', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
               Array [
                 Object {
-                  "link": "/nB-catB",
+                  "link": "/nb-ctgB",
                   "text": "nB",
                 },
                 Object {

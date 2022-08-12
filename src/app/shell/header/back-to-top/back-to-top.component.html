@@ -1,0 +1,9 @@
+<button
+  type="button"
+  class="btn btn-primary shadow back-to-top-btn"
+  [style.display]="isVisible ? 'block' : 'none'"
+  [title]="'back_to_top.title' | translate"
+  (click)="jump()"
+>
+  <fa-icon [icon]="['fas', 'angle-up']"></fa-icon>
+</button>

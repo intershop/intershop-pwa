@@ -14,7 +14,10 @@ const initialState: ServerConfigState = {
 
 export const serverConfigReducer = createReducer(
   initialState,
-  on(loadServerConfigSuccess, (_, action) => ({
-    _config: action.payload.config,
-  }))
+  on(
+    loadServerConfigSuccess,
+    (_, action): ServerConfigState => ({
+      _config: action.payload.config,
+    })
+  )
 );

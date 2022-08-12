@@ -73,12 +73,35 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-          Object {
-            "message": "The promotion code could not be added. The promotion code could not be found. Some other error.",
-            "name": "HttpErrorResponse",
-            "status": 422,
-          }
-        `);
+Object {
+  "errors": Array [
+    Object {
+      "causes": Array [
+        Object {
+          "code": "basket.promotion_code.add_code_promotion_code_not_found.error",
+          "message": "The promotion code could not be found.",
+          "paths": Array [
+            "$.code",
+          ],
+        },
+        Object {
+          "code": "some.other.error",
+          "message": "Some other error.",
+          "paths": Array [
+            "$.code",
+          ],
+        },
+      ],
+      "code": "basket.promotion_code.add_not_successful.error",
+      "message": "The promotion code could not be added.",
+      "status": "422",
+    },
+  ],
+  "message": "The promotion code could not be added. The promotion code could not be found. Some other error.",
+  "name": "HttpErrorResponse",
+  "status": 422,
+}
+`);
         done();
       },
     });
@@ -114,12 +137,21 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-          Object {
-            "message": "The product could not be added to your cart.",
-            "name": "HttpErrorResponse",
-            "status": 422,
-          }
-        `);
+Object {
+  "errors": Array [
+    Object {
+      "code": "basket.add_line_item_not_successful.error",
+      "message": "The product could not be added to your cart.",
+      "paths": Array [
+        "$[0]",
+      ],
+      "status": "422",
+    },
+  ],
+  "name": "HttpErrorResponse",
+  "status": 422,
+}
+`);
         done();
       },
     });

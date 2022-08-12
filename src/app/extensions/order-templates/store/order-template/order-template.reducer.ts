@@ -74,7 +74,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateFail,
     addBasketToNewOrderTemplateFail,
     updateOrderTemplateFail,
-    (state: OrderTemplateState) => ({
+    (state: OrderTemplateState): OrderTemplateState => ({
       ...state,
       selected: undefined as string,
     })
@@ -99,7 +99,7 @@ export const orderTemplateReducer = createReducer(
     const { orderTemplateId } = action.payload;
     return orderTemplateAdapter.removeOne(orderTemplateId, state);
   }),
-  on(selectOrderTemplate, (state, action) => {
+  on(selectOrderTemplate, (state, action): OrderTemplateState => {
     const { id } = action.payload;
     return {
       ...state,

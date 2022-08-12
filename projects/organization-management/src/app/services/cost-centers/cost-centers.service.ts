@@ -10,6 +10,7 @@ import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 @Injectable({ providedIn: 'root' })
 export class CostCentersService {
@@ -152,7 +153,10 @@ export class CostCentersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .patch(`customers/${customer.customerNo}/costcenters/${costCenterId}/buyers/${buyer.login}`, buyer)
+          .patch(
+            `customers/${customer.customerNo}/costcenters/${costCenterId}/buyers/${encodeResourceID(buyer.login)}`,
+            buyer
+          )
           .pipe(concatMap(() => this.getCostCenter(costCenterId)))
       )
     );
@@ -176,7 +180,7 @@ export class CostCentersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .delete(`customers/${customer.customerNo}/costcenters/${costCenterId}/buyers/${login}`)
+          .delete(`customers/${customer.customerNo}/costcenters/${costCenterId}/buyers/${encodeResourceID(login)}`)
           .pipe(concatMap(() => this.getCostCenter(costCenterId)))
       )
     );

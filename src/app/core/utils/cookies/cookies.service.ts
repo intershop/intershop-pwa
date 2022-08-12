@@ -1,5 +1,5 @@
-import { APP_BASE_HREF, DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 
 import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
@@ -23,7 +23,6 @@ interface CookiesOptions {
 @Injectable({ providedIn: 'root' })
 export class CookiesService {
   constructor(
-    @Inject(PLATFORM_ID) private platformId: string,
     @Inject(COOKIE_CONSENT_OPTIONS) private cookieConsentOptions: CookieConsentOptions,
     private transferState: TransferState,
     @Inject(APP_BASE_HREF) private baseHref: string,
@@ -31,17 +30,17 @@ export class CookiesService {
   ) {}
 
   get(key: string): string {
-    return isPlatformBrowser(this.platformId) ? (this.cookiesReader()[key] as string) : undefined;
+    return !SSR ? (this.cookiesReader()[key] as string) : undefined;
   }
 
   remove(key: string) {
-    if (isPlatformBrowser(this.platformId)) {
+    if (!SSR) {
       this.cookiesWriter()(key, undefined);
     }
   }
 
   put(key: string, value: string, options?: CookiesOptions) {
-    if (isPlatformBrowser(this.platformId)) {
+    if (!SSR) {
       this.cookiesWriter()(key, value, options);
     }
   }
@@ -73,7 +72,7 @@ export class CookiesService {
    * @returns      'true' if the user has given the consent for the requested option, 'false' otherwise.
    */
   cookieConsentFor(option: string): boolean {
-    if (isPlatformBrowser(this.platformId)) {
+    if (!SSR) {
       const cookieConsentSettings = JSON.parse(this.get('cookieConsent') || 'null') as CookieConsentSettings;
       return cookieConsentSettings?.enabledOptions ? cookieConsentSettings.enabledOptions.includes(option) : false;
     } else {

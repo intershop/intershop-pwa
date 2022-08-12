@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
@@ -34,7 +34,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
   addresses$: Observable<Address[]>;
   customerAddresses$: Observable<Address[]>;
 
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
   editAddress: Partial<Address>;
   emptyOptionLabel = 'checkout.addresses.select_invoice_address.button';
@@ -122,7 +122,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
       this.collapse = true;
     } else {
       this.checkoutFacade.createBasketAddress(address, 'invoice');
-      (this.form.get('id') as FormControl).setValue('', { emitEvent: false });
+      (this.form.get('id') as UntypedFormControl).setValue('', { emitEvent: false });
     }
   }
 

@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
@@ -49,8 +48,7 @@ export class SearchEffects {
     private suggestService: SuggestService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
-    private translateService: TranslateService,
-    @Inject(PLATFORM_ID) private platformId: string
+    private translateService: TranslateService
   ) {}
 
   /**
@@ -108,7 +106,7 @@ export class SearchEffects {
 
   suggestSearch$ = createEffect(() =>
     this.actions$.pipe(
-      takeWhile(() => isPlatformBrowser(this.platformId)),
+      takeWhile(() => !SSR),
       ofType(suggestSearch),
       mapToPayloadProperty('searchTerm'),
       debounceTime(400),

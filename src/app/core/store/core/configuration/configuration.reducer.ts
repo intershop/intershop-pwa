@@ -16,6 +16,7 @@ export interface ConfigurationState {
   identityProvider?: string;
   identityProviders?: { [id: string]: { type?: string; [key: string]: unknown } };
   features?: string[];
+  addFeatures?: string[];
   defaultLocale?: string;
   localeCurrencyOverride?: { [locale: string]: string | string[] };
   lang?: string;
@@ -33,12 +34,13 @@ const initialState: ConfigurationState = {
   channel: undefined,
   application: undefined,
   features: undefined,
+  addFeatures: [],
   defaultLocale: environment.defaultLocale,
   localeCurrencyOverride: environment.localeCurrencyOverride,
   lang: undefined,
   currency: undefined,
   serverTranslations: {},
-  multiSiteLocaleMap: {},
+  multiSiteLocaleMap: undefined,
   _deviceType: environment.defaultDeviceType,
 };
 
@@ -59,7 +61,7 @@ function addSingleTranslation(
 
 export const configurationReducer = createReducer(
   initialState,
-  on(applyConfiguration, (state, action) => ({ ...state, ...action.payload })),
+  on(applyConfiguration, (state, action): ConfigurationState => ({ ...state, ...action.payload })),
   on(loadSingleServerTranslationSuccess, (state, action) =>
     addSingleTranslation(state, action.payload.lang, action.payload.key, action.payload.translation)
   )

@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
 import { ProductShipmentComponent } from './product-shipment.component';
@@ -23,11 +22,7 @@ describe('Product Shipment Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(ContentIncludeComponent),
-        MockComponent(ModalDialogLinkComponent),
-        ProductShipmentComponent,
-      ],
+      declarations: [MockComponent(ModalDialogLinkComponent), ProductShipmentComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });

@@ -59,7 +59,7 @@ export class SpecialValidators {
      * - no IPs allowed for login emails
      * - only some special characters allowed
      */
-    return /^([\w\-\~]+\.)*[\w\-\~]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}$/.test(control.value)
+    return /^([\w\-\~\+]+\.)*[\w\-\~\+]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}$/.test(control.value)
       ? undefined
       : { email: { valid: false } };
   }

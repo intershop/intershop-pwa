@@ -15,7 +15,7 @@ import { ContentStoreModule } from './content-store.module';
 import { getContentInclude, loadContentInclude, loadContentIncludeSuccess } from './includes';
 
 describe('Content Store', () => {
-  let store$: Store;
+  let store: Store;
   const include = {
     definitionQualifiedName: 'dqn',
     displayName: 'Include',
@@ -42,21 +42,21 @@ describe('Content Store', () => {
       ],
     });
 
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   it('should be created', () => {
-    expect(store$).toBeTruthy();
+    expect(store).toBeTruthy();
   });
 
   it('should be properly memoized for content include selector', done => {
     const callback = { m: identity };
     const callbackSpy = spy(callback);
 
-    store$.pipe(select(getContentInclude('id')), whenTruthy()).subscribe(i => callback.m(i));
+    store.pipe(select(getContentInclude('id')), whenTruthy()).subscribe(i => callback.m(i));
 
-    store$.dispatch(loadContentInclude({ includeId: 'id' }));
-    store$.dispatch(loadContentInclude({ includeId: 'id' }));
+    store.dispatch(loadContentInclude({ includeId: 'id' }));
+    store.dispatch(loadContentInclude({ includeId: 'id' }));
 
     expect(capture(callbackSpy.m).last()).toMatchInlineSnapshot(`
       Array [
@@ -81,13 +81,13 @@ describe('Content Store', () => {
     verify(callbackSpy.m(anything())).once();
 
     const include2 = { id: 'id', displayName: 'Include 2', pageletIDs: ['2'] } as ContentPageletEntryPoint;
-    store$.dispatch(
+    store.dispatch(
       loadContentIncludeSuccess({
         include: { ...include2 },
         pagelets: [{ ...pagelet, id: '2' }],
       })
     );
-    store$.dispatch(
+    store.dispatch(
       loadContentIncludeSuccess({
         include: { ...include2 },
         pagelets: [{ ...pagelet, id: '2' }],

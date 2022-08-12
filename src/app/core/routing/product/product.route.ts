@@ -2,36 +2,48 @@ import { UrlMatchResult, UrlSegment } from '@angular/router';
 import { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { reservedCharactersRegEx } from 'ish-core/utils/routing';
+import { sanitizeSlugData } from 'ish-core/utils/routing';
 
-function generateProductSlug(product: ProductView) {
-  if (!product || !product.name) {
+/**
+ * generate a localized product slug
+ *
+ * @param product product element for slug
+ * @returns localized, formatted product slug
+ */
+function generateLocalizedProductSlug(product: ProductView) {
+  if (!product) {
     return;
   }
 
-  let slug = product.name.replace(reservedCharactersRegEx, '-').replace(/-+/g, '-').replace(/-+$/, '');
+  let slug = product.name || '';
 
   if (ProductHelper.isVariationProduct(product) && product.variableVariationAttributes) {
     slug += '-';
     slug += product.variableVariationAttributes
       .map(att => att.value)
       .filter(val => typeof val === 'string' || typeof val === 'boolean' || typeof val === 'number')
-      .map(val => val.toString().replace(reservedCharactersRegEx, '-'))
-      .join('-')
-      .replace(/-+/g, '-');
+      .map(val => val.toString())
+      .join('-');
   }
 
-  return slug.replace('-cat', '-Cat');
+  return sanitizeSlugData(slug);
 }
 
-const productRouteFormat = new RegExp('/(?!cat)((?!.*-cat.*-sku).*-)?sku(.*?)(-cat(.*))?$');
+// matcher to check if a given url is a product url
+const productRouteFormat = /\/(?!ctg)(?!.*-ctg.*-prd)(.*?)-?prd(.*?)(-ctg(.*))?$/;
 
+/**
+ * check if a given url is a product url
+ *
+ * @param segments current url segments
+ * @returns match result if given url is a product route or not
+ */
 export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
   const isSimpleProduct = segments && segments.length > 0 && segments[0].path === 'product';
@@ -40,8 +52,12 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
     return { consumed: [] };
   }
 
+  // generate complete url path
   const url = `/${segments.map(s => s.path).join('/')}`;
+
+  // check that complete url path is a product route
   if (productRouteFormat.test(url)) {
+    // select product sku and categoryUniqueId to render a product detail page
     const match = productRouteFormat.exec(url);
     const posParams: { [id: string]: UrlSegment } = {};
     if (match[4]) {
@@ -58,27 +74,39 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   return;
 }
 
-export function generateProductUrl(product: ProductView, category?: Category): string {
+/**
+ * generate a localized product url from a product view
+ *
+ * @param product product view
+ * @param category optional category view
+ * @returns localized product url
+ */
+export function generateProductUrl(product: ProductView, category?: CategoryView): string {
   if (!product || !product.sku) {
     return '/';
   }
 
   let route = '/';
 
+  // get right category context for given product
   const contextCategory = category || product?.defaultCategory;
-  if (contextCategory) {
-    route += generateLocalizedCategorySlug(contextCategory);
+
+  // generate for each path element from the category context a category slug and join them together to a complete route
+  if (contextCategory?.pathElements) {
+    route += contextCategory?.pathElements.map(el => generateLocalizedCategorySlug(el)).join('/');
     route += '/';
   }
 
+  // add product slug with product name to the route
   if (product?.name) {
-    route += `${generateProductSlug(product)}-`;
+    route += `${generateLocalizedProductSlug(product)}-`;
   }
 
-  route += `sku${product.sku}`;
+  // sku and category identifier are added to the route
+  route += `prd${product.sku}`;
 
   if (contextCategory) {
-    route += `-cat${contextCategory.uniqueId}`;
+    route += `-ctg${contextCategory.uniqueId}`;
   }
 
   return route;

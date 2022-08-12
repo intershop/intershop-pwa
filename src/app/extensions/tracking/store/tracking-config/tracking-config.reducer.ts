@@ -4,5 +4,5 @@ import { setGTMToken } from './tracking-config.actions';
 
 export const trackingConfigReducer = createReducer<string>(
   undefined,
-  on(setGTMToken, (_, action) => action.payload.gtmToken)
+  on(setGTMToken, (_, action): string => action.payload.gtmToken)
 );

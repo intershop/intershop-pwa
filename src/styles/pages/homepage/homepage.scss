@@ -51,18 +51,3 @@
   padding: 40px 0;
   background-color: $color-tertiary;
 }
-
-.welcome-message {
-  margin-top: $space-default;
-
-  p {
-    margin-bottom: divide($space-default, 3);
-    font-family: $font-family-condensedbold;
-    font-size: $font-size-lg;
-    text-transform: uppercase;
-  }
-
-  a {
-    padding-right: $space-default * 0.5;
-  }
-}

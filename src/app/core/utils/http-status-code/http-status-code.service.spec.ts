@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
@@ -60,14 +59,11 @@ describe('Http Status Code Service', () => {
     });
   });
 
-  describe('on server', () => {
+  describe.onSSREnvironment('on server', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [RouterTestingModule.withRoutes([{ path: 'error', children: [] }])],
-        providers: [
-          { provide: PLATFORM_ID, useValue: 'server' },
-          { provide: RESPONSE, useValue: RES },
-        ],
+        providers: [{ provide: RESPONSE, useValue: RES }],
       });
       httpStatusCodeService = TestBed.inject(HttpStatusCodeService);
       location = TestBed.inject(Location);

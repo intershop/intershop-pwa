@@ -6,33 +6,29 @@ on:
     paths-ignore:
       - '**.md'
       - 'docs/**'
-
-env:
-  B2C_APP_SUFFIX: universal-b2c
-  B2B_APP_SUFFIX: universal-b2b
+  workflow_dispatch:
 
 jobs:
   RemoveDemoServer:
-    if: github.event.pull_request.head.repo.owner.login == 'intershop'
+    if: github.event.repository.full_name == 'intershop/intershop-pwa'
     runs-on: ubuntu-latest
     steps:
+      - name: Determine App Names
+        run: |
+          if [[ -n "${{ github.event.pull_request.head.ref }}" ]]
+          then
+            REF=${{ github.event.pull_request.head.ref }}
+          else
+            REF=${{ github.event.ref }}
+          fi
+          REF=$( echo $REF | sed -e 's/refs\/heads\///' | sed -e 's/[^a-zA-Z0-9-]/-/g' )
+          APP_NAME=$(printf '%.60s' "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-$REF")
+          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
       - name: Login to Azure
         run: az login --service-principal --username ${{ secrets.AZURE_SP_USERNAME }} --password ${{ secrets.AZURE_SP_PASSWORD }} --tenant ${{ secrets.AZURE_SP_TENANT }}
-
-      - name: Remove Universal B2C App
-        env:
-          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2C_APP_SUFFIX }}'
-          GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: test -z "$(az webapp show -g $GROUP -n $APP)" || az webapp delete -g $GROUP --name $APP
-
-      - name: Remove Universal B2B App
-        env:
-          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}-${{ env.B2B_APP_SUFFIX }}'
-          GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: test -z "$(az webapp show -g $GROUP -n $APP)" || az webapp delete -g $GROUP --name $APP
 
       - name: Remove containerized WebApp
         env:
           APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
           GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
-        run: test -z "$(az webapp show -g $GROUP -n $APP)" || az webapp delete -g $GROUP --name $APP
+        run: test -z "$(az webapp show -g $GROUP -n $APP_NAME)" || az webapp delete -g $GROUP --name $APP_NAME

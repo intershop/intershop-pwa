@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
+import { v4 as uuid } from 'uuid';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -58,7 +58,7 @@ export class UserCreatePageComponent implements OnInit {
       active: formValue.profile.active,
       phoneHome: formValue.profile.phoneHome,
       birthday: formValue.profile.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
-      businessPartnerNo: `U${UUID.UUID()}`,
+      businessPartnerNo: `U${uuid()}`,
       roleIDs: formValue.roleIDs,
       userBudget: formValue.userBudget.currency
         ? {

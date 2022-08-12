@@ -3,6 +3,9 @@ import { ClassDeclaration, Node, Project, ReferenceFindableNode, SyntaxKind, ts 
 
 /* eslint-disable no-console */
 
+// RegEx for file exceptions where the '// not-dead-code' exception does not work, e.g. for 'export const'
+const fileExceptionsRegex = /\/src\/environments\/|.*.production.ts$|utils\/routing.ts$/;
+
 const classMethodCheckRegex = /.*(Mapper|Helper|Facade|Service|State)$/;
 
 const project = new Project({ tsConfigFilePath: 'tsconfig.all.json' });
@@ -130,7 +133,7 @@ function checkNode(node: Node) {
     return;
   }
 
-  if (/\/src\/environments\/|.*.production.ts$/.test(node.getSourceFile().getFilePath())) {
+  if (fileExceptionsRegex.test(node.getSourceFile().getFilePath())) {
     return;
   }
 

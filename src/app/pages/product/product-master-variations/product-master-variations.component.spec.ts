@@ -43,7 +43,7 @@ describe('Product Master Variations Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
-      <a id="variation-list-top"></a
+      <a id="variation-list-top" title="top"></a
       ><ish-filter-navigation
         orientation="horizontal"
         ng-reflect-orientation="horizontal"

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -37,7 +37,7 @@ describe('Basket Addresses Effects', () => {
   let basketServiceMock: BasketService;
   let addressServiceMock: AddressService;
   let effects: BasketAddressesEffects;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
@@ -54,14 +54,14 @@ describe('Basket Addresses Effects', () => {
     });
 
     effects = TestBed.inject(BasketAddressesEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('createAddressForBasket$ for a logged in user', () => {
     beforeEach(() => {
       when(addressServiceMock.createCustomerAddress('-', anything())).thenReturn(of(BasketMockData.getAddress()));
 
-      store$.dispatch(
+      store.dispatch(
         loginUserSuccess({
           customer: {
             customerNo: '4711',
@@ -193,7 +193,7 @@ describe('Basket Addresses Effects', () => {
       when(addressServiceMock.updateCustomerAddress(anyString(), anything())).thenReturn(
         of(BasketMockData.getAddress())
       );
-      store$.dispatch(loginUserSuccess({ customer: {} as Customer }));
+      store.dispatch(loginUserSuccess({ customer: {} as Customer }));
     });
 
     it('should call the addressService for updateBasketAddress', done => {

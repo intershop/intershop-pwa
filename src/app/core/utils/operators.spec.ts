@@ -1,5 +1,5 @@
 import { createAction } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { of } from 'rxjs';
 
 import { httpError } from 'ish-core/utils/ngrx-creators';
@@ -27,7 +27,7 @@ describe('Operators', () => {
   });
 
   describe('mapErrorToAction', () => {
-    const dummyFail = createAction('dummy', httpError());
+    const dummyFail = createAction('[] dummy', httpError());
 
     it('should catch HttpErrorResponse and convert them to Fail actions', () => {
       const error = makeHttpError({
@@ -39,7 +39,7 @@ describe('Operators', () => {
       const result$ = cold('---(a|)', {
         a: {
           payload: { error },
-          type: 'dummy',
+          type: '[] dummy',
         },
       });
 
@@ -50,7 +50,7 @@ describe('Operators', () => {
       const error = new Error('other error');
 
       const input$ = hot('  ---#', undefined, error);
-      const result$ = cold('---#');
+      const result$ = cold('---#', undefined, error);
 
       expect(input$.pipe(mapErrorToAction(dummyFail))).toBeObservable(result$);
     });

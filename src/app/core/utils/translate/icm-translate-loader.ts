@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { TranslateLoader } from '@ngx-translate/core';
 import { memoize } from 'lodash-es';
@@ -12,18 +11,14 @@ import { Translations } from './translations.type';
 
 @Injectable()
 export class ICMTranslateLoader implements TranslateLoader {
-  constructor(
-    private transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId: string,
-    private localizations: LocalizationsService
-  ) {}
+  constructor(private transferState: TransferState, private localizations: LocalizationsService) {}
 
   getTranslation = memoize(lang => {
     const SSR_TRANSLATIONS = makeStateKey<Translations>(`ssrTranslations-${lang}`);
 
     const local$ = defer(() => from(import(`../../../../assets/i18n/${lang}.json`)).pipe(catchError(() => of({}))));
     const server$ = iif(
-      () => isPlatformBrowser(this.platformId) && this.transferState.hasKey(SSR_TRANSLATIONS),
+      () => !SSR && this.transferState.hasKey(SSR_TRANSLATIONS),
       of(this.transferState.get(SSR_TRANSLATIONS, {})),
       this.localizations.getServerTranslations(lang).pipe(
         tap(data => {

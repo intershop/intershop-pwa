@@ -1,29 +1,27 @@
-<ng-container *ngIf="contentPageTree$ | async as contentPageTree">
-  <ng-container *ngIf="currentContentPage$ | async as currentContentPage">
-    <ul>
-      <ng-container
-        [ngTemplateOutlet]="pageTreeNode"
-        [ngTemplateOutletContext]="{ treeNodes: [contentPageTree], counter: 0 }"
-      ></ng-container>
-    </ul>
+<ng-container *ngIf="currentContentPage$ | async as currentContentPage">
+  <ul>
+    <ng-container
+      [ngTemplateOutlet]="pageTreeNode"
+      [ngTemplateOutletContext]="{ treeNodes: [contentPageTree], counter: 0 }"
+    ></ng-container>
+  </ul>
 
-    <!-- the recursively used template to render the tree nodes -->
-    <ng-template #pageTreeNode let-treeNodes="treeNodes" let-counter="counter">
-      <li
-        *ngFor="let treeNode of treeNodes"
-        [ngClass]="{ 'page-navigation-active': treeNode.contentPageId === currentContentPage.id }"
+  <!-- the recursively used template to render the tree nodes -->
+  <ng-template #pageTreeNode let-treeNodes="treeNodes" let-counter="counter">
+    <li
+      *ngFor="let treeNode of treeNodes"
+      [ngClass]="{ 'page-navigation-active': treeNode.contentPageId === currentContentPage.id }"
+    >
+      <a [routerLink]="treeNode | ishContentPageRoute" [title]="treeNode.name">{{ treeNode.name }}</a>
+      <ul
+        *ngIf="treeNode.children.length > 0 && ((!depth && depth !== 0) || depth >= counter)"
+        [ngClass]="'page-navigation-' + counter"
       >
-        <a [routerLink]="['/page', treeNode.contentPageId]" [title]="treeNode.name">{{ treeNode.name }}</a>
-        <ul
-          *ngIf="treeNode.children.length > 0 && ((!depth && depth !== 0) || depth >= counter)"
-          [ngClass]="'page-navigation-' + counter"
-        >
-          <ng-container
-            [ngTemplateOutlet]="pageTreeNode"
-            [ngTemplateOutletContext]="{ treeNodes: treeNode.children, counter: counter + 1 }"
-          ></ng-container>
-        </ul>
-      </li>
-    </ng-template>
-  </ng-container>
+        <ng-container
+          [ngTemplateOutlet]="pageTreeNode"
+          [ngTemplateOutletContext]="{ treeNodes: treeNode.children, counter: counter + 1 }"
+        ></ng-container>
+      </ul>
+    </li>
+  </ng-template>
 </ng-container>

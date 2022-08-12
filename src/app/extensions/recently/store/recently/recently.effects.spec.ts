@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { cold } from 'jest-marbles';
+import { cold } from 'jasmine-marbles';
 
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { getServerConfig } from 'ish-core/store/core/server-config';

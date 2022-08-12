@@ -83,10 +83,10 @@
       "description": "Flag to indicate if a dir is created.",
       "default": false
     },
-    "noCMSPrefixing": {
+    "cmsPrefixing": {
       "type": "boolean",
-      "description": "Flag to indicate if CMS prefixes should not be added.",
-      "default": false
+      "description": "Flag to indicate if CMS prefixes should be added.",
+      "default": true
     }
   }
 }

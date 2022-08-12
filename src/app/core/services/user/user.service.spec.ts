@@ -13,6 +13,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { UserService } from './user.service';
 
@@ -352,7 +353,9 @@ describe('User Service', () => {
 
     it("should get eligible cost centers for business user when 'getEligibleCostCenters' is called", done => {
       userService.getEligibleCostCenters().subscribe(() => {
-        verify(apiServiceMock.get(`customers/${customer.customerNo}/users/${user.login}/costcenters`)).once();
+        verify(
+          apiServiceMock.get(`customers/${customer.customerNo}/users/${encodeResourceID(user.login)}/costcenters`)
+        ).once();
         done();
       });
     });

@@ -62,13 +62,16 @@ export class PaymentMethodMapper {
       return [];
     }
 
-    // return only payment methods that have also a payment instrument
+    const pmBlacklist = ['ISH_FASTPAY', 'ISH_INVOICE_TOTAL_ZERO'];
+
+    // return only payment methods that have either payment instruments or no parameters
     return options.methods[0].payments
       .map(pm => ({
         id: pm.id,
         serviceId: pm.id, // is missing
         displayName: pm.displayName,
         restrictionCauses: pm.restrictions,
+        hasParameters: !!pm.paymentParameters?.length,
         paymentInstruments: options.instruments
           .filter(i => i.name === pm.id)
           .map(i => ({
@@ -78,7 +81,8 @@ export class PaymentMethodMapper {
             paymentMethod: pm.id,
           })),
       }))
-      .filter(x => x.paymentInstruments?.length);
+      .filter(pm => !pmBlacklist.includes(pm.serviceId))
+      .filter(pm => !pm.hasParameters || pm.paymentInstruments?.length);
   }
 
   /**

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
+import { v4 as uuid } from 'uuid';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -26,7 +26,7 @@ export class AccountPunchoutCreatePageComponent implements OnInit {
   }
 
   submitForm(user: PunchoutUser) {
-    const email = user.login + UUID.UUID();
+    const email = user.login + uuid();
     this.punchoutFacade.addPunchoutUser({ ...user, email });
   }
 }

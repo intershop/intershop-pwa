@@ -3,9 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { NotFoundStatusGuard } from 'ish-core/guards/not-found-status.guard';
 import { matchCategoryRoute } from 'ish-core/routing/category/category.route';
+import { matchContentRoute } from 'ish-core/routing/content-page/content-page.route';
 import { matchProductRoute } from 'ish-core/routing/product/product.route';
 
 const routes: Routes = [
+  {
+    matcher: matchContentRoute,
+    loadChildren: () => import('./content/content-page.module').then(m => m.ContentPageModule),
+  },
   {
     matcher: matchProductRoute,
     loadChildren: () => import('./product/product-page.module').then(m => m.ProductPageModule),

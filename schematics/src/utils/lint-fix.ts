@@ -23,6 +23,10 @@ const registerLintAtEnd = once((root: string) => {
 
 export function applyLintFix(): Rule {
   return tree => {
+    // do nothing for option --dry-run
+    if (process.argv.some(arg => arg === '--dry-run')) {
+      return;
+    }
     // Only include files that have been touched.
     tree.actions
       .map(action => action.path.substring(1))

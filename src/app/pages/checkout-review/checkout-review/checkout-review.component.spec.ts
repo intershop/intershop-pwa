@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -10,7 +10,6 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
@@ -40,7 +39,6 @@ describe('Checkout Review Component', () => {
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(BasketValidationResultsComponent),
-        MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
@@ -76,7 +74,10 @@ describe('Checkout Review Component', () => {
     const emitter = spy(component.createOrder);
 
     fixture.detectChanges();
-    component.form.get('termsAndConditions').setValue('true');
+
+    const form = component.form as UntypedFormGroup;
+
+    form.get('termsAndConditions').setValue('true');
     component.submitOrder();
     verify(emitter.emit()).once();
   });

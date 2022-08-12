@@ -27,7 +27,7 @@ describe('Compare Facade', () => {
 
 describe('Compare Facade', () => {
   let facade: CompareFacade;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,7 +35,7 @@ describe('Compare Facade', () => {
     });
 
     facade = TestBed.inject(CompareFacade);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   it('should be created', () => {
@@ -44,7 +44,7 @@ describe('Compare Facade', () => {
 
   describe('inCompareProducts$', () => {
     beforeEach(() => {
-      store$.dispatch(addToCompare({ sku: '123' }));
+      store.dispatch(addToCompare({ sku: '123' }));
     });
 
     it('should delegate value from addToCompare selector', done => {

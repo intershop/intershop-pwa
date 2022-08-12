@@ -1,5 +1,5 @@
-import { APP_BASE_HREF, DOCUMENT, isPlatformServer } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
+import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
+import { ApplicationRef, Inject, Injectable, Optional } from '@angular/core';
 import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
@@ -11,11 +11,13 @@ import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
 
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 import { generateCategoryUrl, ofCategoryUrl } from 'ish-core/routing/category/category.route';
+import { ofContentPageUrl } from 'ish-core/routing/content-page/content-page.route';
 import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
@@ -35,8 +37,7 @@ export class SeoEffects {
     @Inject(DOCUMENT) private doc: Document,
     @Optional() @Inject(REQUEST) private request: Request,
     @Inject(APP_BASE_HREF) private baseHref: string,
-    private appRef: ApplicationRef,
-    @Inject(PLATFORM_ID) private platformId: string
+    private appRef: ApplicationRef
   ) {}
 
   private pageTitle$ = new Subject<string>();
@@ -55,6 +56,8 @@ export class SeoEffects {
     filter(CategoryHelper.isCategoryCompletelyLoaded)
   );
 
+  private contentPage$ = this.store.pipe(ofContentPageUrl(), select(getSelectedContentPage));
+
   seoCanonicalLink$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -64,7 +67,9 @@ export class SeoEffects {
             // PRODUCT PAGE
             this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substring(1))),
             // CATEGORY / FAMILY PAGE
-            this.categoryPage$.pipe(map(category => this.baseURL + generateCategoryUrl(category).substring(1))),
+            this.categoryPage$.pipe(
+              map((category: CategoryView) => this.baseURL + generateCategoryUrl(category).substring(1))
+            ),
             // DEFAULT
             this.appRef.isStable.pipe(
               whenTruthy(),
@@ -111,12 +116,7 @@ export class SeoEffects {
                 map<string, Partial<SeoAttributes>>(title => ({ title }))
               ),
               // CONTENT PAGE
-              this.store.pipe(
-                ofUrl(/^\/page.*/),
-                select(getSelectedContentPage),
-                mapToProperty('seoAttributes'),
-                whenTruthy()
-              ),
+              this.contentPage$.pipe(mapToProperty('seoAttributes'), whenTruthy()),
             ])
           )
         )
@@ -143,7 +143,7 @@ export class SeoEffects {
         this.store.pipe(select(getCurrentLocale)),
         this.store.pipe(select(getAvailableLocales), whenTruthy()),
       ]).pipe(
-        takeWhile(() => isPlatformServer(this.platformId)),
+        takeWhile(() => SSR),
         tap(([current, locales]) => {
           this.metaService.addTag({ property: 'og:locale', content: current });
 

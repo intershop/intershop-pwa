@@ -1,5 +1,4 @@
-import { isPlatformServer } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
@@ -14,12 +13,7 @@ import { isServerConfigurationLoaded } from './server-config.selectors';
 
 @Injectable()
 export class ServerConfigEffects {
-  constructor(
-    private actions$: Actions,
-    private store: Store,
-    private configService: ConfigurationService,
-    @Inject(PLATFORM_ID) private platformId: string
-  ) {}
+  constructor(private actions$: Actions, private store: Store, private configService: ConfigurationService) {}
 
   /**
    * get server configuration on routing event, if it is not already loaded
@@ -27,7 +21,7 @@ export class ServerConfigEffects {
   loadServerConfigOnInit$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigationAction),
-      isPlatformServer(this.platformId) ? first() : identity,
+      SSR ? first() : identity,
       switchMap(() => this.store.pipe(select(isServerConfigurationLoaded))),
       whenFalsy(),
       map(() => loadServerConfig())

@@ -20,6 +20,10 @@ module.exports = {
     { value: 'build', name: 'build:    Anything build related' },
     { value: 'deps', name: 'deps:     Dependency updates' },
     {
+      value: 'ci',
+      name: 'ci:    Changes to the CI configuration files and scripts',
+    },
+    {
       value: 'chore',
       name: 'chore:    Anything else...',
     },

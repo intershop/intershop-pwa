@@ -4,5 +4,5 @@ import { setSentryConfig } from './sentry-config.actions';
 
 export const sentryConfigReducer = createReducer<string>(
   undefined,
-  on(setSentryConfig, (_, action) => action.payload.dsn)
+  on(setSentryConfig, (_, action): string => action.payload.dsn)
 );

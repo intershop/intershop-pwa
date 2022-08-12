@@ -62,19 +62,28 @@ export const productsReducer = createReducer(
       failed: removeFailed(state.failed, product.sku),
     });
   }),
-  on(loadProductVariationsSuccess, (state, action) => ({
-    ...state,
-    variations: { ...state.variations, [action.payload.sku]: action.payload.variations },
-    defaultVariation: { ...state.defaultVariation, [action.payload.sku]: action.payload.defaultVariation },
-  })),
-  on(loadProductPartsSuccess, (state, action) => ({
-    ...state,
-    parts: { ...state.parts, [action.payload.sku]: action.payload.parts },
-  })),
-  on(loadProductLinksSuccess, (state, action) => ({
-    ...state,
-    links: { ...state.links, [action.payload.sku]: action.payload.links },
-  })),
+  on(
+    loadProductVariationsSuccess,
+    (state, action): ProductsState => ({
+      ...state,
+      variations: { ...state.variations, [action.payload.sku]: action.payload.variations },
+      defaultVariation: { ...state.defaultVariation, [action.payload.sku]: action.payload.defaultVariation },
+    })
+  ),
+  on(
+    loadProductPartsSuccess,
+    (state, action): ProductsState => ({
+      ...state,
+      parts: { ...state.parts, [action.payload.sku]: action.payload.parts },
+    })
+  ),
+  on(
+    loadProductLinksSuccess,
+    (state, action): ProductsState => ({
+      ...state,
+      links: { ...state.links, [action.payload.sku]: action.payload.links },
+    })
+  ),
   on(productSpecialUpdate, (state, action) =>
     productAdapter.updateOne({ id: action.payload.sku, changes: action.payload.update }, state)
   )

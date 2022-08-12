@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -20,7 +20,7 @@ export class UserEditBudgetPageComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
 
-  budgetForm = new FormGroup({});
+  budgetForm = new UntypedFormGroup({});
   submitted = false;
 
   ngOnInit() {

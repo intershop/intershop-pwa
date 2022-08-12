@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { Loader } from '@googlemaps/js-api-loader';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 import { StoreLocationHelper } from '../../models/store-location/store-location.helper';
 import { StoreLocation } from '../../models/store-location/store-location.model';
@@ -20,7 +20,7 @@ export class StoresMapService {
   constructor(private store: Store, @Inject(STORE_MAP_ICON_CONFIGURATION) private icons: IconConfiguration) {}
 
   initialize(container: HTMLElement) {
-    this.store.select(getGMAKey).subscribe((gmaKey: string) => {
+    this.store.pipe(select(getGMAKey)).subscribe((gmaKey: string) => {
       this.initializeMap(container, gmaKey);
     });
   }
@@ -40,10 +40,10 @@ export class StoresMapService {
         streetViewControl: false,
       });
       this.infoWindow = new google.maps.InfoWindow();
-      this.store.select(getStores).subscribe(stores => {
+      this.store.pipe(select(getStores)).subscribe(stores => {
         this.placeMarkers(stores.filter(store => store.longitude && store.latitude));
       });
-      this.store.select(getHighlightedStore).subscribe(data => {
+      this.store.pipe(select(getHighlightedStore)).subscribe(data => {
         this.highlightMarkers(data);
       });
     });

@@ -248,10 +248,10 @@ describe('Shopping Store', () => {
           [Categories API] Load Category Success:
             categories: tree(A,A.123,A.123.456)
           [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
+            breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123"}]
           @ngrx/router-store/navigated: /category/A.123
           [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
+            breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123"}]
         `);
       }));
     });
@@ -369,7 +369,7 @@ describe('Shopping Store', () => {
           categories: tree(A,A.123,A.123.456)
         @ngrx/router-store/navigated: /category/A.123
         [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123"}]
+          breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123"}]
       `);
     }));
 
@@ -436,7 +436,7 @@ describe('Shopping Store', () => {
         [Product Listing] Load More Products:
           id: {"type":"category","value":"A.123.456"}
         [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
+          breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
         [Product Listing Internal] Load More Products For Params:
           id: {"type":"category","value":"A.123.456"}
           filters: undefined
@@ -495,12 +495,12 @@ describe('Shopping Store', () => {
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
-              breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
+              breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
             @ngrx/router-store/navigated: /category/A.123.456
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
-              breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
+              breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
           `);
         }));
       });
@@ -561,7 +561,7 @@ describe('Shopping Store', () => {
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
-              breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
+              breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
             [Product Listing Internal] Load More Products For Params:
               id: {"type":"category","value":"A.123.456"}
               filters: undefined
@@ -588,7 +588,7 @@ describe('Shopping Store', () => {
             [Product Listing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
-              breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
+              breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
           `);
         }));
       });
@@ -686,7 +686,7 @@ describe('Shopping Store', () => {
           [Product Listing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
           [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
+            breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
           [Product Listing Internal] Load More Products For Params:
             id: {"type":"category","value":"A.123.456"}
             filters: undefined
@@ -713,7 +713,7 @@ describe('Shopping Store', () => {
           [Product Listing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
           [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"nA","link":"/nA-catA"},{"text":"nA123","link":"/nA...
+            breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
         `);
       }));
     });

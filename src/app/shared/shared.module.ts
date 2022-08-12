@@ -11,7 +11,6 @@ import {
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SwiperModule } from 'swiper/angular';
 
@@ -62,6 +61,7 @@ import { BasketBuyerComponent } from './components/basket/basket-buyer/basket-bu
 import { BasketCostCenterSelectionComponent } from './components/basket/basket-cost-center-selection/basket-cost-center-selection.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketDesiredDeliveryDateComponent } from './components/basket/basket-desired-delivery-date/basket-desired-delivery-date.component';
+import { BasketErrorMessageComponent } from './components/basket/basket-error-message/basket-error-message.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
 import { BasketOrderReferenceComponent } from './components/basket/basket-order-reference/basket-order-reference.component';
@@ -84,6 +84,7 @@ import { InfoMessageComponent } from './components/common/info-message/info-mess
 import { LoadingComponent } from './components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
+import { PagingComponent } from './components/common/paging/paging.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
@@ -146,7 +147,6 @@ const importExportModules = [
   CommonModule,
   CompareExportsModule,
   ContactUsExportsModule,
-  DeferLoadModule,
   DirectivesModule,
   FeatureToggleModule,
   FormlyAddressFormsModule,
@@ -228,6 +228,7 @@ const exportedComponents = [
   BasketCostCenterSelectionComponent,
   BasketCostSummaryComponent,
   BasketDesiredDeliveryDateComponent,
+  BasketErrorMessageComponent,
   BasketInfoComponent,
   BasketInvoiceAddressWidgetComponent,
   BasketItemsSummaryComponent,
@@ -284,7 +285,7 @@ const exportedComponents = [
 
 @NgModule({
   imports: [...importExportModules],
-  declarations: [...declaredComponents, ...exportedComponents],
+  declarations: [...declaredComponents, ...exportedComponents, PagingComponent],
   exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {

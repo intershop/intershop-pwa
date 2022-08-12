@@ -1,20 +1,18 @@
 <div
   *ngIf="pagelet.hasParam('Video')"
-  (deferLoad)="showVideo = true"
-  class="video-container defer-load"
+  class="video-container"
   [ngClass]="pagelet.stringParam('CSSClass')"
   [ngStyle]="{ 'width.px': videoWidth, 'height.px': videoHeight }"
 >
   <ng-container *ngIf="iframeVideoUrl; else nativeVideo">
-    <div *ngIf="showVideo" class="video-wrapper">
+    <div class="video-wrapper">
       <!-- spell-checker: words allowfullscreen -->
-      <iframe [src]="iframeVideoUrl" frameborder="0" allowfullscreen></iframe>
+      <iframe loading="lazy" [src]="iframeVideoUrl" frameborder="0" allowfullscreen></iframe>
     </div>
   </ng-container>
 
   <ng-template #nativeVideo>
     <video
-      *ngIf="showVideo"
       #videoPlayer
       [src]="nativeVideoUrl"
       class="video"

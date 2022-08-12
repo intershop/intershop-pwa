@@ -1,5 +1,4 @@
-import { isPlatformServer } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -22,12 +21,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  */
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(
-    private store: Store,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: string,
-    private cookieService: CookiesService
-  ) {}
+  constructor(private store: Store, private router: Router, private cookieService: CookiesService) {}
 
   canActivate(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.guardAccess({ ...snapshot.data?.queryParams, ...snapshot.queryParams, returnUrl: state.url });
@@ -41,7 +35,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     const defaultRedirect = this.router.createUrlTree(['/login'], { queryParams });
 
     return iif(
-      () => isPlatformServer(this.platformId),
+      () => SSR,
       // shortcut on ssr
       of(defaultRedirect),
       race(

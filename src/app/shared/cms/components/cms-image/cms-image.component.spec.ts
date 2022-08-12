@@ -33,7 +33,6 @@ describe('Cms Image Component', () => {
       },
     };
     component.pagelet = createContentPageletView(pagelet);
-    component.showImage = true;
   });
 
   it('should be created', () => {
@@ -42,8 +41,8 @@ describe('Cms Image Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <a class="teaser-link" href="http://example.com" title="bar"
-        ><div class="defer-load foo" ng-reflect-ng-class="foo">
-          <img src="http://example.com/foo/bar.png" alt="foo" /></div
+        ><div ng-reflect-ng-class="foo" class="foo">
+          <img loading="lazy" src="http://example.com/foo/bar.png" alt="foo" /></div
       ></a>
     `);
   });

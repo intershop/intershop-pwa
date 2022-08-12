@@ -1,0 +1,26 @@
+// apply scroll-behavior except when running in Cypress context (it breaks a lot of tests)
+html:not(.cypress-tests) {
+  scroll-behavior: smooth;
+}
+
+@keyframes back-to-top-btn-animation {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.back-to-top-btn {
+  position: fixed;
+  right: $space-default;
+  bottom: $space-default;
+  z-index: $zindex-fixed;
+  animation: back-to-top-btn-animation 0.15s ease-in-out;
+
+  @media (max-width: $screen-xs-max) {
+    width: auto;
+  }
+}

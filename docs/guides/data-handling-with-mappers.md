@@ -27,19 +27,25 @@ export interface CategoryData {
 **category.model.ts**
 
 ```typescript
-export class Category {
+export interface Category {
   id: string;
   name: string;
   transformed: number;
 }
 ```
 
+The mapper should be a class with static methods that will be used in the corresponding service.
+
+In special cases, the mapper class might need some dependencies to transform data correctly.
+In that case, you can declare it as an `Injectable` and use Angular's dependency injection mechanism to provide an instance in your service.
+
+> :warning: If the mapper needs no dependencies, always use static methods!
+
 **category.mapper.ts**
 
 ```typescript
-@Injectable({ providedIn: 'root' })
 export class CategoryMapper {
-  fromData(categoryData: CategoryData): Category {
+  static fromData(categoryData: CategoryData): Category {
     const category: Category = {
       id: categoryData.id,
       name: categoryData.id,
@@ -48,7 +54,7 @@ export class CategoryMapper {
     return category;
   }
 
-  fromObject(category: Category): CategoryData {
+  static fromObject(category: Category): CategoryData {
     const categoryData: CategoryData = {
       id: category.id,
       name: category.id,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
@@ -13,28 +13,21 @@ import { ContentPageletEntryPointView } from 'ish-core/models/content-view/conte
   templateUrl: './content-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentNavigationComponent implements OnInit, OnChanges {
+export class ContentNavigationComponent implements OnInit {
   /**
-   * Id of page tree root
+   * Content Page Tree to be rendered
    */
-  @Input() root: string;
+  @Input() contentPageTree: ContentPageTreeView;
   /**
    * Max Depth of page tree
    */
   @Input() depth: number;
 
-  contentPageTree$: Observable<ContentPageTreeView>;
   currentContentPage$: Observable<ContentPageletEntryPointView>;
 
   constructor(private cmsFacade: CMSFacade) {}
 
   ngOnInit() {
     this.currentContentPage$ = this.cmsFacade.contentPage$;
-  }
-
-  ngOnChanges() {
-    if (this.root) {
-      this.contentPageTree$ = this.cmsFacade.contentPageTree$(this.root, this.depth);
-    }
   }
 }

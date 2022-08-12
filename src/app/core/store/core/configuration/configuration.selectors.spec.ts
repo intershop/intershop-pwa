@@ -90,6 +90,20 @@ describe('Configuration Selectors', () => {
         expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
       });
     });
+
+    describe('after setting additional features', () => {
+      beforeEach(() => {
+        store$.dispatch(
+          applyConfiguration({
+            addFeatures: ['quoting'],
+          })
+        );
+      });
+
+      it('should have additional features active', () => {
+        expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently', 'quoting']);
+      });
+    });
   });
 
   describe('after setting identity provider', () => {

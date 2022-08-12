@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -30,7 +30,7 @@ describe('Addresses Effects', () => {
   let actions$: Observable<Action>;
   let addressServiceMock: AddressService;
   let effects: AddressesEffects;
-  let store$: Store;
+  let store: Store;
 
   beforeEach(() => {
     addressServiceMock = mock(AddressService);
@@ -49,9 +49,9 @@ describe('Addresses Effects', () => {
     });
 
     effects = TestBed.inject(AddressesEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     const customer = { customerNo: 'patricia' } as Customer;
-    store$.dispatch(loginUserSuccess({ customer }));
+    store.dispatch(loginUserSuccess({ customer }));
   });
 
   describe('loadAddresses$', () => {

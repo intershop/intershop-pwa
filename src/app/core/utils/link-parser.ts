@@ -10,15 +10,14 @@ export class LinkParser {
 
       switch (protocol) {
         case 'product':
-          // TODO: for consistent product links it should have the default category in the route
-          // TODO: use ProductRoutePipe
-          return `${prefix}/sku${value}`;
+          // TODO: use ProductRoutePipe for SEO URLs
+          return `${prefix}/product/${value}`;
         case 'category':
-          // TODO: the configuration parameter currently only works for first level categories
-          // TODO: use CategoryRoutePipe
+          // TODO: use CategoryRoutePipe for SEO URLs
           return `${prefix}/categoryref/${value}${unitName}`;
         case 'page':
           // CMS managed pages link
+          // TODO: use ContentPageRoutePipe for SEO URLs
           return `${prefix}/page/${value}`;
         case 'route':
           // direct router links for the PWA

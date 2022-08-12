@@ -27,4 +27,22 @@ export function addGlobalGuard(
 /**
  * RegEx that finds reserved characters that should not be contained in non functional parts of routes/URLs (e.g product slugs for SEO)
  */
+
+// not-dead-code
 export const reservedCharactersRegEx = /[ &\(\)=]/g;
+
+/**
+ * Sanitize slug data (remove reserved characters, clean up obsolete '-', lower case, capitalize identifiers)
+ */
+export function sanitizeSlugData(slugData: string) {
+  return (
+    slugData
+      ?.replace(reservedCharactersRegEx, '-')
+      .replace(/-+/g, '-')
+      .replace(/-+$/, '')
+      .toLowerCase()
+      .replace('pg', 'Pg')
+      .replace('prd', 'Prd')
+      .replace('ctg', 'Ctg') || ''
+  );
+}

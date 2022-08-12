@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { pick } from 'lodash-es';
 import { Observable } from 'rxjs';
 
@@ -17,9 +17,9 @@ import { QuoteRequest } from '../../models/quoting/quoting.model';
 })
 export class QuoteEditComponent implements OnInit {
   quote$: Observable<QuoteRequest>;
-  form = new FormGroup({
-    displayName: new FormControl(''),
-    description: new FormControl(''),
+  form = new UntypedFormGroup({
+    displayName: new UntypedFormControl(''),
+    description: new UntypedFormControl(''),
   });
 
   constructor(private context: QuoteContextFacade) {}

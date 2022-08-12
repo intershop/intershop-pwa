@@ -6,6 +6,7 @@ import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -42,7 +43,7 @@ export class OrganizationManagementBreadcrumbService {
                     { key: 'account.organization.user_management', link: `${prefix}/users` },
                     {
                       text: `${translation} - ${user.firstName} ${user.lastName}`,
-                      link: `${prefix}/users/${user.login}`,
+                      link: `${prefix}/users/${encodeResourceID(user.login)}`,
                     },
                     {
                       key: `account.user.update_${path.substring(path.lastIndexOf('/') + 1)}.heading`,

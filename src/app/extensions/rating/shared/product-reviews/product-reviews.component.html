@@ -1,31 +1,88 @@
-<h3>{{ 'product.reviews.section.heading' | translate | uppercase }}</h3>
-
 <ish-error-message [error]="error$ | async"></ish-error-message>
 
-<div class="section pb-4">
-  <ng-container *ngIf="productReviews$ | async as productReviews">
-    <div *ngIf="productReviews?.length > 0; else noReviews">
-      <div *ngFor="let review of productReviews" class="row review-item">
-        <div class="col-md-3 review-item-created">
-          {{ review.authorFirstName }}
-          <br />
-          {{ review.creationDate | ishDate: 'medium' }}
-        </div>
-        <div class="col-md-9">
-          <div class="review-item-header-title">
-            <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
-              <span class="">
-                <ish-product-rating-star [filled]="fill" [lastStar]="lastStar"></ish-product-rating-star>
-              </span>
-            </ng-container>
-            <span class="pl-2">{{ review.title }}</span>
-          </div>
-          <div class="review-item-text">{{ review.content }}</div>
-        </div>
-      </div>
+<!-- display the user's own review -->
+<div *ngIf="ownProductReview$ | async as ownReview; else rateProduct" data-testing-id="own-product-review">
+  <h3>{{ 'product.reviews.your_review.heading' | translate }}</h3>
+  <p *ngIf="ownReview.status === 'NEW'">{{ 'product.review.status.new.text' | translate }}</p>
+  <p *ngIf="ownReview.status === 'REJECTED'">{{ 'product.review.status.rejected.text' | translate }}</p>
+  <ng-container *ngTemplateOutlet="reviewItem; context: { review: ownReview }"></ng-container>
+</div>
+<!-- display the rate product link if the user has not rated this product yet -->
+<ng-template #rateProduct>
+  <div *ishHasNotRole="'APP_B2B_OCI_USER'" class="section">
+    <h3>{{ 'product.reviews.rate.heading' | translate }}</h3>
+
+    {{ 'product.reviews.review_this_item.text' | translate }}
+
+    <a
+      *ngIf="isUserLoggedIn$ | async; else loginLink"
+      (click)="reviewCreateDialog.show()"
+      data-testing-id="open-review-dialog"
+      >{{ 'product.reviews.review_this_item.link' | translate }}</a
+    >
+    <ng-template #loginLink>
+      <a routerLink="/login" [queryParams]="{ messageKey: 'review' }" data-testing-id="login-link">{{
+        'product.reviews.review_this_item.link' | translate
+      }}</a></ng-template
+    >
+  </div>
+</ng-template>
+
+<!-- display the list of reviews -->
+<div class="section pb-4" data-testing-id="product-review-list">
+  <h3>{{ 'product.reviews.recent_reviews.heading' | translate }}</h3>
+  <ng-container *ngIf="recentProductReviews$ | async as recentProductReviews; else noReviews">
+    <div *ngIf="recentProductReviews?.length; else noReviews">
+      <ng-container *ngFor="let review of recentProductReviews">
+        <ng-container *ngTemplateOutlet="reviewItem; context: { review: review }"></ng-container>
+      </ng-container>
     </div>
   </ng-container>
 </div>
+
+<!-- template for one review item -->
+<ng-template #reviewItem let-review="review">
+  <div class="row review-item">
+    <div class="col-md-3 review-item-created">
+      <div *ngIf="review.authorFirstName; else anonymousUser">
+        {{ review.authorFirstName }} {{ review.authorLastName?.charAt(0) }}.
+      </div>
+      <ng-template #anonymousUser>
+        <div>{{ 'product.reviews.anonymous_user.text' | translate }}</div>
+      </ng-template>
+      {{ review.creationDate | ishDate: 'medium' }}
+    </div>
+    <div class="col-md-9">
+      <div class="review-item-header-title">
+        <ng-container *ngFor="let fill of getStars(review.rating)">
+          <ish-product-rating-star [filled]="fill"></ish-product-rating-star>
+        </ng-container>
+        <span class="pl-1">{{ review.title }}</span>
+      </div>
+      <div class="review-item-text">{{ review.content }}</div>
+
+      <a *ngIf="review.own" (click)="modalDialog.show(review)" data-testing-id="delete-review">
+        {{ 'product.reviews.delete.review.link' | translate }}
+      </a>
+    </div>
+  </div>
+</ng-template>
+
+<!-- delete dialog -->
+<ish-modal-dialog
+  #modalDialog
+  [options]="{
+    titleText: 'product.reviews.delete.dialog.title' | translate,
+    confirmText: 'product.reviews.delete.button.label' | translate,
+    rejectText: 'account.cancel.button.label' | translate
+  }"
+  (confirmed)="deleteReview($event)"
+>
+  <p>{{ 'product.reviews.delete.dialog.text' | translate }}</p>
+</ish-modal-dialog>
+
+<!-- create dialog -->
+<ish-product-review-create-dialog #reviewCreateDialog></ish-product-review-create-dialog>
 
 <ng-template #noReviews>
   {{ 'product.reviews.no_reviews_yet.text' | translate }}

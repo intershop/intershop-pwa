@@ -12,8 +12,11 @@ const initialState: ParametersState = {
 
 export const parametersReducer = createReducer(
   initialState,
-  on(loadParametersProductListFilterSuccess, (state, action) => ({
-    ...state,
-    productLists: { ...state.productLists, [action.payload.id]: action.payload.productList },
-  }))
+  on(
+    loadParametersProductListFilterSuccess,
+    (state, action): ParametersState => ({
+      ...state,
+      productLists: { ...state.productLists, [action.payload.id]: action.payload.productList },
+    })
+  )
 );

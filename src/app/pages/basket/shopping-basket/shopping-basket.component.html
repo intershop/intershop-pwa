@@ -9,7 +9,10 @@
           [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
           class="details-link"
         >
-          <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include"></ish-content-include>
+          <ish-content-include
+            includeId="include.dialog.safeAndSecure.pagelet2-Include"
+            *ishLazyLoadingContent
+          ></ish-content-include>
         </ish-modal-dialog-link>
       </span>
     </h1>
@@ -17,7 +20,9 @@
 
   <div>
     <!-- Error message -->
-    <ish-error-message [error]="error"></ish-error-message>
+    <ish-error-message *ngIf="error?.message" [error]="error"></ish-error-message>
+
+    <ish-basket-error-message [error]="error"></ish-basket-error-message>
 
     <!-- Basket Info messages -->
     <ish-basket-info></ish-basket-info>
@@ -50,6 +55,8 @@
           <ng-template #elseTemplate>
             <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
           </ng-template>
+
+          <ish-loading *ngIf="loading"></ish-loading>
 
           <div class="button-group">
             <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>

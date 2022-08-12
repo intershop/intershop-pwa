@@ -47,6 +47,7 @@ describe('Requisition Mapper', () => {
             approvalDate: 76543627,
           },
         ],
+        systemRejectErrors: [{ code: 'some.code', message: 'some message' }],
         systemRejected: true,
         userInformation: { firstName: 'Patricia', lastName: 'Miller', email: 'pmiller@test.intershop.de' },
         userBudgets: {
@@ -107,6 +108,9 @@ describe('Requisition Mapper', () => {
           "promotionCodes": undefined,
           "purchaseCurrency": "USD",
           "requisitionNo": "0001",
+          "systemRejectErrors": Array [
+            "some message",
+          ],
           "systemRejected": true,
           "taxationId": undefined,
           "totalProductQuantity": undefined,

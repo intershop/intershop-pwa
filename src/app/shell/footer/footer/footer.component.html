@@ -1,4 +1,10 @@
 <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
   <ish-lazy-store-locator-footer></ish-lazy-store-locator-footer>
-  <div [ishServerHtml]="'footer.content' | translate: { appVersion: appVersion }" class="clearfix"></div>
+  <div class="footer">
+    <div class="container">
+      <div [ishServerHtml]="'footer.disclaimer' | translate" class="clearfix"></div>
+      <ish-lazy-content-include includeId="include.footer.content.pagelet2-Include"></ish-lazy-content-include>
+      <div [ishServerHtml]="'footer.copyright' | translate: { appVersion: appVersion }" class="clearfix"></div>
+    </div>
+  </div>
 </ng-container>

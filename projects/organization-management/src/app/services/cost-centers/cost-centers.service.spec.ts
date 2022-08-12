@@ -111,7 +111,7 @@ describe('Cost Centers Service', () => {
     costCentersService.updateCostCenterBuyer('123', costCenterBuyer).subscribe(() => {
       verify(apiService.patch(anything(), anything())).once();
       expect(capture(apiService.patch).last()[0]).toMatchInlineSnapshot(
-        `"customers/4711/costcenters/123/buyers/pmiller@test.intershop.de"`
+        `"customers/4711/costcenters/123/buyers/pmiller%2540test.intershop.de"`
       );
       done();
     });
@@ -121,7 +121,7 @@ describe('Cost Centers Service', () => {
     costCentersService.deleteCostCenterBuyer('123', 'pmiller@test.intershop.de').subscribe(() => {
       verify(apiService.delete(anything())).once();
       expect(capture(apiService.delete).last()[0]).toMatchInlineSnapshot(
-        `"customers/4711/costcenters/123/buyers/pmiller@test.intershop.de"`
+        `"customers/4711/costcenters/123/buyers/pmiller%2540test.intershop.de"`
       );
       done();
     });

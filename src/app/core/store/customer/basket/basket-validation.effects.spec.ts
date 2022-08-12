@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { cold, hot } from 'jest-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -36,7 +36,7 @@ describe('Basket Validation Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
   let effects: BasketValidationEffects;
-  let store$: Store;
+  let store: Store;
   let location: Location;
 
   beforeEach(() => {
@@ -59,7 +59,7 @@ describe('Basket Validation Effects', () => {
     });
 
     effects = TestBed.inject(BasketValidationEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     location = TestBed.inject(Location);
   });
 
@@ -74,22 +74,22 @@ describe('Basket Validation Effects', () => {
 
     beforeEach(() => {
       when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidation));
-      store$.dispatch(
+      store.dispatch(
         loadServerConfigSuccess({
           config: { basket: { acceleration: true } },
         })
       );
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: BasketMockData.getBasket(),
         })
       );
-      store$.dispatch(loadProductSuccess({ product: { sku: 'SKU' } as Product }));
+      store.dispatch(loadProductSuccess({ product: { sku: 'SKU' } as Product }));
     });
 
     it('should map to action of type ContinueCheckout without basket acceleration', () => {
-      store$.dispatch(
+      store.dispatch(
         loadServerConfigSuccess({
           config: { basket: { acceleration: false } },
         })
@@ -153,18 +153,18 @@ describe('Basket Validation Effects', () => {
 
     beforeEach(() => {
       when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidation));
-      store$.dispatch(
+      store.dispatch(
         loadServerConfigSuccess({
           config: { basket: { acceleration: true } },
         })
       );
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: BasketMockData.getBasket(),
         })
       );
-      store$.dispatch(loadProductSuccess({ product: { sku: 'SKU' } as Product }));
+      store.dispatch(loadProductSuccess({ product: { sku: 'SKU' } as Product }));
     });
 
     it('should call the basketService if validation results are valid and not adjusted', done => {
@@ -220,12 +220,12 @@ describe('Basket Validation Effects', () => {
     beforeEach(() => {
       when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidation));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: BasketMockData.getBasket(),
         })
       );
-      store$.dispatch(loadProductSuccess({ product: { sku: 'SKU' } as Product }));
+      store.dispatch(loadProductSuccess({ product: { sku: 'SKU' } as Product }));
     });
 
     it('should call the basketService for validateBasket', done => {
@@ -289,12 +289,12 @@ describe('Basket Validation Effects', () => {
     beforeEach(() => {
       when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidation));
 
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: BasketMockData.getBasket(),
         })
       );
-      store$.dispatch(loadProductSuccess({ product: { sku: 'SKU' } as Product }));
+      store.dispatch(loadProductSuccess({ product: { sku: 'SKU' } as Product }));
     });
 
     it('should call the basketService for validateBasketAndContinueCheckout', done => {
@@ -330,7 +330,7 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map to action of type SubmitBasket if targetStep is 5 (order creation) and approval is required', () => {
-      store$.dispatch(
+      store.dispatch(
         loadBasketSuccess({
           basket: { ...BasketMockData.getBasket(), approval: { approvalRequired: true } },
         })

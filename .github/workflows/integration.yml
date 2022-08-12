@@ -13,8 +13,9 @@ on:
       - 'docs/**'
 
 env:
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  NODE_VERSION: 16.16.0
   NODE_OPTIONS: --max_old_space_size=8192
+  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
 
 jobs:
   CancelPrevious:
@@ -38,7 +39,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Install root dependencies
@@ -69,7 +70,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Download Build Output
@@ -146,7 +147,7 @@ jobs:
           wait-on: 'http://localhost:4200'
           wait-on-timeout: 180
           working-directory: e2e
-          command: node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
+          command: npx ts-node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v2
@@ -161,3 +162,14 @@ jobs:
         with:
           name: videos
           path: e2e/cypress/videos
+
+  Shellspec:
+    needs: [CancelPrevious]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Execute shellspec tests
+        run: |
+          docker run --rm -v "${{ github.workspace }}/nginx/docker-entrypoint.d:/src" shellspec/shellspec

@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, InjectionToken, Injector, PLATFORM_ID, Type } from '@angular/core';
+import { Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { noop } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -28,13 +27,8 @@ export class IdentityProviderFactory {
     type?: string;
   };
 
-  constructor(
-    private store: Store,
-    private injector: Injector,
-    private featureToggleService: FeatureToggleService,
-    @Inject(PLATFORM_ID) platformId: string
-  ) {
-    if (isPlatformBrowser(platformId)) {
+  constructor(private store: Store, private injector: Injector, private featureToggleService: FeatureToggleService) {
+    if (!SSR) {
       this.store.pipe(select(getIdentityProvider), whenTruthy(), first()).subscribe(config => {
         const provider = this.injector
           .get<IdentityProviderImplementor[]>(IDENTITY_PROVIDER_IMPLEMENTOR, [])
@@ -57,6 +51,7 @@ export class IdentityProviderFactory {
         intercept: (req, next) => next.handle(req),
         triggerLogin: () => true,
         triggerLogout: () => true,
+        triggerInvite: () => true,
         getCapabilities: () => ({}),
       };
     }

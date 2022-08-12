@@ -33,7 +33,7 @@ export class TextareaDescriptionWrapperComponent extends FieldWrapper implements
   }
 
   setDescription(value: string) {
-    this.description$ = this.translate.get('textarea.max_limit', {
+    this.description$ = this.translate.get(this.to.customDescription ?? 'textarea.max_limit', {
       0: Math.max(0, this.to.maxLength - (value?.length ?? 0)),
     });
   }

@@ -1,4 +1,4 @@
-<div (deferLoad)="showImage$.next()" class="defer-load">
+<div>
   <a
     *ngIf="link; else image"
     data-testing-id="product-image-link"
@@ -10,6 +10,7 @@
 
 <ng-template #image>
   <img
+    loading="lazy"
     *ngIf="{ image: productImage$ | async } as product"
     class="product-image"
     [src]="product.image?.effectiveUrl || '/assets/img/not_available.png'"
