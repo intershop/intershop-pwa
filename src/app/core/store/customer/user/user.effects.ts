@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { OAuthInfoEvent, OAuthService } from 'angular-oauth2-oidc';
+import { OAuthInfoEvent, OAuthService, OAuthSuccessEvent } from 'angular-oauth2-oidc';
 import { from } from 'rxjs';
 import {
   concatMap,
@@ -90,7 +90,6 @@ export class UserEffects {
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
         this.userService.fetchToken('password', { username: credentials.login, password: credentials.password }).pipe(
-          map(tokenResponse => this.apiTokenService.setApiToken(tokenResponse.access_token)),
           switchMap(() =>
             this.userService.fetchCustomer().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
           ),
@@ -104,8 +103,7 @@ export class UserEffects {
     () =>
       this.actions$.pipe(
         ofType(fetchAnonymousUserToken),
-        switchMap(() => this.userService.fetchToken('anonymous')),
-        map(tokenResponse => this.apiTokenService.setApiToken(tokenResponse.access_token))
+        switchMap(() => this.userService.fetchToken('anonymous'))
       ),
     { dispatch: false }
   );
@@ -117,6 +115,15 @@ export class UserEffects {
           event => event instanceof OAuthInfoEvent && event.type === 'token_expires' && event.info === 'access_token'
         ),
         switchMap(() => from(this.oAuthService.refreshToken()))
+      ),
+    { dispatch: false }
+  );
+
+  updateApiToken$ = createEffect(
+    () =>
+      this.oAuthService.events.pipe(
+        filter(event => event instanceof OAuthSuccessEvent && event.type === 'token_received'),
+        map(() => this.apiTokenService.setApiToken(this.oAuthService.getAccessToken()))
       ),
     { dispatch: false }
   );

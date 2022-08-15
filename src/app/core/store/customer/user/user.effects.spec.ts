@@ -149,7 +149,6 @@ describe('User Effects', () => {
 
       effects.loginUser$.subscribe(() => {
         verify(userServiceMock.fetchToken(anyString(), anything())).once();
-        verify(apiTokenServiceMock.setApiToken(anyString())).once();
         done();
       });
     });
@@ -198,7 +197,7 @@ describe('User Effects', () => {
       actions$ = of(action);
 
       effects.fetchAnonymousUserToken$.subscribe(() => {
-        verify(apiTokenServiceMock.setApiToken(anyString())).once();
+        verify(userServiceMock.fetchToken('anonymous')).once();
         done();
       });
     });
