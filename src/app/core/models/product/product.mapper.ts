@@ -182,7 +182,7 @@ export class ProductMapper {
       stepOrderQuantity: data.stepOrderQuantity,
       packingUnit: data.packingUnit,
       availableStock: data.availableStock,
-      attributes: data.attributeGroups?.PRODUCT_DETAIL_ATTRIBUTES?.attributes || data.attributes,
+      attributes: data.attributeGroups?.PRODUCT_DETAIL_ATTRIBUTES?.attributes || data.attributes || [],
       attributeGroups: data.attributeGroups,
       attachments: this.attachmentMapper.fromAttachments(data.attachments),
       images: this.imageMapper.fromImages(data.images),
