@@ -146,7 +146,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     master: 6,
   },
   defaultProductListingViewType: 'grid',
-  defaultProductListingViewTypeMobile: 'list',
+  defaultProductListingViewTypeMobile: 'grid',
   defaultDeviceType: 'mobile',
   multiSiteLocaleMap: {
     en_US: '/en',
