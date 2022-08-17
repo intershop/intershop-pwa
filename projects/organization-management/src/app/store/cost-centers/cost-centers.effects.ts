@@ -150,7 +150,17 @@ export class CostCentersEffects {
       mapToPayload(),
       mergeMap(payload =>
         this.costCentersService.addCostCenterBuyers(payload.costCenterId, payload.buyers).pipe(
-          concatMap(costCenter => this.navigateTo('../').pipe(map(() => addCostCenterBuyersSuccess({ costCenter })))),
+          concatMap(costCenter =>
+            this.navigateTo('../').pipe(
+              mergeMap(() => [
+                addCostCenterBuyersSuccess({ costCenter }),
+                displaySuccessMessage({
+                  message: 'account.organization.cost_center_management.buyer.add.confirmation',
+                  messageParams: { 0: `${payload.buyers.length}` },
+                }),
+              ])
+            )
+          ),
           mapErrorToAction(addCostCenterBuyersFail)
         )
       )
@@ -163,7 +173,13 @@ export class CostCentersEffects {
       mapToPayload(),
       mergeMap(payload =>
         this.costCentersService.updateCostCenterBuyer(payload.costCenterId, payload.buyer).pipe(
-          map(costCenter => updateCostCenterBuyerSuccess({ costCenter })),
+          mergeMap(costCenter => [
+            updateCostCenterBuyerSuccess({ costCenter }),
+            displaySuccessMessage({
+              message: 'account.organization.cost_center_management.buyer.update.confirmation',
+              messageParams: { 0: `${payload.buyer.firstName} ${payload.buyer.lastName}` || `${payload.buyer.login}` },
+            }),
+          ]),
           mapErrorToAction(updateCostCenterBuyerFail)
         )
       )
@@ -176,7 +192,13 @@ export class CostCentersEffects {
       mapToPayload(),
       mergeMap(payload =>
         this.costCentersService.deleteCostCenterBuyer(payload.costCenterId, payload.login).pipe(
-          map(costCenter => deleteCostCenterBuyerSuccess({ costCenter })),
+          mergeMap(costCenter => [
+            deleteCostCenterBuyerSuccess({ costCenter }),
+            displaySuccessMessage({
+              message: 'account.organization.cost_center_management.buyer.remove.confirmation',
+              messageParams: { 0: `${payload.login}` },
+            }),
+          ]),
           mapErrorToAction(deleteCostCenterBuyerFail)
         )
       )
