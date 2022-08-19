@@ -6,7 +6,12 @@ import { delay, switchMap, tap } from 'rxjs/operators';
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { CategoryHelper } from 'ish-core/models/category/category.helper';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
-import { getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-tree';
+import {
+  getContentPageTree,
+  getPageTreeError,
+  getPageTreeLoading,
+  loadContentPageTree,
+} from 'ish-core/store/content/page-tree';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getParametersProductList, loadParametersProductListFilter } from 'ish-core/store/content/parameters';
@@ -15,6 +20,7 @@ import { getPGID } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
+/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class CMSFacade {
   constructor(private store: Store) {}
@@ -43,6 +49,9 @@ export class CMSFacade {
     this.store.dispatch(loadContentPageTree({ rootId, depth }));
     return this.store.pipe(select(getContentPageTree(rootId)));
   }
+
+  contentPageTreeLoading$ = this.store.pipe(select(getPageTreeLoading));
+  contentPageTreeError$ = this.store.pipe(select(getPageTreeError));
 
   parameterProductListFilter$(categoryId?: string, productFilter?: string, scope?: string, amount?: number) {
     const listConfiguration = this.getProductListConfiguration(categoryId, productFilter, scope, amount);

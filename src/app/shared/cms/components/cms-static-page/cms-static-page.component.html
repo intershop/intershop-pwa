@@ -1,11 +1,14 @@
 <div class="content-page">
   <div class="row">
+    <ish-error-message [error]="contentPageTreeError$ | async"></ish-error-message>
     <ng-container
       *ngIf="pagelet.booleanParam('ShowSidePanel') || pagelet.booleanParam('ShowNavigation'); else noSidePanel"
     >
       <div class="page-navigation col-md-3">
         <div *ngIf="pagelet.booleanParam('ShowNavigation')" class="page-navigation-contents">
-          <ng-container *ngIf="contentPageTree$ | async as contentPageTree">
+          <ng-container
+            *ngIf="(contentPageTreeLoading$ | async) !== true && (contentPageTree$ | async) as contentPageTree"
+          >
             <ish-content-navigation
               [contentPageTree]="contentPageTree"
               [depth]="pagelet.numberParam('NavigationDepth')"

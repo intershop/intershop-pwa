@@ -12,6 +12,8 @@ import { selectRouteParam } from 'ish-core/store/core/router';
 const getPageTreeState = createSelector(getContentState, state => state.pagetree);
 
 export const getPageTree = createSelector(getPageTreeState, state => state.pagetree);
+export const getPageTreeLoading = createSelector(getPageTreeState, state => state.loading);
+export const getPageTreeError = createSelector(getPageTreeState, state => state.error);
 
 /**
  * Get the content page tree for the given root and the currently selected content page.

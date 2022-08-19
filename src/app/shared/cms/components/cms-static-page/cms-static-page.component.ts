@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 /**
@@ -19,6 +20,8 @@ export class CMSStaticPageComponent implements CMSComponent, OnChanges {
   @Input() pagelet: ContentPageletView;
 
   contentPageTree$: Observable<ContentPageTreeView>;
+  contentPageTreeLoading$: Observable<boolean>;
+  contentPageTreeError$: Observable<HttpError>;
 
   constructor(private cmsFacade: CMSFacade) {}
 
@@ -29,5 +32,8 @@ export class CMSStaticPageComponent implements CMSComponent, OnChanges {
         this.pagelet.numberParam('NavigationDepth')
       );
     }
+
+    this.contentPageTreeLoading$ = this.cmsFacade.contentPageTreeLoading$;
+    this.contentPageTreeError$ = this.cmsFacade.contentPageTreeError$;
   }
 }

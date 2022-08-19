@@ -5,11 +5,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { loadContentPageTreeSuccess } from './page-tree.actions';
-import { getContentPageTree, getPageTree } from './page-tree.selectors';
+import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-tree.actions';
+import { getContentPageTree, getPageTree, getPageTreeError, getPageTreeLoading } from './page-tree.selectors';
 
 describe('Page Tree Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -51,6 +52,18 @@ describe('Page Tree Selectors', () => {
     it('should not select any selected page tree when used', () => {
       expect(getContentPageTree(tree1.contentPageId)(store$.state)).toBeUndefined();
     });
+    it('should not select loading and error if it is in initial state', () => {
+      expect(getPageTreeLoading(store$.state)).toBeFalse();
+      expect(getPageTreeError(store$.state)).toBeUndefined();
+    });
+  });
+
+  describe('LoadContentPageTree', () => {
+    it('should set loading to true', () => {
+      store$.dispatch(loadContentPageTree({ rootId: 'root', depth: 3 }));
+
+      expect(getPageTreeLoading(store$.state)).toBeTrue();
+    });
   });
 
   describe('state contains page tree', () => {
@@ -67,6 +80,14 @@ describe('Page Tree Selectors', () => {
               └─ 1.1.2
 
       `);
+    });
+
+    it('should set loading to false', () => {
+      expect(getPageTreeLoading(store$.state)).toBeFalse();
+    });
+
+    it('should not have an error when successfully loaded the page tree', () => {
+      expect(getPageTreeError(store$.state)).toBeUndefined();
     });
 
     describe('with page route', () => {
@@ -427,6 +448,23 @@ describe('Page Tree Selectors', () => {
           }
         `);
       }));
+    });
+  });
+
+  describe('LoadContentPageTreeFail', () => {
+    const error = makeHttpError({ message: 'ERROR' });
+    const failAction = loadContentPageTreeFail({ error });
+
+    beforeEach(() => {
+      store$.dispatch(failAction);
+    });
+
+    it('should set loading to false', () => {
+      expect(getPageTreeLoading(store$.state)).toBeFalse();
+    });
+
+    it('should have an error when reducing', () => {
+      expect(getPageTreeError(store$.state)).toBeTruthy();
     });
   });
 
