@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { pick } from 'lodash-es';
 import { Observable, combineLatest, forkJoin, from, of, throwError } from 'rxjs';
-import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -58,10 +58,8 @@ export class UserService {
     private appFacade: AppFacade,
     private store: Store,
     private oauthService: OAuthService,
-    oauthConfigurationService: OAuthConfigurationService
-  ) {
-    oauthConfigurationService.config$.subscribe(config => this.oauthService.configure(config));
-  }
+    private oauthConfigurationService: OAuthConfigurationService
+  ) {}
 
   /**
    * Sign in an existing user with the given token or if no token is given, using token stored in cookie.
@@ -100,11 +98,16 @@ export class UserService {
     grantType: T,
     options?: R
   ): Observable<TokenResponse> {
-    return from(
-      this.oauthService.fetchTokenUsingGrant(
-        grantType,
-        options ?? {},
-        new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' })
+    return this.oauthConfigurationService.config$.pipe(
+      tap(config => this.oauthService.configure(config)),
+      switchMap(() =>
+        from(
+          this.oauthService.fetchTokenUsingGrant(
+            grantType,
+            options ?? {},
+            new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' })
+          )
+        )
       )
     );
   }

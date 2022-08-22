@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AuthConfig } from 'angular-oauth2-oidc';
-import { Observable, map, take } from 'rxjs';
+import { isEqual } from 'lodash-es';
+import { Observable, filter, map, take } from 'rxjs';
 
 import { ApiService } from 'ish-core/services/api/api.service';
-import { whenTruthy } from 'ish-core/utils/operators';
+
+const TOKEN_ENDPOINT = '-/token';
 
 @Injectable({
   providedIn: 'root',
@@ -13,13 +15,13 @@ export class OAuthConfigurationService {
 
   get config$(): Observable<AuthConfig> {
     return this.apiService
-      .constructUrlForPath('-/token', {
+      .constructUrlForPath(TOKEN_ENDPOINT, {
         sendCurrency: false,
         sendLocale: false,
         sendApplication: false,
       })
       .pipe(
-        whenTruthy(),
+        filter(url => !isEqual(url, `/${TOKEN_ENDPOINT}`)), // token endpoint should not be relative
         take(1),
         map<string, AuthConfig>(url => ({
           scope: 'openid profile email voucher offline_access',
