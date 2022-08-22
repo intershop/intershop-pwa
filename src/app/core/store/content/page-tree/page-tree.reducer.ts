@@ -3,9 +3,9 @@ import { createReducer, on } from '@ngrx/store';
 import { ContentPageTreeHelper } from 'ish-core/models/content-page-tree/content-page-tree.helper';
 import { ContentPageTree } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSuccess } from './page-tree.actions';
-import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 export interface PageTreeState {
   pagetree: ContentPageTree;
