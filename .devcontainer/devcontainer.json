@@ -12,7 +12,13 @@
   // https://paulhammond.org/2020/vscode-ramdisks
   "runArgs": ["--tmpfs", "${containerWorkspaceFolder}/node_modules:exec"],
   "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
+    "terminal.integrated.profiles.linux": {
+      "zsh": {
+        "path": "zsh",
+        "args": ["-l"]
+      }
+    },
+    "terminal.integrated.defaultProfile.linux": "zsh"
   },
   "extensions": [
     // synchronize-marker:vscode-extensions:begin
