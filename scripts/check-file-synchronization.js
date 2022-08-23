@@ -1,5 +1,6 @@
 const synchronizations = {
   'docker-cache-share': ['Dockerfile', 'Dockerfile_reports'],
+  'vscode-extensions': ['.vscode/extensions.json', '.devcontainer/devcontainer.json'],
 };
 
 const fs = require('fs');

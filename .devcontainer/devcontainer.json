@@ -4,19 +4,21 @@
   "name": "Intershop PWA",
   "build": {
     "dockerfile": "Dockerfile",
-    // Update 'VARIANT' to pick a Node version: 10, 12, 14
     "args": {
       "VARIANT": "16"
     }
   },
+  // node_modules into RAM
   // https://paulhammond.org/2020/vscode-ramdisks
   "runArgs": ["--tmpfs", "${containerWorkspaceFolder}/node_modules:exec"],
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
   },
   "extensions": [
+    // synchronize-marker:vscode-extensions:begin
     // general
     "eamodio.gitlens",
+    "vscode-icons-team.vscode-icons",
     "vincaslt.highlight-matching-tag",
     // code assist
     "visualstudioexptteam.vscodeintellicode",
@@ -24,15 +26,17 @@
     "mikael.angular-beastcode",
     "formulahendry.auto-rename-tag",
     // code style + formatting
+    "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint",
-    "dbaeumer.vscode-eslint",
     "csstools.postcss",
+    "dbaeumer.vscode-eslint",
     // testing
     "andys8.jest-snippets",
     // documentation
     "streetsidesoftware.code-spell-checker",
     "yzhang.markdown-all-in-one"
+    // synchronize-marker:vscode-extensions:end
   ],
   "forwardPorts": [4200],
   "postStartCommand": "sudo chown node node_modules && npm install",
