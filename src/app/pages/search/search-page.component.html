@@ -12,4 +12,6 @@
   <ng-template #noResult>
     <ish-search-no-result *ngIf="(searchLoading$ | async) === false" [searchTerm]="searchTerm" />
   </ng-template>
+
+  <ish-loading *ngIf="searchLoading$ | async" />
 </ng-container>
