@@ -8,9 +8,9 @@
       "VARIANT": "16"
     }
   },
-  // node_modules into RAM
-  // https://paulhammond.org/2020/vscode-ramdisks
-  "runArgs": ["--tmpfs", "${containerWorkspaceFolder}/node_modules:exec"],
+  // node_modules as volume
+  // https://code.visualstudio.com/remote/advancedcontainers/improve-performance#_use-a-targeted-named-volume
+  "mounts": ["target=${containerWorkspaceFolder}/node_modules,type=volume"],
   "settings": {
     "terminal.integrated.profiles.linux": {
       "zsh": {
@@ -47,7 +47,7 @@
   "forwardPorts": [4200],
   // get correct nodejs version from package.json
   "postCreateCommand": ". $NVM_DIR/nvm.sh && nvm install $(node -p -e 'require(\"./package.json\").engines.node')",
-  // install node modules into RAM
+  // install node modules
   "postStartCommand": "sudo chown node node_modules && npm i --no-save --no-audit --prefer-offline --maxsockets 4",
   "remoteUser": "node"
 }
