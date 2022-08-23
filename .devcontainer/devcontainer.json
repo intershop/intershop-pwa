@@ -45,7 +45,9 @@
     // synchronize-marker:vscode-extensions:end
   ],
   "forwardPorts": [4200],
-  "postStartCommand": "sudo chown node node_modules && npm install",
-  // Comment out the next line to run as root instead.
+  // get correct nodejs version from package.json
+  "postCreateCommand": ". $NVM_DIR/nvm.sh && nvm install $(node -p -e 'require(\"./package.json\").engines.node')",
+  // install node modules into RAM
+  "postStartCommand": "sudo chown node node_modules && npm i --no-save --no-audit --prefer-offline --maxsockets 4",
   "remoteUser": "node"
 }
