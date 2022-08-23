@@ -196,4 +196,36 @@ export class ProductHelper {
     const attributes = product.attributes?.filter(att => !common.includes(att.name));
     return { ...product, attributes };
   }
+
+  /**
+   * Updates current product information with new product information considering completeness levels and dynamic product information
+   *
+   * @param currentProduct  The already available product information
+   * @param newProduct      The new product information to update the existing information with
+   * @returns               The updated product information
+   */
+  static updateProductInformation(
+    currentProduct: Partial<AllProductTypes>,
+    newProduct: Partial<AllProductTypes>
+  ): AllProductTypes {
+    // if there is no new product information return the current product information
+    if (!newProduct) {
+      return currentProduct as AllProductTypes;
+    }
+    // set the current product information as base or construct an empty product stub
+    let product = currentProduct || { completenessLevel: 0 };
+    // update the complete product information if the newProduct information
+    // has a higher or equal completeness level than the product information
+    if (!product.completenessLevel || newProduct.completenessLevel >= product.completenessLevel) {
+      return newProduct as AllProductTypes;
+    }
+    // always update dynamic product information with the new product information (e.g. availability)
+    product = {
+      ...product,
+      // list of product properties that should be updated
+      available: newProduct.available ?? product.available,
+      availableStock: newProduct.availableStock ?? product.availableStock,
+    };
+    return product as AllProductTypes;
+  }
 }

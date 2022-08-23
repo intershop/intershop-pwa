@@ -76,26 +76,35 @@ describe('Products Selectors', () => {
         expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
       });
 
-      it.each([
-        [ProductCompletenessLevel.Detail, ProductCompletenessLevel.Detail - 1],
-        [ProductCompletenessLevel.Detail + 1, ProductCompletenessLevel.Detail + 1],
-      ])(
-        'should merge product updates with "%s" completeness when new info with "%s" completeness is available',
-        (resultCompletenessLevel, completenessLevel) => {
-          const newProd = {
-            ...prod,
-            completenessLevel,
-            manufacturer: 'Microsoft',
-            name: 'Updated product',
-            available: false,
-          } as Product;
-          store$.dispatch(loadProductSuccess({ product: newProd }));
+      it('should update product information with the same completeness level', () => {
+        const newProd = {
+          ...prod,
+          completenessLevel: ProductCompletenessLevel.Detail,
+          manufacturer: 'Microsoft',
+          name: 'Updated product',
+          available: false,
+        } as Product;
+        store$.dispatch(loadProductSuccess({ product: newProd }));
 
-          expect(getProductEntities(store$.state)).toEqual({
-            [prod.sku]: { ...newProd, completenessLevel: resultCompletenessLevel },
-          });
-        }
-      );
+        expect(getProductEntities(store$.state)).toEqual({
+          [prod.sku]: { ...newProd },
+        });
+      });
+
+      it('should only partially update product information with a lower completeness level', () => {
+        const newProd = {
+          ...prod,
+          completenessLevel: ProductCompletenessLevel.List,
+          manufacturer: 'Microsoft',
+          name: 'Updated product',
+          available: false,
+        } as Product;
+        store$.dispatch(loadProductSuccess({ product: newProd }));
+
+        expect(getProductEntities(store$.state)).toEqual({
+          [prod.sku]: { ...prod, available: false, availableStock: undefined },
+        });
+      });
     });
 
     describe('and reporting failure', () => {

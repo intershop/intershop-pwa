@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
-import { AllProductTypes, SkuQuantityType } from 'ish-core/models/product/product.model';
+import { AllProductTypes, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
 
 import {
   loadProductFail,
@@ -50,14 +50,7 @@ export const productsReducer = createReducer(
   })),
   on(loadProductSuccess, (state, action) => {
     const product = action.payload.product;
-    const oldProduct = state.entities[product.sku] || { completenessLevel: 0 };
-
-    const newProduct = { ...product };
-    if (product.completenessLevel || oldProduct?.completenessLevel) {
-      newProduct.completenessLevel = Math.max(product.completenessLevel, oldProduct.completenessLevel);
-    }
-
-    return productAdapter.upsertOne(newProduct as AllProductTypes, {
+    return productAdapter.upsertOne(ProductHelper.updateProductInformation(state.entities[product.sku], product), {
       ...state,
       failed: removeFailed(state.failed, product.sku),
     });
