@@ -9,14 +9,22 @@ services:
       # dockerfile: Dockerfile_noSSR
       args:
         serviceWorker: 'false'
-        # activeThemes: b2b
+        activeThemes: b2b
         # activeThemes: b2c
     environment:
       LOGGING: 'true'
       SOURCE_MAPS: 'true'
-      ICM_BASE_URL:
+      ICM_BASE_URL: https://pwa-review.northeurope.cloudapp.azure.com
       # PROXY_ICM: 'true'
       TRUST_ICM: 'true'
+      IDENTITY_PROVIDERS: |
+        punchout:
+          type: PUNCHOUT
+        AzureAD:
+          type: azureAD
+          domain: login.microsoftonline.com/13a9f4be-a9d5-4987-bdf2-f31cc074034f/v2.0
+          clientID: f9d2c39f-5b23-4deb-9d48-8c226a323cea
+      ICM_IDENTITY_PROVIDER: 'AzureAD'
       # PROMETHEUS: 'true'
       # MULTI_SITE_LOCALE_MAP: |
       #   en_US: /en
@@ -57,6 +65,11 @@ services:
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
       SSR: 1
+      OVERRIDE_IDENTITY_PROVIDERS: |
+        .+:
+          - path: /punchout
+            type: punchout
+
       # PROMETHEUS: 1
       # COMPRESSION: 0
       # DEVICE_DETECTION: 0
@@ -67,17 +80,3 @@ services:
       # BASIC_AUTH_IP_WHITELIST: |
       #   # - 172.22.0.1
       #   - 1.2.3.4
-      MULTI_CHANNEL: |
-        .+:
-          - baseHref: /en
-            channel: default
-            lang: en_US
-          - baseHref: /de
-            channel: default
-            lang: de_DE
-          - baseHref: /fr
-            channel: default
-            lang: fr_FR
-          - baseHref: /b2c
-            channel: default
-            theme: b2c
