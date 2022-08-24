@@ -4,19 +4,13 @@
 version: '3'
 services:
   pwa:
-    build:
-      context: .
-      # dockerfile: Dockerfile_noSSR
-      args:
-        serviceWorker: 'false'
-        activeThemes: b2b
-        # activeThemes: b2c
+    image: intershophub/intershop-pwa-ssr:ilmspiritdemo
     environment:
       LOGGING: 'true'
       SOURCE_MAPS: 'true'
-      ICM_BASE_URL: https://pwa-review.northeurope.cloudapp.azure.com
+      ICM_BASE_URL: https://cxmldemo-7-10-34-sso.test.intershop.com
       # PROXY_ICM: 'true'
-      TRUST_ICM: 'true'
+      TRUST_ICM: 'false'
       IDENTITY_PROVIDERS: |
         punchout:
           type: PUNCHOUT
@@ -53,11 +47,11 @@ services:
   # </CDN-Example>
 
   nginx:
-    build: nginx
+    image: intershophub/intershop-pwa-nginx:ilmspiritdemo
     depends_on:
       - pwa
     ports:
-      - '4200:80'
+      - '4000:80'
       # - '9113:9113'
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
