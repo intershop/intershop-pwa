@@ -337,6 +337,7 @@
   "account.quotes.widget.view_all_quotes.link": "View All Quotes",
   "account.register.address.headding": "Address",
   "account.register.address.message": "To save time when placing an order, please provide your primary invoice or shipping address below. We will store this information so you won't have to enter it again.",
+  "account.register.company_information.heading": "Company Information",
   "account.register.complete_heading": "Complete your Account",
   "account.register.confirm_leave_modal.body": "You have not completed the registration process yet. If you leave the page, all information will be lost. Are you sure you want to continue?",
   "account.register.confirm_leave_modal.cancel_button": "Go back",

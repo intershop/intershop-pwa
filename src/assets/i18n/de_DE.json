@@ -337,6 +337,7 @@
   "account.quotes.widget.view_all_quotes.link": "Alle Preisangebote anzeigen",
   "account.register.address.headding": "Adresse",
   "account.register.address.message": "Um bei der Bestellung Zeit zu sparen, geben Sie unten Ihre Hauptadressen für Rechnung und Lieferung an. Die Informationen werden gespeichert, sodass Sie sie bei zukünftigen Bestellungen nicht mehr jedes Mal erneut eingeben müssen.",
+  "account.register.company_information.heading": "Firmeninformationen",
   "account.register.complete_heading": "Vervollständigen Sie Ihr Benutzerkonto",
   "account.register.confirm_leave_modal.body": "Sie haben den Registrierungsvorgang noch nicht abgeschlossen. Wenn Sie die Seite verlassen, gehen alle Informationen verloren. Wollen Sie wirklich fortfahren?",
   "account.register.confirm_leave_modal.cancel_button": "Zurückkehren",
