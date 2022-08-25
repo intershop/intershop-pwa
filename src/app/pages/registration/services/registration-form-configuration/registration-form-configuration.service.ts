@@ -314,7 +314,7 @@ export class RegistrationFormConfigurationService {
         type: 'ish-registration-heading-field',
         templateOptions: {
           headingSize: 'h2',
-          heading: 'Company Information',
+          heading: 'account.register.company_information.heading',
           showRequiredInfo: true,
         },
       },

@@ -337,6 +337,7 @@
   "account.quotes.widget.view_all_quotes.link": "Afficher tous les devis",
   "account.register.address.headding": "Adresse",
   "account.register.address.message": "Pour gagner du temps lors de la commande, veuillez indiquer votre adresse de facturation ou de livraison ci-dessous. Nous conserverons ces informations afin que vous n’ayez pas à les saisir à nouveau.",
+  "account.register.company_information.heading": "Informations sur la société",
   "account.register.complete_heading": "Complétez votre compte",
   "account.register.confirm_leave_modal.body": "Vous n'avez pas encore terminé le processus d'enregistrement. Si vous quittez la page, toutes les informations seront perdues. Êtes-vous sûr de vouloir continuer ?",
   "account.register.confirm_leave_modal.cancel_button": "Retourner",
