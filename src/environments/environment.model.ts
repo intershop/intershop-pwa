@@ -87,6 +87,8 @@ export interface Environment {
 
   // default locale that is used as fallback if no default locale from the ICM REST call is available (should only be set for local development)
   defaultLocale?: string;
+  // default locales if the locales from the configurations REST call are not available, to show error pages in the requested language.
+  defaultLocales?: string[];
 
   // configuration filtering available locales and their active currencies
   localeCurrencyOverride?: { [locale: string]: string | string[] };
@@ -146,6 +148,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   },
   defaultProductListingViewType: 'grid',
   defaultDeviceType: 'mobile',
+  defaultLocales: ['en_US', 'de_DE', 'fr_FR'],
   multiSiteLocaleMap: {
     en_US: '/en',
     de_DE: '/de',
