@@ -12,6 +12,8 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
   selector: 'ish-product-listing',
   templateUrl: './product-listing.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // merged query parameters for product detail links are needed to apply previously selected filter options for variation masters too
+  providers: [{ provide: 'PRODUCT_QUERY_PARAMS_HANDLING', useValue: 'merge' }],
 })
 export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
   @Input() categoryId: string;

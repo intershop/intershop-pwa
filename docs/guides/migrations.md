@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Migrations
 
+## 3.0 to 3.1
+
+The default value of the input parameter ['queryParamsHandling'](https://angular.io/api/router/QueryParamsHandling) has been changed from 'merge' to '' for the components product-name.component and product-image.component.
+This has been done to prevent an unintentional application of filters for product variation master links if the product detail link does not originates from a product listing context (product list page, search result page).
+
 ## 2.4 to 3.0
 
 With the 2.4.1 Hotfix we introduced a more fixed Node.js version handling to the version used and tested by us.
