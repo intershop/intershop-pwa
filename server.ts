@@ -304,7 +304,7 @@ export function app() {
       }
     });
   });
-  server.get(/.*\/favicon.ico.*/, (req, _, next) => {
+  server.get(/^(?!\/assets\/).*\/favicon.ico.*/, (req, _, next) => {
     req.url = req.originalUrl.replace(/[;?&].*$/, '').replace(/^.*\//g, '/');
     next();
   });
