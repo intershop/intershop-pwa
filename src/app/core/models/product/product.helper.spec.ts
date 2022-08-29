@@ -2,7 +2,6 @@ import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
-import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 
 import { ProductDataStub } from './product.interface';
 import { Product, ProductCompletenessLevel, ProductHelper } from './product.model';
@@ -183,73 +182,6 @@ describe('Product Helper', () => {
       [true, { failed: true }],
     ])(`should return %s when supplying product '%j'`, (expected, product: Product) => {
       expect(ProductHelper.isReadyForDisplay(product, ProductCompletenessLevel.List)).toEqual(expected);
-    });
-  });
-
-  describe('calculatePriceRange()', () => {
-    it('should return empty object when no products are supplied', () => {
-      expect(ProductHelper.calculatePriceRange(undefined, undefined, undefined)).toBeEmpty();
-      expect(ProductHelper.calculatePriceRange([], [], undefined)).toBeEmpty();
-    });
-
-    it('should return the single object if only one element is supplied', () => {
-      const product = { sku: '1' } as Product;
-      const productPrice = {
-        sku: '1',
-        prices: { salePrice: { gross: 1, currency: 'EUR' } },
-      } as ProductPriceDetails;
-      expect(ProductHelper.calculatePriceRange([product], [productPrice], 'gross')).toEqual(productPrice);
-    });
-
-    it('should calculate a range when multiple elements are supplied', () => {
-      const product1 = { sku: '1' } as Product;
-      const productPrice1 = {
-        sku: '1',
-        prices: { salePrice: { gross: 1, currency: 'EUR' }, listPrice: { gross: 2, currency: 'EUR' } },
-      } as ProductPriceDetails;
-
-      const product2 = { sku: '2' } as Product;
-      const productPrice2 = {
-        sku: '2',
-        prices: { salePrice: { gross: 3, currency: 'EUR' }, listPrice: { gross: 4, currency: 'EUR' } },
-      } as ProductPriceDetails;
-
-      const product3 = { sku: '3' } as Product;
-      const productPrice3 = {
-        sku: '3',
-        prices: { salePrice: { gross: 5, currency: 'EUR' }, listPrice: { gross: 6, currency: 'EUR' } },
-      } as ProductPriceDetails;
-
-      expect(
-        ProductHelper.calculatePriceRange(
-          [product1, product2, product3],
-          [productPrice1, productPrice2, productPrice3],
-          'gross'
-        )
-      ).toMatchInlineSnapshot(`
-        Object {
-          "minListPrice": Object {
-            "currency": "EUR",
-            "type": "Money",
-            "value": 2,
-          },
-          "minSalePrice": Object {
-            "currency": "EUR",
-            "type": "Money",
-            "value": 1,
-          },
-          "summedUpListPrice": Object {
-            "currency": "EUR",
-            "type": "Money",
-            "value": 12,
-          },
-          "summedUpSalePrice": Object {
-            "currency": "EUR",
-            "type": "Money",
-            "value": 9,
-          },
-        }
-      `);
     });
   });
 

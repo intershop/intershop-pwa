@@ -42,6 +42,10 @@ describe('Product Prices Mapper', () => {
               "net": 1,
               "type": "PriceItem",
             },
+            "maxListPrice": undefined,
+            "maxSalePrice": undefined,
+            "minListPrice": undefined,
+            "minSalePrice": undefined,
             "salePrice": Object {
               "currency": "USD",
               "gross": 2,
@@ -57,6 +61,8 @@ describe('Product Prices Mapper', () => {
                 "type": "PriceItem",
               },
             ],
+            "summedUpListPrice": undefined,
+            "summedUpSalePrice": undefined,
           },
           "sku": "abc",
         }
@@ -96,6 +102,10 @@ describe('Product Prices Mapper', () => {
               "net": 1,
               "type": "PriceItem",
             },
+            "maxListPrice": undefined,
+            "maxSalePrice": undefined,
+            "minListPrice": undefined,
+            "minSalePrice": undefined,
             "salePrice": Object {
               "currency": "USD",
               "gross": 2,
@@ -111,6 +121,8 @@ describe('Product Prices Mapper', () => {
                 "type": "PriceItem",
               },
             ],
+            "summedUpListPrice": undefined,
+            "summedUpSalePrice": undefined,
           },
           "sku": "abc",
         }

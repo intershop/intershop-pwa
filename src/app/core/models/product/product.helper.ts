@@ -2,9 +2,6 @@ import { intersection } from 'lodash-es';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
-import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
-import { PriceHelper } from 'ish-core/models/price/price.model';
-import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import {
@@ -26,13 +23,6 @@ export enum ProductCompletenessLevel {
   Detail = 3,
   List = 2,
 }
-
-// not-dead-code
-export type ProductPrices = Partial<
-  Pick<ProductRetailSet, 'minListPrice' | 'minSalePrice' | 'summedUpListPrice' | 'summedUpSalePrice'>
-> &
-  Partial<Pick<VariationProductMaster, 'minListPrice' | 'minSalePrice' | 'maxListPrice' | 'maxSalePrice'>> &
-  Partial<Pick<ProductPriceDetails, 'prices'>>;
 
 export class ProductHelper {
   /**
@@ -136,35 +126,6 @@ export class ProductHelper {
       return product.attributeGroups[attributeGroupId].attributes;
     }
     return;
-  }
-
-  // not-dead-code
-  static calculatePriceRange(
-    products: Product[],
-    productPrices: ProductPriceDetails[],
-    priceType: 'gross' | 'net'
-  ): ProductPrices {
-    if ((!products || !products.length) && (!productPrices || !productPrices.length)) {
-      return {};
-    } else if (products.length === 1) {
-      return productPrices.find(price => price.sku === products[0].sku);
-    } else {
-      const prices = products.map(p => productPrices.find(productPrice => productPrice.sku === p.sku));
-      return {
-        minListPrice: prices
-          .map(p => PriceItemHelper.selectType(p?.prices?.listPrice, priceType))
-          .reduce(PriceHelper.min),
-        minSalePrice: prices
-          .map(p => PriceItemHelper.selectType(p?.prices?.salePrice, priceType))
-          .reduce(PriceHelper.min),
-        summedUpListPrice: prices
-          .map(p => PriceItemHelper.selectType(p?.prices?.listPrice, priceType))
-          .reduce(PriceHelper.sum),
-        summedUpSalePrice: prices
-          .map(p => PriceItemHelper.selectType(p?.prices?.salePrice, priceType))
-          .reduce(PriceHelper.sum),
-      };
-    }
   }
 
   /**

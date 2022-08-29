@@ -11,9 +11,15 @@ export interface ScaledPrice extends Price {
 }
 
 export interface Pricing {
-  listPrice: Price;
-  salePrice: Price;
-  scaledPrices: ScaledPrice[];
+  listPrice?: Price;
+  salePrice?: Price;
+  scaledPrices?: ScaledPrice[];
+  minSalePrice?: Price;
+  minListPrice?: Price;
+  maxSalePrice?: Price;
+  maxListPrice?: Price;
+  summedUpSalePrice?: Price;
+  summedUpListPrice?: Price;
 }
 
 export * from './price.helper';

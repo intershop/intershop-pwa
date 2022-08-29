@@ -8,7 +8,6 @@ import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
-import { PriceMapper } from 'ish-core/models/price/price.mapper';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 
 import { SkuQuantityType } from './product.helper';
@@ -249,10 +248,6 @@ export class ProductMapper {
     if (data.productMaster) {
       return {
         ...product,
-        minListPrice: PriceMapper.fromData(data.minListPrice),
-        minSalePrice: PriceMapper.fromData(data.minSalePrice),
-        maxListPrice: PriceMapper.fromData(data.maxListPrice),
-        maxSalePrice: PriceMapper.fromData(data.maxSalePrice),
         variationAttributeValues: data.variationAttributeValues,
         type: 'VariationProductMaster',
       };
@@ -272,10 +267,6 @@ export class ProductMapper {
       return {
         ...product,
         type: 'RetailSet',
-        minListPrice: PriceMapper.fromData(data.minListPrice),
-        minSalePrice: PriceMapper.fromData(data.minSalePrice),
-        summedUpListPrice: PriceMapper.fromData(data.summedUpListPrice),
-        summedUpSalePrice: PriceMapper.fromData(data.summedUpSalePrice),
       };
     } else {
       return product;

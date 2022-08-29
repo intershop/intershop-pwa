@@ -3,8 +3,14 @@ import { PriceItem, ScaledPriceItem } from 'ish-core/models/price-item/price-ite
 export interface ProductPriceDetails {
   sku: string;
   prices: {
-    salePrice: PriceItem;
-    listPrice: PriceItem;
-    scaledPrices: ScaledPriceItem[];
+    salePrice?: PriceItem;
+    listPrice?: PriceItem;
+    scaledPrices?: ScaledPriceItem[];
+    minSalePrice?: PriceItem;
+    minListPrice?: PriceItem;
+    maxSalePrice?: PriceItem;
+    maxListPrice?: PriceItem;
+    summedUpSalePrice?: PriceItem;
+    summedUpListPrice?: PriceItem;
   };
 }
