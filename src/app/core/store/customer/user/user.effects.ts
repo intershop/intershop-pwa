@@ -11,6 +11,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -33,6 +34,7 @@ import {
   loadUserPaymentMethodsSuccess,
   loginUser,
   loginUserFail,
+  loginUserRejected,
   loginUserSuccess,
   loginUserWithToken,
   requestPasswordReminder,
@@ -118,9 +120,36 @@ export class UserEffects {
       ofType(createUser),
       mapToPayload(),
       mergeMap((data: CustomerRegistrationType) =>
-        this.userService.createUser(data).pipe(map(loginUserSuccess), mapErrorToAction(createUserFail))
+        this.userService.createUser(data).pipe(
+          withLatestFrom(
+            this.store.pipe(select(getServerConfigParameter<string[]>('general.customerTypeForLoginApproval')))
+          ),
+          map(([customerLoginType, loginTypes]) =>
+            loginTypes.length > 0 &&
+            loginTypes.includes(customerLoginType.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
+              ? loginUserRejected({ email: customerLoginType.user?.email })
+              : loginUserSuccess(customerLoginType)
+          ),
+          mapErrorToAction(createUserFail)
+        )
       )
     )
+  );
+
+  redirectAfterUserCreation$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loginUserRejected),
+        mapToPayload(),
+        concatMap(login =>
+          from(
+            this.router.navigate(['/register/approval'], {
+              queryParams: { mailTo: login.email },
+            })
+          )
+        )
+      ),
+    { dispatch: false }
   );
 
   updateUser$ = createEffect(() =>

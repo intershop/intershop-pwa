@@ -17,6 +17,8 @@ export const loginUserFail = createAction('[User API] Login User Failed', httpEr
 
 export const loginUserSuccess = createAction('[User API] Login User Success', payload<CustomerLoginType>());
 
+export const loginUserRejected = createAction('[User API] Login User Rejection', payload<{ email: string }>());
+
 export const loadCompanyUser = createAction('[User Internal] Load Company User');
 
 export const loadCompanyUserFail = createAction('[User API] Load Company User Fail', httpError());

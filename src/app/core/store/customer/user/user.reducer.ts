@@ -26,6 +26,7 @@ import {
   loadUserPaymentMethodsSuccess,
   loginUserFail,
   loginUserSuccess,
+  loginUserRejected,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
@@ -118,6 +119,7 @@ export const userReducer = createReducer(
     };
   }),
   unsetLoadingAndErrorOn(
+    loginUserRejected,
     loginUserSuccess,
     loadCompanyUserSuccess,
     updateUserSuccess,

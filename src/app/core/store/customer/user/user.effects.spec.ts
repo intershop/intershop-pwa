@@ -16,6 +16,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -39,6 +40,7 @@ import {
   loadUserPaymentMethodsSuccess,
   loginUser,
   loginUserFail,
+  loginUserRejected,
   loginUserSuccess,
   loginUserWithToken,
   requestPasswordReminder,
@@ -101,7 +103,7 @@ describe('User Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router']),
+        CoreStoreModule.forTesting(['router', 'serverConfig']),
         CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
@@ -246,6 +248,14 @@ describe('User Effects', () => {
   });
 
   describe('createUser$', () => {
+    beforeEach(() => {
+      store.dispatch(
+        loadServerConfigSuccess({
+          config: { general: { customerTypeForLoginApproval: ['PRIVATE'] } },
+        })
+      );
+    });
+
     it('should call the api service when Create event is called', done => {
       const action = createUser({
         customer: {
@@ -253,6 +263,15 @@ describe('User Effects', () => {
           customerNo: 'PC',
         },
       } as CustomerRegistrationType);
+
+      const customerLoginType = {
+        customer: {
+          isBusinessCustomer: true,
+          customerNo: 'PC',
+        },
+        pgid: '',
+      };
+      when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
 
       actions$ = of(action);
 
@@ -264,9 +283,44 @@ describe('User Effects', () => {
 
     it('should dispatch a loadPGID action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const customer: Customer = { isBusinessCustomer: true, customerNo: 'PC' };
 
-      const action = createUser({ credentials } as CustomerRegistrationType);
-      const completion = loginUserSuccess({} as CustomerUserType);
+      const customerLoginType = {
+        customer: {
+          isBusinessCustomer: true,
+          customerNo: 'PC',
+        },
+      };
+      when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
+
+      const action = createUser({ customer, credentials } as CustomerRegistrationType);
+      const completion = loginUserSuccess(customerLoginType);
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.createUser$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a redirect action if customer approval is enabled', () => {
+      const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
+
+      const customerLoginType = {
+        customer: {
+          isBusinessCustomer: false,
+          customerNo: 'PC',
+        },
+        user: {
+          firstName: 'Klaus',
+          lastName: 'Klausen',
+          email: 'klausKlausen@blubber.de',
+        },
+      };
+      when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
+
+      const action = createUser({ customer, credentials } as CustomerRegistrationType);
+      const completion = loginUserRejected({ email: customerLoginType.user.email });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
