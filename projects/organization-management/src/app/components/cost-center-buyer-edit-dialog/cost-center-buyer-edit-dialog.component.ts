@@ -100,6 +100,8 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
 
     const changedBuyer: CostCenterBuyer = {
       login: this.buyer.login,
+      firstName: this.buyer.firstName,
+      lastName: this.buyer.lastName,
       budget: PriceHelper.getPrice(this.buyer.budget.currency, this.model.budgetValue ?? 0),
       budgetPeriod: this.model.budgetPeriod,
     };
