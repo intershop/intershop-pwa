@@ -74,7 +74,9 @@
 
           <tr>
             <th>{{ 'product.short_description.label' | translate }}</th>
-            <td *ngFor="let product of visibleProducts">{{ product.shortDescription }}</td>
+            <td *ngFor="let product of visibleProducts">
+              <div [ishServerHtml]="product.shortDescription"></div>
+            </td>
           </tr>
 
           <tr>
