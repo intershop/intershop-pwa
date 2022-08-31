@@ -21,6 +21,7 @@ describe('Product Detail Info Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     when(context.select('product')).thenReturn(of({ sku: '123' } as ProductView));
+    when(context.select('sku')).thenReturn(of('123'));
     when(context.select('variationCount')).thenReturn(of(0));
 
     await TestBed.configureTestingModule({
