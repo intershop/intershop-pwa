@@ -3,7 +3,7 @@
     <li [ngbNavItem]="'DESCRIPTION'" data-testing-id="product-description-tab">
       <a ngbNavLink>{{ 'product.description.heading' | translate }}</a>
       <ng-template ngbNavContent>
-        <div [innerHTML]="product.longDescription"></div>
+        <div [ishServerHtml]="product.longDescription"></div>
       </ng-template>
     </li>
 

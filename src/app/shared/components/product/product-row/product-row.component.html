@@ -15,9 +15,11 @@
 
         <ish-product-id></ish-product-id>
 
-        <div *ngIf="configuration$('description') | async" class="product-description">
-          {{ product.shortDescription }}
-        </div>
+        <div
+          *ngIf="configuration$('description') | async"
+          class="product-description"
+          [ishServerHtml]="product.shortDescription"
+        ></div>
 
         <ish-product-promotion displayType="simpleWithDetail"></ish-product-promotion>
 

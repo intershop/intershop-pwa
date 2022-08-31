@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -23,7 +25,7 @@ describe('Product Detail Info Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('rating'), NgbNavModule, TranslateModule.forRoot()],
-      declarations: [ProductDetailInfoComponent],
+      declarations: [MockDirective(ServerHtmlDirective), ProductDetailInfoComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
