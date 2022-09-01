@@ -37,7 +37,7 @@ export const getFeatures = createSelector(getConfigurationState, state =>
 
 const internalDefaultLocale = createSelector(getConfigurationState, state => state.defaultLocale);
 
-const internalDefaultAvailableLocales = createSelector(getConfigurationState, state => state.defaultLocales);
+const internalFallbackLocales = createSelector(getConfigurationState, state => state.fallbackLocales);
 
 const internalCurrencyFilter = createSelector(getConfigurationState, state => state.localeCurrencyOverride);
 
@@ -45,9 +45,9 @@ const internalCurrencyFilter = createSelector(getConfigurationState, state => st
  * locales configured in ICM
  */
 export const getAvailableLocales = createSelector(
-  internalDefaultAvailableLocales,
+  internalFallbackLocales,
   getServerConfigParameter<string[]>('general.locales'),
-  (defaultLocales, activated) => (activated?.length ? activated : defaultLocales)
+  (fallbackLocales, serverLocales) => (serverLocales?.length ? serverLocales : fallbackLocales)
 );
 
 const internalRequestedLocale = createSelector(getConfigurationState, state => state.lang);

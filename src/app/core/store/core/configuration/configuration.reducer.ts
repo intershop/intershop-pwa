@@ -18,7 +18,7 @@ export interface ConfigurationState {
   features?: string[];
   addFeatures?: string[];
   defaultLocale?: string;
-  defaultLocales?: string[];
+  fallbackLocales?: string[];
   localeCurrencyOverride?: { [locale: string]: string | string[] };
   lang?: string;
   currency?: string;
@@ -37,7 +37,7 @@ const initialState: ConfigurationState = {
   features: undefined,
   addFeatures: [],
   defaultLocale: environment.defaultLocale,
-  defaultLocales: environment.defaultLocales,
+  fallbackLocales: environment.fallbackLocales,
   localeCurrencyOverride: environment.localeCurrencyOverride,
   lang: undefined,
   currency: undefined,
