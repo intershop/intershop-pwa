@@ -1,14 +1,11 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  DEFAULT_PRODUCT_LISTING_VIEW_TYPE_MOBILE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
-import { getDeviceType } from 'ish-core/store/core/configuration';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -24,17 +21,13 @@ describe('Product Listing Effects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router'], [ProductListingEffects]),
+        CoreStoreModule.forTesting(['router', 'configuration'], [ProductListingEffects]),
         RouterTestingModule.withRoutes([{ path: 'some', children: [] }]),
         ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
-        { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE_MOBILE, useValue: 'list' },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
-        provideMockStore({
-          selectors: [{ selector: getDeviceType, value: 'desktop' }],
-        }),
         provideStoreSnapshots(),
       ],
     });
@@ -79,7 +72,21 @@ describe('Product Listing Effects', () => {
 
       tick(0);
 
-      expect(store$.actionsArray()).toMatchInlineSnapshot(`Array []`);
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [Product Listing] Load More Products:
+          id: {"type":"search","value":"term"}
+        [Product Listing Internal] Load More Products For Params:
+          id: {"type":"search","value":"term"}
+          filters: undefined
+          sorting: "name-asc"
+          page: undefined
+        [Search Internal] Search Products:
+          searchTerm: "term"
+          page: undefined
+          sorting: "name-asc"
+        [Filter Internal] Load Filter for Search:
+          searchTerm: "term"
+      `);
     }));
 
     it('should fire all necessary actions for family page', fakeAsync(() => {
@@ -87,7 +94,21 @@ describe('Product Listing Effects', () => {
 
       tick(0);
 
-      expect(store$.actionsArray()).toMatchInlineSnapshot(`Array []`);
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [Product Listing] Load More Products:
+          id: {"type":"category","value":"cat"}
+        [Product Listing Internal] Load More Products For Params:
+          id: {"type":"category","value":"cat"}
+          filters: undefined
+          sorting: "name-asc"
+          page: undefined
+        [Products Internal] Load Products for Category:
+          categoryId: "cat"
+          page: undefined
+          sorting: "name-asc"
+        [Filter Internal] Load Filter For Category:
+          uniqueId: "cat"
+      `);
     }));
   });
 
@@ -103,7 +124,22 @@ describe('Product Listing Effects', () => {
 
       tick(0);
 
-      expect(store$.actionsArray()).toMatchInlineSnapshot(`Array []`);
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [Product Listing] Load More Products:
+          id: {"type":"search","value":"term"}
+        [Product Listing Internal] Load More Products For Params:
+          id: {"type":"search","value":"term","filters":{"param":[1],"sear...
+          filters: {"param":[1],"searchTerm":[1]}
+          sorting: undefined
+          page: undefined
+        [Filter Internal] Load Products For Filter:
+          id: {"type":"search","value":"term","filters":{"param":[1],"sear...
+          searchParameter: {"param":[1],"searchTerm":[1]}
+          page: undefined
+          sorting: undefined
+        [Filter] Apply Filter:
+          searchParameter: {"param":[1],"searchTerm":[1]}
+      `);
       expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.param', ['foobar']);
       expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.searchTerm', ['term']);
     }));
@@ -113,7 +149,22 @@ describe('Product Listing Effects', () => {
 
       tick(0);
 
-      expect(store$.actionsArray()).toMatchInlineSnapshot(`Array []`);
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [Product Listing] Load More Products:
+          id: {"type":"category","value":"cat"}
+        [Product Listing Internal] Load More Products For Params:
+          id: {"type":"category","value":"cat","filters":{"param":[1]}}
+          filters: {"param":[1]}
+          sorting: undefined
+          page: undefined
+        [Filter Internal] Load Products For Filter:
+          id: {"type":"category","value":"cat","filters":{"param":[1]}}
+          searchParameter: {"param":[1]}
+          page: undefined
+          sorting: undefined
+        [Filter] Apply Filter:
+          searchParameter: {"param":[1]}
+      `);
     }));
   });
 });
