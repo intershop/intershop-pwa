@@ -2,7 +2,6 @@ import { Attachment } from 'ish-core/models/attachment/attachment.model';
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
-import { Price } from 'ish-core/models/price/price.model';
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 
@@ -45,18 +44,10 @@ export interface VariationProduct extends Product {
 export interface VariationProductMaster extends Product {
   type: 'VariationProductMaster';
   variationAttributeValues?: VariationAttribute[];
-  minListPrice?: Price;
-  minSalePrice?: Price;
-  maxListPrice?: Price;
-  maxSalePrice?: Price;
 }
 
 export interface ProductRetailSet extends Product {
   type: 'RetailSet';
-  minListPrice: Price;
-  minSalePrice: Price;
-  summedUpListPrice: Price;
-  summedUpSalePrice: Price;
 }
 
 export interface ProductBundle extends Product {

@@ -32,6 +32,12 @@ export class PriceItemHelper {
       scaledPrices: priceDetails?.prices?.scaledPrices?.map(priceItem =>
         PriceItemHelper.selectScaledPriceType(priceItem, type)
       ),
+      minSalePrice: PriceItemHelper.selectType(priceDetails?.prices?.minSalePrice, type),
+      minListPrice: PriceItemHelper.selectType(priceDetails?.prices?.minListPrice, type),
+      maxSalePrice: PriceItemHelper.selectType(priceDetails?.prices?.maxSalePrice, type),
+      maxListPrice: PriceItemHelper.selectType(priceDetails?.prices?.maxListPrice, type),
+      summedUpSalePrice: PriceItemHelper.selectType(priceDetails?.prices?.summedUpSalePrice, type),
+      summedUpListPrice: PriceItemHelper.selectType(priceDetails?.prices?.summedUpListPrice, type),
     };
   }
 }
