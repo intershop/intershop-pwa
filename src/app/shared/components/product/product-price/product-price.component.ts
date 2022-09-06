@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MatomoTracker } from '@ngx-matomo/tracker';
-import { Observable, combineLatest, Subject, takeUntil, switchMap } from 'rxjs';
+import { Observable, Subject, combineLatest, switchMap, takeUntil } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Price, PriceHelper, Pricing } from 'ish-core/models/price/price.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-price',
@@ -28,9 +28,9 @@ export class ProductPriceComponent implements OnInit {
       priceSavings: Price;
       lowerPrice: Price;
       upperPrice: Price;
-    } & Pricing & ProductView
+    } & Pricing &
+      ProductView
   >;
-
 
   constructor(private context: ProductContextFacade, private readonly tracker: MatomoTracker) {}
 
@@ -59,8 +59,14 @@ export class ProductPriceComponent implements OnInit {
     this.data$
       .pipe(
         switchMap(async product => {
-          this.tracker.setEcommerceView(product.sku, product.name, product?.defaultCategory?.name, product?.salePrice?.value);
+          this.tracker.setEcommerceView(
+            product.sku,
+            product.name,
+            product?.defaultCategory?.name,
+            product?.salePrice?.value
+          );
           this.tracker.trackPageView();
+          console.log('Triggered');
         }),
         takeUntil(this.destroy)
       )
@@ -72,5 +78,4 @@ export class ProductPriceComponent implements OnInit {
     this.destroy.next();
     this.destroy.complete();
   }
-
 }
