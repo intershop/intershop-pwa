@@ -1,0 +1,62 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<ng-container *ngIf="pageTree$ | async as page">
+  <li
+    #subMenu
+    [class]="'dropdown ' + pagelet.stringParam('CSSClass', '')"
+    [ngClass]="{ open: isOpened(page.contentPageId) }"
+    (mouseenter)="subMenuShow(subMenu)"
+    (mouseleave)="subMenuHide(subMenu)"
+    (click)="subMenuHide(subMenu)"
+  >
+    <a
+      [routerLink]="page | ishContentPageRoute"
+      [ngStyle]="{ width: !showSubMenu(page.children.length) ? '100%' : '' }"
+    >
+      <ng-container *ngIf="pagelet.hasParam('DisplayName'); else noDisplayName">
+        {{ pagelet.stringParam('DisplayName') }}
+      </ng-container>
+      <ng-template #noDisplayName>
+        {{ page.name }}
+      </ng-template>
+    </a>
+
+    <ng-container *ngIf="showSubMenu(page.children.length)">
+      <a class="dropdown-toggle" (click)="toggleOpen(page.contentPageId)">
+        <fa-icon *ngIf="isOpened(page.contentPageId); else closed" [icon]="['fas', 'minus']" />
+        <ng-template #closed><fa-icon [icon]="['fas', 'plus']" /></ng-template>
+      </a>
+
+      <ng-container [ngTemplateOutlet]="treeNodeTemplate" [ngTemplateOutletContext]="{ treeNode: page, depth: 1 }" />
+
+      <!-- the recursively used template to render the tree nodes -->
+      <ng-template #treeNodeTemplate let-treeNode="treeNode" let-depth="depth">
+        <ul class="category-level{{ depth }}" [ngClass]="{ 'dropdown-menu': depth === 1 }">
+          <li
+            *ngFor="let node of treeNode.children"
+            class="main-navigation-level{{ depth }}-item"
+            [ngClass]="{ open: isOpened(node.contentPageId) }"
+          >
+            <a [routerLink]="node | ishContentPageRoute" [ngStyle]="{ width: !node.children.length ? '100%' : '' }">
+              {{ node.name }}
+            </a>
+            <ng-container *ngIf="node.children.length">
+              <a class="dropdown-toggle" (click)="toggleOpen(node.contentPageId)">
+                <fa-icon *ngIf="isOpened(node.contentPageId); else closed" [icon]="['fas', 'minus']" />
+                <ng-template #closed><fa-icon [icon]="['fas', 'plus']" /></ng-template>
+              </a>
+              <ng-container
+                [ngTemplateOutlet]="treeNodeTemplate"
+                [ngTemplateOutletContext]="{ treeNode: node, depth: depth + 1 }"
+              />
+            </ng-container>
+          </li>
+
+          <li *ngIf="pagelet.hasParam('SubNavigationHTML') && depth === 1" class="sub-navigation-content">
+            <div [ishServerHtml]="pagelet.stringParam('SubNavigationHTML')"></div>
+          </li>
+        </ul>
+      </ng-template>
+    </ng-container>
+  </li>
+</ng-container>

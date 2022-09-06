@@ -7,6 +7,7 @@ import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.
 import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './components/cms-image/cms-image.component';
 import { CMSNavigationLinkComponent } from './components/cms-navigation-link/cms-navigation-link.component';
+import { CMSNavigationPageComponent } from './components/cms-navigation-page/cms-navigation-page.component';
 import { CMSProductListCategoryComponent } from './components/cms-product-list-category/cms-product-list-category.component';
 import { CMSProductListFilterComponent } from './components/cms-product-list-filter/cms-product-list-filter.component';
 import { CMSProductListManualComponent } from './components/cms-product-list-manual/cms-product-list-manual.component';
@@ -136,6 +137,14 @@ import { CMS_COMPONENT } from './configurations/injection-keys';
       useValue: {
         definitionQualifiedName: 'app_sf_base_cm:component.navigation.link.pagelet2-Component',
         class: CMSNavigationLinkComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_base_cm:component.navigation.page.pagelet2-Component',
+        class: CMSNavigationPageComponent,
       },
       multi: true,
     },
