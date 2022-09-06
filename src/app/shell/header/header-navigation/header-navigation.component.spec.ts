@@ -45,7 +45,7 @@ describe('Header Navigation Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <ul class="navbar-nav main-navigation-list">
-        <li class="dropdown">
+        <li class="dropdown first">
           <a
             class="main-navigation-link"
             ng-reflect-router-link="/cat/A"

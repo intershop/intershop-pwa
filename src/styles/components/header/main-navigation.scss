@@ -23,6 +23,7 @@
       }
 
       li {
+        float: none;
         list-style: none;
 
         &.open ul {
@@ -49,23 +50,24 @@
           float: left;
           width: calc(100% - #{$toggler-width});
           padding: $space-default ($grid-gutter-width * 0.5) !important;
-          font-size: $font-size-menu-item-mobile;
+          font-size: $font-size-navbar-item-mobile;
           line-height: 1.3125rem;
+          color: $text-color-inverse;
+          background: $CORPORATE-PRIMARY;
+          border-bottom: $border-width-default solid $border-color-default;
         }
-      }
 
-      li.open {
-        .category-level1,
-        .category-level2,
-        .category-level3,
-        .category-level4 {
-          width: 100%;
-          padding: 0;
-          margin: 0;
+        &.open {
+          .category-level1,
+          .category-level2,
+          .category-level3,
+          .category-level4 {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+          }
         }
-      }
 
-      > li {
         &.dropdown {
           padding: 0;
           background: none;
@@ -73,13 +75,6 @@
 
         ul > li {
           float: none;
-        }
-        // Navbar Items
-        > a {
-          font-size: $font-size-navbar-item-mobile;
-          color: $text-color-inverse;
-          background: $CORPORATE-PRIMARY;
-          border-bottom: $border-width-default solid $border-color-default;
         }
       }
       // Menu Items
@@ -89,7 +84,9 @@
       .category-level4 {
         > li > a {
           font-size: $font-size-sub-menu-item-mobile;
+          color: $text-color-primary;
           text-transform: capitalize;
+          background-color: $color-inverse;
           border-bottom: $border-width-default solid $border-color-light;
         }
 
@@ -139,19 +136,22 @@
   }
 
   .main-navigation-list {
+    display: block;
+
     a {
       font-size: $font-size-navbar-item;
       color: $text-color-primary;
     }
 
-    > li {
+    li {
       line-height: 40px;
 
       &.dropdown {
         position: static;
+        float: left;
         padding: 0 10px;
 
-        &:first-child {
+        &.first {
           padding-left: 0;
         }
 
@@ -226,6 +226,7 @@
 
             ul {
               padding: 0;
+              padding-left: $space-default;
               margin: 0;
             }
 
@@ -282,6 +283,16 @@
 
 @include media-breakpoint-down(sm) {
   @include mobile-navigation;
+}
+
+.sub-navigation-content {
+  padding: 0 !important;
+  margin: 0 !important;
+  clear: both;
+
+  @media (max-width: $screen-xs-max) {
+    padding: $space-default !important;
+  }
 }
 
 /* purgecss end ignore */

@@ -2,10 +2,10 @@
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <ul class="navbar-nav main-navigation-list">
   <li
-    *ngFor="let category of categories$ | async"
+    *ngFor="let category of categories$ | async; first as isFirst"
     #subMenu
     class="dropdown"
-    [ngClass]="{ open: isOpened(category.uniqueId) }"
+    [ngClass]="{ open: isOpened(category.uniqueId), first: isFirst }"
     (mouseenter)="subMenuShow(subMenu)"
     (mouseleave)="subMenuHide(subMenu)"
     (click)="subMenuHide(subMenu)"
