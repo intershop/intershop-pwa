@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 import { EMPTY, from, iif, of } from 'rxjs';
 import {
   concatMap,
@@ -56,7 +57,6 @@ import {
   updateBasketShippingMethod,
 } from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 
 @Injectable()
 export class BasketEffects {
@@ -138,8 +138,8 @@ export class BasketEffects {
       mergeMap(() =>
         this.basketService.createBasket().pipe(
           map(basket => createBasketSuccess({ basket })),
-          mapErrorToAction(createBasketFail),
-        ),
+          mapErrorToAction(createBasketFail)
+        )
       )
     )
   );
@@ -307,30 +307,6 @@ export class BasketEffects {
       filter(routerState => /^\/(basket|checkout.*)/.test(routerState.url) && !routerState.queryParams?.error),
       mergeMap(() => [resetBasketErrors(), resetOrderErrors()])
     )
-  );
-
-  /**
-   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
-   * Add queryParam error=true to the route to prevent resetting errors.
-   *
-   */
-  orderSubmitTrackingMatomo$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(submitBasket),
-        switchMap(() => {
-
-          this.store.pipe(select(getCurrentBasket)).subscribe(b => {
-            this.tracker.trackEcommerceOrder(b?.id, b?.totals.total.gross);
-            this.tracker.trackPageView();
-            console.log(`Tracked order with id ${b?.id} and total amount of ${b?.totals.total.gross}`);
-          });
-
-          return EMPTY;
-        })
-      ),
-
-    { dispatch: false }
   );
 
   /**

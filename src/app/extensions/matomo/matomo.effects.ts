@@ -1,34 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { MatomoTracker } from '@ngx-matomo/tracker';
+import { EMPTY } from 'rxjs';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-
-import { mapToPayloadProperty } from 'ish-core/utils/operators';
-
 import {
-  addItemsToBasket,
   addItemsToBasketSuccess,
   deleteBasketItem,
   updateBasketItems,
-  updateBasketItemsSuccess,
   loadBasketSuccess,
+  submitBasket,
 } from 'src/app/core/store/customer/basket/basket.actions';
 import { getCurrentBasket } from 'src/app/core/store/customer/basket/basket.selectors';
-import { MatomoTracker } from '@ngx-matomo/tracker';
-import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
-import { createOrderSuccess } from 'ish-core/store/customer/orders';
-import { getSelectedOrder } from 'ish-core/store/customer/orders';
-import { getProduct, getSelectedProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
 
-import { EMPTY, pipe } from 'rxjs';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
-import { LineItemUpdateHelper } from 'ish-core/models/line-item-update/line-item-update.helper';
+import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
+import { getProduct, getSelectedProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
+import { log } from 'ish-core/utils/dev/operators';
+import { mapToPayloadProperty } from 'ish-core/utils/operators';
 
 @Injectable()
 export class MatomoEffects {
   constructor(private actions$: Actions, private store: Store, private readonly tracker: MatomoTracker) {}
 
   quant = 0;
+  sku = '';
+
   /**
    * Triggers when a product is added to the basket. Sends product data to Matomo and logs to the console.
    */
@@ -37,23 +34,17 @@ export class MatomoEffects {
       this.actions$.pipe(
         ofType(addItemsToBasketSuccess),
         mapToPayloadProperty('items'),
+        log('Hallo'),
         tap(item => {
+          console.log(item);
           this.quant = item[0].quantity;
+          this.sku = String(item[0].sku);
           console.log(`Quantity: ${this.quant}`);
+          console.log(`SKU: ${this.sku}`);
         }),
-        withLatestFrom(this.store.select(getCurrentBasket)),
-        map(([items, basket]) => basket.lineItems.filter(lineItem => lineItem.productSKU === items[0].sku)?.[0]),
+        withLatestFrom(this.store.pipe(select(getProduct(this.sku)))),
         tap(item => {
-          this.tracker.addEcommerceItem(
-            item.productSKU,
-            `SKU: ${item.productSKU}`,
-            undefined,
-            item.price.gross,
-            this.quant
-          );
-          console.log(
-            `Item with ID: ${item.productSKU}, Quantity: ${this.quant} and price: ${item.price.gross} has been added to the basket`
-          );
+          console.log(item);
         })
       ),
     { dispatch: false }
@@ -125,12 +116,16 @@ export class MatomoEffects {
     () =>
       this.actions$.pipe(
         ofType(loadProductPricesSuccess),
-        map(action => {
-          const prices = action.payload.prices;
-          this.tracker.setEcommerceView(prices[0].sku, 'name1', 'category', prices[0].prices.salePrice.net);
-          this.tracker.trackPageView();
-          console.log(`View product with sku ${prices[0].sku} and price of ${prices[0].prices.salePrice.net}`);
-          return action;
+        tap(action => {
+          if (action.payload.prices.length === 1) {
+            console.log(`Price Site is ${action.payload.prices.length}`);
+            const prices = action.payload.prices;
+            this.tracker.setEcommerceView('#PV', '#PV', 'category', prices[0].prices.salePrice.net);
+            this.tracker.trackPageView();
+            console.log(`View product with sku ${prices[0].sku} and price of ${prices[0].prices.salePrice.net}`);
+          } else {
+            console.log(`Price Site is ${action.payload.prices.length}`);
+          }
         })
       ),
 
@@ -142,6 +137,7 @@ export class MatomoEffects {
    * Add queryParam error=true to the route to prevent resetting errors.
    *
    */
+  /*
   orderSubmitTrackingMatomo$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -160,6 +156,7 @@ export class MatomoEffects {
 
     { dispatch: false }
   );
+  */
 
   /**
    * Executed when product detail page is called. It sends the information to Matomo using a manual event and not by using the eCommerce view.
@@ -170,9 +167,15 @@ export class MatomoEffects {
         ofType(loadProductPricesSuccess),
         map(action => {
           const prices = action.payload.prices;
-          this.tracker.trackEvent('ProductPageView', 'viewProduct', '', Number(prices[0].sku));
-          console.log(`Viewed product with sku ${prices[0].sku}`);
-          return action;
+          console.log(prices.length);
+          // track only price array contains one value -> avoids firing on category level
+          if (prices.length === 1) {
+            this.tracker.trackEvent('ProductPageView', prices[0].sku, 'pageView', 1);
+            console.log(`Viewed product with sku ${prices[0].sku}`);
+            return action;
+          } else {
+            return action;
+          }
         })
       ),
     { dispatch: false }
@@ -191,7 +194,29 @@ export class MatomoEffects {
         tap(([, product]) => {
           const category = product.defaultCategoryId;
           this.tracker.trackEvent('TrackCategory', category);
-          console.log('Category is ' + category);
+          console.log(`Category is ${category}`);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  /**
+   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
+   * Add queryParam error=true to the route to prevent resetting errors.
+   *
+   */
+  orderSubmitTrackingMatomo$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(submitBasket),
+        switchMap(() => {
+          this.store.pipe(select(getCurrentBasket)).subscribe(b => {
+            this.tracker.trackEcommerceOrder(b?.id, b?.totals.total.gross);
+            this.tracker.trackPageView();
+            console.log(`Tracked order with id ${b?.id} and total amount of ${b?.totals.total.gross}`);
+          });
+
+          return EMPTY;
         })
       ),
     { dispatch: false }
