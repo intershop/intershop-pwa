@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 import { EMPTY, from, iif, of } from 'rxjs';
 import {
   concatMap,
@@ -136,8 +137,8 @@ export class BasketEffects {
       mergeMap(() =>
         this.basketService.createBasket().pipe(
           map(basket => createBasketSuccess({ basket })),
-          mapErrorToAction(createBasketFail),
-        ),
+          mapErrorToAction(createBasketFail)
+        )
       )
     )
   );
