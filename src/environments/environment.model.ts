@@ -81,6 +81,7 @@ export interface Environment {
 
   // default viewType used for product listings
   defaultProductListingViewType: ViewType;
+  defaultProductListingViewTypeMobile: ViewType;
 
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
@@ -148,6 +149,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     master: 6,
   },
   defaultProductListingViewType: 'grid',
+  defaultProductListingViewTypeMobile: 'grid',
   defaultDeviceType: 'mobile',
   fallbackLocales: ['en_US', 'de_DE', 'fr_FR'],
   multiSiteLocaleMap: {

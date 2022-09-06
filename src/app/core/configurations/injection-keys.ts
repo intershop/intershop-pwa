@@ -45,6 +45,13 @@ export const DEFAULT_PRODUCT_LISTING_VIEW_TYPE = new InjectionToken<ViewType>('d
   factory: () => environment.defaultProductListingViewType,
 });
 
+export const DEFAULT_PRODUCT_LISTING_VIEW_TYPE_MOBILE = new InjectionToken<ViewType>(
+  'defaultProductListingViewTypeMobile',
+  {
+    factory: () => environment.defaultProductListingViewTypeMobile,
+  }
+);
+
 /**
  * the configured cookie consent options for the application
  */
