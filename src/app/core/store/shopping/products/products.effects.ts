@@ -15,7 +15,6 @@ import {
   mergeMap,
   switchMap,
   take,
-  tap,
   throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
