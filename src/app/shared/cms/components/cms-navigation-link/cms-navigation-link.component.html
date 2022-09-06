@@ -1,0 +1,41 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<ng-container *ngIf="pagelet?.hasParam('Link')">
+  <li
+    #subMenu
+    [class]="'dropdown ' + pagelet.stringParam('CSSClass', '')"
+    [ngClass]="{ open: opened }"
+    (mouseenter)="subMenuShow(subMenu)"
+    (mouseleave)="subMenuHide(subMenu)"
+    (click)="subMenuHide(subMenu)"
+  >
+    <ng-container *ngIf="isRouterLink(pagelet, 'Link'); else externalLink">
+      <a
+        [routerLink]="routerLink(pagelet, 'Link')"
+        [ngStyle]="{ width: !pagelet.hasParam('SubNavigationHTML') ? '100%' : '' }"
+      >
+        {{ pagelet.stringParam('LinkText') }}
+      </a>
+    </ng-container>
+    <ng-template #externalLink>
+      <a
+        [href]="pagelet.stringParam('Link')"
+        [ngStyle]="{ width: !pagelet.hasParam('SubNavigationHTML') ? '100%' : '' }"
+      >
+        {{ pagelet.stringParam('LinkText') }}
+      </a>
+    </ng-template>
+
+    <ng-container *ngIf="pagelet.hasParam('SubNavigationHTML')">
+      <a class="dropdown-toggle" (click)="toggleOpen()">
+        <fa-icon *ngIf="opened; else closed" [icon]="['fas', 'minus']" />
+        <ng-template #closed><fa-icon [icon]="['fas', 'plus']" /></ng-template>
+      </a>
+      <ul class="category-level1 dropdown-menu">
+        <li class="sub-navigation-content">
+          <div [ishServerHtml]="pagelet.stringParam('SubNavigationHTML')"></div>
+        </li>
+      </ul>
+    </ng-container>
+  </li>
+</ng-container>
