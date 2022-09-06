@@ -23,6 +23,9 @@ In addition the `'messageToMerchant'` environment feature toggle option needs to
 To address an Angular hydration issue ([#1585](https://github.com/intershop/intershop-pwa/pull/1585)) the `header` component rendering was changed and in addition a `HeaderType` was introduced for the standard header types `['simple', 'error', 'checkout']`.
 If in a project other header types are used these header types and the rendering needs to be adapted accordingly.
 
+With the introduction of the new [navigation CMS components](../concepts/cms-integration.md#navigation-cms-components) it became necessary to adapt the main navigation styling.
+The styling can no longer rely on child selectors (`>`) since the CMS manged components introduce a lot of additional HTML tags around the styling relevant `li` tags.
+
 ## From 4.2 to 5.0
 
 Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.
