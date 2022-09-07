@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -26,7 +27,6 @@ import { ProductDetailVariationsComponent } from '../product-detail-variations/p
 import { ProductImagesComponent } from '../product-images/product-images.component';
 
 import { ProductDetailComponent } from './product-detail.component';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Product Detail Component', () => {
   let component: ProductDetailComponent;

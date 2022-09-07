@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Store, select } from '@ngrx/store';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { identity, of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -13,7 +14,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ContentStoreModule } from './content-store.module';
 import { getContentInclude, loadContentInclude, loadContentIncludeSuccess } from './includes';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Content Store', () => {
   let store: Store;

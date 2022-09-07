@@ -3,6 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -31,7 +32,6 @@ import {
   submitBasket,
   validateBasket,
 } from './basket.actions';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Basket Validation Effects', () => {
   let actions$: Observable<Action>;
@@ -47,11 +47,11 @@ describe('Basket Validation Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['serverConfig']),
         CustomerStoreModule.forTesting('user', 'basket'),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
         RouterTestingModule.withRoutes([
           { path: 'checkout', children: [{ path: 'address', children: [] }] },
           { path: 'checkout', children: [{ path: 'review', children: [] }] },
         ]),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },

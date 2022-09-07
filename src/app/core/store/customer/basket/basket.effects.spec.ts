@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { cold, hot } from 'jasmine-marbles';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -45,7 +46,6 @@ import {
   updateBasketShippingMethod,
 } from './basket.actions';
 import { BasketEffects } from './basket.effects';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Basket Effects', () => {
   let actions$: Observable<Action>;
@@ -61,8 +61,8 @@ describe('Basket Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig', 'configuration']),
         CustomerStoreModule.forTesting('user', 'basket'),
-        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
         NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
+        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },

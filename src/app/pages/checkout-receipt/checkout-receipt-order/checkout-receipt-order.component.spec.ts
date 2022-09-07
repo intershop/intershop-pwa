@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
 import { CheckoutReceiptOrderComponent } from './checkout-receipt-order.component';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Checkout Receipt Order Component', () => {
   let component: CheckoutReceiptOrderComponent;
@@ -18,9 +18,9 @@ describe('Checkout Receipt Order Component', () => {
     await TestBed.configureTestingModule({
       declarations: [CheckoutReceiptOrderComponent, MockComponent(ModalDialogLinkComponent)],
       imports: [
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
         RouterTestingModule,
         TranslateModule.forRoot(),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
     }).compileComponents();
   });

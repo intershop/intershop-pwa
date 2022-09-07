@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
@@ -35,7 +36,6 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
 import { loginUser, personalizationStatusDetermined } from './user';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -152,6 +152,7 @@ describe('Customer Store', () => {
       imports: [
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
         RouterTestingModule.withRoutes([
           {
             path: 'account',
@@ -164,7 +165,6 @@ describe('Customer Store', () => {
         ]),
         ShoppingStoreModule,
         TranslateModule.forRoot(),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },

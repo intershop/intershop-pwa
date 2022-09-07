@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatomoTracker } from '@ngx-matomo/tracker';
-import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';

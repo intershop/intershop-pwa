@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 import { from } from 'rxjs';
 import { concatMap, map, mergeMap } from 'rxjs/operators';
 
@@ -18,7 +19,6 @@ import {
 
 import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
 import { getBreadcrumbForContentPage } from './pages.selectors';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 
 @Injectable()
 export class PagesEffects {

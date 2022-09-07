@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { cold, hot } from 'jasmine-marbles';
 import { BehaviorSubject, Observable, merge, noop, of, throwError } from 'rxjs';
 import { delay, toArray } from 'rxjs/operators';
@@ -35,7 +36,6 @@ import {
   loadProductsForCategoryFail,
 } from './products.actions';
 import { ProductsEffects } from './products.effects';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Products Effects', () => {
   let actions$: Observable<Action>;
@@ -77,13 +77,13 @@ describe('Products Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig']),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
         RouterTestingModule.withRoutes([
           { path: 'category/:categoryUniqueId/product/:sku', children: [] },
           { path: 'product/:sku', children: [] },
           { path: '**', children: [] },
         ]),
         ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices'),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
