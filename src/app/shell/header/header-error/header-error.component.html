@@ -1,0 +1,22 @@
+<div class="header header-error container">
+  <div class="mid-header">
+    <div class="logo-wrapper d-none d-md-block">
+      <a
+        rel="home"
+        [href]="homeHref"
+        class="logo"
+        [attr.aria-label]="'common.home.link' | translate"
+        data-testing-id="header-home-link-desktop"
+      ></a>
+    </div>
+    <div class="logo-wrapper d-md-none">
+      <a
+        rel="home"
+        [href]="homeHref"
+        class="mobile-logo"
+        [attr.aria-label]="'common.home.link' | translate"
+        data-testing-id="link-home"
+      ></a>
+    </div>
+  </div>
+</div>
