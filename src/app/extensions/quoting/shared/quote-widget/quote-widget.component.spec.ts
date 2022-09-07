@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -21,7 +21,7 @@ describe('Quote Widget Component', () => {
 
   beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
-    when(quotingFacade.quotingEntities$()).thenReturn(of([]));
+    when(quotingFacade.quotingEntities$(anything())).thenReturn(of([]));
     when(quotingFacade.loading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
@@ -50,7 +50,7 @@ describe('Quote Widget Component', () => {
   });
 
   it('should calculate and display the right amounts when rendered', () => {
-    when(quotingFacade.quotingEntities$()).thenReturn(
+    when(quotingFacade.quotingEntities$(anything())).thenReturn(
       of(range(1, 6).map(num => ({ id: `${num}` } as unknown as Quote)))
     );
     when(quotingFacade.state$('1')).thenReturn(of('New'));

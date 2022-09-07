@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
 import { Quote, QuoteRequest } from '../../models/quoting/quoting.model';
@@ -9,14 +9,27 @@ import { Quote, QuoteRequest } from '../../models/quoting/quoting.model';
   templateUrl: './quote-list-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteListPageComponent implements OnInit {
+export class QuoteListPageComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
-  quotes$: Observable<(Quote | QuoteRequest)[]>;
+  quotes: (Quote | QuoteRequest)[];
 
-  constructor(private quotingFacade: QuotingFacade) {}
+  private destroy$ = new Subject<void>();
+
+  constructor(private quotingFacade: QuotingFacade, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.quotes$ = this.quotingFacade.quotingEntities$();
+    this.quotingFacade
+      .quotingEntities$({ automaticRefresh: true })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(quotes => {
+        this.quotes = quotes;
+        this.cd.detectChanges();
+      });
     this.loading$ = this.quotingFacade.loading$;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

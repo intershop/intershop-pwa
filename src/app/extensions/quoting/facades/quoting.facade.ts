@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { timer } from 'rxjs';
+import { Observable, OperatorFunction, identity, timer } from 'rxjs';
 import { map, sample, switchMap, tap } from 'rxjs/operators';
 
-import { whenFalsy } from 'ish-core/utils/operators';
+import { delayUntil, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
@@ -21,28 +21,18 @@ import {
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
-  constructor(private store: Store) {}
+  constructor(private store: Store, private appRef: ApplicationRef) {}
 
   loading$ = this.store.pipe(select(getQuotingLoading));
 
-  quotingEntities$() {
+  quotingEntities$(options?: { automaticRefresh: boolean }) {
     // update on subscription
     this.loadQuoting();
 
     return this.store.pipe(
       select(getQuotingEntities),
       sample(this.loading$.pipe(whenFalsy())),
-      switchMap(entities =>
-        // update every minute
-        timer(0, 60_000).pipe(
-          tap(count => {
-            if (count) {
-              this.loadQuoting();
-            }
-          }),
-          map(() => entities)
-        )
-      ),
+      options?.automaticRefresh ? this.automaticQuoteRefresh() : identity,
       tap(entities => {
         entities.filter(QuotingHelper.isStub).forEach(entity => {
           this.store.dispatch(loadQuotingDetail({ entity, level: 'List' }));
@@ -80,5 +70,23 @@ export class QuotingFacade {
 
   deleteQuoteFromBasket(quoteId: string) {
     this.store.dispatch(deleteQuoteFromBasket({ id: quoteId }));
+  }
+
+  private automaticQuoteRefresh<T>(): OperatorFunction<T, T> {
+    return (source$: Observable<T>) =>
+      source$.pipe(
+        delayUntil(this.appRef.isStable.pipe(whenTruthy())),
+        switchMap(entities =>
+          // update every minute
+          timer(0, 60_000).pipe(
+            tap(count => {
+              if (count) {
+                this.loadQuoting();
+              }
+            }),
+            map(() => entities)
+          )
+        )
+      );
   }
 }
