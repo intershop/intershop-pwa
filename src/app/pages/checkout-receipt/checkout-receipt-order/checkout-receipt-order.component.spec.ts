@@ -17,7 +17,11 @@ describe('Checkout Receipt Order Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CheckoutReceiptOrderComponent, MockComponent(ModalDialogLinkComponent)],
-      imports: [RouterTestingModule, TranslateModule.forRoot(), NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })],
+      imports: [
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
+      ],
     }).compileComponents();
   });
 

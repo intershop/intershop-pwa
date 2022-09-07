@@ -36,8 +36,10 @@ describe('Content Store', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        ContentStoreModule, CoreStoreModule.forTesting([], true),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })],
+        ContentStoreModule,
+        CoreStoreModule.forTesting([], true),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
+      ],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsService) },
         { provide: HttpStatusCodeService, useFactory: () => instance(mock(HttpStatusCodeService)) },

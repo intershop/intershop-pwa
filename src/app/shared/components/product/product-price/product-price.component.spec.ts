@@ -47,7 +47,8 @@ describe('Product Price Component', () => {
     await TestBed.configureTestingModule({
       imports: [
         TranslateModule.forRoot(),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })],
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
+      ],
       declarations: [MockPipe(PricePipe, (price: Price) => `\$${price.value?.toFixed(2)}`), ProductPriceComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();

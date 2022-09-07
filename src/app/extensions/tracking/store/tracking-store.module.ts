@@ -15,6 +15,6 @@ const trackingEffects = [TrackingConfigEffects, MatomoEffects];
 
 // not-dead-code
 @NgModule({
-  imports: [EffectsModule.forFeature(trackingEffects), StoreModule.forFeature('tracking', trackingReducers)]
+  imports: [EffectsModule.forFeature(trackingEffects), StoreModule.forFeature('tracking', trackingReducers)],
 })
 export class TrackingStoreModule {}

@@ -62,7 +62,7 @@ describe('Basket Effects', () => {
         CoreStoreModule.forTesting(['router', 'serverConfig', 'configuration']),
         CustomerStoreModule.forTesting('user', 'basket'),
         RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },

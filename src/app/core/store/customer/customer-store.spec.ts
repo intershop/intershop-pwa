@@ -164,7 +164,7 @@ describe('Customer Store', () => {
         ]),
         ShoppingStoreModule,
         TranslateModule.forRoot(),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },

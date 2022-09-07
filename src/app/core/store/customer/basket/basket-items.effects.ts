@@ -54,7 +54,7 @@ export class BasketItemsEffects {
     private actions$: Actions,
     private router: Router,
     private store: Store,
-    private basketService: BasketService,
+    private basketService: BasketService
   ) {}
 
   /**
