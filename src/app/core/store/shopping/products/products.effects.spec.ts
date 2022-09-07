@@ -36,7 +36,6 @@ import {
   loadProductsForCategoryFail,
 } from './products.actions';
 import { ProductsEffects } from './products.effects';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Products Effects', () => {
   let actions$: Observable<Action>;
@@ -85,7 +84,6 @@ describe('Products Effects', () => {
           { path: '**', children: [] },
         ]),
         ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices'),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },

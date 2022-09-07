@@ -32,7 +32,6 @@ import {
   submitBasket,
   validateBasket,
 } from './basket.actions';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Basket Validation Effects', () => {
   let actions$: Observable<Action>;
@@ -53,7 +52,6 @@ describe('Basket Validation Effects', () => {
           { path: 'checkout', children: [{ path: 'address', children: [] }] },
           { path: 'checkout', children: [{ path: 'review', children: [] }] },
         ]),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },

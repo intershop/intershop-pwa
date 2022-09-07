@@ -14,7 +14,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ContentStoreModule } from './content-store.module';
 import { getContentInclude, loadContentInclude, loadContentIncludeSuccess } from './includes';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Content Store', () => {
   let store: Store;
