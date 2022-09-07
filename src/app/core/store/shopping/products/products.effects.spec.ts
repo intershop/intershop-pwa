@@ -85,7 +85,7 @@ describe('Products Effects', () => {
           { path: '**', children: [] },
         ]),
         ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices'),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
