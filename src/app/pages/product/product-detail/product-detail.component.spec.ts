@@ -27,7 +27,6 @@ import { ProductDetailVariationsComponent } from '../product-detail-variations/p
 import { ProductImagesComponent } from '../product-images/product-images.component';
 
 import { ProductDetailComponent } from './product-detail.component';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Product Detail Component', () => {
   let component: ProductDetailComponent;

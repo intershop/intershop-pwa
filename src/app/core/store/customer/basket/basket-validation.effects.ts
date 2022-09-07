@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { MatomoTracker } from '@ngx-matomo/tracker';
 import { intersection } from 'lodash-es';
 import { EMPTY, Observable, from } from 'rxjs';
 import { concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
@@ -31,7 +32,6 @@ import {
   validateBasket,
 } from './basket.actions';
 import { getCurrentBasket } from './basket.selectors';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 
 @Injectable()
 export class BasketValidationEffects {
