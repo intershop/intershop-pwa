@@ -12,7 +12,6 @@ import {
   map,
   mergeMap,
   switchMap,
-  tap,
   toArray,
   window,
   withLatestFrom,
@@ -45,8 +44,7 @@ import {
   updateBasketItemSuccess,
   validateBasket,
 } from './basket.actions';
-import { getBasketInfo, getCurrentBasket, getCurrentBasketId } from './basket.selectors';
-import { update } from 'lodash-es';
+import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketItemsEffects {

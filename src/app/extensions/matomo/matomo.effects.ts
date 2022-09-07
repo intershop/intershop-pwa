@@ -58,7 +58,7 @@ export class MatomoEffects {
       this.actions$.pipe(
         ofType(deleteBasketItem),
         mapToPayloadProperty('itemId'),
-        withLatestFrom(this.store.select(getCurrentBasket)),
+        withLatestFrom(this.store.pipe(select(getCurrentBasket))),
         map(([itemId, basket]) => basket.lineItems.filter(lineItem => lineItem.id === itemId)?.[0]),
         filter(item => !!item),
         tap(lineItem => {
@@ -93,7 +93,7 @@ export class MatomoEffects {
       this.actions$.pipe(
         ofType(updateBasketItems),
         mapToPayloadProperty('lineItemUpdates'),
-        withLatestFrom(this.store.select(getCurrentBasket)),
+        withLatestFrom(this.store.pipe(select(getCurrentBasket))),
         map(([lineItemUpdates, basket]) => basket.lineItems.filter(i => i.id === lineItemUpdates[0].itemId)?.[0]),
         tap(lineItem => {
           this.tracker.addEcommerceItem(

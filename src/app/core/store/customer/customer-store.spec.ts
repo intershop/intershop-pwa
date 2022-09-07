@@ -36,7 +36,6 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
 import { loginUser, personalizationStatusDetermined } from './user';
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -166,7 +165,6 @@ describe('Customer Store', () => {
         ]),
         ShoppingStoreModule,
         TranslateModule.forRoot(),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
