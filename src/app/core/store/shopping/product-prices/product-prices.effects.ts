@@ -9,10 +9,7 @@ import { loadProductPrices, loadProductPricesSuccess } from '.';
 
 @Injectable()
 export class ProductPricesEffects {
-  constructor(
-    private actions$: Actions,
-    private pricesService: PricesService
-  ) {}
+  constructor(private actions$: Actions, private pricesService: PricesService) {}
 
   loadProductPrices$ = createEffect(() =>
     this.actions$.pipe(

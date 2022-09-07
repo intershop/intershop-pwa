@@ -180,7 +180,7 @@ describe('Shopping Store', () => {
         ]),
         ShoppingStoreModule,
         TranslateModule.forRoot(),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },

@@ -48,7 +48,7 @@ export class OrdersEffects {
     private orderService: OrderService,
     private router: Router,
     private store: Store,
-    private translateService: TranslateService,
+    private translateService: TranslateService
   ) {}
 
   /**

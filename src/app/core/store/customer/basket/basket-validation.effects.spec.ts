@@ -53,7 +53,7 @@ describe('Basket Validation Effects', () => {
           { path: 'checkout', children: [{ path: 'address', children: [] }] },
           { path: 'checkout', children: [{ path: 'review', children: [] }] },
         ]),
-        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
       ],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
