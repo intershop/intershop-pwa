@@ -1,4 +1,5 @@
 <ng-container [ngSwitch]="headerType$ | async">
+  <ish-header-error *ngSwitchCase="'error'"></ish-header-error>
   <ish-header-simple *ngSwitchCase="'simple'"></ish-header-simple>
   <ish-header-checkout *ngSwitchCase="'checkout'"></ish-header-checkout>
 
