@@ -1,7 +1,7 @@
 import { ApplicationRef, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, OperatorFunction, identity, timer } from 'rxjs';
-import { map, sample, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, OperatorFunction, identity, timer } from 'rxjs';
+import { map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { delayUntil, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
@@ -21,8 +21,11 @@ import {
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
-  constructor(private store: Store, private appRef: ApplicationRef) {}
+  private isStable$ = new BehaviorSubject<boolean>(false);
 
+  constructor(private store: Store, appRef: ApplicationRef) {
+    appRef.isStable.pipe(whenTruthy(), take(1)).subscribe(isStable => this.isStable$.next(isStable));
+  }
   loading$ = this.store.pipe(select(getQuotingLoading));
 
   quotingEntities$(options?: { automaticRefresh: boolean }) {
@@ -75,7 +78,7 @@ export class QuotingFacade {
   private automaticQuoteRefresh<T>(): OperatorFunction<T, T> {
     return (source$: Observable<T>) =>
       source$.pipe(
-        delayUntil(this.appRef.isStable.pipe(whenTruthy())),
+        delayUntil(this.isStable$),
         switchMap(entities =>
           // update every minute
           timer(0, 60_000).pipe(
