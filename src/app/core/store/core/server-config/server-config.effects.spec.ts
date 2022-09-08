@@ -8,6 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { serverConfigError } from 'ish-core/store/core/error';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { routerTestNavigationAction } from 'ish-core/utils/dev/routing';
@@ -120,6 +121,15 @@ describe('Server Config Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadServerConfig$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type serverConfigError', () => {
+      const action = loadServerConfigFail({ error: makeHttpError({ message: 'invalid' }) });
+      const completion = serverConfigError({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.mapToServerConfigError$).toBeObservable(expected$);
     });
   });
 });

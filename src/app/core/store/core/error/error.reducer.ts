@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { businessError, communicationTimeoutError, serverError } from './error.actions';
+import { businessError, communicationTimeoutError, serverConfigError, serverError } from './error.actions';
 
 export interface ErrorState {
   current: HttpError | string;
@@ -20,6 +20,7 @@ export const errorReducer = createReducer(
     serverError,
     businessError,
     communicationTimeoutError,
+    serverConfigError,
     (state, action): ErrorState => ({
       ...state,
       current: action.payload.error,

@@ -6,7 +6,8 @@ import { identity } from 'rxjs';
 import { concatMap, first, map, switchMap } from 'rxjs/operators';
 
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { mapErrorToAction, whenFalsy } from 'ish-core/utils/operators';
+import { serverConfigError } from 'ish-core/store/core/error';
+import { mapErrorToAction, mapToPayloadProperty, whenFalsy } from 'ish-core/utils/operators';
 
 import { loadServerConfig, loadServerConfigFail, loadServerConfigSuccess } from './server-config.actions';
 import { isServerConfigurationLoaded } from './server-config.selectors';
@@ -37,6 +38,14 @@ export class ServerConfigEffects {
           mapErrorToAction(loadServerConfigFail)
         )
       )
+    )
+  );
+
+  mapToServerConfigError$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadServerConfigFail),
+      mapToPayloadProperty('error'),
+      map(error => serverConfigError({ error }))
     )
   );
 }
