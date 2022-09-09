@@ -2,14 +2,13 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  DEFAULT_PRODUCT_LISTING_VIEW_TYPE_MOBILE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
-import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { getDeviceType } from 'ish-core/store/core/configuration';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
@@ -36,8 +35,8 @@ import { getProductListingViewType } from './product-listing.selectors';
 export class ProductListingEffects {
   constructor(
     @Inject(PRODUCT_LISTING_ITEMS_PER_PAGE) private itemsPerPage: number,
-    @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE) private defaultViewType: ViewType,
-    @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE_MOBILE) private defaultViewTypeMobile: ViewType,
+    @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE)
+    private defaultViewType: ViewType | Partial<Record<DeviceType, ViewType>>,
     private actions$: Actions,
     private store: Store
   ) {}
@@ -49,19 +48,19 @@ export class ProductListingEffects {
     )
   );
 
-  initializeDefaultViewType$ = createEffect(() =>
-    this.store.pipe(
-      filter(() => !SSR),
-      select(getProductListingViewType),
-      whenFalsy(),
-      withLatestFrom(this.store.pipe(select(getDeviceType))),
-      map(([, deviceType]) =>
-        setViewType(
-          deviceType === 'mobile' ? { viewType: this.defaultViewTypeMobile } : { viewType: this.defaultViewType }
-        )
+  initializeDefaultViewType$ =
+    !SSR &&
+    createEffect(() =>
+      this.store.pipe(
+        select(getProductListingViewType),
+        whenFalsy(),
+        withLatestFrom(this.store.pipe(select(getDeviceType))),
+        map(([, deviceType]) =>
+          typeof this.defaultViewType === 'object' ? this.defaultViewType[deviceType] : this.defaultViewType
+        ),
+        map(viewType => setViewType({ viewType }))
       )
-    )
-  );
+    );
 
   setViewTypeFromQueryParam$ = createEffect(() =>
     this.store.pipe(
