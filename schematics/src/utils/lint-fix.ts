@@ -29,6 +29,7 @@ export function applyLintFix(): Rule {
     }
     // Only include files that have been touched.
     tree.actions
+      .filter(action => action.kind !== 'd')
       .map(action => action.path.substring(1))
       .filter(path => path.endsWith('.ts') || path.endsWith('.html'))
       .forEach(file => {

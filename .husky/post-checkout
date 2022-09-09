@@ -15,7 +15,6 @@ then
 
   if [ "$INTERSHOP_PWA_AUTO_INSTALL" = "true" ]
   then
-    git clean -xdf src/**/lazy-* projects/**/lazy-*
     npm install
   fi
 fi
