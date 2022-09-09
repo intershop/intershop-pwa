@@ -78,7 +78,7 @@ export class QuotingFacade {
   private automaticQuoteRefresh<T>(): OperatorFunction<T, T> {
     return (source$: Observable<T>) =>
       source$.pipe(
-        delayUntil(this.isStable$),
+        delayUntil(this.isStable$.pipe(whenTruthy())),
         switchMap(entities =>
           // update every minute
           timer(0, 60_000).pipe(
