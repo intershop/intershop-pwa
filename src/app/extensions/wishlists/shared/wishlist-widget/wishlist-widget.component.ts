@@ -4,6 +4,7 @@ import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -32,8 +33,8 @@ export class WishlistWidgetComponent implements OnInit {
 
   constructor(
     private wishlistsFacade: WishlistsFacade,
-    @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number,
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) mediumBreakpointWidth: number
+    @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>,
+    @Inject(MEDIUM_BREAKPOINT_WIDTH) mediumBreakpointWidth: InjectSingle<typeof MEDIUM_BREAKPOINT_WIDTH>
   ) {
     this.tileConfiguration = {
       addToWishlist: false,

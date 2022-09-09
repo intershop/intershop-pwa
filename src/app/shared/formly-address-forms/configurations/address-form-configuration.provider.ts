@@ -1,5 +1,7 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
+import { InjectMultiple } from 'ish-core/utils/injection';
+
 import { AddressFormConfiguration } from './address-form.configuration';
 
 export const ADDRESS_FORM_CONFIGURATION = new InjectionToken<AddressFormConfiguration>('Address Form Factory');
@@ -10,7 +12,9 @@ export const ADDRESS_FORM_CONFIGURATION = new InjectionToken<AddressFormConfigur
  */
 @Injectable()
 export class AddressFormConfigurationProvider {
-  constructor(@Inject(ADDRESS_FORM_CONFIGURATION) private configurations: AddressFormConfiguration[]) {}
+  constructor(
+    @Inject(ADDRESS_FORM_CONFIGURATION) private configurations: InjectMultiple<typeof ADDRESS_FORM_CONFIGURATION>
+  ) {}
 
   /**
    * gets the appropriate address configuration for the given countryCode and configuration

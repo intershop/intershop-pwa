@@ -8,7 +8,7 @@ import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
-import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { getDeviceType } from 'ish-core/store/core/configuration';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
@@ -20,6 +20,7 @@ import {
 } from 'ish-core/store/shopping/filter';
 import { loadProductsForCategory, loadProductsForMaster } from 'ish-core/store/shopping/products';
 import { searchProducts } from 'ish-core/store/shopping/search';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { stringToFormParams } from 'ish-core/utils/url-form-params';
 
@@ -34,9 +35,9 @@ import { getProductListingViewType } from './product-listing.selectors';
 @Injectable()
 export class ProductListingEffects {
   constructor(
-    @Inject(PRODUCT_LISTING_ITEMS_PER_PAGE) private itemsPerPage: number,
+    @Inject(PRODUCT_LISTING_ITEMS_PER_PAGE) private itemsPerPage: InjectSingle<typeof PRODUCT_LISTING_ITEMS_PER_PAGE>,
     @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE)
-    private defaultViewType: ViewType | Partial<Record<DeviceType, ViewType>>,
+    private defaultViewType: InjectSingle<typeof DEFAULT_PRODUCT_LISTING_VIEW_TYPE>,
     private actions$: Actions,
     private store: Store
   ) {}

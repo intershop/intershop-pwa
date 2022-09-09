@@ -4,6 +4,7 @@ import { TransferState } from '@angular/platform-browser';
 
 import { THEME_COLOR } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
+import { InjectSingle } from 'ish-core/utils/injection';
 
 /**
  * Service to add the configured/selected theme’s meta in the HTML’s head.
@@ -13,7 +14,7 @@ export class ThemeService {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private transferState: TransferState,
-    @Inject(THEME_COLOR) private themeColor: string
+    @Inject(THEME_COLOR) private themeColor: InjectSingle<typeof THEME_COLOR>
   ) {}
 
   private trySetAttribute(selector: string, attribute: string, value: string) {

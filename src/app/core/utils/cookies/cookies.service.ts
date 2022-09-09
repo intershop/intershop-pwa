@@ -4,7 +4,8 @@ import { TransferState } from '@angular/platform-browser';
 
 import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
-import { CookieConsentOptions, CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
+import { CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
+import { InjectSingle } from 'ish-core/utils/injection';
 
 interface CookiesOptions {
   path?: string;
@@ -23,7 +24,7 @@ interface CookiesOptions {
 @Injectable({ providedIn: 'root' })
 export class CookiesService {
   constructor(
-    @Inject(COOKIE_CONSENT_OPTIONS) private cookieConsentOptions: CookieConsentOptions,
+    @Inject(COOKIE_CONSENT_OPTIONS) private cookieConsentOptions: InjectSingle<typeof COOKIE_CONSENT_OPTIONS>,
     private transferState: TransferState,
     @Inject(APP_BASE_HREF) private baseHref: string,
     @Inject(DOCUMENT) private document: Document
