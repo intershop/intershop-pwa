@@ -1,5 +1,6 @@
 import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
-import { omit } from 'lodash-es';
+
+import { omit } from 'ish-core/utils/functions';
 
 import { FieldLibrary } from './field-library';
 

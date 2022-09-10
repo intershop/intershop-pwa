@@ -218,10 +218,16 @@
               "message": "use star imports only for aggregation of deeper lying imports"
             },
             {
-              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick)$).*",
+              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick|differenceBy|unionBy|mergeWith)$).*",
               "name": "lodash.*",
-              "filePattern": "^(?!.*.spec.ts$).*.ts$",
-              "message": "importing (range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick) from lodash is forbidden"
+              "filePattern": "^.*/src/app/(?!.*\\.spec\\.ts$).*\\.ts$",
+              "message": "importing this operator from lodash is forbidden"
+            },
+            {
+              "importNamePattern": "^omit$",
+              "name": "lodash.*",
+              "filePattern": "^.*/src/app/(?!.*\\.spec\\.ts$).*\\.ts$",
+              "message": "use omit from 'ish-core/utils/functions'"
             },
             {
               "importNamePattern": "CookiesService",
