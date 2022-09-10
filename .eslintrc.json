@@ -241,9 +241,9 @@
               "message": "Modules should only aggregate deeper lying artifacts."
             },
             {
-              "name": "^(?!.*\\.(module|guard)$)\\.\\..*$",
+              "name": "^(?!.*\\.(module|guard|service)$)\\.\\..*$",
               "filePattern": ".*-routing\\.module\\.ts",
-              "message": "Modules should only aggregate deeper lying artifacts."
+              "message": "Routing modules should only aggregate deeper lying artifacts."
             },
             {
               "name": ".*/extensions/.*",
