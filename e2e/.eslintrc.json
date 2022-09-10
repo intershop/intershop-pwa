@@ -1,5 +1,5 @@
 {
-  "extends": "../../.eslintrc.json",
+  "extends": "../.eslintrc.json",
   "overrides": [
     {
       "files": ["*.ts"],
@@ -23,6 +23,7 @@
         ],
         "@typescript-eslint/no-unused-expressions": "off",
         "ban/ban": "off",
+        "ish-custom-rules/ban-imports-file-pattern": "off",
         "ish-custom-rules/project-structure": [
           "warn",
           {
@@ -30,7 +31,8 @@
             "pathPatterns": [
               ".*/e2e/framework/.*/*\\.ts",
               ".*/e2e/pages/.*\\.(module|page|dialog)\\.ts",
-              ".*/e2e/specs/\\w+/[^/]*\\.e2e-spec\\.ts"
+              ".*/e2e/specs/\\w+/[^/]*\\.e2e-spec\\.ts",
+              ".*/e2e/cypress.*\\.ts"
             ]
           }
         ],
