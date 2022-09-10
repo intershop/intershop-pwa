@@ -181,6 +181,7 @@ toastr
 topseller
 transpiled
 tsquery
+typeof
 uncommit
 undiscounted
 unflatten
