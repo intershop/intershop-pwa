@@ -91,7 +91,7 @@ describe('Basket Items Effects', () => {
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
       when(basketServiceMock.addItemsToBasket(anything())).thenReturn(
-        of({ lineItems: [], info: undefined, error: undefined })
+        of({ lineItems: [], info: undefined, errors: undefined })
       );
     });
 

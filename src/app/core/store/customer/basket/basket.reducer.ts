@@ -228,7 +228,7 @@ export const basketReducer = createReducer(
     ...state,
     basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
     info: action.payload.info,
-    error: action.payload.error,
+    error: action.payload.errors ? { name: 'HttpErrorResponse', errors: action.payload.errors } : undefined,
     lastTimeProductAdded: new Date().getTime(),
     submittedBasket: undefined,
   })),
