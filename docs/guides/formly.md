@@ -267,6 +267,7 @@ Template option `inputClass`: These css class(es) will be added to all input/sel
 | ish-captcha-field    | Includes the `<ish-lazy-captcha>` component and adds the relevant `formControls` to the form | `topic`: Topic that will be passed to the Captcha component.                                                                  |
 | ish-radio-field      | Basic radio input                                                                            | ----                                                                                                                          |
 | ish-plain-text-field | Only display the form value                                                                  | ----                                                                                                                          |
+| ish-html-text-field  | Only display the form value as html                                                          | ----                                                                                                                          |
 
 ### Wrappers
 

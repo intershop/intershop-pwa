@@ -23,6 +23,7 @@ import { DatePickerFieldComponent } from './date-picker-field/date-picker-field.
 import { IshDatepickerI18n } from './date-picker-field/ish-datepicker-i18n';
 import { LocalizedParserFormatter } from './date-picker-field/localized-parser-formatter';
 import { FieldsetFieldComponent } from './fieldset-field/fieldset-field.component';
+import { HtmlTextFieldComponent } from './html-text-field/html-text-field.component';
 import { PlainTextFieldComponent } from './plain-text-field/plain-text-field.component';
 import { RadioFieldComponent } from './radio-field/radio-field.component';
 import { SelectFieldComponent } from './select-field/select-field.component';
@@ -34,6 +35,7 @@ const fieldComponents = [
   CheckboxFieldComponent,
   DatePickerFieldComponent,
   FieldsetFieldComponent,
+  HtmlTextFieldComponent,
   PlainTextFieldComponent,
   RadioFieldComponent,
   SelectFieldComponent,
@@ -61,6 +63,11 @@ const fieldComponents = [
         {
           name: 'ish-plain-text-field',
           component: PlainTextFieldComponent,
+          wrappers: ['form-field-horizontal'],
+        },
+        {
+          name: 'ish-html-text-field',
+          component: HtmlTextFieldComponent,
           wrappers: ['form-field-horizontal'],
         },
         {
