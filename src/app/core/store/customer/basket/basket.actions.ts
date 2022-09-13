@@ -6,7 +6,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -85,7 +85,7 @@ export const addItemsToBasketFail = createAction('[Basket API] Add Items To Bask
 
 export const addItemsToBasketSuccess = createAction(
   '[Basket API] Add Items To Basket Success',
-  payload<{ lineItems: LineItem[]; info: BasketInfo[]; error?: HttpError }>()
+  payload<{ lineItems: LineItem[]; info: BasketInfo[]; errors?: ErrorFeedback[] }>()
 );
 
 export const mergeBasketInProgress = createAction('[Basket API] Merge two baskets in progress');
