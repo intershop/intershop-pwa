@@ -42,6 +42,9 @@ class TextInputFieldComponent extends FieldType {}
 @Component({ template: 'PlainTextFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class PlainTextFieldComponent extends FieldType {}
 
+@Component({ template: 'HtmlTextFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
+class HtmlTextFieldComponent extends FieldType {}
+
 @Component({ template: 'EmailFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}' })
 class EmailFieldComponent extends FieldType {}
 
@@ -74,6 +77,7 @@ class DatePickerFieldComponent extends FieldType {}
     DummyWrapperComponent,
     EmailFieldComponent,
     FieldsetFieldComponent,
+    HtmlTextFieldComponent,
     PasswordFieldComponent,
     PhoneFieldComponent,
     PlainTextFieldComponent,
@@ -92,7 +96,11 @@ class DatePickerFieldComponent extends FieldType {}
         },
         {
           name: 'ish-plain-text-field',
-          component: TextInputFieldComponent,
+          component: PlainTextFieldComponent,
+        },
+        {
+          name: 'ish-html-text-field',
+          component: HtmlTextFieldComponent,
         },
         {
           name: 'ish-fieldset-field',
