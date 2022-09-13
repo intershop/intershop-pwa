@@ -79,9 +79,15 @@ export interface Environment {
         master: number;
       };
 
-  // default viewType used for product listings
-  defaultProductListingViewType: ViewType;
-  defaultProductListingViewTypeMobile: ViewType;
+  /**
+   * default viewType used for product listings
+   *
+   * default value is 'grid'
+   *
+   * - to override it for all device types use `defaultProductListingViewType: 'list'`
+   * - to override it for mobile and tablet use `defaultProductListingViewType: { mobile: 'list', tablet: 'list' }`
+   */
+  defaultProductListingViewType?: ViewType | Partial<Record<DeviceType, ViewType>>;
 
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
@@ -148,8 +154,6 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     search: 12,
     master: 6,
   },
-  defaultProductListingViewType: 'grid',
-  defaultProductListingViewTypeMobile: 'grid',
   defaultDeviceType: 'mobile',
   fallbackLocales: ['en_US', 'de_DE', 'fr_FR'],
   multiSiteLocaleMap: {
