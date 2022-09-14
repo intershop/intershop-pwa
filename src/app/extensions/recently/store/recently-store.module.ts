@@ -17,7 +17,6 @@ const recentlyReducers: ActionReducerMap<RecentlyState> = {
 
 const recentlyEffects = [RecentlyEffects];
 
-// not-dead-code
 @Injectable()
 export class DefaultRecentlyStoreConfig implements StoreConfig<RecentlyState> {
   metaReducers = [
@@ -32,7 +31,6 @@ export class DefaultRecentlyStoreConfig implements StoreConfig<RecentlyState> {
 
 export const RECENTLY_STORE_CONFIG = new InjectionToken<StoreConfig<RecentlyState>>('recentlyStoreConfig');
 
-// not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(recentlyEffects),

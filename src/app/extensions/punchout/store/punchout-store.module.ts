@@ -26,7 +26,6 @@ export class PunchoutStoreConfig implements StoreConfig<PunchoutState> {
 
 export const PUNCHOUT_STORE_CONFIG = new InjectionToken<StoreConfig<PunchoutState>>('punchoutStoreConfig');
 
-// not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(punchoutEffects),

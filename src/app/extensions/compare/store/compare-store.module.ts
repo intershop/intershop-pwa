@@ -17,7 +17,6 @@ const compareReducers: ActionReducerMap<CompareState> = {
 
 const compareEffects = [CompareEffects];
 
-// not-dead-code
 @Injectable()
 export class DefaultCompareStoreConfig implements StoreConfig<CompareState> {
   metaReducers = [dataRetentionMeta<CompareState>(this.dataRetention.compare, this.appBaseHref, 'compare', '_compare')];
@@ -30,7 +29,6 @@ export class DefaultCompareStoreConfig implements StoreConfig<CompareState> {
 
 export const COMPARE_STORE_CONFIG = new InjectionToken<StoreConfig<CompareState>>('compareStoreConfig');
 
-// not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(compareEffects),

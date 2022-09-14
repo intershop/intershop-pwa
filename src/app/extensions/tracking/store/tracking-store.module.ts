@@ -12,7 +12,6 @@ const trackingReducers: ActionReducerMap<TrackingState> = {
 
 const trackingEffects = [TrackingConfigEffects];
 
-// not-dead-code
 @NgModule({
   imports: [EffectsModule.forFeature(trackingEffects), StoreModule.forFeature('tracking', trackingReducers)],
 })

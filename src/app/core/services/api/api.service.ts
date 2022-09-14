@@ -295,7 +295,6 @@ export class ApiService {
       );
   }
 
-  // not-dead-code
   b2bUserEndpoint() {
     const ids$ = combineLatest([
       this.store.pipe(select(getLoggedInUser)),

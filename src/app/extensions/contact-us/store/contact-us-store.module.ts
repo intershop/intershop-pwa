@@ -13,7 +13,6 @@ const contactUsReducers: ActionReducerMap<ContactUsState> = {
 
 const contactUsEffects = [ContactEffects];
 
-// not-dead-code
 @NgModule({
   imports: [EffectsModule.forFeature(contactUsEffects), StoreModule.forFeature('contactUs', contactUsReducers)],
 })

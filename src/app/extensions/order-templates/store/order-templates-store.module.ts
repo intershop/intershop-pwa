@@ -24,7 +24,6 @@ export const ORDER_TEMPLATES_STORE_CONFIG = new InjectionToken<StoreConfig<Order
   'orderTemplatesStoreConfig'
 );
 
-// not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(orderTemplatesEffects),
