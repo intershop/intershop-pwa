@@ -25,7 +25,6 @@ export const PRODUCT_REVIEW_STORE_CONFIG = new InjectionToken<StoreConfig<Produc
   'productReviewStoreConfig'
 );
 
-// not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(productReviewsEffects),

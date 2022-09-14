@@ -20,7 +20,6 @@ export class QuotingStoreConfig implements StoreConfig<QuotingState> {
 
 export const QUOTING_STORE_CONFIG = new InjectionToken<StoreConfig<QuotingState>>('quotingStoreConfig');
 
-// not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(quotingEffects),

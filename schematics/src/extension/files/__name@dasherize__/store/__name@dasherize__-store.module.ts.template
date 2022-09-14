@@ -9,7 +9,6 @@ const <%= camelize(name) %>Reducers: ActionReducerMap<<%= classify(name) %>State
 
 const <%= camelize(name) %>Effects = [];
 
-// not-dead-code
 @NgModule({
   imports: [EffectsModule.forFeature(<%= camelize(name) %>Effects), StoreModule.forFeature('<%= camelize(name) %>', <%= camelize(name) %>Reducers)],
 })

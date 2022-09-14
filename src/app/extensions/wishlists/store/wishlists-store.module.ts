@@ -22,7 +22,6 @@ export class WishlistStoreConfig implements StoreConfig<WishlistsState> {
 
 export const WISHLIST_STORE_CONFIG = new InjectionToken<StoreConfig<WishlistsState>>('wishlistStoreConfig');
 
-// not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(wishlistsEffects),

@@ -37,7 +37,6 @@ export class DefaultTactonStoreConfig implements StoreConfig<TactonState> {
 
 export const TACTON_STORE_CONFIG = new InjectionToken<StoreConfig<TactonState>>('tactonStoreConfig');
 
-// not-dead-code
 @NgModule({
   imports: [
     EffectsModule.forFeature(tactonEffects),
