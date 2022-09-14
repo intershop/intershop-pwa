@@ -21,7 +21,7 @@ The `package.json` property `config.active-themes` determines which themes shoul
 This will build server and client bundles for all active themes and supply them in the `dist` folder.
 The SSR process for each theme can be run individually using the generated scripts `dist/<theme>/run-standalone`.
 
-To run multiple themes with [PM2][pm2] the script `dist/build-ecosystem` can be used to generate the ecosystem.
+To run multiple themes with [PM2][pm2] the script `src/ssr/server-scripts/build-ecosystem.js` can be used to generate the ecosystem.
 If only one theme is active, the theme-specific SSR process will be run in cluster mode on the default port.
 If more themes are active, PM2 is provisioned to run a distributor process in front of all theme-specific processes, to direct incoming traffic to the correct SSR process.
 
