@@ -3,8 +3,8 @@ import { ClassDeclaration, Node, Project, ReferenceFindableNode, SyntaxKind, ts 
 
 /* eslint-disable no-console */
 
-// RegEx for file exceptions where the '// not-dead-code' exception does not work, e.g. for 'export const'
-const fileExceptionsRegex = /\/src\/environments\/|.*.production.ts$|utils\/routing.ts$/;
+// RegEx for file exceptions
+const fileExceptionsRegex = /\/src\/environments\/|.*\.production\.ts|\/server\.ts$/;
 
 const classMethodCheckRegex = /.*(Mapper|Helper|Facade|Service|State)$/;
 
@@ -137,8 +137,22 @@ function checkNode(node: Node) {
     return;
   }
 
+  if (
+    node.getKind() === SyntaxKind.VariableDeclaration &&
+    node.getParent().getParent().getKind() === SyntaxKind.VariableStatement &&
+    node
+      .getParent()
+      .getParent()
+      .getLeadingCommentRanges()
+      .some(c => c.getText().includes('not-dead-code'))
+  ) {
+    if (process.env.DEBUG) console.warn('ignoring (1)', node.getText());
+    return;
+  }
+
   const ignoreComment = node.getPreviousSiblingIfKind(SyntaxKind.SingleLineCommentTrivia);
   if (ignoreComment?.getText().includes('not-dead-code')) {
+    if (process.env.DEBUG) console.warn('ignoring (2)', node.getText());
     return;
   }
 
