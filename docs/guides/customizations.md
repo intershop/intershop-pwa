@@ -34,26 +34,33 @@ Based on this initial version of the Intershop PWA (the latest release), any pro
 
 ## Start Customization
 
+The PWA uses themes which include theme specific
+
+- features and configurations
+- overrides for certain file types (HTML and TypeScript)
+- styles and static assets
+
 To start customizing, **set a default theme** for your customization with the script
 
 ```bash
-node schematics/customization/add --default <prefix>
+node schematics/customization/add --default <theme-prefix>
 ```
 
-This will:
+This mechanism uses Angular configurations to replace files for each configuration, it will:
 
-- Add an Angular theme configuration, that is used to configure your individual brand. This default theme will used instead of the existing B2B and B2C themes. It is possible to use multiple themes next to each other, see [Guide - Multiple Themes](./multiple-themes.md)).
-- Add style files for customization under `src/styles/themes/<prefix>`
-- Add the theme as an active theme in `package.json`. (It will replace all active themes if `--default` is used.)
-- Add the prefix specific file `environment.<prefix>.ts`
-- Add a prefix `custom` for new Angular artifacts.
-- Customize ESLint in `.eslintrc.json` to support your new theme files (specifically, the `project-structure` rule).
+- add an Angular theme configuration in `angular.json` which is used to configure your individual theme. This **default** theme will used instead of the existing B2B and B2C themes. It is possible to configure and run multiple themes next to each other, see [Guide - Multiple Themes](./multiple-themes.md)).
+- add the theme-prefix as the active theme in `package.json` and replace all active themes (if `--default` is used)
+- add the theme-prefix specific file `environment.<theme-prefix>.ts` which should be used for further theme configuration
+- add initial style files for styling customization under `src/styles/themes/<theme-prefix>`
+- add the theme-prefix `custom` for new Angular artifacts
+- add the theme-prefix to the schematics `schematics/src/helpers/override/schema.json`
+- customize ESLint in `.eslintrc.json` to support your new theme files (specifically, the `project-structure` rule)
+
+> **NOTE:** If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
 
 After that we recommend to additionally use the prefix `custom` in every component to further help identifying customized components.
 
 ```bash
-$ node schematics/customization/add brand
-
 $ ng g c shared/components/basket/custom-basket-display
 CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-display.component.ts (275 bytes)
 ...

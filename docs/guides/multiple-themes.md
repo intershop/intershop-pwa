@@ -7,34 +7,21 @@ kb_sync_latest_only
 
 # Multiple Themes
 
-The PWA uses themes which include theme specific
+It is possible to create multiple themes for the PWA and the Intershop Progressive Web App currently uses multi-theming to provide different features, configurations and styles for the B2B an the B2C application.
 
-- feature and configuration set
-- overrides for certain file types (HTML and TypeScript)
-- styles and static assets
-
-It is possible to create multiple themes for the PWA.
-One theme should be set as default.
-
-This mechanism uses Angular configurations to replace files for each configuration.
-
-The Intershop Progressive Web App currently uses multi-theming to provide different styles for the B2B an the B2C application.
 The styles for B2B are defined in `src/styles/themes/b2b/style.scss`, for B2C in `src/styles/themes/b2c/style.scss`.
 
-Using schematics to start customizing Intershop Progressive Web App prepares a theme for your own custom styling. (See [Customizations - Start Customization](../guides/customizations.md#start-customization))
+## Developing the PWA with several themes
 
-## Developing the PWA with only one Theme
+Before using multiple themes, use schematics to set your default theme: [Customizations - Start Customization](../guides/customizations.md#start-customization).
 
-To configure and run the Intershop PWA with only one project/brand specific theme start the customization by setting the `<brand>` theme as default theme.
+Now add another theme **without** using `--default`:
 
+```bash
+node schematics/customization/add <theme-prefix>
 ```
-node schematics/customization/add --default <brand>
-```
 
-This configures the `<brand>` theme as the only active theme in the `package.json`.
-Besides that, all necessary configurations in `angular.json`, `.eslintrc.json` and `override/schema.json` are made and a new `src/styles/themes/<brand>` folder and `environment.<brand>.ts` is created that should be used for further project development.
-
-> **NOTE:** If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
+This will add the theme to the according files and create styling specific folders and files, see [Customizations - Start Customization](../guides/customizations.md#start-customization).
 
 # Further References
 
