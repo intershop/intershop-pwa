@@ -81,17 +81,41 @@ describe('Category Mapper', () => {
     it('should return -1 for falsy inputs', () => {
       expect(categoryMapper.computeCompleteness(undefined)).toEqual(-1);
     });
-    it('should return 0 for input from top level call', () => {
+    it('should return 0 for input from category path categories', () => {
       expect(categoryMapper.computeCompleteness({ uri: 'some' } as CategoryData)).toEqual(0);
     });
-    it('should return 1 for input from subcategories from category call', () => {
-      expect(categoryMapper.computeCompleteness({ uri: 'some', images: [{}] } as CategoryData)).toEqual(1);
+    it('should return 1 for input from sub categories', () => {
+      expect(categoryMapper.computeCompleteness({ uri: 'some', categoryRef: 'some@demo' } as CategoryData)).toEqual(1);
     });
-    it('should return 2 for input from categories call', () => {
-      expect(categoryMapper.computeCompleteness({ images: [{}], categoryPath: [{}, {}] } as CategoryData)).toEqual(2);
+    it('should return 2 for root categories from top level categories call', () => {
+      expect(
+        categoryMapper.computeCompleteness({
+          uri: 'some',
+          categoryRef: 'some@demo',
+          categoryPath: [{}],
+        } as CategoryData)
+      ).toEqual(2);
     });
-    it('should return 3 for input from categories call with root categories', () => {
-      expect(categoryMapper.computeCompleteness({ categoryPath: [{}], attributes: [] } as CategoryData)).toEqual(3);
+    it('should return 2 for sub categories from categories call', () => {
+      expect(
+        categoryMapper.computeCompleteness({
+          uri: 'some',
+          categoryRef: 'some@demo',
+          images: [{}],
+          categoryPath: [{}, {}],
+        } as CategoryData)
+      ).toEqual(2);
+    });
+    it('should return 3 for input from categories call', () => {
+      expect(
+        categoryMapper.computeCompleteness({
+          uri: 'some',
+          categoryRef: 'some@demo',
+          images: [{}],
+          categoryPath: [{}, {}],
+          seoAttributes: {},
+        } as CategoryData)
+      ).toEqual(3);
     });
   });
 
