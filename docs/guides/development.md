@@ -31,18 +31,32 @@ Use `ng serve --open` to start up the development server and open the Progressiv
 
 For actually setting up a customer project based on the Intershop PWA read the [Customization Guide](customizations.md).
 
-## Development Server
+## Local Environment Configuration
 
-Run `ng serve` or `ng s` for a development server.
-
-The project is also configured to support the usage of an own local environment file `environment.development.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
+The project is configured to support the usage of an own local environment file `environment.development.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
 Overrides in this file will be included in the theme environments and override parts of it.
 For production builds, no overrides should be used.
 The docker build automatically creates this file as an empty file.
 The `environment.development.ts` will be ignored by Git so the developer-specific settings will not be committed and accidentally shared.
 It is initially created when running `npm install`.
 
-This local environment configuration will automatically be used if you start the PWA with `ng serve`.
+The default configuration is set in `angular.json`:
+
+```
+"defaultConfiguration": "b2b,production",
+```
+
+Therefore the b2b related environment file `environment.b2b.ts` is used when starting the server where further B2B theme specific configurations are made.
+This environment file references two more files:
+
+- `environment.model.ts` where "ENVIRONMENT_DEFAULTS" are taken from
+- `environment.development.ts` where you can add your own configuration only for the local development environment, see overrides explanation above.
+
+## Development Server
+
+Run `ng serve` or `ng s` for a development server.
+
+The [local environment configuration](#local-environment-configuration) will automatically be used if you start the PWA with `ng serve`.
 
 Once the server is running, navigate to http://localhost:4200 in your browser to see the application.
 The app will automatically reload if you change any of the source files.
@@ -51,6 +65,8 @@ Running `ng serve --port 4300` will start the server on a different port than th
 
 Running `ng serve --open` will automatically open a new browser tab with the started application.
 The different start options can be combined.
+
+The project can alternatively be run in production mode with `npm start`.
 
 Further options of the development server can be found running `ng serve --help`.
 
@@ -102,6 +118,19 @@ Afterwards a clean `npm install` is performed.
 
 Tips and tools for debugging Angular applications can be found on the Internet.
 As Angular runs in the browser, all the development tool functionality provided there can also be used for Angular (debugging, call stacks, profiling, storage, audits, ...).
+
+### Visual Studio Code Remote Development
+
+An alternative development setup for the PWA is provided when using Visual Studio Code Remote - Containers to work in an isolated pre-configured project development environment.
+
+As prerequisite [Docker](https://docs.docker.com/get-docker/) has to be installed on your development machine.
+Furthermore, [Visual Studio Code](https://code.visualstudio.com) with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension has to be used as IDE.
+
+After cloning your local working copy (e.g. with VS Code), VSCode will ask you if you want to reopen the folder in a container.
+By doing this, VS Code will prepare the environment for you inside the container.
+It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
+
+Open a console in VS Code and run `ng serve` to start developing.
 
 ### Browser Extensions
 

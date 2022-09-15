@@ -34,14 +34,20 @@ Based on this initial version of the Intershop PWA (the latest release), any pro
 
 ## Start Customization
 
-To start customizing, **set a theme** for your customization with the script `node schematics/customization/add --default <prefix>`.
+To start customizing, **set a default theme** for your customization with the script
+
+```bash
+node schematics/customization/add --default <prefix>
+```
+
 This will:
 
-- Add an Angular theme configuration, that is used to configure your individual brand. (see [Guide - Multiple Themes](./multiple-themes.md))
+- Add an Angular theme configuration, that is used to configure your individual brand. This default theme will used instead of the existing B2B and B2C themes. It is possible to use multiple themes next to each other, see [Guide - Multiple Themes](./multiple-themes.md)).
 - Add style files for customization under `src/styles/themes/<prefix>`
 - Add the theme as an active theme in `package.json`. (It will replace all active themes if `--default` is used.)
+- Add the prefix specific file `environment.<prefix>.ts`
 - Add a prefix `custom` for new Angular artifacts.
-- Customize ESLint to support your new theme files (specifically, the `project-structure` rule).
+- Customize ESLint in `.eslintrc.json` to support your new theme files (specifically, the `project-structure` rule).
 
 After that we recommend to additionally use the prefix `custom` in every component to further help identifying customized components.
 

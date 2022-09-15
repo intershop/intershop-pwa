@@ -7,7 +7,15 @@ kb_sync_latest_only
 
 # Multiple Themes
 
+The PWA uses themes which include theme specific
+
+- feature and configuration set
+- overrides for certain file types (HTML and TypeScript)
+- styles and static assets
+
 It is possible to create multiple themes for the PWA.
+One theme should be set as default.
+
 This mechanism uses Angular configurations to replace files for each configuration.
 
 The Intershop Progressive Web App currently uses multi-theming to provide different styles for the B2B an the B2C application.
