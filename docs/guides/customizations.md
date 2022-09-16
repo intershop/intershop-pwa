@@ -149,7 +149,7 @@ Here you can just accept either modification and update the test snapshots.
 ### Styling
 
 Changing the styling by applying changes to SCSS files should be done in the custom theme folder `src/styles/themes/<theme-prefix>`.
-This folder is created when adding a new theme, see [Customizations - Start Customization](../guides/customizations.md#start-customization).
+This folder is created when adding a new theme, see [Start Customization](../guides/customizations.md#start-customization).
 There are two approaches to apply a theme specific styling:
 
 1. Copy only the `*.scss` files you need to change to your themes folder and adjust the file references. All files which are not overwritten in your theme will be taken from the standard and all changes and bugfixes in these files when migrating the PWA will be applied and used in your project.
@@ -175,7 +175,7 @@ When styling is done on component level, all styling is encapsulated to exactly 
 
 To add static assets (images, favicon, manifest file), create a theme specific folder in `src/assets/themes/<theme-prefix>` and adjust the theme specific references in the `*.scss` files accordingly.
 
-The `index.html` does not support the theme specific overrides, see [Customizations - Start Customization](../guides/customizations.md#theme-specific-overrides).
+The `index.html` does not support the theme specific overrides, see [Theme Specific Overrides](../guides/customizations.md#theme-specific-overrides).
 Therefore, any theme specific references have to be changed directly in this file.
 
 ### Dependencies
