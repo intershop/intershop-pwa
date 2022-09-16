@@ -70,20 +70,20 @@ export class CategoryMapper {
     // adjust CategoryCompletenessLevel.Max accordingly
     let count = 0;
 
-    if (!categoryData.uri) {
-      // returned subcategories and elements from the top-level category call contain uri
-      count++;
-    }
-    if (categoryData.images) {
-      // images are not supplied with top level category call
-      count++;
-    }
-    if (categoryData.attributes) {
-      // attributes are not supplied for subcategories
+    if (categoryData.categoryRef) {
+      // category path categories do not contain a categoryRef
       count++;
     }
     if (categoryData.categoryPath && categoryData.categoryPath.length === 1) {
       // root categories have no images but a single-entry categoryPath
+      count++;
+    }
+    if (categoryData.images) {
+      // images are supplied for sub categories in the category details call
+      count++;
+    }
+    if (categoryData.seoAttributes) {
+      // seo attributes are only supplied with the category details call
       count++;
     }
 
