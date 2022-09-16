@@ -114,11 +114,6 @@ Afterwards a clean `npm install` is performed.
 
 :warning: All unstaged files will be deleted!
 
-## Debugging
-
-Tips and tools for debugging Angular applications can be found on the Internet.
-As Angular runs in the browser, all the development tool functionality provided there can also be used for Angular (debugging, call stacks, profiling, storage, audits, ...).
-
 ### Visual Studio Code Remote Development
 
 An alternative development setup for the PWA is provided when using Visual Studio Code Remote - Containers to work in an isolated pre-configured project development environment.
@@ -131,6 +126,11 @@ By doing this, VS Code will prepare the environment for you inside the container
 It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
 
 Open a console in VS Code and run `ng serve` to start developing.
+
+## Debugging
+
+Tips and tools for debugging Angular applications can be found on the Internet.
+As Angular runs in the browser, all the development tool functionality provided there can also be used for Angular (debugging, call stacks, profiling, storage, audits, ...).
 
 ### Browser Extensions
 

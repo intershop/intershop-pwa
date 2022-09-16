@@ -46,9 +46,9 @@ To start customizing, **set a default theme** for your customization with the sc
 node schematics/customization/add --default <theme-prefix>
 ```
 
-This mechanism uses Angular configurations to replace files for each configuration, it will:
+It will:
 
-- add an Angular theme configuration in `angular.json` which is used to configure your individual theme. This **default** theme will used instead of the existing B2B and B2C themes. It is possible to configure and run multiple themes next to each other, see [Guide - Multiple Themes](./multiple-themes.md)).
+- add an Angular theme configuration in `angular.json` which is used to configure your individual theme. This **default** theme will be used instead of the existing B2B and B2C themes. It is possible to configure and run multiple themes next to each other, see [Guide - Multiple Themes](./multiple-themes.md)).
 - add the theme-prefix as the active theme in `package.json` and replace all active themes (if `--default` is used)
 - add the theme-prefix specific file `environment.<theme-prefix>.ts` which should be used for further theme configuration
 - add initial style files for styling customization under `src/styles/themes/<theme-prefix>`
@@ -148,21 +148,35 @@ Here you can just accept either modification and update the test snapshots.
 
 ### Styling
 
-Changing the styling of **existing components** should be done by adding overrides in the custom theme folder under `src/styles/themes`.
-For this you could copy only the `*.scss` files you need to adapt and fit the reference in your themes `style.scss`.
-Or you can start your styling changes by copying the complete set of standard styles to your themes folder right from the start and do all the changes there.
-Or you can come up with your own preferred way for styling adaptions.
-Just putting a brand override file next to the original file in the `src/styles` folder will not lead to the expected results.
-You should not change relevant information in the global style files under `src/styles`.
+Changing the styling by applying changes to SCSS files should be done in the custom theme folder `src/styles/themes/<theme-prefix>`.
+This folder is created when adding a new theme, see [Customizations - Start Customization](../guides/customizations.md#start-customization).
+There are two approaches to apply a theme specific styling:
 
-When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
+1. Copy only the `*.scss` files you need to change to your themes folder and adjust the file references. All files which are not overwritten in your theme will be taken from the standard and all changes and bugfixes in these files when migrating the PWA will be applied and used in your project.
+2. Copy the complete set of standard `*.scss` files to your themes folder and adjust the file references. All standard changes and bugfixes to `*.scss` files will not be applied to your theme during a PWA migration.
+
+Just putting a brand override file next to the original file in the `src/styles` folder will not lead to the expected results.
+The lookup starts with the file `style.scss` in the theme specific folder.
+
 You can re-use variables from the global styling on component level by importing only the styling file that defines the theme variables, e.g.
 
 ```
 @import 'variables';
 ```
 
-Be aware that Visual Studio Code will not resolve the import reference correctly but it works in the build PWA version anyways.
+> **Note:** You should
+>
+> - not change global `*.scss` files in `src/styles` and only apply style changes in your theme folder by copying files into the this folder and adjusting file references
+> - not delete the standard theme folders to prevent merge conflicts when migrating the PWA (changes in standard files but deleted in your project).
+
+When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
+
+> **Note:** Be aware that Visual Studio Code will not resolve all import references correctly but it works in the build PWA version anyways.
+
+To add static assets (images, favicon, manifest file), create a theme specific folder in `src/assets/themes/<theme-prefix>` and adjust the theme specific references in the `*.scss` files accordingly.
+
+The `index.html` does not support the theme specific overrides, see [Customizations - Start Customization](../guides/customizations.md#theme-specific-overrides).
+Therefore, any theme specific references have to be changed directly in this file.
 
 ### Dependencies
 

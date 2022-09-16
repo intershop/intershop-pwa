@@ -19,7 +19,7 @@ Run `npm install -g @angular/cli` once to globally install Angular CLI on your d
 
 Use `ng serve --open` to start up the development server and open the Progressive Web App in your browser.
 
-For more information consult the according chapters in the [Development Guide](./development.md).
+For more information about environment configuration, server and tools consult the according chapters in the [Development Guide](./development.md).
 
 ## Customization
 
@@ -43,7 +43,7 @@ To run the PWA with multiple channels and [Google PageSpeed](https://developers.
 
 We provide templates for [Kubernetes Deployments](../../schematics/src/kubernetes-deployment) and [DevOps](../../schematics/src/azure-pipeline) for Microsoft Azure.
 
-## Progressive Web App (PWA)
+## Progressive Web App (PWA) and Service Worker
 
 To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started), use `npm run start` to build and serve the application.
 After that open _http://localhost:4200_ in your browser and test it or run a PWA audit.
