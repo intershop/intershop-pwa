@@ -55,3 +55,7 @@ export interface QuoteRequestResponse extends QuoteBaseData<Link | QuoteRequestL
 }
 
 export type QuoteData = Link | QuoteResponse | QuoteRequestResponse;
+
+export interface QuoteEntitiesOptions {
+  automaticRefresh?: boolean;
+}

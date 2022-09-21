@@ -26,7 +26,7 @@ export class QuoteWidgetComponent implements OnInit, OnDestroy {
     this.loading$ = this.quotingFacade.loading$;
 
     const quotingStates$ = this.quotingFacade
-      .quotingEntities$({ automaticRefresh: true })
+      .quotingEntities$()
       .pipe(
         switchMap(quotes =>
           iif(() => !quotes?.length, of([]), combineLatest(quotes.map(quote => this.quotingFacade.state$(quote.id))))

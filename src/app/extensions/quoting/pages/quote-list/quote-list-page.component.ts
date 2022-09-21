@@ -19,7 +19,7 @@ export class QuoteListPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.quotingFacade
-      .quotingEntities$({ automaticRefresh: true })
+      .quotingEntities$()
       .pipe(takeUntil(this.destroy$))
       .subscribe(quotes => {
         this.quotes = quotes;

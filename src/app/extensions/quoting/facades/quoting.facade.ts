@@ -6,6 +6,7 @@ import { map, sample, switchMap, take, tap } from 'rxjs/operators';
 import { delayUntil, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
+import { QuoteEntitiesOptions } from '../models/quoting/quoting.interface';
 import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
   createQuoteRequestFromBasket,
@@ -28,7 +29,7 @@ export class QuotingFacade {
   }
   loading$ = this.store.pipe(select(getQuotingLoading));
 
-  quotingEntities$(options?: { automaticRefresh: boolean }) {
+  quotingEntities$(options: QuoteEntitiesOptions = { automaticRefresh: true }) {
     // update on subscription
     this.loadQuoting();
 

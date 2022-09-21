@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -26,7 +26,7 @@ describe('Quote List Page Component', () => {
       providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
     }).compileComponents();
 
-    when(quotingFacade.quotingEntities$(anything())).thenReturn(of([]));
+    when(quotingFacade.quotingEntities$()).thenReturn(of([]));
     when(quotingFacade.loading$).thenReturn(of(false));
   });
 
@@ -43,7 +43,7 @@ describe('Quote List Page Component', () => {
   });
 
   it('should render loading component if quotes loading', () => {
-    when(quotingFacade.quotingEntities$(anything())).thenReturn(EMPTY);
+    when(quotingFacade.quotingEntities$()).thenReturn(EMPTY);
     when(quotingFacade.loading$).thenReturn(of(true));
 
     fixture.detectChanges();
@@ -52,7 +52,7 @@ describe('Quote List Page Component', () => {
 
   it('should render quote list component if quotes present', () => {
     const quotes = [{ id: 'test' }] as Quote[];
-    when(quotingFacade.quotingEntities$(anything())).thenReturn(of(quotes));
+    when(quotingFacade.quotingEntities$()).thenReturn(of(quotes));
 
     fixture.detectChanges();
     expect(element.querySelector('ish-quote-list')).toBeTruthy();
