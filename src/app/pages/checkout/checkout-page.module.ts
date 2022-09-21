@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ServerSideRenderingGuard } from 'ish-core/guards/server-side-rendering.guard';
+import { NoServerSideRenderingGuard } from 'ish-core/guards/no-server-side-rendering.guard';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { CheckoutAddressPageModule } from '../checkout-address/checkout-address-page.module';
@@ -17,6 +17,7 @@ import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-p
 const checkoutPageRoutes: Routes = [
   {
     path: '',
+    canActivate: [NoServerSideRenderingGuard],
     component: CheckoutPageComponent,
     children: [
       {
@@ -45,7 +46,6 @@ const checkoutPageRoutes: Routes = [
       },
       {
         path: 'receipt',
-        canActivate: [ServerSideRenderingGuard],
         data: { checkoutStep: 5 },
         component: CheckoutReceiptPageModule.component,
       },

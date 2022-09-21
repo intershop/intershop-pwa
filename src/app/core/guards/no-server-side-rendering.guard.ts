@@ -5,7 +5,7 @@ import { CanActivate, Router } from '@angular/router';
  * guards a route against server side rendering (e.g. if the logic requires information only available in browser rendering)
  */
 @Injectable({ providedIn: 'root' })
-export class ServerSideRenderingGuard implements CanActivate {
+export class NoServerSideRenderingGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate() {
