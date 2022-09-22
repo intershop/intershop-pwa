@@ -180,8 +180,10 @@ export class ProductHelper {
     if (!product.completenessLevel || newProduct.completenessLevel >= product.completenessLevel) {
       return newProduct as AllProductTypes;
     }
+    // if the newProduct information has a lower completeness level merge attributes and
     // always update dynamic product information with the new product information (e.g. availability)
     product = {
+      ...newProduct,
       ...product,
       // list of product properties that should be updated
       available: newProduct.available ?? product.available,
