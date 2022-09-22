@@ -56,7 +56,7 @@ export class FilterNavigationMapper {
               selected: facet.selected,
               displayName: facet.displayValue || undefined,
               searchParameter: {
-                ...stringToFormParams(facet.link.uri.split('?')[1] || ''),
+                ...stringToFormParams(facet.link.uri.split('?')[1]?.replace(/\+/g, '%20') || ''),
                 category,
               },
               level: facet.level || 0,
