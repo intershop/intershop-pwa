@@ -45,6 +45,7 @@ import { CMSDialogComponent } from './cms/components/cms-dialog/cms-dialog.compo
 import { CMSFreestyleComponent } from './cms/components/cms-freestyle/cms-freestyle.component';
 import { CMSImageEnhancedComponent } from './cms/components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './cms/components/cms-image/cms-image.component';
+import { CMSNavigationCategoryComponent } from './cms/components/cms-navigation-category/cms-navigation-category.component';
 import { CMSNavigationLinkComponent } from './cms/components/cms-navigation-link/cms-navigation-link.component';
 import { CMSNavigationPageComponent } from './cms/components/cms-navigation-page/cms-navigation-page.component';
 import { CMSProductListCategoryComponent } from './cms/components/cms-product-list-category/cms-product-list-category.component';
@@ -201,6 +202,7 @@ const declaredComponents = [
   CMSFreestyleComponent,
   CMSImageComponent,
   CMSImageEnhancedComponent,
+  CMSNavigationCategoryComponent,
   CMSNavigationLinkComponent,
   CMSNavigationPageComponent,
   CMSProductListCategoryComponent,
