@@ -47,12 +47,7 @@ export class CategoriesService {
    * @returns      A Sorted list of top level categories with sub categories.
    */
   getTopLevelCategories(limit: number): Observable<CategoryTree> {
-    let params = new HttpParams().set('imageView', 'NO-IMAGE');
-    if (limit > 0) {
-      params = params.set('view', 'tree').set('limit', limit.toString()).set('omitHasOnlineProducts', 'true');
-    }
-
-    return this.apiService.get('categories', { sendSPGID: true, params }).pipe(
+    return this.apiService.get('categories', { sendSPGID: true, params: this.setTreeParams(limit) }).pipe(
       unpackEnvelope<CategoryData>(),
       map(categoriesData =>
         categoriesData
@@ -60,5 +55,38 @@ export class CategoriesService {
           .reduce((a, b) => CategoryTreeHelper.merge(a, b), CategoryTreeHelper.empty())
       )
     );
+  }
+
+  /**
+   * Get the category tree data for a given categoryRef up to the given depth limit.
+   * If no limit is given or the limit is 0 the simple category detail REST call is made.
+   *
+   * @param categoryRef  The categoryRef for the category of interest
+   * @param depth        The number of depth levels to be returned in a hierarchical structure.
+   * @returns            A category tree for the given category ref.
+   */
+  getCategoryTree(categoryRef: string, depth?: number): Observable<CategoryTree> {
+    if (!categoryRef) {
+      return throwError(() => new Error('getCategoryTree() called without categoryRef'));
+    }
+    return this.apiService
+      .get<CategoryData>(`categories/${categoryRef}`, { sendSPGID: true, params: this.setTreeParams(depth) })
+      .pipe(map(categoryData => this.categoryMapper.fromData(categoryData)));
+  }
+
+  /**
+   * Set the necessary parameters for a REST call that should return a categories tree for the given depth.
+   * Http params for a tree REST call are only needed if a depth > 0 is set.
+   */
+  private setTreeParams(depth?: number): HttpParams {
+    let params = new HttpParams();
+    if (depth > 0) {
+      params = params
+        .set('view', 'tree')
+        .set('limit', depth.toString())
+        .set('omitHasOnlineProducts', 'true')
+        .set('imageView', 'NO-IMAGE');
+    }
+    return params;
   }
 }

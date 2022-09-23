@@ -3,4 +3,5 @@ export interface NavigationCategory {
   name: string;
   url: string;
   hasChildren: boolean;
+  children?: NavigationCategory[];
 }

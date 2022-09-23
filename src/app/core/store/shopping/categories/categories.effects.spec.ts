@@ -5,7 +5,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
-import { anyNumber, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -23,6 +23,8 @@ import {
   loadCategoryByRef,
   loadCategoryFail,
   loadCategorySuccess,
+  loadCategoryTree,
+  loadCategoryTreeSuccess,
   loadTopLevelCategories,
   loadTopLevelCategoriesFail,
   loadTopLevelCategoriesSuccess,
@@ -43,6 +45,12 @@ describe('Categories Effects', () => {
     { uniqueId: '456', categoryPath: ['456'] },
   ] as Category[]);
 
+  const CATEGORIES_TREE = categoryTree([
+    { uniqueId: '123', categoryRef: '123@cat', categoryPath: ['123'] },
+    { uniqueId: '123.456', categoryRef: '456@cat', categoryPath: ['123', '456'] },
+    { uniqueId: '123.456.789', categoryRef: '789@cat', categoryPath: ['123', '456', '789'] },
+  ] as Category[]);
+
   beforeEach(() => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getCategory('123')).thenReturn(
@@ -55,6 +63,7 @@ describe('Categories Effects', () => {
       throwError(() => makeHttpError({ message: 'invalid category' }))
     );
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(TOP_LEVEL_CATEGORIES));
+    when(categoriesServiceMock.getCategoryTree(anything(), anyNumber())).thenReturn(of(CATEGORIES_TREE));
 
     TestBed.configureTestingModule({
       imports: [
@@ -311,6 +320,33 @@ describe('Categories Effects', () => {
       const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadTopLevelCategories$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadCategoryTree$', () => {
+    it('should call the categoriesService for loadCategoryTree action', done => {
+      const action = loadCategoryTree({ categoryRef: '123@cat', depth: 1 });
+      actions$ = of(personalizationStatusDetermined(), action);
+
+      effects.loadCategoryTree$.subscribe(() => {
+        verify(categoriesServiceMock.getCategoryTree(anyString(), anyNumber())).once();
+        expect(capture(categoriesServiceMock.getCategoryTree).last()).toMatchInlineSnapshot(`
+          [
+            "123@cat",
+            1,
+          ]
+        `);
+        done();
+      });
+    });
+
+    it('should map to action of type loadCategoryTreeSuccess', () => {
+      const action = loadCategoryTree({ categoryRef: '123@cat', depth: 2 });
+      const completion = loadCategoryTreeSuccess({ categories: CATEGORIES_TREE });
+      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined() });
+      const expected$ = cold('--c-c-c', { c: completion });
+
+      expect(effects.loadCategoryTree$).toBeObservable(expected$);
     });
   });
 

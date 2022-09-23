@@ -14,9 +14,6 @@ const getCategoriesState = createSelector(getShoppingState, (state: ShoppingStat
 
 export const getCategoryTree = createSelector(getCategoriesState, state => state.categories);
 
-/**
- * Retrieve the {@link Dictionary} of {@link Category} entities.
- */
 export const getCategoryEntities = createSelector(getCategoryTree, tree => tree.nodes);
 
 export const getCategoryRefs = createSelector(getCategoryTree, tree => tree.categoryRefs);
@@ -53,16 +50,6 @@ export const getBreadcrumbForCategoryPage = createSelectorFactory<object, Breadc
     : undefined
 );
 
-function mapNavigationCategoryFromId(uniqueId: string, tree: CategoryTree, subTree?: CategoryTree): NavigationCategory {
-  const selected = subTree || tree;
-  return {
-    uniqueId,
-    name: selected.nodes[uniqueId].name,
-    url: generateCategoryUrl(createCategoryView(tree, uniqueId)),
-    hasChildren: !!selected?.edges[uniqueId]?.length,
-  };
-}
-
 export const getNavigationCategories = (uniqueId: string) =>
   createSelectorFactory<object, NavigationCategory[]>(projector =>
     defaultMemoize(projector, CategoryTreeHelper.equals, isEqual)
@@ -75,3 +62,32 @@ export const getNavigationCategories = (uniqueId: string) =>
       ? subTree.edges[uniqueId].map(id => mapNavigationCategoryFromId(id, tree, subTree))
       : [];
   });
+
+export const getNavigationCategoryTree = (categoryRef: string, depth: number) =>
+  createSelectorFactory<object, NavigationCategory>(projector => resultMemoize(projector, isEqual))(
+    getCategoryIdByRefId(categoryRef),
+    getCategoryTree,
+    (uniqueId: string, tree: CategoryTree): NavigationCategory =>
+      uniqueId
+        ? mapNavigationCategoryFromId(uniqueId, tree, CategoryTreeHelper.subTree(tree, uniqueId), depth)
+        : undefined
+  );
+
+function mapNavigationCategoryFromId(
+  uniqueId: string,
+  tree: CategoryTree,
+  subTree?: CategoryTree,
+  depth?: number
+): NavigationCategory {
+  const selected = subTree || tree;
+  return {
+    uniqueId,
+    name: selected.nodes[uniqueId].name,
+    url: generateCategoryUrl(createCategoryView(tree, uniqueId)),
+    hasChildren: !!selected.edges[uniqueId]?.length,
+    children:
+      depth > 0
+        ? selected.edges[uniqueId]?.map(childId => mapNavigationCategoryFromId(childId, tree, subTree, depth - 1))
+        : undefined,
+  };
+}

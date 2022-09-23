@@ -14,8 +14,10 @@ import {
   getCategory,
   getCategoryIdByRefId,
   getNavigationCategories,
+  getNavigationCategoryTree,
   getSelectedCategory,
   loadCategoryByRef,
+  loadCategoryTree,
   loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
@@ -69,8 +71,14 @@ export class ShoppingFacade {
     }
     return this.store.pipe(
       select(getNavigationCategories(uniqueId)),
+      // prevent to display an empty navigation bar after login/logout);
       filter(categories => !!categories?.length)
-    ); // prevent to display an empty navigation bar after login/logout);
+    );
+  }
+
+  navigationCategoryTree$(categoryRef: string, depth: number) {
+    this.store.dispatch(loadCategoryTree({ categoryRef, depth }));
+    return this.store.pipe(select(getNavigationCategoryTree(categoryRef, depth)));
   }
 
   // PRODUCT

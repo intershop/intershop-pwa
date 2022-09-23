@@ -17,6 +17,7 @@ import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-stat
 import { InjectSingle } from 'ish-core/utils/injection';
 import {
   mapErrorToAction,
+  mapToPayload,
   mapToPayloadProperty,
   useCombinedObservableOnAction,
   whenTruthy,
@@ -27,6 +28,8 @@ import {
   loadCategoryByRef,
   loadCategoryFail,
   loadCategorySuccess,
+  loadCategoryTree,
+  loadCategoryTreeSuccess,
   loadTopLevelCategories,
   loadTopLevelCategoriesFail,
   loadTopLevelCategoriesSuccess,
@@ -113,6 +116,18 @@ export class CategoriesEffects {
           map(categories => loadTopLevelCategoriesSuccess({ categories })),
           mapErrorToAction(loadTopLevelCategoriesFail)
         )
+      )
+    )
+  );
+
+  loadCategoryTree$ = createEffect(() =>
+    this.actions$.pipe(
+      useCombinedObservableOnAction(this.actions$.pipe(ofType(loadCategoryTree)), personalizationStatusDetermined),
+      mapToPayload(),
+      switchMap(({ categoryRef, depth }) =>
+        this.categoryService
+          .getCategoryTree(categoryRef, depth)
+          .pipe(map(categories => loadCategoryTreeSuccess({ categories })))
       )
     )
   );
