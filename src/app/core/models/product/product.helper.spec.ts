@@ -336,6 +336,7 @@ describe('Product Helper', () => {
       } as Product;
       stubProduct = {
         sku: '110',
+        longDescription: 'additional info',
         completenessLevel: 0,
         name: 'Stub Product',
         available: false,
@@ -366,6 +367,7 @@ describe('Product Helper', () => {
         Object {
           "available": false,
           "completenessLevel": 0,
+          "longDescription": "additional info",
           "name": "Stub Product",
           "sku": "110",
         }
@@ -402,6 +404,7 @@ describe('Product Helper', () => {
           "available": false,
           "availableStock": undefined,
           "completenessLevel": 3,
+          "longDescription": "additional info",
           "manufacturer": "Detail Manufacturer",
           "name": "Detail Product",
           "shortDescription": "The best product",

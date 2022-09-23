@@ -102,7 +102,7 @@ describe('Products Selectors', () => {
         store$.dispatch(loadProductSuccess({ product: newProd }));
 
         expect(getProductEntities(store$.state)).toEqual({
-          [prod.sku]: { ...prod, available: false, availableStock: undefined },
+          [prod.sku]: { ...prod, available: false, manufacturer: 'Microsoft', availableStock: undefined },
         });
       });
     });
