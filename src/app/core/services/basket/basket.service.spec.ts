@@ -297,4 +297,31 @@ describe('Basket Service', () => {
       done();
     });
   });
+  it("should add a quote to the basket if 'addQuoteToBasket' is called", done => {
+    when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
+
+    basketService.addQuoteToBasket('quoteId').subscribe(() => {
+      verify(apiService.post(anything(), anything(), anything())).once();
+      const [path, body] = capture(apiService.post).last();
+      expect(path).toMatchInlineSnapshot(`"baskets/current/quotes"`);
+      expect(body).toMatchInlineSnapshot(`
+        Object {
+          "calculated": true,
+          "id": "quoteId",
+        }
+      `);
+      done();
+    });
+  });
+
+  it("should delete a quote from the basket if 'deleteQuoteFromBasket' is called", done => {
+    when(apiService.delete(anything(), anything())).thenReturn(of({}));
+
+    basketService.deleteQuoteFromBasket('quoteId').subscribe(() => {
+      verify(apiService.delete(anything(), anything())).once();
+      const [path] = capture(apiService.delete).last();
+      expect(path).toMatchInlineSnapshot(`"baskets/current/quotes/quoteId"`);
+      done();
+    });
+  });
 });

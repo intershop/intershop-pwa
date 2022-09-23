@@ -50,6 +50,8 @@ export const deleteQuotingEntitySuccess = createAction(
 );
 
 export const deleteQuoteFromBasket = createAction('[Quoting] Delete Quote From Basket', payload<IdPayloadType>());
+export const deleteQuoteFromBasketSuccess = createAction('[Quoting API] Delete Quote From Basket Success');
+export const deleteQuoteFromBasketFail = createAction('[Quoting API] Delete Quote From Basket Fail');
 
 export const rejectQuote = createAction('[Quoting] Reject Quote', payload<IdPayloadType>());
 
