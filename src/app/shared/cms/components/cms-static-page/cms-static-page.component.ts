@@ -29,5 +29,8 @@ export class CMSStaticPageComponent implements CMSComponent, OnChanges {
         this.pagelet.numberParam('NavigationDepth')
       );
     }
+
+    // explicitly set breadcrumb data for content pages that use the Static Content Page Component
+    this.cmsFacade.setBreadcrumbForContentPage(this.pagelet?.stringParam('NavigationRoot'));
   }
 }

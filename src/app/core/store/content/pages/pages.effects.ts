@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, map, mergeMap } from 'rxjs/operators';
+import { concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -16,7 +16,12 @@ import {
   whenTruthy,
 } from 'ish-core/utils/operators';
 
-import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
+import {
+  loadContentPage,
+  loadContentPageFail,
+  loadContentPageSuccess,
+  setBreadcrumbForContentPage,
+} from './pages.actions';
 import { getBreadcrumbForContentPage } from './pages.selectors';
 
 @Injectable()
@@ -58,8 +63,11 @@ export class PagesEffects {
   );
 
   setBreadcrumbForContentPage$ = createEffect(() =>
-    this.store.pipe(select(getBreadcrumbForContentPage)).pipe(
-      whenTruthy(),
+    this.actions$.pipe(
+      ofType(setBreadcrumbForContentPage),
+      mapToPayloadProperty('rootId'),
+      // eslint-disable-next-line rxjs/no-unsafe-switchmap
+      switchMap(rootId => this.store.pipe(select(getBreadcrumbForContentPage(rootId)))),
       map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
     )
   );

@@ -18,7 +18,12 @@ import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 
-import { loadContentPage, loadContentPageFail, loadContentPageSuccess } from './pages.actions';
+import {
+  loadContentPage,
+  loadContentPageFail,
+  loadContentPageSuccess,
+  setBreadcrumbForContentPage,
+} from './pages.actions';
 import { PagesEffects } from './pages.effects';
 
 describe('Pages Effects', () => {
@@ -118,36 +123,40 @@ describe('Pages Effects', () => {
   });
 
   describe('setBreadcrumbForContentPage$', () => {
-    const tree1 = { contentPageId: '1', name: 'page 1', path: ['1'] } as ContentPageTreeElement;
-    const tree2 = { contentPageId: '1.1', name: 'page 1.1', path: ['1', '1.1'] } as ContentPageTreeElement;
+    const tree1 = { contentPageId: '1', path: ['1'], name: 'Page 1' } as ContentPageTreeElement;
+    const tree2 = { contentPageId: '1.1', path: ['1', '1.1'], name: 'Page 1.1' } as ContentPageTreeElement;
 
     beforeEach(fakeAsync(() => {
       router.navigateByUrl('/page/1.1');
       tick(500);
       store.dispatch(
         loadContentPageSuccess({
-          page: { id: '1.1', displayName: 'page 1.1' } as ContentPageletEntryPoint,
+          page: { id: '1.1', displayName: 'Page 1.1' } as ContentPageletEntryPoint,
           pagelets: [],
         })
       );
     }));
 
-    it('should set breadcrumb if selected content page is not part of a page tree', done => {
+    it('should set page breadcrumb data without path if no page tree information is available', done => {
+      actions$ = of(setBreadcrumbForContentPage({ rootId: '1' }));
+
       effects.setBreadcrumbForContentPage$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"key":"page 1.1"}]
+            breadcrumbData: [{"key":"Page 1.1"}]
         `);
         done();
       });
     });
 
-    it('should set page breadcrumb if selected content page is part of a page tree', done => {
+    it('should set page breadcrumb with path if selected content page is part of a page tree', done => {
       store.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
+      actions$ = of(setBreadcrumbForContentPage({ rootId: '1' }));
+
       effects.setBreadcrumbForContentPage$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"key":"page 1","link":"/page-1-pg1"},{"key":"page 1.1"}]
+            breadcrumbData: [{"key":"Page 1","link":"/page-1-pg1"},{"key":"Page 1.1"}]
         `);
         done();
       });

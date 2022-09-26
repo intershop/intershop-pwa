@@ -12,3 +12,8 @@ export const loadContentPageSuccess = createAction(
   '[Content Page API] Load Content Page Success',
   payload<{ page: ContentPageletEntryPoint; pagelets: ContentPagelet[] }>()
 );
+
+export const setBreadcrumbForContentPage = createAction(
+  '[Content Page Internal] Set Breadcrumb For Content Page',
+  payload<{ rootId: string }>()
+);
