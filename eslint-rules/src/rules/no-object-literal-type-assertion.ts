@@ -10,6 +10,7 @@ const messages = {
  * Disallows type assertions (`exampleObject as ExampleType`) on object literals.
  */
 const noObjectLiteralTypeAssertionRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

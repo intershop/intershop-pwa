@@ -43,7 +43,8 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles/themes/placeholder"]
             },
-            "sourceMap": true
+            "sourceMap": true,
+            "allowedCommonJsDependencies": ["fast-sha256"]
           },
           "defaultConfiguration": "b2b,production",
           "configurations": {

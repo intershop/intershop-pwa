@@ -12,6 +12,7 @@ const messages = {
  *  Use `ngOnInit` instead.
  */
 const noInitializeObservablesDirectlyRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

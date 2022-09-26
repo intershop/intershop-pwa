@@ -1,6 +1,7 @@
 import { TSESLint } from '@typescript-eslint/utils';
 
 const useSsrVariableInsteadOfPlatformIdRule: TSESLint.RuleModule<string> = {
+  defaultOptions: undefined,
   meta: {
     docs: {
       description:

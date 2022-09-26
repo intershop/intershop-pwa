@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -32,7 +32,7 @@ describe('Requisition Detail Page Component', () => {
     context = mock(RequisitionContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
@@ -44,7 +44,6 @@ describe('Requisition Detail Page Component', () => {
         MockComponent(RequisitionRejectDialogComponent),
         MockComponent(RequisitionSummaryComponent),
         MockDirective(AuthorizationToggleDirective),
-        MockDirective(RouterLinkWithHref),
         RequisitionDetailPageComponent,
       ],
     })

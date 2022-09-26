@@ -46,6 +46,7 @@
           }
         ],
         "@angular-eslint/sort-ngmodule-metadata-arrays": "warn",
+        "@ngrx/avoid-combining-selectors": "off",
         "@ngrx/avoid-mapping-selectors": "off",
         "@ngrx/no-store-subscription": "off",
         "@ngrx/prefer-effect-callback-in-block-statement": "off",

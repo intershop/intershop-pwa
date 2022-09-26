@@ -34,6 +34,7 @@ const messages = {
  *
  */
 const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<keyof typeof messages, [RuleSetting[]]> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',
