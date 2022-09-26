@@ -6,6 +6,7 @@ const messages = {
 };
 
 const noOptionalInputsRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

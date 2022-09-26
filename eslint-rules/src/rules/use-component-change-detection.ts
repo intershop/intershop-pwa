@@ -10,6 +10,7 @@ const messages = {
  * Enforces the explicit declaration of `changeDetection` in component decorators.
  */
 const useComponentChangeDetectionRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

@@ -16,6 +16,7 @@ const messages = {
  * Checks whether component tests contain at least a few standard test cases.
  */
 const componentCreationTestRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     fixable: 'code',
