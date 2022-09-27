@@ -6,7 +6,6 @@ import { map, sample, switchMap, take, tap } from 'rxjs/operators';
 import { delayUntil, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
-import { QuoteEntitiesOptions } from '../models/quoting/quoting.interface';
 import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
   createQuoteRequestFromBasket,
@@ -18,6 +17,10 @@ import {
   loadQuoting,
   loadQuotingDetail,
 } from '../store/quoting';
+
+interface QuoteEntitiesOptions {
+  automaticRefresh?: boolean;
+}
 
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
