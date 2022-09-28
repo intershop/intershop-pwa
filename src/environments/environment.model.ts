@@ -14,6 +14,7 @@ export interface Environment {
   icmServerStatic: string;
   icmChannel: string;
   icmApplication?: string;
+  hybridApplication?: string;
 
   // array of REST path expressions that should always be mocked
   apiMockPaths?: string[];
@@ -138,6 +139,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
+  hybridApplication: '-',
   identityProvider: 'ICM',
 
   /* FEATURE TOGGLES */

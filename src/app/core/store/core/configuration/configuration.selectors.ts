@@ -11,6 +11,11 @@ export const getConfigurationState = createSelector(getCoreState, state => state
 
 export const getICMApplication = createSelector(getConfigurationState, state => state.application || '-');
 
+export const getResponsiveStarterStoreApplication = createSelector(
+  getConfigurationState,
+  state => state.hybridApplication || '-'
+);
+
 export const getICMServerURL = createSelector(getConfigurationState, state =>
   state.baseURL && state.server ? `${state.baseURL}/${state.server}` : undefined
 );
