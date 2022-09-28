@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, merge } from 'rxjs';
 import { take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
@@ -50,7 +51,11 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private appFacade: AppFacade, private organizationManagementFacade: OrganizationManagementFacade) {}
+  constructor(
+    private appFacade: AppFacade,
+    private organizationManagementFacade: OrganizationManagementFacade,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit() {
     this.loading$ = this.organizationManagementFacade.costCentersLoading$;
@@ -59,7 +64,6 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
       this.organizationManagementFacade.usersError$
     );
     this.buyers$ = this.organizationManagementFacade.costCenterUnassignedBuyers$();
-
     // set model and form fields
     this.buyers$
       .pipe(withLatestFrom(this.appFacade.currentCurrency$), take(1), takeUntil(this.destroy$))
@@ -70,10 +74,13 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
   }
 
   getModel(buyers: B2bUser[], currency: string) {
+    const inactivetext = this.translateService.instant('account.user.list.status.inactive');
     return {
       addBuyers: buyers.map(buyer => ({
         selected: false,
-        name: `${buyer.firstName} ${buyer.lastName}`,
+        name: `${buyer.firstName} ${buyer.lastName} ${
+          !buyer.active ? `<p class="input-help">${inactivetext}</p>` : ''
+        } `,
         login: buyer.login,
         budgetValue: undefined,
         currency,
@@ -102,7 +109,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
             },
             {
               key: 'name',
-              type: 'ish-plain-text-field',
+              type: 'ish-html-text-field',
               className: 'col-11 col-sm-10 col-md-3 list-item pb-0',
               templateOptions: {
                 inputClass: 'col-form-label pb-0',
