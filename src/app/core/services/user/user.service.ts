@@ -23,6 +23,7 @@ import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-cente
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -159,12 +160,31 @@ export class UserService {
     return this.appFacade.isAppTypeREST$.pipe(
       first(),
       withLatestFrom(newCustomer$.pipe(first())),
-      concatMap(([isAppTypeRest, newCustomer]) =>
+      withLatestFrom(
+        this.store.pipe(select(getServerConfigParameter<string[]>('general.customerTypeForLoginApproval')))
+      ),
+      concatMap(([[isAppTypeRest, newCustomer], loginTypes]) =>
         this.apiService
           .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
-          .pipe(concatMap(() => this.fetchCustomer()))
+          .pipe(
+            !loginTypes?.includes(newCustomer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
+              ? concatMap(() => this.fetchCustomer())
+              : concatMap(() =>
+                  of({
+                    customer: {
+                      customerNo: newCustomer.customerNo,
+                      isBusinessCustomer: newCustomer.isBusinessCustomer,
+                    },
+                    user: {
+                      email: newCustomer.credentials.login,
+                      firstName: newCustomer.address.firstName,
+                      lastName: newCustomer.address.lastName,
+                    },
+                  })
+                )
+          )
       )
     );
   }

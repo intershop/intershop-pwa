@@ -166,6 +166,7 @@
   "account.login.disabled_user.error": "Your account is disabled.",
   "account.login.email.label": "E-mail",
   "account.login.email_password.error.invalid": "Your E-mail/Password combination is incorrect. Please try again.",
+  "account.login.customer_approval.error.invalid": "Your customer account is not approved.",
   "account.login.link": "Sign In",
   "account.login.non_approved_customer.error": "Your customer account is not approved.",
   "account.login.notifications.message": "Please log in to your account to use our notification tool.",

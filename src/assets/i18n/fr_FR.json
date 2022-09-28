@@ -166,6 +166,7 @@
   "account.login.disabled_user.error": "Votre compte est désactivé.",
   "account.login.email.label": "Courriel",
   "account.login.email_password.error.invalid": "Votre combinaison courriel / mot de passe est incorrecte. Veuillez réessayer.",
+  "account.login.customer_approval.error.invalid": "Votre compte client n’est pas approuvé .",
   "account.login.link": "Se connecter",
   "account.login.non_approved_customer.error": "Votre compte client n’est pas approuvé.",
   "account.login.notifications.message": "Veuillez vous connecter à votre compte pour utiliser l’outil de notification.",

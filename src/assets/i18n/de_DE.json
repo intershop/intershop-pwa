@@ -166,6 +166,7 @@
   "account.login.disabled_user.error": "Ihr Benutzerkonto ist deaktiviert.",
   "account.login.email.label": "E-Mail",
   "account.login.email_password.error.invalid": "Ihre E-Mail-Kennwort-Kombination ist nicht korrekt. Bitte versuchen Sie es erneut.",
+  "account.login.customer_approval.error.invalid": "Ihr Benutzerkonto ist nicht genehmigt.",
   "account.login.link": "Anmelden",
   "account.login.non_approved_customer.error": "Ihr Benutzerkonto ist nicht genehmigt.",
   "account.login.notifications.message": "Melden Sie sich mit Ihrem Benutzernamen an, um unseren Benachrichtigungsservice zu nutzen.",

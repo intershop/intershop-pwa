@@ -125,8 +125,7 @@ export class UserEffects {
             this.store.pipe(select(getServerConfigParameter<string[]>('general.customerTypeForLoginApproval')))
           ),
           map(([customerLoginType, loginTypes]) =>
-            loginTypes.length > 0 &&
-            loginTypes.includes(customerLoginType.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
+            loginTypes?.includes(customerLoginType.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
               ? loginUserRejected({ email: customerLoginType.user?.email })
               : loginUserSuccess(customerLoginType)
           ),
