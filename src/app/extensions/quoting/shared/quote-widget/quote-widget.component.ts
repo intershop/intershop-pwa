@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, combineLatest, iif, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, combineLatest, iif, of } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
@@ -12,13 +12,15 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
-export class QuoteWidgetComponent implements OnInit {
+export class QuoteWidgetComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
 
-  respondedQuotes$: Observable<number>;
-  submittedQuoteRequests$: Observable<number>;
+  respondedQuotes: number;
+  submittedQuoteRequests: number;
 
-  constructor(private quotingFacade: QuotingFacade) {}
+  private destroy$ = new Subject<void>();
+
+  constructor(private quotingFacade: QuotingFacade, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.loading$ = this.quotingFacade.loading$;
@@ -31,9 +33,26 @@ export class QuoteWidgetComponent implements OnInit {
         )
       );
 
-    this.respondedQuotes$ = quotingStates$.pipe(map(states => states.filter(state => state === 'Responded').length));
-    this.submittedQuoteRequests$ = quotingStates$.pipe(
-      map(states => states.filter(state => state === 'Submitted').length)
-    );
+    combineLatest([
+      quotingStates$.pipe(
+        map(states => states.filter(state => state === 'Responded').length),
+        distinctUntilChanged()
+      ),
+      quotingStates$.pipe(
+        map(states => states.filter(state => state === 'Submitted').length),
+        distinctUntilChanged()
+      ),
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([responded, submitted]) => {
+        this.respondedQuotes = responded;
+        this.submittedQuoteRequests = submitted;
+        this.cd.detectChanges();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
