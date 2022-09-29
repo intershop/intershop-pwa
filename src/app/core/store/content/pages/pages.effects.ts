@@ -67,8 +67,12 @@ export class PagesEffects {
       ofType(setBreadcrumbForContentPage),
       mapToPayloadProperty('rootId'),
       // eslint-disable-next-line rxjs/no-unsafe-switchmap
-      switchMap(rootId => this.store.pipe(select(getBreadcrumbForContentPage(rootId)))),
-      map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+      switchMap(rootId =>
+        this.store.pipe(
+          select(getBreadcrumbForContentPage(rootId)),
+          map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+        )
+      )
     )
   );
 }
