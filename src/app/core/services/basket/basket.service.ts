@@ -514,7 +514,7 @@ export class BasketService {
   }
 
   /**
-   * Create a custom attribute on the currently used basket. Default attribute type is 'String'.
+   * Creates a custom attribute on the currently used basket. Default attribute type is 'String'.
    *
    * @param attr   The custom attribute
    * @returns      The custom attribute
@@ -533,7 +533,7 @@ export class BasketService {
   }
 
   /**
-   * Update a custom attribute on the currently used basket. Default attribute type is 'String'.
+   * Updates a custom attribute on the currently used basket. Default attribute type is 'String'.
    *
    * @param attribute   The custom attribute
    * @returns           The custom attribute
@@ -552,7 +552,7 @@ export class BasketService {
   }
 
   /**
-   * Delete a custom attribute from the currently used basket.
+   * Deletes a custom attribute from the currently used basket.
    *
    * @param attributeName The name of the custom attribute
    */
@@ -563,5 +563,45 @@ export class BasketService {
     return this.currentBasketEndpoint().delete(`attributes/${attributeName}`, {
       headers: this.basketHeaders,
     });
+  }
+
+  /**
+   * Adds all items of a quote to the current basket.
+   *
+   * @param quoteId   The id of the quote that should be added to the basket.
+   * @returns         The info message if present.
+   */
+  addQuoteToBasket(quoteId: string): Observable<string> {
+    if (!quoteId) {
+      return throwError(() => new Error('addQuoteToBasket() called without quoteId'));
+    }
+
+    return this.currentBasketEndpoint()
+      .post(
+        `quotes`,
+        { id: quoteId, calculated: true },
+        {
+          headers: this.basketHeaders,
+        }
+      )
+      .pipe(map(({ infos }) => infos?.[0]?.message));
+  }
+
+  /**
+   * Deletes all items of a quote from the current basket.
+   *
+   * @param quoteId   The id of the quote whose items should be deleted from the basket.
+   * @returns         The info message if present.
+   */
+  deleteQuoteFromBasket(quoteId: string): Observable<BasketInfo[]> {
+    if (!quoteId) {
+      return throwError(() => new Error('deleteQuoteFromBasket() called without quoteId'));
+    }
+
+    return this.currentBasketEndpoint()
+      .delete(`quotes/${quoteId}`, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(BasketInfoMapper.fromInfo));
   }
 }

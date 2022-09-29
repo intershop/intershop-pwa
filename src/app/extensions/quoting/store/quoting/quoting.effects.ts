@@ -9,7 +9,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { deleteBasketItem, getCurrentBasket, getCurrentBasketId, updateBasket } from 'ish-core/store/customer/basket';
+import { getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import {
   mapErrorToAction,
   mapToPayload,
@@ -47,6 +47,8 @@ import {
   updateQuoteRequest,
   updateQuoteRequestSuccess,
   deleteQuoteFromBasket,
+  deleteQuoteFromBasketSuccess,
+  deleteQuoteFromBasketFail,
 } from './quoting.actions';
 import { getQuotingEntity } from './quoting.selectors';
 
@@ -122,10 +124,16 @@ export class QuotingEffects {
     this.actions$.pipe(
       ofType(deleteQuoteFromBasket),
       mapToPayloadProperty('id'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-      map(([quoteId, basket]) => basket?.lineItems?.find(li => li.quote === quoteId)?.id),
       whenTruthy(),
-      map(itemId => deleteBasketItem({ itemId }))
+      concatMap(quoteId => this.basketService.deleteQuoteFromBasket(quoteId)),
+      mergeMap(info => [
+        loadBasket(),
+        deleteQuoteFromBasketSuccess(),
+        displaySuccessMessage({
+          message: info?.[0]?.message,
+        }),
+      ]),
+      mapErrorToAction(deleteQuoteFromBasketFail)
     )
   );
 
@@ -140,8 +148,8 @@ export class QuotingEffects {
           switchMap(basketId =>
             !basketId ? this.basketService.createBasket().pipe(map(basket => basket.id)) : of(basketId)
           ),
-          concatMap(basketId => this.quotingService.addQuoteToBasket(basketId, quoteId)),
-          mergeMap(() => [updateBasket({ update: { calculated: true } }), addQuoteToBasketSuccess({ id: quoteId })]),
+          concatMap(() => this.basketService.addQuoteToBasket(quoteId)),
+          mergeMap(() => [loadBasket(), addQuoteToBasketSuccess({ id: quoteId })]),
           mapErrorToAction(loadQuotingFail)
         )
       )
