@@ -42,7 +42,7 @@ export const getBreadcrumbForContentPage = (rootId: string) =>
         breadcrumbData = [];
       }
 
-      // determine breadcrumb data infpagetree information is available for the selected content page
+      // determine breadcrumb data pagetree information is available for the selected content page
       if (pagetree.nodes[contentPage?.id]) {
         pagetree.nodes[contentPage.id].path.forEach((item, i, path) => {
           // check if we are at the wanted path element for the root
