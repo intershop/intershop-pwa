@@ -48,6 +48,12 @@ export class CMSFacade {
     return this.store.pipe(select(getContentPageTree(rootId)));
   }
 
+  /**
+   *
+   * @param rootId is taken into consideration as first element of breadcrumb for content page
+   *
+   * NOTE: use 'COMPLETE' as value of rootId to get complete available page path as breadcrumb
+   */
   setBreadcrumbForContentPage(rootId: string): void {
     this.store.dispatch(setBreadcrumbForContentPage({ rootId }));
   }
