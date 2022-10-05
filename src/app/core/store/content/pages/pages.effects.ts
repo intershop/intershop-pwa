@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 import { from } from 'rxjs';
 import { concatMap, map, mergeMap } from 'rxjs/operators';
 
@@ -26,8 +25,7 @@ export class PagesEffects {
     private actions$: Actions,
     private store: Store,
     private cmsService: CMSService,
-    private httpStatusCodeService: HttpStatusCodeService,
-    private readonly tracker: MatomoTracker
+    private httpStatusCodeService: HttpStatusCodeService
   ) {}
 
   loadContentPage$ = createEffect(() =>
