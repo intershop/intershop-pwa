@@ -101,7 +101,8 @@ For this reason, the PWA must be adapted to work with the Responsive Starter Sto
 | [50dc72ef0](https://github.com/intershop/intershop-pwa/commit/50dc72ef083d6bee3c33edebef275b85762db618) | feat: switch to the new headless REST application type CMS content model (#302)         |
 | [741454c8c](https://github.com/intershop/intershop-pwa/commit/741454c8c839dd001a3943236172d75ffd05541d) | feat: switch to the new headless REST application type applications demo content (#302) |
 
-- Configure the correct `icmApplication` setting
+- Configure `icmApplication` setting to denote the `intershop.REST` based application. This is usually just `rest`
+- Configure `hybridApplication` setting to denote the Responsive Starter Store application.
 - Add needed PWA specific Content Includes in the Responsive Starter Store
   - Via `componentEntryPointDefinitions` in the ICM project source code
 - Follow the Hybrid configuration setup
