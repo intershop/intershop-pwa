@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { MatomoTracker } from '@ngx-matomo/tracker';
-import { Observable, Subject, combineLatest, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -32,7 +31,7 @@ export class ProductPriceComponent implements OnInit {
       ProductView
   >;
 
-  constructor(private context: ProductContextFacade, private readonly tracker: MatomoTracker) {}
+  constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'price');
@@ -56,22 +55,6 @@ export class ProductPriceComponent implements OnInit {
           : undefined,
       }))
     );
-    this.data$
-      .pipe(
-        switchMap(async product => {
-          this.tracker.setEcommerceView(
-            product.sku,
-            product.name,
-            product?.defaultCategory?.name,
-            product?.salePrice?.value
-          );
-          this.tracker.trackPageView();
-          console.log('Triggered');
-        }),
-        takeUntil(this.destroy)
-      )
-      // eslint-disable-next-line rxjs/no-ignored-subscribe
-      .subscribe();
   }
 
   ngOnDestroy() {

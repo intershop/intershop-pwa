@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 import { EMPTY, from, iif, of } from 'rxjs';
 import {
   concatMap,
@@ -65,8 +64,7 @@ export class BasketEffects {
     private basketService: BasketService,
     private apiTokenService: ApiTokenService,
     private router: Router,
-    private store: Store,
-    private readonly tracker: MatomoTracker
+    private store: Store
   ) {}
 
   /**

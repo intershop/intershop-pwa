@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 
 import { Order } from 'ish-core/models/order/order.model';
 
@@ -10,10 +9,8 @@ import { Order } from 'ish-core/models/order/order.model';
 })
 export class CheckoutReceiptOrderComponent implements OnInit {
   @Input() order: Order;
-  constructor(private readonly tracker: MatomoTracker) {}
+  constructor() {}
   ngOnInit(): void {
-    this.tracker.trackEcommerceOrder(this.order.id, this.order.totals.total.gross);
-    this.tracker.trackPageView();
-    console.log(`Tracking order with id ${this.order.id} and total amount of ${this.order.totals.total.gross}`);
+    console.log(`Doesnt Work`);
   }
 }
