@@ -9,7 +9,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam, selectUrl } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
+import { addItemsToBasketSuccess, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import {
   mapErrorToAction,
   mapToPayload,
@@ -149,7 +149,11 @@ export class QuotingEffects {
             !basketId ? this.basketService.createBasket().pipe(map(basket => basket.id)) : of(basketId)
           ),
           concatMap(() => this.basketService.addQuoteToBasket(quoteId)),
-          mergeMap(() => [loadBasket(), addQuoteToBasketSuccess({ id: quoteId })]),
+          mergeMap(info => [
+            addItemsToBasketSuccess({ lineItems: [], info }), //  update lastTimeProductAdded in the basket state
+            loadBasket(),
+            addQuoteToBasketSuccess({ id: quoteId }),
+          ]),
           mapErrorToAction(loadQuotingFail)
         )
       )

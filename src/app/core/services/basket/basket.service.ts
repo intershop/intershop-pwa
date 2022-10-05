@@ -571,7 +571,7 @@ export class BasketService {
    * @param quoteId   The id of the quote that should be added to the basket.
    * @returns         The info message if present.
    */
-  addQuoteToBasket(quoteId: string): Observable<string> {
+  addQuoteToBasket(quoteId: string): Observable<BasketInfo[]> {
     if (!quoteId) {
       return throwError(() => new Error('addQuoteToBasket() called without quoteId'));
     }
@@ -584,7 +584,7 @@ export class BasketService {
           headers: this.basketHeaders,
         }
       )
-      .pipe(map(({ infos }) => infos?.[0]?.message));
+      .pipe(map(BasketInfoMapper.fromInfo));
   }
 
   /**
