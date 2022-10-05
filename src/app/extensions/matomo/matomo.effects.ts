@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
@@ -7,14 +8,15 @@ import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import {
   addItemsToBasketSuccess,
   deleteBasketItem,
-  updateBasketItems,
   loadBasketSuccess,
   submitBasket,
+  updateBasketItemSuccess,
 } from 'src/app/core/store/customer/basket/basket.actions';
 import { getCurrentBasket } from 'src/app/core/store/customer/basket/basket.selectors';
 
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
+import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
 import { getProduct, getSelectedProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
 import { log } from 'ish-core/utils/dev/operators';
 import { mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -23,29 +25,58 @@ import { mapToPayloadProperty } from 'ish-core/utils/operators';
 export class MatomoEffects {
   constructor(private actions$: Actions, private store: Store, private readonly tracker: MatomoTracker) {}
 
-  quant = 0;
-  sku = '';
-
   /**
    * Triggers when a product is added to the basket. Sends product data to Matomo and logs to the console.
    */
-  matomoAddItem$ = createEffect(
+  /*
+  matomoAddNewItem$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(addItemsToBasketSuccess),
-        mapToPayloadProperty('items'),
-        log('Hallo'),
-        tap(item => {
-          console.log(item);
-          this.quant = item[0].quantity;
-          this.sku = String(item[0].sku);
-          console.log(`Quantity: ${this.quant}`);
-          console.log(`SKU: ${this.sku}`);
-        }),
-        withLatestFrom(this.store.pipe(select(getProduct(this.sku)))),
-        tap(item => {
-          console.log(item);
+        mapToPayloadProperty('lineItems'),
+        log('addItemToBasketSuccessInfo'),
+        map(lineItem => {
+          const product$ = this.store.pipe(select(getProduct(lineItem[0].productSKU))).forEach(product => {
+            this.tracker.addEcommerceItem(
+              lineItem[0].productSKU,
+              product.name,
+              product.defaultCategory.name,
+              lineItem[0].singleBasePrice.net,
+              lineItem[0].quantity.value
+            );
+            console.log(`${product.name} added to basket with single base price of ${lineItem[0].singleBasePrice.net}`);
+          });
         })
+      ),
+    { dispatch: false }
+  );
+  */
+
+  matomoAddItemNew$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(addItemsToBasketSuccess),
+        mapToPayloadProperty('lineItems'),
+        log('addItemToBasketSuccessInfo'),
+        // eslint-disable-next-line rxjs/no-unsafe-switchmap
+        switchMap(lineItem =>
+          this.store.pipe(
+            select(getProduct(lineItem[0].productSKU)),
+            log('Item'),
+            tap(product => {
+              this.tracker.addEcommerceItem(
+                lineItem[0].productSKU,
+                product.name,
+                product.defaultCategory.name,
+                lineItem[0].singleBasePrice.gross,
+                lineItem[0].quantity.value
+              );
+              console.log(
+                `${product.name} added to basket with single base price of ${lineItem[0].singleBasePrice.net}`
+              );
+            })
+          )
+        )
       ),
     { dispatch: false }
   );
@@ -78,8 +109,8 @@ export class MatomoEffects {
         ofType(loadBasketSuccess),
         mapToPayloadProperty('basket'),
         tap(basket => {
-          this.tracker.trackEcommerceCartUpdate(basket.totals.total.gross);
-          console.log('Matomo Basket Updated');
+          this.tracker.trackEcommerceCartUpdate(basket.totals.total.net);
+          console.log(`Updated basket total is ${basket.totals.total.gross}`);
         })
       ),
     { dispatch: false }
@@ -88,23 +119,57 @@ export class MatomoEffects {
   /**
    * Updates products already in basket, when quantity, etc. is updated.
    */
+  /*
   matomoItemUpdate$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(updateBasketItems),
-        mapToPayloadProperty('lineItemUpdates'),
+        ofType(updateBasketItemSuccess),
+        mapToPayloadProperty('lineItem'),
         withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-        map(([lineItemUpdates, basket]) => basket.lineItems.filter(i => i.id === lineItemUpdates[0].itemId)?.[0]),
+        log('UpdateBasketItemSuccessInfo'),
+        map(([lineItem, basket]) => basket.lineItems.filter(i => i.id === lineItem.id)?.[0]),
         tap(lineItem => {
-          this.tracker.addEcommerceItem(
-            lineItem.productSKU,
-            `SKU: ${lineItem.productSKU}`,
-            undefined,
-            lineItem.price.gross,
-            Number(lineItem.quantity.value)
-          );
-          console.log(`Update Item: ${lineItem.productSKU}. New Quantity is: ${lineItem.quantity.value}`);
+          const productInfo$ = this.store.pipe(select(getProduct(lineItem.productSKU))).forEach(product => {
+            this.tracker.addEcommerceItem(
+              lineItem.productSKU,
+              product.name,
+              product.defaultCategory.name,
+              lineItem.totals.total.net,
+              lineItem.quantity.value
+            );
+            console.log(`${product.name} quantity updated`);
+          });
         })
+      ),
+    { dispatch: false }
+  );
+  */
+
+  matomoItemUpdate$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateBasketItemSuccess),
+        mapToPayloadProperty('lineItem'),
+        withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+        log('UpdateBasketItemSuccessInfo'),
+        map(([lineItem, basket]) => basket.lineItems.filter(i => i.id === lineItem.id)?.[0]),
+        // eslint-disable-next-line rxjs/no-unsafe-switchmap
+        switchMap(lineItem =>
+          this.store.pipe(
+            select(getProduct(lineItem.productSKU)),
+            log('Item'),
+            tap(product => {
+              this.tracker.addEcommerceItem(
+                lineItem.productSKU,
+                product.name,
+                product.defaultCategory.name,
+                lineItem.singleBasePrice.gross,
+                lineItem.quantity.value
+              );
+              console.log(`${product.name} quantity updated`);
+            })
+          )
+        )
       ),
     { dispatch: false }
   );
@@ -112,23 +177,23 @@ export class MatomoEffects {
   /**
    * Triggered when a product detail page is called. Data is sent to Matomo and logged.
    */
-  matomoPageView = createEffect(
+  trackPageView = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(loadProductPricesSuccess),
-        tap(action => {
-          if (action.payload.prices.length === 1) {
-            console.log(`Price Site is ${action.payload.prices.length}`);
-            const prices = action.payload.prices;
-            this.tracker.setEcommerceView('#PV', '#PV', 'category', prices[0].prices.salePrice.net);
+        ofType(loadProductSuccess),
+        mapToPayloadProperty('product'),
+        withLatestFrom(this.store.pipe(ofProductUrl(), select(getSelectedProduct))),
+        filter(product => product[0]?.sku === product[1]?.sku),
+        log('SingleProduct'),
+        map(product => {
+          const prices$ = this.store.pipe(select(getProductPrice(product[1].sku))).forEach(price => {
+            const salePrice = price.prices.salePrice.net;
+            this.tracker.setEcommerceView(product[0].sku, product[0].name, product[0].defaultCategoryId, salePrice);
             this.tracker.trackPageView();
-            console.log(`View product with sku ${prices[0].sku} and price of ${prices[0].prices.salePrice.net}`);
-          } else {
-            console.log(`Price Site is ${action.payload.prices.length}`);
-          }
+            console.log(`Product Sale Price ${salePrice}`);
+          });
         })
       ),
-
     { dispatch: false }
   );
 
