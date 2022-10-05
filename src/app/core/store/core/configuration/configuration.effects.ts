@@ -4,7 +4,7 @@ import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { EMPTY, defer, fromEvent, iif, merge } from 'rxjs';
+import { EMPTY, combineLatest, defer, fromEvent, iif, merge } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
@@ -71,9 +71,10 @@ export class ConfigurationEffects {
           this.stateProperties
             .getStateOrEnvOrDefault<string | string[]>('FEATURES', 'features')
             .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x))),
-          this.stateProperties
-            .getStateOrEnvOrDefault<string>('ICM_IDENTITY_PROVIDER', 'identityProvider')
-            .pipe(map(x => x || 'ICM')),
+          combineLatest([
+            this.stateProperties.getStateOrEnvOrDefault<string>('IDENTITY_PROVIDER', 'identityProvider'),
+            this.stateProperties.getStateOrEnvOrDefault<string>('ICM_IDENTITY_PROVIDER', 'identityProvider'),
+          ]).pipe(map(([x, y]) => x || y || 'ICM')),
           this.stateProperties.getStateOrEnvOrDefault<ConfigurationType['identityProviders']>(
             'IDENTITY_PROVIDERS',
             'identityProviders'
