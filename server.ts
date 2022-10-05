@@ -260,8 +260,10 @@ export function app() {
     proxyReqPathResolver: (req: express.Request) => req.originalUrl,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     proxyReqOptDecorator: (options: any) => {
-      // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
-      options.rejectUnauthorized = false;
+      if (process.env.TRUST_ICM) {
+        // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
+        options.rejectUnauthorized = false;
+      }
       return options;
     },
     // fool ICM so it thinks it's running here
