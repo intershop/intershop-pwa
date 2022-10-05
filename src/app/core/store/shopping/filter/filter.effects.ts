@@ -3,7 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { FilterService } from 'ish-core/services/filter/filter.service';
-import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { delayUntil, mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
 
 import {
   applyFilter,
@@ -23,6 +24,7 @@ export class FilterEffects {
   loadAvailableFilters$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadFilterForCategory, loadFilterForSearch, loadFilterForMaster),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
       map(action => {
         switch (action.type) {
           case loadFilterForCategory.type:

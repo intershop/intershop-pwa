@@ -9,6 +9,7 @@ import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -80,7 +81,8 @@ describe('Filter Effects', () => {
   describe('loadAvailableFilters$', () => {
     it('should call the filterService for LoadFilterForCategories action', done => {
       const action = loadFilterForCategory({ uniqueId: 'c' });
-      actions$ = of(action);
+
+      actions$ = of(personalizationStatusDetermined, action);
 
       effects.loadAvailableFilters$.subscribe(() => {
         verify(filterServiceMock.getFilterForCategory(anything())).once();
@@ -90,7 +92,7 @@ describe('Filter Effects', () => {
 
     it('should call the filterService for loadFilterForSearch action', done => {
       const action = loadFilterForSearch({ searchTerm: 'c' });
-      actions$ = of(action);
+      actions$ = of(personalizationStatusDetermined, action);
 
       effects.loadAvailableFilters$.subscribe(() => {
         verify(filterServiceMock.getFilterForSearch(anything())).once();
@@ -100,7 +102,7 @@ describe('Filter Effects', () => {
 
     it('should call the filterService for loadFilterForMaster action', done => {
       const action = loadFilterForMaster({ masterSKU: 'c' });
-      actions$ = of(action);
+      actions$ = of(personalizationStatusDetermined, action);
 
       effects.loadAvailableFilters$.subscribe(() => {
         verify(filterServiceMock.getFilterForMaster(anything())).once();
@@ -111,8 +113,8 @@ describe('Filter Effects', () => {
     it('should map to action of type LoadFilterSuccess', () => {
       const action = loadFilterForCategory({ uniqueId: 'c' });
       const completion = loadFilterSuccess({ filterNavigation: filterNav });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadAvailableFilters$).toBeObservable(expected$);
     });
@@ -120,8 +122,8 @@ describe('Filter Effects', () => {
     it('should map invalid request to action of type LoadFilterFail', () => {
       const action = loadFilterForCategory({ uniqueId: 'invalid' });
       const completion = loadFilterFail({ error: makeHttpError({ message: 'invalid' }) });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined });
+      const expected$ = cold('--c-c-c', { c: completion });
 
       expect(effects.loadAvailableFilters$).toBeObservable(expected$);
     });
@@ -137,11 +139,11 @@ describe('Filter Effects', () => {
 
       actions$ = merge(
         // go to master 1
-        of(loadFilterForMaster({ masterSKU: 'master1' })),
+        of(personalizationStatusDetermined, loadFilterForMaster({ masterSKU: 'master1' })),
         // go to category
-        of(loadFilterForCategory({ uniqueId: 'category' })).pipe(delay(300)),
+        of(personalizationStatusDetermined, loadFilterForCategory({ uniqueId: 'category' })).pipe(delay(300)),
         // go to master 2 before category filters are loaded
-        of(loadFilterForMaster({ masterSKU: 'master2' })).pipe(delay(500))
+        of(personalizationStatusDetermined, loadFilterForMaster({ masterSKU: 'master2' })).pipe(delay(500))
       );
 
       let lastAction;
