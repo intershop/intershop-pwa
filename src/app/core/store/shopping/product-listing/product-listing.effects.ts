@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { distinctUntilChanged, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
@@ -92,6 +92,10 @@ export class ProductListingEffects {
         let initialPage = page; // scope variable (reset after first usage)
         return this.store.pipe(
           select(selectQueryParams),
+          // filter router changes which have nothing to do with product lists like login
+          filter(
+            params => !!params?.filters || !!params?.sorting || !!params?.page || Object.keys(params)?.length === 0
+          ),
           map(params => {
             const filters = params.filters
               ? {
