@@ -25,14 +25,43 @@ export const getSelectedContentPage = createSelector(getPageEntities, selectRout
   createContentPageletEntryPointView(pages[id])
 );
 
-export const getBreadcrumbForContentPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
-  resultMemoize(projector, isEqual)
-)(getPageTree, getSelectedContentPage, (pagetree: ContentPageTree, contentPage: ContentPageletEntryPointView) =>
-  pagetree.nodes[contentPage?.id]
-    ? (pagetree.nodes[contentPage.id].path.map((item, i, path) => ({
-        key: pagetree.nodes[item].name,
-        link:
-          i !== path.length - 1 ? generateContentPageUrl(createContentPageTreeView(pagetree, item, item)) : undefined,
-      })) as BreadcrumbItem[])
-    : ([{ key: contentPage?.displayName }] as BreadcrumbItem[])
-);
+export const getBreadcrumbForContentPage = (rootId: string) =>
+  createSelectorFactory<object, BreadcrumbItem[]>(projector => resultMemoize(projector, isEqual))(
+    getSelectedContentPage,
+    getPageTree,
+    (contentPage: ContentPageletEntryPointView, pagetree: ContentPageTree) => {
+      // set default breadcrumb data: just the selected content page name
+      let breadcrumbData = [{ key: contentPage?.displayName }] as BreadcrumbItem[];
+      // initialize root flag (no root yet)
+      let gotRoot = false;
+
+      // if 'COMPLETE' is used as rootId the complete available page path is returned as breadcrumb data
+      // (in case we have no explicit root information but the full path is wanted)
+      if (rootId === 'COMPLETE') {
+        gotRoot = true;
+        breadcrumbData = [];
+      }
+
+      // determine if pagetree information is available for the selected content page
+      if (pagetree.nodes[contentPage?.id]) {
+        pagetree.nodes[contentPage.id].path.forEach((item, i, path) => {
+          // check if we are at the wanted path element for the root
+          if (item === rootId) {
+            gotRoot = true;
+            breadcrumbData = [];
+          }
+          // push breadcrumb data once we have a root
+          if (gotRoot) {
+            breadcrumbData.push({
+              key: pagetree.nodes[item].name,
+              link:
+                i !== path.length - 1
+                  ? generateContentPageUrl(createContentPageTreeView(pagetree, item, item))
+                  : undefined,
+            });
+          }
+        });
+      }
+      return breadcrumbData;
+    }
+  );

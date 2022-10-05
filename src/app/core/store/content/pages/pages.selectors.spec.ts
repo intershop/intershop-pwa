@@ -51,60 +51,119 @@ describe('Pages Selectors', () => {
     }));
   });
 
-  describe('getSelectedContentPageBreadcrumbData', () => {
-    const tree1 = { contentPageId: '1', path: ['1'], name: '1' } as ContentPageTreeElement;
-    const tree2 = { contentPageId: '1.1', path: ['1', '1.1'], name: '1.1' } as ContentPageTreeElement;
+  describe('getBreadcrumbForContentPage', () => {
+    const tree1 = { contentPageId: '1', path: ['1'], name: 'Page 1' } as ContentPageTreeElement;
+    const tree2 = { contentPageId: '1.1', path: ['1', '1.1'], name: 'Page 1.1' } as ContentPageTreeElement;
+    const tree3 = { contentPageId: '1.1.1', path: ['1', '1.1', '1.1.1'], name: 'Page 1.1.1' } as ContentPageTreeElement;
+    const tree4 = { contentPageId: '1.1.2', path: ['1', '1.1', '1.1.2'], name: 'Page 1.1.2' } as ContentPageTreeElement;
 
     beforeEach(() => {
+      store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2, tree3, tree4]) }));
+    });
+
+    it('should return just the page name, if no rootId is given', fakeAsync(() => {
       store$.dispatch(
         loadContentPageSuccess({
-          page: { id: '1.1', displayName: 'page-1.1' } as ContentPageletEntryPoint,
+          page: { id: '1.1', displayName: 'Page 1.1' } as ContentPageletEntryPoint,
           pagelets: [],
         })
       );
-      store$.dispatch(
-        loadContentPageSuccess({ page: { id: '1', displayName: 'page-1' } as ContentPageletEntryPoint, pagelets: [] })
-      );
-    });
-
-    it('should return undefined, if selected content page is not part of a page tree', fakeAsync(() => {
       router.navigateByUrl('/any;contentPageId=1.1');
       tick(500);
-      expect(getBreadcrumbForContentPage(store$.state)).toMatchInlineSnapshot(`
+      expect(getBreadcrumbForContentPage(undefined)(store$.state)).toMatchInlineSnapshot(`
         Array [
           Object {
-            "key": "page-1.1",
+            "key": "Page 1.1",
           },
         ]
       `);
     }));
 
-    it('should return BreadcrumbData, if selected content page is part of a page tree', fakeAsync(() => {
-      store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
-      router.navigateByUrl('/any;contentPageId=1');
+    it('should return just the page name, if a rootId, that is not in the path, is given', fakeAsync(() => {
+      store$.dispatch(
+        loadContentPageSuccess({
+          page: { id: '1.1', displayName: 'Page 1.1' } as ContentPageletEntryPoint,
+          pagelets: [],
+        })
+      );
+      router.navigateByUrl('/any;contentPageId=1.1');
       tick(500);
-      expect(getBreadcrumbForContentPage(store$.state)).toMatchInlineSnapshot(`
+      expect(getBreadcrumbForContentPage('1.1.2')(store$.state)).toMatchInlineSnapshot(`
         Array [
           Object {
-            "key": "1",
+            "key": "Page 1.1",
+          },
+        ]
+      `);
+    }));
+
+    it('should return complete BreadcrumbData, if "COMPLETE" is given as rootId if rootId is not known', fakeAsync(() => {
+      store$.dispatch(
+        loadContentPageSuccess({
+          page: { id: '1.1', displayName: 'Page 1.1' } as ContentPageletEntryPoint,
+          pagelets: [],
+        })
+      );
+      router.navigateByUrl('/any;contentPageId=1.1');
+      tick(500);
+      expect(getBreadcrumbForContentPage('COMPLETE')(store$.state)).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "key": "Page 1",
+            "link": "/page-1-pg1",
+          },
+          Object {
+            "key": "Page 1.1",
             "link": undefined,
           },
         ]
       `);
     }));
 
-    it('should return BreadcrumbData, if selected content page is part of a page tree', fakeAsync(() => {
-      store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
-      router.navigateByUrl('/any;contentPageId=1.1');
+    it('should return complete BreadcrumbData, if root rootId is given', fakeAsync(() => {
+      store$.dispatch(
+        loadContentPageSuccess({
+          page: { id: '1.1.1', displayName: 'Page 1.1.1' } as ContentPageletEntryPoint,
+          pagelets: [],
+        })
+      );
+      router.navigateByUrl('/any;contentPageId=1.1.1');
       tick(500);
-      expect(getBreadcrumbForContentPage(store$.state)).toMatchInlineSnapshot(`
+      expect(getBreadcrumbForContentPage('1')(store$.state)).toMatchInlineSnapshot(`
         Array [
           Object {
-            "key": "1",
-            "link": "/1-pg1",
+            "key": "Page 1",
+            "link": "/page-1-pg1",
           },
           Object {
-            "key": "1.1",
+            "key": "Page 1.1",
+            "link": "/page-1/page-1.1-pg1.1",
+          },
+          Object {
+            "key": "Page 1.1.1",
+            "link": undefined,
+          },
+        ]
+      `);
+    }));
+
+    it('should return partial BreadcrumbData, if not root is given as rootId', fakeAsync(() => {
+      store$.dispatch(
+        loadContentPageSuccess({
+          page: { id: '1.1.1', displayName: 'Page 1.1.1' } as ContentPageletEntryPoint,
+          pagelets: [],
+        })
+      );
+      router.navigateByUrl('/any;contentPageId=1.1.1');
+      tick(500);
+      expect(getBreadcrumbForContentPage('1.1')(store$.state)).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "key": "Page 1.1",
+            "link": "/page-1/page-1.1-pg1.1",
+          },
+          Object {
+            "key": "Page 1.1.1",
             "link": undefined,
           },
         ]
