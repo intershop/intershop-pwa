@@ -12,6 +12,9 @@ kb_sync_latest_only
 The default value of the input parameter ['queryParamsHandling'](https://angular.io/api/router/QueryParamsHandling) has been changed from 'merge' to '' for the components product-name.component and product-image.component.
 This has been done to prevent an unintentional application of filters for product variation master links if the product detail link does not originates from a product listing context (product list page, search result page).
 
+To prevent deprecation warnings we removed the unnecessary `~` from all 3rd party SCSS imports (see https://webpack.js.org/loaders/sass-loader/#resolving-import-at-rules - "Using ~ is deprecated and can be removed from your code (we recommend it)").
+This should be done for additional imports in the customizations as well.
+
 ## 2.4 to 3.0
 
 With the 2.4.1 Hotfix we introduced a more fixed Node.js version handling to the version used and tested by us.

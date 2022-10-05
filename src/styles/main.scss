@@ -8,17 +8,17 @@
 // THIRD PARTY IMPORTS
 
 // import Bootstrap styles
-@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 
 // import Font Awesome styles
-@import '~@fortawesome/fontawesome-svg-core/styles';
+@import '@fortawesome/fontawesome-svg-core/styles';
 
 // import Angular Toastr bootstrap styles
-@import '~ngx-toastr/toastr-bs4-alert';
+@import 'ngx-toastr/toastr-bs4-alert';
 
 // import Swiper default theme
-@import '~swiper/scss';
-@import '~swiper/scss/pagination';
+@import 'swiper/scss';
+@import 'swiper/scss/pagination';
 
 //
 // STYLING COMPATIBILITY LAYER
