@@ -28,30 +28,6 @@ export class MatomoEffects {
   /**
    * Triggers when a product is added to the basket. Sends product data to Matomo and logs to the console.
    */
-  /*
-  matomoAddNewItem$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(addItemsToBasketSuccess),
-        mapToPayloadProperty('lineItems'),
-        log('addItemToBasketSuccessInfo'),
-        map(lineItem => {
-          const product$ = this.store.pipe(select(getProduct(lineItem[0].productSKU))).forEach(product => {
-            this.tracker.addEcommerceItem(
-              lineItem[0].productSKU,
-              product.name,
-              product.defaultCategory.name,
-              lineItem[0].singleBasePrice.net,
-              lineItem[0].quantity.value
-            );
-            console.log(`${product.name} added to basket with single base price of ${lineItem[0].singleBasePrice.net}`);
-          });
-        })
-      ),
-    { dispatch: false }
-  );
-  */
-
   matomoAddItemNew$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -119,32 +95,6 @@ export class MatomoEffects {
   /**
    * Updates products already in basket, when quantity, etc. is updated.
    */
-  /*
-  matomoItemUpdate$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(updateBasketItemSuccess),
-        mapToPayloadProperty('lineItem'),
-        withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-        log('UpdateBasketItemSuccessInfo'),
-        map(([lineItem, basket]) => basket.lineItems.filter(i => i.id === lineItem.id)?.[0]),
-        tap(lineItem => {
-          const productInfo$ = this.store.pipe(select(getProduct(lineItem.productSKU))).forEach(product => {
-            this.tracker.addEcommerceItem(
-              lineItem.productSKU,
-              product.name,
-              product.defaultCategory.name,
-              lineItem.totals.total.net,
-              lineItem.quantity.value
-            );
-            console.log(`${product.name} quantity updated`);
-          });
-        })
-      ),
-    { dispatch: false }
-  );
-  */
-
   matomoItemUpdate$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -185,43 +135,21 @@ export class MatomoEffects {
         withLatestFrom(this.store.pipe(ofProductUrl(), select(getSelectedProduct))),
         filter(product => product[0]?.sku === product[1]?.sku),
         log('SingleProduct'),
-        map(product => {
-          const prices$ = this.store.pipe(select(getProductPrice(product[1].sku))).forEach(price => {
-            const salePrice = price.prices.salePrice.net;
-            this.tracker.setEcommerceView(product[0].sku, product[0].name, product[0].defaultCategoryId, salePrice);
-            this.tracker.trackPageView();
-            console.log(`Product Sale Price ${salePrice}`);
-          });
-        })
+        switchMap(product =>
+          this.store.pipe(
+            select(getProductPrice(product[1].sku)),
+            log('Item'),
+            tap(item => {
+              const salePrice = item.prices.salePrice.net;
+              this.tracker.setEcommerceView(product[0].sku, product[0].name, product[0].defaultCategoryId, salePrice);
+              this.tracker.trackPageView();
+              console.log(`Product Sale Price ${salePrice}`);
+            })
+          )
+        )
       ),
     { dispatch: false }
   );
-
-  /**
-   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
-   * Add queryParam error=true to the route to prevent resetting errors.
-   *
-   */
-  /*
-  orderSubmitTrackingMatomo$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(createOrderSuccess),
-        // eslint-disable-next-line rxjs/no-unsafe-switchmap
-        switchMap(() => {
-          this.store.pipe(select(getSelectedOrder)).subscribe(b => {
-            this.tracker.trackEcommerceOrder(b.id, b.totals.total.gross);
-            this.tracker.trackPageView();
-            console.log(`Tracked order with id ${b.id} and total amount of ${b.totals.total.gross}`);
-          });
-
-          return EMPTY;
-        })
-      ),
-
-    { dispatch: false }
-  );
-  */
 
   /**
    * Executed when product detail page is called. It sends the information to Matomo using a manual event and not by using the eCommerce view.
