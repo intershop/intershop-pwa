@@ -436,22 +436,11 @@ export function app() {
 }
 
 function run() {
-  if (process.env.SSL) {
-    const https = require('https');
-    const privateKey = fs.readFileSync(join(DIST_FOLDER, 'server.key'), 'utf8');
-    const certificate = fs.readFileSync(join(DIST_FOLDER, 'server.crt'), 'utf8');
-    const credentials = { key: privateKey, cert: certificate };
+  const http = require('http');
 
-    https.createServer(credentials, app()).listen(PORT);
+  http.createServer(app()).listen(PORT);
 
-    console.log(`Node Express server listening on https://${require('os').hostname()}:${PORT}`);
-  } else {
-    const http = require('http');
-
-    http.createServer(app()).listen(PORT);
-
-    console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
-  }
+  console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
   console.log('serving static files from', BROWSER_FOLDER);
 }
 

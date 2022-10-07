@@ -9,7 +9,7 @@ if (process.env.TRUST_ICM) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-const pwaClient = process.env.SSL ? require('https') : require('http');
+const pwaClient = require('http');
 
 const optionsAngularUniversal = {
   host: 'localhost',

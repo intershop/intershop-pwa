@@ -50,13 +50,27 @@ services:
       - pwa
     ports:
       - '4200:80'
+      # - '4200:443'
       # - '9113:9113'
+    #
+    # Uncomment this if you want the containers CA to be available on your local machine
+    # 1.) provide below adjusted volume mapping
+    # 2.) download and install mkcert -> https://github.com/FiloSottile/mkcert
+    # 3.) `export CAROOT=/home/your-user/ca-dir`
+    # 4.) `mkcert -install`
+    #
+    # For more details have a look at https://github.com/FiloSottile/mkcert#installing-the-ca-on-other-systems
+    #
+    # hostname: 'your-local-host-name-with-fqdn'
+    # volumes:
+    #  - /home/your-user/ca-dir:/root/.local/share/mkcert
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
       # DEBUG: 1
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
       SSR: 1
+      SSL: 0
       # PROMETHEUS: 1
       # COMPRESSION: 0
       # DEVICE_DETECTION: 0
