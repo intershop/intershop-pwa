@@ -48,7 +48,7 @@ describe('Checkout Shipping Component', () => {
 
   it('should render available shipping methods on page', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('formly-field')).toHaveLength(1);
+    expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(1);
   });
 
   it('should throw updateShippingMethod event when the user changes payment selection', () => {

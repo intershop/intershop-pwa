@@ -16,12 +16,15 @@ class LibraryConfigReplacementExtension implements FormlyExtension {
   private configIds: Set<string>;
 
   prePopulate(field: FormlyFieldConfig): void {
-    const configId = new RegExp(/^#(.+)$/).exec(field.type)?.[1];
-    if (this.configIds.has(configId)) {
-      const override = omit(field, 'type');
-      const config = this.fieldLibrary.getConfiguration(configId, override);
-      // eslint-disable-next-line ban/ban
-      Object.assign(field, config);
+    if (typeof field.type === 'string') {
+      const configId = new RegExp(/^#(.+)$/).exec(field.type)?.[1];
+      if (this.configIds.has(configId)) {
+        const override = omit(field, 'type');
+        const config = this.fieldLibrary.getConfiguration(configId, override);
+        // eslint-disable-next-line ban/ban
+        Object.assign(field, config);
+        field.templateOptions = config.templateOptions;
+      }
     }
   }
 }
