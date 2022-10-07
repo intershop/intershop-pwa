@@ -17,8 +17,6 @@ export const loginUserFail = createAction('[User API] Login User Failed', httpEr
 
 export const loginUserSuccess = createAction('[User API] Login User Success', payload<CustomerLoginType>());
 
-export const loginUserRejected = createAction('[User API] Login User Rejection', payload<{ email: string }>());
-
 export const loadCompanyUser = createAction('[User Internal] Load Company User');
 
 export const loadCompanyUserFail = createAction('[User API] Load Company User Fail', httpError());
@@ -28,6 +26,11 @@ export const loadCompanyUserSuccess = createAction('[User API] Load Company User
 export const logoutUser = createAction('[User] Logout User');
 
 export const createUser = createAction('[User] Create User', payload<CustomerRegistrationType>());
+
+export const createUserSuccess = createAction(
+  '[User API] Create User Success',
+  payload<{ email: string; approvalRequired: boolean }>()
+);
 
 export const createUserFail = createAction('[User API] Create User Failed', httpError());
 

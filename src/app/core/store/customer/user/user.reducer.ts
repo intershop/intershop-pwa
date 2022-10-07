@@ -26,7 +26,6 @@ import {
   loadUserPaymentMethodsSuccess,
   loginUserFail,
   loginUserSuccess,
-  loginUserRejected,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
@@ -44,6 +43,7 @@ import {
   updateUserPasswordSuccess,
   updateUserSuccess,
   userErrorReset,
+  createUserSuccess,
 } from './user.actions';
 
 export interface UserState {
@@ -101,6 +101,17 @@ export const userReducer = createReducer(
     updateUserPasswordByPasswordReminderFail,
     requestPasswordReminderFail
   ),
+  unsetLoadingAndErrorOn(
+    loginUserSuccess,
+    loadCompanyUserSuccess,
+    createUserSuccess,
+    updateUserSuccess,
+    updateUserPasswordSuccess,
+    updateCustomerSuccess,
+    loadUserCostCentersSuccess,
+    loadUserPaymentMethodsSuccess,
+    deleteUserPaymentInstrumentSuccess
+  ),
   setErrorOn(
     updateUserFail,
     updateUserPasswordFail,
@@ -118,17 +129,6 @@ export const userReducer = createReducer(
       error,
     };
   }),
-  unsetLoadingAndErrorOn(
-    loginUserRejected,
-    loginUserSuccess,
-    loadCompanyUserSuccess,
-    updateUserSuccess,
-    updateUserPasswordSuccess,
-    updateCustomerSuccess,
-    loadUserCostCentersSuccess,
-    loadUserPaymentMethodsSuccess,
-    deleteUserPaymentInstrumentSuccess
-  ),
   on(loginUserSuccess, (state: UserState, action): UserState => {
     const customer = action.payload.customer;
     const user = action.payload.user;

@@ -23,7 +23,6 @@ import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-cente
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -103,11 +102,11 @@ export class UserService {
   }
 
   /**
-   * Create a new user for the given data.
+   * Creates a new user for the given data.
    *
-   * @param body  The user data (customer, user, credentials, address) to create a new user.
+   * @param body  The user data (customer, user, credentials, address) to create a new user. The new user is not logged in after creation.
    */
-  createUser(body: CustomerRegistrationType): Observable<CustomerLoginType> {
+  createUser(body: CustomerRegistrationType): Observable<CustomerUserType> {
     if (!body || !body.customer || (!body.user && !body.userId) || !body.address) {
       return throwError(() => new Error('createUser() called without required body data'));
     }
@@ -160,31 +159,12 @@ export class UserService {
     return this.appFacade.isAppTypeREST$.pipe(
       first(),
       withLatestFrom(newCustomer$.pipe(first())),
-      withLatestFrom(
-        this.store.pipe(select(getServerConfigParameter<string[]>('general.customerTypeForLoginApproval')))
-      ),
-      concatMap(([[isAppTypeRest, newCustomer], loginTypes]) =>
+      concatMap(([isAppTypeRest, newCustomer]) =>
         this.apiService
           .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
-          .pipe(
-            !loginTypes?.includes(newCustomer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
-              ? concatMap(() => this.fetchCustomer())
-              : concatMap(() =>
-                  of({
-                    customer: {
-                      customerNo: newCustomer.customerNo,
-                      isBusinessCustomer: newCustomer.isBusinessCustomer,
-                    },
-                    user: {
-                      email: newCustomer.credentials.login,
-                      firstName: newCustomer.address.firstName,
-                      lastName: newCustomer.address.lastName,
-                    },
-                  })
-                )
-          )
+          .pipe(map(() => ({ customer: body.customer, user: body.user })))
       )
     );
   }

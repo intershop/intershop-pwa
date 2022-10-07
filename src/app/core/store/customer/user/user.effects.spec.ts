@@ -25,6 +25,7 @@ import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 import {
   createUser,
   createUserFail,
+  createUserSuccess,
   deleteUserPaymentInstrument,
   deleteUserPaymentInstrumentFail,
   deleteUserPaymentInstrumentSuccess,
@@ -40,7 +41,6 @@ import {
   loadUserPaymentMethodsSuccess,
   loginUser,
   loginUserFail,
-  loginUserRejected,
   loginUserSuccess,
   loginUserWithToken,
   requestPasswordReminder,
@@ -256,21 +256,27 @@ describe('User Effects', () => {
       );
     });
 
+    const customerLoginType = {
+      customer: {
+        isBusinessCustomer: true,
+        customerNo: 'PC',
+      },
+      user: {
+        email: 'test@intershop.de',
+      } as User,
+    };
+
     it('should call the api service when Create event is called', done => {
       const action = createUser({
         customer: {
           isBusinessCustomer: true,
           customerNo: 'PC',
         },
+        user: {
+          email: 'test@intershop.de',
+        },
       } as CustomerRegistrationType);
 
-      const customerLoginType = {
-        customer: {
-          isBusinessCustomer: true,
-          customerNo: 'PC',
-        },
-        pgid: '',
-      };
       when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
 
       actions$ = of(action);
@@ -281,28 +287,23 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a loadPGID action on successful user creation', () => {
+    it('should dispatch a createUserSuccess amf signInuserWithToken action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
       const customer: Customer = { isBusinessCustomer: true, customerNo: 'PC' };
 
-      const customerLoginType = {
-        customer: {
-          isBusinessCustomer: true,
-          customerNo: 'PC',
-        },
-      };
       when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
 
       const action = createUser({ customer, credentials } as CustomerRegistrationType);
-      const completion = loginUserSuccess(customerLoginType);
+      const completion1 = createUserSuccess({ email: customerLoginType.user.email, approvalRequired: false });
+      const completion2 = loginUserWithToken({ token: undefined });
 
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-b', { b: completion });
+      const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
 
       expect(effects.createUser$).toBeObservable(expected$);
     });
 
-    it('should dispatch a redirect action if customer approval is enabled', () => {
+    it('should dispatch only a createUserSuccess action if customer approval is enabled', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
       const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
 
@@ -314,16 +315,16 @@ describe('User Effects', () => {
         user: {
           firstName: 'Klaus',
           lastName: 'Klausen',
-          email: 'klausKlausen@blubber.de',
+          email: 'test@intershop.de',
         },
       };
       when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
 
       const action = createUser({ customer, credentials } as CustomerRegistrationType);
-      const completion = loginUserRejected({ email: customerLoginType.user.email });
+      const completion = createUserSuccess({ email: customerLoginType.user.email, approvalRequired: true });
 
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-b', { b: completion });
+      const expected$ = cold('-(b?)', { b: completion });
 
       expect(effects.createUser$).toBeObservable(expected$);
     });
@@ -339,6 +340,19 @@ describe('User Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.createUser$).toBeObservable(expected$);
+    });
+
+    it('should navigate to /register/approval if customer approval is needed', done => {
+      actions$ = of(createUserSuccess({ email: 'test@intershop.de', approvalRequired: true }));
+
+      effects.redirectAfterUserCreationWithCustomerApproval$.subscribe({
+        next: () => {
+          expect(location.path()).toEqual('/register/approval?email=test@intershop.de');
+          done();
+        },
+        error: fail,
+        complete: noop,
+      });
     });
   });
 

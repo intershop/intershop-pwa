@@ -11,7 +11,6 @@ import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-import { getServerConfig } from 'ish-core/store/core/server-config';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
@@ -32,9 +31,7 @@ describe('User Service', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
-        provideMockStore({
-          selectors: [{ selector: getLoggedInCustomer, value: undefined }],
-        }),
+        provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: undefined }] }),
       ],
     });
     userService = TestBed.inject(UserService);
@@ -42,11 +39,6 @@ describe('User Service', () => {
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
     store$ = TestBed.inject(MockStore);
-
-    // workaround: overrideSelector is not working for selectors with parameters https://github.com/ngrx/platform/issues/2717
-    store$.overrideSelector(getServerConfig, {
-      _config: { general: { customerTypeForLoginApproval: ['PRIVATE'] } },
-    });
   });
 
   describe('SignIn a user', () => {
@@ -168,12 +160,6 @@ describe('User Service', () => {
 
     it("should create a new individual user when 'createUser' is called", done => {
       when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of({}));
-      when(apiServiceMock.get(anything(), anything())).thenReturn(
-        of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
-      );
-      when(apiServiceMock.get(anything())).thenReturn(
-        of({ customerNo: 'PC', customerType: 'PRIVATE' } as CustomerData)
-      );
 
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: false } as Customer,
@@ -184,8 +170,6 @@ describe('User Service', () => {
 
       userService.createUser(payload).subscribe(() => {
         verify(apiServiceMock.post('privatecustomers', anything(), anything())).once();
-        verify(apiServiceMock.get('customers/-', anything())).once();
-        verify(apiServiceMock.get('privatecustomers/-')).once();
         done();
       });
     });

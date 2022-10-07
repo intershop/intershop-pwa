@@ -19,6 +19,7 @@ import { getPGID, personalizationStatusDetermined } from '.';
 import {
   createUser,
   createUserFail,
+  createUserSuccess,
   deleteUserPaymentInstrument,
   deleteUserPaymentInstrumentFail,
   deleteUserPaymentInstrumentSuccess,
@@ -34,7 +35,6 @@ import {
   loadUserPaymentMethodsSuccess,
   loginUser,
   loginUserFail,
-  loginUserRejected,
   loginUserSuccess,
   loginUserWithToken,
   requestPasswordReminder,
@@ -124,26 +124,33 @@ export class UserEffects {
           withLatestFrom(
             this.store.pipe(select(getServerConfigParameter<string[]>('general.customerTypeForLoginApproval')))
           ),
-          map(([customerLoginType, loginTypes]) =>
-            loginTypes?.includes(customerLoginType.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
-              ? loginUserRejected({ email: customerLoginType.user?.email })
-              : loginUserSuccess(customerLoginType)
-          ),
+          map(([customerLoginType, customerTypeForLoginApproval]) => ({
+            email: customerLoginType.user.email,
+            approvalRequired: customerTypeForLoginApproval?.includes(
+              customerLoginType.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE'
+            ),
+          })),
+          concatMap(userSuccessData => [
+            createUserSuccess(userSuccessData),
+            !userSuccessData.approvalRequired ? loginUserWithToken({ token: undefined }) : undefined,
+          ]),
+
           mapErrorToAction(createUserFail)
         )
       )
     )
   );
 
-  redirectAfterUserCreation$ = createEffect(
+  redirectAfterUserCreationWithCustomerApproval$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(loginUserRejected),
+        ofType(createUserSuccess),
         mapToPayload(),
-        concatMap(login =>
+        filter(payload => payload.approvalRequired),
+        concatMap(payload =>
           from(
             this.router.navigate(['/register/approval'], {
-              queryParams: { mailTo: login.email },
+              queryParams: { email: payload?.email },
             })
           )
         )
