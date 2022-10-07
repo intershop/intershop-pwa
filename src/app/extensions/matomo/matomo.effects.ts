@@ -28,7 +28,7 @@ export class MatomoEffects {
   /**
    * Triggers when a product is added to the basket. Sends product data to Matomo and logs to the console.
    */
-  matomoAddItemNew$ = createEffect(
+  addItemToBasket$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(addItemsToBasketSuccess),
@@ -60,7 +60,7 @@ export class MatomoEffects {
   /**
    * Is triggered when a product is deleted from the basket. Effects sends info to Matomo and logs event.
    */
-  matomoProductDelete$ = createEffect(
+  deleteProductFromBasket$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(deleteBasketItem),
@@ -79,7 +79,7 @@ export class MatomoEffects {
   /**
    * Updates the basket value in matomo. Triggered when product is added, removed and updated.
    */
-  matomoUpdateBasketValue$ = createEffect(
+  updateBasketValue$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(loadBasketSuccess),
@@ -95,7 +95,7 @@ export class MatomoEffects {
   /**
    * Updates products already in basket, when quantity, etc. is updated.
    */
-  matomoItemUpdate$ = createEffect(
+  updateBasketItem$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(updateBasketItemSuccess),
@@ -153,8 +153,9 @@ export class MatomoEffects {
 
   /**
    * Executed when product detail page is called. It sends the information to Matomo using a manual event and not by using the eCommerce view.
+   * This effects should be seen as a less favorable alternative to the trackPageView effect.
    */
-  matomoPageViewTagManager = createEffect(
+  trackPageViewTagManager = createEffect(
     () =>
       this.actions$.pipe(
         ofType(loadProductPricesSuccess),
@@ -177,7 +178,7 @@ export class MatomoEffects {
   /**
    * Tracks the category when product detail page is called.
    */
-  trackProductCategory$ = createEffect(
+  trackProductCategoryTagManager$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(loadProductSuccess),
@@ -198,7 +199,7 @@ export class MatomoEffects {
    * Add queryParam error=true to the route to prevent resetting errors.
    *
    */
-  orderSubmitTrackingMatomo$ = createEffect(
+  trackSubmittedOrders$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(submitBasket),
