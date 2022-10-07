@@ -180,7 +180,7 @@ describe('Quoting Effects', () => {
 
   describe('addQuoteToBasket$', () => {
     beforeEach(() => {
-      when(basketService.addQuoteToBasket(anything())).thenReturn(of(''));
+      when(basketService.addQuoteToBasket(anything())).thenReturn(of(undefined));
     });
 
     describe('with basket', () => {
@@ -188,13 +188,24 @@ describe('Quoting Effects', () => {
         store$.overrideSelector(getCurrentBasketId, 'basketID');
       });
 
-      it('should directly add quote to basket via quoting service', done => {
+      it('should directly add quote to basket via basket service', done => {
         actions$ = of(addQuoteToBasket({ id: 'quoteID' }));
 
-        effects.addQuoteToBasket$.subscribe(() => {
-          verify(basketService.addQuoteToBasket('quoteID')).once();
-          verify(basketService.createBasket()).never();
-          done();
+        effects.addQuoteToBasket$.pipe(toArray()).subscribe({
+          next: actions => {
+            verify(basketService.addQuoteToBasket('quoteID')).once();
+            verify(basketService.createBasket()).never();
+            expect(actions).toMatchInlineSnapshot(`
+              [Basket API] Add Items To Basket Success:
+                lineItems: []
+                info: undefined
+              [Basket Internal] Load Basket
+              [Quoting API] Add Quote To Basket Success:
+                id: "quoteID"
+              `);
+          },
+          error: fail,
+          complete: done,
         });
       });
     });
