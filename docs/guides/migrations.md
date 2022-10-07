@@ -12,6 +12,10 @@ kb_sync_latest_only
 A styling adaption was made to the application shell to expand it to the full page height so the footer now always stays at the bottom.
 Together with that an inline style of the `main-container` was moved to the global styling definition.
 
+Formly has been upgraded from version 5 to 6.
+Find more information in the [Formly Upgrade Guide](https://github.com/ngx-formly/ngx-formly/blob/main/UPGRADE-6.0.md).
+We still use deprecated form properties like 'templateOptions' and 'expressionProperties' for compatibility reasons but we are going to replace them in the next major release.
+
 ## 3.0 to 3.1
 
 The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).

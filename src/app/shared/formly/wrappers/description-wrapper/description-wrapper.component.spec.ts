@@ -41,15 +41,20 @@ describe('Description Wrapper Component', () => {
     fixture = TestBed.createComponent(FormlyTestingContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    component.form = new FormGroup({});
+    component.model = {};
+    component.fields = [
+      {
+        ...fieldBase,
+        templateOptions: {
+          customDescription: 'desc',
+        },
+      },
+    ];
   });
 
   it('should be created', () => {
-    const testComponentInputs = {
-      model: {},
-      fields: [fieldBase],
-      form: new FormGroup({}),
-    };
-    component.testComponentInputs = testComponentInputs;
     fixture.detectChanges();
 
     expect(component).toBeTruthy();
@@ -59,42 +64,25 @@ describe('Description Wrapper Component', () => {
   });
 
   it('should contain basic string description for no arguments', () => {
-    const testComponentInputs = {
-      model: {},
-      form: new FormGroup({}),
-      fields: [
-        {
-          ...fieldBase,
-          templateOptions: {
-            customDescription: 'desc',
-          },
-        },
-      ],
-    };
-    component.testComponentInputs = testComponentInputs;
     fixture.detectChanges();
+
     expect(element.querySelector('small').textContent).toMatchInlineSnapshot(`" value:desc args:{} "`);
   });
 
   it('should contain complex description when arguments are supplied', () => {
-    const testComponentInputs = {
-      model: {},
-      form: new FormGroup({}),
-      fields: [
-        {
-          ...fieldBase,
-          templateOptions: {
-            customDescription: {
-              key: 'description',
-              args: {
-                0: 'argument',
-              },
+    component.fields = [
+      {
+        ...fieldBase,
+        templateOptions: {
+          customDescription: {
+            key: 'description',
+            args: {
+              0: 'argument',
             },
           },
         },
-      ],
-    };
-    component.testComponentInputs = testComponentInputs;
+      },
+    ];
     fixture.detectChanges();
     expect(element.querySelector('small').textContent).toMatchInlineSnapshot(
       `" value:description args:{\\"0\\":\\"argument\\"} "`
