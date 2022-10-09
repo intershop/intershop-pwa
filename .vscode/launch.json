@@ -19,11 +19,19 @@
       "internalConsoleOptions": "neverOpen"
     },
     {
-      "name": "Clean up Localizations",
+      "name": "Cleanup Localizations",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/clean-up-localizations",
-      "args": [],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Upgrade PWA",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/upgrade-pwa",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
