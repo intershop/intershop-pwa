@@ -71,12 +71,18 @@ Make sure to use them as written in the table below.
 
 ## Running with https
 
-We deliver a self-signed x509 certificate for local development/deployment purposes only.
-For obvious reasons (e.g we do not know your hostname) we cannot deliver a certificate that is accepted by web browsers.
-Therefore be prepared for security questions when first accessing the site.
+The docker SSR container will not support https anymore.
+If you want to execute angular or angular universal live development server with HTTPS support, you have to use means provided by Angular CLI.
 
-Our image build process is expecting files `server.crt` and `server.key` in folder `dist`.
-Extension `crt` is the certificate and `key` represents the private key.
+```
+ng serve --configuration "b2b,development" --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
+```
+
+or for live angular universal development
+
+```
+ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
+```
 
 ## Local ICM Cache
 
