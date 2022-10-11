@@ -13,7 +13,7 @@
     loading="lazy"
     *ngIf="{ image: productImage$ | async } as product"
     class="product-image"
-    [src]="product.image?.effectiveUrl || '/assets/img/not_available.png'"
+    [src]="product.image?.effectiveUrl || '/assets/img/not-available.svg'"
     [attr.data-type]="product.image?.typeID"
     [attr.data-view]="product.image?.viewID"
     [attr.height]="product.image?.imageActualHeight"

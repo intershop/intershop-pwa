@@ -58,7 +58,7 @@ describe('Product Image Component', () => {
         "class": "product-image",
         "itemprop": "image",
         "loading": "lazy",
-        "src": "/assets/img/not_available.png",
+        "src": "/assets/img/not-available.svg",
       }
     `);
   });
@@ -108,7 +108,7 @@ describe('Product Image Component', () => {
     );
 
     fixture.detectChanges();
-    expect(element.querySelector('img').getAttribute('src')).toMatchInlineSnapshot(`"/assets/img/not_available.png"`);
+    expect(element.querySelector('img').getAttribute('src')).toMatchInlineSnapshot(`"/assets/img/not-available.svg"`);
   });
 
   describe('image alt attribute', () => {
