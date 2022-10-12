@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, UrlSegment } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -51,7 +50,7 @@ describe('Registration Form Configuration Service', () => {
     ]);
 
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting(), RouterTestingModule],
+      imports: [FeatureToggleModule.forTesting()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: FieldLibrary, useFactory: () => instance(fieldLibrary) },

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -50,7 +49,6 @@ describe('Product Add To Order Template Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [MockComponent(SelectOrderTemplateModalComponent), ProductAddToOrderTemplateComponent],
-      imports: [RouterTestingModule],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacade) },
