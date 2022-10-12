@@ -9,6 +9,10 @@ kb_sync_latest_only
 
 ## 3.0 to 3.1
 
+The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).
+Use variable 'IDENTITY_PROVIDER' to select the provider to be used instead.
+Keep this in mind before deploying or starting the Intershop PWA in server-side rendering mode.
+
 The default value of the input parameter ['queryParamsHandling'](https://angular.io/api/router/QueryParamsHandling) has been changed from 'merge' to '' for the components product-name.component and product-image.component.
 This has been done to prevent an unintentional application of filters for product variation master links if the product detail link does not originates from a product listing context (product list page, search result page).
 
