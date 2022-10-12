@@ -36,52 +36,56 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.fields = [
       {
-        key: 'currentPassword',
-        type: 'ish-text-input-field',
-        templateOptions: {
-          type: 'password',
-          required: true,
-          hideRequiredMarker: true,
-          label: 'account.password.label',
-        },
-        validation: {
-          messages: {
-            incorrect: 'account.update_password.old_password.error.incorrect',
-          },
-        },
-      },
-      {
-        key: 'password',
-        type: 'ish-password-field',
-        templateOptions: {
-          postWrappers: [{ wrapper: 'description', index: -1 }],
-          required: true,
-          hideRequiredMarker: true,
-          label: 'account.update_password.newpassword.label',
-          customDescription: {
-            key: 'account.register.password.extrainfo.message',
-            args: { 0: '7' },
-          },
-
-          attributes: { autocomplete: 'new-password' },
-        },
-      },
-      {
-        key: 'passwordConfirmation',
-        type: 'ish-password-field',
-        templateOptions: {
-          required: true,
-          hideRequiredMarker: true,
-          label: 'account.update_password.newpassword_confirmation.label',
-        },
         validators: {
-          validation: [SpecialValidators.equalToControl('password')],
+          validation: [SpecialValidators.equalTo('passwordConfirmation', 'password')],
         },
-        validation: {
-          messages: {
-            required: 'account.register.password_confirmation.error.default',
+        fieldGroup: [
+          {
+            key: 'currentPassword',
+            type: 'ish-text-input-field',
+            templateOptions: {
+              type: 'password',
+              required: true,
+              hideRequiredMarker: true,
+              label: 'account.password.label',
+            },
+            validation: {
+              messages: {
+                incorrect: 'account.update_password.old_password.error.incorrect',
+              },
+            },
           },
-        },
+          {
+            key: 'password',
+            type: 'ish-password-field',
+            templateOptions: {
+              postWrappers: [{ wrapper: 'description', index: -1 }],
+              required: true,
+              hideRequiredMarker: true,
+              label: 'account.update_password.newpassword.label',
+              customDescription: {
+                key: 'account.register.password.extrainfo.message',
+                args: { 0: '7' },
+              },
+
+              attributes: { autocomplete: 'new-password' },
+            },
+          },
+          {
+            key: 'passwordConfirmation',
+            type: 'ish-password-field',
+            templateOptions: {
+              required: true,
+              hideRequiredMarker: true,
+              label: 'account.update_password.newpassword_confirmation.label',
+            },
+            validation: {
+              messages: {
+                required: 'account.register.password_confirmation.error.default',
+              },
+            },
+          },
+        ],
       },
     ];
   }

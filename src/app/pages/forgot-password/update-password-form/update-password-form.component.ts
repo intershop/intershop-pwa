@@ -31,40 +31,44 @@ export class UpdatePasswordFormComponent implements OnInit {
   ngOnInit() {
     this.fields = [
       {
-        key: 'password',
-        type: 'ish-password-field',
-        templateOptions: {
-          postWrappers: [{ wrapper: 'description', index: -1 }],
-          required: true,
-          hideRequiredMarker: true,
-          label: 'account.register.password.label',
-          customDescription: {
-            key: 'account.register.password.extrainfo.message',
-            args: { 0: '7' },
-          },
-        },
-        validation: {
-          messages: {
-            minLength: 'account.update_password.new_password.error.length',
-          },
-        },
-      },
-      {
-        key: 'passwordConfirmation',
-        type: 'ish-password-field',
-        templateOptions: {
-          required: true,
-          hideRequiredMarker: true,
-          label: 'account.register.password_confirmation.label',
-        },
         validators: {
-          validation: [SpecialValidators.equalToControl('password')],
+          validation: [SpecialValidators.equalTo('passwordConfirmation', 'password')],
         },
-        validation: {
-          messages: {
-            required: 'account.register.password_confirmation.error.default',
+        fieldGroup: [
+          {
+            key: 'password',
+            type: 'ish-password-field',
+            templateOptions: {
+              postWrappers: [{ wrapper: 'description', index: -1 }],
+              required: true,
+              hideRequiredMarker: true,
+              label: 'account.register.password.label',
+              customDescription: {
+                key: 'account.register.password.extrainfo.message',
+                args: { 0: '7' },
+              },
+            },
+            validation: {
+              messages: {
+                minLength: 'account.update_password.new_password.error.length',
+              },
+            },
           },
-        },
+          {
+            key: 'passwordConfirmation',
+            type: 'ish-password-field',
+            templateOptions: {
+              required: true,
+              hideRequiredMarker: true,
+              label: 'account.register.password_confirmation.label',
+            },
+            validation: {
+              messages: {
+                required: 'account.register.password_confirmation.error.default',
+              },
+            },
+          },
+        ],
       },
     ];
   }
