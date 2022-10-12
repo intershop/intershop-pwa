@@ -15,6 +15,11 @@ This has been done to prevent an unintentional application of filters for produc
 To prevent deprecation warnings we removed the unnecessary `~` from all 3rd party SCSS imports (see https://webpack.js.org/loaders/sass-loader/#resolving-import-at-rules - "Using ~ is deprecated and can be removed from your code (we recommend it)").
 This should be done for additional imports in the customizations as well.
 
+The validator `equalToControl` did not work properly.
+For that reason we removed it.
+Use the validator `equalTo` instead.
+Find more information in the method description in the [`special-validators.ts`](https://github.com/intershop/intershop-pwa/blob/3.0.0/src/app/shared/forms/validators/special-validators.ts#L82-L87).
+
 ## 2.4 to 3.0
 
 With the 2.4.1 Hotfix we introduced a more fixed Node.js version handling to the version used and tested by us.
