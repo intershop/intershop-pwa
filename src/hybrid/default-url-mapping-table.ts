@@ -1,4 +1,4 @@
-const ICM_CONFIG_MATCH = `^/INTERSHOP/web/WFS/(?<channel>[\\w-]+)/(?<lang>[\\w-]+)/(?<application>[\\w-]+)/[\\w-]+`;
+export const ICM_CONFIG_MATCH = `^/INTERSHOP/web/WFS/(?<channel>[\\w-]+)/(?<lang>[\\w-]+)/(?<application>[\\w-]+)/(?<currency>[\\w-]+)`;
 
 const PWA_CONFIG_BUILD = ';channel=$<channel>;lang=$<lang>;application=$<application>';
 
@@ -99,7 +99,7 @@ export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
     pwaBuild: `account${PWA_CONFIG_BUILD}`,
     pwa: '^/account.*$',
     icmBuild: 'ViewUserAccount-Start',
-    handledBy: 'icm',
+    handledBy: 'pwa',
   },
   {
     id: 'Register',
