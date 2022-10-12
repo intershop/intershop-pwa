@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
@@ -19,7 +18,7 @@ describe('Auth Guard', () => {
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user'), RouterTestingModule],
+        imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
         providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],
       }).compileComponents();
     });
