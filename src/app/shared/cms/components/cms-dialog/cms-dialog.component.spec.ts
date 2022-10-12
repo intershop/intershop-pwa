@@ -1,6 +1,5 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -22,7 +21,6 @@ describe('Cms Dialog Component', () => {
     when(appFacade.icmBaseUrl).thenReturn('http://example.com');
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [CMSDialogComponent, MockComponent(ContentSlotComponent), ServerHtmlDirective],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },

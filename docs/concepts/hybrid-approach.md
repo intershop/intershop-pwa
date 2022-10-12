@@ -16,7 +16,7 @@ A possible scenario would be to have the shopping experience with all its SEO op
 - ICM 7.10.32.16-LTS or 7.10.38.6-LTS
 - PWA 2.3.0
 
-> **NOTE:** The feature is based on the assumption that the PWA and the ICM can read and write each other's cookies. That means that both cookies must have the same domain and the same path. Therefore, the feature only works if the PWA and the ICM are running in the same domain.
+> **NOTE:** The feature is based on the assumption that the PWA and the ICM can read and write each other's cookies. That means that cookies written by the PWA and ICM must have the same domain and the same path. This works since all Responsive Starter Store requests and responses are proxied through the PWA SSR simulating a common domain.
 
 ## Architectural Concept
 
@@ -88,23 +88,17 @@ However, `pwa` and `icmBuild` are used in the client application where [named ca
 ## PWA Adaptions
 
 With version 0.23.0 the PWA was changed to no longer reuse the Responsive Starter Store application types but rather be based upon the newly introduced headless application type for REST Clients - `intershop.REST`.
-This application type is completely independent of the Responsive Starter Store and is not suitable for storefront setups using the hybrid approach.
-For this reason, the PWA must be adapted to work with the Responsive Starter Store again.
+This application type is completely independent of the Responsive Starter Store.
+For this reason, the PWA must be configured to know which application it has to use to work with the Responsive Starter Store again (`hybridApplication`).
 
-**Migration Steps to prepare the PWA for the hybrid approach with the Responsive Starter Store**
+**Steps to prepare the PWA for the hybrid approach with the Responsive Starter Store**
 
 - Use a current PWA version
-- Revert the following Git commits:
-
-| commit                                                                                                  | comment                                                                                 |
-| ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| [50dc72ef0](https://github.com/intershop/intershop-pwa/commit/50dc72ef083d6bee3c33edebef275b85762db618) | feat: switch to the new headless REST application type CMS content model (#302)         |
-| [741454c8c](https://github.com/intershop/intershop-pwa/commit/741454c8c839dd001a3943236172d75ffd05541d) | feat: switch to the new headless REST application type applications demo content (#302) |
-
-- Configure the correct `icmApplication` setting
-- Add needed PWA specific Content Includes in the Responsive Starter Store
-  - Via `componentEntryPointDefinitions` in the ICM project source code
+- Configure `icmApplication` setting to denote the `intershop.REST` based application used by the PWA (this is in the demo scenario just `rest`).
+- Configure `hybridApplication` setting to denote the Responsive Starter Store application (this is usually `-`).
 - Follow the Hybrid configuration setup
+
+> **NOTE:** If for some reason the CMS content of the Responsive Starter Store should directly be reused in the PWA in a hybrid approach, the PWA needs some code adaptions and has to use the same application as the Responsive Starter Store. For more details see the older version of this documentation - [Hybrid Approach - PWA Adaptions (3.0.0)](https://github.com/intershop/intershop-pwa/blob/3.0.0/docs/concepts/hybrid-approach.md#pwa-adaptions).
 
 # Further References
 

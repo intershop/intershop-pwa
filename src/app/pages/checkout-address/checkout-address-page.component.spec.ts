@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -33,7 +32,7 @@ describe('Checkout Address Page Component', () => {
         MockComponent(CheckoutAddressAnonymousComponent),
         MockComponent(CheckoutAddressComponent),
       ],
-      imports: [RouterTestingModule.withRoutes([{ path: 'basket', children: [] }]), TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },

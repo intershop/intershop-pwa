@@ -78,6 +78,9 @@ export class PunchoutUserFormComponent implements OnInit {
       },
       {
         type: 'ish-fieldset-field',
+        validators: {
+          validation: [SpecialValidators.equalTo('passwordConfirmation', 'password')],
+        },
         fieldGroup: [
           {
             key: 'password',
@@ -104,9 +107,6 @@ export class PunchoutUserFormComponent implements OnInit {
                 : 'account.punchout.password.confirmation.label',
               attributes: { autocomplete: 'new-password' },
               hideRequiredMarker: true,
-            },
-            validators: {
-              validation: [SpecialValidators.equalToControl('password')],
             },
             validation: {
               messages: {

@@ -5,7 +5,7 @@
         {{- $application := "" }}{{ if (has . "application") }}{{ $application = join ( slice ";application" .application ) "=" }}{{ end }}
         {{- $identityProvider := "" }}{{ if (has . "identityProvider") }}{{ $identityProvider = .identityProvider }}{{ end }}
         {{- $lang := "default" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
-        {{- $currency := "" }}{{ if (has . "currency") }}{{ $currency = join ( slice ";currency" .currency ) "=" }}{{ end }}
+        {{- $currency := "" }}{{ if (has . "currency") }}{{ $currency = .currency }}{{ end }}
         {{- $features := "" }}{{ if (has . "features") }}{{ $features = join ( slice ";features" .features ) "=" }}{{ end }}
         {{- $addFeatures := "" }}{{ if (has . "addFeatures") }}{{ $addFeatures = join ( slice ";addFeatures" .addFeatures ) "=" }}{{ end }}
         {{- $theme := "" }}{{ if (has . "theme") }}{{ $theme = join ( slice ";theme" .theme ) "=" }}{{ end }}

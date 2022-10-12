@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -29,7 +28,7 @@ describe('Language Switch Component', () => {
         MockComponent(FaIconComponent),
         MockPipe(MakeHrefPipe, (_, urlParams) => of(urlParams.lang)),
       ],
-      imports: [NgbDropdownModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [NgbDropdownModule, TranslateModule.forRoot()],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });

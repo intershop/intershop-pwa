@@ -13,6 +13,7 @@ export interface ConfigurationState {
   serverStatic?: string;
   channel?: string;
   application?: string;
+  hybridApplication?: string;
   identityProvider?: string;
   identityProviders?: { [id: string]: { type?: string; [key: string]: unknown } };
   features?: string[];
@@ -34,6 +35,7 @@ const initialState: ConfigurationState = {
   serverStatic: undefined,
   channel: undefined,
   application: undefined,
+  hybridApplication: undefined,
   features: undefined,
   addFeatures: [],
   defaultLocale: environment.defaultLocale,

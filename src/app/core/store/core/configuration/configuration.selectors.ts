@@ -9,7 +9,12 @@ import { ConfigurationState } from './configuration.reducer';
 
 export const getConfigurationState = createSelector(getCoreState, state => state.configuration);
 
-export const getICMApplication = createSelector(getConfigurationState, state => state.application || '-');
+const getICMApplication = createSelector(getConfigurationState, state => state.application || '-');
+
+export const getResponsiveStarterStoreApplication = createSelector(
+  getConfigurationState,
+  state => state.hybridApplication || '-'
+);
 
 export const getICMServerURL = createSelector(getConfigurationState, state =>
   state.baseURL && state.server ? `${state.baseURL}/${state.server}` : undefined

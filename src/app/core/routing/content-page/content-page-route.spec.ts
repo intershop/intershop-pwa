@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { createContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageTreeHelper } from 'ish-core/models/content-page-tree/content-page-tree.helper';
@@ -34,7 +33,7 @@ describe('Content Page Route', () => {
   let wrap: (url: string) => UrlSegment[];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [RouterTestingModule] });
+    TestBed.configureTestingModule({});
     const router = TestBed.inject(Router);
     wrap = url => {
       const primary = router.parseUrl(url).root.children.primary;

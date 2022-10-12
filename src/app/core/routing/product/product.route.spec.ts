@@ -39,7 +39,7 @@ describe('Product Route', () => {
   let wrap: (url: string) => UrlSegment[];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [RouterTestingModule] });
+    TestBed.configureTestingModule({});
     const router = TestBed.inject(Router);
     wrap = url => {
       const primary = router.parseUrl(url).root.children.primary;
