@@ -43,12 +43,6 @@ To run the PWA with multiple channels and [Google PageSpeed](https://developers.
 
 We provide templates for [Kubernetes Deployments](../../schematics/src/kubernetes-deployment) and [DevOps](../../schematics/src/azure-pipeline) for Microsoft Azure.
 
-## Progressive Web App (PWA) and Service Worker
-
-To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started), use `npm run start` to build and serve the application.
-After that open _http://localhost:4200_ in your browser and test it or run a PWA audit.
-Currently only _localhost_ or _127.0.0.1_ will work with the service worker since it requires _https_ communication on any other domain.
-
 ## Running Tests
 
 Run `npm test` to start an on the fly test running environment to execute the unit tests via [Jest](https://jestjs.io/) once.

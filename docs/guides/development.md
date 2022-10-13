@@ -10,6 +10,8 @@ kb_sync_latest_only
 Developing with the Intershop PWA requires to download and install [Node.js](https://nodejs.org) with the included npm package manager.
 Check the project's `package.json` in the `engines` section for the recommended node version.
 
+> **Note:** If you will work with different Node.js based projects or different PWA versions we recommend using a Node Version Manager (see [NVM](https://github.com/nvm-sh/nvm) or [NVM for Windows](https://github.com/coreybutler/nvm-windows)).
+
 Clone or download the Intershop PWA GitHub project to your computer, e.g.
 
 ```bash
@@ -40,10 +42,10 @@ The docker build automatically creates this file as an empty file.
 The `environment.development.ts` will be ignored by Git so the developer-specific settings will not be committed and accidentally shared.
 It is initially created when running `npm install`.
 
-The default configuration is set in `angular.json`:
+The default development configuration is set in `angular.json`:
 
 ```
-"defaultConfiguration": "b2b,production",
+"defaultConfiguration": "b2b,development",
 ```
 
 Therefore the b2b related environment file `environment.b2b.ts` is used when starting the server where further B2B theme specific configurations are made.
@@ -64,13 +66,18 @@ The app will automatically reload if you change any of the source files.
 Running `ng serve --port 4300` will start the server on a different port than the default 4200 port, e.g. if one wants to run multiple instances in parallel for comparison.
 
 Running `ng serve --open` will automatically open a new browser tab with the started application.
-The different start options can be combined.
 
-The project can alternatively be run in production mode with `npm start`.
+Running `ng serve --ssl` will run the development server with `https` support.
+
+The development server can be started with different configurations besides the default configuration as well, e.g. `ng serve --configuration "b2c,production"` or a bit shorter `ng s -c=b2c,production`.
+
+The different start options can be combined.
 
 Further options of the development server can be found running `ng serve --help`.
 
-> **Warning:** DO NOT USE webpack-dev-server IN PRODUCTION environments!
+> **Warning:** DO NOT USE the webpack-dev-server IN PRODUCTION environments!
+
+The project can alternatively be run in server side rendering mode, see [Building and Running Server-Side Rendering](ssr-startup.md).
 
 ## Testing Production Setups
 

@@ -37,7 +37,7 @@ Based on this initial version of the Intershop PWA (the latest release), any pro
 The PWA uses themes which include theme specific
 
 - features and configurations
-- overrides for certain file types (HTML and TypeScript)
+- overrides for certain file types (HTML, component styles and TypeScript)
 - styles and static assets
 
 To start customizing, **set a default theme** for your customization with the script
@@ -52,8 +52,8 @@ It will:
 - add the theme-prefix as the active theme in `package.json` and replace all active themes (if `--default` is used)
 - add the theme-prefix specific file `environment.<theme-prefix>.ts` which should be used for further theme configuration
 - add initial style files for styling customization under `src/styles/themes/<theme-prefix>`
-- add the theme-prefix `custom` for new Angular artifacts
-- add the theme-prefix to the schematics `schematics/src/helpers/override/schema.json`
+- add the theme-prefix to the override schematic `schematics/src/helpers/override/schema.json`
+- change the project prefix for new Angular artifacts from `ish` to `custom`
 - customize ESLint in `.eslintrc.json` to support your new theme files (specifically, the `project-structure` rule)
 
 > **NOTE:** If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
@@ -158,18 +158,18 @@ There are two approaches to apply a theme specific styling:
 Just putting a brand override file next to the original file in the `src/styles` folder will not lead to the expected results.
 The lookup starts with the file `style.scss` in the theme specific folder.
 
-You can re-use variables from the global styling on component level by importing only the styling file that defines the theme variables, e.g.
-
-```
-@import 'variables';
-```
-
 > **Note:** You should
 >
 > - not change global `*.scss` files in `src/styles` and only apply style changes in your theme folder by copying files into the this folder and adjusting file references
 > - not delete the standard theme folders to prevent merge conflicts when migrating the PWA (changes in standard files but deleted in your project).
 
 When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
+
+You can re-use variables from the global styling on component level by importing only the styling file that defines the theme variables, e.g.
+
+```
+@import 'variables';
+```
 
 > **Note:** Be aware that Visual Studio Code will not resolve all import references correctly but it works in the build PWA version anyways.
 
