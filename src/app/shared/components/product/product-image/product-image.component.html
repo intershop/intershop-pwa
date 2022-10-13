@@ -15,8 +15,6 @@
       loading="lazy"
       class="product-image"
       [src]="image.effectiveUrl"
-      [attr.data-type]="image.typeID"
-      [attr.data-view]="image.viewID"
       [attr.height]="image.imageActualHeight"
       [attr.width]="image.imageActualWidth"
       [attr.alt]="altText || (defaultAltText$ | async)"
@@ -29,8 +27,7 @@
       loading="lazy"
       class="product-image"
       src="/assets/img/not-available.svg"
-      [attr.alt]="altText || (defaultAltText$ | async)"
-      itemprop="image"
+      [attr.alt]="'product.image.not_available.alttext' | translate"
     />
   </ng-template>
 </ng-template>

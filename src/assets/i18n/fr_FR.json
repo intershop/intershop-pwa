@@ -855,6 +855,7 @@
   "product.description.heading": "Description",
   "product.details.heading": "Détails",
   "product.email_a_friend.link": "Envoyer un courriel à un(e) ami(e)",
+  "product.image.not_available.alttext": "no product image available",
   "product.image.text.alttext": "photo du produit",
   "product.instock.text": "En stock",
   "product.itemNumber.label": "ID de produit :",

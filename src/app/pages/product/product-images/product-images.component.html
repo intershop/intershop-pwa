@@ -1,6 +1,6 @@
 <div *ngIf="product$ | async" class="row">
   <div class="col-lg-3 d-none d-lg-block">
-    <div class="product-img-thumbs" data-type="S">
+    <div class="product-img-thumbs">
       <div
         *ngFor="let imageView of getImageViewIDs$('S') | async; index as i"
         class="product-thumb-set"

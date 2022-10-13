@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { Image } from 'ish-core/models/image/image.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { ProductImageComponent } from './product-image.component';
@@ -18,7 +19,9 @@ describe('Product Image Component', () => {
 
   beforeEach(async () => {
     context = mock(ProductContextFacade);
-    when(context.getProductImage$(anything(), anything())).thenReturn(EMPTY);
+    when(context.getProductImage$(anything(), anything())).thenReturn(
+      of({ effectiveUrl: '/assets/product_img/a.jpg' } as Image)
+    );
     when(context.select('product')).thenReturn(of({} as ProductView));
     when(context.select('productURL')).thenReturn(of('/product/TEST'));
 
@@ -38,6 +41,7 @@ describe('Product Image Component', () => {
     translate.setDefaultLang('en');
     translate.use('en');
     translate.set('product.image.text.alttext', 'product photo');
+    translate.set('product.image.not_available.alttext', 'no product image available');
 
     component.imageType = 'S';
   });
@@ -48,15 +52,14 @@ describe('Product Image Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render N/A image when images is not available', () => {
+  it('should render N/A image when images are not available', () => {
     when(context.getProductImage$(anything(), anything())).thenReturn(of(undefined));
 
     fixture.detectChanges();
     expect(element.querySelector('img')?.attributes).toMatchInlineSnapshot(`
       NamedNodeMap {
-        "alt": "product photo",
+        "alt": "no product image available",
         "class": "product-image",
-        "itemprop": "image",
         "loading": "lazy",
         "src": "/assets/img/not-available.svg",
       }
@@ -82,8 +85,6 @@ describe('Product Image Component', () => {
       NamedNodeMap {
         "alt": "product photo",
         "class": "product-image",
-        "data-type": "S",
-        "data-view": "front",
         "height": "110",
         "itemprop": "image",
         "loading": "lazy",
