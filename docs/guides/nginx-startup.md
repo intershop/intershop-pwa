@@ -17,15 +17,33 @@ The docker image can be built by running a docker build with the `Dockerfile` lo
 
 Mandatory environment variables:
 
-- Connect it to the PWA with `UPSTREAM_PWA` in the form of `http(s)://<IP>:<PORT>`
+- Connect it to the PWA with `UPSTREAM_PWA` in the form of `http://<IP>:<PORT>`
 
 For HTTP, the server will run on default port 80.
-If HTTPS is chosen as an upstream, it will run on default port 443.
-In the latter case the files `server.key` and `server.crt` have to be supplied in the container folder `/etx/nginx` (either by volume mapping with `docker run` or in the image itself by `docker build`).
+For HTTPS, the server will run on default port 443.
 
 We're using the standard NGinx Docker image.
 Therefore we inherit all their configuration capabilities.
 For further information please refer to [the official NGinx Docker image page](https://hub.docker.com/_/nginx?tab=description)
+
+### HTTPS or SSL
+
+You can switch on HTTPS for the nginx container to execute a production like setup locally or for demo purposes.
+Just by changing `ENV SSL=0` to `ENV SSL=1` and adjusting the port mapping in `docker-compose.yml`.
+No need to supply a certificate and a key.
+They are automatically generated inside the running container.
+The certificate is self-signed and will not work in your browser.
+You have to confirm the security exception.
+As developer convenience you can volume mount an internal folder to your host system to effectively trust the generated cert.
+Please check the nginx logs for the following output.
+
+<!-- cSpell: disable -->
+
+```
+You can now export the local CA by adjusting your docker-compose.yml /home/your-user/ca-dir:/root/.local/share/mkcert/rootCA.pem
+```
+
+<!-- cSpell: enable -->
 
 ### Basic Auth
 
@@ -128,6 +146,7 @@ Built-in features can be enabled and disabled:
 - `COMPRESSION=off` disables compression (default `on`)
 - `DEVICE_DETECTION=off` disables user-agent detection (default `on`)
 - `PROMETHEUS=on` enables [Prometheus](https://prometheus.io) metrics exports on port `9113` (default `off`)
+- `SSL=on` to switch on HTTPS. Look above for further explanation.
 
 ## Features
 

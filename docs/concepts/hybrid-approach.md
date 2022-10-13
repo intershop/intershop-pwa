@@ -53,9 +53,9 @@ intershop.WebServerSecureURL=https://<nginx>
 The server-side rendering process must be started with `SSR_HYBRID=1`.
 
 In addition, the PWA must be run with secure URLs as well.
-To achieve this locally, set the environment variable `SSL=1` and provide a valid certificate (see [SSR Startup](../guides/ssr-startup.md#running-with-https)).
+See [SSR Startup](../guides/ssr-startup.md#running-with-https)) for reference how you can achieve that locally.
 
-> :warning: **Don't use this option for production environments**, as those should not use the local certificates provide via the `dist` folder.
+> :warning: **Don't use this option for production environments**, above means to switch on hybrid mode and https are only to ease local development.
 
 > :warning: **Only for development environments**: It might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
 

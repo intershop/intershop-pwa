@@ -69,14 +69,26 @@ Make sure to use them as written in the table below.
 |                     | IDENTITY_PROVIDER ~~ICM_IDENTITY_PROVIDER~~ | string               | ID of Identity Provider for [SSO][concept-sso]                                               |
 |                     | IDENTITY_PROVIDERS                          | JSON                 | Configuration of Identity Providers for [SSO][concept-sso]                                   |
 
-## Running with https
+## Development
 
-We deliver a self-signed x509 certificate for local development/deployment purposes only.
-For obvious reasons (e.g we do not know your hostname) we cannot deliver a certificate that is accepted by web browsers.
-Therefore be prepared for security questions when first accessing the site.
+For live Angular Universal (SSR) development, you have to use means provided by Angular CLI.
+The following command starts a SSR development environment.
 
-Our image build process is expecting files `server.crt` and `server.key` in folder `dist`.
-Extension `crt` is the certificate and `key` represents the private key.
+```
+npm run start:ssr-dev
+```
+
+If the SSR development environment needs to run with `https` this can be achieved like this.
+
+```
+npm run start:ssr-dev -- --ssl
+```
+
+To provide specific certificates that can be valid in your local development environment this is an example command how to achieve this.
+
+```
+ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
+```
 
 ## Local ICM Cache
 

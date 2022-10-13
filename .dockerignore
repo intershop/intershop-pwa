@@ -35,8 +35,6 @@
 !/dist/entrypoint.sh
 !/dist/healthcheck.js
 !/dist/robots.txt
-!/dist/server.crt
-!/dist/server.key
 
 # from docs/.gitignore
 /docs/compodoc

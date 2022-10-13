@@ -3,5 +3,3 @@
 !/entrypoint.sh
 !/healthcheck.js
 !/robots.txt
-!/server.crt
-!/server.key
