@@ -262,7 +262,7 @@
   "account.organization.cost_center_management.buyer.update.confirmation": "The budget of user \"{{0}}\" has been updated.",
   "account.organization.cost_center_management.create.confirmation": "The cost center \"{{0}}\" has been created.",
   "account.organization.cost_center_management.delete.confirmation": "The cost center has been deleted.",
-  "account.organization.cost_center_management.update.confirmation": "The cost center \"{{0}}\" has create been updated.",
+  "account.organization.cost_center_management.update.confirmation": "The cost center \"{{0}}\" has been updated.",
   "account.organization.user_management": "User Management",
   "account.organization.user_management.back_to_list": "Back to User Management",
   "account.organization.user_management.new_user.confirmation": "The user \"{{0}}\" has been created.",

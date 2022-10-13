@@ -287,7 +287,7 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a createUserSuccess amf signInuserWithToken action on successful user creation', () => {
+    it('should dispatch a createUserSuccess and signInuserWithToken action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
       const customer: Customer = { isBusinessCustomer: true, customerNo: 'PC' };
 

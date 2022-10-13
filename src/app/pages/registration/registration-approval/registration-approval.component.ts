@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 /**
- * The Registration Approval Page is shown after customer registration if an approval is needed according to an ICM backoffice preference.
+ * The Registration Approval component is shown after customer registration with a needed approval according to an ICM backoffice preference.
  */
 @Component({
   templateUrl: './registration-approval.component.html',
