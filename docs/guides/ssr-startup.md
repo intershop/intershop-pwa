@@ -69,16 +69,22 @@ Make sure to use them as written in the table below.
 |                     | ICM_IDENTITY_PROVIDER | string               | ID of Identity Provider for [SSO][concept-sso]                                               |
 |                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of Identity Providers for [SSO][concept-sso]                                   |
 
-## Running with https
+## Development
 
-The docker SSR container will not support https anymore.
-If you want to execute angular or angular universal live development server with HTTPS support, you have to use means provided by Angular CLI.
+For live Angular Universal (SSR) development, you have to use means provided by Angular CLI.
+The following command starts a SSR development environment.
 
 ```
-ng serve --configuration "b2b,development" --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
+npm run start:ssr-dev
 ```
 
-or for live angular universal development
+If the SSR development environment needs to run with `https` this can be achieved like this.
+
+```
+npm run start:ssr-dev -- --ssl
+```
+
+To provide specific certificates that can be valid in your local development environment this is an example command how to achieve this.
 
 ```
 ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
