@@ -7,7 +7,7 @@ kb_everyone
 
 # Changelog
 
-## [3.0.0](https://github.com/releases/tag/3.0.0) (2022-08-12)
+## [3.0.0](https://github.com/intershop/intershop-pwa/releases/tag/3.0.0) (2022-08-12)
 
 **required Intershop Commerce Management version: 7.10.38.11-LTS**
 
@@ -98,7 +98,7 @@ kb_everyone
 - The cypress test files moved from cypress/integration folder to cypress/e2e. The cypress config file changed and also some scripts have been adapted to reflect the new config structure.
 - **schematics:** The `cms` schematic's `noCMSPrefixing` option has been renamed to `cmsPrefixing` with an inverted behavior.
 
-## [2.4.1](https://github.com/releases/tag/2.4.1) (2022-07-13)
+## [2.4.1](https://github.com/intershop/intershop-pwa/releases/tag/2.4.1) (2022-07-13)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
 
@@ -114,7 +114,7 @@ kb_everyone
 - don't display the review tab on product master variation page (#1193) ([8a0a265](https://github.com/intershop/intershop-pwa/commit/8a0a265))
 - content page not found when reloading a page with an authenticated user (#1198) ([401b393](https://github.com/intershop/intershop-pwa/commit/401b393))
 
-## [2.4.0](https://github.com/releases/tag/2.4.0) (2022-06-03)
+## [2.4.0](https://github.com/intershop/intershop-pwa/releases/tag/2.4.0) (2022-06-03)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
 
@@ -161,7 +161,7 @@ kb_everyone
 - The ratings & reviews functionality was moved into an extension (see [Migrations / 2.3 to 2.4](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#23-to-24) for more details).
 - Removed unused newsletter localization keys.
 
-## [2.3.0](https://github.com/releases/tag/2.3.0) (2022-05-03)
+## [2.3.0](https://github.com/intershop/intershop-pwa/releases/tag/2.3.0) (2022-05-03)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
 
@@ -210,7 +210,7 @@ kb_everyone
 - For a working hybrid approach ICM 7.10.32.16-LTS or 7.10.38.6-LTS or newer is required. The changes in the PWA should not be incompatible with older ICM version if no hybrid approach is needed.
 - The method `getFilteredProducts` was moved from `FilterService` to `ProductsService`.
 
-## [2.2.0](https://github.com/releases/tag/2.2.0) (2022-04-01)
+## [2.2.0](https://github.com/intershop/intershop-pwa/releases/tag/2.2.0) (2022-04-01)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
 
@@ -246,7 +246,7 @@ kb_everyone
 - Node.js 16 is now used for development and deployment.
 - The compare functionality was moved into an extension (see [Migrations / 2.1 to 2.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#21-to-22) for more details).
 
-## [2.1.0](https://github.com/releases/tag/2.1.0) (2022-03-08)
+## [2.1.0](https://github.com/intershop/intershop-pwa/releases/tag/2.1.0) (2022-03-08)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
 
@@ -288,7 +288,7 @@ kb_everyone
 - Handling personalized REST calls for category and product data required some possibly breaking changes (see [Migrations / 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#20-to-21) for more details).
 - The recently viewed products functionality was moved into an extension (see [Migrations / 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#20-to-21) for more details).
 
-## [2.0.0](https://github.com/releases/tag/2.0.0) (2022-02-08)
+## [2.0.0](https://github.com/intershop/intershop-pwa/releases/tag/2.0.0) (2022-02-08)
 
 **required Intershop Commerce Management version: 7.10.38.0-LTS**
 
@@ -380,7 +380,7 @@ kb_everyone
 - The `SelectOption` interface has been moved to the select-option.model.ts file of the core/model folder, the related import statements have been adapted.
 - The B2C theme `default` is renamed to `b2c` and the B2B theme `blue` is renamed to `b2b` and `b2b` is now used as the default theme (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details.
 
-## [1.4.0](https://github.com/releases/tag/1.4.0) (2021-12-07)
+## [1.4.0](https://github.com/intershop/intershop-pwa/releases/tag/1.4.0) (2021-12-07)
 
 **required Intershop Commerce Management version: 7.10.32.10-LTS**
 
@@ -409,7 +409,7 @@ kb_everyone
 
 - We no longer use `@use 'sass:math';` and `math.div();` in our `.scss` files but instead switched to the new Bootstrap default way using `divide()`. This is more a note to check your styling customizations for possible adaptions. Both ways should still work together and adaptions are not required.
 
-## [1.3.0](https://github.com/releases/tag/1.3.0) (2021-10-29)
+## [1.3.0](https://github.com/intershop/intershop-pwa/releases/tag/1.3.0) (2021-10-29)
 
 **required Intershop Commerce Management version: 7.10.32.7-LTS**
 
@@ -456,7 +456,7 @@ kb_everyone
 
 - The PWA no longer relies on the dependency to 'b64u' since no encoding and decoding Base64 is needed any more in SSR. In the browser native methods are used. If your custom code uses b64u in SSR you should not remove this dependency or use a polyfill like 'btoa-polyfill'.
 
-## [1.2.0](https://github.com/releases/tag/1.2.0) (2021-09-30)
+## [1.2.0](https://github.com/intershop/intershop-pwa/releases/tag/1.2.0) (2021-09-30)
 
 **required Intershop Commerce Management version: 7.10.32.3-LTS**
 
