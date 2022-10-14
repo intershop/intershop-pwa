@@ -27,12 +27,14 @@ export const logoutUser = createAction('[User] Logout User');
 
 export const createUser = createAction('[User] Create User', payload<CustomerRegistrationType>());
 
-export const createUserSuccess = createAction(
-  '[User API] Create User Success',
-  payload<{ email: string; approvalRequired: boolean }>()
-);
+export const createUserSuccess = createAction('[User API] Create User Success', payload<{ email: string }>());
 
 export const createUserFail = createAction('[User API] Create User Failed', httpError());
+
+export const createUserApprovalRequired = createAction(
+  '[User Internal] Create User Approval Required',
+  payload<{ email: string }>()
+);
 
 export const updateUser = createAction(
   '[User] Update User',

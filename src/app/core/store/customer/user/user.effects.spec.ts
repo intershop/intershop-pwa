@@ -24,6 +24,7 @@ import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
   createUser,
+  createUserApprovalRequired,
   createUserFail,
   createUserSuccess,
   deleteUserPaymentInstrument,
@@ -287,14 +288,14 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a createUserSuccess and signInuserWithToken action on successful user creation', () => {
+    it('should dispatch a createUserSuccess and a loginUserWithToken action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
       const customer: Customer = { isBusinessCustomer: true, customerNo: 'PC' };
 
       when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
 
       const action = createUser({ customer, credentials } as CustomerRegistrationType);
-      const completion1 = createUserSuccess({ email: customerLoginType.user.email, approvalRequired: false });
+      const completion1 = createUserSuccess({ email: customerLoginType.user.email });
       const completion2 = loginUserWithToken({ token: undefined });
 
       actions$ = hot('-a', { a: action });
@@ -303,7 +304,7 @@ describe('User Effects', () => {
       expect(effects.createUser$).toBeObservable(expected$);
     });
 
-    it('should dispatch only a createUserSuccess action if customer approval is enabled', () => {
+    it('should dispatch a createUserSuccess and a createUserApprovalRequired action if customer approval is enabled', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
       const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
 
@@ -321,10 +322,11 @@ describe('User Effects', () => {
       when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
 
       const action = createUser({ customer, credentials } as CustomerRegistrationType);
-      const completion = createUserSuccess({ email: customerLoginType.user.email, approvalRequired: true });
+      const completion1 = createUserSuccess({ email: customerLoginType.user.email });
+      const completion2 = createUserApprovalRequired({ email: customerLoginType.user.email });
 
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(b?)', { b: completion });
+      const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
 
       expect(effects.createUser$).toBeObservable(expected$);
     });
@@ -343,7 +345,7 @@ describe('User Effects', () => {
     });
 
     it('should navigate to /register/approval if customer approval is needed', done => {
-      actions$ = of(createUserSuccess({ email: 'test@intershop.de', approvalRequired: true }));
+      actions$ = of(createUserApprovalRequired({ email: 'test@intershop.de' }));
 
       effects.redirectAfterUserCreationWithCustomerApproval$.subscribe({
         next: () => {

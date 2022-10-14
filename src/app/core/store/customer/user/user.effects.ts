@@ -18,6 +18,7 @@ import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from
 import { getPGID, personalizationStatusDetermined } from '.';
 import {
   createUser,
+  createUserApprovalRequired,
   createUserFail,
   createUserSuccess,
   deleteUserPaymentInstrument,
@@ -124,17 +125,12 @@ export class UserEffects {
           withLatestFrom(
             this.store.pipe(select(getServerConfigParameter<string[]>('general.customerTypeForLoginApproval')))
           ),
-          map(([customerLoginType, customerTypeForLoginApproval]) => ({
-            email: customerLoginType.user.email,
-            approvalRequired: customerTypeForLoginApproval?.includes(
-              customerLoginType.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE'
-            ),
-          })),
-          concatMap(userSuccessData => [
-            createUserSuccess(userSuccessData),
-            !userSuccessData.approvalRequired ? loginUserWithToken({ token: undefined }) : undefined,
+          concatMap(([createUserResponse, customerTypeForLoginApproval]) => [
+            createUserSuccess({ email: createUserResponse.user.email }),
+            customerTypeForLoginApproval?.includes(createUserResponse.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
+              ? createUserApprovalRequired({ email: createUserResponse.user.email })
+              : loginUserWithToken({ token: undefined }),
           ]),
-
           mapErrorToAction(createUserFail)
         )
       )
@@ -144,13 +140,12 @@ export class UserEffects {
   redirectAfterUserCreationWithCustomerApproval$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(createUserSuccess),
-        mapToPayload(),
-        filter(payload => payload.approvalRequired),
-        concatMap(payload =>
+        ofType(createUserApprovalRequired),
+        mapToPayloadProperty('email'),
+        concatMap(email =>
           from(
             this.router.navigate(['/register/approval'], {
-              queryParams: { email: payload?.email },
+              queryParams: { email },
             })
           )
         )
