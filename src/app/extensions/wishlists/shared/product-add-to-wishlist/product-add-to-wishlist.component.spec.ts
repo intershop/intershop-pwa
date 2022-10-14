@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -55,7 +54,6 @@ describe('Product Add To Wishlist Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [MockComponent(SelectWishlistModalComponent), ProductAddToWishlistComponent],
-      imports: [RouterTestingModule],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },

@@ -44,39 +44,51 @@ If the format is _switch_, the property is switched on by supplying `on`, `1`, `
 All parameters are **case sensitive**.
 Make sure to use them as written in the table below.
 
-|                     | parameter             | format               | comment                                                                                      |
-| ------------------- | --------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
-| **SSR Specific**    | PORT                  | number               | Port for running the application                                                             |
-|                     | SSL                   | any                  | Enables SSL/TLS                                                                              |
-|                     | CONCURRENCY_SSR       | number \| max        | concurrency for SSR instances per theme (default: 2)                                         |
-|                     | CACHE_ICM_CALLS       | recommended \| JSON  | enable caching for ICM calls, see [Local ICM Cache](#local-icm-cache) (default: disabled)    |
-| **General**         | ICM_BASE_URL          | string               | Sets the base URL for the ICM                                                                |
-|                     | ICM_CHANNEL           | string               | Overrides the default channel                                                                |
-|                     | ICM_APPLICATION       | string               | Overrides the default application                                                            |
-|                     | FEATURES              | comma-separated list | Overrides active features                                                                    |
-|                     | THEME                 | string               | Overrides the default theme                                                                  |
-|                     | MULTI_SITE_LOCALE_MAP | JSON \| false        | Used to map locales to [url modification parameters](../guides/multi-site-configurations.md) |
-|                     | DEPLOY_URL            | string               | Set a [Deploy URL][concept-deploy-url] (default `/`)                                         |
-| **Debug** :warning: | TRUST_ICM             | any                  | Use this if ICM is deployed with an insecure certificate                                     |
-|                     | LOGGING               | switch               | Enables extra log output                                                                     |
-|                     | SOURCE_MAPS           | switch               | Exposes source maps if activated                                                             |
-| **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in [Hybrid Mode][concept-hybrid]                                 |
-|                     | PROXY_ICM             | any \| URL           | Proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                                 |
-| **Third party**     | GTM_TOKEN             | string               | Token for Google Tag Manager                                                                 |
-|                     | GMA_KEY               | string               | API key for Google Maps                                                                      |
-|                     | SENTRY_DSN            | string               | Sentry DSN URL for using Sentry Error Monitor                                                |
-|                     | PROMETHEUS            | switch               | Exposes Prometheus metrics                                                                   |
-|                     | ICM_IDENTITY_PROVIDER | string               | ID of Identity Provider for [SSO][concept-sso]                                               |
-|                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of Identity Providers for [SSO][concept-sso]                                   |
+|                     | parameter                                   | format               | comment                                                                                      |
+| ------------------- | ------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
+| **SSR Specific**    | PORT                                        | number               | Port for running the application                                                             |
+|                     | SSL                                         | any                  | Enables SSL/TLS                                                                              |
+|                     | CONCURRENCY_SSR                             | number \| max        | concurrency for SSR instances per theme (default: 2)                                         |
+|                     | CACHE_ICM_CALLS                             | recommended \| JSON  | enable caching for ICM calls, see [Local ICM Cache](#local-icm-cache) (default: disabled)    |
+| **General**         | ICM_BASE_URL                                | string               | Sets the base URL for the ICM                                                                |
+|                     | ICM_CHANNEL                                 | string               | Overrides the default channel                                                                |
+|                     | ICM_APPLICATION                             | string               | Overrides the default application                                                            |
+|                     | FEATURES                                    | comma-separated list | Overrides active features                                                                    |
+|                     | THEME                                       | string               | Overrides the default theme                                                                  |
+|                     | MULTI_SITE_LOCALE_MAP                       | JSON \| false        | Used to map locales to [url modification parameters](../guides/multi-site-configurations.md) |
+|                     | DEPLOY_URL                                  | string               | Set a [Deploy URL][concept-deploy-url] (default `/`)                                         |
+| **Debug** :warning: | TRUST_ICM                                   | any                  | Use this if ICM is deployed with an insecure certificate                                     |
+|                     | LOGGING                                     | switch               | Enables extra log output                                                                     |
+|                     | SOURCE_MAPS                                 | switch               | Exposes source maps if activated                                                             |
+| **Hybrid Approach** | SSR_HYBRID                                  | any                  | Enables running PWA and ICM in [Hybrid Mode][concept-hybrid]                                 |
+|                     | PROXY_ICM                                   | any \| URL           | Proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                                 |
+| **Third party**     | GTM_TOKEN                                   | string               | Token for Google Tag Manager                                                                 |
+|                     | GMA_KEY                                     | string               | API key for Google Maps                                                                      |
+|                     | SENTRY_DSN                                  | string               | Sentry DSN URL for using Sentry Error Monitor                                                |
+|                     | PROMETHEUS                                  | switch               | Exposes Prometheus metrics                                                                   |
+|                     | IDENTITY_PROVIDER ~~ICM_IDENTITY_PROVIDER~~ | string               | ID of Identity Provider for [SSO][concept-sso]                                               |
+|                     | IDENTITY_PROVIDERS                          | JSON                 | Configuration of Identity Providers for [SSO][concept-sso]                                   |
 
-## Running with https
+## Development
 
-We deliver a self-signed x509 certificate for local development/deployment purposes only.
-For obvious reasons (e.g we do not know your hostname) we cannot deliver a certificate that is accepted by web browsers.
-Therefore be prepared for security questions when first accessing the site.
+For live Angular Universal (SSR) development, you have to use means provided by Angular CLI.
+The following command starts a SSR development environment.
 
-Our image build process is expecting files `server.crt` and `server.key` in folder `dist`.
-Extension `crt` is the certificate and `key` represents the private key.
+```
+npm run start:ssr-dev
+```
+
+If the SSR development environment needs to run with `https` this can be achieved like this.
+
+```
+npm run start:ssr-dev -- --ssl
+```
+
+To provide specific certificates that can be valid in your local development environment this is an example command how to achieve this.
+
+```
+ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
+```
 
 ## Local ICM Cache
 

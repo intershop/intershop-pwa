@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, Router, UrlTree, convertToParamMap } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { EMPTY, Observable, Subject, noop, of, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -42,13 +41,6 @@ describe('Punchout Identity Provider', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([
-          { path: 'home', children: [] },
-          { path: 'logout', children: [] },
-          { path: 'error', children: [] },
-        ]),
-      ],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },

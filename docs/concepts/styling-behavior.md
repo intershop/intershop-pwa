@@ -34,6 +34,23 @@ The assets folder is the place for any static resources like images, colors, etc
 
 Currently the default font families for the Intershop Progressive Web App [Roboto](https://fonts.google.com/specimen/Roboto) and [Roboto Condensed](https://fonts.google.com/specimen/Roboto+Condensed) are defined as npm dependency.
 
+## Icons
+
+As described above, solid [Font Awesome](https://fontawesome.com/) icons are used.
+To integrate an icon
+
+- open the appropriate page icon details, e.g. https://fontawesome.com/icons/print?s=solid&f=classic
+- copy only the name of the icon without the "fa-" prefix, in this case `print`
+  ```html
+  <i class="fa-solid fa-print"></i>
+  ```
+- use the icon name with following syntax
+  ```html
+  <fa-icon [icon]="['fas', 'print']"></fa-icon>
+  ```
+
+If an icon is not available yet, you need to add it to `src\app\core\icon.module.ts` in the `import {}` and the `constructor(){}`.
+
 ## References
 
 [Guide - Multiple Themes](../guides/multiple-themes.md)

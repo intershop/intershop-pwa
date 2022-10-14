@@ -37,46 +37,51 @@ export class AccountProfileEmailComponent implements OnInit {
   private getFields() {
     return [
       {
-        key: 'email',
-        type: 'ish-email-field',
-        templateOptions: {
-          label: 'account.update_email.newemail.label',
-          hideRequiredMarker: true,
-          required: true,
-        },
-      },
-
-      {
-        key: 'emailConfirmation',
-        type: 'ish-email-field',
-
-        templateOptions: {
-          hideRequiredMarker: true,
-          required: true,
-          label: 'account.update_email.email_confirmation.label',
-        },
         validators: {
-          validation: [SpecialValidators.equalToControl('email')],
+          validation: [SpecialValidators.equalTo('emailConfirmation', 'email')],
         },
-        validation: {
-          messages: {
-            required: 'account.update_email.email.error.notempty',
+        fieldGroup: [
+          {
+            key: 'email',
+            type: 'ish-email-field',
+            templateOptions: {
+              label: 'account.update_email.newemail.label',
+              hideRequiredMarker: true,
+              required: true,
+            },
           },
-        },
-      },
-      {
-        key: 'currentPassword',
-        type: 'ish-password-field',
-        templateOptions: {
-          hideRequiredMarker: true,
-          required: true,
-          label: 'account.update_email.password.label',
-        },
-        validation: {
-          messages: {
-            required: 'account.update_password.old_password.error.required',
+
+          {
+            key: 'emailConfirmation',
+            type: 'ish-email-field',
+
+            templateOptions: {
+              hideRequiredMarker: true,
+              required: true,
+              label: 'account.update_email.email_confirmation.label',
+            },
+            validation: {
+              messages: {
+                required: 'account.update_email.email.error.notempty',
+                equalTo: 'account.registration.email.not_match.error',
+              },
+            },
           },
-        },
+          {
+            key: 'currentPassword',
+            type: 'ish-password-field',
+            templateOptions: {
+              hideRequiredMarker: true,
+              required: true,
+              label: 'account.update_email.password.label',
+            },
+            validation: {
+              messages: {
+                required: 'account.update_password.old_password.error.required',
+              },
+            },
+          },
+        ],
       },
     ];
   }

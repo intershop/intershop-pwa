@@ -26,7 +26,6 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
@@ -67,7 +66,6 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(appFacade) },
@@ -113,7 +111,6 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
