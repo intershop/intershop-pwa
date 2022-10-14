@@ -188,7 +188,7 @@ describe('Product Mapper', () => {
       expect(stub.name).toEqual('productName');
       expect(stub.shortDescription).toEqual('productDescription');
       expect(stub.sku).toEqual('productSKU');
-      verify(imageMapper.fromImages(anything())).once();
+      verify(imageMapper.fromImageUrl(anything())).once();
       verify(attachmentMapper.fromAttachments(anything())).never();
     });
 
