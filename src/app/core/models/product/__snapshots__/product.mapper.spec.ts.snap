@@ -20,8 +20,8 @@ Object {
   "images": Array [
     Object {
       "effectiveUrl": "http://www.example.org/assets/product_img/a.jpg",
-      "imageActualHeight": undefined,
-      "imageActualWidth": undefined,
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
       "name": "front M",
       "primaryImage": true,
       "type": "Image",
@@ -30,8 +30,8 @@ Object {
     },
     Object {
       "effectiveUrl": "http://www.example.org/assets/product_img/a.jpg",
-      "imageActualHeight": undefined,
-      "imageActualWidth": undefined,
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
       "name": "front S",
       "primaryImage": true,
       "type": "Image",

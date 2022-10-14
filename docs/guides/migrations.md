@@ -24,6 +24,10 @@ For that reason we removed it.
 Use the validator `equalTo` instead.
 Find more information in the method description in the [`special-validators.ts`](https://github.com/intershop/intershop-pwa/blob/3.0.0/src/app/shared/forms/validators/special-validators.ts#L82-L87).
 
+The "Product Image Not Available" PNG image `not_available.png` is removed and replaced by an SVG image `not-available.svg` which does not include a text inside the image any more to avoid localization issues.
+The file references are updated accordingly, the product image component is updated to use the correct image attributes, a localized alternative text is added and the product and image mapper files are updated to provide the correct data.
+In case the current PNG image file and the handling is customized in a project, you have to make sure to keep the project changes.
+
 ## 2.4 to 3.0
 
 With the 2.4.1 Hotfix we introduced a more fixed Node.js version handling to the version used and tested by us.

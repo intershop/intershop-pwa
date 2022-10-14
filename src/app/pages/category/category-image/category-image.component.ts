@@ -16,7 +16,7 @@ export class CategoryImageComponent implements OnChanges {
    */
   @Input() category: Category;
 
-  categoryImageUrl = '/assets/img/not_available.png';
+  categoryImageUrl = '/assets/img/not-available.svg';
 
   ngOnChanges() {
     this.setCategoryImageUrl();
