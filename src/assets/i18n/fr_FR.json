@@ -145,7 +145,7 @@
   "account.create.benefit4.text": "Une vue complète de votre historique de commandes",
   "account.create.benefit5.text": "Accès rapide aux produits dans votre panier d’achat",
   "account.create.button.label": "Créer un compte",
-  "account.customer.approval.message": "<p>Votre compte doit être approuvée. Nous enverrons un courriel <strong>{{0}}</strong> lorsque votre compte sera actif et que vous pouvez vous connecter.</p>Pour toute question, veuillez contacter notre <a href=\"route://contact\">Service Client</a>.",
+  "account.customer.approval.message": "<p>Votre compte doit être approuvé. Nous enverrons un courriel à <strong>{{0}}</strong> lorsque votre compte sera actif et que vous pouvez vous connecter.</p>Pour toute question, veuillez contacter notre <a href=\"route://contact\">service client</a>.",
   "account.customer.registered.title": "Merci de vous inscrire!",
   "account.date.month": "Mois",
   "account.date.month.error.required": "Veuillez sélectionner un mois.",

@@ -145,7 +145,7 @@
   "account.create.benefit4.text": "Überblick über all Ihre Bestellungen",
   "account.create.benefit5.text": "Schneller Zugriff auf gespeicherte Produkte in Ihrem Warenkorb",
   "account.create.button.label": "Benutzerkonto anlegen",
-  "account.customer.approval.message": "<p>Ihr Benutzerkonto muss genehmigt werden. Wir senden eine E-Mail an <strong>{{0}}</strong>, sobald Ihr Account freigeschaltet ist und Sie sich einloggen können.</p>Bei Fragen wenden Sie sich bitte an unseren <a href=\"route://contact\">Kundenservice</a>.",
+  "account.customer.approval.message": "<p>Ihr Benutzerkonto muss genehmigt werden. Wir senden eine E-Mail an <strong>{{0}}</strong>, sobald Ihr Benutzerkonto freigeschaltet ist und Sie sich einloggen können.</p>Bei Fragen wenden Sie sich bitte an unseren <a href=\"route://contact\">Kundenservice</a>.",
   "account.customer.registered.title": "Vielen Dank für Ihre Registrierung!",
   "account.date.month": "Monat",
   "account.date.month.error.required": "Bitte wählen Sie einen Monat aus.",
