@@ -12,6 +12,7 @@
       [routerLink]="category.url"
       [attr.data-testing-id]="category.uniqueId + '-link'"
       [ngStyle]="{ width: !(0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren) ? '100%' : '' }"
+      class="main-navigation-link"
     >
       {{ category.name }}
     </a>
