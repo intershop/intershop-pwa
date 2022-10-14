@@ -15,6 +15,10 @@ This has been done to prevent an unintentional application of filters for produc
 To prevent deprecation warnings we removed the unnecessary `~` from all 3rd party SCSS imports (see https://webpack.js.org/loaders/sass-loader/#resolving-import-at-rules - "Using ~ is deprecated and can be removed from your code (we recommend it)").
 This should be done for additional imports in the customizations as well.
 
+The "Product Image Not Available" PNG image `not_available.png` is removed and replaced by an SVG image `not-available.svg` which does not include a text inside the image any more to avoid localization issues.
+The file references are updated accordingly, the product image component is updated to use the correct image attributes, a localized alternative text is added and the product and image mapper files are updated to provide the correct data.
+In case the current PNG image file and the handling is customized in a project, you have to make sure to keep the project changes.
+
 ## 2.4 to 3.0
 
 With the 2.4.1 Hotfix we introduced a more fixed Node.js version handling to the version used and tested by us.
