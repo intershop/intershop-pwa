@@ -32,6 +32,7 @@ import {
 import {
   createUser,
   deleteUserPaymentInstrument,
+  getCustomerApprovalEmail,
   getLoggedInCustomer,
   getLoggedInUser,
   getPasswordReminderError,
@@ -119,6 +120,7 @@ export class AccountFacade {
 
   customer$ = this.store.pipe(select(getLoggedInCustomer));
   isBusinessCustomer$ = this.store.pipe(select(isBusinessCustomer));
+  getCustomerApprovalEmail$ = this.store.pipe(select(getCustomerApprovalEmail));
   userPriceDisplayType$ = this.store.pipe(select(getPriceDisplayType));
 
   updateCustomerProfile(customer: Customer, message?: MessagesPayloadType) {

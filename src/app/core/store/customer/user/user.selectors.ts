@@ -30,6 +30,8 @@ export const getPasswordReminderSuccess = createSelector(getUserState, state => 
 
 export const getPasswordReminderError = createSelector(getUserState, state => state.passwordReminderError);
 
+export const getCustomerApprovalEmail = createSelector(getUserState, state => state.customerApprovalEmail);
+
 export const getPriceDisplayType = createSelector(
   getUserAuthorized,
   isBusinessCustomer,

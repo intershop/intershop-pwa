@@ -142,13 +142,7 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(createUserApprovalRequired),
         mapToPayloadProperty('email'),
-        concatMap(email =>
-          from(
-            this.router.navigate(['/register/approval'], {
-              queryParams: { email },
-            })
-          )
-        )
+        concatMap(() => from(this.router.navigate(['/register/approval'])))
       ),
     { dispatch: false }
   );

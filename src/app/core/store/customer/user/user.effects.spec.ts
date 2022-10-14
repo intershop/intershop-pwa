@@ -349,7 +349,7 @@ describe('User Effects', () => {
 
       effects.redirectAfterUserCreationWithCustomerApproval$.subscribe({
         next: () => {
-          expect(location.path()).toEqual('/register/approval?email=test@intershop.de');
+          expect(location.path()).toEqual('/register/approval');
           done();
         },
         error: fail,
