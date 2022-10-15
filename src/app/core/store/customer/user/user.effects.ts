@@ -141,7 +141,6 @@ export class UserEffects {
     () =>
       this.actions$.pipe(
         ofType(createUserApprovalRequired),
-        mapToPayloadProperty('email'),
         concatMap(() => from(this.router.navigate(['/register/approval'])))
       ),
     { dispatch: false }
