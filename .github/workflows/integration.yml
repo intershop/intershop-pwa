@@ -35,9 +35,9 @@ jobs:
       TESTING: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js 16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -52,7 +52,7 @@ jobs:
         run: npm run build:multi
 
       - name: Upload Build Output
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dist
           path: dist
@@ -66,15 +66,15 @@ jobs:
         test: ['b2c', 'b2b']
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js 16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Download Build Output
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
@@ -109,13 +109,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install e2e dependencies
         run: cd e2e && npm i
 
       - name: Download Build Output
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
@@ -141,7 +141,7 @@ jobs:
           node dist/$THEME/run-standalone &
 
       - name: Cypress
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           install: false
           wait-on: 'http://localhost:4200'
@@ -150,14 +150,14 @@ jobs:
           command: npx ts-node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
 
       - name: Upload Screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: screenshots
           path: e2e/cypress/screenshots
 
       - name: Upload Videos
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: videos
@@ -169,7 +169,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Execute shellspec tests
         run: |
           docker run --rm -v "${{ github.workspace }}/nginx/docker-entrypoint.d:/src" shellspec/shellspec
