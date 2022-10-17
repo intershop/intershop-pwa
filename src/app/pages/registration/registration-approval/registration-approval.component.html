@@ -1,0 +1,4 @@
+<ng-container *ngIf="email$ | async as email">
+  <h1>{{ 'account.customer.registered.title' | translate }}</h1>
+  <div [ishServerHtml]="'account.customer.approval.message' | translate: { '0': email }"></div>
+</ng-container>

@@ -11,13 +11,16 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { getPGID, personalizationStatusDetermined } from '.';
 import {
   createUser,
+  createUserApprovalRequired,
   createUserFail,
+  createUserSuccess,
   deleteUserPaymentInstrument,
   deleteUserPaymentInstrumentFail,
   deleteUserPaymentInstrumentSuccess,
@@ -118,9 +121,29 @@ export class UserEffects {
       ofType(createUser),
       mapToPayload(),
       mergeMap((data: CustomerRegistrationType) =>
-        this.userService.createUser(data).pipe(map(loginUserSuccess), mapErrorToAction(createUserFail))
+        this.userService.createUser(data).pipe(
+          withLatestFrom(
+            this.store.pipe(select(getServerConfigParameter<string[]>('general.customerTypeForLoginApproval')))
+          ),
+          concatMap(([createUserResponse, customerTypeForLoginApproval]) => [
+            createUserSuccess({ email: createUserResponse.user.email }),
+            customerTypeForLoginApproval?.includes(createUserResponse.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
+              ? createUserApprovalRequired({ email: createUserResponse.user.email })
+              : loginUserWithToken({ token: undefined }),
+          ]),
+          mapErrorToAction(createUserFail)
+        )
       )
     )
+  );
+
+  redirectAfterUserCreationWithCustomerApproval$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createUserApprovalRequired),
+        concatMap(() => from(this.router.navigate(['/register/approval'])))
+      ),
+    { dispatch: false }
   );
 
   updateUser$ = createEffect(() =>

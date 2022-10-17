@@ -102,11 +102,11 @@ export class UserService {
   }
 
   /**
-   * Create a new user for the given data.
+   * Creates a new user for the given data.
    *
-   * @param body  The user data (customer, user, credentials, address) to create a new user.
+   * @param body  The user data (customer, user, credentials, address) to create a new user. The new user is not logged in after creation.
    */
-  createUser(body: CustomerRegistrationType): Observable<CustomerLoginType> {
+  createUser(body: CustomerRegistrationType): Observable<CustomerUserType> {
     if (!body || !body.customer || (!body.user && !body.userId) || !body.address) {
       return throwError(() => new Error('createUser() called without required body data'));
     }
@@ -164,7 +164,7 @@ export class UserService {
           .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
-          .pipe(concatMap(() => this.fetchCustomer()))
+          .pipe(map(() => ({ customer: body.customer, user: body.user })))
       )
     );
   }

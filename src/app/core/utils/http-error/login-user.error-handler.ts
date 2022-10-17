@@ -15,11 +15,14 @@ export class LoginUserErrorHandler implements SpecialHttpErrorHandler {
   test(error: HttpErrorResponse, request: HttpRequest<unknown>): boolean {
     return (
       request.headers.has(ApiService.AUTHORIZATION_HEADER_KEY) &&
-      error.status === 401 &&
+      (error.status === 401 || error.status === 403) &&
       error.url.includes('customers/-')
     );
   }
-  map(): Partial<HttpError> {
+  map(error: HttpErrorResponse): Partial<HttpError> {
+    if (error.status === 403) {
+      return { code: 'account.login.customer_approval.error.invalid' };
+    }
     if (this.loginType === 'email') {
       return { code: 'account.login.email_password.error.invalid' };
     } else {

@@ -16,6 +16,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -23,7 +24,9 @@ import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
   createUser,
+  createUserApprovalRequired,
   createUserFail,
+  createUserSuccess,
   deleteUserPaymentInstrument,
   deleteUserPaymentInstrumentFail,
   deleteUserPaymentInstrumentSuccess,
@@ -101,7 +104,7 @@ describe('User Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router']),
+        CoreStoreModule.forTesting(['router', 'serverConfig']),
         CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
@@ -246,13 +249,36 @@ describe('User Effects', () => {
   });
 
   describe('createUser$', () => {
+    beforeEach(() => {
+      store.dispatch(
+        loadServerConfigSuccess({
+          config: { general: { customerTypeForLoginApproval: ['PRIVATE'] } },
+        })
+      );
+    });
+
+    const customerLoginType = {
+      customer: {
+        isBusinessCustomer: true,
+        customerNo: 'PC',
+      },
+      user: {
+        email: 'test@intershop.de',
+      } as User,
+    };
+
     it('should call the api service when Create event is called', done => {
       const action = createUser({
         customer: {
           isBusinessCustomer: true,
           customerNo: 'PC',
         },
+        user: {
+          email: 'test@intershop.de',
+        },
       } as CustomerRegistrationType);
+
+      when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
 
       actions$ = of(action);
 
@@ -262,14 +288,45 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a loadPGID action on successful user creation', () => {
+    it('should dispatch a createUserSuccess and a loginUserWithToken action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const customer: Customer = { isBusinessCustomer: true, customerNo: 'PC' };
 
-      const action = createUser({ credentials } as CustomerRegistrationType);
-      const completion = loginUserSuccess({} as CustomerUserType);
+      when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
+
+      const action = createUser({ customer, credentials } as CustomerRegistrationType);
+      const completion1 = createUserSuccess({ email: customerLoginType.user.email });
+      const completion2 = loginUserWithToken({ token: undefined });
 
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-b', { b: completion });
+      const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
+
+      expect(effects.createUser$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a createUserSuccess and a createUserApprovalRequired action if customer approval is enabled', () => {
+      const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
+
+      const customerLoginType = {
+        customer: {
+          isBusinessCustomer: false,
+          customerNo: 'PC',
+        },
+        user: {
+          firstName: 'Klaus',
+          lastName: 'Klausen',
+          email: 'test@intershop.de',
+        },
+      };
+      when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
+
+      const action = createUser({ customer, credentials } as CustomerRegistrationType);
+      const completion1 = createUserSuccess({ email: customerLoginType.user.email });
+      const completion2 = createUserApprovalRequired({ email: customerLoginType.user.email });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
 
       expect(effects.createUser$).toBeObservable(expected$);
     });
@@ -285,6 +342,19 @@ describe('User Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.createUser$).toBeObservable(expected$);
+    });
+
+    it('should navigate to /register/approval if customer approval is needed', done => {
+      actions$ = of(createUserApprovalRequired({ email: 'test@intershop.de' }));
+
+      effects.redirectAfterUserCreationWithCustomerApproval$.subscribe({
+        next: () => {
+          expect(location.path()).toEqual('/register/approval');
+          done();
+        },
+        error: fail,
+        complete: noop,
+      });
     });
   });
 

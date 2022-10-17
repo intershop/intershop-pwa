@@ -43,6 +43,8 @@ import {
   updateUserPasswordSuccess,
   updateUserSuccess,
   userErrorReset,
+  createUserSuccess,
+  createUserApprovalRequired,
 } from './user.actions';
 
 export interface UserState {
@@ -56,6 +58,7 @@ export interface UserState {
   pgid: string;
   passwordReminderSuccess: boolean;
   passwordReminderError: HttpError;
+  customerApprovalEmail: string;
 }
 
 const initialState: UserState = {
@@ -69,6 +72,7 @@ const initialState: UserState = {
   pgid: undefined,
   passwordReminderSuccess: undefined,
   passwordReminderError: undefined,
+  customerApprovalEmail: undefined,
 };
 
 export const userReducer = createReducer(
@@ -100,6 +104,17 @@ export const userReducer = createReducer(
     updateUserPasswordByPasswordReminderFail,
     requestPasswordReminderFail
   ),
+  unsetLoadingAndErrorOn(
+    loginUserSuccess,
+    loadCompanyUserSuccess,
+    createUserSuccess,
+    updateUserSuccess,
+    updateUserPasswordSuccess,
+    updateCustomerSuccess,
+    loadUserCostCentersSuccess,
+    loadUserPaymentMethodsSuccess,
+    deleteUserPaymentInstrumentSuccess
+  ),
   setErrorOn(
     updateUserFail,
     updateUserPasswordFail,
@@ -117,15 +132,12 @@ export const userReducer = createReducer(
       error,
     };
   }),
-  unsetLoadingAndErrorOn(
-    loginUserSuccess,
-    loadCompanyUserSuccess,
-    updateUserSuccess,
-    updateUserPasswordSuccess,
-    updateCustomerSuccess,
-    loadUserCostCentersSuccess,
-    loadUserPaymentMethodsSuccess,
-    deleteUserPaymentInstrumentSuccess
+  on(
+    createUserApprovalRequired,
+    (state, action): UserState => ({
+      ...state,
+      customerApprovalEmail: action.payload.email,
+    })
   ),
   on(loginUserSuccess, (state: UserState, action): UserState => {
     const customer = action.payload.customer;
