@@ -4,19 +4,27 @@
   "name": "Intershop PWA",
   "build": {
     "dockerfile": "Dockerfile",
-    // Update 'VARIANT' to pick a Node version: 10, 12, 14
     "args": {
       "VARIANT": "16"
     }
   },
-  // https://paulhammond.org/2020/vscode-ramdisks
-  "runArgs": ["--tmpfs", "${containerWorkspaceFolder}/node_modules:exec"],
+  // node_modules as volume
+  // https://code.visualstudio.com/remote/advancedcontainers/improve-performance#_use-a-targeted-named-volume
+  "mounts": ["target=${containerWorkspaceFolder}/node_modules,type=volume"],
   "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
+    "terminal.integrated.profiles.linux": {
+      "zsh": {
+        "path": "zsh",
+        "args": ["-l"]
+      }
+    },
+    "terminal.integrated.defaultProfile.linux": "zsh"
   },
   "extensions": [
+    // synchronize-marker:vscode-extensions:begin
     // general
     "eamodio.gitlens",
+    "vscode-icons-team.vscode-icons",
     "vincaslt.highlight-matching-tag",
     // code assist
     "visualstudioexptteam.vscodeintellicode",
@@ -24,18 +32,22 @@
     "mikael.angular-beastcode",
     "formulahendry.auto-rename-tag",
     // code style + formatting
+    "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint",
-    "dbaeumer.vscode-eslint",
     "csstools.postcss",
+    "dbaeumer.vscode-eslint",
     // testing
     "andys8.jest-snippets",
     // documentation
     "streetsidesoftware.code-spell-checker",
     "yzhang.markdown-all-in-one"
+    // synchronize-marker:vscode-extensions:end
   ],
   "forwardPorts": [4200],
-  "postStartCommand": "sudo chown node node_modules && npm install",
-  // Comment out the next line to run as root instead.
+  // get correct nodejs version from package.json
+  "postCreateCommand": ". $NVM_DIR/nvm.sh && nvm install $(node -p -e 'require(\"./package.json\").engines.node')",
+  // install node modules
+  "postStartCommand": "sudo chown node node_modules eslint-rules && npm i --no-save --no-audit --prefer-offline --maxsockets 4",
   "remoteUser": "node"
 }

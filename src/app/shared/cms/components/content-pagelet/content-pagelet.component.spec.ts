@@ -1,7 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { noop, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -29,7 +28,6 @@ describe('Content Pagelet Component', () => {
     when(appFacade.icmBaseUrl).thenReturn('http://example.org');
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [CMSTextComponent, ServerHtmlDirective],
       providers: [
         {

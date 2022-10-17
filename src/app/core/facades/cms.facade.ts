@@ -8,7 +8,11 @@ import { CategoryHelper } from 'ish-core/models/category/category.helper';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
 import { getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-tree';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
-import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
+import {
+  getContentPageLoading,
+  getSelectedContentPage,
+  setBreadcrumbForContentPage,
+} from 'ish-core/store/content/pages';
 import { getParametersProductList, loadParametersProductListFilter } from 'ish-core/store/content/parameters';
 import { getViewContext, loadViewContextEntrypoint } from 'ish-core/store/content/viewcontexts';
 import { getPGID } from 'ish-core/store/customer/user';
@@ -42,6 +46,16 @@ export class CMSFacade {
   contentPageTree$(rootId: string, depth: number) {
     this.store.dispatch(loadContentPageTree({ rootId, depth }));
     return this.store.pipe(select(getContentPageTree(rootId)));
+  }
+
+  /**
+   *
+   * @param rootId is taken into consideration as first element of breadcrumb for content page
+   *
+   * NOTE: use 'COMPLETE' as value of rootId to get complete available page path as breadcrumb
+   */
+  setBreadcrumbForContentPage(rootId: string): void {
+    this.store.dispatch(setBreadcrumbForContentPage({ rootId }));
   }
 
   parameterProductListFilter$(categoryId?: string, productFilter?: string, scope?: string, amount?: number) {

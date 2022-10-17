@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -22,7 +21,6 @@ describe('Product Master Variations Component', () => {
     when(context.select('product', 'sku')).thenReturn(of('123456789'));
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [
         MockComponent(FilterNavigationComponent),
         MockComponent(ProductListingComponent),

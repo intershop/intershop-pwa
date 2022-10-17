@@ -72,6 +72,8 @@ ul {
     img {
       width: 270px;
       height: auto;
+      // fix layout shift at the image
+      aspect-ratio: 1/1;
     }
   }
 

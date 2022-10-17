@@ -10,6 +10,7 @@ const messages = {
  * Enforces the usage of a done() callback in tests that rely on asynchronous logic (subscribe calls).
  */
 const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

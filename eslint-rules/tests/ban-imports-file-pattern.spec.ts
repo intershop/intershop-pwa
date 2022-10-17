@@ -52,7 +52,33 @@ testRule(banImportsFilePatternRule, {
       ],
     },
     {
-      name: 'should report when detecting disallowed start pattern',
+      name: 'should report on file included in file pattern',
+      filename: 'test.component.spec.ts',
+      options: [
+        [
+          {
+            importNamePattern: 'environment',
+            name: '.*environments\\/environment',
+            filePattern: '^.*\\.ts$',
+            message: 'Test Message',
+          },
+        ],
+      ],
+      code: `
+        import { environment } from '../environments/environment';
+      `,
+      errors: [
+        {
+          messageId: 'banImportsFilePatternError',
+          data: {
+            message: 'Test Message',
+          },
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      name: 'should report when detecting disallowed star pattern',
       filename: 'test.component.ts',
       options: [
         [

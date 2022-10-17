@@ -6,10 +6,9 @@ import { basename, dirname, join, normalize, resolve } from 'path';
 import * as ts from 'typescript';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-console, @typescript-eslint/no-var-requires, @typescript-eslint/naming-convention */
 
-const purgecssPlugin = require('purgecss-webpack-plugin');
+const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
 
 const glob = require('glob');
 
@@ -227,7 +226,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
     logger.log('setting up purgecss CSS minification');
     config.plugins.push(
-      new purgecssPlugin({
+      new PurgeCSSPlugin({
         paths: glob.sync('./**/src/app/**/!(*.spec.ts)*', { nodir: true }),
         safelist: {
           standard: [/(p|m)(l|r|x|y|t|b)?-[0-5]/],

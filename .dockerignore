@@ -17,6 +17,7 @@
 /.nb-gradle
 /nbproject/
 /.nvmrc
+/.vim/
 /.angular/cache
 **/*.log
 /src/environments/environment.local.ts
@@ -35,8 +36,6 @@
 !/dist/entrypoint.sh
 !/dist/healthcheck.js
 !/dist/robots.txt
-!/dist/server.crt
-!/dist/server.key
 
 # from docs/.gitignore
 /docs/compodoc

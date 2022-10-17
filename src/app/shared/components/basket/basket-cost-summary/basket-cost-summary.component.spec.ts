@@ -1,4 +1,3 @@
-import { CompilerOptions } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
@@ -26,9 +25,7 @@ describe('Basket Cost Summary Component', () => {
       declarations: [BasketCostSummaryComponent, MockComponent(FaIconComponent), MockDirective(NgbPopover), PricePipe],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    })
-      .configureCompiler({ preserveWhitespaces: true } as CompilerOptions)
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

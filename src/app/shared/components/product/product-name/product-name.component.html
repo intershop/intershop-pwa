@@ -5,7 +5,7 @@
         class="product-title"
         data-testing-id="product-name-link"
         [routerLink]="productURL$ | async"
-        [queryParamsHandling]="queryParamsHandling"
+        [queryParamsHandling]="computedQueryParamsHandling"
         >{{ alternate || productName }}</a
       >
     </ng-container>

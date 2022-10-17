@@ -21,6 +21,11 @@ import {
   loadAddresses,
 } from 'ish-core/store/customer/addresses';
 import { getUserRoles } from 'ish-core/store/customer/authorization';
+import {
+  firstGDPRDataRequest,
+  getDataRequestError,
+  getDataRequestLoading,
+} from 'ish-core/store/customer/data-requests';
 import { getOrders, getOrdersLoading, getSelectedOrder, loadOrders } from 'ish-core/store/customer/orders';
 import {
   cancelRegistration,
@@ -32,6 +37,7 @@ import {
 import {
   createUser,
   deleteUserPaymentInstrument,
+  getCustomerApprovalEmail,
   getLoggedInCustomer,
   getLoggedInUser,
   getPasswordReminderError,
@@ -119,6 +125,7 @@ export class AccountFacade {
 
   customer$ = this.store.pipe(select(getLoggedInCustomer));
   isBusinessCustomer$ = this.store.pipe(select(isBusinessCustomer));
+  getCustomerApprovalEmail$ = this.store.pipe(select(getCustomerApprovalEmail));
   userPriceDisplayType$ = this.store.pipe(select(getPriceDisplayType));
 
   updateCustomerProfile(customer: Customer, message?: MessagesPayloadType) {
@@ -232,6 +239,13 @@ export class AccountFacade {
   deleteCustomerAddress(addressId: string) {
     this.store.dispatch(deleteCustomerAddress({ addressId }));
   }
+
+  // DATA REQUESTS
+
+  dataRequestLoading$ = this.store.pipe(select(getDataRequestLoading));
+  dataRequestError$ = this.store.pipe(select(getDataRequestError));
+  // boolean to check wether the GDPR data request is dispatched for the first time
+  isFirstGDPRDataRequest$ = this.store.pipe(select(firstGDPRDataRequest));
 
   // SSO
 

@@ -62,8 +62,10 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
     const regex = /.*\[ismediaobject\](.*?)\[\/ismediaobject\].*/;
     if (regex.test(src)) {
       const [, ismediaobjectContent] = regex.exec(src);
-      const links = ismediaobjectContent.split('|');
-      return this.appFacade.icmBaseUrl + links[links.length - 1];
+      const mediaObjectSrc = ismediaobjectContent.split('|')[1];
+      return this.appFacade.icmBaseUrl + mediaObjectSrc;
+    } else if (src.startsWith('/INTERSHOP/')) {
+      return this.appFacade.icmBaseUrl + src;
     } else {
       return src;
     }

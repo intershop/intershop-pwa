@@ -6,7 +6,14 @@ import { join } from 'path';
 import * as robots from 'express-robots-txt';
 import * as fs from 'fs';
 import * as proxy from 'express-http-proxy';
-import { AppServerModule, ICM_WEB_URL, HYBRID_MAPPING_TABLE, environment, APP_BASE_HREF } from './src/main.server';
+import {
+  AppServerModule,
+  ICM_WEB_URL,
+  HYBRID_MAPPING_TABLE,
+  environment,
+  APP_BASE_HREF,
+  ICM_CONFIG_MATCH,
+} from './src/main.server';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 
@@ -59,7 +66,6 @@ global['navigator'] = win.navigator;
 */
 
 // The Express app is exported so that it can be used by serverless Functions.
-// not-dead-code
 export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
 
@@ -171,6 +177,7 @@ export function app() {
         UserAgent: '*',
         Disallow: [
           '/error',
+          '/maintenance',
           '/account',
           '/compare',
           '/recently',
@@ -180,6 +187,7 @@ export function app() {
           '/login',
           '/logout',
           '/forgotPassword',
+          '/gdpr-requests',
           '/contact',
         ],
       })
@@ -192,8 +200,16 @@ export function app() {
     for (const entry of HYBRID_MAPPING_TABLE) {
       const icmUrlRegex = new RegExp(entry.icm);
       const pwaUrlRegex = new RegExp(entry.pwa);
-      if (icmUrlRegex.exec(url) && entry.handledBy === 'pwa') {
-        newUrl = url.replace(icmUrlRegex, `/${entry.pwaBuild}`);
+      const icmMatchArray = icmUrlRegex.exec(url);
+      if (icmMatchArray && entry.handledBy === 'pwa') {
+        const config: { [is: string]: string } = {
+          ...icmMatchArray.groups,
+          application: environment.icmApplication || '-',
+        };
+        // Rewrite configuration part of incoming ICM url
+        const _url = url.replace(new RegExp(ICM_CONFIG_MATCH), buildICMWebURL(config));
+        // Build pwa URL based on equally named-groups of ICM url
+        newUrl = _url.replace(icmUrlRegex, `/${entry.pwaBuild}`);
         break;
       } else if (pwaUrlRegex.exec(url) && entry.handledBy === 'icm') {
         const config: { [is: string]: string } = {};
@@ -216,15 +232,9 @@ export function app() {
           config.channel = environment.icmChannel;
         }
 
-        if (/;application=[^;]*/.test(url)) {
-          config.application = /;application=([^;]*)/.exec(url)[1];
-        } else {
-          config.application = environment.icmApplication || '-';
-        }
+        config.application = environment.hybridApplication || environment.icmApplication;
 
-        const build = [ICM_WEB_URL, entry.icmBuild]
-          .join('/')
-          .replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
+        const build = [buildICMWebURL(config), entry.icmBuild].join('/');
         newUrl = url.replace(pwaUrlRegex, build).replace(/;.*/g, '');
         break;
       }
@@ -238,6 +248,9 @@ export function app() {
       next();
     }
   };
+
+  const buildICMWebURL = (config: { [is: string]: string } = {}): string =>
+    ICM_WEB_URL.replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
 
   if (process.env.SSR_HYBRID) {
     server.use('*', hybridRedirect);
@@ -304,7 +317,7 @@ export function app() {
       }
     });
   });
-  server.get(/.*\/favicon.ico.*/, (req, _, next) => {
+  server.get(/^(?!\/assets\/).*\/favicon.ico.*/, (req, _, next) => {
     req.url = req.originalUrl.replace(/[;?&].*$/, '').replace(/^.*\//g, '/');
     next();
   });
@@ -436,22 +449,11 @@ export function app() {
 }
 
 function run() {
-  if (process.env.SSL) {
-    const https = require('https');
-    const privateKey = fs.readFileSync(join(DIST_FOLDER, 'server.key'), 'utf8');
-    const certificate = fs.readFileSync(join(DIST_FOLDER, 'server.crt'), 'utf8');
-    const credentials = { key: privateKey, cert: certificate };
+  const http = require('http');
 
-    https.createServer(credentials, app()).listen(PORT);
+  http.createServer(app()).listen(PORT);
 
-    console.log(`Node Express server listening on https://${require('os').hostname()}:${PORT}`);
-  } else {
-    const http = require('http');
-
-    http.createServer(app()).listen(PORT);
-
-    console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
-  }
+  console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
   console.log('serving static files from', BROWSER_FOLDER);
 }
 

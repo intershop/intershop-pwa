@@ -12,7 +12,6 @@ import { Image } from './image.model';
  * @example
  * ImageMapper.fromImages(images)
  * ImageMapper.fromImage(image)
- * ImageMapper.fromImages(images)
  */
 @Injectable({ providedIn: 'root' })
 export class ImageMapper {
@@ -26,7 +25,6 @@ export class ImageMapper {
    * Maps Images to Images.
    *
    * @param images The source images.
-   * @param icmBaseURL The prefix URL for building absolute URLs for each relative URL.
    * @returns The images.
    */
   fromImages(images: Image[]): Image[] {
@@ -40,7 +38,6 @@ export class ImageMapper {
    * Maps Image to Image.
    *
    * @param image The source image.
-   * @param icmBaseURL The prefix URL for building absolute URLs for each relative URL.
    * @returns The image.
    */
   private fromImage(image: Image): Image {
@@ -54,7 +51,6 @@ export class ImageMapper {
    * Builds absolute URL from relative URL and icmBaseURL or returns absolute URL.
    *
    * @param url The relative or absolute image URL.
-   * @param icmBaseURL The prefix URL for building absolute URLs for each relative URL.
    * @returns The URL.
    */
   private fromEffectiveUrl(url: string): string {
@@ -65,5 +61,39 @@ export class ImageMapper {
       return url;
     }
     return `${this.icmBaseURL}${url}`;
+  }
+
+  /**
+   * Maps a single product image URL to a minimum product images array.
+   *
+   * @param url The image URL.
+   * @returns The minimum images (M and S image).
+   */
+  fromImageUrl(url: string): Image[] {
+    if (!url) {
+      return;
+    }
+    return [
+      {
+        effectiveUrl: this.fromEffectiveUrl(url),
+        name: 'front M',
+        primaryImage: true,
+        type: 'Image',
+        typeID: 'M',
+        viewID: 'front',
+        imageActualHeight: 270,
+        imageActualWidth: 270,
+      },
+      {
+        effectiveUrl: this.fromEffectiveUrl(url),
+        name: 'front S',
+        primaryImage: true,
+        type: 'Image',
+        typeID: 'S',
+        viewID: 'front',
+        imageActualHeight: 110,
+        imageActualWidth: 110,
+      },
+    ];
   }
 }

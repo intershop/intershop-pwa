@@ -136,6 +136,15 @@ describe('Product Mapper', () => {
       expect(p2.attributes).toEqual([{ name: 'Grafikkarte', type: 'String', value: 'NVIDIA Quadro K2200' }]);
     });
 
+    it('should return an empty array if no attributes available', () => {
+      const product: Product = productMapper.fromData({
+        sku: '1',
+        attributes: undefined,
+      } as ProductData);
+      expect(product).toBeTruthy();
+      expect(product.attributes).toBeEmpty();
+    });
+
     describe('available', () => {
       it.each([
         [undefined, undefined, false],
@@ -179,7 +188,7 @@ describe('Product Mapper', () => {
       expect(stub.name).toEqual('productName');
       expect(stub.shortDescription).toEqual('productDescription');
       expect(stub.sku).toEqual('productSKU');
-      verify(imageMapper.fromImages(anything())).once();
+      verify(imageMapper.fromImageUrl(anything())).once();
       verify(attachmentMapper.fromAttachments(anything())).never();
     });
 

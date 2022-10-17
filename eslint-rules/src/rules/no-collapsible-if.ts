@@ -8,6 +8,7 @@ const messages = {
  * Finds and merges collapsible if statements.
  */
 const noCollapsibleIfRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     fixable: 'code',

@@ -41,6 +41,8 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
 
     form = fb.group({
       login: ['jlink@test.intershop.de'],
+      firstName: ['Jack'],
+      lastName: ['Link'],
       budgetValue: [123, [SpecialValidators.moneyAmount]],
       budgetPeriod: ['monthly'],
     });

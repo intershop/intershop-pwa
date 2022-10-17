@@ -22,6 +22,9 @@
           <ng-container *ishHasNotRole="'APP_B2B_ACCOUNT_OWNER'">
             {{ buyer.firstName }} {{ buyer.lastName }}
           </ng-container>
+          <span *ngIf="buyer.active === false" class="input-help">
+            <br />{{ 'account.user.list.status.inactive' | translate }}
+          </span>
         </td>
       </ng-container>
 

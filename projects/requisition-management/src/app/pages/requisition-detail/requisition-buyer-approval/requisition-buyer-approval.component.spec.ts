@@ -1,4 +1,3 @@
-import { CompilerOptions } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -33,9 +32,7 @@ describe('Requisition Buyer Approval Component', () => {
         RequisitionBuyerApprovalComponent,
       ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    })
-      .configureCompiler({ preserveWhitespaces: true } as CompilerOptions)
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

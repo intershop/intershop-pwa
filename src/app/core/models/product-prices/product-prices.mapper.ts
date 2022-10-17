@@ -39,6 +39,13 @@ export class ProductPricesMapper {
         salePrice: getSinglePrice(data?.prices?.SalePrice) ?? getSinglePrice(data?.prices?.ListPrice),
         listPrice: getSinglePrice(data?.prices?.ListPrice),
         scaledPrices,
+        minSalePrice: getSinglePrice(data?.prices?.MinSalePrice) ?? getSinglePrice(data?.prices?.MinListPrice),
+        minListPrice: getSinglePrice(data?.prices?.MinListPrice),
+        maxSalePrice: getSinglePrice(data?.prices?.MaxSalePrice) ?? getSinglePrice(data?.prices?.MaxListPrice),
+        maxListPrice: getSinglePrice(data?.prices?.MaxListPrice),
+        summedUpSalePrice:
+          getSinglePrice(data?.prices?.SummedUpSalePrice) ?? getSinglePrice(data?.prices?.SummedUpListPrice),
+        summedUpListPrice: getSinglePrice(data?.prices?.SummedUpListPrice),
       },
     };
   }

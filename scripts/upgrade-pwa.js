@@ -6,6 +6,9 @@ const pinned = {
   '@ng-bootstrap/ng-bootstrap': '11', // 12 requires Bootstrap 5
   '@types/node': '16', // LTS
   '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
+  jest: '28',
+  '@types/jest': '28',
+  '@ngx-formly/core': '5',
 };
 
 // <HELPERS>
@@ -17,16 +20,6 @@ const parseVersion = version => {
     return /\^([0-9]+)\.[0-9]+\.[0-9]+/.exec(version)[1];
   }
   return version;
-};
-
-const writeVersion = version => {
-  if (/^[0-9]+$/.test(version)) {
-    return `^${version}.0.0`;
-  } else if (/^[0-9]+\.[0-9]+$/.test(version)) {
-    return `~${version}.0`;
-  } else {
-    return version;
-  }
 };
 
 const execute = command => {
@@ -72,23 +65,6 @@ angularCoreDependencies.forEach(dep => {
   pinned[dep] = parseVersion(latestVersions[dep]);
 });
 
-// set pinned version in package.json
-modifyPackageJson(packageJson => {
-  Object.entries(pinned).forEach(([dep, ver]) => {
-    const write = writeVersion(ver);
-    if (packageJson.dependencies[dep]) {
-      packageJson.dependencies[dep] = write;
-    } else {
-      packageJson.devDependencies[dep] = write;
-    }
-  });
-  return packageJson;
-});
-
-// install pinned versions
-execute('npm i');
-commit('chore: install pinned versions');
-
 const coreLibs = [
   '@schematics/angular',
   '@angular/cli',
@@ -122,14 +98,11 @@ const libs = Object.keys(JSON.parse(spawnSync(NPM, ['outdated', '--json']).stdou
 execute('npx ng update -C --force ' + libs.join(' '));
 
 // rewrite package-lock.json (just in case)
-execute(
-  'npx rimraf package-lock.json ' +
-    (process.platform === 'win32' ? '\\"node_modules/!(rimraf|.bin)\\"' : 'node_modules')
-);
+execute('npx rimraf package-lock.json node_modules');
 execute('npm install --force');
 commit('chore: synchronize package-lock.json');
 
-// set pinned version in package.json with used values
+// check if pinned versions in package.json start with pinned values
 const packageLockJson = JSON.parse(fs.readFileSync('./package-lock.json', { encoding: 'utf-8' }));
 modifyPackageJson(packageJson => {
   Object.entries(pinned).forEach(([dep, version]) => {
@@ -140,15 +113,9 @@ modifyPackageJson(packageJson => {
       console.warn('some dependency upgrade must have pulled a newer version');
       console.warn('####################################');
     }
-    if (packageJson.dependencies[dep]) {
-      packageJson.dependencies[dep] = packageJson.dependencies[dep].replace(/[0-9].*$/, write);
-    } else {
-      packageJson.devDependencies[dep] = packageJson.devDependencies[dep].replace(/[0-9].*$/, write);
-    }
   });
   return packageJson;
 });
-commit('chore: synchronize package.json with used pinned versions');
 
 console.warn('###### Known dependency incompatibilities:');
 spawnSync(NPM, ['ls', '-a'])

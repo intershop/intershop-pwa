@@ -55,7 +55,7 @@ Your template should look something like this:
 ### FormlyFieldConfig
 
 The `FormlyFieldConfig` class allows you to define a number of parameters that change the way a Formly field behaves.
-For a comprehensive overview of properties, refer to the [official documentation](https://formly.dev/guide/properties-options).
+For a comprehensive overview of properties, refer to the [official documentation](https://formly.dev/docs/guide/properties-options).
 A configuration for a form containing only a basic input field could be defined like this:
 
 ```typescript
@@ -181,7 +181,7 @@ FormlyModule.forChild({
 
 ### Validation
 
-There are many options when it comes to [adding custom validation to formly forms](https://formly.dev/guide/validation).
+There are many options when it comes to [adding custom validation to formly forms](https://formly.dev/docs/guide/validation).
 
 The PWA comes with some predefined custom validators which can be found in [special-validators.ts](../../src/app/shared/forms/validators/special-validators.ts).
 These can be added directly to the `validators.validation` property of a `FormlyFieldConfig`.
@@ -267,6 +267,7 @@ Template option `inputClass`: These css class(es) will be added to all input/sel
 | ish-captcha-field    | Includes the `<ish-lazy-captcha>` component and adds the relevant `formControls` to the form | `topic`: Topic that will be passed to the Captcha component.                                                                  |
 | ish-radio-field      | Basic radio input                                                                            | ----                                                                                                                          |
 | ish-plain-text-field | Only display the form value                                                                  | ----                                                                                                                          |
+| ish-html-text-field  | Only display the form value as html                                                          | ----                                                                                                                          |
 
 ### Wrappers
 

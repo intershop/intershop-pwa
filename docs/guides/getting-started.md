@@ -16,34 +16,14 @@ After having cloned the project from the Git repository, open a command line in 
 
 The project uses Angular CLI which has to be installed globally.
 Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine.
+
 Use `ng serve --open` to start up the development server and open the Progressive Web App in your browser.
 
-The project can alternatively be run in production mode with `npm start`.
-
-## Visual Studio Code Remote Development
-
-An alternative development setup for the PWA is provided when using Visual Studio Code Remote - Containers to work in an isolated pre-configured project development environment.
-
-As prerequisite [Docker](https://docs.docker.com/get-docker/) has to be installed on your development machine.
-Furthermore, [Visual Studio Code](https://code.visualstudio.com) with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension has to be used as IDE.
-
-After cloning your local working copy (e.g. with VS Code), VSCode will ask you if you want to reopen the folder in a container.
-By doing this, VS Code will prepare the environment for you inside the container.
-It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
-
-Open a console in VS Code and run `ng serve` to start developing.
+For more information about environment configuration, server and tools consult the according chapters in the [Development Guide](./development.md).
 
 ## Customization
 
 Before customizing the PWA for your specific needs, have a look at our [Customization Guide](./customizations.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
-
-## Development Server
-
-Run `ng serve` or `ng s` for a development server.
-
-For more information consult the chapter in the [Development Guide](./development.md#development-server).
-
-> **Warning**: Do not use _webpack-dev-server_ in production!
 
 ## Deployment
 
@@ -62,12 +42,6 @@ Build it with `docker build -t my_pwa .`.
 To run the PWA with multiple channels and [Google PageSpeed](https://developers.google.com/speed/pagespeed/insights/) optimizations, you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
 
 We provide templates for [Kubernetes Deployments](../../schematics/src/kubernetes-deployment) and [DevOps](../../schematics/src/azure-pipeline) for Microsoft Azure.
-
-## Progressive Web App (PWA)
-
-To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started), use `npm run start` to build and serve the application.
-After that open _http://localhost:4200_ in your browser and test it or run a PWA audit.
-Currently only _localhost_ or _127.0.0.1_ will work with the service worker since it requires _https_ communication on any other domain.
 
 ## Running Tests
 

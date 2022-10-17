@@ -2,13 +2,14 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
-import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { getDeviceType } from 'ish-core/store/core/configuration';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
   applyFilter,
@@ -19,7 +20,7 @@ import {
 } from 'ish-core/store/shopping/filter';
 import { loadProductsForCategory, loadProductsForMaster } from 'ish-core/store/shopping/products';
 import { searchProducts } from 'ish-core/store/shopping/search';
-import { mapToPayload, throttleOrChanged, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { stringToFormParams } from 'ish-core/utils/url-form-params';
 
 import {
@@ -34,7 +35,8 @@ import { getProductListingViewType } from './product-listing.selectors';
 export class ProductListingEffects {
   constructor(
     @Inject(PRODUCT_LISTING_ITEMS_PER_PAGE) private itemsPerPage: number,
-    @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE) private defaultViewType: ViewType,
+    @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE)
+    private defaultViewType: ViewType | Partial<Record<DeviceType, ViewType>>,
     private actions$: Actions,
     private store: Store
   ) {}
@@ -46,13 +48,19 @@ export class ProductListingEffects {
     )
   );
 
-  initializeDefaultViewType$ = createEffect(() =>
-    this.store.pipe(
-      select(getProductListingViewType),
-      whenFalsy(),
-      map(() => setViewType({ viewType: this.defaultViewType }))
-    )
-  );
+  initializeDefaultViewType$ =
+    !SSR &&
+    createEffect(() =>
+      this.store.pipe(
+        select(getProductListingViewType),
+        whenFalsy(),
+        withLatestFrom(this.store.pipe(select(getDeviceType))),
+        map(([, deviceType]) =>
+          typeof this.defaultViewType === 'object' ? this.defaultViewType[deviceType] : this.defaultViewType
+        ),
+        map(viewType => setViewType({ viewType }))
+      )
+    );
 
   setViewTypeFromQueryParam$ = createEffect(() =>
     this.store.pipe(
@@ -84,6 +92,10 @@ export class ProductListingEffects {
         let initialPage = page; // scope variable (reset after first usage)
         return this.store.pipe(
           select(selectQueryParams),
+          // filter router changes which have nothing to do with product lists like login
+          filter(
+            params => !!params?.filters || !!params?.sorting || !!params?.page || Object.keys(params)?.length === 0
+          ),
           map(params => {
             const filters = params.filters
               ? {
@@ -106,7 +118,7 @@ export class ProductListingEffects {
           })
         );
       }),
-      throttleOrChanged(5000),
+      distinctUntilChanged(isEqual),
       map(({ id, filters, sorting, page }) => loadMoreProductsForParams({ id, filters, sorting, page }))
     )
   );
@@ -115,6 +127,7 @@ export class ProductListingEffects {
     this.actions$.pipe(
       ofType(loadMoreProductsForParams),
       mapToPayload(),
+      distinctUntilChanged(isEqual),
       map(({ id, sorting, page, filters }) => {
         if (filters) {
           const searchParameter = filters;
@@ -132,7 +145,8 @@ export class ProductListingEffects {
           }
         }
       }),
-      whenTruthy()
+      whenTruthy(),
+      distinctUntilChanged(isEqual)
     )
   );
 

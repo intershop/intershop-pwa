@@ -43,11 +43,11 @@ export class ProductPriceComponent implements OnInit {
         isListPriceLessThanSalePrice: prices.listPrice?.value < prices.salePrice?.value,
         priceSavings: prices.listPrice && prices.salePrice && PriceHelper.diff(prices.listPrice, prices.salePrice),
         lowerPrice:
-          (ProductHelper.isMasterProduct(product) || ProductHelper.isRetailSet(product)) && product.minSalePrice,
+          (ProductHelper.isMasterProduct(product) || ProductHelper.isRetailSet(product)) && prices.minSalePrice,
         upperPrice: ProductHelper.isMasterProduct(product)
-          ? product.maxSalePrice
+          ? prices.maxSalePrice
           : ProductHelper.isRetailSet(product)
-          ? product.summedUpSalePrice
+          ? prices.summedUpSalePrice
           : undefined,
       }))
     );

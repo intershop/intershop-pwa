@@ -17,7 +17,7 @@ import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/bas
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { ErrorFeedback, HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -330,11 +330,11 @@ export class BasketService {
    * @param   items       The list of product SKU and quantity pairs to be added to the basket.
    * @returns lineItems   The list of line items, that have been added to the basket.
    *          info        Info responded by the server.
-   *          error       Errors responded by the server.
+   *          errors      Errors responded by the server.
    */
   addItemsToBasket(
     items: SkuQuantityType[]
-  ): Observable<{ lineItems: LineItem[]; info: BasketInfo[]; error: HttpError }> {
+  ): Observable<{ lineItems: LineItem[]; info: BasketInfo[]; errors: ErrorFeedback[] }> {
     if (!items) {
       return throwError(() => new Error('addItemsToBasket() called without items'));
     }
@@ -355,7 +355,7 @@ export class BasketService {
         map(payload => ({
           lineItems: payload.data.map(item => LineItemMapper.fromData(item)),
           info: BasketInfoMapper.fromInfo({ infos: payload.infos }),
-          error: payload.errors ? { name: 'HttpErrorResponse', errors: payload.errors } : undefined,
+          errors: payload.errors,
         }))
       );
   }
@@ -514,7 +514,7 @@ export class BasketService {
   }
 
   /**
-   * Create a custom attribute on the currently used basket. Default attribute type is 'String'.
+   * Creates a custom attribute on the currently used basket. Default attribute type is 'String'.
    *
    * @param attr   The custom attribute
    * @returns      The custom attribute
@@ -533,7 +533,7 @@ export class BasketService {
   }
 
   /**
-   * Update a custom attribute on the currently used basket. Default attribute type is 'String'.
+   * Updates a custom attribute on the currently used basket. Default attribute type is 'String'.
    *
    * @param attribute   The custom attribute
    * @returns           The custom attribute
@@ -552,7 +552,7 @@ export class BasketService {
   }
 
   /**
-   * Delete a custom attribute from the currently used basket.
+   * Deletes a custom attribute from the currently used basket.
    *
    * @param attributeName The name of the custom attribute
    */
@@ -563,5 +563,45 @@ export class BasketService {
     return this.currentBasketEndpoint().delete(`attributes/${attributeName}`, {
       headers: this.basketHeaders,
     });
+  }
+
+  /**
+   * Adds all items of a quote to the current basket.
+   *
+   * @param quoteId   The id of the quote that should be added to the basket.
+   * @returns         The info message if present.
+   */
+  addQuoteToBasket(quoteId: string): Observable<BasketInfo[]> {
+    if (!quoteId) {
+      return throwError(() => new Error('addQuoteToBasket() called without quoteId'));
+    }
+
+    return this.currentBasketEndpoint()
+      .post(
+        `quotes`,
+        { id: quoteId, calculated: true },
+        {
+          headers: this.basketHeaders,
+        }
+      )
+      .pipe(map(BasketInfoMapper.fromInfo));
+  }
+
+  /**
+   * Deletes all items of a quote from the current basket.
+   *
+   * @param quoteId   The id of the quote whose items should be deleted from the basket.
+   * @returns         The info message if present.
+   */
+  deleteQuoteFromBasket(quoteId: string): Observable<BasketInfo[]> {
+    if (!quoteId) {
+      return throwError(() => new Error('deleteQuoteFromBasket() called without quoteId'));
+    }
+
+    return this.currentBasketEndpoint()
+      .delete(`quotes/${quoteId}`, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(BasketInfoMapper.fromInfo));
   }
 }

@@ -1,0 +1,22 @@
+<ng-container *ngIf="error$ | async">
+  <ish-error-message [error]="error$ | async" [toast]="false"></ish-error-message>
+  <h1 data-testing-id="empty-confirmation-title">
+    {{ 'personal.data.request.confirmation.empty.heading' | translate }}
+  </h1>
+  <div [ishServerHtml]="'personal.data.request.confirmation.empty.message' | translate"></div>
+</ng-container>
+<ng-container *ngIf="(loading$ | async) === false && !!(error$ | async) === false">
+  <ng-container *ngIf="firstGDPRDataRequest$ | async; else dataRequestedBefore">
+    <h1 data-testing-id="successful-confirmation-title">
+      {{ 'personal.data.request.confirmation.success.heading' | translate }}
+    </h1>
+    <div [ishServerHtml]="'personal.data.request.confirmation.success.message' | translate"></div>
+  </ng-container>
+  <ng-template #dataRequestedBefore>
+    <h1 data-testing-id="already-confirmed-title">
+      {{ 'personal.data.request.confirmation.confirmed.heading' | translate }}
+    </h1>
+    <div [ishServerHtml]="'personal.data.request.confirmation.confirmed.message' | translate"></div>
+  </ng-template>
+</ng-container>
+<ish-loading *ngIf="loading$ | async"></ish-loading>

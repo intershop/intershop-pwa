@@ -8,7 +8,6 @@ import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
-import { PriceMapper } from 'ish-core/models/price/price.mapper';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 
 import { SkuQuantityType } from './product.helper';
@@ -123,28 +122,7 @@ export class ProductMapper {
       shortDescription: data.description,
       name: data.title,
       sku,
-      images: this.imageMapper.fromImages([
-        {
-          effectiveUrl: retrieveStubAttributeValue(data, 'image'),
-          name: 'front M',
-          primaryImage: true,
-          type: 'Image',
-          typeID: 'M',
-          viewID: 'front',
-          imageActualHeight: undefined,
-          imageActualWidth: undefined,
-        },
-        {
-          effectiveUrl: retrieveStubAttributeValue(data, 'image'),
-          name: 'front S',
-          primaryImage: true,
-          type: 'Image',
-          typeID: 'S',
-          viewID: 'front',
-          imageActualHeight: undefined,
-          imageActualWidth: undefined,
-        },
-      ]),
+      images: this.imageMapper.fromImageUrl(retrieveStubAttributeValue(data, 'image')),
       manufacturer: retrieveStubAttributeValue(data, 'manufacturer'),
       available: this.calculateAvailable(
         retrieveStubAttributeValue(data, 'availability'),
@@ -182,7 +160,7 @@ export class ProductMapper {
       stepOrderQuantity: data.stepOrderQuantity,
       packingUnit: data.packingUnit,
       availableStock: data.availableStock,
-      attributes: data.attributeGroups?.PRODUCT_DETAIL_ATTRIBUTES?.attributes || data.attributes,
+      attributes: data.attributeGroups?.PRODUCT_DETAIL_ATTRIBUTES?.attributes || data.attributes || [],
       attributeGroups: data.attributeGroups,
       attachments: this.attachmentMapper.fromAttachments(data.attachments),
       images: this.imageMapper.fromImages(data.images),
@@ -249,10 +227,6 @@ export class ProductMapper {
     if (data.productMaster) {
       return {
         ...product,
-        minListPrice: PriceMapper.fromData(data.minListPrice),
-        minSalePrice: PriceMapper.fromData(data.minSalePrice),
-        maxListPrice: PriceMapper.fromData(data.maxListPrice),
-        maxSalePrice: PriceMapper.fromData(data.maxSalePrice),
         variationAttributeValues: data.variationAttributeValues,
         type: 'VariationProductMaster',
       };
@@ -272,10 +246,6 @@ export class ProductMapper {
       return {
         ...product,
         type: 'RetailSet',
-        minListPrice: PriceMapper.fromData(data.minListPrice),
-        minSalePrice: PriceMapper.fromData(data.minSalePrice),
-        summedUpListPrice: PriceMapper.fromData(data.summedUpListPrice),
-        summedUpSalePrice: PriceMapper.fromData(data.summedUpSalePrice),
       };
     } else {
       return product;

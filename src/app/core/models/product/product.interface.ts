@@ -41,19 +41,9 @@ export interface ProductData {
   stepOrderQuantity?: number;
   packingUnit: string;
 
-  // If Variation Master and Retail Set {
-  minListPrice?: PriceData;
-  maxListPrice?: PriceData;
-  minSalePrice?: PriceData;
-  maxSalePrice?: PriceData;
-  // }
   variationAttributeValues?: VariationAttribute[];
   variableVariationAttributes?: VariationAttribute[];
   partOfRetailSet: boolean;
-  // If  Retail Set {
-  summedUpListPrice?: PriceData;
-  summedUpSalePrice?: PriceData;
-  // }
 
   attachments?: AttachmentData[];
   variations?: unknown;

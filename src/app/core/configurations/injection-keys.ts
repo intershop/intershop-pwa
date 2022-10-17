@@ -2,7 +2,6 @@ import { InjectionToken } from '@angular/core';
 
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { PriceUpdateType } from 'ish-core/models/price/price.model';
-import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 
 import { environment } from '../../../environments/environment';
@@ -41,9 +40,12 @@ export const PRODUCT_LISTING_ITEMS_PER_PAGE = new InjectionToken<Environment['pr
 /**
  * default definition of the product listing view type
  */
-export const DEFAULT_PRODUCT_LISTING_VIEW_TYPE = new InjectionToken<ViewType>('defaultProductListingViewType', {
-  factory: () => environment.defaultProductListingViewType,
-});
+export const DEFAULT_PRODUCT_LISTING_VIEW_TYPE = new InjectionToken<Environment['defaultProductListingViewType']>(
+  'defaultProductListingViewType',
+  {
+    factory: () => environment.defaultProductListingViewType,
+  }
+);
 
 /**
  * the configured cookie consent options for the application

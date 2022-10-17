@@ -7,3 +7,5 @@ export const communicationTimeoutError = createAction('[Error] Communication Tim
 export const serverError = createAction('[Error] Server Error (5xx)', httpError());
 
 export const businessError = createAction('[Error] Business Error', payload<{ error: string }>());
+
+export const serverConfigError = createAction('[Error] Load Server Configuration Error', httpError());

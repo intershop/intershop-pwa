@@ -26,7 +26,6 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
@@ -58,7 +57,8 @@ describe('Server Html Directive', () => {
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {
-        html = `<img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png[/ismediaobject]" alt="" width="92" height="92" style="width: unset;" />`;
+        html = `<img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS_Business/inSPIRED/en_US/logo.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS_Business/inSPIRED/en_US/logo.png[/ismediaobject]" alt="logo" width="100" height="100"/>
+          <img src="/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS_Business/inSPIRED/en_US/logo.png" alt="logo" width="100" height="100"/>`;
       }
 
       const appFacade = mock(AppFacade);
@@ -66,7 +66,6 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(appFacade) },
@@ -82,11 +81,16 @@ describe('Server Html Directive', () => {
       expect(element).toMatchInlineSnapshot(`
         <div>
           <img
-            src="http://example.org/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png"
-            alt=""
-            width="92"
-            height="92"
-            style="width: unset"
+            src="http://example.org/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS_Business/inSPIRED/en_US/logo.png"
+            alt="logo"
+            width="100"
+            height="100"
+          />
+          <img
+            src="http://example.org/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS_Business/inSPIRED/en_US/logo.png"
+            alt="logo"
+            width="100"
+            height="100"
           />
         </div>
       `);
@@ -107,7 +111,6 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -50,11 +49,7 @@ describe('Basket Payment Effects', () => {
     paymentServiceMock = mock(PaymentService);
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        CustomerStoreModule.forTesting('user', 'basket'),
-        RouterTestingModule.withRoutes([{ path: 'checkout/review', children: [] }]),
-      ],
+      imports: [CoreStoreModule.forTesting(['router']), CustomerStoreModule.forTesting('user', 'basket')],
       providers: [
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         BasketPaymentEffects,

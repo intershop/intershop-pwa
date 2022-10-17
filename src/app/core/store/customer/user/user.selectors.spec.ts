@@ -14,6 +14,7 @@ import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
+  createUserApprovalRequired,
   loadCompanyUserSuccess,
   loadUserCostCentersSuccess,
   loadUserPaymentMethods,
@@ -26,6 +27,7 @@ import {
   updateUserPassword,
 } from './user.actions';
 import {
+  getCustomerApprovalEmail,
   getLoggedInCustomer,
   getLoggedInUser,
   getPasswordReminderError,
@@ -269,6 +271,18 @@ describe('User Selectors', () => {
         }
         expect(getPriceDisplayType(store$.state)).toEqual(expected);
       });
+    });
+  });
+
+  describe('getCustomerApprovalEmail', () => {
+    it('should be undefined if no createUserApprovalRequired action was triggert', () => {
+      expect(getCustomerApprovalEmail(store$.state)).toBeUndefined();
+    });
+
+    it('should return the email address of the user to be approved', () => {
+      const email = 'test@intershop.com';
+      store$.dispatch(createUserApprovalRequired({ email }));
+      expect(getCustomerApprovalEmail(store$.state)).toEqual(email);
     });
   });
 });

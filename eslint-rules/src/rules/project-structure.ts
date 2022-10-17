@@ -33,6 +33,7 @@ const messages = {
  * allowedNumberWords: List of words containing numbers that will be treated as normal for the sake of kebab-case. Usually, numbers are treated as their own words.
  */
 const projectStructureRule: TSESLint.RuleModule<keyof typeof messages, [RuleSetting]> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

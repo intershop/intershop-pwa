@@ -2,9 +2,6 @@ import { intersection } from 'lodash-es';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
-import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
-import { PriceHelper } from 'ish-core/models/price/price.model';
-import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import {
@@ -26,13 +23,6 @@ export enum ProductCompletenessLevel {
   Detail = 3,
   List = 2,
 }
-
-// not-dead-code
-export type ProductPrices = Partial<
-  Pick<ProductRetailSet, 'minListPrice' | 'minSalePrice' | 'summedUpListPrice' | 'summedUpSalePrice'>
-> &
-  Partial<Pick<VariationProductMaster, 'minListPrice' | 'minSalePrice' | 'maxListPrice' | 'maxSalePrice'>> &
-  Partial<Pick<ProductPriceDetails, 'prices'>>;
 
 export class ProductHelper {
   /**
@@ -138,35 +128,6 @@ export class ProductHelper {
     return;
   }
 
-  // not-dead-code
-  static calculatePriceRange(
-    products: Product[],
-    productPrices: ProductPriceDetails[],
-    priceType: 'gross' | 'net'
-  ): ProductPrices {
-    if ((!products || !products.length) && (!productPrices || !productPrices.length)) {
-      return {};
-    } else if (products.length === 1) {
-      return productPrices.find(price => price.sku === products[0].sku);
-    } else {
-      const prices = products.map(p => productPrices.find(productPrice => productPrice.sku === p.sku));
-      return {
-        minListPrice: prices
-          .map(p => PriceItemHelper.selectType(p?.prices?.listPrice, priceType))
-          .reduce(PriceHelper.min),
-        minSalePrice: prices
-          .map(p => PriceItemHelper.selectType(p?.prices?.salePrice, priceType))
-          .reduce(PriceHelper.min),
-        summedUpListPrice: prices
-          .map(p => PriceItemHelper.selectType(p?.prices?.listPrice, priceType))
-          .reduce(PriceHelper.sum),
-        summedUpSalePrice: prices
-          .map(p => PriceItemHelper.selectType(p?.prices?.salePrice, priceType))
-          .reduce(PriceHelper.sum),
-      };
-    }
-  }
-
   /**
    * Determines the set of common attribute names for the compare products.
    *
@@ -195,5 +156,39 @@ export class ProductHelper {
     const common = ProductHelper.getCommonAttributeNames(visibleProducts);
     const attributes = product.attributes?.filter(att => !common.includes(att.name));
     return { ...product, attributes };
+  }
+
+  /**
+   * Updates current product information with new product information considering completeness levels and dynamic product information
+   *
+   * @param currentProduct  The already available product information
+   * @param newProduct      The new product information to update the existing information with
+   * @returns               The updated product information
+   */
+  static updateProductInformation(
+    currentProduct: Partial<AllProductTypes>,
+    newProduct: Partial<AllProductTypes>
+  ): AllProductTypes {
+    // if there is no new product information return the current product information
+    if (!newProduct) {
+      return currentProduct as AllProductTypes;
+    }
+    // set the current product information as base or construct an empty product stub
+    let product = currentProduct || { completenessLevel: 0 };
+    // update the complete product information if the newProduct information
+    // has a higher or equal completeness level than the product information
+    if (!product.completenessLevel || newProduct.completenessLevel >= product.completenessLevel) {
+      return newProduct as AllProductTypes;
+    }
+    // if the newProduct information has a lower completeness level merge attributes and
+    // always update dynamic product information with the new product information (e.g. availability)
+    product = {
+      ...newProduct,
+      ...product,
+      // list of product properties that should be updated
+      available: newProduct.available ?? product.available,
+      availableStock: newProduct.availableStock ?? product.availableStock,
+    };
+    return product as AllProductTypes;
   }
 }

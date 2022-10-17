@@ -7,6 +7,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { ProductView, createProductView } from 'ish-core/models/product-view/product-view.model';
@@ -80,6 +81,7 @@ describe('Product Compare List Component', () => {
         MockComponent(ProductPriceComponent),
         MockDirective(FeatureToggleDirective),
         MockDirective(ProductContextDirective),
+        MockDirective(ServerHtmlDirective),
         MockPipe(AttributeToStringPipe),
         ProductCompareListComponent,
       ],

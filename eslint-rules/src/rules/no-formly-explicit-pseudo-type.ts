@@ -9,6 +9,7 @@ const messages = {
  * as this is reserved for reusable configuration pseudo-types.
  */
 const noFormlyExplicitPseudoTypeRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

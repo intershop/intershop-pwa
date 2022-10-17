@@ -12,6 +12,7 @@ const messages = {
  * Finds and replaces import paths which can be simplified by import aliases.
  */
 const useAliasImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { QueryParamsHandling } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, combineLatest, of } from 'rxjs';
@@ -26,7 +26,7 @@ export class ProductImageComponent implements OnInit {
   @Input() link = false;
   @Input() linkTarget: string;
 
-  @Input() queryParamsHandling: QueryParamsHandling = 'merge';
+  @Input() queryParamsHandling: QueryParamsHandling = '';
   /**
    * The image type (size), i.e. 'S' for the small image.
    */
@@ -44,7 +44,13 @@ export class ProductImageComponent implements OnInit {
   productImage$: Observable<Image>;
   defaultAltText$: Observable<string>;
 
-  constructor(private translateService: TranslateService, private context: ProductContextFacade) {}
+  computedQueryParamsHandling: QueryParamsHandling;
+
+  constructor(
+    private translateService: TranslateService,
+    private context: ProductContextFacade,
+    @Optional() @Inject('PRODUCT_QUERY_PARAMS_HANDLING') private queryParamsHandlingInjector: QueryParamsHandling
+  ) {}
 
   ngOnInit() {
     this.productURL$ = this.context.select('productURL');
@@ -55,5 +61,7 @@ export class ProductImageComponent implements OnInit {
       this.translateService.get('product.image.text.alttext'),
       of(this.imageView && `${this.imageView} ${this.imageType}`),
     ]).pipe(map(parts => parts.filter(x => !!x).join(' ')));
+
+    this.computedQueryParamsHandling = this.queryParamsHandlingInjector ?? this.queryParamsHandling;
   }
 }

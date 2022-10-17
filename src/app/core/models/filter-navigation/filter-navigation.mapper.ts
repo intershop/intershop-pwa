@@ -46,8 +46,9 @@ export class FilterNavigationMapper {
   private mapFacetData(filterData: FilterData) {
     return filterData.filterEntries
       ? filterData.filterEntries.reduce((acc, facet) => {
-          const category = facet.link.uri.includes('/categories/')
-            ? [facet.link.uri.split('/productfilters')[0].split('/categories/')[1]]
+          const uri = this.removeSpgidFromUri(facet.link.uri);
+          const category = uri.includes('/categories/')
+            ? [uri.split('/productfilters')[0].split('/categories/')[1]]
             : undefined;
           if (facet.name !== 'Show all') {
             acc.push({
@@ -56,7 +57,7 @@ export class FilterNavigationMapper {
               selected: facet.selected,
               displayName: facet.displayValue || undefined,
               searchParameter: {
-                ...stringToFormParams(facet.link.uri.split('?')[1] || ''),
+                ...stringToFormParams(facet.link.uri.split('?')[1]?.replace(/\+/g, '%20') || ''),
                 category,
               },
               level: facet.level || 0,
@@ -69,5 +70,16 @@ export class FilterNavigationMapper {
           return acc;
         }, [])
       : [];
+  }
+
+  private removeSpgidFromUri(uri: string): string {
+    if (!uri?.includes(';spgid')) {
+      return uri;
+    }
+
+    const pgidStart = uri.indexOf(';spgid');
+    const pgidEnd = uri.indexOf('/', pgidStart);
+
+    return uri.replace(uri.substring(pgidStart, pgidEnd), '');
   }
 }

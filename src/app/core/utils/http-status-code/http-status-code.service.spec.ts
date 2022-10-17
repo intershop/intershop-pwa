@@ -25,7 +25,12 @@ describe('Http Status Code Service', () => {
   describe('on browser', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule.withRoutes([{ path: 'error', children: [] }])],
+        imports: [
+          RouterTestingModule.withRoutes([
+            { path: 'error', children: [] },
+            { path: 'maintenance', children: [] },
+          ]),
+        ],
       });
       httpStatusCodeService = TestBed.inject(HttpStatusCodeService);
       location = TestBed.inject(Location);
@@ -56,13 +61,25 @@ describe('Http Status Code Service', () => {
         verify(resSpy.status(anyNumber())).never();
         expect(location.path()).toEqual('/error');
       }));
+
+      it('should redirect to maintenance page for server 503 errors (Unavailable)', fakeAsync(() => {
+        httpStatusCodeService.setStatus(503);
+        tick(500);
+        verify(resSpy.status(anyNumber())).never();
+        expect(location.path()).toEqual('/maintenance');
+      }));
     });
   });
 
   describe.onSSREnvironment('on server', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule.withRoutes([{ path: 'error', children: [] }])],
+        imports: [
+          RouterTestingModule.withRoutes([
+            { path: 'error', children: [] },
+            { path: 'maintenance', children: [] },
+          ]),
+        ],
         providers: [{ provide: RESPONSE, useValue: RES }],
       });
       httpStatusCodeService = TestBed.inject(HttpStatusCodeService);
@@ -93,6 +110,13 @@ describe('Http Status Code Service', () => {
         tick(500);
         verify(resSpy.status(500)).once();
         expect(location.path()).toEqual('/error');
+      }));
+
+      it('should redirect to maintenance page for server 503 errors (Unavailable)', fakeAsync(() => {
+        httpStatusCodeService.setStatus(503);
+        tick(500);
+        verify(resSpy.status(503)).once();
+        expect(location.path()).toEqual('/maintenance');
       }));
     });
   });

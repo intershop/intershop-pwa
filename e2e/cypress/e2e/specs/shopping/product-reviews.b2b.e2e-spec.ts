@@ -52,7 +52,7 @@ describe('Product Reviews', () => {
       page.reviewTab.fillReviewForm({ rating: 2, title: 'Disappointment', content: 'Bad quality' });
       page.reviewTab.submitReviewCreationForm();
 
-      page.infoText.should('contain', 'needs to be reviewed');
+      page.infoText.should('contain', 'needs to be approved');
       page.reviewTab.ownProductReview.should('exist');
       page.reviewTab.ownProductReview.should('contain', 'Disappointment');
     });

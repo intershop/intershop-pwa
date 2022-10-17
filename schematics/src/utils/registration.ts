@@ -243,9 +243,9 @@ export function addDecoratorToClass(
     const source = readIntoSourceFile(host, file);
     tsquery(source, `ClassDeclaration:has(Identifier[name=${className}])`).forEach(
       (classDeclaration: ts.ClassDeclaration) => {
-        const exists = classDeclaration.decorators.find(decorator =>
-          tsquery(decorator, 'Identifier').find(id => id.getText() === decoratorName)
-        );
+        const exists = ts
+          .getDecorators(classDeclaration)
+          .find(decorator => tsquery(decorator, 'Identifier').find(id => id.getText() === decoratorName));
         if (!exists) {
           const recorder = host.beginUpdate(file);
 

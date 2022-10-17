@@ -1,6 +1,5 @@
 import { ofType } from '@ngrx/effects';
 import { Action, ActionCreator } from '@ngrx/store';
-import { isEqual } from 'lodash-es';
 import {
   MonoTypeOperatorFunction,
   NEVER,
@@ -12,17 +11,7 @@ import {
   throwError,
   connect,
 } from 'rxjs';
-import {
-  buffer,
-  catchError,
-  distinctUntilChanged,
-  filter,
-  map,
-  mergeAll,
-  scan,
-  take,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { buffer, catchError, distinctUntilChanged, filter, map, mergeAll, take, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -104,28 +93,5 @@ export function delayUntil<T>(notifier: Observable<unknown>): OperatorFunction<T
   return source =>
     source.pipe(
       connect(connected => concat(concat(connected, NEVER).pipe(buffer(notifier), take(1), mergeAll()), connected))
-    );
-}
-
-/**
- * Throttle observable emissions for specified duration or until a new value was emitted
- *
- * Taken from https://stackoverflow.com/questions/53623221/rxjs-throttle-same-value-but-let-new-values-through
- *
- * @param duration specified time where observable emissions are ignored
- * @param equals callback function to check if value changes changed
- * @returns
- */
-export function throttleOrChanged<T>(duration: number, equals: (a: T, b: T) => boolean = isEqual) {
-  return (source: Observable<T>) =>
-    source.pipe(
-      map(x => ({ val: x, time: Date.now(), keep: true })),
-      scan((acc, cur) => {
-        const diff = cur.time - acc.time;
-        const isSame = equals(acc.val, cur.val);
-        return diff > duration || (diff < duration && !isSame) ? { ...cur, keep: true } : { ...acc, keep: false };
-      }),
-      filter(x => x.keep),
-      map(x => x.val)
     );
 }

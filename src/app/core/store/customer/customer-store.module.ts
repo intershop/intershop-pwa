@@ -17,6 +17,8 @@ import { BasketValidationEffects } from './basket/basket-validation.effects';
 import { BasketEffects } from './basket/basket.effects';
 import { basketReducer } from './basket/basket.reducer';
 import { CustomerState } from './customer-store';
+import { DataRequestsEffects } from './data-requests/data-requests.effects';
+import { dataRequestsReducer } from './data-requests/data-requests.reducer';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
 import { OrganizationManagementEffects } from './organization-management/organization-management.effects';
@@ -33,6 +35,7 @@ const customerReducers: ActionReducerMap<CustomerState> = {
   basket: basketReducer,
   authorization: authorizationReducer,
   ssoRegistration: ssoRegistrationReducer,
+  dataRequests: dataRequestsReducer,
 };
 
 const customerEffects = [
@@ -49,6 +52,7 @@ const customerEffects = [
   OrganizationManagementEffects,
   RequisitionManagementEffects,
   SsoRegistrationEffects,
+  DataRequestsEffects,
 ];
 
 @Injectable()

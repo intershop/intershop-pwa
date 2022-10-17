@@ -24,6 +24,7 @@ const messages = {
  * message            error message, which should be displayed, when the validation failed
  */
 const banImportsFilePatternRule: TSESLint.RuleModule<keyof typeof messages, [RuleSetting[]]> = {
+  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',
@@ -49,7 +50,7 @@ const banImportsFilePatternRule: TSESLint.RuleModule<keyof typeof messages, [Rul
       rules.forEach(rule => {
         if (
           new RegExp(rule.filePattern).test(normalizePath(context.getFilename())) &&
-          node.source.value === rule.name &&
+          new RegExp(rule.name).test(node.source.value) &&
           checkValidityOfSpecifiers(node.specifiers, rule.importNamePattern, rule.starImport)
         ) {
           context.report({

@@ -153,9 +153,9 @@ describe('Cost Centers Effects', () => {
 
       effects.triggerLoadCostCenter$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-        [CostCenters] Load Cost Center:
-          costCenterId: "100400"
-          `);
+                  [CostCenters] Load Cost Center:
+                    costCenterId: "100400"
+                  `);
         done();
       });
     });
@@ -357,21 +357,13 @@ describe('Cost Centers Effects', () => {
     it('should add costCenterBuyers when triggered', done => {
       actions$ = of(addCostCenterBuyers({ costCenterId, buyers }));
 
-      effects.addCostCenterBuyers$.subscribe(action => {
-        expect(action.type).toMatchInlineSnapshot(`"[CostCenters API] Add Cost Center Buyers Success"`);
-        expect(action.payload).toMatchInlineSnapshot(`
-          Object {
-            "costCenter": Object {
-              "budget": Object {
-                "currency": "USD",
-                "value": 500,
-              },
-              "budgetPeriod": "monthly",
-              "costCenterId": "100400",
-              "id": "1",
-              "name": "Headquarter",
-            },
-          }
+      effects.addCostCenterBuyers$.pipe(toArray()).subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [CostCenters API] Add Cost Center Buyers Success:
+            costCenter: {"id":"1","costCenterId":"100400","name":"Headquarter","budg...
+          [Message] Success Toast:
+            message: "account.organization.cost_center_management.buyer.add.confi...
+            messageParams: {"0":"2"}
         `);
         done();
       });
@@ -419,21 +411,13 @@ describe('Cost Centers Effects', () => {
     it('should update a costCenterBuyer when triggered', done => {
       actions$ = of(updateCostCenterBuyer({ costCenterId, buyer }));
 
-      effects.updateCostCenterBuyer$.subscribe(action => {
-        expect(action.type).toMatchInlineSnapshot(`"[CostCenters API] Update Cost Center Buyer Success"`);
-        expect(action.payload).toMatchInlineSnapshot(`
-          Object {
-            "costCenter": Object {
-              "budget": Object {
-                "currency": "USD",
-                "value": 500,
-              },
-              "budgetPeriod": "monthly",
-              "costCenterId": "100400",
-              "id": "1",
-              "name": "Headquarter",
-            },
-          }
+      effects.updateCostCenterBuyer$.pipe(toArray()).subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [CostCenters API] Update Cost Center Buyer Success:
+            costCenter: {"id":"1","costCenterId":"100400","name":"Headquarter","budg...
+          [Message] Success Toast:
+            message: "account.organization.cost_center_management.buyer.update.co...
+            messageParams: {"0":"undefined undefined"}
         `);
         done();
       });
@@ -469,21 +453,13 @@ describe('Cost Centers Effects', () => {
     it('should delete a costCenterBuyer when triggered', done => {
       actions$ = of(deleteCostCenterBuyer({ costCenterId, login }));
 
-      effects.deleteCostCenterBuyer$.subscribe(action => {
-        expect(action.type).toMatchInlineSnapshot(`"[CostCenters API] Delete Cost Center Buyer Success"`);
-        expect(action.payload).toMatchInlineSnapshot(`
-          Object {
-            "costCenter": Object {
-              "budget": Object {
-                "currency": "USD",
-                "value": 500,
-              },
-              "budgetPeriod": "monthly",
-              "costCenterId": "100400",
-              "id": "1",
-              "name": "Headquarter",
-            },
-          }
+      effects.deleteCostCenterBuyer$.pipe(toArray()).subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [CostCenters API] Delete Cost Center Buyer Success:
+            costCenter: {"id":"1","costCenterId":"100400","name":"Headquarter","budg...
+          [Message] Success Toast:
+            message: "account.organization.cost_center_management.buyer.remove.co...
+            messageParams: {"0":"pmiller@test.intershop.de"}
         `);
         done();
       });

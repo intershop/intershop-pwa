@@ -43,7 +43,8 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles/themes/placeholder"]
             },
-            "sourceMap": true
+            "sourceMap": true,
+            "allowedCommonJsDependencies": ["fast-sha256"]
           },
           "defaultConfiguration": "b2b,production",
           "configurations": {
@@ -106,9 +107,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "intershop-pwa:build",
-            "disableHostCheck": true,
-            "host": "0.0.0.0"
+            "browserTarget": "intershop-pwa:build"
           },
           "defaultConfiguration": "b2b,development",
           "configurations": {
@@ -224,9 +223,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "organization-management:build",
-            "disableHostCheck": true,
-            "host": "0.0.0.0"
+            "browserTarget": "organization-management:build"
           }
         }
       }
@@ -273,9 +270,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "requisition-management:build",
-            "disableHostCheck": true,
-            "host": "0.0.0.0"
+            "browserTarget": "requisition-management:build"
           }
         }
       }

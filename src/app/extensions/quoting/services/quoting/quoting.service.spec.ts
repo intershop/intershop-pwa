@@ -147,29 +147,6 @@ describe('Quoting Service', () => {
     });
   });
 
-  describe('addQuoteToBasket', () => {
-    beforeEach(() => {
-      when(apiService.post(anything(), anything())).thenReturn(of({}));
-    });
-
-    it('should use basket API for adding quotes to basket', done => {
-      quotingService.addQuoteToBasket('basketId', 'quoteID').subscribe({
-        next: () => {
-          verify(apiService.post(anything(), anything())).once();
-          const [path, body] = capture(apiService.post).last();
-          expect(path).toMatchInlineSnapshot(`"baskets/basketId/items"`);
-          expect(body).toMatchInlineSnapshot(`
-            Object {
-              "quoteID": "quoteID",
-            }
-          `);
-        },
-        error: fail,
-        complete: done,
-      });
-    });
-  });
-
   describe('createQuoteRequestFromQuote', () => {
     beforeEach(() => {
       when(apiService.post(anything(), anything(), anything())).thenReturn(of({ type: 'QuoteRequest' }));

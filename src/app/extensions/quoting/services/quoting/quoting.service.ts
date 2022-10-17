@@ -95,11 +95,6 @@ export class QuotingService {
       .pipe(map(data => this.quoteMapper.fromData(data, 'Quote')));
   }
 
-  addQuoteToBasket(basketId: string, quoteID: string) {
-    // ToDo: remove parameter basketId and delegate addQuoteToBasket to the basket service if the basket REST api 1.0 provides this functionality, see #70533
-    return this.apiService.post(`baskets/${basketId}/items`, { quoteID }).pipe(map(() => quoteID));
-  }
-
   createQuoteRequestFromQuote(quoteID: string) {
     return this.apiService
       .b2bUserEndpoint()

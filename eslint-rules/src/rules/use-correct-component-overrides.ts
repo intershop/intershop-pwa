@@ -14,6 +14,7 @@ const messages = {
 };
 
 const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof messages> = {
+  defaultOptions: undefined,
   meta: {
     docs: {
       description:

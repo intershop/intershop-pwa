@@ -224,6 +224,12 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
+        validators: {
+          validation: [
+            SpecialValidators.equalTo('loginConfirmation', 'login'),
+            SpecialValidators.equalTo('passwordConfirmation', 'password'),
+          ],
+        },
         fieldGroup: [
           {
             key: 'login',
@@ -239,9 +245,6 @@ export class RegistrationFormConfigurationService {
             templateOptions: {
               label: 'account.register.email_confirmation.label',
               required: true,
-            },
-            validators: {
-              validation: [SpecialValidators.equalToControl('login')],
             },
             validation: {
               messages: {
@@ -272,9 +275,6 @@ export class RegistrationFormConfigurationService {
               label: 'account.register.password_confirmation.label',
 
               attributes: { autocomplete: 'new-password' },
-            },
-            validators: {
-              validation: [SpecialValidators.equalToControl('password')],
             },
             validation: {
               messages: {
@@ -314,7 +314,7 @@ export class RegistrationFormConfigurationService {
         type: 'ish-registration-heading-field',
         templateOptions: {
           headingSize: 'h2',
-          heading: 'Company Information',
+          heading: 'account.register.company_information.heading',
           showRequiredInfo: true,
         },
       },

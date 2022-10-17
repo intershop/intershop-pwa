@@ -9,7 +9,12 @@ import { ConfigurationState } from './configuration.reducer';
 
 export const getConfigurationState = createSelector(getCoreState, state => state.configuration);
 
-export const getICMApplication = createSelector(getConfigurationState, state => state.application || '-');
+const getICMApplication = createSelector(getConfigurationState, state => state.application || '-');
+
+export const getResponsiveStarterStoreApplication = createSelector(
+  getConfigurationState,
+  state => state.hybridApplication || '-'
+);
 
 export const getICMServerURL = createSelector(getConfigurationState, state =>
   state.baseURL && state.server ? `${state.baseURL}/${state.server}` : undefined
@@ -37,13 +42,17 @@ export const getFeatures = createSelector(getConfigurationState, state =>
 
 const internalDefaultLocale = createSelector(getConfigurationState, state => state.defaultLocale);
 
+const internalFallbackLocales = createSelector(getConfigurationState, state => state.fallbackLocales);
+
 const internalCurrencyFilter = createSelector(getConfigurationState, state => state.localeCurrencyOverride);
 
 /**
  * locales configured in ICM
  */
-export const getAvailableLocales = createSelector(getServerConfigParameter<string[]>('general.locales'), activated =>
-  activated?.length ? activated : undefined
+export const getAvailableLocales = createSelector(
+  internalFallbackLocales,
+  getServerConfigParameter<string[]>('general.locales'),
+  (fallbackLocales, serverLocales) => (serverLocales?.length ? serverLocales : fallbackLocales)
 );
 
 const internalRequestedLocale = createSelector(getConfigurationState, state => state.lang);

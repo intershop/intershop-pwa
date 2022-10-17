@@ -27,6 +27,7 @@ export class PriceHelper {
     }
   }
 
+  // not-dead-code
   static min(p1: Price, p2: Price): Price {
     PriceHelper.sanityChecks(p1, p2);
     return {

@@ -21,7 +21,7 @@ describe('Product Listing Effects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router'], [ProductListingEffects]),
+        CoreStoreModule.forTesting(['router', 'configuration'], [ProductListingEffects]),
         RouterTestingModule.withRoutes([{ path: 'some', children: [] }]),
         ShoppingStoreModule.forTesting('productListing'),
       ],

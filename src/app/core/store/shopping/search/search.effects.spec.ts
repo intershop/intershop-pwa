@@ -52,7 +52,7 @@ describe('Search Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router'], [SearchEffects, ProductListingEffects]),
+        CoreStoreModule.forTesting(['router', 'configuration'], [SearchEffects, ProductListingEffects]),
         RouterTestingModule.withRoutes([
           { path: 'error', children: [] },
           { path: 'search/:searchTerm', children: [] },
