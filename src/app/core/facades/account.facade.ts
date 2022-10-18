@@ -38,6 +38,7 @@ import {
 import {
   createUser,
   deleteUserPaymentInstrument,
+  fetchAnonymousUserToken,
   getCustomerApprovalEmail,
   getLoggedInCustomer,
   getLoggedInUser,
@@ -53,6 +54,7 @@ import {
   loginUser,
   loginUserWithToken,
   logoutUser,
+  logoutUserSuccess,
   requestPasswordReminder,
   resetPasswordReminder,
   updateCustomer,
@@ -92,8 +94,17 @@ export class AccountFacade {
     this.store.dispatch(loginUserWithToken({ token }));
   }
 
-  logoutUser() {
-    this.store.dispatch(logoutUser());
+  /**
+   * Trigger logout action
+   *
+   * @param revokeToken option to revoke api token on server side before logout success action is dispatched
+   */
+  logoutUser(options = { revokeApiToken: true }) {
+    options?.revokeApiToken ? this.store.dispatch(logoutUser()) : this.store.dispatch(logoutUserSuccess());
+  }
+
+  fetchAnonymousToken() {
+    this.store.dispatch(fetchAnonymousUserToken());
   }
 
   createUser(body: CustomerRegistrationType) {

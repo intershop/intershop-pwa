@@ -1,18 +1,20 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, Router, UrlTree, convertToParamMap } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { EMPTY, Observable, Subject, noop, of, timer } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { BehaviorSubject, EMPTY, Observable, Subject, noop, of, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { anyString, anything, capture, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { selectQueryParam } from 'ish-core/store/core/router';
-import { ApiTokenCookieType, ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 
 import { PunchoutSession } from '../models/punchout-session/punchout-session.model';
 import { PunchoutService } from '../services/punchout/punchout.service';
@@ -32,12 +34,11 @@ describe('Punchout Identity Provider', () => {
   const accountFacade = mock(AccountFacade);
   const checkoutFacade = mock(CheckoutFacade);
   const cookiesService = mock(CookiesService);
+  const oAuthConfigurationService = mock(OAuthConfigurationService);
 
   let punchoutIdentityProvider: PunchoutIdentityProvider;
   let store$: MockStore;
-  let storeSpy$: MockStore;
   let router: Router;
-  let cookieVanishes$: Subject<ApiTokenCookieType>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -47,6 +48,8 @@ describe('Punchout Identity Provider', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: CookiesService, useFactory: () => instance(cookiesService) },
+        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationService) },
+        { provide: OAuthService, useFactory: () => instance(mock(OAuthService)) },
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
         provideMockStore(),
       ],
@@ -55,14 +58,13 @@ describe('Punchout Identity Provider', () => {
     punchoutIdentityProvider = TestBed.inject(PunchoutIdentityProvider);
     router = TestBed.inject(Router);
     store$ = TestBed.inject(MockStore);
-    storeSpy$ = spy(store$);
   });
 
   beforeEach(() => {
-    cookieVanishes$ = new Subject<ApiTokenCookieType>();
     when(apiTokenService.restore$(anything())).thenReturn(of(true));
+    when(apiTokenService.cookieVanishes$).thenReturn(new Subject());
     when(checkoutFacade.basket$).thenReturn(EMPTY);
-    when(apiTokenService.cookieVanishes$).thenReturn(cookieVanishes$);
+    when(oAuthConfigurationService.config$).thenReturn(new BehaviorSubject({}));
 
     resetCalls(apiTokenService);
     resetCalls(punchoutService);
@@ -91,18 +93,21 @@ describe('Punchout Identity Provider', () => {
   describe('triggerLogout', () => {
     beforeEach(() => {
       when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
+      when(accountFacade.isLoggedIn$).thenReturn(of(false));
       store$.overrideSelector(selectQueryParam(anything()), undefined);
       punchoutIdentityProvider.init();
     });
 
-    it('should remove api token and basket-id on logout', () => {
+    it('should remove api token and basket-id on logout', done => {
       expect(window.sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
 
-      punchoutIdentityProvider.triggerLogout();
+      const logoutTrigger$ = punchoutIdentityProvider.triggerLogout() as Observable<UrlTree>;
 
-      expect(window.sessionStorage.getItem('basket-id')).toBeNull();
-      expect(capture(storeSpy$.dispatch).first()).toMatchInlineSnapshot(`[User] Logout User`);
-      verify(apiTokenService.removeApiToken()).once();
+      logoutTrigger$.subscribe(() => {
+        expect(window.sessionStorage.getItem('basket-id')).toBeNull();
+        verify(accountFacade.logoutUser()).once();
+        done();
+      });
     });
 
     it('should return to home page per default on subscribe', done => {
@@ -123,8 +128,8 @@ describe('Punchout Identity Provider', () => {
     beforeEach(() => {
       routerSpy = spy(router);
       punchoutIdentityProvider.init();
-      when(accountFacade.userError$).thenReturn(EMPTY);
-      when(accountFacade.isLoggedIn$).thenReturn(EMPTY);
+      when(accountFacade.userError$).thenReturn(timer(Infinity).pipe(switchMap(() => EMPTY)));
+      when(accountFacade.isLoggedIn$).thenReturn(of(true));
     });
 
     it('should throw an business error without query params on login', () => {
@@ -141,9 +146,13 @@ describe('Punchout Identity Provider', () => {
         queryParams = { sid: 'sid', 'access-token': accessToken };
       });
 
-      it('should trigger loginUserWithToken method on login', () => {
-        punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams));
-        verify(accountFacade.loginUserWithToken(accessToken)).once();
+      it('should trigger loginUserWithToken method on login', done => {
+        const login$ = punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams)) as Observable<boolean | UrlTree>;
+
+        login$.subscribe(() => {
+          verify(accountFacade.loginUserWithToken(accessToken)).once();
+          done();
+        });
       });
     });
 
@@ -155,9 +164,13 @@ describe('Punchout Identity Provider', () => {
         queryParams = { HOOK_URL: 'url', USERNAME: username, PASSWORD: password };
       });
 
-      it('should trigger loginUser method on login', () => {
-        punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams));
-        verify(accountFacade.loginUser(anything())).once();
+      it('should trigger loginUser method on login', done => {
+        const login$ = punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams)) as Observable<boolean | UrlTree>;
+
+        login$.subscribe(() => {
+          verify(accountFacade.loginUser(anything())).once();
+          done();
+        });
       });
     });
     describe('race', () => {

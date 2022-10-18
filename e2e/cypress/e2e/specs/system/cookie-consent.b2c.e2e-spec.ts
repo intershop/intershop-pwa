@@ -17,10 +17,12 @@ describe('Cookie Consent', () => {
     it('should accept all cookies', () => {
       at(HomePage, () => {
         cy.get('[data-testing-id="acceptAllButton"]').click();
-        cy.wait(3000);
+        cy.wait(4000);
 
         cy.getCookies().then(cookies => {
           expect(cookies[cookies.length - 1]).to.have.property('name', 'cookieConsent');
+          cy.wait(500);
+          cy.get('.cookies-banner').should('not.exist');
         });
       });
     });

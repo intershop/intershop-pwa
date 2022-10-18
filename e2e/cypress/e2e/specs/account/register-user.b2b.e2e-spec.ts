@@ -37,10 +37,16 @@ describe('New B2B User', () => {
       });
     });
 
-    it('should log out and log in and log out again', () => {
+    it('should log out', () => {
       at(MyAccountPage, page => {
         page.header.logout();
       });
+      at(HomePage, page => {
+        page.header.loginLink.should('be.visible');
+      });
+    });
+
+    it('should log in and log out again', () => {
       at(HomePage, page => {
         page.header.gotoLoginPage();
       });

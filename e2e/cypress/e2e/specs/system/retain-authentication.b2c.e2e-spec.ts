@@ -26,32 +26,52 @@ describe('Returning User', () => {
       at(MyAccountPage, page =>
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`)
       );
-      cy.getCookie('apiToken').should('not.be.empty');
+      cy.getCookie('apiToken')
+        .should('not.be.empty')
+        .should(cookie => {
+          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'user');
+        });
     });
 
     it('should stay logged in when refreshing page once', () => {
       MyAccountPage.navigateTo();
       at(MyAccountPage);
-      cy.getCookie('apiToken').should('not.be.empty');
+      cy.getCookie('apiToken')
+        .should('not.be.empty')
+        .should(cookie => {
+          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'user');
+        });
     });
 
     it('should stay logged in when refreshing page twice', () => {
       MyAccountPage.navigateTo();
       at(MyAccountPage);
-      cy.getCookie('apiToken').should('not.be.empty');
+      cy.getCookie('apiToken')
+        .should('not.be.empty')
+        .should(cookie => {
+          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'user');
+        });
     });
 
     it('should stay logged in when refreshing page thrice', () => {
       MyAccountPage.navigateTo();
       at(MyAccountPage);
-      cy.getCookie('apiToken').should('not.be.empty');
+      cy.getCookie('apiToken')
+        .should('not.be.empty')
+        .should(cookie => {
+          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'user');
+        });
     });
 
-    it('should log out and loose the cookie', () => {
+    it('should log out and get the anonymous token', () => {
       at(MyAccountPage, page => page.header.logout());
       at(HomePage);
       // eslint-disable-next-line unicorn/no-null
-      cy.getCookie('apiToken').should('equal', null);
+      cy.getCookie('apiToken')
+        .should('not.be.empty')
+        .should(cookie => {
+          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'anonymous');
+        });
     });
   });
 
