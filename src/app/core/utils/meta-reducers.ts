@@ -2,13 +2,13 @@ import { Action, ActionReducer, MetaReducer } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { identity } from 'rxjs';
 
-import { logoutUser } from 'ish-core/store/customer/user';
+import { logoutUserSuccess } from 'ish-core/store/customer/user';
 
 import { omit } from './functions';
 
 export function resetOnLogoutMeta<S>(reducer: ActionReducer<S>): ActionReducer<S> {
   return (state: S, action: Action) => {
-    if (action.type === logoutUser.type) {
+    if (action.type === logoutUserSuccess.type) {
       return reducer(undefined, action);
     }
     return reducer(state, action);

@@ -5,7 +5,7 @@ import { identity } from 'rxjs';
 import { applyConfiguration, getICMBaseURL } from 'ish-core/store/core/configuration';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { loginUser, logoutUser } from 'ish-core/store/customer/user';
+import { loginUser, logoutUserSuccess } from 'ish-core/store/customer/user';
 
 import { StoreWithSnapshots, provideStoreSnapshots } from './dev/ngrx-testing';
 import { resetOnLogoutMeta, resetSubStatesOnActionsMeta } from './meta-reducers';
@@ -19,7 +19,7 @@ describe('Meta Reducers', () => {
       TestBed.configureTestingModule({
         imports: [
           CoreStoreModule.forTesting(['configuration'], true, [
-            resetSubStatesOnActionsMeta<CoreState>(['configuration'], [logoutUser]),
+            resetSubStatesOnActionsMeta<CoreState>(['configuration'], [logoutUserSuccess]),
           ]),
         ],
         providers: [provideStoreSnapshots()],
@@ -36,7 +36,7 @@ describe('Meta Reducers', () => {
       it('should reset the configuration sub state', () => {
         expect(getICMBaseURL(store$.state)).toEqual(baseURL);
 
-        store$.dispatch(logoutUser());
+        store$.dispatch(logoutUserSuccess());
 
         expect(getICMBaseURL(store$.state)).toBeUndefined();
       });
@@ -71,12 +71,12 @@ describe('Meta Reducers', () => {
     });
 
     it('should reset state when reducing LogoutUser action', () => {
-      const result = resetOnLogoutMeta(identity)(state, logoutUser());
+      const result = resetOnLogoutMeta(identity)(state, logoutUserSuccess());
       expect(result).toBeUndefined();
     });
 
     it('should reset and delegate to reducer initial state when reducing LogoutUser action', () => {
-      const result = resetOnLogoutMeta(reducer)(state, logoutUser());
+      const result = resetOnLogoutMeta(reducer)(state, logoutUserSuccess());
       expect(result).toEqual({ a: 'initialA', b: 'initialB' });
     });
 

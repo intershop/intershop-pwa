@@ -1,9 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { pick } from 'lodash-es';
-import { Observable, combineLatest, forkJoin, of, throwError } from 'rxjs';
-import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest, defer, forkJoin, from, of, throwError } from 'rxjs';
+import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -19,12 +20,14 @@ import {
 } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { FetchTokenOptions, GrantType } from 'ish-core/models/token/token.interface';
 import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
@@ -50,7 +53,13 @@ interface CreateBusinessCustomerType extends Customer {
  */
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private apiService: ApiService, private appFacade: AppFacade, private store: Store) {}
+  constructor(
+    private apiService: ApiService,
+    private apiTokenService: ApiTokenService,
+    private appFacade: AppFacade,
+    private store: Store,
+    private oauthService: OAuthService
+  ) {}
 
   /**
    * Sign in an existing user with the given login credentials (login, password).
@@ -61,43 +70,63 @@ export class UserService {
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
   signInUser(loginCredentials: Credentials): Observable<CustomerLoginType> {
-    const headers = new HttpHeaders().set(
-      ApiService.AUTHORIZATION_HEADER_KEY,
-      `BASIC ${window.btoa(`${loginCredentials.login}:${loginCredentials.password}`)}`
+    return defer(() =>
+      loginCredentials
+        ? this.fetchToken('password', { username: loginCredentials.login, password: loginCredentials.password }).pipe(
+            switchMap(() => this.fetchCustomer())
+          )
+        : this.fetchCustomer()
     );
-
-    return this.fetchCustomer({ headers });
   }
+
   /**
    * Sign in an existing user with the given token or if no token is given, using token stored in cookie.
    *
-   * @param token             The token that is used to login user.
+   * @param token             The refresh token that is used to login user.
    * @returns                 The logged in customer data.
    *                          For private customers user data are also returned.
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
   signInUserByToken(token?: string): Observable<CustomerLoginType> {
     if (token) {
-      return this.fetchCustomer({
-        headers: new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, token),
-      });
+      return this.fetchToken('refresh_token', { refresh_token: token }).pipe(switchMap(() => this.fetchCustomer()));
     } else {
       return this.fetchCustomer({ skipApiErrorHandling: true });
     }
   }
 
-  private fetchCustomer(options?: AvailableOptions): Observable<CustomerLoginType> {
+  private fetchCustomer(options: AvailableOptions = {}): Observable<CustomerUserType> {
     return this.apiService.get<CustomerData>('customers/-', options).pipe(
       withLatestFrom(this.appFacade.isAppTypeREST$),
       concatMap(([data, isAppTypeRest]) =>
         forkJoin([
           isAppTypeRest && data.customerType === 'PRIVATE'
-            ? this.apiService.get<CustomerData>('privatecustomers/-')
+            ? this.apiService.get<CustomerData>('privatecustomers/-', options)
             : of(data),
-          this.apiService.get<{ pgid: string }>('personalization').pipe(map(data => data.pgid)),
+          this.apiService.get<{ pgid: string }>('personalization', options).pipe(map(data => data.pgid)),
         ])
       ),
       map(([data, pgid]) => ({ ...CustomerMapper.mapLoginData(data), pgid }))
+    );
+  }
+
+  /**
+   * Fetches a new user token. Based on the grantType the user has to apply certain token options to the method.
+   *
+   * @param grantType   The given type ('anonymous', 'password', 'client_credentials', 'refresh_token') is used to specify, how the user token should be fetched.
+   */
+  fetchToken<T extends 'anonymous'>(grantType: T): Observable<TokenResponse>;
+  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(grantType: T, options: R): Observable<TokenResponse>;
+  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(
+    grantType: T,
+    options?: R
+  ): Observable<TokenResponse> {
+    return from(
+      this.oauthService.fetchTokenUsingGrant(
+        grantType,
+        options ?? {},
+        new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' })
+      )
     );
   }
 
@@ -164,7 +193,7 @@ export class UserService {
           .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
-          .pipe(map(() => ({ customer: body.customer, user: body.user })))
+          .pipe(map<void, CustomerUserType>(() => ({ customer: body.customer, user: body.user })))
       )
     );
   }
@@ -244,6 +273,14 @@ export class UserService {
         )
       )
     );
+  }
+
+  /**
+   * Logs out the current user associated with the specified authentication token.
+   * All (refresh) tokens issued for this user will expire and become invalid.
+   */
+  logoutUser() {
+    return this.apiService.put('token/logout').pipe(tap(() => this.apiTokenService.removeApiToken()));
   }
 
   /**

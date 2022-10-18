@@ -30,6 +30,12 @@ To handle the different variation select rendering types the existing `ProductVa
 The rendering and behavior of the existing `ProductVariationSelectComponent` as a standard select box was moved to the new `ProductVariationSelectDefaultComponent`.
 A `ProductVariationSelectSwatchComponent` for colorCode and swatchImage variation select rendering and a `ProductVariationSelectEnhancedComponent` for a select box rendering with color codes or swatch images and a mobile optimization were added.
 
+The user authentication process has changed.
+User authentication tokens are requested from the ICM server using the `/token` REST endpoint now.
+Regarding this, the logout action triggers a service, which revokes the current available access token on the ICM backend.
+If the logout was successful, then all personalized information is removed from the ngrx store.
+Please use `logoutUser({ revokeToken: false })` from the account facade or dispatch `logoutUserSuccess` instead of the `logoutUser` action to use the old behavior.
+
 ## 3.0 to 3.1
 
 The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).

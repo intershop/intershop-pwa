@@ -25,6 +25,10 @@ export const loadCompanyUserSuccess = createAction('[User API] Load Company User
 
 export const logoutUser = createAction('[User] Logout User');
 
+export const logoutUserSuccess = createAction('[User API] Logout User Success');
+
+export const logoutUserFail = createAction('[User API] Logout User Failed', httpError());
+
 export const createUser = createAction('[User] Create User', payload<CustomerRegistrationType>());
 
 export const createUserSuccess = createAction('[User API] Create User Success', payload<{ email: string }>());
@@ -140,3 +144,5 @@ export const updateUserPasswordByPasswordReminderFail = createAction(
   '[Password Reminder] Update User Password Failed',
   httpError()
 );
+
+export const fetchAnonymousUserToken = createAction('[Token API] Fetch Anonymous User Token');

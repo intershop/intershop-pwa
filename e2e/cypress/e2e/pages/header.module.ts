@@ -26,7 +26,7 @@ export class HeaderModule {
 
   gotoLoginPage(wait: () => unknown = waitLoadingEnd) {
     cy.scrollTo('top');
-    cy.get('[data-testing-id="user-status-desktop"] .my-account-login').click();
+    this.loginLink.click();
     wait();
   }
 
@@ -51,8 +51,13 @@ export class HeaderModule {
     wait();
   }
 
-  logout() {
+  logout(wait: () => unknown = waitLoadingEnd) {
     cy.get('[data-testing-id="link-logout"]').first().click();
+    wait();
+  }
+
+  get loginLink() {
+    return cy.get('[data-testing-id="user-status-desktop"] .my-account-login');
   }
 
   get myAccountLink() {
