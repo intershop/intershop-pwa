@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { cold, hot } from 'jasmine-marbles';
 import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -30,6 +31,7 @@ import {
   deleteUserPaymentInstrument,
   deleteUserPaymentInstrumentFail,
   deleteUserPaymentInstrumentSuccess,
+  fetchAnonymousUserToken,
   loadCompanyUser,
   loadCompanyUserFail,
   loadCompanyUserSuccess,
@@ -44,6 +46,9 @@ import {
   loginUserFail,
   loginUserSuccess,
   loginUserWithToken,
+  logoutUser,
+  logoutUserFail,
+  logoutUserSuccess,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
@@ -67,6 +72,7 @@ describe('User Effects', () => {
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
   let apiTokenServiceMock: ApiTokenService;
+  let oAuthServiceMock: OAuthService;
   let router: Router;
   let location: Location;
 
@@ -83,12 +89,23 @@ describe('User Effects', () => {
     isBusinessCustomer: true,
   } as Customer;
 
+  const token = {
+    access_token: 'DEMO@access-token',
+    token_type: 'user',
+    expires_in: 3600,
+    refresh_token: 'DEMO@refresh-token',
+    id_token: 'DEMO@id-token',
+  } as TokenResponse;
+
   beforeEach(() => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
     apiTokenServiceMock = mock(ApiTokenService);
+    oAuthServiceMock = mock(OAuthService);
 
     when(userServiceMock.signInUser(anything())).thenReturn(of(loginResponseData));
+    when(userServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
+    when(userServiceMock.fetchToken(anyString())).thenReturn(of(token));
     when(userServiceMock.signInUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything(), anything())).thenReturn(of({ firstName: 'Patricia' } as User));
@@ -97,10 +114,12 @@ describe('User Effects', () => {
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
     when(userServiceMock.requestPasswordReminder(anything())).thenReturn(of({}));
     when(userServiceMock.getEligibleCostCenters()).thenReturn(of([]));
+    when(userServiceMock.logoutUser()).thenReturn(of(undefined));
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(paymentServiceMock.createUserPayment(anything(), anything())).thenReturn(of({ id: 'paymentInstrumentId' }));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
     when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+    when(oAuthServiceMock.events).thenReturn(of());
 
     TestBed.configureTestingModule({
       imports: [
@@ -110,6 +129,7 @@ describe('User Effects', () => {
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+        { provide: OAuthService, useFactory: () => instance(oAuthServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideMockActions(() => actions$),
@@ -167,6 +187,69 @@ describe('User Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.loginUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loginUserWithToken$', () => {
+    it('should call the api service when LoginUserWithToken event is called', done => {
+      const action = loginUserWithToken({ token: '12345' });
+
+      actions$ = of(action);
+
+      effects.loginUserWithToken$.subscribe(() => {
+        verify(userServiceMock.signInUserByToken(anything())).once();
+        done();
+      });
+    });
+  });
+
+  describe('logoutUser$', () => {
+    it('should call the api service to revoke current token when logoutUser action is called', done => {
+      const action = logoutUser();
+
+      actions$ = of(action);
+
+      effects.logoutUser$.subscribe(() => {
+        verify(userServiceMock.logoutUser()).once();
+        done();
+      });
+    });
+
+    it('should dispatch a success action on a successful request and should fetch a new anonymous user token', () => {
+      const action = logoutUser();
+      const completion1 = logoutUserSuccess();
+      const completion2 = fetchAnonymousUserToken();
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
+
+      expect(effects.logoutUser$).toBeObservable(expected$);
+    });
+
+    it('should dispatch an error action on a failed request', () => {
+      const error = makeHttpError({ status: 401, code: 'error' });
+      when(userServiceMock.logoutUser()).thenReturn(throwError(() => error));
+
+      const action = logoutUser();
+      const completion = logoutUserFail({ error });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-b-b-b', { b: completion });
+
+      expect(effects.logoutUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('fetchAnonymousUserToken$', () => {
+    it('should call apiTokenService with token response', done => {
+      const action = fetchAnonymousUserToken();
+
+      actions$ = of(action);
+
+      effects.fetchAnonymousUserToken$.subscribe(() => {
+        verify(userServiceMock.fetchToken('anonymous')).once();
+        done();
+      });
     });
   });
 
@@ -296,7 +379,7 @@ describe('User Effects', () => {
 
       const action = createUser({ customer, credentials } as CustomerRegistrationType);
       const completion1 = createUserSuccess({ email: customerLoginType.user.email });
-      const completion2 = loginUserWithToken({ token: undefined });
+      const completion2 = loginUser({ credentials });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(bc)', { b: completion1, c: completion2 });

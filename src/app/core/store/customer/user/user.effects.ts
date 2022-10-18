@@ -3,8 +3,20 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
+import { OAuthService, OAuthSuccessEvent } from 'angular-oauth2-oidc';
 import { from } from 'rxjs';
-import { concatMap, delay, exhaustMap, filter, map, mergeMap, sample, takeWhile, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  delay,
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  sample,
+  switchMap,
+  takeWhile,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -55,6 +67,10 @@ import {
   updateUserPreferredPayment,
   updateUserSuccess,
   userErrorReset,
+  fetchAnonymousUserToken,
+  logoutUser,
+  logoutUserSuccess,
+  logoutUserFail,
 } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
@@ -66,7 +82,8 @@ export class UserEffects {
     private userService: UserService,
     private paymentService: PaymentService,
     private router: Router,
-    private apiTokenService: ApiTokenService
+    private apiTokenService: ApiTokenService,
+    private oAuthService: OAuthService
   ) {}
 
   loginUser$ = createEffect(() =>
@@ -77,6 +94,43 @@ export class UserEffects {
         this.userService.signInUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
       )
     )
+  );
+
+  /**
+   * Revoke token on server side
+   */
+  logoutUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(logoutUser),
+      switchMap(() =>
+        this.userService.logoutUser().pipe(
+          concatMap(() => [logoutUserSuccess(), fetchAnonymousUserToken()]),
+          mapErrorToAction(logoutUserFail)
+        )
+      )
+    )
+  );
+
+  fetchAnonymousUserToken$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fetchAnonymousUserToken),
+        switchMap(() => this.userService.fetchToken('anonymous'))
+      ),
+    { dispatch: false }
+  );
+
+  setApiToken$ = createEffect(
+    () =>
+      this.oAuthService.events.pipe(
+        filter(event => event instanceof OAuthSuccessEvent && event.type === 'token_received'),
+        map(() =>
+          this.apiTokenService.setApiToken(this.oAuthService.getAccessToken(), {
+            expires: new Date(this.oAuthService.getAccessTokenExpiration()),
+          })
+        )
+      ),
+    { dispatch: false }
   );
 
   loginUserWithToken$ = createEffect(() =>
@@ -129,7 +183,7 @@ export class UserEffects {
             createUserSuccess({ email: createUserResponse.user.email }),
             customerTypeForLoginApproval?.includes(createUserResponse.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
               ? createUserApprovalRequired({ email: createUserResponse.user.email })
-              : loginUserWithToken({ token: undefined }),
+              : loginUser({ credentials: data.credentials }),
           ]),
           mapErrorToAction(createUserFail)
         )

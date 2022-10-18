@@ -1,7 +1,7 @@
 import { HttpHandler, HttpRequest } from '@angular/common/http';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
-import { noop } from 'rxjs';
+import { BehaviorSubject, noop, of, race, timer } from 'rxjs';
 
 import { PunchoutIdentityProviderModule } from '../extensions/punchout/identity-provider/punchout-identity-provider.module';
 
@@ -10,6 +10,7 @@ import { AzureADIdentityProvider } from './identity-provider/azureAD.identity-pr
 import { ICMIdentityProvider } from './identity-provider/icm.identity-provider';
 import { IDENTITY_PROVIDER_IMPLEMENTOR, IdentityProviderFactory } from './identity-provider/identity-provider.factory';
 import { IdentityProviderCapabilities } from './identity-provider/identity-provider.interface';
+import { OAuthConfigurationService } from './utils/oauth-configuration/oauth-configuration.service';
 
 /**
  * provider factory for storage
@@ -21,9 +22,23 @@ export function storageFactory(): OAuthStorage {
   }
 }
 
+/**
+ * load configuration object for OAuth Service
+ * OAuth Service should be configured, when app is initialized
+ */
+function loadOAuthConfig(configService: OAuthConfigurationService) {
+  return () => race(configService.loadConfig$, timer(4000));
+}
+
 @NgModule({
   imports: [OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } }), PunchoutIdentityProviderModule],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: loadOAuthConfig,
+      deps: [OAuthConfigurationService],
+      multi: true,
+    },
     { provide: OAuthStorage, useFactory: storageFactory },
     {
       provide: IDENTITY_PROVIDER_IMPLEMENTOR,
@@ -70,6 +85,13 @@ export class IdentityProviderModule {
               getCapabilities: () => capabilities,
             }),
             getType: () => 'ICM',
+          },
+        },
+        {
+          provide: OAuthConfigurationService,
+          useValue: {
+            loadConfig$: of({}),
+            config$: new BehaviorSubject({}),
           },
         },
       ],

@@ -1,5 +1,6 @@
 import { Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { once } from 'lodash-es';
 import { noop } from 'rxjs';
 import { first } from 'rxjs/operators';
 
@@ -57,7 +58,14 @@ export class IdentityProviderFactory {
     }
   }
 
+  private logNoIdpError = once(() =>
+    console.error('No identity provider instance exists. Please double-check your configuration:', this.config)
+  );
+
   getInstance() {
+    if (!this.instance) {
+      this.logNoIdpError();
+    }
     return this.instance;
   }
 

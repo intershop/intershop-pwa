@@ -47,11 +47,14 @@ The usage of identity providers can also be set in the multi-channel configurati
 # Further References
 
 - PWA
+  - [Concept - Authentication](./authentication.md)
   - [Guide - SSO with Auth0 for PWA](../guides/sso-auth0.md)
   - [Guide - Building and Running Server-Side Rendering][ssr-startup]
   - [Guide - Building and Running nginx Docker Image][nginx-startup]
 - ICM
   - [Concept - Single Sign-On (SSO)][kb-concept-sso]
+- General
+  - [SSO with OAuth 2 and OpenId Connect](https://angular.de/artikel/oauth-odic-plugin/) (in German)
 
 [kb-concept-sso]: https://support.intershop.com/kb/index.php/Display/29A407
 [ssr-startup]: ../guides/ssr-startup.md

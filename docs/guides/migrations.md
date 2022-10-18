@@ -24,6 +24,12 @@ After entering a desired delivery date on the checkout shipping page and after s
 In case of large basket (> 20 items) this might cause (unacceptable) long response times.
 You can keep the existing behavior by modifying the updateBasketItemsDesiredDeliveryDate() method of the basket service to always return an empty array without doing anything.
 
+The user authentication process has changed.
+User authentication tokens are requested from the ICM server using the token REST endpoint now.
+Regarding to this, the logout action triggers a service, which revokes the current available access token on the ICM backend.
+If the logout was successful, then all personalized information are removed from the ngrx store.
+Please use `logoutUser({ revokeToken: false })` from the account facade or dispatch `logoutUserSuccess` instead of the `logoutUser` action to use the old behavior.
+
 ## 3.0 to 3.1
 
 The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).

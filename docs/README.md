@@ -27,7 +27,10 @@ kb_sync_latest_only
 - [Guide - Formly](./guides/formly.md)
 - [Guide - Field Library](./guides/field-library.md)
 - [Concept - Deployment Scenarios for Angular Applications](./concepts/deployment-angular.md)
-- [Concept - Single Sign-On (SSO) for PWA](./concepts/sso.md)
+- [Concept - Authentication](./concepts/authentication.md)
+  - [Concept - Single Sign-On (SSO) for PWA](./concepts/sso.md)
+  - [Guide - Handling Authentication by the ICM Server](./guides/authentication_icm.md)
+  - [Guide - Punchout Identity Provider](./guides/punchout-identity-provider.md)
 
 ### Developing
 

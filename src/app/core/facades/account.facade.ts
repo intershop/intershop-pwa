@@ -52,7 +52,6 @@ import {
   loadUserPaymentMethods,
   loginUser,
   loginUserWithToken,
-  logoutUser,
   requestPasswordReminder,
   resetPasswordReminder,
   updateCustomer,
@@ -60,8 +59,15 @@ import {
   updateUserPassword,
   updateUserPasswordByPasswordReminder,
   updateUserPreferredPayment,
+  fetchAnonymousUserToken,
+  logoutUser,
+  logoutUserSuccess,
 } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
+
+interface LogoutUserOptions {
+  revokeApiToken: boolean;
+}
 
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
@@ -92,8 +98,17 @@ export class AccountFacade {
     this.store.dispatch(loginUserWithToken({ token }));
   }
 
-  logoutUser() {
-    this.store.dispatch(logoutUser());
+  /**
+   * Trigger logout action
+   *
+   * @param revokeToken option to revoke api token on server side before logout success action is dispatched
+   */
+  logoutUser(options: LogoutUserOptions = { revokeApiToken: true }) {
+    options?.revokeApiToken ? this.store.dispatch(logoutUser()) : this.store.dispatch(logoutUserSuccess());
+  }
+
+  fetchAnonymousToken() {
+    this.store.dispatch(fetchAnonymousUserToken());
   }
 
   createUser(body: CustomerRegistrationType) {
