@@ -119,6 +119,7 @@
     "@angular/compiler-cli": "14.2.5",
     "@angular/language-service": "14.2.5",
     "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@compodoc/compodoc": "^1.1.19",
     "@cspell/dict-de-de": "1.1.32",
     "@cspell/dict-fr-fr": "^2.1.1",
@@ -221,7 +222,8 @@
   },
   "commitlint": {
     "extends": [
-      "cz"
+      "cz",
+      "@commitlint/config-conventional"
     ]
   },
   "config": {
