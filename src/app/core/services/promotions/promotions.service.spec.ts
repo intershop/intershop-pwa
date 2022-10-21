@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -39,10 +39,11 @@ describe('Promotions Service', () => {
   });
 
   it("should get Promotion data when 'getPromotion' is called", done => {
-    when(apiServiceMock.get(`promotions/PROMO_UUID`)).thenReturn(of(promotionMockData));
+    when(apiServiceMock.get(anything(), anything())).thenReturn(of(promotionMockData));
+
     promotionsService.getPromotion('PROMO_UUID').subscribe(data => {
       expect(data.id).toEqual('PROMO_UUID');
-      verify(apiServiceMock.get(`promotions/PROMO_UUID`)).once();
+      verify(apiServiceMock.get(`promotions/PROMO_UUID`, anything())).once();
       done();
     });
   });
