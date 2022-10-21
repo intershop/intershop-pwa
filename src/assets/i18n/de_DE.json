@@ -195,6 +195,8 @@
   "account.navigation.logout.link": "Abmelden",
   "account.navigation.quotes.link": "Preisangebote",
   "account.new_user.heading": "Neue Benutzer",
+  "account.notifications.breadcrumb_link": "Benachrichtigungen",
+  "account.notifications.link": "Benachrichtigungen",
   "account.option.select.text": "Bitte auswählen",
   "account.order.most_recent.heading": "Letzte Bestellungen",
   "account.order.questions.note": "Besuchen Sie die <a href=\"{{0}}\">Hilfe</a> auf unserer Website für umfassende Bestell- und Versandinformationen oder <a href=\"{{1}}\">kontaktieren Sie uns</a> rund um die Uhr.",

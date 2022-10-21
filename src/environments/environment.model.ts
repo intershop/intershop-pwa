@@ -26,6 +26,7 @@ export interface Environment {
     | 'compare'
     | 'rating'
     | 'recently'
+    | 'productNotifications'
     | 'storeLocator'
     | 'contactUs'
     /* B2B features */
@@ -142,7 +143,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   hybridApplication: '-',
 
   /* FEATURE TOGGLES */
-  features: ['compare', 'contactUs', 'rating', 'recently', 'storeLocator'],
+  features: ['compare', 'contactUs', 'productNotifications', 'rating', 'recently', 'storeLocator'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,

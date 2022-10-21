@@ -81,6 +81,14 @@ const accountPageRoutes: Routes = [
           import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
       },
       {
+        path: 'notifications',
+        data: { breadcrumbData: [{ key: 'account.notifications.breadcrumb_link' }] },
+        loadChildren: () =>
+          import('../../extensions/product-notifications/pages/product-notifications-routing.module').then(
+            m => m.ProductNotificationsRoutingModule
+          ),
+      },
+      {
         path: 'organization',
         canActivate: [authorizationToggleGuard],
         data: { permission: 'APP_B2B_MANAGE_COSTCENTER' },

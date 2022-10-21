@@ -195,6 +195,8 @@
   "account.navigation.logout.link": "Déconnexion",
   "account.navigation.quotes.link": "Devis",
   "account.new_user.heading": "Nouveaux utilisateurs",
+  "account.notifications.breadcrumb_link": "Notifications",
+  "account.notifications.link": "Notifications",
   "account.option.select.text": "Veuillez sélectionner",
   "account.order.most_recent.heading": "Les commandes les plus récentes",
   "account.order.questions.note": "Merci de consulter la section <a href=\"{{0}}\">Aide</a> de notre site Web pour des renseignements détaillés sur votre commande et l’expédition ou <a href=\"{{1}}\">Contactez-nous</a> 24 heures sur 24.",

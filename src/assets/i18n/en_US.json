@@ -195,6 +195,8 @@
   "account.navigation.logout.link": "Logout",
   "account.navigation.quotes.link": "Quoting",
   "account.new_user.heading": "New Users",
+  "account.notifications.breadcrumb_link": "Notifications",
+  "account.notifications.link": "Notifications",
   "account.option.select.text": "Please select",
   "account.order.most_recent.heading": "Most Recent Orders",
   "account.order.questions.note": "Please visit the <a href=\"{{0}}\">Help</a> area of our website for comprehensive order and shipping information or <a href=\"{{1}}\">Contact Us</a> 24 hours a day.",
