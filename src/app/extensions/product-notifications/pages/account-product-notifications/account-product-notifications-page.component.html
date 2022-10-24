@@ -1,1 +1,11 @@
-<p>account-product-notifications-page works!</p>
+<div class="productnotifications">
+  <h1>{{ 'account.notifications.heading' | translate }}</h1>
+
+  <ng-container *ngIf="productNotifications$ | async as productNotifications">
+    <ng-container *ngIf="productNotifications?.length > 0" class="list-body">
+      <div *ngFor="let productNotification of productNotifications">
+        {{ productNotification.sku }}
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
