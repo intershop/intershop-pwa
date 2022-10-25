@@ -1,21 +1,13 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+
+import { ProductNotificationsService } from '../services/product-notifications/product-notifications.service';
 
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class ProductNotificationsFacade {
-  //constructor(private store: Store) {}
+  constructor(private productNotificationsService: ProductNotificationsService) {}
 
-  productNotifications$ = of([
-    {
-      sku: 'sku1',
-      notificationMailAddress: 'bboldner@test.intershop.de',
-    },
-    {
-      sku: 'sku2',
-      notificationMailAddress: 'pmiller@test.intershop.de',
-    },
-  ]);
+  productNotifications$ = this.productNotificationsService.getProductNotifications$();
 
   /**
    * example for debugging
