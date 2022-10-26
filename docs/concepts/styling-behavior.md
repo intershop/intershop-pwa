@@ -51,6 +51,11 @@ To integrate an icon
 
 If an icon is not available yet, you need to add it to `src\app\core\icon.module.ts` in the `import {}` and the `constructor(){}`.
 
+## Optimization
+
+For bundled styles optimization [PurgeCSS](https://purgecss.com/) is used.
+Please read [the additional documentation](../guides/optimizations.md#purgecss) regarding the usage and configuration of PurgeCSS in the Intershop PWA.
+
 ## References
 
 [Guide - Multiple Themes](../guides/multiple-themes.md)

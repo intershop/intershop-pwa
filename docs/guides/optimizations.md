@@ -27,7 +27,45 @@ If the PWA is built using `production` configuration. (Either by building with `
 - Webpack [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) is instructed to produce only `main`, `vendor`, `polyfills` and one `common` bundle for the code for optimized compression and download of the application.
 - All `data-testing` attributes are removed from the HTML templates to reduce output.
 - [PurgeCSS](https://purgecss.com) is used to remove unused CSS classes from the CSS output.
-  [Configuration](https://purgecss.com/configuration.html), especially [safelisting](https://purgecss.com/safelisting.html) certain classes, can be done on the plugin configuration or directly in your CSS with a special comment.
+
+## PurgeCSS
+
+> PurgeCSS is a tool to remove unused CSS. It can be part of your development workflow. When you are building a website, you might decide to use a CSS framework like TailwindCSS, Bootstrap, MaterializeCSS, Foundation, etc... But you will only use a small set of the framework, and a lot of unused CSS styles will be included.
+
+> This is where PurgeCSS comes into play. PurgeCSS analyzes your content and your CSS files. Then it matches the selectors used in your files with the one in your content files. It removes unused selectors from your CSS, resulting in smaller CSS files.
+
+While the described feature of purging unused CSS styles is wanted the mechanism of determining used styles is not completely without problems.
+PurgeCSS can only analyze the strings in the actual source code of the project for used styles.
+So styles that get added to the rendered HTML by third-party libraries (e.g.
+Bootstrap, Swiper) would not be found.
+The same goes for styles used in content loaded from the server (e.g.
+CMS, product descriptions).
+Also style selectors that are generated dynamically would not be found.
+
+### Safelisting
+
+To solve this problem PurgeCSS provides different [options for safelisting](https://purgecss.com/safelisting.html) specific styles.
+This can either be done in the plugin configuration or directly in your SCSS/CSS files with special comments.
+
+The PurgeCSS plugin configuration can be found in the projects [`webpack.custom.ts`](https://github.com/intershop/intershop-pwa/blob/3.1.0/templates/webpack/webpack.custom.ts#L231-L246).
+This way is used and recommended to include needed styles of used third-party libraries that would otherwise be purged.
+The different [configuration options](https://purgecss.com/configuration.html) are described in the PurgeCSS documentation.
+
+To protect styles defined in the Intershop PWA project source code safelisting them directly in your SCSS/CSS with [special comments](https://purgecss.com/safelisting.html#in-the-css-directly) is recommended.
+To included nested SCSS definitions using `/* purgecss start ignore */` and `/* purgecss end ignore */` seems to be the best way.
+
+### Development
+
+When using the standard way of developing the PWA with `ng s` PurgeCSS is not activated and styling should work as expected.
+This way missing styling issues because of PurgeCSS often first show up in deployed environments.
+To test or develop with enabled PurgeCSS the development server needs to be started with `ng s -c=b2b,production` (or your desired theme instead of `b2b`).
+In this startup process the line
+
+```
+serve@b2b,production: setting up purgecss CSS minification
+```
+
+can be read, signalling the usage of PurgeCSS similar to the deployed builds.
 
 # Further References
 
