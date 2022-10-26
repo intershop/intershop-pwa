@@ -11,7 +11,10 @@
 </ish-formly-address-form>
 
 <!-- Taxation ID and Email address input field-->
-<formly-form [form]="attributesForm" [fields]="attributesFields"></formly-form>
+<ish-formly-address-extension-form
+  [form]="attributesForm"
+  [businessCustomer]="isBusinessCustomer"
+></ish-formly-address-extension-form>
 
 <!-- Shipping Address Selection Radio boxes-->
 <div class="section">

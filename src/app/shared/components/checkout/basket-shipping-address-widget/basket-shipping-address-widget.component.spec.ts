@@ -27,11 +27,13 @@ describe('Basket Shipping Address Widget Component', () => {
 
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
+    accountFacade = mock(AccountFacade);
+
     when(checkoutFacade.basket$).thenReturn(EMPTY);
     when(checkoutFacade.basketShippingAddress$).thenReturn(EMPTY);
     when(checkoutFacade.basketInvoiceAndShippingAddressEqual$).thenReturn(of(false));
 
-    accountFacade = mock(AccountFacade);
+    when(accountFacade.isLoggedIn$).thenReturn(of(true));
     when(accountFacade.addresses$()).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
@@ -69,6 +71,18 @@ describe('Basket Shipping Address Widget Component', () => {
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
       Array [
         "create-shipping-address-link",
+        "shipping-address-form",
+      ]
+    `);
+  });
+
+  it('should not render create link if an anonymous user has different sinvoice and shipping address', () => {
+    when(accountFacade.isLoggedIn$).thenReturn(of(false));
+
+    fixture.detectChanges();
+
+    expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
+      Array [
         "shipping-address-form",
       ]
     `);

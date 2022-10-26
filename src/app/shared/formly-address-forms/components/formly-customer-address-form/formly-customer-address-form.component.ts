@@ -38,11 +38,17 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() address: Partial<Address>;
   @Input() resetForm = false;
+  // display address extension form fields
+  @Input() extension = false;
 
   @Output() save = new EventEmitter<Address>();
   @Output() cancel = new EventEmitter();
 
   form: FormGroup;
+  extensionForm: FormGroup = new FormGroup({});
+
+  extensionModel: { email: string };
+
   submitted = false;
   businessCustomer$: Observable<boolean>;
 
@@ -64,6 +70,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
     // create form for creating a new address
     this.form = new FormGroup({
       address: new FormGroup({}),
+      additionalAddressAttributes: this.extensionForm,
     });
   }
 
@@ -72,6 +79,8 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
    */
   ngOnChanges(c: SimpleChanges) {
     this.doResetForm(c.resetForm?.currentValue);
+
+    this.extensionModel = this.address ? { email: this.address.email } : undefined;
   }
 
   doResetForm(resetForm: boolean) {
@@ -99,6 +108,9 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
     if (this.address) {
       // update form values in the original address
       formAddress = { ...this.address, ...formAddress };
+    }
+    if (this.extension) {
+      formAddress = { ...formAddress, email: this.extensionForm.get('email')?.value };
     }
     this.save.emit(formAddress);
   }
