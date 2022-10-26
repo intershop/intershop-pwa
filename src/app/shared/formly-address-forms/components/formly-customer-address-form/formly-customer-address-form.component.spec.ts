@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { FormlyAddressExtensionFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-extension-form/formly-address-extension-form.component';
 import { FormlyAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-form/formly-address-form.component';
 
 import { FormlyCustomerAddressFormComponent } from './formly-customer-address-form.component';
@@ -20,7 +21,11 @@ describe('Formly Customer Address Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FormlyCustomerAddressFormComponent, MockComponent(FormlyAddressFormComponent)],
+      declarations: [
+        FormlyCustomerAddressFormComponent,
+        MockComponent(FormlyAddressExtensionFormComponent),
+        MockComponent(FormlyAddressFormComponent),
+      ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
@@ -51,6 +56,7 @@ describe('Formly Customer Address Form Component', () => {
   it('should render an address form component on creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-formly-address-form')).toBeTruthy();
+    expect(element.querySelector('ish-formly-address-extension-form')).toBeFalsy();
   });
 
   it('should throw cancel event when cancel is clicked', () => {
@@ -122,5 +128,11 @@ describe('Formly Customer Address Form Component', () => {
     component.ngOnChanges(changes);
 
     expect(component.form.value.address.countryCode).toEqual('foo');
+  });
+
+  it('should render the extension form if extension is true', () => {
+    component.extension = true;
+    fixture.detectChanges();
+    expect(element.querySelector('ish-formly-address-extension-form')).toBeTruthy();
   });
 });

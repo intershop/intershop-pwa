@@ -19,7 +19,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
   attributesForm: FormGroup = new FormGroup({});
   shipOptionForm: FormGroup = new FormGroup({});
 
-  attributesFields: FormlyFieldConfig[];
   shipOptionFields: FormlyFieldConfig[];
 
   isBusinessCustomer = false;
@@ -33,28 +32,7 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
   constructor(private featureToggleService: FeatureToggleService) {}
 
   ngOnInit() {
-    this.attributesFields = [
-      {
-        type: 'ish-fieldset-field',
-        fieldGroup: [
-          {
-            key: 'email',
-            type: 'ish-email-field',
-            templateOptions: {
-              required: true,
-              label: 'checkout.addresses.email.label',
-              customDescription: {
-                key: 'account.address.email.hint',
-              },
-              postWrappers: [{ wrapper: 'description', index: -1 }],
-            },
-          },
-        ],
-      },
-    ];
-
     if (this.featureToggleService.enabled('businessCustomerRegistration')) {
-      this.attributesFields = [this.createTaxationIDField(), ...this.attributesFields];
       this.isBusinessCustomer = true;
     }
 
@@ -91,17 +69,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
           ? this.parentForm.removeControl('shippingAddress')
           : this.parentForm.setControl('shippingAddress', this.shippingAddressForm);
       });
-  }
-
-  private createTaxationIDField(): FormlyFieldConfig {
-    return {
-      type: 'ish-fieldset-field',
-      fieldGroup: [
-        {
-          type: '#taxationID',
-        },
-      ],
-    };
   }
 
   ngOnDestroy() {
