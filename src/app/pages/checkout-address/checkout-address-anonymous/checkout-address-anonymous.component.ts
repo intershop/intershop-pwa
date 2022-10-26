@@ -64,8 +64,11 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
 
     this.addressForm.control.get('additionalAddressAttributes').setValue({
       taxationID: '',
-      shipOption: 'shipToInvoiceAddress',
       email: '',
+    });
+
+    this.addressForm.control.get('shipOptions').setValue({
+      shipOption: 'shipToInvoiceAddress',
     });
 
     this.submitted = false;
@@ -88,7 +91,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
     };
 
     const shippingAddress =
-      this.form.get('additionalAddressAttributes').value.shipOption === 'shipToInvoiceAddress'
+      this.form.get('shipOptions').value.shipOption === 'shipToInvoiceAddress'
         ? undefined
         : this.form.get('shippingAddress').value.address;
 
@@ -114,6 +117,6 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
   }
 
   get isShippingAddressFormExpanded() {
-    return this.form && this.form.get('additionalAddressAttributes').value.shipOption === 'shipToDifferentAddress';
+    return this.form && this.form.get('shipOptions').value.shipOption === 'shipToDifferentAddress';
   }
 }
