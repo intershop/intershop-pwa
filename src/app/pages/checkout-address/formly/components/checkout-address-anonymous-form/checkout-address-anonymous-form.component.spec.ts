@@ -51,7 +51,7 @@ describe('Checkout Address Anonymous Form Component', () => {
   it('should add shipping address form to parent form, when shipOption is set to shipToDifferentAddress', () => {
     fixture.detectChanges();
 
-    component.form.get('shipOption').setValue('shipToDifferentAddress');
+    component.shipOptionForm.get('shipOption').setValue('shipToDifferentAddress');
 
     fixture.detectChanges();
 

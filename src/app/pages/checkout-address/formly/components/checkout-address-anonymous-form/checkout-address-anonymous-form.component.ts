@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -13,15 +13,13 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 })
 export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy {
   @Input() parentForm: FormGroup;
-  formControl: FormControl;
 
   invoiceAddressForm = new FormGroup({});
   shippingAddressForm = new FormGroup({});
-  form: FormGroup = new FormGroup({});
+  attributesForm: FormGroup = new FormGroup({});
+  shipOptionForm: FormGroup = new FormGroup({});
 
-  addressFields: FormlyFieldConfig[];
-  addressOptions: FormlyFormOptions = {};
-
+  attributesFields: FormlyFieldConfig[];
   shipOptionFields: FormlyFieldConfig[];
 
   isBusinessCustomer = false;
@@ -29,13 +27,13 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
   private destroy$ = new Subject<void>();
 
   get isShippingAddressFormExpanded() {
-    return this.form && this.form.get('shipOption').value === 'shipToDifferentAddress';
+    return this.shipOptionForm && this.shipOptionForm.get('shipOption').value === 'shipToDifferentAddress';
   }
 
   constructor(private featureToggleService: FeatureToggleService) {}
 
   ngOnInit() {
-    this.addressFields = [
+    this.attributesFields = [
       {
         type: 'ish-fieldset-field',
         fieldGroup: [
@@ -45,7 +43,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
             templateOptions: {
               required: true,
               label: 'checkout.addresses.email.label',
-              forceRequiredStar: true,
               customDescription: {
                 key: 'account.address.email.hint',
               },
@@ -57,7 +54,7 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
     ];
 
     if (this.featureToggleService.enabled('businessCustomerRegistration')) {
-      this.addressFields = [this.createTaxationIDField(), ...this.addressFields];
+      this.attributesFields = [this.createTaxationIDField(), ...this.attributesFields];
       this.isBusinessCustomer = true;
     }
 
@@ -82,14 +79,15 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
       },
     ];
     this.parentForm.setControl('invoiceAddress', this.invoiceAddressForm);
-    this.parentForm.setControl('additionalAddressAttributes', this.form);
+    this.parentForm.setControl('additionalAddressAttributes', this.attributesForm);
+    this.parentForm.setControl('shipOptions', this.shipOptionForm);
 
     // add / remove shipping form if shipTo address option changes
     this.parentForm
-      .get('additionalAddressAttributes')
+      .get('shipOptions')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(attributes => {
-        attributes.shipOption === 'shipToInvoiceAddress'
+      .subscribe(options => {
+        options.shipOption === 'shipToInvoiceAddress'
           ? this.parentForm.removeControl('shippingAddress')
           : this.parentForm.setControl('shippingAddress', this.shippingAddressForm);
       });
