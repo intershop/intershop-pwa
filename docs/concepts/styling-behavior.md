@@ -53,7 +53,7 @@ If an icon is not available yet, you need to add it to `src\app\core\icon.module
 
 ## Optimization
 
-The PWA uses [PurgeCSS](https://purgecss.com/) for bundled styles optimization. 
+The PWA uses [PurgeCSS](https://purgecss.com/) for bundled styles optimization.
 Please read [the additional documentation](../guides/optimizations.md#purgecss) for information on the usage and configuration of PurgeCSS in the Intershop PWA.
 
 ## References
