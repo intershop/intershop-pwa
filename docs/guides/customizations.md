@@ -164,7 +164,7 @@ The lookup starts with the file `style.scss` in the theme specific folder.
 > - not delete the standard theme folders to prevent merge conflicts when migrating the PWA (changes in standard files but deleted in your project).
 
 When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
-On component level theme specific overrides work for `.scss` files as expected.
+On component level, theme-specific overrides for `.scss` files work as expected.
 
 You can re-use variables from the global styling on component level by importing only the styling file that defines the theme variables, e.g.
 
