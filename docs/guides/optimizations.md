@@ -51,7 +51,7 @@ This method is used and recommended to include required styles of the third-part
 For the different [configuration options](https://purgecss.com/configuration.html), refer to the PurgeCSS documentation.
 
 To protect styles defined in the Intershop PWA project source code, Intershop recommends safelisting them directly in your SCSS/CSS with [special comments](https://purgecss.com/safelisting.html#in-the-css-directly). 
-To include nested SCSS definitions using `/* purgecss start ignore */` and `/* purgecss end ignore */` seems to be the best way.
+To include nested SCSS definitions, use `/* purgecss start ignore */` and `/* purgecss end ignore */` .
 
 ### Development
 
