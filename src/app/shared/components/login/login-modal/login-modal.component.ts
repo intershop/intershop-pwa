@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'ish-login-modal',
@@ -8,6 +8,12 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class LoginModalComponent {
   @Input() loginMessageKey: string;
   @Output() closeModal = new EventEmitter<void>();
+
+  constructor(private cdRef: ChangeDetectorRef) {}
+
+  detectChanges() {
+    this.cdRef.detectChanges();
+  }
 
   hide() {
     this.closeModal.emit();

@@ -38,6 +38,7 @@ export class LoginGuard implements CanActivate {
 
     const loginModalComponent = this.currentDialog.componentInstance as LoginModalComponent;
     loginModalComponent.loginMessageKey = route.queryParamMap.get('messageKey');
+    loginModalComponent.detectChanges();
 
     // dialog closed
     loginModalComponent.closeModal.pipe(first()).subscribe(() => {
