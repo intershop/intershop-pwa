@@ -18,6 +18,8 @@ We still use deprecated form properties like 'templateOptions' and 'expressionPr
 
 The two small black triangle images `active_catalog.png` (header: when hovering a catalog) and `budget-bar-indicator.png` (my account: budget bar) are removed and replaced by CSS styling.
 
+The basket empty image `empty-cart.png` is removed and replaced with CSS styling.
+
 ## 3.0 to 3.1
 
 The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).
