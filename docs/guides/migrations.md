@@ -20,6 +20,8 @@ The two small black triangle images `active_catalog.png` (header: when hovering 
 
 The basket empty image `empty-cart.png` is removed and replaced with CSS styling.
 
+The sprite image `product_sprite.png` is removed and replaced with localized text for "New", "Sale" and "Top" with the according CSS styling.
+
 ## 3.0 to 3.1
 
 The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).

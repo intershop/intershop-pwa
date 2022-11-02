@@ -11,6 +11,11 @@
   .label-quantity {
     padding-top: 7px;
   }
+
+  .product-image-container {
+    // set for the correct product label ribbon positioning in the PDP only
+    position: relative;
+  }
 }
 
 .bundled-product-list,
