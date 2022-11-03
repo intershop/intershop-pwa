@@ -119,6 +119,7 @@
     "@angular/compiler-cli": "14.2.5",
     "@angular/language-service": "14.2.5",
     "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@compodoc/compodoc": "^1.1.19",
     "@cspell/dict-de-de": "1.1.32",
     "@cspell/dict-fr-fr": "^2.1.1",
@@ -138,8 +139,6 @@
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "comment-json": "^4.2.3",
-    "commitizen": "^4.2.5",
-    "commitlint-config-cz": "^0.13.3",
     "conventional-changelog-cli": "2.2.2",
     "cspell": "^6.12.0",
     "cz-customizable": "^7.0.0",
@@ -221,7 +220,7 @@
   },
   "commitlint": {
     "extends": [
-      "cz"
+      "@commitlint/config-conventional"
     ]
   },
   "config": {
