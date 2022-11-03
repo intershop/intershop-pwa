@@ -184,6 +184,25 @@ export class MatomoEffects {
   );
 
   /**
+   * Tracks the category when product detail page is called.
+   */
+  trackProductCategoryTagManager$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loadProductSuccess),
+        mapToPayloadProperty('product'),
+        withLatestFrom(this.store.pipe(ofProductUrl(), select(getSelectedProduct))),
+        filter(([payloadProd, product]) => !!product && payloadProd?.sku === product?.sku),
+        tap(([, product]) => {
+          const category = product.defaultCategoryId;
+          this.tracker.trackEvent('TrackCategory', category);
+          console.log(`Category is ${category}`);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  /**
    * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
    * Add queryParam error=true to the route to prevent resetting errors.
    *
