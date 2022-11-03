@@ -77,6 +77,9 @@ kb_sync_latest_only
 ### Third-party Integrations
 
 - [Guide - Google Tag Manager](./guides/google-tag-manager.md)
+<!-- cSpell: disable -->
+- [Guide - Matomo Analytics](./guides/matomo-tracking.md)
+<!-- cSpell: enable -->
 - [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
 - [Guide - Extended Product Configurations with Tacton](./guides/tacton-product-configuration.md)
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)
