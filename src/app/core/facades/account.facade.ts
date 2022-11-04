@@ -15,6 +15,7 @@ import { MessagesPayloadType } from 'ish-core/store/core/messages';
 import {
   createCustomerAddress,
   deleteCustomerAddress,
+  updateCustomerAddress,
   getAddressesError,
   getAddressesLoading,
   getAllAddresses,
@@ -238,6 +239,10 @@ export class AccountFacade {
 
   deleteCustomerAddress(addressId: string) {
     this.store.dispatch(deleteCustomerAddress({ addressId }));
+  }
+
+  updateCustomerAddress(address: Address) {
+    this.store.dispatch(updateCustomerAddress({ address }));
   }
 
   // DATA REQUESTS

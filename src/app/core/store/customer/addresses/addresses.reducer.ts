@@ -21,6 +21,7 @@ import {
   loadAddresses,
   loadAddressesFail,
   loadAddressesSuccess,
+  updateCustomerAddress,
   updateCustomerAddressFail,
   updateCustomerAddressSuccess,
 } from './addresses.actions';
@@ -43,6 +44,7 @@ export const addressesReducer = createReducer(
     loadAddresses,
     createCustomerAddress,
     createBasketAddress,
+    updateCustomerAddress,
     updateBasketAddress,
     deleteCustomerAddress,
     deleteBasketShippingAddress

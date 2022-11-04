@@ -132,7 +132,6 @@ describe('Account Addresses Component', () => {
       element.querySelectorAll('div[data-testing-id=preferred-invoice-and-shipping-address] formly-field')
     ).toHaveLength(2);
     expect(element.querySelector('div[data-testing-id=preferred-invoice-address]')).toBeFalsy();
-    expect(element.querySelector('div[data-testing-id=preferred-shipping-address]')).toBeFalsy();
   });
 
   it('should display both preferred addresses if preferred invoice and shipping address are not equal', () => {
@@ -277,5 +276,37 @@ describe('Account Addresses Component', () => {
     component.deleteAddress(address);
 
     verify(accountFacade.deleteCustomerAddress(anything())).once();
+  });
+
+  it('should emit updateCustomerAddress event when updateCustomerAddress is triggered', () => {
+    const address = { id: '123' } as Address;
+
+    component.updateAddress(address);
+
+    verify(accountFacade.updateCustomerAddress(anything())).once();
+  });
+
+  it('should emit updateInvoiceAddress event when updateInvoiceAddress is triggered', () => {
+    const address = { id: '123' } as Address;
+
+    component.updateInvoiceAddress(address);
+
+    verify(accountFacade.updateCustomerAddress(anything())).once();
+  });
+
+  it('should emit updateShippingAddress event when updateShippingAddress is triggered', () => {
+    const address = { id: '123' } as Address;
+
+    component.updateShippingAddress(address);
+
+    verify(accountFacade.updateCustomerAddress(anything())).once();
+  });
+
+  it('should emit updateFurtherAddress event when updateFurtherAddress is triggered', () => {
+    const address = { id: '123' } as Address;
+
+    component.updateFurtherAddress(address);
+
+    verify(accountFacade.updateCustomerAddress(anything())).once();
   });
 });
