@@ -132,6 +132,7 @@ describe('Account Addresses Component', () => {
       element.querySelectorAll('div[data-testing-id=preferred-invoice-and-shipping-address] formly-field')
     ).toHaveLength(2);
     expect(element.querySelector('div[data-testing-id=preferred-invoice-address]')).toBeFalsy();
+    expect(element.querySelector('div[data-testing-id=preferred-shipping-address]')).toBeFalsy();
   });
 
   it('should display both preferred addresses if preferred invoice and shipping address are not equal', () => {
