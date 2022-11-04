@@ -15,7 +15,7 @@ export class ProductNotificationsService {
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
-  getProductNotifications$(): Observable<ProductNotification[]> {
+  getProductNotifications(): Observable<ProductNotification[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService

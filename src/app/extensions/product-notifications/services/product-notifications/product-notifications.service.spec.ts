@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { instance, mock } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -10,7 +10,7 @@ import { ProductNotificationsService } from './product-notifications.service';
 describe('Product Notifications Service', () => {
   let apiServiceMock: ApiService;
   let productNotificationsService: ProductNotificationsService;
-  let store$: MockStore;
+  //let store$: MockStore;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
@@ -22,7 +22,7 @@ describe('Product Notifications Service', () => {
     });
     productNotificationsService = TestBed.inject(ProductNotificationsService);
 
-    store$ = TestBed.inject(MockStore);
+    //store$ = TestBed.inject(MockStore);
   });
 
   it('should be created', () => {
