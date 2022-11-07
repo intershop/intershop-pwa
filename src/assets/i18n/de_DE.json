@@ -31,6 +31,7 @@
   "account.address.uk.postalcode.error.regexp": "Geben Sie eine gültige PLZ (ZIP-Code) für UK an (mit Leerzeichen).",
   "account.address.us.postalcode.error.regexp": "Geben Sie eine gültige PLZ (ZIP-Code) für die USA an.",
   "account.addresses.add_address.button.text": "Adresse hinzufügen",
+  "account.addresses.address_updated.message": "Ihre Adresse wurde aktualisiert.",
   "account.addresses.create_address.button.label": "Adresse speichern",
   "account.addresses.delete_address.text": "Diese Adresse löschen",
   "account.addresses.have_no_saved_address.text": "Sie haben derzeit keine gespeicherten Adressen. Fügen Sie Ihre Rechnungs- und Lieferadresse hinzu, um den Bestellvorgang in Zukunft zu beschleunigen.",

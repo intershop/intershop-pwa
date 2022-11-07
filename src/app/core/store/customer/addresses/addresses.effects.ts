@@ -65,7 +65,6 @@ export class AddressesEffects {
   /**
    * Updates a customer address.
    */
-
   updateCustomerAddress$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateCustomerAddress),
@@ -76,7 +75,7 @@ export class AddressesEffects {
         this.addressService.updateCustomerAddress('-', address).pipe(
           mergeMap(() => [
             updateCustomerAddressSuccess({ address }),
-            displaySuccessMessage({ message: 'account.addresses.new_address_deleted.message' }),
+            displaySuccessMessage({ message: 'account.addresses.address_updated.message' }),
           ]),
           mapErrorToAction(updateCustomerAddressFail)
         )

@@ -32,16 +32,11 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
   preferredInvoiceToAddress: Address;
   preferredShipToAddress: Address;
 
-  CollapseBasicInvoiceEdit = 'CollapseBasicInvoiceEdit';
-
   selectInvoiceConfig: FormlyFieldConfig;
   selectShippingConfig: FormlyFieldConfig;
 
   isCreateAddressFormCollapsed = true;
-  isUpdateAddressFormCollapsed = true;
-  isInvoiceUpdateAddressFormCollapsed = true;
-  isShippingUpdateAddressFormCollapsed = true;
-  isFurtherUpdateAddressFormCollapsed = true;
+  updateFormExpandedAddressId: string;
 
   preferredAddressForm: FormGroup = new FormGroup({});
   furtherAddresses: Address[] = [];
@@ -160,32 +155,15 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
     this.isCreateAddressFormCollapsed = true;
   }
 
-  showUpdateAddressForm() {
-    this.isUpdateAddressFormCollapsed = false;
+  showUpdateAddressForm(address: Address) {
+    this.updateFormExpandedAddressId = address.id;
   }
   hideUpdateAddressForm() {
-    this.isUpdateAddressFormCollapsed = true;
+    this.updateFormExpandedAddressId = undefined;
   }
 
-  showInvoiceUpdateAddressForm() {
-    this.isInvoiceUpdateAddressFormCollapsed = false;
-  }
-  hideInvoiceUpdateAddressForm() {
-    this.isInvoiceUpdateAddressFormCollapsed = true;
-  }
-
-  showShippingUpdateAddressForm() {
-    this.isShippingUpdateAddressFormCollapsed = false;
-  }
-  hideShippingUpdateAddressForm() {
-    this.isShippingUpdateAddressFormCollapsed = true;
-  }
-
-  showFurtherUpdateAddressForm() {
-    this.isFurtherUpdateAddressFormCollapsed = false;
-  }
-  hideFurtherUpdateAddressForm() {
-    this.isFurtherUpdateAddressFormCollapsed = true;
+  isUpdateAddressFormCollapsed(address: Address) {
+    return address?.id !== this.updateFormExpandedAddressId;
   }
 
   createAddress(address: Address) {
@@ -195,22 +173,6 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
   updateAddress(address: Address): void {
     this.accountFacade.updateCustomerAddress(address);
     this.hideUpdateAddressForm();
-    this.hideUpdateAddressForm();
-  }
-
-  updateInvoiceAddress(address: Address): void {
-    this.accountFacade.updateCustomerAddress(address);
-    this.hideInvoiceUpdateAddressForm();
-  }
-
-  updateShippingAddress(address: Address): void {
-    this.accountFacade.updateCustomerAddress(address);
-    this.hideShippingUpdateAddressForm();
-  }
-
-  updateFurtherAddress(address: Address): void {
-    this.accountFacade.updateCustomerAddress(address);
-    this.hideFurtherUpdateAddressForm();
   }
 
   deleteAddress(address: Address) {

@@ -177,7 +177,7 @@ describe('Addresses Effects', () => {
       const action = updateCustomerAddress({ address });
       const completion = updateCustomerAddressSuccess({ address });
       const completion2 = displaySuccessMessage({
-        message: 'account.addresses.new_address_deleted.message',
+        message: 'account.addresses.address_updated.message',
       });
       actions$ = hot('-a-', { a: action });
       const expected$ = cold('-(cd)', { c: completion, d: completion2 });

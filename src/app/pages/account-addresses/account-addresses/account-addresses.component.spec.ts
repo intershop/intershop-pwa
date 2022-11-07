@@ -271,15 +271,7 @@ describe('Account Addresses Component', () => {
     verify(accountFacade.createCustomerAddress(anything())).once();
   });
 
-  it('should emit deleteCustomerAddress event when deleteCustomerAddress is triggered', () => {
-    const address = { id: '123' } as Address;
-
-    component.deleteAddress(address);
-
-    verify(accountFacade.deleteCustomerAddress(anything())).once();
-  });
-
-  it('should emit updateCustomerAddress event when updateCustomerAddress is triggered', () => {
+  it('should emit updateAddress event when updateAddress is triggered', () => {
     const address = { id: '123' } as Address;
 
     component.updateAddress(address);
@@ -287,27 +279,11 @@ describe('Account Addresses Component', () => {
     verify(accountFacade.updateCustomerAddress(anything())).once();
   });
 
-  it('should emit updateInvoiceAddress event when updateInvoiceAddress is triggered', () => {
+  it('should emit deleteCustomerAddress event when deleteCustomerAddress is triggered', () => {
     const address = { id: '123' } as Address;
 
-    component.updateInvoiceAddress(address);
+    component.deleteAddress(address);
 
-    verify(accountFacade.updateCustomerAddress(anything())).once();
-  });
-
-  it('should emit updateShippingAddress event when updateShippingAddress is triggered', () => {
-    const address = { id: '123' } as Address;
-
-    component.updateShippingAddress(address);
-
-    verify(accountFacade.updateCustomerAddress(anything())).once();
-  });
-
-  it('should emit updateFurtherAddress event when updateFurtherAddress is triggered', () => {
-    const address = { id: '123' } as Address;
-
-    component.updateFurtherAddress(address);
-
-    verify(accountFacade.updateCustomerAddress(anything())).once();
+    verify(accountFacade.deleteCustomerAddress(anything())).once();
   });
 });

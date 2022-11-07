@@ -3,7 +3,7 @@
     {{ 'account.addresses.saved_address.heading' | translate }}
     <!-- Add address link -->
     <a
-      *ngIf="isCreateAddressFormCollapsed"
+      *ngIf="isCreateAddressFormCollapsed && !updateFormExpandedAddressId"
       class="btn btn-secondary float-right"
       (click)="showCreateAddressForm()"
       [attr.aria-expanded]="!isCreateAddressFormCollapsed"
@@ -39,38 +39,15 @@
       <ng-container *ngIf="hasPreferredAddresses && preferredAddressesEqual">
         <div class="section" data-testing-id="preferred-invoice-and-shipping-address">
           <h3>{{ 'account.addresses.preferredinvoiceandshipping.heading' | translate }}</h3>
-          <!-- edit action -->
-          <div *ngIf="isUpdateAddressFormCollapsed" class="row">
-            <div class="col-sm-7 col-md-5">
-              <div class="float-right">
-                <a
-                  *ngIf="isUpdateAddressFormCollapsed"
-                  class="float-right btn-tool"
-                  (click)="showUpdateAddressForm()"
-                  [attr.aria-expanded]="!isUpdateAddressFormCollapsed"
-                  aria-controls="CollapseBasicEdit"
-                >
-                  <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
-                </a>
-              </div>
-              <ish-address [address]="preferredInvoiceToAddress"></ish-address>
-            </div>
-          </div>
-          <!-- edit address form -->
-          <div id="CollapseBasicEdit" class="section" *ngIf="!isUpdateAddressFormCollapsed">
-            <div class="row">
-              <div class="col-md-10 col-xl-8">
-                <ish-formly-customer-address-form
-                  [address]="preferredInvoiceToAddress"
-                  [resetForm]="isUpdateAddressFormCollapsed"
-                  (save)="updateAddress($event)"
-                  (cancel)="hideUpdateAddressForm()"
-                >
-                </ish-formly-customer-address-form>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="isUpdateAddressFormCollapsed" class="col-sm-7 col-md-5">
+          <ng-container
+            *ngTemplateOutlet="
+              addressTile;
+              context: {
+                address: preferredInvoiceToAddress
+              }
+            "
+          ></ng-container>
+          <div *ngIf="isUpdateAddressFormCollapsed(preferredInvoiceToAddress)" class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
               <formly-form
                 [form]="preferredAddressForm"
@@ -87,53 +64,19 @@
         <div class="section" data-testing-id="preferred-invoice-address">
           <h3>{{ 'account.addresses.preferredinvoice.heading' | translate }}</h3>
           <ng-container *ngIf="preferredInvoiceToAddress; else noInvoiceToAddress">
-            <div *ngIf="isInvoiceUpdateAddressFormCollapsed" class="row">
-              <!-- edit action -->
-              <div class="col-sm-7 col-md-5">
-                <!-- <ng-container
-                  *ngTemplateOutlet="
-                    editButtonTemplate;
-                    context: {
-                      ariaControls: 'CollapseBasicInvoiceEdit',
-                      condition: 'isInvoiceUpdateAddressFormCollapsed',
-                      method: showInvoiceUpdateAddressForm()
-                    }
-                  "
-                ></ng-container> -->
-                <div class="float-right">
-                  <a
-                    *ngIf="isInvoiceUpdateAddressFormCollapsed"
-                    class="float-right btn-tool"
-                    (click)="showInvoiceUpdateAddressForm()"
-                    [attr.aria-expanded]="!isInvoiceUpdateAddressFormCollapsed"
-                    aria-controls="CollapseBasicInvoiceEdit"
-                  >
-                    <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
-                  </a>
-                </div>
-                <!-- address info -->
-                <ish-address [address]="preferredInvoiceToAddress"></ish-address>
-              </div>
-            </div>
-            <!-- edit address form -->
-            <div id="CollapseBasicInvoiceEdit" class="section" *ngIf="!isInvoiceUpdateAddressFormCollapsed">
-              <div class="row">
-                <div class="col-md-10 col-xl-8">
-                  <ish-formly-customer-address-form
-                    [address]="preferredInvoiceToAddress"
-                    [resetForm]="isInvoiceUpdateAddressFormCollapsed"
-                    (save)="updateInvoiceAddress($event)"
-                    (cancel)="hideInvoiceUpdateAddressForm()"
-                  >
-                  </ish-formly-customer-address-form>
-                </div>
-              </div>
-            </div>
+            <ng-container
+              *ngTemplateOutlet="
+                addressTile;
+                context: {
+                  address: preferredInvoiceToAddress
+                }
+              "
+            ></ng-container>
           </ng-container>
           <ng-template #noInvoiceToAddress>
             <p class="no-address-info">{{ 'account.addresses.no_preferred_invoice_address.text' | translate }}</p>
           </ng-template>
-          <div *ngIf="isInvoiceUpdateAddressFormCollapsed" class="col-sm-7 col-md-5">
+          <div *ngIf="isUpdateAddressFormCollapsed(preferredInvoiceToAddress)" class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
               <formly-form [form]="preferredAddressForm" [fields]="[selectInvoiceConfig]"></formly-form>
             </form>
@@ -144,59 +87,19 @@
         <div class="section" data-testing-id="preferred-shipping-address">
           <h3>{{ 'account.addresses.preferredshipping.heading' | translate }}</h3>
           <ng-container *ngIf="preferredShipToAddress; else noShipToAddress">
-            <div *ngIf="isShippingUpdateAddressFormCollapsed" class="row">
-              <!-- edit action -->
-              <div class="col-sm-7 col-md-5">
-                <!-- <ng-container
-                  *ngTemplateOutlet="
-                    editButtonTemplate;
-                    context: {
-                      ariaControls: 'CollapseBasicShippingEdit',
-                      condition: 'isShippingUpdateAddressFormCollapsed',
-                      method: showShippingUpdateAddressForm()
-                    }
-                  "
-                ></ng-container> -->
-
-                <div class="float-right">
-                  <a
-                    *ngIf="isShippingUpdateAddressFormCollapsed"
-                    class="float-right btn-tool"
-                    (click)="showShippingUpdateAddressForm()"
-                    [attr.aria-expanded]="!isShippingUpdateAddressFormCollapsed"
-                    aria-controls="CollapseBasicShippingEdit"
-                  >
-                    <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
-                  </a>
-                </div>
-                <!-- address info -->
-                <ish-address [address]="preferredShipToAddress"></ish-address>
-              </div>
-            </div>
-            <!-- edit address form -->
-            <div
-              id="CollapseBasicShippingEdit"
-              class="section"
-              *ngIf="!isShippingUpdateAddressFormCollapsed"
-              data-testing-id="update-shipping-address-form"
-            >
-              <div class="row">
-                <div class="col-md-10 col-xl-8">
-                  <ish-formly-customer-address-form
-                    [address]="preferredShipToAddress"
-                    [resetForm]="isShippingUpdateAddressFormCollapsed"
-                    (save)="updateShippingAddress($event)"
-                    (cancel)="hideShippingUpdateAddressForm()"
-                  >
-                  </ish-formly-customer-address-form>
-                </div>
-              </div>
-            </div>
+            <ng-container
+              *ngTemplateOutlet="
+                addressTile;
+                context: {
+                  address: preferredShipToAddress
+                }
+              "
+            ></ng-container>
           </ng-container>
           <ng-template #noShipToAddress>
             <p class="no-address-info">{{ 'account.addresses.no_preferred_shipping_address.text' | translate }}</p>
           </ng-template>
-          <div *ngIf="isShippingUpdateAddressFormCollapsed" class="col-sm-7 col-md-5">
+          <div *ngIf="isUpdateAddressFormCollapsed(preferredShipToAddress)" class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
               <formly-form [form]="preferredAddressForm" [fields]="[selectShippingConfig]"></formly-form>
             </form>
@@ -209,60 +112,15 @@
         <div class="section" data-testing-id="further-addresses">
           <h3>{{ 'account.addresses.heading' | translate }}</h3>
           <div *ngFor="let currentAddress of furtherAddresses" class="list-item-row">
-            <div class="row">
-              <div class="col-sm-7 col-md-5">
-                <!-- edit action -->
-                <div class="float-right row">
-                  <a
-                    *ngIf="isFurtherUpdateAddressFormCollapsed"
-                    class="float-right btn-tool"
-                    (click)="showFurtherUpdateAddressForm()"
-                    [attr.aria-expanded]="!isFurtherUpdateAddressFormCollapsed"
-                    aria-controls="CollapseBasicShippingEdit"
-                  >
-                    <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
-                  </a>
-
-                  <!-- delete address: is only possible if the customer has more than one address -->
-                  <a
-                    *ngIf="(addresses$ | async)?.length > 1 && isFurtherUpdateAddressFormCollapsed"
-                    class="btn-tool"
-                    title="{{ 'account.addresses.delete_address.text' | translate }}"
-                    (click)="modalDialog.show(currentAddress)"
-                  >
-                    <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
-                  </a>
-
-                  <ish-modal-dialog
-                    #modalDialog
-                    [options]="{
-                      titleText: 'account.addresses.remove_dialog.title' | translate,
-                      confirmText: 'account.addresses.remove_dialog.label_yes' | translate,
-                      rejectText: 'account.addresses.remove_dialog.label_no' | translate
-                    }"
-                    (confirmed)="deleteAddress($event)"
-                  >
-                    <p>{{ 'account.addresses.remove_dialog.message_line2' | translate }}</p>
-                  </ish-modal-dialog>
-                </div>
-
-                <ish-address *ngIf="isFurtherUpdateAddressFormCollapsed" [address]="currentAddress"></ish-address>
-              </div>
-            </div>
-            <!-- edit address form -->
-            <div [id]="currentAddress.id" class="section" *ngIf="!isFurtherUpdateAddressFormCollapsed">
-              <div class="row">
-                <div class="col-md-10 col-xl-8">
-                  <ish-formly-customer-address-form
-                    [address]="currentAddress"
-                    [resetForm]="isFurtherUpdateAddressFormCollapsed"
-                    (save)="updateFurtherAddress($event)"
-                    (cancel)="hideFurtherUpdateAddressForm()"
-                  >
-                  </ish-formly-customer-address-form>
-                </div>
-              </div>
-            </div>
+            <ng-container
+              *ngTemplateOutlet="
+                addressTile;
+                context: {
+                  address: currentAddress,
+                  deletable: (addresses$ | async)?.length > 1
+                }
+              "
+            ></ng-container>
           </div>
         </div>
       </ng-container>
@@ -273,20 +131,60 @@
       <p class="empty-list">{{ 'account.addresses.have_no_saved_address.text' | translate }}</p>
     </ng-template>
 
-    <!-- <ng-template #editButtonTemplate let-method="method" let-condition="condition" let-ariaControls="ariaControls">
-      <div class="float-right">
-        <a
-          *ngIf="condition"
-          class="float-right btn-tool"
-          (click)="(method)"
-          [attr.aria-expanded]="!condition"
-          aria-controls="ariaControls"
-          data-testing-id="update-address-button"
-          title="{{ 'account.address.update.label' | translate }} />"
-        >
-          <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
-        </a>
+    <ng-template #addressTile let-address="address" let-deletable="deletable">
+      <!-- edit action -->
+      <div *ngIf="isUpdateAddressFormCollapsed(address)" class="row">
+        <div class="col-sm-7 col-md-5">
+          <div *ngIf="isCreateAddressFormCollapsed" class="float-right">
+            <a
+              *ngIf="isUpdateAddressFormCollapsed(address)"
+              class="btn-tool"
+              (click)="showUpdateAddressForm(address)"
+              title="{{ 'checkout.address.update.button.label' | translate }}"
+              [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
+              aria-controls="CollapseBasicEdit"
+            >
+              <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+            </a>
+
+            <a
+              *ngIf="deletable"
+              class="btn-tool"
+              title="{{ 'account.addresses.delete_address.text' | translate }}"
+              (click)="modalDialog.show(address)"
+            >
+              <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+            </a>
+
+            <ish-modal-dialog
+              #modalDialog
+              [options]="{
+                titleText: 'account.addresses.remove_dialog.title' | translate,
+                confirmText: 'account.addresses.remove_dialog.label_yes' | translate,
+                rejectText: 'account.addresses.remove_dialog.label_no' | translate
+              }"
+              (confirmed)="deleteAddress($event)"
+            >
+              <p>{{ 'account.addresses.remove_dialog.message_line2' | translate }}</p>
+            </ish-modal-dialog>
+          </div>
+          <ish-address [address]="address"></ish-address>
+        </div>
       </div>
-    </ng-template> -->
+      <!-- edit address form -->
+      <div id="CollapseBasicEdit" class="section" *ngIf="!isUpdateAddressFormCollapsed(address)">
+        <div class="row">
+          <div class="col-md-10 col-xl-8">
+            <ish-formly-customer-address-form
+              [address]="address"
+              [resetForm]="isUpdateAddressFormCollapsed(address)"
+              (save)="updateAddress($event)"
+              (cancel)="hideUpdateAddressForm()"
+            >
+            </ish-formly-customer-address-form>
+          </div>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </div>
