@@ -4,6 +4,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { MatomoTracker, NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { Observable, of } from 'rxjs';
+import { MatomoEffects } from 'src/app/extensions/matomo/store/matomo/matomo.effects';
 import { instance, mock, verify } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -14,8 +15,6 @@ import { createBasketSuccess, deleteBasketItem } from 'ish-core/store/customer/b
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-
-import { MatomoEffects } from './matomo.effects';
 
 describe('Matomo Effects', () => {
   let actions$: Observable<Action>;
