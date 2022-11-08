@@ -15,6 +15,7 @@ A possible scenario would be to have the shopping experience with all its SEO op
 
 - ICM 7.10.32.16-LTS or 7.10.38.6-LTS
 - PWA 2.3.0
+- Helm Chart [pwa-main](https://github.com/intershop/helm-charts/releases?q=pwa-main&expanded=true) 0.4.0
 
 > **NOTE:** The feature is based on the assumption that the PWA and the ICM can read and write each other's cookies. That means that cookies written by the PWA and ICM must have the same domain and the same path. This works since all Responsive Starter Store requests and responses are proxied through the PWA SSR simulating a common domain.
 
