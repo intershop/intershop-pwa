@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 
-import { MatomoEffects } from '../../matomo/matomo.effects';
+import { MatomoEffects } from '../../matomo/store/matomo/matomo.effects';
 
 import { TrackingConfigEffects } from './tracking-config/tracking-config.effects';
 import { trackingConfigReducer } from './tracking-config/tracking-config.reducer';

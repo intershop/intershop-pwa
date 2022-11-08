@@ -4,13 +4,12 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MatomoTracker, NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { Observable, of } from 'rxjs';
+import { MatomoEffects } from 'src/app/extensions/matomo/store/matomo/matomo.effects';
 import { instance, mock, verify } from 'ts-mockito';
 
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
-
-import { MatomoEffects } from './matomo.effects';
 
 describe('Matomo Effects', () => {
   let actions$: Observable<Action>;
