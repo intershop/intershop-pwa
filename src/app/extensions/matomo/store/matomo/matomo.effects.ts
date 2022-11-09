@@ -5,16 +5,16 @@ import { Store, select } from '@ngrx/store';
 import { MatomoTracker } from '@ngx-matomo/tracker';
 import { EMPTY } from 'rxjs';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+
+import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import {
   addItemsToBasketSuccess,
   deleteBasketItem,
   loadBasketSuccess,
   submitBasket,
   updateBasketItemSuccess,
-} from 'src/app/core/store/customer/basket/basket.actions';
-import { getCurrentBasket } from 'src/app/core/store/customer/basket/basket.selectors';
-
-import { ofProductUrl } from 'ish-core/routing/product/product.route';
+} from 'ish-core/store/customer/basket';
+import { getCurrentBasket } from 'ish-core/store/customer/basket/basket.selectors';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
 import { getProduct, getSelectedProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
