@@ -143,6 +143,7 @@
               title="{{ 'checkout.address.update.button.label' | translate }}"
               [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
               aria-controls="CollapseBasicEdit"
+              data-testing-id="update-address-button"
             >
               <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
             </a>
@@ -152,6 +153,7 @@
               class="btn-tool"
               title="{{ 'account.addresses.delete_address.text' | translate }}"
               (click)="modalDialog.show(address)"
+              data-testing-id="delete-address-icon"
             >
               <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
             </a>
@@ -172,7 +174,12 @@
         </div>
       </div>
       <!-- edit address form -->
-      <div id="CollapseBasicEdit" class="section" *ngIf="!isUpdateAddressFormCollapsed(address)">
+      <div
+        id="CollapseBasicEdit"
+        class="section"
+        *ngIf="!isUpdateAddressFormCollapsed(address)"
+        data-testing-id="update-address-form"
+      >
         <div class="row">
           <div class="col-md-10 col-xl-8">
             <ish-formly-customer-address-form
