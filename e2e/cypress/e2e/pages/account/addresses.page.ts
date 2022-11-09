@@ -1,5 +1,3 @@
-import { Address } from 'cluster';
-
 import { fillFormField } from '../../framework';
 import { Registration } from '../account/registration.page';
 import { HeaderModule } from '../header.module';
@@ -19,8 +17,9 @@ export class AddressesPage {
     cy.get('[data-testing-id="create-address-button"]').click();
   }
 
-  fillForm(data: Address) {
-    Object.keys(data).forEach(key => fillFormField(this.tag, key, data[key]));
+  fillForm(user: string, password: string) {
+    cy.get('input[data-testing-id="login"]').clear().type(user).blur();
+    cy.get('input[data-testing-id="password"]').clear().type(password).blur();
     return this;
   }
 
@@ -34,7 +33,7 @@ export class AddressesPage {
     return this;
   }
 
-  Cancel() {
+  cancel() {
     cy.get('button').contains('Cancel').click();
   }
 

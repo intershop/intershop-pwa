@@ -56,7 +56,7 @@ describe('Addresses Page Functionality', () => {
     at(AddressesPage, page => {
       page.createAddress();
       page.fillCreateAddressForm(_.address);
-      page.Cancel();
+      page.saveAddress();
       page.selectShippingAddress();
     });
   });
