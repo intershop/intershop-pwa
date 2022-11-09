@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Migrations
 
+## 3.1 to 3.2
+
+A styling adaption was made to the application shell to expand it to the full page height so the footer now always stays at the bottom.
+Together with that an inline style of the `main-container` was moved to the global styling definition.
+
 ## 3.0 to 3.1
 
 The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).

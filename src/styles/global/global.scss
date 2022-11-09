@@ -2,6 +2,8 @@
 // LAYOUT
 // contains layout and presentation classes for the global page structure (header, footer, global navigation, ...)
 .main-container {
+  position: relative;
+  min-height: 200px;
   background: $color-inverse;
 }
 
