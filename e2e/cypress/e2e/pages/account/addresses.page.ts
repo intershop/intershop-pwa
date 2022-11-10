@@ -13,6 +13,18 @@ export class AddressesPage {
     return cy.get(this.tag).find('[data-testing-id="preferred-invoice-and-shipping-address"]');
   }
 
+  get furtherAddress() {
+    return cy.get(this.tag).find('[data-testing-id="further-addresses"]');
+  }
+
+  get shippingAddress() {
+    return cy.get(this.tag).find('[data-testing-id="preferred-shipping-address"]');
+  }
+
+  get invoiceAddress() {
+    return cy.get(this.tag).find('[data-testing-id="preferred-invoice-address"]');
+  }
+
   createAddress() {
     cy.get('[data-testing-id="create-address-button"]').click();
   }
@@ -65,5 +77,11 @@ export class AddressesPage {
   deleteAddress() {
     cy.get('[data-testing-id="delete-address-icon"]').last().click();
     cy.get('button').contains('Delete').click();
+  }
+
+  get successMessage() {
+    return {
+      message: cy.get('#toast-container').find('.toast-message'),
+    };
   }
 }

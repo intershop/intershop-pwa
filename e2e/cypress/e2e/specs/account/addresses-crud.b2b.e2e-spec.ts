@@ -55,9 +55,12 @@ describe('Addresses Page Functionality', () => {
   it('should be able to create address and assign as shipping address', () => {
     at(AddressesPage, page => {
       page.createAddress();
+      cy.wait(500);
       page.fillCreateAddressForm(_.address);
       page.saveAddress();
+      page.furtherAddress.should('contain', _.address.addressLine1);
       page.selectShippingAddress();
+      page.shippingAddress.should('contain', _.address.addressLine1);
     });
   });
 
@@ -66,23 +69,30 @@ describe('Addresses Page Functionality', () => {
       page.createAddress();
       page.fillCreateAddressForm(_.furtherAddress);
       page.saveAddress();
+      page.furtherAddress.should('contain', _.furtherAddress.addressLine1);
     });
   });
 
   it('should be able to assign the further address as default invoice address', () => {
-    at(AddressesPage, page => page.selectInvoiceAddress());
+    at(AddressesPage, page => {
+      page.selectInvoiceAddress();
+      page.invoiceAddress.should('contain', _.furtherAddress.addressLine1);
+    });
   });
 
   it('should be able to update address details and see changes', () => {
     at(AddressesPage, page => {
       page.updateAddress();
       page.fillUpdateAddressForm(_.newAddress).submit().its('response.statusCode').should('equal', 200);
+      page.successMessage.message.should('contain', 'updated');
+      page.furtherAddress.should('contain', `${_.newAddress.firstName} ${_.newAddress.lastName}`);
     });
   });
 
   it('should be able to delete an address and see changes', () => {
     at(AddressesPage, page => {
       page.deleteAddress();
+      page.successMessage.message.should('contain', 'deleted');
     });
   });
 });
