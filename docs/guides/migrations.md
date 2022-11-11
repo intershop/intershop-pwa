@@ -24,6 +24,9 @@ After entering a desired delivery date on the checkout shipping page and after s
 In case of large basket (> 20 items) this might cause (unacceptable) long response times.
 You can keep the existing behavior by modifying the updateBasketItemsDesiredDeliveryDate() method of the basket service to always return an empty array without doing anything.
 
+The `ProductsService` was changed to use `extended=true` REST calls for product details and variations to fetch variation attributes with additional `attributeType` and `metaData` information that can be used to control the rendering of different variation select types.
+The added `VariationAttributeMapper` maps the additional information in a backwards compatible way.
+
 ## 3.0 to 3.1
 
 The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).

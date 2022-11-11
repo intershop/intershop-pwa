@@ -66,7 +66,7 @@ describe('Product Mapper', () => {
       const product: Product = productMapper.fromData({
         sku: '1',
         productMaster: true,
-        variationAttributeValues: [],
+        variationAttributeValuesExtended: [],
       } as ProductData);
       expect(product).toBeTruthy();
       expect(product.type).toEqual('VariationProductMaster');
@@ -78,7 +78,7 @@ describe('Product Mapper', () => {
       const product: Product = productMapper.fromData({
         sku: '1',
         productMaster: false,
-        variableVariationAttributes: [],
+        variationAttributeValuesExtended: [],
       } as ProductData);
       expect(product).toBeTruthy();
       expect(product.type).toEqual('Product');
