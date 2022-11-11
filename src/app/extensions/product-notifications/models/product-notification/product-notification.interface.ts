@@ -1,8 +1,6 @@
 import { Price } from 'ish-core/models/price/price.model';
 
-export interface ProductNotification {
-  id: string;
-  type: 'price' | 'stock';
+export interface ProductNotificationData {
   sku: string;
   notificationMailAddress: string;
   price?: Price;

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, switchMap, take } from 'rxjs';
+import { Observable, map, switchMap, take } from 'rxjs';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { ProductNotificationData } from '../../models/product-notification/product-notification.interface';
+import { ProductNotificationMapper } from '../../models/product-notification/product-notification.mapper';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
 @Injectable({ providedIn: 'root' })
@@ -24,7 +26,12 @@ export class ProductNotificationsService {
               ? `customers/${customer.customerNo}/users/-/notifications/stock`
               : `users/-/notifications/stock`
           )
-          .pipe(unpackEnvelope<Link>(), this.apiService.resolveLinks<ProductNotification>())
+          .pipe(
+            unpackEnvelope<Link>(),
+            this.apiService.resolveLinks<ProductNotificationData>(),
+
+            map(data => data.map(ProductNotificationMapper.fromData))
+          )
       )
     );
   }

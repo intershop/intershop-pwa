@@ -12,9 +12,7 @@ import {
   loadProductNotificationsSuccess,
 } from './product-notification.actions';
 
-export const productNotificationAdapter = createEntityAdapter<ProductNotification>({
-  selectId: productNotification => productNotification.sku,
-});
+export const productNotificationAdapter = createEntityAdapter<ProductNotification>();
 
 export interface ProductNotificationState extends EntityState<ProductNotification> {
   loading: boolean;
