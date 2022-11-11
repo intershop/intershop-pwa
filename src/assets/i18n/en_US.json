@@ -897,6 +897,7 @@
   "product.label.sale.text": "SALE",
   "product.label.topseller.text": "TOP",
   "product.manufacturer_name.label": "Manufacturer Name",
+  "product.notification.edit.link.title": "Edit Notification",
   "product.out_of_stock.text": "Out of Stock",
   "product.price.listPriceFallback.text": "{{0}}",
   "product.price.na.text": "N/A",

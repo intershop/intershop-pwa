@@ -24,4 +24,13 @@
       </ng-container>
     </ng-container>
   </ng-container>
+
+  <ng-container *ngIf="productNotifications$ | async as productNotifications">
+    <ng-container *ngIf="productNotifications?.length > 0" class="list-body">
+      <div *ngFor="let productNotification of productNotifications">
+        {{ productNotification.sku }}
+        <ish-product-notification-edit></ish-product-notification-edit>
+      </div>
+    </ng-container>
+  </ng-container>
 </div>

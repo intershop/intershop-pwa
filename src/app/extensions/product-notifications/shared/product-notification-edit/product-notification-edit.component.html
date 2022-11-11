@@ -1,0 +1,9 @@
+<a
+  class="btn-tool"
+  [title]="'product.notification.edit.link.title' | translate"
+  (click)="openModal(modal)"
+  data-testing-id="product-notification-edit"
+  ><fa-icon icon="pencil-alt"></fa-icon
+></a>
+
+<ish-product-notification-dialog #modal></ish-product-notification-dialog>

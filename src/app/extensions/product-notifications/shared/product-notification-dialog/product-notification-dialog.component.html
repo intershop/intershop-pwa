@@ -1,0 +1,34 @@
+<ng-template #modal let-selectModal>
+  <div class="modal-header">
+    <h2 class="modal-title">title</h2>
+    <button
+      type="button"
+      class="close"
+      [title]="'dialog.close.text' | translate"
+      [attr.aria-label]="'dialog.close.text' | translate"
+      (click)="hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <ng-container>
+    <div class="modal-body">
+      <!-- form component -->
+      (radio) I no longer wish to receive notifications about this item.<br /><br />
+      Back In Stock<br />
+      (radio) Notify me if product is back in stock.<br />
+      Price<br />
+      (radio) Notify me should the price drop to:<br />
+      Price: $ [input]<br /><br />
+      E-Mail [input]
+    </div>
+    <div class="modal-footer">footer</div>
+  </ng-container>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="hide()">
+      {{ 'store.dialog.button.ok' | translate }}
+    </button>
+  </div>
+</ng-template>
