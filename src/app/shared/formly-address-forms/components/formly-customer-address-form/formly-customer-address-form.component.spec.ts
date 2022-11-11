@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { FormlyAddressExtensionFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-extension-form/formly-address-extension-form.component';
 import { FormlyAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-form/formly-address-form.component';
 
@@ -26,7 +27,11 @@ describe('Formly Customer Address Form Component', () => {
         MockComponent(FormlyAddressExtensionFormComponent),
         MockComponent(FormlyAddressFormComponent),
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule.forTesting('businessCustomerRegistration'),
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+      ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
