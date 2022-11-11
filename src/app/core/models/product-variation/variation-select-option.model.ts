@@ -4,4 +4,5 @@ export interface VariationSelectOption {
   type: string;
   alternativeCombination?: boolean;
   active?: boolean;
+  metaData?: string;
 }

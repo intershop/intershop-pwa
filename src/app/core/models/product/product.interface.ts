@@ -5,7 +5,7 @@ import { CategoryData } from 'ish-core/models/category/category.interface';
 import { Image } from 'ish-core/models/image/image.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { PriceData } from 'ish-core/models/price/price.interface';
-import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
+import { VariationAttributeData } from 'ish-core/models/product-variation/variation-attribute.interface';
 import { SeoAttributesData } from 'ish-core/models/seo-attributes/seo-attributes.interface';
 import { Warranty } from 'ish-core/models/warranty/warranty.model';
 
@@ -41,8 +41,7 @@ export interface ProductData {
   stepOrderQuantity?: number;
   packingUnit: string;
 
-  variationAttributeValues?: VariationAttribute[];
-  variableVariationAttributes?: VariationAttribute[];
+  variationAttributeValuesExtended?: VariationAttributeData[];
   partOfRetailSet: boolean;
 
   attachments?: AttachmentData[];
@@ -74,5 +73,5 @@ export interface ProductDataStub {
 }
 
 export interface ProductVariationLink extends Link {
-  variableVariationAttributeValues: VariationAttribute[];
+  variableVariationAttributeValuesExtended: VariationAttributeData[];
 }

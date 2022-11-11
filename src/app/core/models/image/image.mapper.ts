@@ -53,7 +53,7 @@ export class ImageMapper {
    * @param url The relative or absolute image URL.
    * @returns The URL.
    */
-  private fromEffectiveUrl(url: string): string {
+  fromEffectiveUrl(url: string): string {
     if (!url) {
       return;
     }

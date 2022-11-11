@@ -8,6 +8,7 @@ import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
+import { VariationAttributeMapper } from 'ish-core/models/product-variation/variation-attribute.mapper';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 
 import { SkuQuantityType } from './product.helper';
@@ -43,7 +44,8 @@ export class ProductMapper {
   constructor(
     private imageMapper: ImageMapper,
     private attachmentMapper: AttachmentMapper,
-    private categoryMapper: CategoryMapper
+    private categoryMapper: CategoryMapper,
+    private variationAttributeMapper: VariationAttributeMapper
   ) {}
 
   static parseSkuFromURI(uri: string): string {
@@ -91,7 +93,9 @@ export class ProductMapper {
   fromVariationLink(link: ProductVariationLink, productMasterSKU: string): Partial<VariationProduct> {
     return {
       ...this.fromLink(link),
-      variableVariationAttributes: link.variableVariationAttributeValues,
+      variableVariationAttributes: this.variationAttributeMapper.fromData(
+        link.variableVariationAttributeValuesExtended
+      ),
       productMasterSKU,
       type: 'VariationProduct',
       failed: false,
@@ -227,14 +231,14 @@ export class ProductMapper {
     if (data.productMaster) {
       return {
         ...product,
-        variationAttributeValues: data.variationAttributeValues,
+        variationAttributeValues: this.variationAttributeMapper.fromMasterData(data.variationAttributeValuesExtended),
         type: 'VariationProductMaster',
       };
     } else if (data.mastered) {
       return {
         ...product,
         productMasterSKU: data.productMasterSKU,
-        variableVariationAttributes: data.variableVariationAttributes,
+        variableVariationAttributes: this.variationAttributeMapper.fromData(data.variationAttributeValuesExtended),
         type: 'VariationProduct',
       };
     } else if (data.productTypes?.includes('BUNDLE') || data.productBundle) {
