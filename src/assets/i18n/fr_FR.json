@@ -31,6 +31,7 @@
   "account.address.uk.postalcode.error.regexp": "Veuillez entrer un code postal britannique valide (espace inclus).",
   "account.address.us.postalcode.error.regexp": "Veuillez entrer un code postal des États-Unis valide.",
   "account.addresses.add_address.button.text": "Ajouter une adresse",
+  "account.addresses.address_updated.message": "Votre adresse a été mise à jour.",
   "account.addresses.create_address.button.label": "Enregistrer l’adresse",
   "account.addresses.delete_address.text": "Supprimer cette adresse",
   "account.addresses.have_no_saved_address.text": "Actuellement vous n’avez aucune adresse enregistrée. Ajoutez vos adresses de facturation et d’expédition pour un paiement plus rapide à l’avenir.",

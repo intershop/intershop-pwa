@@ -31,6 +31,7 @@
   "account.address.uk.postalcode.error.regexp": "Please enter a valid UK ZIP code (including the whitespace).",
   "account.address.us.postalcode.error.regexp": "Please enter a valid US ZIP code.",
   "account.addresses.add_address.button.text": "Add Address",
+  "account.addresses.address_updated.message": "Your address has been updated.",
   "account.addresses.create_address.button.label": "Save Address",
   "account.addresses.delete_address.text": "Delete this address",
   "account.addresses.have_no_saved_address.text": "You currently have no saved addresses. Add your invoice and shipping addresses for faster checkout in the future.",

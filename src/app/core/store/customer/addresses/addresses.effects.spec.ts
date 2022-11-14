@@ -21,6 +21,9 @@ import {
   deleteCustomerAddress,
   deleteCustomerAddressFail,
   deleteCustomerAddressSuccess,
+  updateCustomerAddress,
+  updateCustomerAddressFail,
+  updateCustomerAddressSuccess,
   loadAddresses,
   loadAddressesSuccess,
 } from './addresses.actions';
@@ -37,6 +40,7 @@ describe('Addresses Effects', () => {
 
     when(addressServiceMock.getCustomerAddresses()).thenReturn(of([{ urn: 'test' } as Address]));
     when(addressServiceMock.createCustomerAddress(anyString(), anything())).thenReturn(of({ urn: 'test' } as Address));
+    when(addressServiceMock.updateCustomerAddress(anyString(), anything())).thenReturn(of({ urn: 'test' } as Address));
     when(addressServiceMock.deleteCustomerAddress(anyString(), anything())).thenReturn(of('123'));
 
     TestBed.configureTestingModule({
@@ -153,6 +157,46 @@ describe('Addresses Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.deleteCustomerAddress$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateCustomerAddress$', () => {
+    it('should call the addressService for updateCustomerAddress', done => {
+      const address = { urn: '123' } as Address;
+      const action = updateCustomerAddress({ address });
+      actions$ = of(action);
+
+      effects.updateCustomerAddress$.subscribe(() => {
+        verify(addressServiceMock.updateCustomerAddress('-', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type updateCustomerSuccess', () => {
+      const address = { urn: '123' } as Address;
+      const action = updateCustomerAddress({ address });
+      const completion = updateCustomerAddressSuccess({ address });
+      const completion2 = displaySuccessMessage({
+        message: 'account.addresses.address_updated.message',
+      });
+      actions$ = hot('-a-', { a: action });
+      const expected$ = cold('-(cd)', { c: completion, d: completion2 });
+
+      expect(effects.updateCustomerAddress$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type updateCustomerFail', () => {
+      when(addressServiceMock.updateCustomerAddress('-', anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const address = { urn: '123' } as Address;
+      const action = updateCustomerAddress({ address });
+      const error = makeHttpError({ message: 'invalid' });
+      const completion = updateCustomerAddressFail({ error });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateCustomerAddress$).toBeObservable(expected$);
     });
   });
 });

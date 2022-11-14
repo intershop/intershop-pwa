@@ -125,9 +125,10 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   }
 
   private fillForm(prefilledAddress: Partial<Address> = {}) {
-    if (Object.keys(prefilledAddress).length === 0) {
+    if (!this.addressForm || Object.keys(prefilledAddress).length === 0) {
       return;
     }
+
     this.addressModel.countryCode = prefilledAddress.countryCode;
     this.handleCountryChange(this.addressModel);
     this.addressModel = {

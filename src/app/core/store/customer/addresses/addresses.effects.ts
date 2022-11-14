@@ -12,6 +12,9 @@ import {
   createCustomerAddress,
   createCustomerAddressFail,
   createCustomerAddressSuccess,
+  updateCustomerAddress,
+  updateCustomerAddressFail,
+  updateCustomerAddressSuccess,
   deleteCustomerAddress,
   deleteCustomerAddressFail,
   deleteCustomerAddressSuccess,
@@ -54,6 +57,27 @@ export class AddressesEffects {
             }),
           ]),
           mapErrorToAction(createCustomerAddressFail)
+        )
+      )
+    )
+  );
+
+  /**
+   * Updates a customer address.
+   */
+  updateCustomerAddress$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateCustomerAddress),
+      mapToPayloadProperty('address'),
+      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      filter(([address, customer]) => !!address || !!customer),
+      mergeMap(([address]) =>
+        this.addressService.updateCustomerAddress('-', address).pipe(
+          mergeMap(() => [
+            updateCustomerAddressSuccess({ address }),
+            displaySuccessMessage({ message: 'account.addresses.address_updated.message' }),
+          ]),
+          mapErrorToAction(updateCustomerAddressFail)
         )
       )
     )

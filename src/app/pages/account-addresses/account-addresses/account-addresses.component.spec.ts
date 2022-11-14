@@ -275,6 +275,14 @@ describe('Account Addresses Component', () => {
     verify(accountFacade.createCustomerAddress(anything())).once();
   });
 
+  it('should emit updateAddress event when updateAddress is triggered', () => {
+    const address = { id: '123' } as Address;
+
+    component.updateAddress(address);
+
+    verify(accountFacade.updateCustomerAddress(anything())).once();
+  });
+
   it('should emit deleteCustomerAddress event when deleteCustomerAddress is triggered', () => {
     const address = { id: '123' } as Address;
 
