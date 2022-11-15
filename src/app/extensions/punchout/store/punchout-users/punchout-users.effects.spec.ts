@@ -15,6 +15,7 @@ import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 import { PunchoutService } from '../../services/punchout/punchout.service';
+import { PunchoutStoreModule } from '../punchout-store.module';
 
 import {
   addPunchoutUser,
@@ -51,6 +52,7 @@ describe('Punchout Users Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router']),
+        PunchoutStoreModule.forTesting('punchoutUsers'),
         RouterTestingModule.withRoutes([
           { path: 'account/punchout', children: [] },
           { path: 'account/punchout/:PunchoutLogin', children: [] },

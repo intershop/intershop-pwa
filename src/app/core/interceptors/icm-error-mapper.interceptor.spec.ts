@@ -133,6 +133,62 @@ describe('Icm Error Mapper Interceptor', () => {
     );
   });
 
+  it('should convert ICM errors format with cause (new ADR) to simplified format concatenating all causes', done => {
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
+          {
+            "errors": [
+              {
+                "causes": [
+                  {
+                    "code": "intershop.cxml.punchout.unitmapping.value.invalid",
+                    "message": "The value must be a tab-separated list of 'value1;value2' pairs.",
+                  },
+                  {
+                    "code": "intershop.cxml.punchout.punchout.locale.value.invalid",
+                    "message": "The value must be two lowercase letters for language and two uppercase letters for region.",
+                  },
+                ],
+                "code": "intershop.cxml.punchout.configuration.error",
+                "level": "ERROR",
+                "status": "400",
+              },
+            ],
+            "message": "<div>The value must be a tab-separated list of 'value1;value2' pairs.</div><div>The value must be two lowercase letters for language and two uppercase letters for region.</div>",
+            "name": "HttpErrorResponse",
+            "status": 422,
+          }
+        `);
+        done();
+      },
+    });
+
+    httpController.expectOne('some').flush(
+      {
+        messages: [
+          {
+            causes: [
+              {
+                code: 'intershop.cxml.punchout.unitmapping.value.invalid',
+                message: "The value must be a tab-separated list of 'value1;value2' pairs.",
+              },
+              {
+                code: 'intershop.cxml.punchout.punchout.locale.value.invalid',
+                message: 'The value must be two lowercase letters for language and two uppercase letters for region.',
+              },
+            ],
+            code: 'intershop.cxml.punchout.configuration.error',
+            level: 'ERROR',
+            status: '400',
+          },
+        ],
+      },
+      { status: 422, statusText: 'Unprocessable Entity' }
+    );
+  });
+
   it('should convert ICM errors format to simplified format', done => {
     http.get('some').subscribe({
       next: fail,

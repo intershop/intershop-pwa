@@ -74,6 +74,7 @@ describe('Punchout MyAccount Functionality', () => {
       page.submit();
     });
     at(PunchoutOverviewPage, page => {
+      page.selectOciTab();
       page.userList.should('contain', `${_.punchoutUser2.login}`);
       page.userList.should('not.contain', `Inactive`);
       page.successMessage.message.should('contain', 'created');

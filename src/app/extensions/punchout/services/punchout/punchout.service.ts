@@ -15,6 +15,9 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { CxmlConfigurationData } from '../../models/cxml-configuration/cxml-configuration.interface';
+import { CxmlConfigurationMapper } from '../../models/cxml-configuration/cxml-configuration.mapper';
+import { CxmlConfiguration } from '../../models/cxml-configuration/cxml-configuration.model';
 import { OciConfigurationItem } from '../../models/oci-configuration-item/oci-configuration-item.model';
 import { OciOptionsData } from '../../models/oci-options/oci-options.interface';
 import { OciOptionsMapper } from '../../models/oci-options/oci-options.mapper';
@@ -37,9 +40,12 @@ export class PunchoutService {
   /**
    * http header for Punchout API v2
    */
-  private punchoutHeaders = new HttpHeaders({
-    Accept: 'application/vnd.intershop.punchout.v2+json',
-  });
+  private punchoutHeaderV2 = new HttpHeaders({ Accept: 'application/vnd.intershop.punchout.v2+json' });
+
+  /**
+   * http header for cXML Punchout API v3
+   */
+  private punchoutHeaderV3 = new HttpHeaders({ Accept: 'application/vnd.intershop.punchout.cxml.v3+json' });
 
   private getResourceType(punchoutType: PunchoutType): string {
     return punchoutType === 'oci' ? 'oci5' : punchoutType === 'cxml' ? 'cxml1.2' : punchoutType;
@@ -55,12 +61,12 @@ export class PunchoutService {
       switchMap(customer =>
         this.apiService
           .get(`customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts`, {
-            headers: this.punchoutHeaders,
+            headers: this.punchoutHeaderV2,
           })
           .pipe(
             unpackEnvelope<Link>(),
             this.apiService.resolveLinks<{ punchoutType: PunchoutType; version: string }>({
-              headers: this.punchoutHeaders,
+              headers: this.punchoutHeaderV2,
             }),
             map(types => types?.map(type => type.punchoutType))
           )
@@ -88,11 +94,11 @@ export class PunchoutService {
             `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/${this.getResourceType(
               punchoutType
             )}/users`,
-            { headers: this.punchoutHeaders }
+            { headers: this.punchoutHeaderV2 }
           )
           .pipe(
             unpackEnvelope<Link>(),
-            this.apiService.resolveLinks<PunchoutUser>({ headers: this.punchoutHeaders }),
+            this.apiService.resolveLinks<PunchoutUser>({ headers: this.punchoutHeaderV2 }),
             map(users => users.map(user => ({ ...user, punchoutType, password: undefined })))
           )
       )
@@ -118,10 +124,10 @@ export class PunchoutService {
               user.punchoutType
             )}/users`,
             user,
-            { headers: this.punchoutHeaders }
+            { headers: this.punchoutHeaderV2 }
           )
           .pipe(
-            this.apiService.resolveLink<PunchoutUser>({ headers: this.punchoutHeaders }),
+            this.apiService.resolveLink<PunchoutUser>({ headers: this.punchoutHeaderV2 }),
             map(createdUser => ({ ...createdUser, punchoutType: user.punchoutType, password: undefined }))
           )
       )
@@ -147,7 +153,7 @@ export class PunchoutService {
               user.punchoutType
             )}/users/${this.apiService.encodeResourceId(user.login)}`,
             user,
-            { headers: this.punchoutHeaders }
+            { headers: this.punchoutHeaderV2 }
           )
           .pipe(map(updatedUser => ({ ...updatedUser, punchoutType: user.punchoutType, password: undefined })))
       )
@@ -170,7 +176,7 @@ export class PunchoutService {
           `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/${this.getResourceType(
             user.punchoutType
           )}/users/${this.apiService.encodeResourceId(user.login)}`,
-          { headers: this.punchoutHeaders }
+          { headers: this.punchoutHeaderV2 }
         )
       )
     );
@@ -226,7 +232,7 @@ export class PunchoutService {
           `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/${this.getResourceType(
             'cxml'
           )}/sessions/${this.apiService.encodeResourceId(sid)}`,
-          { headers: this.punchoutHeaders }
+          { headers: this.punchoutHeaderV2 }
         )
       )
     );
@@ -290,6 +296,58 @@ export class PunchoutService {
     return cXmlForm;
   }
 
+  /**
+   * Gets the cXML configuration for a given user.
+   *
+   * @param user    The punchout user id.
+   * @returns       An array of punchout cXML configurations.
+   */
+  getCxmlConfiguration(userId: string): Observable<CxmlConfiguration[]> {
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .get<CxmlConfigurationData>(
+            `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/${this.getResourceType(
+              'cxml'
+            )}/users/${this.apiService.encodeResourceId(userId)}/configurations`,
+            { headers: this.punchoutHeaderV3 }
+          )
+          .pipe(map(CxmlConfigurationMapper.fromData))
+      )
+    );
+  }
+
+  /**
+   *  Updates a punchout cxml configuration.
+   *
+   * @param cxmlConfiguration  An array of cxml configuration items to update.
+   * @param user               The selected punchout user id.
+   * @returns                  The updated cxml configuration.
+   */
+  updateCxmlConfiguration(cxmlConfiguration: CxmlConfiguration[], userId: string): Observable<CxmlConfiguration[]> {
+    if (!cxmlConfiguration) {
+      return throwError(() => new Error('updateCxmlConfiguration() called without required CxmlConfiguration'));
+    }
+
+    if (!userId) {
+      return throwError(() => new Error('updateCxmlConfiguration() called without required userId'));
+    }
+
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .patch<CxmlConfigurationData>(
+            `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/${this.getResourceType(
+              'cxml'
+            )}/users/${this.apiService.encodeResourceId(userId)}/configurations`,
+            cxmlConfiguration,
+            { headers: this.punchoutHeaderV3 }
+          )
+          .pipe(map(CxmlConfigurationMapper.fromData))
+      )
+    );
+  }
+
   // OCI PUNCHOUT SHOPPING FUNCTIONALITY
 
   private transferOciPunchoutBasket() {
@@ -319,7 +377,7 @@ export class PunchoutService {
             )}/transfer`,
             undefined,
             {
-              headers: this.punchoutHeaders,
+              headers: this.punchoutHeaderV2,
               params: new HttpParams().set('basketId', basketId),
             }
           )
@@ -349,7 +407,7 @@ export class PunchoutService {
               'oci'
             )}/validate`,
             {
-              headers: this.punchoutHeaders,
+              headers: this.punchoutHeaderV2,
               params: new HttpParams().set('productId', productId).set('quantity', quantity),
             }
           )
@@ -378,7 +436,7 @@ export class PunchoutService {
               'oci'
             )}/background-search`,
             {
-              headers: this.punchoutHeaders,
+              headers: this.punchoutHeaderV2,
               params: new HttpParams().set('searchString', searchString),
             }
           )
@@ -440,7 +498,7 @@ export class PunchoutService {
             `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/${this.getResourceType(
               'oci'
             )}/configurations`,
-            { headers: this.punchoutHeaders }
+            { headers: this.punchoutHeaderV2 }
           )
           .pipe(map(data => data.items))
       )
@@ -460,7 +518,7 @@ export class PunchoutService {
             `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/${this.getResourceType(
               'oci'
             )}`,
-            { headers: this.punchoutHeaders }
+            { headers: this.punchoutHeaderV2 }
           )
           .pipe(map(OciOptionsMapper.fromData))
       )
@@ -486,7 +544,7 @@ export class PunchoutService {
               'oci'
             )}/configurations`,
             { items: ociConfiguration },
-            { headers: this.punchoutHeaders }
+            { headers: this.punchoutHeaderV2 }
           )
           .pipe(map(data => data.items))
       )

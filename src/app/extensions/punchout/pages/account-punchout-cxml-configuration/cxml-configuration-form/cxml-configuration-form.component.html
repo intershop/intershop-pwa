@@ -1,0 +1,40 @@
+<ish-error-message [error]="cxmlConfigurationError$ | async" />
+<div class="container">
+  <div class="row list-header d-md-flex d-none">
+    <div class="col-sm-5 list-header-item no-seperator">
+      {{ 'account.punchout.configuration.form.heading.attribute' | translate }}
+    </div>
+    <div class="col-sm-7 list-header-item no-seperator">
+      {{ 'account.punchout.configuration.form.heading.transformed-attribute' | translate }}
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submitForm()" class="pt-1">
+    <div class="list-body">
+      <formly-form [form]="form" [fields]="fields" [model]="model" class="pt-1" />
+    </div>
+
+    <div class="row">
+      <div class="button-group w-100 clearfix">
+        <div class="float-md-right">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="formDisabled"
+            data-testing-id="update-cxml-configuration"
+          >
+            {{ 'account.update.button.label' | translate }}
+          </button>
+          <a [routerLink]="['/account/punchout']" [queryParams]="{ format: 'cxml' }" class="btn btn-secondary">
+            {{ 'account.cancel.link' | translate }}
+          </a>
+        </div>
+        <div class="float-md-left">
+          <a class="btn btn-link pl-md-0" [routerLink]="['/account/punchout']" [queryParams]="{ format: 'cxml' }">{{
+            'account.punchout.configuration.back_to_list' | translate
+          }}</a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

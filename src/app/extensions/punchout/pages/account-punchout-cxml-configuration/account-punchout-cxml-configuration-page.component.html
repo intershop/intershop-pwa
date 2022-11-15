@@ -1,0 +1,13 @@
+<ng-container *ngIf="selectedUser$ | async as user">
+  <h1>{{ 'account.punchout.configuration.heading' | translate }} - {{ user.login }}</h1>
+  <p>{{ 'account.punchout.cxml.configuration.helptext' | translate }}</p>
+
+  <ng-container *ngIf="cxmlConfiguration$ | async as cxmlConfiguration; else noConfiguration">
+    <ng-container *ngIf="cxmlConfiguration.length > 0" ; else noConfiguration>
+      <ish-cxml-configuration-form [cxmlConfiguration]="cxmlConfiguration" /> </ng-container
+  ></ng-container>
+  <ng-template #noConfiguration>
+    <p>{{ 'account.punchout.cxml.configuration.no_configuration' | translate }}</p>
+  </ng-template>
+</ng-container>
+<ish-loading *ngIf="loading$ | async" />
