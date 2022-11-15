@@ -1,5 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { PRIMARY_OUTLET, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -16,7 +17,11 @@ const MOCK_DATA_ROOT = './assets/mock-data';
 export class MockInterceptor implements HttpInterceptor {
   private restEndpoint: string;
 
-  constructor(@Inject(API_MOCK_PATHS) private apiMockPaths: InjectSingle<typeof API_MOCK_PATHS>, store: Store) {
+  constructor(
+    @Inject(API_MOCK_PATHS) private apiMockPaths: InjectSingle<typeof API_MOCK_PATHS>,
+    store: Store,
+    private router: Router
+  ) {
     store.pipe(select(getRestEndpoint)).subscribe(data => (this.restEndpoint = data));
   }
 
@@ -28,7 +33,9 @@ export class MockInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const newUrl = `${MOCK_DATA_ROOT}/${this.getRestPath(req.url)}/${req.method.toLocaleLowerCase()}.json`;
+    const mockUrl = `${MOCK_DATA_ROOT}/${this.getRestPath(req.url)}/${req.method.toLocaleLowerCase()}.json`;
+    const commands = this.router.parseUrl(mockUrl)?.root?.children?.[PRIMARY_OUTLET]?.segments?.map(s => s.path);
+    const newUrl = this.router.createUrlTree(commands)?.toString();
 
     // eslint-disable-next-line no-console
     console.log(`redirecting '${req.url}' to '${newUrl}'`);
