@@ -29,6 +29,7 @@ describe('Punchout Service', () => {
     when(apiServiceMock.resolveLink(anything())).thenReturn(() => of({}));
     when(apiServiceMock.put(anything(), anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.delete(anything(), anything())).thenReturn(of({}));
+    when(apiServiceMock.patch(anything(), anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
@@ -116,6 +117,26 @@ describe('Punchout Service', () => {
       verify(apiServiceMock.put(anything(), anything(), anything())).once();
       expect(capture(apiServiceMock.put).last()[0]).toMatchInlineSnapshot(
         `"customers/4711/punchouts/oci5/configurations"`
+      );
+      done();
+    });
+  });
+
+  it("should get punchout configuration items when 'getCxmlConfiguration' is called", done => {
+    punchoutService.getCxmlConfiguration('user').subscribe(() => {
+      verify(apiServiceMock.get(anything(), anything())).once();
+      expect(capture(apiServiceMock.get).last()[0]).toMatchInlineSnapshot(
+        `"customers/4711/punchouts/cxml1.2/users/user/configurations"`
+      );
+      done();
+    });
+  });
+
+  it("should update cxml configuration items when 'updateCxmlConfiguration' is called", done => {
+    punchoutService.updateCxmlConfiguration([], 'testuser').subscribe(() => {
+      verify(apiServiceMock.patch(anything(), anything(), anything())).once();
+      expect(capture(apiServiceMock.patch).last()[0]).toMatchInlineSnapshot(
+        `"customers/4711/punchouts/cxml1.2/users/testuser/configurations"`
       );
       done();
     });

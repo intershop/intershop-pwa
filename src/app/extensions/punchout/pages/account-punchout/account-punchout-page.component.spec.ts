@@ -2,13 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -44,6 +45,7 @@ describe('Account Punchout Page Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
+        MockPipe(ServerSettingPipe, path => path === 'punchout.cxmlUserConfigurationEnabled'),
       ],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },

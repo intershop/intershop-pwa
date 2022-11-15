@@ -8,8 +8,15 @@ import { selectQueryParam } from 'ish-core/store/core/router';
 import { decamelizeString } from 'ish-core/utils/functions';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { CxmlConfiguration } from '../models/cxml-configuration/cxml-configuration.model';
 import { OciConfigurationItem } from '../models/oci-configuration-item/oci-configuration-item.model';
 import { PunchoutType, PunchoutUser } from '../models/punchout-user/punchout-user.model';
+import {
+  cxmlConfigurationActions,
+  getCxmlConfiguration,
+  getCxmlConfigurationError,
+  getCxmlConfigurationLoading,
+} from '../store/cxml-configuration';
 import {
   getOciConfiguration,
   getOciConfigurationError,
@@ -100,5 +107,22 @@ export class PunchoutFacade {
 
   updateOciConfiguration(configuration: OciConfigurationItem[]) {
     this.store.dispatch(ociConfigurationActions.updateOCIConfiguration({ configuration }));
+  }
+
+  cxmlConfiguration$() {
+    this.store.dispatch(cxmlConfigurationActions.loadCXMLConfiguration());
+    return this.store.pipe(select(getCxmlConfiguration));
+  }
+
+  cxmlConfigurationLoading$ = this.store.pipe(select(getCxmlConfigurationLoading));
+
+  cxmlConfigurationError$ = this.store.pipe(select(getCxmlConfigurationError));
+
+  updateCxmlConfiguration(configuration: CxmlConfiguration[]) {
+    this.store.dispatch(cxmlConfigurationActions.updateCXMLConfiguration({ configuration }));
+  }
+
+  resetCxmlConfiguration() {
+    this.store.dispatch(cxmlConfigurationActions.resetCXMLConfiguration());
   }
 }

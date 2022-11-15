@@ -51,18 +51,27 @@
       <div class="list-body">
         <formly-form [model]="model$ | async" [fields]="fields$ | async" [form]="form" class="pt-1" />
       </div>
-      <div class="row justify-content-end">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="formDisabled"
-          data-testing-id="update-oci-configuration"
-        >
-          {{ 'account.update.button.label' | translate }}
-        </button>
-        <a [routerLink]="['/account/punchout']" [queryParams]="{ format: 'oci' }" class="btn btn-secondary">{{
-          'account.cancel.link' | translate
-        }}</a>
+      <div class="row">
+        <div class="button-group w-100 clearfix">
+          <div class="float-md-right">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="formDisabled"
+              data-testing-id="update-oci-configuration"
+            >
+              {{ 'account.update.button.label' | translate }}
+            </button>
+            <a [routerLink]="['/account/punchout']" [queryParams]="{ format: 'oci' }" class="btn btn-secondary">{{
+              'account.cancel.link' | translate
+            }}</a>
+          </div>
+          <div class="float-md-left">
+            <a class="btn btn-link pl-md-0" [routerLink]="['/account/punchout']" [queryParams]="{ format: 'oci' }">{{
+              'account.punchout.configuration.back_to_list' | translate
+            }}</a>
+          </div>
+        </div>
       </div>
     </form>
   </ng-container>
