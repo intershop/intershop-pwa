@@ -52,6 +52,7 @@ export interface BasketBaseData {
     firstName: string;
     lastName: string;
   };
+  messageToMerchant?: string;
 }
 
 export interface BasketData {

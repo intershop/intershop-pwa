@@ -1,7 +1,7 @@
 <div class="section">
   <h3>{{ 'checkout.basket_merchant_message.title' | translate }}</h3>
 
-  <form [formGroup]="form">
+  <form [formGroup]="form" (ngSubmit)="submitForm()">
     <div class="row">
       <div *ngIf="showSuccessMessage" class="col-md-12">
         <ish-success-message
@@ -15,7 +15,7 @@
       </div>
 
       <div class="col-md-2 pl-md-0 align-self-center">
-        <button type="submit" class="btn btn-secondary">
+        <button type="submit" class="btn btn-secondary" [disabled]="disabled">
           {{ 'checkout.basket_merchant_message.apply.button.label' | translate }}
         </button>
       </div>

@@ -1,7 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 
 @Component({
@@ -9,7 +19,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
   templateUrl: './basket-merchant-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasketMerchantMessageComponent implements OnInit {
+export class BasketMerchantMessageComponent implements OnInit, OnChanges {
   @Input() basket: Basket;
 
   form = new FormGroup({});
@@ -17,10 +27,12 @@ export class BasketMerchantMessageComponent implements OnInit {
   fields: FormlyFieldConfig[];
   showSuccessMessage = false;
 
+  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
+
   ngOnInit() {
     this.fields = [
       {
-        key: 'basket_merchant_message',
+        key: 'messageToMerchant',
         type: 'ish-textarea-field',
         templateOptions: {
           postWrappers: [{ wrapper: 'description', index: -1 }],
@@ -32,5 +44,45 @@ export class BasketMerchantMessageComponent implements OnInit {
         },
       },
     ];
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.basket) {
+      this.successMessage(changes.basket);
+      this.model = { ...this.model, messageToMerchant: this.getMessageToMerchant(this.basket) };
+    }
+  }
+
+  private getMessageToMerchant(basket: Basket): string {
+    return basket?.attributes?.find(attr => attr.name === 'messageToMerchant')?.value as string;
+  }
+
+  private successMessage(basketChange: SimpleChange) {
+    if (
+      this.getMessageToMerchant(basketChange?.previousValue) !==
+        this.getMessageToMerchant(basketChange?.currentValue) &&
+      !basketChange?.firstChange
+    ) {
+      this.showSuccessMessage = true;
+      setTimeout(() => {
+        this.showSuccessMessage = false;
+        this.cd.markForCheck();
+      }, 5000);
+    }
+  }
+
+  get disabled() {
+    return !this.getMessageToMerchant(this.basket) && !this.form.get('messageToMerchant').value;
+  }
+
+  submitForm() {
+    if (this.disabled) {
+      return;
+    }
+
+    this.checkoutFacade.setBasketCustomAttribute({
+      name: 'messageToMerchant',
+      value: this.form.get('messageToMerchant')?.value ? this.form.get('messageToMerchant')?.value : '',
+    });
   }
 }

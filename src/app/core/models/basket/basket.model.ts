@@ -34,6 +34,7 @@ export interface AbstractBasket<T> {
     firstName: string;
     lastName: string;
   };
+  messageToMerchant?: string;
 }
 
 export type Basket = AbstractBasket<LineItem>;
