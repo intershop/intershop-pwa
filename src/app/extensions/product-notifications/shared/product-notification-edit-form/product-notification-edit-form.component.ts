@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-
-import { UntypedFormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
@@ -9,7 +8,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductNotificationEditFormComponent {
-  notificationEditForm = new UntypedFormGroup({});
+  @Input() productNotificationForm: FormGroup;
   fields: FormlyFieldConfig[];
 
   ngOnInit() {
@@ -18,7 +17,7 @@ export class ProductNotificationEditFormComponent {
         key: 'nonotification',
         type: 'ish-radio-field',
         templateOptions: {
-          label: 'product.notification.edit.form.nonotification.label',
+          label: 'product.notification.edit.form.no_notification.label',
           value: 'NoNotification',
         },
       },
@@ -26,7 +25,7 @@ export class ProductNotificationEditFormComponent {
         key: 'instocknotification',
         type: 'ish-radio-field',
         templateOptions: {
-          label: 'product.notification.edit.form.instocknotification.label',
+          label: 'product.notification.edit.form.instock_notification.label',
           value: 'InStockNotification',
         },
       },
@@ -46,6 +45,4 @@ export class ProductNotificationEditFormComponent {
       },
     ];
   }
-
-  submitForm() {}
 }

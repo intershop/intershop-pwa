@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -14,6 +15,8 @@ export class ProductNotificationDialogComponent {
 
   constructor(private ngbModal: NgbModal) {}
 
+  productNotificationForm = new UntypedFormGroup({});
+
   /** close modal */
   hide() {
     this.modal.close();
@@ -23,4 +26,7 @@ export class ProductNotificationDialogComponent {
   show() {
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
+
+  /** submit the form */
+  submitForm() {}
 }
