@@ -103,6 +103,7 @@ describe('Requisition Mapper', () => {
           "invoiceToAddress": undefined,
           "lineItemCount": 2,
           "lineItems": Array [],
+          "messageToMerchant": undefined,
           "orderNo": "10001",
           "payment": undefined,
           "promotionCodes": undefined,
