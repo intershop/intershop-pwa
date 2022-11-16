@@ -18,6 +18,8 @@ export class ProductNotificationEditFormComponent {
         type: 'ish-radio-field',
         templateOptions: {
           label: 'product.notification.edit.form.no_notification.label',
+          inputClass: 'position-static',
+          fieldClass: ' ',
           value: 'NoNotification',
         },
       },
@@ -26,6 +28,8 @@ export class ProductNotificationEditFormComponent {
         type: 'ish-radio-field',
         templateOptions: {
           label: 'product.notification.edit.form.instock_notification.label',
+          inputClass: 'position-static',
+          fieldClass: ' ',
           value: 'InStockNotification',
         },
       },
