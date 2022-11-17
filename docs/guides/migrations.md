@@ -17,10 +17,12 @@ Find more information in the [Formly Upgrade Guide](https://github.com/ngx-forml
 We still use deprecated form properties like 'templateOptions' and 'expressionProperties' for compatibility reasons but we are going to replace them in the next major release.
 
 The two small black triangle images `active_catalog.png` (header: when hovering a catalog) and `budget-bar-indicator.png` (my account: budget bar) are removed and replaced by CSS styling.
-
 The basket empty image `empty-cart.png` is removed and replaced with CSS styling.
-
 The sprite image `product_sprite.png` is removed and replaced with localized text for "New", "Sale" and "Top" with the according CSS styling.
+
+After entering a desired delivery date on the checkout shipping page and after submitting the order the desired delivery date will be saved at all basket items, if necessary.
+In case of large basket (> 20 items) this might cause (unacceptable) long response times.
+You can keep the existing behavior by modifying the updateBasketItemsDesiredDeliveryDate() method of the basket service to always return an empty array without doing anything.
 
 ## 3.0 to 3.1
 

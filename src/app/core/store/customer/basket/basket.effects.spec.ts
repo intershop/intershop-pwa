@@ -37,8 +37,12 @@ import {
   setBasketAttribute,
   setBasketAttributeFail,
   setBasketAttributeSuccess,
+  setBasketDesiredDeliveryDate,
+  setBasketDesiredDeliveryDateFail,
+  setBasketDesiredDeliveryDateSuccess,
   submitBasket,
   submitBasketFail,
+  submitOrder,
   updateBasket,
   updateBasketCostCenter,
   updateBasketFail,
@@ -213,9 +217,9 @@ describe('Basket Effects', () => {
 
       effects.recalculateBasketAfterCurrencyChange$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-        [Basket Internal] Update Basket:
-          update: {"calculated":true}
-        `);
+                  [Basket Internal] Update Basket:
+                    update: {"calculated":true}
+                `);
         done();
       });
     });
@@ -385,6 +389,48 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateBasketCostCenter$).toBeObservable(expected$);
+    });
+  });
+
+  describe('setBasketDesiredDeliveryDate$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything())).thenReturn(of([]));
+    });
+    const desiredDeliveryDate = '2022-02-20';
+
+    it('should call the basketService for setBasketDesiredDeliveryDate', done => {
+      const action = setBasketDesiredDeliveryDate({ desiredDeliveryDate });
+      actions$ = of(action);
+
+      effects.setBasketDesiredDeliveryDate$.subscribe(() => {
+        verify(basketServiceMock.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate)).once();
+        done();
+      });
+    });
+
+    it('should map to actions of type setBasketAttribute and setBasketDesiredDeliveryDate', () => {
+      const action = setBasketDesiredDeliveryDate({ desiredDeliveryDate });
+      const completion1 = setBasketAttribute({
+        attribute: { name: 'desiredDeliveryDate', value: desiredDeliveryDate },
+      });
+      const completion2 = setBasketDesiredDeliveryDateSuccess();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.setBasketDesiredDeliveryDate$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type setBasketDesiredDeliveryDateFail', () => {
+      when(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+
+      const action = setBasketDesiredDeliveryDate({ desiredDeliveryDate });
+      const completion = setBasketDesiredDeliveryDateFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.setBasketDesiredDeliveryDate$).toBeObservable(expected$);
     });
   });
 
@@ -608,6 +654,71 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.createRequisition$).toBeObservable(expected$);
+    });
+  });
+
+  describe('submitOrder$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything())).thenReturn(of([]));
+      store.dispatch(
+        loadBasketSuccess({
+          basket: { id: 'BID', attributes: [{ name: 'desiredDeliveryDate', value: desiredDeliveryDate }] } as Basket,
+        })
+      );
+    });
+    const desiredDeliveryDate = '2022-02-20';
+
+    it('should call the basketService for submitOrder if the basket has a desired delivery date', done => {
+      const action = submitOrder();
+      actions$ = of(action);
+
+      effects.submitOrder$.subscribe(() => {
+        verify(basketServiceMock.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate)).once();
+        done();
+      });
+    });
+
+    it('should not call the basketService for submitOrder if the basket has no desired delivery date', done => {
+      store.dispatch(
+        loadBasketSuccess({
+          basket: { id: 'BID', attributes: [] } as Basket,
+        })
+      );
+
+      const action = submitOrder();
+      actions$ = of(action);
+
+      effects.submitOrder$.subscribe({
+        next: () => {
+          verify(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything())).never();
+        },
+        error: fail,
+        complete: done,
+      });
+    });
+
+    it('should map a valid request to action of type continueCheckout', done => {
+      actions$ = of(submitOrder());
+
+      effects.submitOrder$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Basket] Validate Basket and continue checkout:
+            targetStep: 5
+        `);
+        done();
+      });
+    });
+
+    it('should map an invalid request to action of type setBasketDesiredDeliveryDateFail', () => {
+      when(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = submitOrder();
+      const completion = setBasketDesiredDeliveryDateFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.submitOrder$).toBeObservable(expected$);
     });
   });
 });

@@ -7,9 +7,10 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketData } from 'ish-core/models/basket/basket.interface';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
+import { getBasketIdOrCurrent, getCurrentBasket } from 'ish-core/store/customer/basket';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -49,6 +50,12 @@ describe('Basket Service', () => {
     unit: 'pcs.',
   };
 
+  const basketMock = BasketMockData.getBasket();
+  basketMock.lineItems.push({
+    id: 'withdesiredDeliveryDate',
+    desiredDeliveryDate: '2022-20-02',
+  } as LineItem);
+
   beforeEach(() => {
     apiService = mock(ApiService);
     orderService = mock(OrderService);
@@ -58,7 +65,10 @@ describe('Basket Service', () => {
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: OrderService, useFactory: () => instance(orderService) },
         provideMockStore({
-          selectors: [{ selector: getBasketIdOrCurrent, value: 'current' }],
+          selectors: [
+            { selector: getBasketIdOrCurrent, value: 'current' },
+            { selector: getCurrentBasket, value: basketMock },
+          ],
         }),
       ],
     });
@@ -268,6 +278,30 @@ describe('Basket Service', () => {
     basketService.createRequisition('basketId').subscribe(() => {
       verify(orderService.createOrder('basketId', anything())).once();
       done();
+    });
+  });
+
+  describe('Update Basket Items desired delivery date', () => {
+    it("should update the desired delivery date at all basket items when 'updateBasketItemsDesiredDeliveryDate' is called", done => {
+      when(apiService.patch(anyString(), anything(), anything())).thenReturn(
+        of({ data: { id: lineItemData.id, calculated: false } as LineItemData, infos: undefined })
+      );
+
+      basketService.updateBasketItemsDesiredDeliveryDate('2022-22-02').subscribe(() => {
+        verify(apiService.patch(anything(), anything(), anything())).twice();
+        done();
+      });
+    });
+
+    it("should not update the desired delivery date at those basket items that have already the correct date when 'updateBasketItemsDesiredDeliveryDate' is called", done => {
+      when(apiService.patch(anyString(), anything(), anything())).thenReturn(
+        of({ data: { id: lineItemData.id, calculated: false } as LineItemData, infos: undefined })
+      );
+
+      basketService.updateBasketItemsDesiredDeliveryDate('2022-20-02').subscribe(() => {
+        verify(apiService.patch(anything(), anything(), anything())).once();
+        done();
+      });
     });
   });
 
