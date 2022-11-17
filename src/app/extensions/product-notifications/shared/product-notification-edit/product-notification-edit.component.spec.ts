@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProductNotificationEditComponent } from './ProductNotificationEditComponent';
+import { ProductNotificationEditComponent } from './product-notification-edit.component';
 
-describe('Product Notification Edit Component', () => {
+describe('Product Notification Edit2 Component', () => {
   let component: ProductNotificationEditComponent;
   let fixture: ComponentFixture<ProductNotificationEditComponent>;
   let element: HTMLElement;
