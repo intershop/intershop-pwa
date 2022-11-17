@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs';
+import { concatMap, map } from 'rxjs';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
 
 import { ProductNotificationsService } from '../../services/product-notifications/product-notifications.service';
 
@@ -19,8 +19,9 @@ export class ProductNotificationEffects {
   loadProductNotifications$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadProductNotifications),
-      switchMap(() =>
-        this.productNotificationsService.getProductNotifications().pipe(
+      mapToPayload(),
+      concatMap(({ type }) =>
+        this.productNotificationsService.getProductNotifications(type).pipe(
           map(productNotifications => loadProductNotificationsSuccess({ productNotifications })),
           mapErrorToAction(loadProductNotificationsFail)
         )

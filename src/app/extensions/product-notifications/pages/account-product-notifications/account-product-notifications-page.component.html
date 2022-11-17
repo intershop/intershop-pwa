@@ -1,11 +1,27 @@
 <div class="productnotifications">
   <h1>{{ 'account.notifications.heading' | translate }}</h1>
 
-  <ng-container *ngIf="productNotifications$ | async as productNotifications">
-    <ng-container *ngIf="productNotifications?.length > 0" class="list-body">
-      <div *ngFor="let productNotification of productNotifications">
-        {{ productNotification.sku }}
-      </div>
+  <h3>{{ 'account.notifications.price.heading' | translate }}</h3>
+  <ng-container *ngIf="productNotificationsPrice$ | async as productNotificationsPrice">
+    <ng-container *ngIf="productNotificationsPrice?.length > 0" class="list-body">
+      <ng-container *ngFor="let productNotification of productNotificationsPrice">
+        <div>
+          {{ productNotification.sku }} | {{ productNotification.type }} |
+          <ish-product-name ishProductContext [sku]="productNotification.sku"></ish-product-name>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <h3>{{ 'account.notifications.backinstock.heading' | translate }}</h3>
+  <ng-container *ngIf="productNotificationsInStock$ | async as productNotificationsInStock">
+    <ng-container *ngIf="productNotificationsInStock?.length > 0" class="list-body">
+      <ng-container *ngFor="let productNotification of productNotificationsInStock">
+        <div>
+          {{ productNotification.sku }} | {{ productNotification.type }} |
+          <ish-product-name ishProductContext [sku]="productNotification.sku"></ish-product-name>
+        </div>
+      </ng-container>
     </ng-container>
   </ng-container>
 </div>

@@ -9,7 +9,10 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ProductNotificationData } from '../../models/product-notification/product-notification.interface';
 import { ProductNotificationMapper } from '../../models/product-notification/product-notification.mapper';
-import { ProductNotification } from '../../models/product-notification/product-notification.model';
+import {
+  ProductNotification,
+  ProductNotificationType,
+} from '../../models/product-notification/product-notification.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductNotificationsService {
@@ -17,20 +20,21 @@ export class ProductNotificationsService {
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
-  getProductNotifications(): Observable<ProductNotification[]> {
+  getProductNotifications(notificationType: ProductNotificationType): Observable<ProductNotification[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
           .get(
             customer.isBusinessCustomer
-              ? `customers/${customer.customerNo}/users/-/notifications/stock`
-              : `users/-/notifications/stock`
+              ? `customers/${customer.customerNo}/users/-/notifications/${notificationType}`
+              : `users/-/notifications/${notificationType}`
           )
           .pipe(
             unpackEnvelope<Link>(),
             this.apiService.resolveLinks<ProductNotificationData>(),
-
-            map(data => data.map(ProductNotificationMapper.fromData))
+            map(data =>
+              data.map(notificationData => ProductNotificationMapper.fromData(notificationData, notificationType))
+            )
           )
       )
     );

@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
+import { ProductNotificationType } from '../models/product-notification/product-notification.model';
 import {
-  getAllProductNotifications,
+  getProductNotificationsByType,
   getProductNotificationsError,
   getProductNotificationsLoading,
   loadProductNotifications,
@@ -16,9 +17,9 @@ import {
 export class ProductNotificationsFacade {
   constructor(private store: Store) {}
 
-  productNotifications$() {
-    this.store.dispatch(loadProductNotifications());
-    return this.store.pipe(select(getAllProductNotifications));
+  productNotifications$(type: ProductNotificationType) {
+    this.store.dispatch(loadProductNotifications({ type }));
+    return this.store.pipe(select(getProductNotificationsByType(type)));
   }
 
   productNotificationsLoading$: Observable<boolean> = this.store.pipe(select(getProductNotificationsLoading));

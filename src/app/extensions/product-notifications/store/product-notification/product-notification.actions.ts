@@ -2,9 +2,15 @@ import { createAction } from '@ngrx/store';
 
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-import { ProductNotification } from '../../models/product-notification/product-notification.model';
+import {
+  ProductNotification,
+  ProductNotificationType,
+} from '../../models/product-notification/product-notification.model';
 
-export const loadProductNotifications = createAction('[ProductNotification] Load ProductNotifications');
+export const loadProductNotifications = createAction(
+  '[ProductNotification] Load ProductNotifications',
+  payload<{ type: ProductNotificationType }>()
+);
 
 export const loadProductNotificationsSuccess = createAction(
   '[ProductNotification] Load ProductNotifications Success',

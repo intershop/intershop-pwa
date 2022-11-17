@@ -1,5 +1,9 @@
 import { createSelector } from '@ngrx/store';
 
+import {
+  ProductNotification,
+  ProductNotificationType,
+} from '../../models/product-notification/product-notification.model';
 import { getProductNotificationsState } from '../product-notifications-store';
 
 import { initialState, productNotificationAdapter } from './product-notification.reducer';
@@ -15,3 +19,8 @@ export const getProductNotificationsError = createSelector(getProductNotificatio
 const { selectAll } = productNotificationAdapter.getSelectors(getProductNotificationState);
 
 export const getAllProductNotifications = selectAll;
+
+export const getProductNotificationsByType = (type: ProductNotificationType) =>
+  createSelector(getAllProductNotifications, (entities): ProductNotification[] =>
+    entities.filter(e => e.type === type)
+  );
