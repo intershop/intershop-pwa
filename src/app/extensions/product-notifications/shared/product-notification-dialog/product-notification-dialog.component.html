@@ -1,6 +1,10 @@
 <ng-template #modal let-selectModal>
   <div class="modal-header">
-    <h2 class="modal-title">title</h2>
+    <h2 class="modal-title">
+      <ng-container *ngIf="product$ | async as product">
+        {{ product.name }}
+      </ng-container>
+    </h2>
     <button
       type="button"
       class="close"
@@ -13,6 +17,9 @@
   </div>
 
   <div class="modal-body">
+    <ish-product-image imageType="L"></ish-product-image>
+
+    <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
     <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
       <ish-product-notification-edit-form [formGroup]="productNotificationForm"></ish-product-notification-edit-form>
     </form>

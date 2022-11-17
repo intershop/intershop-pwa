@@ -1,13 +1,19 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
+/**
+ * The Product Notification Form Component includes the form to edit the notification.
+ *
+ * @example
+ * <ish-product-notification-edit-form></ish-product-notification-edit-form>
+ */
 @Component({
   selector: 'ish-product-notification-edit-form',
   templateUrl: './product-notification-edit-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductNotificationEditFormComponent {
+export class ProductNotificationEditFormComponent implements OnInit {
   @Input() productNotificationForm: FormGroup;
   fields: FormlyFieldConfig[];
 
@@ -18,7 +24,6 @@ export class ProductNotificationEditFormComponent {
         type: 'ish-radio-field',
         templateOptions: {
           label: 'product.notification.edit.form.no_notification.label',
-          inputClass: 'position-static',
           fieldClass: ' ',
           value: 'NoNotification',
         },
@@ -28,9 +33,30 @@ export class ProductNotificationEditFormComponent {
         type: 'ish-radio-field',
         templateOptions: {
           label: 'product.notification.edit.form.instock_notification.label',
-          inputClass: 'position-static',
           fieldClass: ' ',
           value: 'InStockNotification',
+        },
+      },
+      {
+        key: 'pricenotification',
+        type: 'ish-radio-field',
+        templateOptions: {
+          label: 'product.notification.edit.form.price_notification.label',
+          fieldClass: ' ',
+          value: 'PriceNotification',
+        },
+      },
+      {
+        key: 'price',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          label: 'product.notification.edit.form.price.label',
+          required: true,
+        },
+        validation: {
+          messages: {
+            required: 'product.notification.edit.form.price.error.required',
+          },
         },
       },
       {
@@ -39,7 +65,6 @@ export class ProductNotificationEditFormComponent {
         templateOptions: {
           label: 'product.notification.edit.form.email.label',
           required: true,
-          hideRequiredMarker: true,
         },
         validation: {
           messages: {
