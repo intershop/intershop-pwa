@@ -13,6 +13,7 @@ export const environment: Environment = {
     'businessCustomerRegistration',
     'costCenters',
     'maps',
+    'messageToMerchant',
     'punchout',
     'quickorder',
     'quoting',

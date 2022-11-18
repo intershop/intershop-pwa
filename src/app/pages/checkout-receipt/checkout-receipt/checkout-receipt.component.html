@@ -3,6 +3,13 @@
     <!-- header as content -->
     <ng-content></ng-content>
 
+    <div *ishFeature="'messageToMerchant'" class="row">
+      <!-- MessageToMerchant-->
+      <ish-info-box heading="checkout.widget.message_to_merchant" class="infobox-wrapper col-md-12">
+        <ish-basket-merchant-message-view [data]="order"></ish-basket-merchant-message-view>
+      </ish-info-box>
+    </div>
+
     <div *ishFeature="'businessCustomerRegistration'" class="row">
       <!-- Buyer-->
       <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">

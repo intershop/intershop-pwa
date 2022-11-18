@@ -31,7 +31,8 @@
       <ng-container *ngIf="isBusinessCustomer$ | async">
         <ish-basket-order-reference [basket]="basket$ | async"></ish-basket-order-reference>
       </ng-container>
-      <ng-container>
+
+      <ng-container *ishFeature="'messageToMerchant'">
         <ish-basket-merchant-message [basket]="basket$ | async"></ish-basket-merchant-message>
       </ng-container>
     </div>

@@ -160,6 +160,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | **B2B Features**             |                                                                                                                            |
 | businessCustomerRegistration | create business customers on registration                                                                                  |
 | costCenters                  | cost center feature                                                                                                        |
+| messageToMerchant            | write a message to the merchant at checkout                                                                                |
 | orderTemplates               | order template feature                                                                                                     |
 | punchout                     | punchout feature                                                                                                           |
 | quickorder                   | quick order page and direct add to cart input                                                                              |

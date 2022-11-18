@@ -762,6 +762,7 @@
   "checkout.widget.buyer.costcenter": "Cost Center",
   "checkout.widget.buyer.heading": "Buyer",
   "checkout.widget.buyer.orderReferenceId": "Order Reference ID",
+  "checkout.widget.message_to_merchant": "Message to Merchant",
   "checkout.widget.payment_method.heading": "Payment Method",
   "checkout.widget.promotion.discount": "Discount",
   "checkout.widget.return_to_cart.link": "Return to Cart",
