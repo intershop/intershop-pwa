@@ -3,7 +3,7 @@
 
   <h3>{{ 'account.notifications.price.heading' | translate }}</h3>
   <ng-container *ngIf="productNotificationsPrice$ | async as productNotificationsPrice">
-    <ng-container *ngIf="productNotificationsPrice?.length > 0" class="list-body">
+    <ng-container *ngIf="productNotificationsPrice?.length">
       <ng-container *ngFor="let productNotification of productNotificationsPrice">
         <div>
           {{ productNotification.sku }} | {{ productNotification.type }} |
@@ -15,7 +15,7 @@
 
   <h3>{{ 'account.notifications.backinstock.heading' | translate }}</h3>
   <ng-container *ngIf="productNotificationsInStock$ | async as productNotificationsInStock">
-    <ng-container *ngIf="productNotificationsInStock?.length > 0" class="list-body">
+    <ng-container *ngIf="productNotificationsInStock?.length">
       <ng-container *ngFor="let productNotification of productNotificationsInStock">
         <div>
           {{ productNotification.sku }} | {{ productNotification.type }} |

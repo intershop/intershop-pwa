@@ -20,6 +20,13 @@ export class ProductNotificationsService {
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
+  /**
+   * Get all product notifications of a specific type from a customer.
+   *
+   * @param notificationType  The type of the product notifications.
+   *                          Possible types are 'price' (a specific product price is reached) and 'stock' (product is back in stock)
+   * @returns                 All product notifications of a specific type from the customer.
+   */
   getProductNotifications(notificationType: ProductNotificationType): Observable<ProductNotification[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>

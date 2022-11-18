@@ -13,11 +13,11 @@ export const loadProductNotifications = createAction(
 );
 
 export const loadProductNotificationsSuccess = createAction(
-  '[ProductNotification] Load ProductNotifications Success',
+  '[ProductNotification API] Load ProductNotifications Success',
   payload<{ productNotifications: ProductNotification[] }>()
 );
 
 export const loadProductNotificationsFail = createAction(
-  '[ProductNotification] Load ProductNotifications Fail',
+  '[ProductNotification API] Load ProductNotifications Fail',
   httpError()
 );

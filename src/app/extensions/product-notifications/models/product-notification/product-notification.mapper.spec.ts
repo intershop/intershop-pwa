@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ProductNotificatioData } from './product-notification.interface';
 import { ProductNotificatioMapper } from './product-notification.mapper';
 
-describe('Product Notificatio Mapper', () => {
+describe('Product Notification Mapper', () => {
   let productNotificatioMapper: ProductNotificatioMapper;
 
   beforeEach(() => {
@@ -19,6 +19,9 @@ describe('Product Notificatio Mapper', () => {
       const data: ProductNotificatioData = {
         incomingField: 'test',
         otherField: false,
+        sku: 'product_sku',
+        notificationMailAddress: 'test@test.intershop.de',
+        price: { type: 'Money', value: 75, currencyMnemonic: 'USD', currency: 'USD' },
       };
       const mapped = productNotificatioMapper.fromData(data);
       expect(mapped).toHaveProperty('id', 'test');
