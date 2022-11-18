@@ -4,6 +4,7 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -37,6 +38,7 @@ describe('Checkout Shipping Page Component', () => {
         MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckoutShippingComponent),
         MockComponent(ErrorMessageComponent),
+        MockDirective(FeatureToggleDirective),
         MockDirective(ServerHtmlDirective),
       ],
       imports: [TranslateModule.forRoot()],
