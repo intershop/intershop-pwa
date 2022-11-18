@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
+
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { Observable } from 'rxjs';
+
+import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
 /**
  * The Product Notification Dialog Component shows the customer a dialog to edit the product notification.
@@ -19,8 +22,10 @@ import { Observable } from 'rxjs';
 })
 export class ProductNotificationDialogComponent implements OnInit {
   modal: NgbModalRef;
-  productNotificationForm = new UntypedFormGroup({});
+  productNotificationForm = new FormGroup({});
   product$: Observable<ProductView>;
+
+  @Input() productNotification: ProductNotification;
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 

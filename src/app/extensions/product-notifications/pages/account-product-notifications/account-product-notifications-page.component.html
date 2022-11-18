@@ -29,7 +29,7 @@
     <ng-container *ngIf="productNotifications?.length > 0" class="list-body">
       <div *ngFor="let productNotification of productNotifications" ishProductContext [sku]="productNotification.sku">
         {{ productNotification.sku }} | {{ productNotification.type }} |
-        <ish-product-notification-edit></ish-product-notification-edit>
+        <ish-product-notification-edit [productNotification]="productNotification"></ish-product-notification-edit>
       </div>
     </ng-container>
   </ng-container>

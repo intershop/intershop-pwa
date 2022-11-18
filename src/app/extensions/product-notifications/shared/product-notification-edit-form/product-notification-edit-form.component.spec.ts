@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+
 import { ProductNotificationEditFormComponent } from './product-notification-edit-form.component';
 
 describe('Product Notification Edit Form Component', () => {
@@ -9,6 +11,7 @@ describe('Product Notification Edit Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [FormlyTestingModule],
       declarations: [ProductNotificationEditFormComponent],
     }).compileComponents();
   });

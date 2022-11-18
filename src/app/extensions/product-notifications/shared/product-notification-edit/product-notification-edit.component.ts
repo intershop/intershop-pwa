@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+import { ProductNotification } from '../../models/product-notification/product-notification.model';
 import { ProductNotificationDialogComponent } from '../product-notification-dialog/product-notification-dialog.component';
 
 /**
@@ -13,6 +15,8 @@ import { ProductNotificationDialogComponent } from '../product-notification-dial
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductNotificationEditComponent {
+  @Input() productNotification: ProductNotification;
+
   openModal(modal: ProductNotificationDialogComponent) {
     modal.show();
   }

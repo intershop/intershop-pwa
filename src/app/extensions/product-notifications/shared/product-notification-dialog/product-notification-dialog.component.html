@@ -21,7 +21,10 @@
 
     <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
     <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
-      <ish-product-notification-edit-form [formGroup]="productNotificationForm"></ish-product-notification-edit-form>
+      <ish-product-notification-edit-form
+        [formGroup]="productNotificationForm"
+        [productNotification]="productNotification"
+      ></ish-product-notification-edit-form>
     </form>
   </div>
   <div class="modal-footer">
