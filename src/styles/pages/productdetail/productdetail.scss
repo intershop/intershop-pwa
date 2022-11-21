@@ -107,3 +107,36 @@
     margin-top: divide($space-default, 3);
   }
 }
+
+.product-attributes {
+  display: grid;
+  grid-template-columns: minmax(min-content, max-content) auto;
+  width: 100%;
+
+  dt,
+  dd {
+    padding: divide($space-default, 3) $space-default;
+    margin: 0;
+  }
+
+  dt:nth-child(4n + 1),
+  dt:nth-child(4n + 1) + dd {
+    background-color: $color-tertiary;
+  }
+}
+
+.table-compare {
+  .product-attributes {
+    grid-template-columns: none;
+
+    dt,
+    dd {
+      padding: 0;
+      background-color: transparent !important;
+    }
+
+    dd {
+      margin-bottom: $space-default * 0.5;
+    }
+  }
+}
