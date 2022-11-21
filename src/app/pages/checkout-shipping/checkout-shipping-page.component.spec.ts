@@ -4,10 +4,10 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
@@ -38,10 +38,9 @@ describe('Checkout Shipping Page Component', () => {
         MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckoutShippingComponent),
         MockComponent(ErrorMessageComponent),
-        MockDirective(FeatureToggleDirective),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('messageToMerchant'), TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
@@ -123,5 +122,10 @@ describe('Checkout Shipping Page Component', () => {
   it('should render shipping component on page', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-checkout-shipping')).toBeTruthy();
+  });
+
+  it('should render message to merchant component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-basket-merchant-message')).toBeTruthy();
   });
 });
