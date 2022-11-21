@@ -110,20 +110,12 @@
 
 .product-attributes {
   display: grid;
-  grid-template-columns: max-content auto;
+  grid-template-columns: minmax(min-content, max-content) auto;
   width: 100%;
-
-  @media (max-width: $screen-sm-max) {
-    grid-template-columns: min-content auto;
-  }
-
-  .attribute-name {
-    font-weight: bold;
-  }
 
   dt,
   dd {
-    padding: 4px 15px;
+    padding: divide($space-default, 3) $space-default;
     margin: 0;
   }
 
@@ -131,23 +123,20 @@
   dt:nth-child(4n + 1) + dd {
     background-color: $color-tertiary;
   }
-
-  @media (min-width: $screen-sm-min) {
-    dt,
-    dd {
-      display: inline-block;
-      padding: 4px 8px;
-    }
-  }
 }
 
 .table-compare {
   .product-attributes {
     grid-template-columns: none;
 
-    dt:nth-child(4n + 1),
-    dt:nth-child(4n + 1) + dd {
-      background-color: transparent;
+    dt,
+    dd {
+      padding: 0;
+      background-color: transparent !important;
+    }
+
+    dd {
+      margin-bottom: $space-default * 0.5;
     }
   }
 }
