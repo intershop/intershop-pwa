@@ -12,7 +12,7 @@ const _ = {
     dollarPrice: '33.75',
     euroPrice: '25,00',
   },
-  searchTerm: 'conversion lens',
+  searchTerm: 'lens',
 };
 
 describe('Language Changing User', () => {

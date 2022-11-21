@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
@@ -17,6 +18,7 @@ import {
 } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
+import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
@@ -48,7 +50,8 @@ export class SearchEffects {
     private suggestService: SuggestService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: Router
   ) {}
 
   /**
@@ -81,23 +84,30 @@ export class SearchEffects {
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
       concatMap(({ searchTerm, amount, sorting, offset, page }) =>
         this.productsService.searchProducts(searchTerm, amount, sorting, offset).pipe(
-          concatMap(({ total, products, sortableAttributes }) => [
-            ...products.map(product => loadProductSuccess({ product })),
-            setProductListingPages(
-              this.productListingMapper.createPages(
-                products.map(p => p.sku),
-                'search',
-                searchTerm,
-                amount,
-                {
-                  startPage: page,
-                  sorting,
-                  sortableAttributes,
-                  itemCount: total,
-                }
-              )
-            ),
-          ]),
+          concatMap(({ total, products, sortableAttributes }) => {
+            // route to product detail page if only one product was found
+            if (total === 1) {
+              this.router.navigate([generateProductUrl(products[0])]);
+            }
+            // provide the data for the search result page
+            return [
+              ...products.map(product => loadProductSuccess({ product })),
+              setProductListingPages(
+                this.productListingMapper.createPages(
+                  products.map(p => p.sku),
+                  'search',
+                  searchTerm,
+                  amount,
+                  {
+                    startPage: page,
+                    sorting,
+                    sortableAttributes,
+                    itemCount: total,
+                  }
+                )
+              ),
+            ];
+          }),
           mapErrorToAction(searchProductsFail)
         )
       )
