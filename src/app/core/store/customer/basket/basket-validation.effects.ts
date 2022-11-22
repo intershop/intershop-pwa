@@ -11,6 +11,7 @@ import {
   BasketValidationResultType,
   BasketValidationScopeType,
 } from 'ish-core/models/basket-validation/basket-validation.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { createOrder } from 'ish-core/store/customer/orders';
@@ -58,7 +59,7 @@ export class BasketValidationEffects {
       ofType(startCheckout),
       withLatestFrom(this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
       filter(([, acc]) => !acc),
-      map(() => continueCheckout({ targetStep: 1 }))
+      map(() => continueCheckout({ targetStep: CheckoutStepType.addresses }))
     )
   );
 
@@ -140,7 +141,7 @@ export class BasketValidationEffects {
           withLatestFrom(this.store.pipe(select(getCurrentBasket))),
           concatMap(([basketValidation, basket]) =>
             basketValidation.results.valid
-              ? targetStep === 5 && !basketValidation.results.adjusted
+              ? targetStep === CheckoutStepType.receipt && !basketValidation.results.adjusted
                 ? basket.approval?.approvalRequired
                   ? [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), submitBasket()]
                   : [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), createOrder()]

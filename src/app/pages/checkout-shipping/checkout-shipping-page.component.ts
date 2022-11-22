@@ -5,6 +5,7 @@ import { shareReplay, take, takeUntil } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
@@ -50,7 +51,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
         this.nextDisabled = !basket || !shippingMethods || !shippingMethods.length || !basket.commonShippingMethod;
         this.cd.markForCheck();
         if (!this.nextDisabled) {
-          this.checkoutFacade.continue(3);
+          this.checkoutFacade.continue(CheckoutStepType.payment);
         }
       });
   }
