@@ -70,7 +70,7 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
    */
   nextStep() {
     this.nextStepRequested = true;
-    this.checkoutFacade.continue(CheckoutStepType.shipping);
+    this.checkoutFacade.continue(CheckoutStepType.Shipping);
   }
 
   ngOnDestroy() {

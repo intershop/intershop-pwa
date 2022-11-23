@@ -51,7 +51,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
         this.nextDisabled = !basket || !shippingMethods || !shippingMethods.length || !basket.commonShippingMethod;
         this.cd.markForCheck();
         if (!this.nextDisabled) {
-          this.checkoutFacade.continue(CheckoutStepType.payment);
+          this.checkoutFacade.continue(CheckoutStepType.Payment);
         }
       });
   }

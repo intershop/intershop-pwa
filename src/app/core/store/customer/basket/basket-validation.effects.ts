@@ -59,7 +59,7 @@ export class BasketValidationEffects {
       ofType(startCheckout),
       withLatestFrom(this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
       filter(([, acc]) => !acc),
-      map(() => continueCheckout({ targetStep: CheckoutStepType.addresses }))
+      map(() => continueCheckout({ targetStep: CheckoutStepType.Addresses }))
     )
   );
 
@@ -141,7 +141,7 @@ export class BasketValidationEffects {
           withLatestFrom(this.store.pipe(select(getCurrentBasket))),
           concatMap(([basketValidation, basket]) =>
             basketValidation.results.valid
-              ? targetStep === CheckoutStepType.receipt && !basketValidation.results.adjusted
+              ? targetStep === CheckoutStepType.Receipt && !basketValidation.results.adjusted
                 ? basket.approval?.approvalRequired
                   ? [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), submitBasket()]
                   : [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), createOrder()]

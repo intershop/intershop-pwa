@@ -69,7 +69,7 @@ export class CheckoutPaymentPageComponent implements OnInit, OnDestroy {
    * Validates the basket and jumps to the next checkout step (Review)
    */
   nextStep() {
-    this.checkoutFacade.continue(CheckoutStepType.review);
+    this.checkoutFacade.continue(CheckoutStepType.Review);
   }
 
   ngOnDestroy() {

@@ -98,7 +98,7 @@ describe('Basket Validation Effects', () => {
 
       const action = startCheckout();
       const completion = continueCheckout({
-        targetStep: CheckoutStepType.addresses,
+        targetStep: CheckoutStepType.Addresses,
       });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
@@ -299,7 +299,7 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should call the basketService for validateBasketAndContinueCheckout', done => {
-      const action = continueCheckout({ targetStep: CheckoutStepType.addresses });
+      const action = continueCheckout({ targetStep: CheckoutStepType.Addresses });
       actions$ = of(action);
 
       effects.validateBasketAndContinueCheckout$.subscribe(() => {
@@ -309,7 +309,7 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map to action of type ContinueCheckoutSuccess if targetStep is not 5 (order creation)', () => {
-      const action = continueCheckout({ targetStep: CheckoutStepType.addresses });
+      const action = continueCheckout({ targetStep: CheckoutStepType.Addresses });
       const completion = continueCheckoutSuccess({
         targetRoute: '/checkout/address',
         basketValidation,
@@ -321,7 +321,7 @@ describe('Basket Validation Effects', () => {
     });
 
     it('should map to action of type CreateOrder if targetStep is 5 (order creation)', () => {
-      const action = continueCheckout({ targetStep: CheckoutStepType.receipt });
+      const action = continueCheckout({ targetStep: CheckoutStepType.Receipt });
       const completion1 = continueCheckoutSuccess({ targetRoute: undefined, basketValidation });
       const completion2 = createOrder();
       actions$ = hot('-a----a----a', { a: action });
@@ -337,7 +337,7 @@ describe('Basket Validation Effects', () => {
         })
       );
 
-      const action = continueCheckout({ targetStep: CheckoutStepType.receipt });
+      const action = continueCheckout({ targetStep: CheckoutStepType.Receipt });
       const completion1 = continueCheckoutSuccess({ targetRoute: undefined, basketValidation });
       const completion2 = submitBasket();
       actions$ = hot('-a----a----a', { a: action });
@@ -351,7 +351,7 @@ describe('Basket Validation Effects', () => {
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
-      const action = continueCheckout({ targetStep: CheckoutStepType.addresses });
+      const action = continueCheckout({ targetStep: CheckoutStepType.Addresses });
       const completion = continueCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
@@ -393,7 +393,7 @@ describe('Basket Validation Effects', () => {
     }));
 
     it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
-      const action = continueCheckout({ targetStep: CheckoutStepType.addresses });
+      const action = continueCheckout({ targetStep: CheckoutStepType.Addresses });
       basketValidation.results.valid = false;
       const completion = continueCheckoutWithIssues({
         targetRoute: '/checkout/address',
