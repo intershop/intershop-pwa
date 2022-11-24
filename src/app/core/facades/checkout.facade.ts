@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
+import { formatISO } from 'date-fns';
 import { Subject, combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
@@ -39,8 +40,10 @@ import {
   loadBasketWithId,
   removePromotionCodeFromBasket,
   setBasketAttribute,
+  setBasketDesiredDeliveryDate,
   setBasketPayment,
   startCheckout,
+  submitOrder,
   updateBasketAddress,
   updateBasketCostCenter,
   updateBasketItem,
@@ -72,6 +75,10 @@ export class CheckoutFacade {
 
   start() {
     this.store.dispatch(startCheckout());
+  }
+
+  submitOrder() {
+    this.store.dispatch(submitOrder());
   }
 
   continue(targetStep: number) {
@@ -158,6 +165,12 @@ export class CheckoutFacade {
   desiredDeliveryDaysMin$ = this.store.pipe(
     select(getServerConfigParameter<number>('shipping.desiredDeliveryDaysMin'))
   );
+
+  setDesiredDeliveryDate(date: Date) {
+    this.store.dispatch(
+      setBasketDesiredDeliveryDate({ desiredDeliveryDate: date ? formatISO(date, { representation: 'date' }) : '' })
+    );
+  }
 
   eligibleShippingMethods$() {
     return this.basket$.pipe(

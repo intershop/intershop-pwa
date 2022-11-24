@@ -283,3 +283,19 @@ export const updateConcardisCvcLastUpdatedSuccess = createAction(
   '[Basket API] Update CvcLastUpdated for Concardis Credit Card Success',
   payload<{ paymentInstrument: PaymentInstrument }>()
 );
+
+export const submitOrder = createAction('[Basket] Basket Submit Order');
+
+export const setBasketDesiredDeliveryDate = createAction(
+  '[Basket] Add or Update Basket Desired Delivery Date',
+  payload<{ desiredDeliveryDate: string }>() // international iso date format yyyy-mm-dd
+);
+
+export const setBasketDesiredDeliveryDateFail = createAction(
+  '[Basket API] Add or Update Basket Desired Delivery Date Fail',
+  httpError()
+);
+
+export const setBasketDesiredDeliveryDateSuccess = createAction(
+  '[Basket API] Add or Update Basket Desired Delivery Date Success'
+);

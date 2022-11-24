@@ -27,9 +27,9 @@ export class CheckoutReviewPageComponent implements OnInit {
   }
 
   /**
-   * creates an order and routes to receipt page in case of success
+   * validates the basket, creates an order and routes to receipt page in case of success
    */
   onCreateOrder() {
-    this.checkoutFacade.continue(5);
+    this.checkoutFacade.submitOrder();
   }
 }
