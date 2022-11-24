@@ -1,5 +1,7 @@
+/* eslint-disable rxjs-angular/prefer-takeuntil */
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -11,6 +13,8 @@ interface NavigationItems {
     serverSetting?: string;
     permission?: string | string[];
     notRole?: string | string[];
+    faIcon?: IconProp;
+    isCollapsed?: boolean;
     children?: NavigationItems;
   };
 }
@@ -29,68 +33,103 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
    * Manages the Account Navigation items.
    */
   navigationItems: NavigationItems = {
-    '/account': { localizationKey: 'account.my_account.link' },
+    '/account': { localizationKey: 'account.my_account.link', faIcon: 'user' },
     '/account/requisitions/buyer': {
-      localizationKey: 'account.requisitions.requisitions',
-      serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
-      permission: 'APP_B2B_PURCHASE',
-      notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+      localizationKey: 'account.requisitions.purchases',
+      faIcon: 'cart-shopping',
+      isCollapsed: true,
+      children: {
+        '/account/requisitions/buyer': {
+          localizationKey: 'account.requisitions.requisitions',
+          serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
+          permission: 'APP_B2B_PURCHASE',
+          notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+        },
+        '/account/quotes': {
+          localizationKey: 'account.navigation.quotes.link',
+          feature: 'quoting',
+          notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+        },
+        '/account/order-templates': {
+          localizationKey: 'account.ordertemplates.link',
+          feature: 'orderTemplates',
+          dataTestingId: 'order-templates-link',
+        },
+        '/account/orders': {
+          localizationKey: 'account.order_history.link',
+          notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+        },
+        '/account/wishlists': {
+          localizationKey: 'account.wishlists.link',
+          feature: 'wishlists',
+          dataTestingId: 'wishlists-link',
+          notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+        },
+      },
     },
-    '/account/requisitions/approver': {
-      localizationKey: 'account.requisitions.approvals',
+    '/account/requisitions/myapprover': {
+      localizationKey: 'account.requisitions.myapprovals',
+      faIcon: 'check',
       serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
       permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
+      isCollapsed: true,
+      children: {
+        '/account/requisitions/approver': {
+          localizationKey: 'account.requisitions.approvals',
+          serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
+          permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
+        },
+      },
     },
-    '/account/quotes': {
-      localizationKey: 'account.navigation.quotes.link',
-      feature: 'quoting',
+    '/account/myprofile': {
+      localizationKey: 'account.profile.myprofile',
       notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+      faIcon: 'gear',
+      isCollapsed: true,
+      children: {
+        '/account/profile': {
+          localizationKey: 'account.profile.link',
+          notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+        },
+      },
     },
-    '/account/order-templates': {
-      localizationKey: 'account.ordertemplates.link',
-      feature: 'orderTemplates',
-      dataTestingId: 'order-templates-link',
-    },
-    '/account/orders': {
-      localizationKey: 'account.order_history.link',
-      notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-    },
-    '/account/wishlists': {
-      localizationKey: 'account.wishlists.link',
-      feature: 'wishlists',
-      dataTestingId: 'wishlists-link',
-      notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-    },
-    '/account/addresses': {
-      localizationKey: 'account.saved_addresses.link',
-      dataTestingId: 'addresses-link',
-      notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-    },
-    '/account/payment': {
-      localizationKey: 'account.payment.link',
-      dataTestingId: 'payments-link',
-      notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-    },
-    '/account/profile': { localizationKey: 'account.profile.link', notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'] },
-    '/account/organization/users': {
-      localizationKey: 'account.organization.user_management',
-      permission: 'APP_B2B_MANAGE_USERS',
-    },
-    '/account/organization/cost-centers': {
-      localizationKey: 'account.organization.cost_center_management',
-      feature: 'costCenters',
-      dataTestingId: 'cost-centers-link',
-      permission: 'APP_B2B_MANAGE_COSTCENTER',
-    },
-    '/account/punchout': {
-      localizationKey: 'account.punchout.link',
-      dataTestingId: 'punchout-link',
-      feature: 'punchout',
-      permission: 'APP_B2B_MANAGE_PUNCHOUT',
+    '/account/requisitions/organization': {
+      localizationKey: 'account.requisitions.organization',
+      faIcon: 'briefcase',
+      isCollapsed: true,
+      children: {
+        '/account/addresses': {
+          localizationKey: 'account.saved_addresses.link',
+          dataTestingId: 'addresses-link',
+          notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+        },
+        '/account/payment': {
+          localizationKey: 'account.payment.link',
+          dataTestingId: 'payments-link',
+          notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+        },
+        '/account/organization/users': {
+          localizationKey: 'account.organization.user_management',
+          permission: 'APP_B2B_MANAGE_USERS',
+        },
+        '/account/organization/cost-centers': {
+          localizationKey: 'account.organization.cost_center_management',
+          feature: 'costCenters',
+          dataTestingId: 'cost-centers-link',
+          permission: 'APP_B2B_MANAGE_COSTCENTER',
+        },
+        '/account/punchout': {
+          localizationKey: 'account.punchout.link',
+          dataTestingId: 'punchout-link',
+          feature: 'punchout',
+          permission: 'APP_B2B_MANAGE_PUNCHOUT',
+        },
+      },
     },
     '/logout': {
       localizationKey: 'account.navigation.logout.link',
       notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+      faIcon: 'right-from-bracket',
     },
   };
 
