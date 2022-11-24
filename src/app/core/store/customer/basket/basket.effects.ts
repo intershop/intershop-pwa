@@ -210,8 +210,9 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(setBasketDesiredDeliveryDate),
       mapToPayloadProperty('desiredDeliveryDate'),
-      mergeMap(date =>
-        this.basketService.updateBasketItemsDesiredDeliveryDate(date).pipe(
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      mergeMap(([date, basket]) =>
+        this.basketService.updateBasketItemsDesiredDeliveryDate(date, basket?.lineItems).pipe(
           switchMap(() => [
             setBasketAttribute({
               attribute: {
@@ -366,8 +367,11 @@ export class BasketEffects {
           basket.attributes,
           'desiredDeliveryDate'
         );
+
         return (
-          desiredDeliveryDate ? this.basketService.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate) : of([])
+          desiredDeliveryDate
+            ? this.basketService.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, basket.lineItems)
+            : of([])
         ).pipe(
           map(() => continueCheckout({ targetStep: 5 })),
           mapErrorToAction(setBasketDesiredDeliveryDateFail)
