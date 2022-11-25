@@ -44,7 +44,7 @@ export class BasketValidationEffects {
 
   // validation step for each checkout step type
   private validationSteps: { [targetStep: string | number]: { scopes: BasketValidationScopeType[]; route: string } } = {
-    [CheckoutStepType.Checkout]: { scopes: ['Products', 'Promotion', 'Value', 'CostCenter'], route: '/basket' },
+    [CheckoutStepType.BeforeCheckout]: { scopes: ['Products', 'Promotion', 'Value', 'CostCenter'], route: '/basket' },
     [CheckoutStepType.Addresses]: {
       scopes: ['InvoiceAddress', 'ShippingAddress', 'Addresses'],
       route: '/checkout/address',
@@ -76,7 +76,7 @@ export class BasketValidationEffects {
       withLatestFrom(this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
       filter(([, acc]) => acc),
       concatMap(() =>
-        this.basketService.validateBasket(this.validationSteps[CheckoutStepType.Checkout].scopes).pipe(
+        this.basketService.validateBasket(this.validationSteps[CheckoutStepType.BeforeCheckout].scopes).pipe(
           map(basketValidation => startCheckoutSuccess({ basketValidation })),
           mapErrorToAction(startCheckoutFail)
         )

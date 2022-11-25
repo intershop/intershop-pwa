@@ -2,8 +2,8 @@
  * available, ordered checkout steps
  */
 export enum CheckoutStepType {
-  Checkout,
-  Addresses = 1,
+  BeforeCheckout,
+  Addresses,
   Shipping,
   Payment,
   Review,

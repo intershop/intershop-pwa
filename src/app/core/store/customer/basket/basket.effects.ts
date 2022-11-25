@@ -18,6 +18,7 @@ import {
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
@@ -373,7 +374,7 @@ export class BasketEffects {
             ? this.basketService.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, basket.lineItems)
             : of([])
         ).pipe(
-          map(() => continueCheckout({ targetStep: 5 })),
+          map(() => continueCheckout({ targetStep: CheckoutStepType.Receipt })),
           mapErrorToAction(setBasketDesiredDeliveryDateFail)
         );
       })

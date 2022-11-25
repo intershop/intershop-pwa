@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap }
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
@@ -81,7 +82,7 @@ export class CheckoutFacade {
     this.store.dispatch(submitOrder());
   }
 
-  continue(targetStep: number) {
+  continue(targetStep: CheckoutStepType) {
     this.store.dispatch(continueCheckout({ targetStep }));
   }
 
