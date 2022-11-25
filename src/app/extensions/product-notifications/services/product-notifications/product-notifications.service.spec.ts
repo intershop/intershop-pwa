@@ -15,6 +15,7 @@ describe('Product Notifications Service', () => {
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
+
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
@@ -28,30 +29,29 @@ describe('Product Notifications Service', () => {
     productNotificationsService = TestBed.inject(ProductNotificationsService);
   });
 
+  it('should be created', () => {
+    expect(productNotificationsService).toBeTruthy();
+  });
   describe('getProductNotifications', () => {
     beforeEach(() => {
       when(apiServiceMock.get(anything())).thenReturn(of({ sku: '1234' }));
       when(apiServiceMock.resolveLinks()).thenReturn(() => of([]));
     });
 
-    it('should be created', () => {
-      expect(productNotificationsService).toBeTruthy();
-    });
-
     it("should get product stock notifications when 'getProductNotifications' for type stock is called for b2b rest applications", done => {
       productNotificationsService.getProductNotifications('stock').subscribe(data => {
         verify(apiServiceMock.get(`customers/4711/users/-/notifications/stock`)).once();
         expect(data).toMatchInlineSnapshot(`Array []`);
+        done();
       });
-      done();
     });
 
     it("should get product price notifications when 'getProductNotifications' for type price is called for b2b rest applications", done => {
-      productNotificationsService.getProductNotifications('stock').subscribe(data => {
+      productNotificationsService.getProductNotifications('price').subscribe(data => {
         verify(apiServiceMock.get(`customers/4711/users/-/notifications/price`)).once();
         expect(data).toMatchInlineSnapshot(`Array []`);
+        done();
       });
-      done();
     });
   });
 });
