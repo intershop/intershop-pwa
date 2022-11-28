@@ -13,9 +13,17 @@ A possible scenario would be to have the shopping experience with all its SEO op
 
 ## Requirements
 
+The best way to deploy a Hybrid Approach installation is with the Intershop provided [PWA Helm chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) (0.4.0 and above).
+How to configure the PWA Helm chart for the PWA and the ICM is explained in the according [Hybrid mode](https://github.com/intershop/helm-charts/tree/main/charts/pwa#hybrid-mode) paragraph.
+The version requirements for the involved systems are the following.
+
+- Intershop 11
+- PWA 3.2.0
+
+The functional requirements for the Hybrid Approach to work are already available with the following versions of ICM and PWA but this way they cannot be deployed together with a combined Helm chart.
+
 - ICM 7.10.32.16-LTS or 7.10.38.6-LTS
 - PWA 2.3.0
-- Helm Chart [pwa-main](https://github.com/intershop/helm-charts/releases?q=pwa-main&expanded=true) 0.4.0
 
 > **NOTE:** The feature is based on the assumption that the PWA and the ICM can read and write each other's cookies. That means that cookies written by the PWA and ICM must have the same domain and the same path. This works since all Responsive Starter Store requests and responses are proxied through the PWA SSR simulating a common domain.
 
@@ -40,7 +48,7 @@ See [Concept - Integration of Progressive Web App and inSPIRED Storefront](https
 
 If you also want to support the correct handling for links generated in e-mails, the property `intershop.WebServerSecureURL` must point to nginx.
 
-_\$SERVER/share/system/config/cluster/appserver.properties_:
+_configuration via \$SERVER/share/system/config/cluster/appserver.properties_:
 
 ```properties
 SecureAccessOnly=true
@@ -49,14 +57,20 @@ intershop.apitoken.cookie.sslmode=true
 intershop.WebServerSecureURL=https://<nginx>
 ```
 
+_configuration via `icm_as` Helm chart_
+
+```yaml
+INTERSHOP_APITOKEN_COOKIE_ENABLED: true
+INTERSHOP_APITOKEN_COOKIE_SSLMODE: true
+INTERSHOP_WEBSERVERSECUREURL: https://<icm-web>
+```
+
 ### Intershop Progressive Web App
 
 The server-side rendering process must be started with `SSR_HYBRID=1`.
 
 In addition, the PWA must be run with secure URLs as well.
-See [SSR Startup](../guides/ssr-startup.md#running-with-https)) for reference how you can achieve that locally.
-
-> :warning: **Don't use this option for production environments**, above means to switch on hybrid mode and https are only to ease local development.
+See [SSR Startup - Development](../guides/ssr-startup.md#development) for reference how you can achieve that locally.
 
 > :warning: **Only for development environments**: It might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
 

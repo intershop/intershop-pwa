@@ -47,7 +47,6 @@ Make sure to use them as written in the table below.
 |                     | parameter                                   | format               | comment                                                                                         |
 | ------------------- | ------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------- |
 | **SSR Specific**    | PORT                                        | number               | Port for running the application                                                                |
-|                     | SSL                                         | any                  | Enables SSL/TLS                                                                                 |
 |                     | CONCURRENCY_SSR                             | number \| max        | concurrency for SSR instances per theme (default: 2)                                            |
 |                     | CACHE_ICM_CALLS                             | recommended \| JSON  | enable caching for ICM calls, see [Local ICM Cache](#local-icm-cache) (default: disabled)       |
 | **General**         | ICM_BASE_URL                                | string               | Sets the base URL for the ICM                                                                   |
