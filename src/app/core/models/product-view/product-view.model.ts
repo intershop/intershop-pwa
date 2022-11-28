@@ -37,8 +37,7 @@ export function createVariationProductMasterView(
   defaultCategory?: CategoryView
 ): VariationProductMasterView {
   return (
-    product &&
-    variations?.length && {
+    product && {
       ...createProductView(product, defaultCategory),
       type: 'VariationProductMaster',
       defaultVariationSKU,
@@ -54,9 +53,7 @@ export function createVariationProductView(
   defaultCategory?: CategoryView
 ): VariationProductView {
   return (
-    product &&
-    productMaster &&
-    variations?.length && {
+    product && {
       ...createProductView(product, defaultCategory),
       type: 'VariationProduct',
       variations,
