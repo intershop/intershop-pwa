@@ -71,6 +71,8 @@ export function app() {
 
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
+  const SSR_HYBRID_BACKEND = process.env.SSR_HYBRID_BACKEND || ICM_BASE_URL;
+
   if (!ICM_BASE_URL) {
     console.error('ICM_BASE_URL not set');
     process.exit(1);
@@ -256,7 +258,7 @@ export function app() {
     server.use('*', hybridRedirect);
   }
 
-  const icmProxy = proxy(ICM_BASE_URL, {
+  const icmProxy = proxy(SSR_HYBRID_BACKEND, {
     // preserve original path
     proxyReqPathResolver: (req: express.Request) => req.originalUrl,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -264,6 +266,10 @@ export function app() {
       if (process.env.TRUST_ICM) {
         // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
         options.rejectUnauthorized = false;
+      }
+      if (process.env.SSR_HYBRID) {
+        // Force context proto to be https otherwise ICM WA is redirecting us to https
+        options.headers['X-Forwarded-Proto'] = 'https';
       }
       return options;
     },
