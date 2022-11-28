@@ -4,31 +4,28 @@
   <h3>{{ 'account.notifications.price.heading' | translate }}</h3>
   <ng-container *ngIf="productNotificationsPrice$ | async as productNotificationsPrice">
     <ng-container *ngIf="productNotificationsPrice?.length">
-      <ng-container *ngFor="let productNotification of productNotificationsPrice">
-        <div>
-          {{ productNotification.sku }} | {{ productNotification.type }} |
-          <ish-product-name ishProductContext [sku]="productNotification.sku"></ish-product-name>
-        </div>
-      </ng-container>
+      <div
+        *ngFor="let productNotification of productNotificationsPrice"
+        ishProductContext
+        [sku]="productNotification.sku"
+      >
+        {{ productNotification.sku }} | {{ productNotification.type }} |
+        <ish-product-name></ish-product-name>
+        <ish-product-notification-edit [productNotification]="productNotification"></ish-product-notification-edit>
+      </div>
     </ng-container>
   </ng-container>
 
   <h3>{{ 'account.notifications.backinstock.heading' | translate }}</h3>
   <ng-container *ngIf="productNotificationsInStock$ | async as productNotificationsInStock">
     <ng-container *ngIf="productNotificationsInStock?.length">
-      <ng-container *ngFor="let productNotification of productNotificationsInStock">
-        <div>
-          {{ productNotification.sku }} | {{ productNotification.type }} |
-          <ish-product-name ishProductContext [sku]="productNotification.sku"></ish-product-name>
-        </div>
-      </ng-container>
-    </ng-container>
-  </ng-container>
-
-  <ng-container *ngIf="productNotifications$ | async as productNotifications">
-    <ng-container *ngIf="productNotifications?.length > 0" class="list-body">
-      <div *ngFor="let productNotification of productNotifications" ishProductContext [sku]="productNotification.sku">
+      <div
+        *ngFor="let productNotification of productNotificationsInStock"
+        ishProductContext
+        [sku]="productNotification.sku"
+      >
         {{ productNotification.sku }} | {{ productNotification.type }} |
+        <ish-product-name></ish-product-name>
         <ish-product-notification-edit [productNotification]="productNotification"></ish-product-notification-edit>
       </div>
     </ng-container>
