@@ -1,18 +1,10 @@
-import { TestBed } from '@angular/core/testing';
-
 import { ProductNotificationData } from './product-notification.interface';
 import { ProductNotificationMapper } from './product-notification.mapper';
 
 describe('Product Notification Mapper', () => {
-  let productNotificationMapper: ProductNotificationMapper;
-
-  beforeEach(() => {
-    productNotificationMapper = TestBed.inject(ProductNotificationMapper);
-  });
-
   describe('fromData', () => {
     it('should throw when input is falsy', () => {
-      expect(() => productNotificationMapper.fromData(undefined, undefined)).toThrow();
+      expect(() => ProductNotificationMapper.fromData(undefined, undefined)).toThrow();
     });
 
     it('should map incoming data for price notification to model data', () => {
