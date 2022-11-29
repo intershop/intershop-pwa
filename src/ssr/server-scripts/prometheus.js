@@ -1,9 +1,10 @@
 const express = require('express');
 const pm2 = require('pm2');
-
+const ports = require('./ecosystem-ports.json');
 const DEBUG = /^(on|1|true|yes)$/i.test(process.env.DEBUG);
 
 const client = require('prom-client');
+const metricsPerWorker = {};
 const requestCounts = new client.Gauge({
   name: 'http_request_counts',
   help: 'counter for requests labeled with: method, status_code, theme, base_href, path',
@@ -35,6 +36,14 @@ const pm2Memory = new client.Gauge({
   help: 'counter for pm2 memory',
   labelNames: ['name'],
 });
+const pm2GetmetricsSuccess = new client.Counter({
+  name: 'pm2_getmetrics_success',
+  help: 'counter for successful getmetrics messages',
+});
+const pm2GetmetricsFailure = new client.Counter({
+  name: 'pm2_getmetrics_failure',
+  help: 'counter for unsuccessful getmetrics messages',
+});
 
 const app = express();
 
@@ -56,13 +65,26 @@ app.post('/report', (req, res) => {
   res.status(204).send();
 });
 
-app.get('/metrics', async (_, res) => {
-  const metrics = await client.register.metrics();
-  if (DEBUG) {
-    console.log(metrics);
-  }
-  res.set('Content-Type', client.register.contentType);
-  res.send(metrics);
+app.get('/metrics', (_, res) => {
+  const metricsArr = Object.values(metricsPerWorker);
+  client.register
+    .getMetricsAsJSON()
+    .then(pm2Metrics => {
+      metricsArr.push(pm2Metrics);
+      const registry = client.AggregatorRegistry.aggregate(metricsArr);
+      registry
+        .metrics()
+        .then(content => {
+          res.set('Content-Type', client.contentType);
+          res.send(content);
+        })
+        .catch(error => {
+          res.status(500).send(error.toString());
+        });
+    })
+    .catch(error => {
+      res.status(500).send(error.toString());
+    });
 
   pm2.connect(err1 => {
     if (!err1) {
@@ -93,5 +115,50 @@ app.get('/metrics', async (_, res) => {
 });
 
 app.listen(9113, () => {
+  process.send('ready');
   console.log('Prometheus reporter listening');
+});
+
+// Ask other processes for metrics Every 10 seconds
+const getMetricsInterval = setInterval(() => {
+  pm2.connect(() => {
+    Object.keys(ports).forEach(theme => {
+      pm2.describe(theme, (err, processInfo) => {
+        processInfo.forEach((processData, index) => {
+          //console.log(`Asking process ${processData.pm_id} for metrics.`);
+
+          pm2.sendDataToProcessId(
+            processData.pm_id,
+            {
+              id: processData.pm_id,
+              type: 'process:msg',
+              data: {
+                theme: processData.name,
+                instance: index,
+              },
+              topic: 'getMetrics',
+            },
+            (err, res) => {
+              if (err) {
+                console.error(error);
+                pm2GetmetricsFailure.inc();
+              } else {
+                pm2GetmetricsSuccess.inc();
+              }
+            }
+          );
+        });
+      });
+    });
+  });
+}, 1000);
+
+// Listen to messages from theme applications
+pm2.launchBus(function (err, pm2_bus) {
+  pm2_bus.on('process:msg', msg => {
+    if (msg?.data?.topic == 'returnMetrics' && msg.process.name && msg.process.pm_id) {
+      const worker = `${msg.process.name} ${msg.process.pm_id}`;
+      metricsPerWorker[worker] = msg.data.body;
+    }
+  });
 });

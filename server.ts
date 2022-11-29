@@ -17,6 +17,9 @@ import {
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 
+const client = require('prom-client');
+const collectDefaultMetrics = client.collectDefaultMetrics;
+
 const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
 
 if (PM2) {
@@ -454,11 +457,31 @@ export function app() {
   return server;
 }
 
+if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
+  type MetricsMessage = { topic: string; data: any };
+  process.on('message', (msg: MetricsMessage) => {
+    if (msg.topic === 'getMetrics') {
+      client.register.getMetricsAsJSON().then((data: any) => {
+        process.send({
+          type: 'process:msg',
+          data: {
+            body: data,
+            topic: 'returnMetrics',
+          },
+        });
+      });
+    }
+  });
+}
+
 function run() {
   const http = require('http');
-
   http.createServer(app()).listen(PORT);
-
+  if (process.env.pm_id && process.env.name) {
+    collectDefaultMetrics({ prefix: 'pwa_', labels: { theme: process.env.name, id: process.env.pm_id } });
+  } else {
+    collectDefaultMetrics({ prefix: 'pwa_' });
+  }
   console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
   console.log('serving static files from', BROWSER_FOLDER);
 }
