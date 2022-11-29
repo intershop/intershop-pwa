@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MatomoTracker } from '@ngx-matomo/tracker';
 import { Observable, Subject } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -14,7 +13,7 @@ export class ProductDetailComponent implements OnInit {
   private destroy = new Subject<void>();
   product$: Observable<ProductView>;
 
-  constructor(private context: ProductContextFacade, private readonly tracker: MatomoTracker) {}
+  constructor(private context: ProductContextFacade) {}
   ngOnInit() {
     this.product$ = this.context.select('product');
   }

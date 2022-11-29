@@ -26,7 +26,7 @@ Before you integrate matomo into the pwa. Here is a basic overview of the system
 You can install the matomo system over their [website](https://matomo.org/faq/on-premise/installing-matomo/) or preferably using the official [docker image](https://hub.docker.com/_/matomo). Further information on the set up is provided on their website and the docker image.  
  After you installed and set up the matomo system, you can access the analytics dashboard on a browser.
 
-When you open the matomo dashboard on you machine it should look like this:
+When you open the matomo dashboard on your machine it should look like this:
 ![Dashboard](matomo_dashboard.png)
 
 Congratulations🎉! You set up the first part of matomo now you have to configure matomo in the pwa or if you have a version without matomo, integrate matomo into the pwa.

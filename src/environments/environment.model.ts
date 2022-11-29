@@ -53,6 +53,10 @@ export interface Environment {
   // track shop interaction via Google Tag Manager (to be used with 'tracking' feature, works with server side rendering only)
   gtmToken?: string;
 
+  // track shop interactions via Matomo Analytics
+  matomoTrackerUrl?: string;
+  matomoSiteId?: string;
+
   // log client-side javascript errors to sentry.io (to be used with 'sentry' feature, works with server side rendering only)
   sentryDSN?: string;
 
@@ -133,6 +137,10 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
   identityProvider: 'ICM',
+
+  /* MATOMO ANALYTICS CONFIGURATION*/
+  matomoTrackerUrl: 'http://localhost:8080',
+  matomoSiteId: '2',
 
   /* FEATURE TOGGLES */
   features: ['compare', 'contactUs', 'rating', 'recently', 'storeLocator'],

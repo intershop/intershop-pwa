@@ -9,12 +9,12 @@ import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import {
   addItemsToBasketSuccess,
-  deleteBasketItem,
+  deleteBasketItemSuccess,
   loadBasketSuccess,
-  submitBasket,
+  submitBasketSuccess,
   updateBasketItemSuccess,
 } from 'ish-core/store/customer/basket';
-import { getCurrentBasket } from 'ish-core/store/customer/basket/basket.selectors';
+import { getCurrentBasket, getSubmittedBasket } from 'ish-core/store/customer/basket/basket.selectors';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
 import { getProduct, getSelectedProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
@@ -35,27 +35,57 @@ export class MatomoEffects {
         mapToPayloadProperty('lineItems'),
         log('addItemToBasketSuccessInfo'),
         // eslint-disable-next-line rxjs/no-unsafe-switchmap
-        switchMap(lineItem =>
-          this.store.pipe(
-            select(getProduct(lineItem[0].productSKU)),
-            log('Item'),
-            tap(product => {
-              this.tracker.addEcommerceItem(
-                lineItem[0].productSKU,
-                product.name,
-                product.defaultCategory.name,
-                lineItem[0].singleBasePrice.gross,
-                lineItem[0].quantity.value
-              );
-              console.log(
-                `${product.name} added to basket with single base price of ${lineItem[0].singleBasePrice.net}`
-              );
-            })
-          )
+        map(lineItems =>
+          lineItems.forEach(item => {
+            console.log(`Works for ${item.productSKU}`);
+            this.store.pipe(
+              select(getProduct(item.productSKU)),
+              log('Selected Item'),
+              tap(product => {
+                this.tracker.addEcommerceItem(
+                  item.productSKU,
+                  product.name,
+                  product.defaultCategory.name,
+                  item.singleBasePrice.gross,
+                  item.quantity.value
+                );
+              })
+            );
+          })
         )
       ),
     { dispatch: false }
   );
+
+  // addItemToBasket$ = createEffect(
+  //   () =>
+  //     this.actions$.pipe(
+  //       ofType(addItemsToBasketSuccess),
+  //       mapToPayloadProperty('lineItems'),
+  //       log('addItemToBasketSuccessInfo'),
+  //       // eslint-disable-next-line rxjs/no-unsafe-switchmap
+  //       switchMap(lineItem =>
+  //         lineItem.map((item) => {
+  //           this.store.pipe(
+  //             select(getProduct(item.productSKU)),
+  //             log('addItem'),
+  //             tap(product => {
+  //               this.tracker.addEcommerceItem(
+  //                 item.productSKU,
+  //                 product.name,
+  //                 product.defaultCategory.name,
+  //                 item.singleBasePrice.gross,
+  //                 item.quantity.value
+  //               );
+  //               console.log(this.store.pipe(select(getPriceDisplayType)));
+  //               console.log(`${product.name} added to basket with single base price of ${item.singleBasePrice.net}`);
+  //             })
+  //           );
+  //         })
+  //       )
+  //     ),
+  //   { dispatch: false }
+  // );
 
   /**
    * Is triggered when a product is deleted from the basket. Effects sends info to Matomo and logs event.
@@ -63,7 +93,7 @@ export class MatomoEffects {
   deleteProductFromBasket$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(deleteBasketItem),
+        ofType(deleteBasketItemSuccess),
         mapToPayloadProperty('itemId'),
         withLatestFrom(this.store.pipe(select(getCurrentBasket))),
         map(([itemId, basket]) => basket.lineItems.filter(lineItem => lineItem.id === itemId)?.[0]),
@@ -178,6 +208,7 @@ export class MatomoEffects {
   /**
    * Tracks the category when product detail page is called.
    */
+  /*
   trackProductCategoryTagManager$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -193,6 +224,20 @@ export class MatomoEffects {
       ),
     { dispatch: false }
   );
+  */
+
+  // trackProductCategoryTagManager$ = createEffect(
+  //   () => this.actions$.pipe(
+  //     ofType(loadProductSuccess),
+  //     switchMap(() => this.store.pipe(
+  //       ofProductUrl(),
+  //       select(getProduct('123')),
+  //       whenTruthy(),
+  //       map(item => item.)
+  //       )
+  //     )),
+  //   { dispatch: false }
+  // );
 
   /**
    * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
@@ -202,9 +247,9 @@ export class MatomoEffects {
   trackSubmittedOrders$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(submitBasket),
+        ofType(submitBasketSuccess),
         switchMap(() => {
-          this.store.pipe(select(getCurrentBasket)).subscribe(b => {
+          this.store.pipe(select(getSubmittedBasket)).subscribe(b => {
             this.tracker.trackEcommerceOrder(b?.id, b?.totals.total.gross);
             this.tracker.trackPageView();
             console.log(`Tracked order with id ${b?.id} and total amount of ${b?.totals.total.gross}`);
