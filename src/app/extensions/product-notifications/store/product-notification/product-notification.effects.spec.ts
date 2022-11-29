@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
+
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
+
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 import { ProductNotificationsService } from '../../services/product-notifications/product-notifications.service';
 
