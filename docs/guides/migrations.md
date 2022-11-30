@@ -7,6 +7,23 @@ kb_sync_latest_only
 
 # Migrations
 
+## 3.1 to 3.2
+
+A styling adaption was made to the application shell to expand it to the full page height so the footer now always stays at the bottom.
+Together with that an inline style of the `main-container` was moved to the global styling definition.
+
+Formly has been upgraded from version 5 to 6.
+Find more information in the [Formly Upgrade Guide](https://github.com/ngx-formly/ngx-formly/blob/main/UPGRADE-6.0.md).
+We still use deprecated form properties like 'templateOptions' and 'expressionProperties' for compatibility reasons but we are going to replace them in the next major release.
+
+The two small black triangle images `active_catalog.png` (header: when hovering a catalog) and `budget-bar-indicator.png` (my account: budget bar) are removed and replaced by CSS styling.
+The basket empty image `empty-cart.png` is removed and replaced with CSS styling.
+The sprite image `product_sprite.png` is removed and replaced with localized text for "New", "Sale" and "Top" with the according CSS styling.
+
+After entering a desired delivery date on the checkout shipping page and after submitting the order the desired delivery date will be saved at all basket items, if necessary.
+In case of large basket (> 20 items) this might cause (unacceptable) long response times.
+You can keep the existing behavior by modifying the updateBasketItemsDesiredDeliveryDate() method of the basket service to always return an empty array without doing anything.
+
 ## 3.0 to 3.1
 
 The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).

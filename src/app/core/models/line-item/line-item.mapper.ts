@@ -49,6 +49,7 @@ export class LineItemMapper {
         productSKU: data.product,
         editable: !data.quantityFixed,
         quote: data.quote ? data.quote : undefined,
+        desiredDeliveryDate: data.desiredDelivery,
       };
     } else {
       throw new Error(`'LineItemData' is required for the mapping`);

@@ -82,7 +82,7 @@
     "@ngrx/store": "14.3.2",
     "@ngrx/store-devtools": "14.3.2",
     "@nguniversal/express-engine": "14.2.0",
-    "@ngx-formly/core": "^5.12.7",
+    "@ngx-formly/core": "^6.0.1",
     "@ngx-translate/core": "^14.0.0",
     "@rx-angular/state": "1.7.0",
     "@sentry/browser": "^7.14.1",

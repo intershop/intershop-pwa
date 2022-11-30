@@ -31,6 +31,7 @@ describe('Basket Invoice Address Widget Component', () => {
 
     accountFacade = mock(AccountFacade);
     when(accountFacade.addresses$()).thenReturn(EMPTY);
+    when(accountFacade.isLoggedIn$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
@@ -160,11 +161,11 @@ describe('Basket Invoice Address Widget Component', () => {
 
       component.addresses$.subscribe(addrs => {
         expect(addrs.map(add => add.id)).toMatchInlineSnapshot(`
-      Array [
-        "3",
-        "4",
-      ]
-    `);
+                Array [
+                  "3",
+                  "4",
+                ]
+            `);
         done();
       });
     });

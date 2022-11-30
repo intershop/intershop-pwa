@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { EMPTY, Observable, forkJoin, iif, of, throwError } from 'rxjs';
 import { catchError, concatMap, map, take } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
@@ -20,7 +20,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
-import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -38,7 +38,9 @@ export type BasketUpdateType =
 
 export type BasketItemUpdateType =
   | { quantity?: { value: number; unit: string }; product?: string }
-  | { shippingMethod: { id: string } };
+  | { shippingMethod?: { id: string } }
+  | { desiredDelivery?: string }
+  | { calculated: boolean };
 
 type BasketIncludeType =
   | 'invoiceToAddress'
@@ -511,6 +513,30 @@ export class BasketService {
         return throwError(() => err);
       })
     );
+  }
+
+  /**
+   * Updates the desired delivery date at all those line items of the current basket, whose desired delivery date differs from the given date.
+   *
+   * @param  desiredDeliveryDate      Desired delivery date in iso format, i.e. yyyy-mm-dd.
+   * @param lineItems                 Array of basket line items
+   * @returns                         Array of updated line items and basket
+   */
+  updateBasketItemsDesiredDeliveryDate(
+    desiredDeliveryDate: string,
+    lineItems: LineItemView[]
+  ): Observable<{ lineItem: LineItem; info: BasketInfo[] }[]> {
+    if (desiredDeliveryDate && !new RegExp(/\d{4}-\d{2}-\d{2}/).test(desiredDeliveryDate)) {
+      return throwError(
+        () => new Error('updateBasketItemsDesiredDeliveryDate() called with an invalid desiredDeliveryDate')
+      );
+    }
+
+    const obsArray = lineItems
+      ?.filter(item => item.desiredDeliveryDate !== desiredDeliveryDate)
+      ?.map(item => this.updateBasketItem(item.id, { desiredDelivery: desiredDeliveryDate }));
+
+    return iif(() => !!obsArray.length, forkJoin(obsArray), of([]));
   }
 
   /**

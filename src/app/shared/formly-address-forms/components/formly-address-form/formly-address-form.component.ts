@@ -83,7 +83,9 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
 
       this.addressModel.countryCode = model.countryCode;
       this.addressForm.updateValueAndValidity();
-      this.addressForm.get('countryCode').markAsDirty();
+      if (model.countryCode) {
+        this.addressForm.get('countryCode').markAsDirty();
+      }
 
       this.parentForm?.setControl('address', this.addressForm);
     }

@@ -238,7 +238,21 @@
   border-bottom: $border-width-default solid $border-color-light;
 
   .empty-cart-icon {
-    padding: ($space-default * 4) 0 ($space-default * 2);
+    display: inline-block;
+    padding: ($space-default * 4) 0 0;
+    font-size: $space-default * 10;
+    line-height: inherit;
+    color: $border-color-light;
+  }
+
+  .empty-cart-icon-text {
+    position: relative;
+    top: -60px;
+    left: -95px;
+    padding: ($space-default * 4) 0 0;
+    font-family: $font-family-bold;
+    font-size: 70px;
+    color: $text-color-quaternary;
   }
 
   h2 {

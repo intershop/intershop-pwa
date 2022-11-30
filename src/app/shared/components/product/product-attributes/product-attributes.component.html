@@ -2,6 +2,5 @@
   <ng-container *ngFor="let attribute of product.attributes | slice: 0:1000">
     <dt class="attribute-type">{{ attribute.name }}:</dt>
     <dd class="attribute-value" [innerHTML]="attribute | ishAttribute: multipleValuesSeparator"></dd>
-    <dd style="clear: both"></dd>
   </ng-container>
 </dl>

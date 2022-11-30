@@ -150,15 +150,43 @@
       &.dropdown {
         position: static;
         padding: 0 10px;
-        background: url('/assets/img/active_catalog.png') -2000px bottom no-repeat;
 
         &:first-child {
           padding-left: 0;
         }
 
+        @media (min-width: $screen-sm) {
+          > a:first-child {
+            position: relative;
+            display: block;
+
+            &::before {
+              // small centered arrow below the category name / link at hover
+              position: absolute;
+              bottom: 0;
+              left: 50%;
+              width: 0;
+              height: 0;
+              margin-left: -6px;
+              visibility: hidden;
+              content: '';
+              border-right: 6px solid transparent;
+              border-bottom: 6px solid #2f2f2f;
+              border-left: 6px solid transparent;
+            }
+          }
+        }
+
         &.hover {
-          background-position: center bottom;
-          transition-delay: 0.5s;
+          @media (min-width: $screen-sm) {
+            > a:first-child {
+              &::before {
+                // set to visible with a delay the same way as the sub categories main layer
+                visibility: visible;
+                transition-delay: 0.5s;
+              }
+            }
+          }
 
           ul {
             visibility: visible;

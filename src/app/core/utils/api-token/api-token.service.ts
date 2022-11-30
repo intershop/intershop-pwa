@@ -91,6 +91,7 @@ export class ApiTokenService {
               expires: new Date(Date.now() + 3600000),
               secure: true,
               sameSite: 'Strict',
+              path: '/',
             });
           } else {
             cookiesService.remove('apiToken');
