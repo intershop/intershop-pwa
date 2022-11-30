@@ -3,11 +3,11 @@
     <li>
       <ng-container *ngIf="currentPage > 1; else inactiveFirstLink">
         <a
-          class="product-list-paging-previous"
           [routerLink]="[]"
           queryParamsHandling="merge"
           [queryParams]="{ page: currentPage - 1 }"
           [fragment]="fragmentOnRouting"
+          class="product-list-paging-previous"
           >&laquo;</a
         >
       </ng-container>
@@ -15,11 +15,11 @@
     </li>
     <li *ngFor="let p of pageIndices">
       <a
-        [ngClass]="{ active: p.value === currentPage }"
         [routerLink]="[]"
         queryParamsHandling="merge"
         [queryParams]="{ page: p.value }"
         [fragment]="fragmentOnRouting"
+        [ngClass]="{ active: p.value === currentPage }"
         >{{ p.display }}</a
       >
     </li>

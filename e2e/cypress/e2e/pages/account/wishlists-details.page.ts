@@ -9,7 +9,7 @@ export class WishlistsDetailsPage {
   readonly breadcrumb = new BreadcrumbModule();
 
   static navigateToOverviewPage() {
-    cy.get('[href="/account/wishlists"]').first().click();
+    cy.get('a[data-testing-id="wishlists-link"]').click();
   }
 
   get listItems() {

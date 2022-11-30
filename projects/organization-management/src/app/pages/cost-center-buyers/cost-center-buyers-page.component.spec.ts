@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -36,7 +37,12 @@ describe('Cost Center Buyers Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyModule.forChild(formlyConfig), FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [
+        FormlyModule.forChild(formlyConfig),
+        FormlyTestingModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [
         CostCenterBuyersPageComponent,
         MockComponent(ErrorMessageComponent),

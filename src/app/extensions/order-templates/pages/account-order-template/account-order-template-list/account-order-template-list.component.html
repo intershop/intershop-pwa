@@ -69,6 +69,7 @@
           ><fa-icon icon="pencil-alt"></fa-icon
         ></a>
         <a
+          [routerLink]="[]"
           class="btn-tool"
           title="{{ 'account.order_template.list.link.remove' | translate }}"
           (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"

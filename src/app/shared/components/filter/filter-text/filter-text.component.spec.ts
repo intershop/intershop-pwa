@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
@@ -12,6 +13,7 @@ describe('Filter Text Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [FilterTextComponent, SanitizePipe],
     }).compileComponents();
   });
@@ -38,10 +40,17 @@ describe('Filter Text Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="filter-list">
         <li class="filter-item filter-layer0">
-          <a class="filter-item-name" data-testing-id="filter-link-AsusName"> Asus (4) </a>
+          <a
+            class="filter-item-name"
+            ng-reflect-router-link=""
+            data-testing-id="filter-link-AsusName"
+            href="/"
+          >
+            Asus (4)
+          </a>
         </li>
         <li class="filter-item filter-layer0 filter-selected">
-          <a data-testing-id="filter-link-LogitechName"
+          <a ng-reflect-router-link="" data-testing-id="filter-link-LogitechName" href="/"
             ><span class="filter-item-name"> Logitech </span><span class="count"> (5) </span></a
           >
         </li>

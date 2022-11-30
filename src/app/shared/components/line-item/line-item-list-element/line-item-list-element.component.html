@@ -91,8 +91,9 @@
           displayType="icon"
         ></ish-lazy-product-add-to-wishlist>
         <a
-          class="btn-tool"
           *ngIf="!pli.isFreeGift && editable"
+          [routerLink]="[]"
+          class="btn-tool"
           [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="pli.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"

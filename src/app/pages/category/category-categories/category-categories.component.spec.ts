@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,7 +23,7 @@ describe('Category Categories Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         CategoryCategoriesComponent,
         MockComponent(BreadcrumbComponent),

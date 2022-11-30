@@ -6,6 +6,7 @@
         <!-- edit shipping address -->
         <a
           *ngIf="collapseChange | async"
+          [routerLink]="[]"
           class="btn-tool"
           title="{{ 'checkout.address.update.button.label' | translate }}"
           (click)="showAddressForm(address)"
@@ -17,6 +18,7 @@
         <!-- delete shipping address -->
         <a
           *ngIf="(basketShippingAddressDeletable$ | async) && (collapseChange | async)"
+          [routerLink]="[]"
           class="btn-tool"
           title="{{ 'checkout.address.delete.button.label' | translate }}"
           (click)="modalDialog.show(address)"

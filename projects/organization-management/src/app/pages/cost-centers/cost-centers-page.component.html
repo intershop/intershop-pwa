@@ -81,6 +81,7 @@
               <!-- Deactivate -->
               <a
                 *ngIf="costCenter.active; else activateCostCenter"
+                [routerLink]="[]"
                 class="btn-tool"
                 title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deactivateDialog)"
@@ -91,6 +92,7 @@
               <!-- Activate -->
               <ng-template #activateCostCenter>
                 <a
+                  [routerLink]="[]"
                   class="btn-tool"
                   title="{{ 'account.costcenter.activate.button.title' | translate }}"
                   (click)="activate(costCenter)"
@@ -102,6 +104,7 @@
               <!-- Delete -->
               <a
                 *ngIf="!(costCenter.pendingOrders + costCenter.approvedOrders); else deleteButtonDisabled"
+                [routerLink]="[]"
                 class="btn-tool"
                 title="{{ 'account.costcenter.delete.link' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deleteDialog)"
