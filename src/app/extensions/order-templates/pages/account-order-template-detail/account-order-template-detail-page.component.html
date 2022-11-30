@@ -5,7 +5,8 @@
   <h1 class="clearfix">
     {{ orderTemplate?.title }}
     <a
-      (click)="editOrderTemplateDialog.show()"
+      href="#"
+      (click)="showTemplate(editOrderTemplateDialog)"
       class="btn btn-secondary float-right"
       [title]="'account.order_template.edit.heading' | translate"
       data-testing-id="order-template-details-edit"

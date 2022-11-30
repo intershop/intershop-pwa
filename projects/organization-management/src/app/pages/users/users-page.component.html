@@ -41,6 +41,7 @@
               title="{{
                 'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName }
               }}"
+              (keydown.enter)="modalDialog.show(user)"
               (click)="modalDialog.show(user)"
             >
               <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>

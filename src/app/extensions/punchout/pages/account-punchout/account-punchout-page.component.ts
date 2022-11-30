@@ -5,6 +5,7 @@ import { map, withLatestFrom } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { PunchoutFacade } from '../../facades/punchout.facade';
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
@@ -46,5 +47,9 @@ export class AccountPunchoutPageComponent implements OnInit {
 
   deleteUser(user: PunchoutUser) {
     this.punchoutFacade.deletePunchoutUser(user);
+  }
+  showTemplate(modalDialog: ModalDialogComponent<unknown>, user: PunchoutUser) {
+    modalDialog.show(user);
+    return false;
   }
 }

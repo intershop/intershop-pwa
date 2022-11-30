@@ -37,5 +37,6 @@ export class QuoteLineItemListElementComponent implements OnInit {
 
   onDeleteItem() {
     this.quoteContext.deleteItem(this.lineItem.id);
+    return false;
   }
 }

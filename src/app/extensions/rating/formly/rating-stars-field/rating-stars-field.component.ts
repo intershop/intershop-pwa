@@ -19,5 +19,6 @@ export class RatingStarsFieldComponent extends FieldType<FieldTypeConfig> {
 
   setStars(stars: number) {
     this.field.formControl.setValue(stars);
+    return false;
   }
 }

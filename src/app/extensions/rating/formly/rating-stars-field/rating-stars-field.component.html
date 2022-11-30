@@ -3,6 +3,7 @@
     <a
       [title]="'product.review.rating.tooltip' | translate: { '0': i + 1 }"
       class="text-muted mt-4"
+      href="#"
       (click)="setStars(i + 1)"
       ><ish-product-rating-star [filled]="fill"></ish-product-rating-star
     ></a>

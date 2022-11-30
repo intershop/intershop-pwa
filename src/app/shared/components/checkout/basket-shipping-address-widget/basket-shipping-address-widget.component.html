@@ -5,6 +5,7 @@
       <div class="float-right">
         <!-- edit shipping address -->
         <a
+          href="#"
           *ngIf="collapseChange | async"
           class="btn-tool"
           title="{{ 'checkout.address.update.button.label' | translate }}"
@@ -19,7 +20,8 @@
           *ngIf="(basketShippingAddressDeletable$ | async) && (collapseChange | async)"
           class="btn-tool"
           title="{{ 'checkout.address.delete.button.label' | translate }}"
-          (click)="modalDialog.show(address)"
+          href="#"
+          (click)="showTemplate(modalDialog, address)"
         >
           <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
         </a>

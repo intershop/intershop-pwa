@@ -16,6 +16,7 @@
 
     <a
       *ngIf="isUserLoggedIn$ | async; else loginLink"
+      (keydown)="reviewCreateDialog.show()"
       (click)="reviewCreateDialog.show()"
       data-testing-id="open-review-dialog"
       >{{ 'product.reviews.review_this_item.link' | translate }}</a
@@ -61,7 +62,7 @@
       </div>
       <div class="review-item-text">{{ review.content }}</div>
 
-      <a *ngIf="review.own" (click)="modalDialog.show(review)" data-testing-id="delete-review">
+      <a *ngIf="review.own" href="#" (click)="showTemplate(modalDialog, review)" data-testing-id="delete-review">
         {{ 'product.reviews.delete.review.link' | translate }}
       </a>
     </div>

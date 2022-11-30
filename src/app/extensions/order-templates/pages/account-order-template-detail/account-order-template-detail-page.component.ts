@@ -6,6 +6,7 @@ import { mapToProperty } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
+import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-template-preferences-dialog/order-template-preferences-dialog.component';
 
 @Component({
   selector: 'ish-account-order-template-detail-page',
@@ -35,5 +36,10 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit {
       ...orderTemplate,
       id: orderTemplateName,
     });
+  }
+
+  showTemplate(editOrderTemplateDialog: OrderTemplatePreferencesDialogComponent) {
+    editOrderTemplateDialog.show();
+    return false;
   }
 }

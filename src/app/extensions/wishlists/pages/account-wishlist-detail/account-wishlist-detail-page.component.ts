@@ -5,6 +5,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { Wishlist } from '../../models/wishlist/wishlist.model';
+import { WishlistPreferencesDialogComponent } from '../../shared/wishlist-preferences-dialog/wishlist-preferences-dialog.component';
 
 @Component({
   selector: 'ish-account-wishlist-detail-page',
@@ -29,5 +30,9 @@ export class AccountWishlistDetailPageComponent implements OnInit {
       ...wishlist,
       id: wishlistName,
     });
+  }
+  showTemplate(editWishlistDialog: WishlistPreferencesDialogComponent) {
+    editWishlistDialog.show();
+    return false;
   }
 }

@@ -41,7 +41,8 @@
               <a
                 class="btn-tool"
                 title="{{ 'account.user.delete_user_dialog.header' | translate: { '0': user.login } }}"
-                (click)="modalDialog.show(user)"
+                href="#"
+                (click)="showTemplate(modalDialog, user)"
                 data-testing-id="delete-user"
               >
                 <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>

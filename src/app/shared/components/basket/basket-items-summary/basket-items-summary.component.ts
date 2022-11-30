@@ -15,6 +15,7 @@ export class BasketItemsSummaryComponent {
 
   toggleCollapse() {
     this.isCollapsed = !this.isCollapsed;
+    return false;
   }
 
   /**

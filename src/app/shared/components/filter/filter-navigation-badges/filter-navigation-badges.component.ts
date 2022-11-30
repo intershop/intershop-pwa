@@ -32,9 +32,11 @@ export class FilterNavigationBadgesComponent implements OnChanges {
 
   apply(searchParameter: URLFormParams) {
     this.applyFilter.emit({ searchParameter });
+    return false;
   }
 
   clear() {
     this.clearFilters.emit();
+    return false;
   }
 }

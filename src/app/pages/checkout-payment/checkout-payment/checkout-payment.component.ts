@@ -164,6 +164,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
         ? this.parameterForm.controls[key].enable()
         : this.parameterForm.controls[key].disable();
     });
+    return false;
   }
 
   /**
@@ -221,6 +222,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     if (paymentInstrument) {
       this.deletePaymentInstrument.emit(paymentInstrument);
     }
+    return false;
   }
 
   /**

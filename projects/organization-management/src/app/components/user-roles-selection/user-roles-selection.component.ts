@@ -134,6 +134,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
 
   toggleExpanded(index: number) {
     this.isExpanded[index] = !this.isExpanded[index];
+    return false;
   }
 
   ngOnDestroy() {

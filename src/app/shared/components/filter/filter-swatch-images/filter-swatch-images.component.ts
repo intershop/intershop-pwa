@@ -30,6 +30,7 @@ export class FilterSwatchImagesComponent {
    */
   filter(facet: Facet) {
     this.applyFilter.emit({ searchParameter: facet.searchParameter });
+    return false;
   }
 
   getBackgroundColor(facet: Facet) {

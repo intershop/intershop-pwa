@@ -56,5 +56,6 @@ export class ProductComparePagingComponent implements OnChanges {
    */
   changeToPage(pageNumber: number) {
     this.changePage.emit(pageNumber);
+    return false;
   }
 }

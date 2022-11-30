@@ -33,6 +33,7 @@ export class BasketAddToQuoteComponent implements OnInit {
 
   addToQuote() {
     this.quotingFacade.createQuoteRequestFromBasket();
+    return false;
   }
 
   login() {

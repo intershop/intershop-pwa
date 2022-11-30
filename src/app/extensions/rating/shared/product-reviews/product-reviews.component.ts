@@ -7,6 +7,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 import { ProductReview } from '../../models/product-reviews/product-review.model';
@@ -63,5 +64,9 @@ export class ProductReviewsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.productReviewsFacade.resetProductReviewError();
+  }
+  showTemplate(modalDialog: ModalDialogComponent<unknown>, review: ProductReview) {
+    modalDialog.show(review);
+    return false;
   }
 }

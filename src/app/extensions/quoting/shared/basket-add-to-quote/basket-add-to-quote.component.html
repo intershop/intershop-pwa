@@ -1,5 +1,6 @@
 <ng-container *ngIf="isLoggedIn$ | async; else disabled">
   <a
+    href="#"
     *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
     class="btn btn-secondary"
     data-testing-id="create-quote-from-basket"

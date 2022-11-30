@@ -8,6 +8,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 /**
@@ -124,6 +125,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
       this.editAddress = {};
     }
     this.collapse = false;
+    return false;
   }
 
   saveAddress(address: Address) {
@@ -142,5 +144,10 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
 
   deleteAddress(address: Address) {
     this.checkoutFacade.deleteBasketAddress(address.id);
+  }
+
+  showTemplate(modalDialog: ModalDialogComponent<unknown>, address: Address) {
+    modalDialog.show(address);
+    return false;
   }
 }

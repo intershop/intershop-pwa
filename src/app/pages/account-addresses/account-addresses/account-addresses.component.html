@@ -3,6 +3,7 @@
     {{ 'account.addresses.saved_address.heading' | translate }}
     <!-- Add address link -->
     <a
+      href="#"
       *ngIf="isCreateAddressFormCollapsed && !updateFormExpandedAddressId"
       class="btn btn-secondary float-right"
       (click)="showCreateAddressForm()"
@@ -137,6 +138,7 @@
         <div class="col-sm-7 col-md-5">
           <div *ngIf="isCreateAddressFormCollapsed" class="float-right">
             <a
+              href="#"
               *ngIf="isUpdateAddressFormCollapsed(address)"
               class="btn-tool"
               (click)="showUpdateAddressForm(address)"
@@ -152,7 +154,8 @@
               *ngIf="deletable"
               class="btn-tool"
               title="{{ 'account.addresses.delete_address.text' | translate }}"
-              (click)="modalDialog.show(address)"
+              href="#"
+              (click)="showTemplate(modalDialog, address)"
               data-testing-id="delete-address-icon"
             >
               <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>

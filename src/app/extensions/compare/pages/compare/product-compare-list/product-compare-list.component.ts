@@ -87,5 +87,6 @@ export class ProductCompareListComponent implements OnInit {
    */
   removeFromCompare(sku: string) {
     this.compareFacade.removeProductFromCompare(sku);
+    return false;
   }
 }

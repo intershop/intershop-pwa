@@ -56,4 +56,9 @@ export class ModalDialogLinkComponent {
   closed(): void {
     this.shown$.next(false);
   }
+
+  showModal(modalDialog: ModalDialogComponent<unknown>) {
+    modalDialog.show();
+    return false;
+  }
 }

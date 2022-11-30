@@ -68,7 +68,7 @@
 
     <ng-template #paymentWidget let-pi="pi" let-isPreferred="isPreferred">
       <div class="col-sm-7 col-md-5" [ngClass]="{ 'pt-2': !isPreferred }">
-        <a class="float-right" (click)="deleteUserPayment(pi.id)" data-testing-id="delete-payment-link">{{
+        <a class="float-right" href="#" (click)="deleteUserPayment(pi.id)" data-testing-id="delete-payment-link">{{
           'checkout.payment.method.delete.link' | translate
         }}</a>
         <input

@@ -2,6 +2,7 @@
   <ng-container *ngFor="let facet of filterElement.facets">
     <li class="filter-item filter-color" [ngClass]="{ 'filter-selected': facet.selected }">
       <a
+        href="#"
         class="filter-swatch"
         [title]="facet.displayName + ' (' + facet.count + ')'"
         (click)="filter(facet)"

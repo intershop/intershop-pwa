@@ -55,4 +55,8 @@ export class FilterCheckboxComponent {
           .sort((a, b) => (a.selected > b.selected ? -1 : a.selected < b.selected ? 1 : 0))
           .slice(0, Math.max(this.filterElement.limitCount || 0, selectedFacetsCount));
   }
+
+  isAllShown() {
+    this.showAll = !this.showAll;
+  }
 }

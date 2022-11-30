@@ -21,6 +21,7 @@ export class TactonConfigureNavigationComponent implements OnInit {
 
   changeStep(step: string) {
     this.tactonFacade.changeConfigurationStep(step);
+    return false;
   }
 
   /**
@@ -30,6 +31,7 @@ export class TactonConfigureNavigationComponent implements OnInit {
    */
   scrollIntoView(id: string) {
     document.querySelector(`#anchor-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    return false;
   }
 
   isActive$(name: string) {

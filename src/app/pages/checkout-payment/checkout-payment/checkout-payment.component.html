@@ -84,11 +84,12 @@
                     <label class="form-check-label" [for]="'paymentOption_' + paymentInstrument.id">
                       {{ paymentInstrument.accountIdentifier }}
                     </label>
-                    <a
+                    <a^
+                      href="#"
                       class="float-right"
                       (click)="deleteBasketPayment(paymentInstrument)"
                       data-testing-id="delete-payment-link"
-                      >{{ 'checkout.payment.method.delete.link' | translate }}</a
+                      >{{ 'checkout.payment.method.delete.link' | translate }}</a^
                     >
                   </div>
                   <div
@@ -106,7 +107,11 @@
                   </div>
                 </li>
                 <li class="panel">
-                  <a *ngIf="!formIsOpen(i)" (click)="openPaymentParameterForm(i)" data-testing-id="add-payment-link"
+                  <a
+                    *ngIf="!formIsOpen(i)"
+                    href="#"
+                    (click)="openPaymentParameterForm(i)"
+                    data-testing-id="add-payment-link"
                     >{{ 'checkout.payment.addPayment.link' | translate }}
                   </a>
                 </li>

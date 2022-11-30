@@ -105,6 +105,7 @@ export class AccountPaymentComponent implements OnInit, OnChanges, OnDestroy {
         message: 'account.payment.payment_deleted.message',
       });
     }
+    return false;
   }
 
   /**

@@ -63,5 +63,6 @@ export class HeaderNavigationComponent implements OnInit {
   toggleOpen(uniqueId: string) {
     const index = this.openedCategories.findIndex(id => id === uniqueId);
     index > -1 ? this.openedCategories.splice(index, 1) : this.openedCategories.push(uniqueId);
+    return false;
   }
 }

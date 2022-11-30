@@ -114,6 +114,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
       this.editAddress = {};
     }
     this.collapse = false;
+    return false;
   }
 
   saveAddress(address: Address) {

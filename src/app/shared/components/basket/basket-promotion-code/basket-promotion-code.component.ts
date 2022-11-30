@@ -74,4 +74,9 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
   get displaySuccessMessage(): boolean {
     return this.basketPromoCodes?.includes(this.lastEnteredPromoCode);
   }
+
+  manageCollapse() {
+    this.isCollapsed = !this.isCollapsed;
+    return false;
+  }
 }

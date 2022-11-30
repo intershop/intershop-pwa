@@ -25,5 +25,6 @@ export class TactonParameterComponent {
 
   uncommit() {
     this.facade.uncommitValue(this.item);
+    return false;
   }
 }

@@ -22,5 +22,6 @@ export class PromotionRemoveComponent implements OnInit {
 
   removePromotion() {
     this.checkoutFacade.removePromotionCodeFromBasket(this.code);
+    return false;
   }
 }

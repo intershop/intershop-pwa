@@ -51,6 +51,7 @@ export class FilterTextComponent implements OnInit {
 
   filter(facet: Facet) {
     this.applyFilter.emit({ searchParameter: facet.searchParameter });
+    return false;
   }
 
   /**
@@ -68,5 +69,10 @@ export class FilterTextComponent implements OnInit {
     return facets
       .sort((a, b) => (a.selected > b.selected ? -1 : a.selected < b.selected ? 1 : 0))
       .slice(0, Math.max(this.filterElement.limitCount || 0, selectedFacetsCount));
+  }
+
+  isAllShown() {
+    this.showAll = !this.showAll;
+    return false;
   }
 }

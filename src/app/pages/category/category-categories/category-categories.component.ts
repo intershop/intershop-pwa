@@ -29,6 +29,8 @@ export class CategoryCategoriesComponent implements OnInit, OnChanges {
     this.isCollapsed = !this.isCollapsed;
     if (!SSR) {
       window.scroll(0, 0);
+      return;
     }
+    return false;
   }
 }

@@ -159,6 +159,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
     };
     this.form.updateValueAndValidity();
     this.selectAll = !this.selectAll;
+    return false;
   }
 
   submitForm() {

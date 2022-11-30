@@ -39,6 +39,7 @@ export class QuickorderRepeatFieldComponent extends FieldArrayType implements Af
       this.add(this.model.length, { sku: '', quantity: 1 });
     }
     this.updateContexts();
+    return false;
   }
 
   /**
@@ -60,5 +61,11 @@ export class QuickorderRepeatFieldComponent extends FieldArrayType implements Af
         )
       );
     });
+  }
+
+  handleContexts(i: number) {
+    this.remove(i);
+    this.updateContexts();
+    return false;
   }
 }

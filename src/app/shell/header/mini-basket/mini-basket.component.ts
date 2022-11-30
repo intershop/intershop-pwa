@@ -76,6 +76,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
    */
   toggleCollapse() {
     this.isCollapsed = !this.isCollapsed;
+    return false;
   }
 
   /**

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { WishlistsFacade } from '../../../facades/wishlists.facade';
 import { Wishlist, WishlistItem } from '../../../models/wishlist/wishlist.model';
+import { SelectWishlistModalComponent } from '../../../shared/select-wishlist-modal/select-wishlist-modal.component';
 
 /**
  * The Wishlist item component displays a wishlist item. This Item can be removed or moved to another wishlist.
@@ -27,5 +28,11 @@ export class AccountWishlistDetailLineItemComponent {
 
   removeProductFromWishlist(sku: string) {
     this.wishlistsFacade.removeProductFromWishlist(this.currentWishlist.id, sku);
+    return false;
+  }
+
+  showTemplate(moveDialog: SelectWishlistModalComponent) {
+    moveDialog.show();
+    return false;
   }
 }

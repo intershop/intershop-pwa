@@ -46,6 +46,7 @@ export class CostCenterUsersListComponent implements OnInit {
     } else {
       this.removeBuyerFromCostCenter();
     }
+    return false;
   }
 
   removeBuyerFromCostCenter() {

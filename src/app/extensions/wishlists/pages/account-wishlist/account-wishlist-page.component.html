@@ -13,7 +13,7 @@
       {{ 'account.wishlists.heading.tooltip.link' | translate }}
       <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
     </a>
-    <a class="btn btn-secondary" data-testing-id="add-wishlist" (click)="addWishlistDialog.show()">{{
+    <a class="btn btn-secondary" data-testing-id="add-wishlist" href="#" (click)="showTemplate(addWishlistDialog)">{{
       'account.wishlists.add_wishlist' | translate
     }}</a>
   </h1>

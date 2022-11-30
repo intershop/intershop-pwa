@@ -80,6 +80,7 @@
             <ng-container *ngIf="isDeletable(costCenter) | async">
               <!-- Deactivate -->
               <a
+                href="#"
                 *ngIf="costCenter.active; else activateCostCenter"
                 class="btn-tool"
                 title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
@@ -91,6 +92,7 @@
               <!-- Activate -->
               <ng-template #activateCostCenter>
                 <a
+                  href="#"
                   class="btn-tool"
                   title="{{ 'account.costcenter.activate.button.title' | translate }}"
                   (click)="activate(costCenter)"
@@ -101,6 +103,7 @@
 
               <!-- Delete -->
               <a
+                href="#"
                 *ngIf="!(costCenter.pendingOrders + costCenter.approvedOrders); else deleteButtonDisabled"
                 class="btn-tool"
                 title="{{ 'account.costcenter.delete.link' | translate }}"

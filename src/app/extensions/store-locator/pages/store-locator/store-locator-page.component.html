@@ -42,6 +42,7 @@
           <div
             *ngFor="let store of stores$ | async"
             class="store-entry"
+            (keydown.enter)="highlight(store)"
             (click)="highlight(store)"
             [class.highlight-store]="highlighted$(store) | async"
             [ishScroll]="highlighted$(store) | async"
@@ -59,6 +60,7 @@
             <div
               *ngFor="let store of stores$ | async"
               class="col-md-4 col-sm-6 col-xs-12 store-entry"
+              (keydown.enter)="highlight(store)"
               (click)="highlight(store)"
               [class.highlight-store]="highlighted$(store) | async"
             >

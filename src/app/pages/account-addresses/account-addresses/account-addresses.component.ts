@@ -10,6 +10,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
 
 /**
@@ -150,6 +151,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
 
   showCreateAddressForm() {
     this.isCreateAddressFormCollapsed = false;
+    return false;
   }
   hideCreateAddressForm() {
     this.isCreateAddressFormCollapsed = true;
@@ -157,6 +159,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
 
   showUpdateAddressForm(address: Address) {
     this.updateFormExpandedAddressId = address.id;
+    return false;
   }
   hideUpdateAddressForm() {
     this.updateFormExpandedAddressId = undefined;
@@ -192,6 +195,11 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
         (!user.preferredInvoiceToAddressUrn || address.urn !== user.preferredInvoiceToAddressUrn) &&
         (!user.preferredShipToAddressUrn || address.urn !== user.preferredShipToAddressUrn)
     );
+  }
+
+  showTemplate(modalDialog: ModalDialogComponent<unknown>, address: Address) {
+    modalDialog.show(address);
+    return false;
   }
 
   ngOnDestroy() {

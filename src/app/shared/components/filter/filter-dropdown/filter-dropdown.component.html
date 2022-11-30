@@ -13,6 +13,7 @@
   </a>
   <div ngbDropdownMenu aria-labelledby="dropdownMenuLink">
     <a
+      href="#"
       *ngFor="let facet of filterElement.facets; trackBy: trackByFn"
       class="dropdown-item"
       [ngClass]="{ selected: facet.selected }"

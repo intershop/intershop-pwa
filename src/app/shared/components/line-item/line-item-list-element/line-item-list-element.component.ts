@@ -37,5 +37,6 @@ export class LineItemListElementComponent implements OnInit {
 
   onDeleteItem(itemId: string) {
     this.checkoutFacade.deleteBasketItem(itemId);
+    return false;
   }
 }

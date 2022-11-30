@@ -24,5 +24,6 @@ export class BasketValidationItemsComponent {
    */
   onDeleteItem(itemId: string) {
     this.deleteItem.emit(itemId);
+    return false;
   }
 }

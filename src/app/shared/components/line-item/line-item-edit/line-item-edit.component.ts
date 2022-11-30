@@ -42,5 +42,6 @@ export class LineItemEditComponent implements OnInit {
         quantity: this.context.get('quantity'),
       })
     );
+    return false;
   }
 }

@@ -59,5 +59,6 @@ export class AccountWishlistListComponent implements OnChanges, OnDestroy {
       .subscribe(res => (modal.options.titleText = res));
 
     modal.show(wishlist.id);
+    return false;
   }
 }

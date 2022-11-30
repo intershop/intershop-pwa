@@ -43,6 +43,7 @@ export class CostCentersPageComponent implements OnInit {
   openConfirmationDialog(costCenter: CostCenter, modal: ModalDialogComponent<string>) {
     this.selectedCostCenter = costCenter;
     modal.show();
+    return false;
   }
 
   /** Deletes the cost center */
@@ -56,6 +57,7 @@ export class CostCentersPageComponent implements OnInit {
 
   activate(costCenter: CostCenter) {
     this.organizationManagementFacade.updateCostCenter({ ...costCenter, active: true });
+    return false;
   }
 
   isDeletable(costCenter: CostCenter): Observable<boolean> {

@@ -36,5 +36,6 @@ export class QuotingBasketLineItemsComponent implements OnInit {
 
   onDeleteQuote(quoteId: string) {
     this.quotingFacade.deleteQuoteFromBasket(quoteId);
+    return false;
   }
 }

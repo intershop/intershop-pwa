@@ -5,6 +5,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
+import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-template-preferences-dialog/order-template-preferences-dialog.component';
 
 @Component({
   selector: 'ish-account-order-template-page',
@@ -36,5 +37,10 @@ export class AccountOrderTemplatePageComponent implements OnInit {
   /** dispatch creation request */
   addOrderTemplate(orderTemplate: OrderTemplate) {
     this.orderTemplatesFacade.addOrderTemplate(orderTemplate);
+  }
+
+  showTemplate(addOrderTemplateDialog: OrderTemplatePreferencesDialogComponent) {
+    addOrderTemplateDialog.show();
+    return false;
   }
 }

@@ -26,9 +26,7 @@
 
     <div *ngIf="!autoplay && !playing" class="video-text">
       <h1 *ngIf="pagelet.hasParam('Heading')">{{ pagelet.stringParam('Heading') }}</h1>
-      <a class="video-link" (click)="playing = true; playVideo()">
-        <fa-icon [icon]="['fas', 'play-circle']"></fa-icon
-      ></a>
+      <a class="video-link" href="#" (click)="playVideoClick()"> <fa-icon [icon]="['fas', 'play-circle']"></fa-icon></a>
     </div>
   </ng-template>
 </div>

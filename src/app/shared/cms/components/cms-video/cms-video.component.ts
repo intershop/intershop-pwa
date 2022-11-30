@@ -114,4 +114,9 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
     videoElement.controls = 'controls';
     videoElement.play();
   }
+  playVideoClick() {
+    this.playing = true;
+    this.playVideo();
+    return false;
+  }
 }

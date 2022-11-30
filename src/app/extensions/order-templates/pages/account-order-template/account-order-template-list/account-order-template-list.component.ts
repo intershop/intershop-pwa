@@ -34,6 +34,7 @@ export class AccountOrderTemplateListComponent {
       0: orderTemplate.title,
     });
     modal.show(orderTemplate.id);
+    return false;
   }
 
   getParts(template: OrderTemplate): SkuQuantityType[] {

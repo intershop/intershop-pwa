@@ -6,6 +6,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template/order-template.model';
+import { SelectOrderTemplateModalComponent } from '../../../shared/select-order-template-modal/select-order-template-modal.component';
 
 @Component({
   selector: 'ish-account-order-template-detail-line-item',
@@ -65,5 +66,11 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
 
   removeProductFromOrderTemplate(sku: string) {
     this.orderTemplatesFacade.removeProductFromOrderTemplate(this.currentOrderTemplate.id, sku);
+    return false;
+  }
+
+  showTemplate(moveDialog: SelectOrderTemplateModalComponent) {
+    moveDialog.show();
+    return false;
   }
 }

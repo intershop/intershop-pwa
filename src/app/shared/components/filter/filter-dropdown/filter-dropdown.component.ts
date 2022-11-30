@@ -20,6 +20,7 @@ export class FilterDropdownComponent implements OnInit {
 
   apply(facet: Facet) {
     this.applyFilter.emit({ searchParameter: facet.searchParameter });
+    return false;
   }
 
   trackByFn(_: number, item: Facet) {

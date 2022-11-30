@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+
 import { QuotingFacade } from '../../../facades/quoting.facade';
 import { QuotingHelper } from '../../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteStubFromAttributes } from '../../../models/quoting/quoting.model';
@@ -48,5 +50,10 @@ export class QuoteListComponent {
    */
   onDeleteItem(item: Quote | QuoteRequest): void {
     this.quotingFacade.delete(item);
+  }
+
+  showTemplate(modalDialog: ModalDialogComponent<unknown>, quote: Quote) {
+    modalDialog.show(quote);
+    return false;
   }
 }

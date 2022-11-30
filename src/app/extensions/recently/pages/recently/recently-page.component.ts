@@ -19,5 +19,6 @@ export class RecentlyPageComponent implements OnInit {
 
   clearAll() {
     this.recentlyFacade.clearRecentlyViewedProducts();
+    return false;
   }
 }
