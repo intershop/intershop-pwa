@@ -87,6 +87,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
       // something was selected via keyboard
       this.searchResults$.pipe(take(1), takeUntil(this.destroy$)).subscribe(results => {
         this.router.navigate(['/search', results[this.activeIndex].term]);
+        this.activeIndex = -1;
       });
     } else {
       this.router.navigate(['/search', suggestedTerm]);
