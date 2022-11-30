@@ -22,26 +22,26 @@
   >
     <div class="sort-by align-items-center justify-content-end">
       <a
-        class="list-view-link"
-        [ngClass]="{ 'list-active': listView }"
-        data-testing-id="list-view-link"
         [routerLink]="[]"
         queryParamsHandling="merge"
         [queryParams]="{ view: 'list' }"
         [replaceUrl]="true"
         [fragment]="fragmentOnRouting"
+        class="list-view-link"
+        [ngClass]="{ 'list-active': listView }"
+        data-testing-id="list-view-link"
       >
         <fa-icon [icon]="['fas', 'list']"></fa-icon>
       </a>
       <a
-        class="grid-view-link"
-        [ngClass]="{ 'grid-active': gridView }"
-        data-testing-id="grid-view-link"
         [routerLink]="[]"
         queryParamsHandling="merge"
         [queryParams]="{ view: 'grid' }"
         [replaceUrl]="true"
         [fragment]="fragmentOnRouting"
+        class="grid-view-link"
+        [ngClass]="{ 'grid-active': gridView }"
+        data-testing-id="grid-view-link"
       >
         <fa-icon [icon]="['fas', 'th']"></fa-icon>
       </a>

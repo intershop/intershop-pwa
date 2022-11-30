@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -28,6 +29,7 @@ describe('Rating Stars Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
+        RouterTestingModule,
         TranslateModule.forRoot(),
       ],
       declarations: [MockComponent(ProductRatingStarComponent), RatingStarsFieldComponent],

@@ -5,6 +5,7 @@
   <h1 class="clearfix">
     {{ orderTemplate?.title }}
     <a
+      [routerLink]="[]"
       (click)="editOrderTemplateDialog.show()"
       class="btn btn-secondary float-right"
       [title]="'account.order_template.edit.heading' | translate"

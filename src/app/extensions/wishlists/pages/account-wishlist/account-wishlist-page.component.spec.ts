@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,7 +23,7 @@ describe('Account Wishlist Page Component', () => {
     const wishlistsFacade = mock(WishlistsFacade);
 
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot()],
+      imports: [NgbPopoverModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         AccountWishlistPageComponent,
         MockComponent(AccountWishlistListComponent),

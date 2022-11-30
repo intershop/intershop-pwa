@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
@@ -31,6 +32,7 @@ describe('Product Variation Select Swatch Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [ProductVariationSelectSwatchComponent],
     }).compileComponents();
   });
@@ -54,10 +56,12 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li class="selected">
-          <a title="Black"><span style="background-color: rgb(0, 0, 0)"></span></a>
+          <a title="Black" ng-reflect-router-link="" href="/"
+            ><span style="background-color: rgb(0, 0, 0)"></span
+          ></a>
         </li>
         <li>
-          <a title="White"
+          <a title="White" ng-reflect-router-link="" href="/"
             ><span class="light-color" style="background-color: rgb(255, 255, 255)"></span
           ></a>
         </li>
@@ -71,10 +75,10 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li>
-          <a title="yyy"><img alt="yyy" src="imageY.png" /></a>
+          <a title="yyy" ng-reflect-router-link="" href="/"><img alt="yyy" src="imageY.png" /></a>
         </li>
         <li class="selected">
-          <a title="zzz"><img alt="zzz" src="imageZ.png" /></a>
+          <a title="zzz" ng-reflect-router-link="" href="/"><img alt="zzz" src="imageZ.png" /></a>
         </li>
       </ul>
     `);

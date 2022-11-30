@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -37,7 +38,7 @@ describe('Basket Shipping Address Widget Component', () => {
     when(accountFacade.addresses$()).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         BasketShippingAddressWidgetComponent,
         MockComponent(AddressComponent),

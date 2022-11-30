@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
 
@@ -14,6 +15,7 @@ describe('Filter Dropdown Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [FilterDropdownComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   });
@@ -60,8 +62,8 @@ describe('Filter Dropdown Component', () => {
           ><span>Color</span></a
         >
         <div ngbdropdownmenu="" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item"> red </a
-          ><a class="dropdown-item selected">
+          <a class="dropdown-item" ng-reflect-router-link="" href="/"> red </a
+          ><a class="dropdown-item selected" ng-reflect-router-link="" href="/">
             blue <fa-icon class="icon-checked" ng-reflect-icon="fas,check"></fa-icon
           ></a>
         </div>

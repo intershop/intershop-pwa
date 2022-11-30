@@ -14,6 +14,7 @@
   <div ngbDropdownMenu aria-labelledby="dropdownMenuLink">
     <a
       *ngFor="let facet of filterElement.facets; trackBy: trackByFn"
+      [routerLink]="[]"
       class="dropdown-item"
       [ngClass]="{ selected: facet.selected }"
       (click)="apply(facet)"

@@ -36,6 +36,7 @@
         <div class="col-1 list-item text-right order-sm-4 order-3">
           <div *ngIf="user.login !== (currentUser$ | async)?.login" class="float-right">
             <a
+              [routerLink]="[]"
               data-testing-id="remove-user"
               class="btn-tool"
               title="{{

@@ -9,7 +9,7 @@ export class OrderTemplatesDetailsPage {
   readonly breadcrumb = new BreadcrumbModule();
 
   static navigateToOverviewPage() {
-    cy.get('[href="/account/order-templates"]').first().click();
+    cy.get('a[data-testing-id="order-templates-link"]').click();
   }
 
   get listItem() {
