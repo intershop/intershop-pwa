@@ -54,13 +54,13 @@ describe('Tacton Configure Navigation Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="list-unstyled bg-light p-3">
         <li class="pt-1 pb-1">
-          <a class="font-weight-bold">step 1 description</a>
+          <a href="#" class="font-weight-bold">step 1 description</a>
           <ul class="list-unstyled pl-3">
-            <li class="pt-1 pb-1"><a>step 1.1 description</a></li>
-            <li class="pt-1 pb-1"><a class="font-weight-bold">step 1.2 description</a></li>
+            <li class="pt-1 pb-1"><a href="#">step 1.1 description</a></li>
+            <li class="pt-1 pb-1"><a href="#" class="font-weight-bold">step 1.2 description</a></li>
           </ul>
         </li>
-        <li class="pt-1 pb-1"><a>step 2 description</a></li>
+        <li class="pt-1 pb-1"><a href="#">step 2 description</a></li>
       </ul>
     `);
   });
