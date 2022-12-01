@@ -35,6 +35,19 @@ describe('Filter Swatch Images Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <ul class="filter-list clearfix">
+        <li class="filter-item filter-color">
+          <a href="#" class="filter-swatch" title="Black (4)" data-testing-id="filter-link-Black"
+            ><span style="background-color: black"></span
+          ></a>
+        </li>
+        <li class="filter-item filter-color filter-selected">
+          <a href="#" class="filter-swatch" title="Red (5)" data-testing-id="filter-link-Red"
+            ><span style="background-color: red"></span
+          ></a>
+        </li>
+      </ul>
+    `);
   });
 });
