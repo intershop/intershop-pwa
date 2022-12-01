@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
+import { FormlyAddressExtensionFormComponent } from './components/formly-address-extension-form/formly-address-extension-form.component';
 import { FormlyAddressFormComponent } from './components/formly-address-form/formly-address-form.component';
 import { FormlyCustomerAddressFormComponent } from './components/formly-customer-address-form/formly-customer-address-form.component';
 import {
@@ -20,8 +21,8 @@ import { AddressFormUSConfiguration } from './configurations/us/address-form-us.
 
 @NgModule({
   imports: [CommonModule, FormlyModule, FormsSharedModule, ReactiveFormsModule, TranslateModule],
-  declarations: [FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
-  exports: [FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
+  declarations: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
+  exports: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
   providers: [
     AddressFormConfigurationProvider,
     { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormDEConfiguration, multi: true },

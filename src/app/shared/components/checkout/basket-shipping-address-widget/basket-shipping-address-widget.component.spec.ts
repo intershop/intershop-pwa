@@ -27,11 +27,13 @@ describe('Basket Shipping Address Widget Component', () => {
 
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
+    accountFacade = mock(AccountFacade);
+
     when(checkoutFacade.basket$).thenReturn(EMPTY);
     when(checkoutFacade.basketShippingAddress$).thenReturn(EMPTY);
     when(checkoutFacade.basketInvoiceAndShippingAddressEqual$).thenReturn(of(false));
 
-    accountFacade = mock(AccountFacade);
+    when(accountFacade.isLoggedIn$).thenReturn(of(true));
     when(accountFacade.addresses$()).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
@@ -74,6 +76,18 @@ describe('Basket Shipping Address Widget Component', () => {
     `);
   });
 
+  it('should not render create link if an anonymous user has different sinvoice and shipping address', () => {
+    when(accountFacade.isLoggedIn$).thenReturn(of(false));
+
+    fixture.detectChanges();
+
+    expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
+      Array [
+        "shipping-address-form",
+      ]
+    `);
+  });
+
   describe('with shipping address on basket', () => {
     beforeEach(() => {
       const address = BasketMockData.getAddress();
@@ -89,6 +103,8 @@ describe('Basket Shipping Address Widget Component', () => {
           "ish-modal-dialog",
           "ish-address",
           "formly-form",
+          "formly-field",
+          "formly-group",
           "formly-field",
           "ng-component",
           "ish-formly-customer-address-form",
@@ -113,6 +129,8 @@ describe('Basket Shipping Address Widget Component', () => {
           "ish-modal-dialog",
           "ish-address",
           "formly-form",
+          "formly-field",
+          "formly-group",
           "formly-field",
           "ng-component",
           "ish-formly-customer-address-form",
@@ -141,6 +159,8 @@ describe('Basket Shipping Address Widget Component', () => {
           Array [
             "formly-form",
             "formly-field",
+            "formly-group",
+            "formly-field",
             "ng-component",
             "ish-formly-customer-address-form",
           ]
@@ -162,6 +182,8 @@ describe('Basket Shipping Address Widget Component', () => {
         expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
           Array [
             "formly-form",
+            "formly-field",
+            "formly-group",
             "formly-field",
             "ng-component",
             "ish-formly-customer-address-form",

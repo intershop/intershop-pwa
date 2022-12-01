@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FormlyAddressExtensionFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-extension-form/formly-address-extension-form.component';
 import { FormlyAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-form/formly-address-form.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
@@ -18,7 +19,11 @@ describe('Checkout Address Anonymous Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CheckoutAddressAnonymousFormComponent, MockComponent(FormlyAddressFormComponent)],
+      declarations: [
+        CheckoutAddressAnonymousFormComponent,
+        MockComponent(FormlyAddressExtensionFormComponent),
+        MockComponent(FormlyAddressFormComponent),
+      ],
       imports: [
         FeatureToggleModule.forTesting('businessCustomerRegistration'),
         FormlyTestingModule.withPresetMocks(['taxationID']),
@@ -43,15 +48,10 @@ describe('Checkout Address Anonymous Form Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should set input field for taxation-id, when businessCustomerRegistration feature is enabled', () => {
-    fixture.detectChanges();
-    expect(component.parentForm.get('additionalAddressAttributes').value).toContainKey('taxationID');
-  });
-
   it('should add shipping address form to parent form, when shipOption is set to shipToDifferentAddress', () => {
     fixture.detectChanges();
 
-    component.form.get('shipOption').setValue('shipToDifferentAddress');
+    component.shipOptionForm.get('shipOption').setValue('shipToDifferentAddress');
 
     fixture.detectChanges();
 

@@ -57,6 +57,9 @@ import {
   setBasketAttribute,
   setBasketAttributeFail,
   setBasketAttributeSuccess,
+  setBasketDesiredDeliveryDate,
+  setBasketDesiredDeliveryDateFail,
+  setBasketDesiredDeliveryDateSuccess,
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
@@ -143,7 +146,8 @@ export const basketReducer = createReducer(
     submitBasket,
     updateConcardisCvcLastUpdated,
     startCheckout,
-    mergeBasketInProgress
+    mergeBasketInProgress,
+    setBasketDesiredDeliveryDate
   ),
   unsetLoadingOn(addPromotionCodeToBasketSuccess, addPromotionCodeToBasketFail, loadBasketSuccess),
   unsetLoadingAndErrorOn(
@@ -163,7 +167,8 @@ export const basketReducer = createReducer(
     loadBasketEligiblePaymentMethodsSuccess,
     updateConcardisCvcLastUpdatedSuccess,
     submitBasketSuccess,
-    startCheckoutSuccess
+    startCheckoutSuccess,
+    setBasketDesiredDeliveryDateSuccess
   ),
   setErrorOn(
     mergeBasketFail,
@@ -185,7 +190,8 @@ export const basketReducer = createReducer(
     deleteBasketPaymentFail,
     updateConcardisCvcLastUpdatedFail,
     submitBasketFail,
-    startCheckoutFail
+    startCheckoutFail,
+    setBasketDesiredDeliveryDateFail
   ),
 
   on(loadBasketSuccess, createBasketSuccess, mergeBasketSuccess, (state, action): BasketState => {

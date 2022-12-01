@@ -35,6 +35,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
   shippingAddress$: Observable<Address>;
   addresses$: Observable<Address[]>;
   customerAddresses$: Observable<Address[]>;
+  displayAddAddressLink$: Observable<boolean>;
 
   basketInvoiceAndShippingAddressEqual$: Observable<boolean>;
   basketShippingAddressDeletable$: Observable<boolean>;
@@ -75,6 +76,12 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
         addresses?.filter(address => address.shipToAddress).filter(address => address.id !== shippingAddress?.id)
       )
     );
+
+    this.displayAddAddressLink$ = combineLatest([
+      this.collapseChange,
+      this.accountFacade.isLoggedIn$,
+      this.basketInvoiceAndShippingAddressEqual$,
+    ]).pipe(map(([collapseChange, loggedIn, addressesEqual]) => collapseChange && (loggedIn || addressesEqual)));
 
     this.fields = [
       {

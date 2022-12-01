@@ -14,7 +14,7 @@
     </a>
 
     <!-- display invoice address -->
-    <ish-address [address]="address"></ish-address>
+    <ish-address [address]="address" [displayEmail]="true"></ish-address>
   </div>
   <p *ngIf="!address && showErrors" class="text-danger">
     {{ 'checkout.addresses.no_Selection.invoice.error' | translate }}
@@ -29,7 +29,7 @@
 </ng-container>
 
 <!-- Add a new Invoice to address -->
-<div class="row" *ngIf="collapseChange | async">
+<div class="row" *ngIf="(collapseChange | async) && (isLoggedIn$ | async)">
   <button
     data-testing-id="create-invoice-address-link"
     class="btn btn-link"
@@ -46,6 +46,7 @@
   <ish-formly-customer-address-form
     [address]="editAddress"
     [resetForm]="collapseChange | async"
+    [extension]="(isLoggedIn$ | async) === false"
     (save)="saveAddress($event)"
     (cancel)="cancelEditAddress()"
   >

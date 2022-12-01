@@ -34,4 +34,5 @@ export interface LineItemData {
   freeGift: boolean;
   quantityFixed?: boolean;
   quote?: string;
+  desiredDelivery?: string;
 }

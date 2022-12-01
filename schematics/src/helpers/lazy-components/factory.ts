@@ -48,10 +48,10 @@ async function deleteOldComponents() {
   if (process.env.CI !== 'true') {
     let gitAvailable = false;
     try {
-      cp.execSync('git --version');
+      cp.execSync('git status');
       gitAvailable = true;
     } catch (error) {
-      console.warn('Git is not installed. Skipping deletion.');
+      console.warn('Git is not installed or it is not a Git repository. Skipping deletion.');
     }
 
     if (gitAvailable) {

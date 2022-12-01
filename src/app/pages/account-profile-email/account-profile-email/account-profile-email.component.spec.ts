@@ -39,7 +39,7 @@ describe('Account Profile Email Component', () => {
   it('should display 3 input fields for email, emailConfirmation and password', () => {
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(3);
+    expect(element.querySelectorAll('formly-group formly-group formly-field')).toHaveLength(3);
   });
 
   it('should emit updateEmail event if form is valid', () => {

@@ -4,6 +4,7 @@ import { filter, first, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -68,7 +69,7 @@ export class CheckoutPaymentPageComponent implements OnInit, OnDestroy {
    * Validates the basket and jumps to the next checkout step (Review)
    */
   nextStep() {
-    this.checkoutFacade.continue(4);
+    this.checkoutFacade.continue(CheckoutStepType.Review);
   }
 
   ngOnDestroy() {

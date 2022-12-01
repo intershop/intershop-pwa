@@ -23,10 +23,6 @@ class TranslatePlaceholderExtension implements FormlyExtension {
       of(to.placeholder).pipe(delay(1000))
     ).subscribe(translation => {
       field.templateOptions.placeholder = translation;
-      // trigger formly change detection
-      if (field.options) {
-        field.options.resetModel();
-      }
     });
   }
 }

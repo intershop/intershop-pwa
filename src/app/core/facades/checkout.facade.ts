@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
+import { formatISO } from 'date-fns';
 import { Subject, combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
@@ -39,8 +41,10 @@ import {
   loadBasketWithId,
   removePromotionCodeFromBasket,
   setBasketAttribute,
+  setBasketDesiredDeliveryDate,
   setBasketPayment,
   startCheckout,
+  submitOrder,
   updateBasketAddress,
   updateBasketCostCenter,
   updateBasketItem,
@@ -74,7 +78,11 @@ export class CheckoutFacade {
     this.store.dispatch(startCheckout());
   }
 
-  continue(targetStep: number) {
+  submitOrder() {
+    this.store.dispatch(submitOrder());
+  }
+
+  continue(targetStep: CheckoutStepType) {
     this.store.dispatch(continueCheckout({ targetStep }));
   }
 
@@ -158,6 +166,12 @@ export class CheckoutFacade {
   desiredDeliveryDaysMin$ = this.store.pipe(
     select(getServerConfigParameter<number>('shipping.desiredDeliveryDaysMin'))
   );
+
+  setDesiredDeliveryDate(date: Date) {
+    this.store.dispatch(
+      setBasketDesiredDeliveryDate({ desiredDeliveryDate: date ? formatISO(date, { representation: 'date' }) : '' })
+    );
+  }
 
   eligibleShippingMethods$() {
     return this.basket$.pipe(
