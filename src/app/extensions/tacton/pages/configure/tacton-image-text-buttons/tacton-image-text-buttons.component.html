@@ -3,6 +3,7 @@
     <div class="border" [ngClass]="{ 'border-primary': opt.selected }">
       <img
         [src]="getImageUrl(opt.properties.tc_component_picture) | async"
+        (keydown.enter)="change(opt.name)"
         (click)="change(opt.name)"
         [attr.alt]="opt.properties.tc_component_picture"
       />

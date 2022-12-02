@@ -6,6 +6,7 @@
     [ngClass]="{ open: isOpened(category.uniqueId) }"
     (mouseover)="subMenuShow(subMenu)"
     (mouseleave)="subMenuHide(subMenu)"
+    (keydown.enter)="subMenuHide(subMenu)"
     (click)="subMenuHide(subMenu)"
   >
     <a

@@ -2,7 +2,7 @@
   <h1>{{ 'servererror.page.title' | translate }}</h1>
   <div class="error-text">
     <div [ishServerHtml]="'servererror.page.text' | translate"></div>
-    <p class="text-muted" (click)="expand()">
+    <p class="text-muted" (keydown.enter)="expand()" (click)="expand()">
       <ng-container [ngSwitch]="httpError?.status">
         <ng-container *ngSwitchCase="undefined"> {{ stringError | translate }} </ng-container>
         <ng-container *ngSwitchCase="0"> Server timeout </ng-container>
