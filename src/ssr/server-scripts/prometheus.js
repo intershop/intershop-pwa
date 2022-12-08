@@ -90,6 +90,30 @@ app.get('/metrics', (_, res) => {
     if (!err1) {
       pm2.list((err2, list) => {
         if (!err2) {
+          list
+            .filter(pd => ports[pd.name])
+            .forEach(processData => {
+              pm2.sendDataToProcessId(
+                processData.pm_id,
+                {
+                  id: processData.pm_id,
+                  type: 'process:msg',
+                  data: {
+                    theme: processData.name,
+                    instance: processData.pm_id,
+                  },
+                  topic: 'getMetrics',
+                },
+                err => {
+                  if (err) {
+                    console.error(err);
+                    pm2GetmetricsFailure.inc();
+                  } else {
+                    pm2GetmetricsSuccess.inc();
+                  }
+                }
+              );
+            });
           const pm2ProcessCounts = list.reduce((acc, p) => ({ ...acc, [p.name]: (acc[p.name] || 0) + 1 }), {});
           Object.entries(pm2ProcessCounts).forEach(([name, value]) => {
             pm2Processes.labels({ name }).set(value);
@@ -119,42 +143,8 @@ app.listen(9113, () => {
   console.log('Prometheus reporter listening');
 });
 
-// Ask other processes for metrics Every 10 seconds
-const getMetricsInterval = setInterval(() => {
-  pm2.connect(() => {
-    Object.keys(ports).forEach(theme => {
-      pm2.describe(theme, (err, processInfo) => {
-        processInfo.forEach((processData, index) => {
-          //console.log(`Asking process ${processData.pm_id} for metrics.`);
-
-          pm2.sendDataToProcessId(
-            processData.pm_id,
-            {
-              id: processData.pm_id,
-              type: 'process:msg',
-              data: {
-                theme: processData.name,
-                instance: index,
-              },
-              topic: 'getMetrics',
-            },
-            (err, res) => {
-              if (err) {
-                console.error(error);
-                pm2GetmetricsFailure.inc();
-              } else {
-                pm2GetmetricsSuccess.inc();
-              }
-            }
-          );
-        });
-      });
-    });
-  });
-}, 1000);
-
 // Listen to messages from theme applications
-pm2.launchBus(function (err, pm2_bus) {
+pm2.launchBus((err, pm2_bus) => {
   pm2_bus.on('process:msg', msg => {
     if (msg?.data?.topic == 'returnMetrics' && msg.process.name && msg.process.pm_id) {
       const worker = `${msg.process.name} ${msg.process.pm_id}`;
