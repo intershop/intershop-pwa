@@ -34,6 +34,8 @@ The `getOAuthServiceInstance()` static method from the `InstanceCreators` class 
 Furthermore the handling of the anonymous user token has been changed.
 It will only be fetched when an anonymous user intends to create a basket.
 
+We added an Address Doctor integration as a new extension which can be enabled with the feature toggle `addressDoctor` and [additional configuration](./address-doctor.md).
+
 ## 3.3 to 4.0
 
 The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm version 9.5.0 and the `"lockfileVersion": 3,`.

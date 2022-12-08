@@ -23,6 +23,7 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
+import { AddressDoctorExportsModule } from '../extensions/address-doctor/exports/address-doctor-exports.module';
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
@@ -148,6 +149,7 @@ import { FormlyModule } from './formly/formly.module';
 import { FormsSharedModule } from './forms/forms.module';
 
 const importExportModules = [
+  AddressDoctorExportsModule,
   AuthorizationToggleModule,
   CMSModule,
   CaptchaExportsModule,

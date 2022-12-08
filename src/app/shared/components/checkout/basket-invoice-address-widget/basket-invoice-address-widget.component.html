@@ -52,3 +52,7 @@
   >
   </ish-formly-customer-address-form>
 </div>
+
+<ng-container *ngIf="(collapseChange | async) === false">
+  <ish-lazy-address-doctor></ish-lazy-address-doctor>
+</ng-container>

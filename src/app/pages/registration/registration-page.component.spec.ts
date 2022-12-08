@@ -7,8 +7,11 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+
+import { LazyAddressDoctorComponent } from '../../extensions/address-doctor/exports/lazy-address-doctor/lazy-address-doctor.component';
 
 import { RegistrationPageComponent } from './registration-page.component';
 import { RegistrationFormConfigurationService } from './services/registration-form-configuration/registration-form-configuration.service';
@@ -26,8 +29,12 @@ describe('Registration Page Component', () => {
     configService = mock(RegistrationFormConfigurationService);
     activatedRoute = mock(ActivatedRoute);
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(ErrorMessageComponent), RegistrationPageComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(ErrorMessageComponent),
+        MockComponent(LazyAddressDoctorComponent),
+        RegistrationPageComponent,
+      ],
+      imports: [FeatureToggleModule.forTesting('addressDoctor'), FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },

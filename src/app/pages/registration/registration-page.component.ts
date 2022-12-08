@@ -1,12 +1,15 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, take, takeUntil, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -23,13 +26,15 @@ import {
   templateUrl: './registration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegistrationPageComponent implements OnInit {
+export class RegistrationPageComponent implements OnInit, OnDestroy {
   error$: Observable<HttpError>;
 
   constructor(
     private route: ActivatedRoute,
     private registrationFormConfiguration: RegistrationFormConfigurationService,
-    private accountFacade: AccountFacade
+    private accountFacade: AccountFacade,
+    private featureToggleService: FeatureToggleService,
+    private featureEventService: FeatureEventService
   ) {}
 
   submitted = false;
@@ -41,6 +46,8 @@ export class RegistrationPageComponent implements OnInit {
   model: Record<string, unknown>;
   options: FormlyFormOptions;
   form = new UntypedFormGroup({});
+
+  private destroy$ = new Subject<void>();
 
   ngOnInit() {
     this.error$ = this.registrationFormConfiguration.getErrorSources().pipe(
@@ -67,6 +74,32 @@ export class RegistrationPageComponent implements OnInit {
       return;
     }
     // keep-localization-pattern: ^customer\..*\.error$
+    if (this.featureToggleService.enabled('addressDoctor')) {
+      const id = this.featureEventService.sendNotification('addressDoctor', 'check-address', {
+        address: this.form.get('address').value,
+      });
+
+      this.featureEventService
+        .eventResultListener$('addressDoctor', 'check-address', id)
+        .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+        .subscribe(({ data }) => {
+          if (data) {
+            this.onCreateWithSuggestion(data);
+          }
+        });
+    } else {
+      this.submitRegistrationForm();
+    }
+  }
+
+  onCreateWithSuggestion(address: Address) {
+    Object.keys(this.form.get('address').value).forEach(key =>
+      (this.form.get('address').get(key) as AbstractControl).setValue(address[key as keyof Address])
+    );
+    this.submitRegistrationForm();
+  }
+
+  submitRegistrationForm() {
     this.registrationFormConfiguration.submitRegistrationForm(this.form, this.registrationConfig, this.model);
   }
 
@@ -77,5 +110,10 @@ export class RegistrationPageComponent implements OnInit {
 
   private clearCaptchaToken() {
     this.form.get('captcha')?.setValue(undefined);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
