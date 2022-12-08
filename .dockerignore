@@ -90,6 +90,9 @@
 # from projects/requisition-management/src/app/exports/.gitignore
 /projects/requisition-management/src/app/exports/**/lazy*
 
+# from src/app/extensions/address-doctor/exports/.gitignore
+/src/app/extensions/address-doctor/exports/**/lazy*
+
 # from src/app/extensions/compare/exports/.gitignore
 /src/app/extensions/compare/exports/**/lazy*
 

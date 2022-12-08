@@ -10,12 +10,15 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+
+import { LazyAddressDoctorComponent } from '../../../../extensions/address-doctor/exports/lazy-address-doctor/lazy-address-doctor.component';
 
 import { BasketShippingAddressWidgetComponent } from './basket-shipping-address-widget.component';
 
@@ -38,12 +41,18 @@ describe('Basket Shipping Address Widget Component', () => {
     when(accountFacade.addresses$()).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule.forTesting('addressDoctor'),
+        FormlyTestingModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [
         BasketShippingAddressWidgetComponent,
         MockComponent(AddressComponent),
         MockComponent(FaIconComponent),
         MockComponent(FormlyCustomerAddressFormComponent),
+        MockComponent(LazyAddressDoctorComponent),
         MockComponent(ModalDialogComponent),
         MockDirective(NgbCollapse),
       ],
@@ -135,6 +144,7 @@ describe('Basket Shipping Address Widget Component', () => {
           "formly-field",
           "ng-component",
           "ish-formly-customer-address-form",
+          "ish-lazy-address-doctor",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -188,6 +198,7 @@ describe('Basket Shipping Address Widget Component', () => {
             "formly-field",
             "ng-component",
             "ish-formly-customer-address-form",
+            "ish-lazy-address-doctor",
           ]
         `);
         expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
