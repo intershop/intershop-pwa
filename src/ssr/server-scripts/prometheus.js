@@ -1,21 +1,9 @@
 const express = require('express');
 const pm2 = require('pm2');
 const ports = require('./ecosystem-ports.json');
-const DEBUG = /^(on|1|true|yes)$/i.test(process.env.DEBUG);
 
 const client = require('prom-client');
 const metricsPerWorker = {};
-const requestCounts = new client.Gauge({
-  name: 'http_request_counts',
-  help: 'counter for requests labeled with: method, status_code, theme, base_href, path',
-  labelNames: ['method', 'status_code', 'theme', 'base_href', 'path'],
-});
-const requestDuration = new client.Histogram({
-  name: 'http_request_duration_seconds',
-  help: 'duration histogram of http responses labeled with: status_code, theme',
-  buckets: [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30],
-  labelNames: ['status_code', 'theme', 'base_href', 'path'],
-});
 const up = new client.Gauge({
   name: 'up',
   help: '1 = up, 0 = not up',
@@ -46,24 +34,6 @@ const pm2GetmetricsFailure = new client.Counter({
 });
 
 const app = express();
-
-app.post('/report', (req, res) => {
-  req.on('data', data => {
-    if (DEBUG) {
-      console.log(data.toString());
-    }
-    const json = JSON.parse(data);
-    const { method, status: status_code, duration, theme, url } = json;
-    const matched = /;baseHref=([^;?]*)/.exec(url);
-    let base_href = matched?.[1] ? decodeURIComponent(decodeURIComponent(matched[1])) + '/' : '/';
-    let cleanUrl = url.replace(/[;?].*/g, '');
-    let path = cleanUrl.replace(base_href, '');
-
-    requestCounts.inc({ method, status_code, theme, base_href, path });
-    requestDuration.labels({ status_code, theme, base_href, path }).observe(duration / 1000);
-  });
-  res.status(204).send();
-});
 
 app.get('/metrics', (_, res) => {
   const metricsArr = Object.values(metricsPerWorker);
