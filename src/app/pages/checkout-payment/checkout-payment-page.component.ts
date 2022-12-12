@@ -55,7 +55,7 @@ export class CheckoutPaymentPageComponent implements OnInit, OnDestroy {
   }
 
   createPaymentInstrument(body: { paymentInstrument: PaymentInstrument; saveForLater: boolean }) {
-    if (!body || !body.paymentInstrument) {
+    if (!body?.paymentInstrument) {
       return;
     }
     this.checkoutFacade.createBasketPayment(body.paymentInstrument, body.saveForLater);

@@ -95,7 +95,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
 
   protected getParamValue(name: string, errorMessage: string): string {
     const parameter = this.paymentMethod.hostedPaymentPageParameters.find(param => param.name === name);
-    if (!parameter || !parameter.value) {
+    if (!parameter?.value) {
       this.generalErrorMessage = errorMessage;
       return;
     }

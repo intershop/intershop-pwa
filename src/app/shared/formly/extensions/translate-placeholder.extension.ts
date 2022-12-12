@@ -12,7 +12,7 @@ class TranslatePlaceholderExtension implements FormlyExtension {
 
   prePopulate(field: FormlyFieldConfig): void {
     const to = field.templateOptions;
-    if (!to || !to.placeholder) {
+    if (!to?.placeholder) {
       return;
     }
 

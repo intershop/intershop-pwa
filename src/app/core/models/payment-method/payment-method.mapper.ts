@@ -13,7 +13,7 @@ import { PaymentMethod } from './payment-method.model';
 
 export class PaymentMethodMapper {
   static fromData(body: PaymentMethodData): PaymentMethod[] {
-    if (!body || !body.data) {
+    if (!body?.data) {
       throw new Error(`'paymentMethodData' is required`);
     }
 
@@ -58,7 +58,7 @@ export class PaymentMethodMapper {
       throw new Error(`'paymentMethodOptions' are required`);
     }
 
-    if (!options.methods || !options.methods.length) {
+    if (!options.methods?.length) {
       return [];
     }
 
@@ -152,7 +152,7 @@ export class PaymentMethodMapper {
     const invalidCapabilities = ['LimitedTender', 'FastCheckout'];
 
     // without capabilities
-    if (!paymentData.capabilities || !paymentData.capabilities.length) {
+    if (!paymentData.capabilities?.length) {
       return true;
     }
 

@@ -107,7 +107,7 @@ export class UserService {
    * @param body  The user data (customer, user, credentials, address) to create a new user. The new user is not logged in after creation.
    */
   createUser(body: CustomerRegistrationType): Observable<CustomerUserType> {
-    if (!body || !body.customer || (!body.user && !body.userId) || !body.address) {
+    if (!body?.customer || (!body?.user && !body?.userId) || !body?.address) {
       return throwError(() => new Error('createUser() called without required body data'));
     }
 
@@ -175,7 +175,7 @@ export class UserService {
    * @param body  The user data (customer, user ) to update the user.
    */
   updateUser(body: CustomerUserType, credentials?: Credentials): Observable<User> {
-    if (!body || !body.customer || !body.user) {
+    if (!body?.customer || !body?.user) {
       return throwError(() => new Error('updateUser() called without required body data'));
     }
 

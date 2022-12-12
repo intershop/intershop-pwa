@@ -99,7 +99,7 @@ export class PaymentService {
     paymentInstrument: string,
     lang: string
   ): Observable<string> {
-    if (!pm || !pm.capabilities || !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data))) {
+    if (!pm?.capabilities || !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data))) {
       return of(paymentInstrument);
       // send redirect urls if there is a redirect required
     } else {

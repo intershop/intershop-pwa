@@ -114,7 +114,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
    */
   protected getParamValue(name: string, errorMessage: string): string {
     const parameter = this.paymentMethod.hostedPaymentPageParameters.find(param => param.name === name);
-    if (!parameter || !parameter.value) {
+    if (!parameter?.value) {
       this.errorMessage.general.message = errorMessage;
       return;
     }

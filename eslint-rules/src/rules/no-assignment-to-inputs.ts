@@ -28,7 +28,7 @@ const noAssignmentToInputsRule: TSESLint.RuleModule<keyof typeof messages> = {
      */
     function checkIsInput(node: TSESTree.PropertyDefinition): boolean {
       const decorators = node.decorators;
-      if (!decorators || !decorators.length) {
+      if (!decorators?.length) {
         return false;
       }
       return decorators
