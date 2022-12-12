@@ -57,7 +57,7 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
     this.basket$
       .pipe(
         whenTruthy(),
-        filter(basket => !basket.lineItems || !basket.lineItems.length),
+        filter(basket => !basket.lineItems?.length),
         take(1),
         takeUntil(this.destroy$)
       )

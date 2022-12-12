@@ -150,7 +150,7 @@ export class ProductHelper {
    * @returns               A Product with specific attributes only compared to the common attributes
    */
   static getProductWithoutCommonAttributes(product: ProductView, visibleProducts: ProductView[]): ProductView {
-    if (!product || !product.sku || !visibleProducts || !visibleProducts.length) {
+    if (!product?.sku || !visibleProducts?.length) {
       return;
     }
     const common = ProductHelper.getCommonAttributeNames(visibleProducts);

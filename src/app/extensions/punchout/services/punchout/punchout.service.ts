@@ -366,7 +366,7 @@ export class PunchoutService {
    * @param submit   Controls whether the HTML form is actually submitted (default) or not (only created in the document body).
    */
   submitOciPunchoutData(data: Attribute<string>[], submit = true) {
-    if (!data || !data.length) {
+    if (!data?.length) {
       return throwError(() => new Error('submitOciPunchoutData() of the punchout service called without data'));
     }
     const hookUrl = this.cookiesService.get('punchout_HookURL');

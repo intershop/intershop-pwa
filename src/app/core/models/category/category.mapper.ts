@@ -30,7 +30,7 @@ export class CategoryMapper {
    * Creates Category stubs from the category path (excluding the last element)
    */
   categoriesFromCategoryPath(path: CategoryPathElement[]): CategoryTree {
-    if (!path || !path.length) {
+    if (!path?.length) {
       return CategoryTreeHelper.empty();
     }
 

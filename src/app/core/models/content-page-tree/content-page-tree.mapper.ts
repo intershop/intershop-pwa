@@ -45,7 +45,7 @@ export class ContentPageTreeMapper {
    * Creates page tree stubs from the page tree path
    */
   treeElementsFromTreeElementPath(path: Link[]): ContentPageTree {
-    if (!path || !path.length) {
+    if (!path?.length) {
       return ContentPageTreeHelper.empty();
     }
 
