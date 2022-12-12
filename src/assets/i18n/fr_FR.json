@@ -389,6 +389,7 @@
   "account.send_password.heading": "Mot de passe oublié ?",
   "account.send_password.message": "Un courriel contenant un lien a été envoyé à votre adresse courriel. Veuillez cliquer sur ce lien pour modifier votre mot de passe.",
   "account.signin.auth0.button.label": "Connectez-vous avec Auth0",
+  "account.signin.azureAD.button.label": "Sign In With AzureAD",
   "account.signin.button.label": "Se connecter",
   "account.update.button.label": "Enregistrer les modifications",
   "account.update_email.answer.text": "Votre nouveau courriel prend effet immédiatement. Utilisez-le la prochaine fois que vous passez une commande ou que vous modifiez les informations de votre compte.",

@@ -10,6 +10,7 @@ import {
 
 import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
 import { Auth0SignInComponent } from 'ish-shared/components/login/auth0-sign-in/auth0-sign-in.component';
+import { AzureADSignInComponent } from 'ish-shared/components/login/azure-ad-sign-in/azure-ad-sign-in.component';
 import { LoginFormComponent } from 'ish-shared/components/login/login-form/login-form.component';
 
 @Component({
@@ -34,6 +35,9 @@ export class IdentityProviderLoginComponent implements OnInit {
     switch (this.identityProviderFactory.getType()) {
       case 'auth0':
         componentRef = this.anchor.createComponent(Auth0SignInComponent);
+        break;
+      case 'azureAD':
+        componentRef = this.anchor.createComponent(AzureADSignInComponent);
         break;
 
       default:

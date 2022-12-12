@@ -389,6 +389,7 @@
   "account.send_password.heading": "Kennwort vergessen?",
   "account.send_password.message": "Eine E-Mail mit einem Link zur Kennwort-Änderung wurde an Ihre E-Mail-Adresse gesendet. Öffnen Sie den Link und folgen Sie den Anweisungen.",
   "account.signin.auth0.button.label": "Mit Auth0 anmelden",
+  "account.signin.azureAD.button.label": "Mit AzureAD anmelden",
   "account.signin.button.label": "Anmelden",
   "account.update.button.label": "Änderungen speichern",
   "account.update_email.answer.text": "Die neue E-Mail-Adresse ist sofort aktiv. Verwenden Sie sie bei der nächsten Bestellung oder aktualisieren Sie Ihre Kontoinformationen.",
