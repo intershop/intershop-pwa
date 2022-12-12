@@ -16,8 +16,7 @@ import {
 } from './src/main.server';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
-
-const client = require('prom-client');
+import * as client from 'prom-client';
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
@@ -462,10 +461,10 @@ export function app() {
 }
 
 if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
-  type MetricsMessage = { topic: string; data: any };
+  type MetricsMessage = { topic: string };
   process.on('message', (msg: MetricsMessage) => {
     if (msg.topic === 'getMetrics') {
-      client.register.getMetricsAsJSON().then((data: any) => {
+      client.register.getMetricsAsJSON().then((data: client.metric[]) => {
         process.send({
           type: 'process:msg',
           data: {
