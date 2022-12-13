@@ -68,10 +68,7 @@ app.get('/metrics', (_, res) => {
                 {
                   id: processData.pm_id,
                   type: 'process:msg',
-                  data: {
-                    theme: processData.name,
-                    instance: processData.pm_id,
-                  },
+                  data: {},
                   topic: 'getMetrics',
                 },
                 err => {
@@ -116,7 +113,7 @@ app.listen(9113, () => {
 // Listen to messages from theme applications
 pm2.launchBus((err, pm2_bus) => {
   pm2_bus.on('process:msg', msg => {
-    if (msg?.data?.topic == 'returnMetrics' && msg.process.name && msg.process.pm_id) {
+    if (msg?.data?.topic === 'returnMetrics' && msg.process.name && msg.process.pm_id) {
       const worker = `${msg.process.name} ${msg.process.pm_id}`;
       metricsPerWorker[worker] = msg.data.body;
     }
