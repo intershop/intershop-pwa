@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable, combineLatest, from, of, race, timer } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, from, of, race, timer } from 'rxjs';
 import { catchError, filter, first, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -18,6 +18,7 @@ import {
   loadUserByAPIToken,
 } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { IdentityProvider, TriggerReturnType } from './identity-provider.interface';
@@ -30,12 +31,17 @@ interface AzureADConfig {
 
 @Injectable({ providedIn: 'root' })
 export class AzureADIdentityProvider implements IdentityProvider {
+  // emits true, when OAuth Service is successfully configured
+  // used as an additional condition to check that the OAuth Service is configured before OAuth Service actions are used
+  private oAuthServiceConfigured$ = new BehaviorSubject<boolean>(false);
+
   constructor(
     private oauthService: OAuthService,
     private apiService: ApiService,
     private store: Store,
     private router: Router,
     private apiTokenService: ApiTokenService,
+    private configService: OAuthConfigurationService,
     @Inject(APP_BASE_HREF) private baseHref: string
   ) {}
 
@@ -49,62 +55,75 @@ export class AzureADIdentityProvider implements IdentityProvider {
 
   init(config: AzureADConfig) {
     const effectiveOrigin = this.baseHref === '/' ? window.location.origin : window.location.origin + this.baseHref;
+    this.configService.config$.pipe(whenTruthy(), take(1)).subscribe(serviceConf => {
+      this.oauthService.configure({
+        // Your AzureAD app's domain
+        // Important: Don't forget to start with https:// AND the trailing slash!
+        issuer: `https://${config.domain}`,
 
-    this.oauthService.configure({
-      // Your AzureAD app's domain
-      // Important: Don't forget to start with https:// AND the trailing slash!
-      issuer: `https://${config.domain}`,
+        // The app's clientId configured in AzureAD
+        clientId: config.clientID,
 
-      // The app's clientId configured in AzureAD
-      clientId: config.clientID,
+        // The app's redirectUri configured in AzureAD
+        redirectUri: `${effectiveOrigin}/loading`,
 
-      // The app's redirectUri configured in AzureAD
-      redirectUri: `${effectiveOrigin}/loading`,
+        // logout redirect URL
+        postLogoutRedirectUri: effectiveOrigin,
 
-      // logout redirect URL
-      postLogoutRedirectUri: effectiveOrigin,
+        // Scopes ("rights") the Angular application wants get delegated
+        // https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
+        scope: 'openid email profile offline_access',
 
-      // Scopes ("rights") the Angular application wants get delegated
-      // https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
-      scope: 'openid email profile offline_access',
+        // Using Authorization Code Flow
+        // (PKCE is activated by default for authorization code flow)
+        responseType: 'code',
 
-      // Using Authorization Code Flow
-      // (PKCE is activated by default for authorization code flow)
-      responseType: 'code',
+        // Your AzureAD account's logout url
+        // Derive it from your application's domain
+        logoutUrl: `https://${config.domain}/v2/logout`,
 
-      // Your AzureAD account's logout url
-      // Derive it from your application's domain
-      logoutUrl: `https://${config.domain}/v2/logout`,
+        sessionChecksEnabled: true,
+        strictDiscoveryDocumentValidation: false,
 
-      sessionChecksEnabled: true,
-      strictDiscoveryDocumentValidation: false,
+        // ICM token endpoint to retrieve a valid token for an anonymous user
+        tokenEndpoint: serviceConf?.tokenEndpoint,
+
+        requireHttps: serviceConf?.requireHttps,
+      });
+      this.oauthService.setupAutomaticSilentRefresh();
+      this.oAuthServiceConfigured$.next(true);
     });
-    this.oauthService.setupAutomaticSilentRefresh();
-    this.apiTokenService
-      .restore$(['user', 'order'])
+
+    this.oAuthServiceConfigured$
       .pipe(
-        switchMap(() => from(this.oauthService.loadDiscoveryDocumentAndTryLogin())),
-        switchMap(() =>
-          timer(0, 200).pipe(
-            map(() => this.oauthService.getIdToken()),
-            take(100),
-            whenTruthy(),
-            take(1)
-          )
-        ),
         whenTruthy(),
-        switchMap(idToken => {
-          const inviteUserId = window.sessionStorage.getItem('invite-userid');
-          const inviteHash = window.sessionStorage.getItem('invite-hash');
-          return inviteUserId && inviteHash
-            ? this.inviteRegistration(idToken, inviteUserId, inviteHash).pipe(
-                tap(() => {
-                  window.sessionStorage.removeItem('invite-userid');
-                  window.sessionStorage.removeItem('invite-hash');
-                })
+        take(1),
+        switchMap(() =>
+          this.apiTokenService.restore$(['user', 'order']).pipe(
+            switchMap(() => from(this.oauthService.loadDiscoveryDocumentAndTryLogin())),
+            switchMap(() =>
+              timer(0, 200).pipe(
+                map(() => this.oauthService.getIdToken()),
+                take(100),
+                whenTruthy(),
+                take(1)
               )
-            : this.normalSignInRegistration(idToken);
-        })
+            ),
+            whenTruthy(),
+            switchMap(idToken => {
+              const inviteUserId = window.sessionStorage.getItem('invite-userid');
+              const inviteHash = window.sessionStorage.getItem('invite-hash');
+              return inviteUserId && inviteHash
+                ? this.inviteRegistration(idToken, inviteUserId, inviteHash).pipe(
+                    tap(() => {
+                      window.sessionStorage.removeItem('invite-userid');
+                      window.sessionStorage.removeItem('invite-hash');
+                    })
+                  )
+                : this.normalSignInRegistration(idToken);
+            })
+          )
+        )
       )
       .subscribe(() => {
         this.apiTokenService.removeApiToken();
@@ -196,27 +215,45 @@ export class AzureADIdentityProvider implements IdentityProvider {
     if (route.queryParamMap.get('userid')) {
       return of(true);
     } else {
-      this.router.navigateByUrl('/loading');
-      return this.oauthService.loadDiscoveryDocumentAndLogin({
-        state: route.queryParams.returnUrl,
-      });
+      return this.oAuthServiceConfigured$.pipe(
+        whenTruthy(),
+        take(1),
+        tap(() => {
+          this.router.navigateByUrl('/loading');
+          this.oauthService.loadDiscoveryDocumentAndLogin({
+            state: route.queryParams.returnUrl,
+          });
+        })
+      );
     }
   }
 
   triggerLogin(route: ActivatedRouteSnapshot): TriggerReturnType {
-    this.router.navigateByUrl('/loading');
-    return this.oauthService.loadDiscoveryDocumentAndLogin({
-      state: route.queryParams.returnUrl,
-    });
+    return this.oAuthServiceConfigured$.pipe(
+      whenTruthy(),
+      take(1),
+      tap(() => {
+        this.router.navigateByUrl('/loading');
+        this.oauthService.loadDiscoveryDocumentAndLogin({
+          state: route.queryParams.returnUrl,
+        });
+      })
+    );
   }
 
   triggerInvite(route: ActivatedRouteSnapshot): TriggerReturnType {
-    this.router.navigateByUrl('/loading');
-    window.sessionStorage.setItem('invite-userid', route.queryParams.uid);
-    window.sessionStorage.setItem('invite-hash', route.queryParams.Hash);
-    return this.oauthService.loadDiscoveryDocumentAndLogin({
-      state: route.queryParams.returnUrl,
-    });
+    return this.oAuthServiceConfigured$.pipe(
+      whenTruthy(),
+      take(1),
+      tap(() => {
+        this.router.navigateByUrl('/loading');
+        window.sessionStorage.setItem('invite-userid', route.queryParams.uid);
+        window.sessionStorage.setItem('invite-hash', route.queryParams.Hash);
+        this.oauthService.loadDiscoveryDocumentAndLogin({
+          state: route.queryParams.returnUrl,
+        });
+      })
+    );
   }
 
   triggerLogout(): TriggerReturnType {
