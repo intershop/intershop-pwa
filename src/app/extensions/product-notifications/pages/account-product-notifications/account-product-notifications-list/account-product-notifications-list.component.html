@@ -1,0 +1,6 @@
+<ng-container *ngFor="let productNotification of productNotifications">
+  <div>
+    {{ productNotification.sku }} | {{ productNotification.type }} |
+    <ish-product-name ishProductContext [sku]="productNotification.sku"></ish-product-name>
+  </div>
+</ng-container>

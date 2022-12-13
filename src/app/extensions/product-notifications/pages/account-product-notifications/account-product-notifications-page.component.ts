@@ -12,6 +12,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountProductNotificationsPageComponent implements OnInit {
+  productNotifications$: Observable<ProductNotification[]>;
   productNotificationsPrice$: Observable<ProductNotification[]>;
   productNotificationsInStock$: Observable<ProductNotification[]>;
   productNotificationsLoading$: Observable<boolean>;
@@ -20,8 +21,7 @@ export class AccountProductNotificationsPageComponent implements OnInit {
   constructor(private productNotificationsFacade: ProductNotificationsFacade) {}
 
   ngOnInit() {
-    this.productNotificationsPrice$ = this.productNotificationsFacade.productNotifications$('price');
-    this.productNotificationsInStock$ = this.productNotificationsFacade.productNotifications$('stock');
+    this.productNotifications$ = this.productNotificationsFacade.productNotificationsByRoute$;
     this.productNotificationsLoading$ = this.productNotificationsFacade.productNotificationsLoading$;
     this.productNotificationsError$ = this.productNotificationsFacade.productNotificationsError$;
   }

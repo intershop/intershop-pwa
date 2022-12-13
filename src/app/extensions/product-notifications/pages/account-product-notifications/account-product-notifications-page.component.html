@@ -1,6 +1,36 @@
 <div class="productnotifications">
   <h1>{{ 'account.notifications.heading' | translate }}</h1>
 
+  <ul ngbNav class="nav-tabs">
+    <li ngbNavItem="price">
+      <a
+        ngbNavLink
+        [routerLink]="['../notifications', { notificationType: 'price' }]"
+        data-testing-id="tab-link-notifications-price"
+        >{{ 'account.notifications.price.heading' | translate }}</a
+      >
+    </li>
+    <li ngbNavItem="stock">
+      <a
+        ngbNavLink
+        [routerLink]="['../notifications', { notificationType: 'stock' }]"
+        data-testing-id="tab-link-notifications-instock"
+        >{{ 'account.notifications.backinstock.heading' | translate }}</a
+      >
+    </li>
+  </ul>
+
+  <div class="section">
+    <ish-account-product-notifications-list
+      [productNotifications]="productNotifications$ | async"
+    ></ish-account-product-notifications-list>
+  </div>
+</div>
+
+<!--
+<div class="productnotifications">
+  <h1>{{ 'account.notifications.heading' | translate }}</h1>
+
   <h3>{{ 'account.notifications.price.heading' | translate }}</h3>
   <ng-container *ngIf="productNotificationsPrice$ | async as productNotificationsPrice">
     <ng-container *ngIf="productNotificationsPrice?.length">
@@ -31,3 +61,5 @@
     </ng-container>
   </ng-container>
 </div>
+
+-->
