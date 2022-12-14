@@ -627,6 +627,34 @@ describe('Basket Effects', () => {
     });
   });
 
+  describe('loadBasketOnBasketPage$', () => {
+    it('should fire LoadBasket when route basket is navigated', () => {
+      router.navigateByUrl('/basket');
+
+      const action = routerTestNavigatedAction({
+        routerState: { url: '/basket' },
+      });
+      actions$ = of(action);
+
+      const completion = loadBasket();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.loadBasketOnBasketPage$).toBeObservable(expected$);
+    });
+
+    it('should not fire LoadBasket when route /something is navigated', () => {
+      router.navigateByUrl('/something');
+
+      actions$ = of(
+        routerTestNavigatedAction({
+          routerState: { url: '/something' },
+        })
+      );
+      expect(effects.loadBasketOnBasketPage$).toBeObservable(cold('|'));
+    });
+  });
+
   describe('createRequisition$', () => {
     beforeEach(() => {
       store.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));

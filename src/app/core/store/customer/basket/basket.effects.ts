@@ -340,6 +340,18 @@ export class BasketEffects {
   );
 
   /**
+   * Trigger LoadBasket action after the user navigated to a basket route
+   */
+  loadBasketOnBasketPage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      mapToRouterState(),
+      filter(routerState => /^\/basket/.test(routerState.url)),
+      map(() => loadBasket())
+    )
+  );
+
+  /**
    * Creates a requisition based on the given basket, if approval is required
    */
   createRequisition$ = createEffect(() =>
