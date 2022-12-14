@@ -13,7 +13,7 @@ Several ICM REST operations require an authenticated user.
 Authentication also assures enterprise information security.
 In the PWA a user can be verified with the help of an identity provider.
 An identity provider (IdP) is a service that stores and manages digital identities.
-The following identity providers are supported: The ICM server (default), the [SSO Auth0](sso.md) and the [Punchout Identity Provider](./../guides/punchout-identity-provider.md).
+The following identity providers are supported: The ICM server (default), the [SSO Auth0](sso.md) and the [Punchout Identity Provider](./../guides/authentication_punchout.md).
 
 ## Library angular-oauth2-oidc
 
@@ -89,5 +89,5 @@ The identity provider implementation defines, how the application should behave 
 ## Further References
 
 - [Guide - ICM Identity Provider](../guides/authentication_icm.md)
-- [Guide - Punchout Identity Provider](../guides/punchout-identity-provider.md)
+- [Guide - Punchout Identity Provider](../guides/authentication_punchout.md)
 - [Concept - Single Sign-On (SSO) for PWA](sso.md)
