@@ -30,7 +30,7 @@ kb_sync_latest_only
 - [Concept - Authentication](./concepts/authentication.md)
   - [Concept - Single Sign-On (SSO) for PWA](./concepts/sso.md)
   - [Guide - Handling Authentication by the ICM Server](./guides/authentication_icm.md)
-  - [Guide - Punchout Identity Provider](./guides/punchout-identity-provider.md)
+  - [Guide - Handling Authentication with the punchout identity provider](./guides/authentication_punchout.md)
 
 ### Developing
 
