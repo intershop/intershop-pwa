@@ -5,6 +5,7 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Product } from 'ish-core/models/product/product.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { ProductsAttributesService } from 'ish-core/services/products-attributes/products-attributes.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -16,6 +17,7 @@ describe('Products Service', () => {
   let productsService: ProductsService;
   let apiServiceMock: ApiService;
   let appFacadeMock: AppFacade;
+  let productAttributesService: ProductsAttributesService;
 
   const productSku = 'SKU';
   const categoryId = 'CategoryID';
@@ -65,7 +67,7 @@ describe('Products Service', () => {
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
     appFacadeMock = mock(AppFacade);
-
+    productAttributesService = mock(ProductsAttributesService);
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['configuration'], [ProductListingEffects]),
@@ -74,6 +76,7 @@ describe('Products Service', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
+        { provide: ProductsAttributesService, useFactory: () => instance(productAttributesService) },
       ],
     });
     productsService = TestBed.inject(ProductsService);

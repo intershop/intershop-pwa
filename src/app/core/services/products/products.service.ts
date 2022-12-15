@@ -20,18 +20,25 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import {
+  ProductAttributeScope,
+  ProductsAttributesService,
+} from 'ish-core/services/products-attributes/products-attributes.service';
 import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
-
-import STUB_ATTRS from './products-list-attributes';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
+  constructor(
+    private apiService: ApiService,
+    private productMapper: ProductMapper,
+    private appFacade: AppFacade,
+    private productAttributesService: ProductsAttributesService
+  ) {}
 
   /**
    * Get the full Product data for the given Product SKU.
@@ -44,7 +51,9 @@ export class ProductsService {
       return throwError(() => new Error('getProduct() called without a sku'));
     }
 
-    const params = new HttpParams().set('allImages', 'true');
+    const params = new HttpParams()
+      .set('allImages', 'true')
+      .set('attrs', this.productAttributesService.getAttributes(ProductAttributeScope.ALL));
 
     return this.apiService
       .get<ProductData>(`products/${sku}`, { sendSPGID: true, params })
@@ -70,7 +79,7 @@ export class ProductsService {
     }
 
     let params = new HttpParams()
-      .set('attrs', STUB_ATTRS)
+      .set('attrs', this.productAttributesService.getAttributes(ProductAttributeScope.ALL))
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
@@ -126,7 +135,7 @@ export class ProductsService {
       .set('searchTerm', searchTerm)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
-      .set('attrs', STUB_ATTRS)
+      .set('attrs', this.productAttributesService.getAttributes(ProductAttributeScope.LIST))
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
@@ -171,7 +180,7 @@ export class ProductsService {
       .set('MasterSKU', masterSKU)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
-      .set('attrs', STUB_ATTRS)
+      .set('attrs', this.productAttributesService.getAttributes(ProductAttributeScope.LIST))
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
@@ -202,7 +211,7 @@ export class ProductsService {
     let params = new HttpParams()
       .set('amount', amount ? amount.toString() : '')
       .set('offset', offset.toString())
-      .set('attrs', STUB_ATTRS)
+      .set('attrs', this.productAttributesService.getAttributes(ProductAttributeScope.LIST))
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
