@@ -1,0 +1,58 @@
+<!-- desktop: display enhanced select boxes with color codes or swatch images with labels -->
+<ng-container *ngIf="(deviceType$ | async) === 'desktop'; else mobile">
+  <div ngbDropdown>
+    <button ngbDropdownToggle type="button" class="btn variation-select" [id]="uuid + group.id">
+      <ng-container *ngFor="let option of group.options">
+        <ng-container *ngIf="option.active">
+          <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }"></ng-container>
+        </ng-container>
+      </ng-container>
+    </button>
+    <div ngbDropdownMenu class="variation-options" [attr.aria-labelledby]="uuid + group.id + 'label'">
+      <ng-container *ngFor="let option of group.options">
+        <button
+          ngbDropdownItem
+          *ngIf="!option.alternativeCombination || multipleOptions"
+          [value]="option.value"
+          [attr.data-testing-id]="group.id + '-' + option.value"
+          (click)="optionChange(group.id, option.value)"
+        >
+          <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }"></ng-container>
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>
+
+<!-- mobile/tablet: display a list of color codes or swatch images with labels -->
+<ng-template #mobile>
+  <div class="mobile-variation-select">
+    <div *ngFor="let option of group.options" class="mobile-variation-option">
+      <a (click)="optionChange(group.id, option.value)">
+        <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }"></ng-container>
+      </a>
+    </div>
+  </div>
+</ng-template>
+
+<!-- reusable template to render the individual options as color code or image swatch with label -->
+<ng-template #optionTemplate let-group="group" let-option="option">
+  <span
+    *ngIf="group.attributeType === 'defaultAndColorCode'"
+    class="color-code"
+    [ngStyle]="{ 'background-color': '#' + option.metaData }"
+    [ngClass]="{ 'light-color': option.label.toLowerCase() === 'white' }"
+  ></span>
+  <img
+    *ngIf="group.attributeType === 'defaultAndSwatchImage'"
+    class="image-swatch"
+    [src]="option.metaData"
+    alt="{{ option.label }}"
+  />
+  <span class="label" [ngClass]="{ selected: option.active }"
+    >{{ option.label }}
+    <ng-container *ngIf="option.alternativeCombination">
+      - {{ 'product.available_in_different_configuration' | translate }}
+    </ng-container>
+  </span>
+</ng-template>

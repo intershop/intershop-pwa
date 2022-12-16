@@ -1,0 +1,36 @@
+@import 'variables';
+
+ul {
+  padding: 0;
+  margin: 10px 0;
+
+  li {
+    display: inline-block;
+    margin-right: 5px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+
+    &.selected {
+      border: 1px solid $border-color-light;
+    }
+
+    a {
+      display: block;
+      border: 1px solid transparent;
+      border-radius: 50%;
+
+      span,
+      img {
+        display: block;
+        width: 32px;
+        height: 32px;
+        border: 1px solid transparent;
+        border-radius: 50%;
+
+        &.light-color {
+          border: 1px solid $border-color-light;
+        }
+      }
+    }
+  }
+}

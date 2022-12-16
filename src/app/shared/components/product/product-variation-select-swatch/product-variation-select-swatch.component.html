@@ -1,0 +1,12 @@
+<ul>
+  <li *ngFor="let option of group.options" [ngClass]="{ selected: option.active }">
+    <a (click)="optionChange(group.id, option.value)" title="{{ option.label }}">
+      <span
+        *ngIf="group.attributeType === 'colorCode'"
+        [ngStyle]="{ 'background-color': '#' + option.metaData }"
+        [ngClass]="{ 'light-color': option.label.toLowerCase() === 'white' }"
+      ></span>
+      <img *ngIf="group.attributeType === 'swatchImage'" [src]="option.metaData" alt="{{ option.label }}" />
+    </a>
+  </li>
+</ul>

@@ -1,0 +1,20 @@
+<select
+  class="form-control"
+  [id]="uuid + group.id"
+  [attr.data-testing-id]="group.id"
+  (change)="optionChange(group.id, $event.target)"
+>
+  <ng-container *ngFor="let option of group.options">
+    <option
+      *ngIf="!option.alternativeCombination || multipleOptions"
+      [value]="option.value"
+      [selected]="option.active"
+      [attr.data-testing-id]="group.id + '-' + option.value"
+    >
+      {{ option.label }}
+      <ng-container *ngIf="option.alternativeCombination">
+        - {{ 'product.available_in_different_configuration' | translate }}
+      </ng-container>
+    </option>
+  </ng-container>
+</select>

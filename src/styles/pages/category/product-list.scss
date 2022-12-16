@@ -23,6 +23,10 @@
         width: 60%;
         text-align: left;
 
+        @include media-breakpoint-down(sm) {
+          width: 100%;
+        }
+
         &.read-only {
           text-align: center;
         }

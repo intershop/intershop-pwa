@@ -26,6 +26,9 @@ You can keep the existing behavior by modifying the updateBasketItemsDesiredDeli
 
 The `ProductsService` was changed to use `extended=true` REST calls for product details and variations to fetch variation attributes with additional `attributeType` and `metaData` information that can be used to control the rendering of different variation select types.
 The added `VariationAttributeMapper` maps the additional information in a backwards compatible way.
+To handle the different variation select rendering types the existing `ProductVariationSelectComponent` now contains the logic to select the fitting variation select rendering component.
+The rendering and behavior of the existing `ProductVariationSelectComponent` as a standard select box was moved to the new `ProductVariationSelectDefaultComponent`.
+A `ProductVariationSelectSwatchComponent` for colorCode and swatchImage variation select rendering and a `ProductVariationSelectEnhancedComponent` for a select box rendering with color codes or swatch images and a mobile optimization were added.
 
 ## 3.0 to 3.1
 
