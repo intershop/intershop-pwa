@@ -2,27 +2,37 @@
   <ng-container *ngIf="variationOptions$ | async as variationOptions">
     <div *ngFor="let group of variationOptions" class="product-variation">
       <div class="form-group">
-        <label [for]="uuid + '__' + group.id" class="col-form-label">{{ group.label }}</label>
-        <select
-          class="form-control"
-          [id]="uuid + '__' + group.id"
-          [attr.data-testing-id]="group.id"
-          (change)="optionChange(group.id, $event.target)"
-        >
-          <ng-container *ngFor="let option of group.options">
-            <option
-              *ngIf="!option.alternativeCombination || variationOptions.length > 1"
-              [value]="option.value"
-              [selected]="option.active"
-              [attr.data-testing-id]="group.id + '-' + option.value"
-            >
-              {{ option.label }}
-              <ng-container *ngIf="option.alternativeCombination">
-                - {{ 'product.available_in_different_configuration' | translate }}
-              </ng-container>
-            </option>
+        <label [for]="uuid + group.id" [id]="uuid + group.id + 'label'" class="col-form-label">{{ group.label }}</label>
+
+        <!-- multiple switch case expressions - https://stackoverflow.com/a/45950368 -->
+        <ng-container [ngSwitch]="true">
+          <ng-container *ngSwitchCase="group.attributeType === 'colorCode' || group.attributeType === 'swatchImage'">
+            <ish-product-variation-select-swatch
+              [group]="group"
+              (changeOption)="optionChange($event)"
+            ></ish-product-variation-select-swatch>
           </ng-container>
-        </select>
+          <ng-container
+            *ngSwitchCase="
+              group.attributeType === 'defaultAndColorCode' || group.attributeType === 'defaultAndSwatchImage'
+            "
+          >
+            <ish-product-variation-select-enhanced
+              [group]="group"
+              [uuid]="uuid"
+              [multipleOptions]="variationOptions.length > 1"
+              (changeOption)="optionChange($event)"
+            ></ish-product-variation-select-enhanced>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <ish-product-variation-select-default
+              [group]="group"
+              [uuid]="uuid"
+              [multipleOptions]="variationOptions.length > 1"
+              (changeOption)="optionChange($event)"
+            ></ish-product-variation-select-default>
+          </ng-container>
+        </ng-container>
       </div>
     </div>
   </ng-container>
