@@ -25,6 +25,14 @@ services:
       # FEATURES: |
       #   - compare
       #   - rating
+      # IDENTITY_PROVIDER: 'Auth0'
+      # IDENTITY_PROVIDERS: |
+      #   Auth0:
+      #     type: auth0
+      #     domain: some-domain.auth0.com
+      #     clientID: ASDF12345
+      #   Punchout:
+      #     type: PUNCHOUT
 
   # <CDN-Example>
   # add 127.0.0.1 mypwa.net to your hosts file and
@@ -81,6 +89,10 @@ services:
       # BASIC_AUTH_IP_WHITELIST: |
       #   # - 172.22.0.1
       #   - 1.2.3.4
+      # OVERRIDE_IDENTITY_PROVIDERS: |
+      #   .+:
+      #     - path: /en/punchout
+      #       type: Punchout
       MULTI_CHANNEL: |
         .+:
           - baseHref: /en

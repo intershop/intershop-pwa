@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 ## 3.1 to 3.2
 
-A styling adaption was made to the application shell to expand it to the full page height so the footer now always stays at the bottom.
+A styling adaption was made to the application shell to expand it to the full page height, so the footer now always stays at the bottom.
 Together with that an inline style of the `main-container` was moved to the global styling definition.
 
 Formly has been upgraded from version 5 to 6.
@@ -17,23 +17,23 @@ Find more information in the [Formly Upgrade Guide](https://github.com/ngx-forml
 We still use deprecated form properties like 'templateOptions' and 'expressionProperties' for compatibility reasons but we are going to replace them in the next major release.
 
 The two small black triangle images `active_catalog.png` (header: when hovering a catalog) and `budget-bar-indicator.png` (my account: budget bar) are removed and replaced by CSS styling.
-The basket empty image `empty-cart.png` is removed and replaced with CSS styling.
-The sprite image `product_sprite.png` is removed and replaced with localized text for "New", "Sale" and "Top" with the according CSS styling.
+The image for an empty basket `empty-cart.png` is removed and replaced with CSS styling.
+The sprite image `product_sprite.png` is removed and replaced with localized text for "New", "Sale", and "Top" with the according CSS styling.
 
-After entering a desired delivery date on the checkout shipping page and after submitting the order the desired delivery date will be saved at all basket items, if necessary.
-In case of large basket (> 20 items) this might cause (unacceptable) long response times.
-You can keep the existing behavior by modifying the updateBasketItemsDesiredDeliveryDate() method of the basket service to always return an empty array without doing anything.
+After entering a desired delivery date on the checkout shipping page and after submitting the order, the desired delivery date will be saved at all basket items if necessary.
+In case of large baskets (> 20 items) this might cause long response times.
+You can keep the existing behavior by modifying the _updateBasketItemsDesiredDeliveryDate()_ method of the basket service to always return an empty array without doing anything.
 
 The `ProductsService` was changed to use `extended=true` REST calls for product details and variations to fetch variation attributes with additional `attributeType` and `metaData` information that can be used to control the rendering of different variation select types.
 The added `VariationAttributeMapper` maps the additional information in a backwards compatible way.
-To handle the different variation select rendering types the existing `ProductVariationSelectComponent` now contains the logic to select the fitting variation select rendering component.
+To handle the different variation select rendering types, the existing `ProductVariationSelectComponent` now contains the logic to select the fitting variation select rendering component.
 The rendering and behavior of the existing `ProductVariationSelectComponent` as a standard select box was moved to the new `ProductVariationSelectDefaultComponent`.
 A `ProductVariationSelectSwatchComponent` for colorCode and swatchImage variation select rendering and a `ProductVariationSelectEnhancedComponent` for a select box rendering with color codes or swatch images and a mobile optimization were added.
 
 The user authentication process has changed.
 User authentication tokens are requested from the ICM server using the `/token` REST endpoint now.
-Regarding this, the logout action triggers a service, which revokes the current available access token on the ICM backend.
-If the logout was successful, then all personalized information is removed from the ngrx store.
+Regarding this, the logout action triggers a service which revokes the currently available access token on the ICM backend.
+If the logout was successful, all personalized information is removed from the ngrx store.
 Please use `logoutUser({ revokeToken: false })` from the account facade or dispatch `logoutUserSuccess` instead of the `logoutUser` action to use the old behavior.
 
 ## 3.0 to 3.1
@@ -42,8 +42,8 @@ The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future
 Use variable 'IDENTITY_PROVIDER' to select the provider to be used instead.
 Keep this in mind before deploying or starting the Intershop PWA in server-side rendering mode.
 
-The default value of the input parameter ['queryParamsHandling'](https://angular.io/api/router/QueryParamsHandling) has been changed from 'merge' to '' for the components product-name.component and product-image.component.
-This has been done to prevent an unintentional application of filters for product variation master links if the product detail link does not originates from a product listing context (product list page, search result page).
+The default value of the input parameter ['queryParamsHandling'](https://angular.io/api/router/QueryParamsHandling) has been changed from 'merge' to '' for the components `product-name.component` and `product-image.component`.
+This has been done to prevent an unintentional application of filters for product variation master links if the product detail link does not originate from a product listing context (product list page, search result page).
 
 To prevent deprecation warnings we removed the unnecessary `~` from all 3rd party SCSS imports (see https://webpack.js.org/loaders/sass-loader/#resolving-import-at-rules - "Using ~ is deprecated and can be removed from your code (we recommend it)").
 This should be done for additional imports in the customizations as well.
@@ -53,22 +53,22 @@ For that reason we removed it.
 Use the validator `equalTo` instead.
 Find more information in the method description in the [`special-validators.ts`](https://github.com/intershop/intershop-pwa/blob/3.0.0/src/app/shared/forms/validators/special-validators.ts#L82-L87).
 
-The "Product Image Not Available" PNG image `not_available.png` is removed and replaced by an SVG image `not-available.svg` which does not include a text inside the image any more to avoid localization issues.
-The file references are updated accordingly, the product image component is updated to use the correct image attributes, a localized alternative text is added and the product and image mapper files are updated to provide the correct data.
-In case the current PNG image file and the handling is customized in a project, you have to make sure to keep the project changes.
+The "Product Image Not Available" PNG image `not_available.png` is removed and replaced by an SVG image `not-available.svg` which does not include a text inside the image anymore to avoid localization issues.
+The file references are updated accordingly, the product image component is updated to use the correct image attributes, a localized alternative text is added, and the product and image mapper files are updated to provide the correct data.
+In case the current PNG image file and the handling is customized in a project, you have to ensure to keep the project changes.
 
 ## 2.4 to 3.0
 
 With the 2.4.1 Hotfix we introduced a more fixed Node.js version handling to the version used and tested by us.
 We set Node.js 16.16.0 and npm 8.11.0 as our application runtime and package management versions.
 This is supposed to prevent unexpected build issues in the future but requires manual updating of Node.js to newer versions if tested successfully.
-Other Node.js versions might still work but you might get warnings regarding the projects recommended settings.
+Other Node.js versions might still work but you might get warnings regarding the project's recommended settings.
 
 The Intershop PWA 3.0 release includes a Jest Update to version 28, see also https://jestjs.io/docs/upgrading-to-jest28.
 The jest-marbles package has been replaced by jasmine-marbles.
 
 It also contains the Angular 14 update and updates to a lot of other dependencies (NgRx, Typescript).
-These updates require some code adaptions, e.g. form classes have been prefixed with _Untyped_ wherever necessary.
+These updates require some code adaptions, e.g., form classes have been prefixed with _Untyped_ wherever necessary.
 The following official guides might help to migrate custom code as well:
 
 - https://update.angular.io/?v=13.0-14.0
@@ -83,7 +83,7 @@ Cypress has been upgraded from version 9 to 10.
 We went through the interactive migration to move our spec files from cypress/integration folder to the cypress/e2e folder and updated the config file as well as some scripts.
 Find more information in the [Cypress Migration Guide](https://docs.cypress.io/guides/references/migration-guide#Migrating-to-Cypress-version-10-0).
 
-Since the used deferred load library is no longer maintained it is removed and replaced with similar standard browser functionality [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#images_and_iframes).
+Since the used deferred load library is no longer maintained, it is removed and has been replaced with similar standard browser functionality [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#images_and_iframes).
 All uses of the `(deferLoad)` directive in custom code need to be replaced.
 
 We removed the unmaintained `angular2-uuid` library in favor of the standard `uuid` library that is already included as an Angular dependency.
@@ -99,9 +99,9 @@ The deprecated `customized-copy` schematic for copying components and replacing 
 We introduced a build variable `SSR` that is now used for all checks if the application is running in SSR or Browser context.
 We no longer use the verbose way of injecting the `PLATFORM_ID` and check it with the methods `isPlatformBrowser` or `isPlatformServer`.
 This way still works but it is discouraged by a new ESLint rule that suggests using the new `SSR` variable instead.
-So running `npm run lint` will help with finding custom code that still relies on the platform checks.
+So running `npm run lint` will help finding custom code that still relies on the platform checks.
 
-To support e.g. special characters in email addresses with newer versions of ICM (7.10.38.x), like `+`, double encoding of resource ids in the REST API calls is necessary.
+To support, e.g., special characters in e-mail addresses with newer versions of ICM (7.10.38.x), like `+`, double encoding of resource ids in the REST API calls is necessary.
 With the method `encodeResourceID` we provide a central place that implements the fitting resource encoding.
 In the PWA this was applied to all user logins in REST API calls.
 For project customizations the usage of the native `encodeURIComponent` functionality should be replaced with `encodeResourceID` for user logins in REST calls as well.
@@ -114,7 +114,7 @@ For categories it was changed from `cat` to `ctg` and for products from `sku`to 
 This way, it is intended to have less conflicts and limitations with potential category/product ids, e.g., 'cats' or 'skunks'.
 
 To improve the support of large baskets we update the ngrx store immediately after adding, updating and deleting basket items now.
-Therefore we had to change the return values of the corresponding basket service functions as well as the payload of the success actions.
+Therefore, we had to change the return values of the corresponding basket service functions as well as the payload of the success actions.
 We also limited the number of displayed line items in the mini basket and introduced a paging bar on the basket page to speed up the rendering of these components.
 
 ## 2.3 to 2.4
