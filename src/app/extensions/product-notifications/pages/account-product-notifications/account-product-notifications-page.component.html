@@ -41,7 +41,11 @@
       >
         {{ productNotification.sku }} | {{ productNotification.type }} |
         <ish-product-name></ish-product-name>
-        <ish-product-notification-edit [productNotification]="productNotification"></ish-product-notification-edit>
+        <ish-product-notification-edit
+          [cssClass]="'btn-link btn-tool'"
+          [productNotification]="productNotification"
+          displayType="icon"
+        ></ish-product-notification-edit>
       </div>
     </ng-container>
   </ng-container>
@@ -56,7 +60,11 @@
       >
         {{ productNotification.sku }} | {{ productNotification.type }} |
         <ish-product-name></ish-product-name>
-        <ish-product-notification-edit [productNotification]="productNotification"></ish-product-notification-edit>
+        <ish-product-notification-edit
+          [cssClass]="'btn-link btn-tool'"
+          [productNotification]="productNotification"
+          displayType="icon"
+        ></ish-product-notification-edit>
       </div>
     </ng-container>
   </ng-container>
