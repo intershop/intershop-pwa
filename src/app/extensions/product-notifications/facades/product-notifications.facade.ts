@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, distinctUntilChanged, map, switchMap } from 'rxjs';
+import { Observable, of, distinctUntilChanged, map, switchMap } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
 
-import { ProductNotificationType } from '../models/product-notification/product-notification.model';
+import {
+  ProductNotification,
+  ProductNotificationType,
+} from '../models/product-notification/product-notification.model';
 import {
   getProductNotificationsByType,
   getProductNotificationsError,
@@ -21,6 +24,18 @@ export class ProductNotificationsFacade {
   private productNotifications$(type: ProductNotificationType) {
     this.store.dispatch(loadProductNotifications({ type }));
     return this.store.pipe(select(getProductNotificationsByType(type)));
+  }
+
+  // TODO: remove mock data and get real product notification
+  productNotification$(): Observable<ProductNotification> {
+    // return of({
+    //   id: '1',
+    //   type: 'stock',
+    //   sku: '12345',
+    //   notificationMailAddress: 'bboldner@test.intershop.de',
+    // });
+
+    return of(undefined);
   }
 
   productNotificationsLoading$: Observable<boolean> = this.store.pipe(select(getProductNotificationsLoading));

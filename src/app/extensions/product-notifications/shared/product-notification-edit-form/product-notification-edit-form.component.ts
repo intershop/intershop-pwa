@@ -1,10 +1,17 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { Pricing } from 'ish-core/models/price/price.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
+import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
 /**
@@ -21,23 +28,62 @@ import { ProductNotification } from '../../models/product-notification/product-n
 export class ProductNotificationEditFormComponent implements OnInit {
   @Input() productNotificationForm: FormGroup;
   @Input() productNotification: ProductNotification;
-  fields: FormlyFieldConfig[];
+  fields$: Observable<FormlyFieldConfig[]>;
 
-  model: any;
+  model$: Observable<any>;
 
-  constructor(private appFacade: AppFacade) {}
+  constructor(
+    private appFacade: AppFacade,
+    private productNotificationsFacade: ProductNotificationsFacade,
+    private context: ProductContextFacade,
+    private accountFacade: AccountFacade
+  ) {}
+
+  productNotification$: Observable<ProductNotification>;
+  product$: Observable<ProductView>;
+  productPrices$: Observable<Pricing>;
 
   ngOnInit() {
-    this.model = this.productNotification
-      ? {
-          alerttype: this.productNotification.type,
-          email: this.productNotification.notificationMailAddress,
-          pricevalue: this.productNotification.price?.value,
-        }
-      : {};
+    this.product$ = this.context.select('product');
+    this.productPrices$ = this.context.select('prices');
 
-    this.fields = [
-      {
+    this.productNotification$ = this.productNotification
+      ? of(this.productNotification)
+      : this.productNotificationsFacade.productNotification$();
+
+    this.model$ = combineLatest([
+      this.productNotification$,
+      this.productPrices$,
+      this.product$,
+      this.accountFacade.user$,
+    ]).pipe(
+      map(([productNotification, productPrices, product, user]) =>
+        productNotification
+          ? {
+              alerttype: productNotification.type,
+              email: productNotification.notificationMailAddress,
+              pricevalue: productNotification.price?.value,
+            }
+          : {
+              alerttype: product?.available ? 'price' : 'stock',
+              email: user.email,
+              pricevalue: productPrices.salePrice.value,
+            }
+      )
+    );
+
+    this.fields$ = combineLatest([
+      this.productNotification$,
+      this.product$,
+      this.model$.pipe(map(model => model?.currency)),
+    ]).pipe(map(([productNotification, product, currency]) => this.getFields(productNotification, product, currency)));
+  }
+
+  getFields(productNotification: ProductNotification, product: ProductView, currency: string): FormlyFieldConfig[] {
+    const fields: FormlyFieldConfig[] = [];
+
+    if (productNotification) {
+      fields.push({
         key: 'alerttype',
         type: 'ish-radio-field',
         templateOptions: {
@@ -45,62 +91,70 @@ export class ProductNotificationEditFormComponent implements OnInit {
           fieldClass: ' ',
           value: '',
         },
-      },
-      {
+      });
+    }
+
+    if (productNotification?.type === 'stock' || !product?.available) {
+      fields.push({
         key: 'alerttype',
         type: 'ish-radio-field',
-        hide: this.productNotification.type !== 'stock',
         templateOptions: {
           label: 'product.notification.edit.form.instock_notification.label',
           fieldClass: ' ',
           value: 'stock',
         },
-      },
-      {
-        key: 'alerttype',
-        type: 'ish-radio-field',
-        hide: this.productNotification.type !== 'price',
-        templateOptions: {
-          label: 'product.notification.edit.form.price_notification.label',
-          fieldClass: ' ',
-          value: 'price',
-        },
-      },
-      {
-        key: 'pricevalue',
-        type: 'ish-text-input-field',
-        hide: this.productNotification.type !== 'price',
-        templateOptions: {
-          postWrappers: [{ wrapper: 'input-addon', index: -1 }],
-          label: 'product.notification.edit.form.price.label',
-          required: true,
-          addonLeft: {
-            text: this.appFacade.currencySymbol$(this.model.currency),
+      });
+    }
+
+    if (productNotification?.type === 'price' || product?.available) {
+      fields.push(
+        {
+          key: 'alerttype',
+          type: 'ish-radio-field',
+          templateOptions: {
+            label: 'product.notification.edit.form.price_notification.label',
+            fieldClass: ' ',
+            value: 'price',
           },
         },
-        validators: {
-          validation: [SpecialValidators.moneyAmount],
-        },
-        validation: {
-          messages: {
-            required: 'product.notification.edit.form.price.error.required',
-            moneyAmount: 'product.notification.edit.form.price.error.valid',
+        {
+          key: 'pricevalue',
+          type: 'ish-text-input-field',
+          templateOptions: {
+            postWrappers: [{ wrapper: 'input-addon', index: -1 }],
+            label: 'product.notification.edit.form.price.label',
+            required: true,
+            addonLeft: {
+              text: this.appFacade.currencySymbol$(currency),
+            },
           },
+          validators: {
+            validation: [SpecialValidators.moneyAmount],
+          },
+          validation: {
+            messages: {
+              required: 'product.notification.edit.form.price.error.required',
+              moneyAmount: 'product.notification.edit.form.price.error.valid',
+            },
+          },
+        }
+      );
+    }
+
+    fields.push({
+      key: 'email',
+      type: 'ish-email-field',
+      templateOptions: {
+        label: 'product.notification.edit.form.email.label',
+        required: true,
+      },
+      validation: {
+        messages: {
+          required: 'form.email.error.required',
         },
       },
-      {
-        key: 'email',
-        type: 'ish-email-field',
-        templateOptions: {
-          label: 'product.notification.edit.form.email.label',
-          required: true,
-        },
-        validation: {
-          messages: {
-            required: 'form.email.error.required',
-          },
-        },
-      },
-    ];
+    });
+
+    return fields;
   }
 }
