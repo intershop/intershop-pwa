@@ -35,6 +35,15 @@ const orderedImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
         .map(imp => context.getSourceCode().getText(imp))
         .sort();
 
+      if (/\{.*\}/.test(nodeText)) {
+        return nodeText.replace(/\{.*\}/, `{ ${sortedNamedImports.join(', ')} }`);
+      } else if (/\{(.|\n)*\}/.test(nodeText)) {
+        return nodeText.replace(
+          /\{(.|\n)*\}/,
+          `{${lineEnding}  ${sortedNamedImports.join(`,${lineEnding}  `)},${lineEnding}}`
+        );
+      }
+
       return nodeText.replace(/\{.*\}/, `{ ${sortedNamedImports.join(', ')} }`);
     }
 

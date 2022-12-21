@@ -16,8 +16,8 @@ import { distinctCompareWith, mapToPayload, whenTruthy } from 'ish-core/utils/op
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 import {
-  applyConfiguration,
   ConfigurationType,
+  applyConfiguration,
   loadSingleServerTranslation,
   loadSingleServerTranslationSuccess,
 } from './configuration.actions';

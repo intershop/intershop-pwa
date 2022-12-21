@@ -21,11 +21,11 @@ import {
   deleteCustomerAddress,
   deleteCustomerAddressFail,
   deleteCustomerAddressSuccess,
+  loadAddresses,
+  loadAddressesSuccess,
   updateCustomerAddress,
   updateCustomerAddressFail,
   updateCustomerAddressSuccess,
-  loadAddresses,
-  loadAddressesSuccess,
 } from './addresses.actions';
 import { AddressesEffects } from './addresses.effects';
 

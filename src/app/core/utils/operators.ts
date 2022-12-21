@@ -7,9 +7,9 @@ import {
   OperatorFunction,
   combineLatest,
   concat,
+  connect,
   of,
   throwError,
-  connect,
 } from 'rxjs';
 import { buffer, catchError, distinctUntilChanged, filter, map, mergeAll, take, withLatestFrom } from 'rxjs/operators';
 

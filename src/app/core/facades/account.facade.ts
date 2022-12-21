@@ -15,11 +15,11 @@ import { MessagesPayloadType } from 'ish-core/store/core/messages';
 import {
   createCustomerAddress,
   deleteCustomerAddress,
-  updateCustomerAddress,
   getAddressesError,
   getAddressesLoading,
   getAllAddresses,
   loadAddresses,
+  updateCustomerAddress,
 } from 'ish-core/store/customer/addresses';
 import { getUserRoles } from 'ish-core/store/customer/authorization';
 import {

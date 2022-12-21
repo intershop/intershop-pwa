@@ -12,15 +12,15 @@ import {
   createCustomerAddress,
   createCustomerAddressFail,
   createCustomerAddressSuccess,
-  updateCustomerAddress,
-  updateCustomerAddressFail,
-  updateCustomerAddressSuccess,
   deleteCustomerAddress,
   deleteCustomerAddressFail,
   deleteCustomerAddressSuccess,
   loadAddresses,
   loadAddressesFail,
   loadAddressesSuccess,
+  updateCustomerAddress,
+  updateCustomerAddressFail,
+  updateCustomerAddressSuccess,
 } from './addresses.actions';
 
 @Injectable()

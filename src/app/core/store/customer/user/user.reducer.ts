@@ -10,7 +10,9 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from
 
 import {
   createUser,
+  createUserApprovalRequired,
   createUserFail,
+  createUserSuccess,
   deleteUserPaymentInstrument,
   deleteUserPaymentInstrumentFail,
   deleteUserPaymentInstrumentSuccess,
@@ -43,8 +45,6 @@ import {
   updateUserPasswordSuccess,
   updateUserSuccess,
   userErrorReset,
-  createUserSuccess,
-  createUserApprovalRequired,
 } from './user.actions';
 
 export interface UserState {
