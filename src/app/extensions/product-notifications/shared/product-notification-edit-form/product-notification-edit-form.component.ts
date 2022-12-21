@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
 /**
@@ -21,6 +24,8 @@ export class ProductNotificationEditFormComponent implements OnInit {
   fields: FormlyFieldConfig[];
 
   model: any;
+
+  constructor(private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.model = this.productNotification
@@ -66,12 +71,20 @@ export class ProductNotificationEditFormComponent implements OnInit {
         type: 'ish-text-input-field',
         hide: this.productNotification.type !== 'price',
         templateOptions: {
+          postWrappers: [{ wrapper: 'input-addon', index: -1 }],
           label: 'product.notification.edit.form.price.label',
           required: true,
+          addonLeft: {
+            text: this.appFacade.currencySymbol$(this.model.currency),
+          },
+        },
+        validators: {
+          validation: [SpecialValidators.moneyAmount],
         },
         validation: {
           messages: {
             required: 'product.notification.edit.form.price.error.required',
+            moneyAmount: 'product.notification.edit.form.price.error.valid',
           },
         },
       },
