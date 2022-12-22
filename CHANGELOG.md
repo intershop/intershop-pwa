@@ -7,6 +7,59 @@ kb_everyone
 
 # Changelog
 
+## [3.2.0](https://github.com/intershop/intershop-pwa/releases/tag/3.2.0) (2022-12-22)
+
+**required Intershop Commerce Management version: 7.10.38.11-LTS**
+
+**required/tested Node.js version: 16.16.0 LTS (including npm 8.11.0)**
+
+### Features
+
+- use ICM '/token' REST endpoint for authentication (#1156) ([4e02efd](https://github.com/intershop/intershop-pwa/commit/4e02efd))
+- introduce additional components for product variation select display (#1317) ([ddd6e2e](https://github.com/intershop/intershop-pwa/commit/ddd6e2e))
+- introduce variation attribute mapping with extended /variations call (#1317) ([d9e4b17](https://github.com/intershop/intershop-pwa/commit/d9e4b17))
+- provide and combine metrics of theme instances (#1340) ([88b4206](https://github.com/intershop/intershop-pwa/commit/88b4206))
+- route to product detail page if only one search result was found (#1316) ([9964ebd](https://github.com/intershop/intershop-pwa/commit/9964ebd))
+- save desired delivery date at basket items (#1325) ([f8fba29](https://github.com/intershop/intershop-pwa/commit/f8fba29))
+- add zebra striped table style for attributes in product details tab (#1326) ([7999f02](https://github.com/intershop/intershop-pwa/commit/7999f02))
+- customer address update in the My Account section (#1315) ([a98d391](https://github.com/intershop/intershop-pwa/commit/a98d391))
+
+### Bug Fixes
+
+- apply ordered-import rule on multiline import statements (#1344) ([5887c41](https://github.com/intershop/intershop-pwa/commit/5887c41))
+- prevent outdated basket information on /basket route (#1342) ([1a730f8](https://github.com/intershop/intershop-pwa/commit/1a730f8))
+- remove check for variations or variation master data for variation product data handling ([41e674f](https://github.com/intershop/intershop-pwa/commit/41e674f))
+- error when submitting consecutive search after submitting search from search suggestion (#1332) ([9d063a9](https://github.com/intershop/intershop-pwa/commit/9d063a9))
+- add SSR hybrid backend configuration option for kubernetes deployments (#1320) ([3e293fa](https://github.com/intershop/intershop-pwa/commit/3e293fa))
+- prevent budget bar arrow and product label ribbons to be shown in the subcategories layer (#1329) ([7f4d34c](https://github.com/intershop/intershop-pwa/commit/7f4d34c))
+- replace the product label image sprite, use CSS only styling and localized HTML text (#1319) ([7f63863](https://github.com/intershop/intershop-pwa/commit/7f63863))
+- replace the empty cart image with pure CSS and remove the image file (#1319) ([eebebec](https://github.com/intershop/intershop-pwa/commit/eebebec))
+- remove active_catalog.png and budget-bar-indicator.png and replace with CSS styling (#1319) ([9aeafaf](https://github.com/intershop/intershop-pwa/commit/9aeafaf))
+- display company input fields for anonymous b2b users on checkout edit address form (#1312) ([23a9257](https://github.com/intershop/intershop-pwa/commit/23a9257))
+- change and display an anonymous user`s email during the checkout process (#1312) ([b2c265b](https://github.com/intershop/intershop-pwa/commit/b2c265b))
+- validate email during the checkout process of an anonymous user (#1312) ([5ba41ec](https://github.com/intershop/intershop-pwa/commit/5ba41ec))
+- apiToken cookie should be shared between same host (#1321) ([80d5f9d](https://github.com/intershop/intershop-pwa/commit/80d5f9d))
+- add promotion scope to the validation of the first basket checkout step (#1322) ([8da52d6](https://github.com/intershop/intershop-pwa/commit/8da52d6))
+- keep the footer at the bottom of the page (#1318) ([feb1648](https://github.com/intershop/intershop-pwa/commit/feb1648))
+- 'npm install' not working with PWA release zip file (#1314) ([33be4cc](https://github.com/intershop/intershop-pwa/commit/33be4cc))
+- display login modal after authentication token has expired (#1280, #1311) ([025818c](https://github.com/intershop/intershop-pwa/commit/025818c))
+- add matrix parameter spgid to promotion REST calls (#1310) ([1cae0d8](https://github.com/intershop/intershop-pwa/commit/1cae0d8))
+
+### Documentation
+
+- improve authentication documentation (#1156) ([cf89956](https://github.com/intershop/intershop-pwa/commit/cf89956))
+- extend PurgeCSS integration documentation (#1313) ([d4db9d6](https://github.com/intershop/intershop-pwa/commit/d4db9d6))
+
+### BREAKING CHANGES
+
+- PWA uses the ICM `/token` REST endpoint to retrieve user token, every anonymous user will get a anonymous user token, every identity provider has to configure the `oAuthService` with information about the token endpoint, before expiration the given token should be refreshed.
+- Changed the rendering of the `ProductVariationSelectComponent` and introduced additional product variation select rendering components (see [Migrations / 3.1 to 3.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#31-to-32) for more details).
+- `ProductsService` was changed to use an `extended=true` details and variations call. `VariationAttribute` model was cleaned up and extended (see [Migrations / 3.1 to 3.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#31-to-32) for more details).
+- The product label ribbon image is replaced with localized text and CSS styling.
+- The empty cart image is removed and replaced with localized text and CSS styling.
+- The `active_catalog.png` and `budget-bar-indicator.png` are removed and replaced with CSS styling.
+- Formly has been upgraded from version 5 to 6 (see [Migrations / 3.1 to 3.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#31-to-32) for more details).
+
 ## [3.1.0](https://github.com/intershop/intershop-pwa/releases/tag/3.1.0) (2022-10-17)
 
 **required Intershop Commerce Management version: 7.10.38.11-LTS**

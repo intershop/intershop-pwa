@@ -14,7 +14,7 @@ Together with that an inline style of the `main-container` was moved to the glob
 
 Formly has been upgraded from version 5 to 6.
 Find more information in the [Formly Upgrade Guide](https://github.com/ngx-formly/ngx-formly/blob/main/UPGRADE-6.0.md).
-We still use deprecated form properties like 'templateOptions' and 'expressionProperties' for compatibility reasons but we are going to replace them in the next major release.
+We still use deprecated form properties like `templateOptions` and `expressionProperties` for compatibility reasons but we are going to replace them in the next major release.
 
 The two small black triangle images `active_catalog.png` (header: when hovering a catalog) and `budget-bar-indicator.png` (my account: budget bar) are removed and replaced by CSS styling.
 The image for an empty basket `empty-cart.png` is removed and replaced with CSS styling.
@@ -22,7 +22,7 @@ The sprite image `product_sprite.png` is removed and replaced with localized tex
 
 After entering a desired delivery date on the checkout shipping page and after submitting the order, the desired delivery date will be saved at all basket items if necessary.
 In case of large baskets (> 20 items) this might cause long response times.
-You can keep the existing behavior by modifying the _updateBasketItemsDesiredDeliveryDate()_ method of the basket service to always return an empty array without doing anything.
+You can keep the existing behavior by modifying the `updateBasketItemsDesiredDeliveryDate()` method of the basket service to always return an empty array without doing anything.
 
 The `ProductsService` was changed to use `extended=true` REST calls for product details and variations to fetch variation attributes with additional `attributeType` and `metaData` information that can be used to control the rendering of different variation select types.
 The added `VariationAttributeMapper` maps the additional information in a backwards compatible way.
