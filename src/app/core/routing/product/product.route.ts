@@ -82,7 +82,7 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
  * @returns localized product url
  */
 export function generateProductUrl(product: ProductView, category?: CategoryView): string {
-  if (!product || !product.sku) {
+  if (!product?.sku) {
     return '/';
   }
 

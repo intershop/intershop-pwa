@@ -32,6 +32,9 @@ import {
   createQuoteRequestFromQuoteRequest,
   createQuoteRequestFromQuoteRequestSuccess,
   createQuoteRequestFromQuoteSuccess,
+  deleteQuoteFromBasket,
+  deleteQuoteFromBasketFail,
+  deleteQuoteFromBasketSuccess,
   deleteQuotingEntity,
   deleteQuotingEntityFail,
   deleteQuotingEntitySuccess,
@@ -46,9 +49,6 @@ import {
   submitQuoteRequestSuccess,
   updateQuoteRequest,
   updateQuoteRequestSuccess,
-  deleteQuoteFromBasket,
-  deleteQuoteFromBasketSuccess,
-  deleteQuoteFromBasketFail,
 } from './quoting.actions';
 import { getQuotingEntity } from './quoting.selectors';
 

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -20,6 +21,7 @@ describe('Shopping Basket Empty Component', () => {
         MockComponent(BasketInfoComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
         ShoppingBasketEmptyComponent,
       ],
       imports: [TranslateModule.forRoot()],

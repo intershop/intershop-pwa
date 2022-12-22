@@ -21,6 +21,8 @@ export const createCustomerAddressSuccess = createAction(
   payload<{ address: Address }>()
 );
 
+export const updateCustomerAddress = createAction('[Address] Update Customer Address', payload<{ address: Address }>());
+
 export const updateCustomerAddressFail = createAction('[Address API] Update Customer Address Fail', httpError());
 
 export const updateCustomerAddressSuccess = createAction(

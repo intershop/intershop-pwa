@@ -44,7 +44,7 @@ export class ProductsService {
       return throwError(() => new Error('getProduct() called without a sku'));
     }
 
-    const params = new HttpParams().set('allImages', 'true');
+    const params = new HttpParams().set('allImages', true).set('extended', true);
 
     return this.apiService
       .get<ProductData>(`products/${sku}`, { sendSPGID: true, params })
@@ -260,8 +260,13 @@ export class ProductsService {
       return throwError(() => new Error('getProductVariations() called without a sku'));
     }
 
+    const params = new HttpParams().set('extended', true);
+
     return this.apiService
-      .get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`, { sendSPGID: true })
+      .get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`, {
+        sendSPGID: true,
+        params,
+      })
       .pipe(
         switchMap(resp =>
           !resp.total
@@ -277,7 +282,7 @@ export class ProductsService {
                         this.apiService
                           .get<{ elements: Link[] }>(`products/${sku}/variations`, {
                             sendSPGID: true,
-                            params: new HttpParams().set('amount', length).set('offset', offset),
+                            params: params.set('amount', length).set('offset', offset),
                           })
                           .pipe(mapToProperty('elements'))
                       )

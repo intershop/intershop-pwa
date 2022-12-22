@@ -16,6 +16,27 @@ import {
 } from './src/main.server';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
+import * as client from 'prom-client';
+
+const collectDefaultMetrics = client.collectDefaultMetrics;
+
+const defaultLabels =
+  process.env.pm_id && process.env.name ? { theme: process.env.name, pm2_id: process.env.pm_id } : undefined;
+
+client.register.setDefaultLabels(defaultLabels);
+
+const requestCounts = new client.Gauge({
+  name: 'pwa_http_request_counts',
+  help: 'counter for requests labeled with: method, status_code, theme, base_href, path',
+  labelNames: ['method', 'status_code', 'base_href', 'path'],
+});
+
+const requestDuration = new client.Histogram({
+  name: 'pwa_http_request_duration_seconds',
+  help: 'duration histogram of http responses labeled with: status_code, theme',
+  buckets: [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30],
+  labelNames: ['status_code', 'base_href', 'path'],
+});
 
 const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
 
@@ -70,6 +91,8 @@ export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
 
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
+
+  const SSR_HYBRID_BACKEND = process.env.SSR_HYBRID_BACKEND || ICM_BASE_URL;
 
   if (!ICM_BASE_URL) {
     console.error('ICM_BASE_URL not set');
@@ -256,7 +279,7 @@ export function app() {
     server.use('*', hybridRedirect);
   }
 
-  const icmProxy = proxy(ICM_BASE_URL, {
+  const icmProxy = proxy(SSR_HYBRID_BACKEND, {
     // preserve original path
     proxyReqPathResolver: (req: express.Request) => req.originalUrl,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -264,6 +287,10 @@ export function app() {
       if (process.env.TRUST_ICM) {
         // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
         options.rejectUnauthorized = false;
+      }
+      if (process.env.SSR_HYBRID) {
+        // Force context proto to be https otherwise ICM WA is redirecting us to https
+        options.headers['X-Forwarded-Proto'] = 'https';
       }
       return options;
     },
@@ -407,34 +434,19 @@ export function app() {
   };
 
   if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
-    const axios = require('axios');
     const onFinished = require('on-finished');
 
     server.use((req, res, next) => {
       const start = Date.now();
       onFinished(res, () => {
         const duration = Date.now() - start;
-        axios
-          .post('http://localhost:9113/report', {
-            theme: THEME,
-            method: req.method,
-            status: res.statusCode,
-            duration,
-            url: req.originalUrl,
-          })
-          .then((reportRes: { status: number; statusText: string; data: unknown }) => {
-            if (reportRes.status !== 204) {
-              console.error(
-                'ERROR unexpected return from Prometheus:',
-                reportRes.status,
-                reportRes.statusText,
-                reportRes.data
-              );
-            }
-          })
-          .catch((error: Error) => {
-            console.error('ERROR reporting to Prometheus:', error.message);
-          });
+        const matched = /;baseHref=([^;?]*)/.exec(req.originalUrl);
+        const base_href = matched?.[1] ? `${decodeURIComponent(decodeURIComponent(matched[1]))}/` : '/';
+        const cleanUrl = req.originalUrl.replace(/[;?].*/g, '');
+        const path = cleanUrl.replace(base_href, '');
+
+        requestCounts.inc({ method: req.method, status_code: res.statusCode, base_href, path });
+        requestDuration.labels({ status_code: res.statusCode, base_href, path }).observe(duration / 1000);
       });
       next();
     });
@@ -448,11 +460,27 @@ export function app() {
   return server;
 }
 
+if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
+  type MetricsMessage = { topic: string };
+  process.on('message', (msg: MetricsMessage) => {
+    if (msg.topic === 'getMetrics') {
+      client.register.getMetricsAsJSON().then((data: client.metric[]) => {
+        process.send({
+          type: 'process:msg',
+          data: {
+            body: data,
+            topic: 'returnMetrics',
+          },
+        });
+      });
+    }
+  });
+}
+
 function run() {
   const http = require('http');
-
   http.createServer(app()).listen(PORT);
-
+  collectDefaultMetrics({ prefix: 'pwa_' });
   console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
   console.log('serving static files from', BROWSER_FOLDER);
 }

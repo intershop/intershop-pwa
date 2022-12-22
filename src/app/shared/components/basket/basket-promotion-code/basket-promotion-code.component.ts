@@ -58,7 +58,7 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
    */
   submitPromotionCode() {
     // prevent success message if the user enters the same promo code twice
-    if (!this.basketPromoCodes || !this.basketPromoCodes.includes(this.codeInput.value)) {
+    if (!this.basketPromoCodes?.includes(this.codeInput.value)) {
       this.lastEnteredPromoCode = this.codeInput.value;
     }
     this.checkoutFacade.addPromotionCodeToBasket(this.codeInput.value);

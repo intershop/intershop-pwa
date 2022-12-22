@@ -81,7 +81,7 @@ Typical hot-spots where copying is a good idea are header-related or product-det
 #### Theme Specific Overrides
 
 The [customized webpack build](./optimizations.md) supports replacing any file with an environment suffix in front of the file extension.
-If you for example want to customize the template `product-detail.component.html`, put your customized content in the parallel file `product-detail.component.brand.html` and run a build with `--configuration=brand`.
+If you for example want to customize the template `product-detail.component.html`, put your customized content in the parallel file `product-detail.component.theme.html` and run a build with `--configuration=theme`.
 Then this overridden component template will be swapped in.
 
 This also works for multiple configurations: `product-detail.component.foo.bar.baz.html` will be active for configurations `foo`, `bar` and `baz`, but not for `foobar`.
@@ -155,7 +155,7 @@ There are two approaches to apply a theme specific styling:
 1. Copy only the `*.scss` files you need to change to your themes folder and adjust the file references. All files which are not overwritten in your theme will be taken from the standard and all changes and bugfixes in these files when migrating the PWA will be applied and used in your project.
 2. Copy the complete set of standard `*.scss` files to your themes folder and adjust the file references. All standard changes and bugfixes to `*.scss` files will not be applied to your theme during a PWA migration.
 
-Just putting a brand override file next to the original file in the `src/styles` folder will not lead to the expected results.
+Just putting a theme override file next to the original file in the `src/styles` folder will not lead to the expected results.
 The lookup starts with the file `style.scss` in the theme specific folder.
 
 > **Note:** You should
@@ -164,6 +164,7 @@ The lookup starts with the file `style.scss` in the theme specific folder.
 > - not delete the standard theme folders to prevent merge conflicts when migrating the PWA (changes in standard files but deleted in your project).
 
 When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
+On component level, theme-specific overrides for `.scss` files work as expected.
 
 You can re-use variables from the global styling on component level by importing only the styling file that defines the theme variables, e.g.
 
@@ -173,10 +174,14 @@ You can re-use variables from the global styling on component level by importing
 
 > **Note:** Be aware that Visual Studio Code will not resolve all import references correctly but it works in the build PWA version anyways.
 
+> **Note:** For bundled styles optimization PurgeCSS is used. Please read [the additional documentation](./optimizations.md#purgecss) regarding the usage and configuration of PurgeCSS in the Intershop PWA.
+
+### Static Assets
+
 To add static assets (images, favicon, manifest file), create a theme specific folder in `src/assets/themes/<theme-prefix>` and adjust the theme specific references in the `*.scss` files accordingly.
 
-The `index.html` does not support the theme specific overrides, see [Theme Specific Overrides](../guides/customizations.md#theme-specific-overrides).
-Therefore, any theme specific references have to be changed directly in this file.
+The `index.html` does not support theme specific overrides, see [Theme Specific Overrides](../guides/customizations.md#theme-specific-overrides).
+For this file, any theme specific differences are handled via [theme.service.ts](../../src/app/core/utils/theme/theme.service.ts).
 
 ### Dependencies
 

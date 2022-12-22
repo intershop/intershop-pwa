@@ -129,6 +129,9 @@ import { ProductRowComponent } from './components/product/product-row/product-ro
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { ProductVariationDisplayComponent } from './components/product/product-variation-display/product-variation-display.component';
+import { ProductVariationSelectDefaultComponent } from './components/product/product-variation-select-default/product-variation-select-default.component';
+import { ProductVariationSelectEnhancedComponent } from './components/product/product-variation-select-enhanced/product-variation-select-enhanced.component';
+import { ProductVariationSelectSwatchComponent } from './components/product/product-variation-select-swatch/product-variation-select-swatch.component';
 import { ProductVariationSelectComponent } from './components/product/product-variation-select/product-variation-select.component';
 import { ProductsListComponent } from './components/product/products-list/products-list.component';
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
@@ -207,6 +210,7 @@ const declaredComponents = [
   LineItemEditDialogComponent,
   LineItemListElementComponent,
   LoginModalComponent,
+  PagingComponent,
   ProductChooseVariationComponent,
   ProductIdComponent,
   ProductItemVariationsComponent,
@@ -247,9 +251,9 @@ const exportedComponents = [
   ErrorMessageComponent,
   FilterNavigationComponent,
   IdentityProviderLoginComponent,
-  InPlaceEditComponent,
   InfoBoxComponent,
   InfoMessageComponent,
+  InPlaceEditComponent,
   LineItemListComponent,
   LoadingComponent,
   LoginFormComponent,
@@ -274,9 +278,12 @@ const exportedComponents = [
   ProductQuantityComponent,
   ProductQuantityLabelComponent,
   ProductShipmentComponent,
+  ProductsListComponent,
   ProductVariationDisplayComponent,
   ProductVariationSelectComponent,
-  ProductsListComponent,
+  ProductVariationSelectDefaultComponent,
+  ProductVariationSelectEnhancedComponent,
+  ProductVariationSelectSwatchComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   SearchBoxComponent,
@@ -285,7 +292,7 @@ const exportedComponents = [
 
 @NgModule({
   imports: [...importExportModules],
-  declarations: [...declaredComponents, ...exportedComponents, PagingComponent],
+  declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {

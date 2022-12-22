@@ -17,7 +17,7 @@ const getInternalBasket = createSelector(getBasketState, basket => basket.basket
 export const getBasketValidationResults = createSelectorFactory<object, BasketValidationResultType>(projector =>
   resultMemoize(projector, isEqual)
 )(getBasketState, (basket: BasketState): BasketValidationResultType => {
-  if (!basket || !basket.validationResults) {
+  if (!basket?.validationResults) {
     return;
   }
 

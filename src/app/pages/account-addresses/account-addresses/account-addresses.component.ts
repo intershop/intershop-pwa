@@ -36,6 +36,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
   selectShippingConfig: FormlyFieldConfig;
 
   isCreateAddressFormCollapsed = true;
+  updateFormExpandedAddressId: string;
 
   preferredAddressForm: FormGroup = new FormGroup({});
   furtherAddresses: Address[] = [];
@@ -150,13 +151,28 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
   showCreateAddressForm() {
     this.isCreateAddressFormCollapsed = false;
   }
-
   hideCreateAddressForm() {
     this.isCreateAddressFormCollapsed = true;
   }
 
+  showUpdateAddressForm(address: Address) {
+    this.updateFormExpandedAddressId = address.id;
+  }
+  hideUpdateAddressForm() {
+    this.updateFormExpandedAddressId = undefined;
+  }
+
+  isUpdateAddressFormCollapsed(address: Address) {
+    return address?.id !== this.updateFormExpandedAddressId;
+  }
+
   createAddress(address: Address) {
     this.accountFacade.createCustomerAddress(address);
+  }
+
+  updateAddress(address: Address): void {
+    this.accountFacade.updateCustomerAddress(address);
+    this.hideUpdateAddressForm();
   }
 
   deleteAddress(address: Address) {

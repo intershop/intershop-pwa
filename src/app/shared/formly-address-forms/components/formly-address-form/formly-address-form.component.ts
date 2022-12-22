@@ -83,7 +83,9 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
 
       this.addressModel.countryCode = model.countryCode;
       this.addressForm.updateValueAndValidity();
-      this.addressForm.get('countryCode').markAsDirty();
+      if (model.countryCode) {
+        this.addressForm.get('countryCode').markAsDirty();
+      }
 
       this.parentForm?.setControl('address', this.addressForm);
     }
@@ -125,9 +127,10 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   }
 
   private fillForm(prefilledAddress: Partial<Address> = {}) {
-    if (Object.keys(prefilledAddress).length === 0) {
+    if (!this.addressForm || Object.keys(prefilledAddress).length === 0) {
       return;
     }
+
     this.addressModel.countryCode = prefilledAddress.countryCode;
     this.handleCountryChange(this.addressModel);
     this.addressModel = {

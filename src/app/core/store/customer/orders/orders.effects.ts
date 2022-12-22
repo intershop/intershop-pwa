@@ -75,7 +75,7 @@ export class OrdersEffects {
       this.actions$.pipe(
         ofType(createOrderSuccess),
         mapToPayloadProperty('order'),
-        filter(order => !order || !order.orderCreation || order.orderCreation.status !== 'ROLLED_BACK'),
+        filter(order => !order?.orderCreation || order.orderCreation.status !== 'ROLLED_BACK'),
         concatMap(order => {
           if (
             order.orderCreation &&

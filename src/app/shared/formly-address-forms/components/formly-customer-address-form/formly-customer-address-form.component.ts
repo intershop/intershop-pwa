@@ -4,17 +4,17 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FormGroup, FormGroupDirective } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -35,22 +35,26 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './formly-customer-address-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, OnDestroy {
+export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   @Input() address: Partial<Address>;
   @Input() resetForm = false;
+  // display address extension form fields
+  @Input() extension = false;
 
   @Output() save = new EventEmitter<Address>();
   @Output() cancel = new EventEmitter();
 
   form: FormGroup;
+  extensionForm: FormGroup = new FormGroup({});
+
+  extensionModel: { email: string };
+
   submitted = false;
   businessCustomer$: Observable<boolean>;
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
 
-  private destroy$ = new Subject<void>();
-
-  constructor(private accountFacade: AccountFacade) {}
+  constructor(private accountFacade: AccountFacade, private featureToggleService: FeatureToggleService) {}
 
   get buttonLabel() {
     return Object.keys(this.address ?? {}).length > 0
@@ -59,11 +63,19 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
   }
 
   ngOnInit() {
-    this.businessCustomer$ = this.accountFacade.isBusinessCustomer$.pipe(takeUntil(this.destroy$));
+    this.businessCustomer$ = this.accountFacade.isBusinessCustomer$.pipe(
+      withLatestFrom(this.accountFacade.isLoggedIn$),
+      map(([isBusinessCustomer, isLoggedIn]) =>
+        isBusinessCustomer || isLoggedIn
+          ? isBusinessCustomer
+          : this.featureToggleService.enabled('businessCustomerRegistration')
+      )
+    );
 
     // create form for creating a new address
     this.form = new FormGroup({
       address: new FormGroup({}),
+      additionalAddressAttributes: this.extensionForm,
     });
   }
 
@@ -72,6 +84,8 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
    */
   ngOnChanges(c: SimpleChanges) {
     this.doResetForm(c.resetForm?.currentValue);
+
+    this.extensionModel = this.address ? { email: this.address.email } : undefined;
   }
 
   doResetForm(resetForm: boolean) {
@@ -100,15 +114,13 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges, On
       // update form values in the original address
       formAddress = { ...this.address, ...formAddress };
     }
+    if (this.extension) {
+      formAddress = { ...formAddress, email: this.extensionForm.get('email')?.value };
+    }
     this.save.emit(formAddress);
   }
 
   cancelForm() {
     this.cancel.emit();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

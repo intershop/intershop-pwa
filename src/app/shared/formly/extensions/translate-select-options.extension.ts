@@ -20,7 +20,7 @@ class TranslateSelectOptionsExtension implements FormlyExtension {
 
   prePopulate(field: FormlyFieldConfig): void {
     const to = field.templateOptions;
-    if (!to || !to.options) {
+    if (!to?.options) {
       return;
     }
     field.templateOptions.processedOptions = (isObservable(to.options) ? to.options : of(to.options)).pipe(

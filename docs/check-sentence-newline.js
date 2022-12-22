@@ -15,7 +15,7 @@ files.forEach(file => {
       if (/^(>|#|\||\s*-|\s*[0-9]+\.)/.test(line)) {
         return line;
       } else {
-        return line.replace(/((?!i\.e)\.) ([A-Z0-9])/g, '$1\n$2');
+        return line.replace(/((?<!i\.e|e\.g)\.) ([A-Z0-9])/g, '$1\n$2');
       }
     })
     .join('\n');

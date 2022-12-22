@@ -16,7 +16,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
@@ -26,6 +28,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
 import {
+  continueCheckout,
   createBasket,
   createBasketFail,
   createBasketSuccess,
@@ -47,9 +50,13 @@ import {
   setBasketAttribute,
   setBasketAttributeFail,
   setBasketAttributeSuccess,
+  setBasketDesiredDeliveryDate,
+  setBasketDesiredDeliveryDateFail,
+  setBasketDesiredDeliveryDateSuccess,
   submitBasket,
   submitBasketFail,
   submitBasketSuccess,
+  submitOrder,
   updateBasket,
   updateBasketCostCenter,
   updateBasketFail,
@@ -198,6 +205,31 @@ export class BasketEffects {
   );
 
   /**
+   * Sets a desired delivery date at the current basket and each line item.
+   */
+  setBasketDesiredDeliveryDate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setBasketDesiredDeliveryDate),
+      mapToPayloadProperty('desiredDeliveryDate'),
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      mergeMap(([date, basket]) =>
+        this.basketService.updateBasketItemsDesiredDeliveryDate(date, basket?.lineItems).pipe(
+          switchMap(() => [
+            setBasketAttribute({
+              attribute: {
+                name: 'desiredDeliveryDate',
+                value: date,
+              },
+            }),
+            setBasketDesiredDeliveryDateSuccess(),
+          ]),
+          mapErrorToAction(setBasketDesiredDeliveryDateFail)
+        )
+      )
+    )
+  );
+
+  /**
    * Add or update an attribute at the basket.
    */
   setCustomAttributeToBasket$ = createEffect(() =>
@@ -308,6 +340,18 @@ export class BasketEffects {
   );
 
   /**
+   * Trigger LoadBasket action after the user navigated to a basket route
+   */
+  loadBasketOnBasketPage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      mapToRouterState(),
+      filter(routerState => /^\/basket/.test(routerState.url)),
+      map(() => loadBasket())
+    )
+  );
+
+  /**
    * Creates a requisition based on the given basket, if approval is required
    */
   createRequisition$ = createEffect(() =>
@@ -320,6 +364,32 @@ export class BasketEffects {
           mapErrorToAction(submitBasketFail)
         )
       )
+    )
+  );
+
+  /**
+   * Before the basket is submitted the desired delivery date will be updated at the basket line items if necessary
+   * Afterwards the basket validation is triggered
+   */
+  submitOrder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(submitOrder),
+      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatMap(([, basket]) => {
+        const desiredDeliveryDate: string = AttributeHelper.getAttributeValueByAttributeName(
+          basket.attributes,
+          'desiredDeliveryDate'
+        );
+
+        return (
+          desiredDeliveryDate
+            ? this.basketService.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, basket.lineItems)
+            : of([])
+        ).pipe(
+          map(() => continueCheckout({ targetStep: CheckoutStepType.Receipt })),
+          mapErrorToAction(setBasketDesiredDeliveryDateFail)
+        );
+      })
     )
   );
 

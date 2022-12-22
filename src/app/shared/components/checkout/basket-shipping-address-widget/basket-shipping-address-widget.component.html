@@ -62,7 +62,7 @@
 </ng-container>
 
 <!-- Add a new Shipping to address -->
-<div *ngIf="collapseChange | async" class="row">
+<div *ngIf="displayAddAddressLink$ | async" class="row">
   <button
     data-testing-id="create-shipping-address-link"
     class="btn btn-link"

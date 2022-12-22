@@ -125,7 +125,7 @@ describe('Shopping Store', () => {
       })
     );
     when(productsServiceMock.searchProducts('something', anyNumber(), anything(), anyNumber())).thenReturn(
-      of({ products: [{ sku: 'P2' } as Product], sortableAttributes: [], total: 1 })
+      of({ products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[], sortableAttributes: [], total: 2 })
     );
 
     promotionsServiceMock = mock(PromotionsService);
@@ -281,8 +281,8 @@ describe('Shopping Store', () => {
         tick(5000);
       }));
 
-      it('should load the product for the search results', fakeAsync(() => {
-        expect(getProductIds(store.state)).toEqual(['P2']);
+      it('should load the products for the search results', fakeAsync(() => {
+        expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       }));
 
       it('should trigger required actions when searching', fakeAsync(() => {
@@ -308,11 +308,13 @@ describe('Shopping Store', () => {
           [Filter Internal] Load Filter for Search:
             searchTerm: "something"
           [Products API] Load Product Success:
+            product: {"sku":"P1"}
+          [Products API] Load Product Success:
             product: {"sku":"P2"}
           [Product Listing Internal] Set Product Listing Pages:
-            1: ["P2"]
+            1: ["P1","P2"]
             id: {"type":"search","value":"something"}
-            itemCount: 1
+            itemCount: 2
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
@@ -536,11 +538,13 @@ describe('Shopping Store', () => {
           [Filter Internal] Load Filter for Search:
             searchTerm: "something"
           [Products API] Load Product Success:
+            product: {"sku":"P1"}
+          [Products API] Load Product Success:
             product: {"sku":"P2"}
           [Product Listing Internal] Set Product Listing Pages:
-            1: ["P2"]
+            1: ["P1","P2"]
             id: {"type":"search","value":"something"}
-            itemCount: 1
+            itemCount: 2
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
@@ -885,8 +889,8 @@ describe('Shopping Store', () => {
       tick(5000);
     }));
 
-    it('should load the product for the search results', fakeAsync(() => {
-      expect(getProductIds(store.state)).toEqual(['P2']);
+    it('should load the products for the search results', fakeAsync(() => {
+      expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
     }));
 
     it('should trigger required actions when searching', fakeAsync(() => {
@@ -911,11 +915,13 @@ describe('Shopping Store', () => {
         [Filter Internal] Load Filter for Search:
           searchTerm: "something"
         [Products API] Load Product Success:
+          product: {"sku":"P1"}
+        [Products API] Load Product Success:
           product: {"sku":"P2"}
         [Product Listing Internal] Set Product Listing Pages:
-          1: ["P2"]
+          1: ["P1","P2"]
           id: {"type":"search","value":"something"}
-          itemCount: 1
+          itemCount: 2
           sortableAttributes: []
         [Filter API] Load Filter Success:
           filterNavigation: {}

@@ -6,6 +6,7 @@ import { filter, first, map, take, takeUntil } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -56,7 +57,7 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
     this.basket$
       .pipe(
         whenTruthy(),
-        filter(basket => !basket.lineItems || !basket.lineItems.length),
+        filter(basket => !basket.lineItems?.length),
         take(1),
         takeUntil(this.destroy$)
       )
@@ -69,7 +70,7 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
    */
   nextStep() {
     this.nextStepRequested = true;
-    this.checkoutFacade.continue(2);
+    this.checkoutFacade.continue(CheckoutStepType.Shipping);
   }
 
   ngOnDestroy() {

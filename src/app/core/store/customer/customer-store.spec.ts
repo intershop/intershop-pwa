@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { EMPTY, of } from 'rxjs';
-import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
@@ -106,6 +107,14 @@ describe('Customer Store', () => {
     useExternalUrl: false,
   } as Promotion;
 
+  const token = {
+    access_token: 'DEMO@access-token',
+    token_type: 'user',
+    expires_in: 3600,
+    refresh_token: 'DEMO@refresh-token',
+    id_token: 'DEMO@id-token',
+  } as TokenResponse;
+
   beforeEach(() => {
     const categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
@@ -140,6 +149,7 @@ describe('Customer Store', () => {
 
     const userServiceMock = mock(UserService);
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
+    when(userServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
 
     const dataRequestsServiceMock = mock(DataRequestsService);
     const filterServiceMock = mock(FilterService);
@@ -148,6 +158,9 @@ describe('Customer Store', () => {
 
     const productPriceServiceMock = mock(PricesService);
     when(productPriceServiceMock.getProductPrices(anything())).thenReturn(of([]));
+
+    const oAuthService = mock(OAuthService);
+    when(oAuthService.events).thenReturn(of());
 
     TestBed.configureTestingModule({
       imports: [
@@ -174,6 +187,7 @@ describe('Customer Store', () => {
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: DataRequestsService, useFactory: () => instance(dataRequestsServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: OAuthService, useFactory: () => instance(oAuthService) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },

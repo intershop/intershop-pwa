@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { formatISO, isEqual, parseISO } from 'date-fns';
+import { isEqual, parseISO } from 'date-fns';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
@@ -128,16 +128,7 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
     if (this.disabled) {
       return;
     }
-    const value = this.form.get('desiredDeliveryDate').value;
 
-    let desiredDeliveryDate;
-    if (value) {
-      desiredDeliveryDate = formatISO(this.form.get('desiredDeliveryDate').value, { representation: 'date' });
-    }
-
-    this.checkoutFacade.setBasketCustomAttribute({
-      name: 'desiredDeliveryDate',
-      value: desiredDeliveryDate ? desiredDeliveryDate : '',
-    });
+    this.checkoutFacade.setDesiredDeliveryDate(this.form.get('desiredDeliveryDate').value);
   }
 }

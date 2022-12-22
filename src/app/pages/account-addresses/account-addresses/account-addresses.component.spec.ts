@@ -129,7 +129,7 @@ describe('Account Addresses Component', () => {
     expect(component.preferredAddressesEqual).toBeTruthy();
     expect(element.querySelector('div[data-testing-id=preferred-invoice-and-shipping-address]')).toBeTruthy();
     expect(
-      element.querySelectorAll('div[data-testing-id=preferred-invoice-and-shipping-address] formly-field')
+      element.querySelectorAll('div[data-testing-id=preferred-invoice-and-shipping-address] formly-group formly-field')
     ).toHaveLength(2);
     expect(element.querySelector('div[data-testing-id=preferred-invoice-address]')).toBeFalsy();
     expect(element.querySelector('div[data-testing-id=preferred-shipping-address]')).toBeFalsy();
@@ -148,9 +148,13 @@ describe('Account Addresses Component', () => {
 
     expect(element.querySelector('div[data-testing-id=preferred-invoice-and-shipping-address]')).toBeFalsy();
     expect(element.querySelector('div[data-testing-id=preferred-invoice-address]')).toBeTruthy();
-    expect(element.querySelectorAll('div[data-testing-id=preferred-invoice-address] formly-field')).toHaveLength(1);
+    expect(
+      element.querySelectorAll('div[data-testing-id=preferred-invoice-address] formly-group formly-field')
+    ).toHaveLength(1);
     expect(element.querySelector('div[data-testing-id=preferred-shipping-address]')).toBeTruthy();
-    expect(element.querySelectorAll('div[data-testing-id=preferred-shipping-address] formly-field')).toHaveLength(1);
+    expect(
+      element.querySelectorAll('div[data-testing-id=preferred-shipping-address] formly-group formly-field')
+    ).toHaveLength(1);
   });
 
   it('should not display further addresses if only preferred invoice and shipping addresses are available', () => {
@@ -269,6 +273,14 @@ describe('Account Addresses Component', () => {
     component.createAddress(address);
 
     verify(accountFacade.createCustomerAddress(anything())).once();
+  });
+
+  it('should emit updateAddress event when updateAddress is triggered', () => {
+    const address = { id: '123' } as Address;
+
+    component.updateAddress(address);
+
+    verify(accountFacade.updateCustomerAddress(anything())).once();
   });
 
   it('should emit deleteCustomerAddress event when deleteCustomerAddress is triggered', () => {

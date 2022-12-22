@@ -10,7 +10,7 @@ import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 export class MakeHrefPipe implements PipeTransform {
   constructor(private multiSiteService: MultiSiteService) {}
   transform(location: LocationStrategy, urlParams: Record<string, string>): Observable<string> {
-    if (!location || !location.path()) {
+    if (!location?.path()) {
       return of('undefined');
     }
 

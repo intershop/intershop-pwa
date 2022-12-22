@@ -33,6 +33,7 @@ export class ProductVariationHelper {
         label: attr.value,
         value: attr.value,
         type: attr.variationAttributeId,
+        metaData: attr.metaData,
         active: currentSettings?.[attr.variationAttributeId]?.value === attr.value,
       }))
       .map(option => ({
@@ -50,6 +51,7 @@ export class ProductVariationHelper {
       return {
         id: attribute.variationAttributeId,
         label: attribute.name,
+        attributeType: attribute.attributeType,
         options: groupedOptions[attrId],
       };
     });

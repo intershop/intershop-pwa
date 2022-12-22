@@ -246,7 +246,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get nextDisabled() {
-    return (!this.basket || !this.basket.payment) && this.nextSubmitted;
+    return !this.basket?.payment && this.nextSubmitted;
   }
 
   get submitDisabled() {

@@ -6,6 +6,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -110,7 +111,7 @@ export const startCheckoutFail = createAction('[Basket API] Start the checkout p
 
 export const continueCheckout = createAction(
   '[Basket] Validate Basket and continue checkout',
-  payload<{ targetStep: number }>()
+  payload<{ targetStep: CheckoutStepType }>()
 );
 
 export const continueCheckoutFail = createAction(
@@ -282,4 +283,20 @@ export const updateConcardisCvcLastUpdatedFail = createAction(
 export const updateConcardisCvcLastUpdatedSuccess = createAction(
   '[Basket API] Update CvcLastUpdated for Concardis Credit Card Success',
   payload<{ paymentInstrument: PaymentInstrument }>()
+);
+
+export const submitOrder = createAction('[Basket] Basket Submit Order');
+
+export const setBasketDesiredDeliveryDate = createAction(
+  '[Basket] Add or Update Basket Desired Delivery Date',
+  payload<{ desiredDeliveryDate: string }>() // international iso date format yyyy-mm-dd
+);
+
+export const setBasketDesiredDeliveryDateFail = createAction(
+  '[Basket API] Add or Update Basket Desired Delivery Date Fail',
+  httpError()
+);
+
+export const setBasketDesiredDeliveryDateSuccess = createAction(
+  '[Basket API] Add or Update Basket Desired Delivery Date Success'
 );

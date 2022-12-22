@@ -5,9 +5,12 @@ import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
   suggestTerm: 'ko',
-  searchTerm: 'kodak M552',
   suggestItemText: 'Kodak',
+  searchTerm: 'kodak M552',
   product: '7912057',
+  searchTermWithMoreResults: 'acer',
+  searchTermWithOneResult: 'acer c110',
+  oneResultProduct: '9438012',
 };
 
 describe('Searching User', () => {
@@ -34,6 +37,18 @@ describe('Searching User', () => {
     at(ProductDetailPage, page => {
       page.sku.should('have.text', _.product);
       page.breadcrumb.items.should('have.length', 4);
+    });
+  });
+
+  it(`should perform another search and land on search result page`, () => {
+    at(ProductDetailPage, page => page.header.searchBox.search(_.searchTermWithMoreResults));
+    at(SearchResultPage, page => page.productList.visibleProducts.should('have.length.gte', 1));
+  });
+
+  it(`should perform search with only one search result and land on product detail page`, () => {
+    at(SearchResultPage, page => page.header.searchBox.search(_.searchTermWithOneResult));
+    at(ProductDetailPage, page => {
+      page.sku.should('have.text', _.oneResultProduct);
     });
   });
 });

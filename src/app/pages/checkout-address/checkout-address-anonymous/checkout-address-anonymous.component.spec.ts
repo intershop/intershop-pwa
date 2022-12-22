@@ -54,6 +54,8 @@ describe('Checkout Address Anonymous Component', () => {
       additionalAddressAttributes: fb.group({
         email: new FormControl('', Validators.required),
         taxationID: new FormControl(''),
+      }),
+      shipOptions: fb.group({
         shipOption: new FormControl('shipToInvoiceAddress'),
       }),
       invoiceAddress: fb.group({
@@ -125,8 +127,10 @@ describe('Checkout Address Anonymous Component', () => {
   it('should create address for valid invoice address form', () => {
     component.form.get('additionalAddressAttributes').setValue({
       taxationID: '',
-      shipOption: 'shipToInvoiceAddress',
       email: 'test@intershop.de',
+    });
+    component.form.get('shipOptions').setValue({
+      shipOption: 'shipToInvoiceAddress',
     });
 
     component.submitAddressForm();

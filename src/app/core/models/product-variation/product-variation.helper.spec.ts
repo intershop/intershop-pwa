@@ -9,8 +9,8 @@ const productVariations = [
     sku: '222',
     productMasterSKU: 'M111',
     variableVariationAttributes: [
-      { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
-      { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
+      { name: 'Attr 1', value: 'A', variationAttributeId: 'a1' },
+      { name: 'Attr 2', value: 'A', variationAttributeId: 'a2' },
     ],
   },
   {
@@ -18,32 +18,32 @@ const productVariations = [
     productMasterSKU: 'M111',
     attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
     variableVariationAttributes: [
-      { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
-      { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
+      { name: 'Attr 1', value: 'A', variationAttributeId: 'a1' },
+      { name: 'Attr 2', value: 'B', variationAttributeId: 'a2' },
     ],
   },
   {
     sku: '444',
     productMasterSKU: 'M111',
     variableVariationAttributes: [
-      { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
-      { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
+      { name: 'Attr 1', value: 'B', variationAttributeId: 'a1' },
+      { name: 'Attr 2', value: 'A', variationAttributeId: 'a2' },
     ],
   },
   {
     sku: '555',
     productMasterSKU: 'M111',
     variableVariationAttributes: [
-      { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
-      { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
+      { name: 'Attr 1', value: 'B', variationAttributeId: 'a1' },
+      { name: 'Attr 2', value: 'B', variationAttributeId: 'a2' },
     ],
   },
   {
     sku: '666',
     productMasterSKU: 'M111',
     variableVariationAttributes: [
-      { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
-      { name: 'Attr 2', type: 'String', value: 'C', variationAttributeId: 'a2' },
+      { name: 'Attr 1', value: 'B', variationAttributeId: 'a1' },
+      { name: 'Attr 2', value: 'C', variationAttributeId: 'a2' },
     ],
   },
 ] as VariationProduct[];
@@ -51,11 +51,11 @@ const productVariations = [
 const productMaster = {
   sku: 'M111',
   variationAttributeValues: [
-    { name: 'Attr 1', type: 'String', value: 'A', variationAttributeId: 'a1' },
-    { name: 'Attr 1', type: 'String', value: 'B', variationAttributeId: 'a1' },
-    { name: 'Attr 2', type: 'String', value: 'A', variationAttributeId: 'a2' },
-    { name: 'Attr 2', type: 'String', value: 'B', variationAttributeId: 'a2' },
-    { name: 'Attr 2', type: 'String', value: 'C', variationAttributeId: 'a2' },
+    { name: 'Attr 1', value: 'A', variationAttributeId: 'a1' },
+    { name: 'Attr 1', value: 'B', variationAttributeId: 'a1' },
+    { name: 'Attr 2', value: 'A', variationAttributeId: 'a2' },
+    { name: 'Attr 2', value: 'B', variationAttributeId: 'a2' },
+    { name: 'Attr 2', value: 'C', variationAttributeId: 'a2' },
   ],
 } as VariationProductMaster;
 

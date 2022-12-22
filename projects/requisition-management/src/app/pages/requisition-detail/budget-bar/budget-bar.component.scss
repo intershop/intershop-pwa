@@ -34,10 +34,22 @@
 
   .overflow-indicator {
     position: absolute;
-    z-index: 2;
+    z-index: 1;
     height: 30px;
-    margin-top: -9px;
-    background: transparent (url('/assets/img/budget-bar-indicator.png')) 100% -8px no-repeat;
+    margin-top: -7px;
+
+    &::before {
+      // small arrow budget bar indicator
+      position: absolute;
+      top: 0;
+      right: -3px;
+      width: 0;
+      height: 0;
+      content: '';
+      border-top: 6px solid #2f2f2f;
+      border-right: 6px solid transparent;
+      border-left: 6px solid transparent;
+    }
 
     .overflow-display {
       float: right;

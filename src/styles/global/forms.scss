@@ -127,6 +127,10 @@ input.form-check-input {
   color: $text-color-quaternary;
 }
 
+select {
+  font-family: $font-family-regular;
+}
+
 // ERROR and SUCCESS
 .has-feedback {
   .form-control[type='number'] {

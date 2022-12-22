@@ -10,7 +10,9 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from
 
 import {
   createUser,
+  createUserApprovalRequired,
   createUserFail,
+  createUserSuccess,
   deleteUserPaymentInstrument,
   deleteUserPaymentInstrumentFail,
   deleteUserPaymentInstrumentSuccess,
@@ -26,6 +28,9 @@ import {
   loadUserPaymentMethodsSuccess,
   loginUserFail,
   loginUserSuccess,
+  logoutUser,
+  logoutUserFail,
+  logoutUserSuccess,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
@@ -43,8 +48,6 @@ import {
   updateUserPasswordSuccess,
   updateUserSuccess,
   userErrorReset,
-  createUserSuccess,
-  createUserApprovalRequired,
 } from './user.actions';
 
 export interface UserState {
@@ -95,7 +98,8 @@ export const userReducer = createReducer(
     loadUserPaymentMethods,
     deleteUserPaymentInstrument,
     updateUserPasswordByPasswordReminder,
-    requestPasswordReminder
+    requestPasswordReminder,
+    logoutUser
   ),
   unsetLoadingOn(
     loadUserCostCentersFail,
@@ -113,7 +117,8 @@ export const userReducer = createReducer(
     updateCustomerSuccess,
     loadUserCostCentersSuccess,
     loadUserPaymentMethodsSuccess,
-    deleteUserPaymentInstrumentSuccess
+    deleteUserPaymentInstrumentSuccess,
+    logoutUserSuccess
   ),
   setErrorOn(
     updateUserFail,
@@ -121,7 +126,8 @@ export const userReducer = createReducer(
     updateCustomerFail,
     loadUserPaymentMethodsFail,
     deleteUserPaymentInstrumentFail,
-    loadRolesAndPermissionsFail
+    loadRolesAndPermissionsFail,
+    logoutUserFail
   ),
   on(loginUserFail, loadCompanyUserFail, createUserFail, (_, action): UserState => {
     const error = action.payload.error;

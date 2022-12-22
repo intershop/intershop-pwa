@@ -33,7 +33,7 @@ RUN cd dist && npm install
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"
 ENV DISPLAY_VERSION=${displayVersion} NODE_PATH=/dist/node_modules PATH=$PATH:/dist/node_modules/.bin
-EXPOSE 4200
+EXPOSE 4200 9113
 RUN mkdir /.pm2 && chmod 777 -Rf /.pm2 && touch /dist/ecosystem.yml && chmod 777 -f /dist/ecosystem.yml
 USER nobody
 HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node /dist/healthcheck.js
