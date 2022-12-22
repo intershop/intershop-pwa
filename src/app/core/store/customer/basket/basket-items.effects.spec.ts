@@ -31,10 +31,10 @@ import {
   loadBasketSuccess,
   updateBasketItem,
   updateBasketItemFail,
+  updateBasketItemSuccess,
   updateBasketItems,
   updateBasketItemsFail,
   updateBasketItemsSuccess,
-  updateBasketItemSuccess,
   validateBasket,
 } from './basket.actions';
 

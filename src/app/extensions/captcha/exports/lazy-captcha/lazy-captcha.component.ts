@@ -2,13 +2,13 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  createNgModule,
   Injector,
   Input,
   OnDestroy,
   OnInit,
   ViewChild,
   ViewContainerRef,
+  createNgModule,
 } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
