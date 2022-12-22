@@ -34,7 +34,8 @@ export type BasketUpdateType =
   | { commonShipToAddress: string }
   | { commonShippingMethod: string }
   | { costCenter: string }
-  | { calculated: boolean };
+  | { calculated: boolean }
+  | { messageToMerchant: string };
 
 export type BasketItemUpdateType =
   | { quantity?: { value: number; unit: string }; product?: string }

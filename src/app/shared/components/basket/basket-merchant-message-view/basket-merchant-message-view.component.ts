@@ -15,6 +15,9 @@ export class BasketMerchantMessageViewComponent implements OnChanges {
   messageToMerchant: string;
 
   ngOnChanges(): void {
-    this.messageToMerchant = this.data.attributes?.find(attr => attr.name === 'messageToMerchant')?.value as string;
+    if (this.data as Order) this.messageToMerchant = this.data.attributes[0]?.value as string;
+    else {
+      this.messageToMerchant = this.data.messageToMerchant;
+    }
   }
 }

@@ -49,18 +49,16 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (this.basket) {
       this.successMessage(changes.basket);
-      this.model = { ...this.model, messageToMerchant: this.getMessageToMerchant(this.basket) };
+      this.model = {
+        ...this.model,
+        messageToMerchant: this.basket?.messageToMerchant ? this.basket?.messageToMerchant : '',
+      };
     }
-  }
-
-  private getMessageToMerchant(basket: Basket): string {
-    return basket?.attributes?.find(attr => attr.name === 'messageToMerchant')?.value as string;
   }
 
   private successMessage(basketChange: SimpleChange) {
     if (
-      this.getMessageToMerchant(basketChange?.previousValue) !==
-        this.getMessageToMerchant(basketChange?.currentValue) &&
+      basketChange?.previousValue?.messageToMerchant !== basketChange?.currentValue?.messageToMerchant &&
       !basketChange?.firstChange
     ) {
       this.showSuccessMessage = true;
@@ -72,17 +70,17 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
   }
 
   get disabled() {
-    return !this.getMessageToMerchant(this.basket) && !this.form.get('messageToMerchant').value;
+    return !this.basket?.messageToMerchant && !this.form.get('messageToMerchant')?.value;
   }
 
-  submitForm() {
+  submitForm(): void {
     if (this.disabled) {
       return;
     }
-
-    this.checkoutFacade.setBasketCustomAttribute({
-      name: 'messageToMerchant',
-      value: this.form.get('messageToMerchant')?.value ? this.form.get('messageToMerchant')?.value : '',
-    });
+    if (!this.form.get('messageToMerchant')?.value) {
+      // TODO : Delete message to merchant (waits for the rest api)
+      return;
+    }
+    this.checkoutFacade.setBasketMessageToMerchant(this.form.get('messageToMerchant')?.value);
   }
 }

@@ -65,7 +65,10 @@ export const updateBasketCostCenter = createAction(
   '[Basket] Assign a Cost Center at Basket ',
   payload<{ costCenter: string }>()
 );
-
+export const addMessageToMerchant = createAction(
+  '[Basket] Message to Merchant',
+  payload<{ messageToMerchant: string }>()
+);
 export const updateBasket = createAction('[Basket Internal] Update Basket', payload<{ update: BasketUpdateType }>());
 
 export const updateBasketFail = createAction('[Basket API] Update Basket Fail', httpError());
@@ -300,3 +303,6 @@ export const setBasketDesiredDeliveryDateFail = createAction(
 export const setBasketDesiredDeliveryDateSuccess = createAction(
   '[Basket API] Add or Update Basket Desired Delivery Date Success'
 );
+export const addMessageToMerchantFail = createAction('[Basket API] Add Message To Merchant Fail', httpError());
+
+export const addMessageToMerchantSuccess = createAction('[Basket API] Add Message To Merchant To Basket Success');

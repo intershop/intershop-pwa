@@ -47,7 +47,7 @@ describe('Basket Merchant Message Component', () => {
 
   it('should read the  message to merchant from the basket', () => {
     component.basket = {
-      attributes: [{ name: 'messageToMerchant', value: 'please deliver soon' }],
+      messageToMerchant: 'please deliver soon',
     } as Basket;
 
     fixture.detectChanges();

@@ -13,6 +13,7 @@ import { selectRouteData } from 'ish-core/store/core/router';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getAllAddresses } from 'ish-core/store/customer/addresses';
 import {
+  addMessageToMerchant,
   addPromotionCodeToBasket,
   assignBasketAddress,
   continueCheckout,
@@ -137,6 +138,10 @@ export class CheckoutFacade {
 
   deleteBasketCustomAttribute(attributeName: string): void {
     this.store.dispatch(deleteBasketAttribute({ attributeName }));
+  }
+
+  setBasketMessageToMerchant(messageToMerchant: string) {
+    this.store.dispatch(addMessageToMerchant({ messageToMerchant }));
   }
 
   // ORDERS

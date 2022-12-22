@@ -36,11 +36,13 @@
     </div>
     <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval"></ish-basket-approval-info>
 
-    <div *ishFeature="'messageToMerchant'" class="row">
-      <!-- MessageToMerchant-->
-      <ish-info-box heading="checkout.widget.message_to_merchant" class="infobox-wrapper col-md-12">
-        <ish-basket-merchant-message-view [data]="basket"></ish-basket-merchant-message-view>
-      </ish-info-box>
+    <div *ngIf="basket.messageToMerchant">
+      <div *ishFeature="'messageToMerchant'" class="row">
+        <!-- MessageToMerchant-->
+        <ish-info-box heading="checkout.widget.message_to_merchant" class="infobox-wrapper col-md-12">
+          <ish-basket-merchant-message-view [data]="basket"></ish-basket-merchant-message-view>
+        </ish-info-box>
+      </div>
     </div>
 
     <div *ishFeature="'businessCustomerRegistration'" class="row">
