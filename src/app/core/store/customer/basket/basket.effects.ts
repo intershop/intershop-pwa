@@ -207,6 +207,18 @@ export class BasketEffects {
   );
 
   /**
+   * Sets a message to merchant at the current basket.
+   */
+  addMessageToMerchant$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addMessageToMerchant),
+      mapToPayloadProperty('messageToMerchant'),
+      map(messageToMerchant => updateBasket({ update: { messageToMerchant } })),
+      mapErrorToAction(addMessageToMerchantFail)
+    )
+  );
+
+  /**
    * Sets a desired delivery date at the current basket and each line item.
    */
   setBasketDesiredDeliveryDate$ = createEffect(() =>
@@ -228,18 +240,6 @@ export class BasketEffects {
           mapErrorToAction(setBasketDesiredDeliveryDateFail)
         )
       )
-    )
-  );
-
-  /**
-   * Sets a message to merchant at the current basket.
-   */
-  addMessageToMerchant$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(addMessageToMerchant),
-      mapToPayloadProperty('messageToMerchant'),
-      map(messageToMerchant => updateBasket({ update: { messageToMerchant } })),
-      mapErrorToAction(addMessageToMerchantFail)
     )
   );
 
