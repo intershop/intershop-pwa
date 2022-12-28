@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Migrations
 
+## 3.2 to 3.3
+
+To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
+Also some `(keydown.enter)` event bindings with `tabindex="0"` were added to ensure a better interactivity with the keyboard only.
+If the according commits lead to problems they could be skipped and resolved later by fixing the accessibility linting issues manually.
+More information regarding accessibility in the PWA and the used ESLint rules can be found in the [Accessibility Guide](./accessibility.md).
+
 ## 3.1 to 3.2
 
 A styling adaption was made to the application shell to expand it to the full page height, so the footer now always stays at the bottom.
