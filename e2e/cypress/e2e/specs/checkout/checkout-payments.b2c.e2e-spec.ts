@@ -113,7 +113,7 @@ describe('Checkout Payment', () => {
         page.paymentInstrument('ISH_CREDITCARD').fillForm({
           creditCardNumber: '4111111111111111',
           creditCardType: 'vsa',
-          creditCardExpiryDate: '12/22',
+          creditCardExpiryDate: '12/25',
         });
         page.paymentInstrument('ISH_CREDITCARD').submit();
       });
@@ -126,7 +126,7 @@ describe('Checkout Payment', () => {
         page.paymentInstrument('ISH_CREDITCARD').fillForm({
           creditCardNumber: '5555555555554444',
           creditCardType: 'mas',
-          creditCardExpiryDate: '12/22',
+          creditCardExpiryDate: '12/25',
         });
         page.paymentInstrument('ISH_CREDITCARD').uncheckSaveForLater();
         page.paymentInstrument('ISH_CREDITCARD').submit();
