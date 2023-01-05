@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AccountProductNotificationsListComponent } from './account-product-notifications-list.component';
 
@@ -9,6 +10,7 @@ describe('Account Product Notifications List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [AccountProductNotificationsListComponent],
     }).compileComponents();
   });

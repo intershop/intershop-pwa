@@ -1,6 +1,80 @@
-<ng-container *ngFor="let productNotification of productNotifications">
-  <div>
-    {{ productNotification.sku }} | {{ productNotification.type }} |
-    <ish-product-name ishProductContext [sku]="productNotification.sku"></ish-product-name>
-  </div>
+<ng-container *ngIf="productNotifications?.length > 0; else emptyList">
+  <table
+    cdk-table
+    [dataSource]="productNotifications"
+    class="table table-lg mobile-optimized"
+    data-testing-id="notification-list"
+  >
+    <!-- Product -->
+    <ng-container cdkColumnDef="productImage">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-product">
+        {{ 'account.notifications.table.product' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let productNotification">
+        <div class="list-item">
+          <ish-product-image
+            ishProductContext
+            [sku]="productNotification.sku"
+            imageType="S"
+            [link]="true"
+          ></ish-product-image>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Product Info -->
+    <ng-container cdkColumnDef="product">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-product-info"></th>
+      <td cdk-cell *cdkCellDef="let productNotification">
+        <div class="list-item">
+          <ish-product-name ishProductContext [sku]="productNotification.sku"></ish-product-name>
+          <ish-product-price
+            ishProductContext
+            [sku]="productNotification.sku"
+            [showInformationalPrice]="true"
+          ></ish-product-price>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Notification -->
+    <ng-container cdkColumnDef="notification">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-notification">
+        {{ 'account.notifications.table.notification' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let productNotification"
+        [attr.data-label]="'account.notifications.table.notification' | translate"
+      >
+        <div *ngIf="productNotification.type === 'stock'">
+          {{
+            'account.notifications.stock.text'
+              | translate
+                : {
+                    '0': productNotification.notificationMailAddress
+                  }
+          }}
+        </div>
+        <div *ngIf="productNotification.type === 'price'">
+          {{
+            'account.notifications.price.text'
+              | translate
+                : {
+                    '0': productNotification.notificationMailAddress,
+                    '1': productNotification.price | ishPrice
+                  }
+          }}
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay" data-testing-id="product-notification-list-item"></tr>
+  </table>
 </ng-container>
+
+<ng-template #emptyList>
+  <p data-testing-id="emptyList">{{ 'account.notifications.no_items_message' | translate }}</p>
+</ng-template>

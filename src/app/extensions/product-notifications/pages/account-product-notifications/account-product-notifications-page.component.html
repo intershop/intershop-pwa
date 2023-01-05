@@ -27,6 +27,8 @@
   </div>
 </div>
 
+<ish-loading *ngIf="productNotificationsLoading$ | async"></ish-loading>
+
 <!--
 <div class="productnotifications">
   <h1>{{ 'account.notifications.heading' | translate }}</h1>
