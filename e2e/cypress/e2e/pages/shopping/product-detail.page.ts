@@ -1,3 +1,5 @@
+import { Interception } from 'cypress/types/net-stubbing';
+
 import { performAddToCart, waitLoadingEnd } from '../../framework';
 import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
@@ -68,7 +70,7 @@ export class ProductDetailPage {
     this.addToOrderTemplateButton().click();
   }
 
-  addProductToCart(): Cypress.Chainable<Cypress.WaitXHR> {
+  addProductToCart(): Cypress.Chainable<Interception> {
     return performAddToCart(this.addToCartButton);
   }
 
