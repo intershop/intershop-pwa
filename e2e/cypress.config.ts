@@ -18,5 +18,6 @@ export default defineConfig({
     },
     baseUrl: 'http://localhost:4200',
     specPattern: 'cypress/e2e/**/*.e2e-spec.ts',
+    testIsolation: false,
   },
 });

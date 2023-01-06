@@ -1,3 +1,5 @@
+import { Interception } from 'cypress/types/net-stubbing';
+
 interface Page {
   tag: string;
 }
@@ -57,7 +59,7 @@ export function fillFormField(parent: string, key: string, value: number | strin
 
 export function performAddToCart(
   button: () => Cypress.Chainable<JQuery<HTMLElement>>
-): Cypress.Chainable<Cypress.WaitXHR> {
+): Cypress.Chainable<Interception> {
   waitLoadingEnd(1000);
   cy.intercept('POST', '**/baskets/*/items').as('basket');
   cy.intercept('GET', '**/baskets/*').as('basketCurrent');

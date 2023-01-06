@@ -62,11 +62,6 @@ beforeEach(() => {
 
 // Cypress.Cookies.debug(true);
 
-// keep certain cookies
-Cypress.Cookies.defaults({
-  preserve: ['apiToken'],
-});
-
 Cypress.on('uncaught:exception', (err, runnable) => {
   console.error(err);
 
