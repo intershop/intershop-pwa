@@ -28,13 +28,6 @@ describe('Wishlist Mapper', () => {
               { name: 'sku', value: '123456' },
               { name: 'id', value: 'wishlistItemId' },
               { name: 'creationDate', value: '12345818123' },
-              {
-                name: 'desiredQuantity',
-                value: {
-                  value: 2,
-                  unit: '',
-                },
-              },
             ],
           },
         ],
@@ -42,9 +35,7 @@ describe('Wishlist Mapper', () => {
       const mapped = wishlistMapper.fromData(wishlistData, '1234');
       expect(mapped).toHaveProperty('id', '1234');
       expect(mapped).toHaveProperty('title', 'wishlist title');
-      expect(mapped).toHaveProperty('items', [
-        { sku: '123456', id: 'wishlistItemId', creationDate: 12345818123, desiredQuantity: { value: 2 } },
-      ]);
+      expect(mapped).toHaveProperty('items', [{ sku: '123456', id: 'wishlistItemId', creationDate: 12345818123 }]);
       expect(mapped).not.toHaveProperty('creationDate');
     });
   });

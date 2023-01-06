@@ -60,18 +60,16 @@ export class ProductAddToOrderTemplateComponent implements OnDestroy, OnInit {
     });
   }
 
-  addProductToOrderTemplate(orderTemplate: { id: string; title: string }) {
+  addProductsToOrderTemplate(orderTemplate: { id: string; title: string }) {
     if (!orderTemplate.id) {
-      this.orderTemplatesFacade.addProductToNewOrderTemplate(
+      this.orderTemplatesFacade.addProductsToNewOrderTemplate(
         orderTemplate.title,
-        this.context.get('sku'),
-        this.context.get('quantity')
+        this.context.getItems().filter(item => !!item.quantity)
       );
     } else {
-      this.orderTemplatesFacade.addProductToOrderTemplate(
+      this.orderTemplatesFacade.addProductsToOrderTemplate(
         orderTemplate.id,
-        this.context.get('sku'),
-        this.context.get('quantity')
+        this.context.getItems().filter(item => !!item.quantity)
       );
     }
   }

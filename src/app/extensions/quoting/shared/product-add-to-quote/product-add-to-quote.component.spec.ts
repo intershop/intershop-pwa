@@ -36,8 +36,10 @@ describe('Product Add To Quote Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToQuoteComponent);
     component = fixture.componentInstance;
-    when(context.get('sku')).thenReturn('dummy');
-    when(context.get('quantity')).thenReturn(5);
+    when(context.getItems()).thenReturn([
+      { sku: 'item1', quantity: 5 },
+      { sku: 'item2', quantity: 10 },
+    ]);
     element = fixture.nativeElement;
     location = TestBed.inject(Location);
   });
@@ -71,6 +73,6 @@ describe('Product Add To Quote Component', () => {
 
     tick(500);
 
-    expect(location.path()).toMatchInlineSnapshot(`"/addProductToQuoteRequest?sku=dummy&quantity=5"`);
+    expect(location.path()).toMatchInlineSnapshot(`"/addProductToQuoteRequest?skuitem1=5&skuitem2=10"`);
   }));
 });

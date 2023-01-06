@@ -11,9 +11,12 @@ export class ProductAddToQuoteRequestGuard implements CanActivate {
   constructor(private modalService: NgbModal, private store: Store) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    this.store.dispatch(
-      addProductToQuoteRequest({ sku: route.queryParamMap.get('sku'), quantity: +route.queryParamMap.get('quantity') })
-    );
+    route.queryParamMap.keys
+      .filter(key => key.startsWith('sku'))
+      .map(key => key.substring(3))
+      .forEach(sku => {
+        this.store.dispatch(addProductToQuoteRequest({ sku, quantity: +route.queryParamMap.get(`sku${sku}`) }));
+      });
 
     const ref = this.modalService.open(ProductAddToQuoteDialogComponent, { centered: true, size: 'lg' });
     const component = ref.componentInstance as ProductAddToQuoteDialogComponent;

@@ -124,15 +124,13 @@ describe('Wishlist Service', () => {
     const wishlistId = '1234';
     const sku = 'abcd';
 
-    when(apiServiceMock.post(`privatecustomers/-/wishlists/${wishlistId}/products/${sku}`, anything())).thenReturn(
-      of({})
-    );
+    when(apiServiceMock.post(`privatecustomers/-/wishlists/${wishlistId}/products/${sku}`)).thenReturn(of({}));
     when(apiServiceMock.get(`privatecustomers/-/wishlists/${wishlistId}`)).thenReturn(
       of({ title: 'wishlist title' } as WishlistData)
     );
 
     wishlistService.addProductToWishlist(wishlistId, sku).subscribe(() => {
-      verify(apiServiceMock.post(`privatecustomers/-/wishlists/${wishlistId}/products/${sku}`, anything())).once();
+      verify(apiServiceMock.post(`privatecustomers/-/wishlists/${wishlistId}/products/${sku}`)).once();
       verify(apiServiceMock.get(`privatecustomers/-/wishlists/${wishlistId}`)).once();
       done();
     });

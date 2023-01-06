@@ -139,7 +139,7 @@ export class WishlistEffects {
       ofType(addProductToWishlist),
       mapToPayload(),
       mergeMap(payload =>
-        this.wishlistService.addProductToWishlist(payload.wishlistId, payload.sku, payload.quantity).pipe(
+        this.wishlistService.addProductToWishlist(payload.wishlistId, payload.sku).pipe(
           map(wishlist => addProductToWishlistSuccess({ wishlist })),
           mapErrorToAction(addProductToWishlistFail)
         )

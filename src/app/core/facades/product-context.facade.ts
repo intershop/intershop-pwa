@@ -455,17 +455,18 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     this.set('sku', () => ProductVariationHelper.findPossibleVariation(name, value, this.get('product')));
   }
 
-  addToBasket() {
-    let items: SkuQuantityType[];
+  getItems(): SkuQuantityType[] {
     if (Object.values(this.get('children'))?.length) {
-      items = Object.values(this.get('children'));
+      return Object.values(this.get('children'));
     } else if (this.get('parts')?.length && !ProductHelper.isProductBundle(this.get('product'))) {
-      items = this.get('parts');
+      return this.get('parts');
     } else {
-      items = [this.get()];
+      return [this.get()];
     }
+  }
 
-    items
+  addToBasket() {
+    this.getItems()
       .filter(x => !!x && !!x.quantity)
       .forEach(child => {
         this.shoppingFacade.addProductToBasket(child.sku, child.quantity);
