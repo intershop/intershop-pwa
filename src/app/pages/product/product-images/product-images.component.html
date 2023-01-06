@@ -2,7 +2,7 @@
   <div class="col-lg-3 d-none d-lg-block">
     <div class="product-img-thumbs">
       <div
-        *ngFor="let imageView of getImageViewIDs$('S') | async; index as i"
+        *ngFor="let imageView of getImageViewIDs$('S') | async; let i = index"
         class="product-thumb-set"
         [ngClass]="{ active: isActiveSlide(i) }"
         (click)="setActiveSlide(i)"
@@ -16,9 +16,15 @@
   <div *ngIf="getImageViewIDs$('L') | async as largeImages" class="col-12 col-lg-9 product-detail-img clearfix">
     <div class="product-image-container">
       <swiper #carousel [navigation]="true">
-        <ng-container *ngFor="let imageView of largeImages">
+        <ng-container *ngFor="let imageView of largeImages; let i = index">
           <ng-template swiperSlide>
-            <ish-product-image imageType="L" [imageView]="imageView"></ish-product-image>
+            <div (click)="openZoomModal(i)" (keydown.enter)="openZoomModal(i)">
+              <ish-product-image
+                [ngClass]="{ 'product-image-zoom': zoomImageIds$ | async }"
+                imageType="L"
+                [imageView]="imageView"
+              ></ish-product-image>
+            </div>
           </ng-template>
         </ng-container>
       </swiper>
@@ -26,3 +32,18 @@
     </div>
   </div>
 </div>
+<ish-modal-dialog
+  *ngIf="zoomImageIds$ | async as zoomImages"
+  #zoomDialog
+  [options]="{
+    scrollable: true,
+    modalDialogClass: 'modal-fullscreen'
+  }"
+>
+  <ish-product-image
+    *ngFor="let imageView of zoomImages; let i = index"
+    [id]="getZoomImageAnchorId(i)"
+    imageType="ZOOM"
+    [imageView]="imageView"
+  ></ish-product-image>
+</ish-modal-dialog>
