@@ -34,7 +34,7 @@ export class ProductNotificationsService {
           .get(
             customer.isBusinessCustomer
               ? `customers/${customer.customerNo}/users/-/notifications/${notificationType}`
-              : `users/-/notifications/${notificationType}`
+              : `privatecustomers/-/notifications/${notificationType}`
           )
           .pipe(
             unpackEnvelope<Link>(),
