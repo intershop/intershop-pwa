@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable, combineLatest, race } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
+  distinctUntilKeyChanged,
   filter,
   first,
   map,
@@ -257,6 +258,16 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
         first()
       ),
       (state, minOrderQuantity) => (state.quantity ??= minOrderQuantity)
+    );
+
+    this.connect(
+      'quantity',
+      this.select('product').pipe(
+        whenTruthy(),
+        distinctUntilKeyChanged('sku'),
+        map(p => p.minOrderQuantity),
+        skip(1)
+      )
     );
 
     this.connect(
