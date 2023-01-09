@@ -50,11 +50,15 @@ export class OrderTemplatesDetailsPage {
     cy.get('[data-testing-id="order-template-success-link"] a').click();
   }
 
-  addOrderTemplateToBasket(productId?: string, quantity?: number) {
+  updateQuantity(productId?: string, quantity?: number) {
     if (productId && quantity) {
       this.getOrderTemplateItemById(productId).find('[data-testing-id="quantity"]').clear().type(quantity.toString());
+      cy.wait(800);
     }
+  }
 
+  addOrderTemplateToBasket() {
+    cy.wait(5000);
     return performAddToCart(() => this.getOrderTemplateCartButton().find('[data-testing-id="addToCartButton"]'));
   }
 }
