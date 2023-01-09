@@ -242,11 +242,18 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
 
     this.connect(
       'hasQuantityError',
-      this.select('children').pipe(
-        map(children => Object.values(children)),
-        skipWhile(children => !children?.length),
-        map(children => !children.length || children.some(child => child.hasQuantityError)),
-        distinctUntilChanged()
+      this.select('sku').pipe(
+        whenTruthy(),
+        distinctUntilChanged(),
+        switchMap(() =>
+          this.select('children').pipe(
+            map(children => Object.values(children)),
+            debounceTime(300),
+            skipWhile(children => !children?.length),
+            map(children => !children.length || children.some(child => child.hasQuantityError)),
+            distinctUntilChanged()
+          )
+        )
       )
     );
 
@@ -272,20 +279,27 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
 
     this.connect(
       'quantity',
-      this.select('children').pipe(
-        map(children => Object.values(children)),
-        skipWhile(children => !children?.length),
-        map(children =>
-          children.reduce(
-            (sum, child) =>
-              sum +
-              (Number.isInteger(child.quantity) && !child.hasQuantityError && !child.hasProductError
-                ? child.quantity
-                : 0),
-            0
+      this.select('sku').pipe(
+        whenTruthy(),
+        distinctUntilChanged(),
+        switchMap(() =>
+          this.select('children').pipe(
+            map(children => Object.values(children)),
+            debounceTime(300),
+            skipWhile(children => !children?.length),
+            map(children =>
+              children.reduce(
+                (sum, child) =>
+                  sum +
+                  (Number.isInteger(child.quantity) && !child.hasQuantityError && !child.hasProductError
+                    ? child.quantity
+                    : 0),
+                0
+              )
+            ),
+            distinctUntilChanged()
           )
-        ),
-        distinctUntilChanged()
+        )
       )
     );
 
@@ -299,11 +313,18 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
 
     this.connect(
       'hasProductError',
-      this.select('children').pipe(
-        map(children => Object.values(children)),
-        skipWhile(children => !children?.length),
-        map(children => !children.length || children.some(child => child.hasProductError)),
-        distinctUntilChanged()
+      this.select('sku').pipe(
+        whenTruthy(),
+        distinctUntilChanged(),
+        switchMap(() =>
+          this.select('children').pipe(
+            map(children => Object.values(children)),
+            debounceTime(300),
+            skipWhile(children => !children?.length),
+            map(children => !children.length || children.some(child => child.hasProductError)),
+            distinctUntilChanged()
+          )
+        )
       )
     );
 
