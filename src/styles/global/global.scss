@@ -133,6 +133,7 @@ img {
 .nav-tabs {
   display: block;
   margin-bottom: $space-default;
+  overflow-y: auto;
   white-space: nowrap;
 
   .nav-item {
@@ -151,6 +152,10 @@ img {
     border-color: transparent;
     border-bottom: 2px solid $CORPORATE-PRIMARY !important;
   }
+}
+
+.nav-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 // Help Text
