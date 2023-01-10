@@ -31,7 +31,7 @@ describe('Filter Collapsible Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <div class="filter-group">
-        <h3 aria-controls="collapseFilter" aria-expanded="true">
+        <h3 tabindex="0" aria-controls="collapseFilter" aria-expanded="true">
           <fa-icon class="float-right" ng-reflect-icon="fas,angle-down"></fa-icon>
         </h3>
       </div>
@@ -43,7 +43,7 @@ describe('Filter Collapsible Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div class="filter-group collapsed">
-        <h3 aria-controls="collapseFilter" aria-expanded="false">
+        <h3 tabindex="0" aria-controls="collapseFilter" aria-expanded="false">
           <fa-icon class="float-right" ng-reflect-icon="fas,angle-right"></fa-icon>
         </h3>
       </div>
