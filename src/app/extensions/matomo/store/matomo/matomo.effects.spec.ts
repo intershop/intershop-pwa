@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, select } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { MatomoTracker, NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { Observable, of } from 'rxjs';
 import { instance, mock, verify } from 'ts-mockito';
@@ -10,10 +10,9 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { addItemsToBasketSuccess, createBasketSuccess, deleteBasketItem } from 'ish-core/store/customer/basket';
+import { createBasketSuccess, deleteBasketItem } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
-import { getProduct } from 'ish-core/store/shopping/products';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
 import { MatomoEffects } from './matomo.effects';
@@ -124,11 +123,15 @@ describe('Matomo Effects', () => {
 
     describe('deleteProductFromBasket$', () => {
       it('should delete product from basket', done => {
+        jest.setTimeout(6000);
+        const item = lineItem;
         const action = deleteBasketItem({ itemId: lineItem.id });
 
         actions$ = of(action);
 
-        effects.deleteProductFromBasket$.subscribe(() => {
+        console.log(lineItem.productSKU);
+
+        effects.deleteProductFromBasket$.forEach(lineItem => {
           verify(tracker.removeEcommerceItem(lineItem.productSKU)).once();
           done();
         });

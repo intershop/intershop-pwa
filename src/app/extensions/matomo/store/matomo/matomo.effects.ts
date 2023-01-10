@@ -1,10 +1,9 @@
-/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { MatomoTracker } from '@ngx-matomo/tracker';
 import { EMPTY } from 'rxjs';
-import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import {
@@ -15,6 +14,7 @@ import {
   updateBasketItemSuccess,
 } from 'ish-core/store/customer/basket';
 import { getCurrentBasket, getSubmittedBasket } from 'ish-core/store/customer/basket/basket.selectors';
+import { getPriceDisplayType } from 'ish-core/store/customer/user';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
 import { getProduct, getSelectedProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
@@ -34,58 +34,35 @@ export class MatomoEffects {
         ofType(addItemsToBasketSuccess),
         mapToPayloadProperty('lineItems'),
         log('addItemToBasketSuccessInfo'),
-        // eslint-disable-next-line rxjs/no-unsafe-switchmap
         map(lineItems =>
-          lineItems.forEach(item => {
-            console.log(`Works for ${item.productSKU}`);
-            this.store.pipe(
-              select(getProduct(item.productSKU)),
-              log('Selected Item'),
-              tap(product => {
-                this.tracker.addEcommerceItem(
-                  item.productSKU,
-                  product.name,
-                  product.defaultCategory.name,
-                  item.singleBasePrice.gross,
-                  item.quantity.value
-                );
-              })
+          lineItems.forEach(lineItem => {
+            let displayPrice = new String();
+            this.store.pipe(select(getPriceDisplayType)).subscribe({
+              next: item => {
+                displayPrice = item;
+              },
+            });
+            console.log(
+              `Price Type: ${displayPrice === 'net' ? lineItem.singleBasePrice.net : lineItem.singleBasePrice.gross}`
             );
+
+            const product$ = this.store.pipe(select(getProduct(lineItem.productSKU)));
+            product$.subscribe(product => {
+              log('Selected Item');
+              console.log(product);
+              this.tracker.addEcommerceItem(
+                lineItem.productSKU,
+                product.name,
+                product.defaultCategory.name,
+                displayPrice === 'net' ? lineItem.singleBasePrice.net : lineItem.singleBasePrice.gross,
+                lineItem.quantity.value
+              );
+            });
           })
         )
       ),
     { dispatch: false }
   );
-
-  // addItemToBasket$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(addItemsToBasketSuccess),
-  //       mapToPayloadProperty('lineItems'),
-  //       log('addItemToBasketSuccessInfo'),
-  //       // eslint-disable-next-line rxjs/no-unsafe-switchmap
-  //       switchMap(lineItem =>
-  //         lineItem.map((item) => {
-  //           this.store.pipe(
-  //             select(getProduct(item.productSKU)),
-  //             log('addItem'),
-  //             tap(product => {
-  //               this.tracker.addEcommerceItem(
-  //                 item.productSKU,
-  //                 product.name,
-  //                 product.defaultCategory.name,
-  //                 item.singleBasePrice.gross,
-  //                 item.quantity.value
-  //               );
-  //               console.log(this.store.pipe(select(getPriceDisplayType)));
-  //               console.log(`${product.name} added to basket with single base price of ${item.singleBasePrice.net}`);
-  //             })
-  //           );
-  //         })
-  //       )
-  //     ),
-  //   { dispatch: false }
-  // );
 
   /**
    * Is triggered when a product is deleted from the basket. Effects sends info to Matomo and logs event.
@@ -101,6 +78,7 @@ export class MatomoEffects {
         tap(lineItem => {
           this.tracker.removeEcommerceItem(lineItem.productSKU);
           console.log(`Item with ID:  ${lineItem.productSKU} has been deleted from the basket`);
+          return lineItem;
         })
       ),
     { dispatch: false }
@@ -116,6 +94,7 @@ export class MatomoEffects {
         mapToPayloadProperty('basket'),
         tap(basket => {
           this.tracker.trackEcommerceCartUpdate(basket.totals.total.net);
+          this.store.pipe(select(getPriceDisplayType), log('Update is '));
           console.log(`Updated basket total is ${basket.totals.total.gross}`);
         })
       ),
@@ -133,8 +112,7 @@ export class MatomoEffects {
         withLatestFrom(this.store.pipe(select(getCurrentBasket))),
         log('UpdateBasketItemSuccessInfo'),
         map(([lineItem, basket]) => basket.lineItems.filter(i => i.id === lineItem.id)?.[0]),
-        // eslint-disable-next-line rxjs/no-unsafe-switchmap
-        switchMap(lineItem =>
+        mergeMap(lineItem =>
           this.store.pipe(
             select(getProduct(lineItem.productSKU)),
             log('Item'),
@@ -165,7 +143,7 @@ export class MatomoEffects {
         withLatestFrom(this.store.pipe(ofProductUrl(), select(getSelectedProduct))),
         filter(product => product[0]?.sku === product[1]?.sku),
         log('SingleProduct'),
-        switchMap(product =>
+        mergeMap(product =>
           this.store.pipe(
             select(getProductPrice(product[1].sku)),
             log('Item'),
@@ -206,40 +184,6 @@ export class MatomoEffects {
   );
 
   /**
-   * Tracks the category when product detail page is called.
-   */
-  /*
-  trackProductCategoryTagManager$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(loadProductSuccess),
-        mapToPayloadProperty('product'),
-        withLatestFrom(this.store.pipe(ofProductUrl(), select(getSelectedProduct))),
-        filter(([payloadProd, product]) => !!product && payloadProd?.sku === product?.sku),
-        tap(([, product]) => {
-          const category = product.defaultCategoryId;
-          this.tracker.trackEvent('TrackCategory', category);
-          console.log(`Category is ${category}`);
-        })
-      ),
-    { dispatch: false }
-  );
-  */
-
-  // trackProductCategoryTagManager$ = createEffect(
-  //   () => this.actions$.pipe(
-  //     ofType(loadProductSuccess),
-  //     switchMap(() => this.store.pipe(
-  //       ofProductUrl(),
-  //       select(getProduct('123')),
-  //       whenTruthy(),
-  //       map(item => item.)
-  //       )
-  //     )),
-  //   { dispatch: false }
-  // );
-
-  /**
    * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
    * Add queryParam error=true to the route to prevent resetting errors.
    *
@@ -248,7 +192,7 @@ export class MatomoEffects {
     () =>
       this.actions$.pipe(
         ofType(submitBasketSuccess),
-        switchMap(() => {
+        mergeMap(() => {
           this.store.pipe(select(getSubmittedBasket)).subscribe(b => {
             this.tracker.trackEcommerceOrder(b?.id, b?.totals.total.gross);
             this.tracker.trackPageView();

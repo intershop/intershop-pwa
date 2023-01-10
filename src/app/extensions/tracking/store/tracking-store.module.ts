@@ -12,10 +12,16 @@ const trackingReducers: ActionReducerMap<TrackingState> = {
   gtmToken: trackingConfigReducer,
 };
 
-const trackingEffects = [TrackingConfigEffects, MatomoEffects];
+const trackingEffects = [TrackingConfigEffects];
+
+const matomoEffects = [MatomoEffects];
 
 // not-dead-code
 @NgModule({
-  imports: [EffectsModule.forFeature(trackingEffects), StoreModule.forFeature('tracking', trackingReducers)],
+  imports: [
+    EffectsModule.forFeature(trackingEffects),
+    StoreModule.forFeature('tracking', trackingReducers),
+    EffectsModule.forFeature(matomoEffects),
+  ],
 })
 export class TrackingStoreModule {}

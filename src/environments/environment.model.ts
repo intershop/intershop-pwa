@@ -43,6 +43,7 @@ export interface Environment {
     | 'tracking'
     | 'tacton'
     | 'maps'
+    | 'matomo'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
