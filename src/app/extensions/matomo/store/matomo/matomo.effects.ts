@@ -64,36 +64,6 @@ export class MatomoEffects {
     { dispatch: false }
   );
 
-  // addItemToBasket$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(addItemsToBasketSuccess),
-  //       mapToPayloadProperty('lineItems'),
-  //       log('addItemToBasketSuccessInfo'),
-  //       // eslint-disable-next-line rxjs/no-unsafe-switchmap
-  //       switchMap(lineItem =>
-  //         lineItem.map((item) => {
-  //           this.store.pipe(
-  //             select(getProduct(item.productSKU)),
-  //             log('addItem'),
-  //             tap(product => {
-  //               this.tracker.addEcommerceItem(
-  //                 item.productSKU,
-  //                 product.name,
-  //                 product.defaultCategory.name,
-  //                 item.singleBasePrice.gross,
-  //                 item.quantity.value
-  //               );
-  //               console.log(this.store.pipe(select(getPriceDisplayType)));
-  //               console.log(`${product.name} added to basket with single base price of ${item.singleBasePrice.net}`);
-  //             })
-  //           );
-  //         })
-  //       )
-  //     ),
-  //   { dispatch: false }
-  // );
-
   /**
    * Is triggered when a product is deleted from the basket. Effects sends info to Matomo and logs event.
    */
@@ -212,40 +182,6 @@ export class MatomoEffects {
       ),
     { dispatch: false }
   );
-
-  /**
-   * Tracks the category when product detail page is called.
-   */
-  /*
-  trackProductCategoryTagManager$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(loadProductSuccess),
-        mapToPayloadProperty('product'),
-        withLatestFrom(this.store.pipe(ofProductUrl(), select(getSelectedProduct))),
-        filter(([payloadProd, product]) => !!product && payloadProd?.sku === product?.sku),
-        tap(([, product]) => {
-          const category = product.defaultCategoryId;
-          this.tracker.trackEvent('TrackCategory', category);
-          console.log(`Category is ${category}`);
-        })
-      ),
-    { dispatch: false }
-  );
-  */
-
-  // trackProductCategoryTagManager$ = createEffect(
-  //   () => this.actions$.pipe(
-  //     ofType(loadProductSuccess),
-  //     switchMap(() => this.store.pipe(
-  //       ofProductUrl(),
-  //       select(getProduct('123')),
-  //       whenTruthy(),
-  //       map(item => item.)
-  //       )
-  //     )),
-  //   { dispatch: false }
-  // );
 
   /**
    * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
