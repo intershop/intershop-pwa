@@ -1,4 +1,11 @@
-<div class="panel-heading" [attr.data-testing-id]="dataTestingId" role="tab" (click)="toggleCollapse()">
+<div
+  class="panel-heading"
+  [attr.data-testing-id]="dataTestingId"
+  role="tab"
+  (click)="toggleCollapse()"
+  (keydown.enter)="toggleCollapse()"
+  tabindex="0"
+>
   <a class="accordion-toggle" [attr.aria-expanded]="isCollapsed">
     {{ heading }}
     <fa-icon *ngIf="!isCollapsed; else collapsed" class="float-right" [icon]="['fas', 'plus']"></fa-icon>

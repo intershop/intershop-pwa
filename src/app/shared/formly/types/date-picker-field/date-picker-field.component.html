@@ -16,7 +16,14 @@
   />
 
   <div class="input-group-append">
-    <div class="btn btn-secondary" (click)="d.toggle()" type="button" data-testing-id="btn-date-picker">
+    <div
+      class="btn btn-secondary"
+      (click)="d.toggle()"
+      (keydown.enter)="d.toggle()"
+      tabindex="0"
+      type="button"
+      data-testing-id="btn-date-picker"
+    >
       <fa-icon class="text-secondary" icon="calendar-day"></fa-icon>
     </div>
   </div>

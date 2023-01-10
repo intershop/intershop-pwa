@@ -1,4 +1,4 @@
-<ng-container *ngIf="isLoggedIn$ | async; else disabled">
+<ng-container *ngIf="isLoggedIn$ | async; else loginButton">
   <a
     *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
     [routerLink]="[]"
@@ -9,14 +9,13 @@
     {{ 'shopping_cart.quote.create.button' | translate }}
   </a>
 </ng-container>
-<ng-template #disabled>
-  <span (click)="login()">
-    <button
-      data-testing-id="create-quote-from-basket"
-      class="btn btn-secondary disabled"
-      [title]="'account.login.quotes.message' | translate"
-    >
-      {{ 'shopping_cart.quote.create.button' | translate }}
-    </button>
-  </span>
+<ng-template #loginButton>
+  <button
+    data-testing-id="create-quote-from-basket"
+    class="btn btn-secondary"
+    [title]="'account.login.quotes.message' | translate"
+    (click)="login()"
+  >
+    {{ 'shopping_cart.quote.create.button' | translate }}
+  </button>
 </ng-template>

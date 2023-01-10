@@ -78,11 +78,13 @@ describe('Tacton Image Text Buttons Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <div class="d-flex flex-wrap align-items-end pb-2">
         <div class="mr-3">
-          <div class="border border-primary"><img src="http://xxximage1_key=xyz" alt="image1" /></div>
+          <div class="border border-primary">
+            <img tabindex="0" src="http://xxximage1_key=xyz" alt="image1" />
+          </div>
           <label><input type="radio" name="ID" value="i1" /> 3 </label>
         </div>
         <div class="mr-3">
-          <div class="border"><img src="http://xxximage2_key=xyz" alt="image2" /></div>
+          <div class="border"><img tabindex="0" src="http://xxximage2_key=xyz" alt="image2" /></div>
           <label><input type="radio" name="ID" value="i2" /> 0 </label>
         </div>
       </div>
