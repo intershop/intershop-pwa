@@ -5,14 +5,18 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
 /**
- * The Product Notification Dialog Component shows the customer a dialog to edit the product notification.
+ * The Product Notification Dialog Component shows the customer a dialog to either create,
+ * edit or remove a product notification.
  *
  * @example
- * <ish-product-notification-dialog></ish-product-notification-dialog>
+ * <ish-product-notification-dialog
+ *   [productNotification]="productNotification"
+ *   #modal></ish-product-notification-dialog>
  */
 @Component({
   selector: 'ish-product-notification-dialog',
@@ -31,6 +35,8 @@ export class ProductNotificationDialogComponent implements OnInit {
 
   constructor(private ngbModal: NgbModal, private context: ProductContextFacade) {}
 
+  submitted = false;
+
   ngOnInit() {
     this.product$ = this.context.select('product');
   }
@@ -46,5 +52,11 @@ export class ProductNotificationDialogComponent implements OnInit {
   }
 
   /** submit the form */
-  submitForm() {}
+  submitForm() {
+    if (this.productNotificationForm.invalid) {
+      markAsDirtyRecursive(this.productNotificationForm);
+      this.submitted = true;
+      return;
+    }
+  }
 }

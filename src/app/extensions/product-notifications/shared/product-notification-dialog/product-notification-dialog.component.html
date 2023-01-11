@@ -22,7 +22,7 @@
     <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
     <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
       <ish-product-notification-edit-form
-        [formGroup]="productNotificationForm"
+        [form]="productNotificationForm"
         [productNotification]="productNotification"
       ></ish-product-notification-edit-form>
     </form>

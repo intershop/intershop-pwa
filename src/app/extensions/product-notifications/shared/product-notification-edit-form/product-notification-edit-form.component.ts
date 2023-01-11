@@ -16,9 +16,19 @@ import { ProductNotification } from '../../models/product-notification/product-n
 
 /**
  * The Product Notification Form Component includes the form to edit the notification.
+ * It is shown within the product notification dialog component.
+ *
+ * The form shows fields either for the price or the stock notification.
+ * Each of these two types has to support two cases:
+ * - a product notification is not available and has to be created or
+ * - a product notification is available and it can be edited or removed.
+ *   In this case, there are radio buttons used to either remove the notification or to edit it.
  *
  * @example
- * <ish-product-notification-edit-form></ish-product-notification-edit-form>
+ * <ish-product-notification-edit-form
+        [form]="productNotificationForm"
+        [productNotification]="productNotification"
+      ></ish-product-notification-edit-form>
  */
 @Component({
   selector: 'ish-product-notification-edit-form',
@@ -26,11 +36,11 @@ import { ProductNotification } from '../../models/product-notification/product-n
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductNotificationEditFormComponent implements OnInit {
-  @Input() productNotificationForm: FormGroup;
+  @Input() form: FormGroup;
   @Input() productNotification: ProductNotification;
   fields$: Observable<FormlyFieldConfig[]>;
 
-  model$: Observable<any>;
+  model$: Observable<{ alerttype: string; email: string; pricevalue: number; currency?: string }>;
 
   constructor(
     private appFacade: AppFacade,
@@ -76,14 +86,23 @@ export class ProductNotificationEditFormComponent implements OnInit {
       this.productNotification$,
       this.product$,
       this.model$.pipe(map(model => model?.currency)),
-    ]).pipe(map(([productNotification, product, currency]) => this.getFields(productNotification, product, currency)));
+    ]).pipe(
+      map(([productNotification, product, currency]) =>
+        productNotification
+          ? this.getFieldsForProductNotification(productNotification, product, currency)
+          : this.getFieldsForNoProductNotification(product, currency)
+      )
+    );
   }
 
-  getFields(productNotification: ProductNotification, product: ProductView, currency: string): FormlyFieldConfig[] {
-    const fields: FormlyFieldConfig[] = [];
-
-    if (productNotification) {
-      fields.push({
+  // get form fields if a product notification is available
+  getFieldsForProductNotification(
+    productNotification: ProductNotification,
+    product: ProductView,
+    currency: string
+  ): FormlyFieldConfig[] {
+    return [
+      {
         key: 'alerttype',
         type: 'ish-radio-field',
         templateOptions: {
@@ -91,11 +110,47 @@ export class ProductNotificationEditFormComponent implements OnInit {
           fieldClass: ' ',
           value: '',
         },
-      });
-    }
+      },
+      ...(productNotification?.type === 'price' || product?.available
+        ? this.getPriceConfigForProductNotification(currency)
+        : []),
+      ...(productNotification?.type === 'stock' || !product?.available
+        ? this.getStockConfigForProductNotification()
+        : []),
+      ...this.getEmailConfig(),
+    ];
+  }
 
-    if (productNotification?.type === 'stock' || !product?.available) {
-      fields.push({
+  // wrap form fields in fieldset if a product notification is not available because there are no radio buttons
+  getFieldsForNoProductNotification(product: ProductView, currency: string): FormlyFieldConfig[] {
+    return [
+      {
+        type: 'ish-fieldset-field',
+        fieldGroup: [...(product?.available ? this.getPriceConfig(currency) : []), ...this.getEmailConfig()],
+      },
+    ];
+  }
+
+  // get the fields for the price notification
+  private getPriceConfigForProductNotification(currency: string): FormlyFieldConfig[] {
+    return [
+      {
+        key: 'alerttype',
+        type: 'ish-radio-field',
+        templateOptions: {
+          label: 'product.notification.edit.form.price_notification.label',
+          fieldClass: ' ',
+          value: 'price',
+        },
+      },
+      ...this.getPriceConfig(currency),
+    ];
+  }
+
+  // get the fields for the stock notification
+  private getStockConfigForProductNotification(): FormlyFieldConfig[] {
+    return [
+      {
         key: 'alerttype',
         type: 'ish-radio-field',
         templateOptions: {
@@ -103,58 +158,48 @@ export class ProductNotificationEditFormComponent implements OnInit {
           fieldClass: ' ',
           value: 'stock',
         },
-      });
-    }
+      },
+    ];
+  }
 
-    if (productNotification?.type === 'price' || product?.available) {
-      fields.push(
-        {
-          key: 'alerttype',
-          type: 'ish-radio-field',
-          templateOptions: {
-            label: 'product.notification.edit.form.price_notification.label',
-            fieldClass: ' ',
-            value: 'price',
+  // get only the price field
+  private getPriceConfig(currency: string): FormlyFieldConfig[] {
+    return [
+      {
+        key: 'pricevalue',
+        type: 'ish-text-input-field',
+        templateOptions: {
+          postWrappers: [{ wrapper: 'input-addon', index: -1 }],
+          label: 'product.notification.edit.form.price.label',
+          required: true,
+          addonLeft: {
+            text: this.appFacade.currencySymbol$(currency),
           },
         },
-        {
-          key: 'pricevalue',
-          type: 'ish-text-input-field',
-          templateOptions: {
-            postWrappers: [{ wrapper: 'input-addon', index: -1 }],
-            label: 'product.notification.edit.form.price.label',
-            required: true,
-            addonLeft: {
-              text: this.appFacade.currencySymbol$(currency),
-            },
+        validators: {
+          validation: [SpecialValidators.moneyAmount],
+        },
+        validation: {
+          messages: {
+            required: 'product.notification.edit.form.price.error.required',
+            moneyAmount: 'product.notification.edit.form.price.error.valid',
           },
-          validators: {
-            validation: [SpecialValidators.moneyAmount],
-          },
-          validation: {
-            messages: {
-              required: 'product.notification.edit.form.price.error.required',
-              moneyAmount: 'product.notification.edit.form.price.error.valid',
-            },
-          },
-        }
-      );
-    }
-
-    fields.push({
-      key: 'email',
-      type: 'ish-email-field',
-      templateOptions: {
-        label: 'product.notification.edit.form.email.label',
-        required: true,
-      },
-      validation: {
-        messages: {
-          required: 'form.email.error.required',
         },
       },
-    });
+    ];
+  }
 
-    return fields;
+  // get only the email field
+  private getEmailConfig(): FormlyFieldConfig[] {
+    return [
+      {
+        key: 'email',
+        type: 'ish-email-field',
+        templateOptions: {
+          label: 'product.notification.edit.form.email.label',
+          required: true,
+        },
+      },
+    ];
   }
 }

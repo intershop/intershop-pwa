@@ -11,10 +11,14 @@ import { ProductNotification } from '../../models/product-notification/product-n
 import { ProductNotificationDialogComponent } from '../product-notification-dialog/product-notification-dialog.component';
 
 /**
- * The Product Notification Component shows the customer a link to open the dialog to edit the product notification.
+ * The Product Notification Edit Component shows the customer a link to open the dialog to either create,
+ * edit or remove a product notification.
  *
  * @example
- * <ish-product-notification-edit></ish-product-notification-edit>
+ * <ish-product-notification-edit
+ *   [cssClass]="'btn-link btn-tool'"
+ *   [productNotification]="productNotification"
+ *   displayType="icon"></ish-product-notification-edit>
  */
 @Component({
   selector: 'ish-product-notification-edit',
