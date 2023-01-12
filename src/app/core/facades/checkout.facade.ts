@@ -141,7 +141,8 @@ export class CheckoutFacade {
   }
 
   setBasketMessageToMerchant(messageToMerchant: string) {
-    this.store.dispatch(addMessageToMerchant({ messageToMerchant }));
+    // eslint-disable-next-line unicorn/no-null
+    this.store.dispatch(addMessageToMerchant({ messageToMerchant: messageToMerchant || null }));
   }
 
   // ORDERS

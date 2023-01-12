@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
 
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
 
@@ -15,9 +16,11 @@ export class BasketMerchantMessageViewComponent implements OnChanges {
   messageToMerchant: string;
 
   ngOnChanges(): void {
-    if (this.data as Order) this.messageToMerchant = this.data.attributes[0]?.value as string;
-    else {
-      this.messageToMerchant = this.data.messageToMerchant;
-    }
+    this.messageToMerchant =
+      this.data.messageToMerchant ||
+      (AttributeHelper.getAttributeValueByAttributeName(
+        this.data.attributes,
+        'BusinessObjectAttributes#Order_MessageToMerchant'
+      ) as string);
   }
 }
