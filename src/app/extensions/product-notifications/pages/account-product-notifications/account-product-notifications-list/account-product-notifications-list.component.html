@@ -7,7 +7,7 @@
   >
     <!-- Product -->
     <ng-container cdkColumnDef="productImage">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-product">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-product-image">
         {{ 'account.notifications.table.product' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let productNotification">
@@ -24,7 +24,7 @@
 
     <!-- Product Info -->
     <ng-container cdkColumnDef="product">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-product-info"></th>
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-product"></th>
       <td cdk-cell *cdkCellDef="let productNotification">
         <div class="list-item">
           <ish-product-name ishProductContext [sku]="productNotification.sku"></ish-product-name>
