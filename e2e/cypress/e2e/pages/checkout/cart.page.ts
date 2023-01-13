@@ -98,8 +98,7 @@ export class CartPage {
             .clear()
             .wait(1000)
             .type(num.toString())
-            .wait(1000)
-            .blur(),
+            .wait(1000),
         get: () =>
           cy
             .get(this.tag)
