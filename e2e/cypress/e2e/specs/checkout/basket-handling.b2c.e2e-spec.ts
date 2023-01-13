@@ -96,6 +96,7 @@ describe('Basket Handling', () => {
       page.addProductToCart().its('response.statusCode').should('equal', 200);
       waitLoadingEnd(1000);
       page.header.miniCart.total.should('contain', _.product.price * 4);
+      page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
       page.lineItem(0).quantity.get().should('equal', 4);

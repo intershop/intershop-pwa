@@ -163,6 +163,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     OrderTemplatesDetailsPage.navigateToOverviewPage();
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplateToCart(accountOrderTemplate);
+      page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
       page.addBasketToOrderTemplate();
