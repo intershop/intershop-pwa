@@ -1,6 +1,5 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
@@ -68,12 +67,7 @@ export class ApiTokenService {
 
   private initialCookie$: Observable<ApiTokenCookie>;
 
-  constructor(
-    private cookiesService: CookiesService,
-    private router: Router,
-    private store: Store,
-    appRef: ApplicationRef
-  ) {
+  constructor(private cookiesService: CookiesService, private store: Store, appRef: ApplicationRef) {
     // setup initial values
     const initialCookie = this.parseCookie();
     this.initialCookie$ = of(!SSR ? initialCookie : undefined);
@@ -212,9 +206,8 @@ export class ApiTokenService {
     if (SSR) {
       return of(true);
     }
-    return this.router.events.pipe(
+    return this.initialCookie$.pipe(
       first(),
-      switchMap(() => this.initialCookie$),
       withLatestFrom(this.apiToken$),
       switchMap(([cookie, apiToken]) => {
         if (!apiToken && fetchAnonymousToken) {
