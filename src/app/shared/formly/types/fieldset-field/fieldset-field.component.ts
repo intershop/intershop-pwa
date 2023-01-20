@@ -6,7 +6,7 @@ import { FieldType } from '@ngx-formly/core';
  *
  * @templateOption **fieldsetClass** - used to add styles to the ``<fieldset>`` tag.
  * @templateOption **childClass** - used to add styles to a child ``<div>``.
- * @templateOption **legend** - used to add a legend to the ``<fieldset>`` tag.
+ * @templateOption **legend** - used to add a legend to the ``<fieldset>`` tag, the value is displayed as the legend text and will also be translated.
  * @templateOption **legendClass** - used to add styles to the ``<legend>`` tag.
  *
  * @usageNotes

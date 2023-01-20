@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
@@ -27,6 +28,7 @@ describe('Fieldset Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [FieldsetFieldComponent],
     }).compileComponents();
@@ -37,6 +39,10 @@ describe('Fieldset Field Component', () => {
       fields: [
         {
           type: 'ish-fieldset-field',
+          templateOptions: {
+            legend: 'Legend text',
+            legendClass: 'text-muted',
+          },
           fieldGroup: [
             {
               key: 'ex1',
@@ -79,5 +85,20 @@ describe('Fieldset Field Component', () => {
         "ish-formly-testing-example",
       ]
     `);
+  });
+
+  it('should contain a legend in a fieldset', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('fieldset > div > legend')).toBeTruthy();
+  });
+
+  it('should contain a legend class in a fieldset', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('legend.text-muted')).toBeTruthy();
+  });
+
+  it('should contain a legend text in a fieldset', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('legend.text-muted').textContent).toMatchInlineSnapshot(`"Legend text"`);
   });
 });
