@@ -65,7 +65,7 @@ describe('Registration Page Component', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('formly-group formly-field')).toMatchInlineSnapshot(`
       NodeList [
-        <formly-field
+        <formly-field _nghost-a-c51=""
         ><ng-component
           >TextInputFieldComponent: test ish-text-input-field { "label": "", "placeholder": "",
           "disabled": false}</ng-component

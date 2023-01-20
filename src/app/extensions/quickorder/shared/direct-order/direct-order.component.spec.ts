@@ -53,7 +53,7 @@ describe('Direct Order Component', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('formly-group formly-field')).toMatchInlineSnapshot(`
       NodeList [
-        <formly-field
+        <formly-field _nghost-a-c51=""
         ><ng-component
           >TextInputFieldComponent: sku ish-text-input-field { "fieldClass": "col-12", "placeholder":
           "shopping_cart.direct_order.item_placeholder", "attributes": { "autocomplete": "on" }, "label":
