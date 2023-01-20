@@ -8,6 +8,7 @@ const pinned = {
   '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
   jest: '28',
   '@types/jest': '28',
+  prettier: '2.7.1',
 };
 
 // <HELPERS>
