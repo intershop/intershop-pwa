@@ -3,7 +3,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { concatMap, filter, take, takeUntil } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
 
@@ -32,12 +32,15 @@ export class CaptchaV3Component implements OnInit, OnDestroy {
   ngOnInit() {
     this.parentForm.get('captchaAction').setValidators([Validators.required]);
 
-    this.recaptchaV3Service
-      .execute(this.parentForm.get('captchaAction').value)
-      .pipe(takeUntil(this.destroy$))
+    this.parentForm
+      .get('captcha')
+      .valueChanges.pipe(
+        filter(captcha => captcha === undefined),
+        concatMap(() => this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value).pipe(take(1))),
+        takeUntil(this.destroy$)
+      )
       .subscribe(token => {
         this.parentForm.get('captcha').setValue(token);
-        this.parentForm.get('captcha').updateValueAndValidity();
       });
   }
 

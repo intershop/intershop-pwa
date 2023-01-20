@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
-import { map, shareReplay, startWith } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, shareReplay, startWith, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Contact } from 'ish-core/models/contact/contact.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { ContactUsFacade } from '../../../facades/contact-us.facade';
 
@@ -21,7 +22,7 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
   templateUrl: './contact-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ContactFormComponent implements OnInit {
+export class ContactFormComponent implements OnInit, OnDestroy {
   /** The contact request to send. */
   @Output() request = new EventEmitter<Contact>();
 
@@ -30,8 +31,13 @@ export class ContactFormComponent implements OnInit {
   contactForm = new UntypedFormGroup({});
   model$: Observable<Partial<Contact>>;
   fields: FormlyFieldConfig[];
+  private destroy$ = new Subject<void>();
 
-  constructor(private accountFacade: AccountFacade, private contactUsFacade: ContactUsFacade) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private formsService: FormsService,
+    private contactUsFacade: ContactUsFacade
+  ) {}
 
   ngOnInit() {
     this.model$ = this.accountFacade.user$.pipe(
@@ -125,7 +131,10 @@ export class ContactFormComponent implements OnInit {
   /** emit contact request, when for is valid or mark form as dirty, when form is invalid */
   submitForm() {
     if (this.contactForm.valid) {
-      this.request.emit(this.contactForm.value);
+      this.formsService
+        .getCaptchaV3Token(this.contactForm)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => this.request.emit(this.contactForm.value));
     } else {
       markAsDirtyRecursive(this.contactForm);
       this.submitted = true;
@@ -135,5 +144,10 @@ export class ContactFormComponent implements OnInit {
   /** return boolean to set submit button enabled/disabled */
   get formDisabled(): boolean {
     return this.contactForm.invalid && this.submitted;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

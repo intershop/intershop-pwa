@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, OperatorFunction } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, OperatorFunction, race, timer } from 'rxjs';
+import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -110,5 +111,19 @@ export class FormsService {
       }
     }
     return salutationLabels;
+  }
+  getCaptchaV3Token(formGroup: FormGroup): Observable<boolean> {
+    if (formGroup.get('captchaAction')?.value) {
+      formGroup.get('captcha').setValue(undefined);
+    }
+    return race(
+      formGroup.get('captcha').valueChanges.pipe(
+        distinctUntilChanged(),
+        whenTruthy(),
+        delay(0),
+        map(() => true)
+      ),
+      timer(3000).pipe(map(() => false))
+    );
   }
 }
