@@ -31,7 +31,6 @@ const modifyPackageJson = cb => {
   const { parse, stringify } = require('comment-json');
   const packageJson = cb(parse(fs.readFileSync('./package.json', { encoding: 'UTF-8' })));
   fs.writeFileSync('./package.json', stringify(packageJson, null, 2) + '\n');
-  execute('npx prettier --write package.json');
 };
 
 const commit = message => {
