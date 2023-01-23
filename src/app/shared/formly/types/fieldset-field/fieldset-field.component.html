@@ -1,5 +1,6 @@
 <fieldset [ngClass]="to.fieldsetClass">
   <div [ngClass]="to.childClass">
+    <legend *ngIf="to.legend" [ngClass]="to.legendClass">{{ to.legend | translate }}</legend>
     <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
   </div>
 </fieldset>

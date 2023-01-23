@@ -10,7 +10,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -52,6 +52,7 @@ const fieldComponents = [
     IconModule,
     NgbDatepickerModule,
     ReactiveFormsModule,
+    TranslateModule,
 
     FormlyBaseModule.forChild({
       types: [

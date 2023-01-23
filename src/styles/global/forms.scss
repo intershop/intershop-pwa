@@ -1,5 +1,9 @@
 fieldset {
   margin-bottom: ($space-default);
+
+  legend {
+    font-size: $font-size-corporate;
+  }
 }
 
 // 	REQUIRED FIELDS
