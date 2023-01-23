@@ -8,7 +8,7 @@ const pinned = {
   '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
   jest: '28',
   '@types/jest': '28',
-  '@ngx-formly/core': '5',
+  prettier: '2.7.1',
 };
 
 // <HELPERS>
@@ -31,7 +31,6 @@ const modifyPackageJson = cb => {
   const { parse, stringify } = require('comment-json');
   const packageJson = cb(parse(fs.readFileSync('./package.json', { encoding: 'UTF-8' })));
   fs.writeFileSync('./package.json', stringify(packageJson, null, 2) + '\n');
-  execute('npx prettier --write package.json');
 };
 
 const commit = message => {
