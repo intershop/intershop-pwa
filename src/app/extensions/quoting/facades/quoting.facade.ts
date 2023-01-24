@@ -50,10 +50,7 @@ export class QuotingFacade {
   }
 
   state$(quoteId: string) {
-    return timer(0, 2000).pipe(
-      switchMap(() => this.store.pipe(select(getQuotingEntity(quoteId)))),
-      map(QuotingHelper.state)
-    );
+    return this.store.pipe(select(getQuotingEntity(quoteId)), map(QuotingHelper.state));
   }
 
   name$(quoteId: string) {
