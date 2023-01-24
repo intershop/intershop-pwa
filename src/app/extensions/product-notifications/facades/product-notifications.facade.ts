@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, of, distinctUntilChanged, map, switchMap } from 'rxjs';
+import { isEqual } from 'lodash-es';
+import { Observable, distinctUntilChanged, map, of, switchMap } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -10,6 +11,7 @@ import {
   ProductNotificationType,
 } from '../models/product-notification/product-notification.model';
 import {
+  getProductNotificationBySku,
   getProductNotificationsByType,
   getProductNotificationsError,
   getProductNotificationsLoading,
@@ -36,6 +38,15 @@ export class ProductNotificationsFacade {
     // });
 
     return of(undefined);
+  }
+
+  productNotificationBySku$(sku: string, type: ProductNotificationType) {
+    this.store.dispatch(loadProductNotifications({ type }));
+
+    return this.store.pipe(select(getProductNotificationBySku(sku, type))).pipe(
+      map(notifications => (notifications?.length ? notifications[0] : undefined)),
+      distinctUntilChanged(isEqual)
+    );
   }
 
   productNotificationsLoading$: Observable<boolean> = this.store.pipe(select(getProductNotificationsLoading));

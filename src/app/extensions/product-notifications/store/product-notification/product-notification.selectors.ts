@@ -24,3 +24,8 @@ export const getProductNotificationsByType = (type: ProductNotificationType) =>
   createSelector(getAllProductNotifications, (entities): ProductNotification[] =>
     entities.filter(e => e.type === type)
   );
+
+export const getProductNotificationBySku = (sku: string, type: ProductNotificationType) =>
+  createSelector(getAllProductNotifications, (entities): ProductNotification[] =>
+    entities.filter(e => e.sku === sku && e.type === type)
+  );

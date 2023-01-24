@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, combineLatest, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
@@ -52,15 +53,21 @@ export class ProductNotificationEditFormComponent implements OnInit {
   productNotification$: Observable<ProductNotification>;
   product$: Observable<ProductView>;
   productPrices$: Observable<Pricing>;
+  productAvailable: boolean;
 
   ngOnInit() {
     this.product$ = this.context.select('product');
     this.productPrices$ = this.context.select('prices');
+    this.productAvailable = this.context.get('product', 'available');
 
+    // get product notification as @Input parameter or from facade
     this.productNotification$ = this.productNotification
       ? of(this.productNotification)
-      : this.productNotificationsFacade.productNotification$();
+      : this.productNotificationsFacade
+          .productNotificationBySku$(this.context.get('sku'), this.productAvailable ? 'price' : 'stock')
+          .pipe(whenTruthy(), shareReplay(1));
 
+    // fill the form values in the form model
     this.model$ = combineLatest([
       this.productNotification$,
       this.productPrices$,
@@ -82,6 +89,7 @@ export class ProductNotificationEditFormComponent implements OnInit {
       )
     );
 
+    // differentiate form with or without a product notification
     this.fields$ = combineLatest([
       this.productNotification$,
       this.product$,
