@@ -201,7 +201,7 @@ export class RegistrationFormConfigurationService {
 
   getErrorSources() {
     return merge(
-      this.accountFacade.userError$.pipe(filter(error => error.status !== 404)),
+      this.accountFacade.userError$.pipe(filter(error => error?.status !== 404)),
       this.accountFacade.ssoRegistrationError$
     );
   }

@@ -1,12 +1,13 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import {
@@ -39,10 +40,13 @@ export class RegistrationPageComponent implements OnInit {
   fields: FormlyFieldConfig[];
   model: Record<string, unknown>;
   options: FormlyFormOptions;
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
 
   ngOnInit() {
-    this.error$ = this.registrationFormConfiguration.getErrorSources();
+    this.error$ = this.registrationFormConfiguration.getErrorSources().pipe(
+      whenTruthy(),
+      tap(() => this.clearCaptchaToken())
+    );
 
     const snapshot = this.route.snapshot;
     this.model = this.registrationFormConfiguration.extractModel(snapshot);
@@ -69,5 +73,9 @@ export class RegistrationPageComponent implements OnInit {
   /** return boolean to set submit button enabled/disabled */
   get submitDisabled(): boolean {
     return this.form.invalid && this.submitted;
+  }
+
+  private clearCaptchaToken() {
+    this.form.get('captcha')?.setValue(undefined);
   }
 }
