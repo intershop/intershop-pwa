@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, combineLatest, of } from 'rxjs';
-import { map, shareReplay, switchMap, take } from 'rxjs/operators';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -58,20 +58,18 @@ export class ProductNotificationEditFormComponent implements OnInit {
   ngOnInit() {
     this.product$ = this.context.select('product');
     this.productPrices$ = this.context.select('prices');
-    this.productAvailable$ = this.context.select('product', 'available').pipe(take(1));
+    this.productAvailable$ = this.context.select('product', 'available');
 
     // get product notification as @Input parameter or from facade
     this.productNotification$ = this.productNotification
       ? of(this.productNotification)
-      : this.context
-          .select('product', 'available')
-          .pipe(
-            switchMap(available =>
-              this.productNotificationsFacade
-                .productNotificationBySku$(this.context.get('sku'), available ? 'price' : 'stock')
-                .pipe(whenTruthy(), shareReplay(1))
-            )
-          );
+      : this.productAvailable$.pipe(
+          switchMap(available =>
+            this.productNotificationsFacade
+              .productNotificationBySku$(this.context.get('sku'), available ? 'price' : 'stock')
+              .pipe(whenTruthy(), shareReplay(1))
+          )
+        );
 
     // fill the form values in the form model
     this.model$ = combineLatest([
