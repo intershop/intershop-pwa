@@ -2,6 +2,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createSelector } from '@ngrx/store';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
@@ -144,6 +145,7 @@ describe('Shopping Store', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
         RouterTestingModule.withRoutes([
           {
             path: 'home',

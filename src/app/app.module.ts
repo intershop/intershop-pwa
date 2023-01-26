@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule, TransferState } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UrlSerializer } from '@angular/router';
+import { NgxMatomoRouterModule } from '@ngx-matomo/router';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
+import { ENVIRONMENT_DEFAULTS } from 'src/environments/environment.model';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
@@ -40,6 +43,11 @@ import { ShellModule } from './shell/shell.module';
     CompareRoutingModule,
     ContactUsRoutingModule,
     AppLastRoutingModule,
+    NgxMatomoTrackerModule.forRoot({
+      trackerUrl: ENVIRONMENT_DEFAULTS.matomoTrackerUrl,
+      siteId: ENVIRONMENT_DEFAULTS.matomoSiteId,
+    }),
+    NgxMatomoRouterModule,
   ],
   /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],

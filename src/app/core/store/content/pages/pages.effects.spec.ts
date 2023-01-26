@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -41,6 +42,7 @@ describe('Pages Effects', () => {
       imports: [
         ContentStoreModule.forTesting('pagetree', 'pages'),
         CoreStoreModule.forTesting(['router']),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
         RouterTestingModule.withRoutes([
           { path: 'page/:contentPageId', children: [] },
           { path: '**', children: [] },

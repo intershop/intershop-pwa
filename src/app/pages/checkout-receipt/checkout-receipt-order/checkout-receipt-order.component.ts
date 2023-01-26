@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 import { Order } from 'ish-core/models/order/order.model';
 
@@ -7,6 +7,10 @@ import { Order } from 'ish-core/models/order/order.model';
   templateUrl: './checkout-receipt-order.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutReceiptOrderComponent {
+export class CheckoutReceiptOrderComponent implements OnInit {
   @Input() order: Order;
+  constructor() {}
+  ngOnInit(): void {
+    console.log(`Doesnt Work`);
+  }
 }

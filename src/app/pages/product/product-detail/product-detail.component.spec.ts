@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -60,6 +61,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductShipmentComponent),
         ProductDetailComponent,
       ],
+      imports: [NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined })],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });

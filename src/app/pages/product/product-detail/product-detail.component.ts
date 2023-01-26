@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -10,10 +10,16 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent implements OnInit {
+  private destroy = new Subject<void>();
   product$: Observable<ProductView>;
 
   constructor(private context: ProductContextFacade) {}
   ngOnInit() {
     this.product$ = this.context.select('product');
+  }
+
+  ngOnDestroy() {
+    this.destroy.next();
+    this.destroy.complete();
   }
 }

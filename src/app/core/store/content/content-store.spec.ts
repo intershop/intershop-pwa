@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Store, select } from '@ngrx/store';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { identity, of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -33,7 +34,11 @@ describe('Content Store', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [ContentStoreModule, CoreStoreModule.forTesting([], true)],
+      imports: [
+        ContentStoreModule,
+        CoreStoreModule.forTesting([], true),
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
+      ],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsService) },
         { provide: ProductsService, useFactory: () => instance(productsService) },

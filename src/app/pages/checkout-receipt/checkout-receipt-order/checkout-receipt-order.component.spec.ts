@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -16,7 +17,11 @@ describe('Checkout Receipt Order Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CheckoutReceiptOrderComponent, MockComponent(ModalDialogLinkComponent)],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [
+        NgxMatomoTrackerModule.forRoot({ disabled: true, trackerUrl: undefined, siteId: undefined }),
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents();
   });
 
