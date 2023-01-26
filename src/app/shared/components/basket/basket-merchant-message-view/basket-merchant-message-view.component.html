@@ -1,3 +1,5 @@
-<ng-container *ngIf="data">
-  <p data-testing-id="messageToMerchant">{{ messageToMerchant }}</p>
+<ng-container *ngIf="data && messageToMerchant">
+  <ish-info-box heading="checkout.widget.message_to_merchant" class="infobox-wrapper">
+    <p data-testing-id="message-to-merchant">{{ messageToMerchant }}</p>
+  </ish-info-box>
 </ng-container>

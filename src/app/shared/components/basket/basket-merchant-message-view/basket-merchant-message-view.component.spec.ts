@@ -1,4 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 
 import { BasketMerchantMessageViewComponent } from './basket-merchant-message-view.component';
 
@@ -9,7 +14,8 @@ describe('Basket Merchant Message View Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BasketMerchantMessageViewComponent],
+      imports: [TranslateModule.forRoot()],
+      declarations: [BasketMerchantMessageViewComponent, InfoBoxComponent],
     }).compileComponents();
   });
 
@@ -23,5 +29,15 @@ describe('Basket Merchant Message View Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should display messageToMerchant', () => {
+    component.data = {} as Basket;
+    component.messageToMerchant = 'This is your message';
+    fixture.detectChanges();
+
+    const messageToMerchantElement = fixture.debugElement.query(By.css(`[data-testing-id= "message-to-merchant"]`));
+    expect(messageToMerchantElement).not.toBeNull();
+    expect(messageToMerchantElement.nativeElement.textContent).toBe('This is your message');
   });
 });

@@ -29,7 +29,6 @@ import { mapErrorToAction, mapToPayloadProperty, mapToProperty } from 'ish-core/
 
 import {
   addMessageToMerchant,
-  addMessageToMerchantFail,
   continueCheckout,
   createBasket,
   createBasketFail,
@@ -213,8 +212,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(addMessageToMerchant),
       mapToPayloadProperty('messageToMerchant'),
-      map(messageToMerchant => updateBasket({ update: { messageToMerchant } })),
-      mapErrorToAction(addMessageToMerchantFail)
+      map(messageToMerchant => updateBasket({ update: { messageToMerchant } }))
     )
   );
 

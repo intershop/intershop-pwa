@@ -5,6 +5,12 @@ import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
 
+/**
+ * The Basket Merchant Message View Component displays the message to merchant on related pages like basket review, order details and requisition details page.
+ *
+ * @example
+ * <ish-basket-merchant-message-view></ish-basket-merchant-message-view>
+ */
 @Component({
   selector: 'ish-basket-merchant-message-view',
   templateUrl: './basket-merchant-message-view.component.html',

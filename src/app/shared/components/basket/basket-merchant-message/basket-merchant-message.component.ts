@@ -14,6 +14,13 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 
+/**
+ * The Basket Merchant Message Component displays a message to merchant input.
+ * It provides the add message to merchant functionality.
+ *
+ * @example
+ * <ish-basket-merchant-message></ish-basket-merchant-message>
+ */
 @Component({
   selector: 'ish-basket-merchant-message',
   templateUrl: './basket-merchant-message.component.html',

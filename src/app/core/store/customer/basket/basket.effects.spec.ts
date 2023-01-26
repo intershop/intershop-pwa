@@ -399,7 +399,7 @@ describe('Basket Effects', () => {
   });
 
   describe('addMessageToMerchant$', () => {
-    it('should trigger the addMessageToMerchant action if called', () => {
+    it('should trigger the updateBasket action if called', () => {
       const messageToMerchant = 'My Message To Merchant';
       const action = addMessageToMerchant({ messageToMerchant });
       const completion = updateBasket({
