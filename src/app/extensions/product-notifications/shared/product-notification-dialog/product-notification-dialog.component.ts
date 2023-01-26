@@ -1,12 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
+import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
 /**
@@ -24,21 +28,33 @@ import { ProductNotification } from '../../models/product-notification/product-n
   styleUrls: ['./product-notification-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductNotificationDialogComponent implements OnInit {
+export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
   modal: NgbModalRef;
-  productNotificationForm = new FormGroup({});
+  productNotificationForm = new UntypedFormGroup({});
   product$: Observable<ProductView>;
+
+  submitted = false;
+  productPrices$: Observable<Pricing>;
+  currentCurrency: string;
 
   @Input() productNotification: ProductNotification;
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
-  constructor(private ngbModal: NgbModal, private context: ProductContextFacade) {}
+  private destroy$ = new Subject<void>();
 
-  submitted = false;
+  constructor(
+    private ngbModal: NgbModal,
+    private context: ProductContextFacade,
+    private productNotificationsFacade: ProductNotificationsFacade,
+    private appFacade: AppFacade
+  ) {}
 
   ngOnInit() {
-    this.product$ = this.context.select('product');
+    // determine current currency
+    this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(currency => {
+      this.currentCurrency = currency;
+    });
   }
 
   /** close modal */
@@ -57,6 +73,30 @@ export class ProductNotificationDialogComponent implements OnInit {
       markAsDirtyRecursive(this.productNotificationForm);
       this.submitted = true;
       return;
+    } else {
+      const formValue = this.productNotificationForm.value;
+      const sku = this.context.get('sku');
+      const notificationType = this.productNotificationForm.value.pricevalue === undefined ? 'stock' : 'price';
+
+      if (formValue.alerttype !== undefined && formValue.alerttype === 'delete') {
+        // user selected the radio button to remove the notification
+        this.productNotificationsFacade.deleteProductNotification(sku, notificationType);
+      } else {
+        // there is no radio button or user selected the radio button to create the notification
+        this.productNotificationsFacade.createProductNotification(
+          sku,
+          notificationType,
+          formValue.email,
+          this.productNotificationForm.value.pricevalue,
+          this.currentCurrency
+        );
+      }
+      this.hide();
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

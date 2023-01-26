@@ -9,7 +9,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { whenTruthy } from 'ish-core/utils/operators';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
@@ -60,18 +59,18 @@ export class ProductNotificationEditFormComponent implements OnInit {
     this.productPrices$ = this.context.select('prices');
     this.productAvailable$ = this.context.select('product', 'available');
 
-    // get product notification as @Input parameter or from facade
+    // get product notification as @Input parameter (my account) or from facade (REST call)
     this.productNotification$ = this.productNotification
       ? of(this.productNotification)
       : this.productAvailable$.pipe(
           switchMap(available =>
             this.productNotificationsFacade
               .productNotificationBySku$(this.context.get('sku'), available ? 'price' : 'stock')
-              .pipe(whenTruthy(), shareReplay(1))
+              .pipe(shareReplay(1))
           )
         );
 
-    // fill the form values in the form model
+    // fill the form values in the form model, this.productNotification$ can be "undefined" if no notification exists
     this.model$ = combineLatest([
       this.productNotification$,
       this.productPrices$,
@@ -120,7 +119,7 @@ export class ProductNotificationEditFormComponent implements OnInit {
         templateOptions: {
           label: 'product.notification.edit.form.no_notification.label',
           fieldClass: ' ',
-          value: '',
+          value: 'delete',
         },
       },
       ...(productNotification?.type === 'price' || product?.available
