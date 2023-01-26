@@ -1,8 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { flatten, range } from 'lodash-es';
-import { Observable, OperatorFunction, from, identity, of, throwError } from 'rxjs';
-import { defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
+import { Observable, OperatorFunction, forkJoin, from, identity, iif, of, throwError } from 'rxjs';
+import { catchError, defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
@@ -21,6 +21,7 @@ import {
 } from 'ish-core/models/product/product.model';
 import { SparqueCountResponse, SparqueFacetOptionsResponse } from 'ish-core/models/sparque/sparque.interface';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
@@ -32,7 +33,15 @@ import STUB_ATTRS from './products-list-attributes';
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
+  static STUB_ATTRS =
+    'sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet,defaultCategory';
+
+  constructor(
+    private apiService: ApiService,
+    private productMapper: ProductMapper,
+    private appFacade: AppFacade,
+    private sparqueApiService: SparqueApiService
+  ) {}
 
   /**
    * Get the full Product data for the given Product SKU.
@@ -45,7 +54,7 @@ export class ProductsService {
       return throwError(() => new Error('getProduct() called without a sku'));
     }
 
-    const params = new HttpParams().set('allImages', true).set('extended', true);
+    const params = new HttpParams().set('allImages', 'true');
 
     return this.apiService
       .get<ProductData>(`products/${sku}`, { sendSPGID: true, params })
@@ -71,7 +80,7 @@ export class ProductsService {
     }
 
     let params = new HttpParams()
-      .set('attrs', STUB_ATTRS)
+      .set('attrs', ProductsService.STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
@@ -105,14 +114,6 @@ export class ProductsService {
       );
   }
 
-  getProductsAfterSearch(): OperatorFunction<
-    [SparqueFacetOptionsResponse, SparqueCountResponse],
-    { products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }
-  > {
-    return (source$: Observable<[SparqueFacetOptionsResponse, SparqueCountResponse]>) =>
-      source$.pipe(map(() => ({ products: [], sortableAttributes: [], total: 0 })));
-  }
-
   /**
    * Get products for a given search term respecting pagination.
    *
@@ -121,9 +122,11 @@ export class ProductsService {
    * @param sortKey       The sortKey to sort the list, default value is ''.
    * @returns             A list of matching Product stubs with a list of possible sort keys and the total amount of results.
    */
+
   searchProducts(
     searchTerm: string,
     amount: number,
+    // @ts-ignore
     sortKey?: string,
     offset = 0
   ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
@@ -131,38 +134,48 @@ export class ProductsService {
       return throwError(() => new Error('searchProducts() called without searchTerm'));
     }
 
-    let params = new HttpParams()
-      .set('searchTerm', searchTerm)
-      .set('amount', amount.toString())
-      .set('offset', offset.toString())
-      .set('attrs', STUB_ATTRS)
-      .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
-      .set('returnSortKeys', 'true');
-    if (sortKey) {
-      params = params.set('sortKey', sortKey);
-    }
-
-    return this.apiService
-      .get<{
-        elements: ProductDataStub[];
-        sortKeys: string[];
-        sortableAttributes: { [id: string]: SortableAttributesType };
-        total: number;
-      }>('products', { sendSPGID: true, params })
+    // sortableAttributes and total are missing in REST response
+    // request should wait some time to get recent basket --> could be optimized
+    return this.sparqueApiService
+      .getRelevantInformations$()
       .pipe(
-        map(response => ({
-          products: response.elements.map(element => this.productMapper.fromStubData(element)),
-          sortableAttributes: Object.values(response.sortableAttributes || {}),
-          total: response.total ? response.total : response.elements.length,
-        })),
-        withLatestFrom(
-          this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
-        ),
-        map(([{ products, sortableAttributes, total }, advancedVariationHandling]) => ({
-          products: this.postProcessMasters(products, advancedVariationHandling),
-          sortableAttributes,
-          total,
-        }))
+        switchMap(([basketSKUs, userId, locale]) =>
+          this.sparqueApiService
+            .get<[SparqueFacetOptionsResponse, SparqueCountResponse]>(
+              `${SparqueApiService.getSearchPath(
+                searchTerm,
+                locale,
+                userId,
+                basketSKUs
+              )}/results,count?config=default&count=${amount}&offset=${offset}`
+            )
+            .pipe(this.getProductsAfterSearch())
+        )
+      );
+  }
+
+  getProductsAfterSearch(): OperatorFunction<
+    [SparqueFacetOptionsResponse, SparqueCountResponse],
+    { products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }
+  > {
+    return (source$: Observable<[SparqueFacetOptionsResponse, SparqueCountResponse]>) =>
+      source$.pipe(
+        map(([result, count]) => ({ items: result?.items, sortableAttributes: [], total: count.total })),
+        switchMap(({ items, sortableAttributes, total }) =>
+          iif(
+            () => !!total,
+            forkJoin(
+              items.map(item => this.getProduct(item.tuple[0].attributes.sku).pipe(catchError(() => of(undefined))))
+            ),
+            of([])
+          ).pipe(
+            map(products => ({
+              products: products.filter(p => !!p),
+              sortableAttributes,
+              total,
+            }))
+          )
+        )
       );
   }
 
@@ -180,7 +193,7 @@ export class ProductsService {
       .set('MasterSKU', masterSKU)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
-      .set('attrs', STUB_ATTRS)
+      .set('attrs', ProductsService.STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
@@ -243,9 +256,9 @@ export class ProductsService {
         }))
       );
   }
-
   /**
    * exchange single-return variation products to master products for B2B
+   * TODO: this is a work-around
    */
   private postProcessMasters(products: Partial<Product>[], advancedVariationHandling: boolean): Product[] {
     if (advancedVariationHandling) {
@@ -268,13 +281,8 @@ export class ProductsService {
       return throwError(() => new Error('getProductVariations() called without a sku'));
     }
 
-    const params = new HttpParams().set('extended', true);
-
     return this.apiService
-      .get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`, {
-        sendSPGID: true,
-        params,
-      })
+      .get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`, { sendSPGID: true })
       .pipe(
         switchMap(resp =>
           !resp.total
@@ -290,7 +298,7 @@ export class ProductsService {
                         this.apiService
                           .get<{ elements: Link[] }>(`products/${sku}/variations`, {
                             sendSPGID: true,
-                            params: params.set('amount', length).set('offset', offset),
+                            params: new HttpParams().set('amount', length).set('offset', offset),
                           })
                           .pipe(mapToProperty('elements'))
                       )
