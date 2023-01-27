@@ -34,7 +34,7 @@ import {
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getCurrentBasket, getCurrentBasketId, loadBasket, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
+import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
 import { getOrder, getSelectedOrderId, loadOrderByAPIToken } from 'ish-core/store/customer/orders';
 import {
   fetchAnonymousUserToken,
@@ -148,23 +148,6 @@ export class ApiTokenService {
         .subscribe(([type, apiToken]) => {
           this.apiToken$.next(apiToken);
           this.cookieVanishes$.next(type);
-        });
-
-      // session keep alive
-      appRef.isStable
-        .pipe(
-          whenTruthy(),
-          first(),
-          mergeMap(() =>
-            store.pipe(
-              select(getCurrentBasket),
-              switchMap(basket => interval(10 * 60 * 1000).pipe(map(() => !!basket)))
-            )
-          ),
-          whenTruthy()
-        )
-        .subscribe(() => {
-          store.dispatch(loadBasket());
         });
     }
   }
