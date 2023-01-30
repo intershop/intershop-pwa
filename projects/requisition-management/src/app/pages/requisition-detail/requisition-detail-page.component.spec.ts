@@ -7,10 +7,11 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
@@ -33,10 +34,11 @@ describe('Requisition Detail Page Component', () => {
     context = mock(RequisitionContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('messageToMerchant'), RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
@@ -45,7 +47,6 @@ describe('Requisition Detail Page Component', () => {
         MockComponent(RequisitionRejectDialogComponent),
         MockComponent(RequisitionSummaryComponent),
         MockDirective(AuthorizationToggleDirective),
-        MockDirective(FeatureToggleDirective),
         RequisitionDetailPageComponent,
       ],
     })
@@ -78,6 +79,7 @@ describe('Requisition Detail Page Component', () => {
         "ish-error-message",
         "ish-requisition-summary",
         "ish-requisition-cost-center-approval",
+        "ish-basket-merchant-message-view",
         "ish-info-box",
         "ish-address",
         "ish-info-box",

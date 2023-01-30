@@ -3,9 +3,9 @@
     <!-- header as content -->
     <ng-content></ng-content>
 
-    <ng-container *ishFeature="'messageToMerchant'" class="row">
+    <ng-container *ishFeature="'messageToMerchant'">
       <!-- MessageToMerchant-->
-      <ish-basket-merchant-message-view [data]="order" class="col-md-12"></ish-basket-merchant-message-view>
+      <ish-basket-merchant-message-view [data]="order"></ish-basket-merchant-message-view>
     </ng-container>
 
     <div *ishFeature="'businessCustomerRegistration'" class="row">

@@ -43,9 +43,9 @@
 
     <h2>{{ 'approval.detailspage.order_details.heading' | translate }}</h2>
 
-    <div *ishFeature="'messageToMerchant'" class="row">
+    <div *ishFeature="'messageToMerchant'">
       <!-- MessageToMerchant-->
-      <ish-basket-merchant-message-view [data]="requisition" class="col-md-12"></ish-basket-merchant-message-view>
+      <ish-basket-merchant-message-view [data]="requisition"></ish-basket-merchant-message-view>
     </div>
 
     <div class="row d-flex">
