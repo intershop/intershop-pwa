@@ -1,4 +1,4 @@
-<ng-container *ngIf="!isMobileView; else mobileNavigation">
+<ng-container *ngIf="!(deviceType === 'mobile' || deviceType === 'tablet'); else mobileNavigation">
   <ul class="account-navigation list-unstyled">
     <ish-account-user-info></ish-account-user-info>
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted">

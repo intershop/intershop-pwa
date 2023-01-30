@@ -1,5 +1,5 @@
 /* eslint-disable rxjs-angular/prefer-takeuntil */
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
@@ -26,10 +26,8 @@ interface NavigationItems {
   templateUrl: './account-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountNavigationComponent implements OnInit, OnChanges {
+export class AccountNavigationComponent {
   @Input() deviceType: DeviceType;
-
-  isMobileView = false;
 
   /**
    * Manages the Account Navigation items.
@@ -137,12 +135,6 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
-  }
-
-  ngOnChanges() {
-    this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
   toggleCollapse(item: NavigationItem) {
     item.isCollapsed = !item.isCollapsed;
   }
