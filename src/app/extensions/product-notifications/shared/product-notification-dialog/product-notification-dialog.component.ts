@@ -77,16 +77,19 @@ export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
       this.submitted = true;
       return;
     } else {
+      const sku = this.context.get('sku');
       const formValue = this.productNotificationForm.value;
-      const notificationType = this.productNotificationForm.value.pricevalue === undefined ? 'stock' : 'price';
+      const productNotificationType = formValue.pricevalue === undefined ? 'stock' : 'price';
+      const productNotificationId =
+        formValue.productnotificationid !== undefined ? formValue.productnotificationid : '';
 
       const productNotification: ProductNotification = {
         id: undefined,
-        type: notificationType,
-        sku: this.context.get('sku'),
+        type: productNotificationType,
+        sku,
         notificationMailAddress: this.productNotificationForm.value.email,
         price: {
-          type: 'Money', // @todo: set correctly
+          type: 'Money',
           value: formValue.pricevalue,
           currency: this.currentCurrency,
         },
@@ -94,11 +97,12 @@ export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
 
       if (formValue.alerttype !== undefined && formValue.alerttype === 'delete') {
         // user selected the radio button to remove the notification
-        this.productNotificationsFacade.deleteProductNotification(productNotification);
+        this.productNotificationsFacade.deleteProductNotification(sku, productNotificationType, productNotificationId);
       } else {
         // there is no radio button or user selected the radio button to create the notification
         this.productNotificationsFacade.createProductNotification(productNotification);
       }
+
       this.hide();
     }
   }

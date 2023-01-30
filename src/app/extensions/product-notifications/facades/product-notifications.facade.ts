@@ -47,8 +47,12 @@ export class ProductNotificationsFacade {
   }
 
   // delete a product notification
-  deleteProductNotification(productNotification: ProductNotification) {
-    this.store.dispatch(deleteProductNotification({ productNotification }));
+  deleteProductNotification(
+    sku: string,
+    productNotificationType: ProductNotificationType,
+    productNotificationId: string
+  ) {
+    this.store.dispatch(deleteProductNotification({ sku, productNotificationType, productNotificationId }));
   }
 
   productNotificationsLoading$: Observable<boolean> = this.store.pipe(select(getProductNotificationsLoading));

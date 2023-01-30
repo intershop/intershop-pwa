@@ -40,7 +40,13 @@ export class ProductNotificationEditFormComponent implements OnInit {
   @Input() productNotification: ProductNotification;
   fields$: Observable<FormlyFieldConfig[]>;
 
-  model$: Observable<{ alerttype: string; email: string; pricevalue: number; currency?: string }>;
+  model$: Observable<{
+    alerttype: string;
+    email: string;
+    pricevalue: number;
+    currency?: string;
+    productnotificationid?: string;
+  }>;
 
   constructor(
     private appFacade: AppFacade,
@@ -83,6 +89,7 @@ export class ProductNotificationEditFormComponent implements OnInit {
               alerttype: productNotification.type,
               email: productNotification.notificationMailAddress,
               pricevalue: productNotification.price?.value,
+              productnotificationid: productNotification.id,
             }
           : {
               alerttype: product?.available ? 'price' : 'stock',
@@ -121,6 +128,9 @@ export class ProductNotificationEditFormComponent implements OnInit {
           fieldClass: ' ',
           value: 'delete',
         },
+      },
+      {
+        key: 'productnotificationid',
       },
       ...(productNotification?.type === 'price' || product?.available
         ? this.getPriceConfigForProductNotification(currency)

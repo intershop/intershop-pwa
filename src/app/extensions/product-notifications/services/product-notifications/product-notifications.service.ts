@@ -80,17 +80,20 @@ export class ProductNotificationsService {
    *
    * @param productNotification       The product notification.
    */
-  deleteProductNotification(productNotification: ProductNotification) {
-    if (!productNotification) {
-      return throwError(() => new Error('deleteProductNotification() called without notification'));
+  deleteProductNotification(sku: string, productNotificationType: string) {
+    if (!sku) {
+      return throwError(() => new Error('deleteProductNotification() called without sku'));
+    }
+    if (!productNotificationType) {
+      return throwError(() => new Error('deleteProductNotification() called without type'));
     }
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService.delete(
           customer.isBusinessCustomer
-            ? `customers/${customer.customerNo}/users/-/notifications/${productNotification.type}/${productNotification.sku}`
-            : `privatecustomers/-/notifications/${productNotification.type}/${productNotification.sku}`
+            ? `customers/${customer.customerNo}/users/-/notifications/${productNotificationType}/${sku}`
+            : `privatecustomers/-/notifications/${productNotificationType}/${sku}`
         )
       )
     );

@@ -46,7 +46,7 @@ export const productNotificationReducer = createReducer(
     productNotificationAdapter.addOne(action.payload.productNotification, state)
   ),
   on(deleteProductNotificationSuccess, (state, action) => {
-    const id = `${action.payload.productNotification.sku}_${action.payload.productNotification.type}`;
+    const id = action.payload.productNotificationId;
 
     return {
       ...productNotificationAdapter.removeOne(id, state),

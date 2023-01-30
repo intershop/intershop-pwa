@@ -60,9 +60,9 @@ export class ProductNotificationEffects {
       ofType(deleteProductNotification),
       mapToPayload(),
       mergeMap(payload =>
-        this.productNotificationsService.deleteProductNotification(payload.productNotification).pipe(
+        this.productNotificationsService.deleteProductNotification(payload.sku, payload.productNotificationType).pipe(
           mergeMap(() => [
-            deleteProductNotificationSuccess(payload),
+            deleteProductNotificationSuccess({ productNotificationId: payload.productNotificationId }),
             displaySuccessMessage({
               message: 'product.notification.delete.success.message',
             }),
