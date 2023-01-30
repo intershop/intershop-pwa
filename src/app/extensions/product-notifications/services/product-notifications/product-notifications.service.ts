@@ -50,60 +50,26 @@ export class ProductNotificationsService {
   /**
    * Creates a product notification for a given product and user.
    *
-   * @param sku                       The product sku.
-   * @param notificationType          The type of the notification.
-   * @param notificationMailAddress   The email of the notification.
-   * @param price                     Optional: The price of the notification.
-   * @param currency                  Optional: The price currency.
+   * @param productNotification       The product notification.
    * @returns                         The created product notification.
    */
-  createProductNotification(
-    sku: string,
-    notificationType: ProductNotificationType,
-    notificationMailAddress: string,
-    price?: number,
-    currency?: string
-  ) {
-    if (!sku) {
-      return throwError(() => new Error('createProductNotification() called without sku'));
+  createProductNotification(productNotification: ProductNotification) {
+    if (!productNotification) {
+      return throwError(() => new Error('createProductNotification() called without notification'));
     }
-    if (!notificationType) {
-      return throwError(() => new Error('createProductNotification() called without notificationType'));
-    }
-    if (!notificationMailAddress) {
-      return throwError(() => new Error('createProductNotification() called without notificationMailAddress'));
-    }
-
-    // if no price is passed, the body should not include it
-    const notificationBody =
-      price === undefined
-        ? {
-            sku,
-            notificationMailAddress,
-          }
-        : {
-            sku,
-            notificationMailAddress,
-            price: {
-              value: price,
-              currency,
-            },
-          };
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
           .post(
             customer.isBusinessCustomer
-              ? `customers/${customer.customerNo}/users/-/notifications/${notificationType}`
-              : `privatecustomers/-/notifications/${notificationType}`,
-            notificationBody
+              ? `customers/${customer.customerNo}/users/-/notifications/${productNotification.type}`
+              : `privatecustomers/-/notifications/${productNotification.type}`,
+            productNotification
           )
           .pipe(
-            this.apiService.resolveLink<ProductNotificationData>()
-            // map(data =>
-            //   data.map(notificationData => ProductNotificationMapper.fromData(notificationData, notificationType))
-            // )
+            this.apiService.resolveLink<ProductNotificationData>(),
+            map(notificationData => ProductNotificationMapper.fromData(notificationData, productNotification.type))
           )
       )
     );
@@ -112,33 +78,20 @@ export class ProductNotificationsService {
   /**
    * Deletes a product notification for a given product and user.
    *
-   * @param sku                       The product sku.
-   * @param notificationType          The type of the notification.
-   * @returns                         The deleted product notification.
+   * @param productNotification       The product notification.
    */
-  deleteProductNotification(sku: string, notificationType: ProductNotificationType) {
-    if (!sku) {
-      return throwError(() => new Error('deleteProductNotification() called without sku'));
-    }
-    if (!notificationType) {
-      return throwError(() => new Error('deleteProductNotification() called without notificationType'));
+  deleteProductNotification(productNotification: ProductNotification) {
+    if (!productNotification) {
+      return throwError(() => new Error('deleteProductNotification() called without notification'));
     }
 
     return this.currentCustomer$.pipe(
-      switchMap(
-        customer =>
-          this.apiService.delete(
-            customer.isBusinessCustomer
-              ? `customers/${customer.customerNo}/users/-/notifications/${notificationType}/${sku}`
-              : `privatecustomers/-/notifications/${notificationType}/${sku}`
-          )
-        // .pipe(
-        //   log(),
-        //   this.apiService.resolveLink<ProductNotificationData>()
-        //   map(data =>
-        //     data.map(notificationData => ProductNotificationMapper.fromData(notificationData, notificationType))
-        //   )
-        // )
+      switchMap(customer =>
+        this.apiService.delete(
+          customer.isBusinessCustomer
+            ? `customers/${customer.customerNo}/users/-/notifications/${productNotification.type}/${productNotification.sku}`
+            : `privatecustomers/-/notifications/${productNotification.type}/${productNotification.sku}`
+        )
       )
     );
   }

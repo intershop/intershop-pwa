@@ -6,7 +6,10 @@ import { Observable, distinctUntilChanged, map, switchMap } from 'rxjs';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
 
-import { ProductNotificationType } from '../models/product-notification/product-notification.model';
+import {
+  ProductNotification,
+  ProductNotificationType,
+} from '../models/product-notification/product-notification.model';
 import {
   createProductNotification,
   deleteProductNotification,
@@ -30,6 +33,7 @@ export class ProductNotificationsFacade {
   // get a product notification by sku and the type
   productNotificationBySku$(sku: string, type: ProductNotificationType) {
     this.store.dispatch(loadProductNotifications({ type }));
+    // @todo: do not get from server again if not needed
 
     return this.store.pipe(select(getProductNotificationBySku(sku, type))).pipe(
       map(notifications => (notifications?.length ? notifications[0] : undefined)),
@@ -38,19 +42,13 @@ export class ProductNotificationsFacade {
   }
 
   // create a product notification
-  createProductNotification(
-    sku: string,
-    type: ProductNotificationType,
-    notificationMailAddress: string,
-    price?: number,
-    currency?: string
-  ) {
-    this.store.dispatch(createProductNotification({ sku, type, notificationMailAddress, price, currency }));
+  createProductNotification(productNotification: ProductNotification) {
+    this.store.dispatch(createProductNotification({ productNotification }));
   }
 
   // delete a product notification
-  deleteProductNotification(sku: string, type: ProductNotificationType) {
-    this.store.dispatch(deleteProductNotification({ sku, type }));
+  deleteProductNotification(productNotification: ProductNotification) {
+    this.store.dispatch(deleteProductNotification({ productNotification }));
   }
 
   productNotificationsLoading$: Observable<boolean> = this.store.pipe(select(getProductNotificationsLoading));

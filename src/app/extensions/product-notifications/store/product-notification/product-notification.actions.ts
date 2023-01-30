@@ -24,18 +24,12 @@ export const loadProductNotificationsFail = createAction(
 
 export const createProductNotification = createAction(
   '[Product Notification] Create Product Notification',
-  payload<{
-    sku: string;
-    type: ProductNotificationType;
-    notificationMailAddress: string;
-    price?: number;
-    currency?: string;
-  }>()
+  payload<{ productNotification: ProductNotification }>()
 );
 
 export const createProductNotificationSuccess = createAction(
   '[Product Notification API] Create Product Notification Success',
-  payload<{ notification: ProductNotification }>()
+  payload<{ productNotification: ProductNotification }>()
 );
 
 export const createProductNotificationFail = createAction(
@@ -45,12 +39,12 @@ export const createProductNotificationFail = createAction(
 
 export const deleteProductNotification = createAction(
   '[Product Notification] Delete Product Notification',
-  payload<{ sku: string; type: ProductNotificationType }>()
+  payload<{ productNotification: ProductNotification }>()
 );
 
 export const deleteProductNotificationSuccess = createAction(
   '[Product Notification API] Delete Product Notification Success',
-  payload<{ sku: string; notification: ProductNotification }>()
+  payload<{ productNotification: ProductNotification }>()
 );
 
 export const deleteProductNotificationFail = createAction(

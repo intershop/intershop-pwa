@@ -41,22 +41,15 @@ export const productNotificationReducer = createReducer(
   ),
   on(loadProductNotificationsSuccess, (state, action) =>
     productNotificationAdapter.upsertMany(action.payload.productNotifications, state)
-  )
-  // on(createProductNotificationSuccess, (state, action) => {
-  //   const productNotification: ProductNotification = {
-  //     sku: action.payload.reviews.sku,
-  //     notification: state.entities[action.payload.notification.sku]?.notification?.concat(
-  //       action.payload.notification.notification
-  //     ),
-  //   };
+  ),
+  on(createProductNotificationSuccess, (state, action) =>
+    productNotificationAdapter.addOne(action.payload.productNotification, state)
+  ),
+  on(deleteProductNotificationSuccess, (state, action) => {
+    const id = `${action.payload.productNotification.sku}_${action.payload.productNotification.type}`;
 
-  //   return productNotificationAdapter.upsertOne(productNotification, state);
-  // }),
-  // on(deleteProductNotificationSuccess, (state, action) => {
-  //   const productReviews: ProductReviewsModel = {
-  //     sku: action.payload.sku,
-  //     reviews: state.entities[action.payload.sku]?.reviews?.filter(review => review.id !== action.payload.review.id),
-  //   };
-  //   return productReviewsAdapter.upsertOne(productReviews, state);
-  // })
+    return {
+      ...productNotificationAdapter.removeOne(id, state),
+    };
+  })
 );

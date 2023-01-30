@@ -903,6 +903,8 @@
   "product.label.sale.text": "SALE",
   "product.label.topseller.text": "TOP",
   "product.manufacturer_name.label": "Herstellername",
+  "product.notification.create.success.message": "Benachrichtigung wurde gesendet.",
+  "product.notification.delete.success.message": "Ihre Produktbenachrichtigung wurde gelöscht.",
   "product.notification.edit.form.cancel.button.label": "Abbrechen",
   "product.notification.edit.form.email.label": "E-Mail",
   "product.notification.edit.form.instock_notification.label": "Benachrichtigen Sie mich, wenn das Produkt wieder auf Lager ist.",

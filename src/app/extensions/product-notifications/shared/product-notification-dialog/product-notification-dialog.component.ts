@@ -51,6 +51,8 @@ export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.product$ = this.context.select('product');
+
     // determine current currency
     this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(currency => {
       this.currentCurrency = currency;
@@ -75,21 +77,27 @@ export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
       return;
     } else {
       const formValue = this.productNotificationForm.value;
-      const sku = this.context.get('sku');
       const notificationType = this.productNotificationForm.value.pricevalue === undefined ? 'stock' : 'price';
 
+      const productNotification: ProductNotification = {
+        id: undefined,
+        type: notificationType,
+        sku: this.context.get('sku'),
+        notificationMailAddress: this.productNotificationForm.value.email,
+        price: {
+          type: 'Money', // @todo: set correctly
+          value: formValue.pricevalue,
+          currency: this.currentCurrency,
+        },
+      };
+
+      // @todo: alerttype is always "delete" after deleting a notification
       if (formValue.alerttype !== undefined && formValue.alerttype === 'delete') {
         // user selected the radio button to remove the notification
-        this.productNotificationsFacade.deleteProductNotification(sku, notificationType);
+        this.productNotificationsFacade.deleteProductNotification(productNotification);
       } else {
         // there is no radio button or user selected the radio button to create the notification
-        this.productNotificationsFacade.createProductNotification(
-          sku,
-          notificationType,
-          formValue.email,
-          this.productNotificationForm.value.pricevalue,
-          this.currentCurrency
-        );
+        this.productNotificationsFacade.createProductNotification(productNotification);
       }
       this.hide();
     }
