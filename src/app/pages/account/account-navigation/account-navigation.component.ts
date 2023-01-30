@@ -5,18 +5,20 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
+interface NavigationItem {
+  localizationKey: string;
+  dataTestingId?: string;
+  feature?: string;
+  serverSetting?: string;
+  permission?: string | string[];
+  notRole?: string | string[];
+  faIcon?: IconProp;
+  isCollapsed?: boolean;
+  children?: NavigationItems;
+}
+
 interface NavigationItems {
-  [link: string]: {
-    localizationKey: string;
-    dataTestingId?: string;
-    feature?: string;
-    serverSetting?: string;
-    permission?: string | string[];
-    notRole?: string | string[];
-    faIcon?: IconProp;
-    isCollapsed?: boolean;
-    children?: NavigationItems;
-  };
+  [link: string]: NavigationItem;
 }
 
 @Component({
@@ -34,11 +36,15 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
    */
   navigationItems: NavigationItems = {
     '/account': { localizationKey: 'account.my_account.link', faIcon: 'user' },
-    '/account/requisitions/buyer': {
+    _purchases: {
       localizationKey: 'account.requisitions.purchases',
       faIcon: 'cart-shopping',
       isCollapsed: true,
       children: {
+        '/account/orders': {
+          localizationKey: 'account.order_history.link',
+          notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+        },
         '/account/requisitions/buyer': {
           localizationKey: 'account.requisitions.requisitions',
           serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
@@ -55,10 +61,6 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
           feature: 'orderTemplates',
           dataTestingId: 'order-templates-link',
         },
-        '/account/orders': {
-          localizationKey: 'account.order_history.link',
-          notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-        },
         '/account/wishlists': {
           localizationKey: 'account.wishlists.link',
           feature: 'wishlists',
@@ -67,7 +69,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
         },
       },
     },
-    '/account/requisitions/myapprover': {
+    _approvals: {
       localizationKey: 'account.requisitions.myapprovals',
       faIcon: 'check',
       serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
@@ -81,7 +83,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
         },
       },
     },
-    '/account/myprofile': {
+    _profile: {
       localizationKey: 'account.profile.myprofile',
       notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       faIcon: 'gear',
@@ -93,7 +95,7 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
         },
       },
     },
-    '/account/requisitions/organization': {
+    _organization: {
       localizationKey: 'account.requisitions.organization',
       faIcon: 'briefcase',
       isCollapsed: true,
@@ -141,6 +143,8 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
+  toggleCollapse(item: NavigationItem) {
+    item.isCollapsed = !item.isCollapsed;
   }
 
   navigateTo(target: EventTarget) {

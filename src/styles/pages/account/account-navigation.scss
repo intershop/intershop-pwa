@@ -2,6 +2,8 @@
 // ACCOUNT NAVIGATION
 
 .account-navigation {
+  border-top: $border-width-default solid $border-color-lighter;
+
   li {
     padding: divide($space-default * 2, 3) divide($space-default * 2, 3) ($space-default * 0.5);
     background: $color-tertiary;
@@ -19,6 +21,8 @@
     }
 
     &.account-nav-header {
+      font-size: 16px;
+      color: $text-color-inverse;
       cursor: pointer;
       background: $color-secondary;
       border: $border-width-default solid $border-color-default;
@@ -26,7 +30,7 @@
 
     .ng-fa-icon {
       margin-right: ($space-default * 0.5);
-      font-size: 14px;
+      font-size: 16px;
       color: $text-color-quaternary;
     }
 
@@ -34,15 +38,6 @@
       margin: 0;
       font-size: 16px;
       color: $text-color-primary;
-    }
-
-    &:first-child {
-      border-width: $border-width-default;
-      border-radius: 0;
-    }
-
-    &:last-child {
-      border-radius: 0;
     }
 
     a {

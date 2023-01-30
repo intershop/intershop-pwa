@@ -1,57 +1,61 @@
 <ng-container *ngIf="!isMobileView; else mobileNavigation">
-  <ul class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
+  <ul class="account-navigation list-unstyled">
     <ish-account-user-info></ish-account-user-info>
-    <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted; let first = first; let i = index">
+    <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted">
       <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
         <ng-container *ishHasNotRole="item.value.notRole">
-          <li
+          <ng-container
             *ngIf="
               (item.value.feature || 'always' | ishFeature) && (item.value.serverSetting || 'always' | ishServerSetting)
             "
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: first }"
           >
-            <ng-container *ngIf="item.value.children; else noChild">
-              <a
-                [attr.data-testing-id]="item.value.dataTestingId"
-                (click)="item.value.isCollapsed = !item.value.isCollapsed"
+            <ng-container *ngIf="item.value.children; else noChildren">
+              <li
+                (click)="toggleCollapse(item.value)"
+                (keydown.enter)="toggleCollapse(item.value)"
+                tabindex="0"
                 [attr.aria-expanded]="!item.value.isCollapsed"
-                aria-controls="collapseExample"
-                ><fa-icon [icon]="item.value.faIcon"></fa-icon>{{ item.value.localizationKey | translate }}</a
+                class="account-nav-header"
+                [attr.data-testing-id]="item.value.dataTestingId"
               >
-            </ng-container>
-            <ng-template #noChild>
-              <a [routerLink]="item.key" [attr.data-testing-id]="item.value.dataTestingId">
-                <fa-icon [icon]="item.value.faIcon"></fa-icon>{{ item.value.localizationKey | translate }}</a
-              >
-            </ng-template>
-          </li>
-          <div [ngbCollapse]="item.value.isCollapsed">
-            <ul *ngIf="item.value.children" class="account-navigation list-unstyled">
-              <ng-container *ngFor="let group of item.value.children | keyvalue: unsorted; let first = first">
-                <ng-container *ngFor="let groupItem of group | keyvalue: unsorted; let first = first">
-                  <ng-container *ngIf="groupItem.value.localizationKey">
-                    <ng-container *ishIsAuthorizedTo="groupItem.value.permission || 'always'">
-                      <ng-container *ishHasNotRole="groupItem.value.notRole">
-                        <li
+                <span>
+                  <fa-icon *ngIf="item.value.faIcon" [icon]="item.value.faIcon"></fa-icon>
+                  {{ item.value.localizationKey | translate }}
+                </span>
+              </li>
+              <li [ngbCollapse]="item.value.isCollapsed">
+                <ul class="account-navigation list-unstyled">
+                  <ng-container *ngFor="let subItem of item.value.children | keyvalue: unsorted">
+                    <ng-container *ishIsAuthorizedTo="subItem.value.permission || 'always'">
+                      <ng-container *ishHasNotRole="subItem.value.notRole">
+                        <ng-container
                           *ngIf="
-                            (groupItem.value.feature || 'always' | ishFeature) &&
-                            (groupItem.value.serverSetting || 'always' | ishServerSetting)
+                            (subItem.value.feature || 'always' | ishFeature) &&
+                            (subItem.value.serverSetting || 'always' | ishServerSetting)
                           "
-                          routerLinkActive="active"
-                          [routerLinkActiveOptions]="{ exact: first }"
                         >
-                          <a [routerLink]="group.key" [attr.data-testing-id]="item.value.dataTestingId">
-                            {{ groupItem.value.localizationKey | translate }}</a
-                          >
-                        </li>
+                          <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                            <a [routerLink]="subItem.key" [attr.data-testing-id]="item.value.dataTestingId">
+                              {{ subItem.value.localizationKey | translate }}
+                            </a>
+                          </li>
+                        </ng-container>
                       </ng-container>
                     </ng-container>
                   </ng-container>
-                </ng-container>
-              </ng-container>
-            </ul>
-          </div>
+                </ul>
+              </li>
+            </ng-container>
+
+            <ng-template #noChildren>
+              <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a [routerLink]="item.key" [attr.data-testing-id]="item.value.dataTestingId">
+                  <fa-icon *ngIf="item.value.faIcon" [icon]="item.value.faIcon"></fa-icon>
+                  {{ item.value.localizationKey | translate }}
+                </a>
+              </li>
+            </ng-template>
+          </ng-container>
         </ng-container>
       </ng-container>
     </ng-container>
@@ -63,52 +67,39 @@
     <ng-container *ngFor="let item of navigationItems | keyvalue: unsorted">
       <ng-container *ishIsAuthorizedTo="item.value.permission || 'always'">
         <ng-container *ishHasNotRole="item.value.notRole">
-          <ng-container *ngIf="item.value.children; else noChild">
-            <optgroup
-              *ngIf="
-                (item.value.feature || 'always' | ishFeature) &&
-                (item.value.serverSetting || 'always' | ishServerSetting)
-              "
-              [label]="item.value.localizationKey | translate"
-            ></optgroup>
-          </ng-container>
-          <ng-template #noChild>
-            <option
-              *ngIf="
-                (item.value.feature || 'always' | ishFeature) &&
-                (item.value.serverSetting || 'always' | ishServerSetting)
-              "
-              [value]="item.key"
-              [attr.selected]="isSelected(item.key)"
-            >
-              {{ item.value.localizationKey | translate }}
-            </option>
-          </ng-template>
-          <ng-container *ngIf="item.value.children" class="account-navigation list-unstyled">
-            <ng-container *ngFor="let group of item.value.children | keyvalue: unsorted; let first = first">
-              <ng-container *ngFor="let groupItem of group | keyvalue: unsorted; let first = first">
-                <ng-container *ngIf="groupItem.value.localizationKey">
-                  <ng-container *ishIsAuthorizedTo="groupItem.value.permission || 'always'">
-                    <ng-container *ishHasNotRole="groupItem.value.notRole">
-                      <option
-                        *ngIf="
-                          (groupItem.value.feature || 'always' | ishFeature) &&
-                          (groupItem.value.serverSetting || 'always' | ishServerSetting)
-                        "
-                        [value]="group.key"
-                        [attr.selected]="isSelected(groupItem.value.link)"
-                      >
-                        {{ groupItem.value.localizationKey | translate }}
-                      </option></ng-container
+          <ng-container
+            *ngIf="
+              (item.value.feature || 'always' | ishFeature) && (item.value.serverSetting || 'always' | ishServerSetting)
+            "
+          >
+            <ng-container *ngIf="item.value.children; else noOptgroup">
+              <optgroup [label]="item.value.localizationKey | translate"></optgroup>
+              <ng-container *ngFor="let subItem of item.value.children | keyvalue: unsorted">
+                <ng-container *ishIsAuthorizedTo="subItem.value.permission || 'always'">
+                  <ng-container *ishHasNotRole="subItem.value.notRole">
+                    <ng-container
+                      *ngIf="
+                        (subItem.value.feature || 'always' | ishFeature) &&
+                        (subItem.value.serverSetting || 'always' | ishServerSetting)
+                      "
                     >
+                      <option [value]="subItem.key" [attr.selected]="isSelected(subItem.key)">
+                        {{ subItem.value.localizationKey | translate }}
+                      </option>
+                    </ng-container>
                   </ng-container>
                 </ng-container>
               </ng-container>
             </ng-container>
+
+            <ng-template #noOptgroup>
+              <option [value]="item.key" [attr.selected]="isSelected(item.key)">
+                {{ item.value.localizationKey | translate }}
+              </option>
+            </ng-template>
           </ng-container>
         </ng-container>
       </ng-container>
     </ng-container>
   </select>
 </ng-template>
-<ng-template #loadChild let-groupData="groupData" let-displayType="displayType"> </ng-template>
