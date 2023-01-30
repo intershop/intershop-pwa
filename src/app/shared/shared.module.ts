@@ -64,6 +64,7 @@ import { BasketDesiredDeliveryDateComponent } from './components/basket/basket-d
 import { BasketErrorMessageComponent } from './components/basket/basket-error-message/basket-error-message.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
+import { BasketMerchantMessageViewComponent } from './components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketMerchantMessageComponent } from './components/basket/basket-merchant-message/basket-merchant-message.component';
 import { BasketOrderReferenceComponent } from './components/basket/basket-order-reference/basket-order-reference.component';
 import { BasketPromotionCodeComponent } from './components/basket/basket-promotion-code/basket-promotion-code.component';
@@ -238,6 +239,7 @@ const exportedComponents = [
   BasketInvoiceAddressWidgetComponent,
   BasketItemsSummaryComponent,
   BasketMerchantMessageComponent,
+  BasketMerchantMessageViewComponent,
   BasketOrderReferenceComponent,
   BasketPromotionCodeComponent,
   BasketPromotionComponent,

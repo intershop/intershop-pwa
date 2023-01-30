@@ -303,6 +303,3 @@ export const setBasketDesiredDeliveryDateFail = createAction(
 export const setBasketDesiredDeliveryDateSuccess = createAction(
   '[Basket API] Add or Update Basket Desired Delivery Date Success'
 );
-export const addMessageToMerchantFail = createAction('[Basket API] Add Message To Merchant Fail', httpError());
-
-export const addMessageToMerchantSuccess = createAction('[Basket API] Add Message To Merchant To Basket Success');
