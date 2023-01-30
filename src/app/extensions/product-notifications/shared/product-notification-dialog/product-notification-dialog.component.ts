@@ -61,6 +61,7 @@ export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
 
   /** close modal */
   hide() {
+    this.productNotificationForm.reset();
     this.modal.close();
   }
 
@@ -91,7 +92,6 @@ export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
         },
       };
 
-      // @todo: alerttype is always "delete" after deleting a notification
       if (formValue.alerttype !== undefined && formValue.alerttype === 'delete') {
         // user selected the radio button to remove the notification
         this.productNotificationsFacade.deleteProductNotification(productNotification);
