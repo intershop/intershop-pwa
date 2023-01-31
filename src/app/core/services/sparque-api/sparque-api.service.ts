@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Store, select, createSelector } from '@ngrx/store';
 import { Observable, auditTime, combineLatest, map, take, tap } from 'rxjs';
 
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
@@ -9,6 +9,9 @@ import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { environment } from '../../../../environments/environment';
+import { getSparqueState } from 'ish-core/store/shopping/sparque/sparque-store';
+import { getSparqueConfig, getSparqueConfigEndpoint } from 'ish-core/store/shopping/sparque/sparque-config';
+import { log } from 'ish-core/utils/dev/operators';
 
 export const DEFINED_FACETS = ['category', 'brand'];
 
@@ -40,6 +43,12 @@ export class SparqueApiService {
    */
   get<T>(path: string): Observable<T> {
     // literally the worst hack you will ever see
+    console.log(getSparqueState);
+    //const getSparqueConfig = createSelector(getSparqueState, state => state?.sparqueConfig);
+    const getSparqueConfig2 = createSelector(getSparqueState, state => state?.sparqueConfig);
+    console.log(this.store.pipe(select(getSparqueConfigEndpoint)));
+    this.store.pipe(select(getSparqueConfigEndpoint)).subscribe(data => console.log(data))
+    this.store.pipe(select(getSparqueConfigEndpoint),log("testdori")).subscribe()
     return this.httpClient.get<T>(`${environment.sparqueBaseURL}/${path.replace('//', '/')}`);
   }
 

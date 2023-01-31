@@ -8,6 +8,15 @@ export const environment: Environment = {
 
   themeColor: '#688dc3',
 
+ sparque: {
+      endPoint: 'test'
+  },
+    tacton: {
+    selfService: {
+      endPoint: '<tacton-endpoint>', // without '/self-service-api'
+      apiKey: '<self-service API key>'
+    }
+  },
   features: [
     ...ENVIRONMENT_DEFAULTS.features,
     'businessCustomerRegistration',
