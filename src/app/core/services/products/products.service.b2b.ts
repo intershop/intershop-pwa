@@ -36,9 +36,6 @@ import STUB_ATTRS from './products-list-attributes';
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  static STUB_ATTRS =
-    'sku,availability,manufacturer,image,minOrderQuantity,maxOrderQuantity,stepOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,retailSet,defaultCategory';
-
   constructor(
     private apiService: ApiService,
     private productMapper: ProductMapper,
@@ -57,7 +54,7 @@ export class ProductsService {
       return throwError(() => new Error('getProduct() called without a sku'));
     }
 
-    const params = new HttpParams().set('allImages', 'true');
+    const params = new HttpParams().set('allImages', true).set('extended', true);
 
     return this.apiService
       .get<ProductData>(`products/${sku}`, { sendSPGID: true, params })
@@ -83,7 +80,7 @@ export class ProductsService {
     }
 
     let params = new HttpParams()
-      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
@@ -125,7 +122,6 @@ export class ProductsService {
    * @param sortKey       The sortKey to sort the list, default value is ''.
    * @returns             A list of matching Product stubs with a list of possible sort keys and the total amount of results.
    */
-
   searchProducts(
     searchTerm: string,
     amount: number,
@@ -196,7 +192,7 @@ export class ProductsService {
       .set('MasterSKU', masterSKU)
       .set('amount', amount.toString())
       .set('offset', offset.toString())
-      .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
@@ -259,6 +255,7 @@ export class ProductsService {
         }))
       );
   }
+
   /**
    * exchange single-return variation products to master products for B2B
    * TODO: this is a work-around
@@ -284,8 +281,13 @@ export class ProductsService {
       return throwError(() => new Error('getProductVariations() called without a sku'));
     }
 
+    const params = new HttpParams().set('extended', true);
+
     return this.apiService
-      .get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`, { sendSPGID: true })
+      .get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`, {
+        sendSPGID: true,
+        params,
+      })
       .pipe(
         switchMap(resp =>
           !resp.total
@@ -301,7 +303,7 @@ export class ProductsService {
                         this.apiService
                           .get<{ elements: Link[] }>(`products/${sku}/variations`, {
                             sendSPGID: true,
-                            params: new HttpParams().set('amount', length).set('offset', offset),
+                            params: params.set('amount', length).set('offset', offset),
                           })
                           .pipe(mapToProperty('elements'))
                       )

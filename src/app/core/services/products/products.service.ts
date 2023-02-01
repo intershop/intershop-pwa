@@ -19,7 +19,6 @@ import {
   VariationProduct,
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
-import { SparqueCountResponse, SparqueFacetOptionsResponse } from 'ish-core/models/sparque/sparque.interface';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
@@ -105,14 +104,6 @@ export class ProductsService {
       );
   }
 
-  getProductsAfterSearch(): OperatorFunction<
-    [SparqueFacetOptionsResponse, SparqueCountResponse],
-    { products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }
-  > {
-    return (source$: Observable<[SparqueFacetOptionsResponse, SparqueCountResponse]>) =>
-      source$.pipe(map(() => ({ products: [], sortableAttributes: [], total: 0 })));
-  }
-
   /**
    * Get products for a given search term respecting pagination.
    *
@@ -164,6 +155,14 @@ export class ProductsService {
           total,
         }))
       );
+  }
+
+  // TODO: find a better solution instead of this stub method for overriding filter.service.b2b.ts usage
+  getProductsAfterSearch(): OperatorFunction<
+    [never, never],
+    { products: never; sortableAttributes: never; total: never }
+  > {
+    return;
   }
 
   getProductsForMaster(
