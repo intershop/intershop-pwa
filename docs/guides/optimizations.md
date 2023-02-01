@@ -12,7 +12,6 @@ kb_sync_latest_only
 The Nginx building block applies:
 
 - Compression of responses
-- PageSpeed optimization
 
 for further information, please refer to the [Guide - Building and Running nginx][nginx-startup].
 

@@ -32,7 +32,6 @@ Please refer to the [documentation](../docs/guides/nginx-startup.md) for configu
            -p 4199:80 \
            -e UPSTREAM_PWA=http://192.168.0.10:4200 \
            -e CACHE=off \
-           -e PAGESPEED=off \
            my_awesome_nginx
    ```
 

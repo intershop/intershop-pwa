@@ -246,7 +246,7 @@ The following official guides might help to migrate custom code as well:
 - https://update.angular.io/?l=3&v=12.0-13.0
 - https://ngrx.io/guide/migration/v13
 - https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md
-- https://swiperjs.com/migration-guide
+- https://v7.swiperjs.com/migration-guide
 
 To help with the necessary rxjs refactorings, consider using [rxjs-fixers-morph](https://github.com/timdeschryver/rxjs-fixers-morph).
 Simply run `npx rxjs-fixers-morph ./tsconfig.json`.

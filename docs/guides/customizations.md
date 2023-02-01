@@ -224,15 +224,18 @@ git checkout -b migration_to_1.1
 ```
 
 Now the Git commits of the new Intershop PWA release will be cherry picked into this migration branch.
-For this, one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g. `1.0.0` to `1.1.0`.
+For this, one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g. `1.0.0` to `1.1.0` (since the end tag is a merge commit it will lead to an error at the end of the cherry pick, to prevent this only the commits up to the second parent should be used with `^2`).
 If there are any problems with the tags, using the specific commit SHAs should always work.
 
 ```
-git cherry-pick 1.0.0..1.1.0
+git cherry-pick 1.0.0..1.1.0^2
 ```
 
 Now each commit of the new Intershop PWA release is applied to the custom project context.
 Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
+
+If merge conflicts need to be resolve it is good to disable any pre-commit hooks during the migration.
+For this set `HUSKY=0` as environment variable.
 
 After successfully going through the range cherry pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
@@ -257,6 +260,9 @@ git rebase --onto develop 1.0.0
 
 Now each commit of the new Intershop PWA release is applied to the custom project context.
 Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
+
+If merge conflicts need to be resolve it is good to disable any pre-commit hooks during the migration.
+For this set `HUSKY=0` as environment variable.
 
 After successfully going through the rebase onto (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
