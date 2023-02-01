@@ -5,6 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -21,6 +22,9 @@ describe('Product Add To Basket Component', () => {
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basketLoading$).thenReturn(of(false));
 
+    const accountFacade = mock(AccountFacade);
+    when(accountFacade.userLoading$).thenReturn(of(false));
+
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToBasket')).thenReturn(of(true));
     when(context.select('product')).thenReturn(of({} as ProductView));
@@ -32,6 +36,7 @@ describe('Product Add To Basket Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), ProductAddToBasketComponent],
       providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
