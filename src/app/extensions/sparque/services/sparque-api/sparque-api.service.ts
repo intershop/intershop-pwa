@@ -1,17 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store, createSelector, select } from '@ngrx/store';
-import { Observable, auditTime, combineLatest, map, take, tap } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, auditTime, combineLatest, concatMap, first, map, take, tap } from 'rxjs';
 
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { log } from 'ish-core/utils/dev/operators';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
-import { environment } from '../../../../../environments/environment';
 import { getSparqueConfigEndpoint } from '../../store/sparque-config';
-import { getSparqueState } from '../../store/sparque-store';
 
 export const DEFINED_FACETS = ['category', 'brand'];
 
@@ -38,18 +37,19 @@ export class SparqueApiService {
       )
       .reduce((prev, curr, idx, arr) => prev.concat(curr, idx !== arr.length - 1 ? '/' : ''), '/');
   }
+
   /**
    * http get request
    */
   get<T>(path: string): Observable<T> {
-    // literally the worst hack you will ever see
-    console.log(getSparqueState);
-    //const getSparqueConfig = createSelector(getSparqueState, state => state?.sparqueConfig);
-    const getSparqueConfig2 = createSelector(getSparqueState, state => state?.sparqueConfig);
-    console.log(this.store.pipe(select(getSparqueConfigEndpoint)));
-    this.store.pipe(select(getSparqueConfigEndpoint)).subscribe(data => console.log(data));
-    this.store.pipe(select(getSparqueConfigEndpoint), log('testdori')).subscribe();
-    return this.httpClient.get<T>(`${environment.sparqueBaseURL}/${path.replace('//', '/')}`);
+    return this.store.pipe(
+      select(getSparqueConfigEndpoint),
+      log('@Dori: Hier ist dein SPARQUE Endpoint:'),
+      whenTruthy(),
+      first(),
+      // TODO: literally the worst hack you will ever see (the '//' replacement)
+      concatMap(sparqueUrl => this.httpClient.get<T>(`${sparqueUrl}/${path.replace('//', '/')}`))
+    );
   }
 
   getRelevantInformations$(delay = true): Observable<[string[], string, string]> {
