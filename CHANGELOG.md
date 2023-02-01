@@ -206,7 +206,7 @@ kb_everyone
 - The `footer.content` localization key was replaced for most of its content by a CMS manageable content include.
 - Introduced double encoding of resource ids in REST API calls for user login (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#2.4-to-30) for more details).
 - Introduced the build variable `SSR` that is now used for all checks if the application is running in SSR or Browser context (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#2.4-to-30) for more details).
-- Angular 14 and dependecies update (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
+- Angular 14 and dependencies update (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
 - Jest upgrade to version 28, the jest-marbles package has been replaced by jasmine-marbles.
 - The @ngx-translate/http-loader has been removed from the dependencies.
 - The [pagespeed module](https://www.modpagespeed.com) of NGINX has been removed without replacement.
@@ -487,7 +487,7 @@ kb_everyone
 ### BREAKING CHANGES
 
 - Switch linting from `tslint` to `eslint` (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
-- Swiper 7 upgrade (see [Migration Guide to Swiper 7](https://swiperjs.com/migration-guide) for more details).
+- Swiper 7 upgrade (see [Migration Guide to Swiper 7](https://v7.swiperjs.com/migration-guide) for more details).
 - Formly 6 upgrade (see [upgrade from 5.0 to 6.0](https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md) for more details).
 - Angular 13 and dependencies update (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
 - Angular 13 removes support for IE 11 (see [Internet Explorer 11 support deprecation and removal](https://github.com/angular/angular/issues/41840) for more details).

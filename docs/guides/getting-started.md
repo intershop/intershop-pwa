@@ -39,7 +39,7 @@ see [Server Configuration in Angular Docs](https://angular.io/guide/deployment#s
 
 For a production setup we recommend building the docker image supplied with the `Dockerfile` in the root folder of the project.
 Build it with `docker build -t my_pwa .`.
-To run the PWA with multiple channels and [Google PageSpeed](https://developers.google.com/speed/pagespeed/insights/) optimizations, you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
+To run the PWA with multiple channels you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
 
 We provide templates for [Kubernetes Deployments](../../schematics/src/kubernetes-deployment) and [DevOps](../../schematics/src/azure-pipeline) for Microsoft Azure.
 
