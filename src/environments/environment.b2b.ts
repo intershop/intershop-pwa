@@ -8,15 +8,10 @@ export const environment: Environment = {
 
   themeColor: '#688dc3',
 
- sparque: {
-      endPoint: 'test'
+  sparque: {
+    endPoint: 'https://rest.spinque.com/4/testintershop/api/PWA',
   },
-    tacton: {
-    selfService: {
-      endPoint: '<tacton-endpoint>', // without '/self-service-api'
-      apiKey: '<self-service API key>'
-    }
-  },
+
   features: [
     ...ENVIRONMENT_DEFAULTS.features,
     'businessCustomerRegistration',
@@ -27,6 +22,7 @@ export const environment: Environment = {
     'quickorder',
     'quoting',
     'orderTemplates',
+    'sparque',
   ],
 
   ...overrides,

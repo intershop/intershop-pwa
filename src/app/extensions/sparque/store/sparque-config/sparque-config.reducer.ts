@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
+import { SparqueConfig } from '../../models/sparque-config/sparque-config.model';
 
 import { setSparqueConfig } from './sparque-config.actions';
 

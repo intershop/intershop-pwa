@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import {  map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+
 import { whenFalsy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
-import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
+import { SparqueConfig } from '../../models/sparque-config/sparque-config.model';
 
 import { loadSparqueConfig, setSparqueConfig } from './sparque-config.actions';
 import { getSparqueConfig } from './sparque-config.selectors';

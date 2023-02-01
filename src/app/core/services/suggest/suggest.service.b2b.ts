@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { SparqueApiService } from 'src/app/extensions/sparque/services/sparque-api/sparque-api.service';
 
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
-import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 
 /**
  * The Suggest Service handles the interaction with the 'suggest' REST API.

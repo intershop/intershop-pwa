@@ -3,6 +3,11 @@ import { Injectable } from '@angular/core';
 import { flatten, range } from 'lodash-es';
 import { Observable, OperatorFunction, forkJoin, from, identity, iif, of, throwError } from 'rxjs';
 import { catchError, defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
+import {
+  SparqueCountResponse,
+  SparqueFacetOptionsResponse,
+} from 'src/app/extensions/sparque/models/sparque/sparque.interface';
+import { SparqueApiService } from 'src/app/extensions/sparque/services/sparque-api/sparque-api.service';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
@@ -19,9 +24,7 @@ import {
   VariationProduct,
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
-import { SparqueCountResponse, SparqueFacetOptionsResponse } from 'ish-core/models/sparque/sparque.interface';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';

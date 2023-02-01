@@ -2,6 +2,13 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import {
+  SparqueCountResponse,
+  SparqueFacetOptionsResponse,
+  SparqueFacetResponse,
+  SparqueOptionsResponse,
+} from 'src/app/extensions/sparque/models/sparque/sparque.interface';
+import { DEFINED_FACETS, SparqueApiService } from 'src/app/extensions/sparque/services/sparque-api/sparque-api.service';
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
@@ -10,15 +17,8 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { Product } from 'ish-core/models/product/product.model';
-import {
-  SparqueCountResponse,
-  SparqueFacetOptionsResponse,
-  SparqueFacetResponse,
-  SparqueOptionsResponse,
-} from 'ish-core/models/sparque/sparque.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { DEFINED_FACETS, SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })
