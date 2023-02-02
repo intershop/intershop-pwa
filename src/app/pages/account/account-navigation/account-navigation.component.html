@@ -34,7 +34,7 @@
                             (subItem.value.serverSetting || 'always' | ishServerSetting)
                           "
                         >
-                          <li [routerLinkActive]="activeClass" [routerLinkActiveOptions]="{ exact: true }">
+                          <li [routerLinkActive]="activeClass" [routerLinkActiveOptions]="{ exact: false }">
                             <a [routerLink]="subItem.key" [attr.data-testing-id]="item.value.dataTestingId">
                               {{ subItem.value.localizationKey | translate }}
                             </a>
@@ -48,7 +48,10 @@
             </ng-container>
 
             <ng-template #noChildren>
-              <li [routerLinkActive]="activeClass" [routerLinkActiveOptions]="{ exact: true }">
+              <li
+                [routerLinkActive]="activeClass"
+                [routerLinkActiveOptions]="{ exact: item.key === '/account' ? true : false }"
+              >
                 <a [routerLink]="item.key" [attr.data-testing-id]="item.value.dataTestingId">
                   <fa-icon *ngIf="item.value.faIcon" [icon]="item.value.faIcon"></fa-icon>
                   {{ item.value.localizationKey | translate }}
