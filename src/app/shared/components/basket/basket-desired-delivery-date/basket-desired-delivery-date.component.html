@@ -1,4 +1,4 @@
-<div class="section">
+<div>
   <h3>{{ 'checkout.desired_delivery_date.title' | translate }}</h3>
 
   <form [formGroup]="form" (ngSubmit)="submitForm()">
@@ -10,7 +10,7 @@
         ></ish-success-message>
       </div>
 
-      <div class="col-md-7">
+      <div class="col-md-6">
         <formly-form [form]="form" [fields]="fields" [model]="model"> </formly-form>
       </div>
 

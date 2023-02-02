@@ -1,4 +1,4 @@
-<div class="section">
+<div>
   <h3>{{ 'checkout.basket_merchant_message.title' | translate }}</h3>
 
   <form [formGroup]="form" (ngSubmit)="submitForm()">
@@ -10,11 +10,11 @@
         ></ish-success-message>
       </div>
 
-      <div class="col-md-7">
+      <div class="col-md-9">
         <formly-form [form]="form" [fields]="fields" [model]="model"> </formly-form>
       </div>
 
-      <div class="col-md-2 pl-md-0 align-self-center">
+      <div class="col-md-2 pl-md-0">
         <button type="submit" class="btn btn-secondary" [disabled]="disabled">
           {{ 'checkout.basket_merchant_message.apply.button.label' | translate }}
         </button>

@@ -44,8 +44,6 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
           label: 'checkout.basket_merchant_message.label',
           maxLength: 3000,
           rows: 2,
-          labelClass: 'col-md-12',
-          fieldClass: 'col-md-12',
         },
       },
     ];
