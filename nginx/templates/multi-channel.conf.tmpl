@@ -147,6 +147,25 @@ server {
         proxy_busy_buffers_size 256k;
     }
 
+    # handle sparque search
+    location ~ ^/search(/?)(.*)$ {
+        allow all;
+
+        proxy_pass https://rest.spinque.com/$2;
+
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Url-Scheme $scheme;
+        proxy_set_header Host rest.spinque.com;
+        proxy_ssl_name        rest.spinque.com;
+
+        add_header X-debug-message "target: https://rest.spinque.com/$2" always;
+        access_log /var/log/nginx/access.log upstreamlog;
+    }
+
     # respect cache entries of static assets
     location ~* ^/(?!ngsw\.json)(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
         allow all;

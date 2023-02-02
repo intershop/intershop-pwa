@@ -204,5 +204,5 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   },
   priceUpdate: 'always',
 
-  sparqueBaseURL: 'https://rest.spinque.com/4/testintershop/api/PWA',
+  sparqueBaseURL: '/search/4/testintershop/api/PWA',
 };
