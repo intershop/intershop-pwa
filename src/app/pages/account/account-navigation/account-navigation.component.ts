@@ -1,5 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
+import { Router, RouterLinkActive } from '@angular/router';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -27,7 +35,7 @@ export interface NavigationItems {
   templateUrl: './account-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountNavigationComponent {
+export class AccountNavigationComponent implements AfterViewInit {
   @Input() deviceType: DeviceType;
 
   /**
@@ -35,7 +43,24 @@ export class AccountNavigationComponent {
    */
   navigationItems: NavigationItems = navigationItems;
 
+  activeClass = 'active';
+
+  @ViewChildren(RouterLinkActive, { read: ElementRef }) activeElementRefs: QueryList<ElementRef>;
+
   constructor(private router: Router) {}
+
+  // after view init open the navigation group of the active navigation item
+  ngAfterViewInit() {
+    // needs to be asynchronous otherwise it would be triggered to early
+    setTimeout(() => {
+      this.activeElementRefs
+        .toArray()
+        // find the active element
+        .find(e => e.nativeElement.classList.contains(this.activeClass))
+        // navigate through the DOM tree to the appropriate parent sibling
+        ?.nativeElement?.parentElement?.parentElement?.previousSibling?.click();
+    }, 0);
+  }
 
   toggleCollapse(item: NavigationItem) {
     item.isCollapsed = !item.isCollapsed;
