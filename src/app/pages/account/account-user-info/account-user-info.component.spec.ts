@@ -60,8 +60,8 @@ describe('Account User Info Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <li class="account-welcome">
         <h4>Mustermann, Max</h4>
-        <p><small>Foods Inc.</small></p>
-        <p><small>Approver, Buyer</small></p>
+        <div>Foods Inc.</div>
+        <div>Approver, Buyer</div>
       </li>
     `);
   });
@@ -76,7 +76,7 @@ describe('Account User Info Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <li class="account-welcome">
         <h4 class="ellipsis">max.mustermann@test.intershop.de</h4>
-        <p><small>Foods Inc.</small></p>
+        <div>Foods Inc.</div>
       </li>
     `);
   });

@@ -2,53 +2,35 @@
 // ACCOUNT NAVIGATION
 
 .account-navigation {
-  border-top: $border-width-default solid $border-color-lighter;
-
   li {
-    padding: divide($space-default * 2, 3) divide($space-default * 2, 3) ($space-default * 0.5);
     background: $color-tertiary;
-    border: $border-width-default solid $border-color-lighter;
-    border-width: 0 1px 1px;
-
-    &.collapse,
-    &.collapsing {
-      padding: 0;
-      border: none;
-    }
 
     &:hover {
       background: darken($color-tertiary, 10%) none repeat scroll 0 0;
     }
 
     &.account-nav-header {
+      padding: divide($space-default * 2, 3) divide($space-default * 2, 3) ($space-default * 0.5);
       font-size: 16px;
       color: $text-color-inverse;
       cursor: pointer;
-      background: $color-secondary;
-      border: $border-width-default solid $border-color-default;
+      background: $CORPORATE-PRIMARY;
     }
 
     .ng-fa-icon {
       margin-right: ($space-default * 0.5);
-      font-size: 16px;
-      color: $text-color-quaternary;
-    }
-
-    p {
-      margin: 0;
-      font-size: 16px;
-      color: $text-color-primary;
     }
 
     a {
       display: block;
+      padding: divide($space-default * 2, 3) divide($space-default * 2, 3) ($space-default * 0.5);
       font-size: 14px;
       color: $link-color;
     }
 
     &.active {
       background: $color-inverse;
-      border-right: none;
+      border-left: $border-width-default solid $color-tertiary;
 
       a {
         color: $text-color-primary;
@@ -56,6 +38,8 @@
     }
 
     &.account-welcome {
+      padding: divide($space-default * 2, 3) divide($space-default * 2, 3) ($space-default * 0.5);
+
       &:hover {
         background: $color-tertiary;
       }
@@ -64,21 +48,11 @@
 }
 
 .account-nav-box {
-  @media (max-width: $screen-xs-max) {
+  @media (max-width: $screen-sm-max) {
     padding-top: $space-default;
     padding-bottom: $space-default;
     margin-top: -15px;
     margin-bottom: ($space-default * 1.5);
     background: $color-tertiary;
-    border-top: $border-width-default solid lighten($border-color-default, 100%);
-  }
-
-  @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-    padding-top: $space-default;
-    padding-bottom: $space-default;
-    margin-top: -25px;
-    margin-bottom: ($space-default * 1.5);
-    background: $color-tertiary;
-    border-top: $border-width-default solid lighten($border-color-default, 100%);
   }
 }

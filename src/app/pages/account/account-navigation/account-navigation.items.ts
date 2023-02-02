@@ -1,7 +1,7 @@
 import { NavigationItems } from './account-navigation.component';
 
 export const navigationItems: NavigationItems = {
-  '/account': { localizationKey: 'account.my_account.link', faIcon: 'user' },
+  '/account': { localizationKey: 'account.my_account.link' },
   _purchases: {
     localizationKey: 'account.requisitions.purchases',
     faIcon: 'cart-shopping',
@@ -97,6 +97,5 @@ export const navigationItems: NavigationItems = {
   '/logout': {
     localizationKey: 'account.navigation.logout.link',
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-    faIcon: 'right-from-bracket',
   },
 };
