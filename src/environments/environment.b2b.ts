@@ -9,7 +9,7 @@ export const environment: Environment = {
   themeColor: '#688dc3',
 
   sparque: {
-    endPoint: 'https://rest.spinque.com/4/testintershop/api/PWA',
+    endPoint: 'search/4/testintershop/api/PWA',
   },
 
   features: [
