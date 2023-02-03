@@ -6,6 +6,7 @@ import { Observable, auditTime, combineLatest, concatMap, first, map, take, tap 
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
+//import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 import { getSparqueConfigEndpoint } from '../../store/sparque-config';
@@ -42,6 +43,7 @@ export class SparqueApiService {
   get<T>(path: string): Observable<T> {
     return this.store.pipe(
       select(getSparqueConfigEndpoint),
+      //log('@Dori: Hier ist dein SPARQUE Endpoint:'),
       whenTruthy(),
       first(),
       // TODO: literally the worst hack you will ever see (the '//' replacement)
@@ -49,7 +51,7 @@ export class SparqueApiService {
     );
   }
 
-  getRelevantInformations$(delay = true): Observable<[string[], string, string]> {
+  getRelevantInformation$(delay = true): Observable<[string[], string, string]> {
     return combineLatest([
       this.store.pipe(
         select(getCurrentBasket),
