@@ -105,6 +105,20 @@
                     >
                     </ish-payment-concardis-creditcard-cvc-detail>
                   </div>
+                  <div
+                    *ngIf="
+                      paymentMethod.serviceId === 'Payone_DirectDebit' &&
+                      basket.payment &&
+                      paymentInstrument.id === basket.payment.paymentInstrument.id
+                    "
+                  >
+                    <ish-payment-payone-directdebit-manage-mandate
+                      [paymentInstrument]="basket.payment.paymentInstrument"
+                      [paymentMethod]="paymentMethod"
+                      [basket]="basket"
+                    >
+                    </ish-payment-payone-directdebit-manage-mandate>
+                  </div>
                 </li>
                 <li class="panel">
                   <a
