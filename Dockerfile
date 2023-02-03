@@ -7,7 +7,7 @@ RUN npm ci --prefer-offline --no-audit --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 RUN npm run ngcc
 # synchronize-marker:docker-cache-share:end
-COPY tsconfig.app.json tsconfig.json ngsw-config.json .browserslistrc angular.json .eslintrc.json /workspace/
+COPY tsconfig.app.json tsconfig.json ngsw-config.json angular.json .eslintrc.json /workspace/
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY projects /workspace/projects

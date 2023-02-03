@@ -6,6 +6,7 @@ const pinned = {
   '@ng-bootstrap/ng-bootstrap': '11', // 12 requires Bootstrap 5
   '@types/node': '18', // LTS
   '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
+  swiper: 8, // 9 requires integration rework
   jest: '28',
   '@types/jest': '28',
   prettier: '2.7.1',
