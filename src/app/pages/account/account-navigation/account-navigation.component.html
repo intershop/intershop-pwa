@@ -14,8 +14,9 @@
                 (click)="toggleCollapse(item.value)"
                 (keydown.enter)="toggleCollapse(item.value)"
                 tabindex="0"
-                [attr.aria-expanded]="!item.value.isCollapsed"
                 class="account-nav-header"
+                [attr.id]="item.key"
+                [attr.aria-expanded]="!item.value.isCollapsed"
                 [attr.data-testing-id]="item.value.dataTestingId"
               >
                 <span>
@@ -34,7 +35,11 @@
                             (subItem.value.serverSetting || 'always' | ishServerSetting)
                           "
                         >
-                          <li [routerLinkActive]="activeClass" [routerLinkActiveOptions]="{ exact: false }">
+                          <li
+                            [routerLinkActive]="activeClass"
+                            [routerLinkActiveOptions]="{ exact: false }"
+                            [attr.data-nav-parent]="item.key"
+                          >
                             <a [routerLink]="subItem.key" [attr.data-testing-id]="item.value.dataTestingId">
                               {{ subItem.value.localizationKey | translate }}
                             </a>
