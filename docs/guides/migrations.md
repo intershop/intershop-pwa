@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Migrations
 
+## 3.3 to 4.0
+
+The account navigation was reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
+For better maintainability and brand specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
+Also with this rework the navigation items data structure was changed from a key value object to a simpler `NavigationItem` Array.
+With this data structure accessing the data was changed for the key access from `item.key` to `item.routerLink` or for the value example from `item.value.localizationKey` to `item.localizationKey`.
+To migrate to this new account navigation item handling any account navigation customization needs to be adapted accordingly.
+
 ## 3.2 to 3.3
 
 To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
