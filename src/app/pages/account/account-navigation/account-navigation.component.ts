@@ -6,20 +6,17 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 import { navigationItems } from './account-navigation.items';
 
-interface NavigationItem {
+export interface NavigationItem {
+  id: string;
   localizationKey: string;
-  dataTestingId?: string;
+  routerLink?: string;
+  faIcon?: IconProp;
+  isCollapsed?: boolean;
   feature?: string;
   serverSetting?: string;
   permission?: string | string[];
   notRole?: string | string[];
-  faIcon?: IconProp;
-  isCollapsed?: boolean;
-  children?: NavigationItems;
-}
-
-export interface NavigationItems {
-  [link: string]: NavigationItem;
+  children?: NavigationItem[];
 }
 
 @Component({
@@ -33,7 +30,7 @@ export class AccountNavigationComponent implements AfterViewInit {
   /**
    * Manages the Account Navigation items.
    */
-  navigationItems: NavigationItems = navigationItems;
+  navigationItems: NavigationItem[] = navigationItems;
 
   activeClass = 'active';
 
@@ -59,17 +56,13 @@ export class AccountNavigationComponent implements AfterViewInit {
     item.isCollapsed = !item.isCollapsed;
   }
 
+  isSelected(item: NavigationItem): string {
+    return item.routerLink === location.pathname ? 'selected' : undefined;
+  }
+
   navigateTo(target: EventTarget) {
     if (target) {
       this.router.navigateByUrl((target as HTMLDataElement).value);
     }
-  }
-
-  get unsorted() {
-    return () => 0;
-  }
-
-  isSelected(itemValueLink: string): string {
-    return itemValueLink === location.pathname ? 'selected' : undefined;
   }
 }

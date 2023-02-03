@@ -1,101 +1,125 @@
-import { NavigationItems } from './account-navigation.component';
+import { NavigationItem } from './account-navigation.component';
 
-export const navigationItems: NavigationItems = {
-  '/account': { localizationKey: 'account.my_account.link' },
-  _purchases: {
+export const navigationItems: NavigationItem[] = [
+  { id: 'my-account', localizationKey: 'account.my_account.link', routerLink: '/account' },
+  {
+    id: 'my-purchases',
     localizationKey: 'account.requisitions.purchases',
     faIcon: 'cart-shopping',
     isCollapsed: true,
-    children: {
-      '/account/orders': {
+    children: [
+      {
+        id: 'orders',
         localizationKey: 'account.order_history.link',
+        routerLink: '/account/orders',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
-      '/account/requisitions/buyer': {
+      {
+        id: 'requisitions',
         localizationKey: 'account.requisitions.requisitions',
+        routerLink: '/account/requisitions/buyer',
         serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
         permission: 'APP_B2B_PURCHASE',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
-      '/account/quotes': {
+      {
+        id: 'quotes',
         localizationKey: 'account.navigation.quotes.link',
+        routerLink: '/account/quotes',
         feature: 'quoting',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
-      '/account/order-templates': {
+      {
+        id: 'order-templates',
         localizationKey: 'account.ordertemplates.link',
+        routerLink: '/account/order-templates',
         feature: 'orderTemplates',
-        dataTestingId: 'order-templates-link',
       },
-      '/account/wishlists': {
+      {
+        id: 'wishlists',
         localizationKey: 'account.wishlists.link',
+        routerLink: '/account/wishlists',
         feature: 'wishlists',
-        dataTestingId: 'wishlists-link',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
-    },
+    ],
   },
-  _approvals: {
+  {
+    id: 'my-approvals',
     localizationKey: 'account.requisitions.myapprovals',
     faIcon: 'check',
+    isCollapsed: true,
     serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
     permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
-    isCollapsed: true,
-    children: {
-      '/account/requisitions/approver': {
+    children: [
+      {
+        id: 'approvals',
         localizationKey: 'account.requisitions.approvals',
+        routerLink: '/account/requisitions/approver',
         serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
         permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
       },
-    },
+    ],
   },
-  _profile: {
+  {
+    id: 'my-profile',
     localizationKey: 'account.profile.myprofile',
-    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
     faIcon: 'gear',
     isCollapsed: true,
-    children: {
-      '/account/profile': {
+    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+    children: [
+      {
+        id: 'profile',
         localizationKey: 'account.profile.link',
+        routerLink: '/account/profile',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
-    },
+    ],
   },
-  _organization: {
+  {
+    id: 'my-organization',
     localizationKey: 'account.requisitions.organization',
     faIcon: 'briefcase',
     isCollapsed: true,
-    children: {
-      '/account/addresses': {
+    children: [
+      {
+        id: 'addresses',
         localizationKey: 'account.saved_addresses.link',
-        dataTestingId: 'addresses-link',
+        routerLink: '/account/addresses',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
-      '/account/payment': {
+      {
+        id: 'payment',
         localizationKey: 'account.payment.link',
-        dataTestingId: 'payments-link',
+        routerLink: '/account/payment',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
-      '/account/organization/users': {
+      {
+        id: 'users',
         localizationKey: 'account.organization.user_management',
+        routerLink: '/account/organization/users',
         permission: 'APP_B2B_MANAGE_USERS',
       },
-      '/account/organization/cost-centers': {
+      {
+        id: 'cost-centers',
         localizationKey: 'account.organization.cost_center_management',
+        routerLink: '/account/organization/cost-centers',
         feature: 'costCenters',
-        dataTestingId: 'cost-centers-link',
         permission: 'APP_B2B_MANAGE_COSTCENTER',
       },
-      '/account/punchout': {
+      {
+        id: 'punchout',
         localizationKey: 'account.punchout.link',
-        dataTestingId: 'punchout-link',
+        routerLink: '/account/punchout',
         feature: 'punchout',
         permission: 'APP_B2B_MANAGE_PUNCHOUT',
       },
-    },
+    ],
   },
-  '/logout': {
+  {
+    id: 'logout',
     localizationKey: 'account.navigation.logout.link',
+    routerLink: '/logout',
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
   },
-};
+];

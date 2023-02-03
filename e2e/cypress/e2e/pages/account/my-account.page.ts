@@ -10,7 +10,7 @@ export class MyAccountPage {
   }
 
   navigateToQuoting() {
-    cy.get('a[data-testing-id="quote-list-link"]').click();
+    cy.get('a[data-testing-id="quotes-nav-link"]').click();
   }
 
   get respondedQuotesCount() {
@@ -22,18 +22,18 @@ export class MyAccountPage {
   }
 
   navigateToAddresses() {
-    cy.get('a[data-testing-id="addresses-link"]').click();
+    cy.get('a[data-testing-id="addresses-nav-link"]').click();
   }
 
   navigateToWishlists() {
-    cy.get('a[data-testing-id="wishlists-link"]').click();
+    cy.get('a[data-testing-id="wishlists-nav-link"]').click();
   }
 
   navigateToOrderTemplates() {
-    cy.get('a[data-testing-id="order-templates-link"]').click();
+    cy.get('a[data-testing-id="order-templates-nav-link"]').click();
   }
 
   navigateToPayments() {
-    cy.get('a[data-testing-id="payments-link"]').click();
+    cy.get('a[data-testing-id="payment-nav-link"]').click();
   }
 }
