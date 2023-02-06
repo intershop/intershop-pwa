@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatMap, map, mergeMap } from 'rxjs';
 
-import { displaySuccessMessage } from 'ish-core/store/core/messages';
+import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { ProductNotificationsService } from '../../services/product-notifications/product-notifications.service';
@@ -69,6 +69,18 @@ export class ProductNotificationEffects {
           ]),
           mapErrorToAction(deleteProductNotificationFail)
         )
+      )
+    )
+  );
+
+  displayProductNotificationErrorMessage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadProductNotificationsFail, createProductNotificationFail, deleteProductNotificationFail),
+      mapToPayloadProperty('error'),
+      map(error =>
+        displayErrorMessage({
+          message: error.message,
+        })
       )
     )
   );
