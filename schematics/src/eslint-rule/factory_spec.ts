@@ -16,7 +16,7 @@ describe('eslint-rule', () => {
   });
 
   it('should create a rule and add it to index.ts', async () => {
-    const tree = await schematicRunner.runSchematicAsync('eslint-rule', defaultOptions, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('eslint-rule', defaultOptions, appTree);
     const files = tree.files.filter(x => x.search('rules') >= 0);
     expect(files).toContain('/eslint-rules/src/rules/foo-bar.ts');
   });

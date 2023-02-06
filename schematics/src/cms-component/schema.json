@@ -9,7 +9,10 @@
     "path": {
       "type": "string",
       "format": "path",
-      "visible": false
+      "visible": false,
+      "$default": {
+        "$source": "workingDirectory"
+      }
     },
     "artifactFolder": {
       "type": "boolean",

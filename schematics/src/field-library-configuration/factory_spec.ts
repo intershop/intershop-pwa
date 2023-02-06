@@ -20,7 +20,7 @@ describe('Address Form Configuration Schematic', () => {
   it('should create an field library configuration and register it in the module', async () => {
     const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('field-library-configuration', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('field-library-configuration', options, appTree);
     const files = tree.files.filter(x => x.search('field-library') >= 0);
     expect(files).toContain('/src/app/shared/formly/field-library/configurations/address-line-6.configuration.ts');
     expect(files).toContain('/src/app/shared/formly/field-library/field-library.module.ts');

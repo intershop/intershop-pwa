@@ -19,13 +19,13 @@ describe('Lazy Component Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     const appTree$ = createApplication(schematicRunner).pipe(
-      createModule(schematicRunner, { name: 'shared' }),
+      createModule(schematicRunner, { name: 'shared', project: undefined }),
       createAppLastRoutingModule(schematicRunner),
       switchMap(tree =>
-        schematicRunner.runSchematicAsync('extension', { project: defaultOptions.project, name: 'ext' }, tree)
+        schematicRunner.runSchematic('extension', { project: defaultOptions.project, name: 'ext' }, tree)
       ),
       switchMap(tree =>
-        schematicRunner.runSchematicAsync('component', { ...defaultOptions, name: 'extensions/ext/shared/dummy' }, tree)
+        schematicRunner.runSchematic('component', { ...defaultOptions, name: 'extensions/ext/shared/dummy' }, tree)
       )
     );
     appTree = await appTree$.toPromise();
@@ -42,8 +42,8 @@ describe('Lazy Component Schematic', () => {
     'src/app/shared/other/other.component.ts',
   ])('should fail for path %s', async path => {
     const err = await schematicRunner
-      .runSchematicAsync('lazy-component', { ...defaultOptions, path }, appTree)
-      .toPromise()
+      .runSchematic('lazy-component', { ...defaultOptions, path }, appTree)
+
       .catch(error => error);
 
     expect(err.message).toMatch(/path does not point to an existing component/);
@@ -52,10 +52,7 @@ describe('Lazy Component Schematic', () => {
   it.each(['extensions/ext/shared/dummy/dummy.component.ts', 'src/app/extensions/ext/shared/dummy/dummy.component.ts'])(
     'should generate a lazy component for %s',
     async path => {
-      const tree = await schematicRunner
-        .runSchematicAsync('lazy-component', { ...defaultOptions, path }, appTree)
-        .toPromise();
-
+      const tree = await schematicRunner.runSchematic('lazy-component', { ...defaultOptions, path }, appTree);
       expect(tree.files).toIncludeAllMembers([
         '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts',
         '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.html',
@@ -70,13 +67,11 @@ describe('Lazy Component Schematic', () => {
     let exportsModuleContent: string;
 
     beforeEach(async () => {
-      tree = await schematicRunner
-        .runSchematicAsync(
-          'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
-          appTree
-        )
-        .toPromise();
+      tree = await schematicRunner.runSchematic(
+        'lazy-component',
+        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
+        appTree
+      );
 
       htmlContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.html');
       componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
@@ -160,13 +155,11 @@ describe('Lazy Component Schematic', () => {
     });
 
     beforeEach(async () => {
-      tree = await schematicRunner
-        .runSchematicAsync(
-          'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
-          appTree
-        )
-        .toPromise();
+      tree = await schematicRunner.runSchematic(
+        'lazy-component',
+        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
+        appTree
+      );
 
       exportsModuleContent = tree.readContent('/src/app/extensions/ext/exports/ext-exports.module.ts');
 
@@ -219,13 +212,11 @@ export class DummyComponent {
 }
 `
       );
-      tree = await schematicRunner
-        .runSchematicAsync(
-          'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
-          appTree
-        )
-        .toPromise();
+      tree = await schematicRunner.runSchematic(
+        'lazy-component',
+        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
+        appTree
+      );
 
       componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
     });
@@ -267,14 +258,11 @@ export class DummyComponent {
     });
 
     it('should overwrite existing lazy component', async () => {
-      const tree = await schematicRunner
-        .runSchematicAsync(
-          'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
-          appTree
-        )
-        .toPromise();
-
+      const tree = await schematicRunner.runSchematic(
+        'lazy-component',
+        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
+        appTree
+      );
       expect(tree.files).toIncludeAllMembers([
         '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts',
         '/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.html',
@@ -311,13 +299,11 @@ export class DummyComponent implements OnChanges {
 }
 `
       );
-      tree = await schematicRunner
-        .runSchematicAsync(
-          'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
-          appTree
-        )
-        .toPromise();
+      tree = await schematicRunner.runSchematic(
+        'lazy-component',
+        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
+        appTree
+      );
 
       componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
     });
@@ -356,13 +342,11 @@ export class DummyComponent implements OnChanges {
 }
 `
       );
-      tree = await schematicRunner
-        .runSchematicAsync(
-          'lazy-component',
-          { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
-          appTree
-        )
-        .toPromise();
+      tree = await schematicRunner.runSchematic(
+        'lazy-component',
+        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
+        appTree
+      );
 
       componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
     });

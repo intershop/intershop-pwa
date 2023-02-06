@@ -22,7 +22,7 @@ describe('Store Group Schematic', () => {
   it('should create a store-group in core store by default', async () => {
     const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('store-group', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('store-group', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
       Array [
@@ -35,7 +35,7 @@ describe('Store Group Schematic', () => {
   it('should register a store group module in state management by default', async () => {
     const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('store-group', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('store-group', options, appTree);
     const storeModuleContent = tree.readContent('/src/app/core/state-management.module.ts');
     expect(storeModuleContent).toContain('import { FooStoreModule }');
   });
