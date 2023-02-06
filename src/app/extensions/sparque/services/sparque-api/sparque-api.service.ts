@@ -6,9 +6,9 @@ import { Observable, auditTime, combineLatest, concatMap, first, map, take, tap 
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
-//import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
+
 import { getSparqueConfigEndpoint } from '../../store/sparque-config';
 
 export const DEFINED_FACETS = ['category', 'brand'];

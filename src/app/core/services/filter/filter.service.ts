@@ -2,29 +2,32 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Filter } from 'ish-core/models/filter/filter.model';
-import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
-import { Product } from 'ish-core/models/product/product.model';
-import { CategoryHelper } from 'ish-core/models/category/category.model';
-import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
-import { FilterNavigationMapper } from 'ish-core/models/filter-navigation/filter-navigation.mapper';
-import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { ApiService } from 'ish-core/services/api/api.service';
-import { omit } from 'ish-core/utils/functions';
-import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
 import {
-  SparqueCountResponse,
   SparqueFacetOptionsResponse,
   SparqueFacetResponse,
   SparqueOptionsResponse,
 } from 'src/app/extensions/sparque/models/sparque/sparque.interface';
 import { DEFINED_FACETS, SparqueApiService } from 'src/app/extensions/sparque/services/sparque-api/sparque-api.service';
 
+import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
+import { FilterNavigationMapper } from 'ish-core/models/filter-navigation/filter-navigation.mapper';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { omit } from 'ish-core/utils/functions';
+import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
+
 //import e = require('express');
 @Injectable({ providedIn: 'root' })
 export class FilterService {
-  constructor(private apiService: ApiService, private filterNavigationMapper: FilterNavigationMapper, private featureToggle: FeatureToggleService, private sparqueApiService: SparqueApiService,) {}
+  constructor(
+    private apiService: ApiService,
+    private filterNavigationMapper: FilterNavigationMapper,
+    private featureToggle: FeatureToggleService,
+    private sparqueApiService: SparqueApiService
+  ) {}
 
   getFilterForCategory(categoryUniqueId: string): Observable<FilterNavigation> {
     const category = CategoryHelper.getCategoryPath(categoryUniqueId);
@@ -34,14 +37,11 @@ export class FilterService {
   }
 
   getFilterForSearch(searchTerm: string): Observable<FilterNavigation> {
-    if(this.featureToggle.enabled('sparque'))
-    {
+    if (this.featureToggle.enabled('sparque')) {
       return this.sparqueApiService
-      .getRelevantInformation$()
-      .pipe(switchMap(([basketSKUs, userId, locale]) => this.getAllFilters$(searchTerm, locale, userId, basketSKUs)));
-    }
-    else
-    {
+        .getRelevantInformation$()
+        .pipe(switchMap(([basketSKUs, userId, locale]) => this.getAllFilters$(searchTerm, locale, userId, basketSKUs)));
+    } else {
       return this.apiService
         .get<FilterNavigationData>(`productfilters`, {
           sendSPGID: true,
@@ -61,18 +61,15 @@ export class FilterService {
   }
 
   applyFilter(searchParameter: URLFormParams): Observable<FilterNavigation> {
-    if(this.featureToggle.enabled('sparque'))
-    {
+    if (this.featureToggle.enabled('sparque')) {
       return this.sparqueApiService
-      .getRelevantInformation$()
-      .pipe(
-        switchMap(([basketSKUs, userId, locale]) =>
-          this.getAllFilters$(searchParameter.searchTerm[0], locale, userId, basketSKUs, searchParameter)
-        )
-      );
-    }
-    else
-    {
+        .getRelevantInformation$()
+        .pipe(
+          switchMap(([basketSKUs, userId, locale]) =>
+            this.getAllFilters$(searchParameter.searchTerm[0], locale, userId, basketSKUs, searchParameter)
+          )
+        );
+    } else {
       const params = appendFormParamsToHttpParams(omit(searchParameter, 'category'));
 
       const resource = searchParameter.category

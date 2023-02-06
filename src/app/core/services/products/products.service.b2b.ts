@@ -136,7 +136,7 @@ export class ProductsService {
     // sortableAttributes and total are missing in REST response
     // request should wait some time to get recent basket --> could be optimized
     return this.sparqueApiService
-      .getRelevantInformations$()
+      .getRelevantInformation$()
       .pipe(
         switchMap(([basketSKUs, userId, locale]) =>
           this.sparqueApiService

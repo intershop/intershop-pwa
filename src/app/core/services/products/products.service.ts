@@ -3,17 +3,13 @@ import { Injectable } from '@angular/core';
 import { flatten, range } from 'lodash-es';
 import { Observable, OperatorFunction, from, identity, of, throwError } from 'rxjs';
 import { defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
+import { SparqueApiService } from 'src/app/extensions/sparque/services/sparque-api/sparque-api.service';
 
-import {
-  SparqueCountResponse,
-  SparqueFacetOptionsResponse,
-} from 'src/app/extensions/sparque/models/sparque/sparque.interface';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
@@ -25,10 +21,10 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
-import { SparqueApiService } from 'src/app/extensions/sparque/services/sparque-api/sparque-api.service';
 
 import STUB_ATTRS from './products-list-attributes';
 
@@ -38,12 +34,12 @@ import STUB_ATTRS from './products-list-attributes';
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
   constructor(
-    private apiService: ApiService, 
-    private productMapper: ProductMapper, 
-    private appFacade: AppFacade, 
+    private apiService: ApiService,
+    private productMapper: ProductMapper,
+    private appFacade: AppFacade,
     private featureToggle: FeatureToggleService,
     private sparqueApiService: SparqueApiService
-    ) {}
+  ) {}
 
   /**
    * Get the full Product data for the given Product SKU.
@@ -134,7 +130,7 @@ export class ProductsService {
       return throwError(() => new Error('searchProducts() called without searchTerm'));
     }
 
-	/*if(this.featureToggle.enabled('sparque'))
+    /*if(this.featureToggle.enabled('sparque'))
   {
 		console.log(this.featureToggle.enabled('sparque'));
 		// sortableAttributes and total are missing in REST response
@@ -191,16 +187,16 @@ export class ProductsService {
           total,
         }))
       );
-	//}
-}
+    //}
+  }
 
-// TODO: find a better solution instead of this stub method for overriding filter.service.b2b.ts usage
-getProductsAfterSearch(): OperatorFunction<
-[never, never],
-{ products: never; sortableAttributes: never; total: never }
-> {
-return;
-}
+  // TODO: find a better solution instead of this stub method for overriding filter.service.b2b.ts usage
+  getProductsAfterSearch(): OperatorFunction<
+    [never, never],
+    { products: never; sortableAttributes: never; total: never }
+  > {
+    return;
+  }
 
   getProductsForMaster(
     masterSKU: string,
