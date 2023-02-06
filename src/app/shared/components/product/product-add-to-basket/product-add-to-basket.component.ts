@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@a
 import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.model';
@@ -34,7 +35,11 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   visible$: Observable<boolean>;
   translationKey$: Observable<string>;
 
-  constructor(private checkoutFacade: CheckoutFacade, private context: ProductContextFacade) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private accountFacade: AccountFacade,
+    private context: ProductContextFacade
+  ) {}
 
   buttonDisabled$: Observable<boolean>;
 
@@ -63,9 +68,16 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
     const hasProductError$ = this.context.select('hasProductError');
     const hasNoQuantity$ = this.context.select('quantity').pipe(map(quantity => quantity <= 0));
     const loading$ = this.displaySpinner$.pipe(startWith(false));
-    this.buttonDisabled$ = combineLatest([loading$, hasQuantityError$, hasProductError$, hasNoQuantity$]).pipe(
-      map(conditions => conditions.some(c => !!c))
-    );
+
+    // disable button when spinning, in case of an error (quick order) or during login or basket loading
+    this.buttonDisabled$ = combineLatest([
+      loading$,
+      hasQuantityError$,
+      hasProductError$,
+      hasNoQuantity$,
+      this.accountFacade.userLoading$,
+      this.basketLoading$,
+    ]).pipe(map(conditions => conditions.some(c => c)));
   }
 
   addToBasket() {

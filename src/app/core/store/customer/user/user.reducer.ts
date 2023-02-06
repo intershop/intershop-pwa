@@ -28,6 +28,7 @@ import {
   loadUserPaymentMethodsSuccess,
   loginUserFail,
   loginUserSuccess,
+  loginUserWithToken,
   logoutUser,
   logoutUserFail,
   logoutUserSuccess,
@@ -99,6 +100,7 @@ export const userReducer = createReducer(
     deleteUserPaymentInstrument,
     updateUserPasswordByPasswordReminder,
     requestPasswordReminder,
+    loginUserWithToken,
     logoutUser
   ),
   unsetLoadingOn(
