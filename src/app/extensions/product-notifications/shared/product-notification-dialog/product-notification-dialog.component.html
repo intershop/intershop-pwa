@@ -23,14 +23,28 @@
     <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
       <ish-product-notification-edit-form
         [form]="productNotificationForm"
-        [productNotification]="productNotification"
+        [productNotification]="productNotification$ | async"
       ></ish-product-notification-edit-form>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="submit" value="Update" name="update" class="btn btn-primary" (click)="submitForm()">
+    <button
+      *ngIf="productNotification$ | async; else createNotificationButton"
+      type="submit"
+      value="Update"
+      name="update"
+      class="btn btn-primary"
+      (click)="submitForm()"
+    >
       {{ 'product.notification.edit.form.update.button.label' | translate }}
     </button>
+
+    <ng-template #createNotificationButton>
+      <button type="submit" value="Create" name="create" class="btn btn-primary" (click)="submitForm()">
+        {{ 'product.notification.edit.form.create.button.label' | translate }}
+      </button>
+    </ng-template>
+
     <button type="submit" value="Cancel" name="cancel" class="btn btn-secondary" (click)="hide()">
       {{ 'product.notification.edit.form.cancel.button.label' | translate }}
     </button>

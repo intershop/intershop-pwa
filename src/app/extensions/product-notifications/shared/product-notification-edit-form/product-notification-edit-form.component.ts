@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, combineLatest, of } from 'rxjs';
-import { map, shareReplay, switchMap } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -11,7 +11,6 @@ import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
-import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
 /**
@@ -27,7 +26,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
  * @example
  * <ish-product-notification-edit-form
         [form]="productNotificationForm"
-        [productNotification]="productNotification"
+        [productNotification]="productNotification$ | async"
       ></ish-product-notification-edit-form>
  */
 @Component({
@@ -40,6 +39,9 @@ export class ProductNotificationEditFormComponent implements OnInit {
   @Input() productNotification: ProductNotification;
   fields$: Observable<FormlyFieldConfig[]>;
 
+  product$: Observable<ProductView>;
+  productPrices$: Observable<Pricing>;
+
   model$: Observable<{
     alerttype: string;
     email: string;
@@ -50,46 +52,23 @@ export class ProductNotificationEditFormComponent implements OnInit {
 
   constructor(
     private appFacade: AppFacade,
-    private productNotificationsFacade: ProductNotificationsFacade,
     private context: ProductContextFacade,
     private accountFacade: AccountFacade
   ) {}
 
-  productNotification$: Observable<ProductNotification>;
-  product$: Observable<ProductView>;
-  productPrices$: Observable<Pricing>;
-  productAvailable$: Observable<boolean>;
-
   ngOnInit() {
     this.product$ = this.context.select('product');
     this.productPrices$ = this.context.select('prices');
-    this.productAvailable$ = this.context.select('product', 'available');
 
-    // get product notification as @Input parameter (my account) or from facade (REST call)
-    this.productNotification$ = this.productNotification
-      ? of(this.productNotification)
-      : this.productAvailable$.pipe(
-          switchMap(available =>
-            this.productNotificationsFacade
-              .productNotificationBySku$(this.context.get('sku'), available ? 'price' : 'stock')
-              .pipe(shareReplay(1))
-          )
-        );
-
-    // fill the form values in the form model, this.productNotification$ can be "undefined" if no notification exists
-    this.model$ = combineLatest([
-      this.productNotification$,
-      this.productPrices$,
-      this.product$,
-      this.accountFacade.user$,
-    ]).pipe(
-      map(([productNotification, productPrices, product, user]) =>
-        productNotification
+    // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
+    this.model$ = combineLatest([this.productPrices$, this.product$, this.accountFacade.user$]).pipe(
+      map(([productPrices, product, user]) =>
+        this.productNotification
           ? {
-              alerttype: productNotification.type,
-              email: productNotification.notificationMailAddress,
-              pricevalue: productNotification.price?.value,
-              productnotificationid: productNotification.id,
+              alerttype: this.productNotification.type,
+              email: this.productNotification.notificationMailAddress,
+              pricevalue: this.productNotification.price?.value,
+              productnotificationid: this.productNotification.id,
             }
           : {
               alerttype: product?.available ? 'price' : 'stock',
@@ -100,14 +79,10 @@ export class ProductNotificationEditFormComponent implements OnInit {
     );
 
     // differentiate form with or without a product notification
-    this.fields$ = combineLatest([
-      this.productNotification$,
-      this.product$,
-      this.model$.pipe(map(model => model?.currency)),
-    ]).pipe(
-      map(([productNotification, product, currency]) =>
-        productNotification
-          ? this.getFieldsForProductNotification(productNotification, product, currency)
+    this.fields$ = combineLatest([this.product$, this.model$.pipe(map(model => model?.currency))]).pipe(
+      map(([product, currency]) =>
+        this.productNotification
+          ? this.getFieldsForProductNotification(this.productNotification, product, currency)
           : this.getFieldsForNoProductNotification(product, currency)
       )
     );

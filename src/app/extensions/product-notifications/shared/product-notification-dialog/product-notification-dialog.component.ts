@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, of, shareReplay, switchMap, takeUntil } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -30,14 +30,17 @@ import { ProductNotification } from '../../models/product-notification/product-n
 })
 export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
   modal: NgbModalRef;
-  productNotificationForm = new UntypedFormGroup({});
-  product$: Observable<ProductView>;
 
-  submitted = false;
+  product$: Observable<ProductView>;
+  productAvailable$: Observable<boolean>;
   productPrices$: Observable<Pricing>;
   currentCurrency: string;
 
+  productNotificationForm = new UntypedFormGroup({});
+  submitted = false;
+
   @Input() productNotification: ProductNotification;
+  productNotification$: Observable<ProductNotification>;
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
@@ -52,11 +55,23 @@ export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.product$ = this.context.select('product');
+    this.productAvailable$ = this.context.select('product', 'available');
 
     // determine current currency
     this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(currency => {
       this.currentCurrency = currency;
     });
+
+    // get product notification as @Input parameter (my account) or from facade (REST call)
+    this.productNotification$ = this.productNotification
+      ? of(this.productNotification)
+      : this.productAvailable$.pipe(
+          switchMap(available =>
+            this.productNotificationsFacade
+              .productNotificationBySku$(this.context.get('sku'), available ? 'price' : 'stock')
+              .pipe(shareReplay(1))
+          )
+        );
   }
 
   /** close modal */

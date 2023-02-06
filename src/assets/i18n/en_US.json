@@ -906,6 +906,7 @@
   "product.notification.create.success.message": "Notification has been set.",
   "product.notification.delete.success.message": "Your product notification was deleted.",
   "product.notification.edit.form.cancel.button.label": "Cancel",
+  "product.notification.edit.form.create.button.label": "OK",
   "product.notification.edit.form.email.label": "E-mail",
   "product.notification.edit.form.instock_notification.label": "Notify me if product is back in stock.",
   "product.notification.edit.form.no_notification.label": "I no longer wish to receive notifications about this item.",

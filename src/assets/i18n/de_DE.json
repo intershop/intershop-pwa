@@ -906,6 +906,7 @@
   "product.notification.create.success.message": "Benachrichtigung wurde gesendet.",
   "product.notification.delete.success.message": "Ihre Produktbenachrichtigung wurde gelöscht.",
   "product.notification.edit.form.cancel.button.label": "Abbrechen",
+  "product.notification.edit.form.create.button.label": "OK",
   "product.notification.edit.form.email.label": "E-Mail",
   "product.notification.edit.form.instock_notification.label": "Benachrichtigen Sie mich, wenn das Produkt wieder auf Lager ist.",
   "product.notification.edit.form.no_notification.label": "Ich möchte keine Benachrichtigungen mehr zu diesem Artikel erhalten.",
