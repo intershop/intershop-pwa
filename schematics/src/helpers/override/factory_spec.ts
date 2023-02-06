@@ -11,21 +11,17 @@ describe('override Schematic', () => {
   let runOverride: (options: Partial<Options>) => Promise<UnitTestTree>;
 
   beforeEach(async () => {
-    const appTree$ = createApplication(schematicRunner).pipe(createModule(schematicRunner, { name: 'shared' }));
+    const appTree$ = createApplication(schematicRunner).pipe(
+      createModule(schematicRunner, { name: 'shared', project: undefined })
+    );
     appTree = await appTree$.toPromise();
-    appTree = await schematicRunner
-      .runSchematicAsync('component', { project: 'bar', name: 'foo/dummy' }, appTree)
-      .toPromise();
-    appTree = await schematicRunner
-      .runSchematicAsync(
-        'component',
-        { project: 'bar', name: 'foo/foobar', styleFile: true } as PWAComponentOptionsSchema,
-        appTree
-      )
-      .toPromise();
-    appTree = await schematicRunner
-      .runSchematicAsync('service', { project: 'bar', name: 'services/dummy' }, appTree)
-      .toPromise();
+    appTree = await schematicRunner.runSchematic('component', { project: 'bar', name: 'foo/dummy' }, appTree);
+    appTree = await schematicRunner.runSchematic(
+      'component',
+      { project: 'bar', name: 'foo/foobar', styleFile: true } as PWAComponentOptionsSchema,
+      appTree
+    );
+    appTree = await schematicRunner.runSchematic('service', { project: 'bar', name: 'services/dummy' }, appTree);
     appTree.create(
       '/src/app/core/routing/product.route.ts',
       `
@@ -33,18 +29,17 @@ describe('override Schematic', () => {
     `
     );
 
-    runOverride = options =>
-      schematicRunner.runSchematicAsync('override', { project: 'bar', ...options }, appTree).toPromise();
+    runOverride = options => schematicRunner.runSchematic('override', { project: 'bar', ...options }, appTree);
   });
 
   it('should be created', () => {
     expect(appTree.files.filter(x => ['.component.', '.service.', '.route'].some(t => x.includes(t))))
       .toMatchInlineSnapshot(`
       Array [
-        "/src/app/app.component.scss",
         "/src/app/app.component.html",
         "/src/app/app.component.spec.ts",
         "/src/app/app.component.ts",
+        "/src/app/app.component.scss",
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",

@@ -20,7 +20,7 @@ describe('Address Form Configuration Schematic', () => {
   it('should create an address form configuration and register it in the module', async () => {
     const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('address-form-configuration', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('address-form-configuration', options, appTree);
     const files = tree.files.filter(x => x.search('formly-address-forms') >= 0);
     expect(files).toContain('/src/app/shared/formly-address-forms/configurations/ex/address-form-ex.configuration.ts');
     expect(files).toContain('/src/app/shared/formly-address-forms/formly-address-forms.module.ts');

@@ -1,4 +1,4 @@
-import { Observable, OperatorFunction } from '@angular-devkit/core/node_modules/rxjs';
+import { Observable, OperatorFunction, from } from '@angular-devkit/core/node_modules/rxjs';
 import { switchMap, tap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { Schema as ModuleOptions } from '@schematics/angular/module/schema';
@@ -9,32 +9,32 @@ export function createSchematicRunner() {
 }
 
 export function createApplication(schematicRunner: SchematicTestRunner) {
-  return schematicRunner
-    .runExternalSchematicAsync('@schematics/angular', 'workspace', {
+  return from(
+    schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', {
       name: 'workspace',
       newProjectRoot: 'projects',
       version: '6.0.0',
     })
-    .pipe(
-      switchMap(workspace =>
-        schematicRunner.runExternalSchematicAsync(
-          '@schematics/angular',
-          'application',
-          {
-            name: 'bar',
-            inlineStyle: false,
-            inlineTemplate: false,
-            routing: true,
-            style: 'scss',
-            skipTests: false,
-            skipPackageJson: false,
-            prefix: 'ish',
-            projectRoot: '',
-          },
-          workspace
-        )
+  ).pipe(
+    switchMap(workspace =>
+      schematicRunner.runExternalSchematic(
+        '@schematics/angular',
+        'application',
+        {
+          name: 'bar',
+          inlineStyle: false,
+          inlineTemplate: false,
+          routing: true,
+          style: 'scss',
+          skipTests: false,
+          skipPackageJson: false,
+          prefix: 'ish',
+          projectRoot: '',
+        },
+        workspace
       )
-    );
+    )
+  );
 }
 
 export function createModule(
@@ -42,7 +42,7 @@ export function createModule(
   options: ModuleOptions
 ): OperatorFunction<UnitTestTree, UnitTestTree> {
   return (source$: Observable<UnitTestTree>) =>
-    source$.pipe(switchMap(tree => schematicRunner.runSchematicAsync('module', { ...options, project: 'bar' }, tree)));
+    source$.pipe(switchMap(tree => schematicRunner.runSchematic('module', { ...options, project: 'bar' }, tree)));
 }
 
 export function copyFileFromPWA(path: string): OperatorFunction<UnitTestTree, UnitTestTree> {
@@ -58,7 +58,7 @@ export function createAppLastRoutingModule(schematicRunner: SchematicTestRunner)
   return (source$: Observable<UnitTestTree>) =>
     source$.pipe(
       switchMap(tree =>
-        schematicRunner.runExternalSchematicAsync(
+        schematicRunner.runExternalSchematic(
           '@schematics/angular',
           'module',
           {

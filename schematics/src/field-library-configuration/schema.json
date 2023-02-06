@@ -15,7 +15,10 @@
     "path": {
       "type": "string",
       "format": "path",
-      "visible": false
+      "visible": false,
+      "$default": {
+        "$source": "workingDirectory"
+      }
     },
     "name": {
       "type": "string",

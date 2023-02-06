@@ -13,7 +13,7 @@ The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm versio
 To migrate to this version it is advised to delete the locale `package-lock.json` beforehand.
 
 The project was updated to work with Angular 15.
-This includes the removal of the Browserslist configuration and an updated TypeScript compiler `target` to `ES2022`.
+This includes the removal of the Browserslist configuration, an updated TypeScript compiler `target` to `ES2022` and adaptions of the Schematics configurations and tests.
 In addition all other dependencies where updated as well and resulted in necessary Stylelint and Jest tests adaptions.
 
 The account navigation was reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
