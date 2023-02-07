@@ -21,7 +21,10 @@ export class AccountProductNotificationsPageComponent implements OnInit {
   constructor(private productNotificationsFacade: ProductNotificationsFacade) {}
 
   ngOnInit() {
+    // TODO: some product notification in the state management reset before fetching the current product notifications
     this.productNotifications$ = this.productNotificationsFacade.productNotificationsByRoute$;
+    //this.productNotificationsPrice$ = this.productNotificationsFacade.productNotifications$('price');
+    //this.productNotificationsInStock$ = this.productNotificationsFacade.productNotifications$('stock');
     this.productNotificationsLoading$ = this.productNotificationsFacade.productNotificationsLoading$;
     this.productNotificationsError$ = this.productNotificationsFacade.productNotificationsError$;
   }
