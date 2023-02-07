@@ -12,6 +12,7 @@ import {
 } from '../models/product-notification/product-notification.model';
 import {
   createProductNotification,
+  updateProductNotification,
   deleteProductNotification,
   getProductNotificationBySku,
   getProductNotificationsByType,
@@ -44,6 +45,11 @@ export class ProductNotificationsFacade {
   // create a product notification
   createProductNotification(productNotification: ProductNotification) {
     this.store.dispatch(createProductNotification({ productNotification }));
+  }
+
+  // update a product notification
+  updateProductNotification(sku: string, productNotification: ProductNotification) {
+    this.store.dispatch(updateProductNotification({ sku, productNotification }));
   }
 
   // delete a product notification

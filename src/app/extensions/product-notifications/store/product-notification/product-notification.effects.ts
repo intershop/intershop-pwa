@@ -11,6 +11,9 @@ import {
   createProductNotification,
   createProductNotificationFail,
   createProductNotificationSuccess,
+  updateProductNotification,
+  updateProductNotificationFail,
+  updateProductNotificationSuccess,
   deleteProductNotification,
   deleteProductNotificationFail,
   deleteProductNotificationSuccess,
@@ -50,6 +53,25 @@ export class ProductNotificationEffects {
             }),
           ]),
           mapErrorToAction(createProductNotificationFail)
+        )
+      )
+    )
+  );
+
+  updateProductNotification$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateProductNotification),
+      mapToPayload(),
+      whenTruthy(),
+      mergeMap(payload =>
+        this.productNotificationsService.updateProductNotification(payload.sku, payload.productNotification).pipe(
+          mergeMap(productNotification => [
+            updateProductNotificationSuccess({ productNotification }),
+            displaySuccessMessage({
+              message: 'product.notification.update.success.message',
+            }),
+          ]),
+          mapErrorToAction(updateProductNotificationFail)
         )
       )
     )

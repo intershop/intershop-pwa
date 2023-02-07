@@ -76,9 +76,43 @@ export class ProductNotificationsService {
   }
 
   /**
-   * Deletes a product notification for a given product and user.
+   * Updates a product notification for a given product and user.
    *
    * @param productNotification       The product notification.
+   * @param sku                       The product sku.
+   * @returns                         The updated product notification.
+   */
+  updateProductNotification(sku: string, productNotification: ProductNotification) {
+    if (!sku) {
+      return throwError(() => new Error('updateProductNotification() called without sku'));
+    }
+    if (!productNotification) {
+      return throwError(() => new Error('updateProductNotification() called without notification'));
+    }
+
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .put(
+            customer.isBusinessCustomer
+              ? `customers/${customer.customerNo}/users/-/notifications/${productNotification.type}/${sku}`
+              : `privatecustomers/-/notifications/${productNotification.type}/${sku}`,
+            productNotification
+          )
+          .pipe(
+            map((response: ProductNotification) =>
+              ProductNotificationMapper.fromData(response, productNotification.type)
+            )
+          )
+      )
+    );
+  }
+
+  /**
+   * Deletes a product notification for a given product and user.
+   *
+   * @param sku                       The product sku.
+   * @param productNotificationType   The type of the product notification.
    */
   deleteProductNotification(sku: string, productNotificationType: string) {
     if (!sku) {

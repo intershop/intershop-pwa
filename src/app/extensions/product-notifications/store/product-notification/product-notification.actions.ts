@@ -37,6 +37,21 @@ export const createProductNotificationFail = createAction(
   httpError()
 );
 
+export const updateProductNotification = createAction(
+  '[Product Notification] Update Product Notification',
+  payload<{ sku: string; productNotification: ProductNotification }>()
+);
+
+export const updateProductNotificationSuccess = createAction(
+  '[Product Notification API] Update Product Notification Success',
+  payload<{ productNotification: ProductNotification }>()
+);
+
+export const updateProductNotificationFail = createAction(
+  '[Product Notification API] Update Product Notification Fail',
+  httpError()
+);
+
 export const deleteProductNotification = createAction(
   '[Product Notification] Delete Product Notification',
   payload<{ sku: string; productNotificationType: ProductNotificationType; productNotificationId: string }>()

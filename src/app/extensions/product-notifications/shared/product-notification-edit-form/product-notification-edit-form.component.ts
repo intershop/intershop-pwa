@@ -43,7 +43,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   productPrices$: Observable<Pricing>;
 
   model$: Observable<{
-    alerttype: string;
+    alerttype?: string;
     email: string;
     pricevalue: number;
     currency?: string;
@@ -60,6 +60,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
     this.product$ = this.context.select('product');
     this.productPrices$ = this.context.select('prices');
 
+    // console.log(this.productNotification?.type);
     // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
     this.model$ = combineLatest([this.productPrices$, this.product$, this.accountFacade.user$]).pipe(
       map(([productPrices, product, user]) =>
@@ -71,7 +72,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
               productnotificationid: this.productNotification.id,
             }
           : {
-              alerttype: product?.available ? 'price' : 'stock',
+              alerttype: undefined,
               email: user.email,
               pricevalue: productPrices.salePrice.value,
             }
@@ -120,6 +121,12 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   // wrap form fields in fieldset if a product notification is not available because there are no radio buttons
   getFieldsForNoProductNotification(product: ProductView, currency: string): FormlyFieldConfig[] {
     return [
+      {
+        key: 'alerttype',
+        templateOptions: {
+          value: '',
+        },
+      },
       {
         type: 'ish-fieldset-field',
         fieldGroup: [...(product?.available ? this.getPriceConfig(currency) : []), ...this.getEmailConfig()],

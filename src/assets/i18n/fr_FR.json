@@ -918,6 +918,7 @@
   "product.notification.edit.link.title": "Edit Notification",
   "product.notification.price.add_notification.button.label": "Notification de prix",
   "product.notification.stock.add_notification.button.label": "Me prévenir lorsque disponible",
+  "product.notification.update.success.message": "Your product notification was updated.",
   "product.out_of_stock.text": "Stock épuisé",
   "product.price.listPriceFallback.text": "{{0}}",
   "product.price.na.text": "n.c.",

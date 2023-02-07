@@ -113,8 +113,14 @@ export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
       if (formValue.alerttype !== undefined && formValue.alerttype === 'delete') {
         // user selected the radio button to remove the notification
         this.productNotificationsFacade.deleteProductNotification(sku, productNotificationType, productNotificationId);
+      } else if (
+        formValue.alerttype !== undefined &&
+        (formValue.alerttype === 'price' || formValue.alerttype === 'stock')
+      ) {
+        // update existing notification
+        this.productNotificationsFacade.updateProductNotification(sku, productNotification);
       } else {
-        // there is no radio button or user selected the radio button to create the notification
+        // there is no radio button
         this.productNotificationsFacade.createProductNotification(productNotification);
       }
 

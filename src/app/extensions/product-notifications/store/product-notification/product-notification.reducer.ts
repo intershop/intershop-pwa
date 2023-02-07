@@ -10,6 +10,9 @@ import {
   createProductNotification,
   createProductNotificationFail,
   createProductNotificationSuccess,
+  updateProductNotification,
+  updateProductNotificationFail,
+  updateProductNotificationSuccess,
   deleteProductNotification,
   deleteProductNotificationFail,
   deleteProductNotificationSuccess,
@@ -32,11 +35,22 @@ export const initialState: ProductNotificationState = productNotificationAdapter
 
 export const productNotificationReducer = createReducer(
   initialState,
-  setLoadingOn(loadProductNotifications, createProductNotification, deleteProductNotification),
-  setErrorOn(loadProductNotificationsFail, createProductNotificationFail, deleteProductNotificationFail),
+  setLoadingOn(
+    loadProductNotifications,
+    createProductNotification,
+    updateProductNotification,
+    deleteProductNotification
+  ),
+  setErrorOn(
+    loadProductNotificationsFail,
+    createProductNotificationFail,
+    updateProductNotificationFail,
+    deleteProductNotificationFail
+  ),
   unsetLoadingAndErrorOn(
     loadProductNotificationsSuccess,
     createProductNotificationSuccess,
+    updateProductNotificationSuccess,
     deleteProductNotificationSuccess
   ),
   on(loadProductNotificationsSuccess, (state, action) =>
@@ -44,6 +58,9 @@ export const productNotificationReducer = createReducer(
   ),
   on(createProductNotificationSuccess, (state, action) =>
     productNotificationAdapter.addOne(action.payload.productNotification, state)
+  ),
+  on(updateProductNotificationSuccess, (state, action) =>
+    productNotificationAdapter.upsertOne(action.payload.productNotification, state)
   ),
   on(deleteProductNotificationSuccess, (state, action) => {
     const id = action.payload.productNotificationId;
