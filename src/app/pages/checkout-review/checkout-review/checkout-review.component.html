@@ -38,7 +38,10 @@
 
     <ng-container *ishFeature="'messageToMerchant'">
       <!-- MessageToMerchant-->
-      <ish-basket-merchant-message-view [data]="basket"></ish-basket-merchant-message-view>
+      <ish-basket-merchant-message-view
+        [data]="basket"
+        editRouterLink="/checkout/shipping"
+      ></ish-basket-merchant-message-view>
     </ng-container>
 
     <div *ishFeature="'businessCustomerRegistration'" class="row">

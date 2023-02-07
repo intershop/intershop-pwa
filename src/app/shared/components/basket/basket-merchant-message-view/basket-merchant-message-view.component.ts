@@ -16,6 +16,7 @@ import { Order } from 'ish-core/models/order/order.model';
 })
 export class BasketMerchantMessageViewComponent implements OnChanges {
   @Input() data: Basket | Order | Requisition;
+  @Input() editRouterLink: string;
 
   messageToMerchant: string;
 
