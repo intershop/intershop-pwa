@@ -2,7 +2,7 @@
   <h1
     [innerHTML]="
       'account.overview.personal_message_b2b.text'
-        | translate: { '0': user.firstName + '&nbsp;' + user.lastName, '1': customer.companyName }
+        | translate : { '0': user.firstName + '&nbsp;' + user.lastName, '1': customer.companyName }
     "
     data-testing-id="personal-message-b2b"
   ></h1>
@@ -14,7 +14,7 @@
 
 <ng-template #personalCustomerMessage>
   <h1
-    [innerHTML]="'account.overview.personal_message.text' | translate: { '0': user.firstName }"
+    [innerHTML]="'account.overview.personal_message.text' | translate : { '0': user.firstName }"
     data-testing-id="personal-message-default"
   ></h1>
 
@@ -85,6 +85,6 @@
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:
   <span
-    [ishServerHtml]="'account.overview.note.text' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }"
+    [ishServerHtml]="'account.overview.note.text' | translate : { '0': 'page://page.privacyPolicy.pagelet2-Page' }"
   ></span>
 </p>

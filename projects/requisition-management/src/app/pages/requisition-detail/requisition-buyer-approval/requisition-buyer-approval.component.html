@@ -56,7 +56,7 @@
           <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisRequisition > 1 }">
             {{
               requisition.userBudget?.spentBudgetIncludingThisRequisition || requisition.totals.total
-                | ishPrice: 'gross'
+                | ishPrice : 'gross'
             }}
             <ng-container *ngIf="requisition.userBudget.budget"
               >({{ spentPercentageIncludingThisRequisition | percent }})</ng-container

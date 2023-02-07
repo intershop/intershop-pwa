@@ -21,13 +21,13 @@
 
 <ng-container *ngIf="(loading$ | async) === false && submitted">
   <ng-container *ngIf="empty(stores$ | async); else storesFound">
-    <div [ishServerHtml]="'store_locator.notFound' | translate: { '0': '/home' }"></div>
+    <div [ishServerHtml]="'store_locator.notFound' | translate : { '0': '/home' }"></div>
   </ng-container>
   <ng-template #storesFound>
     <p>
       {{
         ((stores$ | async).length > 1 ? 'store_locator.results.multiple' : 'store_locator.results.single')
-          | translate: { '0': (stores$ | async).length }
+          | translate : { '0': (stores$ | async).length }
       }}
     </p>
     <ng-container *ishNotFeature="'maps'">

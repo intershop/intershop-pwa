@@ -6,7 +6,7 @@
 
 <div *ngIf="selectedPunchoutType$ | async as selectedType" class="section">
   <h2 class="mt-1">
-    {{ 'account.punchout.user.list.heading' | translate: { '0': selectedType } }}
+    {{ 'account.punchout.user.list.heading' | translate : { '0': selectedType } }}
     <a
       [routerLink]="['/account/punchout/create', { format: selectedType }]"
       class="btn btn-secondary"
@@ -41,7 +41,7 @@
               <a
                 [routerLink]="[]"
                 class="btn-tool"
-                title="{{ 'account.user.delete_user_dialog.header' | translate: { '0': user.login } }}"
+                title="{{ 'account.user.delete_user_dialog.header' | translate : { '0': user.login } }}"
                 (click)="modalDialog.show(user)"
                 data-testing-id="delete-user"
               >
@@ -51,7 +51,7 @@
               <ish-modal-dialog
                 #modalDialog
                 [options]="{
-                  titleText: 'account.user.delete_user_dialog.header' | translate: { '0': user.login },
+                  titleText: 'account.user.delete_user_dialog.header' | translate : { '0': user.login },
                   confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
                   rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
                 }"
@@ -81,7 +81,7 @@
   </ng-container>
   <ng-template #emptyList>
     <p data-testing-id="empty-user-list">
-      {{ 'account.punchout.no_user.text' | translate: { '0': selectedType } }}
+      {{ 'account.punchout.no_user.text' | translate : { '0': selectedType } }}
     </p>
   </ng-template>
 </div>

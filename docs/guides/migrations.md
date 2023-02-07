@@ -71,6 +71,8 @@ will become
 
 Find more information about functional guards in this [blog article](https://blog.angular.io/advancements-in-the-angular-router-5d69ec4c032).
 
+With the [Prettier update to version 2.8](https://prettier.io/blog/2022/11/23/2.8.0.html#angular) the format of pipes in HTML files changed slightly.
+
 The account navigation was reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
 For better maintainability and brand specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
 Also with this rework the navigation items data structure was changed from a key value object to a simpler `NavigationItem` Array.

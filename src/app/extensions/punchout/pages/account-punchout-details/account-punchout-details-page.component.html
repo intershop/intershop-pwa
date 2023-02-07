@@ -1,6 +1,6 @@
 <ng-container *ngIf="selectedUser$ | async as user">
   <h1>
-    {{ 'account.punchout.user.details.heading' | translate: { '0': user.login } }}
+    {{ 'account.punchout.user.details.heading' | translate : { '0': user.login } }}
   </h1>
   <ish-error-message [error]="error$ | async"></ish-error-message>
 

@@ -32,6 +32,6 @@
         <ng-template #plainOrderNo> {{ order.documentNo }}</ng-template>
       </strong>
     </p>
-    <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate: { '0': order.invoiceToAddress.email }"></p>
+    <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate : { '0': order.invoiceToAddress.email }"></p>
   </div>
 </div>

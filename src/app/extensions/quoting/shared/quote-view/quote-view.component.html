@@ -11,16 +11,16 @@
         <p
           [ishServerHtml]="
             'quote.edit.submitted.your_quote_request.text'
-              | translate: { '0': 'route://account/quotes', '1': 'route://account' }
+              | translate : { '0': 'route://account/quotes', '1': 'route://account' }
           "
         ></p>
-        <p>{{ 'quote.edit.submitted.we_will_email.text' | translate: { '0': userEmail$ | async } }}</p>
+        <p>{{ 'quote.edit.submitted.we_will_email.text' | translate : { '0': userEmail$ | async } }}</p>
       </ng-container>
       <ng-template #previouslySubmitted>
         <ish-info-message
           message="{{
             'quote.edit.submitted.your_quote_request_has_been_submitted.text'
-              | translate: { '0': asQuoteRequest(quote).submittedDate || quote.creationDate | ishDate: 'shortDate' }
+              | translate : { '0': asQuoteRequest(quote).submittedDate || quote.creationDate | ishDate : 'shortDate' }
           }}"
           [toast]="false"
         >
@@ -62,8 +62,8 @@
       }}</label>
       <div class="col-8 col-md-9 col-xl-10">
         <p class="form-control-plaintext">
-          {{ asQuote(quote).validFromDate | ishDate: 'shortDate' }} -
-          {{ asQuote(quote).validToDate | ishDate: 'shortDate' }}
+          {{ asQuote(quote).validFromDate | ishDate : 'shortDate' }} -
+          {{ asQuote(quote).validToDate | ishDate : 'shortDate' }}
         </p>
       </div>
     </div>

@@ -67,7 +67,7 @@
           [attr.data-label]="'account.costcenter.details.buyers.list.header.orderspendlimit' | translate"
         >
           {{ buyer.budget | ishPrice }} ({{
-            'account.costcenter.details.buyers.list.orderspendlimit.period' | translate: { '0': buyer.budgetPeriod }
+            'account.costcenter.details.buyers.list.orderspendlimit.period' | translate : { '0': buyer.budgetPeriod }
           }})
         </td>
       </ng-container>
@@ -117,7 +117,7 @@
     rejectText: 'account.cancel.button.label' | translate,
     titleText:
       'account.costcenter.remove_buyer_dialog.header'
-      | translate: { '0': selectedBuyer?.firstName + ' ' + selectedBuyer?.lastName }
+      | translate : { '0': selectedBuyer?.firstName + ' ' + selectedBuyer?.lastName }
   }"
   (confirmed)="removeBuyerFromCostCenter()"
 >

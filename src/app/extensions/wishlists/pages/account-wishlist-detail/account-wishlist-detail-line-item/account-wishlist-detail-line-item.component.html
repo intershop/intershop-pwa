@@ -13,7 +13,7 @@
             <ish-product-bundle-display></ish-product-bundle-display>
             <div class="d-none d-sm-block">
               <label>{{ 'account.wishlist.table.added_on' | translate }}</label>
-              {{ wishlistItemData?.creationDate | ishDate: 'shortDate' }}
+              {{ wishlistItemData?.creationDate | ishDate : 'shortDate' }}
             </div>
             <div class="mb-2">
               <a [routerLink]="[]" class="btn-tool" (click)="moveDialog.show()" data-testing-id="move-wishlist">

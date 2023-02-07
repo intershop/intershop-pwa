@@ -12,13 +12,13 @@
         (product.readyForShipmentMax === 1
           ? 'product.ready_for_shipment.within24'
           : 'product.ready_for_shipment.within'
-        ) | translate: { '0': product.readyForShipmentMax }
+        ) | translate : { '0': product.readyForShipmentMax }
       }}
     </ng-container>
     <ng-template #shipmentRange>
       {{
         'product.ready_for_shipment.minmax'
-          | translate: { '0': product.readyForShipmentMin, '1': product.readyForShipmentMax }
+          | translate : { '0': product.readyForShipmentMin, '1': product.readyForShipmentMax }
       }}
     </ng-template>
     <!-- details link and dialog -->

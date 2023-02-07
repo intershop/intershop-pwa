@@ -9,7 +9,6 @@ const pinned = {
   swiper: 8, // 9 requires integration rework
   jest: '28',
   '@types/jest': '28',
-  prettier: '2.7.1',
 };
 
 // <HELPERS>
