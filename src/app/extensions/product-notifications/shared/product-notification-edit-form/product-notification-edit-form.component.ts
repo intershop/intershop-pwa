@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, combineLatest } from 'rxjs';
@@ -34,7 +34,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
   templateUrl: './product-notification-edit-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductNotificationEditFormComponent implements OnInit {
+export class ProductNotificationEditFormComponent implements OnChanges {
   @Input() form: FormGroup;
   @Input() productNotification: ProductNotification;
   fields$: Observable<FormlyFieldConfig[]>;
@@ -56,7 +56,7 @@ export class ProductNotificationEditFormComponent implements OnInit {
     private accountFacade: AccountFacade
   ) {}
 
-  ngOnInit() {
+  ngOnChanges() {
     this.product$ = this.context.select('product');
     this.productPrices$ = this.context.select('prices');
 
