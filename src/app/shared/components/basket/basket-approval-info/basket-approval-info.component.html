@@ -21,7 +21,7 @@
     </p>
     <p
       [ishServerHtml]="
-        'approval.details.after' | translate: { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
+        'approval.details.after' | translate : { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
       "
       [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
     ></p>
@@ -48,7 +48,8 @@
       <p>
         {{
           'approval.details.cost_center_approvers.people_allowed'
-            | translate: { '0': approval.costCenterApproval.costCenterName || approval.costCenterApproval.costCenterID }
+            | translate
+              : { '0': approval.costCenterApproval.costCenterName || approval.costCenterApproval.costCenterID }
         }}
       </p>
 

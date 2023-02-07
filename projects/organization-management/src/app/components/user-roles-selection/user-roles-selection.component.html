@@ -5,7 +5,7 @@
     }}</label>
     <div class="col-md-8">
       <div *ngIf="form$ | async as form" class="row" [formGroup]="form">
-        <ng-container *ngFor="let item of form.controls | keyvalue: unsorted; let i = index">
+        <ng-container *ngFor="let item of form.controls | keyvalue : unsorted; let i = index">
           <div
             *ngIf="role$(item.key) | async as role"
             [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }"

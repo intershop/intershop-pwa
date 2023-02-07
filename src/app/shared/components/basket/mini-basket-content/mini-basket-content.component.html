@@ -5,7 +5,7 @@
       [error]="basketError"
       cssClass="text-danger"
     ></ish-basket-error-message>
-    <div *ngFor="let lineItem of lineItems | slice: 0:maxItemNumber" class="product-row">
+    <div *ngFor="let lineItem of lineItems | slice : 0 : maxItemNumber" class="product-row">
       <ng-container ishProductContext [sku]="lineItem.productSKU">
         <div class="mini-product-img">
           <ish-product-image imageType="S" [link]="true"></ish-product-image>

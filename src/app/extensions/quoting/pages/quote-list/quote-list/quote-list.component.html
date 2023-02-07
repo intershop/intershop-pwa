@@ -36,7 +36,7 @@
         {{ 'quote.list.table.creation_date' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.creation_date' | translate">
-        {{ quote.creationDate | ishDate: 'shortDate' }}
+        {{ quote.creationDate | ishDate : 'shortDate' }}
       </td>
     </ng-container>
 
@@ -89,7 +89,7 @@
     }"
     (confirmed)="onDeleteItem($event)"
   >
-    <p>{{ 'quote.list.delete.heading' | translate: { '0': asQuote(modalDialog.data)?.displayName } }}</p>
+    <p>{{ 'quote.list.delete.heading' | translate : { '0': asQuote(modalDialog.data)?.displayName } }}</p>
     <p>{{ 'quote.list.delete.do_you_really_want_to_delete.text' | translate }}</p>
   </ish-modal-dialog>
 </ng-container>

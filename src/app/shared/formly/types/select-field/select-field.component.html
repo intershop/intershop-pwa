@@ -6,7 +6,7 @@
   [ngClass]="props.inputClass"
   [attr.data-testing-id]="field.key"
 >
-  <ng-container *ngIf="selectOptions && selectOptions | formlySelectOptions: field | async as opts">
+  <ng-container *ngIf="selectOptions && selectOptions | formlySelectOptions : field | async as opts">
     <ng-container *ngFor="let opt of opts">
       <option [value]="opt.value" [disabled]="opt.disabled">
         {{ opt.label }}

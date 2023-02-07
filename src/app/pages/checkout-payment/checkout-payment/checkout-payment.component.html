@@ -63,7 +63,7 @@
                     [value]="paymentMethod.id"
                   />
                   <label class="form-check-label" [for]="'paymentOption_' + paymentMethod.id">
-                    {{ 'checkout.payment.payWith.link' | translate: { '0': paymentMethod.displayName } }}
+                    {{ 'checkout.payment.payWith.link' | translate : { '0': paymentMethod.displayName } }}
                   </label>
                 </ng-container>
               </div>
@@ -178,7 +178,7 @@
     <ng-template #zeroTotalInfo>
       <ish-info-message
         message="{{
-          'checkout.payment.no_selection_required.info' | translate: { '0': basket.totals?.total | ishPrice }
+          'checkout.payment.no_selection_required.info' | translate : { '0': basket.totals?.total | ishPrice }
         }}"
         [toast]="false"
       ></ish-info-message>
@@ -209,7 +209,7 @@
     <!-- Privacy policy link -->
     <span
       [ishServerHtml]="
-        'checkout.widget.security_privacy_policy.link' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }
+        'checkout.widget.security_privacy_policy.link' | translate : { '0': 'page://page.privacyPolicy.pagelet2-Page' }
       "
     ></span>
   </div>

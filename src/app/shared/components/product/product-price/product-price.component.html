@@ -17,9 +17,9 @@
           (d.isListPriceGreaterThanSalePrice
             ? 'product.price.salePricePrefix.text'
             : 'product.price.salePriceFallback.text'
-          ) | translate: { '0': d.salePrice | ishPrice }
+          ) | translate : { '0': d.salePrice | ishPrice }
         }}
-        <meta itemprop="price" [attr.content]="d.salePrice.value | number: '1.2-2':'en_US'" />
+        <meta itemprop="price" [attr.content]="d.salePrice.value | number : '1.2-2' : 'en_US'" />
         <meta itemprop="priceCurrency" [attr.content]="d.salePrice.currency" />
       </ng-container>
       <ng-template #salePriceNotAvailable> {{ 'product.price.na.text' | translate }} </ng-template>
@@ -31,10 +31,10 @@
       data-testing-id="old-price"
     >
       <span class="price-value">
-        {{ 'product.price.listPriceFallback.text' | translate: { '0': d.listPrice | ishPrice } }}
+        {{ 'product.price.listPriceFallback.text' | translate : { '0': d.listPrice | ishPrice } }}
       </span>
       <span *ngIf="showPriceSavings" class="price-savings">
-        {{ 'product.price.savingsFallback.text' | translate: { '0': d.priceSavings | ishPrice } }}
+        {{ 'product.price.savingsFallback.text' | translate : { '0': d.priceSavings | ishPrice } }}
       </span>
     </div>
 
@@ -43,7 +43,7 @@
         <div *ngIf="lastScaledPrice; else showRange">
           {{
             'product.price.scaledPrice.text.last'
-              | translate: { '0': scaledPrice.minQuantity, '1': scaledPrice | ishPrice }
+              | translate : { '0': scaledPrice.minQuantity, '1': scaledPrice | ishPrice }
           }}
         </div>
         <ng-template #showRange>

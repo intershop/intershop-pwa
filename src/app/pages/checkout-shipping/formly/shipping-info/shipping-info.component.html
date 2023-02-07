@@ -7,12 +7,12 @@
       {{ 'checkout.shipping.delivery_time.within24' | translate }}
     </span>
     <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax > 1">
-      {{ 'checkout.shipping.delivery_time.within' | translate: { '0': shippingMethod?.shippingTimeMax } }}
+      {{ 'checkout.shipping.delivery_time.within' | translate : { '0': shippingMethod?.shippingTimeMax } }}
     </span>
     <span *ngIf="shippingMethod.shippingTimeMin > 0">
       {{
         'checkout.shipping.delivery_time'
-          | translate: { '0': shippingMethod.shippingTimeMin, '1': shippingMethod.shippingTimeMax }
+          | translate : { '0': shippingMethod.shippingTimeMin, '1': shippingMethod.shippingTimeMax }
       }}
     </span>
   </span>

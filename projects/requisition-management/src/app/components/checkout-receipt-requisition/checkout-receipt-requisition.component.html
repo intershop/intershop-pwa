@@ -20,13 +20,13 @@
       <p
         [ishServerHtml]="
           'approval.cart.once_order_approved'
-            | translate: { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
+            | translate : { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
         "
       ></p>
-      <p [innerHTML]="'approval.cart.notification.mail.text' | translate: { '0': basket.email }"></p>
+      <p [innerHTML]="'approval.cart.notification.mail.text' | translate : { '0': basket.email }"></p>
     </div>
     <ng-template #notifyAnonymous>
-      <p [innerHTML]="'approval.cart.notification.mail.text' | translate: { '0': basket.invoiceToAddress.email }"></p>
+      <p [innerHTML]="'approval.cart.notification.mail.text' | translate : { '0': basket.invoiceToAddress.email }"></p>
     </ng-template>
     <div>
       <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval"></ish-basket-approval-info>

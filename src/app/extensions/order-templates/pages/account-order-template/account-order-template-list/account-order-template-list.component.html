@@ -31,7 +31,7 @@
         *cdkCellDef="let orderTemplate"
         [attr.data-label]="'account.order_template.list.table.created' | translate"
       >
-        {{ orderTemplate.creationDate | ishDate: 'shortDate' }}
+        {{ orderTemplate.creationDate | ishDate : 'shortDate' }}
       </td>
     </ng-container>
 
@@ -45,7 +45,7 @@
         *cdkCellDef="let orderTemplate"
         [attr.data-label]="'account.order_template.list.table.item' | translate"
       >
-        {{ 'account.order_template.items' | translate: { '0': orderTemplate.itemsCount } }}
+        {{ 'account.order_template.items' | translate : { '0': orderTemplate.itemsCount } }}
       </td>
     </ng-container>
 

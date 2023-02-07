@@ -16,7 +16,7 @@
           <div *ngIf="amount.value > 0">
             {{ 'account.requisitions.widget.order_total' | translate }}
             <div class="font-weight-bold" data-testing-id="pending-amount-sum">
-              {{ amount | ishPrice: 'gross' }}
+              {{ amount | ishPrice : 'gross' }}
             </div>
           </div>
         </div>

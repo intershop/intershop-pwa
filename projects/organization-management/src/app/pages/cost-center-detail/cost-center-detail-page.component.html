@@ -22,7 +22,7 @@
             <dd class="col-md-8" data-testing-id="owner-field">
               {{ costCenter.costCenterOwner.firstName }} {{ costCenter.costCenterOwner.lastName }}
             </dd>
-            <dt class="col-md-4">{{ 'account.budget.label' | translate: { '0': costCenter.budgetPeriod } }}</dt>
+            <dt class="col-md-4">{{ 'account.budget.label' | translate : { '0': costCenter.budgetPeriod } }}</dt>
             <dd class="col-md-8">{{ costCenter.budget | ishPrice }}</dd>
             <dt class="col-md-4">{{ 'account.budget.already_spent.label' | translate }}</dt>
             <dd class="col-md-8">{{ costCenter.spentBudget | ishPrice }}</dd>

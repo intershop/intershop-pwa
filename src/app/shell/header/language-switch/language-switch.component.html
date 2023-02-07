@@ -19,7 +19,7 @@
         <ul *ngIf="availableLocales.length">
           <ng-container *ngFor="let l of availableLocales">
             <li *ngIf="l !== locale">
-              <a [href]="location | makeHref: { lang: l } | async">
+              <a [href]="location | makeHref : { lang: l } | async">
                 {{ 'locale.' + l + '.long' | translate }}
               </a>
             </li>

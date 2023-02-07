@@ -40,7 +40,7 @@
               data-testing-id="remove-user"
               class="btn-tool"
               title="{{
-                'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName }
+                'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName }
               }}"
               (click)="modalDialog.show(user)"
             >
@@ -51,7 +51,7 @@
               #modalDialog
               [options]="{
                 titleText:
-                  'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName },
+                  'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName },
                 confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
                 rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
               }"

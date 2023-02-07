@@ -29,7 +29,7 @@
 
   <!-- 'Show All' and 'Hide All' links -->
   <a *ngIf="isShowAllLinkVisible()" [routerLink]="[]" (click)="toggleCollapse()">
-    {{ 'checkout.show_all.link' | translate: { '0': basket.lineItems.length } }}&nbsp;
+    {{ 'checkout.show_all.link' | translate : { '0': basket.lineItems.length } }}&nbsp;
     <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
   </a>
   <a *ngIf="isHideLinkVisible()" [routerLink]="[]" (click)="toggleCollapse()">

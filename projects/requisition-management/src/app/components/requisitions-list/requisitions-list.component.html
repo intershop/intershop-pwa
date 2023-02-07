@@ -137,7 +137,7 @@
         [attr.data-label]="'account.approvallist.table.line_item_total' | translate"
         class="column-price"
       >
-        {{ requisition.totals.total | ishPrice: 'gross' }}
+        {{ requisition.totals.total | ishPrice : 'gross' }}
       </td>
     </ng-container>
 
@@ -147,7 +147,7 @@
   </table>
 
   <div data-testing-id="list-counter">
-    {{ 'account.approvallist.items' | translate: { '0': requisitions?.length } }}
+    {{ 'account.approvallist.items' | translate : { '0': requisitions?.length } }}
   </div>
 </ng-container>
 

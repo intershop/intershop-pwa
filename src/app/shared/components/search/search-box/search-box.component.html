@@ -49,7 +49,7 @@
   <ng-container *ngIf="searchResults$ | async as results">
     <ul *ngIf="results.length && inputFocused" class="search-suggest-results">
       <li
-        *ngFor="let result of results | slice: 0:configuration?.maxAutoSuggests; let liIndex = index"
+        *ngFor="let result of results | slice : 0 : configuration?.maxAutoSuggests; let liIndex = index"
         [class.active-suggestion]="activeIndex === liIndex"
         (mousedown)="submitSearch(result.term)"
         (mouseenter)="activeIndex = liIndex"
@@ -57,7 +57,7 @@
         <button
           type="button"
           class="search-result"
-          [innerHTML]="result.term | titlecase | ishHighlight: (inputSearchTerms$ | async)"
+          [innerHTML]="result.term | titlecase | ishHighlight : (inputSearchTerms$ | async)"
         ></button>
       </li>
     </ul>
