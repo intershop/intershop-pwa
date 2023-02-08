@@ -4,34 +4,6 @@ import { NavigationItem } from './account-navigation.component';
 export const navigationItems: NavigationItem[] = [
   { id: 'my-account', localizationKey: 'account.my_account.link', routerLink: '/account' },
   {
-    id: 'requisitions',
-    localizationKey: 'account.requisitions.requisitions',
-    routerLink: '/account/requisitions/buyer',
-    serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
-    permission: 'APP_B2B_PURCHASE',
-    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-  },
-  {
-    id: 'approvals',
-    localizationKey: 'account.requisitions.approvals',
-    routerLink: '/account/requisitions/approver',
-    serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
-    permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
-  },
-  {
-    id: 'quotes',
-    localizationKey: 'account.navigation.quotes.link',
-    routerLink: '/account/quotes',
-    feature: 'quoting',
-    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-  },
-  {
-    id: 'order-templates',
-    localizationKey: 'account.ordertemplates.link',
-    routerLink: '/account/order-templates',
-    feature: 'orderTemplates',
-  },
-  {
     id: 'orders',
     localizationKey: 'account.order_history.link',
     routerLink: '/account/orders',
@@ -61,19 +33,6 @@ export const navigationItems: NavigationItem[] = [
     localizationKey: 'account.profile.link',
     routerLink: '/account/profile',
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-  },
-  {
-    id: 'users',
-    localizationKey: 'account.organization.user_management',
-    routerLink: '/account/organization/users',
-    permission: 'APP_B2B_MANAGE_USERS',
-  },
-  {
-    id: 'cost-centers',
-    localizationKey: 'account.organization.cost_center_management',
-    routerLink: '/account/organization/cost-centers',
-    feature: 'costCenters',
-    permission: 'APP_B2B_MANAGE_COSTCENTER',
   },
   {
     id: 'punchout',
