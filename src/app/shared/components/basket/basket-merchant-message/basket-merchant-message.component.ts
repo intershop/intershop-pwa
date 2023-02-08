@@ -42,7 +42,7 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
         templateOptions: {
           postWrappers: [{ wrapper: 'description', index: -1 }],
           label: 'checkout.basket_merchant_message.label',
-          maxLength: 3000,
+          maxLength: 1000,
           rows: 2,
         },
       },
