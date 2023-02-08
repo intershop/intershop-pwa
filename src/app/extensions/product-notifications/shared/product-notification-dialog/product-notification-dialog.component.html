@@ -17,47 +17,47 @@
   </div>
 
   <ng-container *ngIf="productNotification$ | async as productNotification; else createNotificationButton">
-    <div class="modal-body">
-      <ish-product-image imageType="L"></ish-product-image>
+    <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
+      <div class="modal-body">
+        <ish-product-image imageType="L"></ish-product-image>
 
-      <p class="indicates-required">
-        <span class="required">*</span>{{ 'account.required_field.message' | translate }}
-      </p>
-      <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
+        <p class="indicates-required">
+          <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+        </p>
         <ish-product-notification-edit-form
           [form]="productNotificationForm"
           [productNotification]="productNotification"
         ></ish-product-notification-edit-form>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="submit" value="Update" name="update" class="btn btn-primary" (click)="submitForm()">
-        {{ 'product.notification.edit.form.update.button.label' | translate }}
-      </button>
-      <button type="submit" value="Cancel" name="cancel" class="btn btn-secondary" (click)="hide()">
-        {{ 'product.notification.edit.form.cancel.button.label' | translate }}
-      </button>
-    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" value="Update" name="update" class="btn btn-primary">
+          {{ 'product.notification.edit.form.update.button.label' | translate }}
+        </button>
+        <button type="submit" value="Cancel" name="cancel" class="btn btn-secondary" (click)="hide()">
+          {{ 'product.notification.edit.form.cancel.button.label' | translate }}
+        </button>
+      </div>
+    </form>
   </ng-container>
 
   <ng-template #createNotificationButton>
-    <div class="modal-body">
-      <ish-product-image imageType="L"></ish-product-image>
+    <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
+      <div class="modal-body">
+        <ish-product-image imageType="L"></ish-product-image>
 
-      <p class="indicates-required">
-        <span class="required">*</span>{{ 'account.required_field.message' | translate }}
-      </p>
-      <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
+        <p class="indicates-required">
+          <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+        </p>
         <ish-product-notification-edit-form [form]="productNotificationForm"></ish-product-notification-edit-form>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="submit" value="Create" name="create" class="btn btn-primary" (click)="submitForm()">
-        {{ 'product.notification.edit.form.create.button.label' | translate }}
-      </button>
-      <button type="submit" value="Cancel" name="cancel" class="btn btn-secondary" (click)="hide()">
-        {{ 'product.notification.edit.form.cancel.button.label' | translate }}
-      </button>
-    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" value="Create" name="create" class="btn btn-primary">
+          {{ 'product.notification.edit.form.create.button.label' | translate }}
+        </button>
+        <button type="submit" value="Cancel" name="cancel" class="btn btn-secondary" (click)="hide()">
+          {{ 'product.notification.edit.form.cancel.button.label' | translate }}
+        </button>
+      </div>
+    </form>
   </ng-template>
 </ng-template>

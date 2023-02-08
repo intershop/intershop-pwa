@@ -11,13 +11,8 @@
         {{ 'account.notifications.table.product' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let productNotification">
-        <div class="list-item">
-          <ish-product-image
-            ishProductContext
-            [sku]="productNotification.sku"
-            imageType="S"
-            [link]="true"
-          ></ish-product-image>
+        <div class="list-item" ishProductContext [sku]="productNotification.sku">
+          <ish-product-image imageType="S" [link]="true"></ish-product-image>
         </div>
       </td>
     </ng-container>
@@ -26,13 +21,9 @@
     <ng-container cdkColumnDef="product">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-product"></th>
       <td cdk-cell *cdkCellDef="let productNotification">
-        <div class="list-item">
-          <ish-product-name ishProductContext [sku]="productNotification.sku"></ish-product-name>
-          <ish-product-price
-            ishProductContext
-            [sku]="productNotification.sku"
-            [showInformationalPrice]="true"
-          ></ish-product-price>
+        <div class="list-item" ishProductContext [sku]="productNotification.sku">
+          <ish-product-name></ish-product-name>
+          <ish-product-price [showInformationalPrice]="true"></ish-product-price>
         </div>
       </td>
     </ng-container>
@@ -65,6 +56,20 @@
                     '1': productNotification.price | ishPrice
                   }
           }}
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Notification Edit -->
+    <ng-container cdkColumnDef="notificationEdit">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-notification-edit"><!-- empty th --></th>
+      <td cdk-cell *cdkCellDef="let productNotification">
+        <div class="list-item" ishProductContext [sku]="productNotification.sku">
+          <ish-product-notification-edit
+            [cssClass]="'btn-link btn-tool'"
+            [productNotification]="productNotification"
+            displayType="icon"
+          ></ish-product-notification-edit>
         </div>
       </td>
     </ng-container>
