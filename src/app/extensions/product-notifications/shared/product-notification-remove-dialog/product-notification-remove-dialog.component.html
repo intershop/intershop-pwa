@@ -1,0 +1,31 @@
+<ng-template #modal let-selectModal>
+  <div class="modal-header">
+    <h2 class="modal-title">
+      <ng-container *ngIf="product$ | async as product">
+        {{ product.name }}
+      </ng-container>
+    </h2>
+    <button
+      type="button"
+      class="close"
+      [title]="'dialog.close.text' | translate"
+      [attr.aria-label]="'dialog.close.text' | translate"
+      (click)="hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <p>{{ 'product.notification.remove.message_line1' | translate }}</p>
+    <p>{{ 'product.notification.remove.message_line2' | translate }}</p>
+  </div>
+  <div class="modal-footer">
+    <button value="Delete" name="delete" class="btn btn-primary" (click)="removeProductNotification()">
+      {{ 'product.notification.remove.delete.button.label' | translate }}
+    </button>
+    <button value="Cancel" name="cancel" class="btn btn-secondary" (click)="hide()">
+      {{ 'product.notification.remove.cancel.button.label' | translate }}
+    </button>
+  </div>
+</ng-template>

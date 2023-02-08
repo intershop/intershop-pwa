@@ -74,6 +74,19 @@
       </td>
     </ng-container>
 
+    <!-- Notification Remove -->
+    <ng-container cdkColumnDef="notificationRemove">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-notification-remove"><!-- empty th --></th>
+      <td cdk-cell *cdkCellDef="let productNotification">
+        <div class="list-item" ishProductContext [sku]="productNotification.sku">
+          <ish-product-notification-remove
+            [cssClass]="'btn-link btn-tool'"
+            [productNotification]="productNotification"
+          ></ish-product-notification-remove>
+        </div>
+      </td>
+    </ng-container>
+
     <!-- Header and Row Declarations -->
     <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
     <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay" data-testing-id="product-notification-list-item"></tr>
