@@ -188,6 +188,7 @@
   "account.logout.link": "Abmelden",
   "account.my_account.heading": "Mein Konto",
   "account.my_account.link": "Mein Konto",
+  "account.my_account.overview.link": "Kontoübersicht",
   "account.name.error.forbidden.chars": "Nur alphanumerische Zeichen sind erlaubt.",
   "account.navigation.logout.link": "Abmelden",
   "account.navigation.quotes.link": "Preisangebote",

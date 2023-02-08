@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
@@ -19,37 +19,33 @@ export interface NavigationItem {
   children?: NavigationItem[];
 }
 
+/**
+ * The account navigation component displays the items of the account navigation menu. The navigation items are defined in the account-navigation.items.<theme>.ts or account-navigation.items.ts, respectively.
+ */
 @Component({
   selector: 'ish-account-navigation',
   templateUrl: './account-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountNavigationComponent implements AfterViewInit {
+export class AccountNavigationComponent {
   @Input() deviceType: DeviceType;
 
   /**
    * Manages the Account Navigation items.
    */
-  navigationItems: NavigationItem[] = navigationItems;
+  navItems: NavigationItem[] = navigationItems;
 
   activeClass = 'active';
 
-  constructor(private router: Router, private elem: ElementRef) {}
+  constructor(private router: Router) {}
 
-  // after view init open the navigation parent of the active navigation item
-  ngAfterViewInit() {
-    // needs to be asynchronous otherwise it would be triggered to early
-    setTimeout(() => {
-      // find the currently active navigation item and check for a navigation parent
-      const navParent = this.elem.nativeElement.querySelector(`.${this.activeClass}`)?.dataset.navParent;
-      if (navParent) {
-        const navParentElem = this.elem.nativeElement.querySelector(`#${navParent}`);
-        // check wether the navigation parent is already opened otherwise click the navigation parent to open it
-        if (navParentElem && !(navParentElem.getAttribute('aria-expanded') === 'true')) {
-          navParentElem.click();
-        }
+  activeChanged(active: boolean, activeItem: NavigationItem) {
+    if (active && activeItem) {
+      const parentItem = this.navItems.find(item => item.children?.find(subitem => subitem.id === activeItem?.id));
+      if (parentItem) {
+        parentItem.isCollapsed = false;
       }
-    }, 0);
+    }
   }
 
   toggleCollapse(item: NavigationItem) {

@@ -1,7 +1,7 @@
 import { NavigationItem } from './account-navigation.component';
 
 export const navigationItems: NavigationItem[] = [
-  { id: 'my-account', localizationKey: 'account.my_account.link', routerLink: '/account' },
+  { id: 'my-account', localizationKey: 'account.my_account.overview.link', routerLink: '/account' },
   {
     id: 'my-purchases',
     localizationKey: 'account.requisitions.purchases',
@@ -62,21 +62,6 @@ export const navigationItems: NavigationItem[] = [
     ],
   },
   {
-    id: 'my-profile',
-    localizationKey: 'account.profile.myprofile',
-    faIcon: 'gear',
-    isCollapsed: true,
-    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-    children: [
-      {
-        id: 'profile',
-        localizationKey: 'account.profile.link',
-        routerLink: '/account/profile',
-        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-      },
-    ],
-  },
-  {
     id: 'my-organization',
     localizationKey: 'account.requisitions.organization',
     faIcon: 'briefcase',
@@ -86,12 +71,6 @@ export const navigationItems: NavigationItem[] = [
         id: 'addresses',
         localizationKey: 'account.saved_addresses.link',
         routerLink: '/account/addresses',
-        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-      },
-      {
-        id: 'payment',
-        localizationKey: 'account.payment.link',
-        routerLink: '/account/payment',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
       {
@@ -117,8 +96,30 @@ export const navigationItems: NavigationItem[] = [
     ],
   },
   {
+    id: 'my-profile',
+    localizationKey: 'account.profile.myprofile',
+    faIcon: 'gear',
+    isCollapsed: true,
+    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+    children: [
+      {
+        id: 'profile',
+        localizationKey: 'account.profile.link',
+        routerLink: '/account/profile',
+        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+      },
+      {
+        id: 'payment',
+        localizationKey: 'account.payment.link',
+        routerLink: '/account/payment',
+        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+      },
+    ],
+  },
+  {
     id: 'logout',
     localizationKey: 'account.navigation.logout.link',
+    faIcon: 'right-from-bracket',
     routerLink: '/logout',
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
   },

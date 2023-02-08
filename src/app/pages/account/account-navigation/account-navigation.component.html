@@ -1,7 +1,8 @@
+<!-- account navigation with hierarchy -->
 <ng-container *ngIf="!(deviceType === 'mobile' || deviceType === 'tablet'); else mobileNavigation">
   <ul class="account-navigation list-unstyled">
     <ish-account-user-info></ish-account-user-info>
-    <ng-container *ngFor="let item of navigationItems">
+    <ng-container *ngFor="let item of navItems">
       <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
         <ng-container *ishHasNotRole="item.notRole">
           <ng-container
@@ -13,7 +14,6 @@
                 (keydown.enter)="toggleCollapse(item)"
                 tabindex="0"
                 class="account-nav-header"
-                [attr.id]="item.id"
                 [attr.aria-expanded]="!item.isCollapsed"
                 [attr.data-testing-id]="item.id + '-nav-link'"
               >
@@ -36,7 +36,7 @@
                           <li
                             [routerLinkActive]="activeClass"
                             [routerLinkActiveOptions]="{ exact: false }"
-                            [attr.data-nav-parent]="item.id"
+                            (isActiveChange)="activeChanged($event, subItem)"
                           >
                             <a [routerLink]="subItem.routerLink" [attr.data-testing-id]="subItem.id + '-nav-link'">
                               {{ subItem.localizationKey | translate }}
@@ -68,9 +68,10 @@
   </ul>
 </ng-container>
 
+<!-- mobile account navigation select box -->
 <ng-template #mobileNavigation>
   <select (change)="navigateTo($event.target)" class="form-control">
-    <ng-container *ngFor="let item of navigationItems">
+    <ng-container *ngFor="let item of navItems">
       <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
         <ng-container *ishHasNotRole="item.notRole">
           <ng-container
