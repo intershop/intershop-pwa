@@ -1,9 +1,5 @@
 <ng-container *ngIf="data && messageToMerchant">
-  <ish-info-box
-    [editRouterLink]="editRouterLink ? editRouterLink : null"
-    heading="checkout.widget.message_to_merchant"
-    class="infobox-wrapper"
-  >
+  <ish-info-box [editRouterLink]="editRouterLink" heading="checkout.widget.message_to_merchant" class="infobox-wrapper">
     <p data-testing-id="message-to-merchant">{{ messageToMerchant }}</p>
   </ish-info-box>
 </ng-container>
