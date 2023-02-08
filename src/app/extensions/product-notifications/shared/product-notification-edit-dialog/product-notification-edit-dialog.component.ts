@@ -14,21 +14,21 @@ import { ProductNotificationsFacade } from '../../facades/product-notifications.
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
 /**
- * The Product Notification Dialog Component shows the customer a dialog to either create,
+ * The Product Notification Edit Dialog Component shows the customer a dialog to either create,
  * edit or remove a product notification.
  *
  * @example
- * <ish-product-notification-dialog
+ * <ish-product-notification-edit-dialog
  *   [productNotification]="productNotification"
  *   #modal></ish-product-notification-dialog>
  */
 @Component({
-  selector: 'ish-product-notification-dialog',
-  templateUrl: './product-notification-dialog.component.html',
-  styleUrls: ['./product-notification-dialog.component.scss'],
+  selector: 'ish-product-notification-edit-dialog',
+  templateUrl: './product-notification-edit-dialog.component.html',
+  styleUrls: ['./product-notification-edit-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductNotificationDialogComponent implements OnInit, OnDestroy {
+export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy {
   modal: NgbModalRef;
 
   product$: Observable<ProductView>;

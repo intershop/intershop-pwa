@@ -3,23 +3,23 @@ import { instance, mock } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
-import { ProductNotificationDialogComponent } from './product-notification-dialog.component';
+import { ProductNotificationEditDialogComponent } from './product-notification-edit-dialog.component';
 
-describe('Product Notification Dialog Component', () => {
-  let component: ProductNotificationDialogComponent;
-  let fixture: ComponentFixture<ProductNotificationDialogComponent>;
+describe('Product Notification Edit Dialog Component', () => {
+  let component: ProductNotificationEditDialogComponent;
+  let fixture: ComponentFixture<ProductNotificationEditDialogComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
     await TestBed.configureTestingModule({
-      declarations: [ProductNotificationDialogComponent],
+      declarations: [ProductNotificationEditDialogComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductNotificationDialogComponent);
+    fixture = TestBed.createComponent(ProductNotificationEditDialogComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

@@ -6,7 +6,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
-import { ProductNotificationDialogComponent } from '../product-notification-dialog/product-notification-dialog.component';
+import { ProductNotificationEditDialogComponent } from '../product-notification-edit-dialog/product-notification-edit-dialog.component';
 
 import { ProductNotificationEditComponent } from './product-notification-edit.component';
 
@@ -20,7 +20,7 @@ describe('Product Notification Edit Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FaIconComponent),
-        MockComponent(ProductNotificationDialogComponent),
+        MockComponent(ProductNotificationEditDialogComponent),
         ProductNotificationEditComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],

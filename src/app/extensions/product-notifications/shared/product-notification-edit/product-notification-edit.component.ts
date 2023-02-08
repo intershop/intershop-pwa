@@ -8,7 +8,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
-import { ProductNotificationDialogComponent } from '../product-notification-dialog/product-notification-dialog.component';
+import { ProductNotificationEditDialogComponent } from '../product-notification-edit-dialog/product-notification-edit-dialog.component';
 
 /**
  * The Product Notification Edit Component shows the customer a link to open the dialog to either create,
@@ -44,7 +44,7 @@ export class ProductNotificationEditComponent implements OnDestroy, OnInit {
   /**
    * if the user is not logged in display login dialog, else open notification dialog
    */
-  openModal(modal: ProductNotificationDialogComponent) {
+  openModal(modal: ProductNotificationEditDialogComponent) {
     this.accountFacade.isLoggedIn$.pipe(take(1), takeUntil(this.destroy$)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
         modal.show();
