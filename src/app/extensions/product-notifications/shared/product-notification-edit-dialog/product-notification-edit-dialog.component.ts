@@ -74,18 +74,18 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
         );
   }
 
-  /** close modal */
+  // close modal
   hide() {
     this.productNotificationForm.reset();
     this.modal.close();
   }
 
-  /** open modal */
+  // open modal
   show() {
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
 
-  /** submit the form */
+  // submit the form
   submitForm() {
     if (this.productNotificationForm.invalid) {
       markAsDirtyRecursive(this.productNotificationForm);

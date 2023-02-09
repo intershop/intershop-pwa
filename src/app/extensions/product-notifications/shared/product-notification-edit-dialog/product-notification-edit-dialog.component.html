@@ -23,7 +23,12 @@
       <p class="indicates-required">
         <span class="required">*</span>{{ 'account.required_field.message' | translate }}
       </p>
-      <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
+      <form
+        [formGroup]="productNotificationForm"
+        name="ProductNotificationEditForm"
+        (ngSubmit)="submitForm()"
+        (keydown.enter)="submitForm()"
+      >
         <ish-product-notification-edit-form
           [form]="productNotificationForm"
           [productNotification]="productNotification"
@@ -47,7 +52,12 @@
       <p class="indicates-required">
         <span class="required">*</span>{{ 'account.required_field.message' | translate }}
       </p>
-      <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
+      <form
+        [formGroup]="productNotificationForm"
+        name="ProductNotificationEditForm"
+        (ngSubmit)="submitForm()"
+        (keydown.enter)="submitForm()"
+      >
         <ish-product-notification-edit-form [form]="productNotificationForm"></ish-product-notification-edit-form>
       </form>
     </div>

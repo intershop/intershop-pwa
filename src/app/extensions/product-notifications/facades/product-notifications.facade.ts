@@ -12,13 +12,13 @@ import {
 } from '../models/product-notification/product-notification.model';
 import {
   createProductNotification,
-  updateProductNotification,
   deleteProductNotification,
   getProductNotificationBySku,
   getProductNotificationsByType,
   getProductNotificationsError,
   getProductNotificationsLoading,
   loadProductNotifications,
+  updateProductNotification,
 } from '../store/product-notification';
 
 /* eslint-disable @typescript-eslint/member-ordering */

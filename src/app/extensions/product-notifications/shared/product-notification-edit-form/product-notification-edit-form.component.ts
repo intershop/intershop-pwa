@@ -19,15 +19,15 @@ import { ProductNotification } from '../../models/product-notification/product-n
  *
  * The form shows fields either for the price or the stock notification.
  * Each of these two types has to support two cases:
- * - a product notification is not available and has to be created or
- * - a product notification is available and it can be edited or removed.
- *   In this case, there are radio buttons used to either remove the notification or to edit it.
+ * - A product notification is not available and has to be created. There are no radio buttons.
+ * - A product notification is available and it can be edited or removed. In this case,
+ *   there are radio buttons used to either remove the notification or to edit it.
  *
  * @example
  * <ish-product-notification-edit-form
-        [form]="productNotificationForm"
-        [productNotification]="productNotification$ | async"
-      ></ish-product-notification-edit-form>
+ *   [form]="productNotificationForm"
+ *   [productNotification]="productNotification$ | async"
+ * ></ish-product-notification-edit-form>
  */
 @Component({
   selector: 'ish-product-notification-edit-form',
@@ -129,6 +129,12 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       },
       {
         type: 'ish-fieldset-field',
+        templateOptions: {
+          legend: product?.available
+            ? 'product.notification.edit.form.price_notification.label'
+            : 'product.notification.edit.form.instock_notification.label',
+          legendClass: 'row mb-3',
+        },
         fieldGroup: [...(product?.available ? this.getPriceConfig(currency) : []), ...this.getEmailConfig()],
       },
     ];

@@ -31,19 +31,17 @@ export class ProductNotificationEditComponent implements OnDestroy, OnInit {
   @Input() displayType: 'icon' | 'link' = 'link';
   @Input() cssClass: string;
 
-  available$: Observable<boolean>;
+  productAvailable$: Observable<boolean>;
 
   private destroy$ = new Subject<void>();
 
   constructor(private context: ProductContextFacade, private accountFacade: AccountFacade, private router: Router) {}
 
   ngOnInit() {
-    this.available$ = this.context.select('product', 'available');
+    this.productAvailable$ = this.context.select('product', 'available');
   }
 
-  /**
-   * if the user is not logged in display login dialog, else open notification dialog
-   */
+  // if the user is not logged in display login dialog, else open notification dialog
   openModal(modal: ProductNotificationEditDialogComponent) {
     this.accountFacade.isLoggedIn$.pipe(take(1), takeUntil(this.destroy$)).subscribe(isLoggedIn => {
       if (isLoggedIn) {

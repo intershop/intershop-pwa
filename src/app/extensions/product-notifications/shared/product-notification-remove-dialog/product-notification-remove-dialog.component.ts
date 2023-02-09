@@ -41,7 +41,7 @@ export class ProductNotificationRemoveDialogComponent implements OnInit {
     this.product$ = this.context.select('product');
   }
 
-  /** submit the form */
+  // delete the notification
   removeProductNotification() {
     const sku = this.context.get('sku');
     const productNotificationType = this.productNotification.type;
@@ -51,12 +51,12 @@ export class ProductNotificationRemoveDialogComponent implements OnInit {
     this.hide();
   }
 
-  /** close modal */
+  // close modal
   hide() {
     this.modal.close();
   }
 
-  /** open modal */
+  // open modal
   show() {
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
