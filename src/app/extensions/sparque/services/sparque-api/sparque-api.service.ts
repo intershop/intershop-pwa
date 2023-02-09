@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, auditTime, combineLatest, concatMap, first, map, take, tap } from 'rxjs';
@@ -6,8 +7,10 @@ import { Observable, auditTime, combineLatest, concatMap, first, map, take, tap 
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
+//import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
 import { getSparqueConfigEndpoint } from '../../store/sparque-config';
 
@@ -15,7 +18,7 @@ export const DEFINED_FACETS = ['category', 'brand'];
 
 @Injectable({ providedIn: 'root' })
 export class SparqueApiService {
-  constructor(private httpClient: HttpClient, private store: Store) {}
+  constructor(private httpClient: HttpClient, private store: Store, private apiTokenService: ApiTokenService) {}
 
   static getSearchPath(searchTerm: string, locale: string, userId: string, basketSKUs: string[]): string {
     const basketSKUsPath = basketSKUs?.length
@@ -41,13 +44,22 @@ export class SparqueApiService {
    * http get request
    */
   get<T>(path: string): Observable<T> {
+    let authtoken: string;
+    this.apiTokenService.apiToken$.subscribe(value => (authtoken = value));
     return this.store.pipe(
       select(getSparqueConfigEndpoint),
-      //log('@Dori: Hier ist dein SPARQUE Endpoint:'),
+//      log('@Dori: Hier ist dein SPARQUE Endpoint:'),
       whenTruthy(),
       first(),
       // TODO: literally the worst hack you will ever see (the '//' replacement)
-      concatMap(sparqueUrl => this.httpClient.get<T>(`${sparqueUrl}/${path.replace('//', '/')}`))
+      // also hack for auth token
+      concatMap(sparqueUrl =>
+        this.httpClient.get<T>(`${sparqueUrl}/${path.replace('//', '/')}`, {
+          headers: new HttpHeaders({
+            'authentication-token': authtoken,
+          }),
+        })
+      )
     );
   }
 
