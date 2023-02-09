@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, combineLatest } from 'rxjs';
@@ -56,37 +56,38 @@ export class ProductNotificationEditFormComponent implements OnChanges {
     private accountFacade: AccountFacade
   ) {}
 
-  ngOnChanges() {
-    this.product$ = this.context.select('product');
-    this.productPrices$ = this.context.select('prices');
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.productNotification || changes.form) {
+      this.product$ = this.context.select('product');
+      this.productPrices$ = this.context.select('prices');
 
-    // console.log(this.productNotification?.type);
-    // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
-    this.model$ = combineLatest([this.productPrices$, this.accountFacade.user$]).pipe(
-      map(([productPrices, user]) =>
-        this.productNotification
-          ? {
-              alerttype: this.productNotification.type,
-              email: this.productNotification.notificationMailAddress,
-              pricevalue: this.productNotification.price?.value,
-              productnotificationid: this.productNotification.id,
-            }
-          : {
-              alerttype: undefined,
-              email: user.email,
-              pricevalue: productPrices.salePrice.value,
-            }
-      )
-    );
+      // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
+      this.model$ = combineLatest([this.productPrices$, this.accountFacade.user$]).pipe(
+        map(([productPrices, user]) =>
+          this.productNotification
+            ? {
+                alerttype: this.productNotification.type,
+                email: this.productNotification.notificationMailAddress,
+                pricevalue: this.productNotification.price?.value,
+                productnotificationid: this.productNotification.id,
+              }
+            : {
+                alerttype: undefined,
+                email: user.email,
+                pricevalue: productPrices.salePrice.value,
+              }
+        )
+      );
 
-    // differentiate form with or without a product notification
-    this.fields$ = combineLatest([this.product$, this.model$.pipe(map(model => model?.currency))]).pipe(
-      map(([product, currency]) =>
-        this.productNotification
-          ? this.getFieldsForProductNotification(this.productNotification, product, currency)
-          : this.getFieldsForNoProductNotification(product, currency)
-      )
-    );
+      // differentiate form with or without a product notification
+      this.fields$ = combineLatest([this.product$, this.model$.pipe(map(model => model?.currency))]).pipe(
+        map(([product, currency]) =>
+          this.productNotification
+            ? this.getFieldsForProductNotification(this.productNotification, product, currency)
+            : this.getFieldsForNoProductNotification(product, currency)
+        )
+      );
+    }
   }
 
   // get form fields if a product notification is available
