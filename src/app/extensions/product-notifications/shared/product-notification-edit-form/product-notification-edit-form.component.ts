@@ -62,8 +62,8 @@ export class ProductNotificationEditFormComponent implements OnChanges {
 
     // console.log(this.productNotification?.type);
     // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
-    this.model$ = combineLatest([this.productPrices$, this.product$, this.accountFacade.user$]).pipe(
-      map(([productPrices, product, user]) =>
+    this.model$ = combineLatest([this.productPrices$, this.accountFacade.user$]).pipe(
+      map(([productPrices, user]) =>
         this.productNotification
           ? {
               alerttype: this.productNotification.type,

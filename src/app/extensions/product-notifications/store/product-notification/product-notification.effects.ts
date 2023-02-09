@@ -11,15 +11,15 @@ import {
   createProductNotification,
   createProductNotificationFail,
   createProductNotificationSuccess,
-  updateProductNotification,
-  updateProductNotificationFail,
-  updateProductNotificationSuccess,
   deleteProductNotification,
   deleteProductNotificationFail,
   deleteProductNotificationSuccess,
   loadProductNotifications,
   loadProductNotificationsFail,
   loadProductNotificationsSuccess,
+  updateProductNotification,
+  updateProductNotificationFail,
+  updateProductNotificationSuccess,
 } from './product-notification.actions';
 
 @Injectable()
