@@ -28,6 +28,7 @@ export interface BasketBaseData {
   };
   buckets?: string[];
   lineItems?: string[];
+  messageToMerchant?: string;
   payments?: string[];
   promotionCodes?: string[];
   totals: BasketTotalData;

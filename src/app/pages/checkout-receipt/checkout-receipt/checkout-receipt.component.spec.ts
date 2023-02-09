@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
@@ -24,13 +26,13 @@ describe('Checkout Receipt Component', () => {
         CheckoutReceiptComponent,
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
-        MockDirective(FeatureToggleDirective),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('messageToMerchant'), TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -55,5 +57,24 @@ describe('Checkout Receipt Component', () => {
   it('should display the my account link after creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="myaccount-link"]')).toBeTruthy();
+  });
+
+  it('should display standard elements by default', () => {
+    fixture.detectChanges();
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-basket-merchant-message-view",
+        "ish-info-box",
+        "ish-address",
+        "ish-info-box",
+        "ish-address",
+        "ish-info-box",
+        "ish-basket-shipping-method",
+        "ish-info-box",
+        "ish-line-item-list",
+        "fa-icon",
+        "ish-basket-cost-summary",
+      ]
+    `);
   });
 });

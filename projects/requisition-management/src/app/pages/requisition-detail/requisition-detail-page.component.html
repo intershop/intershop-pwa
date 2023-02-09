@@ -43,6 +43,11 @@
 
     <h2>{{ 'approval.detailspage.order_details.heading' | translate }}</h2>
 
+    <div *ishFeature="'messageToMerchant'">
+      <!-- MessageToMerchant-->
+      <ish-basket-merchant-message-view [data]="requisition"></ish-basket-merchant-message-view>
+    </div>
+
     <div class="row d-flex">
       <!-- Invoice Address -->
       <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">

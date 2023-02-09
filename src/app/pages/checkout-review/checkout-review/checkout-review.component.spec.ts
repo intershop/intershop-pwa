@@ -5,14 +5,16 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -37,16 +39,17 @@ describe('Checkout Review Component', () => {
         MockComponent(AddressComponent),
         MockComponent(BasketApprovalInfoComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
-        MockDirective(FeatureToggleDirective),
         MockDirective(ServerHtmlDirective),
       ],
       imports: [
+        FeatureToggleModule.forTesting('messageToMerchant'),
         FormlyModule.forRoot({
           types: [{ name: 'ish-checkout-review-tac-field', component: CheckoutReviewTacFieldComponent }],
         }),
@@ -100,5 +103,31 @@ describe('Checkout Review Component', () => {
     component.basket.approval = {} as BasketApproval;
     fixture.detectChanges();
     expect(element.querySelector('ish-basket-approval-info')).toBeTruthy();
+  });
+
+  it('should display standard elements by default', () => {
+    fixture.detectChanges();
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-modal-dialog-link",
+        "ish-error-message",
+        "ish-basket-validation-results",
+        "ish-basket-merchant-message-view",
+        "ish-info-box",
+        "ish-address",
+        "ish-info-box",
+        "ish-address",
+        "ish-info-box",
+        "ish-basket-shipping-method",
+        "ish-info-box",
+        "ish-line-item-list",
+        "ish-basket-cost-summary",
+        "formly-form",
+        "formly-field",
+        "formly-group",
+        "formly-field",
+        "ish-checkout-review-tac-field",
+      ]
+    `);
   });
 });

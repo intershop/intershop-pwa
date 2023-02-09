@@ -7,11 +7,13 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
+import { BasketMerchantMessageComponent } from 'ish-shared/components/basket/basket-merchant-message/basket-merchant-message.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
@@ -32,12 +34,13 @@ describe('Checkout Shipping Page Component', () => {
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(BasketMerchantMessageComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckoutShippingComponent),
         MockComponent(ErrorMessageComponent),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('messageToMerchant'), TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
@@ -119,5 +122,10 @@ describe('Checkout Shipping Page Component', () => {
   it('should render shipping component on page', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-checkout-shipping')).toBeTruthy();
+  });
+
+  it('should render message to merchant component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-basket-merchant-message')).toBeTruthy();
   });
 });

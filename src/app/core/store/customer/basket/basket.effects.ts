@@ -28,6 +28,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
 import {
+  addMessageToMerchant,
   continueCheckout,
   createBasket,
   createBasketFail,
@@ -201,6 +202,17 @@ export class BasketEffects {
       ofType(updateBasketCostCenter),
       mapToPayloadProperty('costCenter'),
       map(costCenter => updateBasket({ update: { costCenter } }))
+    )
+  );
+
+  /**
+   * Sets a message to merchant at the current basket.
+   */
+  addMessageToMerchant$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addMessageToMerchant),
+      mapToPayloadProperty('messageToMerchant'),
+      map(messageToMerchant => updateBasket({ update: { messageToMerchant } }))
     )
   );
 
