@@ -147,30 +147,6 @@ server {
         proxy_busy_buffers_size 256k;
     }
 
-    # handle sparque search
-    location /search {
-        allow all;
-        # auth_request /auth;
-
-        rewrite /search(/.*) $1 break;
-        proxy_pass https://rest.spinque.com:443;
-
-        proxy_set_header Host rest.spinque.com;
-        proxy_ssl_name        rest.spinque.com;
-
-        add_header X-debug-message "target: https://rest.spinque.com/$1" always;
-        access_log /var/log/nginx/access.log upstreamlog;
-    }
-
-    location /auth {
-        internal;
-        proxy_set_header Host $host;
-        proxy_pass_request_body off;
-        proxy_set_header Content-Length "";
-        proxy_pass https://pwa-ish-demo.test.intershop.com/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/rest/personalization;
-    }
-
-
     # respect cache entries of static assets
     location ~* ^/(?!ngsw\.json)(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
         allow all;
@@ -190,7 +166,6 @@ server {
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
     }
-
   {{ if (has $mapping "channel") }}
     location / {
         {{- tmpl.Exec "LOCATION_TEMPLATE" $mapping }}

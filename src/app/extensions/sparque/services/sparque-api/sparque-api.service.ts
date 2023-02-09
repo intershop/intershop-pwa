@@ -1,5 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, auditTime, combineLatest, concatMap, first, map, take, tap } from 'rxjs';
@@ -7,10 +6,9 @@ import { Observable, auditTime, combineLatest, concatMap, first, map, take, tap 
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
-//import { log } from 'ish-core/utils/dev/operators';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
-import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
 import { getSparqueConfigEndpoint } from '../../store/sparque-config';
 
@@ -45,7 +43,7 @@ export class SparqueApiService {
    */
   get<T>(path: string): Observable<T> {
     let authtoken: string;
-    this.apiTokenService.apiToken$.subscribe(value => (authtoken = value));
+    this.apiTokenService.apiToken$.subscribe(value => (authtoken = `bearer ${value}`));
     return this.store.pipe(
       select(getSparqueConfigEndpoint),
 //      log('@Dori: Hier ist dein SPARQUE Endpoint:'),
@@ -56,7 +54,7 @@ export class SparqueApiService {
       concatMap(sparqueUrl =>
         this.httpClient.get<T>(`${sparqueUrl}/${path.replace('//', '/')}`, {
           headers: new HttpHeaders({
-            'authentication-token': authtoken,
+            'Authorization': authtoken,
           }),
         })
       )

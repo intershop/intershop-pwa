@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { flatten, range } from 'lodash-es';
 import { Observable, OperatorFunction, from, identity, of, throwError } from 'rxjs';
 import { defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
-import { SparqueApiService } from 'src/app/extensions/sparque/services/sparque-api/sparque-api.service';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
@@ -21,7 +20,6 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
@@ -37,8 +35,6 @@ export class ProductsService {
     private apiService: ApiService,
     private productMapper: ProductMapper,
     private appFacade: AppFacade,
-    private featureToggle: FeatureToggleService,
-    private sparqueApiService: SparqueApiService
   ) {}
 
   /**

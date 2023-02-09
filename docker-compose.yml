@@ -64,6 +64,7 @@ services:
       # - '9113:9113'
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
+      DEBUG: 0
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
       # SSL: 1
@@ -96,6 +97,10 @@ services:
           - baseHref: /b2c
             channel: default
             theme: b2c
+networks:
+  default:
+    name: a-responsive-network
+
 
     # Logging to an External Device (see logging.md)
     # volumes:
