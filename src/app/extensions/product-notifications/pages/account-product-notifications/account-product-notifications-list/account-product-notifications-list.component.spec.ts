@@ -5,6 +5,7 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 
 import { ProductNotificationType } from '../../../models/product-notification/product-notification.model';
@@ -37,6 +38,7 @@ describe('Account Product Notifications List Component', () => {
       declarations: [
         AccountProductNotificationsListComponent,
         MockComponent(ProductImageComponent),
+        MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockDirective(ProductContextDirective),
       ],

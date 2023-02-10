@@ -1,4 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
+
+import { ProductNotificationRemoveDialogComponent } from '../product-notification-remove-dialog/product-notification-remove-dialog.component';
 
 import { ProductNotificationRemoveComponent } from './product-notification-remove.component';
 
@@ -9,7 +14,12 @@ describe('Product Notification Remove Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductNotificationRemoveComponent],
+      declarations: [
+        MockComponent(FaIconComponent),
+        MockComponent(ProductNotificationRemoveDialogComponent),
+        ProductNotificationRemoveComponent,
+      ],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
 

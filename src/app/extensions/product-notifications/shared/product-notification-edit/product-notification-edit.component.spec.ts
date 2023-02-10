@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 import { ProductNotificationEditDialogComponent } from '../product-notification-edit-dialog/product-notification-edit-dialog.component';
@@ -14,18 +16,27 @@ describe('Product Notification Edit Component', () => {
   let component: ProductNotificationEditComponent;
   let fixture: ComponentFixture<ProductNotificationEditComponent>;
   let element: HTMLElement;
+  let context: ProductContextFacade;
+  let accountFacade: AccountFacade;
 
   beforeEach(async () => {
-    const context = mock(ProductContextFacade);
+    context = mock(ProductContextFacade);
+    accountFacade = mock(accountFacade);
+
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(ProductNotificationEditDialogComponent),
         ProductNotificationEditComponent,
       ],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
+      ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
+
+    when(accountFacade.isLoggedIn$).thenReturn(of(true));
   });
 
   beforeEach(() => {
