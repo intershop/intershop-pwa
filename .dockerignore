@@ -96,6 +96,9 @@
 # from src/app/extensions/order-templates/exports/.gitignore
 /src/app/extensions/order-templates/exports/**/lazy*
 
+# from src/app/extensions/product-notifications/exports/.gitignore
+/src/app/extensions/product-notifications/exports/**/lazy*
+
 # from src/app/extensions/punchout/exports/.gitignore
 /src/app/extensions/punchout/exports/**/lazy*
 
