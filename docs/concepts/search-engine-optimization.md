@@ -31,7 +31,7 @@ To use a custom `robots.txt`, place it as a file in the `dist` folder.
 
 ## Page Metadata
 
-The PWA uses the library [@ngx-meta/core](https://www.npmjs.com/package/@ngx-meta/core) for setting tags for title, meta description, robots, canonical links, and open graph infos in page headers.
+The PWA uses the [Meta service](https://angular.io/api/platform-browser/Meta) for setting tags for title, meta description, robots, canonical links, and open graph infos in page headers.
 
 Meta information can be added to the routing in form of the data property `meta`.
 Have a look at [`app-routing.module`](../../src/app/pages/app-routing.module.ts) for examples.

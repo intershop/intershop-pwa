@@ -7,6 +7,44 @@ kb_everyone
 
 # Changelog
 
+## [3.3.0](https://github.com/intershop/intershop-pwa/releases/tag/3.3.0) (2023-02-13)
+
+**required Intershop Commerce Management version: 7.10.38.11-LTS**
+
+**required/tested Node.js version: 16.16.0 LTS (including npm 8.11.0)**
+
+### Features
+
+- add the message to merchant feature to the checkout (#1323) ([50cbe36](https://github.com/intershop/intershop-pwa/commit/50cbe36))
+- formly - add the legend element to the fieldset, add legend class attribute (#1354) ([256bd7f](https://github.com/intershop/intershop-pwa/commit/256bd7f))
+- design preview support (#1216) ([8a22f3c](https://github.com/intershop/intershop-pwa/commit/8a22f3c))
+- **accessibility:** satisfy 'click-events-have-key-events' rule for HTML elements with click event (#1336) ([200409e](https://github.com/intershop/intershop-pwa/commit/200409e))
+- **accessibility:** enable and satisfy 'click-events-have-key-events' rule for '\<a>' tags (#1336) ([ae2d6c4](https://github.com/intershop/intershop-pwa/commit/ae2d6c4))
+
+### Bug Fixes
+
+- suppress shopping cart info message if the user adds the same product again (#1356) ([c05df22](https://github.com/intershop/intershop-pwa/commit/c05df22))
+- shopping cart message needs more space (#1356) ([558a869](https://github.com/intershop/intershop-pwa/commit/558a869))
+- scrollbar added to the approval tabs (#1353) ([2ac7f03](https://github.com/intershop/intershop-pwa/commit/2ac7f03))
+- icm rest endpoint should be truthy to construct a valid api url (#1367) ([61f9b0e](https://github.com/intershop/intershop-pwa/commit/61f9b0e))
+- pages should render properly after basket changes (login, addToBasket, ...) ([fd6aace](https://github.com/intershop/intershop-pwa/commit/fd6aace))
+- render quoting pages properly ([c1054ca](https://github.com/intershop/intershop-pwa/commit/c1054ca))
+- disable add-to-cart button during page loading (#1364) ([0a2bf63](https://github.com/intershop/intershop-pwa/commit/0a2bf63))
+- handle google recaptcha v3 expiration (#1347) ([db071ec](https://github.com/intershop/intershop-pwa/commit/db071ec))
+- add basket ship-to-address to the product prices call (#1362) ([0e3c633](https://github.com/intershop/intershop-pwa/commit/0e3c633))
+- redirect before checkout (checkout guard) due to a cookie restore timing issue (#1357) ([84b0e99](https://github.com/intershop/intershop-pwa/commit/84b0e99))
+- reset correct product context infos when switching prorduct from retail-set to a single product ([f245f07](https://github.com/intershop/intershop-pwa/commit/f245f07))
+- reset product quantity input field when switching products ([72744de](https://github.com/intershop/intershop-pwa/commit/72744de))
+- styling fix for enhanced variation select options dropdown with long option names ([615211b](https://github.com/intershop/intershop-pwa/commit/615211b))
+
+### Documentation
+
+- accessibility documentation added (#1336) ([ec4efac](https://github.com/intershop/intershop-pwa/commit/ec4efac))
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- design preview support (#1216) - 7.10.39.1
+
 ## [3.2.0](https://github.com/intershop/intershop-pwa/releases/tag/3.2.0) (2022-12-22)
 
 **required Intershop Commerce Management version: 7.10.38.11-LTS**
@@ -206,7 +244,7 @@ kb_everyone
 - The `footer.content` localization key was replaced for most of its content by a CMS manageable content include.
 - Introduced double encoding of resource ids in REST API calls for user login (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#2.4-to-30) for more details).
 - Introduced the build variable `SSR` that is now used for all checks if the application is running in SSR or Browser context (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#2.4-to-30) for more details).
-- Angular 14 and dependecies update (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
+- Angular 14 and dependencies update (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
 - Jest upgrade to version 28, the jest-marbles package has been replaced by jasmine-marbles.
 - The @ngx-translate/http-loader has been removed from the dependencies.
 - The [pagespeed module](https://www.modpagespeed.com) of NGINX has been removed without replacement.
@@ -487,7 +525,7 @@ kb_everyone
 ### BREAKING CHANGES
 
 - Switch linting from `tslint` to `eslint` (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
-- Swiper 7 upgrade (see [Migration Guide to Swiper 7](https://swiperjs.com/migration-guide) for more details).
+- Swiper 7 upgrade (see [Migration Guide to Swiper 7](https://v7.swiperjs.com/migration-guide) for more details).
 - Formly 6 upgrade (see [upgrade from 5.0 to 6.0](https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md) for more details).
 - Angular 13 and dependencies update (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
 - Angular 13 removes support for IE 11 (see [Internet Explorer 11 support deprecation and removal](https://github.com/angular/angular/issues/41840) for more details).

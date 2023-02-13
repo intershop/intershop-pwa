@@ -14,6 +14,13 @@ const _ = {
   } as Registration,
 };
 
+function checkApiTokenCookie(type: string) {
+  cy.getCookie('apiToken').then(cookie => {
+    expect(cookie).to.not.be.empty;
+    cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', type);
+  });
+}
+
 describe('Returning User', () => {
   describe('when logged in', () => {
     before(() => LoginPage.navigateTo());
@@ -26,52 +33,32 @@ describe('Returning User', () => {
       at(MyAccountPage, page =>
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`)
       );
-      cy.getCookie('apiToken')
-        .should('not.be.empty')
-        .should(cookie => {
-          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'user');
-        });
+      checkApiTokenCookie('user');
     });
 
     it('should stay logged in when refreshing page once', () => {
       MyAccountPage.navigateTo();
       at(MyAccountPage);
-      cy.getCookie('apiToken')
-        .should('not.be.empty')
-        .should(cookie => {
-          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'user');
-        });
+      checkApiTokenCookie('user');
     });
 
     it('should stay logged in when refreshing page twice', () => {
       MyAccountPage.navigateTo();
       at(MyAccountPage);
-      cy.getCookie('apiToken')
-        .should('not.be.empty')
-        .should(cookie => {
-          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'user');
-        });
+      checkApiTokenCookie('user');
     });
 
     it('should stay logged in when refreshing page thrice', () => {
       MyAccountPage.navigateTo();
       at(MyAccountPage);
-      cy.getCookie('apiToken')
-        .should('not.be.empty')
-        .should(cookie => {
-          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'user');
-        });
+      checkApiTokenCookie('user');
     });
 
     it('should log out and get the anonymous token', () => {
       at(MyAccountPage, page => page.header.logout());
       at(HomePage);
       // eslint-disable-next-line unicorn/no-null
-      cy.getCookie('apiToken')
-        .should('not.be.empty')
-        .should(cookie => {
-          cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'anonymous');
-        });
+      checkApiTokenCookie('anonymous');
     });
   });
 

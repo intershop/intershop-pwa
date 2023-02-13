@@ -4,6 +4,7 @@
     <!-- Add address link -->
     <a
       *ngIf="isCreateAddressFormCollapsed && !updateFormExpandedAddressId"
+      [routerLink]="[]"
       class="btn btn-secondary float-right"
       (click)="showCreateAddressForm()"
       [attr.aria-expanded]="!isCreateAddressFormCollapsed"
@@ -138,6 +139,7 @@
           <div *ngIf="isCreateAddressFormCollapsed" class="float-right">
             <a
               *ngIf="isUpdateAddressFormCollapsed(address)"
+              [routerLink]="[]"
               class="btn-tool"
               (click)="showUpdateAddressForm(address)"
               title="{{ 'checkout.address.update.button.label' | translate }}"
@@ -150,6 +152,7 @@
 
             <a
               *ngIf="deletable"
+              [routerLink]="[]"
               class="btn-tool"
               title="{{ 'account.addresses.delete_address.text' | translate }}"
               (click)="modalDialog.show(address)"

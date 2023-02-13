@@ -6,6 +6,8 @@
         class="product-thumb-set"
         [ngClass]="{ active: isActiveSlide(i) }"
         (click)="setActiveSlide(i)"
+        (keydown.enter)="setActiveSlide(i)"
+        tabindex="0"
       >
         <ish-product-image imageType="S" [imageView]="imageView"></ish-product-image>
       </div>

@@ -20,6 +20,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
+  addMessageToMerchant,
   createBasket,
   createBasketFail,
   createBasketSuccess,
@@ -394,6 +395,19 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateBasketCostCenter$).toBeObservable(expected$);
+    });
+  });
+
+  describe('addMessageToMerchant$', () => {
+    it('should trigger the updateBasket action if called', () => {
+      const messageToMerchant = 'My Message To Merchant';
+      const action = addMessageToMerchant({ messageToMerchant });
+      const completion = updateBasket({
+        update: { messageToMerchant },
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+      expect(effects.addMessageToMerchant$).toBeObservable(expected$);
     });
   });
 

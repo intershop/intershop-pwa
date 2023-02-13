@@ -50,7 +50,7 @@ export const deleteOrderTemplateSuccess = createAction(
 export const deleteOrderTemplateFail = createAction('[Order Templates API] Delete Order Template Fail', httpError());
 
 export const addProductToOrderTemplate = createAction(
-  '[Order Templates] Add Item to Order Template',
+  '[Order Templates] Add Product to Order Template',
   payload<{ orderTemplateId: string; sku: string; quantity?: number }>()
 );
 

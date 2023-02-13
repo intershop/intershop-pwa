@@ -4,6 +4,8 @@
       <img
         [src]="getImageUrl(opt.properties.tc_component_picture) | async"
         (click)="change(opt.name)"
+        (keydown.enter)="change(opt.name)"
+        tabindex="0"
         [attr.alt]="opt.properties.tc_component_picture"
       />
     </div>

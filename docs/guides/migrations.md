@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Migrations
 
+## 3.2 to 3.3
+
+To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
+Also some `(keydown.enter)` event bindings with `tabindex="0"` were added to ensure a better interactivity with the keyboard only.
+If the according commits lead to problems they could be skipped and resolved later by fixing the accessibility linting issues manually.
+More information regarding accessibility in the PWA and the used ESLint rules can be found in the [Accessibility Guide](./accessibility.md).
+
 ## 3.1 to 3.2
 
 A styling adaption was made to the application shell to expand it to the full page height, so the footer now always stays at the bottom.
@@ -239,7 +246,7 @@ The following official guides might help to migrate custom code as well:
 - https://update.angular.io/?l=3&v=12.0-13.0
 - https://ngrx.io/guide/migration/v13
 - https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md
-- https://swiperjs.com/migration-guide
+- https://v7.swiperjs.com/migration-guide
 
 To help with the necessary rxjs refactorings, consider using [rxjs-fixers-morph](https://github.com/timdeschryver/rxjs-fixers-morph).
 Simply run `npx rxjs-fixers-morph ./tsconfig.json`.

@@ -10,6 +10,7 @@ export class QuickorderPage {
 
   fillFormLine(idx: number, sku: string, quantity?: number) {
     fillFormField(`[data-testing-id="quickorder-line-${idx}"]`, 'sku', sku);
+    cy.wait(800);
     if (quantity !== undefined) {
       fillFormField(`[data-testing-id="quickorder-line-${idx}"]`, 'quantity', quantity);
       return this;

@@ -1,4 +1,4 @@
-<div class="section">
+<div>
   <h3>{{ 'checkout.orderReferenceId.title' | translate }}</h3>
 
   <form [formGroup]="form" (ngSubmit)="submitForm()">
@@ -6,7 +6,7 @@
       <div *ngIf="showSuccessMessage" class="col-md-12">
         <ish-success-message message="checkout.orderReferenceId.success.message" [toast]="false"></ish-success-message>
       </div>
-      <div class="col-md-7">
+      <div class="col-md-6">
         <formly-form [form]="form" [fields]="fields" [model]="model"> </formly-form>
       </div>
       <div class="col-md-2 pl-md-0">

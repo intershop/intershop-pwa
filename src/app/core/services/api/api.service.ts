@@ -131,7 +131,7 @@ export class ApiService {
       return of(path);
     }
     return combineLatest([
-      this.store.pipe(select(getRestEndpoint)),
+      this.store.pipe(select(getRestEndpoint), whenTruthy()),
       this.getLocale$(options),
       this.getCurrency$(options),
       of('/'),

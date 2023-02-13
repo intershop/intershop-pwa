@@ -10,7 +10,7 @@
         <ish-content-include includeId="include.searchresult.navigation.pagelet2-Include"></ish-content-include>
       </div>
     </div>
-    <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
+    <a [routerLink]="[]" class="d-md-none mobile-filter-toggle" (click)="toggle()">
       {{ 'search.mobile.filter.trigger' | translate }}
       <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']"></fa-icon>
     </a>

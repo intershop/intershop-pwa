@@ -67,9 +67,17 @@ describe('Order Template Shopping Experience Functionality', () => {
     at(OrderTemplatesDetailsPage, page => page.getOrderTemplateItemById(_.product2).should('exist'));
   });
 
+  it('user changes the desired quantity of an item', () => {
+    at(OrderTemplatesDetailsPage, page => {
+      page.updateQuantity(_.product1, 4);
+      waitLoadingEnd();
+      page.getOrderTemplateItemById(_.product1).find('[data-testing-id="quantity"]').should('have.value', '4');
+    });
+  });
+
   it('user adds an order template from order template detail page to cart', () => {
     at(OrderTemplatesDetailsPage, page => {
-      page.addOrderTemplateToBasket(_.product1, 4);
+      page.addOrderTemplateToBasket();
       waitLoadingEnd();
       page.header.miniCart.goToCart();
     });
@@ -155,6 +163,7 @@ describe('Order Template Shopping Experience Functionality', () => {
     OrderTemplatesDetailsPage.navigateToOverviewPage();
     at(OrderTemplatesOverviewPage, page => {
       page.addOrderTemplateToCart(accountOrderTemplate);
+      page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
       page.addBasketToOrderTemplate();

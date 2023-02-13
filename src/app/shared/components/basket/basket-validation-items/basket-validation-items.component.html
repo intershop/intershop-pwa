@@ -34,14 +34,18 @@
           <p>{{ pli.totals.total | ishPrice }}</p>
 
           <div class="d-none d-lg-block">
-            <a class="btn btn-secondary" (click)="onDeleteItem(pli.id)" data-testing-id="delete-button">{{
-              'restricted-items.Remove.button' | translate
-            }}</a>
+            <a
+              [routerLink]="[]"
+              class="btn btn-secondary"
+              (click)="onDeleteItem(pli.id)"
+              data-testing-id="delete-button"
+              >{{ 'restricted-items.Remove.button' | translate }}</a
+            >
           </div>
         </div>
       </div>
       <div class="d-lg-none text-right">
-        <a class="btn btn-secondary" (click)="onDeleteItem(pli.id)">{{
+        <a [routerLink]="[]" class="btn btn-secondary" (click)="onDeleteItem(pli.id)">{{
           'restricted-items.Remove.button' | translate
         }}</a>
       </div>

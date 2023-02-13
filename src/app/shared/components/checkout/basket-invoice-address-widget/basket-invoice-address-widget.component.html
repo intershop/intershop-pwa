@@ -4,6 +4,7 @@
     <!-- edit invoice address -->
     <a
       *ngIf="collapseChange | async"
+      [routerLink]="[]"
       class="btn-tool float-right"
       title="{{ 'checkout.address.update.button.label' | translate }}"
       (click)="showAddressForm(address)"

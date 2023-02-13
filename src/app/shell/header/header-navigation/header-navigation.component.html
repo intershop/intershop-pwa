@@ -1,10 +1,11 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <ul class="navbar-nav main-navigation-list">
   <li
     *ngFor="let category of categories$ | async"
     #subMenu
     class="dropdown"
     [ngClass]="{ open: isOpened(category.uniqueId) }"
-    (mouseover)="subMenuShow(subMenu)"
+    (mouseenter)="subMenuShow(subMenu)"
     (mouseleave)="subMenuHide(subMenu)"
     (click)="subMenuHide(subMenu)"
   >
@@ -17,7 +18,7 @@
       {{ category.name }}
     </a>
     <ng-container *ngIf="0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren">
-      <a class="dropdown-toggle" (click)="toggleOpen(category.uniqueId)">
+      <a [routerLink]="[]" class="dropdown-toggle" (click)="toggleOpen(category.uniqueId)">
         <fa-icon *ngIf="isOpened(category.uniqueId); else closed" [icon]="['fas', 'minus']"></fa-icon>
         <ng-template #closed> <fa-icon [icon]="['fas', 'plus']"></fa-icon> </ng-template>
       </a>

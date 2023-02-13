@@ -39,6 +39,7 @@
                 <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
               </a>
               <a
+                [routerLink]="[]"
                 class="btn-tool"
                 title="{{ 'account.user.delete_user_dialog.header' | translate: { '0': user.login } }}"
                 (click)="modalDialog.show(user)"

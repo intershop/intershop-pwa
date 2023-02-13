@@ -1,6 +1,5 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
@@ -35,7 +34,7 @@ import {
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getCurrentBasket, getCurrentBasketId, loadBasket, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
+import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
 import { getOrder, getSelectedOrderId, loadOrderByAPIToken } from 'ish-core/store/customer/orders';
 import {
   fetchAnonymousUserToken,
@@ -68,12 +67,7 @@ export class ApiTokenService {
 
   private initialCookie$: Observable<ApiTokenCookie>;
 
-  constructor(
-    private cookiesService: CookiesService,
-    private router: Router,
-    private store: Store,
-    appRef: ApplicationRef
-  ) {
+  constructor(private cookiesService: CookiesService, private store: Store, appRef: ApplicationRef) {
     // setup initial values
     const initialCookie = this.parseCookie();
     this.initialCookie$ = of(!SSR ? initialCookie : undefined);
@@ -155,23 +149,6 @@ export class ApiTokenService {
           this.apiToken$.next(apiToken);
           this.cookieVanishes$.next(type);
         });
-
-      // session keep alive
-      appRef.isStable
-        .pipe(
-          whenTruthy(),
-          first(),
-          mergeMap(() =>
-            store.pipe(
-              select(getCurrentBasket),
-              switchMap(basket => interval(10 * 60 * 1000).pipe(map(() => !!basket)))
-            )
-          ),
-          whenTruthy()
-        )
-        .subscribe(() => {
-          store.dispatch(loadBasket());
-        });
     }
   }
 
@@ -212,9 +189,8 @@ export class ApiTokenService {
     if (SSR) {
       return of(true);
     }
-    return this.router.events.pipe(
+    return this.initialCookie$.pipe(
       first(),
-      switchMap(() => this.initialCookie$),
       withLatestFrom(this.apiToken$),
       switchMap(([cookie, apiToken]) => {
         if (!apiToken && fetchAnonymousToken) {

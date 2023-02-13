@@ -47,6 +47,12 @@
       <ish-basket-buyer [object]="order"></ish-basket-buyer>
     </ish-info-box>
   </div>
+
+  <ng-container *ishFeature="'messageToMerchant'">
+    <!-- MessageToMerchant-->
+    <ish-basket-merchant-message-view [data]="order"></ish-basket-merchant-message-view>
+  </ng-container>
+
   <div class="row d-flex">
     <!-- Invoice Address -->
     <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">

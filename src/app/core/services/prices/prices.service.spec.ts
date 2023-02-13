@@ -3,9 +3,12 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { Address } from 'ish-core/models/address/address.model';
+import { BasketView } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { ProductPriceDetailsData } from 'ish-core/models/product-prices/product-prices.interface';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import { PricesService } from './prices.service';
@@ -22,6 +25,10 @@ describe('Prices Service', () => {
         provideMockStore({
           selectors: [
             { selector: getLoggedInCustomer, value: { customerNo: 'customer', isBusinessCustomer: true } as Customer },
+            {
+              selector: getCurrentBasket,
+              value: { commonShipToAddress: { urn: 'urn:4711' } as Address } as BasketView,
+            },
           ],
         }),
       ],
@@ -46,7 +53,7 @@ describe('Prices Service', () => {
         verify(apiServiceMock.get(`productprices`, anything())).once();
         expect(
           capture<string, AvailableOptions>(apiServiceMock.get).last()?.[1]?.params?.toString()
-        ).toMatchInlineSnapshot(`"sku=abc&sku=123&customerID=customer"`);
+        ).toMatchInlineSnapshot(`"sku=abc&sku=123&customerID=customer&shipToAddress=urn:4711"`);
         done();
       });
     });
