@@ -7,6 +7,44 @@ kb_everyone
 
 # Changelog
 
+## [3.3.0](https://github.com/intershop/intershop-pwa/releases/tag/3.3.0) (2023-02-13)
+
+**required Intershop Commerce Management version: 7.10.38.11-LTS**
+
+**required/tested Node.js version: 16.16.0 LTS (including npm 8.11.0)**
+
+### Features
+
+- add the message to merchant feature to the checkout (#1323) ([50cbe36](https://github.com/intershop/intershop-pwa/commit/50cbe36))
+- formly - add the legend element to the fieldset, add legend class attribute (#1354) ([256bd7f](https://github.com/intershop/intershop-pwa/commit/256bd7f))
+- design preview support (#1216) ([8a22f3c](https://github.com/intershop/intershop-pwa/commit/8a22f3c))
+- **accessibility:** satisfy 'click-events-have-key-events' rule for HTML elements with click event (#1336) ([200409e](https://github.com/intershop/intershop-pwa/commit/200409e))
+- **accessibility:** enable and satisfy 'click-events-have-key-events' rule for '\<a>' tags (#1336) ([ae2d6c4](https://github.com/intershop/intershop-pwa/commit/ae2d6c4))
+
+### Bug Fixes
+
+- suppress shopping cart info message if the user adds the same product again (#1356) ([c05df22](https://github.com/intershop/intershop-pwa/commit/c05df22))
+- shopping cart message needs more space (#1356) ([558a869](https://github.com/intershop/intershop-pwa/commit/558a869))
+- scrollbar added to the approval tabs (#1353) ([2ac7f03](https://github.com/intershop/intershop-pwa/commit/2ac7f03))
+- icm rest endpoint should be truthy to construct a valid api url (#1367) ([61f9b0e](https://github.com/intershop/intershop-pwa/commit/61f9b0e))
+- pages should render properly after basket changes (login, addToBasket, ...) ([fd6aace](https://github.com/intershop/intershop-pwa/commit/fd6aace))
+- render quoting pages properly ([c1054ca](https://github.com/intershop/intershop-pwa/commit/c1054ca))
+- disable add-to-cart button during page loading (#1364) ([0a2bf63](https://github.com/intershop/intershop-pwa/commit/0a2bf63))
+- handle google recaptcha v3 expiration (#1347) ([db071ec](https://github.com/intershop/intershop-pwa/commit/db071ec))
+- add basket ship-to-address to the product prices call (#1362) ([0e3c633](https://github.com/intershop/intershop-pwa/commit/0e3c633))
+- redirect before checkout (checkout guard) due to a cookie restore timing issue (#1357) ([84b0e99](https://github.com/intershop/intershop-pwa/commit/84b0e99))
+- reset correct product context infos when switching prorduct from retail-set to a single product ([f245f07](https://github.com/intershop/intershop-pwa/commit/f245f07))
+- reset product quantity input field when switching products ([72744de](https://github.com/intershop/intershop-pwa/commit/72744de))
+- styling fix for enhanced variation select options dropdown with long option names ([615211b](https://github.com/intershop/intershop-pwa/commit/615211b))
+
+### Documentation
+
+- accessibility documentation added (#1336) ([ec4efac](https://github.com/intershop/intershop-pwa/commit/ec4efac))
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- design preview support (#1216) - 7.10.39.1
+
 ## [3.2.0](https://github.com/intershop/intershop-pwa/releases/tag/3.2.0) (2022-12-22)
 
 **required Intershop Commerce Management version: 7.10.38.11-LTS**
