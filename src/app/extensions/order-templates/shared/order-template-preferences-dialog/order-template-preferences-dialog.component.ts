@@ -66,7 +66,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
       {
         key: 'title',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           required: true,
           label: 'account.order_template.form.name.label',
           hideRequiredMarker: true,

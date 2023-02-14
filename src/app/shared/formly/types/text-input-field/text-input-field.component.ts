@@ -4,7 +4,7 @@ import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core'
 /**
  * Type for a basic input field
  *
- * @templateOption **type** supports all text types; 'text' (default), 'email', 'password', 'tel'
+ * @props **type** supports all text types; 'text' (default), 'email', 'password', 'tel'
  *
  * @defaultWrappers form-field-horizontal & validation
  */
@@ -17,14 +17,14 @@ export class TextInputFieldComponent extends FieldType<FieldTypeConfig> {
   textInputFieldTypes = ['text', 'email', 'password', 'tel'];
 
   onPopulate(field: FormlyFieldConfig) {
-    if (!field.templateOptions?.type) {
-      field.templateOptions.type = 'text';
+    if (!field.props?.type) {
+      field.props.type = 'text';
       return;
     }
 
-    if (!this.textInputFieldTypes.includes(field.templateOptions.type)) {
+    if (!this.textInputFieldTypes.includes(field.props.type)) {
       throw new Error(
-        'parameter <templateOptions.type> is not valid for TextInputFieldComponent, only text, email, password and tel are possible values'
+        'parameter <props.type> is not valid for TextInputFieldComponent, only text, email, password and tel are possible values'
       );
     }
   }

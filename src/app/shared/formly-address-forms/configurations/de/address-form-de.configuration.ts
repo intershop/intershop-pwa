@@ -40,7 +40,7 @@ export class AddressFormDEConfiguration extends AddressFormConfiguration {
         {
           key: 'addressLine3',
           type: 'ish-text-input-field',
-          templateOptions: {
+          props: {
             label: 'account.address.street3.label',
             required: false,
           },
@@ -50,7 +50,7 @@ export class AddressFormDEConfiguration extends AddressFormConfiguration {
         {
           key: 'postalCode',
           type: '#postalCode',
-          templateOptions: {
+          props: {
             maxLength: 5,
           },
           validators: {

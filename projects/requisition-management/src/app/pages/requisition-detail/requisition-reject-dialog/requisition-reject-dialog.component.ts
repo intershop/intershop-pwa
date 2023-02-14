@@ -54,7 +54,7 @@ export class RequisitionRejectDialogComponent implements OnInit {
       {
         key: 'comment',
         type: 'ish-textarea-field',
-        templateOptions: {
+        props: {
           label: 'approval.rejectform.add_a_comment.label',
           required: true,
           maxLength: 1000,

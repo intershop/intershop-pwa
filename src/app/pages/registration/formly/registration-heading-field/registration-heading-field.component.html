@@ -1,13 +1,13 @@
 <ng-container *ngIf="size === 'h1'; else h2">
-  <h1>{{ to.heading | translate }}</h1>
-  <p>{{ to.subheading | translate }}</p>
+  <h1>{{ props.heading | translate }}</h1>
+  <p>{{ props.subheading | translate }}</p>
   <p *ngIf="showRequiredInfo" class="indicates-required">
     <span class="required">*</span>{{ 'account.required_field.message' | translate }}
   </p>
 </ng-container>
 <ng-template #h2>
-  <h2>{{ to.heading | translate }}</h2>
-  <p>{{ to.subheading | translate }}</p>
+  <h2>{{ props.heading | translate }}</h2>
+  <p>{{ props.subheading | translate }}</p>
   <p *ngIf="showRequiredInfo" class="indicates-required">
     <span class="required">*</span>{{ 'account.required_field.message' | translate }}
   </p>

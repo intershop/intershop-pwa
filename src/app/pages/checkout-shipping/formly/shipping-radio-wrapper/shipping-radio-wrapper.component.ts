@@ -4,9 +4,9 @@ import { FieldWrapper } from '@ngx-formly/core';
 /**
  * Wrapper that handles checkout specific formatting and display of radio buttons.
  *
- * @templateOptions **shippingMethod** that will have its description displayed.
- * @templateOptions **id** that will be used in the label.
- * @tempalteOptions **labelClass* that will be applied to the label.
+ * @props **shippingMethod** that will have its description displayed.
+ * @props **id** that will be used in the label.
+ * @props **labelClass* that will be applied to the label.
  *
  */
 @Component({

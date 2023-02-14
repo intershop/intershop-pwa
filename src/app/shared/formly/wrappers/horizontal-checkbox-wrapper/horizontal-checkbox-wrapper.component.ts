@@ -4,10 +4,10 @@ import { FieldWrapper } from '@ngx-formly/core';
 /**
  * Wrapper that works with checkboxes and radio buttons.
  *
- * @templateOption **label** - the label to be displayed
- * @templateOption **labelClass** - the css class to be applied to the ``<label>`` tag. Will use default value if not provided.
- * @templateOption **fieldClass** - the css class to be applied to a div around the ``#fieldComponent`` template. Will use default value if not provided.
- * @templateOption **tooltip** - tooltip information that will be passed to the ``<ish-tooltip>`` component.
+ * @props **label** - the label to be displayed
+ * @props **labelClass** - the css class to be applied to the ``<label>`` tag. Will use default value if not provided.
+ * @props **fieldClass** - the css class to be applied to a div around the ``#fieldComponent`` template. Will use default value if not provided.
+ * @props **tooltip** - tooltip information that will be passed to the ``<ish-tooltip>`` component.
  *  Refer to the component documentation for more info.
  *
  * @usageNotes

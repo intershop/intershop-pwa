@@ -39,7 +39,7 @@ describe('Fieldset Field Component', () => {
       fields: [
         {
           type: 'ish-fieldset-field',
-          templateOptions: {
+          props: {
             legend: 'Legend text',
             legendClass: 'text-muted',
           },

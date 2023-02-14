@@ -61,7 +61,7 @@ export class QuickorderAddProductsFormComponent implements OnInit {
       {
         key: 'addProducts',
         type: 'repeat',
-        templateOptions: {
+        props: {
           addText: 'quickorder.page.add.row',
           addMoreText: 'quickorder.page.add.row.multiple',
           numberMoreRows: this.numberOfRows,
@@ -73,12 +73,12 @@ export class QuickorderAddProductsFormComponent implements OnInit {
               key: 'sku',
               type: 'ish-text-input-field',
               className: 'col-12 list-item search-container',
-              templateOptions: {
+              props: {
                 fieldClass: 'col-12',
                 placeholder: 'shopping_cart.direct_order.item_placeholder',
               },
-              expressionProperties: {
-                'templateOptions.required': (control: SkuQuantityType) => !!control.quantity,
+              expressions: {
+                'props.required': conf => !!conf.model.quantity,
               },
               validation: {
                 messages: {

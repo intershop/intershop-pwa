@@ -34,7 +34,7 @@ describe('Textarea Field Component', () => {
         {
           key: 'textarea',
           type: 'ish-textarea-field',
-          templateOptions: {
+          props: {
             label: 'test label',
             required: true,
           },

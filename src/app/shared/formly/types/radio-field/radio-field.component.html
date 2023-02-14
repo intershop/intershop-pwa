@@ -1,9 +1,9 @@
 <input
   type="radio"
   [formControl]="formControl"
-  [value]="to.value"
+  [value]="props.value"
   [id]="id"
   class="form-check-input"
-  [ngClass]="to.inputClass"
-  [attr.data-testing-id]="'radio-' + to.label"
+  [ngClass]="props.inputClass"
+  [attr.data-testing-id]="'radio-' + props.label"
 />

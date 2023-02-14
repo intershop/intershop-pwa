@@ -43,7 +43,7 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
           {
             key: 'currentPassword',
             type: 'ish-text-input-field',
-            templateOptions: {
+            props: {
               type: 'password',
               required: true,
               hideRequiredMarker: true,
@@ -58,7 +58,7 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
           {
             key: 'password',
             type: 'ish-password-field',
-            templateOptions: {
+            props: {
               postWrappers: [{ wrapper: 'description', index: -1 }],
               required: true,
               hideRequiredMarker: true,
@@ -74,7 +74,7 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
           {
             key: 'passwordConfirmation',
             type: 'ish-password-field',
-            templateOptions: {
+            props: {
               required: true,
               hideRequiredMarker: true,
               label: 'account.update_password.newpassword_confirmation.label',

@@ -39,7 +39,7 @@ export class AddressFormGBConfiguration extends AddressFormConfiguration {
         'addressLine2',
         {
           key: 'addressLine3',
-          templateOptions: {
+          props: {
             label: 'account.address.uk.locality.label',
             required: false,
           },

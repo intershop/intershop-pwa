@@ -42,7 +42,7 @@ describe('Rating Stars Field Component', () => {
         {
           key: 'input',
           type: 'ish-rating-stars-field',
-          templateOptions: {
+          props: {
             label: 'test label',
             required: true,
           },

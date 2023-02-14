@@ -28,7 +28,7 @@ export class PaymentParameterFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.fields = [];
     this.paymentMethod.parameters.forEach(param => this.fields.push({ ...param }));
-    this.fields.forEach(field => (this.model[field.key as string] = field.templateOptions?.options ? undefined : ''));
+    this.fields.forEach(field => (this.model[field.key as string] = field.props?.options ? undefined : ''));
   }
 
   /**

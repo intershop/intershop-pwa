@@ -7,7 +7,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  * @defaultWrappers form-field-checkbox-horizontal
  *
  * @usageNotes
- * Refer to the form-field-checkbox-horizontal wrapper for more info on relevant templateOptions.
+ * Refer to the form-field-checkbox-horizontal wrapper for more info on relevant props.
  */
 @Component({
   selector: 'ish-checkbox-field',

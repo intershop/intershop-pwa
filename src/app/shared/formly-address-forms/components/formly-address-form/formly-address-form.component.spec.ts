@@ -21,7 +21,7 @@ const configurations: { [key: string]: FormlyFieldConfig[] } = {
     {
       key: 'firstName',
       type: 'ish-text-input-field',
-      templateOptions: {
+      props: {
         label: 'default input',
         required: true,
       },
@@ -31,7 +31,7 @@ const configurations: { [key: string]: FormlyFieldConfig[] } = {
     {
       key: 'firstName',
       type: 'ish-text-input-field',
-      templateOptions: {
+      props: {
         label: 'example input',
         required: true,
       },
@@ -39,7 +39,7 @@ const configurations: { [key: string]: FormlyFieldConfig[] } = {
     {
       key: 'lastName',
       type: 'ish-text-input-field',
-      templateOptions: {
+      props: {
         label: 'last name',
       },
     },
@@ -48,7 +48,7 @@ const configurations: { [key: string]: FormlyFieldConfig[] } = {
     {
       key: 'companyName1',
       type: 'ish-text-input-field',
-      templateOptions: {
+      props: {
         label: 'example input',
         required: true,
       },

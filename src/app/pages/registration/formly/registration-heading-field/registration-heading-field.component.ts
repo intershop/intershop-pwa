@@ -6,10 +6,10 @@ const sizes = ['h1', 'h2'];
 /**
  * Type that displays a section heading.
  *
- * @templateOption **heading** the primary heading text. Will be translated.
- * @templateOption **subheading** the secondary heading text. Wil be translated.
- * @templateOption **headingSize** determines whether the heading should be rendered with an <h1> or <h2> tag.
- * @templateOption **showRequiredInfo** determines whether a message explaining the required star should be shown.
+ * @props **heading** the primary heading text. Will be translated.
+ * @props **subheading** the secondary heading text. Wil be translated.
+ * @props **headingSize** determines whether the heading should be rendered with an <h1> or <h2> tag.
+ * @props **showRequiredInfo** determines whether a message explaining the required star should be shown.
  */
 @Component({
   selector: 'ish-registration-heading-field',
@@ -23,10 +23,10 @@ export class RegistrationHeadingFieldComponent extends FieldType {
   };
 
   get size() {
-    return sizes.includes(this.to.headingSize) ? this.to.headingSize : this.dto.headingSize;
+    return sizes.includes(this.props.headingSize) ? this.props.headingSize : this.dto.headingSize;
   }
 
   get showRequiredInfo() {
-    return this.to.showRequiredInfo ?? this.dto.showRequiredInfo;
+    return this.props.showRequiredInfo ?? this.dto.showRequiredInfo;
   }
 }

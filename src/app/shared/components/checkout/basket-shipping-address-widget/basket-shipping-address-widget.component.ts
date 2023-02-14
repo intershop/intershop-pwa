@@ -86,7 +86,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
       {
         key: 'id',
         type: 'ish-select-field',
-        templateOptions: {
+        props: {
           fieldClass: 'col-12',
           options: FormsService.getAddressOptions(this.addresses$),
           placeholder: this.emptyOptionLabel,

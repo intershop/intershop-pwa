@@ -40,7 +40,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
         type: 'ish-text-input-field',
         key: 'newOrderTemplate',
         defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
-        templateOptions: {
+        props: {
           required: true,
         },
         validation: {
@@ -56,7 +56,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
           type: 'ish-radio-field',
           key: 'orderTemplate',
           defaultValue: orderTemplateOptions[0].value,
-          templateOptions: {
+          props: {
             fieldClass: ' ',
             value: option.value,
             label: option.label,
@@ -71,7 +71,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
             {
               type: 'ish-radio-field',
               key: 'orderTemplate',
-              templateOptions: {
+              props: {
                 inputClass: 'position-static',
                 fieldClass: ' ',
                 value: 'new',
@@ -83,14 +83,14 @@ export class SelectOrderTemplateFormComponent implements OnInit {
               className: 'w-75 position-relative validation-offset-0',
               wrappers: ['validation'],
               defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
-              templateOptions: {
+              props: {
                 required: true,
               },
               validation: {
                 messages: { required: 'account.order_template.name.error.required' },
               },
-              expressionProperties: {
-                'templateOptions.disabled': model => model.orderTemplate !== 'new',
+              expressions: {
+                'props.disabled': conf => conf.model.orderTemplate !== 'new',
               },
             },
           ],

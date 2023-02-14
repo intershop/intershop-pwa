@@ -48,7 +48,7 @@ export class StoreLocatorPageComponent implements OnInit {
         key: 'countryCode',
         type: 'ish-select-field',
         wrappers: ['form-field-horizontal'],
-        templateOptions: {
+        props: {
           required: false,
           label: 'store_locator.form.country.label',
           placeholder: 'store_locator.form.country.default',
@@ -64,7 +64,7 @@ export class StoreLocatorPageComponent implements OnInit {
       {
         key: 'postalCode',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           type: 'text',
           label: 'store_locator.form.postalCode.label',
         },
@@ -72,7 +72,7 @@ export class StoreLocatorPageComponent implements OnInit {
       {
         key: 'city',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           type: 'text',
           label: 'store_locator.form.city.label',
         },

@@ -47,7 +47,7 @@ describe('Description Wrapper Component', () => {
     component.fields = [
       {
         ...fieldBase,
-        templateOptions: {
+        props: {
           customDescription: 'desc',
         },
       },
@@ -73,7 +73,7 @@ describe('Description Wrapper Component', () => {
     component.fields = [
       {
         ...fieldBase,
-        templateOptions: {
+        props: {
           customDescription: {
             key: 'description',
             args: {

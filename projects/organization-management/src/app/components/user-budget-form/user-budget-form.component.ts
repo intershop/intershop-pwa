@@ -74,7 +74,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
           {
             key: 'currency',
             type: 'ish-text-input-field',
-            templateOptions: {
+            props: {
               fieldClass: 'd-none',
               required: true,
             },
@@ -82,7 +82,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
           {
             key: 'orderSpentLimitValue',
             type: 'ish-text-input-field',
-            templateOptions: {
+            props: {
               postWrappers: [{ wrapper: 'input-addon', index: -1 }],
               label: 'account.user.new.order_spend_limit.label',
               placeholder: 'account.budget.unlimited',
@@ -106,7 +106,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
                 className: 'col-8',
                 key: 'budgetValue',
                 type: 'ish-text-input-field',
-                templateOptions: {
+                props: {
                   postWrappers: [{ wrapper: 'input-addon', index: -1 }],
                   labelClass: 'col-md-6',
                   fieldClass: 'col-md-6 pr-0',
@@ -129,7 +129,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
                 className: 'col-4',
                 type: 'ish-select-field',
                 key: 'budgetPeriod',
-                templateOptions: {
+                props: {
                   fieldClass: 'col-12 label-empty',
                   options: this.periods.map(period => ({
                     value: period,

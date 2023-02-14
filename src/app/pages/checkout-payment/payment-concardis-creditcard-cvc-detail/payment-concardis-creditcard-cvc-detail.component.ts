@@ -39,7 +39,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
       {
         key: 'cvcDetail',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           required: true,
           label: 'checkout.credit_card.cvc.label',
           labelClass: 'col-5 col-md-7 pl-4',

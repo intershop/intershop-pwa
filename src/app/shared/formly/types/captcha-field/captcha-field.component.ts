@@ -5,7 +5,7 @@ import { FieldType } from '@ngx-formly/core';
 /**
  * Type to include the ``ish-lazy-captcha`` component in your fields.
  *
- * @templateOption **topic** - defines the captcha topic that is passed to the component.
+ * @props **topic** - defines the captcha topic that is passed to the component.
  *
  * @usageNotes
  * Automatically adds the required ``captcha`` and ``captchaAction`` FormControls to the form.
@@ -28,7 +28,7 @@ export class CaptchaFieldComponent extends FieldType implements OnInit {
     }
 
     if (!form.get('captchaAction')) {
-      form.addControl('captchaAction', new FormControl(this.to.topic));
+      form.addControl('captchaAction', new FormControl(this.props.topic));
     }
   }
 }

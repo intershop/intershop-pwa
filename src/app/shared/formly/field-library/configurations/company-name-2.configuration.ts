@@ -14,7 +14,7 @@ export class CompanyName2Configuration extends FieldLibraryConfiguration {
     return {
       key: 'companyName2',
       type: 'ish-text-input-field',
-      templateOptions: {
+      props: {
         label: 'account.address.company_name_2.label',
         required: false,
       },

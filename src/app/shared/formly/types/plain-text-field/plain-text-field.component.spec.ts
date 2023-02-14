@@ -35,7 +35,7 @@ describe('Plain Text Field Component', () => {
         {
           key: 'displayValue',
           type: 'ish-plain-text-field',
-          templateOptions: {
+          props: {
             label: 'test label',
           },
         } as FormlyFieldConfig,

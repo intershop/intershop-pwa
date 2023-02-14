@@ -98,7 +98,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
         {
           key: 'countryCode',
           type: 'ish-select-field',
-          templateOptions: {
+          props: {
             required: true,
             label: 'account.address.country.label',
             forceRequiredStar: true,

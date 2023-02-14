@@ -171,7 +171,7 @@ export class PaymentMethodMapper {
       const param: FormlyFieldConfig = {
         key: p.name,
         type: p.options ? 'ish-select-field' : 'ish-text-input-field',
-        templateOptions: {
+        props: {
           labelClass: 'col-md-4',
           fieldClass: 'col-sm-6',
           type: p.type === 'string' ? 'text' : (p.type as string).toLowerCase(),
@@ -192,12 +192,12 @@ export class PaymentMethodMapper {
 
       if (p.constraints) {
         if (p.constraints.required) {
-          param.templateOptions.required = true;
+          param.props.required = true;
           param.validation.messages = { ...param.validation.messages, required: p.constraints.required.message };
         }
         if (p.constraints.size) {
-          param.templateOptions.minLength = p.constraints.size.min;
-          param.templateOptions.maxLength = p.constraints.size.max;
+          param.props.minLength = p.constraints.size.min;
+          param.props.maxLength = p.constraints.size.max;
           param.validation.messages = {
             ...param.validation.messages,
             minLength: p.constraints.size.message,
@@ -205,7 +205,7 @@ export class PaymentMethodMapper {
           };
         }
         if (p.constraints.pattern) {
-          param.templateOptions.pattern = p.constraints.pattern.regexp;
+          param.props.pattern = p.constraints.pattern.regexp;
           param.validation.messages = {
             ...param.validation.messages,
             pattern: p.constraints.pattern.message,

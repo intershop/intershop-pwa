@@ -23,7 +23,7 @@ describe('Registration Form Configuration Service', () => {
     when(fieldLibrary.getConfigurationGroup('companyInfo')).thenReturn([
       {
         key: 'companyName1',
-        templateOptions: {
+        props: {
           required: true,
         },
       },

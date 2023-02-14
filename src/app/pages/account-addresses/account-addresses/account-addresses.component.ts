@@ -93,7 +93,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
     this.selectInvoiceConfig = {
       key: 'preferredInvoiceAddressUrn',
       type: 'ish-select-field',
-      templateOptions: {
+      props: {
         fieldClass: 'w-100',
         options: addressesAndUser$.pipe(
           map(([addresses, user]) =>
@@ -113,7 +113,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
     this.selectShippingConfig = {
       key: 'preferredShippingAddressUrn',
       type: 'ish-select-field',
-      templateOptions: {
+      props: {
         fieldClass: 'w-100',
         options: addressesAndUser$.pipe(
           map(([addresses, user]) =>

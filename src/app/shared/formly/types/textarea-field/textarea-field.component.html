@@ -1,9 +1,9 @@
 <textarea
   [formControl]="formControl"
-  [cols]="to.cols"
-  [rows]="to.rows"
+  [cols]="props.cols"
+  [rows]="props.rows"
   [formlyAttributes]="field"
   class="form-control"
-  [ngClass]="to.inputClass"
+  [ngClass]="props.inputClass"
   [attr.data-testing-id]="field.key"
 ></textarea>

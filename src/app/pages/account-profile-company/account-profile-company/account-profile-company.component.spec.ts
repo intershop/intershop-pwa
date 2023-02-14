@@ -21,7 +21,7 @@ describe('Account Profile Company Component', () => {
     when(fieldLibrary.getConfigurationGroup(anything(), anything())).thenReturn([
       {
         key: 'companyName',
-        templateOptions: {
+        props: {
           required: true,
         },
       },
