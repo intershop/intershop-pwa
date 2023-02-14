@@ -41,7 +41,7 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
         type: 'ish-radio-field',
         key: 'shipOption',
         defaultValue: 'shipToInvoiceAddress',
-        templateOptions: {
+        props: {
           label: 'checkout.addresses.shipping_address.option1.text',
           value: 'shipToInvoiceAddress',
         },
@@ -50,7 +50,7 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
         type: 'ish-radio-field',
         key: 'shipOption',
         defaultValue: 'shipToInvoiceAddress',
-        templateOptions: {
+        props: {
           label: 'checkout.addresses.shipping_address.option2.text',
           value: 'shipToDifferentAddress',
         },

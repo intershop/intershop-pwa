@@ -55,7 +55,7 @@ export class RegistrationFormConfigurationService {
     return [
       {
         type: 'ish-registration-heading-field',
-        templateOptions: {
+        props: {
           headingSize: 'h1',
           heading: registrationConfig.sso ? 'account.register.complete_heading' : 'account.register.heading',
           subheading: 'account.register.message',
@@ -66,7 +66,7 @@ export class RegistrationFormConfigurationService {
       ...this.getPersonalInfoConfig(),
       {
         type: 'ish-registration-heading-field',
-        templateOptions: {
+        props: {
           headingSize: 'h2',
           heading: 'account.register.address.headding',
           subheading: 'account.register.address.message',
@@ -75,21 +75,21 @@ export class RegistrationFormConfigurationService {
       },
       {
         type: 'ish-fieldset-field',
-        templateOptions: {
+        props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
         fieldGroup: [
           {
             type: 'ish-registration-address-field',
-            templateOptions: {
+            props: {
               businessCustomer: registrationConfig.businessCustomer,
             },
           },
           {
             type: 'ish-registration-tac-field',
             key: 'termsAndConditions',
-            templateOptions: {
+            props: {
               required: true,
             },
             validators: {
@@ -98,7 +98,7 @@ export class RegistrationFormConfigurationService {
           },
           {
             type: 'ish-captcha-field',
-            templateOptions: {
+            props: {
               topic: 'register',
             },
           },
@@ -211,7 +211,7 @@ export class RegistrationFormConfigurationService {
       {
         type: 'ish-registration-heading-field',
 
-        templateOptions: {
+        props: {
           headingSize: 'h2',
           heading: 'account.register.email_password.heading',
           subheading: 'account.register.email_password.message',
@@ -220,7 +220,7 @@ export class RegistrationFormConfigurationService {
       },
       {
         type: 'ish-fieldset-field',
-        templateOptions: {
+        props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
@@ -234,7 +234,7 @@ export class RegistrationFormConfigurationService {
           {
             key: 'login',
             type: 'ish-email-field',
-            templateOptions: {
+            props: {
               label: 'account.register.email.label',
               required: true,
             },
@@ -242,7 +242,7 @@ export class RegistrationFormConfigurationService {
           {
             key: 'loginConfirmation',
             type: 'ish-email-field',
-            templateOptions: {
+            props: {
               label: 'account.register.email_confirmation.label',
               required: true,
             },
@@ -256,7 +256,7 @@ export class RegistrationFormConfigurationService {
           {
             key: 'password',
             type: 'ish-password-field',
-            templateOptions: {
+            props: {
               postWrappers: [{ wrapper: 'description', index: -1 }],
               required: true,
               label: 'account.register.password.label',
@@ -270,7 +270,7 @@ export class RegistrationFormConfigurationService {
           {
             key: 'passwordConfirmation',
             type: 'ish-password-field',
-            templateOptions: {
+            props: {
               required: true,
               label: 'account.register.password_confirmation.label',
 
@@ -291,7 +291,7 @@ export class RegistrationFormConfigurationService {
     return [
       {
         type: 'ish-registration-heading-field',
-        templateOptions: {
+        props: {
           headingSize: 'h2',
           heading: 'account.register.personal_information.heading',
           showRequiredInfo: true,
@@ -299,7 +299,7 @@ export class RegistrationFormConfigurationService {
       },
       {
         type: 'ish-fieldset-field',
-        templateOptions: {
+        props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
@@ -312,7 +312,7 @@ export class RegistrationFormConfigurationService {
     return [
       {
         type: 'ish-registration-heading-field',
-        templateOptions: {
+        props: {
           headingSize: 'h2',
           heading: 'account.register.company_information.heading',
           showRequiredInfo: true,
@@ -320,7 +320,7 @@ export class RegistrationFormConfigurationService {
       },
       {
         type: 'ish-fieldset-field',
-        templateOptions: {
+        props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },

@@ -25,7 +25,7 @@ export class FormlyAddressExtensionFormComponent implements OnInit {
           {
             key: 'email',
             type: 'ish-email-field',
-            templateOptions: {
+            props: {
               required: true,
               label: 'checkout.addresses.email.label',
               customDescription: {

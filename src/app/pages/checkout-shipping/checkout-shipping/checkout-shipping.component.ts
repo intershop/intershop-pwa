@@ -45,7 +45,7 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
           type: 'ish-radio-field',
           key: 'shippingMethod',
           wrappers: ['shipping-radio-wrapper'],
-          templateOptions: {
+          props: {
             description: method.description,
             id: `shipping_method${method.id}`,
             value: method.id,

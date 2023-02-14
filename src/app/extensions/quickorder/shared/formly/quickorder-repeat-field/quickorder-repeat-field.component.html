@@ -21,10 +21,10 @@
 </div>
 <div class="section d-flex flex-nowrap">
   <a [routerLink]="[]" (click)="addMultipleRows(1)" data-testing-id="add-quickorder-line">{{
-    to?.addText | translate
+    props?.addText | translate
   }}</a>
   <span class="link-separator"></span>
-  <a [routerLink]="[]" (click)="addMultipleRows(to?.numberMoreRows)">{{
-    to?.addMoreText | translate: { '0': to?.numberMoreRows }
+  <a [routerLink]="[]" (click)="addMultipleRows(props?.numberMoreRows)">{{
+    props?.addMoreText | translate: { '0': props?.numberMoreRows }
   }}</a>
 </div>

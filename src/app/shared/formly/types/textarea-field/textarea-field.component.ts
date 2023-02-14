@@ -4,13 +4,13 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 /**
  * Type for a basic textarea field
  *
- * @templateOptions **cols** - the amount of columns the textarea should have
- * @templateOptions **rows** - the amount of rows the textarea should have
+ * @props **cols** - the amount of columns the textarea should have
+ * @props **rows** - the amount of rows the textarea should have
  *
  * @defaultWrappers form-field-horizontal & textarea-description & validation
  *
  * @usageNotes
- * See the textarea-description wrapper for more info on the relevant templateOptions.
+ * See the textarea-description wrapper for more info on the relevant props.
  */
 @Component({
   selector: 'ish-textarea-field',
@@ -19,7 +19,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 })
 export class TextareaFieldComponent extends FieldType<FieldTypeConfig> {
   defaultOptions = {
-    templateOptions: {
+    props: {
       cols: 1,
       rows: 1,
     },

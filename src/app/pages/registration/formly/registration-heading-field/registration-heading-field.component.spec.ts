@@ -33,7 +33,7 @@ describe('Registration Heading Field Component', () => {
       fields: [
         {
           type: 'heading',
-          templateOptions: {
+          props: {
             headingSize: 'h1',
             heading: 'heading',
             subHeading: 'subHeading',

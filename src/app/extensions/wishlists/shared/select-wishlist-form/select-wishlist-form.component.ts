@@ -36,7 +36,7 @@ export class SelectWishlistFormComponent implements OnInit {
         type: 'ish-text-input-field',
         key: 'newList',
         defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
-        templateOptions: {
+        props: {
           required: true,
         },
         validation: {
@@ -54,7 +54,7 @@ export class SelectWishlistFormComponent implements OnInit {
           type: 'ish-radio-field',
           key: 'wishlist',
           defaultValue: this.formGroup.get('wishlist')?.value || wishlistOptions[0].value,
-          templateOptions: {
+          props: {
             fieldClass: ' ',
             value: option.value,
             label: option.label,
@@ -69,7 +69,7 @@ export class SelectWishlistFormComponent implements OnInit {
             {
               type: 'ish-radio-field',
               key: 'wishlist',
-              templateOptions: {
+              props: {
                 inputClass: 'position-static',
                 fieldClass: ' ',
                 value: 'new',
@@ -81,7 +81,7 @@ export class SelectWishlistFormComponent implements OnInit {
               className: 'w-75 position-relative validation-offset-0',
               wrappers: ['validation'],
               defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
-              templateOptions: {
+              props: {
                 required: true,
               },
               validation: {
@@ -89,8 +89,8 @@ export class SelectWishlistFormComponent implements OnInit {
                   required: 'account.wishlist.name.error.required',
                 },
               },
-              expressionProperties: {
-                'templateOptions.disabled': model => model.wishlist !== 'new',
+              expressions: {
+                'props.disabled': conf => conf.model.wishlist !== 'new',
               },
             },
           ],

@@ -48,7 +48,7 @@ export class ProductReviewCreateDialogComponent implements OnInit {
       {
         key: 'authorFirstName',
         type: 'ish-plain-text-field',
-        templateOptions: {
+        props: {
           label: 'product.review.name.label',
           labelClass: 'col-md-3',
           fieldClass: 'col-md-9',
@@ -57,7 +57,7 @@ export class ProductReviewCreateDialogComponent implements OnInit {
       {
         key: 'rating',
         type: 'ish-rating-stars-field',
-        templateOptions: {
+        props: {
           label: 'product.review.rating.label',
           labelClass: 'col-md-3',
           fieldClass: 'col-md-9',
@@ -72,7 +72,7 @@ export class ProductReviewCreateDialogComponent implements OnInit {
       {
         key: 'title',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           label: 'product.review.title.label',
           labelClass: 'col-md-3',
           fieldClass: 'col-md-9',
@@ -87,7 +87,7 @@ export class ProductReviewCreateDialogComponent implements OnInit {
       {
         key: 'content',
         type: 'ish-textarea-field',
-        templateOptions: {
+        props: {
           label: 'product.review.content.label',
           labelClass: 'col-md-3',
           fieldClass: 'col-md-9',

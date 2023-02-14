@@ -42,7 +42,7 @@ describe('Select Field Component', () => {
         {
           key: 'select',
           type: 'ish-select-field',
-          templateOptions: {
+          props: {
             label: 'test label',
             required: true,
             options: [{ value: 1, label: 'test' }],

@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 /**
  * Wrapper to display a description that counts the remaining characters in a field.
  *
- * @templateOption **maxLength** - will be used to determine the remaining available characters.
+ * @props **maxLength** - will be used to determine the remaining available characters.
  *
  * @usageNotes
  * This wrapper is made for the textarea type but could be used for different field types as well.
@@ -33,8 +33,8 @@ export class TextareaDescriptionWrapperComponent extends FieldWrapper implements
   }
 
   setDescription(value: string) {
-    this.description$ = this.translate.get(this.to.customDescription ?? 'textarea.max_limit', {
-      0: Math.max(0, this.to.maxLength - (value?.length ?? 0)),
+    this.description$ = this.translate.get(this.props.customDescription ?? 'textarea.max_limit', {
+      0: Math.max(0, this.props.maxLength - (value?.length ?? 0)),
     });
   }
 

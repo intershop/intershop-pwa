@@ -13,7 +13,7 @@ export class CompanyName1Configuration extends FieldLibraryConfiguration {
   getFieldConfig(): FormlyFieldConfig {
     return {
       type: 'ish-text-input-field',
-      templateOptions: {
+      props: {
         label: 'account.address.company_name.label',
         required: true,
       },

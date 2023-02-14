@@ -33,7 +33,7 @@ export class PaymentSaveCheckboxComponent implements OnInit {
       {
         key: 'saveForLater',
         type: 'ish-checkbox-field',
-        templateOptions: {
+        props: {
           label: 'checkout.save_edit.checkbox.label',
         },
       },

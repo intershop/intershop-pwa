@@ -46,7 +46,7 @@ export class ContactFormComponent implements OnInit {
       {
         key: 'name',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           label: 'helpdesk.contactus.name.label',
           required: true,
         },
@@ -59,7 +59,7 @@ export class ContactFormComponent implements OnInit {
       {
         key: 'email',
         type: 'ish-email-field',
-        templateOptions: {
+        props: {
           label: 'helpdesk.contactus.email.label',
           required: true,
         },
@@ -67,7 +67,7 @@ export class ContactFormComponent implements OnInit {
       {
         key: 'phone',
         type: 'ish-phone-field',
-        templateOptions: {
+        props: {
           label: 'helpdesk.contactus.phone.label',
           required: true,
         },
@@ -75,14 +75,14 @@ export class ContactFormComponent implements OnInit {
       {
         key: 'order',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           label: 'helpdesk.contactus.order.label',
         },
       },
       {
         key: 'subject',
         type: 'ish-select-field',
-        templateOptions: {
+        props: {
           label: 'helpdesk.contactus.subject.label',
           required: true,
           options: this.contactUsFacade.contactSubjects$().pipe(
@@ -101,7 +101,7 @@ export class ContactFormComponent implements OnInit {
       {
         key: 'comment',
         type: 'ish-textarea-field',
-        templateOptions: {
+        props: {
           label: 'helpdesk.contactus.comments.label',
           required: true,
           maxLength: 30000,
@@ -115,7 +115,7 @@ export class ContactFormComponent implements OnInit {
       },
       {
         type: 'ish-captcha-field',
-        templateOptions: {
+        props: {
           topic: 'contactUs',
         },
       },

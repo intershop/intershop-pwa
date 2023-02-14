@@ -21,7 +21,7 @@ describe('Field Library', () => {
           provide: FIELD_LIBRARY_CONFIGURATION,
           useValue: {
             id: 'a',
-            getFieldConfig: () => ({ type: 'a', templateOptions: { label: 'a' } }),
+            getFieldConfig: () => ({ type: 'a', props: { label: 'a' } }),
           },
           multi: true,
         },
@@ -29,7 +29,7 @@ describe('Field Library', () => {
           provide: FIELD_LIBRARY_CONFIGURATION,
           useValue: {
             id: 'b',
-            getFieldConfig: () => ({ type: 'b', templateOptions: { label: 'b' } }),
+            getFieldConfig: () => ({ type: 'b', props: { label: 'b' } }),
           },
           multi: true,
         },
@@ -37,7 +37,7 @@ describe('Field Library', () => {
           provide: FIELD_LIBRARY_CONFIGURATION,
           useValue: {
             id: 'c',
-            getFieldConfig: () => ({ type: 'c', wrappers: ['w1', 'w2'], templateOptions: { label: 'c' } }),
+            getFieldConfig: () => ({ type: 'c', wrappers: ['w1', 'w2'], props: { label: 'c' } }),
           },
           multi: true,
         },
@@ -52,7 +52,7 @@ describe('Field Library', () => {
       expect(fieldLibrary.getConfiguration('a')).toMatchInlineSnapshot(`
         Object {
           "key": "a",
-          "templateOptions": Object {
+          "props": Object {
             "label": "a",
           },
           "type": "a",
@@ -63,14 +63,14 @@ describe('Field Library', () => {
     it('should get configuration and override correctly', () => {
       expect(
         fieldLibrary.getConfiguration('a', {
-          templateOptions: {
+          props: {
             label: 'new label',
           },
         })
       ).toMatchInlineSnapshot(`
         Object {
           "key": "a",
-          "templateOptions": Object {
+          "props": Object {
             "label": "new label",
           },
           "type": "a",
@@ -86,7 +86,7 @@ describe('Field Library', () => {
       ).toMatchInlineSnapshot(`
         Object {
           "key": "c",
-          "templateOptions": Object {
+          "props": Object {
             "label": "c",
           },
           "type": "c",
@@ -104,14 +104,14 @@ describe('Field Library', () => {
         Array [
           Object {
             "key": "a",
-            "templateOptions": Object {
+            "props": Object {
               "label": "a",
             },
             "type": "a",
           },
           Object {
             "key": "b",
-            "templateOptions": Object {
+            "props": Object {
               "label": "b",
             },
             "type": "b",
@@ -124,13 +124,13 @@ describe('Field Library', () => {
       expect(
         fieldLibrary.getConfigurationGroup('ab', {
           a: {
-            templateOptions: {
+            props: {
               label: 'new a label',
             },
           },
 
           b: {
-            templateOptions: {
+            props: {
               label: 'new b label',
             },
           },
@@ -139,14 +139,14 @@ describe('Field Library', () => {
         Array [
           Object {
             "key": "a",
-            "templateOptions": Object {
+            "props": Object {
               "label": "new a label",
             },
             "type": "a",
           },
           Object {
             "key": "b",
-            "templateOptions": Object {
+            "props": Object {
               "label": "new b label",
             },
             "type": "b",

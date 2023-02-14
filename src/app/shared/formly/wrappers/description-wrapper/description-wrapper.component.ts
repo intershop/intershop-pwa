@@ -4,7 +4,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 /**
  * Wrapper that adds a small description underneath the field.
  *
- * @templateOption **customDescription** - used to define the description text. Can be one of two types:
+ * @props **customDescription** - used to define the description text. Can be one of two types:
  * * ``string`` : a simple string that will be translated and displayed
  * * ``{ key: string, args: any, class: string}`` : a more complex object containing a translation key
  *    and arguments to be translated as well as a class that will be applied to the description.
@@ -17,10 +17,12 @@ import { FieldWrapper } from '@ngx-formly/core';
 })
 export class DescriptionWrapperComponent extends FieldWrapper {
   get description() {
-    return typeof this.to.customDescription === 'string' ? this.to.customDescription : this.to.customDescription?.key;
+    return typeof this.props.customDescription === 'string'
+      ? this.props.customDescription
+      : this.props.customDescription?.key;
   }
 
   get args() {
-    return typeof this.to.customDescription === 'string' ? {} : this.to.customDescription?.args;
+    return typeof this.props.customDescription === 'string' ? {} : this.props.customDescription?.args;
   }
 }

@@ -9,8 +9,8 @@ type FieldConfigWithDisabled = Omit<FormlyFieldConfig, 'options'> & { options: {
 export const disablePrefilledExtension: FormlyExtension = {
   onPopulate(field) {
     if (hasDisabled(field) && field.key) {
-      field.templateOptions = { ...field.templateOptions };
-      field.templateOptions.disabled = field.options.formState.disabled.includes(field.key as string);
+      field.props = { ...field.props };
+      field.props.disabled = field.options.formState.disabled.includes(field.key as string);
     }
   },
 };

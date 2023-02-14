@@ -67,7 +67,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
       {
         key: 'title',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           required: true,
           label: 'account.wishlists.wishlist_form.name.label',
           hideRequiredMarker: true,
@@ -80,7 +80,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
       {
         key: 'preferred',
         type: 'ish-checkbox-field',
-        templateOptions: {
+        props: {
           label: 'account.wishlists.wishlist_form.preferred.label',
           fieldClass: 'offset-md-4 col-md-8 d-flex align-items-center',
           tooltip: {

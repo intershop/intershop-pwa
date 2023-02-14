@@ -36,7 +36,7 @@ describe('Tooltip Wrapper Component', () => {
           key: 'example',
           type: 'example',
           wrappers: ['tooltip-wrapper'],
-          templateOptions: {
+          props: {
             tooltip: { text: 'tooltip' },
           },
         },

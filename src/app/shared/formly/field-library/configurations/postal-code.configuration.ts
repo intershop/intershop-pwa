@@ -13,7 +13,7 @@ export class PostalCodeConfiguration extends FieldLibraryConfiguration {
   getFieldConfig(): FormlyFieldConfig {
     return {
       type: 'ish-text-input-field',
-      templateOptions: {
+      props: {
         label: 'account.address.postalcode.label',
         required: true,
       },

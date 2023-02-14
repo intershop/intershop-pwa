@@ -34,7 +34,7 @@ export class RequestReminderFormComponent implements OnInit {
       {
         key: 'email',
         type: 'ish-email-field',
-        templateOptions: {
+        props: {
           label: 'account.forgotdata.email.label',
           hideRequiredMarker: true,
           required: true,
@@ -42,7 +42,7 @@ export class RequestReminderFormComponent implements OnInit {
       },
       {
         type: 'ish-captcha-field',
-        templateOptions: {
+        props: {
           topic: 'forgotPassword',
         },
       },

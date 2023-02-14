@@ -45,7 +45,7 @@ describe('Textarea Description Wrapper Component', () => {
           key: 'textarea',
           type: 'textarea',
           wrappers: ['textarea-description-wrapper'],
-          templateOptions: {
+          props: {
             maxLength: 1000,
           },
         },

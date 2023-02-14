@@ -33,7 +33,7 @@ describe('Captcha Field Component', () => {
       fields: [
         {
           type: 'ish-captcha-field',
-          templateOptions: {
+          props: {
             topic: 'test',
           },
         } as FormlyFieldConfig,

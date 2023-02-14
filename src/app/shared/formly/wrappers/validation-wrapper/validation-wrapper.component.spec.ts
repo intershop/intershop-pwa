@@ -55,7 +55,7 @@ describe('Validation Wrapper Component', () => {
           key: 'example',
           type: 'example',
           wrappers: ['validation'],
-          templateOptions: {
+          props: {
             required: true,
           },
         },

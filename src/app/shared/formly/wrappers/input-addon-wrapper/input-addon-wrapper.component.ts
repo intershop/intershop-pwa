@@ -5,8 +5,8 @@ import { of } from 'rxjs';
 /**
  * Wrapper to add input-addons to fields, using bootstrap styling.
  *
- *  @templateOption **addonRight** - object of type ``{ text: string }`` or ``{ text: Observable<string> }`` that will be used to render an input addon to the right of the field.
- *  @templateOption **addonLeft** - object of type ``{ text: string }`` or ``{ text: Observable<string> }`` that will be used to render an input addon to the left of the field.
+ *  @props **addonRight** - object of type ``{ text: string }`` or ``{ text: Observable<string> }`` that will be used to render an input addon to the right of the field.
+ *  @props **addonLeft** - object of type ``{ text: string }`` or ``{ text: Observable<string> }`` that will be used to render an input addon to the left of the field.
  *
  */
 @Component({
@@ -16,16 +16,16 @@ import { of } from 'rxjs';
 })
 export class InputAddonWrapperComponent extends FieldWrapper {
   get addonLeftText() {
-    if (!this.to.addonLeft?.text) {
+    if (!this.props.addonLeft?.text) {
       return;
     }
-    return typeof this.to.addonLeft.text === 'string' ? of(this.to.addonLeft.text) : this.to.addonLeft.text;
+    return typeof this.props.addonLeft.text === 'string' ? of(this.props.addonLeft.text) : this.props.addonLeft.text;
   }
 
   get addonRightText() {
-    if (!this.to.addonRight?.text) {
+    if (!this.props.addonRight?.text) {
       return;
     }
-    return typeof this.to.addonRight.text === 'string' ? of(this.to.addonRight.text) : this.to.addonRight.text;
+    return typeof this.props.addonRight.text === 'string' ? of(this.props.addonRight.text) : this.props.addonRight.text;
   }
 }

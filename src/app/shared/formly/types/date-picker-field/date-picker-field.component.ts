@@ -8,11 +8,11 @@ import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
  * Uses NgbDatepicker with custom formatting and parsing.
  * Refer to `fixed-format-adapter.ts` and `localized-parser-formatter.ts` for more information on date formatting.
  *
- * @templateOption **minDays** - computes the minDate by adding the minimum allowed days to today.
- * @templateOption **maxDays** - computes the maxDate by adding the maximum allowed days to today.
- * @templateOption **isSatExcluded** - specifies if saturdays can be disabled.
- * @templateOption **isSunExcluded** - specifies if sundays can be disabled.
- * @templateOption **inputClass** - class to apply to the input field
+ * @props **minDays** - computes the minDate by adding the minimum allowed days to today.
+ * @props **maxDays** - computes the maxDate by adding the maximum allowed days to today.
+ * @props **isSatExcluded** - specifies if saturdays can be disabled.
+ * @props **isSunExcluded** - specifies if sundays can be disabled.
+ * @props **inputClass** - class to apply to the input field
  *
  * @defaultWrappers 'form-field-horizontal', 'validation'
  *
@@ -47,8 +47,12 @@ export class DatePickerFieldComponent extends FieldType<FieldTypeConfig> {
   }
 
   get markDateDisable$() {
-    const isSatExcluded$ = isObservable(this.to.isSatExcluded) ? this.to.isSatExcluded : of(this.to.isSatExcluded);
-    const isSunExcluded$ = isObservable(this.to.isSunExcluded) ? this.to.isSunExcluded : of(this.to.isSunExcluded);
+    const isSatExcluded$ = isObservable(this.props.isSatExcluded)
+      ? this.props.isSatExcluded
+      : of(this.props.isSatExcluded);
+    const isSunExcluded$ = isObservable(this.props.isSunExcluded)
+      ? this.props.isSunExcluded
+      : of(this.props.isSunExcluded);
 
     return combineLatest([isSatExcluded$, isSunExcluded$]).pipe(
       map(([isSatExcluded, isSunExcluded]) => (date: NgbDate) => {
@@ -60,7 +64,7 @@ export class DatePickerFieldComponent extends FieldType<FieldTypeConfig> {
   }
 
   private toObservableNumber(daysType: 'minDays' | 'maxDays') {
-    const days = daysType === 'minDays' ? this.to.minDays : this.to.maxDays;
+    const days = daysType === 'minDays' ? this.props.minDays : this.props.maxDays;
     const days$ = isObservable(days) ? days : of(days);
     return days$.pipe(map(daysLoc => (typeof daysLoc === 'number' ? daysLoc : undefined)));
   }

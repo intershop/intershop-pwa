@@ -182,14 +182,7 @@
         "dot-notation": "off", // disabled in favor of @typescript-eslint/dot-notation
         "eqeqeq": ["error", "always"],
         "etc/no-commented-out-code": "warn",
-        "etc/no-deprecated": [
-          "warn",
-          {
-            "ignored": {
-              "templateOptions|to|FormlyTemplateOptions|expressionProperties": "name" // deprecated formly methods are temporarily ignored
-            }
-          }
-        ],
+        "etc/no-deprecated": ["warn"],
         "id-blacklist": [
           "error",
           "any",

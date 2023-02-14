@@ -73,7 +73,7 @@ export class CostCenterFormComponent implements OnInit {
           {
             key: 'currency',
             type: 'ish-text-input-field',
-            templateOptions: {
+            props: {
               fieldClass: 'd-none',
               required: true,
             },
@@ -81,7 +81,7 @@ export class CostCenterFormComponent implements OnInit {
           {
             key: 'costCenterId',
             type: 'ish-text-input-field',
-            templateOptions: {
+            props: {
               label: 'account.costcenter.id.label',
               required: true,
               hideRequiredMarker: true,
@@ -100,7 +100,7 @@ export class CostCenterFormComponent implements OnInit {
           {
             key: 'name',
             type: 'ish-text-input-field',
-            templateOptions: {
+            props: {
               label: 'account.costcenter.name.label',
               required: true,
               hideRequiredMarker: true,
@@ -118,7 +118,7 @@ export class CostCenterFormComponent implements OnInit {
                 className: 'col-6 col-md-8',
                 key: 'budgetValue',
                 type: 'ish-text-input-field',
-                templateOptions: {
+                props: {
                   postWrappers: [{ wrapper: 'input-addon', index: -1 }],
                   labelClass: 'col-md-6',
                   fieldClass: 'col-md-6 pr-0',
@@ -143,7 +143,7 @@ export class CostCenterFormComponent implements OnInit {
                 className: 'col-6 col-md-4',
                 type: 'ish-select-field',
                 key: 'budgetPeriod',
-                templateOptions: {
+                props: {
                   fieldClass: 'col-12 label-empty',
                   options: FormsService.getCostCenterBudgetPeriodOptions(),
                 },
@@ -153,7 +153,7 @@ export class CostCenterFormComponent implements OnInit {
           {
             key: 'costCenterManager',
             type: 'ish-select-field',
-            templateOptions: {
+            props: {
               label: 'account.costcenter.manager.label',
               required: true,
               hideRequiredMarker: true,
@@ -169,7 +169,7 @@ export class CostCenterFormComponent implements OnInit {
       },
       {
         type: 'ish-fieldset-field',
-        templateOptions: {
+        props: {
           // hide active flag for new cost centers
           fieldsetClass: !this.costCenter ? 'd-none' : undefined,
         },
@@ -177,7 +177,7 @@ export class CostCenterFormComponent implements OnInit {
           {
             key: 'active',
             type: 'ish-checkbox-field',
-            templateOptions: {
+            props: {
               label: 'account.costCenter.active.label',
             },
           },

@@ -4,7 +4,7 @@ import { FieldType } from '@ngx-formly/core';
 /**
  * Type to display a html text value with optional styling
  *
- * @templateOption **inputClass** a class that will be used to style the div around the text
+ * @props **inputClass** a class that will be used to style the div around the text
  */
 @Component({
   selector: 'ish-html-text-field',

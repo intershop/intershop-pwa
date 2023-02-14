@@ -75,7 +75,7 @@ const fieldComponents = [
           name: 'ish-email-field',
           extends: 'ish-text-input-field',
           defaultOptions: {
-            templateOptions: {
+            props: {
               type: 'email',
             },
             validators: {
@@ -93,7 +93,7 @@ const fieldComponents = [
           name: 'ish-phone-field',
           extends: 'ish-text-input-field',
           defaultOptions: {
-            templateOptions: {
+            props: {
               attributes: { maxlength: 20 },
               type: 'tel',
             },
@@ -112,7 +112,7 @@ const fieldComponents = [
           name: 'ish-password-field',
           extends: 'ish-text-input-field',
           defaultOptions: {
-            templateOptions: {
+            props: {
               type: 'password',
             },
             validators: {

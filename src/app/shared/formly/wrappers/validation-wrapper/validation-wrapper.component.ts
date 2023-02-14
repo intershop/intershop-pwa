@@ -4,7 +4,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 /**
  *  Wrapper to provide validation feedback and styling to fields.
  *
- *  @templateOption **required** - special validation case that is considered.
+ *  @props **required** - special validation case that is considered.
  *
  * @usageNotes
  * This wrapper uses the ``<ish-validation-message>`` and  ``<ish-validation-icons>`` components  to display validation messages
@@ -21,7 +21,7 @@ export class ValidationWrapperComponent extends FieldWrapper {
     return (
       Object.keys(this.field.validators ?? {}).length ||
       Object.keys(this.field.asyncValidators ?? {}).length ||
-      this.field.templateOptions?.required
+      this.field.props?.required
     );
   }
 }

@@ -52,7 +52,7 @@ export class UserProfileFormComponent implements OnInit {
             ? {
                 key: 'email',
                 type: 'ish-email-field',
-                templateOptions: {
+                props: {
                   label: 'account.user.email.label',
                   required: true,
                 },
@@ -61,7 +61,7 @@ export class UserProfileFormComponent implements OnInit {
           {
             key: 'active',
             type: 'ish-checkbox-field',
-            templateOptions: {
+            props: {
               label: 'account.user.active.label',
             },
           },

@@ -39,7 +39,7 @@ describe('Payment Concardis Directdebit Component', () => {
           key: 'IBAN',
           name: 'IBAN',
           type: 'input',
-          templateOptions: { label: 'input', type: 'text', disabled: false },
+          props: { label: 'input', type: 'text', disabled: false },
         },
       ],
     } as PaymentMethod;

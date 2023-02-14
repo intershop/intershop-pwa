@@ -52,7 +52,7 @@ export class LoginFormComponent implements OnInit {
       {
         key: 'login',
         type: this.loginType === 'email' ? 'ish-email-field' : 'ish-text-input-field',
-        templateOptions: {
+        props: {
           label: this.loginType === 'email' ? 'account.login.email.label' : 'account.login.username.label',
           labelClass: this.labelClass || 'col-md-3',
           fieldClass: this.inputClass || 'col-md-6',
@@ -69,7 +69,7 @@ export class LoginFormComponent implements OnInit {
       {
         key: 'password',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           type: 'password',
           label: 'account.login.password.label',
           labelClass: this.labelClass || 'col-md-3',

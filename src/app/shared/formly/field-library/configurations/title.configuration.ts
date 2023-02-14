@@ -18,7 +18,7 @@ export class TitleConfiguration extends FieldLibraryConfiguration {
   getFieldConfig(): FormlyFieldConfig {
     return {
       type: 'ish-select-field',
-      templateOptions: {
+      props: {
         label: 'account.address.title.label',
         placeholder: 'account.option.select.text',
         options: this.formsService.getSalutationOptions(),

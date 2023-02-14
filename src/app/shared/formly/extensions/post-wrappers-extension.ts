@@ -1,11 +1,11 @@
-import { FormlyConfig, FormlyExtension, FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
+import { FormlyConfig, FormlyExtension, FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
 
 type PostWrapper = string | { index: number; wrapper: string };
 
 /**
  * Extension that enables appending wrappers to the default configuration.
  *
- * @templateOption **postWrappers** - property that will be used to extend a field's wrappers without overriding the default ones.
+ * @props **postWrappers** - property that will be used to extend a field's wrappers without overriding the default ones.
  *
  * @usageNotes
  * The array is of type ``<string | {index: number; wrapper: string}>[]``.
@@ -15,13 +15,13 @@ class PostWrappersExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) {}
 
   prePopulate(field: FormlyFieldConfig): void {
-    const to: FormlyTemplateOptions & { postWrappers?: PostWrapper[] } = field.templateOptions;
-    if (!to?.postWrappers || to.postWrappers.length === 0) {
+    const props: FormlyFieldProps & { postWrappers?: PostWrapper[] } = field.props;
+    if (!props?.postWrappers || props.postWrappers.length === 0) {
       return;
     }
     const wrappers = this.formlyConfig.getType(field.type).wrappers;
-    field.wrappers = [...wrappers, ...(to.postWrappers.filter(w => typeof w === 'string') as string[])];
-    to.postWrappers
+    field.wrappers = [...wrappers, ...(props.postWrappers.filter(w => typeof w === 'string') as string[])];
+    props.postWrappers
       .filter(w => typeof w !== 'string')
       .forEach((wrapper: { index: number; wrapper: string }) => {
         field.wrappers.splice(wrapper.index, 0, wrapper.wrapper);
