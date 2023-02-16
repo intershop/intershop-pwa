@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { MatomoTracker } from '@ngx-matomo/tracker';
 import { EMPTY } from 'rxjs';
-import { filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import {
@@ -13,7 +13,7 @@ import {
   submitBasketSuccess,
   updateBasketItemSuccess,
 } from 'ish-core/store/customer/basket';
-import { getCurrentBasket, getSubmittedBasket } from 'ish-core/store/customer/basket/basket.selectors';
+import { getBasketInfo, getCurrentBasket, getSubmittedBasket } from 'ish-core/store/customer/basket/basket.selectors';
 import { getPriceDisplayType } from 'ish-core/store/customer/user';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
@@ -24,6 +24,8 @@ import { mapToPayloadProperty } from 'ish-core/utils/operators';
 @Injectable()
 export class MatomoEffects {
   constructor(private actions$: Actions, private store: Store, private readonly tracker: MatomoTracker) {}
+
+  displayPrice = new String();
 
   /**
    * Triggers when a product is added to the basket. Sends product data to Matomo and logs to the console.
@@ -36,25 +38,30 @@ export class MatomoEffects {
         log('addItemToBasketSuccessInfo'),
         map(lineItems =>
           lineItems.forEach(lineItem => {
-            let displayPrice = new String();
-            this.store.pipe(select(getPriceDisplayType)).subscribe({
-              next: item => {
-                displayPrice = item;
-              },
-            });
+            // if the display price is not available, assign the display price
+            if (!this.displayPrice) {
+              this.store.pipe(select(getPriceDisplayType)).subscribe({
+                next: item => {
+                  this.displayPrice = item;
+                },
+              });
+            }
+
             console.log(
-              `Price Type: ${displayPrice === 'net' ? lineItem.singleBasePrice.net : lineItem.singleBasePrice.gross}`
+              `Price Type: ${
+                this.displayPrice === 'net' ? lineItem.singleBasePrice.net : lineItem.singleBasePrice.gross
+              }`
             );
 
+            // send product data to matomo
             const product$ = this.store.pipe(select(getProduct(lineItem.productSKU)));
             product$.subscribe(product => {
-              log('Selected Item');
               console.log(product);
               this.tracker.addEcommerceItem(
                 lineItem.productSKU,
                 product.name,
                 product.defaultCategory.name,
-                displayPrice === 'net' ? lineItem.singleBasePrice.net : lineItem.singleBasePrice.gross,
+                this.displayPrice === 'net' ? lineItem.singleBasePrice.net : lineItem.singleBasePrice.gross,
                 lineItem.quantity.value
               );
             });
@@ -72,14 +79,16 @@ export class MatomoEffects {
       this.actions$.pipe(
         ofType(deleteBasketItemSuccess),
         mapToPayloadProperty('itemId'),
-        withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-        map(([itemId, basket]) => basket.lineItems.filter(lineItem => lineItem.id === itemId)?.[0]),
-        filter(item => !!item),
-        tap(lineItem => {
-          this.tracker.removeEcommerceItem(lineItem.productSKU);
-          console.log(`Item with ID:  ${lineItem.productSKU} has been deleted from the basket`);
-          return lineItem;
-        })
+        withLatestFrom(this.store.pipe(select(getBasketInfo))),
+        log('DELETE - Basket')
+        // map(([itemId, basket]) => basket.lineItems.filter(lineItem => lineItem.id === itemId)?.[0]),
+        // filter(item => !!item),
+        // log('DELETE'),
+        // map(lineItem => {
+        //   this.tracker.removeEcommerceItem(lineItem.productSKU);
+        //   console.log(`Item with ID:  ${lineItem.productSKU} has been deleted from the basket`);
+        //   return lineItem;
+        // })
       ),
     { dispatch: false }
   );
@@ -92,10 +101,32 @@ export class MatomoEffects {
       this.actions$.pipe(
         ofType(loadBasketSuccess),
         mapToPayloadProperty('basket'),
-        tap(basket => {
-          this.tracker.trackEcommerceCartUpdate(basket.totals.total.net);
-          this.store.pipe(select(getPriceDisplayType), log('Update is '));
-          console.log(`Updated basket total is ${basket.totals.total.gross}`);
+        map(basket => {
+          // check if a display price type is already available, if not assign the price type
+          if (!this.displayPrice) {
+            this.store.pipe(select(getPriceDisplayType)).subscribe({
+              next: item => {
+                this.displayPrice = item;
+              },
+            });
+          }
+
+          // if total is undefined, the basket equals 0
+          if (!basket.totals.total) {
+            this.tracker.trackEcommerceCartUpdate(0);
+
+            console.log('Updated basket total is 0');
+          } else {
+            this.displayPrice === 'net'
+              ? this.tracker.trackEcommerceCartUpdate(basket.totals.total.net)
+              : this.tracker.trackEcommerceCartUpdate(basket.totals.total.gross);
+
+            console.log(
+              `Updated basket total is ${
+                this.displayPrice === 'net' ? basket.totals.total.net : basket.totals.total.gross
+              }`
+            );
+          }
         })
       ),
     { dispatch: false }
@@ -116,7 +147,7 @@ export class MatomoEffects {
           this.store.pipe(
             select(getProduct(lineItem.productSKU)),
             log('Item'),
-            tap(product => {
+            map(product => {
               this.tracker.addEcommerceItem(
                 lineItem.productSKU,
                 product.name,
@@ -147,7 +178,7 @@ export class MatomoEffects {
           this.store.pipe(
             select(getProductPrice(product[1].sku)),
             log('Item'),
-            tap(item => {
+            map(item => {
               const salePrice = item.prices.salePrice.net;
               this.tracker.setEcommerceView(product[0].sku, product[0].name, product[0].defaultCategoryId, salePrice);
               this.tracker.trackPageView();

@@ -83,6 +83,8 @@
     "@ngrx/store-devtools": "^15.4.0",
     "@nguniversal/express-engine": "^15.2.1",
     "@ngx-formly/core": "6.1.4",
+    "@ngx-matomo/router": "^3.2.0",
+    "@ngx-matomo/tracker": "^3.2.0",
     "@ngx-translate/core": "^14.0.0",
     "@rx-angular/state": "^15.0.0",
     "@sentry/browser": "^7.54.0",
