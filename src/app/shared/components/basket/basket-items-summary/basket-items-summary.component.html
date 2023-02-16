@@ -5,7 +5,7 @@
       <div class="col-8">
         <ish-product-name ishProductContext [sku]="pli.productSKU" />
       </div>
-      <div class="col-4 text-right">{{ pli.totals.total | ishPrice }}</div>
+      <div class="col-4 text-right pt-1">{{ pli.totals.total | ishPrice }}</div>
 
       <!-- quantity and undiscounted price -->
       <div class="col-8 cart-pli-data">
@@ -26,12 +26,10 @@
       </div>
 
       <!-- warranty -->
-      <div *ngIf="pli.warranty" class="col-12">
-        {{ pli.warranty.sku }}
-        <div>
-          <ish-product-warranty-details></ish-product-warranty-details>
-        </div>
-      </div>
+      <ng-container *ngIf="pli.warranty">
+        <div class="col-8">{{ pli.warranty.sku }}</div>
+        <div class="col-4 text-right">{{ pli.warranty.price | ishPrice }}</div>
+      </ng-container>
     </ng-container>
   </div>
 

@@ -20,20 +20,22 @@ export class ProductWarrantyComponent implements OnInit {
   uuid: string = uuid();
 
   warranties$: Observable<Warranty[]>;
+  selectedWarranty$: Observable<Warranty>;
 
   constructor(private productContext: ProductContextFacade) {}
 
   ngOnInit(): void {
     this.warranties$ = this.productContext.select('product').pipe(map(product => product.availableWarranties));
+    this.selectedWarranty$ = this.warranties$.pipe(
+      map(warranties => warranties.find(warranty => warranty.id === this.selected))
+    );
   }
 
-  submitSelectedWarranty(selectedWarranty: string | EventTarget | undefined) {
+  submitSelectedWarranty(selectedWarranty: string | EventTarget) {
     if (typeof selectedWarranty === 'string') {
       this.submitWarranty.emit(selectedWarranty);
     } else {
-      this.submitWarranty.emit(
-        selectedWarranty === undefined ? undefined : (selectedWarranty as HTMLDataElement).value
-      );
+      this.submitWarranty.emit(selectedWarranty ? (selectedWarranty as HTMLDataElement).value : '');
     }
   }
 }

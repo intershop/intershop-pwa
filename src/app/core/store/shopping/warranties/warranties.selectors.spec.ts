@@ -36,14 +36,13 @@ describe('Warranties Selectors', () => {
   });
 
   describe('loadWarranties', () => {
-    const action = loadWarranty({ warrantyId: 'war1' });
-
-    beforeEach(() => {
-      store$.dispatch(action);
-    });
-
-    it('should set loading to true', () => {
-      expect(getWarrantyLoading(store$.state)).toBeTrue();
+    describe('loadWarranty', () => {
+      beforeEach(() => {
+        store$.dispatch(loadWarranty({ warrantyId: 'war1' }));
+      });
+      it('should set loading to true', () => {
+        expect(getWarrantyLoading(store$.state)).toBeTrue();
+      });
     });
 
     describe('loadWarrantySuccess', () => {
@@ -62,7 +61,7 @@ describe('Warranties Selectors', () => {
       });
 
       it('should have entities when successfully loading', () => {
-        expect(getWarranty(store$.state)).not.toBeEmpty();
+        expect(getWarranty('war1')).toBeTruthy();
       });
     });
 

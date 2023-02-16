@@ -57,6 +57,6 @@ export class LineItemListElementComponent implements OnInit {
   }
 
   updateSelectedWarranty(warrantySku: string) {
-    this.checkoutFacade.updateBasketItemWarranty({ itemId: this.pli.id, warrantySku });
+    this.checkoutFacade.updateBasketItemWarranty(this.pli.id, warrantySku);
   }
 }

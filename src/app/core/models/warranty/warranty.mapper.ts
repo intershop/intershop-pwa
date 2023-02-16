@@ -6,18 +6,18 @@ import { WarrantyData } from './warranty.interface';
 import { Warranty } from './warranty.model';
 
 export class WarrantyMapper {
-  static fromData(warData: WarrantyData): Warranty {
-    if (warData) {
+  static fromData(data: WarrantyData): Warranty {
+    if (data) {
       return {
-        id: warData.sku,
-        name: warData.name,
-        price: PriceMapper.fromData(warData.price),
-        shortDescription: warData.shortDescription,
-        longDescription: warData.longDescription,
-        years: AttributeHelper.getAttributeValueByAttributeName(warData.attributes, 'Number of years'),
-        timePeriod: AttributeHelper.getAttributeValueByAttributeName(warData.attributes, 'WarrantyTimePeriod'),
-        type: AttributeHelper.getAttributeValueByAttributeName(warData.attributes, 'WarrantyType'),
-        code: AttributeHelper.getAttributeValueByAttributeName(warData.attributes, 'WarrantyCode'),
+        id: data.sku,
+        name: data.name,
+        price: { type: 'Money', value: data.price, currency: data.currencyCode },
+        shortDescription: data.shortDescription,
+        longDescription: data.longDescription,
+        years: AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'Number of years'),
+        timePeriod: AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'WarrantyTimePeriod'),
+        type: AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'WarrantyType'),
+        code: AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'WarrantyCode'),
       };
     } else {
       throw new Error(`'WarrantyData' is required for the mapping`);

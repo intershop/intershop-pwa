@@ -52,9 +52,7 @@
             {{ warranty.name }} - {{ warranty.price | ishPrice }}
           </option>
         </select>
-        <ish-product-warranty-details
-          [warranty]="{ id: 'unknown', name: 'determineSelected', price: undefined }"
-        ></ish-product-warranty-details>
+        <ish-product-warranty-details [warranty]="selectedWarranty$ | async"></ish-product-warranty-details>
       </ng-template>
     </ng-container>
   </div>

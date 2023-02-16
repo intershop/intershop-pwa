@@ -193,7 +193,7 @@
     <ng-template #displayWarrantyName>
       <ng-container *ngIf="selectedWarrantyInfo$ | async as warranty">
         <div class="offset-2 col-7 col-md-6 list-item">
-          {{ warranty.name }}
+          {{ warranty.name }} <ish-product-warranty-details [warranty]="warranty"></ish-product-warranty-details>
         </div>
       </ng-container>
     </ng-template>

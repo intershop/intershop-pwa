@@ -8,21 +8,20 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
 @Component({
   selector: 'ish-product-warranty-details',
   templateUrl: './product-warranty-details.component.html',
-  styleUrls: ['./product-warranty-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductWarrantyDetailsComponent {
   @Input() warranty: Warranty;
 
-  warrantyFullData$: Observable<Warranty>;
+  warrantyDetails$: Observable<Warranty>;
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
 
   constructor(private shoppingFacade: ShoppingFacade) {}
 
-  getFullWarrantyData(warrantyId: string): void {
+  getWarrantyDetails(): void {
     this.loading$ = this.shoppingFacade.warrantyLoading$;
     this.error$ = this.shoppingFacade.warrantyError$;
-    this.warrantyFullData$ = this.shoppingFacade.warrantyById$(warrantyId);
+    this.warrantyDetails$ = this.shoppingFacade.warrantyById$(this.warranty.id);
   }
 }

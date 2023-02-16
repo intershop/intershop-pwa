@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductWarrantyDetailsComponent } from 'ish-shared/components/product/product-warranty-details/product-warranty-details.component';
@@ -17,13 +16,10 @@ describe('Product Warranty Component', () => {
   let fixture: ComponentFixture<ProductWarrantyComponent>;
   let element: HTMLElement;
   let productContext: ProductContextFacade;
-  let shoppingFacade: ShoppingFacade;
 
   beforeEach(async () => {
     productContext = mock(ProductContextFacade);
-    shoppingFacade = mock(ShoppingFacade);
     when(productContext.select('product')).thenReturn(of({} as ProductView));
-
     when(productContext.select('product')).thenReturn(
       of({
         availableWarranties: [
@@ -43,10 +39,7 @@ describe('Product Warranty Component', () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(ProductWarrantyDetailsComponent), MockPipe(PricePipe), ProductWarrantyComponent],
-      providers: [
-        { provide: ProductContextFacade, useFactory: () => instance(productContext) },
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
-      ],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(productContext) }],
     }).compileComponents();
   });
 
