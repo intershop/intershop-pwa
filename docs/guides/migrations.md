@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Migrations
 
+## 3.3 to 4.0
+
+The deprecated SSR environment variable `ICM_IDENTITY_PROVIDER` was completely removed.
+Use the variable `IDENTITY_PROVIDER` instead to select the identity provider to be used if it is not the default `ICM`.
+Removed default `identityProvider` configuration from `environment.model.ts` so only hardcoded fallback from `configuration.effects.ts` works as fallback.
+
 ## 3.2 to 3.3
 
 To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
@@ -45,11 +51,11 @@ Please use `logoutUser({ revokeToken: false })` from the account facade or dispa
 
 ## 3.0 to 3.1
 
-The SSR environment variable 'ICM_IDENTITY_PROVIDER' will be removed in a future release ( PWA 5.0 ).
-Use variable 'IDENTITY_PROVIDER' to select the provider to be used instead.
+The SSR environment variable `ICM_IDENTITY_PROVIDER` will be removed in the next major release (PWA 4.0).
+Use variable `IDENTITY_PROVIDER` to select the provider to be used instead.
 Keep this in mind before deploying or starting the Intershop PWA in server-side rendering mode.
 
-The default value of the input parameter ['queryParamsHandling'](https://angular.io/api/router/QueryParamsHandling) has been changed from 'merge' to '' for the components `product-name.component` and `product-image.component`.
+The default value of the input parameter ['queryParamsHandling'](https://angular.io/api/router/QueryParamsHandling) has been changed from `'merge'` to `''` for the components `product-name.component` and `product-image.component`.
 This has been done to prevent an unintentional application of filters for product variation master links if the product detail link does not originate from a product listing context (product list page, search result page).
 
 To prevent deprecation warnings we removed the unnecessary `~` from all 3rd party SCSS imports (see https://webpack.js.org/loaders/sass-loader/#resolving-import-at-rules - "Using ~ is deprecated and can be removed from your code (we recommend it)").
