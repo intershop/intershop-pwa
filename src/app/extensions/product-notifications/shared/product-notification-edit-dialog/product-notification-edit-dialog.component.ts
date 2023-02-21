@@ -25,7 +25,6 @@ import { ProductNotification } from '../../models/product-notification/product-n
 @Component({
   selector: 'ish-product-notification-edit-dialog',
   templateUrl: './product-notification-edit-dialog.component.html',
-  styleUrls: ['./product-notification-edit-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy {
