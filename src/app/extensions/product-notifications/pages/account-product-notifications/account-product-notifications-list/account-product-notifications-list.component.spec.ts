@@ -57,7 +57,7 @@ describe('Account Product Notifications List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display empty list text and no table if there are no order template', () => {
+  it('should display empty list text and no table if there are no product notifications', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=emptyList]')).toBeTruthy();
 

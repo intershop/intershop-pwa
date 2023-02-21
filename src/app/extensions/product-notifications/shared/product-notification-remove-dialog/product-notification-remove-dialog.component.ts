@@ -53,7 +53,9 @@ export class ProductNotificationRemoveDialogComponent implements OnInit {
 
   // close modal
   hide() {
-    this.modal.close();
+    if (this.modal) {
+      this.modal.close();
+    }
   }
 
   // open modal
