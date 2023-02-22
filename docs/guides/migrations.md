@@ -16,6 +16,9 @@ The project was updated to work with Angular 15.
 This includes the removal of the Browserslist configuration, an updated TypeScript compiler `target` to `ES2022` and adaptions of the Schematics configurations and tests.
 In addition all other dependencies where updated as well and resulted in necessary Stylelint and Jest tests adaptions.
 
+The placeholder for theme specific assets and styles has been changed from `placeholder` to `theme_placeholder`.
+If this is used in any customization, update all paths, which are using the old theme placeholder e.g. `src/styles/themes/placeholder` to `src/styles/themes/theme_placeholder`.
+
 The account navigation was reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
 For better maintainability and brand specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
 Also with this rework the navigation items data structure was changed from a key value object to a simpler `NavigationItem` Array.

@@ -34,14 +34,14 @@
               "src/assets",
               {
                 "glob": "favicon.ico",
-                "input": "src/assets/themes/placeholder/img/",
+                "input": "src/assets/themes/theme_placeholder/img/",
                 "output": "/"
               }
             ],
             "scripts": [],
-            "styles": ["src/styles/themes/placeholder/style.scss"],
+            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/placeholder"]
+              "includePaths": ["src/styles/themes/theme_placeholder"]
             },
             "sourceMap": true,
             "allowedCommonJsDependencies": ["fast-sha256"]
@@ -149,7 +149,7 @@
             "optimization": true,
             "tsConfig": "tsconfig.server.json",
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/placeholder"]
+              "includePaths": ["src/styles/themes/theme_placeholder"]
             },
             "sourceMap": true
           },
@@ -203,7 +203,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/organization-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/placeholder/style.scss"],
+            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
             "assets": [
               {
                 "glob": "**/*",
@@ -250,7 +250,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/requisition-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/placeholder/style.scss"],
+            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
             "assets": [
               {
                 "glob": "**/*",
