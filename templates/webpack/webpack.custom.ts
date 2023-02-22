@@ -309,29 +309,23 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     },
   });
 
-  ['styles', 'assets'].forEach(folder => {
-    const defaultThemePath = join('src', folder, 'themes', 'placeholder');
-    const newThemePath = join('src', folder, 'themes', theme);
+  const themePlaceholder = 'theme_placeholder';
 
-    traverse(
-      config,
-      v => typeof v === 'string' && v.includes(defaultThemePath),
-      (obj, key) => {
-        obj[key] = (obj[key] as string).replace(defaultThemePath, newThemePath);
-      }
-    );
+  traverse(
+    config,
+    v => typeof v === 'string' && v.includes(themePlaceholder),
+    (obj, key) => {
+      obj[key] = (obj[key] as string).replace(themePlaceholder, theme);
+    }
+  );
 
-    const normalDefaultThemePath = defaultThemePath.replace(/\\/g, '/');
-    const normalNewThemePath = newThemePath.replace(/\\/g, '/');
-
-    traverse(
-      angularJsonConfig,
-      v => typeof v === 'string' && v.includes(normalDefaultThemePath),
-      (obj, key) => {
-        obj[key] = (obj[key] as string).replace(normalDefaultThemePath, normalNewThemePath);
-      }
-    );
-  });
+  traverse(
+    angularJsonConfig,
+    v => typeof v === 'string' && v.includes(themePlaceholder),
+    (obj, key) => {
+      obj[key] = (obj[key] as string).replace(themePlaceholder, theme);
+    }
+  );
 
   // set theme specific angular cache directory
   const cacheDir = join('.angular', 'cache');
