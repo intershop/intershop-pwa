@@ -5,7 +5,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Warranty } from 'ish-core/models/warranty/warranty.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
-import { loadWarranty, loadWarrantyFail, loadWarrantySuccess } from './warranties.actions';
+import { warrantyActions, warrantyApiActions } from './warranties.actions';
 
 export const warrantiesAdapter = createEntityAdapter<Warranty>({
   selectId: warranty => warranty.id,
@@ -23,8 +23,10 @@ const initialState: WarrantiesState = warrantiesAdapter.getInitialState({
 
 export const warrantiesReducer = createReducer(
   initialState,
-  setLoadingOn(loadWarranty),
-  setErrorOn(loadWarrantyFail),
-  unsetLoadingAndErrorOn(loadWarrantySuccess),
-  on(loadWarrantySuccess, (state, action) => warrantiesAdapter.upsertOne(action.payload.warranty, state))
+  setLoadingOn(warrantyActions.loadWarranty),
+  setErrorOn(warrantyApiActions.loadWarrantyFail),
+  unsetLoadingAndErrorOn(warrantyApiActions.loadWarrantySuccess),
+  on(warrantyApiActions.loadWarrantySuccess, (state, action) =>
+    warrantiesAdapter.upsertOne(action.payload.warranty, state)
+  )
 );

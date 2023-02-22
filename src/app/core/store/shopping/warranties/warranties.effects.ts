@@ -5,7 +5,7 @@ import { map, mergeMap } from 'rxjs';
 import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import { loadWarranty, loadWarrantyFail, loadWarrantySuccess } from './warranties.actions';
+import { warrantyActions, warrantyApiActions } from './warranties.actions';
 
 @Injectable()
 export class WarrantiesEffects {
@@ -13,13 +13,13 @@ export class WarrantiesEffects {
 
   loadWarranty$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadWarranty),
+      ofType(warrantyActions.loadWarranty),
       mapToPayloadProperty('warrantyId'),
       whenTruthy(),
       mergeMap(warrantyId =>
         this.warrantyService.getWarranty(warrantyId).pipe(
-          map(warranty => loadWarrantySuccess({ warranty })),
-          mapErrorToAction(loadWarrantyFail)
+          map(warranty => warrantyApiActions.loadWarrantySuccess({ warranty })),
+          mapErrorToAction(warrantyApiActions.loadWarrantyFail)
         )
       )
     )

@@ -9,7 +9,7 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
 import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
-import { loadWarranty, loadWarrantyFail, loadWarrantySuccess } from './warranties.actions';
+import { warrantyActions, warrantyApiActions } from './warranties.actions';
 import { WarrantiesEffects } from './warranties.effects';
 
 describe('Warranties Effects', () => {
@@ -34,7 +34,7 @@ describe('Warranties Effects', () => {
 
   describe('loadWarranty$', () => {
     it('should call the warrantyService for loadWarranty', done => {
-      const action = loadWarranty({ warrantyId: 'w123' });
+      const action = warrantyActions.loadWarranty({ warrantyId: 'w123' });
       actions$ = of(action);
 
       effects.loadWarranty$.subscribe(() => {
@@ -44,10 +44,10 @@ describe('Warranties Effects', () => {
     });
 
     it('should map to action of type LoadWarrantySuccess', () => {
-      const action = loadWarranty({ warrantyId: 'w123' });
+      const action = warrantyActions.loadWarranty({ warrantyId: 'w123' });
       actions$ = hot('-a-a-a', { a: action });
 
-      const completion = loadWarrantySuccess({ warranty: { id: 'w123' } as Warranty });
+      const completion = warrantyApiActions.loadWarrantySuccess({ warranty: { id: 'w123' } as Warranty });
 
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -58,8 +58,8 @@ describe('Warranties Effects', () => {
       when(warrantyServiceMock.getWarranty(anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
-      const action = loadWarranty({ warrantyId: 'w123' });
-      const completion = loadWarrantyFail({ error: makeHttpError({ message: 'invalid' }) });
+      const action = warrantyActions.loadWarranty({ warrantyId: 'w123' });
+      const completion = warrantyApiActions.loadWarrantyFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

@@ -6,7 +6,7 @@ import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.modu
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { loadWarranty, loadWarrantyFail, loadWarrantySuccess } from './warranties.actions';
+import { warrantyActions, warrantyApiActions } from './warranties.actions';
 import { getWarranty, getWarrantyError, getWarrantyLoading } from './warranties.selectors';
 
 describe('Warranties Selectors', () => {
@@ -38,7 +38,7 @@ describe('Warranties Selectors', () => {
   describe('loadWarranties', () => {
     describe('loadWarranty', () => {
       beforeEach(() => {
-        store$.dispatch(loadWarranty({ warrantyId: 'war1' }));
+        store$.dispatch(warrantyActions.loadWarranty({ warrantyId: 'war1' }));
       });
       it('should set loading to true', () => {
         expect(getWarrantyLoading(store$.state)).toBeTrue();
@@ -46,7 +46,7 @@ describe('Warranties Selectors', () => {
     });
 
     describe('loadWarrantySuccess', () => {
-      const successAction = loadWarrantySuccess({ warranty: { id: 'war1' } as Warranty });
+      const successAction = warrantyApiActions.loadWarrantySuccess({ warranty: { id: 'war1' } as Warranty });
 
       beforeEach(() => {
         store$.dispatch(successAction);
@@ -67,7 +67,7 @@ describe('Warranties Selectors', () => {
 
     describe('loadWarrantyFail', () => {
       const error = makeHttpError({ message: 'ERROR' });
-      const failAction = loadWarrantyFail({ error });
+      const failAction = warrantyApiActions.loadWarrantyFail({ error });
 
       beforeEach(() => {
         store$.dispatch(failAction);

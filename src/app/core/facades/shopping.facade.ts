@@ -40,7 +40,7 @@ import {
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
 import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/store/shopping/search';
-import { getWarranty, getWarrantyError, getWarrantyLoading, loadWarranty } from 'ish-core/store/shopping/warranties';
+import { getWarranty, getWarrantyError, getWarrantyLoading, warrantyActions } from 'ish-core/store/shopping/warranties';
 import { toObservable } from 'ish-core/utils/functions';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -230,7 +230,7 @@ export class ShoppingFacade {
   // WARRANTIES
 
   warrantyById$(warrantyId: string) {
-    this.store.dispatch(loadWarranty({ warrantyId }));
+    this.store.dispatch(warrantyActions.loadWarranty({ warrantyId }));
     return this.store.pipe(select(getWarranty(warrantyId)));
   }
 
