@@ -53,7 +53,7 @@ describe('Product Notification Edit Dialog Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  describe('formSubmit', () => {
+  describe('form submit', () => {
     beforeEach(() => {
       fb = TestBed.inject(UntypedFormBuilder);
     });

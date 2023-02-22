@@ -34,4 +34,9 @@ describe('Product Notification Remove Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
+
+  it('should include the custom notification modal dialog', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-product-notification-remove-dialog')).toBeTruthy();
+  });
 });
