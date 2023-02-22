@@ -7,7 +7,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 
 import { ProductNotificationEditDialogComponent } from '../product-notification-edit-dialog/product-notification-edit-dialog.component';
 
@@ -54,11 +53,7 @@ describe('Product Notification Edit Component', () => {
 
   it('should include the custom notification modal dialog', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
-        "ish-product-notification-edit-dialog",
-      ]
-    `);
+    expect(element.querySelector('ish-product-notification-edit-dialog')).toBeTruthy();
   });
 
   it('should not show an icon when display type is not icon', () => {

@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -21,7 +21,6 @@ describe('Product Notification Edit Dialog Component', () => {
   let productNotificationsFacade: ProductNotificationsFacade;
   let appFacade: AppFacade;
   let fb: UntypedFormBuilder;
-  let form: UntypedFormGroup;
 
   beforeEach(async () => {
     context = mock(ProductContextFacade);
@@ -46,16 +45,6 @@ describe('Product Notification Edit Dialog Component', () => {
     fixture = TestBed.createComponent(ProductNotificationEditDialogComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    fb = TestBed.inject(UntypedFormBuilder);
-
-    form = fb.group({
-      alerttype: ['price'],
-      email: ['jlink@test.intershop.de', [Validators.required]],
-      pricevalue: ['1000', [SpecialValidators.moneyAmount]],
-    });
-
-    component.productNotificationForm = form;
   });
 
   it('should be created', () => {
@@ -64,23 +53,71 @@ describe('Product Notification Edit Dialog Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should submit a valid form when the user fills all required fields', () => {
-    fixture.detectChanges();
-
-    expect(component.formDisabled).toBeFalse();
-    component.submitForm();
-    expect(component.formDisabled).toBeFalse();
-  });
-
-  it('should not submit a form when the user does not provide money format for price notification', () => {
-    component.productNotificationForm = fb.group({
-      pricevalue: ['abc', [SpecialValidators.moneyAmount]],
+  describe('formSubmit', () => {
+    beforeEach(() => {
+      fb = TestBed.inject(UntypedFormBuilder);
     });
 
-    fixture.detectChanges();
+    it('should submit a valid form when the user fills all required fields', () => {
+      component.productNotificationForm = fb.group({
+        alerttype: ['price'],
+        email: ['jlink@test.intershop.de', [Validators.required, SpecialValidators.email]],
+        pricevalue: [1000, [SpecialValidators.moneyAmount]],
+      });
 
-    expect(component.formDisabled).toBeFalse();
-    component.submitForm();
-    expect(component.formDisabled).toBeTrue();
+      expect(component.formDisabled).toBeFalse();
+      component.submitForm();
+      expect(component.formDisabled).toBeFalse();
+    });
+
+    it('should not submit a form when the user does not provide money format for price notification', () => {
+      component.productNotificationForm = fb.group({
+        pricevalue: ['abc', [SpecialValidators.moneyAmount]],
+      });
+
+      expect(component.formDisabled).toBeFalse();
+      component.submitForm();
+      expect(component.formDisabled).toBeTrue();
+    });
+
+    it('should emit delete product notification when alert type is delete', () => {
+      component.productNotificationForm = fb.group({
+        alerttype: ['delete'],
+      });
+
+      when(productNotificationsFacade.deleteProductNotification(anything(), anything(), anything())).thenReturn();
+      component.submitForm();
+      verify(productNotificationsFacade.deleteProductNotification(anything(), anything(), anything())).once();
+    });
+
+    it('should emit update product notification when alert type is price', () => {
+      component.productNotificationForm = fb.group({
+        alerttype: ['price'],
+      });
+
+      when(productNotificationsFacade.updateProductNotification(anything(), anything())).thenReturn();
+      component.submitForm();
+      verify(productNotificationsFacade.updateProductNotification(anything(), anything())).once();
+    });
+
+    it('should emit update product notification when alert type is stock', () => {
+      component.productNotificationForm = fb.group({
+        alerttype: ['stock'],
+      });
+
+      when(productNotificationsFacade.updateProductNotification(anything(), anything())).thenReturn();
+      component.submitForm();
+      verify(productNotificationsFacade.updateProductNotification(anything(), anything())).once();
+    });
+
+    it('should emit create product notification when alert type is not set', () => {
+      component.productNotificationForm = fb.group({
+        alerttype: undefined,
+      });
+
+      when(productNotificationsFacade.createProductNotification(anything())).thenReturn();
+      component.submitForm();
+      verify(productNotificationsFacade.createProductNotification(anything())).once();
+    });
   });
 });
