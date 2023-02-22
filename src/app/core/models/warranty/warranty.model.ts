@@ -1,3 +1,4 @@
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Price } from 'ish-core/models/price/price.model';
 
 export interface Warranty {
@@ -6,8 +7,5 @@ export interface Warranty {
   price: Price;
   shortDescription?: string;
   longDescription?: string;
-  years?: string;
-  timePeriod?: string;
-  type?: string;
-  code?: string;
+  attributes?: Attribute[];
 }

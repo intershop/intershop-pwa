@@ -1,3 +1,5 @@
+import { Link } from 'ish-core/models/link/link.model';
+
 import { WarrantyData } from './warranty.interface';
 import { WarrantyMapper } from './warranty.mapper';
 
@@ -15,10 +17,16 @@ describe('Warranty Mapper', () => {
         longDescription: 'Insurance against breakdown',
         price: 100,
         currencyCode: 'USD',
+        attributes: [{ name: 'attributeName', value: 'attributeValue' }],
       } as WarrantyData;
       expect(WarrantyMapper.fromData(data)).toMatchInlineSnapshot(`
         Object {
-          "code": undefined,
+          "attributes": Array [
+            Object {
+              "name": "attributeName",
+              "value": "attributeValue",
+            },
+          ],
           "id": "test",
           "longDescription": "Insurance against breakdown",
           "name": "testWarranty",
@@ -28,10 +36,45 @@ describe('Warranty Mapper', () => {
             "value": 100,
           },
           "shortDescription": "Warranty period: 1 year",
-          "timePeriod": undefined,
-          "type": undefined,
-          "years": undefined,
         }
+      `);
+    });
+  });
+
+  describe('fromLinkData', () => {
+    it('should map incoming link data to model data', () => {
+      const warranties: Link[] = [
+        {
+          type: 'Link',
+          uri: 'inSPIRED-inTRONICS-Site/rest;loc=en_US;cur=USD/products;spgid=lTk4L_PyIIiRpDbHqOcO3csS0000/1YLEDTVSUP',
+          title: '1-year LED TV Support',
+          description: 'Insurance against breakdown. Warranty period: 1 year.',
+          attributes: [
+            {
+              name: 'WarrantyPrice',
+              value: {
+                type: 'Money',
+                value: 106,
+                currencyMnemonic: 'USD',
+                currency: 'USD',
+              },
+            },
+          ],
+        },
+      ];
+
+      expect(WarrantyMapper.fromLinkData(warranties)).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "id": "1YLEDTVSUP",
+            "name": "1-year LED TV Support",
+            "price": Object {
+              "currency": "USD",
+              "type": "Money",
+              "value": 106,
+            },
+          },
+        ]
       `);
     });
   });

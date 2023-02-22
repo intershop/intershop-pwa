@@ -6,7 +6,7 @@
         <div class="product-warranty-title">{{ 'product.warranty.heading.text' | translate }}</div>
         <dl class="product-warranty-list">
           <!-- display a no-warranty option -->
-          <dd>
+          <dd class="mb-0">
             <label>
               <input
                 type="radio"
@@ -15,11 +15,11 @@
                 [checked]="selected === 'noWarranty'"
                 (change)="submitSelectedWarranty(undefined)"
               />
-              <span>{{ 'product.warranty.no_protection_plan' | translate }}</span>
+              {{ 'product.warranty.no_protection_plan' | translate }}
             </label>
           </dd>
           <!-- generate all available warranties with radio-buttons -->
-          <dd *ngFor="let warranty of warranties">
+          <dd *ngFor="let warranty of warranties" class="mb-0">
             <label>
               <input
                 type="radio"
@@ -28,8 +28,8 @@
                 [checked]="selected === warranty.id"
                 (change)="submitSelectedWarranty(warranty.id)"
               />
-              <span class="product-warranty-name">{{ warranty.name }}</span>
-              <span class="product-warranty-cost">{{ warranty.price | ishPrice }}</span>
+              {{ warranty.name }}:
+              <span class="pl-1 font-weight-bold">{{ warranty.price | ishPrice }}</span>
               <ish-product-warranty-details [warranty]="warranty"></ish-product-warranty-details>
             </label>
           </dd>

@@ -43,4 +43,10 @@ describe('Product Warranty Details Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
+
+  it('should render the details link', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('.details-link')).toBeTruthy();
+    expect(element.querySelector('ish-modal-dialog-link')).toBeTruthy();
+  });
 });

@@ -8,21 +8,26 @@
     <ish-error-message [error]="error$ | async" [toast]="false"></ish-error-message>
 
     <ng-container *ngIf="warrantyDetails$ | async as warrantyDetails">
-      <p
-        [ishServerHtml]="
-          'In addition to the statutory warranty, we offer an extra warranty for this item for an additional charge: ' +
-          '<br /><strong>' +
-          warrantyDetails.shortDescription +
-          '</strong>'
-        "
-      ></p>
+      {{ 'product.warranty.short_description.label' | translate }}
+      <p>
+        <strong [ishServerHtml]="warrantyDetails.shortDescription"></strong>
+      </p>
 
-      This includes:
+      {{ 'product.warranty.long_description.label' | translate }}
       <p [ishServerHtml]="warrantyDetails.longDescription"></p>
 
-      <div>{{ 'product.warranty.type.text' | translate }} {{ warrantyDetails.type }}</div>
-      <div>{{ 'product.warranty.code.text' | translate }} {{ warrantyDetails.code }}</div>
-      <div>{{ 'product.warranty.expire_date.text' | translate }} {{ warrantyDetails.timePeriod }}</div>
+      <div>
+        {{ 'product.warranty.type.text' | translate }}
+        {{ getWarrantyAttribute(warrantyDetails.attributes, 'WarrantyTimePeriod') }}
+      </div>
+      <div>
+        {{ 'product.warranty.code.text' | translate }}
+        {{ getWarrantyAttribute(warrantyDetails.attributes, 'WarrantyCode') }}
+      </div>
+      <div>
+        {{ 'product.warranty.expire_date.text' | translate }}
+        {{ getWarrantyAttribute(warrantyDetails.attributes, 'WarrantyType') }}
+      </div>
     </ng-container>
     <ish-loading *ngIf="loading$ | async"></ish-loading>
   </ish-modal-dialog-link>

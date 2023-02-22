@@ -81,22 +81,6 @@
     dd {
       margin-bottom: 0;
     }
-
-    label {
-      text-transform: none;
-    }
-
-    .product-warranty-name {
-      padding-right: divide($space-default, 3);
-
-      &::after {
-        content: ':';
-      }
-    }
-
-    .product-warranty-cost {
-      font-weight: bold;
-    }
   }
 }
 

@@ -14,10 +14,7 @@ export class WarrantyMapper {
         price: { type: 'Money', value: data.price, currency: data.currencyCode },
         shortDescription: data.shortDescription,
         longDescription: data.longDescription,
-        years: AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'Number of years'),
-        timePeriod: AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'WarrantyTimePeriod'),
-        type: AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'WarrantyType'),
-        code: AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'WarrantyCode'),
+        attributes: data.attributes,
       };
     } else {
       throw new Error(`'WarrantyData' is required for the mapping`);

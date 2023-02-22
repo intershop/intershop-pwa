@@ -5,7 +5,7 @@ export interface WarrantyData {
   name: string;
   price: number;
   currencyCode: string;
-  shortDescription: string;
-  longDescription: string;
-  attributes: Attribute[];
+  shortDescription?: string;
+  longDescription?: string;
+  attributes?: Attribute[];
 }
