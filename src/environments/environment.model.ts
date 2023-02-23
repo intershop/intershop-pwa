@@ -19,8 +19,8 @@ export interface Environment {
   // array of REST path expressions that should always be mocked
   apiMockPaths?: string[];
 
-  // temporarily hard-coded identity provider ID, later supplied by configurations call
-  identityProvider: 'ICM' | string;
+  // global identity provider ID (fallback 'ICM')
+  identityProvider?: string;
 
   /* FEATURE TOGGLES */
   features: (
@@ -141,7 +141,6 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
   hybridApplication: '-',
-  identityProvider: 'ICM',
 
   /* FEATURE TOGGLES */
   features: ['compare', 'contactUs', 'rating', 'recently', 'storeLocator'],
