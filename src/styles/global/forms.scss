@@ -135,6 +135,10 @@ select {
   font-family: $font-family-regular;
 }
 
+optgroup {
+  font-style: normal;
+}
+
 // ERROR and SUCCESS
 .has-feedback {
   .form-control[type='number'] {

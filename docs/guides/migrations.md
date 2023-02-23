@@ -9,6 +9,12 @@ kb_sync_latest_only
 
 ## 3.3 to 4.0
 
+The account navigation was reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
+For better maintainability and brand specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
+Also with this rework the navigation items data structure was changed from a key value object to a simpler `NavigationItem` Array.
+With this data structure accessing the data was changed for the key access from `item.key` to `item.routerLink` or for the value example from `item.value.localizationKey` to `item.localizationKey`.
+To migrate to this new account navigation item handling any account navigation customization needs to be adapted accordingly.
+
 The deprecated SSR environment variable `ICM_IDENTITY_PROVIDER` was completely removed.
 Use the variable `IDENTITY_PROVIDER` instead to select the identity provider to be used if it is not the default `ICM`.
 Removed default `identityProvider` configuration from `environment.model.ts` so only hardcoded fallback from `configuration.effects.ts` works as fallback.

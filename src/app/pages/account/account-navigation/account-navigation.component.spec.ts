@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
@@ -22,6 +24,8 @@ describe('Account Navigation Component', () => {
       declarations: [
         AccountNavigationComponent,
         MockComponent(AccountUserInfoComponent),
+        MockComponent(FaIconComponent),
+        MockDirective(NgbCollapse),
         MockPipe(FeatureTogglePipe, () => true),
         MockPipe(ServerSettingPipe, () => true),
       ],
