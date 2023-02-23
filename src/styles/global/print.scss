@@ -5,4 +5,33 @@
   a[href]::after {
     content: none !important;
   }
+
+  .fa-ban, // cost management center
+  .fa-cart-shopping,
+  .fa-pencil,
+  .fa-print,
+  .fa-trash-can,
+  // .form-text // can it be used? question and help part should be removed. (for ex: order history - 14 results in 10 files)
+  .marketing-area, // recommended products
+  .product-tile-actions,
+  .share-label,
+  .toast-container, // info messages
+  ish-account-navigation,
+  ish-category-navigation,
+  ish-filter-navigation,
+  ish-product-detail-actions,
+  ish-product-list-toolbar,
+  ish-recently-viewed,
+  // fa-icon, // can not be done because of some unwanted results.Ex: Shopping Cart Breadcrumb.
+  header,
+  footer,
+  aside,
+  nav,
+  iframe {
+    display: none !important;
+  }
+
+  // .switch-layout {
+  //   display: none !important;
+  // }
 }
