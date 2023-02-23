@@ -19,7 +19,6 @@ describe('Product Notification Remove Dialog Component', () => {
     context = mock(ProductContextFacade);
     productNotificationsFacade = mock(ProductNotificationsFacade);
     await TestBed.configureTestingModule({
-      declarations: [ProductNotificationRemoveDialogComponent],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
