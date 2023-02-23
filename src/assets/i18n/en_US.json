@@ -903,7 +903,7 @@
   "product.label.sale.text": "SALE",
   "product.label.topseller.text": "TOP",
   "product.manufacturer_name.label": "Manufacturer Name",
-  "product.notification.create.success.message": "Notification has been set.",
+  "product.notification.create.success.message": "Your product notification has been set.",
   "product.notification.delete.success.message": "Your product notification was deleted.",
   "product.notification.edit.form.cancel.button.label": "Cancel",
   "product.notification.edit.form.create.button.label": "OK",
