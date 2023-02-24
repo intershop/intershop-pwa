@@ -32,6 +32,10 @@ Please run for each configured Angular project (e.g. 'intershop-pwa') the follow
 
 > **NOTE:** Not all scenarios are taken into consideration for the `formly-migrate` schematic, where a deprecated property could be found. Please check and adapt manually your code for additional changes. For further information look into the [formly migration guide](https://formly.dev/docs/guide/migration/).
 
+Obsolete functionality that is no longer needed with the current state of the Intershop PWA was removed from the project source code.
+
+- removed outdated `kubernetes-deployment` schematic that could be used to create Kubernetes charts, use the official [Intershop PWA Helm Chart repository](https://github.com/intershop/helm-charts/tree/main/charts/pwa) instead
+
 ## 3.2 to 3.3
 
 To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.

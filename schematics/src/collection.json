@@ -80,12 +80,6 @@
       "description": "Create a store group.",
       "schema": "./store-group/schema.json"
     },
-    "kubernetes-deployment": {
-      "factory": "./kubernetes-deployment/factory#createKubernetesDeployment",
-      "description": "Create Kubernetes Charts.",
-      "schema": "./kubernetes-deployment/schema.json",
-      "hidden": true
-    },
     "azure-pipeline": {
       "factory": "./azure-pipeline/factory#createAzurePipeline",
       "description": "Create Azure Pipeline.",
