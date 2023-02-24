@@ -41,7 +41,7 @@ For a production setup we recommend building the docker image supplied with the 
 Build it with `docker build -t my_pwa .`.
 To run the PWA with multiple channels you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
 
-We provide Helm Charts for [Kubernetes Deployments](https://github.com/intershop/helm-charts/tree/main/charts/pwa) and templates for [DevOps](../../schematics/src/azure-pipeline) for Microsoft Azure.
+We provide [Helm Charts](https://github.com/intershop/helm-charts/tree/main/charts/pwa) for Kubernetes deployments.
 
 ## Running Tests
 

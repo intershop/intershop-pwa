@@ -80,12 +80,6 @@
       "description": "Create a store group.",
       "schema": "./store-group/schema.json"
     },
-    "azure-pipeline": {
-      "factory": "./azure-pipeline/factory#createAzurePipeline",
-      "description": "Create Azure Pipeline.",
-      "schema": "./azure-pipeline/schema.json",
-      "hidden": true
-    },
     "move-component": {
       "factory": "./helpers/move-component/factory#move",
       "description": "Move Component.",
