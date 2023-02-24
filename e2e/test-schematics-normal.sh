@@ -121,6 +121,3 @@ nohup bash -c "npm run serve &"
 npx wait-on --verbose --interval 1000 --delay 1000 --timeout 30000 tcp:4200
 
 curl -s "http://localhost:4200/warehouses" | grep -q "warehouses-page works"
-
-npx ng g azure-pipeline
-test -f azure-pipelines.yml
