@@ -36,6 +36,7 @@ Obsolete functionality that is no longer needed with the current state of the In
 
 - removed outdated `kubernetes-deployment` schematic that could be used to create Kubernetes charts, use the official [Intershop PWA Helm Chart repository](https://github.com/intershop/helm-charts/tree/main/charts/pwa) instead
 - removed unused `azure-pipeline` schematic that could be used to create an Azure Pipeline template based on the generated Kubernetes charts for DevOps
+- removed migration scripts that where used for pre PWA 1.0 migration support
 
 ## 3.2 to 3.3
 

@@ -13,4 +13,3 @@ node_modules
 /eslint-rules/dist/**
 
 /schematics/dist/**
-/schematics/migration/**
