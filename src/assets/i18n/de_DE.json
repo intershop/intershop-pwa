@@ -400,6 +400,7 @@
   "account.update.button.label": "Änderungen speichern",
   "account.update_email.answer.text": "Die neue E-Mail-Adresse ist sofort aktiv. Verwenden Sie sie bei der nächsten Bestellung oder aktualisieren Sie Ihre Kontoinformationen.",
   "account.update_email.breadcrumb": "E-Mail-Einstellungen bearbeiten",
+  "account.update_email.email.error.notempty": "Bitte geben Sie eine gültige E-Mail-Adresse als Bestätigung ein.",
   "account.update_email.email.label": "Aktuelle E-Mail-Adresse",
   "account.update_email.email_confirmation.error.stringcompare": "Stellen Sie sicher, dass Sie Ihre neue E-Mail-Adresse jedes Mal korrekt eingegeben haben.",
   "account.update_email.email_confirmation.label": "Neue E-Mail-Adresse wiederholen",

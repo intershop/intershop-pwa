@@ -400,6 +400,7 @@
   "account.update.button.label": "Enregistrer les modifications",
   "account.update_email.answer.text": "Votre nouveau courriel prend effet immédiatement. Utilisez-le la prochaine fois que vous passez une commande ou que vous modifiez les informations de votre compte.",
   "account.update_email.breadcrumb": "Modifiez vos paramètres de courriel",
+  "account.update_email.email.error.notempty": "Veuillez entrer un courriel de confirmation valide.",
   "account.update_email.email.label": "Courriel actuel",
   "account.update_email.email_confirmation.error.stringcompare": "Assurez-vous d’avoir correctement saisi le nouveau courriel à chaque fois.",
   "account.update_email.email_confirmation.label": "Répéter le nouveau courriel",

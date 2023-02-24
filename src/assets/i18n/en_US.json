@@ -400,6 +400,7 @@
   "account.update.button.label": "Save Changes",
   "account.update_email.answer.text": "Your new e-mail address takes effect immediately. Use it the next time you place an order or update your account information.",
   "account.update_email.breadcrumb": "Edit E-mail Preferences",
+  "account.update_email.email.error.notempty": "Please enter a valid email to confirm.",
   "account.update_email.email.label": "Current E-mail",
   "account.update_email.email_confirmation.error.stringcompare": "Please make sure you have typed in your new e-mail address accurately each time.",
   "account.update_email.email_confirmation.label": "Repeat New E-mail",
