@@ -14,6 +14,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { resetOrderErrors } from 'ish-core/store/customer/orders';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -655,8 +656,8 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       const completion = loadBasket();
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
+      actions$ = hot('b-a', { a: action, b: personalizationStatusDetermined() });
+      const expected$ = cold('--c', { c: completion });
 
       expect(effects.loadBasketOnBasketPage$).toBeObservable(expected$);
     });
