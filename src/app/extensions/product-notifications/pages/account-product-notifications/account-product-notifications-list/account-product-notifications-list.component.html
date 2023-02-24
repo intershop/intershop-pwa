@@ -38,7 +38,7 @@
         *cdkCellDef="let productNotification"
         [attr.data-label]="'account.notifications.table.notification' | translate"
       >
-        <div *ngIf="productNotification.type === 'stock'">
+        <div *ngIf="productNotification.type === 'stock'" data-testing-id="product-notification-message">
           {{
             'account.notifications.stock.text'
               | translate
@@ -47,7 +47,7 @@
                   }
           }}
         </div>
-        <div *ngIf="productNotification.type === 'price'">
+        <div *ngIf="productNotification.type === 'price'" data-testing-id="product-notification-message">
           {{
             'account.notifications.price.text'
               | translate

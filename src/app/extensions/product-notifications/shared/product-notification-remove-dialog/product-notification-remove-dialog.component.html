@@ -21,7 +21,13 @@
     <p>{{ 'product.notification.remove.message_line2' | translate }}</p>
   </div>
   <div class="modal-footer">
-    <button value="Delete" name="delete" class="btn btn-primary" (click)="removeProductNotification()">
+    <button
+      value="Delete"
+      name="delete"
+      class="btn btn-primary"
+      (click)="removeProductNotification()"
+      data-testing-id="product-notification-delete"
+    >
       {{ 'product.notification.remove.delete.button.label' | translate }}
     </button>
     <button value="Cancel" name="cancel" class="btn btn-secondary" (click)="hide()">

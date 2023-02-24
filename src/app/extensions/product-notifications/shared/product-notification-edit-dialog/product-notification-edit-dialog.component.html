@@ -30,7 +30,12 @@
         ></ish-product-notification-edit-form>
       </div>
       <div class="modal-footer">
-        <button type="submit" name="Update" class="btn btn-primary">
+        <button
+          type="submit"
+          name="Update"
+          class="btn btn-primary"
+          data-testing-id="product-notification-edit-dialog-edit"
+        >
           {{ 'product.notification.edit.form.update.button.label' | translate }}
         </button>
         <button type="button" name="Cancel" class="btn btn-secondary" (click)="hide()">
