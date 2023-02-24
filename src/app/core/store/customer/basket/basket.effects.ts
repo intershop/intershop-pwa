@@ -23,7 +23,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { resetOrderErrors } from 'ish-core/store/customer/orders';
-import { getLoggedInCustomer, loginUserSuccess } from 'ish-core/store/customer/user';
+import { getLoggedInCustomer, loginUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
@@ -352,14 +352,20 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger LoadBasket action after the user navigated to a basket route
+   * Reload basket information on basket route to ensure that rendered page is correct.
    */
   loadBasketOnBasketPage$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(routerNavigatedAction),
-      mapToRouterState(),
-      filter(routerState => /^\/basket/.test(routerState.url)),
-      map(() => loadBasket())
+      ofType(personalizationStatusDetermined),
+      take(1),
+      switchMap(() =>
+        this.actions$.pipe(
+          ofType(routerNavigatedAction),
+          mapToRouterState(),
+          filter(routerState => /^\/basket/.test(routerState.url)),
+          map(() => loadBasket())
+        )
+      )
     )
   );
 
