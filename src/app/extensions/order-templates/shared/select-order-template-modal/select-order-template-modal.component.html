@@ -13,23 +13,23 @@
   </div>
 
   <ng-container *ngIf="showForm; else showSuccess">
-    <div class="modal-body">
-      <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
+    <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
+      <div class="modal-body">
         <ish-select-order-template-form
           [formGroup]="formGroup"
           [addMoveProduct]="addMoveProduct"
         ></ish-select-order-template-form>
-      </form>
-    </div>
+      </div>
 
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="submitForm()">
-        {{ submitButtonTranslationKey | translate }}
-      </button>
-      <button type="button" class="btn btn-secondary" (click)="hide()">
-        {{ 'account.cancel.button.label' | translate }}
-      </button>
-    </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+          {{ submitButtonTranslationKey | translate }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="hide()">
+          {{ 'account.cancel.button.label' | translate }}
+        </button>
+      </div>
+    </form>
   </ng-container>
 
   <ng-template #showSuccess>

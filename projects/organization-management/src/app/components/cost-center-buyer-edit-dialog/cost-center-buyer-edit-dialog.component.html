@@ -12,24 +12,23 @@
     </button>
   </div>
 
-  <div class="modal-body">
-    <form [formGroup]="costCenterBuyerForm" (ngSubmit)="submitCostCenterBuyerForm()">
+  <form [formGroup]="costCenterBuyerForm" (ngSubmit)="submitCostCenterBuyerForm()">
+    <div class="modal-body">
       <formly-form [form]="costCenterBuyerForm" [fields]="fields" [model]="model"></formly-form>
-    </form>
-  </div>
+    </div>
 
-  <div class="modal-footer">
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="formDisabled"
-      (click)="submitCostCenterBuyerForm()"
-      data-testing-id="cost-center-buyer-edit-dialog-submit"
-    >
-      {{ 'account.costcenter.details.buyers.action.save' | translate }}
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="hide()">
-      {{ 'account.cancel.button.label' | translate }}
-    </button>
-  </div>
+    <div class="modal-footer">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="formDisabled"
+        data-testing-id="cost-center-buyer-edit-dialog-submit"
+      >
+        {{ 'account.costcenter.details.buyers.action.save' | translate }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="hide()">
+        {{ 'account.cancel.button.label' | translate }}
+      </button>
+    </div>
+  </form>
 </ng-template>
