@@ -1,0 +1,32 @@
+<!-- Warranty -->
+<ng-container *ngIf="(productHasWarranties$ | async) && pli">
+  <div class="row list-item-row">
+    <!-- check if warranty can be edited, else only display its name -->
+    <ng-container *ngIf="editable; else displayWarrantyName">
+      <div class="offset-2 col-7 col-md-6 list-item">
+        <ish-product-warranty
+          (submitWarranty)="updateLineItemWarranty($event)"
+          [selectedWarranty]="selectedWarranty$ | async"
+          viewType="select"
+        ></ish-product-warranty>
+      </div>
+
+      <ng-container *ngIf="pli.warranty">
+        <!-- Warranty Single Price -->
+        <div class="col-md-2 d-none d-md-block list-item column-price single-price"></div>
+
+        <!-- Warranty Total Price -->
+        <div class="col-3 col-md-2 list-item column-price">{{ pli.warranty.price | ishPrice }}</div>
+      </ng-container>
+    </ng-container>
+
+    <!-- show only the warranty-name when it is not editable -->
+    <ng-template #displayWarrantyName>
+      <ng-container *ngIf="selectedWarranty$ | async as warranty">
+        <div class="offset-2 col-7 col-md-6 list-item" data-testing-id="selectedPliWarranty">
+          {{ warranty.name }} <ish-product-warranty-details [warranty]="warranty"></ish-product-warranty-details>
+        </div>
+      </ng-container>
+    </ng-template>
+  </div>
+</ng-container>

@@ -57,7 +57,7 @@ describe('Product Warranty Component', () => {
 
   it('should emit new warranty if warranty is changed', () => {
     const emitter = spy(component.submitWarranty);
-    component.submitSelectedWarranty('1YearSupport');
+    component.updateWarranty('1YearSupport');
 
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();

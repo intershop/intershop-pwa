@@ -149,53 +149,5 @@
   </div>
 </div>
 
-<!-- Warranty -->
-<ng-container *ngIf="productHasWarranties$ | async">
-  <div class="row list-item-row">
-    <ng-container *ngIf="pli.warranty as warranty; else noWarrantySelected">
-      <!-- check if warranty can be edited, else only display its name -->
-      <ng-container *ngIf="editable; else displayWarrantyName">
-        <!-- if a warranty is selected -->
-        <div class="offset-2 col-7 col-md-6 list-item">
-          <ish-product-warranty
-            (submitWarranty)="updateSelectedWarranty($event)"
-            [selected]="warranty.sku"
-            viewType="select"
-          ></ish-product-warranty>
-        </div>
-      </ng-container>
-
-      <!-- Warranty Single Price -->
-      <div class="col-md-2 d-none d-md-block list-item column-price single-price">
-        <div *ngIf="selectedWarrantyInfo$ | async as warranty">
-          {{ warranty.price | ishPrice }}
-        </div>
-      </div>
-
-      <!-- Warranty Total Price -->
-      <div class="col-3 col-md-2 list-item column-price">{{ pli.warranty.price | ishPrice }}</div>
-    </ng-container>
-
-    <!-- if no warranty is selected -->
-    <ng-template #noWarrantySelected>
-      <ng-container *ngIf="editable">
-        <div class="offset-2 col-7 col-md-6 list-item">
-          <ish-product-warranty
-            (submitWarranty)="updateSelectedWarranty($event)"
-            selected="noWarranty"
-            viewType="select"
-          ></ish-product-warranty>
-        </div>
-      </ng-container>
-    </ng-template>
-
-    <!-- show only the warranty-name when it is not editable -->
-    <ng-template #displayWarrantyName>
-      <ng-container *ngIf="selectedWarrantyInfo$ | async as warranty">
-        <div class="offset-2 col-7 col-md-6 list-item">
-          {{ warranty.name }} <ish-product-warranty-details [warranty]="warranty"></ish-product-warranty-details>
-        </div>
-      </ng-container>
-    </ng-template>
-  </div>
-</ng-container>
+<!-- display/select warranty if available -->
+<ish-line-item-warranty [pli]="pli" [editable]="editable"></ish-line-item-warranty>
