@@ -172,7 +172,7 @@ export class ApiTokenService {
           const apiTokenCookie: ApiTokenCookie = apiTokenCookieString ? JSON.parse(apiTokenCookieString) : undefined;
           if (apiToken) {
             if (apiTokenCookie) {
-              return { ...apiTokenCookie, apiToken }; // overwrite existing cookie informations with new apiToken
+              return { ...apiTokenCookie, apiToken }; // overwrite existing cookie information with new apiToken
             }
             return { apiToken, type: 'anonymous', creator: 'pwa', isAnonymous: true }; // initial api token cookie
           }

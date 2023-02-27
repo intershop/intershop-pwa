@@ -63,7 +63,7 @@ There is an exception for direct string value bindings where we use for example 
 </div>
 ```
 
-## Pattern for Conditions (ngif) with Alternative Template (else) in Component Templates
+## Pattern for Conditions (ngIf) with Alternative Template (else) in Component Templates
 
 Also for consistency reasons, we want to establish the following pattern for conditions in component templates:
 

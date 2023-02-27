@@ -14,10 +14,10 @@ export const getLoading = createSelector(getStoresState, state => state.loading)
 
 export const getError = createSelector(getStoresState, state => state.error);
 
-const getHightlightedStoreId = createSelector(getStoresState, state => state.highlighted);
+const getHighlightedStoreId = createSelector(getStoresState, state => state.highlighted);
 
 export const getHighlightedStore = createSelector(
   selectEntities,
-  getHightlightedStoreId,
+  getHighlightedStoreId,
   (entities, highlightedId) => entities[highlightedId]
 );

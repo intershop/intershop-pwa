@@ -48,7 +48,7 @@ export class FieldLibrary {
     }
     let config = { key: id, ...this.configurations[id].getFieldConfig() };
     if (override) {
-      // modify the default lodash merge behaviour:
+      // modify the default lodash merge behavior:
       // if you are attempting to merge arrays, instead just overwrite with the new array
       config = mergeWith(config, override, (obj, src) => {
         if (Array.isArray(obj)) {

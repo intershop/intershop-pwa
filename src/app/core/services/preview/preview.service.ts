@@ -101,7 +101,7 @@ export class PreviewService {
   }
 
   /**
-   * Listen to events throughout the applicaton and send message to host when
+   * Listen to events throughout the application and send message to host when
    * (1) route has changed (`sfe-pwanavigation`),
    * (2) application is stable, i.e. all async tasks have been completed (`sfe-pwastable`) or
    * (3) content include has been reloaded (`sfe-pwastable`).

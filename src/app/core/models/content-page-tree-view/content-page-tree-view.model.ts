@@ -28,7 +28,7 @@ function getContentPageTreeElements(
 
   let treeElements: ContentPageTreeView[] = [];
 
-  // If current content page is part of element subtree or equals the element itself, then all children of elements should be analysed
+  // If current content page is part of element subtree or equals the element itself, then all children of elements should be analyzed
   if (tree.edges[elementId] && isContentPagePartOfPageTreeElement(tree, currentContentPageId, elementId)) {
     treeElements = tree.edges[elementId]
       .map(child => getContentPageTreeElements(tree, child, rootId, currentContentPageId))
@@ -50,7 +50,7 @@ function getContentPageTreeElements(
   return treeElements;
 }
 
-// Analyse if subtree of page tree element contains current content page id
+// Analyze if subtree of page tree element contains current content page id
 function isContentPagePartOfPageTreeElement(
   tree: ContentPageTree,
   currentContentPageId: string,

@@ -74,12 +74,12 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
   }
 
   getModel(buyers: B2bUser[], currency: string) {
-    const inactivetext = this.translateService.instant('account.user.list.status.inactive');
+    const inactiveText = this.translateService.instant('account.user.list.status.inactive');
     return {
       addBuyers: buyers.map(buyer => ({
         selected: false,
         name: `${buyer.firstName} ${buyer.lastName} ${
-          !buyer.active ? `<p class="input-help">${inactivetext}</p>` : ''
+          !buyer.active ? `<p class="input-help">${inactiveText}</p>` : ''
         } `,
         login: buyer.login,
         budgetValue: undefined,
