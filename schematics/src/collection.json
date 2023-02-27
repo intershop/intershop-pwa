@@ -119,6 +119,11 @@
       "description": "A blank schematic.",
       "factory": "./eslint-rule/factory#eslintRule",
       "schema": "./eslint-rule/schema.json"
+    },
+    "formly-migrate": {
+      "description": "Helper to migrate formly 5 to version 6.",
+      "factory": "./migration/formly-5-to-6/factory#migrateFormly",
+      "schema": "./migration/formly-5-to-6/schema.json"
     }
   }
 }

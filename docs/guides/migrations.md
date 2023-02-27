@@ -19,6 +19,19 @@ The deprecated SSR environment variable `ICM_IDENTITY_PROVIDER` was completely r
 Use the variable `IDENTITY_PROVIDER` instead to select the identity provider to be used if it is not the default `ICM`.
 Removed default `identityProvider` configuration from `environment.model.ts` so only hardcoded fallback from `configuration.effects.ts` works as fallback.
 
+The deprecated properties `templateOptions` and `expressionProperties` from the `FormlyFieldConfiguration` object are removed.
+Current project **must** use the new properties for all formly field configurations.
+You **must** adapt html templates too, when using the deprecated properties in there.
+
+To replace deprecated formly field properties, you can execute the new `formly-migrate` schematic.
+Please run for each configured Angular project (e.g. 'intershop-pwa') the following command:
+
+```console
+  ng g formly-migrate --project=${ANGULAR_PROJECT}
+```
+
+> **NOTE:** Not all scenarios are taken into consideration for the `formly-migrate` schematic, where a deprecated property could be found. Please check and adapt manually your code for additional changes. For further information look into the [formly migration guide](https://formly.dev/docs/guide/migration/).
+
 ## 3.2 to 3.3
 
 To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
