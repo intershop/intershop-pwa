@@ -198,3 +198,8 @@ qwertz
 appr
 
 logformat
+
+keyup
+keydown
+keypress
+mouseout

@@ -13,20 +13,20 @@
   </div>
 
   <ng-container *ngIf="showForm; else showSuccess">
-    <div class="modal-body">
-      <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
+    <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
+      <div class="modal-body">
         <ish-select-wishlist-form [formGroup]="formGroup" [addMoveProduct]="addMoveProduct"></ish-select-wishlist-form>
-      </form>
-    </div>
+      </div>
 
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="submitForm()">
-        {{ submitButtonTranslationKey | translate }}
-      </button>
-      <button type="button" class="btn btn-secondary" (click)="hide()">
-        {{ 'account.wishlists.add_to_wishlist.cancel_button.text' | translate }}
-      </button>
-    </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+          {{ submitButtonTranslationKey | translate }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="hide()">
+          {{ 'account.wishlists.add_to_wishlist.cancel_button.text' | translate }}
+        </button>
+      </div>
+    </form>
   </ng-container>
 
   <ng-template #showSuccess>
