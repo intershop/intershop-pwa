@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsPWAComponent",
+  "title": "Formly 6 Migration",
+  "description": "Tool to do the migration from formly 5 to version 6.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      }
+    }
+  }
+}
