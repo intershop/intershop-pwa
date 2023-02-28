@@ -63,11 +63,13 @@ export class ProductNotificationsFacade {
   productNotificationsLoading$: Observable<boolean> = this.store.pipe(select(getProductNotificationsLoading));
   productNotificationsError$: Observable<HttpError> = this.store.pipe(select(getProductNotificationsError));
 
-  productNotificationsByRoute$ = this.store
-    .pipe(
-      select(selectRouteParam('notificationType')),
-      distinctUntilChanged(),
-      map(type => type || 'price')
-    )
-    .pipe(switchMap(type => this.productNotifications$(type as ProductNotificationType)));
+  productNotificationType$ = this.store.pipe(
+    select(selectRouteParam('notificationType')),
+    distinctUntilChanged(),
+    map(type => type || 'price')
+  );
+
+  productNotificationsByRoute$ = this.productNotificationType$.pipe(
+    switchMap(type => this.productNotifications$(type as ProductNotificationType))
+  );
 }

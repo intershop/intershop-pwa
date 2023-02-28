@@ -35,6 +35,8 @@ describe('Account Product Notifications Page Component', () => {
     fixture = TestBed.createComponent(AccountProductNotificationsPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    when(productNotificationsFacade.productNotificationType$).thenReturn(of('price'));
   });
 
   it('should be created', () => {

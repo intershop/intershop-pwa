@@ -1,7 +1,7 @@
 <div class="productnotifications">
   <h1>{{ 'account.notifications.heading' | translate }}</h1>
 
-  <ul ngbNav class="nav-tabs">
+  <ul ngbNav class="nav-tabs" [(activeId)]="active">
     <li ngbNavItem="price">
       <a
         ngbNavLink
