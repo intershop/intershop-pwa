@@ -260,16 +260,16 @@ describe('Product Mapper', () => {
           },
         ] as Link[])
       ).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "quantity": 1,
             "sku": "201807191",
           },
-          Object {
+          {
             "quantity": 2,
             "sku": "201807192",
           },
-          Object {
+          {
             "quantity": 1,
             "sku": "201807193",
           },

@@ -17,18 +17,18 @@ describe('Authorization Mapper', () => {
 
     it('should map empty role response to empty authorization data', () => {
       expect(authorizationMapper.fromData({ userRoles: [] })).toMatchInlineSnapshot(`
-        Object {
-          "permissionIDs": Array [],
-          "roles": Array [],
+        {
+          "permissionIDs": [],
+          "roles": [],
         }
       `);
     });
 
     it('should map empty response to empty authorization data', () => {
       expect(authorizationMapper.fromData({} as unknown as AuthorizationData)).toMatchInlineSnapshot(`
-        Object {
-          "permissionIDs": Array [],
-          "roles": Array [],
+        {
+          "permissionIDs": [],
+          "roles": [],
         }
       `);
     });
@@ -104,19 +104,19 @@ describe('Authorization Mapper', () => {
       } as unknown as AuthorizationData;
       const mapped = authorizationMapper.fromData(data);
       expect(mapped.roles).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "displayName": "Einkäufer",
             "roleId": "APP_B2B_BUYER",
           },
-          Object {
+          {
             "displayName": "Genehmiger",
             "roleId": "APP_B2B_APPROVER",
           },
         ]
       `);
       expect(mapped.permissionIDs).toMatchInlineSnapshot(`
-        Array [
+        [
           "APP_B2B_ASSIGN_COSTOBJECT_TO_BASKET",
           "APP_B2B_ASSIGN_COSTOBJECT_TO_BASKETLINEITEM",
           "APP_B2B_MANAGE_OWN_QUOTES",

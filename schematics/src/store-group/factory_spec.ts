@@ -25,7 +25,7 @@ describe('Store Group Schematic', () => {
     const tree = await schematicRunner.runSchematic('store-group', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/core/store/foo/foo-store.module.ts",
         "/src/app/core/store/foo/foo-store.ts",
       ]

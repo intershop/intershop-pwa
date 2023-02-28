@@ -111,7 +111,7 @@ describe('Order Template Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getOrderTemplateError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -166,7 +166,7 @@ describe('Order Template Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getOrderTemplateError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -221,7 +221,7 @@ describe('Order Template Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getOrderTemplateError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -280,7 +280,7 @@ describe('Order Template Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getOrderTemplateError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }

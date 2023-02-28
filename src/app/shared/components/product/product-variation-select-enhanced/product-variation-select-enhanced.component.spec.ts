@@ -109,7 +109,7 @@ describe('Product Variation Select Enhanced Component', () => {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-      Object {
+      {
         "group": "color",
         "value": "black",
       }
@@ -127,7 +127,7 @@ describe('Product Variation Select Enhanced Component', () => {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-      Object {
+      {
         "group": "swatch",
         "value": "Z",
       }

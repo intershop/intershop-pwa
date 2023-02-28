@@ -123,7 +123,7 @@ describe('Configuration Selectors', () => {
 
     it('should select the specific identity provider setting when queried', () => {
       expect(getIdentityProvider(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "setting": "specific setting",
           "type": "id",
         }
@@ -177,7 +177,7 @@ describe('Configuration Selectors', () => {
 
       it('should return ICM server locales for available locales', () => {
         expect(getAvailableLocales(store$.state)).toMatchInlineSnapshot(`
-          Array [
+          [
             "en_US",
             "de_DE",
             "fr_BE",
@@ -188,7 +188,7 @@ describe('Configuration Selectors', () => {
 
       it('should return ICM server currencies for available currencies', () => {
         expect(getAvailableCurrencies(store$.state)).toMatchInlineSnapshot(`
-          Array [
+          [
             "USD",
             "EUR",
           ]
@@ -230,7 +230,7 @@ describe('Configuration Selectors', () => {
         it('should use the locale currency filter override for currencies', () => {
           expect(getCurrentCurrency(store$.state)).toMatchInlineSnapshot(`"JPY"`);
           expect(getAvailableCurrencies(store$.state)).toMatchInlineSnapshot(`
-            Array [
+            [
               "JPY",
             ]
           `);

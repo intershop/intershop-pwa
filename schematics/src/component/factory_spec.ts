@@ -23,7 +23,7 @@ describe('Component Schematic', () => {
     const options = { ...defaultOptions };
     const tree = await schematicRunner.runSchematic('component', options, appTree);
     expect(tree.files.filter(x => x.search('foo.component') >= 0)).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/foo/foo.component.html",
         "/src/app/foo/foo.component.spec.ts",
         "/src/app/foo/foo.component.ts",
@@ -68,7 +68,7 @@ describe('Component Schematic', () => {
 
     const tree = await schematicRunner.runSchematic('component', options, appTree);
     expect(tree.files.filter(x => x.search('foo.component') >= 0)).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/foo.component.html",
         "/src/app/foo.component.spec.ts",
         "/src/app/foo.component.ts",
@@ -93,7 +93,7 @@ describe('Component Schematic', () => {
     const options = { ...defaultOptions, styleFile: true };
     const tree = await schematicRunner.runSchematic('component', options, appTree);
     expect(tree.files.filter(x => x.search('foo.component') >= 0)).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/foo/foo.component.html",
         "/src/app/foo/foo.component.scss",
         "/src/app/foo/foo.component.spec.ts",

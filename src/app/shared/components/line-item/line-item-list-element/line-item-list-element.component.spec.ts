@@ -134,7 +134,7 @@ describe('Line Item List Element Component', () => {
     it('should display standard elements for normal products', () => {
       fixture.detectChanges();
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-image",
         "ish-product-name",
         "ish-product-id",

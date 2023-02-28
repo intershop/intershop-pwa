@@ -53,7 +53,7 @@ describe('Filter Navigation Component', () => {
   it('should not display anything when filter is not set', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-filter-navigation-sidebar",
       ]
     `);
@@ -63,7 +63,7 @@ describe('Filter Navigation Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-filter-navigation-sidebar",
       ]
     `);
@@ -74,7 +74,7 @@ describe('Filter Navigation Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-filter-navigation-horizontal",
         "ish-filter-navigation-badges",
       ]

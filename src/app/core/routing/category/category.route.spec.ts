@@ -73,7 +73,7 @@ describe('Category Route', () => {
 
     it('should be a match for matcher', () => {
       expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
-        Object {
+        {
           "categoryUniqueId": "Specials",
         }
       `);
@@ -89,7 +89,7 @@ describe('Category Route', () => {
 
     it('should be a match for matcher', () => {
       expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
-        Object {
+        {
           "categoryUniqueId": "Specials",
         }
       `);
@@ -107,7 +107,7 @@ describe('Category Route', () => {
 
     it('should be a match for matcher', () => {
       expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
-        Object {
+        {
           "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
         }
       `);
@@ -138,7 +138,7 @@ describe('Category Route', () => {
     it('should ignore additional URL params when supplied', () => {
       const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
       expect(matchCategoryRoute(wrap(`${generateCategoryUrl(category)};lang=de_DE`))).toMatchInlineSnapshot(`
-        Object {
+        {
           "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
         }
       `);
@@ -181,7 +181,7 @@ describe('Category Route', () => {
 
       store.pipe(ofCategoryUrl(), select(selectRouter)).subscribe(data => {
         expect(data.state.params).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "ABC",
             }
           `);

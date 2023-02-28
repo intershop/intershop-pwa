@@ -95,11 +95,11 @@ describe('Products Service', () => {
     productsService.getCategoryProducts(categoryId, 0).subscribe(data => {
       expect(data.products.map(p => p.sku)).toEqual(['ProductA', 'ProductB']);
       expect(data.sortableAttributes).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "name": "name-desc",
           },
-          Object {
+          {
             "name": "name-asc",
           },
         ]
@@ -208,18 +208,18 @@ describe('Products Service', () => {
 
     productsService.getProductLinks(productSku).subscribe(links => {
       expect(links).toMatchInlineSnapshot(`
-        Object {
-          "crossselling": Object {
-            "categories": Array [
+        {
+          "crossselling": {
+            "categories": [
               "Cameras-Camcorders",
             ],
-            "products": Array [
+            "products": [
               "341951",
             ],
           },
-          "replacement": Object {
-            "categories": Array [],
-            "products": Array [
+          "replacement": {
+            "categories": [],
+            "products": [
               "9438012",
               "5910874",
             ],
@@ -243,13 +243,13 @@ describe('Products Service', () => {
 
     productsService.getFilteredProducts({ SearchParameter: ['b'] } as URLFormParams, 2).subscribe(data => {
       expect(data?.products?.map(p => p.sku)).toMatchInlineSnapshot(`
-        Array [
+        [
           "123",
           "234",
         ]
       `);
       expect(data?.total).toMatchInlineSnapshot(`2`);
-      expect(data?.sortableAttributes).toMatchInlineSnapshot(`Array []`);
+      expect(data?.sortableAttributes).toMatchInlineSnapshot(`[]`);
 
       verify(apiServiceMock.get(anything(), anything())).once();
       const [resource, options] = capture<string, AvailableOptions>(apiServiceMock.get).last();

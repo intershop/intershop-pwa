@@ -215,7 +215,7 @@ describe('Search Effects', () => {
 
       verify(httpStatusCodeService.setStatus(anything())).once();
       expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           404,
         ]
       `);

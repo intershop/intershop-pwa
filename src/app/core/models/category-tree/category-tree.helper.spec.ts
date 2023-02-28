@@ -486,13 +486,13 @@ describe('Category Tree Helper', () => {
       `);
 
       expect(combined.rootIds).toMatchInlineSnapshot(`
-        Array [
+        [
           "A",
           "B",
         ]
       `);
       expect(Object.keys(combined.nodes)).toMatchInlineSnapshot(`
-        Array [
+        [
           "A",
           "A.1",
           "A.1.a",
@@ -505,7 +505,7 @@ describe('Category Tree Helper', () => {
         ]
       `);
       expect(Object.keys(combined.edges)).toMatchInlineSnapshot(`
-        Array [
+        [
           "A",
           "A.1",
           "B",
@@ -539,12 +539,12 @@ describe('Category Tree Helper', () => {
       `);
 
       expect(tree.rootIds).toMatchInlineSnapshot(`
-        Array [
+        [
           "A",
         ]
       `);
       expect(Object.keys(tree.nodes)).toMatchInlineSnapshot(`
-        Array [
+        [
           "A",
           "A.1",
           "A.1.a",
@@ -553,7 +553,7 @@ describe('Category Tree Helper', () => {
         ]
       `);
       expect(Object.keys(tree.edges)).toMatchInlineSnapshot(`
-        Array [
+        [
           "A",
           "A.1",
         ]
@@ -573,14 +573,14 @@ describe('Category Tree Helper', () => {
 
       expect(tree.rootIds).toBeEmpty();
       expect(Object.keys(tree.nodes)).toMatchInlineSnapshot(`
-        Array [
+        [
           "A.1",
           "A.1.a",
           "A.1.b",
         ]
       `);
       expect(Object.keys(tree.edges)).toMatchInlineSnapshot(`
-        Array [
+        [
           "A.1",
         ]
       `);
@@ -597,7 +597,7 @@ describe('Category Tree Helper', () => {
 
       expect(tree.rootIds).toBeEmpty();
       expect(Object.keys(tree.nodes)).toMatchInlineSnapshot(`
-        Array [
+        [
           "A.1.a",
         ]
       `);

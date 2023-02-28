@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Product Mapper fromStubData should construct a stub when supplied with a complex API response 1`] = `
-Object {
-  "attributeGroups": Object {
-    "attrGroup": Object {
-      "attributes": Array [
-        Object {
+{
+  "attributeGroups": {
+    "attrGroup": {
+      "attributes": [
+        {
           "name": "attrName",
           "type": "Boolean",
           "value": true,
@@ -17,8 +17,8 @@ Object {
   "completenessLevel": 2,
   "defaultCategoryId": undefined,
   "failed": false,
-  "images": Array [
-    Object {
+  "images": [
+    {
       "effectiveUrl": "http://www.example.org/assets/product_img/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
@@ -28,7 +28,7 @@ Object {
       "typeID": "M",
       "viewID": "front",
     },
-    Object {
+    {
       "effectiveUrl": "http://www.example.org/assets/product_img/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
@@ -45,11 +45,11 @@ Object {
   "minOrderQuantity": 5,
   "name": "Kodak M series EasyShare M552",
   "packingUnit": "pcs.",
-  "promotionIds": Array [],
+  "promotionIds": [],
   "readyForShipmentMax": undefined,
   "readyForShipmentMin": undefined,
   "roundedAverageRating": 0,
-  "shortDescription": "EasyShare M552, 14MP, 6.858 cm (2.7 \\") LCD, 4x, 28mm, HD 720p, Black",
+  "shortDescription": "EasyShare M552, 14MP, 6.858 cm (2.7 ") LCD, 4x, 28mm, HD 720p, Black",
   "sku": "7912057",
   "stepOrderQuantity": undefined,
   "type": "Product",

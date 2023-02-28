@@ -136,7 +136,7 @@ describe('Quoting Service', () => {
           const [path, body] = capture(apiService.put).last();
           expect(path).toMatchInlineSnapshot(`"quotes/ID"`);
           expect(body).toMatchInlineSnapshot(`
-            Object {
+            {
               "rejected": true,
             }
           `);
@@ -199,7 +199,7 @@ describe('Quoting Service', () => {
           const [path, body] = capture(apiService.post).last();
           expect(path).toMatchInlineSnapshot(`"quotes"`);
           expect(body).toMatchInlineSnapshot(`
-            Object {
+            {
               "quoteRequestID": "quoteRequestID",
             }
           `);
@@ -230,29 +230,29 @@ describe('Quoting Service', () => {
 
             verify(apiService.put(anything(), anything())).thrice();
             expect(capture(apiService.put).byCallIndex(0)).toMatchInlineSnapshot(`
-              Array [
+              [
                 "quoterequests/quoteRequestID",
-                Object {
+                {
                   "description": "DESC",
                   "displayName": "DISPLAY",
                 },
               ]
             `);
             expect(capture(apiService.put).byCallIndex(1)).toMatchInlineSnapshot(`
-              Array [
+              [
                 "quoterequests/quoteRequestID/items/item1",
-                Object {
-                  "quantity": Object {
+                {
+                  "quantity": {
                     "value": 2,
                   },
                 },
               ]
             `);
             expect(capture(apiService.put).byCallIndex(2)).toMatchInlineSnapshot(`
-              Array [
+              [
                 "quoterequests/quoteRequestID/items/item3",
-                Object {
-                  "quantity": Object {
+                {
+                  "quantity": {
                     "value": 1,
                   },
                 },
@@ -261,7 +261,7 @@ describe('Quoting Service', () => {
 
             verify(apiService.delete(anything())).once();
             expect(capture(apiService.delete).byCallIndex(0)).toMatchInlineSnapshot(`
-              Array [
+              [
                 "quoterequests/quoteRequestID/items/item2",
               ]
             `);

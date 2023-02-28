@@ -75,7 +75,7 @@ describe('Account Order Template Detail Page Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-          Array [
+          [
             "ish-error-message",
             "ish-order-template-preferences-dialog",
           ]
@@ -98,7 +98,7 @@ describe('Account Order Template Detail Page Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        Array [
+        [
           "ish-error-message",
           "ish-account-order-template-detail-line-item",
           "ish-product-add-to-basket",

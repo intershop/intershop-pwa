@@ -67,7 +67,7 @@ describe('Product Route', () => {
 
       it('should be a match for matcher', () => {
         expect(matchProductRoute(wrap(generateProductUrl(product, undefined)))).toMatchInlineSnapshot(`
-          Object {
+          {
             "sku": "A",
           }
         `);
@@ -90,7 +90,7 @@ describe('Product Route', () => {
 
       it('should be a match for matcher', () => {
         expect(matchProductRoute(wrap(generateProductUrl(product, undefined)))).toMatchInlineSnapshot(`
-          Object {
+          {
             "sku": "A",
           }
         `);
@@ -130,7 +130,7 @@ describe('Product Route', () => {
 
         it('should be a match for matcher', () => {
           expect(matchProductRoute(wrap(generateProductUrl(product, category)))).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "Specials",
               "sku": "A",
             }
@@ -149,7 +149,7 @@ describe('Product Route', () => {
 
         it('should be a match for matcher', () => {
           expect(matchProductRoute(wrap(generateProductUrl(product, category)))).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "Specials",
               "sku": "A",
             }
@@ -168,7 +168,7 @@ describe('Product Route', () => {
 
         it('should be a match for matcher', () => {
           expect(matchProductRoute(wrap(generateProductUrl(product)))).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "Specials",
               "sku": "A",
             }
@@ -187,7 +187,7 @@ describe('Product Route', () => {
 
         it('should be a match for matcher', () => {
           expect(matchProductRoute(wrap(generateProductUrl(product)))).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "Specials",
               "sku": "A",
             }
@@ -213,7 +213,7 @@ describe('Product Route', () => {
 
         it('should be a match for matcher', () => {
           expect(matchProductRoute(wrap(generateProductUrl(product, category)))).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
               "sku": "A",
             }
@@ -232,7 +232,7 @@ describe('Product Route', () => {
 
         it('should be a match for matcher', () => {
           expect(matchProductRoute(wrap(generateProductUrl(product, category)))).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
               "sku": "A",
             }
@@ -253,7 +253,7 @@ describe('Product Route', () => {
 
         it('should be a match for matcher', () => {
           expect(matchProductRoute(wrap(generateProductUrl(product)))).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
               "sku": "A",
             }
@@ -272,7 +272,7 @@ describe('Product Route', () => {
 
         it('should be a match for matcher', () => {
           expect(matchProductRoute(wrap(generateProductUrl(product)))).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
               "sku": "A",
             }
@@ -301,7 +301,7 @@ describe('Product Route', () => {
       const product = createProductView({ sku: 'A', name: 'Das neue Surface Pro 7' } as Product);
 
       expect(matchProductRoute(wrap(`${generateProductUrl(product, category)};lang=de_DE`))).toMatchInlineSnapshot(`
-        Object {
+        {
           "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
           "sku": "A",
         }
@@ -329,7 +329,7 @@ describe('Product Route', () => {
 
       store.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
         expect(data.state.params).toMatchInlineSnapshot(`
-            Object {
+            {
               "sku": "123",
             }
           `);
@@ -342,7 +342,7 @@ describe('Product Route', () => {
 
       store.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
         expect(data.state.params).toMatchInlineSnapshot(`
-            Object {
+            {
               "categoryUniqueId": "ABC",
               "sku": "123",
             }

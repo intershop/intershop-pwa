@@ -457,13 +457,13 @@ describe('Orders Effects', () => {
 
       effects.setOrderBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
-          Object {
-            "breadcrumbData": Array [
-              Object {
+          {
+            "breadcrumbData": [
+              {
                 "key": "account.order_history.link",
                 "link": "/account/orders",
               },
-              Object {
+              {
                 "text": "account.orderdetails.breadcrumb - 00000001",
               },
             ],

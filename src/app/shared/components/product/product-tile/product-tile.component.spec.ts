@@ -71,7 +71,7 @@ describe('Product Tile Component', () => {
   it('should render default elements when not specifically configured', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-image",
         "ish-product-label",
         "ish-product-name",

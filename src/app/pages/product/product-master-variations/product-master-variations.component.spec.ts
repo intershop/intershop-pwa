@@ -61,7 +61,7 @@ describe('Product Master Variations Component', () => {
       .componentInstance as ProductListingComponent;
 
     expect(productList.id).toMatchInlineSnapshot(`
-      Object {
+      {
         "type": "master",
         "value": "123456789",
       }

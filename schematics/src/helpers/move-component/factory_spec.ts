@@ -32,7 +32,7 @@ export class DummyTwoComponent {}
 
   it('should be created', () => {
     expect(appTree.files.filter(f => f.endsWith('component.ts'))).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/app.component.ts",
         "/src/app/shared/dummy-two/dummy-two.component.ts",
         "/src/app/foo/dummy/dummy.component.ts",
@@ -60,7 +60,7 @@ export class DummyTwoComponent {}
     );
 
     expect(appTree.files.filter(x => x.includes('/src/app/')).sort()).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/app-routing.module.ts",
         "/src/app/app.component.html",
         "/src/app/app.component.scss",
@@ -177,7 +177,7 @@ export class DummyTwoComponent {}
     `);
 
     expect(appTree.files.filter(f => f.endsWith('component.ts'))).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/app.component.ts",
         "/src/app/shared/foo/foo.component.ts",
         "/src/app/foo/dummy/dummy.component.ts",

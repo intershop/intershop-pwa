@@ -27,7 +27,7 @@ describe('CMS Component Schematic', () => {
     const options = { ...defaultOptions };
     const tree = await schematicRunner.runSchematic('cms-component', options, appTree);
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/shared/cms/cms.module.ts",
         "/src/app/shared/cms/components/cms-foo/cms-foo.component.html",
         "/src/app/shared/cms/components/cms-foo/cms-foo.component.spec.ts",
@@ -76,7 +76,7 @@ describe('CMS Component Schematic', () => {
     const options = { ...defaultOptions, cmsPrefixing: false };
     const tree = await schematicRunner.runSchematic('cms-component', options, appTree);
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/shared/cms/cms.module.ts",
         "/src/app/shared/cms/components/foo/foo.component.html",
         "/src/app/shared/cms/components/foo/foo.component.spec.ts",

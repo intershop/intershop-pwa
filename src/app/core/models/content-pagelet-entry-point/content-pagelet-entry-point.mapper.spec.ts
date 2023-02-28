@@ -80,13 +80,13 @@ describe('Content Pagelet Entry Point Mapper', () => {
     expect(pagelets.map(p => p.id)).toIncludeAllMembers(['pagelet1', 'pagelet11', 'pagelet2']);
     expect(pageletEntryPoint).not.toBeEmpty();
     expect(pageletEntryPoint).toMatchInlineSnapshot(`
-      Object {
-        "configurationParameters": Object {},
+      {
+        "configurationParameters": {},
         "definitionQualifiedName": "fq",
         "displayName": "name-include",
         "domain": "the-domain",
         "id": "include-id",
-        "pageletIDs": Array [
+        "pageletIDs": [
           "pagelet1",
           "pagelet2",
         ],

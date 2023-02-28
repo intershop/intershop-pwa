@@ -175,7 +175,7 @@ describe('Basket Selectors', () => {
       expect(getCurrentBasket(store$.state)).toBeUndefined();
       expect(getCurrentBasketId(store$.state)).toBeUndefined();
       expect(getBasketError(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "message": "invalid",
           "name": "HttpErrorResponse",
         }
@@ -214,7 +214,7 @@ describe('Basket Selectors', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
         expect(getBasketEligibleShippingMethods(store$.state)).toBeUndefined();
         expect(getBasketError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "error",
             "name": "HttpErrorResponse",
           }
@@ -262,7 +262,7 @@ describe('Basket Selectors', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
         expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
         expect(getBasketError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "error",
             "name": "HttpErrorResponse",
           }
@@ -301,7 +301,7 @@ describe('Basket Selectors', () => {
 
     it('should reporting the failure in case of an error', () => {
       expect(getBasketPromotionError(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "message": "error",
           "name": "HttpErrorResponse",
         }

@@ -68,7 +68,7 @@ describe('Recently Viewed Component', () => {
     it('should properly propagate inputs to product-tiles', () => {
       expect(fixture.debugElement.queryAll(By.css('[ishProductContext]')).map(de => de.attributes['ng-reflect-sku']))
         .toMatchInlineSnapshot(`
-        Array [
+        [
           "P1",
           "P2",
           "P3",

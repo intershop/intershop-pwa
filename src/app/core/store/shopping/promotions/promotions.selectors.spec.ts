@@ -64,16 +64,16 @@ describe('Promotions Selectors', () => {
     describe('but no current router state', () => {
       it('should return a promotion stub if promotion is selected', () => {
         expect(getPromotion(promo.id)(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "id": "id",
           }
         `);
         expect(getPromotions([promo.id, promo1.id])(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "id": "id",
             },
-            Object {
+            {
               "id": "id1",
             },
           ]

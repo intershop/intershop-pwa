@@ -52,7 +52,7 @@ describe('Search Page Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-search-no-result",
       ]
     `);
@@ -64,7 +64,7 @@ describe('Search Page Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-search-result",
       ]
     `);

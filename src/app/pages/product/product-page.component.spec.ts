@@ -82,7 +82,7 @@ describe('Product Page Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-content-viewcontext",
         "ish-breadcrumb",
         "ish-product-detail",

@@ -85,7 +85,7 @@ describe('Select Wishlist Modal Component', () => {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-Object {
+{
   "id": ".SKsEQAE4FIAAAFuNiUBWx0d",
   "title": "testing wishlist",
 }
@@ -103,7 +103,7 @@ Object {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-Object {
+{
   "id": undefined,
   "title": "New Wishlist Title",
 }
@@ -122,7 +122,7 @@ Object {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-Object {
+{
   "id": undefined,
   "title": "New Wishlist Title",
 }

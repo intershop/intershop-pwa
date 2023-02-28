@@ -71,8 +71,8 @@ describe('Pages Selectors', () => {
       router.navigateByUrl('/any;contentPageId=1.1');
       tick(500);
       expect(getBreadcrumbForContentPage(undefined)(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "key": "Page 1.1",
           },
         ]
@@ -89,8 +89,8 @@ describe('Pages Selectors', () => {
       router.navigateByUrl('/any;contentPageId=1.1');
       tick(500);
       expect(getBreadcrumbForContentPage('1.1.2')(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "key": "Page 1.1",
           },
         ]
@@ -107,12 +107,12 @@ describe('Pages Selectors', () => {
       router.navigateByUrl('/any;contentPageId=1.1');
       tick(500);
       expect(getBreadcrumbForContentPage('COMPLETE')(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "key": "Page 1",
             "link": "/page-1-pg1",
           },
-          Object {
+          {
             "key": "Page 1.1",
             "link": undefined,
           },
@@ -130,16 +130,16 @@ describe('Pages Selectors', () => {
       router.navigateByUrl('/any;contentPageId=1.1.1');
       tick(500);
       expect(getBreadcrumbForContentPage('1')(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "key": "Page 1",
             "link": "/page-1-pg1",
           },
-          Object {
+          {
             "key": "Page 1.1",
             "link": "/page-1/page-1.1-pg1.1",
           },
-          Object {
+          {
             "key": "Page 1.1.1",
             "link": undefined,
           },
@@ -157,12 +157,12 @@ describe('Pages Selectors', () => {
       router.navigateByUrl('/any;contentPageId=1.1.1');
       tick(500);
       expect(getBreadcrumbForContentPage('1.1')(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "key": "Page 1.1",
             "link": "/page-1/page-1.1-pg1.1",
           },
-          Object {
+          {
             "key": "Page 1.1.1",
             "link": undefined,
           },

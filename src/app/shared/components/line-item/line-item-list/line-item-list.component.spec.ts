@@ -52,7 +52,7 @@ describe('Line Item List Component', () => {
     component.ngOnChanges(changes);
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-line-item-list-element",
       ]
     `);

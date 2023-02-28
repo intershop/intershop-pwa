@@ -5,15 +5,15 @@ import { appendFormParamsToHttpParams, formParamsToString, stringToFormParams } 
 describe('Url Form Params', () => {
   describe('stringToFormParams', () => {
     it('should return empty object for invalid input', () => {
-      expect(stringToFormParams(undefined)).toMatchInlineSnapshot(`Object {}`);
-      expect(stringToFormParams('')).toMatchInlineSnapshot(`Object {}`);
-      expect(stringToFormParams('test')).toMatchInlineSnapshot(`Object {}`);
+      expect(stringToFormParams(undefined)).toMatchInlineSnapshot(`{}`);
+      expect(stringToFormParams('')).toMatchInlineSnapshot(`{}`);
+      expect(stringToFormParams('test')).toMatchInlineSnapshot(`{}`);
     });
 
     it('should handle single value transformation for single parameters', () => {
       expect(stringToFormParams('test=a')).toMatchInlineSnapshot(`
-        Object {
-          "test": Array [
+        {
+          "test": [
             "a",
           ],
         }
@@ -22,8 +22,8 @@ describe('Url Form Params', () => {
 
     it('should handle multi value transformation for single parameters', () => {
       expect(stringToFormParams('test=a,b')).toMatchInlineSnapshot(`
-        Object {
-          "test": Array [
+        {
+          "test": [
             "a",
             "b",
           ],
@@ -33,11 +33,11 @@ describe('Url Form Params', () => {
 
     it('should respect separator option when handling input', () => {
       expect(stringToFormParams('foo=a_or_b&bar=c', '_or_')).toMatchInlineSnapshot(`
-        Object {
-          "bar": Array [
+        {
+          "bar": [
             "c",
           ],
-          "foo": Array [
+          "foo": [
             "a",
             "b",
           ],
@@ -47,8 +47,8 @@ describe('Url Form Params', () => {
 
     it('should not fail if string starts with &', () => {
       expect(stringToFormParams('&test=a')).toMatchInlineSnapshot(`
-        Object {
-          "test": Array [
+        {
+          "test": [
             "a",
           ],
         }
@@ -57,15 +57,15 @@ describe('Url Form Params', () => {
 
     it('should handle complex strings for input', () => {
       expect(stringToFormParams('test=a,b&foo=c&bar=d,e')).toMatchInlineSnapshot(`
-        Object {
-          "bar": Array [
+        {
+          "bar": [
             "d",
             "e",
           ],
-          "foo": Array [
+          "foo": [
             "c",
           ],
-          "test": Array [
+          "test": [
             "a",
             "b",
           ],

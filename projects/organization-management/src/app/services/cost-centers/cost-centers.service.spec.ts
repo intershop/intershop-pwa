@@ -42,7 +42,7 @@ describe('Cost Centers Service', () => {
     costCentersService.getCostCenters().subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           "customers/4711/costcenters",
         ]
       `);
@@ -54,7 +54,7 @@ describe('Cost Centers Service', () => {
     costCentersService.getCostCenter('100400').subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           "customers/4711/costcenters/100400",
         ]
       `);

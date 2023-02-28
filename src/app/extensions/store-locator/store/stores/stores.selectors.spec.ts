@@ -52,8 +52,8 @@ describe('Stores Selectors', () => {
 
     it('should write store entity in store', () => {
       expect(getStores(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "address": "",
             "city": "",
             "country": "",
@@ -81,7 +81,7 @@ describe('Stores Selectors', () => {
 
     it('should get highlighted store', () => {
       expect(getHighlightedStore(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "address": "",
           "city": "",
           "country": "",

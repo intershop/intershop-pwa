@@ -42,16 +42,16 @@ describe('Cms Service', () => {
 
           const args = capture(apiService.get).first();
           expect(args).toMatchInlineSnapshot(`
-            Array [
+            [
               "cms/includes/ID",
-              Object {
+              {
                 "sendPGID": true,
               },
             ]
           `);
 
           expect(data).toMatchInlineSnapshot(`
-            Object {
+            {
               "include": undefined,
               "pagelets": undefined,
             }

@@ -39,7 +39,7 @@ describe('Store Schematic', () => {
     const tree = await schematicRunner.runSchematic('store', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/core/store/core/foo/foo.actions.ts",
         "/src/app/core/store/core/foo/foo.effects.spec.ts",
         "/src/app/core/store/core/foo/foo.effects.ts",
@@ -71,7 +71,7 @@ describe('Store Schematic', () => {
     const tree = await schematicRunner.runSchematic('store', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/core/store/bar/foo/foo.actions.ts",
         "/src/app/core/store/bar/foo/foo.effects.spec.ts",
         "/src/app/core/store/bar/foo/foo.effects.ts",
@@ -103,7 +103,7 @@ describe('Store Schematic', () => {
     const tree = await schematicRunner.runSchematic('store', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/extensions/feature/store/foo/foo.actions.ts",
         "/src/app/extensions/feature/store/foo/foo.effects.spec.ts",
         "/src/app/extensions/feature/store/foo/foo.effects.ts",

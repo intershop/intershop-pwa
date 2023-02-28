@@ -44,10 +44,10 @@ describe('Wishlist Service', () => {
       verify(apiServiceMock.get(`privatecustomers/-/wishlists`)).once();
       verify(apiServiceMock.get(`privatecustomers/-/wishlists/1234`)).once();
       expect(data).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "id": "1234",
-            "items": Array [],
+            "items": [],
             "itemsCount": 0,
             "preferred": true,
             "public": undefined,
@@ -68,10 +68,10 @@ describe('Wishlist Service', () => {
       verify(apiServiceMock.get(`customers/-/wishlists`)).once();
       verify(apiServiceMock.get(`customers/-/wishlists/1234`)).once();
       expect(data).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "id": "1234",
-            "items": Array [],
+            "items": [],
             "itemsCount": 0,
             "preferred": true,
             "public": undefined,

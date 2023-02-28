@@ -57,8 +57,8 @@ describe('Content Store', () => {
     store.dispatch(loadContentInclude({ includeId: 'id' }));
 
     expect(capture(callbackSpy.m).last()).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "booleanParam": [Function],
           "configParam": [Function],
           "displayName": "Include",
@@ -66,7 +66,7 @@ describe('Content Store', () => {
           "hasParam": [Function],
           "id": "id",
           "numberParam": [Function],
-          "pageletIDs": Array [
+          "pageletIDs": [
             "1",
           ],
           "resourceSetId": undefined,
@@ -93,8 +93,8 @@ describe('Content Store', () => {
     );
 
     expect(capture(callbackSpy.m).last()).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "booleanParam": [Function],
           "configParam": [Function],
           "displayName": "Include 2",
@@ -102,7 +102,7 @@ describe('Content Store', () => {
           "hasParam": [Function],
           "id": "id",
           "numberParam": [Function],
-          "pageletIDs": Array [
+          "pageletIDs": [
             "2",
           ],
           "resourceSetId": undefined,

@@ -129,7 +129,7 @@ describe('Punchout Users Selectors', () => {
 
       it('should return the selected user when the punchout user login is given as query param', () => {
         expect(getSelectedPunchoutUser(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "id": "1",
             "login": "1",
             "punchoutType": "oci",

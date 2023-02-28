@@ -33,8 +33,8 @@ describe('Attachment Mapper', () => {
   describe('fromAttachments', () => {
     it('should map attachment data to client array object', () => {
       expect(attachmentMapper.fromAttachments(attachmentsMockData)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "description": "descr1",
             "key": "key1",
             "name": "attachment1",

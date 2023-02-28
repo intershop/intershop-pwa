@@ -74,7 +74,7 @@ describe('Requisition Detail Page Component', () => {
   it('should display standard elements by default', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "fa-icon",
         "ish-error-message",
         "ish-requisition-summary",

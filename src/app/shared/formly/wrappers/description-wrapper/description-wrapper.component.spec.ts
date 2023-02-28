@@ -85,7 +85,7 @@ describe('Description Wrapper Component', () => {
     ];
     fixture.detectChanges();
     expect(element.querySelector('small').textContent).toMatchInlineSnapshot(
-      `" value:description args:{\\"0\\":\\"argument\\"} "`
+      `" value:description args:{"0":"argument"} "`
     );
   });
 });

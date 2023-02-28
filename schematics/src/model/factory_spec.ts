@@ -21,7 +21,7 @@ describe('Model Schematic', () => {
 
     const tree = await schematicRunner.runSchematic('model', options, appTree);
     expect(tree.files.filter(x => x.search('foo') >= 0)).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/core/models/foo/foo.helper.spec.ts",
         "/src/app/core/models/foo/foo.helper.ts",
         "/src/app/core/models/foo/foo.interface.ts",
@@ -37,7 +37,7 @@ describe('Model Schematic', () => {
 
     const tree = await schematicRunner.runSchematic('model', options, appTree);
     expect(tree.files.filter(x => x.search('foo') >= 0)).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/core/models/foo/foo.model.ts",
       ]
     `);
@@ -48,7 +48,7 @@ describe('Model Schematic', () => {
 
     const tree = await schematicRunner.runSchematic('model', options, appTree);
     expect(tree.files.filter(x => x.search('foo') >= 0)).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/extensions/feature/models/foo/foo.helper.spec.ts",
         "/src/app/extensions/feature/models/foo/foo.helper.ts",
         "/src/app/extensions/feature/models/foo/foo.interface.ts",

@@ -34,9 +34,9 @@ describe('Product Prices Mapper', () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "prices": Object {
-            "listPrice": Object {
+        {
+          "prices": {
+            "listPrice": {
               "currency": "USD",
               "gross": 2,
               "net": 1,
@@ -46,14 +46,14 @@ describe('Product Prices Mapper', () => {
             "maxSalePrice": undefined,
             "minListPrice": undefined,
             "minSalePrice": undefined,
-            "salePrice": Object {
+            "salePrice": {
               "currency": "USD",
               "gross": 2,
               "net": 1,
               "type": "PriceItem",
             },
-            "scaledPrices": Array [
-              Object {
+            "scaledPrices": [
+              {
                 "currency": "USD",
                 "gross": 1.5,
                 "minQuantity": 5,
@@ -94,9 +94,9 @@ describe('Product Prices Mapper', () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "prices": Object {
-            "listPrice": Object {
+        {
+          "prices": {
+            "listPrice": {
               "currency": "USD",
               "gross": 2,
               "net": 1,
@@ -106,14 +106,14 @@ describe('Product Prices Mapper', () => {
             "maxSalePrice": undefined,
             "minListPrice": undefined,
             "minSalePrice": undefined,
-            "salePrice": Object {
+            "salePrice": {
               "currency": "USD",
               "gross": 2,
               "net": 1,
               "type": "PriceItem",
             },
-            "scaledPrices": Array [
-              Object {
+            "scaledPrices": [
+              {
                 "currency": "USD",
                 "gross": 1,
                 "minQuantity": 2,

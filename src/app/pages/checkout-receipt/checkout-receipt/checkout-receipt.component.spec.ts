@@ -62,7 +62,7 @@ describe('Checkout Receipt Component', () => {
   it('should display standard elements by default', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-basket-merchant-message-view",
         "ish-info-box",
         "ish-address",
