@@ -30,7 +30,7 @@ export class MyAccountPage {
   }
 
   navigateToProductNotifications() {
-    cy.get('a[data-testing-id="notifications-link"]').click();
+    cy.get('a[data-testing-id="notifications-nav-link"]').click();
   }
 
   navigateToOrderTemplates() {
