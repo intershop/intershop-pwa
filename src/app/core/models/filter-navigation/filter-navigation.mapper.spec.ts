@@ -40,8 +40,8 @@ describe('Filter Navigation Mapper', () => {
       expect(model.filter).toHaveLength(1);
       expect(model.filter[0].facets).toHaveLength(1);
       expect(model.filter[0].facets[0].searchParameter).toMatchInlineSnapshot(`
-        Object {
-          "SearchParameter": Array [
+        {
+          "SearchParameter": [
             "param",
           ],
           "category": undefined,

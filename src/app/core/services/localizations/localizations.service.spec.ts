@@ -41,7 +41,7 @@ describe('Localizations Service', () => {
       localizationsService.getServerTranslations('en_US').subscribe({
         next: res => {
           expect(res).toMatchInlineSnapshot(`
-            Object {
+            {
               "a": "A",
               "b": "B",
             }
@@ -62,7 +62,7 @@ describe('Localizations Service', () => {
     it('should return empty translations and log error in case of failures', done => {
       localizationsService.getServerTranslations('en_US').subscribe({
         next: res => {
-          expect(res).toMatchInlineSnapshot(`Object {}`);
+          expect(res).toMatchInlineSnapshot(`{}`);
           verify(errorHandler.handleError(anything())).once();
           const [error] = capture<Error>(errorHandler.handleError).last();
           expect(error?.message).toMatchInlineSnapshot(

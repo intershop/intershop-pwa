@@ -77,7 +77,7 @@ describe('Product Detail Component', () => {
   it('should render standard elements', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-detail-actions",
         "ish-product-images",
         "ish-lazy-product-rating",

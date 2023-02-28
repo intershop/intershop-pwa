@@ -5,7 +5,7 @@ describe('Price Mapper', () => {
   describe('fromData', () => {
     it('should map price data to client object', () => {
       expect(PriceMapper.fromData({ currency: 'EUR', value: 1.23 })).toMatchInlineSnapshot(`
-        Object {
+        {
           "currency": "EUR",
           "type": "Money",
           "value": 1.23,

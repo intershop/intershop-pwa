@@ -11,16 +11,16 @@ describe('Quoting Helper', () => {
       ] as QuotingEntity[];
 
       expect(list.sort(QuotingHelper.sort)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "completenessLevel": "List",
             "id": "2",
           },
-          Object {
+          {
             "completenessLevel": "Stub",
             "id": "1",
           },
-          Object {
+          {
             "completenessLevel": "Stub",
             "id": "3",
           },
@@ -36,18 +36,18 @@ describe('Quoting Helper', () => {
       ] as QuotingEntity[];
 
       expect(list.sort(QuotingHelper.sort)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "completenessLevel": "List",
             "creationDate": 3,
             "id": "3",
           },
-          Object {
+          {
             "completenessLevel": "Detail",
             "creationDate": 2,
             "id": "2",
           },
-          Object {
+          {
             "completenessLevel": "Stub",
             "id": "1",
           },

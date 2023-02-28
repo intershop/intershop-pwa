@@ -55,11 +55,11 @@ describe('Product Context Facade', () => {
   it('should be created', () => {
     expect(context).toBeTruthy();
     expect(context.get()).toMatchInlineSnapshot(`
-      Object {
+      {
         "allowZeroQuantity": false,
         "categoryId": null,
-        "children": Object {},
-        "displayProperties": Object {},
+        "children": {},
+        "displayProperties": {},
         "propagateActive": true,
         "requiredCompletenessLevel": 2,
       }
@@ -102,10 +102,10 @@ describe('Product Context Facade', () => {
       expect(context.get('product')).toEqual(product);
 
       expect(omit(context.get(), 'displayProperties', 'product')).toMatchInlineSnapshot(`
-        Object {
+        {
           "allowZeroQuantity": false,
           "categoryId": null,
-          "children": Object {},
+          "children": {},
           "hasProductError": true,
           "hasQuantityError": false,
           "label": null,
@@ -126,7 +126,7 @@ describe('Product Context Facade', () => {
 
     it('should set correct display properties for out-of-stock product', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
+        {
           "addToBasket": false,
           "addToCompare": true,
           "addToOrderTemplate": false,
@@ -173,10 +173,10 @@ describe('Product Context Facade', () => {
       expect(context.get('product')).toEqual(product);
 
       expect(omit(context.get(), 'displayProperties', 'product')).toMatchInlineSnapshot(`
-        Object {
+        {
           "allowZeroQuantity": false,
           "categoryId": null,
-          "children": Object {},
+          "children": {},
           "hasProductError": false,
           "hasQuantityError": false,
           "label": null,
@@ -202,7 +202,7 @@ describe('Product Context Facade', () => {
     describe('quantity handling', () => {
       it('should start with min order quantity for product', () => {
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
-          Object {
+          {
             "allowZeroQuantity": false,
             "hasQuantityError": false,
             "maxQuantity": 100,
@@ -217,7 +217,7 @@ describe('Product Context Facade', () => {
       it('should go to error with quantity lower than min order', () => {
         context.set('quantity', () => 1);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
-          Object {
+          {
             "allowZeroQuantity": false,
             "hasQuantityError": true,
             "maxQuantity": 100,
@@ -232,7 +232,7 @@ describe('Product Context Facade', () => {
       it('should go to error with quantity not multiple of step', () => {
         context.set('quantity', () => 15);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
-          Object {
+          {
             "allowZeroQuantity": false,
             "hasQuantityError": true,
             "maxQuantity": 100,
@@ -248,7 +248,7 @@ describe('Product Context Facade', () => {
         context.set('allowZeroQuantity', () => true);
         context.set('quantity', () => 0);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
-          Object {
+          {
             "allowZeroQuantity": true,
             "hasQuantityError": false,
             "maxQuantity": 100,
@@ -263,7 +263,7 @@ describe('Product Context Facade', () => {
       it('should go to error if max order quantity is exceeded', () => {
         context.set('quantity', () => 1000);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
-          Object {
+          {
             "allowZeroQuantity": false,
             "hasQuantityError": true,
             "maxQuantity": 100,
@@ -278,7 +278,7 @@ describe('Product Context Facade', () => {
       it('should go to error if quantity is NaN', () => {
         context.set('quantity', () => NaN);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
-          Object {
+          {
             "allowZeroQuantity": false,
             "hasQuantityError": true,
             "maxQuantity": 100,
@@ -294,7 +294,7 @@ describe('Product Context Facade', () => {
         // eslint-disable-next-line unicorn/no-null
         context.set('quantity', () => null);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
-          Object {
+          {
             "allowZeroQuantity": false,
             "hasQuantityError": true,
             "maxQuantity": 100,
@@ -325,7 +325,7 @@ describe('Product Context Facade', () => {
     describe('display properties', () => {
       it('should set correct display properties for product', () => {
         expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-          Object {
+          {
             "addToBasket": true,
             "addToCompare": true,
             "addToOrderTemplate": true,
@@ -354,7 +354,7 @@ describe('Product Context Facade', () => {
         };
 
         expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-          Object {
+          {
             "addToBasket": true,
             "addToCompare": true,
             "addToOrderTemplate": true,
@@ -507,12 +507,12 @@ describe('Product Context Facade', () => {
     it('should set parts property for retail set', done => {
       context.select('parts').subscribe(parts => {
         expect(parts).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "quantity": 1,
               "sku": "p1",
             },
-            Object {
+            {
               "quantity": 1,
               "sku": "p2",
             },
@@ -524,7 +524,7 @@ describe('Product Context Facade', () => {
 
     it('should set correct display properties for retail set', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
+        {
           "addToBasket": true,
           "addToCompare": true,
           "addToOrderTemplate": true,
@@ -577,12 +577,12 @@ describe('Product Context Facade', () => {
     it('should set parts property for bundle', done => {
       context.select('parts').subscribe(parts => {
         expect(parts).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "quantity": 1,
               "sku": "p1",
             },
-            Object {
+            {
               "quantity": 2,
               "sku": "p2",
             },
@@ -594,7 +594,7 @@ describe('Product Context Facade', () => {
 
     it('should set correct display properties for bundle', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
+        {
           "addToBasket": true,
           "addToCompare": true,
           "addToOrderTemplate": true,
@@ -638,7 +638,7 @@ describe('Product Context Facade', () => {
 
     it('should set correct display properties for variation product', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
+        {
           "addToBasket": true,
           "addToCompare": true,
           "addToOrderTemplate": true,
@@ -680,7 +680,7 @@ describe('Product Context Facade', () => {
 
     it('should set correct display properties for master product', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
+        {
           "addToBasket": false,
           "addToCompare": false,
           "addToOrderTemplate": false,
@@ -791,7 +791,7 @@ describe('Product Context Facade', () => {
       context.set('sku', () => '123');
 
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
+        {
           "addToBasket": true,
           "addToCompare": true,
           "addToOrderTemplate": true,
@@ -821,7 +821,7 @@ describe('Product Context Facade', () => {
       context.set('sku', () => '456');
 
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
+        {
           "addToBasket": false,
           "addToCompare": false,
           "addToOrderTemplate": false,
@@ -856,7 +856,7 @@ describe('Product Context Facade', () => {
       };
 
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
-        Object {
+        {
           "addToBasket": false,
           "addToCompare": false,
           "addToOrderTemplate": false,

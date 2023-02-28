@@ -65,7 +65,7 @@ describe('Cost Center Buyers Repeat Field Component', () => {
   it('should render two form groups after creation with a model containing two objects', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element.querySelector('ish-cost-center-buyers-repeat-field'))).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-cost-center-buyers-repeat-field",
         "formly-field",
         "formly-group",

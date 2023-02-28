@@ -52,7 +52,7 @@ describe('Product Rating Component', () => {
       .queryAll(By.css('ish-product-rating-star'))
       .map(cmp => (cmp.componentInstance as ProductRatingStarComponent).filled);
     expect(stars).toMatchInlineSnapshot(`
-      Array [
+      [
         "full",
         "full",
         "full",

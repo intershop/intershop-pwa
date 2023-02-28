@@ -312,11 +312,11 @@ describe('Basket Items Effects', () => {
       effects.updateBasketItems$.subscribe(() => {
         verify(basketServiceMock.updateBasketItem(payload.lineItemUpdates[1].itemId, anything())).thrice();
         expect(capture(basketServiceMock.updateBasketItem).first()).toMatchInlineSnapshot(`
-          Array [
+          [
             "BIID",
-            Object {
+            {
               "product": undefined,
-              "quantity": Object {
+              "quantity": {
                 "unit": undefined,
                 "value": 2,
               },
@@ -324,11 +324,11 @@ describe('Basket Items Effects', () => {
           ]
         `);
         expect(capture(basketServiceMock.updateBasketItem).second()).toMatchInlineSnapshot(`
-          Array [
+          [
             "BIID",
-            Object {
+            {
               "product": undefined,
-              "quantity": Object {
+              "quantity": {
                 "unit": undefined,
                 "value": 3,
               },
@@ -336,11 +336,11 @@ describe('Basket Items Effects', () => {
           ]
         `);
         expect(capture(basketServiceMock.updateBasketItem).third()).toMatchInlineSnapshot(`
-          Array [
+          [
             "BIID",
-            Object {
+            {
               "product": undefined,
-              "quantity": Object {
+              "quantity": {
                 "unit": undefined,
                 "value": 4,
               },

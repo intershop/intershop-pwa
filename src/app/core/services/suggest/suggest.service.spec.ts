@@ -32,8 +32,8 @@ describe('Suggest Service', () => {
 
     suggestService.search('g').subscribe(res => {
       expect(res).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "term": "Goods",
             "type": undefined,
           },

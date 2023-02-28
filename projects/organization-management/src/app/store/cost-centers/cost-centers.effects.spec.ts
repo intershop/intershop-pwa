@@ -100,10 +100,10 @@ describe('Cost Centers Effects', () => {
       effects.loadCostCenters$.subscribe(action => {
         expect(action.type).toMatchInlineSnapshot(`"[CostCenters API] Load Cost Centers Success"`);
         expect(action.payload).toMatchInlineSnapshot(`
-          Object {
-            "costCenters": Array [
-              Object {
-                "budget": Object {
+          {
+            "costCenters": [
+              {
+                "budget": {
                   "currency": "USD",
                   "value": 500,
                 },
@@ -112,7 +112,7 @@ describe('Cost Centers Effects', () => {
                 "id": "1",
                 "name": "Headquarter",
               },
-              Object {
+              {
                 "costCenterId": "2",
               },
             ],
@@ -166,9 +166,9 @@ describe('Cost Centers Effects', () => {
       effects.loadCostCenter$.subscribe(action => {
         expect(action.type).toMatchInlineSnapshot(`"[CostCenters API] Load Cost Center Success"`);
         expect(action.payload).toMatchInlineSnapshot(`
-          Object {
-            "costCenter": Object {
-              "budget": Object {
+          {
+            "costCenter": {
+              "budget": {
                 "currency": "USD",
                 "value": 500,
               },

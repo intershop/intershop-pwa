@@ -321,7 +321,7 @@ describe('Quoting Effects', () => {
       effects.addProductToQuoteRequest$.subscribe(() => {
         verify(quotingService.addProductToQuoteRequest(anything(), anything())).once();
         expect(capture(quotingService.addProductToQuoteRequest).last()).toMatchInlineSnapshot(`
-          Array [
+          [
             "SKU",
             10,
           ]
@@ -357,10 +357,10 @@ describe('Quoting Effects', () => {
       effects.updateQuoteRequest$.subscribe(() => {
         verify(quotingService.updateQuoteRequest(anything(), anything())).once();
         expect(capture(quotingService.updateQuoteRequest).last()).toMatchInlineSnapshot(`
-          Array [
+          [
             "quoteRequestID",
-            Array [
-              Object {
+            [
+              {
                 "itemId": "ITEM",
                 "type": "remove-item",
               },

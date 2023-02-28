@@ -35,7 +35,7 @@ describe('Wishlist Preferences Dialog Component', () => {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-      Object {
+      {
         "id": "test wishlist",
         "preferred": true,
         "public": false,

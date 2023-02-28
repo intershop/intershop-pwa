@@ -74,29 +74,29 @@ describe('Page Tree Selectors', () => {
         router.navigateByUrl(`page/1`);
         tick(500);
         expect(getContentPageTree(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
-          Object {
-            "children": Array [
-              Object {
-                "children": Array [],
+          {
+            "children": [
+              {
+                "children": [],
                 "contentPageId": "1.1",
                 "name": "1.1",
                 "parent": "1",
-                "path": Array [
+                "path": [
                   "1",
                   "1.1",
                 ],
-                "pathElements": Array [
-                  Object {
+                "pathElements": [
+                  {
                     "contentPageId": "1",
                     "name": "1",
-                    "path": Array [
+                    "path": [
                       "1",
                     ],
                   },
-                  Object {
+                  {
                     "contentPageId": "1.1",
                     "name": "1.1",
-                    "path": Array [
+                    "path": [
                       "1",
                       "1.1",
                     ],
@@ -107,14 +107,14 @@ describe('Page Tree Selectors', () => {
             "contentPageId": "1",
             "name": "1",
             "parent": undefined,
-            "path": Array [
+            "path": [
               "1",
             ],
-            "pathElements": Array [
-              Object {
+            "pathElements": [
+              {
                 "contentPageId": "1",
                 "name": "1",
-                "path": Array [
+                "path": [
                   "1",
                 ],
               },
@@ -127,40 +127,40 @@ describe('Page Tree Selectors', () => {
         router.navigateByUrl(`page/1.1`);
         tick(500);
         expect(getContentPageTree(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
-          Object {
-            "children": Array [
-              Object {
-                "children": Array [
-                  Object {
-                    "children": Array [],
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
                     "contentPageId": "1.1.1",
                     "name": "1.1.1",
                     "parent": "1.1",
-                    "path": Array [
+                    "path": [
                       "1",
                       "1.1",
                       "1.1.1",
                     ],
-                    "pathElements": Array [
-                      Object {
+                    "pathElements": [
+                      {
                         "contentPageId": "1",
                         "name": "1",
-                        "path": Array [
+                        "path": [
                           "1",
                         ],
                       },
-                      Object {
+                      {
                         "contentPageId": "1.1",
                         "name": "1.1",
-                        "path": Array [
+                        "path": [
                           "1",
                           "1.1",
                         ],
                       },
-                      Object {
+                      {
                         "contentPageId": "1.1.1",
                         "name": "1.1.1",
-                        "path": Array [
+                        "path": [
                           "1",
                           "1.1",
                           "1.1.1",
@@ -168,36 +168,36 @@ describe('Page Tree Selectors', () => {
                       },
                     ],
                   },
-                  Object {
-                    "children": Array [],
+                  {
+                    "children": [],
                     "contentPageId": "1.1.2",
                     "name": "1.1.2",
                     "parent": "1.1",
-                    "path": Array [
+                    "path": [
                       "1",
                       "1.1",
                       "1.1.2",
                     ],
-                    "pathElements": Array [
-                      Object {
+                    "pathElements": [
+                      {
                         "contentPageId": "1",
                         "name": "1",
-                        "path": Array [
+                        "path": [
                           "1",
                         ],
                       },
-                      Object {
+                      {
                         "contentPageId": "1.1",
                         "name": "1.1",
-                        "path": Array [
+                        "path": [
                           "1",
                           "1.1",
                         ],
                       },
-                      Object {
+                      {
                         "contentPageId": "1.1.2",
                         "name": "1.1.2",
-                        "path": Array [
+                        "path": [
                           "1",
                           "1.1",
                           "1.1.2",
@@ -209,22 +209,22 @@ describe('Page Tree Selectors', () => {
                 "contentPageId": "1.1",
                 "name": "1.1",
                 "parent": "1",
-                "path": Array [
+                "path": [
                   "1",
                   "1.1",
                 ],
-                "pathElements": Array [
-                  Object {
+                "pathElements": [
+                  {
                     "contentPageId": "1",
                     "name": "1",
-                    "path": Array [
+                    "path": [
                       "1",
                     ],
                   },
-                  Object {
+                  {
                     "contentPageId": "1.1",
                     "name": "1.1",
-                    "path": Array [
+                    "path": [
                       "1",
                       "1.1",
                     ],
@@ -235,14 +235,14 @@ describe('Page Tree Selectors', () => {
             "contentPageId": "1",
             "name": "1",
             "parent": undefined,
-            "path": Array [
+            "path": [
               "1",
             ],
-            "pathElements": Array [
-              Object {
+            "pathElements": [
+              {
                 "contentPageId": "1",
                 "name": "1",
-                "path": Array [
+                "path": [
                   "1",
                 ],
               },
@@ -255,52 +255,52 @@ describe('Page Tree Selectors', () => {
         router.navigateByUrl(`page/1.1.1`);
         tick(500);
         expect(getContentPageTree(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
-          Object {
-            "children": Array [
-              Object {
-                "children": Array [
-                  Object {
-                    "children": Array [
-                      Object {
-                        "children": Array [],
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
                         "contentPageId": "1.1.1.1",
                         "name": "1.1.1.1",
                         "parent": "1.1.1",
-                        "path": Array [
+                        "path": [
                           "1",
                           "1.1",
                           "1.1.1",
                           "1.1.1.1",
                         ],
-                        "pathElements": Array [
-                          Object {
+                        "pathElements": [
+                          {
                             "contentPageId": "1",
                             "name": "1",
-                            "path": Array [
+                            "path": [
                               "1",
                             ],
                           },
-                          Object {
+                          {
                             "contentPageId": "1.1",
                             "name": "1.1",
-                            "path": Array [
+                            "path": [
                               "1",
                               "1.1",
                             ],
                           },
-                          Object {
+                          {
                             "contentPageId": "1.1.1",
                             "name": "1.1.1",
-                            "path": Array [
+                            "path": [
                               "1",
                               "1.1",
                               "1.1.1",
                             ],
                           },
-                          Object {
+                          {
                             "contentPageId": "1.1.1.1",
                             "name": "1.1.1.1",
-                            "path": Array [
+                            "path": [
                               "1",
                               "1.1",
                               "1.1.1",
@@ -313,31 +313,31 @@ describe('Page Tree Selectors', () => {
                     "contentPageId": "1.1.1",
                     "name": "1.1.1",
                     "parent": "1.1",
-                    "path": Array [
+                    "path": [
                       "1",
                       "1.1",
                       "1.1.1",
                     ],
-                    "pathElements": Array [
-                      Object {
+                    "pathElements": [
+                      {
                         "contentPageId": "1",
                         "name": "1",
-                        "path": Array [
+                        "path": [
                           "1",
                         ],
                       },
-                      Object {
+                      {
                         "contentPageId": "1.1",
                         "name": "1.1",
-                        "path": Array [
+                        "path": [
                           "1",
                           "1.1",
                         ],
                       },
-                      Object {
+                      {
                         "contentPageId": "1.1.1",
                         "name": "1.1.1",
-                        "path": Array [
+                        "path": [
                           "1",
                           "1.1",
                           "1.1.1",
@@ -345,36 +345,36 @@ describe('Page Tree Selectors', () => {
                       },
                     ],
                   },
-                  Object {
-                    "children": Array [],
+                  {
+                    "children": [],
                     "contentPageId": "1.1.2",
                     "name": "1.1.2",
                     "parent": "1.1",
-                    "path": Array [
+                    "path": [
                       "1",
                       "1.1",
                       "1.1.2",
                     ],
-                    "pathElements": Array [
-                      Object {
+                    "pathElements": [
+                      {
                         "contentPageId": "1",
                         "name": "1",
-                        "path": Array [
+                        "path": [
                           "1",
                         ],
                       },
-                      Object {
+                      {
                         "contentPageId": "1.1",
                         "name": "1.1",
-                        "path": Array [
+                        "path": [
                           "1",
                           "1.1",
                         ],
                       },
-                      Object {
+                      {
                         "contentPageId": "1.1.2",
                         "name": "1.1.2",
-                        "path": Array [
+                        "path": [
                           "1",
                           "1.1",
                           "1.1.2",
@@ -386,22 +386,22 @@ describe('Page Tree Selectors', () => {
                 "contentPageId": "1.1",
                 "name": "1.1",
                 "parent": "1",
-                "path": Array [
+                "path": [
                   "1",
                   "1.1",
                 ],
-                "pathElements": Array [
-                  Object {
+                "pathElements": [
+                  {
                     "contentPageId": "1",
                     "name": "1",
-                    "path": Array [
+                    "path": [
                       "1",
                     ],
                   },
-                  Object {
+                  {
                     "contentPageId": "1.1",
                     "name": "1.1",
-                    "path": Array [
+                    "path": [
                       "1",
                       "1.1",
                     ],
@@ -412,14 +412,14 @@ describe('Page Tree Selectors', () => {
             "contentPageId": "1",
             "name": "1",
             "parent": undefined,
-            "path": Array [
+            "path": [
               "1",
             ],
-            "pathElements": Array [
-              Object {
+            "pathElements": [
+              {
                 "contentPageId": "1",
                 "name": "1",
-                "path": Array [
+                "path": [
                   "1",
                 ],
               },
@@ -433,7 +433,7 @@ describe('Page Tree Selectors', () => {
   it('should merge trees together when tree contains same path', () => {
     store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
     expect(Object.keys(getPageTree(store$.state).nodes)).toMatchInlineSnapshot(`
-      Array [
+      [
         "1",
         "1.1",
       ]
@@ -442,7 +442,7 @@ describe('Page Tree Selectors', () => {
 
     store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2, tree3, tree4]) }));
     expect(Object.keys(getPageTree(store$.state).nodes)).toMatchInlineSnapshot(`
-      Array [
+      [
         "1",
         "1.1",
         "1.1.1",
@@ -455,14 +455,14 @@ describe('Page Tree Selectors', () => {
   it('should add new tree when tree contains a new rootId', () => {
     store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree1, tree2]) }));
     expect(getPageTree(store$.state).rootIds).toMatchInlineSnapshot(`
-      Array [
+      [
         "1",
       ]
     `);
 
     store$.dispatch(loadContentPageTreeSuccess({ pagetree: pageTree([tree6]) }));
     expect(getPageTree(store$.state).rootIds).toMatchInlineSnapshot(`
-      Array [
+      [
         "1",
         "2",
       ]

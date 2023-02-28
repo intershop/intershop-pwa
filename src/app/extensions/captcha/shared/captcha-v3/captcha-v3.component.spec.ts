@@ -42,7 +42,7 @@ describe('Captcha V3 Component', () => {
   it('should render recaptcha info text when created', () => {
     fixture.detectChanges();
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "recaptcha-v3-info",
       ]
     `);

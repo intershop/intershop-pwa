@@ -11,41 +11,41 @@ describe('Product Listing Mapper', () => {
 
   it('should map single page data to one page', () => {
     expect(productListingMapper.createPages(['A', 'B'], 'test', 'dummy', 2)).toMatchInlineSnapshot(`
-      Object {
-        "1": Array [
+      {
+        "1": [
           "A",
           "B",
         ],
-        "id": Object {
+        "id": {
           "type": "test",
           "value": "dummy",
         },
         "itemCount": 2,
-        "sortableAttributes": Array [],
+        "sortableAttributes": [],
       }
     `);
   });
 
   it('should map multi page data to multiple pages', () => {
     expect(productListingMapper.createPages(['A', 'B', 'C', 'D', 'E'], 'test', 'dummy', 2)).toMatchInlineSnapshot(`
-      Object {
-        "1": Array [
+      {
+        "1": [
           "A",
           "B",
         ],
-        "2": Array [
+        "2": [
           "C",
           "D",
         ],
-        "3": Array [
+        "3": [
           "E",
         ],
-        "id": Object {
+        "id": {
           "type": "test",
           "value": "dummy",
         },
         "itemCount": 5,
-        "sortableAttributes": Array [],
+        "sortableAttributes": [],
       }
     `);
   });
@@ -60,18 +60,18 @@ describe('Product Listing Mapper', () => {
         startPage: 4,
       })
     ).toMatchInlineSnapshot(`
-      Object {
-        "4": Array [
+      {
+        "4": [
           "A",
           "B",
         ],
-        "5": Array [
+        "5": [
           "C",
           "D",
         ],
-        "id": Object {
-          "filters": Object {
-            "foo": Array [
+        "id": {
+          "filters": {
+            "foo": [
               "bar",
             ],
           },
@@ -80,8 +80,8 @@ describe('Product Listing Mapper', () => {
           "value": "dummy",
         },
         "itemCount": 200,
-        "sortableAttributes": Array [
-          Object {
+        "sortableAttributes": [
+          {
             "name": "name-desc",
           },
         ],

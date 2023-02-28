@@ -26,7 +26,7 @@ describe('Quoting Mapper', () => {
       };
       const mapped = quoteMapper.fromData(data, 'QuoteRequest');
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
+        {
           "completenessLevel": "Stub",
           "id": "ioMKCgoEcC4AAAF0BEAGFSQ5",
           "type": "QuoteRequest",
@@ -42,7 +42,7 @@ describe('Quoting Mapper', () => {
       };
       const mapped = quoteMapper.fromData(data, 'Quote');
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
+        {
           "completenessLevel": "Stub",
           "id": "IpMKCgoEYBcAAAF0TgwGFSQd",
           "type": "Quote",
@@ -65,7 +65,7 @@ describe('Quoting Mapper', () => {
       };
       const mapped = quoteMapper.fromData(data, 'QuoteRequest');
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
+        {
           "completenessLevel": "List",
           "creationDate": 1598872290353,
           "displayName": "0000003",
@@ -98,7 +98,7 @@ describe('Quoting Mapper', () => {
       };
       const mapped = quoteMapper.fromData(data, 'Quote');
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
+        {
           "completenessLevel": "List",
           "creationDate": 1598872290353,
           "displayName": "0000003",
@@ -188,44 +188,44 @@ describe('Quoting Mapper', () => {
       };
       const mapped = quoteMapper.fromData(data, 'Quote');
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
+        {
           "completenessLevel": "Detail",
           "creationDate": 1598333717587,
           "description": "TEST3",
           "displayName": "0000009",
           "id": "IpMKCgoEYBcAAAF0TgwGFSQd",
-          "items": Array [
-            Object {
+          "items": [
+            {
               "id": undefined,
-              "originQuantity": Object {
+              "originQuantity": {
                 "name": "Attr1",
                 "type": "Quantity",
                 "unit": "",
                 "value": 1,
               },
-              "originSingleBasePrice": Object {
+              "originSingleBasePrice": {
                 "currency": "USD",
                 "type": "Money",
                 "value": 1002.95,
               },
-              "originTotal": Object {
+              "originTotal": {
                 "currency": "USD",
                 "type": "Money",
                 "value": 1002.95,
               },
               "productSKU": "10696946",
-              "quantity": Object {
+              "quantity": {
                 "name": "Attr2",
                 "type": "Quantity",
                 "unit": "",
                 "value": 2,
               },
-              "singleBasePrice": Object {
+              "singleBasePrice": {
                 "currency": "USD",
                 "type": "Money",
                 "value": 10.95,
               },
-              "total": Object {
+              "total": {
                 "currency": "USD",
                 "type": "Money",
                 "value": 10.95,
@@ -233,14 +233,14 @@ describe('Quoting Mapper', () => {
             },
           ],
           "number": "0000009",
-          "originTotal": Object {
+          "originTotal": {
             "currency": "USD",
             "type": "Money",
             "value": 1054.95,
           },
           "rejected": undefined,
           "sellerComment": "",
-          "total": Object {
+          "total": {
             "currency": "USD",
             "type": "Money",
             "value": 15.95,
@@ -275,20 +275,20 @@ describe('Quoting Mapper', () => {
       };
       const mapped = quoteMapper.fromData(data, 'QuoteRequest');
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
+        {
           "completenessLevel": "List",
           "creationDate": 1598333702038,
           "description": undefined,
           "displayName": "0000008",
           "id": "Of4KCgoEGrcAAAF0kM8GFSQc",
-          "items": Array [
-            Object {
+          "items": [
+            {
               "id": "yMUKCgoEgGkAAAF0AdEGFSQc",
             },
           ],
           "number": "0000008",
           "submittedDate": undefined,
-          "total": Object {
+          "total": {
             "currency": "USD",
             "type": "Money",
             "value": 964.5,
@@ -340,28 +340,28 @@ describe('Quoting Mapper', () => {
       };
       const mapped = quoteMapper.fromData(data, 'QuoteRequest');
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
+        {
           "completenessLevel": "Detail",
           "creationDate": 1598333702038,
           "description": undefined,
           "displayName": "0000008",
           "id": "Of4KCgoEGrcAAAF0kM8GFSQc",
-          "items": Array [
-            Object {
+          "items": [
+            {
               "id": "yMUKCgoEgGkAAAF0AdEGFSQc",
               "productSKU": "8899566",
-              "quantity": Object {
+              "quantity": {
                 "name": "Attr",
                 "type": "Quantity",
                 "unit": "",
                 "value": 1,
               },
-              "singleBasePrice": Object {
+              "singleBasePrice": {
                 "currency": "USD",
                 "type": "Money",
                 "value": 964.5,
               },
-              "total": Object {
+              "total": {
                 "currency": "USD",
                 "type": "Money",
                 "value": 964.5,
@@ -370,7 +370,7 @@ describe('Quoting Mapper', () => {
           ],
           "number": "0000008",
           "submittedDate": 1598333709150,
-          "total": Object {
+          "total": {
             "currency": "USD",
             "type": "Money",
             "value": 964.5,

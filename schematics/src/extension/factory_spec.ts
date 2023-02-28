@@ -30,7 +30,7 @@ describe('Extension Schematic', () => {
     const tree = await schematicRunner.runSchematic('extension', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/extensions/foo/foo.module.ts",
         "/src/app/extensions/foo/exports/.gitignore",
         "/src/app/extensions/foo/exports/foo-exports.module.ts",

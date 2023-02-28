@@ -61,7 +61,7 @@ describe('Server Config Selectors', () => {
       expect(getServerConfigParameter('basket.acceleration')(store$.state)).toMatchInlineSnapshot(`true`);
       expect(getServerConfigParameter('services.captcha.siteKey')(store$.state)).toMatchInlineSnapshot(`"QWERTY"`);
       expect(getServerConfigParameter('general.locales')(store$.state)).toMatchInlineSnapshot(`
-        Array [
+        [
           "de_DE",
           "en_US",
         ]

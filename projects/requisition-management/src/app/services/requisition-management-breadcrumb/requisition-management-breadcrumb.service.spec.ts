@@ -73,8 +73,8 @@ describe('Requisition Management Breadcrumb Service', () => {
         router.navigateByUrl('/requisitions/buyer');
         requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.requisitions.requisitions",
               },
             ]
@@ -87,8 +87,8 @@ describe('Requisition Management Breadcrumb Service', () => {
         router.navigateByUrl('/requisitions/approver');
         requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.requisitions.approvals",
               },
             ]
@@ -102,17 +102,17 @@ describe('Requisition Management Breadcrumb Service', () => {
       router.navigateByUrl('/requisitions/buyer/12345;status=pending');
       requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
         expect(breadcrumbData).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "key": "account.requisitions.requisitions",
-              "link": Array [
+              "link": [
                 "/my-account/buyer",
-                Object {
+                {
                   "status": "pending",
                 },
               ],
             },
-            Object {
+            {
               "text": "approval.details.breadcrumb.order.label - 12345",
             },
           ]
@@ -125,17 +125,17 @@ describe('Requisition Management Breadcrumb Service', () => {
       router.navigateByUrl('/requisitions/approver/12345;status=rejected');
       requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
         expect(breadcrumbData).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "key": "account.requisitions.approvals",
-              "link": Array [
+              "link": [
                 "/my-account/approver",
-                Object {
+                {
                   "status": "rejected",
                 },
               ],
             },
-            Object {
+            {
               "text": "approval.details.breadcrumb.order.label - 12345",
             },
           ]

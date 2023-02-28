@@ -55,7 +55,7 @@ describe('Content Page Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-loading",
       ]
     `);
@@ -66,7 +66,7 @@ describe('Content Page Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-content-pagelet",
       ]
     `);

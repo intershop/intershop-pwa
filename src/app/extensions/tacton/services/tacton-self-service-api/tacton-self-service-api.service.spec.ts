@@ -51,7 +51,7 @@ describe('Tacton Self Service Api Service', () => {
       tactonSelfServiceApiService.startConfiguration('123456').subscribe({
         next: data => {
           expect(data).toMatchInlineSnapshot(`
-                      Object {
+                      {
                         "configId": "Hello!",
                         "externalId": "NewID",
                       }
@@ -64,7 +64,7 @@ describe('Tacton Self Service Api Service', () => {
       const req = controller.expectOne(() => true);
 
       expect(pick(req.request, 'urlWithParams', 'body', 'method')).toMatchInlineSnapshot(`
-        Object {
+        {
           "body": "_key=ASDF&_externalId=NewID",
           "method": "POST",
           "urlWithParams": "http://example.com/self-service/self-service-api/config/start/123456",

@@ -79,8 +79,8 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.user_management",
               },
             ]
@@ -94,12 +94,12 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.user_management",
                 "link": "/my-account/users",
               },
-              Object {
+              {
                 "key": "account.user.breadcrumbs.new_user.text",
               },
             ]
@@ -114,12 +114,12 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.user_management",
                 "link": "/my-account/users",
               },
-              Object {
+              {
                 "text": "account.organization.user_management.user_detail.breadcrumb - John Doe",
               },
             ]
@@ -134,16 +134,16 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.user_management",
                 "link": "/my-account/users",
               },
-              Object {
+              {
                 "link": "/my-account/users/1",
                 "text": "account.organization.user_management.user_detail.breadcrumb - John Doe",
               },
-              Object {
+              {
                 "key": "account.user.update_profile.heading",
               },
             ]
@@ -158,16 +158,16 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.user_management",
                 "link": "/my-account/users",
               },
-              Object {
+              {
                 "link": "/my-account/users/1",
                 "text": "account.organization.user_management.user_detail.breadcrumb - John Doe",
               },
-              Object {
+              {
                 "key": "account.user.update_roles.heading",
               },
             ]
@@ -182,16 +182,16 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.user_management",
                 "link": "/my-account/users",
               },
-              Object {
+              {
                 "link": "/my-account/users/1",
                 "text": "account.organization.user_management.user_detail.breadcrumb - John Doe",
               },
-              Object {
+              {
                 "key": "account.user.update_budget.heading",
               },
             ]
@@ -207,8 +207,8 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.cost_center_management",
               },
             ]
@@ -222,12 +222,12 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.cost_center_management",
                 "link": "/my-account/cost-centers",
               },
-              Object {
+              {
                 "key": "account.costcenter.create.heading",
               },
             ]
@@ -244,12 +244,12 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.cost_center_management",
                 "link": "/my-account/cost-centers",
               },
-              Object {
+              {
                 "text": "Marketing",
               },
             ]
@@ -266,16 +266,16 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.cost_center_management",
                 "link": "/my-account/cost-centers",
               },
-              Object {
+              {
                 "link": "/my-account/cost-centers/1",
                 "text": "Marketing",
               },
-              Object {
+              {
                 "key": "account.costcenter.details.edit.heading",
               },
             ]
@@ -292,16 +292,16 @@ describe('Organization Management Breadcrumb Service', () => {
 
         organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
           expect(breadcrumbData).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "key": "account.organization.cost_center_management",
                 "link": "/my-account/cost-centers",
               },
-              Object {
+              {
                 "link": "/my-account/cost-centers/1",
                 "text": "Marketing",
               },
-              Object {
+              {
                 "key": "account.costcenter.details.buyers.heading",
               },
             ]

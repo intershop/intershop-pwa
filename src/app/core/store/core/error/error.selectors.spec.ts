@@ -37,7 +37,7 @@ describe('Error Selectors', () => {
     store$.dispatch(communicationTimeoutError({ error: makeHttpError({ status: 123 }) }));
 
     expect(getGeneralError(store$.state)).toMatchInlineSnapshot(`
-      Object {
+      {
         "name": "HttpErrorResponse",
         "status": 123,
       }

@@ -108,7 +108,7 @@ describe('Checkout Review Component', () => {
   it('should display standard elements by default', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-modal-dialog-link",
         "ish-error-message",
         "ish-basket-validation-results",

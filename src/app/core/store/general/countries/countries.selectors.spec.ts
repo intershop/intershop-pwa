@@ -38,12 +38,12 @@ describe('Countries Selectors', () => {
 
     it('should return countries after load', () => {
       expect(getAllCountries(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "countryCode": "BG",
             "name": "Bulgaria",
           },
-          Object {
+          {
             "countryCode": "DE",
             "name": "Germany",
           },

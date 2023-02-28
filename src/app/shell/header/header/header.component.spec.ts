@@ -51,7 +51,7 @@ describe('Header Component', () => {
   it('should render default header component if no headerType is set', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-header-default",
         "ish-back-to-top",
       ]
@@ -62,7 +62,7 @@ describe('Header Component', () => {
     when(appFacade.headerType$).thenReturn(of('simple'));
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-header-simple",
         "ish-back-to-top",
       ]
@@ -73,7 +73,7 @@ describe('Header Component', () => {
     when(appFacade.headerType$).thenReturn(of('error'));
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-header-error",
         "ish-back-to-top",
       ]
@@ -84,7 +84,7 @@ describe('Header Component', () => {
     when(appFacade.headerType$).thenReturn(of('checkout'));
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-header-checkout",
         "ish-back-to-top",
       ]

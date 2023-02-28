@@ -118,7 +118,7 @@ describe('Products Selectors', () => {
 
       it('should return a product stub if product is selected', () => {
         expect(getProduct('invalid')(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "defaultCategory": undefined,
             "failed": true,
             "sku": "invalid",
@@ -163,8 +163,8 @@ describe('Products Selectors', () => {
 
       it('should generate a breadcrumb when product is selected', () => {
         expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "link": undefined,
               "text": "product",
             },
@@ -193,12 +193,12 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with default category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-              Array [
-                Object {
+              [
+                {
                   "link": "/na-ctgA",
                   "text": "nA",
                 },
-                Object {
+                {
                   "link": undefined,
                   "text": "product",
                 },
@@ -215,12 +215,12 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with selected category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-              Array [
-                Object {
+              [
+                {
                   "link": "/nb-ctgB",
                   "text": "nB",
                 },
-                Object {
+                {
                   "link": undefined,
                   "text": "product",
                 },
@@ -238,12 +238,12 @@ describe('Products Selectors', () => {
 
           it('should generate a breadcrumb with selected category even if product has default category when product is selected', () => {
             expect(getBreadcrumbForProductPage(store$.state)).toMatchInlineSnapshot(`
-              Array [
-                Object {
+              [
+                {
                   "link": "/nb-ctgB",
                   "text": "nB",
                 },
-                Object {
+                {
                   "link": undefined,
                   "text": "product",
                 },
@@ -269,12 +269,12 @@ describe('Products Selectors', () => {
       );
 
       expect(getProductParts('ABC')(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "quantity": 1,
             "sku": "A",
           },
-          Object {
+          {
             "quantity": 2,
             "sku": "B",
           },
@@ -297,12 +297,12 @@ describe('Products Selectors', () => {
       );
 
       expect(getProductParts('ABC')(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "quantity": 1,
             "sku": "A",
           },
-          Object {
+          {
             "quantity": 1,
             "sku": "B",
           },
@@ -325,13 +325,13 @@ describe('Products Selectors', () => {
 
       it('should add variations to state', () => {
         expect(getProduct('SKU')(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "defaultCategory": undefined,
             "defaultVariationSKU": "VAR",
             "sku": "SKU",
             "type": "VariationProductMaster",
-            "variations": Array [
-              Object {
+            "variations": [
+              {
                 "sku": "VAR",
                 "type": "VariationProduct",
               },
@@ -383,12 +383,12 @@ describe('Products Selectors', () => {
       );
 
       expect(getProductLinks('ABC')(store$.state)).toMatchInlineSnapshot(`
-        Object {
-          "linkType": Object {
-            "categories": Array [
+        {
+          "linkType": {
+            "categories": [
               "cat",
             ],
-            "products": Array [
+            "products": [
               "prod",
             ],
           },

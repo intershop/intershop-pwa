@@ -49,7 +49,7 @@ describe('User Information Mobile Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-login-status",
         "ish-lazy-product-compare-status",
         "ish-lazy-quickorder-link",

@@ -12,7 +12,7 @@ describe('Price Item Helper', () => {
 
     it('should select gross price if requested', () => {
       expect(PriceItemHelper.selectType(priceItem, 'gross')).toMatchInlineSnapshot(`
-        Object {
+        {
           "currency": "USD",
           "type": "Money",
           "value": 43.34,
@@ -22,7 +22,7 @@ describe('Price Item Helper', () => {
 
     it('should select net price if requested', () => {
       expect(PriceItemHelper.selectType(priceItem, 'net')).toMatchInlineSnapshot(`
-        Object {
+        {
           "currency": "USD",
           "type": "Money",
           "value": 40.34,
@@ -41,7 +41,7 @@ describe('Price Item Helper', () => {
 
     it('should select gross price if requested', () => {
       expect(PriceItemHelper.selectScaledPriceType(priceItem, 'gross')).toMatchInlineSnapshot(`
-        Object {
+        {
           "currency": "USD",
           "minQuantity": 2,
           "type": "Money",
@@ -52,7 +52,7 @@ describe('Price Item Helper', () => {
 
     it('should select net price if requested', () => {
       expect(PriceItemHelper.selectScaledPriceType(priceItem, 'net')).toMatchInlineSnapshot(`
-        Object {
+        {
           "currency": "USD",
           "minQuantity": 2,
           "type": "Money",

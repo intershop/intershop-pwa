@@ -93,7 +93,7 @@ describe('Configuration Integration', () => {
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
     expect(getFeatures(store$.state)).toMatchInlineSnapshot(`
-      Array [
+      [
         "a",
         "b",
         "c",
@@ -106,7 +106,7 @@ describe('Configuration Integration', () => {
     router.navigateByUrl('/home;features=none');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
-    expect(getFeatures(store$.state)).toMatchInlineSnapshot(`Array []`);
+    expect(getFeatures(store$.state)).toMatchInlineSnapshot(`[]`);
   }));
 
   it('should not set features if "default" was provided', fakeAsync(() => {
@@ -115,7 +115,7 @@ describe('Configuration Integration', () => {
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
     expect(getFeatures(store$.state)).toMatchInlineSnapshot(`
-      Array [
+      [
         "a",
         "b",
         "c",
@@ -133,7 +133,7 @@ describe('Configuration Integration', () => {
   it('should have a default locale on startup in state', fakeAsync(() => {
     expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`"en_US"`);
     expect(getAvailableLocales(store$.state)).toMatchInlineSnapshot(`
-      Array [
+      [
         "en_US",
         "de_DE",
       ]

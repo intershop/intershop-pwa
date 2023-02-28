@@ -91,7 +91,7 @@ describe('Product Reviews Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getProductReviewsError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }

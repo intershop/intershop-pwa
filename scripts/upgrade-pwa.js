@@ -7,8 +7,8 @@ const pinned = {
   '@types/node': '18', // LTS
   '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
   swiper: 8, // 9 requires integration rework
-  jest: '28',
-  '@types/jest': '28',
+  jest: '29',
+  '@types/jest': '29',
 };
 
 // <HELPERS>

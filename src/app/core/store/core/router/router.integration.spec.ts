@@ -75,7 +75,7 @@ describe('Router Integration', () => {
       expect(selectRouteParam('foo')(store.state)).toBeUndefined();
       expect(selectUrl(store.state)).toBeUndefined();
       expect(selectPath(store.state)).toBeUndefined();
-      expect(store.actionsArray()).toMatchInlineSnapshot(`Array []`);
+      expect(store.actionsArray()).toMatchInlineSnapshot(`[]`);
     });
 
     it('should be empty on initial navigation', fakeAsync(() => {
@@ -83,13 +83,13 @@ describe('Router Integration', () => {
       tick(500);
 
       expect(selectRouter(store.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "navigationId": 1,
-          "state": Object {
-            "data": Object {},
-            "params": Object {},
+          "state": {
+            "data": {},
+            "params": {},
             "path": "**",
-            "queryParams": Object {},
+            "queryParams": {},
             "url": "/",
           },
         }
@@ -112,16 +112,16 @@ describe('Router Integration', () => {
       tick(500);
 
       expect(selectRouter(store.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "navigationId": 1,
-          "state": Object {
-            "data": Object {},
-            "params": Object {
+          "state": {
+            "data": {},
+            "params": {
               "bar": "bar",
               "foo": "urlParam",
             },
             "path": "**",
-            "queryParams": Object {
+            "queryParams": {
               "bar": "bar",
               "foo": "queryParam",
             },
@@ -130,7 +130,7 @@ describe('Router Integration', () => {
         }
       `);
       expect(selectQueryParams(store.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "bar": "bar",
           "foo": "queryParam",
         }
@@ -152,21 +152,21 @@ describe('Router Integration', () => {
       tick(500);
 
       expect(selectRouter(store.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "navigationId": 1,
-          "state": Object {
-            "data": Object {
+          "state": {
+            "data": {
               "foo": "data",
               "leaf": true,
               "level": 4,
               "root": true,
             },
-            "params": Object {
+            "params": {
               "bar": "bar",
               "foo": "very",
             },
             "path": "test/:foo/deep/routes",
-            "queryParams": Object {
+            "queryParams": {
               "bar": "bar",
               "foo": "queryParam",
             },
@@ -175,7 +175,7 @@ describe('Router Integration', () => {
         }
       `);
       expect(selectQueryParams(store.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "bar": "bar",
           "foo": "queryParam",
         }

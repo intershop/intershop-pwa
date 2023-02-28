@@ -33,7 +33,7 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-            Object {
+            {
               "message": "Unauthorized",
               "name": "HttpErrorResponse",
               "status": 401,
@@ -51,7 +51,7 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-        Object {
+        {
           "message": "Http failure response for some: 400 Bad Request",
           "name": "HttpErrorResponse",
           "status": 400,
@@ -73,21 +73,21 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-Object {
-  "errors": Array [
-    Object {
-      "causes": Array [
-        Object {
+{
+  "errors": [
+    {
+      "causes": [
+        {
           "code": "basket.promotion_code.add_code_promotion_code_not_found.error",
           "message": "The promotion code could not be found.",
-          "paths": Array [
+          "paths": [
             "$.code",
           ],
         },
-        Object {
+        {
           "code": "some.other.error",
           "message": "Some other error.",
-          "paths": Array [
+          "paths": [
             "$.code",
           ],
         },
@@ -137,12 +137,12 @@ Object {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-Object {
-  "errors": Array [
-    Object {
+{
+  "errors": [
+    {
       "code": "basket.add_line_item_not_successful.error",
       "message": "The product could not be added to your cart.",
-      "paths": Array [
+      "paths": [
         "$[0]",
       ],
       "status": "422",
@@ -176,7 +176,7 @@ Object {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-        Object {
+        {
           "code": "customer.credentials.login.not_unique.error",
           "name": "HttpErrorResponse",
           "status": 409,
@@ -198,7 +198,7 @@ Object {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-        Object {
+        {
           "message": "Bad Request (The following attributes are missing: email,preferredLanguage)",
           "name": "HttpErrorResponse",
           "status": 400,
@@ -232,12 +232,12 @@ Object {
         next: fail,
         error: error => {
           expect(error).toMatchInlineSnapshot(`
-            Object {
-              "message": "Bad Request (The following attributes are invalid: email,preferredLanguage){\\"email\\":\\"asdf@.\\",\\"preferredLanguage\\":\\"ASDF\\"}",
-              "name": "HttpErrorResponse",
-              "status": 400,
-            }
-          `);
+{
+  "message": "Bad Request (The following attributes are invalid: email,preferredLanguage){"email":"asdf@.","preferredLanguage":"ASDF"}",
+  "name": "HttpErrorResponse",
+  "status": 400,
+}
+`);
           done();
         },
       });
@@ -260,7 +260,7 @@ Object {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-          Object {
+          {
             "error": "some other format",
             "key": "value",
             "name": "HttpErrorResponse",
@@ -322,7 +322,7 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "GET:Test",
             "name": "HttpErrorResponse",
             "status": 400,

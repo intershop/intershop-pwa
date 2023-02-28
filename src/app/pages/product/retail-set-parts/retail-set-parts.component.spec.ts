@@ -53,7 +53,7 @@ describe('Retail Set Parts Component', () => {
   it('should display elements for each part', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-item",
         "ish-product-item",
         "ish-product-item",

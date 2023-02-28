@@ -37,7 +37,7 @@ describe('Product Variation Select Default Component', () => {
     fixture.detectChanges();
 
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "a",
         "a-B",
         "a-C",
@@ -63,7 +63,7 @@ describe('Product Variation Select Default Component', () => {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-      Object {
+      {
         "group": "a",
         "value": "C",
       }

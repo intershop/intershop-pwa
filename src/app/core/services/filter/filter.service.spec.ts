@@ -57,9 +57,9 @@ describe('Filter Service', () => {
 
       verify(apiService.get(anything(), anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           "categories/A/B/productfilters",
-          Object {
+          {
             "sendSPGID": true,
           },
         ]

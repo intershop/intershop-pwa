@@ -26,7 +26,7 @@ describe('Compare Selectors', () => {
       store$.dispatch(addToCompare({ sku: '456' }));
 
       expect(getCompareProductsSKUs(store$.state)).toMatchInlineSnapshot(`
-        Array [
+        [
           "123",
           "456",
         ]
@@ -38,7 +38,7 @@ describe('Compare Selectors', () => {
       store$.dispatch(addToCompare({ sku: '123' }));
 
       expect(getCompareProductsSKUs(store$.state)).toMatchInlineSnapshot(`
-        Array [
+        [
           "123",
         ]
       `);

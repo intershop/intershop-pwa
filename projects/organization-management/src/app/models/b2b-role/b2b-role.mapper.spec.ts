@@ -41,24 +41,24 @@ describe('B2b Role Mapper', () => {
       ] as B2bRoleData[];
       const mapped = b2bRoleMapper.fromData(data);
       expect(mapped).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "description": "The buyer manages own requisitions, order templates, quotes, orders and subscriptions.",
             "displayName": "Buyer",
             "fixed": true,
             "id": "APP_B2B_BUYER",
-            "permissionDisplayNames": Array [
+            "permissionDisplayNames": [
               "Assign a cost object to a basket",
               "Assign a cost object to a basket line item",
               "Create Quotes",
             ],
           },
-          Object {
+          {
             "description": undefined,
             "displayName": "Approver",
             "fixed": false,
             "id": "APP_B2B_APPROVER",
-            "permissionDisplayNames": Array [
+            "permissionDisplayNames": [
               "Approve Pending Orders",
             ],
           },

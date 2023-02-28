@@ -70,7 +70,7 @@ describe('Basket Shipping Address Widget Component', () => {
     fixture.detectChanges();
 
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "create-shipping-address-link",
         "shipping-address-form",
       ]
@@ -83,7 +83,7 @@ describe('Basket Shipping Address Widget Component', () => {
     fixture.detectChanges();
 
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "shipping-address-form",
       ]
     `);
@@ -99,7 +99,7 @@ describe('Basket Shipping Address Widget Component', () => {
     it('should render if shipping is set', () => {
       fixture.detectChanges();
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        Array [
+        [
           "fa-icon",
           "ish-modal-dialog",
           "ish-address",
@@ -112,7 +112,7 @@ describe('Basket Shipping Address Widget Component', () => {
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-        Array [
+        [
           "edit-shipping-address-link",
           "create-shipping-address-link",
           "shipping-address-form",
@@ -126,7 +126,7 @@ describe('Basket Shipping Address Widget Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        Array [
+        [
           "ish-modal-dialog",
           "ish-address",
           "formly-form",
@@ -138,7 +138,7 @@ describe('Basket Shipping Address Widget Component', () => {
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-        Array [
+        [
           "shipping-address-form",
         ]
       `);
@@ -157,7 +157,7 @@ describe('Basket Shipping Address Widget Component', () => {
         fixture.detectChanges();
 
         expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-          Array [
+          [
             "formly-form",
             "formly-field",
             "formly-group",
@@ -167,7 +167,7 @@ describe('Basket Shipping Address Widget Component', () => {
           ]
         `);
         expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-          Array [
+          [
             "sameAsInvoice",
             "create-shipping-address-link",
             "shipping-address-form",
@@ -181,7 +181,7 @@ describe('Basket Shipping Address Widget Component', () => {
         fixture.detectChanges();
 
         expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-          Array [
+          [
             "formly-form",
             "formly-field",
             "formly-group",
@@ -191,7 +191,7 @@ describe('Basket Shipping Address Widget Component', () => {
           ]
         `);
         expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-          Array [
+          [
             "sameAsInvoice",
             "shipping-address-form",
           ]
@@ -223,7 +223,7 @@ describe('Basket Shipping Address Widget Component', () => {
 
       component.addresses$.subscribe(addrs => {
         expect(addrs.map(add => add.id)).toMatchInlineSnapshot(`
-                Array [
+                [
                   "3",
                   "4",
                 ]

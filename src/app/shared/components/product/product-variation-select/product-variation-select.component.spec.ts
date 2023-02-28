@@ -82,7 +82,7 @@ describe('Product Variation Select Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-variation-select-swatch",
         "ish-product-variation-select-enhanced",
         "ish-product-variation-select-swatch",
@@ -99,7 +99,7 @@ describe('Product Variation Select Component', () => {
 
     verify(context.changeVariationOption(anything(), anything())).once();
     expect(capture(context.changeVariationOption).last()).toMatchInlineSnapshot(`
-      Array [
+      [
         "a2",
         "C",
       ]

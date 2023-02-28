@@ -48,7 +48,7 @@ describe('Product Bundle Parts Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-item",
         "ish-product-item",
         "ish-product-add-to-basket",

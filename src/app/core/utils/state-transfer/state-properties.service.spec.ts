@@ -51,7 +51,7 @@ describe('State Properties Service', () => {
     it('should retrieve complex1 from state', done => {
       service.getStateOrEnvOrDefault('COMPLEX1', 'complex1' as any).subscribe(complex1 => {
         expect(complex1).toMatchInlineSnapshot(`
-          Object {
+          {
             "ICM": ICM,
           }
         `);
@@ -62,7 +62,7 @@ describe('State Properties Service', () => {
     it('should retrieve complex2 from state', done => {
       service.getStateOrEnvOrDefault('COMPLEX2', 'complex2' as any).subscribe(complex2 => {
         expect(complex2).toMatchInlineSnapshot(`
-          Object {
+          {
             "de_DE": "/de",
             "en_US": "/en",
           }
@@ -101,8 +101,8 @@ describe('State Properties Service', () => {
     it('should retrieve complex1 as YAML from environment', done => {
       service.getStateOrEnvOrDefault('COMPLEX1', 'complex1' as any).subscribe(complex1 => {
         expect(complex1).toMatchInlineSnapshot(`
-          Object {
-            "Auth0": Object {
+          {
+            "Auth0": {
               "clientId": "clientId",
               "domain": "domain",
               "type": "Auth0",
@@ -116,7 +116,7 @@ describe('State Properties Service', () => {
     it('should retrieve complex2 as JSON from environment', done => {
       service.getStateOrEnvOrDefault('COMPLEX2', 'complex2' as any).subscribe(complex2 => {
         expect(complex2).toMatchInlineSnapshot(`
-          Object {
+          {
             "fr_FR": "/fr",
           }
         `);

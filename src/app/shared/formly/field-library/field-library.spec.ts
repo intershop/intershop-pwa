@@ -50,9 +50,9 @@ describe('Field Library', () => {
   describe('single configuration', () => {
     it('should get configuration by id', () => {
       expect(fieldLibrary.getConfiguration('a')).toMatchInlineSnapshot(`
-        Object {
+        {
           "key": "a",
-          "props": Object {
+          "props": {
             "label": "a",
           },
           "type": "a",
@@ -68,9 +68,9 @@ describe('Field Library', () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "key": "a",
-          "props": Object {
+          "props": {
             "label": "new label",
           },
           "type": "a",
@@ -84,13 +84,13 @@ describe('Field Library', () => {
           wrappers: ['w2'],
         })
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "key": "c",
-          "props": Object {
+          "props": {
             "label": "c",
           },
           "type": "c",
-          "wrappers": Array [
+          "wrappers": [
             "w2",
           ],
         }
@@ -101,17 +101,17 @@ describe('Field Library', () => {
   describe('configuration group', () => {
     it('should get configuration group', () => {
       expect(fieldLibrary.getConfigurationGroup('ab')).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "key": "a",
-            "props": Object {
+            "props": {
               "label": "a",
             },
             "type": "a",
           },
-          Object {
+          {
             "key": "b",
-            "props": Object {
+            "props": {
               "label": "b",
             },
             "type": "b",
@@ -136,17 +136,17 @@ describe('Field Library', () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "key": "a",
-            "props": Object {
+            "props": {
               "label": "new a label",
             },
             "type": "a",
           },
-          Object {
+          {
             "key": "b",
-            "props": Object {
+            "props": {
               "label": "new b label",
             },
             "type": "b",
@@ -159,7 +159,7 @@ describe('Field Library', () => {
   describe('getAvailableConfigurationIds', () => {
     it('should get available ids', () => {
       expect(fieldLibrary.getAvailableConfigurationIds()).toMatchInlineSnapshot(`
-        Array [
+        [
           "a",
           "b",
           "c",

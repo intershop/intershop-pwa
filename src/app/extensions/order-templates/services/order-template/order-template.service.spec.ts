@@ -35,11 +35,11 @@ describe('Order Template Service', () => {
       verify(apiServiceMock.get(`customers/-/users/-/wishlists`)).once();
       verify(apiServiceMock.get(`customers/-/users/-/wishlists/1234`)).once();
       expect(data).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "creationDate": undefined,
             "id": "1234",
-            "items": Array [],
+            "items": [],
             "itemsCount": 0,
             "title": undefined,
           },

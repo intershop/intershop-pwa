@@ -81,7 +81,7 @@ describe('Select Order Template Modal Component', () => {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-Object {
+{
   "id": ".SKsEQAE4FIAAAFuNiUBWx0d",
   "title": "testing order template",
 }
@@ -99,7 +99,7 @@ Object {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-Object {
+{
   "id": undefined,
   "title": "New Ordertemplate Title",
 }
@@ -118,7 +118,7 @@ Object {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-Object {
+{
   "id": undefined,
   "title": "New Ordertemplate Title",
 }

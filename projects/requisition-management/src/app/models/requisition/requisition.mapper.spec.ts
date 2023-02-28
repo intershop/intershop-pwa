@@ -62,26 +62,26 @@ describe('Requisition Mapper', () => {
 
       const mapped = requisitionMapper.fromData({ data });
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
-          "approval": Object {
-            "approvers": Array [
-              Object {
+        {
+          "approval": {
+            "approvers": [
+              {
                 "email": "bboldner@test.intershop.de",
                 "firstName": "Bernhard",
                 "lastName": "Boldner",
               },
             ],
-            "costCenterApproval": Object {
-              "approvers": Array [
-                Object {
+            "costCenterApproval": {
+              "approvers": [
+                {
                   "email": "jlink@test.intershop.de",
                 },
               ],
               "statusCode": "PENDING",
             },
-            "customerApproval": Object {
-              "approvers": Array [
-                Object {
+            "customerApproval": {
+              "approvers": [
+                {
                   "email": "bboldner@test.intershop.de",
                 },
               ],
@@ -102,20 +102,20 @@ describe('Requisition Mapper', () => {
           "infos": undefined,
           "invoiceToAddress": undefined,
           "lineItemCount": 2,
-          "lineItems": Array [],
+          "lineItems": [],
           "messageToMerchant": undefined,
           "orderNo": "10001",
           "payment": undefined,
           "promotionCodes": undefined,
           "purchaseCurrency": "USD",
           "requisitionNo": "0001",
-          "systemRejectErrors": Array [
+          "systemRejectErrors": [
             "some message",
           ],
           "systemRejected": true,
           "taxationId": undefined,
           "totalProductQuantity": undefined,
-          "totals": Object {
+          "totals": {
             "bucketSurchargeTotalsByType": undefined,
             "dutiesAndSurchargesTotal": undefined,
             "isEstimated": false,
@@ -134,24 +134,24 @@ describe('Requisition Mapper', () => {
             "valueRebates": undefined,
             "valueRebatesTotal": undefined,
           },
-          "user": Object {
+          "user": {
             "email": "pmiller@test.intershop.de",
             "firstName": "Patricia",
             "lastName": "Miller",
           },
-          "userBudget": Object {
-            "budget": Object {
+          "userBudget": {
+            "budget": {
               "currency": "USD",
               "type": "Money",
               "value": 3000,
             },
             "budgetPeriod": "weekly",
-            "orderSpentLimit": Object {
+            "orderSpentLimit": {
               "currency": "USD",
               "type": "Money",
               "value": 500,
             },
-            "spentBudget": Object {
+            "spentBudget": {
               "currency": "USD",
               "type": "Money",
               "value": 0,

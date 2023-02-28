@@ -50,7 +50,7 @@ describe('Users Service', () => {
     usersService.getUsers().subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           "customers/4711/users",
         ]
       `);
@@ -62,7 +62,7 @@ describe('Users Service', () => {
     usersService.getUser('pmiller@test.intershop.de').subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           "customers/4711/users/pmiller%2540test.intershop.de",
         ]
       `);
@@ -74,7 +74,7 @@ describe('Users Service', () => {
     usersService.deleteUser('pmiller@test.intershop.de').subscribe(() => {
       verify(apiService.delete(anything())).once();
       expect(capture(apiService.delete).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           "customers/4711/users/pmiller%2540test.intershop.de",
         ]
       `);
@@ -109,16 +109,16 @@ describe('Users Service', () => {
 
     usersService.setUserRoles('pmiller@test.intershop.de', []).subscribe(data => {
       expect(data).toMatchInlineSnapshot(`
-        Array [
+        [
           "BUYER",
         ]
       `);
       verify(apiService.put(anything(), anything())).once();
       expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           "customers/4711/users/pmiller%2540test.intershop.de/roles",
-          Object {
-            "userRoles": Array [],
+          {
+            "userRoles": [],
           },
         ]
       `);
@@ -136,13 +136,13 @@ describe('Users Service', () => {
         budgetPeriod: 'monthly',
       } as UserBudget)
       .subscribe(data => {
-        expect(data).toMatchInlineSnapshot(`Object {}`);
+        expect(data).toMatchInlineSnapshot(`{}`);
         verify(apiService.put(anything(), anything())).once();
         expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
-          Array [
+          [
             "customers/4711/users/pmiller%2540test.intershop.de/budgets",
-            Object {
-              "budget": Object {
+            {
+              "budget": {
                 "currency": "USD",
                 "value": 2000,
               },
@@ -162,7 +162,7 @@ describe('Users Service', () => {
     usersService.getCurrentUserBudget().subscribe(userBudget => {
       verify(apiService.get('budgets')).once();
       expect(userBudget.spentBudget).toMatchInlineSnapshot(`
-        Object {
+        {
           "currency": undefined,
           "type": "Money",
           "value": 0,

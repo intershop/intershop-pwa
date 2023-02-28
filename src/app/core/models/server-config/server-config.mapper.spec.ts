@@ -25,33 +25,33 @@ describe('Server Config Mapper', () => {
       });
 
       expect(config).toMatchInlineSnapshot(`
-        Object {
-          "application": Object {
+        {
+          "application": {
             "applicationType": "intershop.B2CResponsive",
             "displayName": null,
             "urlIdentifier": "-",
           },
-          "basket": Object {
+          "basket": {
             "acceleration": true,
           },
-          "general": Object {
-            "locales": Array [
+          "general": {
+            "locales": [
               "en_US",
               "de_DE",
             ],
           },
-          "services": Object {
-            "captcha": Object {
+          "services": {
+            "captcha": {
               "siteKey": "ASDF",
             },
-            "deeper": Object {
-              "hidden": Object {
+            "deeper": {
+              "hidden": {
                 "alt": 123,
                 "foo": "bar",
                 "num": 123,
               },
             },
-            "gtm": Object {
+            "gtm": {
               "monitor": true,
               "token": "QWERTY",
             },
@@ -61,8 +61,8 @@ describe('Server Config Mapper', () => {
     });
 
     it(`should return an empty object for falsy input`, () => {
-      expect(ServerConfigMapper.fromData(undefined)).toMatchInlineSnapshot(`Object {}`);
-      expect(ServerConfigMapper.fromData({} as ServerConfigData)).toMatchInlineSnapshot(`Object {}`);
+      expect(ServerConfigMapper.fromData(undefined)).toMatchInlineSnapshot(`{}`);
+      expect(ServerConfigMapper.fromData({} as ServerConfigData)).toMatchInlineSnapshot(`{}`);
     });
   });
 });

@@ -11,7 +11,7 @@ describe('Data Request Mapper', () => {
       const dataRequest = DataRequestMapper.fromData(payloadData);
 
       expect(dataRequest).toMatchInlineSnapshot(`
-        Object {
+        {
           "infoCode": "already confirmed",
         }
       `);

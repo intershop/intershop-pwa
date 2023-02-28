@@ -174,21 +174,21 @@ describe('Users Selectors', () => {
       it('should select roles and permissions for state', () => {
         expect(isSystemUserRolesLoaded(store$.state)).toBeTrue();
         expect(getRoles(['B', 'A'])(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "displayName": "Name_A",
               "fixed": true,
               "id": "A",
-              "permissionDisplayNames": Array [
+              "permissionDisplayNames": [
                 "a1",
                 "a2",
               ],
             },
-            Object {
+            {
               "displayName": "Name_B",
               "fixed": false,
               "id": "B",
-              "permissionDisplayNames": Array [
+              "permissionDisplayNames": [
                 "b3",
                 "b2",
                 "b1",
@@ -197,12 +197,12 @@ describe('Users Selectors', () => {
           ]
         `);
         expect(getRoles(['A'])(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "displayName": "Name_A",
               "fixed": true,
               "id": "A",
-              "permissionDisplayNames": Array [
+              "permissionDisplayNames": [
                 "a1",
                 "a2",
               ],
@@ -210,11 +210,11 @@ describe('Users Selectors', () => {
           ]
         `);
         expect(getRole('A')(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "displayName": "Name_A",
             "fixed": true,
             "id": "A",
-            "permissionDisplayNames": Array [
+            "permissionDisplayNames": [
               "a1",
               "a2",
             ],
