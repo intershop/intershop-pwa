@@ -54,7 +54,12 @@ export const productNotificationReducer = createReducer(
     deleteProductNotificationSuccess
   ),
   on(loadProductNotificationsSuccess, (state, action) =>
-    productNotificationAdapter.upsertMany(action.payload.productNotifications, state)
+    /**
+     * The whole collection has to be replaced because any product notification could have
+     * been deleted on server side when the notification requirements are met and the
+     * notification email was sent.
+     */
+    productNotificationAdapter.setAll(action.payload.productNotifications, state)
   ),
   on(createProductNotificationSuccess, (state, action) =>
     productNotificationAdapter.addOne(action.payload.productNotification, state)
