@@ -63,6 +63,7 @@ export class UserProfileFormComponent implements OnInit {
             type: 'ish-checkbox-field',
             props: {
               label: 'account.user.active.label',
+              title: 'account.user.active.title',
             },
           },
           {

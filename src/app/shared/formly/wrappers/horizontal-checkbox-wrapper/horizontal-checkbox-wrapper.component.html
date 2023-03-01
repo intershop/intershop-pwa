@@ -1,14 +1,31 @@
-<div class="row" [ngClass]="field.type === 'ish-checkbox-field' ? 'form-group' : 'mb-2'">
-  <div [class.has-error]="showError" [ngClass]="props.fieldClass ? props.fieldClass : dto.fieldClass">
-    <div class="form-check" [attr.data-testing-id]="keyString + '-wrapper'">
-      <ng-template #fieldComponent></ng-template>
-      <label [attr.for]="id" class="form-check-label" [ngClass]="props.labelClass ? props.labelClass : dto.labelClass">
-        <span *ngIf="props.label">{{ props.label | translate }}</span>
-        <ish-field-tooltip *ngIf="props.tooltip" [tooltipInfo]="props.tooltip"> </ish-field-tooltip>
-      </label>
+<div [ngClass]="field.type === 'ish-checkbox-field' ? 'form-group' : 'mb-2'" class="row">
+  <label
+    [attr.for]="id"
+    class="col-form-label col-md-4"
+    [ngClass]="props.labelClass ? props.labelClass : dto.labelClass"
+    *ngIf="props.title"
+    >{{ props.title | translate }}<span class="required" *ngIf="props.required && !props.hideRequiredMarker">*</span>
+  </label>
+
+  <div
+    class="col-form-label col-md-8"
+    [ngClass]="(props.fieldClass || dto.fieldClass) && (props.title || props.fieldClass ? '' : dto.titleClass)"
+  >
+    <div [class.has-error]="showError">
+      <div class="form-check" [attr.data-testing-id]="keyString + '-wrapper'">
+        <ng-template #fieldComponent></ng-template>
+        <label
+          [attr.for]="id"
+          class="form-check-label"
+          [ngClass]="props.labelClass ? props.labelClass : dto.labelClass"
+        >
+          <span *ngIf="props.label">{{ props.label | translate }}</span>
+          <ish-field-tooltip *ngIf="props.tooltip" [tooltipInfo]="props.tooltip"> </ish-field-tooltip>
+        </label>
+      </div>
+      <ng-container *ngIf="showError" class="invalid-feedback d-block">
+        <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
+      </ng-container>
     </div>
-    <ng-container *ngIf="showError" class="invalid-feedback d-block">
-      <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
-    </ng-container>
   </div>
 </div>
