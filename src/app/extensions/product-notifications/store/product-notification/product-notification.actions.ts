@@ -1,4 +1,4 @@
-import { createAction } from '@ngrx/store';
+import { createActionGroup } from '@ngrx/store';
 
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
@@ -7,62 +7,33 @@ import {
   ProductNotificationType,
 } from '../../models/product-notification/product-notification.model';
 
-export const loadProductNotifications = createAction(
-  '[ProductNotification] Load ProductNotifications',
-  payload<{ type: ProductNotificationType }>()
-);
+export const productNotificationsActions = createActionGroup({
+  source: 'ProductNotification',
+  events: {
+    'Load Product Notifications': payload<{ type: ProductNotificationType }>(),
+    'Create Product Notification': payload<{ productNotification: ProductNotification }>(),
+    'Update Product Notification': payload<{ sku: string; productNotification: ProductNotification }>(),
+    'Delete Product Notification': payload<{
+      sku: string;
+      productNotificationType: ProductNotificationType;
+      productNotificationId: string;
+    }>(),
+  },
+});
 
-export const loadProductNotificationsSuccess = createAction(
-  '[ProductNotification API] Load ProductNotifications Success',
-  payload<{ productNotifications: ProductNotification[]; type: ProductNotificationType }>()
-);
-
-export const loadProductNotificationsFail = createAction(
-  '[ProductNotification API] Load ProductNotifications Fail',
-  httpError()
-);
-
-export const createProductNotification = createAction(
-  '[Product Notification] Create Product Notification',
-  payload<{ productNotification: ProductNotification }>()
-);
-
-export const createProductNotificationSuccess = createAction(
-  '[Product Notification API] Create Product Notification Success',
-  payload<{ productNotification: ProductNotification }>()
-);
-
-export const createProductNotificationFail = createAction(
-  '[Product Notification API] Create Product Notification Fail',
-  httpError()
-);
-
-export const updateProductNotification = createAction(
-  '[Product Notification] Update Product Notification',
-  payload<{ sku: string; productNotification: ProductNotification }>()
-);
-
-export const updateProductNotificationSuccess = createAction(
-  '[Product Notification API] Update Product Notification Success',
-  payload<{ productNotification: ProductNotification }>()
-);
-
-export const updateProductNotificationFail = createAction(
-  '[Product Notification API] Update Product Notification Fail',
-  httpError()
-);
-
-export const deleteProductNotification = createAction(
-  '[Product Notification] Delete Product Notification',
-  payload<{ sku: string; productNotificationType: ProductNotificationType; productNotificationId: string }>()
-);
-
-export const deleteProductNotificationSuccess = createAction(
-  '[Product Notification API] Delete Product Notification Success',
-  payload<{ productNotificationId: string }>()
-);
-
-export const deleteProductNotificationFail = createAction(
-  '[Product Notification API] Delete Product Notification Fail',
-  httpError()
-);
+export const productNotificationsApiActions = createActionGroup({
+  source: 'ProductNotification API',
+  events: {
+    'Load Product Notifications Success': payload<{
+      productNotifications: ProductNotification[];
+      type: ProductNotificationType;
+    }>(),
+    'Load Product Notifications Fail': httpError<{}>(),
+    'Create Product Notification Success': payload<{ productNotification: ProductNotification }>(),
+    'Create Product Notification Fail': httpError<{}>(),
+    'Update Product Notification Success': payload<{ productNotification: ProductNotification }>(),
+    'Update Product Notification Fail': httpError<{}>(),
+    'Delete Product Notification Success': payload<{ productNotificationId: string }>(),
+    'Delete Product Notification Fail': httpError<{}>(),
+  },
+});

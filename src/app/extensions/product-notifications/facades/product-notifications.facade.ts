@@ -11,14 +11,11 @@ import {
   ProductNotificationType,
 } from '../models/product-notification/product-notification.model';
 import {
-  createProductNotification,
-  deleteProductNotification,
   getProductNotificationBySku,
   getProductNotificationsByType,
   getProductNotificationsError,
   getProductNotificationsLoading,
-  loadProductNotifications,
-  updateProductNotification,
+  productNotificationsActions,
 } from '../store/product-notification';
 
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -27,13 +24,13 @@ export class ProductNotificationsFacade {
   constructor(private store: Store) {}
 
   private productNotifications$(type: ProductNotificationType) {
-    this.store.dispatch(loadProductNotifications({ type }));
+    this.store.dispatch(productNotificationsActions.loadProductNotifications({ type }));
     return this.store.pipe(select(getProductNotificationsByType(type)));
   }
 
   // get a product notification by sku and the type
   productNotificationBySku$(sku: string, type: ProductNotificationType) {
-    this.store.dispatch(loadProductNotifications({ type }));
+    this.store.dispatch(productNotificationsActions.loadProductNotifications({ type }));
 
     return this.store.pipe(select(getProductNotificationBySku(sku, type))).pipe(
       map(notifications => (notifications?.length ? notifications[0] : undefined)),
@@ -43,12 +40,12 @@ export class ProductNotificationsFacade {
 
   // create a product notification
   createProductNotification(productNotification: ProductNotification) {
-    this.store.dispatch(createProductNotification({ productNotification }));
+    this.store.dispatch(productNotificationsActions.createProductNotification({ productNotification }));
   }
 
   // update a product notification
   updateProductNotification(sku: string, productNotification: ProductNotification) {
-    this.store.dispatch(updateProductNotification({ sku, productNotification }));
+    this.store.dispatch(productNotificationsActions.updateProductNotification({ sku, productNotification }));
   }
 
   // delete a product notification
@@ -57,7 +54,9 @@ export class ProductNotificationsFacade {
     productNotificationType: ProductNotificationType,
     productNotificationId: string
   ) {
-    this.store.dispatch(deleteProductNotification({ sku, productNotificationType, productNotificationId }));
+    this.store.dispatch(
+      productNotificationsActions.deleteProductNotification({ sku, productNotificationType, productNotificationId })
+    );
   }
 
   productNotificationsLoading$: Observable<boolean> = this.store.pipe(select(getProductNotificationsLoading));

@@ -7,20 +7,7 @@ import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from
 
 import { ProductNotificationsService } from '../../services/product-notifications/product-notifications.service';
 
-import {
-  createProductNotification,
-  createProductNotificationFail,
-  createProductNotificationSuccess,
-  deleteProductNotification,
-  deleteProductNotificationFail,
-  deleteProductNotificationSuccess,
-  loadProductNotifications,
-  loadProductNotificationsFail,
-  loadProductNotificationsSuccess,
-  updateProductNotification,
-  updateProductNotificationFail,
-  updateProductNotificationSuccess,
-} from './product-notification.actions';
+import { productNotificationsActions, productNotificationsApiActions } from './product-notification.actions';
 
 @Injectable()
 export class ProductNotificationEffects {
@@ -28,12 +15,14 @@ export class ProductNotificationEffects {
 
   loadProductNotifications$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadProductNotifications),
+      ofType(productNotificationsActions.loadProductNotifications),
       mapToPayloadProperty('type'),
       concatMap(type =>
         this.productNotificationsService.getProductNotifications(type).pipe(
-          map(productNotifications => loadProductNotificationsSuccess({ productNotifications, type })),
-          mapErrorToAction(loadProductNotificationsFail)
+          map(productNotifications =>
+            productNotificationsApiActions.loadProductNotificationsSuccess({ productNotifications, type })
+          ),
+          mapErrorToAction(productNotificationsApiActions.loadProductNotificationsFail)
         )
       )
     )
@@ -41,18 +30,18 @@ export class ProductNotificationEffects {
 
   createProductNotification$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(createProductNotification),
+      ofType(productNotificationsActions.createProductNotification),
       mapToPayload(),
       whenTruthy(),
       mergeMap(payload =>
         this.productNotificationsService.createProductNotification(payload.productNotification).pipe(
           mergeMap(productNotification => [
-            createProductNotificationSuccess({ productNotification }),
+            productNotificationsApiActions.createProductNotificationSuccess({ productNotification }),
             displaySuccessMessage({
               message: 'product.notification.create.success.message',
             }),
           ]),
-          mapErrorToAction(createProductNotificationFail)
+          mapErrorToAction(productNotificationsApiActions.createProductNotificationFail)
         )
       )
     )
@@ -60,18 +49,18 @@ export class ProductNotificationEffects {
 
   updateProductNotification$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateProductNotification),
+      ofType(productNotificationsActions.updateProductNotification),
       mapToPayload(),
       whenTruthy(),
       mergeMap(payload =>
         this.productNotificationsService.updateProductNotification(payload.sku, payload.productNotification).pipe(
           mergeMap(productNotification => [
-            updateProductNotificationSuccess({ productNotification }),
+            productNotificationsApiActions.updateProductNotificationSuccess({ productNotification }),
             displaySuccessMessage({
               message: 'product.notification.update.success.message',
             }),
           ]),
-          mapErrorToAction(updateProductNotificationFail)
+          mapErrorToAction(productNotificationsApiActions.updateProductNotificationFail)
         )
       )
     )
@@ -79,17 +68,19 @@ export class ProductNotificationEffects {
 
   deleteProductNotification$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(deleteProductNotification),
+      ofType(productNotificationsActions.deleteProductNotification),
       mapToPayload(),
       mergeMap(payload =>
         this.productNotificationsService.deleteProductNotification(payload.sku, payload.productNotificationType).pipe(
           mergeMap(() => [
-            deleteProductNotificationSuccess({ productNotificationId: payload.productNotificationId }),
+            productNotificationsApiActions.deleteProductNotificationSuccess({
+              productNotificationId: payload.productNotificationId,
+            }),
             displaySuccessMessage({
               message: 'product.notification.delete.success.message',
             }),
           ]),
-          mapErrorToAction(deleteProductNotificationFail)
+          mapErrorToAction(productNotificationsApiActions.deleteProductNotificationFail)
         )
       )
     )
@@ -97,7 +88,11 @@ export class ProductNotificationEffects {
 
   displayProductNotificationErrorMessage$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadProductNotificationsFail, createProductNotificationFail, deleteProductNotificationFail),
+      ofType(
+        productNotificationsApiActions.loadProductNotificationsFail,
+        productNotificationsApiActions.createProductNotificationFail,
+        productNotificationsApiActions.deleteProductNotificationFail
+      ),
       mapToPayloadProperty('error'),
       map(error =>
         displayErrorMessage({

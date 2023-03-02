@@ -13,11 +13,7 @@ import {
 } from '../../models/product-notification/product-notification.model';
 import { ProductNotificationsService } from '../../services/product-notifications/product-notifications.service';
 
-import {
-  loadProductNotifications,
-  loadProductNotificationsFail,
-  loadProductNotificationsSuccess,
-} from './product-notification.actions';
+import { productNotificationsActions, productNotificationsApiActions } from './product-notification.actions';
 import { ProductNotificationEffects } from './product-notification.effects';
 
 const productNotifications: ProductNotification[] = [
@@ -63,13 +59,13 @@ describe('Product Notification Effects', () => {
     });
 
     it('should call the service for retrieving product notifications', done => {
-      actions$ = of(loadProductNotifications({ type: 'price' }));
+      actions$ = of(productNotificationsActions.loadProductNotifications({ type: 'price' }));
       effects.loadProductNotifications$.subscribe(() => {
         verify(productNotificationsServiceMock.getProductNotifications('price')).once();
         done();
       });
 
-      actions$ = of(loadProductNotifications({ type: 'stock' }));
+      actions$ = of(productNotificationsActions.loadProductNotifications({ type: 'stock' }));
       effects.loadProductNotifications$.subscribe(() => {
         verify(productNotificationsServiceMock.getProductNotifications('stock')).once();
         done();
@@ -77,8 +73,8 @@ describe('Product Notification Effects', () => {
     });
 
     it('should map to actions of type LoadProductNotificationsSuccess', () => {
-      const action = loadProductNotifications({ type: 'price' });
-      const completion = loadProductNotificationsSuccess({
+      const action = productNotificationsActions.loadProductNotifications({ type: 'price' });
+      const completion = productNotificationsApiActions.loadProductNotificationsSuccess({
         productNotifications,
         type,
       });
@@ -92,8 +88,10 @@ describe('Product Notification Effects', () => {
       when(productNotificationsServiceMock.getProductNotifications(anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
-      const action = loadProductNotifications({ type: 'price' });
-      const completion = loadProductNotificationsFail({ error: makeHttpError({ message: 'invalid' }) });
+      const action = productNotificationsActions.loadProductNotifications({ type: 'price' });
+      const completion = productNotificationsApiActions.loadProductNotificationsFail({
+        error: makeHttpError({ message: 'invalid' }),
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

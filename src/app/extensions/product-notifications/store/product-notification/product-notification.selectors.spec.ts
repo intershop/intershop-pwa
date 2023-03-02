@@ -10,11 +10,7 @@ import {
 } from '../../models/product-notification/product-notification.model';
 import { ProductNotificationsStoreModule } from '../product-notifications-store.module';
 
-import {
-  loadProductNotifications,
-  loadProductNotificationsFail,
-  loadProductNotificationsSuccess,
-} from './product-notification.actions';
+import { productNotificationsActions, productNotificationsApiActions } from './product-notification.actions';
 import {
   getAllProductNotifications,
   getProductNotificationsError,
@@ -48,7 +44,7 @@ describe('Product Notification Selectors', () => {
   });
 
   describe('LoadProductNotifications', () => {
-    const action = loadProductNotifications({ type: 'price' });
+    const action = productNotificationsActions.loadProductNotifications({ type: 'price' });
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -59,7 +55,7 @@ describe('Product Notification Selectors', () => {
     });
   });
 
-  describe('loadProductNotificationsSuccess', () => {
+  describe('productNotificationsActions.loadProductNotificationsSuccess', () => {
     const productNotifications = [
       {
         id: '1_price',
@@ -78,7 +74,7 @@ describe('Product Notification Selectors', () => {
     const type: ProductNotificationType = 'price';
 
     beforeEach(() => {
-      store$.dispatch(loadProductNotificationsSuccess({ productNotifications, type }));
+      store$.dispatch(productNotificationsApiActions.loadProductNotificationsSuccess({ productNotifications, type }));
     });
 
     it('should set loading to false', () => {
@@ -96,7 +92,9 @@ describe('Product Notification Selectors', () => {
 
   describe('loadProductNotificationsFail', () => {
     beforeEach(() => {
-      store$.dispatch(loadProductNotificationsFail({ error: makeHttpError({ message: 'error' }) }));
+      store$.dispatch(
+        productNotificationsApiActions.loadProductNotificationsFail({ error: makeHttpError({ message: 'error' }) })
+      );
     });
 
     it('should set loading to false', () => {

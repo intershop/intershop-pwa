@@ -6,20 +6,7 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils
 
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
-import {
-  createProductNotification,
-  createProductNotificationFail,
-  createProductNotificationSuccess,
-  deleteProductNotification,
-  deleteProductNotificationFail,
-  deleteProductNotificationSuccess,
-  loadProductNotifications,
-  loadProductNotificationsFail,
-  loadProductNotificationsSuccess,
-  updateProductNotification,
-  updateProductNotificationFail,
-  updateProductNotificationSuccess,
-} from './product-notification.actions';
+import { productNotificationsActions, productNotificationsApiActions } from './product-notification.actions';
 
 export const productNotificationAdapter = createEntityAdapter<ProductNotification>();
 
@@ -36,24 +23,24 @@ export const initialState: ProductNotificationState = productNotificationAdapter
 export const productNotificationReducer = createReducer(
   initialState,
   setLoadingOn(
-    loadProductNotifications,
-    createProductNotification,
-    updateProductNotification,
-    deleteProductNotification
+    productNotificationsActions.loadProductNotifications,
+    productNotificationsActions.createProductNotification,
+    productNotificationsActions.updateProductNotification,
+    productNotificationsActions.deleteProductNotification
   ),
   setErrorOn(
-    loadProductNotificationsFail,
-    createProductNotificationFail,
-    updateProductNotificationFail,
-    deleteProductNotificationFail
+    productNotificationsApiActions.loadProductNotificationsFail,
+    productNotificationsApiActions.createProductNotificationFail,
+    productNotificationsApiActions.updateProductNotificationFail,
+    productNotificationsApiActions.deleteProductNotificationFail
   ),
   unsetLoadingAndErrorOn(
-    loadProductNotificationsSuccess,
-    createProductNotificationSuccess,
-    updateProductNotificationSuccess,
-    deleteProductNotificationSuccess
+    productNotificationsApiActions.loadProductNotificationsSuccess,
+    productNotificationsApiActions.createProductNotificationSuccess,
+    productNotificationsApiActions.updateProductNotificationSuccess,
+    productNotificationsApiActions.deleteProductNotificationSuccess
   ),
-  on(loadProductNotificationsSuccess, (state, action) =>
+  on(productNotificationsApiActions.loadProductNotificationsSuccess, (state, action) =>
     /**
      * Product notifications can be deleted on server side when the notification requirements
      * are met and the notification email was sent. Therefore, all product notifications
@@ -64,13 +51,13 @@ export const productNotificationReducer = createReducer(
       ...productNotificationAdapter.removeMany(entity => entity.type === action.payload.type, state),
     })
   ),
-  on(createProductNotificationSuccess, (state, action) =>
+  on(productNotificationsApiActions.createProductNotificationSuccess, (state, action) =>
     productNotificationAdapter.addOne(action.payload.productNotification, state)
   ),
-  on(updateProductNotificationSuccess, (state, action) =>
+  on(productNotificationsApiActions.updateProductNotificationSuccess, (state, action) =>
     productNotificationAdapter.upsertOne(action.payload.productNotification, state)
   ),
-  on(deleteProductNotificationSuccess, (state, action) => {
+  on(productNotificationsApiActions.deleteProductNotificationSuccess, (state, action) => {
     const id = action.payload.productNotificationId;
 
     return {
