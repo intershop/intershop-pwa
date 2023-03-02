@@ -19,6 +19,32 @@ In addition all other dependencies where updated as well and resulted in necessa
 The placeholder for theme specific assets and styles has been changed from `placeholder` to `theme_placeholder`.
 If this is used in any customization, update all paths, which are using the old theme placeholder e.g. `src/styles/themes/placeholder` to `src/styles/themes/theme_placeholder`.
 
+The injection token `LOCAL_TRANSLATIONS` is introduced to use local translation files within the custom [ICM translation loader](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/core/utils/translate/icm-translate-loader.ts).
+A factory function is provided in the [`internationalization.module.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/core/internationalization.module.ts) to decide which json file with translation keys should be used for a given language.
+
+```typescript
+  providers: [
+    ...
+    {
+      provide: LOCAL_TRANSLATIONS,
+      useValue: {
+        useFactory: (lang: string) => {
+          switch (lang) {
+            case 'en_US':
+              return import('../../assets/i18n/en_US.json');
+            case 'fr_FR':
+              return import('../../assets/i18n/fr_FR.json');
+            case 'de_DE':
+              return import('../../assets/i18n/de_DE.json');
+          }
+        },
+      },
+    },
+  ],
+```
+
+Please adapt the `useFactory()` function to return all imported local translation files depending on the `lang` parameter.
+
 The account navigation was reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
 For better maintainability and brand specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
 Also with this rework the navigation items data structure was changed from a key value object to a simpler `NavigationItem` Array.
