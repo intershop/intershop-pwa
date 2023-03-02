@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { TranslateLoader } from '@ngx-translate/core';
 import { memoize } from 'lodash-es';
@@ -9,14 +9,26 @@ import { LocalizationsService } from 'ish-core/services/localizations/localizati
 
 import { Translations } from './translations.type';
 
+interface LocalTranslations {
+  // return a promise with desired local translations based on given lang
+  useFactory(lang: string): Promise<object>;
+}
+
+export const LOCAL_TRANSLATIONS = new InjectionToken<LocalTranslations>('translations');
+
 @Injectable()
 export class ICMTranslateLoader implements TranslateLoader {
-  constructor(private transferState: TransferState, private localizations: LocalizationsService) {}
+  constructor(
+    private transferState: TransferState,
+    private localizations: LocalizationsService,
+    @Inject(LOCAL_TRANSLATIONS) private localTranslations: LocalTranslations
+  ) {}
 
   getTranslation = memoize(lang => {
     const SSR_TRANSLATIONS = makeStateKey<Translations>(`ssrTranslations-${lang}`);
 
-    const local$ = defer(() => from(import(`../../../../assets/i18n/${lang}.json`)).pipe(catchError(() => of({}))));
+    const local$ = defer(() => from(this.localTranslations.useFactory(lang)).pipe(catchError(() => of({}))));
+
     const server$ = iif(
       () => !SSR && this.transferState.hasKey(SSR_TRANSLATIONS),
       of(this.transferState.get(SSR_TRANSLATIONS, {})),

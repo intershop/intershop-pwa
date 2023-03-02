@@ -277,6 +277,27 @@ To add other languages except English, German or French:
    registerLocaleData(localeNl);
    ```
 
+7. Add new json-mapping-file import to `LOCAL_TRANSLATIONS` injection token in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts) provider:
+
+   ```typescript
+    providers: [
+      {
+        provide: LOCAL_TRANSLATIONS,
+        useValue: {
+          useFactory: (lang: string) => {
+            switch (lang) {
+              // other added json-mapping-file imports with translations
+              ...
+              case: nl_NL {
+                return import('../../assets/i18n/nl_NL.json');
+              }
+            }
+          },
+        },
+      }
+   ]
+   ```
+
 # Further References
 
 - [Concept - Multi-Site Handling][concept-multi-site]
