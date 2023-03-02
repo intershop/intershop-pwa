@@ -8,12 +8,13 @@ import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import {
   addItemsToBasketSuccess,
+  deleteBasketItem,
   deleteBasketItemSuccess,
   loadBasketSuccess,
   submitBasketSuccess,
   updateBasketItemSuccess,
 } from 'ish-core/store/customer/basket';
-import { getBasketInfo, getCurrentBasket, getSubmittedBasket } from 'ish-core/store/customer/basket/basket.selectors';
+import { getCurrentBasket, getSubmittedBasket } from 'ish-core/store/customer/basket/basket.selectors';
 import { getPriceDisplayType } from 'ish-core/store/customer/user';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
@@ -77,18 +78,22 @@ export class MatomoEffects {
   deleteProductFromBasket$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(deleteBasketItemSuccess),
+        ofType(deleteBasketItem),
         mapToPayloadProperty('itemId'),
-        withLatestFrom(this.store.pipe(select(getBasketInfo))),
-        log('DELETE - Basket')
-        // map(([itemId, basket]) => basket.lineItems.filter(lineItem => lineItem.id === itemId)?.[0]),
-        // filter(item => !!item),
-        // log('DELETE'),
-        // map(lineItem => {
-        //   this.tracker.removeEcommerceItem(lineItem.productSKU);
-        //   console.log(`Item with ID:  ${lineItem.productSKU} has been deleted from the basket`);
-        //   return lineItem;
-        // })
+        withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+        map(([itemId, basket]) => basket.lineItems.filter(lineItem => lineItem.id === itemId)?.[0]),
+        filter(item => !!item),
+        log('DELETE'),
+        mergeMap(async item => {
+          const deleteAction = await deleteBasketItemSuccess;
+
+          if (deleteAction) {
+            this.tracker.removeEcommerceItem(item.productSKU);
+            console.log(`Product ${item.id} was deleted from the basket`);
+          } else {
+            console.log('Something went wrong');
+          }
+        })
       ),
     { dispatch: false }
   );
