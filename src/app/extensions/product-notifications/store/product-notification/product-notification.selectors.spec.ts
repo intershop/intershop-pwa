@@ -4,7 +4,10 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { ProductNotification } from '../../models/product-notification/product-notification.model';
+import {
+  ProductNotification,
+  ProductNotificationType,
+} from '../../models/product-notification/product-notification.model';
 import { ProductNotificationsStoreModule } from '../product-notifications-store.module';
 
 import {
@@ -72,8 +75,10 @@ describe('Product Notification Selectors', () => {
       },
     ] as ProductNotification[];
 
+    const type: ProductNotificationType = 'price';
+
     beforeEach(() => {
-      store$.dispatch(loadProductNotificationsSuccess({ productNotifications }));
+      store$.dispatch(loadProductNotificationsSuccess({ productNotifications, type }));
     });
 
     it('should set loading to false', () => {
