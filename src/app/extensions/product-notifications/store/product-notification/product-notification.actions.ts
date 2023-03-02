@@ -14,7 +14,7 @@ export const loadProductNotifications = createAction(
 
 export const loadProductNotificationsSuccess = createAction(
   '[ProductNotification API] Load ProductNotifications Success',
-  payload<{ productNotifications: ProductNotification[] }>()
+  payload<{ productNotifications: ProductNotification[]; type: ProductNotificationType }>()
 );
 
 export const loadProductNotificationsFail = createAction(

@@ -7,7 +7,10 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
-import { ProductNotification } from '../../models/product-notification/product-notification.model';
+import {
+  ProductNotification,
+  ProductNotificationType,
+} from '../../models/product-notification/product-notification.model';
 import { ProductNotificationsService } from '../../services/product-notifications/product-notifications.service';
 
 import {
@@ -33,6 +36,8 @@ const productNotifications: ProductNotification[] = [
     price: { type: 'Money', value: 15, currency: 'USD' },
   },
 ];
+
+const type: ProductNotificationType = 'price';
 
 describe('Product Notification Effects', () => {
   let actions$: Observable<Action>;
@@ -75,6 +80,7 @@ describe('Product Notification Effects', () => {
       const action = loadProductNotifications({ type: 'price' });
       const completion = loadProductNotificationsSuccess({
         productNotifications,
+        type,
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

@@ -32,7 +32,7 @@ export class ProductNotificationEffects {
       mapToPayloadProperty('type'),
       concatMap(type =>
         this.productNotificationsService.getProductNotifications(type).pipe(
-          map(productNotifications => loadProductNotificationsSuccess({ productNotifications })),
+          map(productNotifications => loadProductNotificationsSuccess({ productNotifications, type })),
           mapErrorToAction(loadProductNotificationsFail)
         )
       )

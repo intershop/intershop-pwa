@@ -28,7 +28,6 @@ export class AccountProductNotificationsPageComponent implements OnInit, OnDestr
   private destroy$ = new Subject<void>();
 
   ngOnInit() {
-    // TODO: some product notification in the state management reset before fetching the current product notifications
     this.productNotifications$ = this.productNotificationsFacade.productNotificationsByRoute$;
     this.productNotificationsLoading$ = this.productNotificationsFacade.productNotificationsLoading$;
     this.productNotificationsError$ = this.productNotificationsFacade.productNotificationsError$;

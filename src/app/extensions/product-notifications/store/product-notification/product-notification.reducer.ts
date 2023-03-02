@@ -55,11 +55,14 @@ export const productNotificationReducer = createReducer(
   ),
   on(loadProductNotificationsSuccess, (state, action) =>
     /**
-     * The whole collection has to be replaced because any product notification could have
-     * been deleted on server side when the notification requirements are met and the
-     * notification email was sent.
+     * Product notifications can be deleted on server side when the notification requirements
+     * are met and the notification email was sent. Therefore, all product notifications
+     * have to be removed from the state which are not returned from the service before they
+     * are loaded, displayed or used.
      */
-    productNotificationAdapter.setAll(action.payload.productNotifications, state)
+    productNotificationAdapter.upsertMany(action.payload.productNotifications, {
+      ...productNotificationAdapter.removeMany(entity => entity.type === action.payload.type, state),
+    })
   ),
   on(createProductNotificationSuccess, (state, action) =>
     productNotificationAdapter.addOne(action.payload.productNotification, state)
