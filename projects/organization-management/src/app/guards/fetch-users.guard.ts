@@ -1,24 +1,24 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { getUserCount, loadUsers } from '../store/users';
 
-@Injectable({ providedIn: 'root' })
-export class FetchUsersGuard implements CanActivate {
-  constructor(private store: Store) {}
+/**
+ * Fetch users for user management page
+ */
+export function fetchUsersGuard(route: ActivatedRouteSnapshot): boolean | Observable<boolean> {
+  const store = inject(Store);
 
-  canActivate(route: ActivatedRouteSnapshot): boolean | Observable<boolean> {
-    return this.store.pipe(
-      select(getUserCount),
-      tap(count => {
-        if (count <= 1 || !route.data.onlyInitialUsers) {
-          this.store.dispatch(loadUsers());
-        }
-      }),
-      map(() => true)
-    );
-  }
+  return store.pipe(
+    select(getUserCount),
+    tap(count => {
+      if (count <= 1 || !route.data.onlyInitialUsers) {
+        store.dispatch(loadUsers());
+      }
+    }),
+    map(() => true)
+  );
 }

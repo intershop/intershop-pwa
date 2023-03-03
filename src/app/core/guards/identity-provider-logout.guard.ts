@@ -1,17 +1,13 @@
-import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { inject } from '@angular/core';
 import { isObservable, of } from 'rxjs';
 
 import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
 
-@Injectable({ providedIn: 'root' })
-export class IdentityProviderLogoutGuard implements CanActivate {
-  constructor(private identityProviderFactory: IdentityProviderFactory) {}
+export function identityProviderLogoutGuard() {
+  const identityProviderFactory = inject(IdentityProviderFactory);
 
-  canActivate() {
-    const logoutReturn$ = this.identityProviderFactory.getInstance().triggerLogout();
-    return isObservable(logoutReturn$) || isPromise(logoutReturn$) ? logoutReturn$ : of(logoutReturn$);
-  }
+  const logoutReturn$ = identityProviderFactory.getInstance().triggerLogout();
+  return isObservable(logoutReturn$) || isPromise(logoutReturn$) ? logoutReturn$ : of(logoutReturn$);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

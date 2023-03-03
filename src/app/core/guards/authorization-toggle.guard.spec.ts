@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 
-import { AuthorizationToggleGuard } from './authorization-toggle.guard';
+import { authorizationToggleGuard } from './authorization-toggle.guard';
 
 describe('Authorization Toggle Guard', () => {
   let router: Router;
@@ -21,13 +21,13 @@ describe('Authorization Toggle Guard', () => {
           {
             path: 'page1',
             children: [],
-            canActivate: [AuthorizationToggleGuard],
+            canActivate: [authorizationToggleGuard],
             data: { permission: 'DO_THIS' },
           },
           {
             path: 'page2',
             children: [],
-            canActivate: [AuthorizationToggleGuard],
+            canActivate: [authorizationToggleGuard],
             data: { permission: 'DO_THAT' },
           },
         ]),

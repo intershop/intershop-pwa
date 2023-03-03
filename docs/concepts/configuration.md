@@ -190,13 +190,13 @@ const routes: Routes = [
   {
     path: 'quote',
     loadChildren: ...,
-    canActivate: [FeatureToggleGuard],
+    canActivate: [featureToggleGuard],
     data: { feature: 'quoting' },
   },
 ...
 ```
 
-Add the Guard as `CanActivate` to the routing definition.
+Add the Guard as `canActivate` to the routing definition.
 Additionally, you have to supply a `data` field called `feature`, containing a string that determines for which feature the route should be active.
 If the feature is deactivated, the user is sent to the error page on accessing.
 

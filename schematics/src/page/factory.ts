@@ -31,7 +31,7 @@ function addRouteToArray(
   const path = options.child ? options.child : options.lazy ? dasherizedName : dasherizedName.replace(/-/g, '/');
 
   const guard = options.extension
-    ? `, canActivate: [FeatureToggleGuard], data: { feature: '${strings.camelize(options.extension)}' }`
+    ? `, canActivate: [featureToggleGuard], data: { feature: '${strings.camelize(options.extension)}' }`
     : '';
 
   if (options.lazy) {
@@ -172,7 +172,7 @@ export function createPage(options: Options): Rule {
       operations.push(
         addImportToFile({
           module: options.routingModule,
-          artifactName: 'FeatureToggleGuard',
+          artifactName: 'featureToggleGuard',
           moduleImportPath: '/src/app/core/feature-toggle.module',
         })
       );

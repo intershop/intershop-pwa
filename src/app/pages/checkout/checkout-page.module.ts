@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { NoServerSideRenderingGuard } from 'ish-core/guards/no-server-side-rendering.guard';
+import { noServerSideRenderingGuard } from 'ish-core/guards/no-server-side-rendering.guard';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { CheckoutAddressPageModule } from '../checkout-address/checkout-address-page.module';
@@ -11,36 +11,36 @@ import { CheckoutReviewPageModule } from '../checkout-review/checkout-review-pag
 import { CheckoutShippingPageModule } from '../checkout-shipping/checkout-shipping-page.module';
 
 import { CheckoutPageComponent } from './checkout-page.component';
-import { CheckoutPageGuard } from './checkout-page.guard';
+import { checkoutPageGuard } from './checkout-page.guard';
 import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-progress-bar.component';
 
 const checkoutPageRoutes: Routes = [
   {
     path: '',
-    canActivate: [NoServerSideRenderingGuard],
+    canActivate: [noServerSideRenderingGuard],
     component: CheckoutPageComponent,
     children: [
       {
         path: 'address',
-        canActivate: [CheckoutPageGuard],
+        canActivate: [checkoutPageGuard],
         data: { checkoutStep: 1 },
         component: CheckoutAddressPageModule.component,
       },
       {
         path: 'shipping',
-        canActivate: [CheckoutPageGuard],
+        canActivate: [checkoutPageGuard],
         data: { checkoutStep: 2 },
         component: CheckoutShippingPageModule.component,
       },
       {
         path: 'payment',
-        canActivate: [CheckoutPageGuard],
+        canActivate: [checkoutPageGuard],
         data: { checkoutStep: 3 },
         component: CheckoutPaymentPageModule.component,
       },
       {
         path: 'review',
-        canActivate: [CheckoutPageGuard],
+        canActivate: [checkoutPageGuard],
         data: { checkoutStep: 4 },
         component: CheckoutReviewPageModule.component,
       },

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
-import { AuthGuard } from 'ish-core/guards/auth.guard';
+import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { authGuard } from 'ish-core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'addProductToQuoteRequest',
-    canActivate: [FeatureToggleGuard, AuthGuard],
+    canActivate: [featureToggleGuard, authGuard],
     loadChildren: () =>
       import('./quoting-product-add-to-quote-request-routing.module').then(
         m => m.QuotingProductAddToQuoteRequestRoutingModule

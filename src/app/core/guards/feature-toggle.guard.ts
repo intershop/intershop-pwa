@@ -1,27 +1,25 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 
-@Injectable({ providedIn: 'root' })
-export class FeatureToggleGuard implements CanActivate {
-  constructor(
-    private featureToggleService: FeatureToggleService,
-    private router: Router,
-    private httpStatusCodeService: HttpStatusCodeService
-  ) {}
+/**
+ * Routes only to the page if the configured feature toggle at the route is switched on
+ */
+export function featureToggleGuard(route: ActivatedRouteSnapshot) {
+  const featureToggleService = inject(FeatureToggleService);
+  const router = inject(Router);
+  const httpStatusCodeService = inject(HttpStatusCodeService);
 
-  canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot) {
-    if (!this.featureToggleService.enabled(route.data.feature)) {
-      this.httpStatusCodeService.setStatus(404, false);
-      return this.router.createUrlTree(['/error'], {
-        queryParams: {
-          error: 'feature-deactivated',
-          value: route.data.feature,
-        },
-      });
-    }
-    return true;
+  if (!featureToggleService.enabled(route.data.feature)) {
+    httpStatusCodeService.setStatus(404, false);
+    return router.createUrlTree(['/error'], {
+      queryParams: {
+        error: 'feature-deactivated',
+        value: route.data.feature,
+      },
+    });
   }
+  return true;
 }

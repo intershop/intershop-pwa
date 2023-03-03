@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
-@Injectable()
-export class PunchoutPageGuard implements CanActivate {
-  constructor(private router: Router) {}
+/**
+ * In case of CSR the user is redirected to the login page
+ */
+export function punchoutPageGuard(route: ActivatedRouteSnapshot) {
+  const router = inject(Router);
 
-  canActivate(route: ActivatedRouteSnapshot) {
-    // prevent any punchout handling on the server and instead show loading
-    if (SSR) {
-      return this.router.parseUrl('/loading');
-    }
-
-    return this.router.createUrlTree(['/login'], { queryParams: route.queryParams });
+  if (SSR) {
+    return router.parseUrl('/loading');
   }
+
+  return router.createUrlTree(['/login'], { queryParams: route.queryParams });
 }

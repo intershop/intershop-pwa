@@ -255,7 +255,7 @@ describe('Page Schematic', () => {
       const tree = await schematicRunner.runSchematic('page', options, appTree);
       const appRoutingModule = tree.readContent('/src/app/extensions/feature/pages/feature-routing.module.ts');
       expect(appRoutingModule).toContain(
-        `{ path: 'foo', component: FooPageComponent, canActivate: [FeatureToggleGuard], data: { feature: 'feature' } }`
+        `{ path: 'foo', component: FooPageComponent, canActivate: [featureToggleGuard], data: { feature: 'feature' } }`
       );
       expect(appRoutingModule).toContain("import { FooPageComponent } from './foo/foo-page.component'");
     });
@@ -266,7 +266,7 @@ describe('Page Schematic', () => {
       const tree = await schematicRunner.runSchematic('page', options, appTree);
       const appRoutingModule = tree.readContent('/src/app/extensions/feature2/pages/feature2-routing.module.ts');
       expect(appRoutingModule).toContain(
-        `{ path: 'foo', component: FooPageComponent, canActivate: [FeatureToggleGuard], data: { feature: 'feature2' } }`
+        `{ path: 'foo', component: FooPageComponent, canActivate: [featureToggleGuard], data: { feature: 'feature2' } }`
       );
       expect(appRoutingModule).toContain("import { FooPageComponent } from './foo/foo-page.component'");
     });
