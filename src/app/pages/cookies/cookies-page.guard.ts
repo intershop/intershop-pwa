@@ -1,44 +1,44 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, NavigationEnd, Router } from '@angular/router';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { inject } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { filter, first } from 'rxjs/operators';
 
 import { CookiesModalComponent } from './cookies-modal/cookies-modal.component';
 
-@Injectable()
-export class CookiesPageGuard implements CanActivate {
-  private currentDialog: NgbModalRef;
+/**
+ * In case of CSR the cookie consent dialog is shown
+ */
 
-  constructor(private modalService: NgbModal, private router: Router) {}
+export async function cookiesPageGuard() {
+  const modalService = inject(NgbModal);
+  const router = inject(Router);
 
-  async canActivate() {
-    if (SSR) {
-      return this.router.parseUrl('/loading');
-    }
-
-    this.currentDialog = this.modalService.open(CookiesModalComponent, {
-      centered: true,
-      size: 'lg',
-      backdrop: 'static',
-    });
-
-    const cookiesModalComponent = this.currentDialog.componentInstance as CookiesModalComponent;
-
-    // dialog closed
-    cookiesModalComponent.closeModal.pipe(first()).subscribe(() => {
-      this.currentDialog.dismiss();
-    });
-
-    // navigated away with link on dialog
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        first()
-      )
-      .subscribe(() => {
-        this.currentDialog.dismiss();
-      });
-
-    return false;
+  if (SSR) {
+    return router.parseUrl('/loading');
   }
+
+  const currentDialog = modalService.open(CookiesModalComponent, {
+    centered: true,
+    size: 'lg',
+    backdrop: 'static',
+  });
+
+  const cookiesModalComponent = currentDialog.componentInstance as CookiesModalComponent;
+
+  // dialog closed
+  cookiesModalComponent.closeModal.pipe(first()).subscribe(() => {
+    currentDialog.dismiss();
+  });
+
+  // navigated away with link on dialog
+  router.events
+    .pipe(
+      filter(event => event instanceof NavigationEnd),
+      first()
+    )
+    .subscribe(() => {
+      currentDialog.dismiss();
+    });
+
+  return false;
 }

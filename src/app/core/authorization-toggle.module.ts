@@ -38,4 +38,4 @@ export class AuthorizationToggleModule {
 }
 
 export { AuthorizationToggleService } from './utils/authorization-toggle/authorization-toggle.service';
-export { AuthorizationToggleGuard } from './guards/authorization-toggle.guard';
+export { authorizationToggleGuard } from './guards/authorization-toggle.guard';

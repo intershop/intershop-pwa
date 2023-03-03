@@ -4,8 +4,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 import { CoreModule } from 'ish-core/core.module';
-import { AuthGuard } from 'ish-core/guards/auth.guard';
-import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
+import { authGuard } from 'ish-core/guards/auth.guard';
+import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AppComponent } from './app.component';
@@ -27,15 +27,15 @@ import { LoginComponent } from './login.component';
       },
       {
         path: 'logout',
-        canActivate: [IdentityProviderLogoutGuard],
+        canActivate: [identityProviderLogoutGuard],
         component: LoginComponent,
       },
       {
         path: 'requisition-management',
         loadChildren: () =>
           import('./app/pages/requisition-management-routing.module').then(m => m.RequisitionManagementRoutingModule),
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
+        canActivate: [authGuard],
+        canActivateChild: [authGuard],
       },
       {
         path: '**',

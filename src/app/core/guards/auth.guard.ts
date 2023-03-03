@@ -1,15 +1,7 @@
-import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  Params,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable, iif, of, race, timer } from 'rxjs';
+import { iif, of, race, timer } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { getUserAuthorized } from 'ish-core/store/customer/user';
@@ -19,32 +11,29 @@ import { whenTruthy } from 'ish-core/utils/operators';
 /**
  * guards a route against unprivileged access (no user is logged in)
  */
-@Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private store: Store, private router: Router, private cookieService: CookiesService) {}
+export function authGuard(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  const store = inject(Store);
+  const router = inject(Router);
+  const cookieService = inject(CookiesService);
 
-  canActivate(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.guardAccess({ ...snapshot.data?.queryParams, ...snapshot.queryParams, returnUrl: state.url });
-  }
+  const defaultRedirect = router.createUrlTree(['/login'], {
+    queryParams: {
+      ...snapshot.data?.queryParams,
+      ...snapshot.queryParams,
+      returnUrl: state.url,
+    },
+  });
 
-  canActivateChild(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.guardAccess({ ...snapshot.data?.queryParams, ...snapshot.queryParams, returnUrl: state.url });
-  }
-
-  private guardAccess(queryParams: Params): Observable<boolean | UrlTree> {
-    const defaultRedirect = this.router.createUrlTree(['/login'], { queryParams });
-
-    return iif(
-      () => SSR,
-      // shortcut on ssr
-      of(defaultRedirect),
-      race(
-        // wait till authorization can be acquired through cookie
-        this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
-        // send to login after timeout
-        // send right away if no user can be re-hydrated
-        timer(!this.router.navigated && this.cookieService.get('apiToken') ? 4000 : 0).pipe(map(() => defaultRedirect))
-      )
-    );
-  }
+  return iif(
+    () => SSR,
+    // shortcut on ssr
+    of(defaultRedirect),
+    race(
+      // wait till authorization can be acquired through cookie
+      store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
+      // send to login after timeout
+      // send right away if no user can be re-hydrated
+      timer(!router.navigated && cookieService.get('apiToken') ? 4000 : 0).pipe(map(() => defaultRedirect))
+    )
+  );
 }

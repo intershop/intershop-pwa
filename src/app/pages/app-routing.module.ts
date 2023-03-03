@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from 'ish-core/guards/auth.guard';
-import { ErrorStatusGuard } from 'ish-core/guards/error-status.guard';
-import { IdentityProviderInviteGuard } from 'ish-core/guards/identity-provider-invite.guard';
-import { IdentityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
-import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
-import { IdentityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
+import { authGuard } from 'ish-core/guards/auth.guard';
+import { errorStatusGuard } from 'ish-core/guards/error-status.guard';
+import { identityProviderInviteGuard } from 'ish-core/guards/identity-provider-invite.guard';
+import { identityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
+import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
+import { identityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -34,7 +34,7 @@ const routes: Routes = [
   {
     path: 'maintenance',
     loadChildren: () => import('./maintenance/maintenance-page.module').then(m => m.MaintenancePageModule),
-    canActivate: [ErrorStatusGuard],
+    canActivate: [errorStatusGuard],
     data: {
       meta: {
         title: 'seo.title.maintenance',
@@ -45,7 +45,7 @@ const routes: Routes = [
   {
     path: 'account',
     loadChildren: () => import('./account/account-page.module').then(m => m.AccountPageModule),
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     data: {
       meta: {
         title: 'account.my_account.heading',
@@ -81,7 +81,7 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./registration/registration-page.module').then(m => m.RegistrationPageModule),
-    canActivate: [IdentityProviderRegisterGuard],
+    canActivate: [identityProviderRegisterGuard],
     data: {
       meta: {
         title: 'account.register.link',
@@ -92,16 +92,16 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login-page.module').then(m => m.LoginPageModule),
-    canActivate: [IdentityProviderLoginGuard],
+    canActivate: [identityProviderLoginGuard],
   },
   {
     path: 'logout',
-    canActivate: [IdentityProviderLogoutGuard],
+    canActivate: [identityProviderLogoutGuard],
     children: [],
   },
   {
     path: 'invite',
-    canActivate: [IdentityProviderInviteGuard],
+    canActivate: [identityProviderInviteGuard],
     children: [],
   },
   {

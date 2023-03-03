@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
-import { AuthGuard } from 'ish-core/guards/auth.guard';
+import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { authGuard } from 'ish-core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
       import('./account-wishlist/account-wishlist-page.module').then(m => m.AccountWishlistPageModule),
-    canActivate: [FeatureToggleGuard, AuthGuard],
+    canActivate: [featureToggleGuard, authGuard],
     data: { feature: 'wishlists', breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }] },
   },
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
       import('./account-wishlist-detail/account-wishlist-detail-page.module').then(
         m => m.AccountWishlistDetailPageModule
       ),
-    canActivate: [FeatureToggleGuard, AuthGuard],
+    canActivate: [featureToggleGuard, authGuard],
     data: { feature: 'wishlists' },
   },
 ];

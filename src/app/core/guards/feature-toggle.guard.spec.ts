@@ -2,7 +2,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { FeatureToggleGuard, FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleModule, featureToggleGuard } from 'ish-core/feature-toggle.module';
 
 describe('Feature Toggle Guard', () => {
   let router: Router;
@@ -19,13 +19,13 @@ describe('Feature Toggle Guard', () => {
           {
             path: 'feature1',
             children: [],
-            canActivate: [FeatureToggleGuard],
+            canActivate: [featureToggleGuard],
             data: { feature: 'feature1' },
           },
           {
             path: 'feature2',
             children: [],
-            canActivate: [FeatureToggleGuard],
+            canActivate: [featureToggleGuard],
             data: { feature: 'feature2' },
           },
         ]),
