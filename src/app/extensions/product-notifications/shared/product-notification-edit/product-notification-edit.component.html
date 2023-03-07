@@ -1,32 +1,51 @@
-<!-- display notification link -->
-<button
-  type="button"
-  name="editProductNotification"
-  class="btn"
-  [ngClass]="cssClass"
-  (click)="openModal(modal)"
-  data-testing-id="product-notification-edit"
->
-  <ng-container [ngSwitch]="displayType">
-    <!-- edit icon -->
-    <fa-icon
-      *ngSwitchCase="'icon'"
-      [icon]="['fas', 'pencil-alt']"
-      [title]="'product.notification.edit.link.title' | translate"
-    ></fa-icon>
+<!-- display notification button / icon -->
 
-    <ng-container *ngSwitchDefault>
-      <ng-container *ngIf="productAvailable$ | async; else outOfStock">
-        <!-- product is in stock - price notification label text -->
+<ng-container [ngSwitch]="displayType">
+  <!-- edit icon -->
+  <button
+    *ngSwitchCase="'icon'"
+    type="button"
+    name="editProductNotification"
+    class="btn"
+    [ngClass]="cssClass"
+    (click)="openModal(modal)"
+    data-testing-id="product-notification-edit"
+  >
+    <fa-icon [icon]="['fas', 'pencil-alt']" [title]="'product.notification.edit.link.title' | translate"></fa-icon>
+  </button>
+
+  <ng-container *ngSwitchDefault>
+    <!-- button -->
+    <ng-container *ngIf="productAvailable$ | async; else outOfStock">
+      <!-- product is in stock - price notification label text -->
+      <button
+        type="button"
+        name="editProductNotification"
+        class="btn"
+        [ngClass]="cssClass"
+        (click)="openModal(modal)"
+        data-testing-id="product-notification-edit"
+        [title]="'product.notification.price.add_notification.button.title' | translate"
+      >
         {{ 'product.notification.price.add_notification.button.label' | translate }}
-      </ng-container>
-      <ng-template #outOfStock>
-        <!-- product is out of stock - in stock notification label text -->
-        {{ 'product.notification.stock.add_notification.button.label' | translate }}
-      </ng-template>
+      </button>
     </ng-container>
+    <ng-template #outOfStock>
+      <!-- product is out of stock - in stock notification label text -->
+      <button
+        type="button"
+        name="editProductNotification"
+        class="btn"
+        [ngClass]="cssClass"
+        (click)="openModal(modal)"
+        data-testing-id="product-notification-edit"
+        [title]="'product.notification.stock.add_notification.button.title' | translate"
+      >
+        {{ 'product.notification.stock.add_notification.button.label' | translate }}
+      </button>
+    </ng-template>
   </ng-container>
-</button>
+</ng-container>
 
 <ish-product-notification-edit-dialog
   [productNotification]="productNotification"
