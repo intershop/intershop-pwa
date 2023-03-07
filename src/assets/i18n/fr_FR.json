@@ -919,6 +919,7 @@
   "product.notification.price.add_notification.button.label": "Notification de prix",
   "product.notification.remove.cancel.button.label": "Annuler",
   "product.notification.remove.delete.button.label": "Supprimer",
+  "product.notification.remove.link.title": "Supprimer la notification",
   "product.notification.remove.message_line1": "Vous êtes en train de supprimer une notification de produit.",
   "product.notification.remove.message_line2": "Êtes-vous sûr de vouloir l’effacer?",
   "product.notification.stock.add_notification.button.label": "Prévenez-moi lorsque disponible",
