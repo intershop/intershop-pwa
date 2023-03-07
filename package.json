@@ -7,8 +7,8 @@
     "intershop"
   ],
   "engines": {
-    "node": "16.16.0",
-    "npm": "8.11.0"
+    "node": "18.15.0",
+    "npm": "9.5.0"
   },
   "private": true,
   "scripts": {
@@ -133,7 +133,7 @@
     "@types/google.maps": "^3.51.0",
     "@types/jest": "^28.1.8",
     "@types/lodash-es": "^4.17.6",
-    "@types/node": "^16.18.11",
+    "@types/node": "^18.15.11",
     "@types/uuid": "^9.0.0",
     "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
