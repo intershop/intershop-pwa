@@ -9,6 +9,9 @@ kb_sync_latest_only
 
 ## 3.3 to 4.0
 
+The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm version 9.5.0 and the `"lockfileVersion": 3,`.
+To migrate to this version it is advised to delete the locale `package-lock.json` beforehand.
+
 The account navigation was reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
 For better maintainability and brand specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
 Also with this rework the navigation items data structure was changed from a key value object to a simpler `NavigationItem` Array.
