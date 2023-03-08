@@ -4,7 +4,7 @@
       <!-- default display option is radio-buttons -->
       <ng-template ngSwitchDefault>
         <div class="product-warranty-title">{{ 'product.warranty.heading.text' | translate }}</div>
-        <dl class="product-warranty-list">
+        <dl class="product-warranty-list" data-testing-id="product-warranties">
           <!-- display a no-warranty option -->
           <dd>
             <label>
@@ -38,7 +38,11 @@
 
       <!-- viewType select-box -->
       <ng-template ngSwitchCase="select">
-        <select class="form-control d-inline-block w-auto" (change)="updateWarranty($event.target)">
+        <select
+          class="form-control d-inline-block w-auto"
+          (change)="updateWarranty($event.target)"
+          data-testing-id="product-warranties"
+        >
           <!-- display a no-warranty option -->
           <option value="" [selected]="!selectedWarranty">
             {{ 'product.warranty.no_protection_plan' | translate }}
