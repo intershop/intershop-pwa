@@ -27,7 +27,7 @@ export class ProductNotificationsOverviewPage {
     return this.productNotificationListItems.find('a[data-testing-id="product-name-link"]');
   }
 
-  updateProductNotificationByProductName(productName: string, price: number, email: string) {
+  updateProductPriceNotificationByProductName(productName: string, price: number, email: string) {
     this.productNotificationsArray
       .find('a')
       .contains(productName)
@@ -35,6 +35,17 @@ export class ProductNotificationsOverviewPage {
       .find('[data-testing-id="product-notification-edit"]')
       .click();
     cy.get('[data-testing-id="priceValue"]').clear().type(price.toString());
+    cy.get('[data-testing-id="email"]').clear().type(email);
+    cy.get('[data-testing-id="product-notification-edit-dialog-edit"]').click();
+  }
+
+  updateProductStockNotificationByProductName(productName: string, email: string) {
+    this.productNotificationsArray
+      .find('a')
+      .contains(productName)
+      .closest('[data-testing-id="product-notification-list-item"]')
+      .find('[data-testing-id="product-notification-edit"]')
+      .click();
     cy.get('[data-testing-id="email"]').clear().type(email);
     cy.get('[data-testing-id="product-notification-edit-dialog-edit"]').click();
   }

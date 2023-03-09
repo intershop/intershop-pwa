@@ -10,4 +10,10 @@ export class EditProductNotificationModule {
     this.emailInput().type(email);
     cy.get('.modal-footer button.btn-primary').click();
   }
+
+  editStockNotification(email: string) {
+    this.emailInput().clear();
+    this.emailInput().type(email);
+    cy.get('.modal-footer button.btn-primary').click();
+  }
 }
