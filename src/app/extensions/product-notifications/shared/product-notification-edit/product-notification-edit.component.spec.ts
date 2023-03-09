@@ -70,12 +70,12 @@ describe('Product Notification Edit Component', () => {
   it('should display price notification localization button text if the product is available', () => {
     when(context.select('product', 'available')).thenReturn(of(true));
     fixture.detectChanges();
-    expect(element.textContent).toContain('product.notification.price.add_notification.button.label');
+    expect(element.textContent).toContain('product.notification.price.notification.button.label');
   });
 
   it('should display stock notification localization button text if the product is not available', () => {
     when(context.select('product', 'available')).thenReturn(of(false));
     fixture.detectChanges();
-    expect(element.textContent).toContain('product.notification.stock.add_notification.button.label');
+    expect(element.textContent).toContain('product.notification.stock.notification.button.label');
   });
 });
