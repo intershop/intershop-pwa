@@ -41,6 +41,16 @@ export class SpecialValidators {
     return noSpecialCharsPattern.test(control.value) ? undefined : { noSpecialChars: { valid: false } };
   }
 
+  /**
+   * Prevent "<" and ">" to avoid usage of HTML tags.
+   */
+  static noLessOrGreaterThanChars(control: FormControl): { [error: string]: { valid: boolean } } {
+    const noLessOrGreaterThanCharsPattern = /^[^\<\>]*$/;
+    return noLessOrGreaterThanCharsPattern.test(control.value)
+      ? undefined
+      : { noLessOrGreaterThanChars: { valid: false } };
+  }
+
   static punchoutLogin(control: FormControl): { [error: string]: { valid: boolean } } {
     const punchoutLoginPattern = /^[a-zA-Z0-9_.@]*$/;
     return punchoutLoginPattern.test(control.value) ? undefined : { punchoutLogin: { valid: false } };

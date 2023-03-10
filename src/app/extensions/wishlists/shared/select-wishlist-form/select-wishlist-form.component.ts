@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 
@@ -39,9 +40,13 @@ export class SelectWishlistFormComponent implements OnInit {
         props: {
           required: true,
         },
+        validators: {
+          validation: [SpecialValidators.noLessOrGreaterThanChars],
+        },
         validation: {
           messages: {
             required: 'account.wishlist.name.error.required',
+            noLessOrGreaterThanChars: 'account.wishlist.name.error.forbidden.chars',
           },
         },
       },
@@ -84,9 +89,13 @@ export class SelectWishlistFormComponent implements OnInit {
               props: {
                 required: true,
               },
+              validators: {
+                validation: [SpecialValidators.noLessOrGreaterThanChars],
+              },
               validation: {
                 messages: {
                   required: 'account.wishlist.name.error.required',
+                  noLessOrGreaterThanChars: 'account.wishlist.name.error.forbidden.chars',
                 },
               },
               expressions: {

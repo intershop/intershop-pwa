@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 
@@ -43,8 +44,14 @@ export class SelectOrderTemplateFormComponent implements OnInit {
         props: {
           required: true,
         },
+        validators: {
+          validation: [SpecialValidators.noLessOrGreaterThanChars],
+        },
         validation: {
-          messages: { required: 'account.order_template.name.error.required' },
+          messages: {
+            required: 'account.order_template.name.error.required',
+            noLessOrGreaterThanChars: 'account.order_template.name.error.forbidden.chars',
+          },
         },
       },
     ];
@@ -86,8 +93,14 @@ export class SelectOrderTemplateFormComponent implements OnInit {
               props: {
                 required: true,
               },
+              validators: {
+                validation: [SpecialValidators.noLessOrGreaterThanChars],
+              },
               validation: {
-                messages: { required: 'account.order_template.name.error.required' },
+                messages: {
+                  required: 'account.order_template.name.error.required',
+                  noLessOrGreaterThanChars: 'account.order_template.name.error.forbidden.chars',
+                },
               },
               expressions: {
                 'props.disabled': conf => conf.model.orderTemplate !== 'new',
