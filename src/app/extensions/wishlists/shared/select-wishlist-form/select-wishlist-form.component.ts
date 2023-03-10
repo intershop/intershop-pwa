@@ -41,12 +41,12 @@ export class SelectWishlistFormComponent implements OnInit {
           required: true,
         },
         validators: {
-          validation: [SpecialValidators.noLessOrGreaterThanChars],
+          validation: [SpecialValidators.noHtmlTags],
         },
         validation: {
           messages: {
             required: 'account.wishlist.name.error.required',
-            noLessOrGreaterThanChars: 'account.wishlist.name.error.forbidden.chars',
+            noHtmlTags: 'account.name.error.forbidden.html.chars',
           },
         },
       },
@@ -90,12 +90,12 @@ export class SelectWishlistFormComponent implements OnInit {
                 required: true,
               },
               validators: {
-                validation: [SpecialValidators.noLessOrGreaterThanChars],
+                validation: [SpecialValidators.noHtmlTags],
               },
               validation: {
                 messages: {
                   required: 'account.wishlist.name.error.required',
-                  noLessOrGreaterThanChars: 'account.wishlist.name.error.forbidden.chars',
+                  noHtmlTags: 'account.name.error.forbidden.html.chars',
                 },
               },
               expressions: {

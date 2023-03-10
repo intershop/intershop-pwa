@@ -44,11 +44,9 @@ export class SpecialValidators {
   /**
    * Prevent "<" and ">" to avoid usage of HTML tags.
    */
-  static noLessOrGreaterThanChars(control: FormControl): { [error: string]: { valid: boolean } } {
-    const noLessOrGreaterThanCharsPattern = /^[^\<\>]*$/;
-    return noLessOrGreaterThanCharsPattern.test(control.value)
-      ? undefined
-      : { noLessOrGreaterThanChars: { valid: false } };
+  static noHtmlTags(control: FormControl): { [error: string]: { valid: boolean } } {
+    const noHtmlTagsPattern = /^[^\<\>]*$/;
+    return noHtmlTagsPattern.test(control.value) ? undefined : { noHtmlTags: { valid: false } };
   }
 
   static punchoutLogin(control: FormControl): { [error: string]: { valid: boolean } } {

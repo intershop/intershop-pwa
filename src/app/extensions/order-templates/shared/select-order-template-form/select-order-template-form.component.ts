@@ -45,12 +45,12 @@ export class SelectOrderTemplateFormComponent implements OnInit {
           required: true,
         },
         validators: {
-          validation: [SpecialValidators.noLessOrGreaterThanChars],
+          validation: [SpecialValidators.noHtmlTags],
         },
         validation: {
           messages: {
             required: 'account.order_template.name.error.required',
-            noLessOrGreaterThanChars: 'account.order_template.name.error.forbidden.chars',
+            noHtmlTags: 'account.name.error.forbidden.html.chars',
           },
         },
       },
@@ -94,12 +94,12 @@ export class SelectOrderTemplateFormComponent implements OnInit {
                 required: true,
               },
               validators: {
-                validation: [SpecialValidators.noLessOrGreaterThanChars],
+                validation: [SpecialValidators.noHtmlTags],
               },
               validation: {
                 messages: {
                   required: 'account.order_template.name.error.required',
-                  noLessOrGreaterThanChars: 'account.order_template.name.error.forbidden.chars',
+                  noHtmlTags: 'account.name.error.forbidden.html.chars',
                 },
               },
               expressions: {
