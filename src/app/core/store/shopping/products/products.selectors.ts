@@ -120,6 +120,8 @@ export const getProductLinks = (sku: string) => createSelector(getProductsState,
 
 export const getProductParts = (sku: string) => createSelector(getProductsState, state => state.parts[sku]);
 
+export const getFailedProducts = createSelector(getProductsState, state => state.failed);
+
 export const getBreadcrumbForProductPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
   resultMemoize(projector, isEqual)
 )(
