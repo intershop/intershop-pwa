@@ -13,22 +13,23 @@ A possible scenario would be to have the shopping experience with all its SEO op
 
 ## Requirements
 
-The best way to deploy a Hybrid Approach installation is with the Intershop provided [PWA Helm chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) (0.4.0 and above with ICM 11).
-How to configure the PWA Helm chart for the PWA and the ICM is explained in the according [Hybrid mode](https://github.com/intershop/helm-charts/tree/main/charts/pwa#hybrid-mode) paragraph.
-The version requirements for the involved systems are the following.
+The best way to deploy a Hybrid Approach installation is using the [PWA Helm chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) (0.4.0 and above with ICM 11) provided by Intershop.
+For information on configuration of the PWA Helm chart for PWA and ICM, refer to the according [Hybrid mode](https://github.com/intershop/helm-charts/tree/main/charts/pwa#hybrid-mode) paragraph.
+
+The version requirements for the involved systems are the following:
 
 - Intershop 11
 - PWA 3.2.0
 
-The functional requirements for the Hybrid Approach to work are already available with the following versions of ICM and PWA but this way they cannot be deployed together with a combined Helm chart.
+The functional requirements for the Hybrid Approach to work are already available starting with the following versions of ICM and PWA. However, this way they cannot be deployed together with a combined Helm chart.
 
 - ICM 7.10.32.16-LTS or 7.10.38.6-LTS
 - PWA 2.3.0
 
-> **NOTE:** The feature is based on the assumption that the PWA and the ICM can read and write each other's cookies. That means that cookies written by the PWA and ICM must have the same domain and the same path. This works since all Responsive Starter Store requests and responses are proxied through the PWA SSR simulating a common domain.
+> **NOTE:** This feature is feature relies on the PWA and ICM being able to read and write each other's cookies. This means that cookies written by the PWA and ICM must have the same domain and the same path. This works since all Responsive Starter Store requests and responses are proxied through the PWA SSR, simulating a common domain.
 
-The required secure access to the PWA/NGINX deployments in production like environments is handled by the Ingress controller so the PWA and the NGINX container itself can be deployed without SSL.
-ICM needs to be deployed with secure access only anyways.
+The secure access required for the PWA/NGINX deployments in production-like environments is handled by the Ingress controller, so the PWA and the NGINX container itself can be deployed without SSL.
+ICM only needs to be deployed with secure access anyway.
 
 ## Architectural Concept
 
@@ -37,8 +38,8 @@ ICM needs to be deployed with secure access only anyways.
 For a minimal-invasive implementation, the mechanics for the hybrid approach are mainly implemented outside of the ICM and in deployment-specific components of the PWA.
 
 The ICM is proxied in the _express.js_ server of the server-side rendering (SSR) process and hereby made available to the outside.
-A newly introduced mapping table is used in the SSR to decide when an incoming request should be handled by the PWA or the ICM.
-This mapping table is also used in the browser side PWA for switching from the context of the single page application to the ICM.
+A newly introduced mapping table is used in the SSR to decide whether an incoming request should be handled by the PWA or the ICM.
+This mapping table is also used in the browser-side PWA to switch from the single-page application context to the ICM.
 
 ## Configuration
 
@@ -60,7 +61,7 @@ intershop.apitoken.cookie.sslmode=true
 intershop.WebServerSecureURL=https://<NGINX>
 ```
 
-_configuration via `icm_as` Helm chart_
+_configuration via `icm_as` Helm chart_:
 
 ```yaml
 INTERSHOP_APITOKEN_COOKIE_ENABLED: true
@@ -72,12 +73,13 @@ INTERSHOP_WEBSERVERSECUREURL: https://<icm-web>
 
 The server-side rendering process must be started with `SSR_HYBRID=1`.
 
-> :warning: **Only for development environments**: The PWA must be run with secure URLs as well if no NGINX is deployed that handles the access to the PWA via `https`.
-> See [SSR Startup - Development](../guides/ssr-startup.md#development) for reference how you can achieve that locally.
+> :warning: **Only for development environments**: The PWA must also be run with secure URLs if NGINX to handle `https` access to the PWA is not deployed.
+>
+> See [SSR Startup - Development](../guides/ssr-startup.md#development) for a reference on how you to achieve this locally.
 
 > :warning: **Only for development environments**: It might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
 
-Also, the **Service Worker must be disabled** for the PWA, as it installs itself into the browser of the client device and takes over the routing process, making it impossible to break out of the PWA and delegate to the ICM.
+Also, the **Service Worker must be disabled** for the PWA, as it installs itself in the browser of the client device and takes over the routing process, making it impossible to break out of the PWA and delegate to the ICM.
 The Service Worker is disabled by default.
 
 ### Mapping Table
@@ -101,33 +103,34 @@ Each entry contains:
 - Corresponding instructions to build the matching URL of the counterpart (`pwaBuild` and `icmBuild`)
 - A property `handledBy` (either `icm` or `pwa`) to decide on the target upstream
 
-The properties `icm` and `pwaBuild` can use [named capture groups](<https://2ality.com/2017/05/regexp-named-capture-groups.html#replace()-and-named-capture-groups>) and are only used in the _node.js_ process running on the server.
+The properties `icm` and `pwaBuild` can use [named capture groups](<https://2ality.com/2017/05/regexp-named-capture-groups.html#replace()-and-named-capture-groups>). They are only used in the _node.js_ process running on the server.
 However, `pwa` and `icmBuild` are used in the client application where [named capture groups are not yet supported by all browsers](https://github.com/tc39/proposal-regexp-named-groups#implementations).
 
 ## PWA Adaptions
 
-With version 0.23.0 the PWA was changed to no longer reuse the Responsive Starter Store application types but rather be based upon the newly introduced headless application type for REST Clients - `intershop.REST`.
+With version 0.23.0 the PWA has been changed to no longer reuse the Responsive Starter Store application types, but rather to be based on the newly introduced headless application type for REST clients - `intershop.REST`.
 This application type is completely independent of the Responsive Starter Store.
-For this reason, the PWA must be configured to know which application it has to use to work with the Responsive Starter Store again (`hybridApplication`).
+For this reason, the PWA must be configured to know which application to use to work with the Responsive Starter Store again (`hybridApplication`).
 
-**Steps to prepare the PWA for the hybrid approach with the Responsive Starter Store**
+### Preparing the PWA for the Hybrid Approach with the Responsive Starter Store
 
 - Use a current PWA version
-- Configure `icmApplication` setting to denote the `intershop.REST` based application used by the PWA (this is in the demo scenario just `rest`).
+- Configure `icmApplication` setting to denote the `intershop.REST`-based application used by the PWA (`rest` in the demo scenario).
 - Configure `hybridApplication` setting to denote the Responsive Starter Store application (this is usually `-`).
 - Follow the Hybrid configuration setup
 
-> **NOTE:** If for some reason the CMS content of the Responsive Starter Store should directly be reused in the PWA in a hybrid approach, the PWA needs some code adaptions and has to use the same application as the Responsive Starter Store. For more details see the older version of this documentation - [Hybrid Approach - PWA Adaptions (3.0.0)](https://github.com/intershop/intershop-pwa/blob/3.0.0/docs/concepts/hybrid-approach.md#pwa-adaptions).
+> **NOTE:** If for some reason the CMS content of the Responsive Starter Store should directly be reused in the PWA in a Hybrid Approach, the PWA needs some code adaptions and has to use the same application as the Responsive Starter Store. For more details see the older version of this documentation - [Hybrid Approach - PWA Adaptions (3.0.0)](https://github.com/intershop/intershop-pwa/blob/3.0.0/docs/concepts/hybrid-approach.md#pwa-adaptions).
 
 ## Development Environment
 
-To develop and test a PWA with Hybrid Approach in a local development environment the following steps are necessary.
+This section describes how to develop and test a PWA using the Hybrid Approach in a local development environment.
+
 This development environment includes a local installation of ICM with the Responsive Starter Store, the PWA and the NGINX.
-Besides this it fulfils the requirements of a common domain and `https` access.
+In addition, it meets the requirements for a common domain and for `https` access.
 
-After successful configuration an deployment you can access the different systems with these URLs:
+After successful configuration and deployment you can access the different systems with these URLs:
 
-|                                | URL                                                                                                    | comment                                |
+|                                | URL                                                                                                    | Comment                                |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------ | -------------------------------------- |
 | PWA (via NGINX)                | https://hybrid.local                                                                                   | with `https` access and NGINX features |
 | PWA                            | http://hybrid.local:7200                                                                               | direct access to the SSR rendering     |
@@ -136,8 +139,8 @@ After successful configuration an deployment you can access the different system
 
 ### Configuration of a Common Domain
 
-For a more realistic Hybrid Approach environment it is not a good idea to use `localhost` as the common domain or `127.0.0.1` as the IP address.
-For that reason a different common domain - for this guide `hybrid.local` - needs to be configured in the `etc/hosts` file of the operating system that points to the real IP address of the computer.
+For a more realistic Hybrid Approach environment, it is not a good idea to use `localhost` as the common domain or `127.0.0.1` as the IP address.
+For this reason, a different common domain - `hybrid.local` for this guide - must be configured in the operating system's `etc/hosts` file, pointing to the real IP address of the computer.
 
 ```
 192.168.178.77 hybrid.local
@@ -148,16 +151,16 @@ For this guide ICM will listen on port `7443` and the PWA SSR process will liste
 
 ### ICM
 
-The ICM needs to be set up like a normal ICM development environment
+The ICM needs to be set up like a regular ICM development environment.
 
-Special configuration for the ports should be done in the `environment.properties` (only the `webserverHttpsPort` is really relevant for our `SecureAccessOnly` deployment).
+Special configuration for the ports should be done in the `environment.properties` (only the `webserverHttpsPort` is really relevant for our `SecureAccessOnly` deployment):
 
 ```
 webserverPort = 7080
 webserverHttpsPort = 7443
 ```
 
-The `server/share/system/config/cluster/appserver.properties` needs to contain
+The `server/share/system/config/cluster/appserver.properties` needs to contain:
 
 ```
 intershop.WebServerURL=http://hybrid.local
@@ -171,23 +174,23 @@ SecureAccessOnly=true
 ```
 
 - ICM must point to NGINX, in this case `https://hybrid.local`
-- the synchronization of the `apiToken` cookie must be switched on
+- The synchronization of the `apiToken` cookie must be switched on
 - ICM must run in secure-only mode
 
 ### PWA
 
-The Hybrid Approach relevant configurations to run the PWA are
+The configurations relevant to the Hybrid Approach for running the PWA are:
 
 - `ICM_BASE_URL` points to ICM https port - `https://hybrid.local:7443`
-- for development scenarios with a self-signed certificate for ICM this implies that you have to set `TRUST_ICM=true`
-- to enable the Hybrid Approach functionality in the SSR process `SSR_HYBRID=true` needs to be set
+- For development scenarios with a self-signed certificate for ICM this implies that you have to set `TRUST_ICM=true`
+- To enable the Hybrid Approach functionality in the SSR process, `SSR_HYBRID=true` must be set
 - `LOGGING=true` will help with analysis and debugging
-- setting the port of the SSR process to `7200`
+- Setting the port of the SSR process to `7200`
 
 > **NOTE:** The PWA SSR process itself does not need to run with SSL/https.
 > This is taken care of by the NGINX container to provide the secure access to the PWA.
 
-A local PWA that was build from the current PWA project sources can be run in several ways.
+A local PWA that was build from the current PWA project sources can be run in several ways:
 
 **Via Docker**
 
@@ -207,10 +210,10 @@ ICM_BASE_URL=https://hybrid.local:7443 TRUST_ICM=true SSR_HYBRID=true LOGGING=tr
 ICM_BASE_URL=https://hybrid.local:7443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run start:ssr-dev -- --port 7200
 ```
 
-> **NOTE:** A development Hybrid Approach setup could also be tested without NGINX.
-> In this case the PWA SSR process needs to run with SSL itself.
-> This can be achieved with `--ssl` as additional parameter.
-> The PWA with Hybrid Approach would be reachable in this case at `https://hybrid.local:7200`.
+> **NOTE:** A development Hybrid Approach setup can also be tested without NGINX.
+> In this case, the PWA SSR process must run with SSL.
+> This can be achieved by using `--ssl` as an additional parameter.
+> The PWA with Hybrid Approach would then be reachable at `https://hybrid.local:7200`.
 
 ```bash
 ICM_BASE_URL=https://hybrid.local:7443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run start:ssr-dev -- --port 7200 --ssl
@@ -218,20 +221,20 @@ ICM_BASE_URL=https://hybrid.local:7443 TRUST_ICM=true SSR_HYBRID=true LOGGING=tr
 
 ### NGINX
 
-The Hybrid Approach relevant configurations to run the NGINX are
+The configurations relevant to the Hybrid Approach for running the NGINX are:
 
 - `UPSTREAM_PWA` points to the PWA SSR process - `http://hybrid.local:7200`
-- for the secure access `SSL=true` needs to be set (available since PWA 3.1.0)
-- to exclude unexpected caching side effects set `CACHE=false`
-- set NGINX to respond on the standard https port `443`
+- For secure access, set `SSL=true` (available since PWA 3.1.0)
+- To avoid unexpected caching side effects, set `CACHE=false`
+- Set NGINX to respond on the default https port `443`
 
-The way to start the NGINX container from the project sources is with docker
+To start the NGINX container from the project sources with Docker:
 
 ```bash
 docker build -t dev_nginx nginx && docker run -it -p 443:443 -e UPSTREAM_PWA=http://hybrid.local:7200 -e SSL=true -e CACHE=false --name hybrid-nginx dev_nginx
 ```
 
-> **NOTE:** The NGINX of PWA releases prior to 3.1.0 do not support the `SSL=true` configuration.
+> **NOTE:** The NGINX of PWA releases prior to 3.1.0 does not support the `SSL=true` configuration.
 > Previous versions needed the `UPSTREAM_PWA` to be configured with `https` and the the files `server.key` and `server.crt` had to be supplied in the container folder `/etx/nginx` to start the NGINX with SSL.
 
 ```bash
@@ -240,7 +243,7 @@ docker build -t dev_nginx nginx && docker run -it -p 443:443 -e UPSTREAM_PWA=htt
 
 ### Docker Compose for PWA/NGINX
 
-Alternatively the PWA and NGINX can be started with `docker compose` as well.
+Alternatively, the PWA and NGINX can also be started with `docker compose`.
 
 ```yaml
 # save this to a file named 'docker-compose_hybrid.yml' and run it with:
