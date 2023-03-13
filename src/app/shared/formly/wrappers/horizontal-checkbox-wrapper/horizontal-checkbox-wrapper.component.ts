@@ -24,10 +24,11 @@ import { FieldWrapper } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class HorizontalCheckboxWrapperComponent extends FieldWrapper {
-  dto = {
+  dprops = {
     labelClass: '',
     fieldClass: 'col-md-8',
-    titleClass: 'offset-md-4',
+    titleClass: 'col-md-4',
+    noTitleClass: 'offset-md-4',
   };
   get keyString() {
     return this.field.key as string;

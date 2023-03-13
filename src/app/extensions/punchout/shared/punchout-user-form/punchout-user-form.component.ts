@@ -67,13 +67,6 @@ export class PunchoutUserFormComponent implements OnInit {
               },
             },
           },
-          {
-            key: 'active',
-            type: 'ish-checkbox-field',
-            props: {
-              label: 'account.user.active.label',
-            },
-          },
         ],
       },
       {
