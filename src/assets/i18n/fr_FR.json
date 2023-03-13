@@ -190,7 +190,7 @@
   "account.my_account.link": "Mon compte",
   "account.my_account.overview.link": "Aperçu du compte",
   "account.name.error.forbidden.chars": "Seuls les caractères alphanumériques sont autorisés.",
-  "account.name.error.forbidden.html.chars": "This type of special characters is not allowed. Please remove \"<\", \">\" or both.",
+  "account.name.error.forbidden.html.chars": "Ce type de caractère spécial n'est pas autorisé. Veuillez supprimer \"<\", \">\" ou les deux.",
   "account.navigation.logout.link": "Déconnexion",
   "account.navigation.quotes.link": "Devis",
   "account.new_user.heading": "Nouveaux utilisateurs",
