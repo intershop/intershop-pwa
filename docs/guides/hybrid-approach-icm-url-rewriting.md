@@ -5,7 +5,7 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Handle Rewritten ICM URLs in Hybrid Mode
+# Handle Rewritten ICM URLs in the Hybrid Approach
 
 If the ICM is set up with [URL Rewriting](https://support.intershop.com/kb/index.php/Display/28R955), further modifications are required to run the deployment with the [Hybrid Approach](../concepts/hybrid-approach.md).
 
