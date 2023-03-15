@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { map, take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -28,10 +28,9 @@ import { ProductNotificationEditDialogComponent } from '../product-notification-
 @GenerateLazyComponent()
 export class ProductNotificationEditComponent implements OnDestroy, OnInit {
   @Input() productNotification: ProductNotification;
-  @Input() displayType: 'icon' | 'link' = 'link';
+  @Input() displayType: string;
   @Input() cssClass: string;
 
-  productAvailable$: Observable<boolean>;
   visible$: Observable<boolean>;
 
   private destroy$ = new Subject<void>();
@@ -39,8 +38,13 @@ export class ProductNotificationEditComponent implements OnDestroy, OnInit {
   constructor(private context: ProductContextFacade, private accountFacade: AccountFacade, private router: Router) {}
 
   ngOnInit() {
-    this.productAvailable$ = this.context.select('product', 'available');
     this.visible$ = this.context.select('displayProperties', 'addToNotification');
+  }
+
+  buttonKey(key: string): Observable<string> {
+    return this.context
+      .select('product', 'available')
+      .pipe(map(available => `product.notification.${available ? 'price' : 'stock'}.notification.button.${key}`));
   }
 
   // if the user is not logged in display login dialog, else open notification dialog
