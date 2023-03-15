@@ -51,6 +51,11 @@ describe('Product Notification Edit Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
+  it('should not show button when product is master or retail set', () => {
+    when(context.select('displayProperties', 'addToNotification')).thenReturn(of(false));
+    expect(element.querySelector('button')).toBeFalsy();
+  });
+
   it('should include the custom notification modal dialog', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-product-notification-edit-dialog')).toBeTruthy();
@@ -62,6 +67,7 @@ describe('Product Notification Edit Component', () => {
   });
 
   it('should show icon button when display type is icon', () => {
+    when(context.select('displayProperties', 'addToNotification')).thenReturn(of(true));
     component.displayType = 'icon';
     fixture.detectChanges();
     expect(element.querySelector('fa-icon')).toBeTruthy();
@@ -69,12 +75,14 @@ describe('Product Notification Edit Component', () => {
 
   it('should display price notification localization button text if the product is available', () => {
     when(context.select('product', 'available')).thenReturn(of(true));
+    when(context.select('displayProperties', 'addToNotification')).thenReturn(of(true));
     fixture.detectChanges();
     expect(element.textContent).toContain('product.notification.price.notification.button.label');
   });
 
   it('should display stock notification localization button text if the product is not available', () => {
     when(context.select('product', 'available')).thenReturn(of(false));
+    when(context.select('displayProperties', 'addToNotification')).thenReturn(of(true));
     fixture.detectChanges();
     expect(element.textContent).toContain('product.notification.stock.notification.button.label');
   });

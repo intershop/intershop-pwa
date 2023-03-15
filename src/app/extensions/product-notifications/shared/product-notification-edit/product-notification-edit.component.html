@@ -1,6 +1,5 @@
 <!-- display notification button / icon -->
-
-<ng-container [ngSwitch]="displayType">
+<ng-container *ngIf="visible$ | async" [ngSwitch]="displayType">
   <!-- edit icon -->
   <button
     *ngSwitchCase="'icon'"

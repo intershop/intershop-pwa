@@ -129,6 +129,7 @@ describe('Product Context Facade', () => {
         {
           "addToBasket": false,
           "addToCompare": true,
+          "addToNotification": true,
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": true,
@@ -328,6 +329,7 @@ describe('Product Context Facade', () => {
           {
             "addToBasket": true,
             "addToCompare": true,
+            "addToNotification": true,
             "addToOrderTemplate": true,
             "addToQuote": true,
             "addToWishlist": true,
@@ -357,6 +359,7 @@ describe('Product Context Facade', () => {
           {
             "addToBasket": true,
             "addToCompare": true,
+            "addToNotification": true,
             "addToOrderTemplate": true,
             "addToQuote": true,
             "addToWishlist": true,
@@ -527,6 +530,7 @@ describe('Product Context Facade', () => {
         {
           "addToBasket": true,
           "addToCompare": true,
+          "addToNotification": false,
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
@@ -597,6 +601,7 @@ describe('Product Context Facade', () => {
         {
           "addToBasket": true,
           "addToCompare": true,
+          "addToNotification": true,
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
@@ -641,6 +646,7 @@ describe('Product Context Facade', () => {
         {
           "addToBasket": true,
           "addToCompare": true,
+          "addToNotification": true,
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
@@ -683,6 +689,7 @@ describe('Product Context Facade', () => {
         {
           "addToBasket": false,
           "addToCompare": false,
+          "addToNotification": false,
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": false,
@@ -794,6 +801,7 @@ describe('Product Context Facade', () => {
         {
           "addToBasket": true,
           "addToCompare": true,
+          "addToNotification": true,
           "addToOrderTemplate": true,
           "addToQuote": true,
           "addToWishlist": true,
@@ -824,6 +832,7 @@ describe('Product Context Facade', () => {
         {
           "addToBasket": false,
           "addToCompare": false,
+          "addToNotification": true,
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": false,
@@ -859,6 +868,7 @@ describe('Product Context Facade', () => {
         {
           "addToBasket": false,
           "addToCompare": false,
+          "addToNotification": true,
           "addToOrderTemplate": false,
           "addToQuote": false,
           "addToWishlist": false,

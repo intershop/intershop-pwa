@@ -32,6 +32,7 @@ export class ProductNotificationEditComponent implements OnDestroy, OnInit {
   @Input() cssClass: string;
 
   productAvailable$: Observable<boolean>;
+  visible$: Observable<boolean>;
 
   private destroy$ = new Subject<void>();
 
@@ -39,6 +40,7 @@ export class ProductNotificationEditComponent implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.productAvailable$ = this.context.select('product', 'available');
+    this.visible$ = this.context.select('displayProperties', 'addToNotification');
   }
 
   // if the user is not logged in display login dialog, else open notification dialog
