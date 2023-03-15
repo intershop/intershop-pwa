@@ -8,7 +8,7 @@ import {
 } from '../../models/product-notification/product-notification.model';
 
 export const productNotificationsActions = createActionGroup({
-  source: 'ProductNotification',
+  source: 'Product Notifications',
   events: {
     'Load Product Notifications': payload<{ type: ProductNotificationType }>(),
     'Create Product Notification': payload<{ productNotification: ProductNotification }>(),
@@ -22,7 +22,7 @@ export const productNotificationsActions = createActionGroup({
 });
 
 export const productNotificationsApiActions = createActionGroup({
-  source: 'ProductNotification API',
+  source: 'Product Notification API',
   events: {
     'Load Product Notifications Success': payload<{
       productNotifications: ProductNotification[];
