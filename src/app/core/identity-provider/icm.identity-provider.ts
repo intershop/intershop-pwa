@@ -58,7 +58,7 @@ export class ICMIdentityProvider implements IdentityProvider {
         }
       });
 
-    // OAuth Service should be configured before apiToken informations are restored and the refresh token mechanism is setup
+    // OAuth Service should be configured before apiToken information are restored and the refresh token mechanism is setup
     this.oAuthServiceConfigured$
       .pipe(
         whenTruthy(),

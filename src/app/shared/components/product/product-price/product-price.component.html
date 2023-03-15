@@ -39,8 +39,8 @@
     </div>
 
     <div *ngIf="showScaledPrices && d.scaledPrices?.length" class="scaled-prices" data-testing-id="scaled-prices">
-      <ng-container *ngFor="let scaledPrice of d.scaledPrices; index as i; last as lastscaledPrice">
-        <div *ngIf="lastscaledPrice; else showRange">
+      <ng-container *ngFor="let scaledPrice of d.scaledPrices; index as i; last as lastScaledPrice">
+        <div *ngIf="lastScaledPrice; else showRange">
           {{
             'product.price.scaledPrice.text.last'
               | translate: { '0': scaledPrice.minQuantity, '1': scaledPrice | ishPrice }

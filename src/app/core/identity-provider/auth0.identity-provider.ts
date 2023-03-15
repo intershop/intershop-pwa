@@ -95,7 +95,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       this.oAuthServiceConfigured$.next(true);
     });
 
-    // OAuth Service should be configured before apiToken informations are restored
+    // OAuth Service should be configured before apiToken information are restored
     this.oAuthServiceConfigured$
       .pipe(
         whenTruthy(),
