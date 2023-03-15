@@ -14,6 +14,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 
@@ -72,9 +73,13 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
           hideRequiredMarker: true,
           maxLength: 35,
         },
+        validators: {
+          validation: [SpecialValidators.noHtmlTags],
+        },
         validation: {
           messages: {
             required: 'account.order_template.form.name.error.required',
+            noHtmlTags: 'account.name.error.forbidden.html.chars',
           },
         },
       },

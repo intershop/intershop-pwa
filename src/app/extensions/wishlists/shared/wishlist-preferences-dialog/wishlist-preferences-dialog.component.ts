@@ -14,6 +14,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 
@@ -73,8 +74,14 @@ export class WishlistPreferencesDialogComponent implements OnInit {
           hideRequiredMarker: true,
           maxLength: 35,
         },
+        validators: {
+          validation: [SpecialValidators.noHtmlTags],
+        },
         validation: {
-          messages: { required: 'account.wishlists.wishlist_form.name.error.required' },
+          messages: {
+            required: 'account.wishlists.wishlist_form.name.error.required',
+            noHtmlTags: 'account.name.error.forbidden.html.chars',
+          },
         },
       },
       {
