@@ -5,6 +5,7 @@ import { MyAccountPage } from '../../pages/account/my-account.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 import { CartPage } from '../../pages/checkout/cart.page';
 import { CheckoutPaymentPage } from '../../pages/checkout/checkout-payment.page';
+import { CheckoutReceiptPage } from '../../pages/checkout/checkout-receipt.page';
 import { CheckoutReviewPage } from '../../pages/checkout/checkout-review.page';
 import { HomePage } from '../../pages/home.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
@@ -102,7 +103,8 @@ describe('Product Warranty B2C', () => {
       at(CartPage, page => {
         page.lineItem(_.product1.index).warranty.set(_.noWarrantyValue);
         waitLoadingEnd();
-        // page.subtotal.should('contain', _.totalPrice2);
+        // doesn't work with current api, doesn't change the total price when no warranty is selected
+        page.subtotal.should('contain', _.totalPrice2);
       });
     });
   });
@@ -147,9 +149,26 @@ describe('Product Warranty B2C', () => {
         page.selectPayment('INVOICE');
         page.continueCheckout();
       });
-      at(CheckoutReviewPage, page =>
-        page.lineItemWarranty(_.product2.index).should('contain', _.selectedWarranty.name)
-      );
+      at(CheckoutReviewPage, page => {
+        page.lineItemWarranty(_.product2.index).should('contain', _.selectedWarranty.name);
+      });
+    });
+
+    // temporary tests, need to be adjusted when it's possible to checkout with products that have a warranty
+    it('receipt page should show products with selected warranties', () => {
+      at(CheckoutReviewPage, page => {
+        page.acceptTAC();
+        page.submitOrder();
+      });
+      at(CheckoutReceiptPage, page => {
+        page.lineItemWarranty(_.product2.index).should('contain', _.selectedWarranty.name);
+      });
+    });
+
+    xit('order-detail page should show products with selected warranties', () => {
+      at(CheckoutReviewPage, page => {
+        // page.lineItemWarranty(_.product2.index).should('contain', _.selectedWarranty.name)
+      });
     });
   });
 });
