@@ -15,12 +15,6 @@ import { ProductNotificationRemoveComponent } from './shared/product-notificatio
     ProductNotificationEditFormComponent,
     ProductNotificationRemoveComponent,
   ],
-  exports: [
-    ProductNotificationEditComponent,
-    ProductNotificationEditDialogComponent,
-    ProductNotificationEditFormComponent,
-    ProductNotificationRemoveComponent,
-    SharedModule,
-  ],
+  exports: [ProductNotificationEditComponent, ProductNotificationRemoveComponent],
 })
 export class ProductNotificationsModule {}
