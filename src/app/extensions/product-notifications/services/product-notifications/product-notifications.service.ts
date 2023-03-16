@@ -78,8 +78,8 @@ export class ProductNotificationsService {
   /**
    * Updates a product notification for a given product and user.
    *
-   * @param productNotification       The product notification.
    * @param sku                       The product sku.
+   * @param productNotification       The product notification.
    * @returns                         The updated product notification.
    */
   updateProductNotification(sku: string, productNotification: ProductNotification) {
@@ -114,7 +114,7 @@ export class ProductNotificationsService {
    * @param sku                       The product sku.
    * @param productNotificationType   The type of the product notification.
    */
-  deleteProductNotification(sku: string, productNotificationType: string) {
+  deleteProductNotification(sku: string, productNotificationType: ProductNotificationType) {
     if (!sku) {
       return throwError(() => new Error('deleteProductNotification() called without sku'));
     }
