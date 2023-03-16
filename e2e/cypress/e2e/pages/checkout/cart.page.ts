@@ -107,9 +107,12 @@ export class CartPage {
             .invoke('val')
             .then(v => +v),
       },
+      warranty: {
+        set: (warrantyId: string) => cy.get('[data-testing-id="product-warranties"]').eq(idx).select(warrantyId),
+        get: () => cy.get(this.tag).find('[data-testing-id="product-warranties"]').eq(idx),
+      },
       remove: () => cy.get(this.tag).find('[data-testing-id="remove-line-item"]').eq(idx).click(),
       sku: cy.get(this.tag).find('.product-id').eq(idx),
-      warranties: cy.get('[data-testing-id="product-warranties"]').eq(idx),
       openVariationEditDialog: () =>
         cy.get(this.tag).find('ish-line-item-edit').eq(idx).find('a.line-item-edit-link').click(),
     };
@@ -143,13 +146,5 @@ export class CartPage {
     return {
       message: cy.get('#toast-container').find('.toast-message'),
     };
-  }
-
-  // get warranties() {
-  //   return cy.get('[data-testing-id="product-warranties"]');
-  // }
-
-  selectWarranty(lineItemIndex: number, warrantyId: string) {
-    cy.get('[data-testing-id="product-warranties"]').eq(lineItemIndex).select(warrantyId);
   }
 }

@@ -132,5 +132,6 @@ export class ProductDetailPage {
 
   selectWarranty(id: string) {
     cy.get('[data-testing-id="product-warranties"]').find(`input[value="${id}"]`).check();
+    cy.wait(500);
   }
 }
