@@ -51,7 +51,7 @@ describe('Product Notification Edit Form Component', () => {
 
   describe('form fields configuration', () => {
     it('should return correct fields when calling getFieldsForNoProductNotification if product is not available', () => {
-      expect(extractKeys(component.getFieldsForNoProductNotification(product, 'USD'))).toMatchInlineSnapshot(`
+      expect(extractKeys(component.getFieldsForNoProductNotification(product))).toMatchInlineSnapshot(`
         Array [
           "alerttype",
           Array [
@@ -64,7 +64,7 @@ describe('Product Notification Edit Form Component', () => {
     it('should return correct fields when calling getFieldsForNoProductNotification if product is available', () => {
       product.available = true;
 
-      expect(extractKeys(component.getFieldsForNoProductNotification(product, 'USD'))).toMatchInlineSnapshot(`
+      expect(extractKeys(component.getFieldsForNoProductNotification(product))).toMatchInlineSnapshot(`
         Array [
           "alerttype",
           Array [
@@ -82,7 +82,7 @@ describe('Product Notification Edit Form Component', () => {
 
       product.available = true;
 
-      expect(extractKeys(component.getFieldsForProductNotification(component.productNotification, product, 'USD')))
+      expect(extractKeys(component.getFieldsForProductNotification(component.productNotification, product)))
         .toMatchInlineSnapshot(`
         Array [
           "alerttype",
@@ -101,7 +101,7 @@ describe('Product Notification Edit Form Component', () => {
 
       product.available = false;
 
-      expect(extractKeys(component.getFieldsForProductNotification(component.productNotification, product, 'USD')))
+      expect(extractKeys(component.getFieldsForProductNotification(component.productNotification, product)))
         .toMatchInlineSnapshot(`
         Array [
           "alerttype",
