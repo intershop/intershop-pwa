@@ -1,7 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+
+import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
-import { ProductNotificationRemoveDialogComponent } from '../product-notification-remove-dialog/product-notification-remove-dialog.component';
 
 /**
  * The Product Notification Remove Component shows the customer a link to open the dialog
@@ -9,7 +13,7 @@ import { ProductNotificationRemoveDialogComponent } from '../product-notificatio
  *
  * @example
  * <ish-product-notification-remove
- *   [cssClass]="'btn-link btn-tool'"
+ *   cssClass="btn-link btn-tool"
  *   [productNotification]="productNotification"
  * ></ish-product-notification-remove>
  */
@@ -18,11 +22,28 @@ import { ProductNotificationRemoveDialogComponent } from '../product-notificatio
   templateUrl: './product-notification-remove.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductNotificationRemoveComponent {
+export class ProductNotificationRemoveComponent implements OnInit {
   @Input() productNotification: ProductNotification;
   @Input() cssClass: string;
 
-  openModal(modal: ProductNotificationRemoveDialogComponent) {
+  productName$: Observable<string>;
+
+  constructor(private productNotificationsFacade: ProductNotificationsFacade, private context: ProductContextFacade) {}
+
+  ngOnInit() {
+    this.productName$ = this.context.select('product', 'name');
+  }
+
+  openConfirmationDialog(modal: ModalDialogComponent<string>) {
     modal.show();
+  }
+
+  // delete the notification
+  deleteProductNotification() {
+    const sku = this.context.get('sku');
+    const productNotificationType = this.productNotification.type;
+    const productNotificationId = this.productNotification.id;
+
+    this.productNotificationsFacade.deleteProductNotification(sku, productNotificationType, productNotificationId);
   }
 }

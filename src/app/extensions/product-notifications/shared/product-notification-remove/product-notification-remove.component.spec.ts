@@ -2,8 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { ProductNotificationRemoveDialogComponent } from '../product-notification-remove-dialog/product-notification-remove-dialog.component';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+
+import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 
 import { ProductNotificationRemoveComponent } from './product-notification-remove.component';
 
@@ -11,15 +15,23 @@ describe('Product Notification Remove Component', () => {
   let component: ProductNotificationRemoveComponent;
   let fixture: ComponentFixture<ProductNotificationRemoveComponent>;
   let element: HTMLElement;
+  let context: ProductContextFacade;
+  let productNotificationsFacade: ProductNotificationsFacade;
 
   beforeEach(async () => {
+    context = mock(ProductContextFacade);
+    productNotificationsFacade = mock(ProductNotificationsFacade);
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(FaIconComponent),
-        MockComponent(ProductNotificationRemoveDialogComponent),
+        MockComponent(ModalDialogComponent),
         ProductNotificationRemoveComponent,
       ],
       imports: [TranslateModule.forRoot()],
+      providers: [
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
+        { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
+      ],
     }).compileComponents();
   });
 
@@ -35,8 +47,8 @@ describe('Product Notification Remove Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should include the custom notification modal dialog', () => {
+  it('should include the delete notification modal dialog', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-product-notification-remove-dialog')).toBeTruthy();
+    expect(element.querySelector('ish-modal-dialog')).toBeTruthy();
   });
 });

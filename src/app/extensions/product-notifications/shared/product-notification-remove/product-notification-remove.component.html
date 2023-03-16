@@ -2,14 +2,21 @@
   type="button"
   class="btn"
   [ngClass]="cssClass"
-  (click)="openModal(modal)"
+  (click)="openConfirmationDialog(deleteDialog)"
   data-testing-id="product-notification-remove"
 >
-  <!-- remove icon -->
   <fa-icon [icon]="['fas', 'trash-alt']" [title]="'product.notification.remove.link.title' | translate"></fa-icon>
 </button>
 
-<ish-product-notification-remove-dialog
-  [productNotification]="productNotification"
-  #modal
-></ish-product-notification-remove-dialog>
+<ish-modal-dialog
+  #deleteDialog
+  [options]="{
+    confirmText: 'product.notification.remove.delete.button.label' | translate,
+    rejectText: 'product.notification.remove.cancel.button.label' | translate,
+    titleText: productName$ | async
+  }"
+  (confirmed)="deleteProductNotification()"
+>
+  <p>{{ 'product.notification.remove.message_line1' | translate }}</p>
+  <p>{{ 'product.notification.remove.message_line2' | translate }}</p>
+</ish-modal-dialog>
