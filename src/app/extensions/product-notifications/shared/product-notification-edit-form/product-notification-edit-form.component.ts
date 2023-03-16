@@ -46,7 +46,6 @@ export class ProductNotificationEditFormComponent implements OnChanges {
     alerttype?: string;
     email: string;
     pricevalue: number;
-    currency?: string;
     productnotificationid?: string;
   }>;
 
@@ -80,22 +79,18 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       );
 
       // differentiate form with or without a product notification
-      this.fields$ = combineLatest([this.product$, this.model$.pipe(map(model => model?.currency))]).pipe(
-        map(([product, currency]) =>
+      this.fields$ = combineLatest([this.product$]).pipe(
+        map(([product]) =>
           this.productNotification
-            ? this.getFieldsForProductNotification(this.productNotification, product, currency)
-            : this.getFieldsForNoProductNotification(product, currency)
+            ? this.getFieldsForProductNotification(this.productNotification, product)
+            : this.getFieldsForNoProductNotification(product)
         )
       );
     }
   }
 
   // get form fields if a product notification is available
-  getFieldsForProductNotification(
-    productNotification: ProductNotification,
-    product: ProductView,
-    currency: string
-  ): FormlyFieldConfig[] {
+  getFieldsForProductNotification(productNotification: ProductNotification, product: ProductView): FormlyFieldConfig[] {
     return [
       {
         key: 'alerttype',
@@ -110,7 +105,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
         key: 'productnotificationid',
       },
       ...(productNotification?.type === 'price' || product?.available
-        ? this.getPriceConfigForProductNotification(currency)
+        ? this.getPriceConfigForProductNotification()
         : []),
       ...(productNotification?.type === 'stock' || !product?.available
         ? this.getStockConfigForProductNotification()
@@ -120,7 +115,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   }
 
   // wrap form fields in fieldset if a product notification is not available because there are no radio buttons
-  getFieldsForNoProductNotification(product: ProductView, currency: string): FormlyFieldConfig[] {
+  getFieldsForNoProductNotification(product: ProductView): FormlyFieldConfig[] {
     return [
       {
         key: 'alerttype',
@@ -136,13 +131,13 @@ export class ProductNotificationEditFormComponent implements OnChanges {
             : 'product.notification.edit.form.instock_notification.label',
           legendClass: 'row mb-3',
         },
-        fieldGroup: [...(product?.available ? this.getPriceConfig(currency) : []), ...this.getEmailConfig()],
+        fieldGroup: [...(product?.available ? this.getPriceConfig() : []), ...this.getEmailConfig()],
       },
     ];
   }
 
   // get the fields for the price notification
-  private getPriceConfigForProductNotification(currency: string): FormlyFieldConfig[] {
+  private getPriceConfigForProductNotification(): FormlyFieldConfig[] {
     return [
       {
         key: 'alerttype',
@@ -153,7 +148,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
           value: 'price',
         },
       },
-      ...this.getPriceConfig(currency),
+      ...this.getPriceConfig(),
     ];
   }
 
@@ -173,7 +168,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   }
 
   // get only the price field
-  private getPriceConfig(currency: string): FormlyFieldConfig[] {
+  private getPriceConfig(): FormlyFieldConfig[] {
     return [
       {
         key: 'pricevalue',
@@ -183,7 +178,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
           label: 'product.notification.edit.form.price.label',
           required: true,
           addonLeft: {
-            text: this.appFacade.currencySymbol$(currency),
+            text: this.appFacade.currencySymbol$(),
           },
         },
         validators: {
