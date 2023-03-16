@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, mergeMap } from 'rxjs';
+import { concatMap, map, mergeMap, switchMap } from 'rxjs';
 
 import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -17,7 +17,7 @@ export class ProductNotificationEffects {
     this.actions$.pipe(
       ofType(productNotificationsActions.loadProductNotifications),
       mapToPayloadProperty('type'),
-      concatMap(type =>
+      switchMap(type =>
         this.productNotificationsService.getProductNotifications(type).pipe(
           map(productNotifications =>
             productNotificationsApiActions.loadProductNotificationsSuccess({ productNotifications, type })
@@ -52,7 +52,7 @@ export class ProductNotificationEffects {
       ofType(productNotificationsActions.updateProductNotification),
       mapToPayload(),
       whenTruthy(),
-      mergeMap(payload =>
+      concatMap(payload =>
         this.productNotificationsService.updateProductNotification(payload.sku, payload.productNotification).pipe(
           mergeMap(productNotification => [
             productNotificationsApiActions.updateProductNotificationSuccess({ productNotification }),
