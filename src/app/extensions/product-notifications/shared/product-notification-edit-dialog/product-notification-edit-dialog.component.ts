@@ -5,7 +5,6 @@ import { Observable, Subject, of, shareReplay, switchMap, takeUntil } from 'rxjs
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -39,7 +38,6 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
   modal: NgbModalRef;
   product$: Observable<ProductView>;
   productAvailable$: Observable<boolean>;
-  productPrices$: Observable<Pricing>;
   currentCurrency: string;
 
   productNotificationForm = new UntypedFormGroup({});
