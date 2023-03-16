@@ -91,6 +91,7 @@ export class ProductNotificationEffects {
       ofType(
         productNotificationsApiActions.loadProductNotificationsFail,
         productNotificationsApiActions.createProductNotificationFail,
+        productNotificationsApiActions.updateProductNotificationFail,
         productNotificationsApiActions.deleteProductNotificationFail
       ),
       mapToPayloadProperty('error'),
