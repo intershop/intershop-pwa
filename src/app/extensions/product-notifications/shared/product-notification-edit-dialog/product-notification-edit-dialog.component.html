@@ -17,7 +17,7 @@
   </div>
 
   <ng-container *ngIf="productNotification$ | async as productNotification; else createNotificationButton">
-    <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
+    <form [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
       <div class="modal-body">
         <ish-product-image imageType="L"></ish-product-image>
 
@@ -41,7 +41,7 @@
   </ng-container>
 
   <ng-template #createNotificationButton>
-    <form [formGroup]="productNotificationForm" name="ProductNotificationEditForm" (ngSubmit)="submitForm()">
+    <form [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
       <div class="modal-body">
         <ish-product-image imageType="L"></ish-product-image>
 
