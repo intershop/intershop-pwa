@@ -24,10 +24,10 @@ import { ProductNotification } from '../../models/product-notification/product-n
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductNotificationRemoveDialogComponent implements OnInit {
-  modal: NgbModalRef;
-
-  product$: Observable<ProductView>;
   @Input() productNotification: ProductNotification;
+
+  modal: NgbModalRef;
+  product$: Observable<ProductView>;
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 

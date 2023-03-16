@@ -34,8 +34,9 @@ import { ProductNotification } from '../../models/product-notification/product-n
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy {
-  modal: NgbModalRef;
+  @Input() productNotification: ProductNotification;
 
+  modal: NgbModalRef;
   product$: Observable<ProductView>;
   productAvailable$: Observable<boolean>;
   productPrices$: Observable<Pricing>;
@@ -44,12 +45,11 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
   productNotificationForm = new UntypedFormGroup({});
   submitted = false;
 
-  @Input() productNotification: ProductNotification;
   productNotification$: Observable<ProductNotification>;
 
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
-
   private destroy$ = new Subject<void>();
+
+  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
   constructor(
     private ngbModal: NgbModal,
