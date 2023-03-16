@@ -1,6 +1,4 @@
 export class EditProductNotificationModule {
-  constructor(private contextSelector: string = 'ish-product-listing') {}
-
   private priceInput = () => cy.get('ish-fieldset-field').find('[data-testing-id="pricevalue"]');
 
   private emailInput = () => cy.get('ish-fieldset-field').find('[data-testing-id="email"]');

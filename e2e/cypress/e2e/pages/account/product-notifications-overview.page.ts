@@ -19,6 +19,14 @@ export class ProductNotificationsOverviewPage {
     return this.productNotificationsArray.find('div[data-testing-id="product-notification-message"]').invoke('text');
   }
 
+  get productNotificationListItems() {
+    return cy.get('[data-testing-id = "product-notification-list-item"]');
+  }
+
+  get productNotificationListItemLinks() {
+    return this.productNotificationListItems.find('a[data-testing-id="product-name-link"]');
+  }
+
   updateProductNotificationByProductName(productName: string, price: number, email: string) {
     this.productNotificationsArray
       .find('a')

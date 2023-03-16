@@ -39,7 +39,7 @@ describe('Product Notification MyAccount Functionality', () => {
     at(ProductNotificationsOverviewPage);
   });
 
-  it('user creates a product price notification from the product detail page', () => {
+  it('user creates two product price notifications', () => {
     at(ProductNotificationsOverviewPage, page => {
       page.header.gotoCategoryPage(_.category);
     });
@@ -62,9 +62,7 @@ describe('Product Notification MyAccount Functionality', () => {
       page.productNotificationMessage.should('contain', '150');
       page.productNotificationMessage.should('contain', _.email1);
     });
-  });
 
-  it('user creates another product price notification from product detail page', () => {
     at(ProductNotificationsOverviewPage, page => {
       page.header.gotoCategoryPage(_.category);
     });
@@ -80,6 +78,11 @@ describe('Product Notification MyAccount Functionality', () => {
     at(MyAccountPage, page => {
       page.navigateToProductNotifications();
     });
+
+    at(ProductNotificationsOverviewPage, page => {
+      page.productNotificationMessage.should('contain', '50');
+      page.productNotificationListItemLinks.should('have.length', 2);
+    });
   });
 
   it('user updates a product notification', () => {
@@ -91,7 +94,7 @@ describe('Product Notification MyAccount Functionality', () => {
     });
   });
 
-  it('user deletes a product notification', () => {
+  it('user deletes one notification', () => {
     at(ProductNotificationsOverviewPage, page => {
       page.productNotificationsArray.then($listItems => {
         const initLen = $listItems.length;
