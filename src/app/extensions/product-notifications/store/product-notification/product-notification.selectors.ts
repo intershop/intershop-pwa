@@ -16,16 +16,12 @@ export const getProductNotificationsLoading = createSelector(getProductNotificat
 
 export const getProductNotificationsError = createSelector(getProductNotificationState, state => state.error);
 
-const { selectAll } = productNotificationAdapter.getSelectors(getProductNotificationState);
-
-export const getAllProductNotifications = selectAll;
+export const { selectAll } = productNotificationAdapter.getSelectors(getProductNotificationState);
 
 export const getProductNotificationsByType = (type: ProductNotificationType) =>
-  createSelector(getAllProductNotifications, (entities): ProductNotification[] =>
-    entities.filter(e => e.type === type)
-  );
+  createSelector(selectAll, (entities): ProductNotification[] => entities.filter(e => e.type === type));
 
 export const getProductNotificationBySku = (sku: string, type: ProductNotificationType) =>
-  createSelector(getAllProductNotifications, (entities): ProductNotification[] =>
+  createSelector(selectAll, (entities): ProductNotification[] =>
     entities.filter(e => e.sku === sku && e.type === type)
   );

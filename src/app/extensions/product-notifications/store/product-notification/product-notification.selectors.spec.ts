@@ -12,9 +12,11 @@ import { ProductNotificationsStoreModule } from '../product-notifications-store.
 
 import { productNotificationsActions, productNotificationsApiActions } from './product-notification.actions';
 import {
-  getAllProductNotifications,
+  getProductNotificationBySku,
+  getProductNotificationsByType,
   getProductNotificationsError,
   getProductNotificationsLoading,
+  selectAll,
 } from './product-notification.selectors';
 
 describe('Product Notification Selectors', () => {
@@ -39,7 +41,7 @@ describe('Product Notification Selectors', () => {
     });
 
     it('should not have entities when in initial state', () => {
-      expect(getAllProductNotifications(store$.state)).toBeEmpty();
+      expect(selectAll(store$.state)).toBeEmpty();
     });
   });
 
@@ -85,12 +87,12 @@ describe('Product Notification Selectors', () => {
       expect(getProductNotificationsError(store$.state)).toBeUndefined();
     });
 
-    it('should add product notifications to state', () => {
-      expect(getAllProductNotifications(store$.state)).toEqual(productNotifications);
+    it('should have entities when successfully loading', () => {
+      expect(selectAll(store$.state)).not.toBeEmpty();
     });
   });
 
-  describe('loadProductNotificationsFail', () => {
+  describe('productNotificationsActions.loadProductNotificationsFail', () => {
     beforeEach(() => {
       store$.dispatch(
         productNotificationsApiActions.loadProductNotificationsFail({ error: makeHttpError({ message: 'error' }) })
@@ -103,6 +105,64 @@ describe('Product Notification Selectors', () => {
 
     it('should have an error when reducing', () => {
       expect(getProductNotificationsError(store$.state)).toBeTruthy();
+    });
+  });
+
+  describe('getProductNotificationsByType', () => {
+    const productNotifications = [
+      {
+        id: '1_price',
+        type: 'price',
+        sku: '1',
+        notificationMailAddress: 'a.b@c.de',
+      },
+    ] as ProductNotification[];
+
+    const type: ProductNotificationType = 'price';
+
+    beforeEach(() => {
+      store$.dispatch(productNotificationsApiActions.loadProductNotificationsSuccess({ productNotifications, type }));
+    });
+
+    it('should set loading to false', () => {
+      expect(getProductNotificationsLoading(store$.state)).toBeFalse();
+    });
+
+    it('should not have an error when successfully loaded entities', () => {
+      expect(getProductNotificationsError(store$.state)).toBeUndefined();
+    });
+
+    it('should return correct product notification of type price', () => {
+      expect(getProductNotificationsByType(type)(store$.state)).toEqual(productNotifications);
+    });
+  });
+
+  describe('getProductNotificationBySku', () => {
+    const productNotifications = [
+      {
+        id: '1_price',
+        type: 'price',
+        sku: '1',
+        notificationMailAddress: 'a.b@c.de',
+      },
+    ] as ProductNotification[];
+
+    const type: ProductNotificationType = 'price';
+
+    beforeEach(() => {
+      store$.dispatch(productNotificationsApiActions.loadProductNotificationsSuccess({ productNotifications, type }));
+    });
+
+    it('should set loading to false', () => {
+      expect(getProductNotificationsLoading(store$.state)).toBeFalse();
+    });
+
+    it('should not have an error when successfully loaded entities', () => {
+      expect(getProductNotificationsError(store$.state)).toBeUndefined();
+    });
+
+    it('should return correct product notification with specific sku', () => {
+      expect(getProductNotificationBySku('1', 'price')(store$.state)).toEqual(productNotifications);
     });
   });
 });
