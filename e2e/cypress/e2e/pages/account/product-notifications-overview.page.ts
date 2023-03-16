@@ -46,6 +46,6 @@ export class ProductNotificationsOverviewPage {
       .closest('[data-testing-id="product-notification-list-item"]')
       .find('[data-testing-id="product-notification-remove"]')
       .click();
-    cy.get('[data-testing-id="product-notification-delete"]').click();
+    cy.get('[data-testing-id="confirm"]').click();
   }
 }
