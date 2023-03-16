@@ -2,11 +2,11 @@
   <label
     [attr.for]="id"
     class="col-form-label"
-    [ngClass]="props.labelClass ? props.labelClass : dto.labelClass"
+    [ngClass]="props.labelClass ? props.labelClass : dprops.labelClass"
     *ngIf="props.label"
     >{{ props.label | translate }}<span class="required" *ngIf="props.required && !to.hideRequiredMarker">*</span>
   </label>
-  <div [ngClass]="props.fieldClass ? props.fieldClass : dto.fieldClass">
+  <div [ngClass]="props.fieldClass ? props.fieldClass : dprops.fieldClass">
     <ng-template #fieldComponent></ng-template>
   </div>
 </div>

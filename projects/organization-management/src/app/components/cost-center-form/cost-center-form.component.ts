@@ -179,6 +179,7 @@ export class CostCenterFormComponent implements OnInit {
             type: 'ish-checkbox-field',
             props: {
               label: 'account.costCenter.active.label',
+              title: 'account.costCenter.active.title',
             },
           },
         ],

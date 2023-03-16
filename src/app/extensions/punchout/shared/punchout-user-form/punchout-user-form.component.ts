@@ -67,13 +67,6 @@ export class PunchoutUserFormComponent implements OnInit {
               },
             },
           },
-          {
-            key: 'active',
-            type: 'ish-checkbox-field',
-            props: {
-              label: 'account.user.active.label',
-            },
-          },
         ],
       },
       {
@@ -112,6 +105,14 @@ export class PunchoutUserFormComponent implements OnInit {
               messages: {
                 required: 'account.punchout.password.confirmation.error.required',
               },
+            },
+          },
+          {
+            key: 'active',
+            type: 'ish-checkbox-field',
+            templateOptions: {
+              label: 'account.user.active.label',
+              title: 'account.user.active.title',
             },
           },
         ],

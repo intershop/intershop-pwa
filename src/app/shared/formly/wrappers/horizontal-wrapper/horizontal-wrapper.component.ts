@@ -20,7 +20,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class HorizontalWrapperComponent extends FieldWrapper {
-  dto = {
+  dprops = {
     labelClass: 'col-md-4',
     fieldClass: 'col-md-8',
   };

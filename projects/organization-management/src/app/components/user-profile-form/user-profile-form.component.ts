@@ -59,14 +59,15 @@ export class UserProfileFormComponent implements OnInit {
               }
             : {},
           {
+            type: '#phoneHome',
+          },
+          {
             key: 'active',
             type: 'ish-checkbox-field',
             props: {
               label: 'account.user.active.label',
+              title: 'account.user.active.title',
             },
-          },
-          {
-            type: '#phoneHome',
           },
         ],
       },
