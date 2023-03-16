@@ -28,7 +28,7 @@ import { ProductNotificationEditDialogComponent } from '../product-notification-
 @GenerateLazyComponent()
 export class ProductNotificationEditComponent implements OnDestroy, OnInit {
   @Input() productNotification: ProductNotification;
-  @Input() displayType: string;
+  @Input() displayType: 'button' | 'icon' = 'button';
   @Input() cssClass: string;
 
   visible$: Observable<boolean>;
@@ -41,6 +41,7 @@ export class ProductNotificationEditComponent implements OnDestroy, OnInit {
     this.visible$ = this.context.select('displayProperties', 'addToNotification');
   }
 
+  // keep-localization-pattern: ^product\.notification\..*\.notification\.button.*
   buttonKey(key: string): Observable<string> {
     return this.context
       .select('product', 'available')
