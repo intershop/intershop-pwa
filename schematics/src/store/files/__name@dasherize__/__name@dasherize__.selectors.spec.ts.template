@@ -6,7 +6,7 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 <% if(entity) { %>import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { <%= classify(entity) %> } from '<% if(!extension) { %>ish-core<% } else { %>../..<% } %>/models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';<% } %>
 
-import { load<%= classify(name) %><% if (entity) { %>, load<%= classify(name) %>Fail, load<%= classify(name) %>Success<% } %> } from './<%= dasherize(name) %>.actions';
+import { <%= camelize(name) %>Actions<% if (entity) { %>, <%= camelize(name) %>ApiActions<% } %> } from './<%= dasherize(name) %>.actions';
 import { <% if (entity) { %>getNumberOf<%= classify(name) %>, get<%= classify(name) %>, get<%= classify(name) %>Entities, get<%= classify(name) %>Error, <% } %>get<%= classify(name) %>Loading } from './<%= dasherize(name) %>.selectors';
 
 describe('<%= classify(name) %> Selectors', () => {
@@ -41,7 +41,7 @@ describe('<%= classify(name) %> Selectors', () => {
 <% } %>  });
 
   describe('load<%= classify(name) %>', () =>{
-    const action = load<%= classify(name) %>();
+    const action = <%= camelize(name) %>Actions.load<%= classify(name) %>();
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -53,7 +53,7 @@ describe('<%= classify(name) %> Selectors', () => {
 <% if (entity) { %>
     describe('load<%= classify(name) %>Success', () => {
       const <%= camelize(name) %> = [{ id: '1' }, { id: '2' }] as <%= classify(entity) %>[];
-      const successAction = load<%= classify(name) %>Success({ <%= camelize(name) %> });
+      const successAction = <%= camelize(name) %>ApiActions.load<%= classify(name) %>Success({ <%= camelize(name) %> });
 
       beforeEach(() => {
         store$.dispatch(successAction);
@@ -76,7 +76,7 @@ describe('<%= classify(name) %> Selectors', () => {
 
     describe('load<%= classify(name) %>Fail', () => {
       const error = makeHttpError({ message: 'ERROR' });
-      const failAction = load<%= classify(name) %>Fail({ error });
+      const failAction = <%= camelize(name) %>ApiActions.load<%= classify(name) %>Fail({ error });
 
       beforeEach(() => {
         store$.dispatch(failAction);

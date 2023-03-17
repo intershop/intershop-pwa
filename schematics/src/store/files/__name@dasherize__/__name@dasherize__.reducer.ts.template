@@ -7,7 +7,7 @@ import { <%= classify(entity) %> } from '<% if(!extension) { %>ish-core<% } else
 import { createReducer<% if(entity) { %>, on<% } %> } from '@ngrx/store';
 import { <% if(entity) { %>setErrorOn, unsetLoadingAndErrorOn, <% } %>setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
-import { load<%= classify(name) %><% if(entity) { %>, load<%= classify(name) %>Fail, load<%= classify(name) %>Success<% } %> } from './<%= dasherize(name) %>.actions';
+import { <%= camelize(name) %>Actions<% if(entity) { %>, <%= camelize(name) %>ApiActions<% } %> } from './<%= dasherize(name) %>.actions';
 <% if(entity) { %>
 export const <%= camelize(name) %>Adapter = createEntityAdapter<<%= classify(entity) %>>();
 
@@ -31,8 +31,8 @@ const initialState: <%= classify(name) %>State = {
 <% } %>
 export const <%= camelize(name) %>Reducer = createReducer(
   initialState,
-  setLoadingOn(load<%= classify(name) %>)<% if(entity) { %>,
-  setErrorOn(load<%= classify(name) %>Fail),
-  unsetLoadingAndErrorOn(load<%= classify(name) %>Success),
-  on(load<%= classify(name) %>Success, (state, action) => <%= camelize(name) %>Adapter.upsertMany(action.payload.<%= camelize(name) %>, state))<% } %>
+  setLoadingOn(<%= camelize(name) %>Actions.load<%= classify(name) %>)<% if(entity) { %>,
+  setErrorOn(<%= camelize(name) %>ApiActions.load<%= classify(name) %>Fail),
+  unsetLoadingAndErrorOn(<%= camelize(name) %>ApiActions.load<%= classify(name) %>Success),
+  on(<%= camelize(name) %>ApiActions.load<%= classify(name) %>Success, (state, action) => <%= camelize(name) %>Adapter.upsertMany(action.payload.<%= camelize(name) %>, state))<% } %>
 );

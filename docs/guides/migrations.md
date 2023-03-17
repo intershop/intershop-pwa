@@ -38,6 +38,9 @@ Obsolete functionality that is no longer needed with the current state of the In
 - removed unused `azure-pipeline` schematic that could be used to create an Azure Pipeline template based on the generated Kubernetes charts for DevOps
 - removed migration scripts that where used for pre PWA 1.0 migration support
 
+We recommend to use the Action Group Creator to create store actions now.
+Therefore the corresponding store schematic for the action creation has been adapted.
+
 ## 3.2 to 3.3
 
 To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
