@@ -122,7 +122,6 @@ const fieldComponents = [
               messages: {
                 password: 'form.password.error.invalid',
                 required: 'form.password.error.required',
-                equalTo: 'form.password.error.equalTo',
               },
             },
           },

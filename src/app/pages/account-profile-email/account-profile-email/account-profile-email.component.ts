@@ -53,9 +53,9 @@ export class AccountProfileEmailComponent implements OnInit {
 
           {
             key: 'emailConfirmation',
-            type: 'ish-email-field',
-
+            type: 'ish-text-input-field',
             props: {
+              type: 'email',
               hideRequiredMarker: true,
               required: true,
               label: 'account.update_email.email_confirmation.label',
