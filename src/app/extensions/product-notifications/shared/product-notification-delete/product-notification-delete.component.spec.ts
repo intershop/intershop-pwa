@@ -9,11 +9,11 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 
-import { ProductNotificationRemoveComponent } from './product-notification-remove.component';
+import { ProductNotificationDeleteComponent } from './product-notification-delete.component';
 
-describe('Product Notification Remove Component', () => {
-  let component: ProductNotificationRemoveComponent;
-  let fixture: ComponentFixture<ProductNotificationRemoveComponent>;
+describe('Product Notification Delete Component', () => {
+  let component: ProductNotificationDeleteComponent;
+  let fixture: ComponentFixture<ProductNotificationDeleteComponent>;
   let element: HTMLElement;
   let context: ProductContextFacade;
   let productNotificationsFacade: ProductNotificationsFacade;
@@ -25,7 +25,7 @@ describe('Product Notification Remove Component', () => {
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
-        ProductNotificationRemoveComponent,
+        ProductNotificationDeleteComponent,
       ],
       imports: [TranslateModule.forRoot()],
       providers: [
@@ -36,7 +36,7 @@ describe('Product Notification Remove Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductNotificationRemoveComponent);
+    fixture = TestBed.createComponent(ProductNotificationDeleteComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

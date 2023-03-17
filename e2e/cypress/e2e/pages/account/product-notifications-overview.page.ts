@@ -44,7 +44,7 @@ export class ProductNotificationsOverviewPage {
       .find('a')
       .contains(productName)
       .closest('[data-testing-id="product-notification-list-item"]')
-      .find('[data-testing-id="product-notification-remove"]')
+      .find('[data-testing-id="product-notification-delete"]')
       .click();
     cy.get('[data-testing-id="confirm"]').click();
   }

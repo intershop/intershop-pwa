@@ -20,8 +20,8 @@ import { ProductNotification } from '../../models/product-notification/product-n
  * The form shows fields either for the price or the stock notification.
  * Each of these two types has to support two cases:
  * - A product notification is not available and has to be created. There are no radio buttons.
- * - A product notification is available and it can be edited or removed. In this case,
- *   there are radio buttons used to either remove the notification or to edit it.
+ * - A product notification is available and it can be edited or deleted. In this case,
+ *   there are radio buttons used to either delete the notification or to edit it.
  *
  * @example
  * <ish-product-notification-edit-form

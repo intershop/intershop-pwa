@@ -8,21 +8,21 @@ import { ProductNotificationsFacade } from '../../facades/product-notifications.
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
 /**
- * The Product Notification Remove Component shows the customer a link to open the dialog
- * to remove the product notification.
+ * The Product Notification Delete Component shows the customer a link to open the dialog
+ * to delete the product notification.
  *
  * @example
- * <ish-product-notification-remove
+ * <ish-product-notification-delete
  *   cssClass="btn-link btn-tool"
  *   [productNotification]="productNotification"
- * ></ish-product-notification-remove>
+ * ></ish-product-notification-delete>
  */
 @Component({
-  selector: 'ish-product-notification-remove',
-  templateUrl: './product-notification-remove.component.html',
+  selector: 'ish-product-notification-delete',
+  templateUrl: './product-notification-delete.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductNotificationRemoveComponent implements OnInit {
+export class ProductNotificationDeleteComponent implements OnInit {
   @Input() productNotification: ProductNotification;
   @Input() cssClass: string;
 

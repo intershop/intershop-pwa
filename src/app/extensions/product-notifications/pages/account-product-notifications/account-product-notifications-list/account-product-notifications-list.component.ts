@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ProductNotification } from '../../../models/product-notification/product-notification.model';
 
-type ProductNotificationsColumnsType = 'productImage' | 'product' | 'notification' | 'notificationEditRemove';
+type ProductNotificationsColumnsType = 'productImage' | 'product' | 'notification' | 'notificationEditDelete';
 
 @Component({
   selector: 'ish-account-product-notifications-list',
@@ -17,6 +17,6 @@ export class AccountProductNotificationsListComponent {
     'productImage',
     'product',
     'notification',
-    'notificationEditRemove',
+    'notificationEditDelete',
   ];
 }

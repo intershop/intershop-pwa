@@ -61,7 +61,7 @@
     </ng-container>
 
     <!-- Notification Edit -->
-    <ng-container cdkColumnDef="notificationEditRemove">
+    <ng-container cdkColumnDef="notificationEditDelete">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-notification-edit"><!-- empty th --></th>
       <td cdk-cell *cdkCellDef="let productNotification">
         <div class="d-flex flex-nowrap justify-content-center" ishProductContext [sku]="productNotification.sku">
@@ -70,10 +70,10 @@
             [productNotification]="productNotification"
             displayType="icon"
           ></ish-product-notification-edit>
-          <ish-product-notification-remove
+          <ish-product-notification-delete
             cssClass="btn-link btn-tool mr-0 pt-1 px-0"
             [productNotification]="productNotification"
-          ></ish-product-notification-remove>
+          ></ish-product-notification-delete>
         </div>
       </td>
     </ng-container>

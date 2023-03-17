@@ -12,7 +12,7 @@ import { ProductNotificationEditDialogComponent } from '../product-notification-
 
 /**
  * The Product Notification Edit Component shows the customer a link to open the dialog to either create,
- * edit or remove a product notification.
+ * edit or delete a product notification.
  *
  * @example
  * <ish-product-notification-edit

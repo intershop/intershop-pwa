@@ -14,7 +14,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
 
 /**
  * The Product Notification Edit Dialog Component shows the customer a dialog to either create,
- * edit or remove a product notification. The dialog is called from either the detail page or
+ * edit or delete a product notification. The dialog is called from either the detail page or
  * the my account notifications list.
  * If a product notification does not exist yet, the dialog shows the form to create a notification.
  * If a product notification exists, the dialog shows the form to update the notification.
@@ -120,7 +120,7 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
       };
 
       if (formValue.alerttype !== undefined && formValue.alerttype === 'delete') {
-        // user selected the radio button to remove the notification
+        // user selected the radio button to delete the notification
         this.productNotificationsFacade.deleteProductNotification(sku, productNotificationType, productNotificationId);
       } else if (
         formValue.alerttype !== undefined &&
