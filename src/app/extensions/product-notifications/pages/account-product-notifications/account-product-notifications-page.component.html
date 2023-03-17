@@ -1,6 +1,9 @@
 <div class="productnotifications">
   <h1>{{ 'account.notifications.heading' | translate }}</h1>
 
+  <!-- Error message -->
+  <ish-error-message [error]="productNotificationsError$ | async"></ish-error-message>
+
   <ul ngbNav class="nav-tabs" [(activeId)]="active">
     <li ngbNavItem="price">
       <a
