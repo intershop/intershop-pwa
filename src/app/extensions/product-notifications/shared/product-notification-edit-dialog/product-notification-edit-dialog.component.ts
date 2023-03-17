@@ -65,7 +65,7 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
       this.currentCurrency = currency;
     });
 
-    // get product notification as @Input parameter (my account) or from facade (REST call)
+    // if no product notification is given as @Input parameter, trigger a REST call to fetch the notification
     this.productNotification$ = this.productNotification
       ? of(this.productNotification)
       : this.productAvailable$.pipe(
