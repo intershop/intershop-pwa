@@ -88,7 +88,9 @@ export class ApiTokenService {
           const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
           if (cookieContent) {
             cookiesService.put('apiToken', cookieContent, {
-              expires: this.cookieOptions?.expires ?? new Date(Date.now() + DEFAULT_EXPIRY_TIME),
+              expires: this.cookieOptions?.expires
+                ? new Date(this.cookieOptions?.expires.getTime() + 60000)
+                : new Date(Date.now() + DEFAULT_EXPIRY_TIME),
               secure: this.cookieOptions?.secure ?? true,
               sameSite: 'Strict',
               path: '/',
