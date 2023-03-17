@@ -241,18 +241,19 @@ export class RegistrationFormConfigurationService {
           },
           {
             key: 'loginConfirmation',
-            type: 'ish-email-field',
+            type: 'ish-text-input-field',
             props: {
+              type: 'email',
               label: 'account.register.email_confirmation.label',
               required: true,
             },
             validation: {
               messages: {
+                required: 'form.email.error.required',
                 equalTo: 'account.registration.email.not_match.error',
               },
             },
           },
-
           {
             key: 'password',
             type: 'ish-password-field',
@@ -269,16 +270,17 @@ export class RegistrationFormConfigurationService {
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-password-field',
+            type: 'ish-text-input-field',
             props: {
+              type: 'password',
               required: true,
               label: 'account.register.password_confirmation.label',
-
               attributes: { autocomplete: 'new-password' },
             },
             validation: {
               messages: {
                 required: 'account.register.password_confirmation.error.default',
+                equalTo: 'form.password.error.equalTo',
               },
             },
           },

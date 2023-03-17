@@ -67,14 +67,14 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
-
               attributes: { autocomplete: 'new-password' },
             },
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-password-field',
+            type: 'ish-text-input-field',
             props: {
+              type: 'password',
               required: true,
               hideRequiredMarker: true,
               label: 'account.update_password.newpassword_confirmation.label',
@@ -82,6 +82,7 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
             validation: {
               messages: {
                 required: 'account.register.password_confirmation.error.default',
+                equalTo: 'form.password.error.equalTo',
               },
             },
           },

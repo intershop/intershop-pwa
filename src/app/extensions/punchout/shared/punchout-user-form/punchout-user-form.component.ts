@@ -92,8 +92,9 @@ export class PunchoutUserFormComponent implements OnInit {
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-password-field',
+            type: 'ish-text-input-field',
             props: {
+              type: 'password',
               required: this.punchoutUser ? false : true,
               label: this.punchoutUser
                 ? 'account.punchout.password.new.confirmation.label'
@@ -104,6 +105,7 @@ export class PunchoutUserFormComponent implements OnInit {
             validation: {
               messages: {
                 required: 'account.punchout.password.confirmation.error.required',
+                equalTo: 'form.password.error.equalTo',
               },
             },
           },
