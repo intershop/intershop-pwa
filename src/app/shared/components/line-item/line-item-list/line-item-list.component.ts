@@ -49,7 +49,7 @@ export class LineItemListComponent implements OnChanges {
   }
 
   trackByFn(_: number, item: Partial<LineItemView & OrderLineItem>) {
-    return item.productSKU;
+    return item.id;
   }
 
   /**
