@@ -155,6 +155,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | compare                      | product compare feature (additional configuration via `dataRetention` configuration options)                               |
 | contactUs                    | allows the user to contact the website provider via a contact web form                                                     |
+| productNotifications         | product notifications feature for price and in stock notifications                                                         |
 | rating                       | display product ratings                                                                                                    |
 | recently                     | display recently viewed products (additional configuration via `dataRetention` configuration options)                      |
 | storeLocator                 | display physical stores and their addresses                                                                                |

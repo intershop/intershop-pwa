@@ -118,6 +118,8 @@ If you want to inject a token use the methods `injectSingle` and `injectMultiple
 There is a new linting rule `useTypeSafeInjectionTokenRule` that enforces the usage of these methods.
 Find more information in the [Configuration Concept](../concepts/configuration.md#angular-cli-environments)
 
+We introduced the product notifications feature as a new extension which is toggled with the feature toggle 'productNotifications' in the `environment.model.ts`.
+
 ## 3.2 to 3.3
 
 To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
