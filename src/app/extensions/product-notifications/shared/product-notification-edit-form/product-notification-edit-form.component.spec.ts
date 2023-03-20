@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -18,17 +17,14 @@ describe('Product Notification Edit Form Component', () => {
   let element: HTMLElement;
   let context: ProductContextFacade;
   let appFacade: AppFacade;
-  let accountFacade: AccountFacade;
   const product: ProductView = {} as ProductView;
 
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     appFacade = mock(AppFacade);
-    accountFacade = mock(accountFacade);
 
     await TestBed.configureTestingModule({
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],

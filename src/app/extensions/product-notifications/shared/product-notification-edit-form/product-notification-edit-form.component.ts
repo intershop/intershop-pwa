@@ -1,10 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Pricing } from 'ish-core/models/price/price.model';
@@ -27,6 +24,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
  * <ish-product-notification-edit-form
  *   [form]="productNotificationForm"
  *   [productNotification]="productNotification$ | async"
+ *   [userEmail]="userEmail$ | async"
  * ></ish-product-notification-edit-form>
  */
 @Component({
@@ -37,55 +35,45 @@ import { ProductNotification } from '../../models/product-notification/product-n
 export class ProductNotificationEditFormComponent implements OnChanges {
   @Input() form: FormGroup;
   @Input() productNotification: ProductNotification;
-  fields$: Observable<FormlyFieldConfig[]>;
+  @Input() userEmail: string;
 
-  product$: Observable<ProductView>;
-  productPrices$: Observable<Pricing>;
+  product: ProductView;
+  productPrices: Pricing;
 
-  model$: Observable<{
+  model: {
     alerttype?: string;
     email: string;
     pricevalue: number;
     productnotificationid?: string;
-  }>;
+  };
 
-  constructor(
-    private appFacade: AppFacade,
-    private context: ProductContextFacade,
-    private accountFacade: AccountFacade
-  ) {}
+  fields: FormlyFieldConfig[];
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.productNotification || changes.form) {
-      this.product$ = this.context.select('product');
-      this.productPrices$ = this.context.select('prices');
+  constructor(private appFacade: AppFacade, private context: ProductContextFacade) {}
+
+  ngOnChanges() {
+    if (this.userEmail && this.form) {
+      this.product = this.context.get('product');
+      this.productPrices = this.context.get('prices');
 
       // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
-      this.model$ = combineLatest([this.productPrices$, this.accountFacade.user$]).pipe(
-        map(([productPrices, user]) =>
-          this.productNotification
-            ? {
-                alerttype: this.productNotification.type,
-                email: this.productNotification.notificationMailAddress,
-                pricevalue: this.productNotification.price?.value,
-                productnotificationid: this.productNotification.id,
-              }
-            : {
-                alerttype: undefined,
-                email: user.email,
-                pricevalue: productPrices.salePrice.value,
-              }
-        )
-      );
+      this.model = this.productNotification
+        ? {
+            alerttype: this.productNotification.type,
+            email: this.productNotification.notificationMailAddress,
+            pricevalue: this.productNotification.price?.value,
+            productnotificationid: this.productNotification.id,
+          }
+        : {
+            alerttype: undefined,
+            email: this.userEmail,
+            pricevalue: this.productPrices.salePrice.value,
+          };
 
       // differentiate form with or without a product notification
-      this.fields$ = combineLatest([this.product$]).pipe(
-        map(([product]) =>
-          this.productNotification
-            ? this.getFieldsForProductNotification(this.productNotification, product)
-            : this.getFieldsForNoProductNotification(product)
-        )
-      );
+      this.fields = this.productNotification
+        ? this.getFieldsForProductNotification(this.productNotification, this.product)
+        : this.getFieldsForNoProductNotification(this.product);
     }
   }
 

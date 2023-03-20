@@ -3,6 +3,7 @@ import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
@@ -18,16 +19,19 @@ describe('Product Notification Edit Dialog Component', () => {
   let element: HTMLElement;
   let context: ProductContextFacade;
   let productNotificationsFacade: ProductNotificationsFacade;
+  let accountFacade: AccountFacade;
   let appFacade: AppFacade;
   let fb: UntypedFormBuilder;
 
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     productNotificationsFacade = mock(ProductNotificationsFacade);
+    accountFacade = mock(accountFacade);
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
       providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },

@@ -3,6 +3,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject, of, shareReplay, switchMap, takeUntil } from 'rxjs';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -38,6 +39,7 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
   modal: NgbModalRef;
   product$: Observable<ProductView>;
   productAvailable$: Observable<boolean>;
+  userEmail$: Observable<string>;
   currentCurrency: string;
 
   productNotificationForm = new UntypedFormGroup({});
@@ -52,6 +54,7 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
   constructor(
     private ngbModal: NgbModal,
     private context: ProductContextFacade,
+    private accountFacade: AccountFacade,
     private productNotificationsFacade: ProductNotificationsFacade,
     private appFacade: AppFacade
   ) {}
@@ -59,6 +62,7 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
   ngOnInit() {
     this.product$ = this.context.select('product');
     this.productAvailable$ = this.context.select('product', 'available');
+    this.userEmail$ = this.accountFacade.userEmail$;
 
     // determine current currency
     this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(currency => {
