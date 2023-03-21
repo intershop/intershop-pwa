@@ -83,7 +83,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       {
         key: 'alerttype',
         type: 'ish-radio-field',
-        templateOptions: {
+        props: {
           label: 'product.notification.edit.form.no_notification.label',
           fieldClass: ' ',
           value: 'delete',
@@ -107,13 +107,13 @@ export class ProductNotificationEditFormComponent implements OnChanges {
     return [
       {
         key: 'alerttype',
-        templateOptions: {
+        props: {
           value: '',
         },
       },
       {
         type: 'ish-fieldset-field',
-        templateOptions: {
+        props: {
           legend: product?.available
             ? 'product.notification.edit.form.price_notification.label'
             : 'product.notification.edit.form.instock_notification.label',
@@ -130,7 +130,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       {
         key: 'alerttype',
         type: 'ish-radio-field',
-        templateOptions: {
+        props: {
           label: 'product.notification.edit.form.price_notification.label',
           fieldClass: ' ',
           value: 'price',
@@ -146,7 +146,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       {
         key: 'alerttype',
         type: 'ish-radio-field',
-        templateOptions: {
+        props: {
           label: 'product.notification.edit.form.instock_notification.label',
           fieldClass: ' ',
           value: 'stock',
@@ -161,7 +161,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       {
         key: 'pricevalue',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           postWrappers: [{ wrapper: 'input-addon', index: -1 }],
           label: 'product.notification.edit.form.price.label',
           required: true,
@@ -188,7 +188,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       {
         key: 'email',
         type: 'ish-email-field',
-        templateOptions: {
+        props: {
           label: 'product.notification.edit.form.email.label',
           required: true,
         },
