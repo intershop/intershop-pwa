@@ -1,4 +1,4 @@
-<ng-container *ngFor="let item of lineItems$ | async">
+<ng-container *ngFor="let item of lineItems$ | async; trackBy: trackByFn">
   <div class="row" *ngIf="item[0] !== 'undefined'">
     <h2 class="col-12">
       {{ 'quote.basket_items.label' | translate : { '0': getName(item[0]) | async } }}

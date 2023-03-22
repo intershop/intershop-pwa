@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="list-body">
-        <ng-container *ngFor="let item of orderTemplate.items; let i = index">
+        <ng-container *ngFor="let item of orderTemplate.items; let i = index; trackBy: trackByFn">
           <div class="list-item-row list-item-row-big">
             <ish-account-order-template-detail-line-item
               ishProductContext

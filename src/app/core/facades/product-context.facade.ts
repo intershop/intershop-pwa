@@ -506,10 +506,10 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
 
   validDebouncedQuantityUpdate$(time = 800) {
     return this.select('quantity').pipe(
-      skip(1),
       debounceTime(time),
       filter(() => !this.get('hasQuantityError')),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      skip(1)
     );
   }
 

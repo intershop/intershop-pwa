@@ -37,4 +37,8 @@ export class QuotingBasketLineItemsComponent implements OnInit {
   onDeleteQuote(quoteId: string) {
     this.quotingFacade.deleteQuoteFromBasket(quoteId);
   }
+
+  trackByFn(_: number, element: [string, LineItem[]]) {
+    return element[0];
+  }
 }
