@@ -5,7 +5,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { extractKeys } from 'ish-shared/formly/dev/testing/formly-testing-utils';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
@@ -28,8 +27,6 @@ describe('Product Notification Edit Form Component', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
-      imports: [FormlyTestingModule],
-      declarations: [ProductNotificationEditFormComponent],
     }).compileComponents();
   });
 
