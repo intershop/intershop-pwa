@@ -107,8 +107,8 @@ $datepicker-active-bg: $CORPORATE-PRIMARY;
 $datepicker-active-hover: $CORPORATE-SECONDARY;
 
 // input indicator color
-$error-color: #dc3545; // TODO: merge with existing theme color?
-$success-color: #28a745; // TODO: merge with existing theme color?
+$error-color: #dc3545;
+$success-color: #28a745;
 
 // mobile toggler base width
 $toggler-width: 64px;
@@ -163,7 +163,6 @@ $toast-info-color: rgba(12, 84, 96, 0.999999);
 // @gray:                   lighten(#000, 33.5%); // #555
 // @gray-light:             lighten(#000, 60%);   // #999
 // @gray-lighter:           lighten(#000, 93.5%); // #eee
-// TODO: add proper intershop custom colors
 $white: #fff;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
@@ -213,7 +212,6 @@ $font-family-sans-serif: $font-family-regular;
 $font-family-monospace: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
 $font-family-base: $font-family-regular;
 
-// TODO: round font size values
 $font-size-base: $font-size-corporate; // 14px is the bootstrap 3 default font size (1rem should be around 16px)
 $font-size-sm: $font-size-base * 0.85; // ~12px
 
@@ -221,7 +219,6 @@ $h1-font-size: $font-size-base * 2.15; // ~30px
 $h2-font-size: $font-size-base * 1.7; // ~24px
 $h3-font-size: $font-size-base * 1.25; // ~18px
 $h4-font-size: $font-size-base * 1.05; // ~15px
-// TODO: h5 font size
 $h6-font-size: $font-size-base * 0.85; // ~12px
 
 $headings-font-family: $font-family-condensedbold;
@@ -272,13 +269,6 @@ $container-max-widths: (
 );
 // Navbar
 $navbar-padding-x: 0;
-// TODO: navbar related vars needed?
-// @navbar-collapse-max-height:       none;
-// Inverted navbar
-// Reset inverted navbar basics
-// @navbar-inverse-color:                      @gray-light;
-// Inverted navbar links
-// @navbar-inverse-link-color:                 @gray-light;
 // Popovers
 $popover-max-width: 310px;
 $popover-border-color: rgba(0, 0, 0, 0.2);
@@ -286,12 +276,8 @@ $popover-border-color: rgba(0, 0, 0, 0.2);
 $modal-content-border-color: rgba(0, 0, 0, 0.2);
 $modal-header-border-color: $border-color-light;
 // Carousel
-// TODO:  needed?
-// @carousel-text-shadow:                        0 1px 2px rgba(0,0,0,.6);
 $carousel-control-color: $color-secondary;
 $carousel-control-width: 5%;
 $carousel-indicator-active-bg: $CORPORATE-PRIMARY;
-// TODO:  needed?
-// @carousel-indicator-border-color:             #999;
 // Close
 $close-text-shadow: none;

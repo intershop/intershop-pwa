@@ -71,8 +71,12 @@
       </ng-container>
     </ng-container>
 
+    <!-- ishFeature directives are needed for styling purposes here -->
     <ish-lazy-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4"></ish-lazy-quote-widget>
-    <ish-lazy-order-template-widget class="col-12 col-md-4"></ish-lazy-order-template-widget>
+    <ish-lazy-order-template-widget
+      *ishFeature="'orderTemplates'"
+      class="col-12 col-md-4"
+    ></ish-lazy-order-template-widget>
   </div>
 
   <!-- Order Widget - displays latest orders as list -->

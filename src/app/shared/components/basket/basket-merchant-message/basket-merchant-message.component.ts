@@ -73,10 +73,7 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
   }
 
   get disabled() {
-    /* TODO : Delete message to merchant is not possible for the user yet ( REST API responds with a 500 error and an error page is shown )
-      ICM 7.10.39.2 or higher is required to fix this issue (AB#82589), uncomment the following line in this case
-    return !this.basket?.messageToMerchant && !this.form.get('messageToMerchant')?.value; */
-    return !this.model.messageToMerchant.trim();
+    return !this.basket?.messageToMerchant && !this.form.get('messageToMerchant')?.value;
   }
 
   submitForm(): void {

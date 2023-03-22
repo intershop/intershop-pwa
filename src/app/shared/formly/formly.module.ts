@@ -19,7 +19,6 @@ import { WrappersModule } from './wrappers/wrappers.module';
       },
     }),
     FieldLibraryModule,
-    // ToDo: with formly 6.x the default module sorting will work again
     // eslint-disable-next-line @angular-eslint/sort-ngmodule-metadata-arrays
     ExtensionsModule,
     TypesModule,

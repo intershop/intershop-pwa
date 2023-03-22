@@ -1039,7 +1039,6 @@
   "quote.not_found.error": "The quote could not be found.",
   "quote.quote_details.link": "Quote Details",
   "quote.quotes.link": "Quotes",
-  "quote.state.accepted": "Accepted",
   "quote.state.expired": "Expired",
   "quote.state.new": "New",
   "quote.state.rejected": "Rejected",

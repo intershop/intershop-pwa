@@ -147,7 +147,7 @@ export class RegistrationFormConfigurationService {
         lastName: formValue.lastName,
         email: formValue.login,
         phoneHome: formValue.phoneHome,
-        birthday: formValue.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
+        birthday: formValue.birthday === '' ? undefined : formValue.birthday,
       };
 
       const credentials: Credentials = {
