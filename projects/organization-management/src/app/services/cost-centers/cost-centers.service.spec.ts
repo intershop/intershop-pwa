@@ -20,6 +20,7 @@ describe('Cost Centers Service', () => {
     when(apiService.post(anything(), anything())).thenReturn(of({}));
     when(apiService.patch(anything(), anything())).thenReturn(of({}));
     when(apiService.delete(anything())).thenReturn(of({}));
+    when(apiService.resolveLinks()).thenReturn(() => of([]));
 
     TestBed.configureTestingModule({
       providers: [

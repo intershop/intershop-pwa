@@ -237,7 +237,6 @@ export class ProductsService {
 
   /**
    * exchange single-return variation products to master products for B2B
-   * TODO: this is a work-around
    */
   private postProcessMasters(products: Partial<Product>[], advancedVariationHandling: boolean): Product[] {
     if (advancedVariationHandling) {

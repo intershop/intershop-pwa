@@ -120,7 +120,7 @@ export class ProductReviewCreateDialogComponent implements OnInit {
     }
   }
 
-  /** ToDo: send the review to the server */
+  /** Send the review to the server */
   submitForm(sku: string) {
     if (this.form.invalid) {
       markAsDirtyRecursive(this.form);

@@ -64,11 +64,7 @@ describe('Checkout Payment', () => {
         page.paymentInstrument('ISH_DEBIT_TRANSFER').submit();
         page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('holder').log('ish debit transfer');
         page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('holder').should('contain', 'missing');
-        /* TODO: size validator does not display message correctly
-      page
-        .paymentInstrument('ISH_DEBIT_TRANSFER')
-        .formError('IBAN')
-        .should('contain', 'must have a length'); */
+        page.paymentInstrument('ISH_DEBIT_TRANSFER').formError('IBAN').should('contain', 'must have a length');
       });
     });
 

@@ -10,14 +10,13 @@ export class LinkParser {
 
       switch (protocol) {
         case 'product':
-          // TODO: use ProductRoutePipe for SEO URLs
+          // product page links
           return `${prefix}/product/${value}`;
         case 'category':
-          // TODO: use CategoryRoutePipe for SEO URLs
+          // category page links
           return `${prefix}/categoryref/${value}${unitName}`;
         case 'page':
-          // CMS managed pages link
-          // TODO: use ContentPageRoutePipe for SEO URLs
+          // content page links
           return `${prefix}/page/${value}`;
         case 'route':
           // direct router links for the PWA

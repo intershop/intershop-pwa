@@ -139,7 +139,6 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
       } else {
         param.push({ name: 'cvcLastUpdated', value: new Date().toISOString() });
       }
-      // TODO: Replacing encoded paymentInstrumentId with Token for put request
       param.find(attribute => attribute.name === 'paymentInstrumentId').value = this.paymentInstrument.parameters.find(
         attribute => attribute.name === 'token'
       ).value;

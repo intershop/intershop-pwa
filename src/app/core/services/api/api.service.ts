@@ -81,7 +81,7 @@ export class ApiService {
         ? // captcha V3
           headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA recaptcha_token=${captcha} action=${captchaAction}`)
         : // captcha V2
-          // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implementation that still requires two parameters
+          // second parameter 'foo=bar' is only required to resolve a shortcoming of the server side implementation that requires two parameters
           headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA g-recaptcha-response=${captcha} foo=bar`)
     );
   }
