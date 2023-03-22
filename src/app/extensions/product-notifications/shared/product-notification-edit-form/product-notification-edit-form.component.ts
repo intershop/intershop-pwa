@@ -165,6 +165,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
           postWrappers: [{ wrapper: 'input-addon', index: -1 }],
           label: 'product.notification.edit.form.price.label',
           required: true,
+          hideRequiredMarker: true,
           addonLeft: {
             text: this.appFacade.currencySymbol$(),
           },
@@ -191,6 +192,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
         props: {
           label: 'product.notification.edit.form.email.label',
           required: true,
+          hideRequiredMarker: true,
         },
       },
     ];
