@@ -27,7 +27,12 @@ However, this way they cannot be deployed together with a combined Helm chart.
 - ICM 7.10.32.16-LTS or 7.10.38.6-LTS
 - PWA 2.3.0
 
-> **NOTE:** This feature is feature relies on the PWA and ICM being able to read and write each other's cookies. This means that cookies written by the PWA and ICM must have the same domain and the same path. This works since all Responsive Starter Store requests and responses are proxied through the PWA SSR, simulating a common domain.
+> :exclamation: **NOTE:** This feature relies on the PWA and ICM being able to read and write each other's `apiToken` cookies.
+>
+> This means that cookies written by the PWA and ICM must have the same domain and the same path. This works since all Responsive Starter Store requests and responses are proxied through the PWA SSR, simulating a common domain (an actual common domain for PWA and ICM is not required).
+>
+> It is also important that the cookie must not be set to [`HttpOnly`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#restrict_access_to_cookies).
+> Instead the `apiToken` cookie should be set with `Secure` and `SameSite=Strict`.
 
 The secure access required for the PWA/NGINX deployments in production-like environments is handled by the Ingress controller, so the PWA and the NGINX container itself can be deployed without SSL.
 ICM only needs to be deployed with secure access anyway.
