@@ -104,8 +104,10 @@
 
 <!-- Links -->
 <div class="section d-flex justify-content-between">
-  <a routerLink="/account/orders" data-testing-id="orders-link">{{
+  <a routerLink="/account/orders" class="noprint" data-testing-id="orders-link">{{
     'account.orderdetails.links.return_to_orders' | translate
   }}</a>
-  <a routerLink="/home" data-testing-id="home-link">{{ 'account.orderdetails.links.continue_shopping' | translate }}</a>
+  <a routerLink="/home" class="noprint" data-testing-id="home-link">{{
+    'account.orderdetails.links.continue_shopping' | translate
+  }}</a>
 </div>

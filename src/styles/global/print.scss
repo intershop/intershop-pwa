@@ -2,9 +2,11 @@
 // CUSTOMIZED PRINT STYLES
 @import 'variables';
 
+$margin-right: 2.5%;
+
 @mixin print-background {
-  background-color: transparent;
-  border: 1px solid $border-color-light;
+  background-color: transparent !important;
+  border: 1px solid $border-color-light !important;
 }
 
 @media print {
@@ -12,23 +14,37 @@
     content: none !important;
   }
 
-  //for firefox upper texts (localhost, my account | intershop PWA)
   @page {
-    margin-top: 0;
+    margin-top: 1.04in;
+    margin-right: 0.1in !important;
+    margin-bottom: 0.4in;
+    margin-left: 0.4in;
   }
 
+  .line-item-list {
+    .list-header,
+    .list-item-row {
+      margin-right: $margin-right;
+    }
+  }
+
+  .line-item-list,
   .order-summary {
+    display: inline-block;
     page-break-before: always !important; // older browser versions
-    break-before: always !important;
+    break-before: page !important;
   }
-
-  // ish-info-box {
-  //   display: block;
-  // } // firefox layout
 
   button,
+  .budget-bar,
+  .cost-summary,
   .infobox {
     @include print-background;
+  }
+
+  .budget-bar-used {
+    background-color: transparent;
+    border: 1px solid $color-special-primary;
   }
 
   .fa-ban, // cost management center
@@ -37,7 +53,6 @@
   .fa-print,
   .fa-trash-can,
   .header-utility,
-  // .form-text // can it be used? question and help part should be removed. (for ex: order history - 14 results in 10 files)
   .marketing-area, // recommended products
   .navbar-toggler,
   .product-tile-actions,
@@ -49,7 +64,6 @@
   iframe,
   ish-account-navigation,
   ish-back-to-top,
-  ish-breadcrumb,
   ish-category-navigation,
   ish-checkout-progress-bar,
   ish-filter-navigation,
@@ -59,13 +73,17 @@
   ish-product-detail-actions,
   ish-product-list-toolbar,
   ish-recently-viewed,
-  // fa-icon, // can not be done because of some maybe unwanted results.Ex: Shopping Cart Breadcrumb?.
   nav {
     display: none !important;
   }
 
+  .details-link,
+  .all-variations-link,
+  .noprint {
+    display: none;
+  }
+
   .logo {
-    margin-top: 2cm;
     -webkit-print-color-adjust: exact !important; /* Chrome, Safari 6 – 15.3, Edge */
     color-adjust: exact !important; /* Firefox 48 – 96 */
     print-color-adjust: exact !important; /* Firefox 97+, Safari 15.4+ */
