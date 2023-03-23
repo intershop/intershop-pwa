@@ -141,7 +141,7 @@ describe('Payment Method Mapper', () => {
     });
   });
 
-  describe('Payment Method Mapper', () => {
+  describe('fromOptions', () => {
     const paymentMethodsData = {
       payments: [
         {
@@ -177,6 +177,7 @@ describe('Payment Method Mapper', () => {
       {
         id: 'abc',
         name: 'ISH_CreditCard',
+        accountIdentifier: 'Visa ********3456',
         attributes: [
           {
             name: 'cardNumber',
@@ -210,6 +211,7 @@ describe('Payment Method Mapper', () => {
       expect(paymentMethods[0].paymentInstruments[0].id).toEqual('abc');
       expect(paymentMethods[0].paymentInstruments[0].parameters).toHaveLength(2);
       expect(paymentMethods[0].paymentInstruments[0].parameters[0].value).toEqual('************1111');
+      expect(paymentMethods[0].paymentInstruments[0].accountIdentifier).toEqual('Visa ********3456');
     });
   });
 });

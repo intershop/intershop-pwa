@@ -28,8 +28,7 @@ export class PaymentPayoneInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Map Payone Ideal and EPS Bank group options, provide an error message key for the required validator
-   * This workaround will be obsolete if the REST api comply with the correct data format
+   * Map Payone Ideal and EPS Bank group options
    *
    * @param paymentMethod The iDeal or EPS payment method data
    * @returns The mapped payment method data
@@ -40,12 +39,9 @@ export class PaymentPayoneInterceptor implements HttpInterceptor {
       id: param.name,
     }));
 
-    const parameterDefinitions = paymentMethod.parameterDefinitions?.map(data => {
-      const constraints = data.constraints.required
-        ? { ...data.constraints, required: { message: 'checkout.bankGroup.error.required' } }
-        : data.constraints;
-      return data.name === 'bankGroupCode' ? { ...data, constraints, options } : data;
-    });
+    const parameterDefinitions = paymentMethod.parameterDefinitions?.map(data =>
+      data.name === 'bankGroupCode' ? { ...data, options } : data
+    );
 
     return { ...paymentMethod, parameterDefinitions };
   }
