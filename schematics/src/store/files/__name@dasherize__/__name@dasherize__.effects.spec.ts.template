@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
 
-import { load<%= classify(name) %> } from './<%= dasherize(name) %>.actions';
+import { <%= camelize(name) %>Actions } from './<%= dasherize(name) %>.actions';
 import { <%= classify(name) %>Effects } from './<%= dasherize(name) %>.effects';
 
 describe('<%= classify(name) %> Effects', () => {
@@ -24,7 +24,7 @@ describe('<%= classify(name) %> Effects', () => {
 
   describe('load<%= classify(name) %>$', () => {
     it('should not dispatch actions when encountering load<%= classify(name) %>', () => {
-      const action = load<%= classify(name) %>();
+      const action = <%= camelize(name) %>Actions.load<%= classify(name) %>();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('------');
 

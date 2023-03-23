@@ -1,13 +1,24 @@
-import { createAction } from '@ngrx/store';<% if(entity) { %>
+import { createActionGroup, emptyProps } from '@ngrx/store';<% if(entity) { %>
 
 import { <%= classify(entity) %> } from '<% if(!extension) { %>ish-core<% } else { %>../..<% } %>/models/<%= dasherize(entity) %>/<%= dasherize(entity) %>.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 <% } %>
 
-export const load<%= classify(name) %> = createAction('[<%= classify(name) %>] Load <%= classify(name) %>');
+export const <%= camelize(name) %>Actions = createActionGroup({
+  source: '<%= actionTitle(classify(name)) %>',
+  events: {
+    'Load <%= actionTitle(classify(name)) %>': emptyProps(),
+  },
+});
+
 
 <% if(entity) { %>
-export const load<%= classify(name) %>Fail = createAction('[<%= classify(name) %> API] Load <%= classify(name) %> Fail', httpError());
 
-export const load<%= classify(name) %>Success = createAction('[<%= classify(name) %> API] Load <%= classify(name) %> Success', payload<{ <%= camelize(name) %>: <%= classify(entity) %>[] }>())
+export const <%= camelize(name) %>ApiActions = createActionGroup({
+  source: '<%= actionTitle(classify(name)) %> API',
+  events: {
+    'Load <%= actionTitle(classify(name)) %> Success': payload<{ <%= camelize(name) %>: <%= classify(entity) %>[] }>(),
+    'Load <%= actionTitle(classify(name)) %> Fail': httpError<{}>(),
+  },
+});
 <% } %>
