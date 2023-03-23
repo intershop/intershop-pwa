@@ -39,7 +39,7 @@ export const serverValidationExtension: FormlyExtension = {
 
     field.expressions = {
       ...field.expressions,
-      'validation.messages.serverError': 'formState.errors?.[field.key as string]',
+      'validation.messages.serverError': field.options.formState.errors?.[field.key as string],
     };
   },
 };
