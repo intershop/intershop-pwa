@@ -112,7 +112,7 @@ export class PunchoutUserFormComponent implements OnInit {
           {
             key: 'active',
             type: 'ish-checkbox-field',
-            templateOptions: {
+            props: {
               label: 'account.user.active.label',
               title: 'account.user.active.title',
             },
