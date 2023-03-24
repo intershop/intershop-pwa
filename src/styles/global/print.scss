@@ -2,65 +2,30 @@
 // CUSTOMIZED PRINT STYLES
 @import 'variables';
 
-$margin-right: 2.5%;
-
-@mixin print-background {
-  background-color: transparent !important;
-  border: 1px solid $border-color-light !important;
-}
-
 @media print {
+  @page {
+    margin-top: 100px;
+  }
+
+  @supports (-moz-appearance: none) {
+    .logo {
+      margin-left: 25px !important;
+    }
+  }
+
   a[href]::after {
     content: none !important;
   }
 
-  @page {
-    margin-top: 1.04in;
-    margin-right: 0.1in !important;
-    margin-bottom: 0.4in;
-    margin-left: 0.4in;
+  button {
+    color: $button-default-color !important;
+    background-color: $button-default-bg !important;
+    border-color: $button-default-border !important;
   }
 
-  .line-item-list {
-    .list-header,
-    .list-item-row {
-      margin-right: $margin-right;
-    }
-  }
-
-  .line-item-list,
-  .order-summary {
-    display: inline-block;
-    page-break-before: always !important; // older browser versions
-    break-before: page !important;
-  }
-
-  button,
-  .budget-bar,
-  .cost-summary,
-  .infobox {
-    @include print-background;
-  }
-
-  .budget-bar-used {
-    background-color: transparent;
-    border: 1px solid $color-special-primary;
-  }
-
-  .fa-ban, // cost management center
-  .fa-cart-shopping,
-  .fa-pencil,
-  .fa-print,
-  .fa-trash-can,
-  .header-utility,
-  .marketing-area, // recommended products
-  .navbar-toggler,
-  .product-tile-actions,
-  .share-label,
-  .toast-container, // info messages
-  .user-links,
   aside,
   footer,
+  header::before,
   iframe,
   ish-account-navigation,
   ish-back-to-top,
@@ -73,7 +38,19 @@ $margin-right: 2.5%;
   ish-product-detail-actions,
   ish-product-list-toolbar,
   ish-recently-viewed,
-  nav {
+  nav,
+  .fa-ban,
+  .fa-cart-shopping,
+  .fa-pencil,
+  .fa-print,
+  .fa-trash-can,
+  .header-utility,
+  .marketing-area,
+  .navbar-toggler,
+  .product-tile-actions,
+  .share-label,
+  .toast-container,
+  .user-links {
     display: none !important;
   }
 
@@ -81,6 +58,33 @@ $margin-right: 2.5%;
   .all-variations-link,
   .noprint {
     display: none;
+  }
+
+  .budget-bar-used {
+    background-color: transparent;
+    border: 1px solid $color-special-primary;
+  }
+
+  button,
+  .budget-bar,
+  .cost-summary,
+  .infobox {
+    background-color: transparent !important;
+    border: 1px solid $border-color-light !important;
+  }
+
+  .line-item-list {
+    .list-header,
+    .list-item-row {
+      margin-right: 2.5%;
+    }
+  }
+
+  .line-item-list,
+  .order-summary {
+    display: inline-block;
+    break-before: page !important;
+    page-break-before: always !important; /* Older browser versions */
   }
 
   .logo {
