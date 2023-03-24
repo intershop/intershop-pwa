@@ -41,10 +41,10 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   productPrices: Pricing;
 
   model: {
-    alerttype?: string;
+    alertType?: string;
     email: string;
-    pricevalue: number;
-    productnotificationid?: string;
+    priceValue: number;
+    productNotificationId?: string;
   };
 
   fields: FormlyFieldConfig[];
@@ -59,15 +59,15 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
       this.model = this.productNotification
         ? {
-            alerttype: this.productNotification.type,
+            alertType: this.productNotification.type,
             email: this.productNotification.notificationMailAddress,
-            pricevalue: this.productNotification.price?.value,
-            productnotificationid: this.productNotification.id,
+            priceValue: this.productNotification.price?.value,
+            productNotificationId: this.productNotification.id,
           }
         : {
-            alerttype: undefined,
+            alertType: undefined,
             email: this.userEmail,
-            pricevalue: this.productPrices.salePrice.value,
+            priceValue: this.productPrices.salePrice.value,
           };
 
       // differentiate form with or without a product notification
@@ -81,7 +81,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   getFieldsForProductNotification(productNotification: ProductNotification, product: ProductView): FormlyFieldConfig[] {
     return [
       {
-        key: 'alerttype',
+        key: 'alertType',
         type: 'ish-radio-field',
         props: {
           label: 'product.notification.edit.form.no_notification.label',
@@ -90,7 +90,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
         },
       },
       {
-        key: 'productnotificationid',
+        key: 'productNotificationId',
       },
       ...(productNotification?.type === 'price' || product?.available
         ? this.getPriceConfigForProductNotification()
@@ -106,7 +106,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   getFieldsForNoProductNotification(product: ProductView): FormlyFieldConfig[] {
     return [
       {
-        key: 'alerttype',
+        key: 'alertType',
         props: {
           value: '',
         },
@@ -128,7 +128,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   private getPriceConfigForProductNotification(): FormlyFieldConfig[] {
     return [
       {
-        key: 'alerttype',
+        key: 'alertType',
         type: 'ish-radio-field',
         props: {
           label: 'product.notification.edit.form.price_notification.label',
@@ -144,7 +144,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   private getStockConfigForProductNotification(): FormlyFieldConfig[] {
     return [
       {
-        key: 'alerttype',
+        key: 'alertType',
         type: 'ish-radio-field',
         props: {
           label: 'product.notification.edit.form.instock_notification.label',
@@ -159,7 +159,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   private getPriceConfig(): FormlyFieldConfig[] {
     return [
       {
-        key: 'pricevalue',
+        key: 'priceValue',
         type: 'ish-text-input-field',
         props: {
           postWrappers: [{ wrapper: 'input-addon', index: -1 }],

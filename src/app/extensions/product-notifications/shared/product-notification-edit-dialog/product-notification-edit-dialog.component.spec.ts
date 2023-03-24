@@ -62,9 +62,9 @@ describe('Product Notification Edit Dialog Component', () => {
 
     it('should submit a valid form when the user fills all required fields', () => {
       component.productNotificationForm = fb.group({
-        alerttype: ['price'],
+        alertType: ['price'],
         email: ['jlink@test.intershop.de', [Validators.required, SpecialValidators.email]],
-        pricevalue: [1000, [SpecialValidators.moneyAmount]],
+        priceValue: [1000, [SpecialValidators.moneyAmount]],
       });
 
       expect(component.formDisabled).toBeFalse();
@@ -74,7 +74,7 @@ describe('Product Notification Edit Dialog Component', () => {
 
     it('should not submit a form when the user does not provide money format for price notification', () => {
       component.productNotificationForm = fb.group({
-        pricevalue: ['abc', [SpecialValidators.moneyAmount]],
+        priceValue: ['abc', [SpecialValidators.moneyAmount]],
       });
 
       expect(component.formDisabled).toBeFalse();
@@ -84,7 +84,7 @@ describe('Product Notification Edit Dialog Component', () => {
 
     it('should emit delete product notification when alert type is delete', () => {
       component.productNotificationForm = fb.group({
-        alerttype: ['delete'],
+        alertType: ['delete'],
       });
 
       when(productNotificationsFacade.deleteProductNotification(anything(), anything(), anything())).thenReturn();
@@ -94,7 +94,7 @@ describe('Product Notification Edit Dialog Component', () => {
 
     it('should emit update product notification when alert type is price', () => {
       component.productNotificationForm = fb.group({
-        alerttype: ['price'],
+        alertType: ['price'],
       });
 
       when(productNotificationsFacade.updateProductNotification(anything(), anything())).thenReturn();
@@ -104,7 +104,7 @@ describe('Product Notification Edit Dialog Component', () => {
 
     it('should emit update product notification when alert type is stock', () => {
       component.productNotificationForm = fb.group({
-        alerttype: ['stock'],
+        alertType: ['stock'],
       });
 
       when(productNotificationsFacade.updateProductNotification(anything(), anything())).thenReturn();
@@ -114,7 +114,7 @@ describe('Product Notification Edit Dialog Component', () => {
 
     it('should emit create product notification when alert type is not set', () => {
       component.productNotificationForm = fb.group({
-        alerttype: undefined,
+        alertType: undefined,
       });
 
       when(productNotificationsFacade.createProductNotification(anything())).thenReturn();
