@@ -1,5 +1,5 @@
 export class EditProductNotificationModule {
-  private priceInput = () => cy.get('ish-fieldset-field').find('[data-testing-id="pricevalue"]');
+  private priceInput = () => cy.get('ish-fieldset-field').find('[data-testing-id="priceValue"]');
 
   private emailInput = () => cy.get('ish-fieldset-field').find('[data-testing-id="email"]');
 

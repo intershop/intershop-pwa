@@ -34,7 +34,7 @@ export class ProductNotificationsOverviewPage {
       .closest('[data-testing-id="product-notification-list-item"]')
       .find('[data-testing-id="product-notification-edit"]')
       .click();
-    cy.get('[data-testing-id="pricevalue"]').clear().type(price.toString());
+    cy.get('[data-testing-id="priceValue"]').clear().type(price.toString());
     cy.get('[data-testing-id="email"]').clear().type(email);
     cy.get('[data-testing-id="product-notification-edit-dialog-edit"]').click();
   }
