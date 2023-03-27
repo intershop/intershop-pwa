@@ -31,7 +31,7 @@ jobs:
 
       - name: Publish Reports Image to Registry
         id: reports
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: reports
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
