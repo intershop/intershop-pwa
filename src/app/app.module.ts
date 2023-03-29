@@ -43,11 +43,11 @@ import { ShellModule } from './shell/shell.module';
     CompareRoutingModule,
     ContactUsRoutingModule,
     AppLastRoutingModule,
+    NgxMatomoRouterModule,
     NgxMatomoTrackerModule.forRoot({
       trackerUrl: ENVIRONMENT_DEFAULTS.matomoTrackerUrl,
       siteId: ENVIRONMENT_DEFAULTS.matomoSiteId,
     }),
-    NgxMatomoRouterModule,
   ],
   /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],

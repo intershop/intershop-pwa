@@ -4,6 +4,7 @@ import { Actions, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
 import { filter, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { ENVIRONMENT_DEFAULTS } from 'src/environments/environment.model';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -13,6 +14,7 @@ import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-prop
 
 import { setGTMToken } from './tracking-config.actions';
 import { getGTMToken } from './tracking-config.selectors';
+import { setMatomoSiteId, setMatomoTrackerUrl } from 'src/app/extensions/matomo/store/matomo/matomo-config.actions';
 
 @Injectable()
 export class TrackingConfigEffects {
@@ -38,6 +40,15 @@ export class TrackingConfigEffects {
           this.gtm(window, 'dataLayer', gtmToken);
           angulartics2GoogleTagManager.startTracking();
         });
+    }
+
+    if (!SSR && featureToggleService.enabled('matomo')) {
+      console.log(
+        `Matomo Enabled!\n Defaults: ${ENVIRONMENT_DEFAULTS.matomoTrackerUrl} and ${ENVIRONMENT_DEFAULTS.matomoSiteId}`
+      );
+
+      setMatomoTrackerUrl({ trackerUrl: ENVIRONMENT_DEFAULTS.matomoTrackerUrl });
+      setMatomoSiteId({ siteId: ENVIRONMENT_DEFAULTS.matomoSiteId });
     }
   }
 
