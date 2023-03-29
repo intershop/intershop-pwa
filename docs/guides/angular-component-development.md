@@ -86,9 +86,9 @@ In this case the condition should look like this:
 <ng-container *ngIf="observable$ | async as synchronized; else loading">
 ```
 
-## Pattern for Loops (ngFor) in Component Templates with changing values
+## Pattern for Loops (ngFor) with Changing Data in Component Templates
 
-Looping through an array in a component could sometimes be very frustrating.
+Looping through an array in a component may sometimes be accompanied by side effects if the data within the array are changing.
 
 ```html
 <ng-container *ngFor="let element of array$ | async">
@@ -96,9 +96,9 @@ Looping through an array in a component could sometimes be very frustrating.
 </ng-container>
 ```
 
-Should the values of the array$ observable be changed during the lifetime of the component (reording elements, add/ delete elements, changing properties), then all current children DOM elements are destroyed and initialized with the new values.
+In case the values of the array$ observable are varying somehow during the lifetime of the component (reordering elements, add/ delete elements, changing properties), all children DOM elements are destroyed and re-initialized with the new data.
 
-To avoid the behavior and perform correct DOM updates, the elements has to be identified in the `NgFor` directive uniquely.
+To avoid these many and expensive DOM manipulations and persist the children DOM elements the loop elements has to be uniquely identified in the `NgFor` directive.
 This can be achieved by using custom [`trackBy`](https://angular.io/api/core/TrackByFunction) functions within the `ngFor` directive.
 
 ```typescript

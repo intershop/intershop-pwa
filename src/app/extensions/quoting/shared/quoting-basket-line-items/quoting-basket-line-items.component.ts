@@ -39,6 +39,7 @@ export class QuotingBasketLineItemsComponent implements OnInit {
   }
 
   trackByFn(_: number, element: [string, LineItem[]]) {
+    // quoteId
     return element[0];
   }
 }
