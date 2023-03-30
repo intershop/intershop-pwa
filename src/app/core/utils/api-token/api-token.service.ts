@@ -36,12 +36,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
 import { getOrder, getSelectedOrderId, loadOrderByAPIToken } from 'ish-core/store/customer/orders';
-import {
-  fetchAnonymousUserToken,
-  getLoggedInUser,
-  getUserAuthorized,
-  loadUserByAPIToken,
-} from 'ish-core/store/customer/user';
+import { getLoggedInUser, getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -185,17 +180,13 @@ export class ApiTokenService {
     return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
   }
 
-  restore$(types: ApiTokenCookieType[] = ['user', 'order'], fetchAnonymousToken = true): Observable<boolean> {
+  restore$(types: ApiTokenCookieType[] = ['user', 'order']): Observable<boolean> {
     if (SSR) {
       return of(true);
     }
     return this.initialCookie$.pipe(
       first(),
-      withLatestFrom(this.apiToken$),
-      switchMap(([cookie, apiToken]) => {
-        if (!apiToken && fetchAnonymousToken) {
-          this.store.dispatch(fetchAnonymousUserToken());
-        }
+      switchMap(cookie => {
         if (types.includes(cookie?.type)) {
           switch (cookie?.type) {
             case 'user': {

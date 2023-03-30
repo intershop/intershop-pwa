@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
+import { TokenResponse } from 'angular-oauth2-oidc';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -11,6 +11,7 @@ import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -30,7 +31,7 @@ describe('User Service', () => {
   let userService: UserService;
   let apiServiceMock: ApiService;
   let apiTokenServiceMock: ApiTokenService;
-  let oAuthServiceMock: OAuthService;
+  let tokenServiceMock: TokenService;
   let appFacade: AppFacade;
   let store$: MockStore;
 
@@ -38,9 +39,9 @@ describe('User Service', () => {
     apiServiceMock = mock(ApiService);
     apiTokenServiceMock = mock(ApiTokenService);
     appFacade = mock(AppFacade);
-    oAuthServiceMock = mock(OAuthService);
+    tokenServiceMock = mock(TokenService);
 
-    when(oAuthServiceMock.fetchTokenUsingGrant(anyString(), anything(), anything())).thenResolve(token);
+    when(tokenServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
     when(appFacade.isAppTypeREST$).thenReturn(of(true));
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
@@ -50,7 +51,7 @@ describe('User Service', () => {
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
-        { provide: OAuthService, useFactory: () => instance(oAuthServiceMock) },
+        { provide: TokenService, useFactory: () => instance(tokenServiceMock) },
         provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: undefined }] }),
       ],
     });
@@ -71,7 +72,7 @@ describe('User Service', () => {
       when(apiServiceMock.get('personalization', anything())).thenReturn(of({ pgid: '6FGMJtFU2xuRpG9I3CpTS7fc0000' }));
 
       userService.signInUser(loginDetail).subscribe(data => {
-        verify(oAuthServiceMock.fetchTokenUsingGrant(anyString(), anything(), anything())).once();
+        verify(tokenServiceMock.fetchToken(anyString(), anything())).once();
         expect(data).toHaveProperty('customer.customerNo', 'PC');
         expect(data).toHaveProperty('pgid', '6FGMJtFU2xuRpG9I3CpTS7fc0000');
         done();
@@ -88,7 +89,7 @@ describe('User Service', () => {
       when(apiServiceMock.get('personalization', anything())).thenReturn(of({ pgid: '6FGMJtFU2xuRpG9I3CpTS7fc0000' }));
 
       userService.signInUser(undefined).subscribe(data => {
-        verify(oAuthServiceMock.fetchTokenUsingGrant(anyString(), anything(), anything())).never();
+        verify(tokenServiceMock.fetchToken(anyString(), anything())).never();
         expect(data).toHaveProperty('customer.customerNo', 'PC');
         expect(data).toHaveProperty('pgid', '6FGMJtFU2xuRpG9I3CpTS7fc0000');
         done();

@@ -1,8 +1,7 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, Router, UrlTree, convertToParamMap } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, EMPTY, Observable, Subject, noop, of, timer } from 'rxjs';
+import { EMPTY, Observable, Subject, noop, of, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { anyString, anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
@@ -14,7 +13,6 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 
 import { PunchoutSession } from '../models/punchout-session/punchout-session.model';
 import { PunchoutService } from '../services/punchout/punchout.service';
@@ -34,7 +32,6 @@ describe('Punchout Identity Provider', () => {
   const accountFacade = mock(AccountFacade);
   const checkoutFacade = mock(CheckoutFacade);
   const cookiesService = mock(CookiesService);
-  const oAuthConfigurationService = mock(OAuthConfigurationService);
 
   let punchoutIdentityProvider: PunchoutIdentityProvider;
   let store$: MockStore;
@@ -48,8 +45,6 @@ describe('Punchout Identity Provider', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: CookiesService, useFactory: () => instance(cookiesService) },
-        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationService) },
-        { provide: OAuthService, useFactory: () => instance(mock(OAuthService)) },
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
         provideMockStore(),
       ],
@@ -64,7 +59,6 @@ describe('Punchout Identity Provider', () => {
     when(apiTokenService.restore$(anything())).thenReturn(of(true));
     when(apiTokenService.cookieVanishes$).thenReturn(new Subject());
     when(checkoutFacade.basket$).thenReturn(EMPTY);
-    when(oAuthConfigurationService.config$).thenReturn(new BehaviorSubject({}));
 
     resetCalls(apiTokenService);
     resetCalls(punchoutService);

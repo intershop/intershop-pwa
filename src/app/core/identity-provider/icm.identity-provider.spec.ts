@@ -1,21 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 
 import { ICMIdentityProvider } from './icm.identity-provider';
 
 describe('Icm Identity Provider', () => {
   const apiTokenService = mock(ApiTokenService);
   const accountFacade = mock(AccountFacade);
-  const oAuthConfigurationService = mock(OAuthConfigurationService);
 
   let icmIdentityProvider: ICMIdentityProvider;
   let store$: MockStore;
@@ -26,10 +23,6 @@ describe('Icm Identity Provider', () => {
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
-
-        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationService) },
-        { provide: OAuthService, useFactory: () => instance(mock(OAuthService)) },
-
         provideMockStore(),
       ],
     }).compileComponents();
@@ -42,7 +35,6 @@ describe('Icm Identity Provider', () => {
   beforeEach(() => {
     when(apiTokenService.restore$()).thenReturn(of(true));
     when(apiTokenService.cookieVanishes$).thenReturn(new Subject());
-    when(oAuthConfigurationService.config$).thenReturn(new BehaviorSubject({}));
 
     resetCalls(apiTokenService);
     resetCalls(accountFacade);
