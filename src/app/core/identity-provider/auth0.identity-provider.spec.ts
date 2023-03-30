@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { anything, capture, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -13,7 +13,7 @@ import { ApiService } from 'ish-core/services/api/api.service';
 import { getSsoRegistrationCancelled, getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
 import { getLoggedInCustomer, getUserAuthorized, getUserLoading } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
+import { InstanceCreators } from 'ish-core/utils/instance-creators';
 
 import { Auth0Config, Auth0IdentityProvider } from './auth0.identity-provider';
 
@@ -36,7 +36,7 @@ describe('Auth0 Identity Provider', () => {
   const oAuthService = mock(OAuthService);
   const apiService = mock(ApiService);
   const apiTokenService = mock(ApiTokenService);
-  const oAuthConfigurationService = mock(OAuthConfigurationService);
+  const instanceCreators = spy(InstanceCreators);
   let auth0IdentityProvider: Auth0IdentityProvider;
   let store$: MockStore;
   let storeSpy$: MockStore;
@@ -57,11 +57,18 @@ describe('Auth0 Identity Provider', () => {
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
         { provide: APP_BASE_HREF, useValue: baseHref },
-        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationService) },
-        { provide: OAuthService, useFactory: () => instance(oAuthService) },
         provideMockStore(),
       ],
     }).compileComponents();
+
+    when(oAuthService.getIdToken()).thenReturn(idToken);
+    when(oAuthService.loadDiscoveryDocumentAndTryLogin()).thenReturn(
+      new Promise((res, _) => {
+        res(true);
+      })
+    );
+    when(oAuthService.state).thenReturn(undefined);
+    when(instanceCreators.getOAuthServiceInstance(anything())).thenReturn(instance(oAuthService));
 
     auth0IdentityProvider = TestBed.inject(Auth0IdentityProvider);
     router = TestBed.inject(Router);
@@ -70,15 +77,7 @@ describe('Auth0 Identity Provider', () => {
   });
 
   beforeEach(() => {
-    when(apiTokenService.restore$(anything(), anything())).thenReturn(of(true));
-    when(oAuthService.getIdToken()).thenReturn(idToken);
-    when(oAuthService.loadDiscoveryDocumentAndTryLogin()).thenReturn(
-      new Promise((res, _) => {
-        res(true);
-      })
-    );
-    when(oAuthService.state).thenReturn(undefined);
-    when(oAuthConfigurationService.config$).thenReturn(new BehaviorSubject({}));
+    when(apiTokenService.restore$(anything())).thenReturn(of(true));
     when(apiService.post(anything(), anything())).thenReturn(of(userData));
   });
 

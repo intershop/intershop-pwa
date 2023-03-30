@@ -2,8 +2,7 @@ import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, Observable, merge, noop, of, race, throwError } from 'rxjs';
+import { Observable, noop, of, race, throwError } from 'rxjs';
 import { catchError, concatMap, delay, filter, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -13,17 +12,12 @@ import { IdentityProvider, TriggerReturnType } from 'ish-core/identity-provider/
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
-import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../services/punchout/punchout.service';
 
 @Injectable({ providedIn: 'root' })
 export class PunchoutIdentityProvider implements IdentityProvider {
-  // emits true, when OAuth Service is successfully configured
-  // used as an additional condition to check that the OAuth Service is configured before OAuth Service actions are used
-  private oAuthServiceConfigured$ = new BehaviorSubject<boolean>(false);
-
   constructor(
     protected router: Router,
     protected store: Store,
@@ -32,9 +26,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     private accountFacade: AccountFacade,
     private punchoutService: PunchoutService,
     private cookiesService: CookiesService,
-    private checkoutFacade: CheckoutFacade,
-    private oAuthService: OAuthService,
-    private configService: OAuthConfigurationService
+    private checkoutFacade: CheckoutFacade
   ) {}
 
   getCapabilities() {
@@ -46,12 +38,6 @@ export class PunchoutIdentityProvider implements IdentityProvider {
   }
 
   init() {
-    // OAuth Service should be configured by internal OAuth configuration service
-    this.configService.config$.pipe(whenTruthy(), take(1)).subscribe(config => {
-      this.oAuthService.configure(config);
-      this.oAuthServiceConfigured$.next(true);
-    });
-
     this.apiTokenService.cookieVanishes$
       .pipe(withLatestFrom(this.apiTokenService.apiToken$))
       .subscribe(([type, apiToken]) => {
@@ -64,15 +50,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
       });
 
     // OAuth Service should be configured before apiToken information are restored and the refresh token mechanism is setup
-    this.oAuthServiceConfigured$
-      .pipe(
-        whenTruthy(),
-        take(1),
-        switchMap(() =>
-          merge(this.apiTokenService.restore$(['user', 'order']), this.configService.setupRefreshTokenMechanism$())
-        )
-      )
-      .subscribe(noop);
+    this.apiTokenService.restore$(['user', 'order']).subscribe(noop);
 
     this.checkoutFacade.basket$.pipe(whenTruthy(), first()).subscribe(basketView => {
       window.sessionStorage.setItem('basket-id', basketView.id);
@@ -94,85 +72,71 @@ export class PunchoutIdentityProvider implements IdentityProvider {
       return false;
     }
 
-    return this.oAuthServiceConfigured$.pipe(
-      whenTruthy(),
-      take(1),
-      tap(() => {
-        // initiate the punchout user login with the access-token (cXML) or the given credentials (OCI)
-        if (route.queryParamMap.has('access-token')) {
-          this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
-        } else {
-          this.accountFacade.loginUser({
-            login: route.queryParamMap.get('USERNAME'),
-            password: route.queryParamMap.get('PASSWORD'),
-          });
-        }
-      }),
-      switchMap(() =>
-        race(
-          // throw an error if a user login error occurs
-          this.accountFacade.userError$.pipe(
-            whenTruthy(),
-            take(1),
-            concatMap(userError => throwError(() => userError))
-          ),
+    if (route.queryParamMap.has('access-token')) {
+      this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
+    } else {
+      this.accountFacade.loginUser({
+        login: route.queryParamMap.get('USERNAME'),
+        password: route.queryParamMap.get('PASSWORD'),
+      });
+    }
 
-          // handle the punchout functions once the punchout user is logged in
-          this.accountFacade.isLoggedIn$.pipe(
-            whenTruthy(),
-            take(1),
+    return race(
+      // throw an error if a user login error occurs
+      this.accountFacade.userError$.pipe(
+        whenTruthy(),
+        take(1),
+        concatMap(userError => throwError(() => userError))
+      ),
+
+      // handle the punchout functions once the punchout user is logged in
+      this.accountFacade.isLoggedIn$.pipe(
+        whenTruthy(),
+        take(1),
+        switchMap(() => {
+          // handle cXML punchout with sid
+          if (route.queryParamMap.get('sid')) {
+            return this.handleCxmlPunchoutLogin(route);
+            // handle OCI punchout with HOOK_URL
+          } else if (route.queryParamMap.get('HOOK_URL')) {
+            return this.handleOciPunchoutLogin(route);
+          }
+        }),
+        // punchout error after successful authentication (needs to logout)
+        catchError(error =>
+          this.accountFacade.userLoading$.pipe(
+            first(loading => !loading),
+            delay(0),
             switchMap(() => {
-              // handle cXML punchout with sid
-              if (route.queryParamMap.get('sid')) {
-                return this.handleCxmlPunchoutLogin(route);
-                // handle OCI punchout with HOOK_URL
-              } else if (route.queryParamMap.get('HOOK_URL')) {
-                return this.handleOciPunchoutLogin(route);
-              }
-            }),
-            // punchout error after successful authentication (needs to logout)
-            catchError(error =>
-              this.accountFacade.userLoading$.pipe(
-                first(loading => !loading),
-                delay(0),
-                switchMap(() => {
-                  this.accountFacade.logoutUser();
-                  this.apiTokenService.removeApiToken();
-                  this.appFacade.setBusinessError(error);
-                  return of(this.router.parseUrl('/error'));
-                })
-              )
-            )
+              this.accountFacade.logoutUser();
+              this.apiTokenService.removeApiToken();
+              this.appFacade.setBusinessError(error);
+              return of(this.router.parseUrl('/error'));
+            })
           )
-        ).pipe(
-          // general punchout error handling (parameter missing, authentication error)
-          catchError(error => {
-            this.appFacade.setBusinessError(error);
-            return of(this.router.parseUrl('/error'));
-          })
         )
       )
+    ).pipe(
+      // general punchout error handling (parameter missing, authentication error)
+      catchError(error => {
+        this.appFacade.setBusinessError(error);
+        return of(this.router.parseUrl('/error'));
+      })
     );
   }
 
   triggerLogout(): TriggerReturnType {
     window.sessionStorage.removeItem('basket-id');
-    return this.oAuthServiceConfigured$.pipe(
-      whenTruthy(),
+    this.accountFacade.logoutUser(); // user will be logged out and related refresh token is revoked on server
+    return this.accountFacade.isLoggedIn$.pipe(
+      // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls
+      filter(loggedIn => !loggedIn),
       take(1),
-      tap(() => this.accountFacade.logoutUser()), // user will be logged out and related refresh token is revoked on server
       switchMap(() =>
-        this.accountFacade.isLoggedIn$.pipe(
-          // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls
-          filter(loggedIn => !loggedIn),
-          take(1),
-          switchMap(() =>
-            this.store.pipe(
-              select(selectQueryParam('returnUrl')),
-              map(returnUrl => returnUrl || '/home'),
-              map(returnUrl => this.router.parseUrl(returnUrl))
-            )
-          )
+        this.store.pipe(
+          select(selectQueryParam('returnUrl')),
+          map(returnUrl => returnUrl || '/home'),
+          map(returnUrl => this.router.parseUrl(returnUrl))
         )
       )
     );

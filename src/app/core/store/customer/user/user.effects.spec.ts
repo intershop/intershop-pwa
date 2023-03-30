@@ -14,6 +14,7 @@ import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/m
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -73,6 +74,7 @@ describe('User Effects', () => {
   let paymentServiceMock: PaymentService;
   let apiTokenServiceMock: ApiTokenService;
   let oAuthServiceMock: OAuthService;
+  let tokenServiceMock: TokenService;
   let router: Router;
   let location: Location;
 
@@ -102,10 +104,11 @@ describe('User Effects', () => {
     paymentServiceMock = mock(PaymentService);
     apiTokenServiceMock = mock(ApiTokenService);
     oAuthServiceMock = mock(OAuthService);
+    tokenServiceMock = mock(TokenService);
 
     when(userServiceMock.signInUser(anything())).thenReturn(of(loginResponseData));
-    when(userServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
-    when(userServiceMock.fetchToken(anyString())).thenReturn(of(token));
+    when(tokenServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
+    when(tokenServiceMock.fetchToken(anyString())).thenReturn(of(token));
     when(userServiceMock.signInUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything(), anything())).thenReturn(of({ firstName: 'Patricia' } as User));
@@ -129,8 +132,8 @@ describe('User Effects', () => {
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-        { provide: OAuthService, useFactory: () => instance(oAuthServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
+        { provide: TokenService, useFactory: () => instance(tokenServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideMockActions(() => actions$),
         UserEffects,
@@ -217,11 +220,10 @@ describe('User Effects', () => {
 
     it('should dispatch a success action on a successful request and should fetch a new anonymous user token', () => {
       const action = logoutUser();
-      const completion1 = logoutUserSuccess();
-      const completion2 = fetchAnonymousUserToken();
+      const completion = logoutUserSuccess();
 
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
+      const expected$ = cold('-b', { b: completion });
 
       expect(effects.logoutUser$).toBeObservable(expected$);
     });
@@ -247,7 +249,7 @@ describe('User Effects', () => {
       actions$ = of(action);
 
       effects.fetchAnonymousUserToken$.subscribe(() => {
-        verify(userServiceMock.fetchToken('anonymous')).once();
+        verify(tokenServiceMock.fetchToken('anonymous')).once();
         done();
       });
     });
