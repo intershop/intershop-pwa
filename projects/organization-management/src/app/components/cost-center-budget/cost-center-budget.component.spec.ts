@@ -41,6 +41,7 @@ describe('Cost Center Budget Component', () => {
         currency: 'USD',
         type: 'Money',
       },
+      name: 'Oil Corp Headquarter',
     } as CostCenter;
 
     basketChange = {
@@ -62,7 +63,13 @@ describe('Cost Center Budget Component', () => {
       <div>
         <div placement="top" data-testing-id="cost-center-budget-popover" ng-reflect-placement="top">
           <div class="progress">
-            <div role="progressbar" class="progress-bar" style="width: 40%">
+            <div
+              role="progressbar"
+              class="progress-bar"
+              aria-label="Spent budget of cost center Oil Corp Headquarter"
+              aria-valuetext="40%"
+              style="width: 40%"
+            >
               <span class="progress-display">40%</span>
             </div>
           </div>

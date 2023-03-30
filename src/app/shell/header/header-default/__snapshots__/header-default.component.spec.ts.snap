@@ -54,8 +54,8 @@ exports[`Header Default Component should render normal header adequately for des
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="false">
-      <div role="navigation" class="main-navigation">
+    <nav aria-label="main" class="global-nav navbar-expand-md" ng-reflect-collapsed="false">
+      <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -117,8 +117,8 @@ exports[`Header Default Component should render normal header adequately for mob
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
-      <div role="navigation" class="main-navigation">
+    <nav aria-label="main" class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
+      <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -181,8 +181,8 @@ exports[`Header Default Component should render normal header adequately for tab
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="false">
-      <div role="navigation" class="main-navigation">
+    <nav aria-label="main" class="global-nav navbar-expand-md" ng-reflect-collapsed="false">
+      <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -236,8 +236,8 @@ exports[`Header Default Component should render sticky header adequately for des
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="false">
-      <div role="navigation" class="main-navigation">
+    <nav aria-label="main" class="global-nav navbar-expand-md" ng-reflect-collapsed="false">
+      <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -291,8 +291,8 @@ exports[`Header Default Component should render sticky header adequately for mob
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
-      <div role="navigation" class="main-navigation">
+    <nav aria-label="main" class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
+      <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>
@@ -346,8 +346,8 @@ exports[`Header Default Component should render sticky header adequately for tab
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
-      <div role="navigation" class="main-navigation">
+    <nav aria-label="main" class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
+      <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
       </div>

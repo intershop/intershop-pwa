@@ -77,7 +77,13 @@ describe('User Budget Component', () => {
         </dl>
         <div placement="top" data-testing-id="user-budget-popover" ng-reflect-placement="top">
           <div class="progress">
-            <div role="progressbar" class="progress-bar" style="width: 50%">
+            <div
+              role="progressbar"
+              aria-label="Spent budget"
+              class="progress-bar"
+              aria-valuetext="50%"
+              style="width: 50%"
+            >
               <span class="progress-display">50%</span>
             </div>
           </div>

@@ -1,4 +1,4 @@
-<li *ngIf="isBusinessUser$ | async" class="account-welcome">
+<li *ngIf="isBusinessUser$ | async" class="account-welcome" role="presentation">
   <ng-container *ngIf="user$ | async as user">
     <ng-container *ngIf="user.lastName && user.firstName; else email">
       <h4>{{ user.lastName }}, {{ user.firstName }}</h4>

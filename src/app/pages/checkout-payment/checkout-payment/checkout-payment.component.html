@@ -21,7 +21,7 @@
         <ul *ngIf="hasPaymentMethods" id="payment-accordion" class="payment-methods list-unstyled">
           <ng-container *ngFor="let paymentMethod of filteredPaymentMethods; index as i">
             <li class="panel">
-              <div [ngClass]="{ 'form-check': !paymentMethod.parameters }" role="tab">
+              <div [ngClass]="{ 'form-check': !paymentMethod.parameters }">
                 <strong>
                   {{ paymentMethod.displayName }}
                   <ng-container *ngIf="!paymentMethod.displayName">{{ paymentMethod.id }}</ng-container>
@@ -72,8 +72,8 @@
                 *ngIf="paymentMethod.parameters?.length"
                 [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
               >
-                <li *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel section">
-                  <div class="form-check col-10 col-md-6 col-lg-8 col-xl-6" role="tab">
+                <div *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel section">
+                  <div class="form-check col-10 col-md-6 col-lg-8 col-xl-6">
                     <input
                       type="radio"
                       formControlName="name"
@@ -105,8 +105,8 @@
                     >
                     </ish-payment-concardis-creditcard-cvc-detail>
                   </div>
-                </li>
-                <li class="panel">
+                </div>
+                <div class="panel">
                   <a
                     *ngIf="!formIsOpen(i)"
                     [routerLink]="[]"
@@ -114,7 +114,7 @@
                     data-testing-id="add-payment-link"
                     >{{ 'checkout.payment.addPayment.link' | translate }}
                   </a>
-                </li>
+                </div>
 
                 <div [ngbCollapse]="!formIsOpen(i)">
                   <p class="indicates-required">
