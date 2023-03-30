@@ -86,6 +86,39 @@ In this case the condition should look like this:
 <ng-container *ngIf="observable$ | async as synchronized; else loading">
 ```
 
+## Pattern for Loops (ngFor) with Changing Data in Component Templates
+
+Looping through an array in a component may sometimes be accompanied by side effects if the data within the array are changing.
+
+```html
+<ng-container *ngFor="let element of array$ | async">
+  <another-component [element]="element"></another-component>
+</ng-container>
+```
+
+In case the values of the array$ observable are varying somehow during the lifetime of the component (reordering elements, add/ delete elements, changing properties), all children DOM elements are destroyed and re-initialized with the new data.
+
+To avoid these many and expensive DOM manipulations and persist the children DOM elements the loop elements has to be uniquely identified in the `NgFor` directive.
+This can be achieved by using custom [`trackBy`](https://angular.io/api/core/TrackByFunction) functions within the `ngFor` directive.
+
+```typescript
+@Component({
+  ...
+  template: `
+  <ng-container *ngFor="let element of array$ | async; trackBy: customTrackByFn">
+    <another-component [element]="element"></another-component>
+  </ng-container>`
+})
+export class AnyComponent implements OnInit, OnDestroy {
+  ...
+  customTrackByFn(index, element) {
+    return element.id;
+  }
+}
+```
+
+The custom trackBy function needs to return unique values for all unique inputs.
+
 ## Do Not Unsubscribe, Use Destroy Observable and takeUntil Instead
 
 Following the ideas of the article [RxJS: Don’t Unsubscribe](https://benlesh.medium.com/rxjs-dont-unsubscribe-6753ed4fda87), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.

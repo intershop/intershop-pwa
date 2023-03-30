@@ -5,7 +5,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { mapToProperty } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { OrderTemplate } from '../../models/order-template/order-template.model';
+import { OrderTemplate, OrderTemplateItem } from '../../models/order-template/order-template.model';
 
 @Component({
   selector: 'ish-account-order-template-detail-page',
@@ -35,5 +35,9 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit {
       ...orderTemplate,
       id: orderTemplateName,
     });
+  }
+
+  trackByFn(_: number, item: OrderTemplateItem) {
+    return item.id;
   }
 }

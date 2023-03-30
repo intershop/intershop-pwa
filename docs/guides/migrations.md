@@ -99,6 +99,9 @@ Please run for each configured Angular project (e.g. 'intershop-pwa') the follow
 
 > **NOTE:** Not all scenarios are taken into consideration for the `formly-migrate` schematic, where a deprecated property could be found. Please check and adapt manually your code for additional changes. For further information look into the [formly migration guide](https://formly.dev/docs/guide/migration/).
 
+The templates of `account-order-template-detail-page.component.ts`, `quote-line-item-list.component.ts`, `quoting-basket-line-items.component.ts` and `account-wishlist-detail-page.component.ts` are updated to ensure correct DOM element updates for `ngFor` loop changes.
+A [trackBy function](https://angular.io/api/core/TrackByFunction) will now be used.
+
 Obsolete functionality that is no longer needed with the current state of the Intershop PWA was removed from the project source code.
 
 - removed outdated `kubernetes-deployment` schematic that could be used to create Kubernetes charts, use the official [Intershop PWA Helm Chart repository](https://github.com/intershop/helm-charts/tree/main/charts/pwa) instead
