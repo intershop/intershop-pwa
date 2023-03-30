@@ -94,7 +94,12 @@ export class ProductListingEffects {
           select(selectQueryParams),
           // filter router changes which have nothing to do with product lists like login
           filter(
-            params => !!params?.filters || !!params?.sorting || !!params?.page || Object.keys(params)?.length === 0
+            params =>
+              !!params?.filters ||
+              !!params?.view ||
+              !!params?.sorting ||
+              !!params?.page ||
+              Object.keys(params)?.length === 0
           ),
           map(params => {
             const filters = params.filters
