@@ -1,5 +1,5 @@
-import { switchMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { switchMap } from 'rxjs/operators';
 import { PWALazyComponentOptionsSchema as Options } from 'schemas/lazy-component/schema';
 
 import {

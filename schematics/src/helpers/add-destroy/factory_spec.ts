@@ -1,5 +1,5 @@
-import { switchMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { switchMap } from 'rxjs/operators';
 import { PWAComponentOptionsSchema } from 'schemas/component/schema';
 
 import { createApplication, createSchematicRunner } from '../../utils/testHelper';

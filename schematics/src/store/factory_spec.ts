@@ -1,5 +1,5 @@
-import { mergeMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { mergeMap } from 'rxjs/operators';
 import { PWAStoreOptionsSchema as Options } from 'schemas/store/schema';
 
 import {
