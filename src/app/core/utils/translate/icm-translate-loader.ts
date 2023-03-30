@@ -6,6 +6,7 @@ import { combineLatest, defer, from, iif, of } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
+import { InjectSingle } from 'ish-core/utils/injection';
 
 import { Translations } from './translations.type';
 
@@ -21,7 +22,7 @@ export class ICMTranslateLoader implements TranslateLoader {
   constructor(
     private transferState: TransferState,
     private localizations: LocalizationsService,
-    @Inject(LOCAL_TRANSLATIONS) private localTranslations: LocalTranslations
+    @Inject(LOCAL_TRANSLATIONS) private localTranslations: InjectSingle<typeof LOCAL_TRANSLATIONS>
   ) {}
 
   getTranslation = memoize(lang => {
