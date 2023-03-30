@@ -58,7 +58,7 @@ describe('Account User Info Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <li class="account-welcome">
+      <li role="presentation" class="account-welcome">
         <h4>Mustermann, Max</h4>
         <div>Foods Inc.</div>
         <div>Approver, Buyer</div>
@@ -74,7 +74,7 @@ describe('Account User Info Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <li class="account-welcome">
+      <li role="presentation" class="account-welcome">
         <h4 class="ellipsis">max.mustermann@test.intershop.de</h4>
         <div>Foods Inc.</div>
       </li>

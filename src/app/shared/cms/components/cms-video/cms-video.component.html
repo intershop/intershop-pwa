@@ -7,7 +7,13 @@
   <ng-container *ngIf="iframeVideoUrl; else nativeVideo">
     <div class="video-wrapper">
       <!-- spell-checker: words allowfullscreen -->
-      <iframe loading="lazy" [src]="iframeVideoUrl" frameborder="0" allowfullscreen></iframe>
+      <iframe
+        [title]="pagelet?.displayName"
+        loading="lazy"
+        [src]="iframeVideoUrl"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
     </div>
   </ng-container>
 
@@ -22,6 +28,7 @@
       [controls]="autoplay"
       [muted]="mute"
       [poster]="pagelet.stringParam('Image')"
+      [title]="pagelet?.displayName"
     ></video>
 
     <div *ngIf="!autoplay && !playing" class="video-text">

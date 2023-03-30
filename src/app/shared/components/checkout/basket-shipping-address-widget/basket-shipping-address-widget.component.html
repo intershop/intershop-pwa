@@ -70,14 +70,14 @@
     class="btn btn-link"
     (click)="showAddressForm()"
     [attr.aria-expanded]="(collapseChange | async) === false"
-    aria-controls="collapseBasic"
+    aria-controls="shipping-address-panel"
   >
     {{ 'checkout.create_address.link' | translate }}
   </button>
 </div>
 
 <!-- shipping address form -->
-<div id="collapseBasic" [ngbCollapse]="collapseChange | async" data-testing-id="shipping-address-form">
+<div id="shipping-address-panel" [ngbCollapse]="collapseChange | async" data-testing-id="shipping-address-form">
   <ish-formly-customer-address-form
     [address]="editAddress"
     [resetForm]="collapseChange | async"

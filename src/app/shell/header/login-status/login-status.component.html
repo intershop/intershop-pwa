@@ -1,6 +1,6 @@
 <ng-container *ngIf="logoutOnly; else loginStatus">
   <ng-container *ngIf="user$ | async as user; else notLoggedIn">
-    <a routerLink="/logout" data-testing-id="link-logout">
+    <a routerLink="/logout" data-testing-id="link-logout" aria-label="logout">
       <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
       <span *ngIf="view !== 'small'"> {{ 'account.logout.link' | translate }} </span>
     </a>
@@ -11,7 +11,7 @@
 <ng-template #loginStatus>
   <!-- logged in -->
   <ng-container *ngIf="user$ | async as user; else notLoggedIn">
-    <a routerLink="/account" class="my-account-link" data-testing-id="link-myaccount">
+    <a routerLink="/account" class="my-account-link" data-testing-id="link-myaccount" aria-label="account">
       <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
       <span *ngIf="user.lastName; else nameNotDisplayed" class="login-name" [ngClass]="getViewClasses()">{{
         user.firstName + ' ' + user.lastName
@@ -23,7 +23,7 @@
       >
     </a>
     <span class="separator" [ngClass]="getViewClasses()">&#124;</span>
-    <a routerLink="/logout" class="my-account-link my-account-logout" data-testing-id="link-logout">
+    <a routerLink="/logout" class="my-account-link my-account-logout" data-testing-id="link-logout" aria-label="logout">
       <span [ngClass]="getViewClasses()">{{ 'account.logout.link' | translate }}</span>
     </a>
   </ng-container>
@@ -34,6 +34,7 @@
       [queryParams]="{ returnUrl: '/account' }"
       class="my-account-link my-account-login"
       rel="nofollow"
+      aria-label="login"
     >
       <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
       <span [ngClass]="getViewClasses()">{{ 'account.login.link' | translate }}</span>
@@ -44,6 +45,7 @@
       [queryParams]="{ returnUrl: '/account' }"
       class="my-account-link my-account-register"
       rel="nofollow"
+      aria-label="register"
       ><span [ngClass]="getViewClasses()">{{ 'account.register.link' | translate }}</span>
     </a>
   </ng-template>

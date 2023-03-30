@@ -1,7 +1,7 @@
 <!-- account navigation with hierarchy -->
 <ng-container *ngIf="!(deviceType === 'mobile' || deviceType === 'tablet'); else mobileNavigation">
   <ul class="account-navigation list-unstyled">
-    <ish-account-user-info></ish-account-user-info>
+    <ish-account-user-info role="listitem"></ish-account-user-info>
     <ng-container *ngFor="let item of navItems">
       <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
         <ng-container *ishHasNotRole="item.notRole">

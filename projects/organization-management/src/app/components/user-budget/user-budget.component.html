@@ -25,6 +25,8 @@
           [ngClass]="{ 'bg-danger': usedBudgetPercentage * 100 > 90 }"
           [ngStyle]="{ width: usedBudgetPercentage | percent }"
           role="progressbar"
+          aria-label="Spent budget"
+          [attr.aria-valuetext]="usedBudgetPercentage | percent"
         >
           <span class="progress-display">{{ usedBudgetPercentage | percent }}</span>
           <ng-template #BudgetPopover>

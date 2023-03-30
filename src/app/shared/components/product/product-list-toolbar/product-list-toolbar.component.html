@@ -30,6 +30,8 @@
         class="list-view-link"
         [ngClass]="{ 'list-active': listView }"
         data-testing-id="list-view-link"
+        role="button"
+        aria-label="list view"
       >
         <fa-icon [icon]="['fas', 'list']"></fa-icon>
       </a>
@@ -42,6 +44,8 @@
         class="grid-view-link"
         [ngClass]="{ 'grid-active': gridView }"
         data-testing-id="grid-view-link"
+        role="button"
+        aria-label="grid view"
       >
         <fa-icon [icon]="['fas', 'th']"></fa-icon>
       </a>

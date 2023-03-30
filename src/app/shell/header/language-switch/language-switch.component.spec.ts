@@ -63,8 +63,8 @@ describe('Language Switch Component', () => {
     expect(element.querySelectorAll('li')).toHaveLength(2);
     expect(element.querySelectorAll('[href]')).toMatchInlineSnapshot(`
       NodeList [
-        <a href="en_US"> English (United States) </a>,
-        <a href="fr_FR"> Français (France) </a>,
+        <a role="menuitem" href="en_US"> English (United States) </a>,
+        <a role="menuitem" href="fr_FR"> Français (France) </a>,
       ]
     `);
     expect(element.querySelector('.language-switch-current-selection').textContent).toMatchInlineSnapshot(`"Deutsch"`);

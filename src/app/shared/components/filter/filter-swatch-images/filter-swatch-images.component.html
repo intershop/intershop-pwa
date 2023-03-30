@@ -1,4 +1,4 @@
-<ul class="filter-list clearfix">
+<ul class="filter-list clearfix" [id]="'filter-list_' + filterElement.name">
   <ng-container *ngFor="let facet of filterElement.facets">
     <li class="filter-item filter-color" [ngClass]="{ 'filter-selected': facet.selected }">
       <a

@@ -60,6 +60,7 @@ describe('Product Quantity Component', () => {
         data-testing-id="quantity"
         type="number"
         pattern="[0-9]*"
+        aria-label="quantity"
         class="form-control text-center"
         id="ASDF"
         min="2"
