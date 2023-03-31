@@ -5,7 +5,6 @@ import { debounce, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs
 
 import { PRICE_UPDATE } from 'ish-core/configurations/injection-keys';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
-import { PriceUpdateType } from 'ish-core/models/price/price.model';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -41,12 +40,13 @@ import {
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
 import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/store/shopping/search';
 import { toObservable } from 'ish-core/utils/functions';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class ShoppingFacade {
-  constructor(private store: Store, @Inject(PRICE_UPDATE) private priceUpdate: PriceUpdateType) {}
+  constructor(private store: Store, @Inject(PRICE_UPDATE) private priceUpdate: InjectSingle<typeof PRICE_UPDATE>) {}
 
   // CATEGORY
 

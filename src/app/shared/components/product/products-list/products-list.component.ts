@@ -6,6 +6,7 @@ import {
   MEDIUM_BREAKPOINT_WIDTH,
   SMALL_BREAKPOINT_WIDTH,
 } from 'ish-core/configurations/injection-keys';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
 
 SwiperCore.use([Pagination, Navigation]);
@@ -29,9 +30,9 @@ export class ProductsListComponent implements OnChanges {
   swiperConfig: SwiperOptions;
 
   constructor(
-    @Inject(SMALL_BREAKPOINT_WIDTH) private smallBreakpointWidth: number,
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
-    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number
+    @Inject(SMALL_BREAKPOINT_WIDTH) private smallBreakpointWidth: InjectSingle<typeof SMALL_BREAKPOINT_WIDTH>,
+    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: InjectSingle<typeof MEDIUM_BREAKPOINT_WIDTH>,
+    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>
   ) {
     this.swiperConfig = {
       direction: 'horizontal',

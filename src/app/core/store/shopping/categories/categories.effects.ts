@@ -14,6 +14,7 @@ import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
+import { InjectSingle } from 'ish-core/utils/injection';
 import {
   mapErrorToAction,
   mapToPayloadProperty,
@@ -43,7 +44,8 @@ export class CategoriesEffects {
     private actions$: Actions,
     private store: Store,
     private categoryService: CategoriesService,
-    @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number,
+    @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH)
+    private mainNavigationMaxSubCategoriesDepth: InjectSingle<typeof MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH>,
     private httpStatusCodeService: HttpStatusCodeService
   ) {}
 

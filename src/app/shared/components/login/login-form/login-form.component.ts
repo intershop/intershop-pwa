@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -39,7 +40,10 @@ export class LoginFormComponent implements OnInit {
 
   fields: FormlyFieldConfig[];
 
-  constructor(@Inject(USER_REGISTRATION_LOGIN_TYPE) public loginType: string, private accountFacade: AccountFacade) {}
+  constructor(
+    @Inject(USER_REGISTRATION_LOGIN_TYPE) public loginType: InjectSingle<typeof USER_REGISTRATION_LOGIN_TYPE>,
+    private accountFacade: AccountFacade
+  ) {}
 
   ngOnInit() {
     this.loginError$ = this.accountFacade.userError$;

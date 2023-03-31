@@ -112,6 +112,12 @@ Obsolete functionality that is no longer needed with the current state of the In
 We recommend to use the Action Group Creator to create store actions now.
 Therefore the corresponding store schematic for the action creation has been adapted.
 
+We added some helper methods to improve the use of dependency injection.
+Use the method `createEnvironmentInjectionToken` now to define new injection keys for environment variables in the injection-keys.ts.
+If you want to inject a token use the methods `injectSingle` and `injectMultiple` to secure the type safety of your injected variables (except for angular core tokens, which are forced to a type).
+There is a new linting rule `useTypeSafeInjectionTokenRule` that enforces the usage of these methods.
+Find more information in the [Configuration Concept](../concepts/configuration.md#angular-cli-environments)
+
 ## 3.2 to 3.3
 
 To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.

@@ -5,7 +5,8 @@ import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
-import { DataRetentionPolicy, dataRetentionMeta } from 'ish-core/utils/meta-reducers';
+import { InjectSingle } from 'ish-core/utils/injection';
+import { dataRetentionMeta } from 'ish-core/utils/meta-reducers';
 
 import { ProductConfigurationEffects } from './product-configuration/product-configuration.effects';
 import { productConfigurationReducer } from './product-configuration/product-configuration.reducer';
@@ -31,7 +32,7 @@ export class DefaultTactonStoreConfig implements StoreConfig<TactonState> {
 
   constructor(
     @Inject(APP_BASE_HREF) private appBaseHref: string,
-    @Inject(DATA_RETENTION_POLICY) private dataRetention: DataRetentionPolicy
+    @Inject(DATA_RETENTION_POLICY) private dataRetention: InjectSingle<typeof DATA_RETENTION_POLICY>
   ) {}
 }
 

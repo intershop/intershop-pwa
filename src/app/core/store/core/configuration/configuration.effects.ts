@@ -12,6 +12,7 @@ import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { distinctCompareWith, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
@@ -30,8 +31,8 @@ export class ConfigurationEffects {
     private store: Store,
     private stateProperties: StatePropertiesService,
     private transferState: TransferState,
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
-    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
+    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: InjectSingle<typeof MEDIUM_BREAKPOINT_WIDTH>,
+    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>,
     @Inject(DOCUMENT) document: Document,
     translateService: TranslateService,
     appRef: ApplicationRef,

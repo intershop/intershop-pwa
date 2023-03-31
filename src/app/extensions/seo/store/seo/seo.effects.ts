@@ -6,7 +6,6 @@ import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-stor
 import { Store, select } from '@ngrx/store';
 import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { TranslateService } from '@ngx-translate/core';
-import { Request } from 'express';
 import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
@@ -24,6 +23,7 @@ import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/confi
 import { ofUrl, selectRouteData, selectRouteParam } from 'ish-core/store/core/router';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories/categories.selectors';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable()
@@ -35,7 +35,7 @@ export class SeoEffects {
     private titleService: Title,
     private translate: TranslateService,
     @Inject(DOCUMENT) private doc: Document,
-    @Optional() @Inject(REQUEST) private request: Request,
+    @Optional() @Inject(REQUEST) private request: InjectSingle<typeof REQUEST>,
     @Inject(APP_BASE_HREF) private baseHref: string,
     private appRef: ApplicationRef
   ) {}
