@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -25,6 +26,7 @@ describe('Product Notification Delete Component', () => {
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
+        MockDirective(ServerHtmlDirective),
         ProductNotificationDeleteComponent,
       ],
       imports: [TranslateModule.forRoot()],

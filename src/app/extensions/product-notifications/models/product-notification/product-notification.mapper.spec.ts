@@ -16,10 +16,10 @@ describe('Product Notification Mapper', () => {
 
       const mapped = ProductNotificationMapper.fromData(productNotificationData, 'price');
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
+        {
           "id": "12345_price",
           "notificationMailAddress": "test@test.intershop.de",
-          "price": Object {
+          "price": {
             "currency": "USD",
             "type": "Money",
             "value": 75,
@@ -38,7 +38,7 @@ describe('Product Notification Mapper', () => {
 
       const mapped = ProductNotificationMapper.fromData(productNotificationData, 'stock');
       expect(mapped).toMatchInlineSnapshot(`
-        Object {
+        {
           "id": "12345_stock",
           "notificationMailAddress": "test@test.intershop.de",
           "price": undefined,

@@ -17,6 +17,5 @@
   }"
   (confirmed)="deleteProductNotification()"
 >
-  <p>{{ 'product.notification.delete.message_line1' | translate }}</p>
-  <p>{{ 'product.notification.delete.message_line2' | translate }}</p>
+  <div [ishServerHtml]="'product.notification.delete.message' | translate"></div>
 </ish-modal-dialog>

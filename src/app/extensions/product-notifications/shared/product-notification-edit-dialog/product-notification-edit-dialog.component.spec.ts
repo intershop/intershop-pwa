@@ -6,7 +6,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
@@ -36,7 +35,6 @@ describe('Product Notification Edit Dialog Component', () => {
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
       ],
-      imports: [FormlyTestingModule],
     }).compileComponents();
 
     when(appFacade.currentCurrency$).thenReturn(of('USD'));

@@ -50,7 +50,7 @@ describe('Product Notifications Service', () => {
     it("should get product stock notifications when 'getProductNotifications' for type stock is called for b2b rest applications", done => {
       productNotificationsService.getProductNotifications('stock').subscribe(data => {
         verify(apiServiceMock.get(`customers/4711/users/-/notifications/stock`)).once();
-        expect(data).toMatchInlineSnapshot(`Array []`);
+        expect(data).toMatchInlineSnapshot(`[]`);
         done();
       });
     });
@@ -58,7 +58,7 @@ describe('Product Notifications Service', () => {
     it("should get product price notifications when 'getProductNotifications' for type price is called for b2b rest applications", done => {
       productNotificationsService.getProductNotifications('price').subscribe(data => {
         verify(apiServiceMock.get(`customers/4711/users/-/notifications/price`)).once();
-        expect(data).toMatchInlineSnapshot(`Array []`);
+        expect(data).toMatchInlineSnapshot(`[]`);
         done();
       });
     });
