@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { RecentlyFacade } from '../../facades/recently.facade';
 
@@ -24,7 +24,7 @@ describe('Recently Page Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [MockComponent(BreadcrumbComponent), MockDirective(ProductContextDirective), RecentlyPageComponent],
+      declarations: [MockComponent(BreadcrumbComponent), MockComponent(ProductsListComponent), RecentlyPageComponent],
       providers: [{ provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) }],
     }).compileComponents();
   });
@@ -39,11 +39,6 @@ describe('Recently Page Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  it('should display product items for recently used products', () => {
-    fixture.detectChanges();
-    expect(element.querySelectorAll('ish-product-item')).toHaveLength(2);
   });
 
   it('should trigger facade when clear button is clicked', () => {
