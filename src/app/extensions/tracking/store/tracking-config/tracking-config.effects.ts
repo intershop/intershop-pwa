@@ -4,6 +4,7 @@ import { Actions, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
 import { filter, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { setMatomoSiteId, setMatomoTrackerUrl } from 'src/app/extensions/matomo/store/matomo/matomo-config.actions';
 import { ENVIRONMENT_DEFAULTS } from 'src/environments/environment.model';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -14,7 +15,6 @@ import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-prop
 
 import { setGTMToken } from './tracking-config.actions';
 import { getGTMToken } from './tracking-config.selectors';
-import { setMatomoSiteId, setMatomoTrackerUrl } from 'src/app/extensions/matomo/store/matomo/matomo-config.actions';
 
 @Injectable()
 export class TrackingConfigEffects {
