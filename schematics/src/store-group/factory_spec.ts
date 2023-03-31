@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { PWAStoreGroupOptionsSchema as Options } from 'schemas/store-group/schema';
 
 import { copyFileFromPWA, createApplication, createSchematicRunner } from '../utils/testHelper';
@@ -16,7 +17,7 @@ describe('Store Group Schematic', () => {
       copyFileFromPWA('src/app/core/state-management.module.ts'),
       copyFileFromPWA('src/app/core/store/core/core-store.ts')
     );
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create a store-group in core store by default', async () => {

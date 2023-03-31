@@ -1,5 +1,6 @@
-import { switchMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { PWALazyComponentOptionsSchema as Options } from 'schemas/lazy-component/schema';
 
 import {
@@ -28,7 +29,7 @@ describe('Lazy Component Schematic', () => {
         schematicRunner.runSchematic('component', { ...defaultOptions, name: 'extensions/ext/shared/dummy' }, tree)
       )
     );
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should be created', () => {
