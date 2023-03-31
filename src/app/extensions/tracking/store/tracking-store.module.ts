@@ -18,6 +18,8 @@ export const matomoReducer: ActionReducerMap<MatomoState> = {
   siteId: matomoSiteIdReducer,
 };
 
+console.log(matomoReducer.trackerUrl);
+
 const trackingEffects = [TrackingConfigEffects];
 
 const matomoEffects = [MatomoEffects];

@@ -3,13 +3,13 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
-import { filter, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 import { setMatomoSiteId, setMatomoTrackerUrl } from 'src/app/extensions/matomo/store/matomo/matomo-config.actions';
-import { ENVIRONMENT_DEFAULTS } from 'src/environments/environment.model';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
+import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
@@ -41,15 +41,6 @@ export class TrackingConfigEffects {
           angulartics2GoogleTagManager.startTracking();
         });
     }
-
-    if (!SSR && featureToggleService.enabled('matomo')) {
-      console.log(
-        `Matomo Enabled!\n Defaults: ${ENVIRONMENT_DEFAULTS.matomoTrackerUrl} and ${ENVIRONMENT_DEFAULTS.matomoSiteId}`
-      );
-
-      setMatomoTrackerUrl({ trackerUrl: ENVIRONMENT_DEFAULTS.matomoTrackerUrl });
-      setMatomoSiteId({ siteId: ENVIRONMENT_DEFAULTS.matomoSiteId });
-    }
   }
 
   setGTMToken$ = createEffect(() =>
@@ -60,6 +51,19 @@ export class TrackingConfigEffects {
       map(([, gtmToken]) => gtmToken),
       whenTruthy(),
       map(gtmToken => setGTMToken({ gtmToken }))
+    )
+  );
+
+  setMatomoConfig$ = createEffect(() =>
+    this.actions$.pipe(
+      takeWhile(() => !SSR && this.featureToggleService.enabled('matomo')),
+      take(1),
+      log('Matomo after take while'),
+      withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('MATOMO_TRACKER_URL', 'matomoTrackerUrl')),
+      withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('MATOMO_SITE_ID', 'matomoSiteId')),
+      map(([[, trackerUrl], siteId]) => [trackerUrl, siteId]),
+      filter(([trackerUrl, siteId]) => !!trackerUrl && !!siteId),
+      concatMap(([trackerUrl, siteId]) => [setMatomoTrackerUrl({ trackerUrl }), setMatomoSiteId({ siteId })])
     )
   );
 

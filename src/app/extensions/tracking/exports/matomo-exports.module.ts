@@ -5,7 +5,7 @@ import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
 @NgModule({
-  imports: [NgxMatomoRouterModule, NgxMatomoTrackerModule.forRoot({ trackerUrl: undefined, siteId: undefined })],
+  imports: [NgxMatomoRouterModule, NgxMatomoTrackerModule.forRoot({ trackerUrl: 'http://localhost:8080', siteId: '2' })],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
