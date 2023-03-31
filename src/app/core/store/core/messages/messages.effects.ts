@@ -5,7 +5,7 @@ import { routerRequestAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
-import { OperatorFunction, Subject, combineLatest } from 'rxjs';
+import { EMPTY, OperatorFunction, Subject, combineLatest, iif } from 'rxjs';
 import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { getDeviceType } from 'ish-core/store/core/configuration';
@@ -34,77 +34,97 @@ export class MessagesEffects {
 
   infoToast$ = createEffect(
     () =>
-      this.actions$.pipe(
-        ofType(displayInfoMessage),
-        mapToPayload(),
-        this.composeToastServiceArguments(0),
-        map(args => this.toastr.info(...args)),
-        tap(() => {
-          this.applyStyle$.next();
-        }),
-        this.closeToastOnRouting()
+      iif(
+        () => !SSR,
+        this.actions$.pipe(
+          ofType(displayInfoMessage),
+          mapToPayload(),
+          this.composeToastServiceArguments(0),
+          map(args => this.toastr.info(...args)),
+          tap(() => {
+            this.applyStyle$.next();
+          }),
+          this.closeToastOnRouting()
+        ),
+        EMPTY
       ),
     { dispatch: false }
   );
 
   errorToast$ = createEffect(
     () =>
-      this.actions$.pipe(
-        ofType(displayErrorMessage),
-        mapToPayload(),
-        this.composeToastServiceArguments(0),
-        map(args => this.toastr.error(...args)),
-        tap(() => {
-          this.applyStyle$.next();
-        }),
-        this.closeToastOnRouting()
+      iif(
+        () => !SSR,
+        this.actions$.pipe(
+          ofType(displayErrorMessage),
+          mapToPayload(),
+          this.composeToastServiceArguments(0),
+          map(args => this.toastr.error(...args)),
+          tap(() => {
+            this.applyStyle$.next();
+          }),
+          this.closeToastOnRouting()
+        ),
+        EMPTY
       ),
     { dispatch: false }
   );
 
   warningToast$ = createEffect(
     () =>
-      this.actions$.pipe(
-        ofType(displayWarningMessage),
-        mapToPayload(),
-        this.composeToastServiceArguments(0),
-        map(args => this.toastr.warning(...args)),
-        tap(() => {
-          this.applyStyle$.next();
-        }),
-        this.closeToastOnRouting()
+      iif(
+        () => !SSR,
+        this.actions$.pipe(
+          ofType(displayWarningMessage),
+          mapToPayload(),
+          this.composeToastServiceArguments(0),
+          map(args => this.toastr.warning(...args)),
+          tap(() => {
+            this.applyStyle$.next();
+          }),
+          this.closeToastOnRouting()
+        ),
+        EMPTY
       ),
     { dispatch: false }
   );
 
   successToast$ = createEffect(
     () =>
-      this.actions$.pipe(
-        ofType(displaySuccessMessage),
-        mapToPayload(),
-        filter(payload => !!payload?.message),
-        this.composeToastServiceArguments(),
-        map(args => this.toastr.success(...args)),
-        tap(() => {
-          this.applyStyle$.next();
-        })
+      iif(
+        () => !SSR,
+        this.actions$.pipe(
+          ofType(displaySuccessMessage),
+          mapToPayload(),
+          filter(payload => !!payload?.message),
+          this.composeToastServiceArguments(),
+          map(args => this.toastr.success(...args)),
+          tap(() => {
+            this.applyStyle$.next();
+          })
+        ),
+        EMPTY
       ),
     { dispatch: false }
   );
 
   setToastStickyClass$ = createEffect(
     () =>
-      combineLatest([this.store.pipe(select(isStickyHeader)), this.applyStyle$]).pipe(
-        tap(([sticky]) => {
-          const container = this.document.getElementById('toast-container');
-          if (container) {
-            if (sticky) {
-              container.classList.add('toast-sticky');
-            } else {
-              container.classList.remove('toast-sticky');
+      iif(
+        () => !SSR,
+        combineLatest([this.store.pipe(select(isStickyHeader)), this.applyStyle$]).pipe(
+          tap(([sticky]) => {
+            const container = this.document.getElementById('toast-container');
+            if (container) {
+              if (sticky) {
+                container.classList.add('toast-sticky');
+              } else {
+                container.classList.remove('toast-sticky');
+              }
             }
-          }
-        })
+          })
+        ),
+        EMPTY
       ),
     { dispatch: false }
   );
