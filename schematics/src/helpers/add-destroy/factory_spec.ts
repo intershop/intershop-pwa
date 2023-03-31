@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { PWAComponentOptionsSchema } from 'schemas/component/schema';
 
@@ -21,7 +22,7 @@ describe('Lazy Component Schematic', () => {
         )
       )
     );
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should be created', () => {

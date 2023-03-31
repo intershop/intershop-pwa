@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { PWAStoreOptionsSchema as Options } from 'schemas/store/schema';
 
@@ -30,7 +31,7 @@ describe('Store Schematic', () => {
       copyFileFromPWA('src/app/core/state-management.module.ts'),
       mergeMap(tree => schematicRunner.runSchematic('store-group', { ...defaultOptions, name: 'bar' }, tree))
     );
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create a store in core store by default', async () => {

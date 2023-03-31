@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 
 import { createApplication, createModule, createSchematicRunner } from '../../utils/testHelper';
 
@@ -10,7 +11,7 @@ describe('move-component Schematic', () => {
     const appTree$ = createApplication(schematicRunner).pipe(
       createModule(schematicRunner, { name: 'shared', project: undefined })
     );
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
     appTree.overwrite('/src/app/app.component.html', '<ish-dummy></ish-dummy>');
     appTree = await schematicRunner.runSchematic('component', { project: 'bar', name: 'foo/dummy' }, appTree);
     appTree = await schematicRunner.runSchematic('component', { project: 'bar', name: 'shared/dummy-two' }, appTree);

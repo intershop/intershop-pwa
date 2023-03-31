@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { PWAFieldLibrarySchema as Options } from 'schemas/field-library-configuration/schema';
 
 import { copyFileFromPWA, createApplication, createSchematicRunner } from '../utils/testHelper';
@@ -15,7 +16,7 @@ describe('Address Form Configuration Schematic', () => {
     const appTree$ = createApplication(schematicRunner).pipe(
       copyFileFromPWA('src/app/shared/formly/field-library/field-library.module.ts')
     );
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
   });
   it('should create an field library configuration and register it in the module', async () => {
     const options = { ...defaultOptions };

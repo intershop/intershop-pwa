@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { PWAServiceOptionsSchema as Options } from 'schemas/service/schema';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
@@ -13,7 +14,7 @@ describe('Service Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     const appTree$ = createApplication(schematicRunner);
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create a service in core by default', async () => {

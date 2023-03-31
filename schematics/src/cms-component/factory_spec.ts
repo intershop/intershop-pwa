@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { PWACMSComponentOptionsSchema as Options } from 'schemas/cms-component/schema';
 
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
@@ -20,7 +21,7 @@ describe('CMS Component Schematic', () => {
       createModule(schematicRunner, { name: 'shared', project: undefined }),
       createModule(schematicRunner, { name: 'shared/cms', project: undefined })
     );
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create a component in cms module with added name prefix', async () => {
