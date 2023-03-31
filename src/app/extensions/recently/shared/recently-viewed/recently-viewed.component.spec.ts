@@ -1,14 +1,13 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockDirective, MockPipe } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { RecentlyFacade } from '../../facades/recently.facade';
 
@@ -26,7 +25,7 @@ describe('Recently Viewed Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([{ path: 'recently', component: RecentlyViewedComponent }])],
-      declarations: [MockDirective(ProductContextDirective), MockPipe(TranslatePipe), RecentlyViewedComponent],
+      declarations: [MockComponent(ProductsListComponent), MockPipe(TranslatePipe), RecentlyViewedComponent],
       providers: [{ provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) }],
     }).compileComponents();
   });
@@ -50,48 +49,22 @@ describe('Recently Viewed Component', () => {
     expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
-  describe('with items', () => {
-    beforeEach(() => {
-      when(recentlyFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1', 'P2', 'P3']));
-
-      fixture.detectChanges();
-    });
-
-    it('should display product-item components for all products', () => {
-      expect(element.querySelectorAll('ish-product-item')).toHaveLength(3);
-    });
-
-    it('should display view all link on page', () => {
-      expect(findAllDataTestingIDs(fixture)).toContain('view-all');
-    });
-
-    it('should properly propagate inputs to product-tiles', () => {
-      expect(fixture.debugElement.queryAll(By.css('[ishProductContext]')).map(de => de.attributes['ng-reflect-sku']))
-        .toMatchInlineSnapshot(`
-        [
-          "P1",
-          "P2",
-          "P3",
-        ]
-      `);
-    });
+  it('should display view all link on page', () => {
+    when(recentlyFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1', 'P2', 'P3']));
+    fixture.detectChanges();
+    expect(findAllDataTestingIDs(fixture)).toContain('view-all');
   });
 
-  describe('link to recently page', () => {
-    it('should navigate to recently page when view-all link is clicked', fakeAsync(() => {
-      when(recentlyFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1']));
+  it('should navigate to recently page when view-all link is clicked', fakeAsync(() => {
+    when(recentlyFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1']));
+    fixture.detectChanges();
 
-      fixture.detectChanges();
+    expect(location.path()).toMatchInlineSnapshot(`""`);
 
-      expect(location.path()).toMatchInlineSnapshot(`""`);
+    const link = element.querySelector('[data-testing-id="view-all"]') as HTMLLinkElement;
+    link.click();
+    tick(0);
 
-      const link = element.querySelector('[data-testing-id="view-all"]') as HTMLLinkElement;
-
-      link.click();
-
-      tick(0);
-
-      expect(location.path()).toMatchInlineSnapshot(`"/recently"`);
-    }));
-  });
+    expect(location.path()).toMatchInlineSnapshot(`"/recently"`);
+  }));
 });

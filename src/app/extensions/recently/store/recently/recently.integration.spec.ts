@@ -41,7 +41,7 @@ describe('Recently Integration', () => {
 
   describe('after short shopping spree', () => {
     beforeEach(fakeAsync(() => {
-      ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(sku =>
+      ['A', 'B', 'C', 'D', 'E', 'F'].forEach(sku =>
         store$.dispatch(loadProductSuccess({ product: { sku } as Product }))
       );
       ['A', 'B', 'F', 'C', 'A', 'D', 'E', 'D', 'A', 'B', 'A'].forEach(sku => {
@@ -53,7 +53,7 @@ describe('Recently Integration', () => {
     it('should have collected data for display on pages', () => {
       const viewed = ['A', 'B', 'D', 'E', 'C', 'F'];
       expect(getRecentlyViewedProducts(store$.state)).toEqual(viewed);
-      const filtered = ['B', 'D', 'E', 'C'];
+      const filtered = ['B', 'D', 'E', 'C', 'F'];
       expect(getMostRecentlyViewedProducts(store$.state)).toEqual(filtered);
     });
 
