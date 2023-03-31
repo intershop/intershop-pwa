@@ -101,3 +101,9 @@ In the matomo dashboard you can filter the data by category, action and name:
 As you can see, matomo already shows you some of the parameters like category or value.  
 For a detailed overview you can select a specific effect and get an enhanced view like this:  
 ![matomo detailed view effects](matomo_ind_effects_details.png)
+
+## **Last Changes that are important when continuing development**
+  - Implemented reducers for lazy loading at [tracking-store.module.ts](../../src/app/extensions/tracking/store/tracking-store.module.ts)
+  - Env variables to activate matomo tracking are hard coded in [matomo-exports.module.ts](../../src/app/extensions/tracking/exports/matomo-exports.module.ts)
+  - Latest unsolved challenge -> Import matomo env variables into matomo-exports.module.ts when enabled
+  - Important -> hard coded variables need to be replaced by dynamically injecting matomo env variables 
