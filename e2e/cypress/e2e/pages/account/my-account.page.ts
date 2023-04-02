@@ -29,6 +29,10 @@ export class MyAccountPage {
     cy.get('a[data-testing-id="wishlists-nav-link"]').click();
   }
 
+  navigateToProductNotifications() {
+    cy.get('a[data-testing-id="notifications-nav-link"]').click();
+  }
+
   navigateToOrderTemplates() {
     cy.get('a[data-testing-id="order-templates-nav-link"]').click();
   }

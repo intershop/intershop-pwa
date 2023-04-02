@@ -52,6 +52,7 @@ export interface ProductContextDisplayProperties<T = boolean> {
   addToOrderTemplate: T;
   addToCompare: T;
   addToQuote: T;
+  addToNotification: T;
 }
 
 const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined> = {
@@ -72,6 +73,7 @@ const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined
   addToOrderTemplate: true,
   addToCompare: true,
   addToQuote: true,
+  addToNotification: true,
 };
 
 export interface ExternalDisplayPropertiesProvider {

@@ -26,6 +26,7 @@ import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-expo
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
+import { ProductNotificationsExportsModule } from '../extensions/product-notifications/exports/product-notifications-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
@@ -167,6 +168,7 @@ const importExportModules = [
   NgbPopoverModule,
   OrderTemplatesExportsModule,
   PipesModule,
+  ProductNotificationsExportsModule,
   PunchoutExportsModule,
   QuickorderExportsModule,
   QuotingExportsModule,

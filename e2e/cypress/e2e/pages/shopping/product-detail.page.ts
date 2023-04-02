@@ -3,6 +3,7 @@ import { Interception } from 'cypress/types/net-stubbing';
 import { performAddToCart, waitLoadingEnd } from '../../framework';
 import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
+import { EditProductNotificationModule } from '../account/edit-product-notification.module';
 import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 import { MetaDataModule } from '../meta-data.module';
@@ -23,6 +24,7 @@ export class ProductDetailPage {
 
   readonly addToWishlist = new AddToWishlistModule();
   readonly addToOrderTemplate = new AddToOrderTemplateModule();
+  readonly editProductNotificationModule = new EditProductNotificationModule();
 
   reviewTab = new ProductReviewModule();
 
@@ -47,6 +49,10 @@ export class ProductDetailPage {
   }
 
   private addToQuoteRequestButton = () => cy.get('ish-product-detail').find('[data-testing-id="addToQuoteButton"]');
+
+  private editProductNotificationButton() {
+    return cy.get('ish-product-detail').find('[data-testing-id="product-notification-edit"]');
+  }
 
   private quantityInput = () => cy.get('ish-product-detail').find('[data-testing-id="quantity"]');
 
@@ -82,6 +88,10 @@ export class ProductDetailPage {
 
   addProductToWishlist() {
     this.addToWishlistButton().click();
+  }
+
+  editProductNotification() {
+    this.editProductNotificationButton().click();
   }
 
   setQuantity(quantity: number) {

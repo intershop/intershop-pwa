@@ -17,6 +17,13 @@ export const navigationItems: NavigationItem[] = [
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
   },
   {
+    id: 'notifications',
+    localizationKey: 'account.notifications.link',
+    routerLink: '/account/notifications',
+    feature: 'productNotifications',
+    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+  },
+  {
     id: 'addresses',
     localizationKey: 'account.saved_addresses.link',
     routerLink: '/account/addresses',
