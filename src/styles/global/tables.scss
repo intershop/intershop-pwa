@@ -215,7 +215,7 @@
   display: inline-block;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .table-compare > .fixed-column {
     display: none;
   }
@@ -266,7 +266,7 @@
       border: 0;
     }
 
-    @media (max-width: 767px) {
+    @media (width <= 767px) {
       td,
       th {
         min-width: 400px;
