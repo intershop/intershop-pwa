@@ -26,3 +26,46 @@
     }
   }
 }
+
+// fullscreen modal styling (similar to Bootstrap 5)
+// use `modalDialogClass: 'modal-fullscreen'` instead of `size`
+.modal-fullscreen {
+  min-width: 100%;
+  margin: 0;
+
+  .modal-content {
+    min-height: 100vh;
+    padding-top: 50px; // for the fixed header
+    border: none;
+  }
+
+  // the fixed header in fullscreen is needed for mobile devices
+  // otherwise the header will not always be reachable to close the dialog
+  .modal-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    min-height: 50px;
+    background-color: $color-inverse;
+  }
+
+  .modal-body {
+    align-self: center;
+  }
+}
+
+.modal-dialog-scrollable {
+  min-height: 100vh;
+
+  .modal-body {
+    // Hide scrollbar for Firefox
+    scrollbar-width: none;
+
+    /* Hide scrollbar for WebKit browsers */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
