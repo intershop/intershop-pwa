@@ -8,19 +8,14 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, take, takeUntil } from 'rxjs';
 
-export interface ModalOptions {
+export interface ModalOptions extends NgbModalOptions {
   /**
    * Modal title string.
    */
-  titleText: string;
-  /**
-   * size attribute
-   *   'sm': small, 'lg': large, 'xl': extra large, 'md': medium (default)
-   */
-  size?: 'sm' | 'lg' | 'xl';
+  titleText?: string;
   /**
    * Optional modal confirm button text.
    */
@@ -36,10 +31,12 @@ export interface ModalOptions {
 }
 
 /**
- * The Modal Dialog Component displays a generic modal, that shows a custom title and custom content.
+ * The Modal Dialog Component displays a generic (ng-bootstrap) modal, that shows a custom title and custom content.
  * It provides an optional footer that includes confirm and reject buttons.
  * It is possible to pass any data on show.
  * The also provided confirmed output emitter will return the previously passed data if the modal gets confirmed.
+ *
+ * @see https://ng-bootstrap.github.io/#/components/modal/api#NgbModal
  *
  * @example
  * <ish-modal-dialog [options]="options" (confirmed)="onConfirmed($event)">
@@ -74,13 +71,9 @@ export class ModalDialogComponent<T> implements OnDestroy {
    * Configure and show modal dialog.
    */
   show(data?: T) {
-    if (data) {
-      this.data = data;
-    }
+    this.data = data ? data : undefined;
 
-    const size = this.options?.size ? this.options.size : undefined;
-
-    this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, { size });
+    this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, this.options);
 
     this.ngbModalRef.dismissed.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => this.closed.emit(this.data));
 
@@ -102,6 +95,22 @@ export class ModalDialogComponent<T> implements OnDestroy {
   confirm() {
     this.confirmed.emit(this.data);
     this.hide();
+  }
+
+  /**
+   * Scrolls to an anchor element
+   *
+   * @param anchor The ID of the anchor element.
+   */
+  scrollToAnchor(anchor: string) {
+    if (this.options.scrollable) {
+      const element = document.getElementById(anchor);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+        }, 200);
+      }
+    }
   }
 
   ngOnDestroy(): void {

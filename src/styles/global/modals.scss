@@ -26,3 +26,33 @@
     }
   }
 }
+
+// fullscreen modal styling (similar to Bootstrap 5)
+// use `modalDialogClass: 'modal-fullscreen'` instead of `size`
+.modal-fullscreen {
+  min-width: 100%;
+  margin: 0;
+
+  .modal-content {
+    min-height: 100vh;
+    border: none;
+  }
+
+  .modal-body {
+    align-self: center;
+  }
+}
+
+.modal-dialog-scrollable {
+  min-height: 100vh;
+
+  .modal-body {
+    // Hide scrollbar for Firefox
+    scrollbar-width: none;
+
+    /* Hide scrollbar for WebKit browsers */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
