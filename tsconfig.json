@@ -9,6 +9,8 @@
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    // leave this as CommonJS, so scripts can be run with 'npx ts-node'
+    // see https://github.com/TypeStrong/ts-node#commonjs-vs-native-ecmascript-modules
     "module": "CommonJS",
     "moduleResolution": "node",
     "importHelpers": true,
@@ -25,7 +27,7 @@
       ],
       "swiper_angular": ["node_modules/swiper/angular"]
     },
-    "lib": ["es2018", "dom"],
+    "lib": ["ES2022", "dom"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitAny": true,
