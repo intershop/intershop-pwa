@@ -39,8 +39,8 @@ export function sanitizeSlugData(slugData: string) {
       .replace(/-+/g, '-')
       .replace(/-+$/, '')
       .toLowerCase()
-      .replace('pg', 'Pg')
-      .replace('prd', 'Prd')
-      .replace('ctg', 'Ctg') || ''
+      .replaceAll('pg', 'Pg')
+      .replaceAll('prd', 'Prd')
+      .replaceAll('ctg', 'Ctg') || ''
   );
 }

@@ -8,16 +8,16 @@ import { matchProductRoute } from 'ish-core/routing/product/product.route';
 
 const routes: Routes = [
   {
-    matcher: matchContentRoute,
-    loadChildren: () => import('./content/content-page.module').then(m => m.ContentPageModule),
-  },
-  {
     matcher: matchProductRoute,
     loadChildren: () => import('./product/product-page.module').then(m => m.ProductPageModule),
   },
   {
     matcher: matchCategoryRoute,
     loadChildren: () => import('./category/category-page.module').then(m => m.CategoryPageModule),
+  },
+  {
+    matcher: matchContentRoute,
+    loadChildren: () => import('./content/content-page.module').then(m => m.ContentPageModule),
   },
   {
     path: '**',
