@@ -355,17 +355,21 @@ export class BasketEffects {
    * Reload basket information on basket route to ensure that rendered page is correct.
    */
   loadBasketOnBasketPage$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(personalizationStatusDetermined),
-      take(1),
-      switchMap(() =>
-        this.actions$.pipe(
-          ofType(routerNavigatedAction),
-          mapToRouterState(),
-          filter(routerState => /^\/basket/.test(routerState.url)),
-          map(() => loadBasket())
+    iif(
+      () => !SSR,
+      this.actions$.pipe(
+        ofType(personalizationStatusDetermined),
+        take(1),
+        switchMap(() =>
+          this.actions$.pipe(
+            ofType(routerNavigatedAction),
+            mapToRouterState(),
+            filter(routerState => /^\/basket/.test(routerState.url)),
+            map(() => loadBasket())
+          )
         )
-      )
+      ),
+      EMPTY
     )
   );
 
