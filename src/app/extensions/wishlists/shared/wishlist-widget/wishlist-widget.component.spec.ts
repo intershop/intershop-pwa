@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { EMPTY } from 'rxjs';
+import { MockComponent } from 'ng-mocks';
+import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
+
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 
@@ -12,12 +15,14 @@ describe('Wishlist Widget Component', () => {
   let fixture: ComponentFixture<WishlistWidgetComponent>;
   let element: HTMLElement;
 
+  let wishlistFacadeMock: WishlistsFacade;
+
   beforeEach(async () => {
-    const wishlistFacadeMock = mock(WishlistsFacade);
+    wishlistFacadeMock = mock(WishlistsFacade);
     when(wishlistFacadeMock.allWishlistsItemsSkus$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [WishlistWidgetComponent],
+      declarations: [MockComponent(ProductsListComponent), WishlistWidgetComponent],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
@@ -33,5 +38,17 @@ describe('Wishlist Widget Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should display empty list text if there are no wishlist products', () => {
+    when(wishlistFacadeMock.allWishlistsItemsSkus$).thenReturn(of());
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=emptyWishlistProductsList]')).toBeTruthy();
+  });
+
+  it('should display product list if there are wishlist products', () => {
+    when(wishlistFacadeMock.allWishlistsItemsSkus$).thenReturn(of(['sku1', 'sku2']));
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=wishlistProductsList]')).toBeTruthy();
   });
 });

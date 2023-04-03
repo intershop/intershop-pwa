@@ -1,15 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
 
-import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
-import { InjectSingle } from 'ish-core/utils/injection';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
-
-SwiperCore.use([Navigation, Pagination]);
 
 /**
  * The Wishlist Widget Component displays all unique items from all wish lists.
@@ -22,47 +17,14 @@ SwiperCore.use([Navigation, Pagination]);
 @GenerateLazyComponent()
 export class WishlistWidgetComponent implements OnInit {
   allWishlistsItemsSkus$: Observable<string[]>;
-  itemsPerSlide = 4;
   tileConfiguration: Partial<ProductContextDisplayProperties>;
 
-  /**
-   * configuration of swiper carousel
-   * find possible parameters here: http://idangero.us/swiper/api/#parameters
-   */
-  swiperConfig: SwiperOptions;
-
-  constructor(
-    private wishlistsFacade: WishlistsFacade,
-    @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>,
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) mediumBreakpointWidth: InjectSingle<typeof MEDIUM_BREAKPOINT_WIDTH>
-  ) {
+  constructor(private wishlistsFacade: WishlistsFacade) {
     this.tileConfiguration = {
       addToWishlist: false,
       addToOrderTemplate: false,
       addToCompare: false,
       addToQuote: false,
-    };
-
-    this.swiperConfig = {
-      direction: 'horizontal',
-      navigation: true,
-      pagination: {
-        clickable: true,
-      },
-      breakpoints: {
-        0: {
-          slidesPerView: 2,
-          slidesPerGroup: 2,
-        },
-        [mediumBreakpointWidth]: {
-          slidesPerView: 3,
-          slidesPerGroup: 3,
-        },
-        [largeBreakpointWidth]: {
-          slidesPerView: 4,
-          slidesPerGroup: 4,
-        },
-      },
     };
   }
 
