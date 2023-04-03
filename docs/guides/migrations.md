@@ -10,16 +10,16 @@ kb_sync_latest_only
 ## 3.3 to 4.0
 
 The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm version 9.5.0 and the `"lockfileVersion": 3,`.
-To migrate to this version it is advised to delete the locale `package-lock.json` beforehand.
+To migrate to this version, it is advised to delete the locale `package-lock.json` beforehand.
 
 The project was updated to work with Angular 15.
-This includes the removal of the Browserslist configuration, an updated TypeScript compiler `target` to `ES2022` and adaptions of the Schematics configurations and tests.
-In addition all other dependencies where updated as well and resulted in necessary Stylelint and Jest tests adaptions.
+This includes the removal of the Browserslist configuration, an updated TypeScript compiler `target` to `ES2022`, and adaptions of the Schematics configurations and tests.
+In addition, all other dependencies were updated as well and resulted in necessary Stylelint and Jest test adaptions.
 
-The placeholder for theme specific assets and styles has been changed from `placeholder` to `theme_placeholder`.
-If this is used in any customization, update all paths, which are using the old theme placeholder e.g. `src/styles/themes/placeholder` to `src/styles/themes/theme_placeholder`.
+The placeholder for theme-specific assets and styles has been changed from `placeholder` to `theme_placeholder`.
+If this is used in any customization, update all paths which are using the old theme placeholder, e.g., `src/styles/themes/placeholder` to `src/styles/themes/theme_placeholder`.
 
-The injection token `LOCAL_TRANSLATIONS` is introduced to use local translation files within the custom [ICM translation loader](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/core/utils/translate/icm-translate-loader.ts).
+The injection token `LOCAL_TRANSLATIONS` was introduced to use local translation files within the custom [ICM translation loader](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/core/utils/translate/icm-translate-loader.ts).
 A factory function is provided in the [`internationalization.module.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/core/internationalization.module.ts) to decide which json file with translation keys should be used for a given language.
 
 ```typescript
@@ -46,8 +46,8 @@ A factory function is provided in the [`internationalization.module.ts`](https:/
 Please adapt the `useFactory()` function to return all imported local translation files depending on the `lang` parameter.
 
 With Angular 15 class-based route guards are deprecated in favor of functional guards.
-That's why we removed the guard classes and replace them by functions.
-For the `canActivate/canChildActivate` methods only change to class name into the function name by lowercasing the first letter, e.g.
+Thus, we removed the guard classes and replaced them by functions.
+For the `canActivate/canChildActivate` methods only change the class name into the function name by lowercasing the first letter, e.g.,
 
 ```typescript
 {
@@ -69,62 +69,62 @@ will become
 },
 ```
 
-Find more information about functional guards in this [blog article](https://blog.angular.io/advancements-in-the-angular-router-5d69ec4c032).
+For more information about functional guards, see this [blog article](https://blog.angular.io/advancements-in-the-angular-router-5d69ec4c032).
 
 With the [Prettier update to version 2.8](https://prettier.io/blog/2022/11/23/2.8.0.html#angular) the format of pipes in HTML files changed slightly.
 
 After updating [Jest to version 29](https://jestjs.io/docs/upgrading-to-jest29#snapshot-format) the default snapshot formatting changed.
 Run `npm run test -- -u` to update your test snapshots.
 
-The account navigation was reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
-For better maintainability and brand specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
-Also with this rework the navigation items data structure was changed from a key value object to a simpler `NavigationItem` Array.
+The account navigation has been reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
+For better maintainability and brand-specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
+With this rework also the navigation items data structure was changed from a key value object to a simpler `NavigationItem` array.
 With this data structure accessing the data was changed for the key access from `item.key` to `item.routerLink` or for the value example from `item.value.localizationKey` to `item.localizationKey`.
-To migrate to this new account navigation item handling any account navigation customization needs to be adapted accordingly.
+To migrate to this new account navigation item handling, any account navigation customization needs to be adapted accordingly.
 
 The deprecated SSR environment variable `ICM_IDENTITY_PROVIDER` was completely removed.
 Use the variable `IDENTITY_PROVIDER` instead to select the identity provider to be used if it is not the default `ICM`.
-Removed default `identityProvider` configuration from `environment.model.ts` so only hardcoded fallback from `configuration.effects.ts` works as fallback.
+We removed the default `identityProvider` configuration from `environment.model.ts` so only the hardcoded fallback from `configuration.effects.ts` works as fallback.
 
-The deprecated properties `templateOptions` and `expressionProperties` from the `FormlyFieldConfiguration` object are removed.
-Current project **must** use the new properties for all formly field configurations.
-You **must** adapt html templates too, when using the deprecated properties in there.
+The deprecated properties `templateOptions` and `expressionProperties` have been removed from the `FormlyFieldConfiguration` object.
+Current projects **must** use the new properties for all formly field configurations.
+You **must** adapt html templates, too, when using the deprecated properties in there.
 
 To replace deprecated formly field properties, you can execute the new `formly-migrate` schematic.
-Please run for each configured Angular project (e.g. 'intershop-pwa') the following command:
+Please run the following command for each configured Angular project (e.g., 'intershop-pwa'):
 
 ```console
   ng g formly-migrate --project=${ANGULAR_PROJECT}
 ```
 
-> **NOTE:** Not all scenarios are taken into consideration for the `formly-migrate` schematic, where a deprecated property could be found. Please check and adapt manually your code for additional changes. For further information look into the [formly migration guide](https://formly.dev/docs/guide/migration/).
+> **NOTE:** Not all scenarios where a deprecated property could be found are taken into consideration for the `formly-migrate` schematic. Please check and adapt your code manually for additional changes. For further information, see the [formly migration guide](https://formly.dev/docs/guide/migration/).
 
-The templates of `account-order-template-detail-page.component.ts`, `quote-line-item-list.component.ts`, `quoting-basket-line-items.component.ts` and `account-wishlist-detail-page.component.ts` are updated to ensure correct DOM element updates for `ngFor` loop changes.
-A [trackBy function](https://angular.io/api/core/TrackByFunction) will now be used.
+The templates of `account-order-template-detail-page.component.ts`, `quote-line-item-list.component.ts`, `quoting-basket-line-items.component.ts` and `account-wishlist-detail-page.component.ts` have been updated to ensure correct DOM element updates for `ngFor` loop changes.
+A [trackBy function](https://angular.io/api/core/TrackByFunction) will be used now.
 
-Obsolete functionality that is no longer needed with the current state of the Intershop PWA was removed from the project source code.
+Obsolete functionality that is no longer needed with the current state of the Intershop PWA was removed from the project source code:
 
-- removed outdated `kubernetes-deployment` schematic that could be used to create Kubernetes charts, use the official [Intershop PWA Helm Chart repository](https://github.com/intershop/helm-charts/tree/main/charts/pwa) instead
-- removed unused `azure-pipeline` schematic that could be used to create an Azure Pipeline template based on the generated Kubernetes charts for DevOps
-- removed migration scripts that where used for pre PWA 1.0 migration support
-- removed obsolete TODO comments and related logic that handled for example wrong/odd/old REST API quirks
+- Removed outdated `kubernetes-deployment` schematic that could be used to create Kubernetes charts. Use the official [Intershop PWA Helm Chart repository](https://github.com/intershop/helm-charts/tree/main/charts/pwa) instead.
+- Removed unused `azure-pipeline` schematic that could be used to create an Azure Pipeline template based on the generated Kubernetes charts for DevOps.
+- Removed migration scripts that were used for pre PWA 1.0 migration support.
+- Removed obsolete TODO comments and related logic that handled, for example, wrong/odd/old REST API quirks.
 
 We recommend to use the Action Group Creator to create store actions now.
-Therefore the corresponding store schematic for the action creation has been adapted.
+Therefore, the corresponding store schematic for the action creation has been adapted.
 
 We added some helper methods to improve the use of dependency injection.
-Use the method `createEnvironmentInjectionToken` now to define new injection keys for environment variables in the injection-keys.ts.
-If you want to inject a token use the methods `injectSingle` and `injectMultiple` to secure the type safety of your injected variables (except for angular core tokens, which are forced to a type).
+Use the method `createEnvironmentInjectionToken` now to define new injection keys for environment variables in the `injection-keys.ts`.
+If you want to inject a token, use the methods `injectSingle` and `injectMultiple` to secure the type safety of your injected variables (except for Angular core tokens, which are forced to a type).
 There is a new linting rule `useTypeSafeInjectionTokenRule` that enforces the usage of these methods.
-Find more information in the [Configuration Concept](../concepts/configuration.md#angular-cli-environments)
+For more information, see the [Configuration Concept](../concepts/configuration.md#angular-cli-environments).
 
 We introduced the product notifications feature as a new extension which is toggled with the feature toggle 'productNotifications' in the `environment.model.ts`.
 
 ## 3.2 to 3.3
 
-To improve the accessibility of the PWA in regards to more elements being tab focusable a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
+To improve the accessibility of the PWA in regards to more elements being tab focusable, a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
 Also some `(keydown.enter)` event bindings with `tabindex="0"` were added to ensure a better interactivity with the keyboard only.
-If the according commits lead to problems they could be skipped and resolved later by fixing the accessibility linting issues manually.
+If the according commits lead to problems, they could be skipped and resolved later by fixing the accessibility linting issues manually.
 More information regarding accessibility in the PWA and the used ESLint rules can be found in the [Accessibility Guide](./accessibility.md).
 
 ## 3.1 to 3.2
@@ -133,7 +133,7 @@ A styling adaption was made to the application shell to expand it to the full pa
 Together with that an inline style of the `main-container` was moved to the global styling definition.
 
 Formly has been upgraded from version 5 to 6.
-Find more information in the [Formly Upgrade Guide](https://github.com/ngx-formly/ngx-formly/blob/main/UPGRADE-6.0.md).
+For more information, see the [Formly Upgrade Guide](https://github.com/ngx-formly/ngx-formly/blob/main/UPGRADE-6.0.md).
 We still use deprecated form properties like `templateOptions` and `expressionProperties` for compatibility reasons but we are going to replace them in the next major release.
 
 The two small black triangle images `active_catalog.png` (header: when hovering a catalog) and `budget-bar-indicator.png` (my account: budget bar) are removed and replaced by CSS styling.
@@ -165,13 +165,13 @@ Keep this in mind before deploying or starting the Intershop PWA in server-side 
 The default value of the input parameter ['queryParamsHandling'](https://angular.io/api/router/QueryParamsHandling) has been changed from `'merge'` to `''` for the components `product-name.component` and `product-image.component`.
 This has been done to prevent an unintentional application of filters for product variation master links if the product detail link does not originate from a product listing context (product list page, search result page).
 
-To prevent deprecation warnings we removed the unnecessary `~` from all 3rd party SCSS imports (see https://webpack.js.org/loaders/sass-loader/#resolving-import-at-rules - "Using ~ is deprecated and can be removed from your code (we recommend it)").
+To prevent deprecation warnings, we removed the unnecessary `~` from all 3rd party SCSS imports (see https://webpack.js.org/loaders/sass-loader/#resolving-import-at-rules - "Using ~ is deprecated and can be removed from your code (we recommend it)").
 This should be done for additional imports in the customizations as well.
 
 The validator `equalToControl` did not work properly.
 For that reason we removed it.
 Use the validator `equalTo` instead.
-Find more information in the method description in the [`special-validators.ts`](https://github.com/intershop/intershop-pwa/blob/3.0.0/src/app/shared/forms/validators/special-validators.ts#L82-L87).
+For more information, see the method description in the [`special-validators.ts`](https://github.com/intershop/intershop-pwa/blob/3.0.0/src/app/shared/forms/validators/special-validators.ts#L82-L87).
 
 The "Product Image Not Available" PNG image `not_available.png` is removed and replaced by an SVG image `not-available.svg` which does not include a text inside the image anymore to avoid localization issues.
 The file references are updated accordingly, the product image component is updated to use the correct image attributes, a localized alternative text is added, and the product and image mapper files are updated to provide the correct data.
@@ -201,7 +201,7 @@ In order to reliably maintain compatibility in the future, the `cms` schematic's
 
 Cypress has been upgraded from version 9 to 10.
 We went through the interactive migration to move our spec files from cypress/integration folder to the cypress/e2e folder and updated the config file as well as some scripts.
-Find more information in the [Cypress Migration Guide](https://docs.cypress.io/guides/references/migration-guide#Migrating-to-Cypress-version-10-0).
+For more information, see the [Cypress Migration Guide](https://docs.cypress.io/guides/references/migration-guide#Migrating-to-Cypress-version-10-0).
 
 Since the used deferred load library is no longer maintained, it is removed and has been replaced with similar standard browser functionality [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#images_and_iframes).
 All uses of the `(deferLoad)` directive in custom code need to be replaced.
@@ -216,24 +216,24 @@ You might need to keep this dependency if you are loading translations different
 
 The deprecated `customized-copy` schematic for copying components and replacing all usages was removed.
 
-We introduced a build variable `SSR` that is now used for all checks if the application is running in SSR or Browser context.
+We introduced a build variable `SSR` that is now used for all checks if the application is running in SSR or browser context.
 We no longer use the verbose way of injecting the `PLATFORM_ID` and check it with the methods `isPlatformBrowser` or `isPlatformServer`.
 This way still works but it is discouraged by a new ESLint rule that suggests using the new `SSR` variable instead.
 So running `npm run lint` will help finding custom code that still relies on the platform checks.
 
-To support, e.g., special characters in e-mail addresses with newer versions of ICM (7.10.38.x), like `+`, double encoding of resource ids in the REST API calls is necessary.
+To support, e.g., special characters in e-mail addresses with newer versions of ICM (7.10.38.x), like `+`, double encoding of resource IDs in the REST API calls is necessary.
 With the method `encodeResourceID` we provide a central place that implements the fitting resource encoding.
 In the PWA this was applied to all user logins in REST API calls.
-For project customizations the usage of the native `encodeURIComponent` functionality should be replaced with `encodeResourceID` for user logins in REST calls as well.
+For project customizations, the usage of the native `encodeURIComponent` functionality should be replaced with `encodeResourceID` for user logins in REST calls as well.
 
 The `footer.content` localization key was replaced for most of its content by a CMS manageable content include `include.footer.content.pagelet2-Include` that is available from ICM 7.10.38.9-LTS.
 
 For better Search Engine Optimization the route formate and route handling for products, categories, and content pages has been reworked.
-All these routes now contain hierarchies and have different id markers.
+All these routes now contain hierarchies and have different ID markers.
 For categories it was changed from `cat` to `ctg` and for products from `sku`to `prd`.
-This way, it is intended to have less conflicts and limitations with potential category/product ids, e.g., 'cats' or 'skunks'.
+This way, it is intended to have less conflicts and limitations with potential category/product IDs, e.g., 'cats' or 'skunks'.
 
-To improve the support of large baskets we update the ngrx store immediately after adding, updating and deleting basket items now.
+To improve the support of large baskets we update the ngrx store immediately after adding, updating, and deleting basket items now.
 Therefore, we had to change the return values of the corresponding basket service functions as well as the payload of the success actions.
 We also limited the number of displayed line items in the mini basket and introduced a paging bar on the basket page to speed up the rendering of these components.
 
@@ -249,7 +249,7 @@ Routes to non-existing CMS content pages now result in a "Page Not Found" error 
 
 The 'ratings' functionality (components concerning the display of product ratings) has been moved into an extension using the existing feature toggle 'ratings'.
 
-With the display of product reviews the attribute 'numberOfReviews' has been added to the product model, and the number of reviews is now displayed behind the product rating stars instead of the average rating that is already depicted in the stars.
+With the display of product reviews the attribute 'numberOfReviews' has been added to the product model, and the number of reviews is displayed behind the product rating stars now instead of the average rating that is already depicted in the stars.
 
 ## 2.2 to 2.3
 
