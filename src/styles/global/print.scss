@@ -1,4 +1,5 @@
 //
+// Apply general print styles for PDF creation and to pages with a print icon.
 // CUSTOMIZED PRINT STYLES
 @import 'variables';
 
@@ -7,20 +8,8 @@
     margin-top: 100px;
   }
 
-  @supports (-moz-appearance: none) {
-    .logo {
-      margin-left: 25px !important;
-    }
-  }
-
   a[href]::after {
     content: none !important;
-  }
-
-  button {
-    color: $button-default-color !important;
-    background-color: $button-default-bg !important;
-    border-color: $button-default-border !important;
   }
 
   aside,
@@ -57,13 +46,19 @@
 
   .details-link,
   .all-variations-link,
-  .noprint {
+  .no-print {
     display: none;
   }
 
   .budget-bar-used {
     background-color: transparent;
     border: 1px solid $color-special-primary;
+  }
+
+  button {
+    color: $button-default-color !important;
+    background-color: $button-default-bg !important;
+    border-color: $button-default-border !important;
   }
 
   button,
@@ -85,12 +80,18 @@
   .order-summary {
     display: inline-block;
     break-before: page !important;
-    page-break-before: always !important; /* Older browser versions */
+    page-break-before: always !important; /* older browser versions */
   }
 
   .logo {
     -webkit-print-color-adjust: exact !important; /* Chrome, Safari 6 – 15.3, Edge */
     color-adjust: exact !important; /* Firefox 48 – 96 */
     print-color-adjust: exact !important; /* Firefox 97+, Safari 15.4+ */
+  }
+
+  @supports (-moz-appearance: none) {
+    .logo {
+      margin-left: 25px !important;
+    }
   }
 }

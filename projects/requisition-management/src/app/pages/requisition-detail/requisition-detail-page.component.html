@@ -115,13 +115,13 @@
     ></ish-requisition-reject-dialog>
 
     <div class="section d-flex d-flex justify-content-between">
-      <a [routerLink]="['../../' + view, { status: requisition.approval.statusCode }]" class="noprint">
+      <a [routerLink]="['../../' + view, { status: requisition.approval.statusCode }]" class="no-print">
         <ng-container *ngIf="view === 'buyer'; else backToApprovals">
           {{ 'approval.detailspage.links.return_to_requisitions' | translate }}
         </ng-container>
         <ng-template #backToApprovals>{{ 'approval.detailspage.links.return_to_approvals' | translate }}</ng-template>
       </a>
-      <a routerLink="/home" class="noprint" data-testing-id="home-link">{{
+      <a routerLink="/home" class="no-print" data-testing-id="home-link">{{
         'account.orderdetails.links.continue_shopping' | translate
       }}</a>
     </div>
