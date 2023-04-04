@@ -3,6 +3,10 @@
 // CUSTOMIZED PRINT STYLES
 @import 'variables';
 
+@mixin border($color) {
+  border: 1px solid $color;
+}
+
 @media print {
   @page {
     margin-top: 100px;
@@ -52,7 +56,18 @@
 
   .budget-bar-used {
     background-color: transparent;
-    border: 1px solid $color-special-primary;
+
+    &.bg-danger {
+      @include border($danger);
+    }
+
+    &.bg-warning {
+      @include border($warning);
+    }
+
+    &.bg-success {
+      @include border($success);
+    }
   }
 
   button {
@@ -74,13 +89,6 @@
     .list-item-row {
       margin-right: 2.5%;
     }
-  }
-
-  .line-item-list,
-  .order-summary {
-    display: inline-block;
-    break-before: page !important;
-    page-break-before: always !important; /* older browser versions */
   }
 
   .logo {
