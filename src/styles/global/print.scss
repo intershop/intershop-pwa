@@ -1,6 +1,11 @@
+///////////////////////////////////////////////////////////////////////////////
 //
-// Apply general print styles for PDF creation and to pages with a print icon.
 // CUSTOMIZED PRINT STYLES
+//
+// Apply general print styles for PDF creation and pages with a print icon.
+//
+///////////////////////////////////////////////////////////////////////////////
+
 @import 'variables';
 
 @mixin border($color) {
@@ -33,6 +38,7 @@
   ish-product-list-toolbar,
   ish-recently-viewed,
   nav,
+  .account-nav-box,
   .fa-ban,
   .fa-cart-shopping,
   .fa-pencil,
@@ -43,6 +49,9 @@
   .navbar-toggler,
   .product-tile-actions,
   .share-label,
+  .swiper-button-next,
+  .swiper-button-prev,
+  .product-img-thumbs,
   .toast-container,
   .user-links {
     display: none !important;
@@ -50,8 +59,13 @@
 
   .details-link,
   .all-variations-link,
-  .no-print {
+  .no-print,
+  .swiper-slide {
     display: none;
+  }
+
+  .swiper-slide-active {
+    display: inline-block !important;
   }
 
   .budget-bar-used {
@@ -82,6 +96,10 @@
   .infobox {
     background-color: transparent !important;
     border: 1px solid $border-color-light !important;
+  }
+
+  .cost-summary {
+    margin-top: 20px;
   }
 
   .line-item-list {
