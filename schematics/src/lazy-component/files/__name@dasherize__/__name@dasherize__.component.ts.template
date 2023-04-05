@@ -6,16 +6,20 @@ import {
   <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
 
-<% if(guardDisplay) { %>
+<% if(guardDisplay && hasLazyFeature) { %>
+  import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+  import { switchMap, takeUntil } from 'rxjs/operators';
+  import { of } from 'rxjs';
+  import { whenTruthy } from 'ish-core/utils/operators';
+<% } else if(guardDisplay) { %>
   import { FeatureToggleService } from 'ish-core/feature-toggle.module';
   import { takeUntil } from 'rxjs/operators';
-<% } %>
-
-<% if(hasLazyFeature) { %>
+<% } else if(hasLazyFeature) { %>
   import { of } from 'rxjs';
   import { switchMap } from 'rxjs/operators';
   import { whenTruthy } from 'ish-core/utils/operators';
 <% } %>
+
 
 import type { <%= classify(originalName) %>Component as OriginalComponent } from '<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
 
