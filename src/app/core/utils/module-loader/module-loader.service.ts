@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, Injector, Type, createNgModule } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getFeatures } from 'ish-core/store/core/configuration';
+import { getFeatures, notifyLazyFeatureLoaded } from 'ish-core/store/core/configuration';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -28,6 +28,7 @@ export class ModuleLoaderService {
           if (!this.loadedModules.includes(loaded)) {
             createNgModule(loaded, injector);
             this.loadedModules.push(loaded);
+            this.store.dispatch(notifyLazyFeatureLoaded({ feature: mod.feature }));
           }
         });
     });

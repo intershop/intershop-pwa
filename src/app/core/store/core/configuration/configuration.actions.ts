@@ -17,3 +17,8 @@ export const loadSingleServerTranslationSuccess = createAction(
   '[Configuration] Load Single Server Translation Success',
   payload<{ lang: string; key: string; translation: string }>()
 );
+
+export const notifyLazyFeatureLoaded = createAction(
+  '[Configuration] Lazy feature Loaded',
+  payload<{ feature: string }>()
+);

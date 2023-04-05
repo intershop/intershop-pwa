@@ -11,6 +11,12 @@ import {
   import { takeUntil } from 'rxjs/operators';
 <% } %>
 
+<% if(hasLazyFeature) { %>
+  import { of } from 'rxjs';
+  import { switchMap } from 'rxjs/operators';
+  import { whenTruthy } from 'ish-core/utils/operators';
+<% } %>
+
 import type { <%= classify(originalName) %>Component as OriginalComponent } from '<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
 
 @Component({
@@ -43,7 +49,13 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   ) {}
 
   <% if(!guardDisplay) { %>async<% } %> ngOnInit() {
-    <% if(guardDisplay) { %> this.featureToggleService.enabled$('<%= camelize(guardDisplay) %>').pipe(takeUntil(this.destroy$)).subscribe(async enabled => {
+    <% if(guardDisplay) { %> this.featureToggleService.enabled$('<%= camelize(guardDisplay) %>').pipe(
+      <% if(hasLazyFeature) { %>
+        switchMap(enabled =>
+          enabled ? this.featureToggleService.loaded$('<%= camelize(guardDisplay) %>').pipe(whenTruthy()) : of(enabled)
+        ),
+      <% } %>
+      takeUntil(this.destroy$)).subscribe(async enabled => {
       if (enabled) {
     <% } %>
 

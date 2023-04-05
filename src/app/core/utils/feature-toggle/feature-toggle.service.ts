@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
-import { getFeatures } from 'ish-core/store/core/configuration';
+import { getFeatures, isLazyFeatureLoaded } from 'ish-core/store/core/configuration';
 
 export function checkFeature(features: string[] = [], feature: string): boolean {
   if (feature === 'always') {
@@ -19,8 +19,8 @@ export function checkFeature(features: string[] = [], feature: string): boolean 
 export class FeatureToggleService {
   private featureToggles$ = new BehaviorSubject<string[]>(undefined);
 
-  constructor(store: Store) {
-    store.pipe(select(getFeatures)).subscribe(this.featureToggles$);
+  constructor(private store: Store) {
+    this.store.pipe(select(getFeatures)).subscribe(this.featureToggles$);
   }
 
   /**
@@ -42,5 +42,9 @@ export class FeatureToggleService {
       map(featureToggles => checkFeature(featureToggles, feature)),
       distinctUntilChanged()
     );
+  }
+
+  loaded$(feature: string): Observable<boolean> {
+    return this.store.pipe(select(isLazyFeatureLoaded(feature))).pipe(distinctUntilChanged());
   }
 }

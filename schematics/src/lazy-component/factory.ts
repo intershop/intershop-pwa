@@ -67,6 +67,10 @@ export function createLazyComponent(options: Options): Rule {
 
     let inputNames: string[] = [];
 
+    const moduleContent = host.read(options.module).toString('utf-8');
+    const moduleSource = ts.createSourceFile(options.module, moduleContent, ts.ScriptTarget.Latest, true);
+
+    const hasLazyFeature = tsquery(moduleSource, 'CallExpression:has(Identifier[name=LAZY_FEATURE_MODULE])').length > 0;
     const componentContent = host.read(componentPath).toString('utf-8');
     const componentSource = ts.createSourceFile(componentPath, componentContent, ts.ScriptTarget.Latest, true);
 
@@ -175,6 +179,7 @@ export function createLazyComponent(options: Options): Rule {
             guardDisplay,
             componentImportPath,
             declaringModule,
+            hasLazyFeature,
           }),
           move(options.path),
           forEach(fileEntry => {

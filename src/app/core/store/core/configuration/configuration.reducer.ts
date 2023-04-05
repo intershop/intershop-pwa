@@ -5,7 +5,11 @@ import { Translations } from 'ish-core/utils/translate/translations.type';
 
 import { environment } from '../../../../../environments/environment';
 
-import { applyConfiguration, loadSingleServerTranslationSuccess } from './configuration.actions';
+import {
+  applyConfiguration,
+  loadSingleServerTranslationSuccess,
+  notifyLazyFeatureLoaded,
+} from './configuration.actions';
 
 export interface ConfigurationState {
   baseURL?: string;
@@ -18,6 +22,7 @@ export interface ConfigurationState {
   identityProviders?: { [id: string]: { type?: string; [key: string]: unknown } };
   features?: string[];
   addFeatures?: string[];
+  lazyFeaturesLoaded?: { [id: string]: boolean };
   defaultLocale?: string;
   fallbackLocales?: string[];
   localeCurrencyOverride?: { [locale: string]: string | string[] };
@@ -38,6 +43,7 @@ const initialState: ConfigurationState = {
   hybridApplication: undefined,
   features: undefined,
   addFeatures: [],
+  lazyFeaturesLoaded: {},
   defaultLocale: environment.defaultLocale,
   fallbackLocales: environment.fallbackLocales,
   localeCurrencyOverride: environment.localeCurrencyOverride,
@@ -68,5 +74,12 @@ export const configurationReducer = createReducer(
   on(applyConfiguration, (state, action): ConfigurationState => ({ ...state, ...action.payload })),
   on(loadSingleServerTranslationSuccess, (state, action) =>
     addSingleTranslation(state, action.payload.lang, action.payload.key, action.payload.translation)
+  ),
+  on(
+    notifyLazyFeatureLoaded,
+    (state, action): ConfigurationState => ({
+      ...state,
+      lazyFeaturesLoaded: { ...state.lazyFeaturesLoaded, [action.payload.feature]: true },
+    })
   )
 );
