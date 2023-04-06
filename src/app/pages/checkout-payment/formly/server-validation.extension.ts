@@ -12,8 +12,8 @@ export const serverValidationExtension: FormlyExtension = {
     if (field.hide) {
       return;
     }
-    field.templateOptions = {
-      ...field.templateOptions,
+    field.props = {
+      ...field.props,
       showValidation: (fld: FormlyFieldConfig) =>
         field.formControl?.valid &&
         field.formControl?.dirty &&
@@ -37,9 +37,9 @@ export const serverValidationExtension: FormlyExtension = {
       },
     };
 
-    field.expressionProperties = {
-      ...field.expressionProperties,
-      'validation.messages.serverError': (_, formState) => formState.errors?.[field.key as string],
+    field.expressions = {
+      ...field.expressions,
+      'validation.messages.serverError': field.options.formState.errors?.[field.key as string],
     };
   },
 };

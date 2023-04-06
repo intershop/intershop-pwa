@@ -31,24 +31,7 @@ export class ContentConfigurationParameterMapper {
     return configurationParameters;
   }
 
-  private resolveStaticURL(value: string): string {
-    if (value.startsWith('http')) {
-      return value;
-    }
-
-    if (!value.includes(':/')) {
-      return value;
-    }
-
-    const split = value.split(':');
-
-    return encodeURI(`${this.staticURL}/${split[0]}/${this.lang}${split[1]}`);
-  }
-
-  /**
-   * TODO: Make this method use name-based plugin mechanism to delegate post processing of
-   * configuration parameter data to specific handler.
-   */
+  // post process the configuration parameter data to apply special handling for specific types
   private postProcessData(data: ContentConfigurationParameterData): string | object | number {
     switch (data.type) {
       case 'bc_pmc:types.pagelet2-ImageFileRef':
@@ -61,5 +44,19 @@ export class ContentConfigurationParameterMapper {
       default:
         return data.value;
     }
+  }
+
+  // convert ICM file references to full server URLs
+  private resolveStaticURL(value: string): string {
+    if (value.startsWith('http')) {
+      return value;
+    }
+
+    if (!value.includes(':/')) {
+      return value;
+    }
+
+    const split = value.split(':');
+    return encodeURI(`${this.staticURL}/${split[0]}/${this.lang}${split[1]}`);
   }
 }

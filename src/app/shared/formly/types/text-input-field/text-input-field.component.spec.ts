@@ -34,7 +34,7 @@ describe('Text Input Field Component', () => {
         {
           key: 'input',
           type: 'ish-text-input-field',
-          templateOptions: {
+          props: {
             label: 'test label',
             required: true,
           },

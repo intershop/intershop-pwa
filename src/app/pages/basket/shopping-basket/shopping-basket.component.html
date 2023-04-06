@@ -70,7 +70,7 @@
         <ish-lazy-direct-order></ish-lazy-direct-order>
 
         <p>
-          <a routerLink="/home" class="text-nowrap">{{
+          <a routerLink="/home" class="text-nowrap no-print">{{
             'shopping_cart.detailed.continue_shopping.link' | translate
           }}</a>
         </p>
@@ -89,7 +89,6 @@
           <!-- Cost Summary Component -->
           <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
-          <!-- ToDo: ISREST-275: disable button if basket max value is exceeded -->
           <button
             *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
             type="submit"

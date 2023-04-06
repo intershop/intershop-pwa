@@ -1,5 +1,5 @@
-import { noop } from '@angular-devkit/core/node_modules/rxjs';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 import { PWAExtensionOptionsSchema as Options } from 'schemas/extension/schema';
 
 import {
@@ -19,19 +19,19 @@ describe('Extension Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     const appTree$ = createApplication(schematicRunner).pipe(
-      createModule(schematicRunner, { name: 'shared' }),
+      createModule(schematicRunner, { name: 'shared', project: undefined }),
       createAppLastRoutingModule(schematicRunner)
     );
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create an extension', async () => {
     const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('extension', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0);
     expect(files).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/extensions/foo/foo.module.ts",
         "/src/app/extensions/foo/exports/.gitignore",
         "/src/app/extensions/foo/exports/foo-exports.module.ts",
@@ -46,7 +46,7 @@ describe('Extension Schematic', () => {
   it('should import extension routing in app module, before NotFoundRouting module', async () => {
     const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('extension', options, appTree);
     const appModuleContent = tree.readContent('/src/app/app.module.ts');
     expect(appModuleContent).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
@@ -77,7 +77,7 @@ describe('Extension Schematic', () => {
   it('should import and export extension exports in shared module', async () => {
     const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('extension', options, appTree);
     const sharedModuleContent = tree.readContent('/src/app/shared/shared.module.ts');
     expect(sharedModuleContent).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
@@ -123,12 +123,9 @@ export class AppModule { }
 
     const options = { ...defaultOptions };
 
-    schematicRunner.runSchematicAsync('extension', options, appTree).subscribe({
-      next: noop,
-      error: err => {
-        expect(err).toMatchInlineSnapshot(`[Error: did not find 'AppLastRoutingModule' in /src/app/app.module.ts]`);
-        done();
-      },
+    schematicRunner.runSchematic('extension', options, appTree).catch(err => {
+      expect(err).toMatchInlineSnapshot(`[Error: did not find 'AppLastRoutingModule' in /src/app/app.module.ts]`);
+      done();
     });
   });
 });

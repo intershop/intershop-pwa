@@ -35,7 +35,7 @@ describe('Html Text Field Component', () => {
         {
           key: 'displayValue',
           type: 'ish-html-text-field',
-          templateOptions: {
+          props: {
             label: 'test label',
           },
         } as FormlyFieldConfig,

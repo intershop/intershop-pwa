@@ -52,10 +52,10 @@ describe('Content Configuration Parameter Mapper', () => {
     const result = contentConfigurationParameterMapper.fromData(input);
     expect(result).not.toBeEmpty();
     expect(result).toMatchInlineSnapshot(`
-      Object {
+      {
         "key1": "1",
         "key2": "hello",
-        "key3": Array [
+        "key3": [
           "hello",
           "world",
         ],
@@ -99,12 +99,12 @@ describe('Content Configuration Parameter Mapper', () => {
 
     const result = contentConfigurationParameterMapper.fromData(input);
     expect(result).toMatchInlineSnapshot(`
-      Object {
+      {
         "key1": "assets/pwa/pwa_home_teaser_1.jpg",
         "key2": "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
         "key3": "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
         "key4": "https://www.youtube.com/watch?v=ABCDEFG",
-        "key5": Array [
+        "key5": [
           "assets/pwa/pwa_home_teaser_1.jpg",
           "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
           "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
@@ -150,12 +150,12 @@ describe('Content Configuration Parameter Mapper', () => {
 
     const result = contentConfigurationParameterMapper.fromData(input);
     expect(result).toMatchInlineSnapshot(`
-      Object {
+      {
         "key1": "assets/pwa/pwa_home_teaser_1.jpg",
         "key2": "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
         "key3": "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
         "key4": "https://www.youtube.com/watch?v=ABCDEFG",
-        "key5": Array [
+        "key5": [
           "assets/pwa/pwa_home_teaser_1.jpg",
           "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",
           "http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg",

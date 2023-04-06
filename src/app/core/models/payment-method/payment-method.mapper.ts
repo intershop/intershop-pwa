@@ -77,7 +77,7 @@ export class PaymentMethodMapper {
           .map(i => ({
             id: i.id,
             parameters: i.attributes,
-            accountIdentifier: PaymentMethodMapper.determineAccountIdentifier(pm, i),
+            accountIdentifier: PaymentMethodMapper.determineAccountIdentifier(i),
             paymentMethod: pm.id,
           })),
       }))
@@ -86,62 +86,16 @@ export class PaymentMethodMapper {
   }
 
   /**
-   * determines the accountIdentifier - this temporary method will be obsolete, if #IS-29004, #IS-29006 have been fixed
-   * the general identifier returns account identifier attribute if present, else it returns all the attributes
-   * a specific identifier is only returned for ISH_CREDITCARD, add further special functionality here, if needed
+   * returns the payment instrument's account identifier if present, else it returns all the attributes
+   * add further special functionality here, if needed
    */
-  private static determineAccountIdentifier(pm: PaymentMethodBaseData, pi: PaymentInstrumentData): string {
-    let identifier: string;
-
-    switch (pm.id) {
-      case 'ISH_CREDITCARD': {
-        identifier = `${PaymentMethodMapper.mapCreditCardCode(pi.attributes[1].value)} ${pi.attributes[0].value} ${
-          pi.attributes[2].value
-        }`;
-        break;
-      }
-      default: {
-        if (pi.accountIdentifier) {
-          identifier = pi.accountIdentifier;
-        } else {
-          identifier = pi.attributes
-            ?.filter(attr => attr.name !== 'paymentInstrumentId')
-            .map(attr => attr.value)
-            .reduce((acc, val) => (val ? `${acc}  ${val}` : acc));
-        }
-      }
-    }
-
-    return identifier;
-  }
-
-  /**
-   * maps the credit card code for ISH_CREDITCARD - this temporary method will be obsolete, if #IS-29004, #IS-29006 have been fixed
-   */
-  private static mapCreditCardCode(code: string): string {
-    let creditCardType: string;
-    switch (code) {
-      case 'amx': {
-        creditCardType = 'American Express';
-        break;
-      }
-      case 'mas': {
-        creditCardType = 'Master Card';
-        break;
-      }
-      case 'vsa': {
-        creditCardType = 'VISA';
-        break;
-      }
-      case 'dcv': {
-        creditCardType = 'Discover';
-        break;
-      }
-      default: {
-        creditCardType = code;
-      }
-    }
-    return creditCardType;
+  private static determineAccountIdentifier(pi: PaymentInstrumentData): string {
+    return pi.accountIdentifier
+      ? pi.accountIdentifier
+      : pi.attributes
+          ?.filter(attr => attr.name !== 'paymentInstrumentId')
+          .map(attr => attr.value)
+          .reduce((acc, val) => (val ? `${acc}  ${val}` : acc));
   }
 
   /**
@@ -171,7 +125,7 @@ export class PaymentMethodMapper {
       const param: FormlyFieldConfig = {
         key: p.name,
         type: p.options ? 'ish-select-field' : 'ish-text-input-field',
-        templateOptions: {
+        props: {
           labelClass: 'col-md-4',
           fieldClass: 'col-sm-6',
           type: p.type === 'string' ? 'text' : (p.type as string).toLowerCase(),
@@ -192,12 +146,12 @@ export class PaymentMethodMapper {
 
       if (p.constraints) {
         if (p.constraints.required) {
-          param.templateOptions.required = true;
+          param.props.required = true;
           param.validation.messages = { ...param.validation.messages, required: p.constraints.required.message };
         }
         if (p.constraints.size) {
-          param.templateOptions.minLength = p.constraints.size.min;
-          param.templateOptions.maxLength = p.constraints.size.max;
+          param.props.minLength = p.constraints.size.min;
+          param.props.maxLength = p.constraints.size.max;
           param.validation.messages = {
             ...param.validation.messages,
             minLength: p.constraints.size.message,
@@ -205,7 +159,7 @@ export class PaymentMethodMapper {
           };
         }
         if (p.constraints.pattern) {
-          param.templateOptions.pattern = p.constraints.pattern.regexp;
+          param.props.pattern = p.constraints.pattern.regexp;
           param.validation.messages = {
             ...param.validation.messages,
             pattern: p.constraints.pattern.message,

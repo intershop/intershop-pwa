@@ -84,7 +84,7 @@ describe('Cms Product List Filter Component', () => {
       component.productSKUs$.subscribe(productSKUs => {
         expect(productSKUs).toHaveLength(3);
         expect(productSKUs).toMatchInlineSnapshot(`
-          Array [
+          [
             "id-1",
             "id-2",
             "id-3",

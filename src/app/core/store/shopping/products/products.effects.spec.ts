@@ -384,7 +384,7 @@ describe('Products Effects', () => {
         next: () => {
           verify(httpStatusCodeService.setStatus(anything())).once();
           expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
-            Array [
+            [
               404,
             ]
           `);
@@ -419,7 +419,7 @@ describe('Products Effects', () => {
         next: () => {
           verify(httpStatusCodeService.setStatus(anything())).once();
           expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
-                      Array [
+                      [
                         404,
                       ]
                   `);

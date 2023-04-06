@@ -1,7 +1,7 @@
 <ng-container *ngIf="control.dirty && control.validator">
   <fa-icon class="form-control-feedback" *ngIf="this.control.valid; else invalid" [icon]="['fas', 'check']"></fa-icon>
   <ng-template #invalid> <fa-icon class="form-control-feedback" [icon]="['fas', 'times']"></fa-icon> </ng-template>
-  <small *ngFor="let error of errors | slice: 0:1" class="validation-message">
+  <small *ngFor="let error of errors | slice : 0 : 1" class="validation-message">
     {{ error | translate }}
   </small>
 </ng-container>

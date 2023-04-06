@@ -26,7 +26,7 @@ describe('Account Profile User Component', () => {
       {
         key: 'firstName',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           required: true,
         },
       },

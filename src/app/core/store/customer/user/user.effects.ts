@@ -354,7 +354,7 @@ export class UserEffects {
   );
 
   /**
-   * Creates a payment instrument for an unparametrized payment method (like invoice)  and assigns it as preferred instrument at the user.
+   * Creates a payment instrument for an un-parametrized payment method (like invoice)  and assigns it as preferred instrument at the user.
    * This is necessary due to limitations of the payment user REST interface.
    */
   updatePreferredUserPayment$ = createEffect(() =>

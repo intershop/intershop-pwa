@@ -16,7 +16,7 @@ describe('Price Item Mapper', () => {
       });
 
       expect(price).toMatchInlineSnapshot(`
-        Object {
+        {
           "currency": "USD",
           "gross": 43.34,
           "net": 40.34,
@@ -54,7 +54,7 @@ describe('Price Item Mapper', () => {
       );
 
       expect(price).toMatchInlineSnapshot(`
-        Object {
+        {
           "currency": "USD",
           "type": "Money",
           "value": 40.34,

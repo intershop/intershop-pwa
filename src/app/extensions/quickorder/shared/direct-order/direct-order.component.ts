@@ -73,7 +73,7 @@ export class DirectOrderComponent implements OnInit, AfterViewInit {
       {
         key: 'sku',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           fieldClass: 'col-12',
           placeholder: 'shopping_cart.direct_order.item_placeholder',
           attributes: { autocomplete: 'on' },

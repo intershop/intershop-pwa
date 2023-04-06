@@ -23,7 +23,7 @@ class LibraryConfigReplacementExtension implements FormlyExtension {
         const config = this.fieldLibrary.getConfiguration(configId, override);
         // eslint-disable-next-line ban/ban
         Object.assign(field, config);
-        field.templateOptions = config.templateOptions;
+        field.props = config.props;
       }
     }
   }

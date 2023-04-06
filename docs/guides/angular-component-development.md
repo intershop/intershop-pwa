@@ -63,7 +63,7 @@ There is an exception for direct string value bindings where we use for example 
 </div>
 ```
 
-## Pattern for Conditions (ngif) with Alternative Template (else) in Component Templates
+## Pattern for Conditions (ngIf) with Alternative Template (else) in Component Templates
 
 Also for consistency reasons, we want to establish the following pattern for conditions in component templates:
 
@@ -85,6 +85,39 @@ In this case the condition should look like this:
 ```typescript
 <ng-container *ngIf="observable$ | async as synchronized; else loading">
 ```
+
+## Pattern for Loops (ngFor) with Changing Data in Component Templates
+
+Looping through an array in a component may sometimes be accompanied by side effects if the data within the array are changing.
+
+```html
+<ng-container *ngFor="let element of array$ | async">
+  <another-component [element]="element"></another-component>
+</ng-container>
+```
+
+In case the values of the array$ observable are varying somehow during the lifetime of the component (reordering elements, add/ delete elements, changing properties), all children DOM elements are destroyed and re-initialized with the new data.
+
+To avoid these many and expensive DOM manipulations and persist the children DOM elements the loop elements has to be uniquely identified in the `NgFor` directive.
+This can be achieved by using custom [`trackBy`](https://angular.io/api/core/TrackByFunction) functions within the `ngFor` directive.
+
+```typescript
+@Component({
+  ...
+  template: `
+  <ng-container *ngFor="let element of array$ | async; trackBy: customTrackByFn">
+    <another-component [element]="element"></another-component>
+  </ng-container>`
+})
+export class AnyComponent implements OnInit, OnDestroy {
+  ...
+  customTrackByFn(index, element) {
+    return element.id;
+  }
+}
+```
+
+The custom trackBy function needs to return unique values for all unique inputs.
 
 ## Do Not Unsubscribe, Use Destroy Observable and takeUntil Instead
 

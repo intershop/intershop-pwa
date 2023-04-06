@@ -43,7 +43,7 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
         {
           key: 'city',
           type: '#city',
-          templateOptions: {
+          props: {
             postWrappers: [{ wrapper: 'tooltip', index: -1 }],
             tooltip: {
               link: 'account.address.apo_fpo.link',
@@ -55,7 +55,7 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
         {
           key: 'mainDivisionCode',
           type: 'ish-select-field',
-          templateOptions: {
+          props: {
             label: 'account.address.state.label',
             required: true,
             placeholder: 'account.option.select.text',

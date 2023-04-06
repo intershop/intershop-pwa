@@ -49,7 +49,7 @@ describe('Product Quantity Component', () => {
   it('should display counter input when type is not selected', () => {
     fixture.detectChanges();
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "decrease-quantity-ASDF",
         "increase-quantity-ASDF",
         "quantity",
@@ -74,7 +74,7 @@ describe('Product Quantity Component', () => {
 
     fixture.detectChanges();
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "quantity",
       ]
     `);
@@ -97,7 +97,7 @@ describe('Product Quantity Component', () => {
 
     fixture.detectChanges();
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "quantity",
       ]
     `);

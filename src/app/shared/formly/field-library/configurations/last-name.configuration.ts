@@ -15,7 +15,7 @@ export class LastNameConfiguration extends FieldLibraryConfiguration {
   getFieldConfig(): FormlyFieldConfig {
     return {
       type: 'ish-text-input-field',
-      templateOptions: {
+      props: {
         label: 'account.address.lastname.label',
         required: true,
       },

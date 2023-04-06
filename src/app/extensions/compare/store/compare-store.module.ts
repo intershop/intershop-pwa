@@ -5,7 +5,8 @@ import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
-import { DataRetentionPolicy, dataRetentionMeta } from 'ish-core/utils/meta-reducers';
+import { InjectSingle } from 'ish-core/utils/injection';
+import { dataRetentionMeta } from 'ish-core/utils/meta-reducers';
 
 import { CompareState } from './compare-store';
 import { CompareEffects } from './compare/compare.effects';
@@ -23,7 +24,7 @@ export class DefaultCompareStoreConfig implements StoreConfig<CompareState> {
 
   constructor(
     @Inject(APP_BASE_HREF) private appBaseHref: string,
-    @Inject(DATA_RETENTION_POLICY) private dataRetention: DataRetentionPolicy
+    @Inject(DATA_RETENTION_POLICY) private dataRetention: InjectSingle<typeof DATA_RETENTION_POLICY>
   ) {}
 }
 

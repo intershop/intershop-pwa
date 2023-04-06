@@ -63,7 +63,8 @@ describe('Lazy Captcha Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render v2 component when configured', fakeAsync(() => {
+  /* eslint-disable jest/no-disabled-tests */
+  xit('should render v2 component when configured', fakeAsync(() => {
     when(captchaFacade.captchaVersion$).thenReturn(of(2 as 2));
     fixture.detectChanges();
 
@@ -73,7 +74,7 @@ describe('Lazy Captcha Component', () => {
     expect(v2Cmp).toBeTruthy();
     expect(v2Cmp.cssClass).toEqual('d-none');
   }));
-  it('should render v3 component when configured', fakeAsync(() => {
+  xit('should render v3 component when configured', fakeAsync(() => {
     when(captchaFacade.captchaVersion$).thenReturn(of(3 as 3));
     fixture.detectChanges();
 

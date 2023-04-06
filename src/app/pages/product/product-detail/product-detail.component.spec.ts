@@ -17,6 +17,7 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
+import { LazyProductNotificationEditComponent } from '../../../extensions/product-notifications/exports/lazy-product-notification-edit/lazy-product-notification-edit.component';
 import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 import { LazyProductRatingComponent } from '../../../extensions/rating/exports/lazy-product-rating/lazy-product-rating.component';
 import { LazyTactonConfigureProductComponent } from '../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
@@ -41,6 +42,7 @@ describe('Product Detail Component', () => {
         MockComponent(ContentViewcontextComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
+        MockComponent(LazyProductNotificationEditComponent),
         MockComponent(LazyProductRatingComponent),
         MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
@@ -77,7 +79,7 @@ describe('Product Detail Component', () => {
   it('should render standard elements', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-detail-actions",
         "ish-product-images",
         "ish-lazy-product-rating",
@@ -95,6 +97,7 @@ describe('Product Detail Component', () => {
         "ish-product-add-to-basket",
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-quote",
+        "ish-lazy-product-notification-edit",
         "ish-content-viewcontext",
       ]
     `);

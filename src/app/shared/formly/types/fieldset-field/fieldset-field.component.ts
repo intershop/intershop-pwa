@@ -4,10 +4,10 @@ import { FieldType } from '@ngx-formly/core';
 /**
  * Type to render a group of fields within ``<fieldset>`` tags.
  *
- * @templateOption **fieldsetClass** - used to add styles to the ``<fieldset>`` tag.
- * @templateOption **childClass** - used to add styles to a child ``<div>``.
- * @templateOption **legend** - used to add a legend to the ``<fieldset>`` tag, the value is displayed as the legend text and will also be translated.
- * @templateOption **legendClass** - used to add styles to the ``<legend>`` tag.
+ * @props **fieldsetClass** - used to add styles to the ``<fieldset>`` tag.
+ * @props **childClass** - used to add styles to a child ``<div>``.
+ * @props **legend** - used to add a legend to the ``<fieldset>`` tag, the value is displayed as the legend text and will also be translated.
+ * @props **legendClass** - used to add styles to the ``<legend>`` tag.
  *
  * @usageNotes
  * Control the rendered children via the ``fieldGroup`` attribute.

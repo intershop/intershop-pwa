@@ -13,7 +13,7 @@ export class AddressLine1Configuration extends FieldLibraryConfiguration {
   getFieldConfig(): FormlyFieldConfig {
     return {
       type: 'ish-text-input-field',
-      templateOptions: {
+      props: {
         label: 'account.address.street.label',
         required: true,
       },

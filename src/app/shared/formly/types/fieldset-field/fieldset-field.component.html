@@ -1,6 +1,6 @@
-<fieldset [ngClass]="to.fieldsetClass">
-  <div [ngClass]="to.childClass">
-    <legend *ngIf="to.legend" [ngClass]="to.legendClass">{{ to.legend | translate }}</legend>
+<fieldset [ngClass]="props.fieldsetClass">
+  <div [ngClass]="props.childClass">
+    <legend *ngIf="props.legend" [ngClass]="props.legendClass">{{ props.legend | translate }}</legend>
     <formly-field *ngFor="let f of field.fieldGroup" [field]="f"></formly-field>
   </div>
 </fieldset>

@@ -200,11 +200,11 @@ describe('Checkout Payment Component', () => {
       verify(emitter.emit(anything())).once();
       const [arg] = capture(emitter.emit).last();
       expect(arg).toMatchInlineSnapshot(`
-        Object {
-          "paymentInstrument": Object {
+        {
+          "paymentInstrument": {
             "id": undefined,
-            "parameters": Array [
-              Object {
+            "parameters": [
+              {
                 "name": "creditCardNumber",
                 "value": "123",
               },
@@ -231,11 +231,11 @@ describe('Checkout Payment Component', () => {
       verify(emitter.emit(anything())).once();
       const [arg] = capture(emitter.emit).last();
       expect(arg).toMatchInlineSnapshot(`
-        Object {
-          "paymentInstrument": Object {
+        {
+          "paymentInstrument": {
             "id": undefined,
-            "parameters": Array [
-              Object {
+            "parameters": [
+              {
                 "name": "creditCardNumber",
                 "value": "456",
               },

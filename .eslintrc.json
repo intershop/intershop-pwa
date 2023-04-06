@@ -182,14 +182,7 @@
         "dot-notation": "off", // disabled in favor of @typescript-eslint/dot-notation
         "eqeqeq": ["error", "always"],
         "etc/no-commented-out-code": "warn",
-        "etc/no-deprecated": [
-          "warn",
-          {
-            "ignored": {
-              "templateOptions|to|FormlyTemplateOptions|expressionProperties": "name" // deprecated formly methods are temporarily ignored
-            }
-          }
-        ],
+        "etc/no-deprecated": ["warn"],
         "id-blacklist": [
           "error",
           "any",
@@ -277,7 +270,7 @@
             {
               "importNamePattern": ".*",
               "name": ".*environments/environment.*",
-              "filePattern": "^.*/app/((?!(app(.server)?.module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service|injection-keys)\\.ts).)*$",
+              "filePattern": "^.*/app/((?!(app(.server)?.module|core/store/core/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service|core/utils/injection)\\.ts).)*$",
               "message": "Importing environment is not allowed. Inject needed properties instead."
             },
             {
@@ -682,6 +675,7 @@
         "ish-custom-rules/use-correct-component-overrides": "warn",
         "ish-custom-rules/use-jest-extended-matchers-in-tests": "warn",
         "ish-custom-rules/use-ssr-variable-instead-of-platform-id": "warn",
+        "ish-custom-rules/use-type-safe-injection-token": "warn",
         "ish-custom-rules/require-formly-code-documentation": "warn",
         "jest/no-commented-out-tests": "warn",
         "jest/no-disabled-tests": "warn",

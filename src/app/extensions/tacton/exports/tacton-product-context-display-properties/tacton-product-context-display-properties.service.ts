@@ -17,6 +17,7 @@ export class TactonProductContextDisplayPropertiesService implements ExternalDis
           ? {
               addToBasket: false,
               addToCompare: false,
+              addToNotification: false,
               addToOrderTemplate: false,
               addToQuote: false,
               addToWishlist: false,

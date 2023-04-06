@@ -73,7 +73,7 @@ describe('Formly Testing Fieldgroup Example Component', () => {
 
   it('should contain both of the example fields wrapped in a fieldset', () => {
     expect(findAllCustomElements(element.querySelector('fieldset'))).toMatchInlineSnapshot(`
-      Array [
+      [
         "formly-field",
         "ish-formly-testing-example",
         "formly-field",

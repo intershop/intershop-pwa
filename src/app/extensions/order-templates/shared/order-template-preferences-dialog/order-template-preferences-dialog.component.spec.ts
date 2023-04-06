@@ -33,7 +33,7 @@ describe('Order Template Preferences Dialog Component', () => {
     verify(emitter.emit(anything())).once();
     const [arg] = capture(emitter.emit).last();
     expect(arg).toMatchInlineSnapshot(`
-      Object {
+      {
         "id": "test order template",
         "title": "test order template",
       }

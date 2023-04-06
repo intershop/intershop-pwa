@@ -1,8 +1,123 @@
+///////////////////////////////////////////////////////////////////////////////
 //
 // CUSTOMIZED PRINT STYLES
+//
+// Apply general print styles for PDF creation and pages with a print icon.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+@import 'variables';
+
+@mixin border($color) {
+  border: 1px solid $color;
+}
 
 @media print {
+  @page {
+    margin-top: 100px;
+  }
+
   a[href]::after {
     content: none !important;
+  }
+
+  aside,
+  footer,
+  header::before,
+  iframe,
+  ish-account-navigation,
+  ish-back-to-top,
+  ish-category-navigation,
+  ish-checkout-progress-bar,
+  ish-filter-navigation,
+  ish-lazy-product-add-to-order-template,
+  ish-lazy-product-compare-status,
+  ish-lazy-quickorder-link,
+  ish-lazy-search-box,
+  ish-product-detail-actions,
+  ish-product-list-toolbar,
+  ish-recently-viewed,
+  nav,
+  .account-nav-box,
+  .all-variations-link,
+  .details-link,
+  .fa-ban,
+  .fa-cart-shopping,
+  .fa-pencil,
+  .fa-print,
+  .fa-trash-can,
+  .header-utility,
+  .marketing-area,
+  .navbar-toggler,
+  .no-print,
+  .product-img-thumbs,
+  .product-tile-actions,
+  .share-label,
+  .swiper-button-next,
+  .swiper-button-prev,
+  .toast-container,
+  .user-links {
+    display: none !important;
+  }
+
+  .swiper-slide {
+    display: none;
+  }
+
+  .swiper-slide-active {
+    display: inline-block !important;
+  }
+
+  .budget-bar-used {
+    background-color: transparent;
+
+    &.bg-danger {
+      @include border($danger);
+    }
+
+    &.bg-warning {
+      @include border($warning);
+    }
+
+    &.bg-success {
+      @include border($success);
+    }
+  }
+
+  button {
+    color: $button-default-color !important;
+    background-color: $button-default-bg !important;
+    border-color: $button-default-border !important;
+  }
+
+  button,
+  .budget-bar,
+  .cost-summary,
+  .infobox {
+    background-color: transparent !important;
+    border: 1px solid $border-color-light !important;
+  }
+
+  .cost-summary {
+    margin-top: 20px;
+  }
+
+  .line-item-list {
+    .list-header,
+    .list-item-row {
+      margin-right: 2.5%;
+    }
+  }
+
+  .logo {
+    -webkit-print-color-adjust: exact !important; /* Chrome, Safari 6 – 15.3, Edge */
+    color-adjust: exact !important; /* Firefox 48 – 96 */
+    print-color-adjust: exact !important; /* Firefox 97+, Safari 15.4+ */
+  }
+
+  @supports (-moz-appearance: none) {
+    .logo {
+      margin-left: 25px !important;
+    }
   }
 }

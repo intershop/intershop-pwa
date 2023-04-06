@@ -1,4 +1,5 @@
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
 
 import { createApplication, createModule, createSchematicRunner } from '../../utils/testHelper';
 
@@ -7,15 +8,13 @@ describe('move-component Schematic', () => {
 
   let appTree: UnitTestTree;
   beforeEach(async () => {
-    const appTree$ = createApplication(schematicRunner).pipe(createModule(schematicRunner, { name: 'shared' }));
-    appTree = await appTree$.toPromise();
+    const appTree$ = createApplication(schematicRunner).pipe(
+      createModule(schematicRunner, { name: 'shared', project: undefined })
+    );
+    appTree = await lastValueFrom(appTree$);
     appTree.overwrite('/src/app/app.component.html', '<ish-dummy></ish-dummy>');
-    appTree = await schematicRunner
-      .runSchematicAsync('component', { project: 'bar', name: 'foo/dummy' }, appTree)
-      .toPromise();
-    appTree = await schematicRunner
-      .runSchematicAsync('component', { project: 'bar', name: 'shared/dummy-two' }, appTree)
-      .toPromise();
+    appTree = await schematicRunner.runSchematic('component', { project: 'bar', name: 'foo/dummy' }, appTree);
+    appTree = await schematicRunner.runSchematic('component', { project: 'bar', name: 'shared/dummy-two' }, appTree);
 
     appTree.overwrite(
       '/src/app/shared/dummy-two/dummy-two.component.ts',
@@ -34,7 +33,7 @@ export class DummyTwoComponent {}
 
   it('should be created', () => {
     expect(appTree.files.filter(f => f.endsWith('component.ts'))).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/app.component.ts",
         "/src/app/shared/dummy-two/dummy-two.component.ts",
         "/src/app/foo/dummy/dummy.component.ts",
@@ -55,12 +54,14 @@ export class DummyTwoComponent {}
   });
 
   it('should move component from a to b', async () => {
-    appTree = await schematicRunner
-      .runSchematicAsync('move-component', { project: 'bar', from: 'foo/dummy', to: 'foo' }, appTree)
-      .toPromise();
+    appTree = await schematicRunner.runSchematic(
+      'move-component',
+      { project: 'bar', from: 'foo/dummy', to: 'foo' },
+      appTree
+    );
 
     expect(appTree.files.filter(x => x.includes('/src/app/')).sort()).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/app-routing.module.ts",
         "/src/app/app.component.html",
         "/src/app/app.component.scss",
@@ -79,9 +80,11 @@ export class DummyTwoComponent {}
   });
 
   it('should rename component everywhere when moving', async () => {
-    appTree = await schematicRunner
-      .runSchematicAsync('move-component', { project: 'bar', from: 'foo/dummy', to: 'foo' }, appTree)
-      .toPromise();
+    appTree = await schematicRunner.runSchematic(
+      'move-component',
+      { project: 'bar', from: 'foo/dummy', to: 'foo' },
+      appTree
+    );
 
     expect(appTree.readContent('/src/app/app.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
@@ -157,9 +160,7 @@ export class DummyTwoComponent {}
     { from: 'shared/dummy-two', to: 'shared/foo' },
     { from: 'src/app/shared/dummy-two', to: 'src/app/shared/foo' },
   ])('should rename component everywhere when moving %j', async ({ from, to }) => {
-    appTree = await schematicRunner
-      .runSchematicAsync('move-component', { project: 'bar', from, to }, appTree)
-      .toPromise();
+    appTree = await schematicRunner.runSchematic('move-component', { project: 'bar', from, to }, appTree);
 
     expect(appTree.readContent('/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
       "import { NgModule } from '@angular/core';
@@ -177,7 +178,7 @@ export class DummyTwoComponent {}
     `);
 
     expect(appTree.files.filter(f => f.endsWith('component.ts'))).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/app.component.ts",
         "/src/app/shared/foo/foo.component.ts",
         "/src/app/foo/dummy/dummy.component.ts",

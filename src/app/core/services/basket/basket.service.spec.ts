@@ -335,7 +335,7 @@ describe('Basket Service', () => {
       const [path, body] = capture(apiService.post).last();
       expect(path).toMatchInlineSnapshot(`"baskets/current/quotes"`);
       expect(body).toMatchInlineSnapshot(`
-        Object {
+        {
           "calculated": true,
           "id": "quoteId",
         }

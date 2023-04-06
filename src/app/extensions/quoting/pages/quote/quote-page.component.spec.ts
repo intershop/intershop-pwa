@@ -60,7 +60,7 @@ describe('Quote Page Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-error-message",
         "ish-quote-edit",
         "ish-quote-interactions",
@@ -75,7 +75,7 @@ describe('Quote Page Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-error-message",
         "ish-quote-view",
         "ish-quote-interactions",
@@ -90,7 +90,7 @@ describe('Quote Page Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-error-message",
         "ish-quote-view",
         "ish-quote-interactions",

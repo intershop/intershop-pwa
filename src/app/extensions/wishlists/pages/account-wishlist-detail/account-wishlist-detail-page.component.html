@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="list-body">
-        <ng-container *ngFor="let item of wishlist.items">
+        <ng-container *ngFor="let item of wishlist.items; trackBy: trackByFn">
           <div class="list-item-row">
             <ish-account-wishlist-detail-line-item
               ishProductContext

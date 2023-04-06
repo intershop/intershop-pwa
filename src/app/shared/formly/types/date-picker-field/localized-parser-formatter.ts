@@ -6,7 +6,7 @@ import { format, parse } from 'date-fns';
 /**
  * This service handles conversion between the NgbDateStruct used by NgbDatepicker and the string representation in the input field.
  *
- * Note that this is distinct from the internal date representation, wich is handled by `NgbDateNativeAdapter`.
+ * Note that this is distinct from the internal date representation, which is handled by `NgbDateNativeAdapter`.
  *
  * Currently, this uses Angular's internal locale api to retrieve date formats.
  *
@@ -18,7 +18,7 @@ export class LocalizedParserFormatter extends NgbDateParserFormatter {
 
   constructor(private translate: TranslateService) {
     super();
-    // magic accessing angulars internal locale api. Uses the short date format with long years.
+    // magic accessing Angular's internal locale api. Uses the short date format with long years.
     this.dateFormatString = ɵfindLocaleData(this.translate.currentLang)[10][0];
   }
 

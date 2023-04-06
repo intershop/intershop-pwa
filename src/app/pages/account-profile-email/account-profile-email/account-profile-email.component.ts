@@ -44,7 +44,7 @@ export class AccountProfileEmailComponent implements OnInit {
           {
             key: 'email',
             type: 'ish-email-field',
-            templateOptions: {
+            props: {
               label: 'account.update_email.newemail.label',
               hideRequiredMarker: true,
               required: true,
@@ -53,9 +53,9 @@ export class AccountProfileEmailComponent implements OnInit {
 
           {
             key: 'emailConfirmation',
-            type: 'ish-email-field',
-
-            templateOptions: {
+            type: 'ish-text-input-field',
+            props: {
+              type: 'email',
               hideRequiredMarker: true,
               required: true,
               label: 'account.update_email.email_confirmation.label',
@@ -70,7 +70,7 @@ export class AccountProfileEmailComponent implements OnInit {
           {
             key: 'currentPassword',
             type: 'ish-password-field',
-            templateOptions: {
+            props: {
               hideRequiredMarker: true,
               required: true,
               label: 'account.update_email.password.label',

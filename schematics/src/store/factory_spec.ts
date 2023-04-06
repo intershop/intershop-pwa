@@ -1,5 +1,6 @@
-import { mergeMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { lastValueFrom } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { PWAStoreOptionsSchema as Options } from 'schemas/store/schema';
 
 import {
@@ -22,24 +23,24 @@ describe('Store Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     const appTree$ = createApplication(schematicRunner).pipe(
-      createModule(schematicRunner, { name: 'shared' }),
+      createModule(schematicRunner, { name: 'shared', project: undefined }),
       createAppLastRoutingModule(schematicRunner),
-      mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree)),
+      mergeMap(tree => schematicRunner.runSchematic('extension', { name: 'feature', project: 'bar' }, tree)),
       copyFileFromPWA('src/app/core/store/core/core-store.module.ts'),
       copyFileFromPWA('src/app/core/store/core/core-store.ts'),
       copyFileFromPWA('src/app/core/state-management.module.ts'),
-      mergeMap(tree => schematicRunner.runSchematicAsync('store-group', { ...defaultOptions, name: 'bar' }, tree))
+      mergeMap(tree => schematicRunner.runSchematic('store-group', { ...defaultOptions, name: 'bar' }, tree))
     );
-    appTree = await appTree$.toPromise();
+    appTree = await lastValueFrom(appTree$);
   });
 
   it('should create a store in core store by default', async () => {
     const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('store', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/core/store/core/foo/foo.actions.ts",
         "/src/app/core/store/core/foo/foo.effects.spec.ts",
         "/src/app/core/store/core/foo/foo.effects.ts",
@@ -54,7 +55,7 @@ describe('Store Schematic', () => {
   it('should register a store in core store by default', async () => {
     const options = { ...defaultOptions };
 
-    const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('store', options, appTree);
     const storeContent = tree.readContent('/src/app/core/store/core/core-store.ts');
     expect(storeContent).toContain('import { FooState }');
     expect(storeContent).toContain('foo: FooState');
@@ -68,10 +69,10 @@ describe('Store Schematic', () => {
   it('should create a store in core feature store if requested', async () => {
     const options = { ...defaultOptions, feature: 'bar' };
 
-    const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('store', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/core/store/bar/foo/foo.actions.ts",
         "/src/app/core/store/bar/foo/foo.effects.spec.ts",
         "/src/app/core/store/bar/foo/foo.effects.ts",
@@ -86,7 +87,7 @@ describe('Store Schematic', () => {
   it('should register in feature store', async () => {
     const options = { ...defaultOptions, feature: 'bar' };
 
-    const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('store', options, appTree);
     const storeContent = tree.readContent('/src/app/core/store/bar/bar-store.ts');
     expect(storeContent).toContain('import { FooState }');
     expect(storeContent).toContain('foo: FooState');
@@ -100,10 +101,10 @@ describe('Store Schematic', () => {
   it('should create a store in extension if requested', async () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
-    const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('store', options, appTree);
     const files = tree.files.filter(x => x.search('foo') >= 0).sort();
     expect(files).toMatchInlineSnapshot(`
-      Array [
+      [
         "/src/app/extensions/feature/store/foo/foo.actions.ts",
         "/src/app/extensions/feature/store/foo/foo.effects.spec.ts",
         "/src/app/extensions/feature/store/foo/foo.effects.ts",
@@ -118,7 +119,7 @@ describe('Store Schematic', () => {
   it('should register in extension store', async () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
-    const tree = await schematicRunner.runSchematicAsync('store', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematic('store', options, appTree);
     const storeContent = tree.readContent('/src/app/extensions/feature/store/feature-store.ts');
     expect(storeContent).toContain('import { FooState }');
     expect(storeContent).toContain('foo: FooState');
@@ -132,12 +133,9 @@ describe('Store Schematic', () => {
   it('should throw if both feature and extension are supplied', done => {
     const options = { ...defaultOptions, extension: 'feature', feature: 'bar' };
 
-    schematicRunner.runSchematicAsync('store', options, appTree).subscribe({
-      next: fail,
-      error: err => {
-        expect(err).toMatchInlineSnapshot(`[Error: cannot add feature store in extension]`);
-        done();
-      },
+    schematicRunner.runSchematic('store', options, appTree).catch(err => {
+      expect(err).toMatchInlineSnapshot(`[Error: cannot add feature store in extension]`);
+      done();
     });
   });
 

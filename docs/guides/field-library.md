@@ -14,7 +14,7 @@ kb_sync_latest_only
   - [The Field Library](#the-field-library)
     - [Retrieving Configurations](#retrieving-configurations)
     - [Retrieving Configuration Groups](#retrieving-configuration-groups)
-    - [Defining your own Configurations & Configuration Groups](#defining-your-own-configurations--configuration-groups)
+    - [Defining your own Configurations \& Configuration Groups](#defining-your-own-configurations--configuration-groups)
       - [Defining a FieldLibraryConfiguration](#defining-a-fieldlibraryconfiguration)
       - [Defining a FieldLibraryConfigurationGroup](#defining-a-fieldlibraryconfigurationgroup)
   - [Automatic Field Replacement using the '#' Pseudo-type](#automatic-field-replacement-using-the--pseudo-type)
@@ -63,7 +63,7 @@ For example, you can use the standard `firstName` field but change the label lik
 
 ```typescript
 this.fieldLibrary.getConfiguration('firstName', {
-  templateOptions: {
+  props: {
     label: 'New Label',
   },
 });
@@ -90,12 +90,12 @@ For example, the following code snippet will return the `personalInfo` configura
 ```typescript
 this.fieldLibrary.getConfigurationGroup('personalInfo', {
   firstName: {
-    templateOptions: {
+    props: {
       required: false,
     },
   },
   lastName: {
-    templateOptions: {
+    props: {
       label: 'new and improved label',
     },
   },
@@ -160,7 +160,7 @@ For example, defining a new label text works like this:
 ```typescript
 {
   type: '#firstName',
-  templateOptions: {
+  props: {
     label: 'New Label',
   }
 }

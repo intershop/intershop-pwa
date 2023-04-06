@@ -52,21 +52,22 @@ export class UserProfileFormComponent implements OnInit {
             ? {
                 key: 'email',
                 type: 'ish-email-field',
-                templateOptions: {
+                props: {
                   label: 'account.user.email.label',
                   required: true,
                 },
               }
             : {},
           {
-            key: 'active',
-            type: 'ish-checkbox-field',
-            templateOptions: {
-              label: 'account.user.active.label',
-            },
+            type: '#phoneHome',
           },
           {
-            type: '#phoneHome',
+            key: 'active',
+            type: 'ish-checkbox-field',
+            props: {
+              label: 'account.user.active.label',
+              title: 'account.user.active.title',
+            },
           },
         ],
       },

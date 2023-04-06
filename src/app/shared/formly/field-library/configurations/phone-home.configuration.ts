@@ -13,7 +13,7 @@ export class PhoneHomeConfiguration extends FieldLibraryConfiguration {
   getFieldConfig(): FormlyFieldConfig {
     return {
       type: 'ish-phone-field',
-      templateOptions: {
+      props: {
         label: 'account.profile.phone.label',
         required: false,
       },

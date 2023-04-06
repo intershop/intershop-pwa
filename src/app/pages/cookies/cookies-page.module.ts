@@ -4,13 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { CookiesModalComponent } from './cookies-modal/cookies-modal.component';
-import { CookiesPageGuard } from './cookies-page.guard';
+import { cookiesPageGuard } from './cookies-page.guard';
 
 const cookiesPageRoutes: Routes = [
   {
     path: '',
     children: [],
-    canActivate: [CookiesPageGuard],
+    canActivate: [cookiesPageGuard],
     data: {
       meta: {
         title: 'cookie.preferences.heading',
@@ -22,7 +22,6 @@ const cookiesPageRoutes: Routes = [
 
 @NgModule({
   imports: [CommonModule, RouterModule.forChild(cookiesPageRoutes), TranslateModule],
-  providers: [CookiesPageGuard],
   declarations: [CookiesModalComponent],
 })
 export class CookiesPageModule {}

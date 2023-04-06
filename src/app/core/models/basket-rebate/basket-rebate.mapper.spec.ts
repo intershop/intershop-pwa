@@ -22,8 +22,8 @@ describe('Basket Rebate Mapper', () => {
       });
 
       expect(basketRebate).toMatchInlineSnapshot(`
-        Object {
-          "amount": Object {
+        {
+          "amount": {
             "currency": "USD",
             "gross": 43.34,
             "net": 40.34,

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthorizationToggleGuard } from 'ish-core/authorization-toggle.module';
-import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
+import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
+import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOverviewPageModule } from '../account-overview/account-overview-page.module';
@@ -57,7 +57,7 @@ const accountPageRoutes: Routes = [
       },
       {
         path: 'punchout',
-        canActivate: [FeatureToggleGuard, AuthorizationToggleGuard],
+        canActivate: [featureToggleGuard, authorizationToggleGuard],
         data: {
           feature: 'punchout',
           permission: 'APP_B2B_MANAGE_PUNCHOUT',
@@ -81,14 +81,22 @@ const accountPageRoutes: Routes = [
           import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
       },
       {
+        path: 'notifications',
+        data: { breadcrumbData: [{ key: 'account.notifications.breadcrumb_link' }] },
+        loadChildren: () =>
+          import('../../extensions/product-notifications/pages/product-notifications-routing.module').then(
+            m => m.ProductNotificationsRoutingModule
+          ),
+      },
+      {
         path: 'organization',
-        canActivate: [AuthorizationToggleGuard],
+        canActivate: [authorizationToggleGuard],
         data: { permission: 'APP_B2B_MANAGE_COSTCENTER' },
         loadChildren: () => import('organization-management').then(m => m.OrganizationManagementRoutingModule),
       },
       {
         path: 'requisitions',
-        canActivate: [AuthorizationToggleGuard],
+        canActivate: [authorizationToggleGuard],
         data: { permission: 'APP_B2B_PURCHASE' },
         loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementRoutingModule),
       },

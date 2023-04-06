@@ -52,7 +52,7 @@ describe('Saved Tacton Configuration Selectors', () => {
 
     it('should save entity to state', () => {
       expect(getSavedTactonConfiguration('tab/product')(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "configId": "ABC",
           "externalId": "some",
           "productId": "tab/product",
@@ -81,7 +81,7 @@ describe('Saved Tacton Configuration Selectors', () => {
 
     it('should save entity to state', () => {
       expect(getSavedTactonConfiguration('tab/product')(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "configId": "ABC",
           "externalId": "some",
           "productId": "tab/product",

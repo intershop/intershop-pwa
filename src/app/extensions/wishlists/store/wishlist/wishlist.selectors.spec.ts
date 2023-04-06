@@ -149,7 +149,7 @@ describe('Wishlist Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getWishlistsError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -201,7 +201,7 @@ describe('Wishlist Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getWishlistsError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -250,7 +250,7 @@ describe('Wishlist Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getWishlistsError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -305,7 +305,7 @@ describe('Wishlist Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getWishlistsError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }

@@ -17,7 +17,7 @@ class CheckboxFieldComponent extends FieldType {}
   template: `FieldsetFieldComponent:
     <div *ngFor="let f of field.fieldGroup">
       {{ getFieldSummary(f) }}
-      {{ f.templateOptions | json }}
+      {{ f.props | json }}
     </div>`,
 })
 class FieldsetFieldComponent extends FieldType {

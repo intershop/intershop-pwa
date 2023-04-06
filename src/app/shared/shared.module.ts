@@ -26,6 +26,7 @@ import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-expo
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
+import { ProductNotificationsExportsModule } from '../extensions/product-notifications/exports/product-notifications-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
@@ -45,6 +46,7 @@ import { CMSImageComponent } from './cms/components/cms-image/cms-image.componen
 import { CMSProductListCategoryComponent } from './cms/components/cms-product-list-category/cms-product-list-category.component';
 import { CMSProductListFilterComponent } from './cms/components/cms-product-list-filter/cms-product-list-filter.component';
 import { CMSProductListManualComponent } from './cms/components/cms-product-list-manual/cms-product-list-manual.component';
+import { CMSProductListRestComponent } from './cms/components/cms-product-list-rest/cms-product-list-rest.component';
 import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
@@ -166,6 +168,7 @@ const importExportModules = [
   NgbPopoverModule,
   OrderTemplatesExportsModule,
   PipesModule,
+  ProductNotificationsExportsModule,
   PunchoutExportsModule,
   QuickorderExportsModule,
   QuotingExportsModule,
@@ -194,6 +197,7 @@ const declaredComponents = [
   CMSProductListCategoryComponent,
   CMSProductListFilterComponent,
   CMSProductListManualComponent,
+  CMSProductListRestComponent,
   CMSStandardPageComponent,
   CMSStaticPageComponent,
   CMSTextComponent,

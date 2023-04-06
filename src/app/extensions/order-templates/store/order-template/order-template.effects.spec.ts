@@ -508,13 +508,13 @@ describe('Order Template Effects', () => {
 
       effects.setOrderTemplateBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
-          Object {
-            "breadcrumbData": Array [
-              Object {
+          {
+            "breadcrumbData": [
+              {
                 "key": "account.ordertemplates.link",
                 "link": "/account/order-templates",
               },
-              Object {
+              {
                 "text": "testing order template",
               },
             ],

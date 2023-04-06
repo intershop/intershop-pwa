@@ -4,11 +4,11 @@ const fs = require('fs');
 const pinned = {
   bootstrap: '4', // pinned
   '@ng-bootstrap/ng-bootstrap': '11', // 12 requires Bootstrap 5
-  '@types/node': '16', // LTS
+  '@types/node': '18', // LTS
   '@cspell/dict-de-de': '1.1.32', // later versions use the GPL license
-  jest: '28',
-  '@types/jest': '28',
-  prettier: '2.7.1',
+  swiper: 8, // 9 requires integration rework
+  jest: '29',
+  '@types/jest': '29',
 };
 
 // <HELPERS>
@@ -105,7 +105,7 @@ commit('chore: synchronize package-lock.json');
 const packageLockJson = JSON.parse(fs.readFileSync('./package-lock.json', { encoding: 'utf-8' }));
 modifyPackageJson(packageJson => {
   Object.entries(pinned).forEach(([dep, version]) => {
-    const write = packageLockJson.dependencies[dep].version;
+    const write = packageLockJson.packages['node_modules/' + dep].version;
     if (!write.startsWith(version)) {
       console.warn('####### something went wrong #######');
       console.warn(`package ${dep} was not pinned down correctly to version ${version} and is now on version ${write}`);

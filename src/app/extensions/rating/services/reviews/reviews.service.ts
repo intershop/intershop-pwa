@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
@@ -24,18 +24,9 @@ export class ReviewsService {
       return throwError(() => new Error('getProductReviews() called without sku'));
     }
 
-    let ownReviewId: string;
-
     return this.apiService.get(`products/${sku}/reviews?attrs=own`, { sendSPGID: true }).pipe(
       unpackEnvelope<Link>(),
-      tap(reviewLinks => {
-        ownReviewId = reviewLinks?.find(link =>
-          link.attributes.find(attr => attr.name === 'own' && attr.value === true)
-        )?.itemId;
-      }),
       this.apiService.resolveLinks<ProductReview>(),
-      // ToDo: remove this mapping if the own flag is returned by the REST api
-      map(reviews => reviews.map(review => ({ ...review, own: review.id === ownReviewId }))),
       map(reviews => ProductReviewsMapper.fromData(sku, reviews))
     );
   }

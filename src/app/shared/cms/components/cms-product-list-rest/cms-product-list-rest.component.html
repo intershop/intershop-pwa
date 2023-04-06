@@ -1,0 +1,13 @@
+<ng-container *ngIf="productSKUs$ | async as productSKUs">
+  <div *ngIf="productSKUs?.length" class="product-list-container" [ngClass]="pagelet.stringParam('CSSClass')">
+    <h2 *ngIf="pagelet.stringParam('Title')">{{ pagelet.stringParam('Title') }}</h2>
+    <ish-products-list
+      [productSKUs]="productSKUs"
+      [listStyle]="pagelet.stringParam('ListStyle')"
+      [slideItems]="pagelet.numberParam('SlideItems')"
+      [listItemStyle]="$any(pagelet.stringParam('ListItemStyle'))"
+      [listItemCSSClass]="pagelet.stringParam('ListItemCSSClass')"
+    >
+    </ish-products-list>
+  </div>
+</ng-container>

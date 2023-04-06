@@ -20,6 +20,7 @@ describe('Cost Centers Service', () => {
     when(apiService.post(anything(), anything())).thenReturn(of({}));
     when(apiService.patch(anything(), anything())).thenReturn(of({}));
     when(apiService.delete(anything())).thenReturn(of({}));
+    when(apiService.resolveLinks()).thenReturn(() => of([]));
 
     TestBed.configureTestingModule({
       providers: [
@@ -42,7 +43,7 @@ describe('Cost Centers Service', () => {
     costCentersService.getCostCenters().subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           "customers/4711/costcenters",
         ]
       `);
@@ -54,7 +55,7 @@ describe('Cost Centers Service', () => {
     costCentersService.getCostCenter('100400').subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-        Array [
+        [
           "customers/4711/costcenters/100400",
         ]
       `);

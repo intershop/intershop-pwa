@@ -51,7 +51,7 @@ export class PunchoutUserFormComponent implements OnInit {
           {
             key: 'login',
             type: 'ish-text-input-field',
-            templateOptions: {
+            props: {
               label: 'account.punchout.username.label',
               required: true,
               hideRequiredMarker: true,
@@ -67,13 +67,6 @@ export class PunchoutUserFormComponent implements OnInit {
               },
             },
           },
-          {
-            key: 'active',
-            type: 'ish-checkbox-field',
-            templateOptions: {
-              label: 'account.user.active.label',
-            },
-          },
         ],
       },
       {
@@ -85,7 +78,7 @@ export class PunchoutUserFormComponent implements OnInit {
           {
             key: 'password',
             type: 'ish-password-field',
-            templateOptions: {
+            props: {
               postWrappers: [{ wrapper: 'description', index: -1 }],
               label: this.punchoutUser ? 'account.punchout.password.new.label' : 'account.punchout.password.label',
               required: this.punchoutUser ? false : true,
@@ -99,8 +92,9 @@ export class PunchoutUserFormComponent implements OnInit {
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-password-field',
-            templateOptions: {
+            type: 'ish-text-input-field',
+            props: {
+              type: 'password',
               required: this.punchoutUser ? false : true,
               label: this.punchoutUser
                 ? 'account.punchout.password.new.confirmation.label'
@@ -111,7 +105,16 @@ export class PunchoutUserFormComponent implements OnInit {
             validation: {
               messages: {
                 required: 'account.punchout.password.confirmation.error.required',
+                equalTo: 'form.password.error.equalTo',
               },
+            },
+          },
+          {
+            key: 'active',
+            type: 'ish-checkbox-field',
+            props: {
+              label: 'account.user.active.label',
+              title: 'account.user.active.title',
             },
           },
         ],

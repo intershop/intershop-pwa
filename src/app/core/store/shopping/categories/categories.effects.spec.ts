@@ -282,7 +282,7 @@ describe('Categories Effects', () => {
       effects.loadTopLevelCategories$.subscribe(() => {
         verify(categoriesServiceMock.getTopLevelCategories(anyNumber())).once();
         expect(capture(categoriesServiceMock.getTopLevelCategories).last()).toMatchInlineSnapshot(`
-          Array [
+          [
             1,
           ]
         `);
@@ -322,7 +322,7 @@ describe('Categories Effects', () => {
         next: () => {
           verify(httpStatusCodeService.setStatus(anything())).once();
           expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
-                      Array [
+                      [
                         404,
                       ]
                   `);

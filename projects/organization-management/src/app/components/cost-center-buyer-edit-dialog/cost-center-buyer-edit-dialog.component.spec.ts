@@ -3,7 +3,6 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -24,7 +23,6 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
     organizationManagementFacade = mock(organizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },

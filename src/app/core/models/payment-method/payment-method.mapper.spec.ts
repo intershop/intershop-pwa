@@ -129,19 +129,19 @@ describe('Payment Method Mapper', () => {
       expect(paymentMethod.parameters[0].type).toEqual('ish-text-input-field');
       expect(paymentMethod.parameters[0].key).toEqual('holder');
       expect(paymentMethod.parameters[0].hide).toBeFalse();
-      expect(paymentMethod.parameters[0].templateOptions.type).toEqual('text');
-      expect(paymentMethod.parameters[0].templateOptions.required).toBeTrue();
+      expect(paymentMethod.parameters[0].props.type).toEqual('text');
+      expect(paymentMethod.parameters[0].props.required).toBeTrue();
 
-      expect(paymentMethod.parameters[1].templateOptions.pattern).toBe(regexp);
-      expect(paymentMethod.parameters[1].templateOptions.minLength).toBe(15);
-      expect(paymentMethod.parameters[1].templateOptions.maxLength).toBe(34);
-      expect(paymentMethod.parameters[1].templateOptions.attributes).toBeObject();
+      expect(paymentMethod.parameters[1].props.pattern).toBe(regexp);
+      expect(paymentMethod.parameters[1].props.minLength).toBe(15);
+      expect(paymentMethod.parameters[1].props.maxLength).toBe(34);
+      expect(paymentMethod.parameters[1].props.attributes).toBeObject();
 
       expect(paymentMethod.parameters[3].hide).toBeTrue();
     });
   });
 
-  describe('Payment Method Mapper', () => {
+  describe('fromOptions', () => {
     const paymentMethodsData = {
       payments: [
         {
@@ -177,6 +177,7 @@ describe('Payment Method Mapper', () => {
       {
         id: 'abc',
         name: 'ISH_CreditCard',
+        accountIdentifier: 'Visa ********3456',
         attributes: [
           {
             name: 'cardNumber',
@@ -210,6 +211,7 @@ describe('Payment Method Mapper', () => {
       expect(paymentMethods[0].paymentInstruments[0].id).toEqual('abc');
       expect(paymentMethods[0].paymentInstruments[0].parameters).toHaveLength(2);
       expect(paymentMethods[0].paymentInstruments[0].parameters[0].value).toEqual('************1111');
+      expect(paymentMethods[0].paymentInstruments[0].accountIdentifier).toEqual('Visa ********3456');
     });
   });
 });

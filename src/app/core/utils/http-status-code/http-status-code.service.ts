@@ -1,11 +1,12 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { Response } from 'express';
+
+import { InjectSingle } from 'ish-core/utils/injection';
 
 @Injectable({ providedIn: 'root' })
 export class HttpStatusCodeService {
-  constructor(private router: Router, @Optional() @Inject(RESPONSE) private response: Response) {}
+  constructor(private router: Router, @Optional() @Inject(RESPONSE) private response: InjectSingle<typeof RESPONSE>) {}
 
   /**
    * set status for SSR response

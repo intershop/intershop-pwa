@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 
@@ -40,11 +41,17 @@ export class SelectOrderTemplateFormComponent implements OnInit {
         type: 'ish-text-input-field',
         key: 'newOrderTemplate',
         defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
-        templateOptions: {
+        props: {
           required: true,
         },
+        validators: {
+          validation: [SpecialValidators.noHtmlTags],
+        },
         validation: {
-          messages: { required: 'account.order_template.name.error.required' },
+          messages: {
+            required: 'account.order_template.name.error.required',
+            noHtmlTags: 'account.name.error.forbidden.html.chars',
+          },
         },
       },
     ];
@@ -56,7 +63,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
           type: 'ish-radio-field',
           key: 'orderTemplate',
           defaultValue: orderTemplateOptions[0].value,
-          templateOptions: {
+          props: {
             fieldClass: ' ',
             value: option.value,
             label: option.label,
@@ -71,7 +78,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
             {
               type: 'ish-radio-field',
               key: 'orderTemplate',
-              templateOptions: {
+              props: {
                 inputClass: 'position-static',
                 fieldClass: ' ',
                 value: 'new',
@@ -83,14 +90,20 @@ export class SelectOrderTemplateFormComponent implements OnInit {
               className: 'w-75 position-relative validation-offset-0',
               wrappers: ['validation'],
               defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
-              templateOptions: {
+              props: {
                 required: true,
               },
-              validation: {
-                messages: { required: 'account.order_template.name.error.required' },
+              validators: {
+                validation: [SpecialValidators.noHtmlTags],
               },
-              expressionProperties: {
-                'templateOptions.disabled': model => model.orderTemplate !== 'new',
+              validation: {
+                messages: {
+                  required: 'account.order_template.name.error.required',
+                  noHtmlTags: 'account.name.error.forbidden.html.chars',
+                },
+              },
+              expressions: {
+                'props.disabled': conf => conf.model.orderTemplate !== 'new',
               },
             },
           ],

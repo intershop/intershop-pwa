@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { API_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
+import { InjectSingle } from 'ish-core/utils/injection';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 
@@ -15,7 +16,7 @@ const MOCK_DATA_ROOT = './assets/mock-data';
 export class MockInterceptor implements HttpInterceptor {
   private restEndpoint: string;
 
-  constructor(@Inject(API_MOCK_PATHS) private apiMockPaths: string[], store: Store) {
+  constructor(@Inject(API_MOCK_PATHS) private apiMockPaths: InjectSingle<typeof API_MOCK_PATHS>, store: Store) {
     store.pipe(select(getRestEndpoint)).subscribe(data => (this.restEndpoint = data));
   }
 

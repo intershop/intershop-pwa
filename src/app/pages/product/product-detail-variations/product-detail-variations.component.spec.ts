@@ -62,7 +62,7 @@ describe('Product Detail Variations Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-variation-select",
       ]
     `);
@@ -91,7 +91,7 @@ describe('Product Detail Variations Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-variation-display",
         "ish-product-master-link",
       ]

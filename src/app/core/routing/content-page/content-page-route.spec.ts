@@ -64,7 +64,7 @@ describe('Content Page Route', () => {
 
     it('should be a match for matcher', () => {
       expect(matchContentRoute(wrap(generateContentPageUrl(topLevelView)))).toMatchInlineSnapshot(`
-        Object {
+        {
           "contentPageId": "top",
         }
       `);
@@ -80,7 +80,7 @@ describe('Content Page Route', () => {
 
     it('should not be a match for matcher', () => {
       expect(matchContentRoute(wrap(generateContentPageUrl(topLevelView)))).toMatchInlineSnapshot(`
-        Object {
+        {
           "contentPageId": "top",
         }
       `);
@@ -102,7 +102,7 @@ describe('Content Page Route', () => {
 
     it('should not be a match for matcher', () => {
       expect(matchContentRoute(wrap(generateContentPageUrl(bottomLevelView)))).toMatchInlineSnapshot(`
-        Object {
+        {
           "contentPageId": "bottom",
         }
       `);

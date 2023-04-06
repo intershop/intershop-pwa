@@ -63,7 +63,7 @@ const fields: FormlyFieldConfig[] = [
   {
     type: 'ish-input-field',
     key: 'example-input',
-    templateOptions: {
+    props: {
       required: true,
       label: 'Input Field Label',
     },
@@ -85,7 +85,6 @@ If you need to - for some reason - completely override the Formly configuration 
 ### Custom Field Types
 
 To define a custom field type, create a component that extends `FieldType`.
-This component will have full access to all information related to the field and form - access the fields `templateOptions` via the `to` attribute.
 Hook up the form element with the `formControl` and `formlyAttributes` inputs.
 An example field type could look like this:
 
@@ -103,7 +102,7 @@ export class ExampleInputFieldComponent extends FieldType {
 
 ```html
 <!--  example-input-field.component.html -->
-<input [type]="to.type" [formControl]="formControl" [formlyAttributes]="field" />
+<input [type]="props.type" [formControl]="formControl" [formlyAttributes]="field" />
 ```
 
 Register the custom type in the `formly.module.ts` `forChild()` function:
@@ -126,7 +125,7 @@ A simple example wrapper that adds a label to the field could look like this:
   selector: 'example-label-wrapper',
   template: `
     <label [attr.for]="id">
-      {{ to.label | translate }}
+      {{ props.label | translate }}
     </label>
     <ng-template #fieldComponent></ng-template>
   `,
@@ -162,9 +161,9 @@ A simple extension that ensures a `label` attribute is always set could look lik
 ```typescript
 export const labelDefaultValueExtension: FormlyExtension = {
   prePopulate(field: FormlyFieldConfig): void {
-    field.templateOptions = {
-      ...field.templateOptions,
-      label: field.templateOptions.label ?? 'Default Label',
+    field.props = {
+      ...field.props,
+      label: field.props.label ?? 'Default Label',
     };
   },
 };
@@ -254,12 +253,12 @@ Refer to the tables below for an overview of these parts.
 
 Template option `inputClass`: These css class(es) will be added to all input/select/textarea/text tags.
 
-| Name                 | Description                                                                                  | Relevant templateOptions                                                                                                                                                                                                                                                          |
+| Name                 | Description                                                                                  | Relevant props                                                                                                                                                                                                                                                                    |
 | -------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ish-text-input-field | Basic input field, supports all text types                                                   | type: 'text' (default),'email','tel','password'                                                                                                                                                                                                                                   |
 | ish-select-field     | Basic select field                                                                           | `options`: `{ value: any; label: string}[]` or Observable. `placeholder`: Translation key or string for the default selection                                                                                                                                                     |
 | ish-textarea-field   | Basic textarea field                                                                         | `cols` & `rows`: Specifies the dimensions of the textarea                                                                                                                                                                                                                         |
-| ish-checkbox-field   | Basic checkbox input                                                                         | ----                                                                                                                                                                                                                                                                              |
+| ish-checkbox-field   | Basic checkbox input                                                                         | `title`: Title for a checkbox                                                                                                                                                                                                                                                     |
 | ish-email-field      | Email input field that automatically adds an e-mail validator and error messages             | ----                                                                                                                                                                                                                                                                              |
 | ish-password-field   | Password input field that automatically adds a password validator and error messages         | ----                                                                                                                                                                                                                                                                              |
 | ish-phone-field      | Phone number input field that automatically adds a phone number validator and error messages | ----                                                                                                                                                                                                                                                                              |
@@ -271,19 +270,19 @@ Template option `inputClass`: These css class(es) will be added to all input/sel
 
 ### Wrappers
 
-| Name                           | Functionality                                                                                                                                                                                                                    | Relevant templateOptions                                                                                                                                                     |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| form-field-horizontal          | Adds a label next to the field and adds red styling for invalid fields.                                                                                                                                                          | `labelClass`& `fieldClass`: Classes that will be added to the label or field `<div>`                                                                                         |
-| form-field-checkbox-horizontal | Adds a label for a checkbox or radio field, adds red styling and error messages for invalid fields. Uses `validators.validation` and `validation.messages` properties. Adds a tooltip behind the label, see also tooltip-wrapper | `labelClass`& `fieldClass`: Classes that will be added to the label or the outer field `<div>`                                                                               |
-| validation                     | Adds validation icons and error messages to the field. Uses `validators.validation` and `validation.messages` properties.                                                                                                        | `showValidation`: `(field: FormlyFieldConfig) => boolean`: optional, used to determine whether to show validation check marks                                                |
-| textarea-description           | Adds a description to textarea fields, including the amount of remaining characters.                                                                                                                                             | `maxLength`: Specifies the maximum length to be displayed in the message. `customDescription`: translation key for the textarea description (default: 'textarea.max_limit' ) |
-| description                    | Adds a custom description to any field                                                                                                                                                                                           | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                                                                          |
-| tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                                                                                             | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                                                                        |
-| input-addon                    | Adds a prepended or appended text to a field, e.g. a currency or unit.                                                                                                                                                           | `addonLeft?`: `{ text: string \| Observable<string>; }, addonRight?: {text: string \| Observable<string>}` that defines the addon texts.                                     |
+| Name                           | Functionality                                                                                                                                                                                                                                                              | Relevant props                                                                                                                                                               |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| form-field-horizontal          | Adds a label next to the field and adds red styling for invalid fields.                                                                                                                                                                                                    | `labelClass`& `fieldClass`: Classes that will be added to the label or field `<div>`                                                                                         |
+| form-field-checkbox-horizontal | Adds a label for a checkbox or radio field, adds red styling and error messages for invalid fields. Adds a title for a checkbox, if provided. Uses `validators.validation` and `validation.messages` properties. Adds a tooltip behind the label, see also tooltip-wrapper | `labelClass`, `titleClass`& `fieldClass`: Classes that will be added to the label, title or the outer field `<div>`                                                          |
+| validation                     | Adds validation icons and error messages to the field. Uses `validators.validation` and `validation.messages` properties.                                                                                                                                                  | `showValidation`: `(field: FormlyFieldConfig) => boolean`: optional, used to determine whether to show validation check marks                                                |
+| textarea-description           | Adds a description to textarea fields, including the amount of remaining characters.                                                                                                                                                                                       | `maxLength`: Specifies the maximum length to be displayed in the message. `customDescription`: translation key for the textarea description (default: 'textarea.max_limit' ) |
+| description                    | Adds a custom description to any field                                                                                                                                                                                                                                     | `customDescription`: `string` or `{key: string; args: any}` that will be translated                                                                                          |
+| tooltip                        | Adds a tooltip to a field. Includes `<ish-field-tooltip>` component.                                                                                                                                                                                                       | `tooltip`: `{ title?: string; text: string; link: string }` that defines the different tooltip texts.                                                                        |
+| input-addon                    | Adds a prepended or appended text to a field, e.g. a currency or unit.                                                                                                                                                                                                     | `addonLeft?`: `{ text: string \| Observable<string>; }, addonRight?: {text: string \| Observable<string>}` that defines the addon texts.                                     |
 
 ### Extensions
 
-| Name                     | Functionality                                                                   | Relevant templateOptions                                                                                                                                                                       |
+| Name                     | Functionality                                                                   | Relevant props                                                                                                                                                                                 |
 | ------------------------ | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | hide-if-empty            | Hides fields of type `ish-select-field` that have an empty `options` attribute. | `options`: used to determine emptiness.                                                                                                                                                        |
 | translate-select-options | Automatically translates option labels and adds a placeholder option.           | `options`: options whose labels will be translated. `placeholder`: used to determine whether to set placeholder and its text.                                                                  |

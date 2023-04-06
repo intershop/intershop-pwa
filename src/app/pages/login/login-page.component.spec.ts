@@ -49,7 +49,7 @@ describe('Login Page Component', () => {
   it('should render login form on Login page', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-identity-provider-login",
       ]
     `);

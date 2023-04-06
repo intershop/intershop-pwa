@@ -234,7 +234,7 @@ describe('Product Helper', () => {
 
       it('should return all attribute names of product if only one element is supplied', () => {
         expect(ProductHelper.getCommonAttributeNames([product])).toMatchInlineSnapshot(`
-          Array [
+          [
             "Optical zoom",
             "Focal length (35mm film equivalent)",
             "Image formats supported",
@@ -243,19 +243,19 @@ describe('Product Helper', () => {
       });
       it('should return the correct set of attributes for different list of products', () => {
         expect(ProductHelper.getCommonAttributeNames([product, compareProduct1])).toMatchInlineSnapshot(`
-          Array [
+          [
             "Optical zoom",
           ]
         `);
         expect(ProductHelper.getCommonAttributeNames([product, compareProduct2])).toMatchInlineSnapshot(`
-          Array [
+          [
             "Optical zoom",
             "Image formats supported",
           ]
         `);
         expect(ProductHelper.getCommonAttributeNames([product, compareProduct1, compareProduct2]))
           .toMatchInlineSnapshot(`
-          Array [
+          [
             "Optical zoom",
           ]
         `);
@@ -269,12 +269,12 @@ describe('Product Helper', () => {
 
       it('should return product with correct filtered attributes for different list of compare products', () => {
         expect(ProductHelper.getProductWithoutCommonAttributes(product, [compareProduct1])).toMatchInlineSnapshot(`
-          Object {
-            "attributes": Array [
-              Object {
+          {
+            "attributes": [
+              {
                 "name": "Focal length (35mm film equivalent)",
               },
-              Object {
+              {
                 "name": "Image formats supported",
               },
             ],
@@ -283,9 +283,9 @@ describe('Product Helper', () => {
           }
         `);
         expect(ProductHelper.getProductWithoutCommonAttributes(product, [compareProduct2])).toMatchInlineSnapshot(`
-          Object {
-            "attributes": Array [
-              Object {
+          {
+            "attributes": [
+              {
                 "name": "Focal length (35mm film equivalent)",
               },
             ],
@@ -295,12 +295,12 @@ describe('Product Helper', () => {
         `);
         expect(ProductHelper.getProductWithoutCommonAttributes(product, [compareProduct1, compareProduct2]))
           .toMatchInlineSnapshot(`
-          Object {
-            "attributes": Array [
-              Object {
+          {
+            "attributes": [
+              {
                 "name": "Focal length (35mm film equivalent)",
               },
-              Object {
+              {
                 "name": "Image formats supported",
               },
             ],
@@ -351,7 +351,7 @@ describe('Product Helper', () => {
 
     it('should return current product information if no new product information is provided', () => {
       expect(ProductHelper.updateProductInformation(detailProduct, undefined)).toMatchInlineSnapshot(`
-        Object {
+        {
           "available": true,
           "completenessLevel": 3,
           "manufacturer": "Detail Manufacturer",
@@ -364,7 +364,7 @@ describe('Product Helper', () => {
 
     it('should return new product information if no product information exists', () => {
       expect(ProductHelper.updateProductInformation(undefined, stubProduct)).toMatchInlineSnapshot(`
-        Object {
+        {
           "available": false,
           "completenessLevel": 0,
           "longDescription": "additional info",
@@ -376,7 +376,7 @@ describe('Product Helper', () => {
 
     it('should return new product information if completeness level ist higher', () => {
       expect(ProductHelper.updateProductInformation(listProduct, detailProduct)).toMatchInlineSnapshot(`
-        Object {
+        {
           "available": true,
           "completenessLevel": 3,
           "manufacturer": "Detail Manufacturer",
@@ -389,7 +389,7 @@ describe('Product Helper', () => {
 
     it('should return new product information if completeness level ist equal', () => {
       expect(ProductHelper.updateProductInformation(stubProduct, stubProduct2)).toMatchInlineSnapshot(`
-        Object {
+        {
           "available": true,
           "completenessLevel": 0,
           "name": "Stub Product 2",
@@ -400,7 +400,7 @@ describe('Product Helper', () => {
 
     it('should return updated current product information if completeness level ist lower', () => {
       expect(ProductHelper.updateProductInformation(detailProduct, stubProduct)).toMatchInlineSnapshot(`
-        Object {
+        {
           "available": false,
           "availableStock": undefined,
           "completenessLevel": 3,

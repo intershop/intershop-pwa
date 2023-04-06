@@ -38,7 +38,7 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
       {
         key: 'desiredDeliveryDate',
         type: 'ish-date-picker-field',
-        templateOptions: {
+        props: {
           postWrappers: [{ wrapper: 'description', index: -1 }],
           label: 'checkout.desired_delivery_date.label',
           customDescription: {
@@ -54,12 +54,12 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
         validators: {
           noSaturday: {
             expression: (control: FormControl, field: FormlyFieldConfig) =>
-              field.templateOptions.isSatExcluded ? SpecialValidators.noSaturday(control) : () => true,
+              field.props.isSatExcluded ? SpecialValidators.noSaturday(control) : () => true,
             message: 'checkout.desired_delivery_date.error.no_saturday',
           },
           noSunday: {
             expression: (control: FormControl, field: FormlyFieldConfig) =>
-              field.templateOptions.isSunExcluded ? SpecialValidators.noSunday(control) : () => true,
+              field.props.isSunExcluded ? SpecialValidators.noSunday(control) : () => true,
             message: 'checkout.desired_delivery_date.error.no_sunday',
           },
         },

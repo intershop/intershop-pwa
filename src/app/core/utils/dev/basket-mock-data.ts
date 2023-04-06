@@ -95,7 +95,7 @@ export class BasketMockData {
         {
           key: 'IBAN',
           type: 'input',
-          templateOptions: {
+          props: {
             type: 'text',
             required: true,
           },

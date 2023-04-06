@@ -80,28 +80,10 @@
       "description": "Create a store group.",
       "schema": "./store-group/schema.json"
     },
-    "kubernetes-deployment": {
-      "factory": "./kubernetes-deployment/factory#createKubernetesDeployment",
-      "description": "Create Kubernetes Charts.",
-      "schema": "./kubernetes-deployment/schema.json",
-      "hidden": true
-    },
-    "azure-pipeline": {
-      "factory": "./azure-pipeline/factory#createAzurePipeline",
-      "description": "Create Azure Pipeline.",
-      "schema": "./azure-pipeline/schema.json",
-      "hidden": true
-    },
     "move-component": {
       "factory": "./helpers/move-component/factory#move",
       "description": "Move Component.",
       "schema": "./helpers/move-component/schema.json",
-      "hidden": true
-    },
-    "decontainerize-0.16-to-0.17": {
-      "factory": "./migration/decontainerize-0.16-to-0.17/factory#decontainerize",
-      "description": "Perform de-containerization from 0.15 to 0.16.",
-      "schema": "./migration/decontainerize-0.16-to-0.17/schema.json",
       "hidden": true
     },
     "add-destroy": {
@@ -119,6 +101,11 @@
       "description": "A blank schematic.",
       "factory": "./eslint-rule/factory#eslintRule",
       "schema": "./eslint-rule/schema.json"
+    },
+    "formly-migrate": {
+      "description": "Helper to migrate formly 5 to version 6.",
+      "factory": "./migration/formly-5-to-6/factory#migrateFormly",
+      "schema": "./migration/formly-5-to-6/schema.json"
     }
   }
 }

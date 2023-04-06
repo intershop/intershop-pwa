@@ -464,7 +464,7 @@ if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
   type MetricsMessage = { topic: string };
   process.on('message', (msg: MetricsMessage) => {
     if (msg.topic === 'getMetrics') {
-      client.register.getMetricsAsJSON().then((data: client.metric[]) => {
+      client.register.getMetricsAsJSON().then((data: client.MetricObject[]) => {
         process.send({
           type: 'process:msg',
           data: {

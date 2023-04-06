@@ -25,7 +25,7 @@ describe('Loading Page Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-loading",
       ]
     `);

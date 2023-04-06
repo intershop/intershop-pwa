@@ -27,5 +27,5 @@ export const getMostRecentlyViewedProducts = createSelector(
   getRecentlyViewedProducts,
   getSelectedProduct,
   (skus, selected): string[] =>
-    selected ? skus.filter(productSKU => productSKU && productSKU !== selected.sku).slice(0, 4) : skus.slice(0, 4)
+    selected ? skus.filter(productSKU => productSKU && productSKU !== selected.sku).slice(0, 12) : skus.slice(0, 12)
 );

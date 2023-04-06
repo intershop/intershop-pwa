@@ -20,6 +20,7 @@ export class PunchoutProductContextDisplayPropertiesService implements ExternalD
         isPunchoutUser
           ? {
               addToQuote: false,
+              addToNotification: false,
               shipment: false,
             }
           : {}

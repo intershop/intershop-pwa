@@ -6,7 +6,7 @@ import { FieldType } from '@ngx-formly/core';
  * Type that will render an <ish-formly-address-form> component
  * and configure it to use the current form as its parent.
  *
- * @templateOption **businessCustomer** will be passed on to the component (see component documentation for infos).
+ * @props **businessCustomer** will be passed on to the component (see component documentation for infos).
  */
 @Component({
   selector: 'ish-registration-address-field',

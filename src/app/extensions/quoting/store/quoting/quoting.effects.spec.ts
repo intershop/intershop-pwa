@@ -7,7 +7,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { delay, toArray } from 'rxjs/operators';
-import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -109,22 +109,13 @@ describe('Quoting Effects', () => {
     });
 
     it('should navigate to created quote request 4', done => {
-      const routerSpy = spy(router);
-
-      when(routerSpy.navigateByUrl(anyString())).thenReturn(Promise.resolve(true));
+      const routerSpy = jest.spyOn(router, 'navigateByUrl');
 
       actions$ = of(createQuoteRequestFromQuoteSuccess({ entity: { id: '123' } as QuoteRequest }));
 
       effects.redirectToNewQuoteRequest$.subscribe({ next: noop, error: fail, complete: noop });
 
-      verify(routerSpy.navigateByUrl(anything())).once();
-
-      expect(capture(routerSpy.navigateByUrl).last()).toMatchInlineSnapshot(`
-        Array [
-          "/account/quotes/123",
-        ]
-      `);
-
+      expect(routerSpy).toHaveBeenCalledWith('/account/quotes/123');
       done();
     });
   });
@@ -330,7 +321,7 @@ describe('Quoting Effects', () => {
       effects.addProductToQuoteRequest$.subscribe(() => {
         verify(quotingService.addProductToQuoteRequest(anything(), anything())).once();
         expect(capture(quotingService.addProductToQuoteRequest).last()).toMatchInlineSnapshot(`
-          Array [
+          [
             "SKU",
             10,
           ]
@@ -366,10 +357,10 @@ describe('Quoting Effects', () => {
       effects.updateQuoteRequest$.subscribe(() => {
         verify(quotingService.updateQuoteRequest(anything(), anything())).once();
         expect(capture(quotingService.updateQuoteRequest).last()).toMatchInlineSnapshot(`
-          Array [
+          [
             "quoteRequestID",
-            Array [
-              Object {
+            [
+              {
                 "itemId": "ITEM",
                 "type": "remove-item",
               },

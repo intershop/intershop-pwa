@@ -118,9 +118,9 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
 
     if (param.key === 'mandateText') {
       param.type = 'ish-checkbox-field';
-      param.templateOptions.fieldClass = 'offset-md-4 col-md-6';
-      param.templateOptions.labelClass = '';
-      param.templateOptions.label = this.getParamValue('mandateText', '');
+      param.props.fieldClass = 'offset-md-4 col-md-6';
+      param.props.labelClass = '';
+      param.props.label = this.getParamValue('mandateText', '');
       param.defaultValue = false;
       param.hide = false;
       param.validators = [Validators.pattern('false')];

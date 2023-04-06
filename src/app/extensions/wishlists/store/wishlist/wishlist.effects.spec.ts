@@ -527,13 +527,13 @@ describe('Wishlist Effects', () => {
 
       effects.setWishlistBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
-          Object {
-            "breadcrumbData": Array [
-              Object {
+          {
+            "breadcrumbData": [
+              {
                 "key": "account.wishlists.breadcrumb_link",
                 "link": "/account/wishlists",
               },
-              Object {
+              {
                 "text": "testing wishlist",
               },
             ],

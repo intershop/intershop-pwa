@@ -19,7 +19,7 @@
     data-testing-id="out-of-stock-warning"
     class="alert alert-info"
   >
-    {{ 'account.order_template.out_of_stock.warning' | translate: { num: noOfUnavailableProducts } }}
+    {{ 'account.order_template.out_of_stock.warning' | translate : { num: noOfUnavailableProducts } }}
   </p>
 
   <div class="section">
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="list-body">
-        <ng-container *ngFor="let item of orderTemplate.items; let i = index">
+        <ng-container *ngFor="let item of orderTemplate.items; let i = index; trackBy: trackByFn">
           <div class="list-item-row list-item-row-big">
             <ish-account-order-template-detail-line-item
               ishProductContext

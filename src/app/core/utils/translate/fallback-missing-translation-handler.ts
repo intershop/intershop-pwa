@@ -12,6 +12,7 @@ import { EMPTY, concat, defer, iif, of } from 'rxjs';
 import { filter, first, map, tap } from 'rxjs/operators';
 
 import { getSpecificServerTranslation, loadSingleServerTranslation } from 'ish-core/store/core/configuration';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 export const FALLBACK_LANG = new InjectionToken<string>('fallbackTranslateLanguage');
@@ -23,7 +24,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
     private translateCompiler: TranslateCompiler,
     private translateParser: TranslateParser,
     private errorHandler: ErrorHandler,
-    @Inject(FALLBACK_LANG) private fallback: string,
+    @Inject(FALLBACK_LANG) private fallback: InjectSingle<typeof FALLBACK_LANG>,
     private store: Store
   ) {}
 

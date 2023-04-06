@@ -11,9 +11,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailActionsComponent implements OnInit {
-  /**
-   * TODO: to be removed once channelName information available in system
-   */
+  // TODO: to be removed once channelName information available in system
   channelName = 'inTRONICS';
 
   product$: Observable<ProductView>;

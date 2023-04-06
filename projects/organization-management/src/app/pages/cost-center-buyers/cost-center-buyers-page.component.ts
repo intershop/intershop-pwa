@@ -74,12 +74,12 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
   }
 
   getModel(buyers: B2bUser[], currency: string) {
-    const inactivetext = this.translateService.instant('account.user.list.status.inactive');
+    const inactiveText = this.translateService.instant('account.user.list.status.inactive');
     return {
       addBuyers: buyers.map(buyer => ({
         selected: false,
         name: `${buyer.firstName} ${buyer.lastName} ${
-          !buyer.active ? `<p class="input-help">${inactivetext}</p>` : ''
+          !buyer.active ? `<p class="input-help">${inactiveText}</p>` : ''
         } `,
         login: buyer.login,
         budgetValue: undefined,
@@ -94,7 +94,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
       {
         key: 'addBuyers',
         type: 'repeatCostCenterBuyers',
-        templateOptions: {},
+        props: {},
         fieldArray: {
           fieldGroupClassName: 'row list-item-row',
           fieldGroup: [
@@ -103,7 +103,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
               key: 'selected',
               defaultValue: false,
               className: 'col-1 col-md-2 list-item pb-0',
-              templateOptions: {
+              props: {
                 fieldClass: 'offset-md-2 col-2 mt-1',
               },
             },
@@ -111,7 +111,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
               key: 'name',
               type: 'ish-html-text-field',
               className: 'col-11 col-sm-10 col-md-3 list-item pb-0',
-              templateOptions: {
+              props: {
                 inputClass: 'col-form-label pb-0',
               },
             },
@@ -119,7 +119,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
               key: 'budgetValue',
               type: 'ish-text-input-field',
               className: 'col-6 col-md-4 list-item',
-              templateOptions: {
+              props: {
                 fieldClass: 'col-12',
                 postWrappers: [{ wrapper: 'input-addon', index: -1 }],
                 addonLeft: {
@@ -139,7 +139,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
               key: 'budgetPeriod',
               type: 'ish-select-field',
               className: 'col-6 col-md-3 list-item',
-              templateOptions: {
+              props: {
                 fieldClass: 'col-12',
                 options: FormsService.getCostCenterBudgetPeriodOptions(),
               },

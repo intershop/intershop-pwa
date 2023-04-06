@@ -51,7 +51,7 @@ export class BasketValidationEffects {
     },
     [CheckoutStepType.Shipping]: { scopes: ['Shipping'], route: '/checkout/shipping' },
     [CheckoutStepType.Payment]: { scopes: ['Payment'], route: '/checkout/payment' },
-    [CheckoutStepType.Review]: { scopes: ['All', 'CostCenter'], route: '/checkout/review' }, // ToDo: has to be changed if the cost center approval has been implemented
+    [CheckoutStepType.Review]: { scopes: ['All', 'CostCenter'], route: '/checkout/review' },
     [CheckoutStepType.Receipt]: { scopes: ['All'], route: 'auto' }, // targetRoute will be calculated in dependence of the validation result
   };
 

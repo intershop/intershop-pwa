@@ -33,6 +33,7 @@ export class ProductContextDisplayPropertiesService implements ExternalDisplayPr
           addToOrderTemplate: canBeOrdered,
           addToCompare: !ProductHelper.isMasterProduct(product),
           addToQuote: canBeOrdered,
+          addToNotification: !ProductHelper.isRetailSet(product) && !ProductHelper.isMasterProduct(product),
         };
 
         return (

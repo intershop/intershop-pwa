@@ -2,12 +2,7 @@
   <div *ngIf="products.length" class="product-list-container" data-testing-id="recently-viewed">
     <h2>{{ 'recentlyViewed.component.heading' | translate }}</h2>
 
-    <!-- TODO: carousel or better clearing after 4 elements with intended CSS classes -->
-    <div class="product-list row">
-      <div *ngFor="let productSku of products" class="col-6 col-lg-3 product-list-item">
-        <ish-product-item ishProductContext [sku]="productSku" displayType="tile"></ish-product-item>
-      </div>
-    </div>
+    <ish-products-list [productSKUs]="products" listStyle="carousel" listItemStyle="tile"></ish-products-list>
 
     <a [routerLink]="['/recently']" class="view-all" data-testing-id="view-all">{{
       'common.view_all.link' | translate

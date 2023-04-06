@@ -31,7 +31,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
 
   itemHasBeenRemoved = false;
 
-  // default values to controll scrolling behavior
+  // default values to control scrolling behavior
   scrollDuration = 500;
   scrollSpacing = 64;
 

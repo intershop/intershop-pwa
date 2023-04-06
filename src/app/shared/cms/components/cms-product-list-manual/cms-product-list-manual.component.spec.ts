@@ -42,7 +42,7 @@ describe('Cms Product List Manual Component', () => {
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(component.productSKUs).toMatchInlineSnapshot(`
-      Array [
+      [
         "1",
         "2",
       ]

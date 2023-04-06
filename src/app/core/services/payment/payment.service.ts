@@ -364,7 +364,6 @@ export class PaymentService {
         parameters: paymentInstrument.parameters.map(attr => ({ key: attr.name, property: attr.value })),
       };
 
-      // TODO: Replace this PUT request with PATCH request once it is fixed in ICM
       return this.apiService
         .put(`customers/-/payments/${paymentInstrument.id}`, body)
         .pipe(map(() => paymentInstrument));

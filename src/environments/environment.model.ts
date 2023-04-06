@@ -1,6 +1,5 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
-import { PriceUpdateType } from 'ish-core/models/price/price.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
@@ -19,14 +18,15 @@ export interface Environment {
   // array of REST path expressions that should always be mocked
   apiMockPaths?: string[];
 
-  // temporarily hard-coded identity provider ID, later supplied by configurations call
-  identityProvider: 'ICM' | string;
+  // global identity provider ID (fallback 'ICM')
+  identityProvider?: string;
 
   /* FEATURE TOGGLES */
   features: (
     | 'compare'
     | 'rating'
     | 'recently'
+    | 'productNotifications'
     | 'storeLocator'
     | 'contactUs'
     /* B2B features */
@@ -131,7 +131,7 @@ export interface Environment {
    * - 'always': fetch fresh price information all the time
    * - 'stable': only fetch prices once per application lifetime
    */
-  priceUpdate: PriceUpdateType;
+  priceUpdate: 'stable' | 'always';
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
@@ -141,10 +141,9 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
   hybridApplication: '-',
-  identityProvider: 'ICM',
 
   /* FEATURE TOGGLES */
-  features: ['compare', 'contactUs', 'rating', 'recently', 'storeLocator'],
+  features: ['compare', 'contactUs', 'productNotifications', 'rating', 'recently', 'storeLocator'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,

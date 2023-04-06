@@ -114,10 +114,8 @@
   margin-bottom: $space-default * 2;
 
   .list-item-row {
-    @media (max-width: $screen-xs-max) {
-      margin-bottom: ($space-default);
-      border-bottom: 1px solid $border-color-lighter;
-    }
+    margin-bottom: ($space-default);
+    border-bottom: 1px solid $border-color-lighter;
 
     &.list-item-row-big {
       padding-bottom: ($space-default * 0.5);
@@ -129,10 +127,6 @@
           border-top: 1px solid $border-color-lighter;
         }
       }
-    }
-
-    &:last-child {
-      border-bottom: 1px solid $border-color-lighter;
     }
 
     .list-item {
@@ -221,7 +215,7 @@
   display: inline-block;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .table-compare > .fixed-column {
     display: none;
   }
@@ -272,7 +266,7 @@
       border: 0;
     }
 
-    @media (max-width: 767px) {
+    @media (width <= 767px) {
       td,
       th {
         min-width: 400px;

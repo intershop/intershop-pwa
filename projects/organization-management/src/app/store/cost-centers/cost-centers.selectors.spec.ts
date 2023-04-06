@@ -203,7 +203,7 @@ describe('Cost Centers Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getCostCentersError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -266,7 +266,7 @@ describe('Cost Centers Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getCostCentersError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -331,7 +331,7 @@ describe('Cost Centers Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getCostCentersError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -396,7 +396,7 @@ describe('Cost Centers Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getCostCentersError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }
@@ -461,7 +461,7 @@ describe('Cost Centers Selectors', () => {
 
       it('should add the error to state', () => {
         expect(getCostCentersError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "invalid",
             "name": "HttpErrorResponse",
           }

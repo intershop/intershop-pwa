@@ -137,8 +137,8 @@ describe('Categories Selectors', () => {
 
       it('should set a category page breadcrumb when selected', () => {
         expect(getBreadcrumbForCategoryPage(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "link": undefined,
               "text": "nA",
             },
@@ -158,12 +158,12 @@ describe('Categories Selectors', () => {
 
         it('should set a category page breadcrumb when selected', () => {
           expect(getBreadcrumbForCategoryPage(store$.state)).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "link": "/na-ctgA",
                 "text": "nA",
               },
-              Object {
+              {
                 "link": undefined,
                 "text": "nA1",
               },
@@ -188,14 +188,14 @@ describe('Categories Selectors', () => {
     describe('selecting navigation categories', () => {
       it('should select top level categories when no argument was supplied', () => {
         expect(getNavigationCategories(undefined)(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "hasChildren": true,
               "name": "name_A",
               "uniqueId": "A",
               "url": "/name_a-ctgA",
             },
-            Object {
+            {
               "hasChildren": false,
               "name": "name_B",
               "uniqueId": "B",
@@ -207,14 +207,14 @@ describe('Categories Selectors', () => {
 
       it('should select sub categories when sub category is selected', () => {
         expect(getNavigationCategories('A')(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "hasChildren": true,
               "name": "name_A.1",
               "uniqueId": "A.1",
               "url": "/name_a/name_a.1-ctgA.1",
             },
-            Object {
+            {
               "hasChildren": false,
               "name": "name_A.2",
               "uniqueId": "A.2",
@@ -226,14 +226,14 @@ describe('Categories Selectors', () => {
 
       it('should select deeper sub categories when deeper sub category is selected', () => {
         expect(getNavigationCategories('A.1')(store$.state)).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "hasChildren": false,
               "name": "name_A.1.a",
               "uniqueId": "A.1.a",
               "url": "/name_a/name_a.1/name_a.1.a-ctgA.1.a",
             },
-            Object {
+            {
               "hasChildren": false,
               "name": "name_A.1.b",
               "uniqueId": "A.1.b",

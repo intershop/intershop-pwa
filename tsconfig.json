@@ -8,12 +8,13 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     // leave this as CommonJS, so scripts can be run with 'npx ts-node'
-    // see https://github.com/TypeStrong/ts-node#import-statements
+    // see https://github.com/TypeStrong/ts-node#commonjs-vs-native-ecmascript-modules
     "module": "CommonJS",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "paths": {
       "ish-core/*": ["src/app/core/*"],
       "ish-shared/*": ["src/app/shared/*"],
@@ -26,10 +27,12 @@
       ],
       "swiper_angular": ["node_modules/swiper/angular"]
     },
-    "lib": ["es2018", "dom"],
+    "lib": ["ES2022", "dom"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "useDefineForClassFields": false,
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

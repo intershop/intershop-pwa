@@ -4,7 +4,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { BehaviorSubject, EMPTY, Observable, Subject, noop, of, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { anyString, anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -111,22 +111,23 @@ describe('Punchout Identity Provider', () => {
     });
 
     it('should return to home page per default on subscribe', done => {
-      const routerSpy = spy(router);
+      const routerSpy = jest.spyOn(router, 'parseUrl');
 
       const logoutTrigger$ = punchoutIdentityProvider.triggerLogout() as Observable<UrlTree>;
 
       logoutTrigger$.subscribe(() => {
-        verify(routerSpy.parseUrl('/home')).once();
+        expect(routerSpy).toHaveBeenCalledWith('/home');
         done();
       });
     });
   });
+
   describe('triggerLogin', () => {
-    let routerSpy: Router;
+    let routerSpy: unknown;
     let queryParams = {};
 
     beforeEach(() => {
-      routerSpy = spy(router);
+      routerSpy = jest.spyOn(router, 'parseUrl');
       punchoutIdentityProvider.init();
       when(accountFacade.userError$).thenReturn(timer(Infinity).pipe(switchMap(() => EMPTY)));
       when(accountFacade.isLoggedIn$).thenReturn(of(true));
@@ -202,7 +203,7 @@ describe('Punchout Identity Provider', () => {
 
             tick(500);
             verify(checkoutFacade.loadBasketWithId('basket-id')).once();
-            verify(routerSpy.parseUrl('/home')).once();
+            expect(routerSpy).toHaveBeenCalledWith('/home');
           }));
         });
 
@@ -218,7 +219,7 @@ describe('Punchout Identity Provider', () => {
             login$.subscribe(() => {
               verify(cookiesService.put('punchout_HookURL', 'url', anything())).once();
               verify(checkoutFacade.createBasket()).once();
-              verify(routerSpy.parseUrl('/home')).once();
+              expect(routerSpy).toHaveBeenCalledWith('/home');
               done();
             });
           });
@@ -245,7 +246,7 @@ describe('Punchout Identity Provider', () => {
                 boolean | UrlTree
               >;
               login$.subscribe(() => {
-                verify(routerSpy.parseUrl(`/product/${productId}`)).once();
+                expect(routerSpy).toHaveBeenCalledWith(`/product/${productId}`);
                 done();
               });
             });
@@ -322,7 +323,7 @@ describe('Punchout Identity Provider', () => {
             verify(accountFacade.logoutUser()).once();
             verify(apiTokenService.removeApiToken()).once();
             verify(appFacade.setBusinessError(error.toString()));
-            verify(routerSpy.parseUrl('/error')).once();
+            expect(routerSpy).toHaveBeenCalledWith('/error');
           }));
         });
       });
@@ -340,7 +341,7 @@ describe('Punchout Identity Provider', () => {
           >;
           login$.subscribe(() => {
             verify(appFacade.setBusinessError(anything())).once();
-            verify(routerSpy.parseUrl('/error')).once();
+            expect(routerSpy).toHaveBeenCalledWith('/error');
             done();
           });
         });

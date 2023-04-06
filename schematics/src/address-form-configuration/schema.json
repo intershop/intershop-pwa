@@ -16,7 +16,10 @@
     "path": {
       "type": "string",
       "format": "path",
-      "visible": false
+      "visible": false,
+      "$default": {
+        "$source": "workingDirectory"
+      }
     },
     "countryCode": {
       "type": "string",

@@ -66,7 +66,7 @@ describe('Basket Invoice Address Widget Component', () => {
     fixture.detectChanges();
 
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "create-invoice-address-link",
         "invoice-address-form",
       ]
@@ -83,14 +83,14 @@ describe('Basket Invoice Address Widget Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        Array [
+        [
           "fa-icon",
           "ish-address",
           "ish-formly-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-        Array [
+        [
           "edit-invoice-address-link",
           "create-invoice-address-link",
           "invoice-address-form",
@@ -104,13 +104,13 @@ describe('Basket Invoice Address Widget Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        Array [
+        [
           "ish-address",
           "ish-formly-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-        Array [
+        [
           "invoice-address-form",
         ]
       `);
@@ -126,13 +126,13 @@ describe('Basket Invoice Address Widget Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        Array [
+        [
           "ish-address",
           "ish-formly-customer-address-form",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-        Array [
+        [
           "invoice-address-form",
         ]
       `);
@@ -162,7 +162,7 @@ describe('Basket Invoice Address Widget Component', () => {
 
       component.addresses$.subscribe(addrs => {
         expect(addrs.map(add => add.id)).toMatchInlineSnapshot(`
-                Array [
+                [
                   "3",
                   "4",
                 ]

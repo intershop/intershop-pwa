@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 
-@Injectable({ providedIn: 'root' })
-export class RedirectFirstToParentGuard implements CanActivate {
-  constructor(private router: Router) {}
+/**
+ * Redirects the user to the parent page if the requested page is the starting page (first page the user requested)
+ */
+export function redirectFirstToParentGuard(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
+  const router = inject(Router);
 
-  canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-    if (!this.router.navigated) {
-      return this.router.parseUrl(state.url.replace(/\/\w+$/, ''));
-    }
-    return true;
+  if (!router.navigated) {
+    return router.parseUrl(state.url.replace(/\/\w+$/, ''));
   }
+  return true;
 }

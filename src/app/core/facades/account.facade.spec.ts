@@ -74,7 +74,7 @@ describe('Account Facade', () => {
 
       it('should dispatch loading action and select addresses when user is present', done => {
         facade.addresses$().subscribe(data => {
-          expect(data).toMatchInlineSnapshot(`Array []`);
+          expect(data).toMatchInlineSnapshot(`[]`);
 
           verify(storeSpy$.dispatch(anything())).once();
 

@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize]
 
 env:
-  NODE_VERSION: 16.16.0
+  NODE_VERSION: 18.15.0
 
 jobs:
   Docs:
@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 16
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}

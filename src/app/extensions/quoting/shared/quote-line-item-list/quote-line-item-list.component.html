@@ -12,7 +12,7 @@
   </div>
   <div class="list-body">
     <ish-quote-line-item-list-element
-      *ngFor="let pli of lineItems$ | async"
+      *ngFor="let pli of lineItems$ | async; trackBy: trackByFn"
       [lineItem]="pli"
       ishProductContext
       [allowZeroQuantity]="true"

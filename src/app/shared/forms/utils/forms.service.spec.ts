@@ -61,12 +61,12 @@ describe('Forms Service', () => {
         ] as Address[])
       ).subscribe((options: SelectOption[]) => {
         expect(options).toMatchInlineSnapshot(`
-          Array [
-            Object {
+          [
+            {
               "label": "Patricia Miller, Potsdamer Str., Berlin",
               "value": "12345",
             },
-            Object {
+            {
               "label": "Bernhard Boldner, Berliner Str., Hamburg",
               "value": "67890",
             },

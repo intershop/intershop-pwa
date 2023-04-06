@@ -27,8 +27,8 @@ describe('Search Selector', () => {
 
     it('should get search results when searchTerm exists', () => {
       expect(getSuggestSearchResults('searchTerm')(store$.state)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "term": "term",
           },
         ]

@@ -12,25 +12,18 @@
     </button>
   </div>
 
-  <div class="modal-body">
-    <form [formGroup]="wishListForm" (ngSubmit)="submitWishlistForm()">
-      <!-- TODO: Show server error -->
+  <form [formGroup]="wishListForm" (ngSubmit)="submitWishlistForm()">
+    <div class="modal-body">
       <formly-form [form]="wishListForm" [fields]="fields" [model]="model"> </formly-form>
-    </form>
-  </div>
+    </div>
 
-  <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-primary"
-      [disabled]="formDisabled"
-      (click)="submitWishlistForm()"
-      data-testing-id="wishlist-dialog-submit"
-    >
-      {{ primaryButton | translate }}
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="hide()">
-      {{ 'account.wishlists.wishlist_form.cancel_button.text' | translate }}
-    </button>
-  </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="wishlist-dialog-submit">
+        {{ primaryButton | translate }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="hide()">
+        {{ 'account.wishlists.wishlist_form.cancel_button.text' | translate }}
+      </button>
+    </div>
+  </form>
 </ng-template>

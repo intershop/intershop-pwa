@@ -18,34 +18,35 @@ In addition, the PWA, when run with Angular Universal, consists of a server-side
 ### Angular CLI Environments
 
 The standard way of configuring an Angular Application can be done by managing multiple environment files that are part of the project's source tree, usually located in _src/environments._ To choose one configuration, you have to supply the parameter when building the Angular Application.
-The file _angular.json_ defines how the correct environment file is swapped in for the corresponding environment.
-See [Configuring application environments](https://angular.io/guide/build#configure-environment-specific-defaults) for further information.
+See [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md) and [Configuring application environments](https://angular.io/guide/build#configure-environment-specific-defaults) for further information.
 
-Properties supplied with environment files should not be accessed directly in artifacts other than modules.
+Properties supplied with environment files should not be accessed directly in artifacts.
 Instead, you need to provide them via `InjectionToken`s to be used in components, pipes or services.
-The `InjectionToken` can be used to access a certain property later on:
+Standard `InjectionToken`s are defined in [`injection-keys.ts`](../../src/app/core/configurations/injection-keys.ts).
+To create new keys for the standard PWA, use this file; project customizations should create their own file next to it.
+
+First extend the [`environment.model`](../../src/environments/environment.model.ts) to support your new property.
+Then define an `InjectionToken` that can be used to access a certain property later on:
 
 ```typescript
-export const PROPERTY = new InjectionToken<string>('property');
-
-@NgModule({
-  providers: [{ provide: PROPERTY, useValue: environment.property }],
-})
-export class SomeModule {}
+export const PROPERTY = createEnvironmentInjectionToken('property');
 ```
 
-**Property consumer**
+The new token is automatically initialized with the default value from the Angular CLI environment files.
+To override it in tests, you can provide it in the `TestBed` configuration.
+
+To inject the property with dependency injection use the helper [`InjectSingle`](../../src/app/core/utils/injection.ts) to properly inherit type information:
 
 ```typescript
 import { Inject } from '@angular/core'
-import { PROPERTY } from '../injection-keys'
+
+import { PROPERTY } from 'ish-core/configurations/injection-keys'
+import { InjectSingle } from 'ish-core/utils/injection';
 
 ...
 
-constructor(@Inject(PROPERTY) private property: string)
+constructor(@Inject(PROPERTY) private property: InjectSingle<typeof PROPERTY>)
 ```
-
-It is good practice to never write those properties at runtime.
 
 As can be seen here, only build-time and deploy-time configuration parameter can be supplied this way.
 
@@ -154,6 +155,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | compare                      | product compare feature (additional configuration via `dataRetention` configuration options)                               |
 | contactUs                    | allows the user to contact the website provider via a contact web form                                                     |
+| productNotifications         | product notifications feature for price and in stock notifications                                                         |
 | rating                       | display product ratings                                                                                                    |
 | recently                     | display recently viewed products (additional configuration via `dataRetention` configuration options)                      |
 | storeLocator                 | display physical stores and their addresses                                                                                |
@@ -190,13 +192,13 @@ const routes: Routes = [
   {
     path: 'quote',
     loadChildren: ...,
-    canActivate: [FeatureToggleGuard],
+    canActivate: [featureToggleGuard],
     data: { feature: 'quoting' },
   },
 ...
 ```
 
-Add the Guard as `CanActivate` to the routing definition.
+Add the Guard as `canActivate` to the routing definition.
 Additionally, you have to supply a `data` field called `feature`, containing a string that determines for which feature the route should be active.
 If the feature is deactivated, the user is sent to the error page on accessing.
 
@@ -275,6 +277,27 @@ To add other languages except English, German or French:
 
    ```typescript
    registerLocaleData(localeNl);
+   ```
+
+7. Add new json-mapping-file import to `LOCAL_TRANSLATIONS` injection token in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts) provider:
+
+   ```typescript
+    providers: [
+      {
+        provide: LOCAL_TRANSLATIONS,
+        useValue: {
+          useFactory: (lang: string) => {
+            switch (lang) {
+              // other added json-mapping-file imports with translations
+              ...
+              case: nl_NL {
+                return import('../../assets/i18n/nl_NL.json');
+              }
+            }
+          },
+        },
+      }
+   ]
    ```
 
 # Further References

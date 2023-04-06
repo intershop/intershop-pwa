@@ -1,0 +1,61 @@
+<ng-template #modal let-selectModal>
+  <div class="modal-header">
+    <h2 class="modal-title">
+      <ng-container *ngIf="product$ | async as product">
+        {{ product.name }}
+      </ng-container>
+    </h2>
+    <button
+      type="button"
+      class="close"
+      [title]="'dialog.close.text' | translate"
+      [attr.aria-label]="'dialog.close.text' | translate"
+      (click)="hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <ng-container *ngIf="productNotification$ | async as productNotification; else createNotificationButton">
+    <form [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
+      <div class="modal-body">
+        <ish-product-image imageType="L"></ish-product-image>
+
+        <ish-product-notification-edit-form
+          [form]="productNotificationForm"
+          [productNotification]="productNotification"
+          [userEmail]="userEmail$ | async"
+        ></ish-product-notification-edit-form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" data-testing-id="product-notification-edit-dialog-edit">
+          {{ 'product.notification.edit.form.update.button.label' | translate }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="hide()">
+          {{ 'product.notification.edit.form.cancel.button.label' | translate }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-template #createNotificationButton>
+    <form [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
+      <div class="modal-body">
+        <ish-product-image imageType="L"></ish-product-image>
+
+        <ish-product-notification-edit-form
+          [form]="productNotificationForm"
+          [userEmail]="userEmail$ | async"
+        ></ish-product-notification-edit-form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">
+          {{ 'product.notification.edit.form.create.button.label' | translate }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="hide()">
+          {{ 'product.notification.edit.form.cancel.button.label' | translate }}
+        </button>
+      </div>
+    </form>
+  </ng-template>
+</ng-template>

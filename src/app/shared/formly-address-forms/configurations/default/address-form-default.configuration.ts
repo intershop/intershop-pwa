@@ -45,7 +45,7 @@ export class AddressFormDefaultConfiguration extends AddressFormConfiguration {
         {
           key: 'mainDivisionCode',
           type: 'ish-select-field',
-          templateOptions: {
+          props: {
             required: true,
             label: 'account.default_address.state.label',
             placeholder: 'account.option.select.text',

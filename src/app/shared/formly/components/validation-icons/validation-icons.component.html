@@ -8,9 +8,7 @@
   <ng-template #noError>
     <span class="has-success">
       <fa-icon
-        *ngIf="
-          field?.templateOptions?.showValidation ? field.templateOptions.showValidation(field) : defaultShowValidation()
-        "
+        *ngIf="field?.props?.showValidation ? field.props.showValidation(field) : defaultShowValidation()"
         class="form-control-feedback"
         [icon]="['fas', 'check']"
         data-testing-id="check-icon"

@@ -2,6 +2,7 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { mergeWith } from 'lodash-es';
 
+import { InjectMultiple } from 'ish-core/utils/injection';
 import { FieldLibraryConfiguration } from 'ish-shared/formly/field-library/configurations/field-library-configuration';
 
 export const FIELD_LIBRARY_CONFIGURATION = new InjectionToken<FieldLibraryConfiguration>(
@@ -18,9 +19,9 @@ export const FIELD_LIBRARY_CONFIGURATION_GROUP = new InjectionToken<Configuratio
 export class FieldLibrary {
   constructor(
     @Inject(FIELD_LIBRARY_CONFIGURATION)
-    fieldLibraryConfigurations: FieldLibraryConfiguration[],
+    fieldLibraryConfigurations: InjectMultiple<typeof FIELD_LIBRARY_CONFIGURATION>,
     @Inject(FIELD_LIBRARY_CONFIGURATION_GROUP)
-    fieldLibraryConfigurationGroups: ConfigurationGroup[]
+    fieldLibraryConfigurationGroups: InjectMultiple<typeof FIELD_LIBRARY_CONFIGURATION_GROUP>
   ) {
     // create configuration dictionary from array
     this.configurations = fieldLibraryConfigurations?.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {}) ?? {};
@@ -48,7 +49,7 @@ export class FieldLibrary {
     }
     let config = { key: id, ...this.configurations[id].getFieldConfig() };
     if (override) {
-      // modify the default lodash merge behaviour:
+      // modify the default lodash merge behavior:
       // if you are attempting to merge arrays, instead just overwrite with the new array
       config = mergeWith(config, override, (obj, src) => {
         if (Array.isArray(obj)) {

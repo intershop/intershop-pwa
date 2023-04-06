@@ -1,9 +1,8 @@
-import { Type } from '@angular/core';
-import { CanActivate, CanActivateChild, Router } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 
 export function addGlobalGuard(
   router: Router,
-  guard: Type<Partial<CanActivate & CanActivateChild>>,
+  guard: CanActivateFn,
   config: { canActivate: boolean; canActivateChild: boolean } = { canActivate: true, canActivateChild: true }
 ) {
   router.config.forEach(route => {
@@ -40,8 +39,8 @@ export function sanitizeSlugData(slugData: string) {
       .replace(/-+/g, '-')
       .replace(/-+$/, '')
       .toLowerCase()
-      .replace('pg', 'Pg')
-      .replace('prd', 'Prd')
-      .replace('ctg', 'Ctg') || ''
+      .replaceAll('pg', 'Pg')
+      .replaceAll('prd', 'Prd')
+      .replaceAll('ctg', 'Ctg') || ''
   );
 }

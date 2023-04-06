@@ -25,7 +25,7 @@ describe('Shipping Method Mapper', () => {
       expect(shippingMethod).toBeTruthy();
       expect(shippingMethod.name).toEqual('StdGround');
       expect(shippingMethod.shippingCosts).toMatchInlineSnapshot(`
-        Object {
+        {
           "currency": "USD",
           "gross": 43.34,
           "net": 40.34,

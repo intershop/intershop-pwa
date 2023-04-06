@@ -10,7 +10,7 @@ kb_sync_latest_only
 ## Quick Start
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
-Currently Node.js 16.x LTS with the corresponding npm is required.
+Currently Node.js 18.15.0 LTS with the corresponding npm 9.5.0 is used for development.
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install`.
 
@@ -41,7 +41,7 @@ For a production setup we recommend building the docker image supplied with the 
 Build it with `docker build -t my_pwa .`.
 To run the PWA with multiple channels you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
 
-We provide templates for [Kubernetes Deployments](../../schematics/src/kubernetes-deployment) and [DevOps](../../schematics/src/azure-pipeline) for Microsoft Azure.
+We provide [Helm Charts](https://github.com/intershop/helm-charts/tree/main/charts/pwa) for Kubernetes deployments.
 
 ## Running Tests
 

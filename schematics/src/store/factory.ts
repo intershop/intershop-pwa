@@ -210,6 +210,7 @@ export function createStore(options: Options): Rule {
           applyTemplates({
             ...strings,
             ...options,
+            actionTitle,
           }),
           move(options.path),
         ])
@@ -223,4 +224,8 @@ export function createStore(options: Options): Rule {
 
     return chain(operations);
   };
+}
+
+function actionTitle(name: string): string {
+  return name.replace(/[A-Z]/g, ' $&').trim();
 }

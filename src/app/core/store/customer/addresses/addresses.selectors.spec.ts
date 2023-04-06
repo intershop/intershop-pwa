@@ -76,7 +76,7 @@ describe('Addresses Selectors', () => {
         expect(getAddressesLoading(store$.state)).toBeFalse();
         expect(getAllAddresses(store$.state)).toBeEmpty();
         expect(getAddressesError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "error",
             "name": "HttpErrorResponse",
           }
@@ -116,7 +116,7 @@ describe('Addresses Selectors', () => {
         expect(getAddressesLoading(store$.state)).toBeFalse();
         expect(getAllAddresses(store$.state)).toBeEmpty();
         expect(getAddressesError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "error",
             "name": "HttpErrorResponse",
           }
@@ -156,7 +156,7 @@ describe('Addresses Selectors', () => {
         expect(getAddressesLoading(store$.state)).toBeFalse();
         expect(getAllAddresses(store$.state)).toBeEmpty();
         expect(getAddressesError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "error",
             "name": "HttpErrorResponse",
           }
@@ -210,7 +210,7 @@ describe('Addresses Selectors', () => {
         expect(getAddressesLoading(store$.state)).toBeFalse();
         expect(getAllAddresses(store$.state)).toEqual([address]);
         expect(getAddressesError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "error",
             "name": "HttpErrorResponse",
           }
@@ -252,7 +252,7 @@ describe('Addresses Selectors', () => {
         expect(getAddressesLoading(store$.state)).toBeFalse();
         expect(getAllAddresses(store$.state)).toEqual([address]);
         expect(getAddressesError(store$.state)).toMatchInlineSnapshot(`
-          Object {
+          {
             "message": "error",
             "name": "HttpErrorResponse",
           }

@@ -21,7 +21,7 @@ describe('Field Library', () => {
           provide: FIELD_LIBRARY_CONFIGURATION,
           useValue: {
             id: 'a',
-            getFieldConfig: () => ({ type: 'a', templateOptions: { label: 'a' } }),
+            getFieldConfig: () => ({ type: 'a', props: { label: 'a' } }),
           },
           multi: true,
         },
@@ -29,7 +29,7 @@ describe('Field Library', () => {
           provide: FIELD_LIBRARY_CONFIGURATION,
           useValue: {
             id: 'b',
-            getFieldConfig: () => ({ type: 'b', templateOptions: { label: 'b' } }),
+            getFieldConfig: () => ({ type: 'b', props: { label: 'b' } }),
           },
           multi: true,
         },
@@ -37,7 +37,7 @@ describe('Field Library', () => {
           provide: FIELD_LIBRARY_CONFIGURATION,
           useValue: {
             id: 'c',
-            getFieldConfig: () => ({ type: 'c', wrappers: ['w1', 'w2'], templateOptions: { label: 'c' } }),
+            getFieldConfig: () => ({ type: 'c', wrappers: ['w1', 'w2'], props: { label: 'c' } }),
           },
           multi: true,
         },
@@ -50,9 +50,9 @@ describe('Field Library', () => {
   describe('single configuration', () => {
     it('should get configuration by id', () => {
       expect(fieldLibrary.getConfiguration('a')).toMatchInlineSnapshot(`
-        Object {
+        {
           "key": "a",
-          "templateOptions": Object {
+          "props": {
             "label": "a",
           },
           "type": "a",
@@ -63,14 +63,14 @@ describe('Field Library', () => {
     it('should get configuration and override correctly', () => {
       expect(
         fieldLibrary.getConfiguration('a', {
-          templateOptions: {
+          props: {
             label: 'new label',
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "key": "a",
-          "templateOptions": Object {
+          "props": {
             "label": "new label",
           },
           "type": "a",
@@ -84,13 +84,13 @@ describe('Field Library', () => {
           wrappers: ['w2'],
         })
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "key": "c",
-          "templateOptions": Object {
+          "props": {
             "label": "c",
           },
           "type": "c",
-          "wrappers": Array [
+          "wrappers": [
             "w2",
           ],
         }
@@ -101,17 +101,17 @@ describe('Field Library', () => {
   describe('configuration group', () => {
     it('should get configuration group', () => {
       expect(fieldLibrary.getConfigurationGroup('ab')).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "key": "a",
-            "templateOptions": Object {
+            "props": {
               "label": "a",
             },
             "type": "a",
           },
-          Object {
+          {
             "key": "b",
-            "templateOptions": Object {
+            "props": {
               "label": "b",
             },
             "type": "b",
@@ -124,29 +124,29 @@ describe('Field Library', () => {
       expect(
         fieldLibrary.getConfigurationGroup('ab', {
           a: {
-            templateOptions: {
+            props: {
               label: 'new a label',
             },
           },
 
           b: {
-            templateOptions: {
+            props: {
               label: 'new b label',
             },
           },
         })
       ).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "key": "a",
-            "templateOptions": Object {
+            "props": {
               "label": "new a label",
             },
             "type": "a",
           },
-          Object {
+          {
             "key": "b",
-            "templateOptions": Object {
+            "props": {
               "label": "new b label",
             },
             "type": "b",
@@ -159,7 +159,7 @@ describe('Field Library', () => {
   describe('getAvailableConfigurationIds', () => {
     it('should get available ids', () => {
       expect(fieldLibrary.getAvailableConfigurationIds()).toMatchInlineSnapshot(`
-        Array [
+        [
           "a",
           "b",
           "c",

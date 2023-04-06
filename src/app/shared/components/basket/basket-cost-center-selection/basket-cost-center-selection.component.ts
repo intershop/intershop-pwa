@@ -97,7 +97,7 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
       {
         key: 'costCenter',
         type: 'ish-select-field',
-        templateOptions: {
+        props: {
           label: 'checkout.cost_center.select.label',
           required: true,
           hideRequiredMarker: true,

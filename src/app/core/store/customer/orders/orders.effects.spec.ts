@@ -427,22 +427,6 @@ describe('Orders Effects', () => {
     });
   });
 
-  describe('selectOrderAfterRedirectFailed', () => {
-    it('should navigate to /checkout/payment if order creation failed after redirect', done => {
-      actions$ = of(selectOrderAfterRedirectFail(undefined));
-
-      effects.selectOrderAfterRedirectFailed$.subscribe({
-        next: action => {
-          expect(action).toMatchInlineSnapshot(`[Basket Internal] Load Basket`);
-          expect(location.path()).toEqual('/checkout/payment?redirect=failure');
-          done();
-        },
-        error: fail,
-        complete: noop,
-      });
-    });
-  });
-
   describe('setOrderBreadcrumb$', () => {
     beforeEach(fakeAsync(() => {
       store.dispatch(loadOrdersSuccess({ orders }));
@@ -457,13 +441,13 @@ describe('Orders Effects', () => {
 
       effects.setOrderBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
-          Object {
-            "breadcrumbData": Array [
-              Object {
+          {
+            "breadcrumbData": [
+              {
                 "key": "account.order_history.link",
                 "link": "/account/orders",
               },
-              Object {
+              {
                 "text": "account.orderdetails.breadcrumb - 00000001",
               },
             ],

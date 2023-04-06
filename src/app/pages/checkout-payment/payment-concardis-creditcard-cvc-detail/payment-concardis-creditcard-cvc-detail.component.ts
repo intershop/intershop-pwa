@@ -39,7 +39,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
       {
         key: 'cvcDetail',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           required: true,
           label: 'checkout.credit_card.cvc.label',
           labelClass: 'col-5 col-md-7 pl-4',
@@ -139,7 +139,6 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
       } else {
         param.push({ name: 'cvcLastUpdated', value: new Date().toISOString() });
       }
-      // TODO: Replacing encoded paymentInstrumentId with Token for put request
       param.find(attribute => attribute.name === 'paymentInstrumentId').value = this.paymentInstrument.parameters.find(
         attribute => attribute.name === 'token'
       ).value;

@@ -52,7 +52,7 @@ describe('Date Picker Field Component', () => {
         {
           key: 'desiredDeliveryDate',
           type: 'ish-date-picker-field',
-          templateOptions: templateOptionsLoc,
+          props: templateOptionsLoc,
         } as FormlyFieldConfig,
       ],
       form: new FormGroup({}),

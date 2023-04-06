@@ -80,7 +80,7 @@
     </ng-container>
 
     <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order_total.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.totals?.total | ishPrice: 'gross' }}</dd>
+    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.totals?.total | ishPrice : 'gross' }}</dd>
 
     <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.approval_status.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-9">
@@ -110,7 +110,7 @@
             <ng-container *ngIf="requisition.systemRejectErrors?.length">
               {{
                 'approval.detailspage.approval_status.system_rejected.reasons.comment'
-                  | translate: { '0': requisition.systemRejectErrors.length }
+                  | translate : { '0': requisition.systemRejectErrors.length }
               }}
             </ng-container>
           </p>

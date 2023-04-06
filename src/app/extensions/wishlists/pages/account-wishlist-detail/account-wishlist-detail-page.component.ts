@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
-import { Wishlist } from '../../models/wishlist/wishlist.model';
+import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
 
 @Component({
   selector: 'ish-account-wishlist-detail-page',
@@ -29,5 +29,9 @@ export class AccountWishlistDetailPageComponent implements OnInit {
       ...wishlist,
       id: wishlistName,
     });
+  }
+
+  trackByFn(_: number, item: WishlistItem) {
+    return item.id;
   }
 }

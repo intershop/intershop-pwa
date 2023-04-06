@@ -8,6 +8,7 @@ import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/config
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty } from 'ish-core/utils/operators';
 
 SwiperCore.use([Navigation, Pagination]);
@@ -59,8 +60,8 @@ export class ProductLinksCarouselComponent {
   swiperConfig: SwiperOptions;
 
   constructor(
-    @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number,
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) mediumBreakpointWidth: number,
+    @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>,
+    @Inject(MEDIUM_BREAKPOINT_WIDTH) mediumBreakpointWidth: InjectSingle<typeof MEDIUM_BREAKPOINT_WIDTH>,
     private shoppingFacade: ShoppingFacade,
     private state: RxState<{
       products: string[];

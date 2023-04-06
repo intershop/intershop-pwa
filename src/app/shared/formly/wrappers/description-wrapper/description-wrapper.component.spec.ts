@@ -47,7 +47,7 @@ describe('Description Wrapper Component', () => {
     component.fields = [
       {
         ...fieldBase,
-        templateOptions: {
+        props: {
           customDescription: 'desc',
         },
       },
@@ -73,7 +73,7 @@ describe('Description Wrapper Component', () => {
     component.fields = [
       {
         ...fieldBase,
-        templateOptions: {
+        props: {
           customDescription: {
             key: 'description',
             args: {
@@ -85,7 +85,7 @@ describe('Description Wrapper Component', () => {
     ];
     fixture.detectChanges();
     expect(element.querySelector('small').textContent).toMatchInlineSnapshot(
-      `" value:description args:{\\"0\\":\\"argument\\"} "`
+      `" value:description args:{"0":"argument"} "`
     );
   });
 });

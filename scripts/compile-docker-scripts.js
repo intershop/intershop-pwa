@@ -15,8 +15,8 @@ fs.writeFileSync(
   JSON.stringify(
     {
       dependencies: {
-        pm2: lockFile.dependencies.pm2.version,
-        express: lockFile.dependencies.express.version,
+        pm2: lockFile.packages['node_modules/pm2'].version,
+        express: lockFile.packages['node_modules/express'].version,
       },
     },
     undefined,

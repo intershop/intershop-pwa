@@ -96,7 +96,7 @@ describe('Pages Effects', () => {
         next: () => {
           verify(httpStatusCodeService.setStatus(anything())).once();
           expect(capture(httpStatusCodeService.setStatus).last()).toMatchInlineSnapshot(`
-                        Array [
+                        [
                           404,
                         ]
                     `);

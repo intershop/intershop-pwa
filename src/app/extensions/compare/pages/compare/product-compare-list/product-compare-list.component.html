@@ -8,7 +8,7 @@
 
   <div class="product-list table-compare">
     <div class="table-responsive">
-      <table class="table" *ngIf="compareProducts | slice: start:end as visibleProducts">
+      <table class="table" *ngIf="compareProducts | slice : start : end as visibleProducts">
         <tbody>
           <tr>
             <th class="legacy-col-6 legacy-col-md-3 no-border">&nbsp;</th>
@@ -88,7 +88,7 @@
           <tr *ngFor="let commonAttributeName of commonAttributeNames$ | async">
             <th>{{ commonAttributeName }}</th>
             <td *ngFor="let product of visibleProducts">
-              {{ getAttributeByAttributeName(product?.attributes, commonAttributeName) | ishAttribute: '|' }}
+              {{ getAttributeByAttributeName(product?.attributes, commonAttributeName) | ishAttribute : '|' }}
             </td>
           </tr>
 

@@ -230,7 +230,7 @@ describe('Shopping Store', () => {
 
       it('should load necessary data when going to a category page', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
-          Array [
+          [
             "A",
             "A.123",
             "A.123.456",
@@ -351,7 +351,7 @@ describe('Shopping Store', () => {
 
     it('should load necessary data when going to a category page', fakeAsync(() => {
       expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
-        Array [
+        [
           "A",
           "A.123",
           "A.123.456",
@@ -384,7 +384,7 @@ describe('Shopping Store', () => {
 
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
-          Array [
+          [
             "A",
             "A.123",
             "A.123.456",
@@ -416,7 +416,7 @@ describe('Shopping Store', () => {
 
     it('should load all products and required categories when going to a family page', fakeAsync(() => {
       expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
-          Array [
+          [
             "A",
             "A.123",
             "A.123.456",
@@ -607,7 +607,7 @@ describe('Shopping Store', () => {
 
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
-          Array [
+          [
             "A",
             "A.123",
             "A.123.456",
@@ -639,7 +639,7 @@ describe('Shopping Store', () => {
 
     it('should load the product and its required categories when going to a product page', fakeAsync(() => {
       expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
-          Array [
+          [
             "A",
             "A.123",
             "A.123.456",
@@ -674,7 +674,7 @@ describe('Shopping Store', () => {
 
       it('should load the sibling products when they are not yet loaded', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
-          Array [
+          [
             "A",
             "A.123",
             "A.123.456",
@@ -731,7 +731,7 @@ describe('Shopping Store', () => {
 
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
         expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
-          Array [
+          [
             "A",
             "A.123",
             "A.123.456",
@@ -814,7 +814,7 @@ describe('Shopping Store', () => {
 
     it('should load only family page content and redirect to error when product was not found', fakeAsync(() => {
       expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
-        Array [
+        [
           "A",
           "A.123",
           "A.123.456",

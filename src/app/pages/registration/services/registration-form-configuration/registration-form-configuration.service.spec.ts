@@ -23,7 +23,7 @@ describe('Registration Form Configuration Service', () => {
     when(fieldLibrary.getConfigurationGroup('companyInfo')).thenReturn([
       {
         key: 'companyName1',
-        templateOptions: {
+        props: {
           required: true,
         },
       },
@@ -66,19 +66,19 @@ describe('Registration Form Configuration Service', () => {
     it('should return right fields when calling getRegistrationConfig', () => {
       const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
       expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
-        Array [
-          Array [
+        [
+          [
             "companyName1",
             "companyName2",
             "taxationID",
           ],
-          Array [
+          [
             "title",
             "firstName",
             "lastName",
             "phoneHome",
           ],
-          Array [
+          [
             "termsAndConditions",
           ],
         ]
@@ -93,25 +93,25 @@ describe('Registration Form Configuration Service', () => {
       it('should return the right fields when calling getRegistrationConfig', () => {
         const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
         expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
-          Array [
-            Array [
+          [
+            [
               "login",
               "loginConfirmation",
               "password",
               "passwordConfirmation",
             ],
-            Array [
+            [
               "companyName1",
               "companyName2",
               "taxationID",
             ],
-            Array [
+            [
               "title",
               "firstName",
               "lastName",
               "phoneHome",
             ],
-            Array [
+            [
               "termsAndConditions",
             ],
           ]
@@ -124,20 +124,20 @@ describe('Registration Form Configuration Service', () => {
       it('should return the right fields when calling getRegistrationConfig', () => {
         const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
         expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
-          Array [
-            Array [
+          [
+            [
               "login",
               "loginConfirmation",
               "password",
               "passwordConfirmation",
             ],
-            Array [
+            [
               "title",
               "firstName",
               "lastName",
               "phoneHome",
             ],
-            Array [
+            [
               "termsAndConditions",
             ],
           ]
@@ -154,7 +154,7 @@ describe('Registration Form Configuration Service', () => {
       } as ActivatedRouteSnapshot;
 
       expect(registrationConfigurationService.extractConfig(snapshot)).toMatchInlineSnapshot(`
-        Object {
+        {
           "businessCustomer": false,
           "cancelUrl": undefined,
           "sso": false,
@@ -171,7 +171,7 @@ describe('Registration Form Configuration Service', () => {
       FeatureToggleModule.switchTestingFeatures('businessCustomerRegistration');
 
       expect(registrationConfigurationService.extractConfig(snapshot)).toMatchInlineSnapshot(`
-        Object {
+        {
           "businessCustomer": true,
           "cancelUrl": "/checkout",
           "sso": true,

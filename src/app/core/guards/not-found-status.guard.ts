@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { inject } from '@angular/core';
 
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 
-@Injectable({ providedIn: 'root' })
-export class NotFoundStatusGuard implements CanActivate {
-  constructor(private httpStatusCodeService: HttpStatusCodeService) {}
+/**
+ * Redirects to the error page if the current route could not be found
+ */
+export function notFoundStatusGuard() {
+  const httpStatusCodeService = inject(HttpStatusCodeService);
 
-  canActivate() {
-    return this.httpStatusCodeService.setStatus(404, false);
-  }
+  return httpStatusCodeService.setStatus(404, false);
 }

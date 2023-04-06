@@ -52,19 +52,19 @@ describe('Product Listing Selectors', () => {
     it('should be empty when in initial state', () => {
       const view = getProductListingView(TEST_ID)(store$.state);
       expect(view).toMatchInlineSnapshot(`
-        Object {
+        {
           "allPagesAvailable()": false,
           "empty()": true,
           "itemCount": 0,
           "lastPage": NaN,
           "nextPage()": 1,
-          "pageIndices()": Array [],
+          "pageIndices()": [],
           "previousPage()": undefined,
-          "products()": Array [],
-          "productsOfPage(1)": Array [],
-          "productsOfPage(2)": Array [],
-          "productsOfPage(3)": Array [],
-          "sortableAttributes": Array [],
+          "products()": [],
+          "productsOfPage(1)": [],
+          "productsOfPage(2)": [],
+          "productsOfPage(3)": [],
+          "sortableAttributes": [],
         }
       `);
     });
@@ -86,32 +86,32 @@ describe('Product Listing Selectors', () => {
     it('should construct a view when selecting results', () => {
       const view = getProductListingView(TEST_ID)(store$.state);
       expect(view).toMatchInlineSnapshot(`
-        Object {
+        {
           "allPagesAvailable()": false,
           "empty()": false,
           "itemCount": 4,
           "lastPage": 1,
           "nextPage()": 2,
-          "pageIndices()": Array [
+          "pageIndices()": [
             1 -> 1,
             2 -> 2,
           ],
           "previousPage()": undefined,
-          "products()": Array [
+          "products()": [
             "A",
             "B",
           ],
-          "productsOfPage(1)": Array [
+          "productsOfPage(1)": [
             "A",
             "B",
           ],
-          "productsOfPage(2)": Array [],
-          "productsOfPage(3)": Array [],
-          "sortableAttributes": Array [
-            Object {
+          "productsOfPage(2)": [],
+          "productsOfPage(3)": [],
+          "sortableAttributes": [
+            {
               "name": "by-name",
             },
-            Object {
+            {
               "name": "by-date",
             },
           ],
@@ -134,37 +134,37 @@ describe('Product Listing Selectors', () => {
       it('should construct a view when selecting results', () => {
         const view = getProductListingView(TEST_ID)(store$.state);
         expect(view).toMatchInlineSnapshot(`
-          Object {
+          {
             "allPagesAvailable()": true,
             "empty()": false,
             "itemCount": 4,
             "lastPage": 2,
             "nextPage()": undefined,
-            "pageIndices()": Array [
+            "pageIndices()": [
               1 -> 1,
               2 -> 2,
             ],
             "previousPage()": undefined,
-            "products()": Array [
+            "products()": [
               "A",
               "B",
               "C",
               "D",
             ],
-            "productsOfPage(1)": Array [
+            "productsOfPage(1)": [
               "A",
               "B",
             ],
-            "productsOfPage(2)": Array [
+            "productsOfPage(2)": [
               "C",
               "D",
             ],
-            "productsOfPage(3)": Array [],
-            "sortableAttributes": Array [
-              Object {
+            "productsOfPage(3)": [],
+            "sortableAttributes": [
+              {
                 "name": "by-name",
               },
-              Object {
+              {
                 "name": "by-date",
               },
             ],
@@ -190,33 +190,33 @@ describe('Product Listing Selectors', () => {
     it('should construct a view when selecting results', () => {
       const view = getProductListingView(TEST_ID)(store$.state);
       expect(view).toMatchInlineSnapshot(`
-        Object {
+        {
           "allPagesAvailable()": false,
           "empty()": false,
           "itemCount": 6,
           "lastPage": 2,
           "nextPage()": 3,
-          "pageIndices()": Array [
+          "pageIndices()": [
             1 -> 1,
             2 -> 2,
             3 -> 3,
           ],
           "previousPage()": 1,
-          "products()": Array [
+          "products()": [
             "C",
             "D",
           ],
-          "productsOfPage(1)": Array [],
-          "productsOfPage(2)": Array [
+          "productsOfPage(1)": [],
+          "productsOfPage(2)": [
             "C",
             "D",
           ],
-          "productsOfPage(3)": Array [],
-          "sortableAttributes": Array [
-            Object {
+          "productsOfPage(3)": [],
+          "sortableAttributes": [
+            {
               "name": "by-name",
             },
-            Object {
+            {
               "name": "by-date",
             },
           ],
@@ -243,7 +243,7 @@ describe('Product Listing Selectors', () => {
 
     it('should construct page indices implicitly for first page', () => {
       expect(view.pageIndices()).toMatchInlineSnapshot(`
-        Array [
+        [
           1 -> 1,
           2 -> 2,
           3 -> 3,
@@ -260,7 +260,7 @@ describe('Product Listing Selectors', () => {
 
     it('should construct page indices for intermediate page', () => {
       expect(view.pageIndices(15)).toMatchInlineSnapshot(`
-        Array [
+        [
           1-9 -> 1,
           10 -> 10,
           11 -> 11,
@@ -279,7 +279,7 @@ describe('Product Listing Selectors', () => {
 
     it('should construct page indices for page near end', () => {
       expect(view.pageIndices(29)).toMatchInlineSnapshot(`
-        Array [
+        [
           1-9 -> 1,
           10-19 -> 10,
           20 -> 20,
@@ -316,7 +316,7 @@ describe('Product Listing Selectors', () => {
 
     it('should construct page indices for page near start', () => {
       expect(view.pageIndices(8)).toMatchInlineSnapshot(`
-        Array [
+        [
           1 -> 1,
           2 -> 2,
           3 -> 3,
@@ -333,7 +333,7 @@ describe('Product Listing Selectors', () => {
 
     it('should construct page indices for page in the middle', () => {
       expect(view.pageIndices(1234)).toMatchInlineSnapshot(`
-        Array [
+        [
           1-1209 -> 1,
           1210-1219 -> 1210,
           1220-1229 -> 1220,
@@ -354,7 +354,7 @@ describe('Product Listing Selectors', () => {
 
     it('should construct page indices for page near end', () => {
       expect(view.pageIndices(2997)).toMatchInlineSnapshot(`
-        Array [
+        [
           1-2969 -> 1,
           2970-2979 -> 2970,
           2980-2989 -> 2980,

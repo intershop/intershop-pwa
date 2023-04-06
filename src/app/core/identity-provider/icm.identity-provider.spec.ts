@@ -3,7 +3,7 @@ import { Router, UrlTree } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
-import { anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
+import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { selectQueryParam } from 'ish-core/store/core/router';
@@ -75,12 +75,12 @@ describe('Icm Identity Provider', () => {
     });
 
     it('should return to home page', done => {
-      const routerSpy = spy(router);
+      const routerSpy = jest.spyOn(router, 'parseUrl');
 
       const logoutTrigger$ = icmIdentityProvider.triggerLogout() as Observable<UrlTree>;
 
       logoutTrigger$.subscribe(() => {
-        verify(routerSpy.parseUrl('/home')).once();
+        expect(routerSpy).toHaveBeenCalledWith('/home');
         done();
       });
     });

@@ -6,7 +6,7 @@
 >
   <a [routerLink]="[]" (click)="toggleCollapse()">
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon"></fa-icon>
-    <span>{{ 'shopping_cart.ministatus.items.text' | translate: { '0': itemCount$ | async } }}</span>
+    <span>{{ 'shopping_cart.ministatus.items.text' | translate : { '0': itemCount$ | async } }}</span>
     <ng-container *ngIf="itemTotal$ | async as itemTotal">
       <span> / </span> <span class="mini-cart-price">{{ itemTotal | ishPrice }}</span>
     </ng-container>

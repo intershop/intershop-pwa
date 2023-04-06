@@ -225,24 +225,12 @@ export class OrdersEffects {
             if (params.redirect === 'success') {
               return selectOrder({ orderId });
             } else {
+              // cancelled payment
               return loadBasket();
             }
           }),
-          mapErrorToAction(selectOrderAfterRedirectFail) // ToDo: display error message on receipt page
+          mapErrorToAction(selectOrderAfterRedirectFail)
         )
-      )
-    )
-  );
-
-  selectOrderAfterRedirectFailed$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(selectOrderAfterRedirectFail),
-      concatMap(() =>
-        from(
-          this.router.navigate(['/checkout/payment'], {
-            queryParams: { redirect: 'failure' },
-          })
-        ).pipe(map(() => loadBasket()))
       )
     )
   );

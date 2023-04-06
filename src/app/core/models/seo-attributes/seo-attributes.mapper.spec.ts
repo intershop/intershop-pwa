@@ -16,7 +16,7 @@ describe('Seo Attributes Mapper', () => {
           robots: ['index', 'follow'],
         })
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "description": "my description",
           "robots": "index, follow",
           "title": "my title",
@@ -40,7 +40,7 @@ describe('Seo Attributes Mapper', () => {
           },
         } as unknown as ContentPagelet)
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "description": "DESC",
           "robots": "index, nofollow",
           "title": "Terms and Conditions",

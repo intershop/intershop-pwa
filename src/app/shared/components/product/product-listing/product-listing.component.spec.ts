@@ -78,7 +78,7 @@ describe('Product Listing Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        Array [
+        [
           "ish-product-list-toolbar",
           "ish-product-list",
           "ish-product-list-paging",
@@ -91,7 +91,7 @@ describe('Product Listing Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        Array [
+        [
           "ish-product-list-toolbar",
           "ish-product-list",
           "ish-product-list-toolbar",

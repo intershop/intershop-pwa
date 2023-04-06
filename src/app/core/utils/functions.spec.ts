@@ -52,9 +52,9 @@ describe('Functions', () => {
   describe('mergeDeep', () => {
     it('should merge complex objects on input', () => {
       expect(mergeDeep({ a: 1, b: { c: 2 } }, { d: 4, b: { e: 5 } })).toMatchInlineSnapshot(`
-        Object {
+        {
           "a": 1,
-          "b": Object {
+          "b": {
             "c": 2,
             "e": 5,
           },
@@ -65,9 +65,9 @@ describe('Functions', () => {
 
     it('should override incoming objects on input', () => {
       expect(mergeDeep({ a: 1, b: { c: 2 }, d: 11 }, { a: 4, b: { c: 5 } })).toMatchInlineSnapshot(`
-        Object {
+        {
           "a": 4,
-          "b": Object {
+          "b": {
             "c": 5,
           },
           "d": 11,
@@ -77,9 +77,9 @@ describe('Functions', () => {
 
     it('should handle empty source objects', () => {
       expect(mergeDeep({ a: 1, b: { c: 2 }, d: 11 }, {})).toMatchInlineSnapshot(`
-        Object {
+        {
           "a": 1,
-          "b": Object {
+          "b": {
             "c": 2,
           },
           "d": 11,
@@ -89,9 +89,9 @@ describe('Functions', () => {
 
     it('should handle undefined source objects', () => {
       expect(mergeDeep({ a: 1, b: { c: 2 }, d: 11 }, undefined)).toMatchInlineSnapshot(`
-        Object {
+        {
           "a": 1,
-          "b": Object {
+          "b": {
             "c": 2,
           },
           "d": 11,
@@ -101,9 +101,9 @@ describe('Functions', () => {
 
     it('should handle empty target objects', () => {
       expect(mergeDeep({}, { a: 4, b: { c: 5 } })).toMatchInlineSnapshot(`
-        Object {
+        {
           "a": 4,
-          "b": Object {
+          "b": {
             "c": 5,
           },
         }
@@ -112,9 +112,9 @@ describe('Functions', () => {
 
     it('should handle undefined target objects', () => {
       expect(mergeDeep(undefined, { a: 4, b: { c: 5 } })).toMatchInlineSnapshot(`
-        Object {
+        {
           "a": 4,
-          "b": Object {
+          "b": {
             "c": 5,
           },
         }
@@ -122,7 +122,7 @@ describe('Functions', () => {
     });
 
     it('should handle empty target and source objects', () => {
-      expect(mergeDeep({}, {})).toMatchInlineSnapshot(`Object {}`);
+      expect(mergeDeep({}, {})).toMatchInlineSnapshot(`{}`);
     });
 
     it('should handle undefined target and source objects', () => {
@@ -144,7 +144,7 @@ describe('Functions', () => {
 
     it('should remove keys from object on input', () => {
       expect(omit(input, 'a', 'c')).toMatchInlineSnapshot(`
-        Object {
+        {
           "b": "2",
           "d": false,
         }
@@ -155,7 +155,7 @@ describe('Functions', () => {
       omit(input, 'a', 'c');
 
       expect(input).toMatchInlineSnapshot(`
-        Object {
+        {
           "a": 1,
           "b": "2",
           "c": true,
@@ -170,7 +170,7 @@ describe('Functions', () => {
 
     it('should return original object if input was array', () => {
       expect(omit(['a'], 'a')).toMatchInlineSnapshot(`
-        Array [
+        [
           "a",
         ]
       `);
@@ -224,8 +224,8 @@ describe('Functions', () => {
     });
 
     it('should throw if value does not match format', () => {
-      expect(() => parseTimeToSeconds('20x')).toThrowErrorMatchingInlineSnapshot(`"Cannot parse \\"20x\\" as time."`);
-      expect(() => parseTimeToSeconds('asdf')).toThrowErrorMatchingInlineSnapshot(`"Cannot parse \\"asdf\\" as time."`);
+      expect(() => parseTimeToSeconds('20x')).toThrowErrorMatchingInlineSnapshot(`"Cannot parse "20x" as time."`);
+      expect(() => parseTimeToSeconds('asdf')).toThrowErrorMatchingInlineSnapshot(`"Cannot parse "asdf" as time."`);
     });
   });
 });

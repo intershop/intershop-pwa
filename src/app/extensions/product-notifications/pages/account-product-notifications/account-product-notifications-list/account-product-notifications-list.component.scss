@@ -1,0 +1,17 @@
+@import 'variables';
+@import 'bootstrap/scss/mixins';
+
+table.mobile-optimized,
+table.mobile-optimized.table-lg {
+  @include media-breakpoint-only(xs) {
+    tr td {
+      &.cdk-cell {
+        display: block;
+
+        .list-item {
+          text-align: center;
+        }
+      }
+    }
+  }
+}

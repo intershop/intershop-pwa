@@ -1,5 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
@@ -9,44 +10,51 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
-import { AuthGuard } from './auth.guard';
+import { authGuard } from './auth.guard';
 
 describe('Auth Guard', () => {
-  describe('canActivate()', () => {
-    let authGuard: AuthGuard;
-    let store: Store;
+  let store: Store;
+  let router: Router;
 
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
-        providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],
-      }).compileComponents();
-    });
-
-    beforeEach(() => {
-      authGuard = TestBed.inject(AuthGuard);
-      store = TestBed.inject(Store);
-    });
-
-    it('should return true when user is authorized', done => {
-      store.dispatch(loginUserSuccess({ customer: {} as Customer }));
-
-      authGuard
-        .canActivate({} as ActivatedRouteSnapshot, { url: 'home' } as RouterStateSnapshot)
-        .subscribe(authorized => {
-          expect(authorized).toBeTruthy();
-          done();
-        });
-    });
-
-    it('should return false when called as unauthorized', done => {
-      authGuard
-        .canActivate({} as ActivatedRouteSnapshot, { url: 'home' } as RouterStateSnapshot)
-        .subscribe(authorized => {
-          expect(authorized).toBeInstanceOf(UrlTree);
-          expect((authorized as UrlTree).queryParams).toHaveProperty('returnUrl', 'home');
-          done();
-        });
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        CoreStoreModule.forTesting(),
+        CustomerStoreModule.forTesting('user'),
+        RouterTestingModule.withRoutes([
+          {
+            path: 'account',
+            canActivate: [authGuard],
+            children: [],
+          },
+          {
+            path: 'login',
+            children: [],
+          },
+        ]),
+      ],
+      providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],
+    }).compileComponents();
   });
+
+  beforeEach(() => {
+    store = TestBed.inject(Store);
+    router = TestBed.inject(Router);
+  });
+
+  it('should return to the desired page when user is authorized', fakeAsync(() => {
+    store.dispatch(loginUserSuccess({ customer: {} as Customer }));
+
+    router.navigate(['/account']);
+    tick(2000);
+
+    expect(router.url).toMatchInlineSnapshot(`"/account"`);
+  }));
+
+  it('should return to the login page when user is not authorized', fakeAsync(() => {
+    router.navigate(['/account']);
+    tick(2000);
+
+    expect(router.url).toMatchInlineSnapshot(`"/login?returnUrl=%2Faccount"`);
+  }));
 });

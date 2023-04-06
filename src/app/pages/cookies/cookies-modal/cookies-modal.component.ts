@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 
 import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
-import { CookieConsentOptions, CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
+import { CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
+import { InjectSingle } from 'ish-core/utils/injection';
 
 /**
  * Cookies Modal Component
@@ -19,7 +20,7 @@ export class CookiesModalComponent implements OnInit {
   selectedIds: { [id: string]: boolean } = {};
 
   constructor(
-    @Inject(COOKIE_CONSENT_OPTIONS) public cookieConsentOptions: CookieConsentOptions,
+    @Inject(COOKIE_CONSENT_OPTIONS) public cookieConsentOptions: InjectSingle<typeof COOKIE_CONSENT_OPTIONS>,
     private cookiesService: CookiesService
   ) {}
 

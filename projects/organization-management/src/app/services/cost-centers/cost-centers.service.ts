@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, OperatorFunction, forkJoin, iif, of, throwError } from 'rxjs';
+import { Observable, forkJoin, throwError } from 'rxjs';
 import { concatMap, map, switchMap, take } from 'rxjs/operators';
 
 import { CostCenterData } from 'ish-core/models/cost-center/cost-center.interface';
 import { CostCenterMapper } from 'ish-core/models/cost-center/cost-center.mapper';
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
-import { Link } from 'ish-core/models/link/link.model';
-import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
@@ -27,7 +26,7 @@ export class CostCentersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService.get(`customers/${customer.customerNo}/costcenters`).pipe(
-          this.resolveCostCenterLinks<CostCenterData>(),
+          this.apiService.resolveLinks<CostCenterData>(),
           map(ccData => ccData.map(CostCenterMapper.fromData))
         )
       )
@@ -184,27 +183,5 @@ export class CostCentersService {
           .pipe(concatMap(() => this.getCostCenter(costCenterId)))
       )
     );
-  }
-
-  /**
-   * ToDo: use resolveLinks of the api.service instead
-   * Temporary fix, it can be removed  after the REST response has been corrected, see #71044
-   */
-  private resolveCostCenterLinks<T>(options?: AvailableOptions): OperatorFunction<Link[], T[]> {
-    return source$ =>
-      source$.pipe(
-        // filter for all real Link elements
-        map(links => (links?.length ? links.filter(el => el?.type === 'Link' && !!el.uri) : [])),
-        // transform Link elements to API Observables
-        map(links =>
-          links.map(item => {
-            // check link uri and prepend server ICM if necessary
-            const uri = item.uri.substring(item.uri.indexOf('/customers'));
-            return this.apiService.get<T>(uri, options);
-          })
-        ),
-        // flatten to API requests O<O<T>[]> -> O<T[]>
-        concatMap(obsArray => iif(() => !!obsArray.length, forkJoin(obsArray), of([])))
-      );
   }
 }

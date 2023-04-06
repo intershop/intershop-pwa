@@ -99,7 +99,7 @@ describe('Content View Model', () => {
   it('should be able to create a view of a pagelet entry point', () => {
     expect(() => createContentPageletEntryPointView(pageletEntryPoint)).not.toThrow();
     expect(createContentPageletEntryPointView(pageletEntryPoint)).toMatchInlineSnapshot(`
-      Object {
+      {
         "booleanParam": [Function],
         "configParam": [Function],
         "displayName": "name",
@@ -107,7 +107,7 @@ describe('Content View Model', () => {
         "hasParam": [Function],
         "id": "include",
         "numberParam": [Function],
-        "pageletIDs": Array [
+        "pageletIDs": [
           "p1",
           "p2",
         ],
@@ -121,7 +121,7 @@ describe('Content View Model', () => {
   it('should be able to create a view of configuration parameters', () => {
     expect(() => createContentConfigurationParameterView(configurationParameters)).not.toThrow();
     expect(createContentConfigurationParameterView(configurationParameters)).toMatchInlineSnapshot(`
-      Object {
+      {
         "booleanParam": [Function],
         "configParam": [Function],
         "hasParam": [Function],
@@ -273,7 +273,7 @@ describe('Content View Model', () => {
     it('should have a slot view on p2', () => {
       const p2 = createContentPageletView(pagelets.p2);
       expect(p2.slot('fq')).toMatchInlineSnapshot(`
-        Object {
+        {
           "booleanParam": [Function],
           "configParam": [Function],
           "displayName": "slot",
@@ -281,7 +281,7 @@ describe('Content View Model', () => {
           "hasParam": [Function],
           "id": "fq",
           "numberParam": [Function],
-          "pageletIDs": Array [
+          "pageletIDs": [
             "p3",
           ],
           "stringParam": [Function],
@@ -292,7 +292,7 @@ describe('Content View Model', () => {
     it('should have a pagelet on slot view on p2', () => {
       const p2 = createContentPageletView(pagelets.p2);
       expect(p2.slot('fq').pageletIDs).toMatchInlineSnapshot(`
-        Array [
+        [
           "p3",
         ]
       `);
@@ -303,10 +303,10 @@ describe('Content View Model', () => {
       const p4 = createContentPageletView(pagelets.p4);
 
       expect(p4).toMatchInlineSnapshot(`
-        Object {
+        {
           "booleanParam": [Function],
           "configParam": [Function],
-          "configurationParameters": Object {
+          "configurationParameters": {
             "key7": "4",
           },
           "definitionQualifiedName": "fq",

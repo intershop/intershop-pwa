@@ -38,7 +38,7 @@ export class UpdatePasswordFormComponent implements OnInit {
           {
             key: 'password',
             type: 'ish-password-field',
-            templateOptions: {
+            props: {
               postWrappers: [{ wrapper: 'description', index: -1 }],
               required: true,
               hideRequiredMarker: true,
@@ -56,8 +56,9 @@ export class UpdatePasswordFormComponent implements OnInit {
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-password-field',
-            templateOptions: {
+            type: 'ish-text-input-field',
+            props: {
+              type: 'password',
               required: true,
               hideRequiredMarker: true,
               label: 'account.register.password_confirmation.label',
@@ -65,6 +66,7 @@ export class UpdatePasswordFormComponent implements OnInit {
             validation: {
               messages: {
                 required: 'account.register.password_confirmation.error.default',
+                equalTo: 'form.password.error.equalTo',
               },
             },
           },

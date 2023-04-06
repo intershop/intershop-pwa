@@ -84,7 +84,7 @@ describe('Quote Line Item List Element Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-image",
         "ish-product-name",
         "ish-product-id",
@@ -94,7 +94,7 @@ describe('Quote Line Item List Element Component', () => {
       ]
     `);
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "product-list-item",
         "total-price",
       ]
@@ -107,7 +107,7 @@ describe('Quote Line Item List Element Component', () => {
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      Array [
+      [
         "ish-product-image",
         "ish-product-name",
         "ish-product-id",
@@ -122,7 +122,7 @@ describe('Quote Line Item List Element Component', () => {
       ]
     `);
     expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      Array [
+      [
         "product-list-item",
         "remove-line-item",
         "total-price",
@@ -135,7 +135,7 @@ describe('Quote Line Item List Element Component', () => {
 
     verify(quoteContext.deleteItem(anything())).once();
     expect(capture(quoteContext.deleteItem).last()).toMatchInlineSnapshot(`
-      Array [
+      [
         "item123",
       ]
     `);

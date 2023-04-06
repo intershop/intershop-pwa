@@ -38,7 +38,7 @@ export class AddressFormFRConfiguration extends AddressFormConfiguration {
         {
           key: 'postalCode',
           type: '#postalCode',
-          templateOptions: {
+          props: {
             maxLength: 5,
           },
           validators: {

@@ -30,4 +30,8 @@ export class QuoteLineItemListComponent implements OnInit {
     );
     this.editable$ = this.context.select('editable');
   }
+
+  trackByFn(_: number, item: Pick<QuoteRequestItem, 'productSKU' | 'quantity'>) {
+    return item.productSKU;
+  }
 }

@@ -14,7 +14,6 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
-import { LazyOrderTemplateWidgetComponent } from '../../../extensions/order-templates/exports/lazy-order-template-widget/lazy-order-template-widget.component';
 import { LazyWishlistWidgetComponent } from '../../../extensions/wishlists/exports/lazy-wishlist-widget/lazy-wishlist-widget.component';
 
 import { AccountOverviewComponent } from './account-overview.component';
@@ -34,7 +33,6 @@ describe('Account Overview Component', () => {
         AccountOverviewComponent,
         MockComponent(FaIconComponent),
         MockComponent(LazyBudgetWidgetComponent),
-        MockComponent(LazyOrderTemplateWidgetComponent),
         MockComponent(LazyRequisitionWidgetComponent),
         MockComponent(LazyWishlistWidgetComponent),
         MockComponent(OrderWidgetComponent),

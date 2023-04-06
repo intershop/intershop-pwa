@@ -14,6 +14,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 
@@ -67,20 +68,26 @@ export class WishlistPreferencesDialogComponent implements OnInit {
       {
         key: 'title',
         type: 'ish-text-input-field',
-        templateOptions: {
+        props: {
           required: true,
           label: 'account.wishlists.wishlist_form.name.label',
           hideRequiredMarker: true,
           maxLength: 35,
         },
+        validators: {
+          validation: [SpecialValidators.noHtmlTags],
+        },
         validation: {
-          messages: { required: 'account.wishlists.wishlist_form.name.error.required' },
+          messages: {
+            required: 'account.wishlists.wishlist_form.name.error.required',
+            noHtmlTags: 'account.name.error.forbidden.html.chars',
+          },
         },
       },
       {
         key: 'preferred',
         type: 'ish-checkbox-field',
-        templateOptions: {
+        props: {
           label: 'account.wishlists.wishlist_form.preferred.label',
           fieldClass: 'offset-md-4 col-md-8 d-flex align-items-center',
           tooltip: {

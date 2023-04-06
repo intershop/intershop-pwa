@@ -39,7 +39,7 @@ describe('Fieldset Field Component', () => {
       fields: [
         {
           type: 'ish-fieldset-field',
-          templateOptions: {
+          props: {
             legend: 'Legend text',
             legendClass: 'text-muted',
           },
@@ -78,7 +78,7 @@ describe('Fieldset Field Component', () => {
   it('should contain both of the example fields wrapped in a fieldset', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element.querySelector('fieldset'))).toMatchInlineSnapshot(`
-      Array [
+      [
         "formly-field",
         "ish-formly-testing-example",
         "formly-field",

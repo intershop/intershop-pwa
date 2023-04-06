@@ -24,7 +24,7 @@ describe('Ngrx Creators', () => {
       it('should set loading to true when reducing load action', () => {
         const state = reducer(initialState, load());
         expect(state).toMatchInlineSnapshot(`
-          Object {
+          {
             "error": undefined,
             "loading": true,
           }
@@ -35,7 +35,7 @@ describe('Ngrx Creators', () => {
         it('should set loading to false on load success', () => {
           const state = reducer({ ...initialState, loading: true }, loadSuccess({ entities: [] }));
           expect(state).toMatchInlineSnapshot(`
-            Object {
+            {
               "error": undefined,
               "loading": false,
             }
@@ -50,8 +50,8 @@ describe('Ngrx Creators', () => {
             loadFail({ error: makeHttpError({ message: 'ERROR' }) })
           );
           expect(state).toMatchInlineSnapshot(`
-            Object {
-              "error": Object {
+            {
+              "error": {
                 "message": "ERROR",
                 "name": "HttpErrorResponse",
               },
@@ -76,7 +76,7 @@ describe('Ngrx Creators', () => {
       it('should increase loading when reducing load action', () => {
         const state = reducer(initialState, load());
         expect(state).toMatchInlineSnapshot(`
-          Object {
+          {
             "error": undefined,
             "loading": 1,
           }
@@ -87,7 +87,7 @@ describe('Ngrx Creators', () => {
         it('should decrease loading on load success', () => {
           const state = reducer({ ...initialState, loading: 1 }, loadSuccess({ entities: [] }));
           expect(state).toMatchInlineSnapshot(`
-            Object {
+            {
               "error": undefined,
               "loading": 0,
             }
@@ -102,8 +102,8 @@ describe('Ngrx Creators', () => {
             loadFail({ error: makeHttpError({ message: 'ERROR' }) })
           );
           expect(state).toMatchInlineSnapshot(`
-            Object {
-              "error": Object {
+            {
+              "error": {
                 "message": "ERROR",
                 "name": "HttpErrorResponse",
               },
@@ -117,7 +117,7 @@ describe('Ngrx Creators', () => {
         it('should increase loading more when reducing second load action', () => {
           const state = reducer({ ...initialState, loading: 1 }, load());
           expect(state).toMatchInlineSnapshot(`
-            Object {
+            {
               "error": undefined,
               "loading": 2,
             }
@@ -141,7 +141,7 @@ describe('Ngrx Creators', () => {
         it('should warn when loading would be decreased below 0', () => {
           const state = reducer({ ...initialState, loading: 0 }, loadSuccess({ entities: [] }));
           expect(state).toMatchInlineSnapshot(`
-            Object {
+            {
               "error": undefined,
               "loading": 0,
             }
@@ -157,8 +157,8 @@ describe('Ngrx Creators', () => {
             loadFail({ error: makeHttpError({ message: 'ERROR' }) })
           );
           expect(state).toMatchInlineSnapshot(`
-            Object {
-              "error": Object {
+            {
+              "error": {
                 "message": "ERROR",
                 "name": "HttpErrorResponse",
               },

@@ -62,7 +62,7 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
       {
         type: 'ish-checkout-review-tac-field',
         key: 'termsAndConditions',
-        templateOptions: {
+        props: {
           validation: {
             show: true,
           },

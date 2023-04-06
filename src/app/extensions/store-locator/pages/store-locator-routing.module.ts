@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
+import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
 import { STORE_MAP_ICON_CONFIGURATION } from '../services/stores-map/stores-map.service';
 
@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: 'store-finder',
     loadChildren: () => import('./store-locator/store-locator-page.module').then(m => m.StoreLocatorPageModule),
-    canActivate: [FeatureToggleGuard],
+    canActivate: [featureToggleGuard],
     data: { feature: 'storeLocator' },
   },
 ];

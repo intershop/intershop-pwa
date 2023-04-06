@@ -20,7 +20,7 @@ describe('B2b User Mapper', () => {
       const user = B2bUserMapper.fromData(userData);
 
       expect(user).toMatchInlineSnapshot(`
-        Object {
+        {
           "active": true,
           "birthday": undefined,
           "businessPartnerNo": undefined,
@@ -67,31 +67,31 @@ describe('B2b User Mapper', () => {
       const users = B2bUserMapper.fromListData(userListData);
 
       expect(users).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "active": true,
             "firstName": "Patricia",
             "lastName": "Miller",
             "login": "pmiller@test.intershop.de",
-            "roleIDs": Array [
+            "roleIDs": [
               "APP_B2B_COSTCENTER_OWNER",
               "APP_B2B_BUYER",
             ],
-            "userBudget": Object {
-              "budget": Object {
+            "userBudget": {
+              "budget": {
                 "currency": "USD",
                 "value": 10000,
               },
               "budgetPeriod": "monthly",
-              "orderSpentLimit": Object {
+              "orderSpentLimit": {
                 "currency": "USD",
                 "value": 500,
               },
-              "remainingBudget": Object {
+              "remainingBudget": {
                 "currency": "USD",
                 "value": 8000,
               },
-              "spentBudget": Object {
+              "spentBudget": {
                 "currency": "USD",
                 "value": 2000,
               },
