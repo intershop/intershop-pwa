@@ -31,6 +31,7 @@ datepicker
 directdebit
 dockerignore
 dockerized
+dprops
 dropup
 editorconfig
 entrypoint
@@ -124,6 +125,7 @@ productdetail
 productfilter
 productfilters
 productid
+productnotification
 productprices
 promotioncodes
 proxied

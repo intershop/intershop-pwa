@@ -7,6 +7,72 @@ kb_everyone
 
 # Changelog
 
+## [4.0.0](https://github.com/intershop/intershop-pwa/releases/tag/4.0.0) (2023-04-06)
+
+**required Intershop Commerce Management version: 7.10.39.2**
+
+**required/tested Node.js version: 18.15.0 LTS (including npm 9.5.0)**
+
+### Features
+
+- introduce a general print styling, e.g. to nicely print to PDF (#1376) ([94be193](https://github.com/intershop/intershop-pwa/commit/94be193))
+- add product zoom functionality in fullscreen dialog (#1011, #1350) ([c839353](https://github.com/intershop/intershop-pwa/commit/c839353))
+- enhance modal dialog component with fullscreen and scrolling (#1350) ([1de7672](https://github.com/intershop/intershop-pwa/commit/1de7672))
+- product notifications (price, in stock) (#1327) ([c07edca](https://github.com/intershop/intershop-pwa/commit/c07edca))
+- add "Product List (REST)" CMS component (#1397) ([dc5c9dc](https://github.com/intershop/intershop-pwa/commit/dc5c9dc))
+- add title for (status) checkboxes (#1383) ([9dafd3f](https://github.com/intershop/intershop-pwa/commit/9dafd3f))
+- add schematic to apply migration changes for formly 6 update ([932cafa](https://github.com/intershop/intershop-pwa/commit/932cafa))
+- introduce account navigation grouping - used in b2b theme (#1331) ([3334e77](https://github.com/intershop/intershop-pwa/commit/3334e77))
+
+### Bug Fixes
+
+- use ProductsListComponent for wishlist widget component (#1408) ([3486687](https://github.com/intershop/intershop-pwa/commit/3486687))
+- use ProductsListComponent for recently viewed items on PDP and recently viewed page (#1408) ([5fbdfb6](https://github.com/intershop/intershop-pwa/commit/5fbdfb6))
+- adapt Products List component to not display failed products (#1408) ([ff4f2e7](https://github.com/intershop/intershop-pwa/commit/ff4f2e7))
+- improve matcher routing for SEO URLs (#1387, #1409) ([f952dc9](https://github.com/intershop/intershop-pwa/commit/f952dc9))
+- encode canonical link to match actual link URLs ([0fd2766](https://github.com/intershop/intershop-pwa/commit/0fd2766))
+- basket loaded in SSR results in error and a toast message that can't be closed (#1406) ([8e3b038](https://github.com/intershop/intershop-pwa/commit/8e3b038))
+- refresh the search page with query parameter 'view' ([4e7f9d7](https://github.com/intershop/intershop-pwa/commit/4e7f9d7))
+- quick quantity change on item lists (#1391) ([b019bb2](https://github.com/intershop/intershop-pwa/commit/b019bb2))
+- server-validation-extension prePropulate() method should not error on execution ([30a6178](https://github.com/intershop/intershop-pwa/commit/30a6178))
+- change templateOptions to props using the formly-migrate schematic (#1393) ([17f7b66](https://github.com/intershop/intershop-pwa/commit/17f7b66))
+- adapt Hybrid Approach mapping table for new SEO optimized URLs (#1392) ([81cf2b4](https://github.com/intershop/intershop-pwa/commit/81cf2b4))
+- return a unique id in the line item list's trackBy function (#1390) ([78d99d0](https://github.com/intershop/intershop-pwa/commit/78d99d0))
+- added missing translation key ([8a7fc5e](https://github.com/intershop/intershop-pwa/commit/8a7fc5e))
+- email and password confirmation fields should only validate the equality with its related input field ([58aa313](https://github.com/intershop/intershop-pwa/commit/58aa313))
+- correct names and comments with spelling errors, update spell check dictionary with missing words (#1382) ([8f36209](https://github.com/intershop/intershop-pwa/commit/8f36209))
+- prevent HTML input in the form field "name" for order templates and wishlists (#1385) ([b990b3b](https://github.com/intershop/intershop-pwa/commit/b990b3b))
+- load basket information on basket page when personalization status is determined ([45f67c8](https://github.com/intershop/intershop-pwa/commit/45f67c8))
+- correct dialog form submission with enter key (#1378) ([b60e0a1](https://github.com/intershop/intershop-pwa/commit/b60e0a1))
+- remove deprecated SSR environment variable 'ICM_IDENTITY_PROVIDER' (#1373) ([1f87684](https://github.com/intershop/intershop-pwa/commit/1f87684))
+- false error messages regarding JestMatchers in tests (#1371) ([466283c](https://github.com/intershop/intershop-pwa/commit/466283c))
+
+### Documentation
+
+- add Hybrid Approch development environment chapter (#1386) ([416d6e9](https://github.com/intershop/intershop-pwa/commit/416d6e9))
+
+### Code Refactoring
+
+- cleanup/remove obsolete/update TODO comments ([e43c432](https://github.com/intershop/intershop-pwa/commit/e43c432))
+- replace deprecated formly field configuration properties ([fad6075](https://github.com/intershop/intershop-pwa/commit/fad6075))
+- **Angular 15:** replace class-based route guards by functional guards ([289e161](https://github.com/intershop/intershop-pwa/commit/289e161))
+- **Angular 15:** rework translate loader on SSR after Angular 15 update ([292d559](https://github.com/intershop/intershop-pwa/commit/292d559))
+
+### BREAKING CHANGES
+
+- The `TODO` code cleanup removed some implementation fixes to work with ICM versions prior to 7.10.39.2.
+- **Angular 15:** Class-based route guards are replaced by functional guards (see [Migrations / 3.3 to 4.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#33-to-40) for more details).
+- **Angular 15:** ICM Translate Loader needs new configuration for `LOCAL_TRANSLATIONS` (see [Migrations / 3.3 to 4.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#33-to-40) for more details).
+- **Angular 15:** Angular 15 and dependencies update (removed Browserslist configuration, update TypeScript compiler `target`, Stylelint adaptions, Jest tests adaptions).
+- Intershop PWA development is now based on Node.js 18.15.0 with npm 9.5.0 and the `"lockfileVersion": 3,`.
+- All deprecated formly field configuration properties are replaced.
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- product notifications (price, in stock) (#1327) - 7.10.40.1 (for adapted email templates only, REST functionality is already available in earlier versions)
+- product zoom functionality (#1350) - 7.10.40.1 (for 'ZOOM' image demo data, this is not required to use the functionality)
+- add "Product List (REST)" CMS component (#1397) - 7.10.40.1 (requires additional CMS Content Model `component.common.productListRest.pagelet2` that could be copied to earlier versions as well)
+
 ## [3.3.0](https://github.com/intershop/intershop-pwa/releases/tag/3.3.0) (2023-02-13)
 
 **required Intershop Commerce Management version: 7.10.38.11-LTS**
