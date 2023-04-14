@@ -1,13 +1,17 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  Renderer2,
+  inject,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -30,7 +34,13 @@ declare let Payone: any;
 export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, OnInit {
   payoneCreditCardForm = new FormGroup({});
 
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {}
+  private renderer = inject(Renderer2);
+
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   /**
    * payone payment method, needed to get configuration parameters
@@ -136,7 +146,9 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   submitNewPaymentInstrument() {
     // reset error message
     this.generalErrorMessage = undefined;
-    document.getElementById('error').innerHTML = '';
+
+    this.renderer.setProperty(this.document.getElementById('error'), 'innerHTML', '');
+
     if (this.iframes.isComplete()) {
       // Perform "CreditCardCheck" to create and get a PseudoCardPan; then call your function "payCallback"
       this.iframes.creditCardCheck('payoneCreditCardCallback');
