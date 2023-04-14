@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 
 interface ScriptType {
@@ -9,12 +10,19 @@ interface ScriptType {
 @Injectable({ providedIn: 'root' })
 export class ScriptLoaderService {
   private registeredScripts: ScriptType[] = [];
+  private renderer: Renderer2;
+
+  constructor(private rendererFactory: RendererFactory2, @Inject(DOCUMENT) private document: Document) {
+    // Get an instance of Renderer2
+    this.renderer = this.rendererFactory.createRenderer(undefined, undefined);
+  }
 
   /**
    * load a script, if it has not already been loaded
    *
    * @param url  script url, e.g. https://pptest.payengine.de/bridge/1.0/payengine.min.js
    */
+
   load(url: string): Observable<ScriptType> {
     return new Observable<ScriptType>((observer: Observer<ScriptType>) => {
       let script = this.registeredScripts.find(s => s.src === url);
@@ -29,7 +37,7 @@ export class ScriptLoaderService {
         observer.complete();
       } else {
         // Load the script
-        const scriptElement = document.createElement('script');
+        const scriptElement = this.renderer.createElement('script');
         scriptElement.type = 'text/javascript';
         scriptElement.src = script.src;
         scriptElement.async = true;
@@ -45,7 +53,7 @@ export class ScriptLoaderService {
         };
 
         // insert script as html body child
-        document.getElementsByTagName('body')[0].appendChild(scriptElement);
+        this.renderer.appendChild(this.document.body, scriptElement);
       }
     });
   }

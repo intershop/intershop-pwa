@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerRequestAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
@@ -10,6 +9,7 @@ import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operator
 
 import { getDeviceType } from 'ish-core/store/core/configuration';
 import { isStickyHeader } from 'ish-core/store/core/viewconf';
+import { DomService } from 'ish-core/utils/dom/dom.service';
 import { mapToPayload } from 'ish-core/utils/operators';
 
 import {
@@ -24,10 +24,10 @@ import {
 export class MessagesEffects {
   constructor(
     private actions$: Actions,
+    private domService: DomService,
     private store: Store,
     private translate: TranslateService,
-    private toastr: ToastrService,
-    @Inject(DOCUMENT) private document: Document
+    private toastr: ToastrService
   ) {}
 
   private applyStyle$ = new Subject<void>();
@@ -114,12 +114,13 @@ export class MessagesEffects {
         () => !SSR,
         combineLatest([this.store.pipe(select(isStickyHeader)), this.applyStyle$]).pipe(
           tap(([sticky]) => {
-            const container = this.document.getElementById('toast-container');
+            const container = this.domService.getElementById('toast-container');
             if (container) {
               if (sticky) {
+                this.domService.addClass(container, 'toast-sticky');
                 container.classList.add('toast-sticky');
               } else {
-                container.classList.remove('toast-sticky');
+                this.domService.removeClass(container, 'toast-sticky');
               }
             }
           })

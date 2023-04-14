@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -13,7 +14,7 @@ import { TactonNavigationTree } from '../../../models/tacton-navigation-tree/tac
 export class TactonConfigureNavigationComponent implements OnInit {
   tree$: Observable<TactonNavigationTree>;
 
-  constructor(private tactonFacade: TactonFacade) {}
+  constructor(private tactonFacade: TactonFacade, @Inject(DOCUMENT) private document: Document) {}
 
   ngOnInit() {
     this.tree$ = this.tactonFacade.configurationTree$;
@@ -29,7 +30,9 @@ export class TactonConfigureNavigationComponent implements OnInit {
    * @see https://stackoverflow.com/questions/46658522/how-to-smooth-scroll-to-page-anchor-in-angular-4-without-plugins-properly/51400379#51400379
    */
   scrollIntoView(id: string) {
-    document.querySelector(`#anchor-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    this.document
+      .querySelector(`#anchor-${id}`)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
   }
 
   isActive$(name: string) {

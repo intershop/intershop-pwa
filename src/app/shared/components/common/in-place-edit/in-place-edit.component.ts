@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -5,6 +6,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   OnDestroy,
   Output,
 } from '@angular/core';
@@ -26,10 +28,14 @@ export class InPlaceEditComponent implements AfterViewInit, OnDestroy {
 
   hover: boolean;
 
-  constructor(private host: ElementRef, private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private host: ElementRef,
+    private cdRef: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   ngAfterViewInit() {
-    fromEvent(document, 'mousedown')
+    fromEvent(this.document, 'mousedown')
       .pipe(
         // only main button clicks
         filter((event: MouseEvent) => !event.button),

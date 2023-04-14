@@ -1,5 +1,6 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, iif, throwError } from 'rxjs';
 import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
@@ -11,6 +12,7 @@ import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getCurrentBasketId } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
+import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
@@ -19,7 +21,13 @@ import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-
 
 @Injectable({ providedIn: 'root' })
 export class PunchoutService {
-  constructor(private apiService: ApiService, private cookiesService: CookiesService, private store: Store) {}
+  constructor(
+    private apiService: ApiService,
+    private cookiesService: CookiesService,
+    private store: Store,
+    private domService: DomService,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
@@ -188,8 +196,9 @@ export class PunchoutService {
     }
 
     // replace the document content with the form and submit the form
-    document.body.innerHTML = '';
-    document.body.appendChild(form);
+    this.domService.setProperty(this.document.body, 'innerHTML', '');
+    this.domService.appendChild(this.document.body, form);
+
     if (submit) {
       form.submit();
     }
@@ -256,15 +265,16 @@ export class PunchoutService {
    * @returns The cXML punchout form
    */
   private createCxmlPunchoutForm(punchOutOrderMessage: string, browserFormPostUrl: string): HTMLFormElement {
-    const cXmlForm = document.createElement('form');
-    cXmlForm.method = 'post';
-    cXmlForm.action = browserFormPostUrl;
-    cXmlForm.enctype = 'application/x-www-form-urlencoded';
-    const input = document.createElement('input'); // set the returnURL
-    input.setAttribute('name', 'cXML-urlencoded');
-    input.setAttribute('value', punchOutOrderMessage); // set the cXML value
-    input.setAttribute('type', 'hidden');
-    cXmlForm.appendChild(input);
+    const cXmlForm = this.domService.createElement<HTMLFormElement>('form');
+    this.domService.setProperty(cXmlForm, 'method', 'post');
+    this.domService.setProperty(cXmlForm, 'action', browserFormPostUrl);
+    this.domService.setProperty(cXmlForm, 'enctype', 'application/x-www-form-urlencoded');
+
+    const input = this.domService.createElement('input', cXmlForm); // set the returnURL
+    this.domService.setProperty(input, 'name', 'cXML-urlencoded');
+    this.domService.setProperty(input, 'value', punchOutOrderMessage);
+    this.domService.setProperty(input, 'type', 'hidden');
+
     return cXmlForm;
   }
 
@@ -386,15 +396,15 @@ export class PunchoutService {
    * @returns           The OCI punchout form
    */
   private createOciForm(data: Attribute<string>[], hookUrl: string): HTMLFormElement {
-    const ociForm = document.createElement('form');
-    ociForm.method = 'post';
-    ociForm.action = hookUrl;
+    const ociForm = this.domService.createElement<HTMLFormElement>('form');
+    this.domService.setProperty(ociForm, 'method', 'post');
+    this.domService.setProperty(ociForm, 'action', hookUrl);
+
     data.forEach(inputData => {
-      const input = document.createElement('input'); // prepare a new input DOM element
-      input.setAttribute('name', inputData.name); // set the param name
-      input.setAttribute('value', inputData.value); // set the value
-      input.setAttribute('type', 'hidden'); // set the type "hidden"
-      ociForm.appendChild(input); // add the input to the OCI form
+      const input = this.domService.createElement('input', ociForm); // prepare a new input DOM element
+      this.domService.setProperty(input, 'name', inputData.name);
+      this.domService.setProperty(input, 'value', inputData.value);
+      this.domService.setProperty(input, 'type', 'hidden');
     });
     return ociForm;
   }

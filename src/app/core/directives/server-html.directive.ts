@@ -8,7 +8,9 @@ import {
   Inject,
   Input,
   OnChanges,
+  Renderer2,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -22,6 +24,8 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
   @Input() callbacks: {
     [key: string]: (event?: MouseEvent) => void;
   };
+
+  private renderer = inject(Renderer2);
 
   constructor(
     private router: Router,
@@ -51,10 +55,10 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
   private patchElements() {
     // use setAttribute here to bypass security check
     Array.from(this.elementRef.nativeElement.querySelectorAll('[href]')).forEach((element: HTMLElement) => {
-      element.setAttribute('href', LinkParser.parseLink(element.getAttribute('href'), this.baseHref));
+      this.renderer.setAttribute(element, 'href', LinkParser.parseLink(element.getAttribute('href'), this.baseHref));
     });
     Array.from(this.elementRef.nativeElement.querySelectorAll('[src]')).forEach((element: HTMLElement) => {
-      element.setAttribute('src', this.transformMediaObjectSrc(element.getAttribute('src')));
+      this.renderer.setAttribute(element, 'src', this.transformMediaObjectSrc(element.getAttribute('src')));
     });
   }
 
@@ -106,7 +110,9 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
 
         // handle fragment links / anchor navigation
         if (routeHref.startsWith('#')) {
-          document.getElementById(routeHref.replace('#', '')).scrollIntoView({ block: 'start', behavior: 'smooth' });
+          this.elementRef.nativeElement
+            .querySelector(routeHref)
+            ?.scrollIntoView({ block: 'start', behavior: 'smooth' });
         } else {
           // otherwise handle as routerLink
           this.router.navigateByUrl(routeHref);
