@@ -122,6 +122,7 @@ This feature can also be used to benchmark the SSR render performance locally by
 - [PM2][pm2]
 - [YouTube - Server Side Rendering and Pre Rendering with Angular Universal](https://www.youtube.com/watch?v=-VDOAjzLcvQ)
 - [Google Developers - Rendering on the Web](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
+- [Angular Universal: a Complete Practical Guide](https://blog.angular-university.io/angular-universal/)
 
 [concept-hybrid]: ../concepts/hybrid-approach.md
 [concept-deploy-url]: ../concepts/deploy-url.md
