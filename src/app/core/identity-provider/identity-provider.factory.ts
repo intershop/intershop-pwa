@@ -40,7 +40,9 @@ export class IdentityProviderFactory {
           console.error('did not find identity provider for config', config);
         } else {
           const instance = this.injector.get(provider.implementor);
-          instance.init(config);
+          setTimeout(() => {
+            instance.init(config);
+          }, 1);
 
           this.instance = instance;
           this.config = config;
