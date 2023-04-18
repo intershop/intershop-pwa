@@ -40,6 +40,13 @@ export class IdentityProviderFactory {
           console.error('did not find identity provider for config', config);
         } else {
           const instance = this.injector.get(provider.implementor);
+
+          /*
+            If the code is called synchronously, the init method can call other actions that can trigger http requests.
+            If an HTTP request is triggered before the identity provider constructor is finished, a "Null Pointer Exception" will be thrown in the identity-provider.interceptor.
+            A delay with setTimeout is added to mitigate this problem
+          */
+          // TODO: Find a way to implement this without setTimeout()
           setTimeout(() => {
             instance.init(config);
           }, 1);
