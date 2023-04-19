@@ -361,6 +361,12 @@
               "name": "@typescript-eslint/experimental-utils",
               "filePattern": ".*eslint-rules/.*",
               "message": "Change to \"@typescript-eslint/utils\"."
+            },
+            {
+              "importNamePattern": "^DomService$",
+              "name": "ish-core/utils/dom/dom.service",
+              "filePattern": "^.*\\.(component|directive)\\.ts*$",
+              "message": "The \"DomService\" should only be used in injectable classes. Use the Angular \"Renderer2\" instead."
             }
           ]
         ],
