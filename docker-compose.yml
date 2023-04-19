@@ -33,6 +33,19 @@ services:
       #     clientID: ASDF12345
       #   Punchout:
       #     type: PUNCHOUT
+    #
+    # <Logging to an external device>
+    # Enabled volumes allow you to write server-side rendering and NGINX logs in local Unix/Windows directories.
+    # The path is composed as follows:
+    #   - d:/pwa/logs ... The local Windows/Unix directory of the development machine where the logs should be stored.
+    #   - .pm2/logs ... The log location of the SSR rendering container.
+    #
+    # Uncomment the following lines and adjust the paths to your environment to use this feature:
+    #
+    # volumes:
+    #   - d:/pwa/logs:/.pm2/logs/
+    #
+    # </Logging to an external device>
 
   # <CDN-Example>
   # add 127.0.0.1 mypwa.net to your hosts file and
@@ -60,6 +73,19 @@ services:
       - '4200:80'
       # - '4200:443'
       # - '9113:9113'
+    # <Logging to an external device>
+    #
+    # Enabled volumes allow you to write server-side rendering and NGINX logs in local Unix/Windows directories.
+    # The path is composed as follows:
+    #   - d:/pwa/logs ... The local Windows/Unix directory of the development machine where the logs should be stored.
+    #   - /var/log/ ... The log location of the nginx/cache container.
+    #
+    # Uncomment the following lines and adjust the paths to your environment to use this feature:
+    #
+    # volumes:
+    #   - d:/pwa/logs:/var/log/
+    #
+    # </Logging to an external device>
     #
     # Uncomment this if you want the containers CA to be available on your local machine
     # 1.) provide below adjusted volume mapping
