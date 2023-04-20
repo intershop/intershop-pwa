@@ -53,6 +53,7 @@ import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms
 import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './cms/components/cms-video/cms-video.component';
+import { ContentDesignViewWrapperComponent } from './cms/components/content-design-view-wrapper/content-design-view-wrapper.component';
 import { ContentIncludeComponent } from './cms/components/content-include/content-include.component';
 import { ContentNavigationComponent } from './cms/components/content-navigation/content-navigation.component';
 import { ContentPageletComponent } from './cms/components/content-pagelet/content-pagelet.component';
@@ -260,6 +261,7 @@ const exportedComponents = [
   ContentIncludeComponent,
   ContentNavigationComponent,
   ContentPageletComponent,
+  ContentDesignViewWrapperComponent,
   ContentViewcontextComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,

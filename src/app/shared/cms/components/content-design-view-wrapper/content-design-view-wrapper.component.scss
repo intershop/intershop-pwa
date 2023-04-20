@@ -1,0 +1,91 @@
+@import 'variables';
+
+// DesignView colors
+$design-view-color-pagelet: #00b8d9;
+$design-view-color-slot: #399;
+$design-view-color-include: #ce5399;
+
+.design-view-wrapper {
+  position: relative;
+
+  > .design-view-wrapper-actions {
+    position: absolute;
+    top: -43px;
+    left: -2px;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: flex-end;
+    color: $color-inverse;
+
+    .name {
+      padding: 0 $space-default;
+      white-space: nowrap;
+    }
+
+    .btn {
+      margin-bottom: 0;
+      font-size: 20px;
+      color: $color-inverse;
+    }
+  }
+
+  &.pagelet.last-design-view-wrapper {
+    /*
+     * Highlight only the last .pagelet element in the hierarchy and highlight neither slot nor include.
+     * The class .last-design-view-wrapper is applied in TypeScript because &.pagelet:not(:has(.design-view-wrapper))
+     * does not work in Firefox yet. So it cannot be done in CSS only.
+    */
+    &:hover {
+      outline-width: 3px;
+      outline-style: solid;
+      outline-offset: -1px;
+
+      > .design-view-wrapper-actions {
+        display: flex;
+      }
+    }
+
+    &.slot,
+    &.include {
+      min-width: 100px;
+      min-height: 30px;
+    }
+
+    &.pagelet {
+      > .design-view-wrapper-actions {
+        background-color: $design-view-color-pagelet;
+      }
+
+      &:hover {
+        outline-color: $design-view-color-pagelet;
+      }
+    }
+
+    &.slot {
+      > .design-view-wrapper-actions {
+        background-color: $design-view-color-slot;
+      }
+
+      &:hover {
+        outline-color: $design-view-color-slot;
+      }
+    }
+
+    &.include {
+      > .design-view-wrapper-actions {
+        background-color: $design-view-color-include;
+      }
+
+      &:hover {
+        outline-color: $design-view-color-include;
+      }
+    }
+  }
+}
+
+// apply design view specific changes to be able to edit all components
+::ng-deep .carousel-inner {
+  // carousel slide item
+  overflow: inherit;
+}
