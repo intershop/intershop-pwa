@@ -90,7 +90,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
     // anonymous user token should only be fetched when no user is logged in
     this.apiTokenService
-      .restore$(['user', 'order'], !this.oauthService.getIdToken())
+      .restore$(['user', 'order'])
       .pipe(
         switchMap(() => from(this.oauthService.loadDiscoveryDocumentAndTryLogin())),
         switchMap(() =>

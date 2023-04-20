@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, noop } from 'rxjs';
-import { filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { selectQueryParam } from 'ish-core/store/core/router';
@@ -31,19 +31,14 @@ export class ICMIdentityProvider implements IdentityProvider {
   init() {
     this.apiTokenService.restore$().subscribe(noop);
 
-    this.apiTokenService.cookieVanishes$
-      .pipe(withLatestFrom(this.apiTokenService.apiToken$))
-      .subscribe(([type, apiToken]) => {
-        this.accountFacade.logoutUser({ revokeApiToken: false });
-        if (!apiToken) {
-          this.accountFacade.fetchAnonymousToken();
-        }
-        if (type === 'user') {
-          this.router.navigate(['/login'], {
-            queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
-          });
-        }
-      });
+    this.apiTokenService.cookieVanishes$.subscribe(([type]) => {
+      this.accountFacade.logoutUser({ revokeApiToken: false });
+      if (type === 'user') {
+        this.router.navigate(['/login'], {
+          queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
+        });
+      }
+    });
   }
 
   triggerLogin(): TriggerReturnType {
