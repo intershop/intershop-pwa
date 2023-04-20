@@ -102,12 +102,7 @@ export class UserEffects {
   logoutUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logoutUser),
-      switchMap(() =>
-        this.userService.logoutUser().pipe(
-          concatMap(() => [logoutUserSuccess(), fetchAnonymousUserToken()]),
-          mapErrorToAction(logoutUserFail)
-        )
-      )
+      switchMap(() => this.userService.logoutUser().pipe(map(logoutUserSuccess), mapErrorToAction(logoutUserFail)))
     )
   );
 

@@ -54,11 +54,13 @@ describe('Returning User', () => {
       checkApiTokenCookie('user');
     });
 
-    it('should log out and get the anonymous token', () => {
+    it('should log out and remove its apiToken cookie', () => {
       at(MyAccountPage, page => page.header.logout());
       at(HomePage);
-      // eslint-disable-next-line unicorn/no-null
-      checkApiTokenCookie('anonymous');
+
+      cy.getCookie('apiToken').then(cookie => {
+        expect(cookie).to.be.null;
+      });
     });
   });
 
