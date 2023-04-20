@@ -17,7 +17,7 @@ const _ = {
   },
   category: 'networks',
   subcategory: 'networks.firewalls',
-  product1: '859910',
+  product1: '1451744',
   product2: '3459777',
   product3: '3542794',
 };
