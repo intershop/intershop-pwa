@@ -1,0 +1,37 @@
+<ng-container *ngIf="isDesignviewMode && type; else cmsOutlet">
+  <div class="designview-wrapper" [ngClass]="type">
+    <div class="designview-wrapper-actions">
+      <!-- pagelet -->
+      <ng-container *ngIf="type === 'pagelet'">
+        <ng-container *ngIf="pagelet$ | async as pagelet">
+          <div class="name">{{ pagelet.displayName }}</div>
+          <button (click)="action()" class="btn" title="{{ 'designview.edit.link.title' | translate }}">
+            <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+          </button>
+          <button (click)="action()" class="btn" title="{{ 'designview.remove.link.title' | translate }}">
+            <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+          </button>
+        </ng-container>
+      </ng-container>
+      <!-- slot -->
+      <ng-container *ngIf="type === 'slot'">
+        <div class="name">{{ pagelet.slot(this.slotId).displayName }}</div>
+        <button (click)="action()" class="btn" title="{{ 'designview.add.link.title' | translate }}">
+          <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+        </button>
+      </ng-container>
+      <!-- include -->
+      <ng-container *ngIf="type === 'include'">
+        <div class="name">{{ include.displayName }}</div>
+        <button (click)="action()" class="btn" title="{{ 'designview.add.link.title' | translate }}">
+          <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+        </button>
+      </ng-container>
+    </div>
+    <ng-container *ngTemplateOutlet="cmsOutlet"></ng-container>
+  </div>
+</ng-container>
+
+<ng-template #cmsOutlet>
+  <ng-content></ng-content>
+</ng-template>

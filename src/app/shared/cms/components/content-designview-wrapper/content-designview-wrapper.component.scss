@@ -1,0 +1,69 @@
+@import 'variables';
+
+// DesignView colors
+$designview-color-pagelet: #00b8d9;
+$designview-color-slot: #399;
+$designview-color-include: #ce5399;
+
+.designview-wrapper {
+  position: relative;
+
+  > .designview-wrapper-actions {
+    position: absolute;
+    top: -43px;
+    left: -2px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: $color-inverse;
+    background-color: $designview-color-pagelet;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
+    .name {
+      padding: 0 $space-default;
+    }
+
+    .btn {
+      margin-bottom: 0;
+      font-size: 20px;
+      color: $color-inverse;
+    }
+  }
+
+  &:hover {
+    outline: 3px solid $designview-color-pagelet;
+    outline-offset: -1px;
+
+    > .designview-wrapper-actions {
+      opacity: 1;
+    }
+  }
+
+  &.slot,
+  &.include {
+    min-width: 100px;
+    min-height: 30px;
+  }
+
+  &.slot {
+    > .designview-wrapper-actions {
+      background-color: $designview-color-slot;
+    }
+
+    &:hover {
+      outline: 3px solid $designview-color-slot;
+    }
+  }
+
+  &.include {
+    > .designview-wrapper-actions {
+      background-color: $designview-color-include;
+    }
+
+    &:hover {
+      outline: 3px solid $designview-color-include;
+    }
+  }
+}
