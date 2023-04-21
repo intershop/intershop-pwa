@@ -694,7 +694,6 @@
         "jsdoc/check-values": "warn",
         "jsdoc/empty-tags": "warn",
         "jsdoc/implements-on-classes": "warn",
-        "jsdoc/newline-after-description": ["warn", "always"],
         "jsdoc/no-undefined-types": "warn",
         "jsdoc/require-property-description": "warn",
         "jsdoc/require-property-name": "warn",
