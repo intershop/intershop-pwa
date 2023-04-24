@@ -10,7 +10,7 @@ import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
+import { getBasketIdOrCurrent, getCurrentBasket } from 'ish-core/store/customer/basket';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -59,7 +59,10 @@ describe('Basket Service', () => {
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: OrderService, useFactory: () => instance(orderService) },
         provideMockStore({
-          selectors: [{ selector: getBasketIdOrCurrent, value: 'current' }],
+          selectors: [
+            { selector: getBasketIdOrCurrent, value: 'current' },
+            { selector: getCurrentBasket, value: { id: '123' } },
+          ],
         }),
       ],
     });

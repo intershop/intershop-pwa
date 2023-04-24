@@ -2,7 +2,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, forkJoin, iif, of, throwError } from 'rxjs';
-import { catchError, concatMap, map, take } from 'rxjs/operators';
+import { catchError, concatMap, first, map, take } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
@@ -27,7 +27,7 @@ import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-m
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
+import { getBasketIdOrCurrent, getCurrentBasket } from 'ish-core/store/customer/basket';
 
 export type BasketUpdateType =
   | { invoiceToAddress: string }
@@ -341,26 +341,38 @@ export class BasketService {
     if (!items) {
       return throwError(() => new Error('addItemsToBasket() called without items'));
     }
+    return this.store.pipe(select(getCurrentBasket)).pipe(
+      first(),
+      concatMap(basket =>
+        this.currentBasketEndpoint()
+          .post<{ data: LineItemData[]; infos: BasketInfo[]; errors?: ErrorFeedback[] }>(
+            'items',
+            this.mapItemsToAdd(basket, items),
+            {
+              headers: this.basketHeaders,
+            }
+          )
+          .pipe(
+            map(payload => ({
+              lineItems: payload.data.map(item => LineItemMapper.fromData(item)),
+              info: BasketInfoMapper.fromInfo({ infos: payload.infos }),
+              errors: payload.errors,
+            }))
+          )
+      )
+    );
+  }
 
-    const body = items.map(item => ({
+  private mapItemsToAdd(basket: Basket, items: SkuQuantityType[]) {
+    return items.map(item => ({
       product: item.sku,
       quantity: {
         value: item.quantity,
         unit: item.unit,
       },
+      // ToDo: if multi buckets will be supported setting the shipping method to the common shipping method has to be reworked
+      shippingMethod: basket?.commonShippingMethod?.id,
     }));
-
-    return this.currentBasketEndpoint()
-      .post<{ data: LineItemData[]; infos: BasketInfo[]; errors?: ErrorFeedback[] }>('items', body, {
-        headers: this.basketHeaders,
-      })
-      .pipe(
-        map(payload => ({
-          lineItems: payload.data.map(item => LineItemMapper.fromData(item)),
-          info: BasketInfoMapper.fromInfo({ infos: payload.infos }),
-          errors: payload.errors,
-        }))
-      );
   }
 
   /**
