@@ -10,7 +10,7 @@ on:
     - cron: '0 0 * * *'
 
 env:
-  NODE_VERSION: 18.15.0
+  NODE_VERSION: 18.16.0
 
 jobs:
   Updates:

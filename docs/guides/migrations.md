@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Migrations
 
+## 4.0 to 4.1
+
+The Intershop PWA now uses Node.js 18.16.0 LTS with the corresponding npm version 9.5.1 to resolve an issue with Azure docker deployments (see #1416).
+
 ## 3.3 to 4.0
 
 The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm version 9.5.0 and the `"lockfileVersion": 3,`.
