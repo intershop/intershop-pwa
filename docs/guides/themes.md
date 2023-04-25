@@ -28,10 +28,12 @@ This will add the theme to the according files and create styling-specific folde
 
 ## Configurable Theme
 
-> **Note:**
+> **Note**
+>
 > To use this feature, the feature toggle `extraConfiguration` needs to be enabled.
 
-> **Warning:**
+> **Warning**
+>
 > Multiple themes (e.g., for different channels or brands) increase the build and deployment time of the PWA SSR container.
 > This is okay for a limited number of themes (2-3) but will become problematic the higher the number gets.
 > A solution could be to use only one theme that can be configured for the different channels/brands at runtime.
@@ -106,7 +108,8 @@ With the introduction of such CSS custom properties the values of these properti
 <html style="--logo: url(https://localhost/INTERSHOP/static/WFS/inSPIRED-inTRONICS_Business-Site/rest/inSPIRED-inTRONICS_Business-rest/en_US/config/logo.png); --logo-width: 260px; -font-family-regular: Open+Sans; --corporate-primary: #688dc3;" lang="en-US">
 ```
 
-> **Note:**
+> **Note**
+>
 > SCSS color calculations do not work with CSS custom properties, they need real values.
 > Therefore, SCSS functions like `darken()` and `lighten()` do not work with values like `var(--corporate-primary)`.
 > The standard Intershop PWA SCSS styling was adapted to no longer use such functions.
@@ -163,6 +166,7 @@ If the _Configuration JSON_ does not suit the requirements for customizations we
 ### Developing with the Configurable Theme
 
 > **Note**
+>
 > To use this feature, the feature toggle `extraConfiguration` needs to be enabled.
 
 For testing the configurable `b2c` theme, even without an ICM that provides the needed CMS include and pagelet, we provide mock data that can be used instead.
