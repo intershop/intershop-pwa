@@ -6,7 +6,7 @@ import { ProfilePage } from '../../pages/account/profile.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 
 const _ = {
-  user: { login: `testuser${new Date().getTime()}@test.intershop.de`, companyName1: 'Big Foods', ...sensibleDefaults },
+  user: { ...sensibleDefaults, login: `testuser${new Date().getTime()}@test.intershop.de`, companyName1: 'Big Foods' },
   newDetails: {
     companyName: 'REALLY',
     companyName2: 'Big Foods',

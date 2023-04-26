@@ -7,7 +7,7 @@ import { sensibleDefaults } from '../../pages/account/registration.page';
 import { HomePage } from '../../pages/home.page';
 
 const _ = {
-  user: { login: `testuser${new Date().getTime()}@test.intershop.de`, ...sensibleDefaults },
+  user: { ...sensibleDefaults, login: `testuser${new Date().getTime()}@test.intershop.de` },
   newEmail: `changed${new Date().getTime()}@test.intershop.de`,
 };
 

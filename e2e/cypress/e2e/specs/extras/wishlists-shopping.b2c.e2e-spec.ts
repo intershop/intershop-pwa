@@ -10,8 +10,8 @@ import { FamilyPage } from '../../pages/shopping/family.page';
 
 const _ = {
   user: {
-    login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
+    login: `test${new Date().getTime()}@testcity.de`,
   },
   category: 'Home-Entertainment',
   subcategory: 'Home-Entertainment.SmartHome',
