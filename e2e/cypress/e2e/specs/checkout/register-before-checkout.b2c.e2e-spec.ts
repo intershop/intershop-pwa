@@ -24,8 +24,8 @@ const _ = {
   } as AddressDetailsTypes,
   email: 'p.parkes@test.intershop.de',
   user: {
-    login: `testuser${new Date().getTime()}@test.intershop.de`,
     ...sensibleDefaults,
+    login: `testuser${new Date().getTime()}@test.intershop.de`,
   } as Registration,
 };
 

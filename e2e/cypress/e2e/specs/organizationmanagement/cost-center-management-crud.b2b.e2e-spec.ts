@@ -11,8 +11,8 @@ import { CostCentersPage } from '../../pages/organizationmanagement/cost-centers
 // test for viewing functionality only
 const _ = {
   user: {
-    login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
+    login: `test${new Date().getTime()}@testcity.de`,
   },
   newCostCenter: {
     costCenterId: '100400',

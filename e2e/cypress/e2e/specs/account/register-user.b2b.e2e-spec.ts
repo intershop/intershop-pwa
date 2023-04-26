@@ -6,8 +6,8 @@ import { HomePage } from '../../pages/home.page';
 
 const _ = {
   user: {
-    login: `testuser${new Date().getTime()}@test.intershop.de`,
     ...sensibleDefaults,
+    login: `testuser${new Date().getTime()}@test.intershop.de`,
     companyName1: 'Big Foods',
   } as Registration,
 };

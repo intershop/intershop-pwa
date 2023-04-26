@@ -7,8 +7,8 @@ import { QuoteRequestDialog } from '../../pages/shopping/quote-request.dialog';
 
 const _ = {
   user: {
-    login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
+    login: `test${new Date().getTime()}@testcity.de`,
   },
   product: {
     sku: '6997041',

@@ -21,8 +21,8 @@ const _ = {
     budgetPeriod: 'monthly',
   },
   user: {
-    login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
+    login: `test${new Date().getTime()}@testcity.de`,
   },
   sku: '201807197',
 };
