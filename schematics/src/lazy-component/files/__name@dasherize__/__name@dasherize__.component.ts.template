@@ -1,7 +1,9 @@
 import {
   ChangeDetectionStrategy, Component, createNgModule, OnInit, ViewChild, ViewContainerRef,
   Injector,
+  <% if (inputNames.length) { %>
   ComponentRef,
+  <% } %>
   <% if (inputNames.length) { %>Input, OnChanges, SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
 
@@ -10,8 +12,9 @@ import {
   import { takeUntil } from 'rxjs/operators';
 <% } %>
 
+<% if (inputNames.length) { %>
 import type { <%= classify(originalName) %>Component as OriginalComponent } from '<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
-
+<% } %>
 @Component({
   selector: '<%= selector %>',
   templateUrl: './<%= dasherize(name) %>.component.html',
@@ -34,7 +37,9 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   @Input() <%= name %>: OriginalComponent['<%= name %>'];
 <% } %>
 
+   <% if (inputNames.length) { %>
   private component: ComponentRef<OriginalComponent>;
+  <% } %>
 
   constructor(
     <% if(guardDisplay) { %>private featureToggleService: FeatureToggleService,<% } %>
@@ -63,7 +68,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
 
     const ngModuleRef = createNgModule(module, this.injector);
 
-    this.component = this.anchor.createComponent(originalComponent, { ngModuleRef });
+    <% if (inputNames.length) { %> this.component =  <% } %>this.component = this.anchor.createComponent(originalComponent, { ngModuleRef });
   <% if (inputNames.length) { %>
     this.ngOnChanges({
         <% for (let name of inputNames) { %>
