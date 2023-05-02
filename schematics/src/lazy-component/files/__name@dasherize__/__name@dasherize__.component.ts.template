@@ -2,8 +2,7 @@ import {
   ChangeDetectionStrategy, Component, createNgModule, OnInit, ViewChild, ViewContainerRef,
   Injector,
   ComponentRef,
-  <% if (inputNames.length) { %>Input, OnChanges, <% } %>
-  <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
+  <% if (inputNames.length) { %>Input, OnChanges, SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
 
 <% if(guardDisplay) { %>
@@ -66,30 +65,22 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
 
     this.component = this.anchor.createComponent(originalComponent, { ngModuleRef });
   <% if (inputNames.length) { %>
-    this.ngOnChanges(
-      <% if (onChanges === 'complex') { %>{
+    this.ngOnChanges({
         <% for (let name of inputNames) { %>
           <%= name %>: new SimpleChange(undefined, this.<%= name %>, true),
         <% } %>
         }
-      <% } %>
     );
   <% } %>
-    this.component.changeDetectorRef.markForCheck();
+
   }
 
 <% if (inputNames.length) { %>
-  ngOnChanges(<% if (onChanges === 'complex') { %>changes: SimpleChanges<% } %>) {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.component) {
-      <% for (let name of inputNames) { %>
-        this.component.instance.<%= name %> = this.<%= name %>;
-      <% } %>
-
-      <% if (onChanges === 'simple') { %>
-        this.component.instance.ngOnChanges();
-      <% } else if (onChanges === 'complex') { %>
-        this.component.instance.ngOnChanges(changes);
-      <% } %>
+      for (const inputName in changes) {
+        this.component.setInput(inputName, changes[inputName].currentValue);
+      }
     }
   }
 <% } %>
