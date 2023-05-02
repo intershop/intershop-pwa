@@ -68,7 +68,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
 
     const ngModuleRef = createNgModule(module, this.injector);
 
-    <% if (inputNames.length) { %> this.component =  <% } %>this.component = this.anchor.createComponent(originalComponent, { ngModuleRef });
+    <% if (inputNames.length) { %> this.component =  <% } %>this.anchor.createComponent(originalComponent, { ngModuleRef });
   <% if (inputNames.length) { %>
     this.ngOnChanges({
         <% for (let name of inputNames) { %>
