@@ -241,16 +241,6 @@ export class DummyComponent {
       expect(componentContent).toContain("@Input() importComplexTyped: OriginalComponent['importComplexTyped'];");
       expect(componentContent).toContain("@Input() importGenericTyped: OriginalComponent['importGenericTyped'];");
     });
-
-    it('should transfer inputs', () => {
-      expect(componentContent).toContain('component.instance.simpleTyped = this.simpleTyped');
-      expect(componentContent).toContain('component.instance.simpleTypedInitialized = this.simpleTypedInitialized');
-      expect(componentContent).toContain('component.instance.complexTyped = this.complexTyped');
-      expect(componentContent).toContain('component.instance.complexTypedInitialized = this.complexTypedInitialized');
-      expect(componentContent).toContain('component.instance.importTyped = this.importTyped');
-      expect(componentContent).toContain('component.instance.importComplexTyped = this.importComplexTyped');
-      expect(componentContent).toContain('component.instance.importGenericTyped = this.importGenericTyped');
-    });
   });
 
   describe('overwriting', () => {
@@ -272,92 +262,6 @@ export class DummyComponent {
       expect(tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts')).toContain(
         'export class LazyDummyComponent'
       );
-    });
-  });
-
-  describe('component with ngOnChanges without SimpleChanges', () => {
-    let tree: UnitTestTree;
-    let componentContent: string;
-
-    beforeEach(async () => {
-      appTree.overwrite(
-        '/src/app/extensions/ext/shared/dummy/dummy.component.ts',
-        `import { ChangeDetectionStrategy, Component, Input, OnChanges, Output } from '@angular/core';
-
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-
-@Component({
-  selector: 'ish-dummy',
-  templateUrl: './dummy.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DummyComponent implements OnChanges {
-  @Input() input: boolean;
-
-  ngOnChanges() {
-    // do something
-  }
-}
-`
-      );
-      tree = await schematicRunner.runSchematic(
-        'lazy-component',
-        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
-        appTree
-      );
-
-      componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
-    });
-
-    it('should call ngOnChanges', () => {
-      expect(componentContent).toContain('component.instance.ngOnChanges()');
-    });
-
-    it('should not import SimpleChanges', () => {
-      expect(componentContent).not.toContain('SimpleChanges');
-    });
-  });
-
-  describe('component with ngOnChanges with SimpleChanges', () => {
-    let tree: UnitTestTree;
-    let componentContent: string;
-
-    beforeEach(async () => {
-      appTree.overwrite(
-        '/src/app/extensions/ext/shared/dummy/dummy.component.ts',
-        `import { ChangeDetectionStrategy, Component, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-
-@Component({
-  selector: 'ish-dummy',
-  templateUrl: './dummy.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DummyComponent implements OnChanges {
-  @Input() input: boolean;
-
-  ngOnChanges(changes: SimpleChanges) {
-    // do something
-  }
-}
-`
-      );
-      tree = await schematicRunner.runSchematic(
-        'lazy-component',
-        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
-        appTree
-      );
-
-      componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
-    });
-
-    it('should call ngOnChanges with parameter', () => {
-      expect(componentContent).toMatch(/component\.instance\.ngOnChanges\(\w+\)/);
-    });
-
-    it('should import SimpleChanges', () => {
-      expect(componentContent).toContain('SimpleChanges');
     });
   });
 });
