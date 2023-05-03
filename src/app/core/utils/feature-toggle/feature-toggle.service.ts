@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { isEqual } from 'lodash-es';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { concatMap, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { getFeatures, isLazyFeatureLoaded } from 'ish-core/store/core/configuration';
 
@@ -20,7 +21,7 @@ export class FeatureToggleService {
   private featureToggles$ = new BehaviorSubject<string[]>(undefined);
 
   constructor(private store: Store) {
-    this.store.pipe(select(getFeatures)).subscribe(this.featureToggles$);
+    this.store.pipe(select(getFeatures), distinctUntilChanged(isEqual)).subscribe(this.featureToggles$);
   }
 
   /**
@@ -35,16 +36,20 @@ export class FeatureToggleService {
   }
 
   /**
-   * Asynchronously check if {@param feature} is active.
+   * Asynchronously check if {@param feature} is active and loaded.
    */
   enabled$(feature: string): Observable<boolean> {
     return this.featureToggles$.pipe(
       map(featureToggles => checkFeature(featureToggles, feature)),
+      concatMap(enabled => (enabled ? this.loaded$(feature) : of(enabled))),
       distinctUntilChanged()
     );
   }
 
   loaded$(feature: string): Observable<boolean> {
+    if (['always', 'never'].includes(feature)) {
+      return of(true);
+    }
     return this.store.pipe(select(isLazyFeatureLoaded(feature))).pipe(distinctUntilChanged());
   }
 }
