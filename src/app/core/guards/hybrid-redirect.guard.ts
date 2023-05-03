@@ -8,6 +8,9 @@ import { getICMWebURL } from 'ish-core/store/hybrid';
 
 import { HYBRID_MAPPING_TABLE } from '../../../hybrid/default-url-mapping-table';
 
+/**
+ * guard that handles the Hybrid Approach functionality on the browser side using the HYBRID_MAPPING_TABLE configuration
+ */
 export function hybridRedirectGuard(_: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
   return checkRedirect(state.url);
 }
