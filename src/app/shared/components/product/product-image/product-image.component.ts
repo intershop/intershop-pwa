@@ -40,8 +40,11 @@ export class ProductImageComponent implements OnInit {
    */
   @Input() altText: string;
 
+  @Input() zoom: boolean;
+
   productURL$: Observable<string>;
   productImage$: Observable<Image>;
+  productZoomImage$: Observable<Image>;
   defaultAltText$: Observable<string>;
 
   computedQueryParamsHandling: QueryParamsHandling;
@@ -55,6 +58,9 @@ export class ProductImageComponent implements OnInit {
   ngOnInit() {
     this.productURL$ = this.context.select('productURL');
     this.productImage$ = this.context.getProductImage$(this.imageType, this.imageView);
+    if (this.zoom) {
+      this.productZoomImage$ = this.context.getProductImage$('ZOOM', this.imageView);
+    }
 
     this.defaultAltText$ = combineLatest([
       this.context.select('product').pipe(map(product => product?.name || product?.sku || '')),

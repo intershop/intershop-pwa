@@ -11,6 +11,7 @@ import {
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SwiperModule } from 'swiper/angular';
 
@@ -166,6 +167,7 @@ const importExportModules = [
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  NgxImageZoomModule,
   OrderTemplatesExportsModule,
   PipesModule,
   ProductNotificationsExportsModule,

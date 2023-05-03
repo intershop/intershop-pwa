@@ -87,3 +87,11 @@
 .product-img-thumbs {
   width: 90px;
 }
+
+/* purgecss start ignore */
+.ngxImageZoomContainer {
+  width: 500px !important;
+  height: 500px !important;
+}
+
+/* purgecss end ignore */

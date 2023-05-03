@@ -1,4 +1,15 @@
 <div *ngIf="product$ | async" class="row">
+  <div *ngIf="getImageViewIDs$('L') | async as largeImages" class="col-12 product-detail-img clearfix">
+    <div class="product-image-container">
+      <ng-container *ngFor="let imageView of largeImages; let i = index">
+        <ish-product-image [zoom]="true" imageType="L" [imageView]="imageView"></ish-product-image>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!---
+<div *ngIf="product$ | async" class="row">
   <div class="col-lg-3 d-none d-lg-block">
     <div class="product-img-thumbs">
       <div
@@ -48,3 +59,4 @@
     [imageView]="imageView"
   ></ish-product-image>
 </ish-modal-dialog>
+-->

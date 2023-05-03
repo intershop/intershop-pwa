@@ -1,12 +1,20 @@
-<div>
-  <a
-    *ngIf="link; else image"
-    data-testing-id="product-image-link"
-    [routerLink]="linkTarget || (productURL$ | async)"
-    [queryParamsHandling]="computedQueryParamsHandling"
-    ><ng-container *ngTemplateOutlet="image"></ng-container>
-  </a>
-</div>
+<ng-container *ngIf="productZoomImage$ | async as zoomImage; else noZoom">
+  <ng-container *ngIf="productImage$ | async as image">
+    <lib-ngx-image-zoom [thumbImage]="image.effectiveUrl" [fullImage]="zoomImage.effectiveUrl"></lib-ngx-image-zoom>
+  </ng-container>
+</ng-container>
+
+<ng-template #noZoom>
+  <div>
+    <a
+      *ngIf="link; else image"
+      data-testing-id="product-image-link"
+      [routerLink]="linkTarget || (productURL$ | async)"
+      [queryParamsHandling]="computedQueryParamsHandling"
+      ><ng-container *ngTemplateOutlet="image"></ng-container>
+    </a>
+  </div>
+</ng-template>
 
 <ng-template #image>
   <ng-container *ngIf="productImage$ | async as image; else noImage">
