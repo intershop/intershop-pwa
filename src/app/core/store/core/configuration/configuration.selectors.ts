@@ -40,9 +40,6 @@ export const getFeatures = createSelector(getConfigurationState, state =>
   state.features ? [...state.features, ...state.addFeatures] : undefined
 );
 
-export const isLazyFeatureLoaded = (feature: string) =>
-  createSelector(getConfigurationState, state => state.lazyFeaturesLoaded?.[feature] ?? false);
-
 const internalDefaultLocale = createSelector(getConfigurationState, state => state.defaultLocale);
 
 const internalFallbackLocales = createSelector(getConfigurationState, state => state.fallbackLocales);

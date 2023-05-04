@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { concatMap, distinctUntilChanged, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { concatMap, distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
-import { getFeatures, isLazyFeatureLoaded } from 'ish-core/store/core/configuration';
+import { getFeatures } from 'ish-core/store/core/configuration';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 export function checkFeature(features: string[] = [], feature: string): boolean {
   if (feature === 'always') {
@@ -18,10 +19,18 @@ export function checkFeature(features: string[] = [], feature: string): boolean 
 
 @Injectable({ providedIn: 'root' })
 export class FeatureToggleService {
+  private addLoadedFeature$ = new Subject<string>();
+  private lazyFeaturesLoaded$ = new BehaviorSubject<string[]>([]);
+
   private featureToggles$ = new BehaviorSubject<string[]>(undefined);
 
   constructor(private store: Store) {
     this.store.pipe(select(getFeatures), distinctUntilChanged(isEqual)).subscribe(this.featureToggles$);
+
+    // will add new loaded feature to current list
+    this.addLoadedFeature$
+      .pipe(whenTruthy(), withLatestFrom(this.lazyFeaturesLoaded$))
+      .subscribe(([feature, loaded]) => this.lazyFeaturesLoaded$.next([...loaded, feature]));
   }
 
   /**
@@ -50,6 +59,17 @@ export class FeatureToggleService {
     if (['always', 'never'].includes(feature)) {
       return of(true);
     }
-    return this.store.pipe(select(isLazyFeatureLoaded(feature))).pipe(distinctUntilChanged());
+    return this.lazyFeaturesLoaded$.pipe(
+      map(loadedFeatures => loadedFeatures.includes(feature)),
+      distinctUntilChanged()
+    );
+  }
+
+  addLazyFeatureLoaded(feature: string) {
+    if (['always', 'never'].includes(feature)) {
+      return;
+    }
+
+    this.addLoadedFeature$.next(feature);
   }
 }

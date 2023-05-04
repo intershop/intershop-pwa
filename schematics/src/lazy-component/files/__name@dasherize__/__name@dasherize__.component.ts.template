@@ -9,13 +9,11 @@ import {
 <% if(guardDisplay && hasLazyFeature) { %>
   import { FeatureToggleService } from 'ish-core/feature-toggle.module';
   import { switchMap, takeUntil } from 'rxjs/operators';
-  import { of } from 'rxjs';
   import { whenTruthy } from 'ish-core/utils/operators';
 <% } else if(guardDisplay) { %>
   import { FeatureToggleService } from 'ish-core/feature-toggle.module';
   import { takeUntil } from 'rxjs/operators';
 <% } else if(hasLazyFeature) { %>
-  import { of } from 'rxjs';
   import { switchMap } from 'rxjs/operators';
   import { whenTruthy } from 'ish-core/utils/operators';
 <% } %>
@@ -55,12 +53,15 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   <% if(!guardDisplay) { %>async<% } %> ngOnInit() {
     <% if(guardDisplay) { %> this.featureToggleService.enabled$('<%= camelize(guardDisplay) %>').pipe(
       <% if(hasLazyFeature) { %>
-        switchMap(enabled =>
-          enabled ? this.featureToggleService.loaded$('<%= camelize(guardDisplay) %>').pipe(whenTruthy()) : of(enabled)
-        ),
+        whenTruthy(),
+        switchMap(() => this.featureToggleService.loaded$('<%= camelize(guardDisplay) %>')),
+      <% } if(hasLazyFeature) { %>
+        takeUntil(this.destroy$)).subscribe(async loaded => {
+        if (loaded) {
+      <% } else { %>
+        takeUntil(this.destroy$)).subscribe(async enabled => {
+        if (enabled) {
       <% } %>
-      takeUntil(this.destroy$)).subscribe(async enabled => {
-      if (enabled) {
     <% } %>
 
       await this.renderComponent();
