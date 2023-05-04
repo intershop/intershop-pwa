@@ -4,11 +4,19 @@ import { map } from 'rxjs/operators';
 
 import { FeatureToggleDirective } from './directives/feature-toggle.directive';
 import { NotFeatureToggleDirective } from './directives/not-feature-toggle.directive';
-import { FeatureToggleService, checkFeature } from './utils/feature-toggle/feature-toggle.service';
+import {
+  DEFAULT_LOADED_FEATURES,
+  FeatureToggleService,
+  checkFeature,
+} from './utils/feature-toggle/feature-toggle.service';
 
 @NgModule({
   declarations: [FeatureToggleDirective, NotFeatureToggleDirective],
   exports: [FeatureToggleDirective, NotFeatureToggleDirective],
+  providers: [
+    { provide: DEFAULT_LOADED_FEATURES, useValue: 'guestCheckout', multi: true },
+    { provide: DEFAULT_LOADED_FEATURES, useValue: 'businessCustomerRegistration', multi: true },
+  ],
 })
 export class FeatureToggleModule {
   private static features$ = new BehaviorSubject<string[]>(undefined);
