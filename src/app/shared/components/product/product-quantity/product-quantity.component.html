@@ -1,7 +1,7 @@
 <div *ngIf="visible$ | async" [ngClass]="{ 'has-error': hasQuantityError$ | async }" class="quantity-input">
   <ng-container [ngSwitch]="type">
     <ng-template ngSwitchCase="select">
-      <select (change)="change($event.target)" class="form-control" [id]="id" data-testing-id="quantity">
+      <select (change)="change($event.target)" class="form-control" [id]="elementId" data-testing-id="quantity">
         <option *ngFor="let opt of selectValues$ | async" [value]="opt" [selected]="opt === (quantity$ | async)">
           {{ opt }}
         </option>
@@ -10,7 +10,7 @@
     <ng-template ngSwitchCase="input">
       <input
         class="form-control"
-        [id]="id"
+        [id]="elementId"
         data-testing-id="quantity"
         type="number"
         pattern="[0-9]*"
@@ -29,7 +29,7 @@
           class="btn btn-link decrease-button"
           (click)="decrease()"
           [disabled]="cannotDecrease$ | async"
-          [attr.data-testing-id]="'decrease-quantity-' + id"
+          [attr.data-testing-id]="'decrease-quantity-' + elementId"
           translate
           tabindex="-1"
         >
@@ -40,7 +40,7 @@
           class="btn btn-link increase-button"
           (click)="increase()"
           [disabled]="cannotIncrease$ | async"
-          [attr.data-testing-id]="'increase-quantity-' + id"
+          [attr.data-testing-id]="'increase-quantity-' + elementId"
           translate
           tabindex="-1"
         >
@@ -48,7 +48,7 @@
         </button>
         <input
           class="form-control text-center"
-          [id]="id"
+          [id]="elementId"
           data-testing-id="quantity"
           type="number"
           pattern="[0-9]*"

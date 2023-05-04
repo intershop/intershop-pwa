@@ -14,6 +14,9 @@ The Intershop PWA now uses Node.js 18.16.0 LTS with the corresponding npm versio
 As a leftover adaption regarding the switch from deprecated class-based route guards in favor of functional guards the `addGlobalGuard` function was adapted to actually work with functional guards.
 If the `addGlobalGuard` function is used for customizations make sure it now works as expected.
 
+The input parameter `id` of the component `ish-product-quantity` caused issues with duplicate IDs within the page html, therefore it was renamed to `elementId`.
+If the input parameter 'id' of this component has already been used it has to be renamed accordingly.
+
 ## 3.3 to 4.0
 
 The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm version 9.5.0 and the `"lockfileVersion": 3,`.

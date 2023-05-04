@@ -31,7 +31,7 @@ describe('Product Quantity Component', () => {
     fixture = TestBed.createComponent(ProductQuantityComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.id = 'ASDF';
+    component.elementId = 'ASDF';
   });
 
   it('should be created', () => {
