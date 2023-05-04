@@ -14,7 +14,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 })
 export class ProductQuantityComponent implements OnInit {
   @Input() type: 'input' | 'select' | 'counter' = 'counter';
-  @Input() id: string = uuid();
+  @Input() elementId: string = uuid();
 
   visible$: Observable<boolean>;
   quantity$: Observable<number>;
