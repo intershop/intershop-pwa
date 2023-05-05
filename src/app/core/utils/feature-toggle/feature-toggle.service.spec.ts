@@ -3,7 +3,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { getConfigurationState, getFeatures } from 'ish-core/store/core/configuration';
+import { getFeatures } from 'ish-core/store/core/configuration';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
 describe('Feature Toggle Service', () => {
@@ -30,14 +30,13 @@ describe('Feature Toggle Service', () => {
       TestBed.configureTestingModule({
         providers: [
           provideMockStore({
-            selectors: [
-              { selector: getFeatures, value: ['feature1'] },
-              { selector: getConfigurationState, value: { lazyFeaturesLoaded: { feature1: true } } },
-            ],
+            selectors: [{ selector: getFeatures, value: ['feature1'] }],
           }),
         ],
       });
       featureToggle = TestBed.inject(FeatureToggleService);
+
+      featureToggle.addLoadedFeatureToList('feature1');
     });
 
     it.each([

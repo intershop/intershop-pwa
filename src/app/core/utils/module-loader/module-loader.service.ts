@@ -30,7 +30,7 @@ export class ModuleLoaderService {
           if (!this.loadedModules.includes(loaded)) {
             createNgModule(loaded, injector);
             this.loadedModules.push(loaded);
-            this.featureToggleService.addLazyFeatureLoaded(mod.feature);
+            this.featureToggleService.addLoadedFeatureToList(mod.feature);
           }
         });
     });

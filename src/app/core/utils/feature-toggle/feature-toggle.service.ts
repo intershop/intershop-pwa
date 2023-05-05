@@ -5,7 +5,6 @@ import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { concatMap, distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
-import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 export function checkFeature(features: string[] = [], feature: string): boolean {
@@ -23,7 +22,7 @@ export const DEFAULT_LOADED_FEATURES = new InjectionToken<string>('defaultFeatur
 @Injectable({ providedIn: 'root' })
 export class FeatureToggleService {
   private addLoadedFeature$ = new Subject<string>();
-  private lazyFeaturesLoaded$ = new BehaviorSubject<string[]>([]);
+  private loadedFeatures$ = new BehaviorSubject<string[]>([]);
 
   private featureToggles$ = new BehaviorSubject<string[]>(undefined);
 
@@ -32,11 +31,12 @@ export class FeatureToggleService {
 
     // will add new loaded feature to current list
     this.addLoadedFeature$
-      .pipe(whenTruthy(), withLatestFrom(this.lazyFeaturesLoaded$.pipe(log())))
-      .subscribe(([feature, loaded]) => this.lazyFeaturesLoaded$.next([...loaded, feature]));
+      .pipe(whenTruthy(), withLatestFrom(this.loadedFeatures$))
+      .subscribe(([feature, loaded]) => this.loadedFeatures$.next([...loaded, feature]));
 
+    // will add non lazy extensions and feature flags as default to loaded list
     const defaultFeatures = this.injector.get<string[]>(DEFAULT_LOADED_FEATURES, []);
-    defaultFeatures.filter(feat => this.enabled(feat)).forEach(feat => this.addLazyFeatureLoaded(feat));
+    defaultFeatures.filter(feat => this.enabled(feat)).forEach(feat => this.addLoadedFeatureToList(feat));
   }
 
   /**
@@ -65,17 +65,22 @@ export class FeatureToggleService {
     if (['always', 'never'].includes(feature)) {
       return of(true);
     }
-    return this.lazyFeaturesLoaded$.pipe(
+    return this.loadedFeatures$.pipe(
       map(loadedFeatures => loadedFeatures.includes(feature)),
       distinctUntilChanged()
     );
   }
 
-  addLazyFeatureLoaded(feature: string) {
+  /**
+   * Will add loaded lazy feature to list
+   *
+   * @param feature loaded lazy feature
+   */
+  addLoadedFeatureToList(feature: string) {
     if (['always', 'never'].includes(feature)) {
       return;
     }
 
-    this.addLoadedFeature$.next('123');
+    this.addLoadedFeature$.next(feature);
   }
 }
