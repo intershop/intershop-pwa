@@ -11,6 +11,6 @@ import { LazyQuickorderLinkComponent } from './lazy-quickorder-link/lazy-quickor
 
   declarations: [LazyDirectOrderComponent, LazyQuickorderLinkComponent],
   exports: [LazyDirectOrderComponent, LazyQuickorderLinkComponent],
-  providers: [{ provide: DEFAULT_LOADED_FEATURES, useValue: 'quickOrder', multi: true }],
+  providers: [{ provide: DEFAULT_LOADED_FEATURES, useValue: 'quickorder', multi: true }],
 })
 export class QuickorderExportsModule {}
