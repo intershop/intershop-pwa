@@ -28,6 +28,7 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { getBasketIdOrCurrent, getCurrentBasket } from 'ish-core/store/customer/basket';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 export type BasketUpdateType =
   | { invoiceToAddress: string }
@@ -396,7 +397,7 @@ export class BasketService {
    * @param codeStr   The code string of the promotion code that should be removed from basket.
    */
   removePromotionCodeFromBasket(codeStr: string): Observable<string> {
-    return this.currentBasketEndpoint().delete<string>(`promotioncodes/${codeStr}`, {
+    return this.currentBasketEndpoint().delete<string>(`promotioncodes/${encodeResourceID(codeStr)}`, {
       headers: this.basketHeaders,
     });
   }
