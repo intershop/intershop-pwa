@@ -1,4 +1,9 @@
-<h1>{{ 'account.punchout.heading' | translate }}</h1>
+<h1>
+  {{ 'account.punchout.heading' | translate }}
+  <a *ngIf="selectedType === 'oci'" routerLink="configuration" class="btn btn-secondary">{{
+    'account.punchout.configuration.button.label' | translate
+  }}</a>
+</h1>
 <ish-error-message [error]="error"></ish-error-message>
 
 <p *ngIf="punchoutTypes?.length > 0; else noPunchoutTypes">

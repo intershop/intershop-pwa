@@ -1,0 +1,44 @@
+<div class="list-header d-sm-flex">
+  <div class="col-md-3 list-header-item no-seperator">
+    {{ 'account.punchout.configuration.form.heading.attribute' | translate }}
+  </div>
+  <div class="col-md-3 list-header-item no-seperator">
+    {{ 'account.punchout.configuration.form.heading.transformed-attribute' | translate }}
+    <ng-template #OciConfigurationPlaceholder>
+      <!--<span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>-->
+    </ng-template>
+    <a
+      class="header-note pl-2"
+      [ngbPopover]="OciConfigurationPlaceholder"
+      placement="bottom"
+      popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
+    >
+      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+    </a>
+  </div>
+  <div class="col-md-3 list-header-item no-seperator">
+    {{ 'account.punchout.configuration.form.heading.mapping' | translate }}
+    <ng-template #OciConfigurationMapping>
+      <div
+        innerHTML="{{ 'account.punchout.configuration.form.tooltip.mapping.content' | translate }}"
+        class="list-position-outside"
+      ></div>
+    </ng-template>
+    <a
+      class="header-note pl-2"
+      [ngbPopover]="OciConfigurationMapping"
+      placement="bottom"
+      popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
+    >
+      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+    </a>
+  </div>
+  <div class="col-md-3 list-header-item no-seperator">
+    {{ 'account.punchout.configuration.form.heading.format' | translate }}
+  </div>
+</div>
+<form [formGroup]="form"></form>
+
+<a [routerLink]="['/account/punchout', { format: 'oci' }]" class="btn btn-secondary">{{
+  'account.cancel.link' | translate
+}}</a>
