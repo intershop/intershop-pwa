@@ -7,7 +7,7 @@ import { getFeatures } from 'ish-core/store/core/configuration';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-declare interface LazyModuleType {
+export interface LazyModuleType {
   feature: string;
   location(): Promise<Type<unknown>>;
 }

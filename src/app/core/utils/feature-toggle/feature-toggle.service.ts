@@ -1,10 +1,13 @@
-import { Injectable, InjectionToken, Injector } from '@angular/core';
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
+import { Injectable, InjectionToken, Injector, ValueProvider } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { concatMap, distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
+import { Environment } from 'src/environments/environment.model';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
+import { LAZY_FEATURE_MODULE, LazyModuleType } from 'ish-core/utils/module-loader/module-loader.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 export function checkFeature(features: string[] = [], feature: string): boolean {
@@ -18,6 +21,27 @@ export function checkFeature(features: string[] = [], feature: string): boolean 
 }
 
 export const DEFAULT_LOADED_FEATURES = new InjectionToken<string>('defaultFeature');
+
+export function loadFeatureProvider(
+  feature: Environment['features'][0] | 'always' | 'never',
+  lazyLoading: false
+): ValueProvider;
+
+export function loadFeatureProvider(
+  feature: Environment['features'][0] | 'always' | 'never',
+  lazyLoading: true,
+  lazyOptions: Omit<LazyModuleType, 'feature'>
+): ValueProvider;
+
+export function loadFeatureProvider(
+  feature: Environment['features'][0] | 'always' | 'never',
+  lazyLoading: boolean,
+  lazyOptions?: Omit<LazyModuleType, 'feature'>
+): ValueProvider {
+  return lazyLoading
+    ? { provide: LAZY_FEATURE_MODULE, useValue: { ...lazyOptions, feature }, multi: true }
+    : { provide: DEFAULT_LOADED_FEATURES, useValue: feature, multi: true };
+}
 
 @Injectable({ providedIn: 'root' })
 export class FeatureToggleService {
