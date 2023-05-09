@@ -13,7 +13,10 @@ export const loadOciConfigurationsSuccess = createAction(
   payload<{ ociConfigurations: OciConfiguration[] }>()
 );
 
-export const updateOciConfiguration = createAction('[Punchout] Update Oci Configurations');
+export const updateOciConfiguration = createAction(
+  '[Punchout] Update Oci Configurations',
+  payload<{ ociConfiguration: OciConfiguration }>()
+);
 
 export const updateOciConfigurationFail = createAction('[Punchout API] Update Oci Configurations Fail', httpError());
 
