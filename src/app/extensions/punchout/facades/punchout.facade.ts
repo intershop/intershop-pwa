@@ -7,7 +7,14 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { OciConfigurationItem } from '../models/oci-configuration/oci-configuration.model';
 import { PunchoutType, PunchoutUser } from '../models/punchout-user/punchout-user.model';
+import {
+  getOciConfigurationError,
+  getOciConfigurationLoading,
+  loadOciConfiguration,
+  updateOciConfiguration,
+} from '../store/oci-configuration';
 import { transferPunchoutBasket } from '../store/punchout-functions';
 import { getPunchoutTypes, getPunchoutTypesError, getPunchoutTypesLoading } from '../store/punchout-types';
 import {
@@ -28,10 +35,12 @@ export class PunchoutFacade {
   punchoutLoading$ = combineLatest([
     this.store.pipe(select(getPunchoutLoading)),
     this.store.pipe(select(getPunchoutTypesLoading)),
+    this.store.pipe(select(getOciConfigurationLoading)),
   ]).pipe(map(([loading, typesLoading]) => loading || (typesLoading as boolean)));
 
   punchoutError$ = this.store.pipe(select(getPunchoutError));
   punchoutTypesError$: Observable<HttpError> = this.store.pipe(select(getPunchoutTypesError));
+  ociConfigurationError$ = this.store.pipe(select(getOciConfigurationError));
 
   supportedPunchoutTypes$: Observable<PunchoutType[]> = this.store.pipe(select(getPunchoutTypes));
 
@@ -67,5 +76,13 @@ export class PunchoutFacade {
 
   transferBasket() {
     this.store.dispatch(transferPunchoutBasket());
+  }
+
+  loadOciConfiguration() {
+    this.store.dispatch(loadOciConfiguration());
+  }
+
+  updateOciConfiguration(ociConfiguration: OciConfigurationItem[]) {
+    this.store.dispatch(updateOciConfiguration({ ociConfiguration }));
   }
 }

@@ -1,4 +1,4 @@
-export interface OciConfiguration {
+export interface OciConfigurationItem {
   type: string;
   field: string;
   transform: string;
