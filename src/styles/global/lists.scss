@@ -25,7 +25,7 @@
   }
 
   a {
-    $disabled-link-color: darken($CORPORATE-PRIMARY, $default-color-adjust);
+    $disabled-link-color: $CORPORATE-SECONDARY;
 
     color: $disabled-link-color;
 
@@ -34,7 +34,7 @@
     }
 
     &:hover &:hover > .ng-fa-icon {
-      color: darken($disabled-link-color, $default-color-adjust);
+      color: $CORPORATE-DARK;
     }
   }
 }

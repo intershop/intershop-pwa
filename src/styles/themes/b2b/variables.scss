@@ -35,6 +35,9 @@ $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1r
 
 $CORPORATE-PRIMARY: #688dc3; // BLUE
 $CORPORATE-SECONDARY: darken($CORPORATE-PRIMARY, 10%);
+$CORPORATE-LIGHT: lighten($CORPORATE-PRIMARY, 10%);
+$CORPORATE-DARK: darken($CORPORATE-PRIMARY, 20%);
+$CORPORATE-SHADOW: #7f9ecc80; // with alpha transparency
 
 //
 //TEXT COLORS
@@ -58,6 +61,7 @@ $color-corporate: $CORPORATE-PRIMARY;
 $color-primary: #222;
 $color-secondary: #2c2d2e;
 $color-tertiary: #eee;
+$color-quaternary: #d5d5d5;
 
 $color-dark: #000;
 $color-inverse: #fff;
@@ -88,6 +92,7 @@ $border-width-default: 1px;
 // primary buttons
 $button-primary-bg: $CORPORATE-PRIMARY;
 $button-primary-border: $CORPORATE-SECONDARY;
+$button-focus-box-shadow: $CORPORATE-SHADOW;
 
 // default buttons
 $button-default-color: $CORPORATE-PRIMARY;
@@ -186,8 +191,8 @@ $body-color: $color-primary;
 //
 // Style anchor elements.
 
-$link-color: $primary;
-$link-hover-color: darken($link-color, 10%);
+$link-color: $CORPORATE-PRIMARY;
+$link-hover-color: $CORPORATE-SECONDARY;
 
 // Components
 //

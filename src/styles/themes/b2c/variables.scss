@@ -9,22 +9,22 @@
 //
 // LOGOS
 
-$logo: url('/assets/themes/b2c/img/logo.png');
-$logo-width: 114px;
-$logo-height: 40px;
-$logo-mobile: url('/assets/themes/b2c/img/logo_mobile.png');
-$logo-mobile-width: 41px;
-$logo-mobile-height: 41px;
+$logo: var(--logo);
+$logo-width: var(--logo-width);
+$logo-height: var(--logo-height);
+$logo-mobile: var(--logo-mobile);
+$logo-mobile-width: var(--logo-mobile-width);
+$logo-mobile-height: var(--logo-mobile-height);
 
 // General spaces
 $space-default: 15px;
 
 //
 // FONTS
-$font-family-regular: 'robotoregular', 'Helvetica', 'Arial', sans-serif;
-$font-family-bold: 'robotobold', 'Helvetica', 'Arial', sans-serif;
-$font-family-condensedregular: 'roboto_condensedregular', 'Helvetica Neue', helvetica, 'Arial', sans-serif;
-$font-family-condensedbold: 'roboto_condensedbold', 'Helvetica Neue', helvetica, 'Arial', sans-serif;
+$font-family-regular: var(--font-family-regular);
+$font-family-bold: var(--font-family-bold);
+$font-family-condensedregular: var(--font-family-condensedregular);
+$font-family-condensedbold: var(--font-family-condensedbold);
 
 //
 // FONT SIZES
@@ -33,19 +33,22 @@ $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1r
 //
 //CORPORATE DESIGN COLORS
 
-$CORPORATE-PRIMARY: #ff6d00; // ORANGE
-$CORPORATE-SECONDARY: darken($CORPORATE-PRIMARY, 10%);
+$CORPORATE-PRIMARY: var(--corporate-primary);
+$CORPORATE-SECONDARY: var(--corporate-secondary);
+$CORPORATE-LIGHT: var(--corporate-light);
+$CORPORATE-DARK: var(--corporate-dark);
+$CORPORATE-SHADOW: var(--corporate-shadow);
 
 //
 //TEXT COLORS
 
-$text-color-corporate: $CORPORATE-PRIMARY;
+$text-color-corporate: var(--text-color-corporate);
 
-$text-color-primary: #222;
-$text-color-secondary: #555;
-$text-color-tertiary: #8b8b8b;
-$text-color-quaternary: #999;
-$text-color-quinary: #eee;
+$text-color-primary: var(--text-color-primary);
+$text-color-secondary: var(--text-color-secondary);
+$text-color-tertiary: var(--text-color-tertiary);
+$text-color-quaternary: var(--text-color-quaternary);
+$text-color-quinary: var(--text-color-quinary);
 
 $text-color-inverse: #fff;
 $text-color-special: #ea1919; //RED
@@ -53,11 +56,12 @@ $text-color-special: #ea1919; //RED
 //
 //GENERAL COLORS
 
-$color-corporate: $CORPORATE-PRIMARY;
+$color-corporate: var(--color-corporate);
 
-$color-primary: #222;
-$color-secondary: #2c2d2e;
-$color-tertiary: #eee;
+$color-primary: var(--color-primary);
+$color-secondary: var(--color-secondary);
+$color-tertiary: var(--color-tertiary);
+$color-quaternary: var(--color-quaternary);
 
 $color-dark: #000;
 $color-inverse: #fff;
@@ -88,6 +92,7 @@ $border-width-default: 1px;
 // primary buttons
 $button-primary-bg: $CORPORATE-PRIMARY;
 $button-primary-border: $CORPORATE-SECONDARY;
+$button-focus-box-shadow: $CORPORATE-SHADOW;
 
 // default buttons
 $button-default-color: $CORPORATE-PRIMARY;
@@ -167,8 +172,12 @@ $gray-800: #343a40;
 $gray-900: #212529;
 $black: #000;
 
-$primary: $CORPORATE-PRIMARY;
-$secondary: $CORPORATE-SECONDARY;
+// NOTE: these two variables cannot be set with CSS custom properties
+// since they are used for Bootstrap internal color calculations
+// if necessary such Bootstrap generated styles need to be overridden in project styles (e.g. see buttons.scss)
+$primary: #ff6d00; // ORANGE
+$secondary: darken($primary, 10%);
+// ------------------------------
 
 $danger: $color-special-primary;
 $warning: $color-special-secondary;
@@ -186,8 +195,8 @@ $body-color: $color-primary;
 //
 // Style anchor elements.
 
-$link-color: $primary;
-$link-hover-color: darken($link-color, 10%);
+$link-color: $CORPORATE-PRIMARY;
+$link-hover-color: $CORPORATE-SECONDARY;
 
 // Components
 //
