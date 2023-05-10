@@ -51,16 +51,25 @@ export class FeatureToggleService {
   private featureToggles$ = new BehaviorSubject<string[]>(undefined);
 
   constructor(private store: Store, private injector: Injector) {
-    this.store.pipe(select(getFeatures), distinctUntilChanged(isEqual)).subscribe(this.featureToggles$);
+    const defaultFeatures = this.injector.get<string[]>(DEFAULT_LOADED_FEATURES, []);
+
+    this.store.pipe(select(getFeatures), distinctUntilChanged(isEqual)).subscribe((features: string[]) => {
+      this.featureToggles$.next(features);
+
+      // will add non lazy extensions and feature flags as default to loaded list
+      defaultFeatures.forEach(defaultFeature => {
+        if (checkFeature(features, defaultFeature)) {
+          this.addLoadedFeatureToList(defaultFeature);
+        }
+      });
+    });
 
     // will add new loaded feature to current list
-    this.addLoadedFeature$
-      .pipe(whenTruthy(), withLatestFrom(this.loadedFeatures$))
-      .subscribe(([feature, loaded]) => this.loadedFeatures$.next([...loaded, feature]));
-
-    // will add non lazy extensions and feature flags as default to loaded list
-    const defaultFeatures = this.injector.get<string[]>(DEFAULT_LOADED_FEATURES, []);
-    defaultFeatures.filter(feat => this.enabled(feat)).forEach(feat => this.addLoadedFeatureToList(feat));
+    this.addLoadedFeature$.pipe(whenTruthy(), withLatestFrom(this.loadedFeatures$)).subscribe(([feature, loaded]) => {
+      if (!loaded?.includes(feature)) {
+        this.loadedFeatures$.next([...loaded, feature]);
+      }
+    });
   }
 
   /**
