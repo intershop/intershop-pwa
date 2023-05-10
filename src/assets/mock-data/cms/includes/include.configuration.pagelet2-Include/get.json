@@ -1,0 +1,68 @@
+{
+  "type": "PageletEntryPointRO",
+  "definitionQualifiedName": "app_sf_pwa_cm:include.configuration.pagelet2-Include",
+  "link": {
+    "type": "Link",
+    "uri": "inSPIRED-inTRONICS_Business-Site/rest/cms/includes/include.configuration.pagelet2-Include",
+    "title": "Configuration",
+    "itemId": "include.configuration.pagelet2-Include"
+  },
+  "pagelets": [
+    {
+      "type": "PageletRO",
+      "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component",
+      "link": {
+        "type": "Link",
+        "uri": "/inSPIRED-inTRONICS_Business-Site/rest/cms/pagelets/cmp_CONFIGURATION",
+        "title": "Configuration",
+        "itemId": "cmp_CONFIGURATION"
+      },
+      "displayName": "Configuration",
+      "id": "cmp_CONFIGURATION",
+      "domain": "inSPIRED-inTRONICS_Business-rest",
+      "configurationParameters": {
+        "Logo": {
+          "value": "inSPIRED-inTRONICS_Business-rest:/config/logo.png",
+          "type": "bc_pmc:types.pagelet2-ImageFileRef",
+          "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component-Logo"
+        },
+        "LogoMobile": {
+          "value": "inSPIRED-inTRONICS_Business-rest:/config/logo_mobile.png",
+          "type": "bc_pmc:types.pagelet2-ImageFileRef",
+          "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component-LogoMobile"
+        },
+        "Favicon": {
+          "value": "inSPIRED-inTRONICS_Business-rest:/config/favicon.ico",
+          "type": "bc_pmc:types.pagelet2-ImageFileRef",
+          "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component-Favicon"
+        },
+        "CSSProperties": {
+          "value": "corporate-primary:#068000\r\ncorporate-secondary:#066600\r\ncorporate-light:#09a000\r\ncorporate-dark:#033300\r\ncorporate-shadow:#09a00080\r\nlogo-width:260px\r\nlogo-height:50px\r\nfont-family-condensedbold:Roboto Slab\r\n",
+          "type": "bc_pmc:types.pagelet2-Text",
+          "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component-CSSProperties"
+        },
+        "CSSFonts": {
+          "value": "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&display=swap\r\n",
+          "type": "bc_pmc:types.pagelet2-Text",
+          "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component-CSSFonts"
+        },
+        "Features": {
+          "value": "compare,quickorder",
+          "type": "bc_pmc:types.pagelet2-Text",
+          "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component-Features"
+        },
+        "ConfigurationJSON": {
+          "value": "{\r\n  \"data\": {\r\n      \"foo\": \"bar\"\r\n  },\r\n  \"gtm\": {\r\n    \"token\": \"1234567890\"\r\n  }\r\n}",
+          "type": "bc_pmc:types.pagelet2-Text",
+          "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component-ConfigurationJSON"
+        }
+      },
+      "customAttributes": {}
+    }
+  ],
+  "displayName": "Configuration",
+  "id": "include.configuration.pagelet2-Include",
+  "domain": "inSPIRED-inTRONICS_Business-rest",
+  "resourceSetID": "app_sf_pwa_cm",
+  "customAttributes": {}
+}

@@ -12,7 +12,7 @@ kb_sync_latest_only
 To **simply** build the Intershop PWA in server-side rendering mode, you can use the _package.json_ script `npm run build`, which builds the Intershop PWA with the `production` configuration of the `angular.json` with the default theme.
 Afterwards you can start the application with `npm run serve` (or do both by using `npm run start`).
 
-To build a specific theme (see [Guide - Multiple Themes][multiple-themes]), you can build (and run) via `npm` using the `--configuration=` argument.
+To build a specific theme (see [Guide - Themes][themes]), you can build (and run) via `npm` using the `--configuration=` argument.
 All `configuration` options must be in the format `--configuration=<theme>,(production|development)`.
 
 ## Building Multiple Themes
@@ -115,7 +115,7 @@ This feature can also be used to benchmark the SSR render performance locally by
 - [Concept - Deploy URL][concept-deploy-url]
 - [Concept - Hybrid Approach][concept-hybrid]
 - [Concept - Logging](../concepts/logging.md)
-- [Guide - Multiple Themes][multiple-themes]
+- [Guide - Themes][themes]
 - [Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
 - [Guide - Google Tag Manager](./google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
@@ -126,5 +126,5 @@ This feature can also be used to benchmark the SSR render performance locally by
 
 [concept-hybrid]: ../concepts/hybrid-approach.md
 [concept-deploy-url]: ../concepts/deploy-url.md
-[multiple-themes]: ./multiple-themes.md
+[themes]: ./themes.md
 [pm2]: https://pm2.keymetrics.io

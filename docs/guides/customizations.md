@@ -5,7 +5,7 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Customization Guide
+# Customizations
 
 When customizing the PWA, always keep in mind that you probably want to upgrade from time to time and will have to merge incoming changes into your codebase.
 We therefore suggest that you do not edit existing files all too much and keep them as intact as possible.
@@ -48,7 +48,7 @@ node schematics/customization/add --default <theme-prefix>
 
 It will:
 
-- add an Angular theme configuration in `angular.json` which is used to configure your individual theme. This **default** theme will be used instead of the existing B2B and B2C themes. It is possible to configure and run multiple themes next to each other, see [Guide - Multiple Themes](./multiple-themes.md)).
+- add an Angular theme configuration in `angular.json` which is used to configure your individual theme. This **default** theme will be used instead of the existing B2B and B2C themes. It is possible to configure and run multiple themes next to each other, see [Guide - Themes](./themes.md)).
 - add the theme-prefix as the active theme in `package.json` and replace all active themes (if `--default` is used)
 - add the theme-prefix specific file `environment.<theme-prefix>.ts` which should be used for further theme configuration
 - add initial style files for styling customization under `src/styles/themes/<theme-prefix>`

@@ -20,6 +20,12 @@ If the input parameter 'id' of this component has already been used it has to be
 The `ishIntersectionObserver` returns all 3 `IntersectionStatus` change events `Visible`, `Pending` and now `NotVisible` as well.
 The custom project code needs to be adapted if it does not filter the events where it is used (e.g `if (event === 'Visible')`).
 
+The two standard themes `b2b` and `b2c` where refactored so the `b2c` theme could be changed into a [configurable theme](./themes.md#configurable-theme) that uses CSS custom properties (CSS variables).
+Since SCSS color calculations do not work with CSS custom properties (they need real values instead of `var(--corporate-primary)`), SCSS functions like `darken()` and `lighten()` were removed from the standard Intershop PWA SCSS styling.
+Existing projects that do not want to use a configurable theme do not need to apply these changes to their custom styling.
+
+To use the new [configurable theme](./themes.md#configurable-theme) feature the feature toggle `extraConfiguration` needs to be enabled.
+
 ## 3.3 to 4.0
 
 The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm version 9.5.0 and the `"lockfileVersion": 3,`.
@@ -132,7 +138,7 @@ If you want to inject a token, use the methods `injectSingle` and `injectMultipl
 There is a new linting rule `useTypeSafeInjectionTokenRule` that enforces the usage of these methods.
 For more information, see the [Configuration Concept](../concepts/configuration.md#angular-cli-environments).
 
-We introduced the product notifications feature as a new extension which is toggled with the feature toggle 'productNotifications' in the `environment.model.ts`.
+We introduced the product notifications feature as a new extension which can be enabled with the feature toggle `productNotifications`.
 
 ## 3.2 to 3.3
 
@@ -385,7 +391,7 @@ You must **not** edit any file inside that `dist` folder, since this would inclu
 
 ## 0.31 to 1.0
 
-The Angular configuration mechanism of the Intershop PWA was refactored to support running multiple configurations in one docker image (see [Guide - Multiple Themes](./multiple-themes.md)).
+The Angular configuration mechanism of the Intershop PWA was refactored to support running multiple configurations in one docker image (see [Guide - Multiple Themes](./themes.md)).
 This now means that the former `environment.local.ts` which had a standalone configuration can no longer be supported.
 Instead, theme-specific environments exist for `default` and `blue`, and development settings can be overridden in `environment.development.ts`, which are imported into the theme-specific configurations (see [Guide - Development](./development.md#development-server)).
 `npm install` will create an initial version of the `environment.development.ts` that can be filled with the needed information from `environment.local.ts`.

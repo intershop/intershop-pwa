@@ -151,30 +151,31 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 
 ### Available Feature Toggles
 
-| feature toggle               | description of enabled feature                                                                                             |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| compare                      | product compare feature (additional configuration via `dataRetention` configuration options)                               |
-| contactUs                    | allows the user to contact the website provider via a contact web form                                                     |
-| productNotifications         | product notifications feature for price and in stock notifications                                                         |
-| rating                       | display product ratings                                                                                                    |
-| recently                     | display recently viewed products (additional configuration via `dataRetention` configuration options)                      |
-| storeLocator                 | display physical stores and their addresses                                                                                |
-| **B2B Features**             |                                                                                                                            |
-| businessCustomerRegistration | create business customers on registration                                                                                  |
-| costCenters                  | cost center feature                                                                                                        |
-| messageToMerchant            | write a message to the merchant at checkout                                                                                |
-| orderTemplates               | order template feature                                                                                                     |
-| punchout                     | punchout feature                                                                                                           |
-| quickorder                   | quick order page and direct add to cart input                                                                              |
-| quoting                      | quoting feature                                                                                                            |
-| **B2C Features**             |                                                                                                                            |
-| guestCheckout                | allow unregistered guest checkout                                                                                          |
-| wishlists                    | wishlist product list feature                                                                                              |
-| **Third-party Integrations** |                                                                                                                            |
-| maps                         | Google Maps integration for locating stores (used with the `storeLocator` feature, additional configuration via `gmaKey`)  |
-| sentry                       | Sentry error tracking and monitoring (additional configuration via `sentryDSN`)                                            |
-| tacton                       | Tacton product configuration integration (additional configuration via `tacton` and `dataRetention` configuration options) |
-| tracking                     | Google Tag Manager tracking (additional configuration via `gtmToken`)                                                      |
+| feature toggle               | description of enabled feature                                                                                                                  |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| compare                      | product compare feature (additional configuration via `dataRetention` configuration options)                                                    |
+| contactUs                    | allows the user to contact the website provider via a contact web form                                                                          |
+| extraConfiguration           | fetch extra configuration information from _Configuration_ CMS component for [configurable themes etc.](../guides/themes.md#configurable-theme) |
+| productNotifications         | product notifications feature for price and in stock notifications                                                                              |
+| rating                       | display product ratings                                                                                                                         |
+| recently                     | display recently viewed products (additional configuration via `dataRetention` configuration options)                                           |
+| storeLocator                 | display physical stores and their addresses                                                                                                     |
+| **B2B Features**             |                                                                                                                                                 |
+| businessCustomerRegistration | create business customers on registration                                                                                                       |
+| costCenters                  | cost center feature                                                                                                                             |
+| messageToMerchant            | write a message to the merchant at checkout                                                                                                     |
+| orderTemplates               | order template feature                                                                                                                          |
+| punchout                     | punchout feature                                                                                                                                |
+| quickorder                   | quick order page and direct add to cart input                                                                                                   |
+| quoting                      | quoting feature                                                                                                                                 |
+| **B2C Features**             |                                                                                                                                                 |
+| guestCheckout                | allow unregistered guest checkout                                                                                                               |
+| wishlists                    | wishlist product list feature                                                                                                                   |
+| **Third-party Integrations** |                                                                                                                                                 |
+| maps                         | Google Maps integration for locating stores (used with the `storeLocator` feature, additional configuration via `gmaKey`)                       |
+| sentry                       | Sentry error tracking and monitoring (additional configuration via `sentryDSN`)                                                                 |
+| tacton                       | Tacton product configuration integration (additional configuration via `tacton` and `dataRetention` configuration options)                      |
+| tracking                     | Google Tag Manager tracking (additional configuration via `gtmToken`)                                                                           |
 
 ### Configuring Features
 
