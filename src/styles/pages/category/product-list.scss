@@ -174,29 +174,6 @@
   color: $text-color-quaternary;
 }
 
-.filtered-products {
-  .product-list {
-    .product-list-item {
-      &.grid-view {
-        &:nth-child(2n + 1) {
-          clear: both;
-        }
-
-        @media (min-width: $screen-md-min) {
-          &:nth-child(2n + 1),
-          &:nth-child(3n + 1) {
-            clear: none;
-          }
-
-          &:nth-child(4n + 1) {
-            clear: both;
-          }
-        }
-      }
-    }
-  }
-}
-
 .product-list-container {
   @include clearfix();
 
@@ -268,40 +245,6 @@
 }
 
 /* purgecss end ignore */
-
-.full-page-grid-view-product-list {
-  .product-list:not(.slick-carousel) {
-    .product-list-item {
-      &:nth-child(2n + 1) {
-        clear: both;
-      }
-
-      @media (min-width: $screen-sm-min) {
-        &:nth-child(2n + 1) {
-          clear: none;
-        }
-
-        &:nth-child(3n + 1) {
-          clear: both;
-        }
-      }
-
-      @media (min-width: $screen-md-min) {
-        &:nth-child(2n + 1) {
-          clear: none;
-        }
-
-        &:nth-child(3n + 1) {
-          clear: none;
-        }
-
-        &:nth-child(4n + 1) {
-          clear: both;
-        }
-      }
-    }
-  }
-}
 
 /* product tile effects */
 .product-tile {

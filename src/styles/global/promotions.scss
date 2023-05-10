@@ -13,19 +13,11 @@
     float: left;
     margin-right: 10px;
   }
-
-  .promotion-short-title {
-    display: inline;
-    padding-right: $space-default * 0.5;
-  }
-
-  .promotion-long-title {
-    display: inline;
-    padding-right: $space-default * 0.5;
-  }
 }
 
-.promotion-title {
+.promotion-title,
+.promotion-short-title,
+.promotion-long-title {
   display: inline;
   padding-right: $space-default * 0.5;
 }

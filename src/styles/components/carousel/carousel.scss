@@ -28,20 +28,3 @@
     border: 1px solid $carousel-indicator-active-bg;
   }
 }
-
-//Recently Viewed
-.recently-viewed-links-container {
-  .recently-viewed-links {
-    margin-top: 17px;
-    list-style: none;
-
-    @media (max-width: $screen-sm-max) {
-      margin-top: 0;
-    }
-
-    li {
-      display: inline-block;
-      padding-left: $space-default;
-    }
-  }
-}

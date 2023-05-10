@@ -113,15 +113,6 @@ img {
   vertical-align: middle;
 }
 
-.img-fluid {
-  width: 100%;
-}
-
-// General styles
-.show-inline {
-  display: inline;
-}
-
 //
 // Global Panels
 .grey-panel {
@@ -243,9 +234,22 @@ img.marketing {
   font-weight: normal;
 }
 
+.badge-primary {
+  background-color: #1db5b5;
+}
+
+.badge.border-primary {
+  border-color: #1db5b5 !important;
+}
+
 .alert {
   > p,
   > ul {
     margin-bottom: 0;
   }
+}
+
+.section {
+  margin-bottom: ($space-default * 2);
+  clear: both;
 }

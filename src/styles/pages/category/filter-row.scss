@@ -6,15 +6,6 @@
   margin: $space-default 0;
   background-color: $color-tertiary;
 
-  .search-count {
-    line-height: $input-height;
-
-    > span {
-      font-size: 14px;
-      font-weight: bold;
-    }
-  }
-
   .sort-by {
     a {
       float: right;
