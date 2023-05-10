@@ -16,7 +16,7 @@ import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
-import { OciConfiguration } from '../../models/oci-configuration/oci-configuration.model';
+import { OciConfigurationItem } from '../../models/oci-configuration/oci-configuration.model';
 import { PunchoutSession } from '../../models/punchout-session/punchout-session.model';
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
@@ -63,49 +63,48 @@ export class PunchoutService {
   }
 
   /**
-   * Gets the list of oci configurations.
+   * Gets the list of oci configuration items.
    *
-   * @returns    An array of punchout oci configurations.
+   * @returns    An array of punchout oci configuration items.
    */
-  getOciConfigurations(): Observable<OciConfiguration[]> {
+  getOciConfiguration(): Observable<OciConfigurationItem[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .get<{ data: OciConfiguration[] }>(
+          .get<{ items: OciConfigurationItem[] }>(
             `customers/${customer.customerNo}/punchouts/${this.getResourceType('oci')}/configurations`,
             {
               headers: this.punchoutHeaders,
             }
           )
-          .pipe(map(data => data.data))
+          .pipe(map(data => data.items))
       )
     );
   }
 
+  //TODO: Update method will be replaced with Silke's method.
   /**
    *  Updates a punchout oci configuration.
    *
-   * @param   ociConfiguration  The ociConfiguration for the oci configuration update.
+   * @param   ociConfigurationItem[]  The list of ociConfigurationItem for the oci configuration update.
    * @returns             The updated oci configuration.
    */
-  updateOciConfiguration(ociConfiguration: OciConfiguration): Observable<OciConfiguration> {
+  updateOciConfiguration(ociConfiguration: OciConfigurationItem[]): Observable<OciConfigurationItem> {
     if (!ociConfiguration) {
       return throwError(() => new Error('updateOciConfiguration() called without required OciConfiguration'));
     }
 
     return this.currentCustomer$.pipe(
-      switchMap(
-        customer =>
-          this.apiService
-            .put<{ data: OciConfiguration }>(
-              `customers/${customer.customerNo}/punchouts/${this.getResourceType('oci')}/configurations`,
-              ociConfiguration,
-              {
-                headers: this.punchoutHeaders,
-              }
-            )
-            .pipe(map(data => data.data))
-        // .pipe(map(OciConfigurationMapper.fromData)) TO DO: mapper will be created
+      switchMap(customer =>
+        this.apiService
+          .put<{ data: OciConfigurationItem }>(
+            `customers/${customer.customerNo}/punchouts/${this.getResourceType('oci')}/configurations`,
+            ociConfiguration,
+            {
+              headers: this.punchoutHeaders,
+            }
+          )
+          .pipe(map(data => data.data))
       )
     );
   }

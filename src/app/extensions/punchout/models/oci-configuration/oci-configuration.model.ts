@@ -1,13 +1,10 @@
-export interface OciConfiguration {
-  name: string;
+export interface OciConfigurationItem {
   type: string;
   field: string;
   transform: string;
   formatter: string;
-  mappings: [
+  mappings?: [
     {
-      name: string;
-      type: string;
       mapFromValue: string;
       mapToValue: string;
     }

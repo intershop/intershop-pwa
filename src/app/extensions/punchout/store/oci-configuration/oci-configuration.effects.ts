@@ -7,30 +7,31 @@ import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators
 import { PunchoutService } from '../../services/punchout/punchout.service';
 
 import {
-  loadOciConfigurations,
-  loadOciConfigurationsFail,
-  loadOciConfigurationsSuccess,
+  loadOciConfiguration,
+  loadOciConfigurationFail,
+  loadOciConfigurationSuccess,
   updateOciConfiguration,
   updateOciConfigurationFail,
   updateOciConfigurationSuccess,
 } from './oci-configuration.actions';
 
 @Injectable()
-export class OciConfigurationsEffects {
+export class OciConfigurationEffects {
   constructor(private actions$: Actions, private punchoutService: PunchoutService) {}
 
-  loadOciConfigurations$ = createEffect(() =>
+  loadOciConfiguration$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadOciConfigurations),
+      ofType(loadOciConfiguration),
       concatMap(() =>
-        this.punchoutService.getOciConfigurations().pipe(
-          map(ociConfigurations => loadOciConfigurationsSuccess({ ociConfigurations })),
-          mapErrorToAction(loadOciConfigurationsFail)
+        this.punchoutService.getOciConfiguration().pipe(
+          map(ociConfiguration => loadOciConfigurationSuccess({ ociConfiguration })),
+          mapErrorToAction(loadOciConfigurationFail)
         )
       )
     )
   );
 
+  //TODO: The update function should be replaced with Silke's method.
   updateOciConfiguration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateOciConfiguration),

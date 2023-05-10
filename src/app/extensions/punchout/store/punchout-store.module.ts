@@ -5,6 +5,8 @@ import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 
+import { OciConfigurationEffects } from './oci-configuration/oci-configuration.effects';
+import { ociConfigurationReducer } from './oci-configuration/oci-configuration.reducer';
 import { PunchoutFunctionsEffects } from './punchout-functions/punchout-functions.effects';
 import { PunchoutState } from './punchout-store';
 import { PunchoutTypesEffects } from './punchout-types/punchout-types.effects';
@@ -13,11 +15,12 @@ import { PunchoutUsersEffects } from './punchout-users/punchout-users.effects';
 import { punchoutUsersReducer } from './punchout-users/punchout-users.reducer';
 
 const punchoutReducers: ActionReducerMap<PunchoutState> = {
+  ociConfiguration: ociConfigurationReducer,
   punchoutUsers: punchoutUsersReducer,
   punchoutTypes: punchoutTypesReducer,
 };
 
-const punchoutEffects = [PunchoutUsersEffects, PunchoutFunctionsEffects, PunchoutTypesEffects];
+const punchoutEffects = [OciConfigurationEffects, PunchoutUsersEffects, PunchoutFunctionsEffects, PunchoutTypesEffects];
 
 @Injectable()
 export class PunchoutStoreConfig implements StoreConfig<PunchoutState> {
