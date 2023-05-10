@@ -11,3 +11,10 @@ export const loadServerConfigSuccess = createAction(
 );
 
 export const loadServerConfigFail = createAction('[Configuration API] Get the ICM configuration Fail', httpError());
+
+export const loadExtraConfigSuccess = createAction(
+  '[CMS API] Get extra ICM configuration from CMS Success',
+  payload<{ extra: ServerConfig }>()
+);
+
+export const loadExtraConfigFail = createAction('[CMS API] Get extra ICM configuration from CMS Fail', httpError());

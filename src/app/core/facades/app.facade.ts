@@ -15,7 +15,7 @@ import {
 } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
-import { getServerConfigParameter } from 'ish-core/store/core/server-config';
+import { getExtraConfigParameter, getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
@@ -111,6 +111,16 @@ export class AppFacade {
    */
   serverSetting$<T>(path: string) {
     return this.store.pipe(select(getServerConfigParameter<T>(path)));
+  }
+
+  // not-dead-code
+  /**
+   * extracts a specific extra server setting from the store (intended for custom ConfigurationJSON)
+   *
+   * @param path the path to the server setting, starting from the serverConfig/extra store
+   */
+  extraSetting$<T>(path: string) {
+    return this.store.pipe(select(getExtraConfigParameter<T>(path)));
   }
 
   /**

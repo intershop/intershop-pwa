@@ -29,6 +29,7 @@ export interface Environment {
     | 'productNotifications'
     | 'storeLocator'
     | 'contactUs'
+    | 'extraConfiguration'
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'

@@ -16,3 +16,16 @@ export const getServerConfigParameter = <T>(path: string) =>
         .split('.')
         .reduce((obj, key) => (obj?.[key] !== undefined ? obj[key] : undefined), serverConfig) as unknown as T
   );
+
+const getExtraConfig = createSelector(getServerConfigState, state => state.extra);
+
+export const isExtraConfigurationLoaded = createSelector(getExtraConfig, extraConfig => !!extraConfig);
+
+export const getExtraConfigParameter = <T>(path: string) =>
+  createSelector(
+    getExtraConfig,
+    (extraConfig): T =>
+      path
+        .split('.')
+        .reduce((obj, key) => (obj?.[key] !== undefined ? obj[key] : undefined), extraConfig) as unknown as T
+  );
