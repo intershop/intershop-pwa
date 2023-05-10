@@ -63,6 +63,21 @@ export class DomService {
   }
 
   /**
+   * Creates a text node with the given text and if a parent is given appends it to a parent element.
+   *
+   * @param text    The text string.
+   * @param parent  The parent element.
+   * @returns       The created element.
+   */
+  createTextNode(text: string, parent?: HTMLElement) {
+    const textNode = this.renderer.createText(text);
+    if (parent) {
+      this.appendChild(parent, textNode);
+    }
+    return textNode;
+  }
+
+  /**
    * Sets an attribute value for an element in the DOM.
    *
    * @param el              The element.
@@ -98,19 +113,17 @@ export class DomService {
     return this.renderer.setProperty(el, name, value);
   }
 
-  // not-dead-code
   /**
-   * Sets the value of a css variable.
-   * ToDo: remove the notDeadCode comment as soon as setCssVariable method is used
+   * Sets the value of a CSS custom property (variable).
    *
-   * @param variableName    The name of the variable (without prefix '--').
-   * @param value           The value to be set.
+   * @param propertyName    The name of the custom property (without prefix '--').
+   * @param propertyValue   The value to be set.
    */
-  setCssVariable(variableName: string, value: string): void {
+  setCssCustomProperty(propertyName: string, propertyValue: string): void {
     this.renderer.setStyle(
       this.document.documentElement,
-      `--${variableName.toLowerCase()}`,
-      value.toString(),
+      `--${propertyName.toLowerCase()}`,
+      propertyValue.toString(),
       RendererStyleFlags2.DashCase
     );
   }

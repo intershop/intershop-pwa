@@ -6,6 +6,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { serverConfigError } from 'ish-core/store/core/error';
@@ -25,7 +26,10 @@ describe('Server Config Effects', () => {
     when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['serverConfig'], [ServerConfigEffects])],
+      imports: [
+        CoreStoreModule.forTesting(['serverConfig'], [ServerConfigEffects]),
+        FeatureToggleModule.forTesting('extraConfiguration'),
+      ],
       providers: [
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
         provideStoreSnapshots(),
