@@ -52,9 +52,9 @@ kb_sync_latest_only
 
 - [Concept - Progressive Web App](./concepts/progressive-web-app.md)
 - [Guide - Customizations](./guides/customizations.md)
-  - [Guide - Multiple Themes](./guides/multiple-themes.md)
-- [Guide - Cookie Consent](./guides/cookie-consent.md)
+- [Guide - Themes](./guides/themes.md)
 - [Guide - Migration](./guides/migrations.md)
+- [Guide - Cookie Consent](./guides/cookie-consent.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
 - [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
 

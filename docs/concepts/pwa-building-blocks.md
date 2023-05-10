@@ -22,7 +22,7 @@ For an architectural overview of how SSR works in the Intershop PWA, see [Deploy
 Pre-rendering pages enables a number of features:
 
 - **SEO compatibility**: Many web crawlers have no or only a limited capability to interpret JavaScript code. To make single-page applications like the Intershop PWA accessible to search engines, SSR is necessary. Pre-rendered pages can easily be crawled and indexed. For more information, see [Search Engine Optimization](search-engine-optimization.md).
-- **Dynamic configurations**: Using SSR allows for safe, dynamic configuration of the Intershop PWA through various URL parameters (see [Configuration](configuration.md)). For example, server-side parameter configuration enables [multi-site](multi-site-handling.md) and [multi-theme](../guides/multiple-themes.md) handling.
+- **Dynamic configurations**: Using SSR allows for safe, dynamic configuration of the Intershop PWA through various URL parameters (see [Configuration](configuration.md)). For example, server-side parameter configuration enables [multi-site](multi-site-handling.md) and [multi-theme](../guides/themes.md) handling.
 - **Hybrid approach**: Via the _express.js_ server, URLs can be remapped to allow dynamic integration of specific _Responsive Starter Store_ pages. See [Hybrid Approach](hybrid-approach.md) for more information.
 
 For an overview of the ever-growing list of third party integrations relating to SSR and deployment in general, see [Third-party Integrations](../README.md#third-party-integrations).

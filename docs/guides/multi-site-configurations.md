@@ -47,7 +47,7 @@ All other properties are optional:
 - **addFeatures**: Comma-separated list of additional features extending defaults
 - **lang**: The default language as defined in the Angular CLI environment
 - **currency**: The default currency for this channel
-- **theme**: The theme used for the channel (see [Guide - Multiple Themes](./multiple-themes.md))
+- **theme**: The theme used for the channel (see [Guide - Themes](./themes.md))
 - **protected**: Selectively disable basic auth for a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
 
 Dynamically directing the PWA to different ICM installations can be done by using:
