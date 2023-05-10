@@ -1,10 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// THEME SPECIFIC CONFIGURATION
+// THEME SPECIFIC CONFIGURATION with CSS Custom Properties
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-// set theme specific variables
+// set CSS custom properties (can be overridden at runtime)
+@import 'properties';
+
+// set theme specific variables (partially with CSS custom properties)
 @import 'variables';
 
 // import general main theme

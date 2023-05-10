@@ -21,6 +21,10 @@
 }
 
 // Global Styles
+body {
+  color: $text-color-primary;
+}
+
 h1,
 .h1,
 h2,
@@ -73,6 +77,16 @@ a {
 
   &.teaser-link {
     display: block;
+  }
+}
+
+.text {
+  &-primary {
+    color: $CORPORATE-PRIMARY !important;
+  }
+
+  &-secondary {
+    color: $CORPORATE-SECONDARY !important;
   }
 }
 
@@ -224,7 +238,7 @@ img.marketing {
 
     &:hover {
       color: $text-color-inverse;
-      background: lighten($CORPORATE-PRIMARY, 5%);
+      background: $CORPORATE-SECONDARY;
     }
   }
 }

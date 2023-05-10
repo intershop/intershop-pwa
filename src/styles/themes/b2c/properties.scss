@@ -1,0 +1,42 @@
+:root {
+  //
+  // LOGOS
+  --logo: url('/assets/themes/b2c/img/logo.png');
+  --logo-width: 114px;
+  --logo-height: 40px;
+  --logo-mobile: url('/assets/themes/b2c/img/logo_mobile.png');
+  --logo-mobile-width: 41px;
+  --logo-mobile-height: 41px;
+
+  //
+  // FONTS
+  --font-family-regular: 'robotoregular', 'Helvetica', 'Arial', sans-serif;
+  --font-family-bold: 'robotobold', 'Helvetica', 'Arial', sans-serif;
+  --font-family-condensedregular: 'roboto_condensedregular', 'Helvetica Neue', helvetica, 'Arial', sans-serif;
+  --font-family-condensedbold: 'roboto_condensedbold', 'Helvetica Neue', helvetica, 'Arial', sans-serif;
+
+  //
+  // CORPORATE DESIGN COLORS
+  --corporate-primary: #ff6d00; // ORANGE
+  --corporate-secondary: #cc5700; // darken($CORPORATE-PRIMARY, 10%);
+  --corporate-light: #ff8a33; // lighten($CORPORATE-PRIMARY, 10%);
+  --corporate-dark: #994100; // darken($CORPORATE-PRIMARY, 20%);
+  --corporate-shadow: #ff832680; // with alpha transparency
+
+  //
+  // TEXT COLOR
+  --text-color-corporate: var(--corporate-primary);
+  --text-color-primary: #222;
+  --text-color-secondary: #555;
+  --text-color-tertiary: #8b8b8b;
+  --text-color-quaternary: #999;
+  --text-color-quinary: #eee;
+
+  //
+  // GENERAL COLORS
+  --color-corporate: var(--corporate-primary);
+  --color-primary: #222;
+  --color-secondary: #2c2d2e;
+  --color-tertiary: #eee;
+  --color-quaternary: #d5d5d5;
+}

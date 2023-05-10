@@ -42,7 +42,7 @@
       color: $text-color-quaternary;
 
       &:hover {
-        color: darken($text-color-quaternary, 10%);
+        color: $text-color-tertiary;
       }
     }
 

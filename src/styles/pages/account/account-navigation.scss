@@ -6,7 +6,7 @@
     background: $color-tertiary;
 
     &:hover {
-      background: darken($color-tertiary, 10%) none repeat scroll 0 0;
+      background: $color-quaternary none repeat scroll 0 0;
     }
 
     &.account-nav-header {

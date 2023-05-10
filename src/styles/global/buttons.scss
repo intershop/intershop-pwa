@@ -12,6 +12,61 @@
     clear: both;
   }
 
+  &:focus,
+  &.focus {
+    box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+  }
+
+  &-primary {
+    background-color: $CORPORATE-PRIMARY;
+    border-color: $CORPORATE-PRIMARY;
+
+    &:hover {
+      background-color: $CORPORATE-SECONDARY;
+      border-color: $CORPORATE-SECONDARY;
+    }
+
+    &:focus,
+    &.focus {
+      background-color: $CORPORATE-SECONDARY;
+      border-color: $CORPORATE-SECONDARY;
+      box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+    }
+
+    &.disabled,
+    &:disabled {
+      background-color: $CORPORATE-LIGHT;
+      border-color: $CORPORATE-LIGHT;
+    }
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active {
+      background-color: $CORPORATE-SECONDARY;
+      border-color: $CORPORATE-SECONDARY;
+
+      &:focus {
+        box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+      }
+    }
+  }
+
+  &-secondary {
+    &:focus,
+    &.focus {
+      box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+    }
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active {
+      background-color: $CORPORATE-SECONDARY;
+      border-color: $CORPORATE-SECONDARY;
+
+      &:focus {
+        box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+      }
+    }
+  }
+
   & ~ .btn.btn-block {
     margin-left: 0;
   }
@@ -35,9 +90,8 @@
     border-color: $button-default-border;
 
     &:not(:disabled):hover {
-      //color: $button-default-color;
-      background-color: darken($button-default-bg, 10%);
-      border-color: darken($button-default-border, 10%);
+      background-color: $color-tertiary;
+      border-color: $CORPORATE-SECONDARY;
     }
   }
 }

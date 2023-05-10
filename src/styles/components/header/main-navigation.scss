@@ -102,7 +102,7 @@
       .category-level3,
       .category-level4 {
         > li > a {
-          color: lighten($text-color-primary, 35%);
+          color: $text-color-tertiary;
         }
       }
     }
@@ -231,7 +231,7 @@
 
             a {
               font-size: $font-size-sub-menu-item;
-              color: lighten($text-color-primary, 35%);
+              color: $text-color-tertiary;
               text-transform: none;
             }
           }
