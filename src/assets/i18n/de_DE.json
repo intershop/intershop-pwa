@@ -805,6 +805,7 @@
   "cookie.consent.option.tracking.name": "Tracking und Performance",
   "cookie.preferences.heading": "Cookie-Einstellungen",
   "cookies.banner.accept_all": "Alle akzeptieren",
+  "cookies.banner.accept_only_required": "Nur notwendige akzeptieren",
   "cookies.banner.set_preferences": "Einstellungen anpassen",
   "cookies.banner.text": "<h4>Ihre Privatsphäre ist uns wichtig</h4><p>Diese Website verwendet Cookies und andere Technologien, um unsere Website sicher zu halten, ihre Leistung zu messen, den Inhalt zu personalisieren und Ihre Nutzung unserer Website zu verbessern. Zu diesem Zweck erfassen wir Daten über Benutzer und deren Verhalten.<br/>Mit der Entscheidung für \"Alle akzeptieren\" stimmen Sie der Verwendung aller Cookies zu. Für weitere Informationen und Anpassung Ihrer Einstellungen wählen Sie \"Einstellungen anpassen\". Detailliertere Informationen finden Sie in unserer <a href=\"page://page.privacyPolicy.pagelet2-Page\">Datenschutzerklärung</a>.</p>",
   "cookies.modal.accept_all": "Alle akzeptieren",

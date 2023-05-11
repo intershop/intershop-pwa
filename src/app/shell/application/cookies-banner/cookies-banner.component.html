@@ -10,7 +10,11 @@
     {{ 'cookies.banner.accept_all' | translate }}
   </button>
 
-  <button type="button" class="btn btn-outline-light float-right" routerLink="/cookies">
+  <button type="button" class="btn btn-outline-light float-right" (click)="acceptOnlyRequired()">
+    {{ 'cookies.banner.accept_only_required' | translate }}
+  </button>
+
+  <button type="button" class="btn btn-link float-right" routerLink="/cookies">
     {{ 'cookies.banner.set_preferences' | translate }}
   </button>
 </div>
