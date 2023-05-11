@@ -1,7 +1,7 @@
 <ng-container *ngIf="visible$ | async">
   <ng-container *ngIf="product$ | async as product">
     <div *ngFor="let attr of product.variableVariationAttributes" class="product-variation read-only">
-      <label>{{ attr.name }}:</label>
+      <span class="product-variation-info">{{ attr.name }}:</span>
       <span>{{ attr.value }}</span>
     </div>
   </ng-container>
