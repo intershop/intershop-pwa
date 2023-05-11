@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { loadFeatureProvider } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 @NgModule({

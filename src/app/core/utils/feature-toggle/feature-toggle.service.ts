@@ -20,7 +20,7 @@ export function checkFeature(features: string[] = [], feature: string): boolean 
   }
 }
 
-export const DEFAULT_LOADED_FEATURES = new InjectionToken<string>('defaultFeature');
+const DEFAULT_LOADED_FEATURES = new InjectionToken<string>('defaultFeature');
 
 export function loadFeatureProvider(
   feature: Environment['features'][0] | 'always' | 'never',
