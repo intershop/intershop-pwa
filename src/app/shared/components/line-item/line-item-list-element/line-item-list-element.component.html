@@ -40,7 +40,6 @@
           <!-- edit variation & quantity -->
           <ng-container *ngIf="editable">
             <ish-line-item-edit
-              *ngIf="!('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting)"
               ishProductContext
               [sku]="pli.productSKU"
               [quantity]="pli.quantity.value"
