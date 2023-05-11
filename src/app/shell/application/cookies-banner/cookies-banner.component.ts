@@ -52,4 +52,8 @@ export class CookiesBannerComponent implements OnInit {
       this.cookiesService.setCookiesConsentForAll();
     }
   }
+
+  acceptOnlyRequired() {
+    this.cookiesService.setCookiesConsentFor(['required']);
+  }
 }
