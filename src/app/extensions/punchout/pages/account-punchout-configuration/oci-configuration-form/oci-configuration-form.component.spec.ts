@@ -8,6 +8,7 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
@@ -40,7 +41,11 @@ describe('Oci Configuration Form Component', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [MockComponent(FaIconComponent), OciConfigurationFormComponent],
+      declarations: [
+        MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
+        OciConfigurationFormComponent,
+      ],
       providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
     }).compileComponents();
   });

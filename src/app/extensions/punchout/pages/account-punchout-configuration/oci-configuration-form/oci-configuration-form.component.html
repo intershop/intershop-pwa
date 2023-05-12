@@ -1,5 +1,7 @@
-<ng-container *ngIf="configItems$ | async">
-  <div class="container">
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<div class="container">
+  <ng-container *ngIf="configItems$ | async">
     <div class="row list-header d-sm-flex">
       <div class="col-md-3 list-header-item no-seperator">
         {{ 'account.punchout.configuration.form.heading.attribute' | translate }}
@@ -52,5 +54,6 @@
         }}</a>
       </div>
     </form>
-  </div>
-</ng-container>
+  </ng-container>
+</div>
+<ish-loading *ngIf="loading$ | async"></ish-loading>

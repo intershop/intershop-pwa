@@ -335,6 +335,7 @@
   "account.punchout.configuration.form.tooltip.placeholder.headline": "Verfügbare Platzhalter",
   "account.punchout.configuration.heading": "Punchout-Konfiguration",
   "account.punchout.configuration.link": "Konfiguration",
+  "account.punchout.configuration.save_success.message": "Die OCI-Punchout-Konfiguration wurde gespeichert.",
   "account.punchout.create.description": "Bitte geben Sie die Anmeldedaten des {{0, translate, account.punchout.type.text}}-Punchout-Benutzers an.",
   "account.punchout.create.heading": "Einen neuen {{0, translate, account.punchout.type.text}}-Punchout-Benutzer anlegen",
   "account.punchout.create.link": "Einen neuen Punchout-Benutzer anlegen",

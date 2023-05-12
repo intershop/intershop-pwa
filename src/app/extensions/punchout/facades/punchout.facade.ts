@@ -35,13 +35,10 @@ export class PunchoutFacade {
   punchoutLoading$ = combineLatest([
     this.store.pipe(select(getPunchoutLoading)),
     this.store.pipe(select(getPunchoutTypesLoading)),
-    this.store.pipe(select(getOciConfigurationLoading)),
   ]).pipe(map(([loading, typesLoading]) => loading || (typesLoading as boolean)));
 
   punchoutError$ = this.store.pipe(select(getPunchoutError));
   punchoutTypesError$: Observable<HttpError> = this.store.pipe(select(getPunchoutTypesError));
-  ociConfigurationError$ = this.store.pipe(select(getOciConfigurationError));
-
   supportedPunchoutTypes$: Observable<PunchoutType[]> = this.store.pipe(select(getPunchoutTypes));
 
   selectedPunchoutType$ = combineLatest([
@@ -82,6 +79,8 @@ export class PunchoutFacade {
     this.store.dispatch(ociConfigurationActions.loadOciConfiguration());
     return this.store.pipe(select(getOciConfiguration));
   }
+  ociConfigurationLoading$ = this.store.pipe(select(getOciConfigurationLoading));
+  ociConfigurationError$ = this.store.pipe(select(getOciConfigurationError));
 
   updateOciConfiguration(ociConfiguration: OciConfigurationItem[]) {
     this.store.dispatch(ociConfigurationActions.updateOciConfiguration({ ociConfiguration }));

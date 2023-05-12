@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject, filter, map, shareReplay, takeUntil } from 'rxjs';
+import { Observable, Subject, filter, shareReplay, takeUntil } from 'rxjs';
+
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
 import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci-configuration-item.model';
@@ -15,6 +17,8 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({});
 
   configItems$: Observable<OciConfigurationItem[]>;
+  error$: Observable<HttpError>;
+  loading$: Observable<boolean>;
 
   model: { ociConfig: OciConfigurationItem[] } = {
     ociConfig: [],
@@ -28,16 +32,26 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.fields = this.getFields();
     this.configItems$ = this.punchoutFacade.ociConfiguration$().pipe(shareReplay(1));
-
     this.configItems$
       .pipe(
         filter(configItems => configItems?.length > 0),
-        map(config => ({ ociConfig: config })),
         takeUntil(this.destroy$)
       )
       .subscribe(data => {
-        this.model = data;
+        this.model = this.getModel(data);
       });
+
+    this.error$ = this.punchoutFacade.ociConfigurationError$;
+    this.loading$ = this.punchoutFacade.ociConfigurationLoading$;
+  }
+
+  private getModel(items: OciConfigurationItem[]): { ociConfig: OciConfigurationItem[] } {
+    const config: OciConfigurationItem[] = items?.map(item =>
+      !item.mappings ? { ...item, mappings: [{ mapFromValue: '', mapToValue: '' }] } : item
+    );
+    return {
+      ociConfig: config,
+    };
   }
 
   private getFields(): FormlyFieldConfig[] {
@@ -93,7 +107,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    this.punchoutFacade.updateOciConfiguration(this.form.get('ociConfig').value);
+    this.punchoutFacade.updateOciConfiguration(this.model.ociConfig);
   }
 
   ngOnDestroy() {
