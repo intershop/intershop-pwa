@@ -1,50 +1,56 @@
-<div class="container">
-  <div class="row list-header d-sm-flex">
-    <div class="col-md-3 list-header-item no-seperator">
-      {{ 'account.punchout.configuration.form.heading.attribute' | translate }}
+<ng-container *ngIf="configItems$ | async">
+  <div class="container">
+    <div class="row list-header d-sm-flex">
+      <div class="col-md-3 list-header-item no-seperator">
+        {{ 'account.punchout.configuration.form.heading.attribute' | translate }}
+      </div>
+      <div class="col-md-3 list-header-item no-seperator">
+        {{ 'account.punchout.configuration.form.heading.transformed-attribute' | translate }}
+        <ng-template #OciConfigurationPlaceholder>
+          <!--<span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>-->
+        </ng-template>
+        <a
+          class="header-note pl-2"
+          [ngbPopover]="OciConfigurationPlaceholder"
+          placement="bottom"
+          popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
+        >
+          <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+        </a>
+      </div>
+      <div class="col-md-3 list-header-item no-seperator">
+        {{ 'account.punchout.configuration.form.heading.mapping' | translate }}
+        <ng-template #OciConfigurationMapping>
+          <div
+            innerHTML="{{ 'account.punchout.configuration.form.tooltip.mapping.content' | translate }}"
+            class="list-position-outside"
+          ></div>
+        </ng-template>
+        <a
+          class="header-note pl-2"
+          [ngbPopover]="OciConfigurationMapping"
+          placement="bottom"
+          popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
+        >
+          <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+        </a>
+      </div>
+      <div class="col-md-3 list-header-item no-seperator">
+        {{ 'account.punchout.configuration.form.heading.format' | translate }}
+      </div>
     </div>
-    <div class="col-md-3 list-header-item no-seperator">
-      {{ 'account.punchout.configuration.form.heading.transformed-attribute' | translate }}
-      <ng-template #OciConfigurationPlaceholder>
-        <!--<span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>-->
-      </ng-template>
-      <a
-        class="header-note pl-2"
-        [ngbPopover]="OciConfigurationPlaceholder"
-        placement="bottom"
-        popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
-      >
-        <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
-      </a>
-    </div>
-    <div class="col-md-3 list-header-item no-seperator">
-      {{ 'account.punchout.configuration.form.heading.mapping' | translate }}
-      <ng-template #OciConfigurationMapping>
-        <div
-          innerHTML="{{ 'account.punchout.configuration.form.tooltip.mapping.content' | translate }}"
-          class="list-position-outside"
-        ></div>
-      </ng-template>
-      <a
-        class="header-note pl-2"
-        [ngbPopover]="OciConfigurationMapping"
-        placement="bottom"
-        popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
-      >
-        <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
-      </a>
-    </div>
-    <div class="col-md-3 list-header-item no-seperator">
-      {{ 'account.punchout.configuration.form.heading.format' | translate }}
-    </div>
+    <form [formGroup]="form" (ngSubmit)="submitForm()" class="pt-1">
+      <div class="list-body">
+        <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1"></formly-form>
+      </div>
+      <div class="row justify-content-end">
+        <button type="submit" class="btn btn-primary" data-testing-id="update-oci-configuration">
+          {{ 'account.update.button.label' | translate }}
+        </button>
+        <a [routerLink]="['/account/punchout', { format: 'oci' }]" class="btn btn-secondary">{{
+          'account.cancel.link' | translate
+        }}</a>
+      </div>
+    </form>
   </div>
-  <form [formGroup]="form" class="pt-1">
-    <div class="list-body">
-      <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1"></formly-form>
-    </div>
-  </form>
-</div>
-
-<a [routerLink]="['/account/punchout', { format: 'oci' }]" class="btn btn-secondary">{{
-  'account.cancel.link' | translate
-}}</a>
+</ng-container>

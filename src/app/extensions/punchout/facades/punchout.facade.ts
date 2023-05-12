@@ -7,13 +7,13 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-import { OciConfigurationItem } from '../models/oci-configuration/oci-configuration.model';
+import { OciConfigurationItem } from '../models/oci-configuration-item/oci-configuration-item.model';
 import { PunchoutType, PunchoutUser } from '../models/punchout-user/punchout-user.model';
 import {
+  getOciConfiguration,
   getOciConfigurationError,
   getOciConfigurationLoading,
-  loadOciConfiguration,
-  updateOciConfiguration,
+  ociConfigurationActions,
 } from '../store/oci-configuration';
 import { transferPunchoutBasket } from '../store/punchout-functions';
 import { getPunchoutTypes, getPunchoutTypesError, getPunchoutTypesLoading } from '../store/punchout-types';
@@ -78,11 +78,12 @@ export class PunchoutFacade {
     this.store.dispatch(transferPunchoutBasket());
   }
 
-  loadOciConfiguration() {
-    this.store.dispatch(loadOciConfiguration());
+  ociConfiguration$() {
+    this.store.dispatch(ociConfigurationActions.loadOciConfiguration());
+    return this.store.pipe(select(getOciConfiguration));
   }
 
   updateOciConfiguration(ociConfiguration: OciConfigurationItem[]) {
-    this.store.dispatch(updateOciConfiguration({ ociConfiguration }));
+    this.store.dispatch(ociConfigurationActions.updateOciConfiguration({ ociConfiguration }));
   }
 }

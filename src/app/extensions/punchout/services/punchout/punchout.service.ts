@@ -16,7 +16,7 @@ import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
-import { OciConfigurationItem } from '../../models/oci-configuration/oci-configuration.model';
+import { OciConfigurationItem } from '../../models/oci-configuration-item/oci-configuration-item.model';
 import { PunchoutSession } from '../../models/punchout-session/punchout-session.model';
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
@@ -88,7 +88,7 @@ export class PunchoutService {
    * @param   ociConfigurationItem[]  The list of ociConfigurationItem for the oci configuration update.
    * @returns             The updated oci configuration.
    */
-  updateOciConfiguration(ociConfiguration: OciConfigurationItem[]): Observable<OciConfigurationItem> {
+  updateOciConfiguration(ociConfiguration: OciConfigurationItem[]): Observable<OciConfigurationItem[]> {
     if (!ociConfiguration) {
       return throwError(() => new Error('updateOciConfiguration() called without required OciConfiguration'));
     }
@@ -96,14 +96,14 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put<{ data: OciConfigurationItem }>(
+          .put<{ items: OciConfigurationItem[] }>(
             `customers/${customer.customerNo}/punchouts/${this.getResourceType('oci')}/configurations`,
-            ociConfiguration,
+            { items: ociConfiguration },
             {
               headers: this.punchoutHeaders,
             }
           )
-          .pipe(map(data => data.data))
+          .pipe(map(data => data.items))
       )
     );
   }

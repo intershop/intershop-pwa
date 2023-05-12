@@ -1,42 +1,50 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, Subject, filter, map, shareReplay, takeUntil } from 'rxjs';
 
-import { OciConfiguration } from '../../../models/oci-configuration/oci-configuration.model';
+import { PunchoutFacade } from '../../../facades/punchout.facade';
+import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci-configuration-item.model';
 
 @Component({
   selector: 'ish-oci-configuration-form',
   templateUrl: './oci-configuration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OciConfigurationFormComponent implements OnInit {
+export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({});
-  // ToDo: should get data from facade
-  model: { ociConfig: OciConfiguration[] } = {
-    ociConfig: [
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-UNIT', transform: '', formatter: '' },
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-VENDOR', transform: '', formatter: '' },
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-MATGROUP', transform: '', formatter: '' },
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-CONTRACT', transform: '', formatter: '' },
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-CONTRACT_ITEM', transform: '', formatter: '' },
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-CUST_FIELD1', transform: '', formatter: '' },
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-CUST_FIELD2', transform: '', formatter: '' },
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-CUST_FIELD3', transform: '', formatter: '' },
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-CUST_FIELD4', transform: '', formatter: '' },
-      { type: 'PunchoutConfigurationItem', field: 'NEW_ITEM-CUST_FIELD5', transform: '', formatter: '' },
-    ],
+
+  configItems$: Observable<OciConfigurationItem[]>;
+
+  model: { ociConfig: OciConfigurationItem[] } = {
+    ociConfig: [],
   };
   fields: FormlyFieldConfig[];
 
+  private destroy$ = new Subject<void>();
+
+  constructor(private punchoutFacade: PunchoutFacade) {}
+
   ngOnInit() {
     this.fields = this.getFields();
+    this.configItems$ = this.punchoutFacade.ociConfiguration$().pipe(shareReplay(1));
+
+    this.configItems$
+      .pipe(
+        filter(configItems => configItems?.length > 0),
+        map(config => ({ ociConfig: config })),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(data => {
+        this.model = data;
+      });
   }
 
   private getFields(): FormlyFieldConfig[] {
     return [
       {
         key: 'ociConfig',
-        type: 'repeat',
+        type: 'repeatOciConfig',
         fieldArray: {
           fieldGroupClassName: 'row list-item-row',
           fieldGroup: [
@@ -82,5 +90,14 @@ export class OciConfigurationFormComponent implements OnInit {
         },
       },
     ];
+  }
+
+  submitForm() {
+    this.punchoutFacade.updateOciConfiguration(this.form.get('ociConfig').value);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

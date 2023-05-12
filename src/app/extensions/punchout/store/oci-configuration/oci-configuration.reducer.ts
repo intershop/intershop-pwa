@@ -1,40 +1,41 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
-import { createReducer } from '@ngrx/store';
-import { on } from 'events';
+import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
-import { OciConfigurationItem } from '../../models/oci-configuration/oci-configuration.model';
+import { OciConfigurationItem } from '../../models/oci-configuration-item/oci-configuration-item.model';
 
-import {
-  loadOciConfiguration,
-  loadOciConfigurationFail,
-  loadOciConfigurationSuccess,
-  updateOciConfiguration,
-  updateOciConfigurationFail,
-  updateOciConfigurationSuccess,
-} from './oci-configuration.actions';
+import { ociConfigurationActions, ociConfigurationActionsApiActions } from './oci-configuration.actions';
 
-export const ociConfigurationAdapter = createEntityAdapter<OciConfigurationItem>();
-
-export interface OciConfigurationState extends EntityState<OciConfigurationItem> {
+export interface OciConfigurationState {
+  config: OciConfigurationItem[];
   loading: boolean;
   error: HttpError;
 }
 
-const initialState: OciConfigurationState = ociConfigurationAdapter.getInitialState({
+const initialState: OciConfigurationState = {
+  config: [],
   loading: false,
   error: undefined,
-});
+};
 
 export const ociConfigurationReducer = createReducer(
   initialState,
-  setLoadingOn(loadOciConfiguration, updateOciConfiguration),
-  unsetLoadingAndErrorOn(loadOciConfigurationSuccess, updateOciConfigurationSuccess),
-  setErrorOn(loadOciConfigurationFail, updateOciConfigurationFail),
-  //TODO: The on function will be fixed
-  on(loadOciConfigurationSuccess, updateOciConfigurationSuccess, (state, action) =>
-    ociConfigurationAdapter.upsertMany(action.payload.OciConfiguration, state)
+  setLoadingOn(ociConfigurationActions.loadOciConfiguration, ociConfigurationActions.updateOciConfiguration),
+  unsetLoadingAndErrorOn(
+    ociConfigurationActionsApiActions.loadOciConfigurationSuccess,
+    ociConfigurationActionsApiActions.updateOciConfigurationSuccess
+  ),
+  setErrorOn(
+    ociConfigurationActionsApiActions.loadOciConfigurationFail,
+    ociConfigurationActionsApiActions.updateOciConfigurationFail
+  ),
+  on(
+    ociConfigurationActionsApiActions.loadOciConfigurationSuccess,
+    ociConfigurationActionsApiActions.loadOciConfigurationSuccess,
+    (state, { payload: { ociConfiguration } }): OciConfigurationState => ({
+      ...state,
+      config: ociConfiguration,
+    })
   )
 );

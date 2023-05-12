@@ -6,14 +6,7 @@ import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
 
-import {
-  loadOciConfiguration,
-  loadOciConfigurationFail,
-  loadOciConfigurationSuccess,
-  updateOciConfiguration,
-  updateOciConfigurationFail,
-  updateOciConfigurationSuccess,
-} from './oci-configuration.actions';
+import { ociConfigurationActions, ociConfigurationActionsApiActions } from './oci-configuration.actions';
 
 @Injectable()
 export class OciConfigurationEffects {
@@ -21,11 +14,11 @@ export class OciConfigurationEffects {
 
   loadOciConfiguration$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadOciConfiguration),
+      ofType(ociConfigurationActions.loadOciConfiguration),
       concatMap(() =>
         this.punchoutService.getOciConfiguration().pipe(
-          map(ociConfiguration => loadOciConfigurationSuccess({ ociConfiguration })),
-          mapErrorToAction(loadOciConfigurationFail)
+          map(ociConfiguration => ociConfigurationActionsApiActions.loadOciConfigurationSuccess({ ociConfiguration })),
+          mapErrorToAction(ociConfigurationActionsApiActions.loadOciConfigurationFail)
         )
       )
     )
@@ -34,12 +27,14 @@ export class OciConfigurationEffects {
   //TODO: The update function should be replaced with Silke's method.
   updateOciConfiguration$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateOciConfiguration),
+      ofType(ociConfigurationActions.updateOciConfiguration),
       mapToPayloadProperty('ociConfiguration'),
       concatMap(configuration =>
         this.punchoutService.updateOciConfiguration(configuration).pipe(
-          map(ociConfiguration => updateOciConfigurationSuccess({ ociConfiguration })),
-          mapErrorToAction(updateOciConfigurationFail)
+          map(ociConfiguration =>
+            ociConfigurationActionsApiActions.updateOciConfigurationSuccess({ ociConfiguration })
+          ),
+          mapErrorToAction(ociConfigurationActionsApiActions.updateOciConfigurationFail)
         )
       )
     )

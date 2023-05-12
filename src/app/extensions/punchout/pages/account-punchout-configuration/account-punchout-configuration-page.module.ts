@@ -24,7 +24,7 @@ const accountPunchoutConfigurationPageRoutes: Routes = [
 const ociConfigurationFormlyConfig: ConfigOption = {
   types: [
     {
-      name: 'repeat',
+      name: 'repeatOciConfig',
       component: OciConfigurationRepeatFieldComponent,
     },
   ],

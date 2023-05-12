@@ -5,9 +5,12 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
+import { PunchoutFacade } from '../../../facades/punchout.facade';
 import { OciConfigurationRepeatFieldComponent } from '../formly/oci-configuration-repeat-field/oci-configuration-repeat-field.component';
 
 import { OciConfigurationFormComponent } from './oci-configuration-form.component';
@@ -16,17 +19,19 @@ describe('Oci Configuration Form Component', () => {
   let component: OciConfigurationFormComponent;
   let fixture: ComponentFixture<OciConfigurationFormComponent>;
   let element: HTMLElement;
+  let punchoutFacade: PunchoutFacade;
 
   const formlyConfig: ConfigOption = {
     types: [
       {
-        name: 'repeat',
+        name: 'repeatOciConfig',
         component: MockComponent(OciConfigurationRepeatFieldComponent),
       },
     ],
   };
 
   beforeEach(async () => {
+    punchoutFacade = mock(PunchoutFacade);
     await TestBed.configureTestingModule({
       imports: [
         FormlyModule.forChild(formlyConfig),
@@ -36,6 +41,7 @@ describe('Oci Configuration Form Component', () => {
         TranslateModule.forRoot(),
       ],
       declarations: [MockComponent(FaIconComponent), OciConfigurationFormComponent],
+      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
     }).compileComponents();
   });
 
@@ -43,6 +49,8 @@ describe('Oci Configuration Form Component', () => {
     fixture = TestBed.createComponent(OciConfigurationFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    when(punchoutFacade.ociConfiguration$()).thenReturn(of([]));
   });
 
   it('should be created', () => {
