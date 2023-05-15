@@ -81,9 +81,32 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
             },
             // ToDo
             {
-              key: 'mapping',
-              type: 'ish-plain-text-field',
-              className: 'list-item col-md-3',
+              key: 'mappings',
+              className: 'oci-configuration-mappings col-md-3',
+              type: 'repeat-oci-configuration-mapping',
+              fieldArray: {
+                fieldGroupClassName: 'oci-configuration-mappings-group ',
+                fieldGroup: [
+                  {
+                    key: 'mapFromValue',
+                    type: 'ish-text-input-field',
+                    props: {
+                      formGroupClass: 'map-from-group',
+                      fieldClass: 'map-from-field',
+                      inputClass: 'map-from-input',
+                    },
+                  },
+                  {
+                    key: 'mapToValue',
+                    type: 'ish-text-input-field',
+                    props: {
+                      formGroupClass: 'map-to-group',
+                      fieldClass: 'map-to-field',
+                      inputClass: 'map-to-input',
+                    },
+                  },
+                ],
+              },
             },
             // ToDo
             {

@@ -6,6 +6,7 @@ import { PunchoutModule } from '../../punchout.module';
 
 import { AccountPunchoutConfigurationPageComponent } from './account-punchout-configuration-page.component';
 import { OciConfigurationRepeatFieldComponent } from './formly/oci-configuration-repeat-field/oci-configuration-repeat-field.component';
+import { OciConfigurationRepeatMappingFieldComponent } from './formly/oci-configuration-repeat-mapping-field/oci-configuration-repeat-mapping-field.component';
 import { OciConfigurationFormComponent } from './oci-configuration-form/oci-configuration-form.component';
 
 const accountPunchoutConfigurationPageRoutes: Routes = [
@@ -27,6 +28,10 @@ const ociConfigurationFormlyConfig: ConfigOption = {
       name: 'repeatOciConfig',
       component: OciConfigurationRepeatFieldComponent,
     },
+    {
+      name: 'repeat-oci-configuration-mapping',
+      component: OciConfigurationRepeatMappingFieldComponent,
+    },
   ],
 };
 
@@ -41,6 +46,7 @@ const ociConfigurationFormlyConfig: ConfigOption = {
     AccountPunchoutConfigurationPageComponent,
     OciConfigurationFormComponent,
     OciConfigurationRepeatFieldComponent,
+    OciConfigurationRepeatMappingFieldComponent,
   ],
 })
 export class AccountPunchoutConfigurationPageModule {}
