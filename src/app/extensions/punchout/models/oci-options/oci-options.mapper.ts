@@ -7,7 +7,7 @@ export class OciOptionsMapper {
 
     return {
       availableFormatters: availableFormatters?.map(formatter => formatter.id),
-      availablePlaceholders: availablePlaceholders.map(placeholder => placeholder.id),
+      availablePlaceholders: availablePlaceholders?.map(placeholder => placeholder.id),
     };
   }
 }

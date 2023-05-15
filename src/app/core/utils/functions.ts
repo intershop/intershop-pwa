@@ -75,8 +75,10 @@ export function parseTimeToSeconds(timeString: string): number {
  * If a camelized string is given the string is returned as separate capitalized words, e.g. 'lowerCase' will be 'Lower Case'
  */
 export function decamelizeString(str: string): string {
-  return snakeCase(str)
-    .split('_')
-    .map(part => capitalize(camelCase(part)))
-    .join(' ');
+  return str
+    ? snakeCase(str)
+        .split('_')
+        .map(part => capitalize(camelCase(part)))
+        .join(' ')
+    : str;
 }

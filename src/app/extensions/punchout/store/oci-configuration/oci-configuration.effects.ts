@@ -7,7 +7,7 @@ import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
 
-import { ociConfigurationActions, ociConfigurationActionsApiActions } from './oci-configuration.actions';
+import { ociConfigurationActions, ociConfigurationApiActions } from './oci-configuration.actions';
 
 @Injectable()
 export class OciConfigurationEffects {
@@ -23,25 +23,25 @@ export class OciConfigurationEffects {
     )
   );
 
-  loadOciConfiguration$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ociConfigurationActions.loadOciConfiguration),
-      concatMap(() =>
-        this.punchoutService.getOciConfiguration().pipe(
-          mergeMap(configuration => [ociConfigurationActionsApiActions.loadOciConfigurationSuccess({ configuration })]),
-          mapErrorToAction(ociConfigurationActionsApiActions.loadOciConfigurationFail)
-        )
-      )
-    )
-  );
-
   loadOciConfigurationOptions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ociConfigurationActions.loadOciConfigurationOptions),
       concatMap(() =>
         this.punchoutService.getOciConfigurationOptions().pipe(
-          map(options => ociConfigurationActionsApiActions.loadOciConfigurationOptionsSuccess({ options })),
-          mapErrorToAction(ociConfigurationActionsApiActions.loadOciConfigurationOptionsFail)
+          map(options => ociConfigurationApiActions.loadOciConfigurationOptionsSuccess({ options })),
+          mapErrorToAction(ociConfigurationApiActions.loadOciConfigurationOptionsFail)
+        )
+      )
+    )
+  );
+
+  loadOciConfiguration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ociConfigurationActions.loadOciConfiguration),
+      concatMap(() =>
+        this.punchoutService.getOciConfiguration().pipe(
+          mergeMap(configuration => [ociConfigurationApiActions.loadOciConfigurationSuccess({ configuration })]),
+          mapErrorToAction(ociConfigurationApiActions.loadOciConfigurationFail)
         )
       )
     )
@@ -54,12 +54,12 @@ export class OciConfigurationEffects {
       concatMap(configuration =>
         this.punchoutService.updateOciConfiguration(configuration).pipe(
           mergeMap(configuration => [
-            ociConfigurationActionsApiActions.updateOciConfigurationSuccess({ configuration }),
+            ociConfigurationApiActions.updateOciConfigurationSuccess({ configuration }),
             displaySuccessMessage({
               message: 'account.punchout.configuration.save_success.message',
             }),
           ]),
-          mapErrorToAction(ociConfigurationActionsApiActions.updateOciConfigurationFail)
+          mapErrorToAction(ociConfigurationApiActions.updateOciConfigurationFail)
         )
       )
     )

@@ -15,7 +15,7 @@ export const ociConfigurationActions = createActionGroup({
   },
 });
 
-export const ociConfigurationActionsApiActions = createActionGroup({
+export const ociConfigurationApiActions = createActionGroup({
   source: 'OCI Configuration API',
   events: {
     'Load OCI Configuration Success': payload<{ configuration: OciConfigurationItem[] }>(),

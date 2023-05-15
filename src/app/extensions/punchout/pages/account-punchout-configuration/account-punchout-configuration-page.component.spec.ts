@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { AccountPunchoutConfigurationPageComponent } from './account-punchout-configuration-page.component';
-import { OciPunchoutConfigurationFormComponent } from './oci-punchout-configuration-form/oci-punchout-configuration-form/oci-punchout-configuration-form.component';
+import { OciConfigurationFormComponent } from './oci-configuration-form/oci-configuration-form.component';
 
 describe('Account Punchout Configuration Page Component', () => {
   let component: AccountPunchoutConfigurationPageComponent;
@@ -13,7 +13,7 @@ describe('Account Punchout Configuration Page Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [AccountPunchoutConfigurationPageComponent, MockComponent(OciPunchoutConfigurationFormComponent)],
+      declarations: [AccountPunchoutConfigurationPageComponent, MockComponent(OciConfigurationFormComponent)],
     }).compileComponents();
   });
 

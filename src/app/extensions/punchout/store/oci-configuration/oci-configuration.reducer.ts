@@ -6,7 +6,7 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils
 import { OciConfigurationItem } from '../../models/oci-configuration-item/oci-configuration-item.model';
 import { OciOptions } from '../../models/oci-options/oci-options.model';
 
-import { ociConfigurationActions, ociConfigurationActionsApiActions } from './oci-configuration.actions';
+import { ociConfigurationActions, ociConfigurationApiActions } from './oci-configuration.actions';
 
 export interface OciConfigurationState {
   configuration: OciConfigurationItem[];
@@ -30,25 +30,25 @@ export const ociConfigurationReducer = createReducer(
     ociConfigurationActions.updateOciConfiguration
   ),
   unsetLoadingAndErrorOn(
-    ociConfigurationActionsApiActions.loadOciConfigurationSuccess,
-    ociConfigurationActionsApiActions.loadOciConfigurationOptionsSuccess,
-    ociConfigurationActionsApiActions.updateOciConfigurationSuccess
+    ociConfigurationApiActions.loadOciConfigurationSuccess,
+    ociConfigurationApiActions.loadOciConfigurationOptionsSuccess,
+    ociConfigurationApiActions.updateOciConfigurationSuccess
   ),
   setErrorOn(
-    ociConfigurationActionsApiActions.loadOciConfigurationFail,
-    ociConfigurationActionsApiActions.loadOciConfigurationOptionsFail,
-    ociConfigurationActionsApiActions.updateOciConfigurationFail
+    ociConfigurationApiActions.loadOciConfigurationFail,
+    ociConfigurationApiActions.loadOciConfigurationOptionsFail,
+    ociConfigurationApiActions.updateOciConfigurationFail
   ),
   on(
-    ociConfigurationActionsApiActions.loadOciConfigurationSuccess,
-    ociConfigurationActionsApiActions.updateOciConfigurationSuccess,
+    ociConfigurationApiActions.loadOciConfigurationSuccess,
+    ociConfigurationApiActions.updateOciConfigurationSuccess,
     (state, { payload: { configuration } }): OciConfigurationState => ({
       ...state,
       configuration,
     })
   ),
   on(
-    ociConfigurationActionsApiActions.loadOciConfigurationOptionsSuccess,
+    ociConfigurationApiActions.loadOciConfigurationOptionsSuccess,
     (state, { payload: { options } }): OciConfigurationState => ({
       ...state,
       options,
