@@ -4,8 +4,15 @@ import { getPunchoutState } from '../punchout-store';
 
 const getOciConfigurationState = createSelector(getPunchoutState, state => state.ociConfiguration);
 
-export const getOciConfiguration = createSelector(getOciConfigurationState, state => state.config);
+export const getOciConfiguration = createSelector(getOciConfigurationState, state => state.configuration);
 
 export const getOciConfigurationLoading = createSelector(getOciConfigurationState, state => state.loading);
 
 export const getOciConfigurationError = createSelector(getOciConfigurationState, state => state.error);
+
+export const getOciFormatters = createSelector(getOciConfigurationState, state => state.options?.availableFormatters);
+
+export const getOciPlaceholders = createSelector(
+  getOciConfigurationState,
+  state => state.options?.availablePlaceholders
+);

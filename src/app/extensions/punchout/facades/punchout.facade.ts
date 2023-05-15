@@ -5,6 +5,7 @@ import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { decamelizeString } from 'ish-core/utils/functions';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { OciConfigurationItem } from '../models/oci-configuration-item/oci-configuration-item.model';
@@ -13,6 +14,8 @@ import {
   getOciConfiguration,
   getOciConfigurationError,
   getOciConfigurationLoading,
+  getOciFormatters,
+  getOciPlaceholders,
   ociConfigurationActions,
 } from '../store/oci-configuration';
 import { transferPunchoutBasket } from '../store/punchout-functions';
@@ -76,13 +79,26 @@ export class PunchoutFacade {
   }
 
   ociConfiguration$() {
-    this.store.dispatch(ociConfigurationActions.loadOciConfiguration());
+    this.store.dispatch(ociConfigurationActions.loadOciOptionsAndConfiguration());
     return this.store.pipe(select(getOciConfiguration));
   }
   ociConfigurationLoading$ = this.store.pipe(select(getOciConfigurationLoading));
   ociConfigurationError$ = this.store.pipe(select(getOciConfigurationError));
+  ociFormatterSelectOptions$ = this.store.pipe(
+    select(getOciFormatters),
+    whenTruthy(),
+    map(formatters => formatters.map(f => ({ label: decamelizeString(f), value: f }))),
+    map(options => {
+      options.push({
+        value: '',
+        label: 'account.punchout.configuration.option.none.label',
+      });
+      return options;
+    })
+  );
+  ociPlaceholders$ = this.store.pipe(select(getOciPlaceholders));
 
-  updateOciConfiguration(ociConfiguration: OciConfigurationItem[]) {
-    this.store.dispatch(ociConfigurationActions.updateOciConfiguration({ ociConfiguration }));
+  updateOciConfiguration(configuration: OciConfigurationItem[]) {
+    this.store.dispatch(ociConfigurationActions.updateOciConfiguration({ configuration }));
   }
 }

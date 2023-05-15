@@ -335,6 +335,7 @@
   "account.punchout.configuration.form.tooltip.placeholder.headline": "Available Placeholders",
   "account.punchout.configuration.heading": "Punchout Configuration",
   "account.punchout.configuration.link": "Configuration",
+  "account.punchout.configuration.option.none.label": "None",
   "account.punchout.configuration.save_success.message": "The OCI punchout configuration has been saved.",
   "account.punchout.create.description": "Please specify your user with your {{0, translate, account.punchout.type.text}} punchout credentials.",
   "account.punchout.create.heading": "Create New {{0, translate, account.punchout.type.text}} Punchout User",

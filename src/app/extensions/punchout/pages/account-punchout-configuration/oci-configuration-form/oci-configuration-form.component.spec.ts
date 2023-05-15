@@ -56,6 +56,7 @@ describe('Oci Configuration Form Component', () => {
     element = fixture.nativeElement;
 
     when(punchoutFacade.ociConfiguration$()).thenReturn(of([]));
+    when(punchoutFacade.ociFormatterSelectOptions$).thenReturn(of([]));
   });
 
   it('should be created', () => {

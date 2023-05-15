@@ -9,7 +9,9 @@
       <div class="col-md-3 list-header-item no-seperator">
         {{ 'account.punchout.configuration.form.heading.transformed-attribute' | translate }}
         <ng-template #OciConfigurationPlaceholder>
-          <!--<span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>-->
+          <ng-container *ngIf="availablePlaceholders$ | async as placeholders">
+            <div *ngFor="let placeholder of placeholders">{{ '{' + placeholder + '}' }}</div>
+          </ng-container>
         </ng-template>
         <a
           class="header-note pl-2"
@@ -43,7 +45,7 @@
     </div>
     <form [formGroup]="form" (ngSubmit)="submitForm()" class="pt-1">
       <div class="list-body">
-        <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1"></formly-form>
+        <formly-form [model]="model" [fields]="fields$ | async" [form]="form" class="pt-1"></formly-form>
       </div>
       <div class="row justify-content-end">
         <button type="submit" class="btn btn-primary" data-testing-id="update-oci-configuration">

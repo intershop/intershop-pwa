@@ -13,13 +13,35 @@ import { ociConfigurationActions, ociConfigurationActionsApiActions } from './oc
 export class OciConfigurationEffects {
   constructor(private actions$: Actions, private punchoutService: PunchoutService) {}
 
+  loadOciOptionsAndConfiguration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ociConfigurationActions.loadOciOptionsAndConfiguration),
+      concatMap(() => [
+        ociConfigurationActions.loadOciConfigurationOptions(),
+        ociConfigurationActions.loadOciConfiguration(),
+      ])
+    )
+  );
+
   loadOciConfiguration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ociConfigurationActions.loadOciConfiguration),
       concatMap(() =>
         this.punchoutService.getOciConfiguration().pipe(
-          map(ociConfiguration => ociConfigurationActionsApiActions.loadOciConfigurationSuccess({ ociConfiguration })),
+          mergeMap(configuration => [ociConfigurationActionsApiActions.loadOciConfigurationSuccess({ configuration })]),
           mapErrorToAction(ociConfigurationActionsApiActions.loadOciConfigurationFail)
+        )
+      )
+    )
+  );
+
+  loadOciConfigurationOptions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ociConfigurationActions.loadOciConfigurationOptions),
+      concatMap(() =>
+        this.punchoutService.getOciConfigurationOptions().pipe(
+          map(options => ociConfigurationActionsApiActions.loadOciConfigurationOptionsSuccess({ options })),
+          mapErrorToAction(ociConfigurationActionsApiActions.loadOciConfigurationOptionsFail)
         )
       )
     )
@@ -28,11 +50,11 @@ export class OciConfigurationEffects {
   updateOciConfiguration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ociConfigurationActions.updateOciConfiguration),
-      mapToPayloadProperty('ociConfiguration'),
+      mapToPayloadProperty('configuration'),
       concatMap(configuration =>
         this.punchoutService.updateOciConfiguration(configuration).pipe(
-          mergeMap(ociConfiguration => [
-            ociConfigurationActionsApiActions.updateOciConfigurationSuccess({ ociConfiguration }),
+          mergeMap(configuration => [
+            ociConfigurationActionsApiActions.updateOciConfigurationSuccess({ configuration }),
             displaySuccessMessage({
               message: 'account.punchout.configuration.save_success.message',
             }),

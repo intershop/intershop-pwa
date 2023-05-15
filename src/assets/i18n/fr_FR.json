@@ -335,6 +335,7 @@
   "account.punchout.configuration.form.tooltip.placeholder.headline": "Espaces réservés disponibles",
   "account.punchout.configuration.heading": "Configuration punchout",
   "account.punchout.configuration.link": "Configuration",
+  "account.punchout.configuration.option.none.label": "Aucun",
   "account.punchout.configuration.save_success.message": "La configuration du pointage de l’OCI a été sauvegardée.",
   "account.punchout.create.description": "Veuillez indiquer votre utilisateur avec vos données d’identification {{0, translate, account.punchout.type.text}} punchout.",
   "account.punchout.create.heading": "Créer un nouvel utilisateur {{0, translate, account.punchout.type.text}} punchout",

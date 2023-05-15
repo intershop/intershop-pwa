@@ -17,6 +17,9 @@ import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { OciConfigurationItem } from '../../models/oci-configuration-item/oci-configuration-item.model';
+import { OciOptionsData } from '../../models/oci-options/oci-options.interface';
+import { OciOptionsMapper } from '../../models/oci-options/oci-options.mapper';
+import { OciOptions } from '../../models/oci-options/oci-options.model';
 import { PunchoutSession } from '../../models/punchout-session/punchout-session.model';
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
@@ -426,6 +429,23 @@ export class PunchoutService {
             }
           )
           .pipe(map(data => data.items))
+      )
+    );
+  }
+
+  /**
+   * Gets the oci configuration options (formatters and placeholders).
+   *
+   * @returns    An array of punchout oci configuration options.
+   */
+  getOciConfigurationOptions(): Observable<OciOptions> {
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .options<OciOptionsData>(`customers/${customer.customerNo}/punchouts/${this.getResourceType('oci')}`, {
+            headers: this.punchoutHeaders,
+          })
+          .pipe(map(OciOptionsMapper.fromData))
       )
     );
   }
