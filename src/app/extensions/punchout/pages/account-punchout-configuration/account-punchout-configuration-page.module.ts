@@ -5,6 +5,7 @@ import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { PunchoutModule } from '../../punchout.module';
 
 import { AccountPunchoutConfigurationPageComponent } from './account-punchout-configuration-page.component';
+import { MappingInputWrapperComponent } from './formly/mapping-input-wrapper/mapping-input-wrapper.component';
 import { OciConfigurationRepeatFieldComponent } from './formly/oci-configuration-repeat-field/oci-configuration-repeat-field.component';
 import { OciConfigurationRepeatMappingFieldComponent } from './formly/oci-configuration-repeat-mapping-field/oci-configuration-repeat-mapping-field.component';
 import { OciConfigurationFormComponent } from './oci-configuration-form/oci-configuration-form.component';
@@ -33,6 +34,12 @@ const ociConfigurationFormlyConfig: ConfigOption = {
       component: OciConfigurationRepeatMappingFieldComponent,
     },
   ],
+  wrappers: [
+    {
+      name: 'mapping-input-wrapper',
+      component: MappingInputWrapperComponent,
+    },
+  ],
 };
 
 @NgModule({
@@ -44,6 +51,7 @@ const ociConfigurationFormlyConfig: ConfigOption = {
 
   declarations: [
     AccountPunchoutConfigurationPageComponent,
+    MappingInputWrapperComponent,
     OciConfigurationFormComponent,
     OciConfigurationRepeatFieldComponent,
     OciConfigurationRepeatMappingFieldComponent,
