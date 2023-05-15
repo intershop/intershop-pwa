@@ -38,7 +38,7 @@ export interface ProductData {
   productMasterSKU?: string;
   minOrderQuantity: number;
   maxOrderQuantity?: number;
-  stepOrderQuantity?: number;
+  stepQuantity?: number;
   packingUnit: string;
 
   variationAttributeValuesExtended?: VariationAttributeData[];

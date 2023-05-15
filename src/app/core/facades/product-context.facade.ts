@@ -207,7 +207,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     this.connect(
       'stepQuantity',
       this.select('product').pipe(
-        map(product => product?.stepOrderQuantity || 1),
+        map(product => product?.stepQuantity || 1),
         distinctUntilChanged()
       )
     );
