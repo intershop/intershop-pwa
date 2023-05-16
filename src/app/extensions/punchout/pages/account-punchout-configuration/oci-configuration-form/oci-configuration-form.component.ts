@@ -68,9 +68,9 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
       map(options => [
         {
           key: 'ociConfig',
-          type: 'repeatOciConfig',
+          type: 'repeat-oci-config',
           fieldArray: {
-            fieldGroupClassName: 'row list-item-row',
+            fieldGroupClassName: 'row list-item-row mb-0',
             fieldGroup: [
               {
                 key: 'field',
@@ -89,8 +89,6 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
                   fieldClass: 'col-md-11',
                 },
               },
-
-              // ToDo
               {
                 key: 'mappings',
                 className: 'oci-configuration-mappings list-item col-md-3',
@@ -101,17 +99,15 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
                     {
                       key: 'mapFromValue',
                       type: 'ish-text-input-field',
-                      wrappers: ['mapping-input-wrapper'],
-                      props: {
-                        inputClass: 'map-from-input',
-                      },
+                      wrappers: ['oci-configuration-mapping-wrapper'],
                     },
                     {
                       key: 'mapToValue',
                       type: 'ish-text-input-field',
-                      wrappers: ['mapping-input-wrapper'],
+                      wrappers: ['oci-configuration-mapping-wrapper'],
                       props: {
-                        inputClass: 'map-to-input',
+                        fieldClass: 'ml-1',
+                        arrowRight: true,
                       },
                     },
                   ],

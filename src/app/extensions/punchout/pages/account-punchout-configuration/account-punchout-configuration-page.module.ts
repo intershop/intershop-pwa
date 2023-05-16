@@ -5,9 +5,9 @@ import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { PunchoutModule } from '../../punchout.module';
 
 import { AccountPunchoutConfigurationPageComponent } from './account-punchout-configuration-page.component';
-import { MappingInputWrapperComponent } from './formly/mapping-input-wrapper/mapping-input-wrapper.component';
+import { OciConfigurationMappingRepeatFieldComponent } from './formly/oci-configuration-mapping-repeat-field/oci-configuration-mapping-repeat-field.component';
+import { OciConfigurationMappingWrapperComponent } from './formly/oci-configuration-mapping-wrapper/oci-configuration-mapping-wrapper.component';
 import { OciConfigurationRepeatFieldComponent } from './formly/oci-configuration-repeat-field/oci-configuration-repeat-field.component';
-import { OciConfigurationRepeatMappingFieldComponent } from './formly/oci-configuration-repeat-mapping-field/oci-configuration-repeat-mapping-field.component';
 import { OciConfigurationFormComponent } from './oci-configuration-form/oci-configuration-form.component';
 
 const accountPunchoutConfigurationPageRoutes: Routes = [
@@ -26,18 +26,18 @@ const accountPunchoutConfigurationPageRoutes: Routes = [
 const ociConfigurationFormlyConfig: ConfigOption = {
   types: [
     {
-      name: 'repeatOciConfig',
+      name: 'repeat-oci-config',
       component: OciConfigurationRepeatFieldComponent,
     },
     {
       name: 'repeat-oci-configuration-mapping',
-      component: OciConfigurationRepeatMappingFieldComponent,
+      component: OciConfigurationMappingRepeatFieldComponent,
     },
   ],
   wrappers: [
     {
-      name: 'mapping-input-wrapper',
-      component: MappingInputWrapperComponent,
+      name: 'oci-configuration-mapping-wrapper',
+      component: OciConfigurationMappingWrapperComponent,
     },
   ],
 };
@@ -51,10 +51,10 @@ const ociConfigurationFormlyConfig: ConfigOption = {
 
   declarations: [
     AccountPunchoutConfigurationPageComponent,
-    MappingInputWrapperComponent,
     OciConfigurationFormComponent,
+    OciConfigurationMappingRepeatFieldComponent,
+    OciConfigurationMappingWrapperComponent,
     OciConfigurationRepeatFieldComponent,
-    OciConfigurationRepeatMappingFieldComponent,
   ],
 })
 export class AccountPunchoutConfigurationPageModule {}

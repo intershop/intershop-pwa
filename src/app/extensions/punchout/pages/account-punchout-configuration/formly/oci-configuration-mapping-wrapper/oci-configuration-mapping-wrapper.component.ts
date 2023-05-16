@@ -6,8 +6,8 @@ import { FieldWrapper } from '@ngx-formly/core';
  *
  */
 @Component({
-  selector: 'ish-mapping-input-wrapper',
-  templateUrl: './mapping-input-wrapper.component.html',
+  selector: 'ish-oci-configuration-mapping-wrapper',
+  templateUrl: './oci-configuration-mapping-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MappingInputWrapperComponent extends FieldWrapper {}
+export class OciConfigurationMappingWrapperComponent extends FieldWrapper {}

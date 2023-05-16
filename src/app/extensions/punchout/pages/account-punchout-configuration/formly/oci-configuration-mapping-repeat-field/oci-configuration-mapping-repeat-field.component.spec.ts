@@ -5,9 +5,9 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
-import { OciConfigurationRepeatFieldComponent } from './oci-configuration-repeat-field.component';
+import { OciConfigurationMappingRepeatFieldComponent } from './oci-configuration-mapping-repeat-field.component';
 
-describe('Oci Configuration Repeat Field Component', () => {
+describe('Oci Configuration Mapping Repeat Field Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
@@ -16,21 +16,21 @@ describe('Oci Configuration Repeat Field Component', () => {
     await TestBed.configureTestingModule({
       imports: [
         FormlyModule.forChild({
-          types: [{ name: 'repeat-oci-config', component: OciConfigurationRepeatFieldComponent }],
+          types: [{ name: 'repeat-oci-configuration-mapping', component: OciConfigurationMappingRepeatFieldComponent }],
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [OciConfigurationRepeatFieldComponent],
+      declarations: [OciConfigurationMappingRepeatFieldComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
     const testComponentInputs = {
-      model: { ociConfig: '' },
+      model: { mappings: '' },
       fields: [
         {
           key: 'repeat',
-          type: 'repeat-oci-config',
+          type: 'repeat-oci-configuration-mapping',
         },
       ],
       form: new FormGroup({}),
@@ -51,6 +51,6 @@ describe('Oci Configuration Repeat Field Component', () => {
 
   it('should be rendered after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-oci-configuration-repeat-field')).toBeTruthy();
+    expect(element.querySelector('ish-oci-configuration-mapping-repeat-field')).toBeTruthy();
   });
 });
