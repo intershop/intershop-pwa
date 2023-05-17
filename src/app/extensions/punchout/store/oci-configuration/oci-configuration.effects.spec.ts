@@ -5,7 +5,6 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -26,7 +25,6 @@ describe('Oci Configuration Effects', () => {
     when(punchoutService.updateOciConfiguration(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting([])],
       providers: [
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
         OciConfigurationEffects,
