@@ -55,9 +55,7 @@ const fromIntersectionObserver = (element: HTMLElement, config: IntersectionObse
     }>();
 
     const intersectionObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        subject$.next({ entry, observer });
-      });
+      entries.forEach(entry => subject$.next({ entry, observer }));
     }, config);
 
     subject$.subscribe(() => {
