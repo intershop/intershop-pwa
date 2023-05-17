@@ -56,9 +56,7 @@ const fromIntersectionObserver = (element: HTMLElement, config: IntersectionObse
 
     const intersectionObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
-        if (isIntersecting(entry)) {
-          subject$.next({ entry, observer });
-        }
+        subject$.next({ entry, observer });
       });
     }, config);
 
@@ -96,8 +94,4 @@ async function isVisible(element: HTMLElement) {
 
     observer.observe(element);
   });
-}
-
-function isIntersecting(entry: IntersectionObserverEntry) {
-  return entry.isIntersecting || entry.intersectionRatio > 0;
 }
