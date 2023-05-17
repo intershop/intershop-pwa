@@ -51,7 +51,7 @@ exports[`Product Mapper fromStubData should construct a stub when supplied with 
   "roundedAverageRating": 0,
   "shortDescription": "EasyShare M552, 14MP, 6.858 cm (2.7 ") LCD, 4x, 28mm, HD 720p, Black",
   "sku": "7912057",
-  "stepOrderQuantity": undefined,
+  "stepQuantity": undefined,
   "type": "Product",
 }
 `;
