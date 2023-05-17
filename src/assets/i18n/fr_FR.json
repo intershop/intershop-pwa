@@ -326,6 +326,7 @@
   "account.profile.update_profile.message": "Les données de votre profil ont été mises à jour.",
   "account.punchout.configuration.button.label": "Configurer",
   "account.punchout.configuration.description": "Spécifiez les valeurs de retour du format de transfert OCI Punchout pour votre système d’approvisionnement.",
+  "account.punchout.configuration.form.add_row.link": "Ajouter une ligne",
   "account.punchout.configuration.form.heading.attribute": "Paramètre Nom",
   "account.punchout.configuration.form.heading.format": "Format",
   "account.punchout.configuration.form.heading.mapping": "Mappage",

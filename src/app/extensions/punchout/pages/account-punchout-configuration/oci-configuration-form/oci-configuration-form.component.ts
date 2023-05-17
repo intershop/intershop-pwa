@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { isEqual } from 'lodash-es';
-import { Observable, Subject, distinctUntilChanged, filter, map, shareReplay, takeUntil } from 'rxjs';
+import { Observable, Subject, filter, map, shareReplay, take, takeUntil } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -46,7 +45,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
     this.configItems$
       .pipe(
         filter(configItems => configItems?.length > 0),
-        distinctUntilChanged(isEqual),
+        take(1),
         takeUntil(this.destroy$)
       )
       .subscribe(data => {
@@ -55,9 +54,13 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   }
 
   private getModel(items: OciConfigurationItem[]): { ociConfig: OciConfigurationItem[] } {
-    const config: OciConfigurationItem[] = items?.map(item =>
-      !item.mappings ? { ...item, mappings: [{ mapFromValue: '', mapToValue: '' }] } : item
+    const config: OciConfigurationItem[] = items?.map(
+      item =>
+        !item.mappings
+          ? { ...item, mappings: [{ mapFromValue: '', mapToValue: '' }] }
+          : { ...item, mappings: JSON.parse(JSON.stringify(item.mappings)) } // necessary to make the object extensible
     );
+
     return {
       ociConfig: config,
     };
@@ -94,7 +97,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
                 className: 'oci-configuration-mappings list-item col-md-3',
                 type: 'repeat-oci-configuration-mapping',
                 fieldArray: {
-                  fieldGroupClassName: 'oci-configuration-mappings-group',
+                  fieldGroupClassName: 'oci-configuration-mappings-group mb-3',
                   fieldGroup: [
                     {
                       key: 'mapFromValue',
@@ -119,7 +122,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
                 type: 'ish-select-field',
                 className: 'list-item col-md-3',
                 props: {
-                  fieldClass: 'col-12 label-empty',
+                  fieldClass: 'col-12',
                   options,
                 },
               },

@@ -326,6 +326,7 @@
   "account.profile.update_profile.message": "Your profile information has been updated.",
   "account.punchout.configuration.button.label": "Configure",
   "account.punchout.configuration.description": "Specify the return values of the OCI Punchout transfer format for your procurement system.",
+  "account.punchout.configuration.form.add_row.link": "Add a row",
   "account.punchout.configuration.form.heading.attribute": "Parameter Name",
   "account.punchout.configuration.form.heading.format": "Format",
   "account.punchout.configuration.form.heading.mapping": "Mapping",

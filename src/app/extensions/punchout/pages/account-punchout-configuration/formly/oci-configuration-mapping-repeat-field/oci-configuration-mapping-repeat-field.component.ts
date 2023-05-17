@@ -6,4 +6,8 @@ import { FieldArrayType } from '@ngx-formly/core';
   templateUrl: './oci-configuration-mapping-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OciConfigurationMappingRepeatFieldComponent extends FieldArrayType {}
+export class OciConfigurationMappingRepeatFieldComponent extends FieldArrayType {
+  addRow() {
+    this.add(this.model.length, { mapFromValue: '', mapToValue: '' });
+  }
+}
