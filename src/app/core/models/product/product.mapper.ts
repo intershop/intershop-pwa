@@ -161,7 +161,7 @@ export class ProductMapper {
       available: this.calculateAvailable(data.availability, data.inStock),
       minOrderQuantity: data.minOrderQuantity,
       maxOrderQuantity: data.maxOrderQuantity,
-      stepQuantity: data.stepQuantity,
+      stepQuantity: data.stepOrderQuantity,
       packingUnit: data.packingUnit,
       availableStock: data.availableStock,
       attributes: data.attributeGroups?.PRODUCT_DETAIL_ATTRIBUTES?.attributes || data.attributes || [],
