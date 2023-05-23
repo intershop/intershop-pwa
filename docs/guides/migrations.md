@@ -17,6 +17,9 @@ If the `addGlobalGuard` function is used for customizations make sure it now wor
 The input parameter `id` of the component `ish-product-quantity` caused issues with duplicate IDs within the page html, therefore it was renamed to `elementId`.
 If the input parameter 'id' of this component has already been used it has to be renamed accordingly.
 
+The `ishIntersectionObserver` returns all 3 `IntersectionStatus` change events `Visible`, `Pending` and now `NotVisible` as well.
+The custom project code needs to be adapted if it does not filter the events where it is used (e.g `if (event === 'Visible')`).
+
 ## 3.3 to 4.0
 
 The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm version 9.5.0 and the `"lockfileVersion": 3,`.
