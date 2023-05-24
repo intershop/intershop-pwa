@@ -18,7 +18,7 @@ The styling integration is configured in the _/src/themes/main.scss_ of the proj
 Instead of the Bootstrap 3 Glyphicons, the current styling uses free solid icons of [Font Awesome](https://fontawesome.com/).
 
 The styling itself is integrated into the project as global style via a _style.scss_ that is referenced in the _angular.json_ and is compiled automatically (see also [Guide - Themes](../guides/themes.md)).
-Throughout the whole Intershop Progressive Web App, there are almost no component specific `styleUrls` or `styles` properties.
+Throughout the whole Intershop Progressive Web App, there are almost no component-specific `styleUrls` or `styles` properties.
 
 The [Javascript part of Bootstrap](https://getbootstrap.com/docs/4.6/getting-started/javascript/) for the behavior is not directly used from the Bootstrap dependency since this implementation is jQuery based and not really suited to work in an Angular environment.
 For Bootstrap 4, [ng-bootstrap](https://ng-bootstrap.github.io) provides _Bootstrap widgets the angular way_.
@@ -37,17 +37,20 @@ Currently the default font families for the Intershop Progressive Web App [Robot
 ## Icons
 
 As described above, solid [Font Awesome](https://fontawesome.com/) icons are used.
-To integrate an icon
+To integrate an icon:
 
-- open the appropriate page icon details, e.g. https://fontawesome.com/icons/print?s=solid&f=classic
-- copy only the name of the icon without the "fa-" prefix, in this case `print`
-  ```html
-  <i class="fa-solid fa-print"></i>
-  ```
-- use the icon name with following syntax
-  ```html
-  <fa-icon [icon]="['fas', 'print']"></fa-icon>
-  ```
+1. Open the appropriate page icon details, e.g. https://fontawesome.com/icons/print?s=solid&f=classic
+2. Copy only the name of the icon without the "fa-" prefix, in this case `print`
+
+```html
+<i class="fa-solid fa-print"></i>
+```
+
+3. Use the icon name with following syntax
+
+```html
+<fa-icon [icon]="['fas', 'print']"></fa-icon>
+```
 
 If an icon is not available yet, you need to add it to `src\app\core\icon.module.ts` in the `import {}` and the `constructor(){}`.
 

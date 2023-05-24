@@ -41,20 +41,20 @@ The `channel` property is also mandatory.
 
 All other properties are optional:
 
-- **application**: The ICM application
-- **identityProvider**: The active identity provider for this site
-- **features**: Comma-separated list of activated features
-- **addFeatures**: Comma-separated list of additional features extending defaults
-- **lang**: The default language as defined in the Angular CLI environment
-- **currency**: The default currency for this channel
-- **theme**: The theme used for the channel (see [Guide - Themes](./themes.md))
+- **application**: the ICM application
+- **identityProvider**: the active identity provider for this site
+- **features**: comma-separated list of activated features
+- **addFeatures**: comma-separated list of additional features extending defaults
+- **lang**: the default language as defined in the Angular CLI environment
+- **currency**: the default currency for this channel
+- **theme**: the theme used for the channel (see [Guide - Themes](./themes.md))
 - **protected**: Selectively disable basic auth for a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
 
 Dynamically directing the PWA to different ICM installations can be done by using:
 
-- **icmHost**: The domain in which the ICM instance runs (without protocol and port)
-- **icmPort**: Optional, required if the port differs from 443
-- **icmScheme**: Optional, required if the protocol differs from 'https'
+- **icmHost**: the domain in which the ICM instance runs (without protocol and port)
+- **icmPort**: optional, required if the port differs from 443
+- **icmScheme**: optional, required if the protocol differs from 'https'
 
 Multiple channels can also be configured via context paths that re-configure the PWA upstream to use a different `baseHref` for each channel.
 
@@ -93,7 +93,7 @@ Such a configuration is shown in the following configuration that sets different
 
 ## Examples
 
-### One domain, One Channel, Multiple Locales
+### One Domain, One Channel, Multiple Locales
 
 This setup is used by our demo application.
 It uses a single channel and a static URL, while locales are changed via a context path (`baseHref`) parameter.
@@ -116,7 +116,8 @@ This results in URLs like this:
     lang: fr_FR
 ```
 
-It is possible to extend this configuration to use different channels per context path - to do this, replace the `default` value with your desired channel.
+It is possible to extend this configuration to use different channels per context path.
+To do this, replace the `default` value with your desired channel.
 
 ### Multiple Domains, Multiple Channels, Multiple Locales
 
@@ -145,10 +146,10 @@ This results in URLs like this:
   channel: inspired-inTRONICS-FR
 ```
 
-### Multiple Subdomains, Multiple channels, Multiple Locales
+### Multiple Subdomains, Multiple Channels, Multiple Locales
 
 It is also possible to configure different subdomains by changing the regular expression that matches the domain.
-This works also in conjunction with context paths.
+This also works in conjunction with context paths.
 
 This results in URLs like this:
 `de.pwademo.com`, `fr.pwademo.com`, `ca.pwademo.com/en`
@@ -200,7 +201,7 @@ To see what is possible through multi-site handling, have a look at this extende
   features: quoting
 ```
 
-### Extended Example with two domains, one with basic auth (except /fr), the other without
+### Extended Example with Two Domains, One with Basic Auth (Except /fr), the Other Without
 
 ```yaml
 de.+\.com:
@@ -217,17 +218,17 @@ ca.+\.com:
     lang: en_US
 ```
 
-## Integrate your multi-site configuration with the language switch
+## Integrate Your Multi-Site Configuration with the Language Switch
 
 To construct new multi-site URLs when switching between languages, the PWA uses the `multi-site.service.ts`.
-The `getLangUpdatedUrl` is called with the desired locale string, current url and current baseHref.
-From this it constructs a new URL, conforming to our multi-site setup (see [One domain, one channel, multiple locales](#one-domain-one-channel-multiple-locales)).
+The `getLangUpdatedUrl` is called with the desired locale string, current url, and current baseHref.
+From this it constructs a new URL, conforming to our multi-site setup (see [One Domain, One Channel, Multiple Locales](#one-domain-one-channel-multiple-locales)).
 
-To control the transformation of urls, the `multiSiteLocaleMap` environment variable is used.
+To control the transformation of URLs, the `multiSiteLocaleMap` environment variable is used.
 Depending on your needs, `multiSiteLocaleMap` can be set in either the `environment.ts` or as an environment variable (`MULTI_SITE_LOCALE_MAP`).
 See [`docker-compose.yml`](../../docker-compose.yml) for a commented out example or [`environment.model.ts`](../../src/environments/environment.model.ts) for the default value.
 
-In case you want to disable this functionality, simply override the default environment variable `multiSiteLocaleMap` with `undefined` or `MULTI_SITE_LOCALE_MAP` with `false`.
+In case you want to disable this functionality, override the default environment variable `multiSiteLocaleMap` with `undefined` or `MULTI_SITE_LOCALE_MAP` with `false`.
 
 In case you want to extend this functionality to work with more locales, extend the default environment variable `multiSiteLocaleMap` with your additional locales.
 

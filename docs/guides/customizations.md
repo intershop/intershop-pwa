@@ -7,9 +7,9 @@ kb_sync_latest_only
 
 # Customizations
 
-When customizing the PWA, always keep in mind that you probably want to upgrade from time to time and will have to merge incoming changes into your codebase.
-We therefore suggest that you do not edit existing files all too much and keep them as intact as possible.
-In this document we provide a couple of rules that you should follow.
+When customizing the PWA, always keep in mind that you may want to upgrade from time to time and will have to merge incoming changes into your codebase.
+We, therefore, suggest not to edit existing files to a large extent and to keep them as intact as possible.
+In this document we provide a couple of rules to follow.
 Generally speaking:
 
 > Keep modifications on existing files as minimal as possible!
@@ -18,23 +18,23 @@ It can be tempting to always modify existing templates, component and style file
 However, when merging incoming upgrades the number of merge conflicts can possibly be large.
 So if you want to upgrade to new PWA versions later, stick to the following recommendations.
 
-## Setup an Intershop PWA-based Project
+## Set up an Intershop PWA-based Project
 
 When initially setting up an Intershop PWA-based project it is not advisable to clone the complete GitHub repository of the Intershop PWA.
-All that is initially needed is the `master` branch that includes the released versions of the PWA.
+All that is needed initially is the `master` branch that includes the released versions of the PWA.
 This can be achieved with the following Git command.
 
 ```
 git clone --single-branch --branch master --origin intershop https://github.com/intershop/intershop-pwa.git project-pwa
 ```
 
-This command clones only the `master` branch from the GitHub repository of the Intershop PWA with the remote name `intershop` (not `origin` that will be needed later on for the projects own remote Git repository) into a folder `project-pwa` (instead of `intershop-pwa`).
+This command clones only the `master` branch from the GitHub repository of the Intershop PWA with the remote name `intershop` (not `origin` that will be needed later on for the project's own remote Git repository) into a folder `project-pwa` (instead of `intershop-pwa`).
 
 Based on this initial version of the Intershop PWA (the latest release), any project customizations can be started.
 
 ## Start Customization
 
-The PWA uses themes which include theme specific
+The PWA uses themes which include theme-specific
 
 - features and configurations
 - overrides for certain file types (HTML, component styles and TypeScript)
@@ -76,12 +76,12 @@ That way the modifications on existing code are most often kept to a single line
 When **heavily customizing** existing components it is better to **copy components** and change all references.
 If 20 % of the component has to be changed, it is already a good idea to duplicate it.
 That way incoming changes will not affect your customizations.
-Typical hot-spots where copying is a good idea are header-related or product-detail-page related customizations.
+Typical hot-spots where copying is a good idea are header-related or product-detail-page-related customizations.
 
 #### Theme Specific Overrides
 
 The [customized webpack build](./optimizations.md) supports replacing any file with an environment suffix in front of the file extension.
-If you for example want to customize the template `product-detail.component.html`, put your customized content in the parallel file `product-detail.component.theme.html` and run a build with `--configuration=theme`.
+If you, for example, want to customize the template `product-detail.component.html`, put your customized content in the parallel file `product-detail.component.theme.html` and run a build with `--configuration=theme`.
 Then this overridden component template will be swapped in.
 
 This also works for multiple configurations: `product-detail.component.foo.bar.baz.html` will be active for configurations `foo`, `bar` and `baz`, but not for `foobar`.
@@ -102,7 +102,7 @@ As an example, imagine the following files/overrides exist:
 - In a build for theme `foo`, the file `my.component.foo.html` will be swapped in.
 - In a build for theme `bar`, the file `my.component.bar.baz.html` will be swapped in.
 - In a build for theme `foobar`, the file `my.component.all.html` will be swapped in.
-- The file `my.component.html` won't be used for any builds.
+- The file `my.component.html` will not be used for any builds.
 
 ##### Schematic Support
 
@@ -150,13 +150,13 @@ Here you can just accept either modification and update the test snapshots.
 
 Changing the styling by applying changes to SCSS files should be done in the custom theme folder `src/styles/themes/<theme-prefix>`.
 This folder is created when adding a new theme, see [Start Customization](../guides/customizations.md#start-customization).
-There are two approaches to apply a theme specific styling:
+There are two approaches to apply a theme-specific styling:
 
-1. Copy only the `*.scss` files you need to change to your themes folder and adjust the file references. All files which are not overwritten in your theme will be taken from the standard and all changes and bugfixes in these files when migrating the PWA will be applied and used in your project.
-2. Copy the complete set of standard `*.scss` files to your themes folder and adjust the file references. All standard changes and bugfixes to `*.scss` files will not be applied to your theme during a PWA migration.
+- Copy only the `*.scss` files you need to change to your themes folder and adjust the file references. All files which are not overwritten in your theme will be taken from the standard and all changes and bugfixes in these files when migrating the PWA will be applied and used in your project.
+- Copy the complete set of standard `*.scss` files to your themes folder and adjust the file references. All standard changes and bugfixes to `*.scss` files will not be applied to your theme during a PWA migration.
 
 Just putting a theme override file next to the original file in the `src/styles` folder will not lead to the expected results.
-The lookup starts with the file `style.scss` in the theme specific folder.
+The lookup starts with the file `style.scss` in the theme-specific folder.
 
 > **Note:** You should
 >
@@ -166,7 +166,7 @@ The lookup starts with the file `style.scss` in the theme specific folder.
 When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
 On component level, theme-specific overrides for `.scss` files work as expected.
 
-You can re-use variables from the global styling on component level by importing only the styling file that defines the theme variables, e.g.
+You can re-use variables from the global styling on component level by importing only the styling file that defines the theme variables, e.g.,
 
 ```
 @import 'variables';
@@ -178,10 +178,10 @@ You can re-use variables from the global styling on component level by importing
 
 ### Static Assets
 
-To add static assets (images, favicon, manifest file), create a theme specific folder in `src/assets/themes/<theme-prefix>` and adjust the theme specific references in the `*.scss` files accordingly.
+To add static assets (images, favicon, manifest file), create a theme-specific folder in `src/assets/themes/<theme-prefix>` and adjust the theme-specific references in the `*.scss` files accordingly.
 
-The `index.html` does not support theme specific overrides, see [Theme Specific Overrides](../guides/customizations.md#theme-specific-overrides).
-For this file, any theme specific differences are handled via [theme.service.ts](../../src/app/core/utils/theme/theme.service.ts).
+The `index.html` does not support theme-specific overrides, see [Theme Specific Overrides](../guides/customizations.md#theme-specific-overrides).
+For this file, any theme-specific differences are handled via [theme.service.ts](../../src/app/core/utils/theme/theme.service.ts).
 
 ### Dependencies
 
@@ -196,7 +196,7 @@ In theory the customized PWA project can re-use our Page Objects without much ad
 Specs should be copied and adapted for the project to use correct demo data.
 When executing tests, the test itself requires an appropriate demo server to be launched before the run.
 We currently use patterns in the test name to determine the channel for which the test can be run.
-E.g. `login-user.b2b.b2c.e2e-spec.ts` can be run on with the inSPIRED B2C and B2B channels.
+For example, `login-user.b2b.b2c.e2e-spec.ts` can be run for the inSPIRED B2C and B2B channels.
 The same system can be adopted for customization projects.
 
 ## Import Changes from New PWA Release (Migration)
@@ -224,7 +224,7 @@ git checkout -b migration_to_1.1
 ```
 
 Now the Git commits of the new Intershop PWA release will be cherry picked into this migration branch.
-For this, one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g. `1.0.0` to `1.1.0` (since the end tag is a merge commit it will lead to an error at the end of the cherry pick, to prevent this only the commits up to the second parent should be used with `^2`).
+For this, one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g., `1.0.0` to `1.1.0` (since the end tag is a merge commit it will lead to an error at the end of the cherry pick, to prevent this only the commits up to the second parent should be used with `^2`).
 If there are any problems with the tags, using the specific commit SHAs should always work.
 
 ```
@@ -234,24 +234,24 @@ git cherry-pick 1.0.0..1.1.0^2
 Now each commit of the new Intershop PWA release is applied to the custom project context.
 Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
 
-If merge conflicts need to be resolve it is good to disable any pre-commit hooks during the migration.
-For this set `HUSKY=0` as environment variable.
+If merge conflicts need to be resolved, it is advisable to disable any pre-commit hooks during the migration.
+For this purpose, set `HUSKY=0` as environment variable.
 
-After successfully going through the range cherry pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
+After successfully going through the range cherry pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required and you need to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
 
 ### 2. Rebase Commits of New Release
 
-For the `git rebase --onto` approach one needs to create a new branch based on the release tag of the Intershop PWA one wants to migrate to, naming it, for example, `migration_to_1.1`.
+For the `git rebase --onto` approach you need to create a new branch based on the release tag of the Intershop PWA you want to migrate to, naming it, for example, `migration_to_1.1`.
 
 ```
 git checkout -b migration_to_1.1 1.1.0
 ```
 
 Now the branch with the Git commits of the new Intershop PWA release will be rebased onto the current project's main development branch.
-For this, one needs to provide the branch name of the target branch to rebase onto.
+To do so, you need to provide the branch name of the target branch to rebase onto.
 In addition, a commit is needed where the current migration branch should be "cut off".
-This is usually the current version tag of the Intershop PWA used currently in the custom project, e.g. `1.0.0`.
+This is usually the current version tag of the Intershop PWA used currently in the custom project, e.g., `1.0.0`.
 If there are any problems with the tag, using the specific commit SHAs should always work.
 
 ```
@@ -261,10 +261,10 @@ git rebase --onto develop 1.0.0
 Now each commit of the new Intershop PWA release is applied to the custom project context.
 Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
 
-If merge conflicts need to be resolve it is good to disable any pre-commit hooks during the migration.
-For this set `HUSKY=0` as environment variable.
+If merge conflicts need to be resolved, it is advisable to disable any pre-commit hooks during the migration.
+For this purpose, set `HUSKY=0` as environment variable.
 
-After successfully going through the rebase onto (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required and one needs to check whether the project code still works as expected.
+After successfully going through the rebase onto (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required and you need to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
 
 ### 3. Merge the New Release in its Entirety
@@ -273,21 +273,21 @@ This is also a possible way to migrate your custom project to the latest version
 
 Just add the Intershop PWA GitHub repository as a second remote in your project and `git merge` the release branch.
 
-> Prior to 0.16.1 the entire git history changed completely.
-> Please see [Merging 0.16.1 as 2nd upstream repository: "refusing to merge unrelated histories](https://github.com/intershop/intershop-pwa/issues/62) for suggestions on importing the new history.
+> Prior to 0.16.1 the entire Git history changed completely.
+> Please see [Merging 0.16.1 as 2nd upstream repository: "refusing to merge unrelated histories"](https://github.com/intershop/intershop-pwa/issues/62) for suggestions on importing the new history.
 
 ## Hints
 
 - The Intershop PWA project is configured to follow consistent formatting rules.
   For a better overview of relevant changes and less merge efforts it is advised to adhere to these rules during project development as well.
-  For this, one needs to configure one's IDE accordingly.
+  For this, you need to configure your IDE accordingly.
   The fitting Visual Studio Code configuration is part of the project.
 - The Intershop PWA project configures and contains a set of linting rules that also aim to ensure a consistent code style and are intended to prevent any coding patterns that are considered problematic.
   It is advised to follow these rules in customer projects as well.
   If some rules are actually unwanted in a project, it is best to disable these configurations but to keep all other checks intact and to address any violations.
 - Keep the unit tests running and write new ones.
   This will also help ensuring not to break any existing functionality after a migration.
-- `npm run check` should run through successfully on local development environments after a feature or bugfix or migration has finished.
+- `npm run check` should run through successfully on local development environments after a feature or bug fix or migration has finished.
   This check can be left to a CI pipeline as well but the task should be configured in a way that fits the requirements of the project.
 
 # Further References
