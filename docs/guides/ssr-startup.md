@@ -66,8 +66,8 @@ Make sure to use them as written in the table below.
 |                     | GMA_KEY               | string               | API key for Google Maps                                                                          |
 |                     | SENTRY_DSN            | string               | Sentry DSN URL for using Sentry Error Monitor                                                    |
 |                     | PROMETHEUS            | switch               | Exposes Prometheus metrics                                                                       |
-|                     | IDENTITY_PROVIDER     | string               | ID of the default Identity Provider if other than `ICM`                                          |
-|                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of additional Identity Providers besides the default `ICM`                         |
+|                     | IDENTITY_PROVIDER     | string               | ID of the default identity provider if other than `ICM`                                          |
+|                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of additional identity providers besides the default `ICM`                         |
 
 ## Development
 
@@ -84,7 +84,7 @@ If the SSR development environment needs to run with `https`, this can be achiev
 npm run start:ssr-dev -- --ssl
 ```
 
-To provide specific certificates that can be valid in your local development environment this is an example command how to achieve this.
+The following is an example command for how to provide specific certificates that can be valid in your local development environment:
 
 ```
 ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de

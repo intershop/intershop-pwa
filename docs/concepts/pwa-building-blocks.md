@@ -35,7 +35,7 @@ Nginx enables the following features to be used in an Intershop PWA deployment:
 
 - Uncomplicated caching of PWA server-side rendering responses provided by the upstream Angular Universal server.
 - Handling of multiple channels via URL parameters in conjunction with SSR (see [Multi-Site Handling](multi-site-handling.md)).
-- Customizable compression for downstream services
+- Customizable compression for downstream services.
 - Device type detection to ensure a correct pre-render, adapted to the incoming user agent.
 
 For an overview of the ever-growing list of third party integrations relating to nginx and deployment in general, see [Third-party Integrations](../README.md#third-party-integrations).
@@ -68,7 +68,7 @@ Read on for a step-by-step walkthrough of the initial connection request.
 
 6. The initial page response is displayed to the user and the Angular Client application boots up in the browser.
 
-7. Once booted up, additional REST Calls are directed straight to the ICM and the PWA acts as a single-page application. No further HTML pages are requested.
+7. Once booted up, additional REST calls are directed straight to the ICM, and the PWA acts as a single-page application. No further HTML pages are requested.
 
 ## Deployment Without Nginx
 

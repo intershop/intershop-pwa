@@ -9,22 +9,23 @@ kb_sync_latest_only
 
 ## 4.0 to 4.1
 
-The Intershop PWA now uses Node.js 18.16.0 LTS with the corresponding npm version 9.5.1 to resolve an issue with Azure docker deployments (see #1416).
+The Intershop PWA now uses Node.js 18.16.0 LTS with the corresponding npm version 9.5.1 to resolve an issue with Azure Docker deployments (see #1416).
 
-As a leftover adaption regarding the switch from deprecated class-based route guards in favor of functional guards the `addGlobalGuard` function was adapted to actually work with functional guards.
-If the `addGlobalGuard` function is used for customizations make sure it now works as expected.
+As a leftover adaption regarding the switch from deprecated class-based route guards in favor of functional guards the `addGlobalGuard` function was adapted to work with functional guards.
+If the `addGlobalGuard` function is used for customizations, make sure it now works as expected.
 
-The input parameter `id` of the component `ish-product-quantity` caused issues with duplicate IDs within the page html, therefore it was renamed to `elementId`.
-If the input parameter 'id' of this component has already been used it has to be renamed accordingly.
+The input parameter `id` of the component `ish-product-quantity` caused issues with duplicate IDs within the page html.
+Therefore, it was renamed to `elementId`.
+If the input parameter 'id' of this component has already been used, it has to be renamed accordingly.
 
 The `ishIntersectionObserver` returns all 3 `IntersectionStatus` change events `Visible`, `Pending` and now `NotVisible` as well.
 The custom project code needs to be adapted if it does not filter the events where it is used (e.g `if (event === 'Visible')`).
 
-The two standard themes `b2b` and `b2c` where refactored so the `b2c` theme could be changed into a [configurable theme](./themes.md#configurable-theme) that uses CSS custom properties (CSS variables).
+The two standard themes `b2b` and `b2c` where refactored in such a way that the `b2c` theme could be changed into a [configurable theme](./themes.md#configurable-theme) that uses CSS custom properties (CSS variables).
 Since SCSS color calculations do not work with CSS custom properties (they need real values instead of `var(--corporate-primary)`), SCSS functions like `darken()` and `lighten()` were removed from the standard Intershop PWA SCSS styling.
 Existing projects that do not want to use a configurable theme do not need to apply these changes to their custom styling.
 
-To use the new [configurable theme](./themes.md#configurable-theme) feature the feature toggle `extraConfiguration` needs to be enabled.
+To use the new [configurable theme](./themes.md#configurable-theme) feature, the feature toggle `extraConfiguration` needs to be enabled.
 
 ## 3.3 to 4.0
 
@@ -33,7 +34,7 @@ To migrate to this version, it is advised to delete the locale `package-lock.jso
 
 The project was updated to work with Angular 15.
 This includes the removal of the Browserslist configuration and an updated TypeScript compiler `target` and `lib` to `ES2022` (for browser support requirements that differ from the Angular 15 standard configuration see the [configuring browser compatibility](https://angular.io/guide/build#configuring-browser-compatibility) guide and the [TypeScript configuration](https://angular.io/guide/typescript-configuration) reference).
-Adaptions of the Schematics configurations and tests were necessary as well.
+Adaptions of the Schematics configurations and tests were also necessary.
 In addition, all other dependencies were updated as well and resulted in necessary Stylelint and Jest test adaptions.
 
 The placeholder for theme-specific assets and styles has been changed from `placeholder` to `theme_placeholder`.
@@ -104,7 +105,7 @@ To migrate to this new account navigation item handling, any account navigation 
 
 The deprecated SSR environment variable `ICM_IDENTITY_PROVIDER` was completely removed.
 Use the variable `IDENTITY_PROVIDER` instead to select the identity provider to be used if it is not the default `ICM`.
-We removed the default `identityProvider` configuration from `environment.model.ts` so only the hardcoded fallback from `configuration.effects.ts` works as fallback.
+We removed the default `identityProvider` configuration from `environment.model.ts`, so only the hardcoded fallback from `configuration.effects.ts` works as fallback.
 
 The deprecated properties `templateOptions` and `expressionProperties` have been removed from the `FormlyFieldConfiguration` object.
 Current projects **must** use the new properties for all formly field configurations.
@@ -391,7 +392,7 @@ You must **not** edit any file inside that `dist` folder, since this would inclu
 
 ## 0.31 to 1.0
 
-The Angular configuration mechanism of the Intershop PWA was refactored to support running multiple configurations in one docker image (see [Guide - Multiple Themes](./themes.md)).
+The Angular configuration mechanism of the Intershop PWA was refactored to support running multiple configurations in one Docker image (see [Guide - Multiple Themes](./themes.md)).
 This now means that the former `environment.local.ts` which had a standalone configuration can no longer be supported.
 Instead, theme-specific environments exist for `default` and `blue`, and development settings can be overridden in `environment.development.ts`, which are imported into the theme-specific configurations (see [Guide - Development](./development.md#development-server)).
 `npm install` will create an initial version of the `environment.development.ts` that can be filled with the needed information from `environment.local.ts`.

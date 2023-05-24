@@ -17,15 +17,15 @@ In addition, the PWA, when run with Angular Universal, consists of a server-side
 
 ### Angular CLI Environments
 
-The standard way of configuring an Angular Application can be done by managing multiple environment files that are part of the project's source tree, usually located in _src/environments._ To choose one configuration, you have to supply the parameter when building the Angular Application.
-See [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md) and [Configuring application environments](https://angular.io/guide/build#configure-environment-specific-defaults) for further information.
+The standard way of configuring an Angular Application is managing multiple environment files that are part of the project's source tree, usually located in _src/environments._ To choose one configuration, you have to supply the parameter when building the Angular Application.
+See [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md) and [Configuring Application Environments](https://angular.io/guide/build#configure-environment-specific-defaults) for further information.
 
-Properties supplied with environment files should not be accessed directly in artifacts.
-Instead, you need to provide them via `InjectionToken`s to be used in components, pipes or services.
-Standard `InjectionToken`s are defined in [`injection-keys.ts`](../../src/app/core/configurations/injection-keys.ts).
-To create new keys for the standard PWA, use this file; project customizations should create their own file next to it.
+Do not access properties supplied with environment files directly in artifacts.
+Instead, you need to provide them via `InjectionTokens` to be used in components, pipes, or services.
+Standard `InjectionTokens` are defined in [`injection-keys.ts`](../../src/app/core/configurations/injection-keys.ts).
+Use this file to create new keys for the standard PWA; project customizations should create their own file next to it.
 
-First extend the [`environment.model`](../../src/environments/environment.model.ts) to support your new property.
+First, extend the [`environment.model`](../../src/environments/environment.model.ts) to support your new property.
 Then define an `InjectionToken` that can be used to access a certain property later on:
 
 ```typescript
@@ -35,7 +35,7 @@ export const PROPERTY = createEnvironmentInjectionToken('property');
 The new token is automatically initialized with the default value from the Angular CLI environment files.
 To override it in tests, you can provide it in the `TestBed` configuration.
 
-To inject the property with dependency injection use the helper [`InjectSingle`](../../src/app/core/utils/injection.ts) to properly inherit type information:
+To inject the property with dependency injection, use the helper [`InjectSingle`](../../src/app/core/utils/injection.ts) to properly inherit type information:
 
 ```typescript
 import { Inject } from '@angular/core'
@@ -48,15 +48,15 @@ import { InjectSingle } from 'ish-core/utils/injection';
 constructor(@Inject(PROPERTY) private property: InjectSingle<typeof PROPERTY>)
 ```
 
-As can be seen here, only build-time and deploy-time configuration parameter can be supplied this way.
+As can be seen here, only build-time and deploy-time configuration parameters can be supplied this way.
 
 ### Node.js Environment Variables
 
 When running the application in Angular Universal mode within a _Node.js_ environment, we can additionally access the process environment variables via _process.env_.
-This method provides a way to configure the application at deploy time, e.g., when using docker images.
+This method provides a way to configure the application at deploy time, e.g., when using Docker images.
 Configuration can then be consumed and passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/platform-browser/TransferState).
 
-To introduce a new `TransferState` key it should be added to the [`state-keys.ts`](../../src/app/core/configurations/state-keys.ts).
+To introduce a new `TransferState` key, add it to the [`state-keys.ts`](../../src/app/core/configurations/state-keys.ts).
 
 ```typescript
 export const NEW_KEY = makeStateKey<string>('newKey');
@@ -64,7 +64,7 @@ export const NEW_KEY = makeStateKey<string>('newKey');
 
 The actual transfer is handled by the [`app.server.module.ts`](../../src/app/app.server.module.ts) where the mapping of the environment variable is done.
 
-Accessing the transferred state in a service or a component is pretty straight forward:
+Accessing the transferred state in a service or a component is done as follows:
 
 ```typescript
 import { NEW_KEY } from 'ish-core/configurations/state-keys';
@@ -80,7 +80,7 @@ if (!SSR) {
 
 ### NgRx Configuration State
 
-Previous ways were mainly handling deployment- or build-time-related means to configure an Angular application.
+The previous ways were mainly handling deployment- or build-time-related means to configure an Angular application.
 All further configuration that has some kind of runtime flexibility, especially configuration that is retrieved via REST calls from the ICM, has to be handled in the NgRx store and to be used throughout the application with selectors.
 Effects and actions should be used to manipulate those settings.
 
@@ -99,9 +99,9 @@ In general, properties available at build time can only be supplied by Angular C
 
 ### Deployment Settings
 
-Deployment settings do not influence the build process and therefore can be set in more flexible manners.
+Deployment settings do not influence the build process and, therefore, can be set in more flexible manners.
 The main criteria of this category is the fact that deployment settings do not change during runtime.
-The most common way of supplying them can be implemented by using Angular CLI environment files and `InjectionToken`s for distribution throughout the application's code.
+The most common way of supplying them can be implemented by using Angular CLI environment files and `InjectionTokens` for distribution throughout the application's code.
 
 An example for this kind of settings are breakpoint settings for the different device classes of the application touch points.
 
@@ -112,12 +112,12 @@ Deployment settings can also be set by using `TransferState` to use environment 
 The most flexible kind of settings, which can also change when the application runs, are runtime settings.
 Angular CLI environment files cannot provide a way to handle those.
 Only the NgRx store can do that.
-Therefore only NgRx means should be used to supply them.
+Thus, only NgRx means should be used to supply them.
 Nevertheless, default values can be provided by environment files and can later be overridden by system environment variables.
 
 Everything managed in the NgRx state is accumulated on the server side and sent to the client side with the initial HTML response.
 
-To access these properties we provide the [`StatePropertiesService`](../../src/app/core/utils/state-transfer/state-properties.service.ts), which takes care of retrieving the configuration either from the configuration state, an environment variable or the environment.ts (in that order).
+To access these properties, we provide the [`StatePropertiesService`](../../src/app/core/utils/state-transfer/state-properties.service.ts), which takes care of retrieving the configuration either from the configuration state, an environment variable or the _environment.ts_ (in that order).
 
 ### Configurations REST Resource
 
@@ -133,9 +133,9 @@ The ICM configurations information can be accessed through the [`getServerConfig
 At first, the PWA has to be connected with the corresponding ICM.
 This can be done by modifying environment files or by setting the environment variable `ICM_BASE_URL` for the process running the _Node.js_ server.
 The latter is the preferred way.
-See also [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)
+See also [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md).
 
-Independent of where and how you deploy the Angular Universal application, be it in a docker container or plain, running on Azure, with or without service orchestrator, setting the base URL provides the most flexible way of configuring the PWA.
+Independent of where and how you deploy the Angular Universal application, be it in a Docker container or plain, running on Azure, with or without service orchestrator, setting the base URL provides the most flexible way of configuring the PWA.
 Refer to the documentation for mechanisms of your environment on how to set and pass environment variables.
 
 ### Settings for Channels and Applications
@@ -151,26 +151,26 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 
 ### Available Feature Toggles
 
-| feature toggle               | description of enabled feature                                                                                                                  |
+| Feature Toggle               | Description of Enabled Feature                                                                                                                  |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| compare                      | product compare feature (additional configuration via `dataRetention` configuration options)                                                    |
-| contactUs                    | allows the user to contact the website provider via a contact web form                                                                          |
-| extraConfiguration           | fetch extra configuration information from _Configuration_ CMS component for [configurable themes etc.](../guides/themes.md#configurable-theme) |
-| productNotifications         | product notifications feature for price and in stock notifications                                                                              |
-| rating                       | display product ratings                                                                                                                         |
-| recently                     | display recently viewed products (additional configuration via `dataRetention` configuration options)                                           |
-| storeLocator                 | display physical stores and their addresses                                                                                                     |
+| compare                      | Product compare feature (additional configuration via `dataRetention` configuration options)                                                    |
+| contactUs                    | Allow the user to contact the website provider via a contact web form                                                                           |
+| extraConfiguration           | Fetch extra configuration information from _Configuration_ CMS component for [configurable themes etc.](../guides/themes.md#configurable-theme) |
+| productNotifications         | Product notifications feature for price and in stock notifications                                                                              |
+| rating                       | Display product ratings                                                                                                                         |
+| recently                     | Display recently viewed products (additional configuration via `dataRetention` configuration options)                                           |
+| storeLocator                 | Display physical stores and their addresses                                                                                                     |
 | **B2B Features**             |                                                                                                                                                 |
-| businessCustomerRegistration | create business customers on registration                                                                                                       |
-| costCenters                  | cost center feature                                                                                                                             |
-| messageToMerchant            | write a message to the merchant at checkout                                                                                                     |
-| orderTemplates               | order template feature                                                                                                                          |
-| punchout                     | punchout feature                                                                                                                                |
-| quickorder                   | quick order page and direct add to cart input                                                                                                   |
-| quoting                      | quoting feature                                                                                                                                 |
+| businessCustomerRegistration | Create business customers on registration                                                                                                       |
+| costCenters                  | Cost center feature                                                                                                                             |
+| messageToMerchant            | Write a message to the merchant at checkout                                                                                                     |
+| orderTemplates               | Order template feature                                                                                                                          |
+| punchout                     | Punchout feature                                                                                                                                |
+| quickorder                   | Quick order page and direct add to cart input                                                                                                   |
+| quoting                      | Quoting feature                                                                                                                                 |
 | **B2C Features**             |                                                                                                                                                 |
-| guestCheckout                | allow unregistered guest checkout                                                                                                               |
-| wishlists                    | wishlist product list feature                                                                                                                   |
+| guestCheckout                | Allow unregistered guest checkout                                                                                                               |
+| wishlists                    | Wishlist product list feature                                                                                                                   |
 | **Third-party Integrations** |                                                                                                                                                 |
 | maps                         | Google Maps integration for locating stores (used with the `storeLocator` feature, additional configuration via `gmaKey`)                       |
 | sentry                       | Sentry error tracking and monitoring (additional configuration via `sentryDSN`)                                                                 |
@@ -180,13 +180,17 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 ### Configuring Features
 
 The configuration of features can be done statically by the Angular CLI environment property `features` (string array) or the environment parameter `FEATURES` (comma-separated string list).
-To configure it dynamically, use the PWA URL parameter `features` (comma-separated string list) during URL rewriting in the reverse proxy. (see [Concept - Multi-Site Handling][concept-multi-site])
+To configure it dynamically, use the PWA URL parameter `features` (comma-separated string list) during URL rewriting in the reverse proxy (see [Concept - Multi-Site Handling][concept-multi-site]).
 
 ### Programmatically Switching Features
 
 Various means to activate and deactivate functionality based on feature toggles are supplied.
 
 **Guard**
+
+Add the Guard as `canActivate` to the routing definition.
+Additionally, you have to supply a `data` field called `feature`, containing a string that determines for which feature the route should be active.
+If the feature is deactivated, the user is sent to the error page on accessing.
 
 ```typescript
 const routes: Routes = [
@@ -198,10 +202,6 @@ const routes: Routes = [
   },
 ...
 ```
-
-Add the Guard as `canActivate` to the routing definition.
-Additionally, you have to supply a `data` field called `feature`, containing a string that determines for which feature the route should be active.
-If the feature is deactivated, the user is sent to the error page on accessing.
 
 **Directive**
 
@@ -239,27 +239,27 @@ Switching features in tests can be triggered by calling [`FeatureToggleModule.sw
 
 You can set the default locale statically by modifying the order of the provided locales in the Angular CLI environment files.
 The first locale is always chosen as the default one.
-To dynamically set the default locale, use the URL parameter `lang` when rewriting the URL in the reverse proxy (see [Concept - Multi-Site Handling][concept-multi-site]).
+To set the default locale dynamically, use the URL parameter `lang` when rewriting the URL in the reverse proxy (see [Concept - Multi-Site Handling][concept-multi-site]).
 
 ## Extend Locales
 
-To add other languages except English, German or French:
+To add other languages except English, German, or French:
 
 1. Add the locale to the ICM channel configuration.
 
-2. Create a new json-mapping-file with all translations, e.g., `src/assets/i18n/nl_NL.json`.
+2. Create a new json mapping file with all translations, e.g., `src/assets/i18n/nl_NL.json`.
 
 <!-- spell-checker: words Niederländisch -->
 
 3. (optional) Add the new language switch translation keys to other locales:
-   _example de_DE.json_
+   _example de_DE.json_:
 
    ```
      "locale.nl_NL.long": "Niederländisch",
      "locale.nl_NL.short": "nl",
    ```
 
-4. (optional) Add the locale specific currency filter to the environments under `src/environments`, e.g.
+4. (optional) Add the locale-specific currency filter to the environments under `src/environments`, e.g.,
 
    ```typescript
     localeCurrencyOverride: {
@@ -280,7 +280,7 @@ To add other languages except English, German or French:
    registerLocaleData(localeNl);
    ```
 
-7. Add new json-mapping-file import to `LOCAL_TRANSLATIONS` injection token in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts) provider:
+7. Add new json mapping file import to `LOCAL_TRANSLATIONS` injection token in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts) provider:
 
    ```typescript
     providers: [
