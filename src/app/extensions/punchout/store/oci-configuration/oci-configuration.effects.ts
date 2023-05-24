@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, mergeMap } from 'rxjs/operators';
+import { concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -26,7 +26,7 @@ export class OciConfigurationEffects {
   loadOciConfigurationOptions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ociConfigurationActions.loadOciConfigurationOptions),
-      concatMap(() =>
+      switchMap(() =>
         this.punchoutService.getOciConfigurationOptions().pipe(
           map(options => ociConfigurationApiActions.loadOciConfigurationOptionsSuccess({ options })),
           mapErrorToAction(ociConfigurationApiActions.loadOciConfigurationOptionsFail)
@@ -38,9 +38,9 @@ export class OciConfigurationEffects {
   loadOciConfiguration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ociConfigurationActions.loadOciConfiguration),
-      concatMap(() =>
+      switchMap(() =>
         this.punchoutService.getOciConfiguration().pipe(
-          mergeMap(configuration => [ociConfigurationApiActions.loadOciConfigurationSuccess({ configuration })]),
+          map(configuration => ociConfigurationApiActions.loadOciConfigurationSuccess({ configuration })),
           mapErrorToAction(ociConfigurationApiActions.loadOciConfigurationFail)
         )
       )

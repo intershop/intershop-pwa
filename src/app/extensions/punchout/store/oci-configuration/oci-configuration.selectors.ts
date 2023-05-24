@@ -10,9 +10,8 @@ export const getOciConfigurationLoading = createSelector(getOciConfigurationStat
 
 export const getOciConfigurationError = createSelector(getOciConfigurationState, state => state.error);
 
-export const getOciFormatters = createSelector(getOciConfigurationState, state => state.options?.availableFormatters);
+const getOciConfigurationOptions = createSelector(getOciConfigurationState, state => state.options);
 
-export const getOciPlaceholders = createSelector(
-  getOciConfigurationState,
-  state => state.options?.availablePlaceholders
-);
+export const getOciFormatters = createSelector(getOciConfigurationOptions, options => options?.availableFormatters);
+
+export const getOciPlaceholders = createSelector(getOciConfigurationOptions, options => options?.availablePlaceholders);
