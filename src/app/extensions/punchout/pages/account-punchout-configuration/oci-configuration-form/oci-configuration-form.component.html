@@ -17,6 +17,8 @@
           class="header-note pl-2"
           [ngbPopover]="OciConfigurationPlaceholder"
           placement="bottom"
+          triggers="click"
+          [autoClose]="'outside'"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
         >
           <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
@@ -34,6 +36,8 @@
           class="header-note pl-2"
           [ngbPopover]="OciConfigurationMapping"
           placement="bottom"
+          triggers="click"
+          [autoClose]="'outside'"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
         >
           <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
@@ -45,7 +49,7 @@
     </div>
     <form [formGroup]="form" (ngSubmit)="submitForm()" class="pt-1">
       <div class="list-body">
-        <formly-form [model]="model" [fields]="fields$ | async" [form]="form" class="pt-1"></formly-form>
+        <formly-form [model]="model$ | async" [fields]="fields$ | async" [form]="form" class="pt-1"></formly-form>
       </div>
       <div class="row justify-content-end">
         <button type="submit" class="btn btn-primary" data-testing-id="update-oci-configuration">

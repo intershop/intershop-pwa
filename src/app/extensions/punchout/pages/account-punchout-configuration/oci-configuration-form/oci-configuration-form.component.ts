@@ -24,9 +24,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   formatterOptions$: Observable<SelectOption[]>;
   availablePlaceholders$: Observable<string[]>;
 
-  model: { ociConfig: OciConfigurationItem[] } = {
-    ociConfig: [],
-  };
+  model$: Observable<{ ociConfig: OciConfigurationItem[] }>;
   fields: FormlyFieldConfig[];
   fields$: Observable<FormlyFieldConfig[]>;
 
@@ -42,15 +40,12 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
 
     this.fields$ = this.getFields();
     this.configItems$ = this.punchoutFacade.ociConfiguration$().pipe(shareReplay(1));
-    this.configItems$
-      .pipe(
-        filter(configItems => configItems?.length > 0),
-        take(1),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(data => {
-        this.model = this.getModel(data);
-      });
+    this.model$ = this.configItems$.pipe(
+      filter(configItems => configItems?.length > 0),
+      take(1),
+      map(this.getModel),
+      takeUntil(this.destroy$)
+    );
   }
 
   private getModel(items: OciConfigurationItem[]): { ociConfig: OciConfigurationItem[] } {
@@ -134,7 +129,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    this.punchoutFacade.updateOciConfiguration(this.model.ociConfig);
+    this.punchoutFacade.updateOciConfiguration(this.form.value.ociConfig);
   }
 
   ngOnDestroy() {
