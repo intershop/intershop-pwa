@@ -19,4 +19,8 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   templateUrl: './radio-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RadioFieldComponent extends FieldType<FieldTypeConfig> {}
+export class RadioFieldComponent extends FieldType<FieldTypeConfig> {
+  get radioName() {
+    return `${this.field.parent?.id || ''}_${this.field.key}`;
+  }
+}
