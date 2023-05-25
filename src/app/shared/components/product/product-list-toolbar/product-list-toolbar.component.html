@@ -24,20 +24,6 @@
       <a
         [routerLink]="[]"
         queryParamsHandling="merge"
-        [queryParams]="{ view: 'list' }"
-        [replaceUrl]="true"
-        [fragment]="fragmentOnRouting"
-        class="list-view-link"
-        [ngClass]="{ 'list-active': listView }"
-        data-testing-id="list-view-link"
-        role="button"
-        aria-label="list view"
-      >
-        <fa-icon [icon]="['fas', 'list']"></fa-icon>
-      </a>
-      <a
-        [routerLink]="[]"
-        queryParamsHandling="merge"
         [queryParams]="{ view: 'grid' }"
         [replaceUrl]="true"
         [fragment]="fragmentOnRouting"
@@ -48,6 +34,20 @@
         aria-label="grid view"
       >
         <fa-icon [icon]="['fas', 'th']"></fa-icon>
+      </a>
+      <a
+        [routerLink]="[]"
+        queryParamsHandling="merge"
+        [queryParams]="{ view: 'list' }"
+        [replaceUrl]="true"
+        [fragment]="fragmentOnRouting"
+        class="list-view-link"
+        [ngClass]="{ 'list-active': listView }"
+        data-testing-id="list-view-link"
+        role="button"
+        aria-label="list view"
+      >
+        <fa-icon [icon]="['fas', 'list']"></fa-icon>
       </a>
     </div>
   </div>

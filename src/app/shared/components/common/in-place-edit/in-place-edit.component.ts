@@ -34,6 +34,7 @@ export class InPlaceEditComponent implements AfterViewInit, OnDestroy {
     @Inject(DOCUMENT) private document: Document
   ) {}
 
+  // change into edit mode by clicking on the text
   ngAfterViewInit() {
     fromEvent(this.document, 'mousedown')
       .pipe(
@@ -57,28 +58,31 @@ export class InPlaceEditComponent implements AfterViewInit, OnDestroy {
       });
   }
 
+  // change into edit mode by clicking the pen
+  changeEditMode() {
+    if (this.mode === 'edit') {
+      setTimeout(() => {
+        this.host.nativeElement.querySelector('.form-control')?.focus();
+      }, 200);
+    }
+    if (this.mode === 'view') {
+      this.confirm();
+      this.mode = 'edit';
+    }
+  }
+
   confirm() {
     this.mode = 'view';
-    this.unsetHover();
     this.edited.emit();
   }
 
   cancel() {
     this.mode = 'view';
-    this.unsetHover();
     this.aborted.emit();
   }
 
   get viewMode() {
     return this.mode === 'view';
-  }
-
-  setHover() {
-    this.hover = true;
-  }
-
-  unsetHover() {
-    this.hover = false;
   }
 
   ngOnDestroy() {

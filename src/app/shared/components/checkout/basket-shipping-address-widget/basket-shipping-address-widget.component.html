@@ -8,7 +8,7 @@
           *ngIf="collapseChange | async"
           [routerLink]="[]"
           class="btn-tool"
-          title="{{ 'checkout.address.update.button.label' | translate }}"
+          title="{{ 'checkout.address.update.button.shipping.label' | translate }}"
           (click)="showAddressForm(address)"
           data-testing-id="edit-shipping-address-link"
         >
@@ -72,7 +72,7 @@
     [attr.aria-expanded]="(collapseChange | async) === false"
     aria-controls="shipping-address-panel"
   >
-    {{ 'checkout.create_address.link' | translate }}
+    {{ 'checkout.create_shipping_address.link' | translate }}
   </button>
 </div>
 

@@ -69,7 +69,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
       .pipe(
         map(address =>
           address
-            ? 'checkout.addresses.select_a_different_address.default'
+            ? 'checkout.addresses.select_a_different_shipping_address.default'
             : 'checkout.addresses.select_shipping_address.button'
         ),
         takeUntil(this.destroy$)

@@ -1,10 +1,12 @@
-a {
+a,
+button {
   display: flex;
   padding-right: 20px;
 
   span:first-child {
     flex: 1;
     overflow: hidden;
+    text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
   }

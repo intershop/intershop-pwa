@@ -13,6 +13,10 @@
 
 <ng-template #image>
   <div [ngClass]="pagelet.stringParam('CSSClass')">
-    <img loading="lazy" [src]="pagelet.stringParam('Image')" [attr.alt]="pagelet.stringParam('AlternateText')" />
+    <img
+      loading="lazy"
+      [src]="pagelet.stringParam('Image')"
+      [attr.alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
+    />
   </div>
 </ng-template>

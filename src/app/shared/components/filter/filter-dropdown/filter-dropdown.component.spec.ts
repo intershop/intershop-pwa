@@ -51,7 +51,7 @@ describe('Filter Dropdown Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <div ngbdropdown="" autoclose="outside">
-        <a
+        <button
           ngbdropdowntoggle=""
           role="button"
           id="dropdownMenuLink"
@@ -59,8 +59,9 @@ describe('Filter Dropdown Component', () => {
           aria-haspopup="true"
           aria-expanded="false"
           class="form-control"
-          ><span>Color</span></a
         >
+          <span>Color</span>
+        </button>
         <div ngbdropdownmenu="" aria-labelledby="dropdownMenuLink">
           <a class="dropdown-item" ng-reflect-router-link="" href="/"> red </a
           ><a class="dropdown-item selected" ng-reflect-router-link="" href="/">

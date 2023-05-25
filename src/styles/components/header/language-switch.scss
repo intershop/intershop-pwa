@@ -9,17 +9,22 @@
     margin-top: 0;
   }
 
-  .language-switch-link {
+  .language-switch-button {
+    //mobile
+    padding: 0;
+    margin: 13px 0 $space-default -1px;
+    font-family: $font-family-bold;
+    font-size: 12px;
     text-transform: uppercase;
     cursor: pointer;
   }
 
   //language selector not as accordion
   &:not(.accordion) {
-    .language-switch-link {
+    .language-switch-button {
       display: block;
-      padding-right: $space-default;
-      padding-left: $space-default * 0.5;
+      padding: ($space-default * 0.5) $space-default ($space-default * 0.5) ($space-default * 0.5);
+      margin: 0;
       color: $text-color-quinary !important;
     }
 
