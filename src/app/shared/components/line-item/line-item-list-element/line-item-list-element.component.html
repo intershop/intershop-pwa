@@ -124,11 +124,6 @@
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
     <div class="form-group w-100 text-right" [ngClass]="{ 'pr-2': !editable }">
-      <ish-product-quantity-label
-        translationKey="shopping_cart.pli.qty.label"
-        [for]="'pli-quantity_' + pli.position"
-        class="d-xl-none col-term"
-      ></ish-product-quantity-label>
       <ish-product-quantity
         *ngIf="editable; else readonly"
         [elementId]="'pli-quantity_' + pli.position"

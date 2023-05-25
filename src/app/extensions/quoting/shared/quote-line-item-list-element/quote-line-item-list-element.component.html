@@ -64,7 +64,6 @@
     <div class="form-group w-100" [ngClass]="{ 'text-right': editable$ | async }">
       <ish-product-quantity *ngIf="editable$ | async; else readonlyQuantity"></ish-product-quantity>
       <ng-template #readonlyQuantity>
-        <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
         {{ lineItem.quantity.value | number }}
       </ng-template>
     </div>
