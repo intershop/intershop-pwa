@@ -17,7 +17,7 @@ import {
 } from 'ish-core/store/core/configuration';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { serverError } from 'ish-core/store/core/error';
-import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
+import { isServerConfigurationLoaded, loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { getPGID } from 'ish-core/store/customer/user';
 
 import { ApiService, unpackEnvelope } from './api.service';
@@ -39,6 +39,7 @@ describe('Api Service', () => {
         providers: [
           provideMockStore({
             selectors: [
+              { selector: isServerConfigurationLoaded, value: true },
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
               { selector: getCurrentCurrency, value: 'USD' },
@@ -198,6 +199,7 @@ describe('Api Service', () => {
         providers: [
           provideMockStore({
             selectors: [
+              { selector: isServerConfigurationLoaded, value: true },
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: 'http://www.example.org/WFS' },
               { selector: getCurrentCurrency, value: 'USD' },
@@ -402,6 +404,7 @@ describe('Api Service', () => {
         providers: [
           provideMockStore({
             selectors: [
+              { selector: isServerConfigurationLoaded, value: true },
               { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
               { selector: getICMServerURL, value: undefined },
               { selector: getCurrentLocale, value: undefined },
@@ -679,6 +682,7 @@ describe('Api Service', () => {
         providers: [
           provideMockStore({
             selectors: [
+              { selector: isServerConfigurationLoaded, value: true },
               { selector: getICMServerURL, value: undefined },
               { selector: getRestEndpoint, value: 'http://www.example.org' },
               { selector: getCurrentLocale, value: 'en' },
