@@ -1,5 +1,5 @@
 <div ngbDropdown autoClose="outside">
-  <a
+  <button
     ngbDropdownToggle
     class="form-control"
     role="button"
@@ -10,7 +10,7 @@
     [attr.title]="placeholder !== filterElement.name ? placeholder : null"
   >
     <span>{{ placeholder }}</span>
-  </a>
+  </button>
   <div ngbDropdownMenu aria-labelledby="dropdownMenuLink">
     <a
       *ngFor="let facet of filterElement.facets; trackBy: trackByFn"

@@ -6,13 +6,19 @@
   ngbDropdown
   placement="{{ placement === 'up' ? 'top-right' : 'bottom-right' }}"
 >
-  <a ngbDropdownToggle class="language-switch-link" role="button" aria-haspopup="menu">
+  <button
+    ngbDropdownToggle
+    class="language-switch-button btn btn-link"
+    aria-expanded="false"
+    aria-haspopup="menu"
+    [attr.aria-label]="'locale.' + locale + '.long' | translate"
+  >
     <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon"></fa-icon>
     <span class="language-switch-current-selection d-inline"
       >{{ 'locale.' + locale + (view === 'accordion' ? '.long' : '.short') | translate
       }}<span class="switch_arrow"></span
     ></span>
-  </a>
+  </button>
   <div ngbDropdownMenu class="language-switch-container dropdown-menu" style="left: 0 !important" role="menu">
     <div class="language-switch-menu-container">
       <ng-container *ngIf="availableLocales$ | async as availableLocales">
