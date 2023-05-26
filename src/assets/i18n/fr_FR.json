@@ -839,7 +839,7 @@
   "customer.wishlist.profane_word.error": "Le texte saisi ne peut pas être traité. Les termes jugés inappropriés, injurieux ou vulgaires ne sont pas acceptés. Veuillez saisir un nouveau texte.",
   "designview.add.link.title": "Ajouter",
   "designview.edit.link.title": "Modifier",
-  "designview.remove.link.title": "Supprimer",
+  "designview.delete.link.title": "Supprimer",
   "dialog.close.text": "Fermer",
   "email.recommended_product.heading": "J’ai trouvé un article pour vous sur {{0}}",
   "email.recommended_product.text": "Allez voir ce que j’ai trouvé pour vous. {{0}}\n{{1}}",

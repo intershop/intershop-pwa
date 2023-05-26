@@ -5,10 +5,18 @@
       <ng-container *ngIf="type === 'pagelet'">
         <ng-container *ngIf="pagelet$ | async as pagelet">
           <div class="name">{{ pagelet.displayName }}</div>
-          <button (click)="action()" class="btn" title="{{ 'designview.edit.link.title' | translate }}">
+          <button
+            (click)="action(pagelet.id, 'pageletEdit')"
+            class="btn"
+            title="{{ 'designview.edit.link.title' | translate }}"
+          >
             <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
           </button>
-          <button (click)="action()" class="btn" title="{{ 'designview.remove.link.title' | translate }}">
+          <button
+            (click)="action(pagelet.id, 'pageletDelete')"
+            class="btn"
+            title="{{ 'designview.delete.link.title' | translate }}"
+          >
             <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
           </button>
         </ng-container>
@@ -16,14 +24,22 @@
       <!-- slot -->
       <ng-container *ngIf="type === 'slot'">
         <div class="name">{{ pagelet.slot(this.slotId).displayName }}</div>
-        <button (click)="action()" class="btn" title="{{ 'designview.add.link.title' | translate }}">
+        <button
+          (click)="action(this.slotId, 'slotAdd')"
+          class="btn"
+          title="{{ 'designview.add.link.title' | translate }}"
+        >
           <fa-icon [icon]="['fas', 'plus']"></fa-icon>
         </button>
       </ng-container>
       <!-- include -->
       <ng-container *ngIf="type === 'include'">
         <div class="name">{{ include.displayName }}</div>
-        <button (click)="action()" class="btn" title="{{ 'designview.add.link.title' | translate }}">
+        <button
+          (click)="action(include.id, 'includeAdd')"
+          class="btn"
+          title="{{ 'designview.add.link.title' | translate }}"
+        >
           <fa-icon [icon]="['fas', 'plus']"></fa-icon>
         </button>
       </ng-container>

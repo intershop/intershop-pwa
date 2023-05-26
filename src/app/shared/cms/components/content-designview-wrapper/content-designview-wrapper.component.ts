@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { DesignviewService } from 'ish-core/services/designview/designview.service';
 import { PreviewService } from 'ish-core/services/preview/preview.service';
 
 @Component({
@@ -25,7 +26,11 @@ export class ContentDesignviewWrapperComponent implements OnInit {
 
   isDesignviewMode = false; // temporary activation switch
 
-  constructor(private cmsFacade: CMSFacade, private previewService: PreviewService) {}
+  constructor(
+    private cmsFacade: CMSFacade,
+    private previewService: PreviewService,
+    private designviewService: DesignviewService
+  ) {}
 
   ngOnInit() {
     if (this.pageletId) {
@@ -40,7 +45,7 @@ export class ContentDesignviewWrapperComponent implements OnInit {
     this.isDesignviewMode = this.previewService.previewContextId === 'DESIGNVIEW';
   }
 
-  action() {
-    console.log('Design View button clicked');
+  action(id: string, action: string) {
+    this.designviewService.messageToHost({ type: 'dv-clientAction', payload: { id, action } });
   }
 }
