@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { PreviewService } from 'ish-core/services/preview/preview.service';
 
 @Component({
   selector: 'ish-content-designview-wrapper',
@@ -22,9 +23,9 @@ export class ContentDesignviewWrapperComponent implements OnInit {
   pagelet$: Observable<ContentPageletView>;
   type: 'pagelet' | 'slot' | 'include';
 
-  isDesignviewMode = true; // temporary activation switch
+  isDesignviewMode = false; // temporary activation switch
 
-  constructor(private cmsFacade: CMSFacade) {}
+  constructor(private cmsFacade: CMSFacade, private previewService: PreviewService) {}
 
   ngOnInit() {
     if (this.pageletId) {
@@ -35,6 +36,8 @@ export class ContentDesignviewWrapperComponent implements OnInit {
     } else if (this.include) {
       this.type = 'include';
     }
+
+    this.isDesignviewMode = this.previewService.previewContextId === 'DESIGNVIEW';
   }
 
   action() {
