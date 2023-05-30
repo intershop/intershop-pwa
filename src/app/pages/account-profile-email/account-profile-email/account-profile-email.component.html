@@ -8,7 +8,7 @@
     <div class="section">
       <form [formGroup]="form" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
         <div class="row form-group">
-          <div class="col-md-4 col-term">{{ 'account.update_email.email.label' | translate }}</div>
+          <div class="col-md-4 col-form-label">{{ 'account.update_email.email.label' | translate }}</div>
           <div *ngIf="currentUser" class="col-md-8 col-form-label">{{ currentUser.email }}</div>
         </div>
 

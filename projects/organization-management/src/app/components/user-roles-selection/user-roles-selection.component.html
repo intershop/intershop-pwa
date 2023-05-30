@@ -1,6 +1,6 @@
 <fieldset>
   <div class="row">
-    <div class="col-md-4 col-term">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</div>
+    <div class="col-md-4 col-form-label">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</div>
     <div class="col-md-8">
       <div *ngIf="form$ | async as form" class="row" [formGroup]="form">
         <ng-container *ngFor="let item of form.controls | keyvalue : unsorted; let i = index">

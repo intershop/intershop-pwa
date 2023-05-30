@@ -249,16 +249,3 @@ img.marketing {
     margin-bottom: 0;
   }
 }
-
-// Used for horizontal descriptions on the left side that describe a value/row on the right side
-// Does the same as .col-form-label, but this class should be used for elements that are not a label
-// The name is WIP
-.col-term {
-  padding-top: add($input-padding-y, $input-border-width);
-  padding-bottom: add($input-padding-y, $input-border-width);
-  margin-bottom: 0;
-
-  @include font-size(inherit);
-
-  line-height: $input-line-height;
-}
