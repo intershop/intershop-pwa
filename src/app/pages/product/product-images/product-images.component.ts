@@ -65,16 +65,4 @@ export class ProductImagesComponent implements OnInit {
   isActiveSlide(slideIndex: number): boolean {
     return this.carousel?.swiperRef?.activeIndex === slideIndex;
   }
-
-  getZoomImageAnchorId(i: number) {
-    return `zoom-image-${i}`;
-  }
-
-  openZoomModal(i: number) {
-    if (this.zoomDialog) {
-      this.zoomDialog.show();
-      this.zoomDialog.scrollToAnchor(this.getZoomImageAnchorId(i));
-    }
-    return false;
-  }
 }

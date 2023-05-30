@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 
+import { ProductImageZoomComponent } from 'ish-shared/components/product/product-image-zoom/product-image-zoom.component';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { ProductBrandComponent } from './product-brand/product-brand.component';
@@ -34,7 +36,7 @@ const productPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [NgbNavModule, RouterModule.forChild(productPageRoutes), SharedModule],
+  imports: [NgbNavModule, RouterModule.forChild(productPageRoutes), NgxImageZoomModule, SharedModule],
   declarations: [
     ProductBrandComponent,
     ProductBundlePartsComponent,
@@ -43,6 +45,7 @@ const productPageRoutes: Routes = [
     ProductDetailInfoComponent,
     ProductDetailVariationsComponent,
     ProductImagesComponent,
+    ProductImageZoomComponent,
     ProductLinksCarouselComponent,
     ProductLinksComponent,
     ProductLinksListComponent,

@@ -1,0 +1,38 @@
+<div>
+  <a
+    *ngIf="link; else image"
+    data-testing-id="product-image-link"
+    [routerLink]="linkTarget || (productURL$ | async)"
+    [queryParamsHandling]="computedQueryParamsHandling"
+  >
+    <ng-container *ngTemplateOutlet="image"></ng-container>
+  </a>
+</div>
+
+<ng-template #image>
+  <ng-container *ngIf="productImage$ | async as image">
+    <ng-container *ngIf="image[0]?.effectiveUrl && image[1]?.effectiveUrl; else noImage">
+      <lib-ngx-image-zoom
+        [ngClass]="'asdf'"
+        [thumbImage]="image[0].effectiveUrl"
+        [fullImage]="image[1].effectiveUrl"
+        [zoomMode]="'click'"
+        [enableScrollZoom]="true"
+        [magnification]="1"
+        [minZoomRatio]="0.5"
+        [maxZoomRatio]="3"
+        [titleText]="altText || image[2]"
+        [altText]="altText || image[2]"
+      ></lib-ngx-image-zoom>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #noImage>
+    <img
+      loading="lazy"
+      class="product-image"
+      src="/assets/img/not-available.svg"
+      [attr.alt]="'product.image.not_available.alttext' | translate"
+    />
+  </ng-template>
+</ng-template>

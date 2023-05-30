@@ -1,0 +1,9 @@
+:host {
+  display: block;
+  width: 100%;
+
+  // stylelint-disable-next-line selector-class-pattern
+  ::ng-deep .ngxImageZoomContainer {
+    width: 100% !important;
+  }
+}
