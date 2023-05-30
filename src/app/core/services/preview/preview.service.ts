@@ -79,7 +79,12 @@ export class PreviewService {
    * (3) OR the debug mode is on (`initOnTopLevel`).
    */
   private shouldInit() {
-    return typeof window !== 'undefined' && ((window.parent && window.parent !== window) || this.initOnTopLevel);
+    // TODO: replace usage of previewContextId to identify Design View mode
+    return (
+      typeof window !== 'undefined' &&
+      ((window.parent && window.parent !== window) || this.initOnTopLevel) &&
+      this.previewContextId !== 'DESIGNVIEW'
+    );
   }
 
   /**

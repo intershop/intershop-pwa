@@ -42,6 +42,7 @@ export class ContentDesignviewWrapperComponent implements OnInit {
       this.type = 'include';
     }
 
+    // TODO: replace usage of previewContextId to identify Design View mode
     this.isDesignviewMode = this.previewService.previewContextId === 'DESIGNVIEW';
   }
 

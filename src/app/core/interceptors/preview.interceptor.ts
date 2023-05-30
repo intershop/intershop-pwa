@@ -12,6 +12,7 @@ export class PreviewInterceptor implements HttpInterceptor {
   constructor(private previewService: PreviewService) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    // TODO: replace usage of previewContextId to identify Design View mode
     if (this.previewService.previewContextId && this.previewService.previewContextId !== 'DESIGNVIEW') {
       return next.handle(
         req.clone({
