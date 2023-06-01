@@ -5,6 +5,8 @@ import { Observable, Subject, filter, map, shareReplay, take, takeUntil } from '
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
 import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci-configuration-item.model';
@@ -16,6 +18,7 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
 })
 export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({});
+  submitted = false;
 
   configItems$: Observable<OciConfigurationItem[]>;
   error$: Observable<HttpError>;
@@ -93,19 +96,35 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
                 type: 'repeat-oci-configuration-mapping',
                 fieldArray: {
                   fieldGroupClassName: 'oci-configuration-mappings-group mb-3',
+                  validators: {
+                    validation: [
+                      SpecialValidators.dependentlyRequired('mapToValue', 'mapFromValue'),
+                      SpecialValidators.dependentlyRequired('mapFromValue', 'mapToValue'),
+                    ],
+                  },
                   fieldGroup: [
                     {
                       key: 'mapFromValue',
                       type: 'ish-text-input-field',
-                      wrappers: ['oci-configuration-mapping-wrapper'],
+                      wrappers: ['oci-configuration-mapping-wrapper', 'validation'],
+                      validation: {
+                        messages: {
+                          dependentlyRequired: 'account.punchout.configuration.form.mapping.from.error',
+                        },
+                      },
                     },
                     {
                       key: 'mapToValue',
                       type: 'ish-text-input-field',
-                      wrappers: ['oci-configuration-mapping-wrapper'],
+                      wrappers: ['oci-configuration-mapping-wrapper', 'validation'],
                       props: {
                         fieldClass: 'ml-1',
                         arrowRight: true,
+                      },
+                      validation: {
+                        messages: {
+                          dependentlyRequired: 'account.punchout.configuration.form.mapping.to.error',
+                        },
                       },
                     },
                   ],
@@ -129,7 +148,16 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
+    if (this.form.invalid) {
+      this.submitted = true;
+      markAsDirtyRecursive(this.form);
+      return;
+    }
     this.punchoutFacade.updateOciConfiguration(this.form.value.ociConfig);
+  }
+
+  get formDisabled() {
+    return this.form.invalid && this.submitted;
   }
 
   ngOnDestroy() {

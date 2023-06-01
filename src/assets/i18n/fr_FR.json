@@ -331,6 +331,8 @@
   "account.punchout.configuration.form.heading.format": "Format",
   "account.punchout.configuration.form.heading.mapping": "Mappage",
   "account.punchout.configuration.form.heading.transformed-attribute": "Paramètre Valeur",
+  "account.punchout.configuration.form.mapping.from.error": "La valeur «Mappage de» est manquante.",
+  "account.punchout.configuration.form.mapping.to.error": "La valeur «Mappage à» est manquante.",
   "account.punchout.configuration.form.tooltip.mapping.content": "Le mappage des données permet d’attribuer des valeurs individuellement à la configuration. Les valeurs des champs sont mappées à partir du catalogue externe de pointage externe vers votre système d’approvisionnement. Veuillez noter ce qui suit:<ul class=\"pl-3\"><li>Une règle de mappage ne peut être saisie que pour les champs ayant une valeur de paramètre.</li><li>Une règle de mappage doit toujours avoir une valeur « de » et une valeur « à », sinon elle ne sera pas sauvegardée.</li><li>Si plusieurs règles de mappage existent, seule la première règle correspondante sera appliquée. Les règles de chaînage ne sont pas possibles.</li><li>Une règle n’est appliquée qu’une fois dans un string.</li><li>Un astérisque (*) correspond à un nombre quelconque de caractères, par exemple 2345* = 23450000.</li></ul>",
   "account.punchout.configuration.form.tooltip.mapping.headline": "Mappage des données",
   "account.punchout.configuration.form.tooltip.placeholder.headline": "Espaces réservés disponibles",

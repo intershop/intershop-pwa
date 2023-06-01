@@ -331,6 +331,8 @@
   "account.punchout.configuration.form.heading.format": "Format",
   "account.punchout.configuration.form.heading.mapping": "Mapping",
   "account.punchout.configuration.form.heading.transformed-attribute": "Parameter Value",
+  "account.punchout.configuration.form.mapping.from.error": "The \"mapping from\" value is missing.",
+  "account.punchout.configuration.form.mapping.to.error": "The \"mapping to\" value is missing.",
   "account.punchout.configuration.form.tooltip.mapping.content": "The data mapping allows values to be assigned individually to the configuration. The field values are mapped from the external punchout catalog to your procurement system. Please note the following:<ul class=\"pl-3\"><li>A mapping rule can only be entered for fields with a parameter value.</li><li>A mapping rule must always have a &quot;from&quot; and a &quot;to&quot; value, otherwise it will not be saved.</li><li>If multiple mapping rules exist, only the first matching rule will be applied. Chaining rules is not possible.</li><li>A rule is only applied once within a string.</li><li>An asterisk (*) matches any number of characters, e.g. 2345* = 23450000.</li></ul>",
   "account.punchout.configuration.form.tooltip.mapping.headline": "Data Mapping",
   "account.punchout.configuration.form.tooltip.placeholder.headline": "Available Placeholders",

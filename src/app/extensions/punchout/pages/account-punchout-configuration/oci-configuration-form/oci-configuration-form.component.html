@@ -52,7 +52,12 @@
         <formly-form [model]="model$ | async" [fields]="fields$ | async" [form]="form" class="pt-1"></formly-form>
       </div>
       <div class="row justify-content-end">
-        <button type="submit" class="btn btn-primary" data-testing-id="update-oci-configuration">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="formDisabled"
+          data-testing-id="update-oci-configuration"
+        >
           {{ 'account.update.button.label' | translate }}
         </button>
         <a [routerLink]="['/account/punchout', { format: 'oci' }]" class="btn btn-secondary">{{

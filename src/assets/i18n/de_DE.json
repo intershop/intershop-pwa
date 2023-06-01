@@ -331,6 +331,8 @@
   "account.punchout.configuration.form.heading.format": "Format",
   "account.punchout.configuration.form.heading.mapping": "Mapping",
   "account.punchout.configuration.form.heading.transformed-attribute": "Parameterwert",
+  "account.punchout.configuration.form.mapping.from.error": "Der \"Mapping von\"-Wert fehlt.",
+  "account.punchout.configuration.form.mapping.to.error": "Der \"Mapping nach\"-Wert fehlt.",
   "account.punchout.configuration.form.tooltip.mapping.content": "Das Daten-Mapping ermöglicht es, Ihrer Konfiguration individuelle Werte zuzuordnen. Die Feldwerte aus dem externen Punchout-Katalog werden Ihrem Procurement-System zugeordnet. Bitte beachten Sie Folgendes:<ul class=\"pl-3\"><li>Eine Mappingregel kann nur für Felder mit einem Parameterwert eingegeben werden.</li><li>Eine Mappingregel muss immer einen &quot;von&quot;- und einen &quot;nach&quot;-Wert haben, sonst wird sie nicht gespeichert.</li><li>Wenn mehrere Zuordnungsregeln existieren, wird nur die erste Zuordnungsregel angewendet. Eine Verkettung von Regeln ist nicht möglich.</li><li>Eine Regel wird nur einmal innerhalb eines Strings angewendet.</li><li>Ein Sternchen (*) entspricht einer beliebigen Anzahl von Zeichen, zum Beispiel 2345* 23450000.</li></ul>",
   "account.punchout.configuration.form.tooltip.mapping.headline": "Daten-Mapping",
   "account.punchout.configuration.form.tooltip.placeholder.headline": "Verfügbare Platzhalter",

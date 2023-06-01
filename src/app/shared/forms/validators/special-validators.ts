@@ -109,6 +109,28 @@ export class SpecialValidators {
     };
   }
 
+  /**
+   * A form control is required if a related form control is not empty.
+   *
+   * The Validator has to be attached to the parent form group containing both controls under investigation.
+   * The 'dependentlyRequired' error is set for the first argument control name if it is empty but the related control has a value.
+   *
+   */
+  static dependentlyRequired(requiredControlName: string, relatedControlName: string) {
+    return (group: FormGroup): ValidationErrors => {
+      const requiredControl = group.get(requiredControlName);
+      const relatedControl = group.get(relatedControlName);
+      const otherErrorKeys = Object.keys(requiredControl?.errors || {}).filter(x => x !== 'dependentlyRequired');
+
+      if (requiredControl && !otherErrorKeys.length) {
+        requiredControl.setErrors(
+          !relatedControl?.value || requiredControl.value ? undefined : { dependentlyRequired: { valid: false } }
+        );
+      }
+      return [];
+    };
+  }
+
   static moneyAmount(control: FormControl): { [error: string]: { valid: boolean } } {
     const moneyAmountPattern = /^$|^\d{1,9}(\.\d{1,2})?$/;
     if (!control.value) {
