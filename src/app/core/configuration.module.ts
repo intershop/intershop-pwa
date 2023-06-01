@@ -6,16 +6,18 @@ import { dataRequestErrorHandler } from './utils/http-error/data-request.error-h
 import { editPasswordErrorHandler } from './utils/http-error/edit-password.error-handler';
 import { LoginUserErrorHandler } from './utils/http-error/login-user.error-handler';
 import { requestReminderErrorHandler } from './utils/http-error/request-reminder.error-handler';
+import { updateOciConfigurationErrorHandler } from './utils/http-error/update-oci-configuration.error-handler';
 import { updatePasswordErrorHandler } from './utils/http-error/update-password.error-handler';
 
 @NgModule({
   providers: [
-    { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: updatePasswordErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useClass: LoginUserErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: requestReminderErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: dataRequestErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: editPasswordErrorHandler, multi: true },
     { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: createPaymentErrorHandler, multi: true },
+    { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: updatePasswordErrorHandler, multi: true },
+    { provide: SPECIAL_HTTP_ERROR_HANDLER, useValue: updateOciConfigurationErrorHandler, multi: true },
   ],
 })
 export class ConfigurationModule {}
