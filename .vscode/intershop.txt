@@ -28,6 +28,7 @@ crosssells
 cxml
 cybersource
 datepicker
+decamelize
 directdebit
 dockerignore
 dockerized

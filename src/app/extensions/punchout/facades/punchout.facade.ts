@@ -5,9 +5,19 @@ import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { decamelizeString } from 'ish-core/utils/functions';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { OciConfigurationItem } from '../models/oci-configuration-item/oci-configuration-item.model';
 import { PunchoutType, PunchoutUser } from '../models/punchout-user/punchout-user.model';
+import {
+  getOciConfiguration,
+  getOciConfigurationError,
+  getOciConfigurationLoading,
+  getOciFormatters,
+  getOciPlaceholders,
+  ociConfigurationActions,
+} from '../store/oci-configuration';
 import { transferPunchoutBasket } from '../store/punchout-functions';
 import { getPunchoutTypes, getPunchoutTypesError, getPunchoutTypesLoading } from '../store/punchout-types';
 import {
@@ -32,7 +42,6 @@ export class PunchoutFacade {
 
   punchoutError$ = this.store.pipe(select(getPunchoutError));
   punchoutTypesError$: Observable<HttpError> = this.store.pipe(select(getPunchoutTypesError));
-
   supportedPunchoutTypes$: Observable<PunchoutType[]> = this.store.pipe(select(getPunchoutTypes));
 
   selectedPunchoutType$ = combineLatest([
@@ -67,5 +76,29 @@ export class PunchoutFacade {
 
   transferBasket() {
     this.store.dispatch(transferPunchoutBasket());
+  }
+
+  ociConfiguration$() {
+    this.store.dispatch(ociConfigurationActions.loadOciOptionsAndConfiguration());
+    return this.store.pipe(select(getOciConfiguration));
+  }
+  ociConfigurationLoading$ = this.store.pipe(select(getOciConfigurationLoading));
+  ociConfigurationError$ = this.store.pipe(select(getOciConfigurationError));
+  ociFormatterSelectOptions$ = this.store.pipe(
+    select(getOciFormatters),
+    whenTruthy(),
+    map(formatters => formatters.map(f => ({ label: decamelizeString(f), value: f }))),
+    map(options => {
+      options.push({
+        value: '',
+        label: 'account.punchout.configuration.option.none.label',
+      });
+      return options;
+    })
+  );
+  ociPlaceholders$ = this.store.pipe(select(getOciPlaceholders));
+
+  updateOciConfiguration(configuration: OciConfigurationItem[]) {
+    this.store.dispatch(ociConfigurationActions.updateOciConfiguration({ configuration }));
   }
 }

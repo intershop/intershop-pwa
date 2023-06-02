@@ -16,6 +16,10 @@ import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
+import { OciConfigurationItem } from '../../models/oci-configuration-item/oci-configuration-item.model';
+import { OciOptionsData } from '../../models/oci-options/oci-options.interface';
+import { OciOptionsMapper } from '../../models/oci-options/oci-options.mapper';
+import { OciOptions } from '../../models/oci-options/oci-options.model';
 import { PunchoutSession } from '../../models/punchout-session/punchout-session.model';
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
@@ -407,5 +411,68 @@ export class PunchoutService {
       this.domService.setProperty(input, 'type', 'hidden');
     });
     return ociForm;
+  }
+
+  /**
+   * Gets the list of oci configuration items.
+   *
+   * @returns    An array of punchout oci configuration items.
+   */
+  getOciConfiguration(): Observable<OciConfigurationItem[]> {
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .get<{ items: OciConfigurationItem[] }>(
+            `customers/${customer.customerNo}/punchouts/${this.getResourceType('oci')}/configurations`,
+            {
+              headers: this.punchoutHeaders,
+            }
+          )
+          .pipe(map(data => data.items))
+      )
+    );
+  }
+
+  /**
+   * Gets the oci configuration options (formatters and placeholders).
+   *
+   * @returns    An array of punchout oci configuration options.
+   */
+  getOciConfigurationOptions(): Observable<OciOptions> {
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .options<OciOptionsData>(`customers/${customer.customerNo}/punchouts/${this.getResourceType('oci')}`, {
+            headers: this.punchoutHeaders,
+          })
+          .pipe(map(OciOptionsMapper.fromData))
+      )
+    );
+  }
+
+  /**
+   *  Updates a punchout oci configuration.
+   *
+   * @param   ociConfiguration  An array of oci configuration items to update.
+   * @returns                   The updated oci configuration.
+   */
+  updateOciConfiguration(ociConfiguration: OciConfigurationItem[]): Observable<OciConfigurationItem[]> {
+    if (!ociConfiguration) {
+      return throwError(() => new Error('updateOciConfiguration() called without required OciConfiguration'));
+    }
+
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService
+          .put<{ items: OciConfigurationItem[] }>(
+            `customers/${customer.customerNo}/punchouts/${this.getResourceType('oci')}/configurations`,
+            { items: ociConfiguration },
+            {
+              headers: this.punchoutHeaders,
+            }
+          )
+          .pipe(map(data => data.items))
+      )
+    );
   }
 }

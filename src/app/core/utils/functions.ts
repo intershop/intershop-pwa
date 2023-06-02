@@ -1,4 +1,4 @@
-import { range } from 'lodash-es';
+import { capitalize, range, snakeCase } from 'lodash-es';
 import { Observable, isObservable, of } from 'rxjs';
 
 /**
@@ -69,4 +69,16 @@ export function parseTimeToSeconds(timeString: string): number {
 
   const [, time, unit] = match;
   return +time * (unit === 'd' ? 24 * 60 * 60 : unit === 'h' ? 60 * 60 : unit === 'm' ? 60 : 1);
+}
+
+/**
+ * If a camelized string is given the string is returned as separate capitalized words, e.g. 'lowerCase' will be 'Lower Case'
+ */
+export function decamelizeString(str: string): string {
+  return str
+    ? snakeCase(str)
+        .split('_')
+        .map(part => capitalize(part))
+        .join(' ')
+    : str;
 }

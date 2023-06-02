@@ -8,6 +8,13 @@ const routes: Routes = [
       import('./account-punchout/account-punchout-page.module').then(m => m.AccountPunchoutPageModule),
   },
   {
+    path: 'configuration',
+    loadChildren: () =>
+      import('./account-punchout-configuration/account-punchout-configuration-page.module').then(
+        m => m.AccountPunchoutConfigurationPageModule
+      ),
+  },
+  {
     path: 'create',
     loadChildren: () =>
       import('./account-punchout-create/account-punchout-create-page.module').then(

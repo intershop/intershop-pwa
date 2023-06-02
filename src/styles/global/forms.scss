@@ -238,3 +238,10 @@ optgroup {
 .grecaptcha-badge {
   visibility: hidden;
 }
+
+.oci-configuration-mappings {
+  .oci-configuration-mappings-group {
+    display: flex;
+    margin-right: $space-default;
+  }
+}

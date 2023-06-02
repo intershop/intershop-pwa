@@ -22,6 +22,7 @@ describe('Punchout Service', () => {
     apiServiceMock = mock(ApiService);
     cookiesServiceMock = mock(CookiesService);
 
+    when(apiServiceMock.options(anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.get(anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.resolveLinks(anything())).thenReturn(() => of([]));
     when(apiServiceMock.post(anything(), anything(), anything())).thenReturn(of({}));
@@ -86,6 +87,34 @@ describe('Punchout Service', () => {
       verify(apiServiceMock.delete(anything(), anything())).once();
       expect(capture(apiServiceMock.delete).last()[0]).toMatchInlineSnapshot(
         `"customers/4711/punchouts/oci5/users/ociuser"`
+      );
+      done();
+    });
+  });
+
+  it("should get punchout configuration items when 'getOciConfiguration' is called", done => {
+    punchoutService.getOciConfiguration().subscribe(() => {
+      verify(apiServiceMock.get(anything(), anything())).once();
+      expect(capture(apiServiceMock.get).last()[0]).toMatchInlineSnapshot(
+        `"customers/4711/punchouts/oci5/configurations"`
+      );
+      done();
+    });
+  });
+
+  it("should get oci options when 'getOciConfigurationOptions' is called", done => {
+    punchoutService.getOciConfigurationOptions().subscribe(() => {
+      verify(apiServiceMock.options(anything(), anything())).once();
+      expect(capture(apiServiceMock.options).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci5"`);
+      done();
+    });
+  });
+
+  it("should update oci configuration items when 'updateOciConfiguration' is called", done => {
+    punchoutService.updateOciConfiguration([]).subscribe(() => {
+      verify(apiServiceMock.put(anything(), anything(), anything())).once();
+      expect(capture(apiServiceMock.put).last()[0]).toMatchInlineSnapshot(
+        `"customers/4711/punchouts/oci5/configurations"`
       );
       done();
     });
