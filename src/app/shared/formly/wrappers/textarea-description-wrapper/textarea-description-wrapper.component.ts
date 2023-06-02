@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
 /**
@@ -19,9 +19,10 @@ import { takeUntil, throttleTime } from 'rxjs/operators';
 })
 export class TextareaDescriptionWrapperComponent extends FieldWrapper implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  description$ = new BehaviorSubject<string>('');
 
-  constructor(private translate: TranslateService) {
+  description = '';
+
+  constructor(private translate: TranslateService, private cdRef: ChangeDetectorRef) {
     super();
   }
 
@@ -35,15 +36,13 @@ export class TextareaDescriptionWrapperComponent extends FieldWrapper implements
   }
 
   setDescription(value: string) {
-    this.description$.next(
-      this.translate.instant(this.props.customDescription ?? 'textarea.max_limit', {
-        0: Math.max(0, this.props.maxLength - (value?.length ?? 0)),
-      })
-    );
+    this.description = this.translate.instant(this.props.customDescription ?? 'textarea.max_limit', {
+      0: Math.max(0, this.props.maxLength - (value?.length ?? 0)),
+    });
+    this.cdRef.markForCheck();
   }
 
   ngOnDestroy() {
-    this.description$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }
