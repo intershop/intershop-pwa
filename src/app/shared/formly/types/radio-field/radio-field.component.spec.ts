@@ -25,11 +25,15 @@ describe('Radio Field Component', () => {
 
   beforeEach(() => {
     const testComponentInputs = {
-      model: { radio: '' },
+      model: { rkey: '' },
       fields: [
         {
-          key: 'radio',
+          key: 'rkey',
           type: 'radio',
+          props: {
+            label: 'radio-label',
+            value: 'value1',
+          },
         },
       ],
       form: new FormGroup({}),
@@ -50,5 +54,16 @@ describe('Radio Field Component', () => {
   it('should be rendered after creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-radio-field')).toBeTruthy();
+    expect(element.querySelector('ish-radio-field')).toMatchInlineSnapshot(`
+      <ish-radio-field
+        ><input
+          type="radio"
+          class="form-check-input"
+          value="value1"
+          id="formly_1_radio_rkey_0"
+          name="formly_0_formly-group__rkey"
+          data-testing-id="radio-radio-label"
+      /></ish-radio-field>
+    `);
   });
 });
