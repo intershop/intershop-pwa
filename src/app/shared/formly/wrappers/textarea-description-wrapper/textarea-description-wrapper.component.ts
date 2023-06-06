@@ -28,11 +28,11 @@ export class TextareaDescriptionWrapperComponent extends FieldWrapper implements
     this.description$ = this.formControl.valueChanges.pipe(
       startWith(this.formControl.value),
       throttleTime(1000, undefined, { leading: true, trailing: true }),
-      switchMap(value => this.getDescription(value))
+      switchMap(value => this.getDescription$(value))
     );
   }
 
-  getDescription(value: string): Observable<string> {
+  getDescription$(value: string): Observable<string> {
     return this.translate.get(this.props.customDescription ?? 'textarea.max_limit', {
       0: Math.max(0, this.props.maxLength - (value?.length ?? 0)),
     });
