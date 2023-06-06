@@ -1,5 +1,5 @@
 <ng-template #fieldComponent></ng-template>
-<div *ngIf="description">
+<div *ngIf="description$ | async as description">
   <small class="form-text ng-star-inserted" data-testing-id="textarea-description">
     {{ description }}
   </small>

@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { startWith, switchMap, throttleTime } from 'rxjs/operators';
 
 /**
  * Wrapper to display a description that counts the remaining characters in a field.
@@ -17,37 +17,24 @@ import { takeUntil, throttleTime } from 'rxjs/operators';
   templateUrl: './textarea-description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class TextareaDescriptionWrapperComponent extends FieldWrapper implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class TextareaDescriptionWrapperComponent extends FieldWrapper implements OnInit {
+  description$: Observable<string>;
 
-  private _description = '';
-
-  constructor(private translate: TranslateService, private cdRef: ChangeDetectorRef) {
+  constructor(private translate: TranslateService) {
     super();
   }
 
   ngOnInit() {
-    this.description = this.formControl.value;
-    this.formControl.valueChanges
-      .pipe(throttleTime(1000, undefined, { leading: true, trailing: true }), takeUntil(this.destroy$))
-      .subscribe(value => {
-        this.description = value;
-      });
+    this.description$ = this.formControl.valueChanges.pipe(
+      startWith(this.formControl.value),
+      throttleTime(1000, undefined, { leading: true, trailing: true }),
+      switchMap(value => this.getDescription(value))
+    );
   }
 
-  get description() {
-    return this._description;
-  }
-
-  set description(value: string) {
-    this._description = this.translate.instant(this.props.customDescription ?? 'textarea.max_limit', {
+  getDescription(value: string): Observable<string> {
+    return this.translate.get(this.props.customDescription ?? 'textarea.max_limit', {
       0: Math.max(0, this.props.maxLength - (value?.length ?? 0)),
     });
-    this.cdRef.markForCheck();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
