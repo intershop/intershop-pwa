@@ -20,23 +20,27 @@ import { takeUntil, throttleTime } from 'rxjs/operators';
 export class TextareaDescriptionWrapperComponent extends FieldWrapper implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  description = '';
+  private _description = '';
 
   constructor(private translate: TranslateService, private cdRef: ChangeDetectorRef) {
     super();
   }
 
   ngOnInit() {
-    this.setDescription(this.formControl.value);
+    this.description = this.formControl.value;
     this.formControl.valueChanges
       .pipe(throttleTime(1000, undefined, { leading: true, trailing: true }), takeUntil(this.destroy$))
       .subscribe(value => {
-        this.setDescription(value);
+        this.description = value;
       });
   }
 
-  setDescription(value: string) {
-    this.description = this.translate.instant(this.props.customDescription ?? 'textarea.max_limit', {
+  get description() {
+    return this._description;
+  }
+
+  set description(value: string) {
+    this._description = this.translate.instant(this.props.customDescription ?? 'textarea.max_limit', {
       0: Math.max(0, this.props.maxLength - (value?.length ?? 0)),
     });
     this.cdRef.markForCheck();
