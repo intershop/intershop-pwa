@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { startWith, switchMap, throttleTime } from 'rxjs/operators';
 
 /**
  * Wrapper to display a description that counts the remaining characters in a field.
@@ -17,8 +17,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './textarea-description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class TextareaDescriptionWrapperComponent extends FieldWrapper implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class TextareaDescriptionWrapperComponent extends FieldWrapper implements OnInit {
   description$: Observable<string>;
 
   constructor(private translate: TranslateService) {
@@ -26,20 +25,16 @@ export class TextareaDescriptionWrapperComponent extends FieldWrapper implements
   }
 
   ngOnInit() {
-    this.setDescription(this.formControl.value);
-    this.formControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
-      this.setDescription(value);
-    });
+    this.description$ = this.formControl.valueChanges.pipe(
+      startWith(this.formControl.value),
+      throttleTime(500, undefined, { leading: true, trailing: true }),
+      switchMap(value => this.getDescription$(value))
+    );
   }
 
-  setDescription(value: string) {
-    this.description$ = this.translate.get(this.props.customDescription ?? 'textarea.max_limit', {
+  getDescription$(value: string): Observable<string> {
+    return this.translate.get(this.props.customDescription ?? 'textarea.max_limit', {
       0: Math.max(0, this.props.maxLength - (value?.length ?? 0)),
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

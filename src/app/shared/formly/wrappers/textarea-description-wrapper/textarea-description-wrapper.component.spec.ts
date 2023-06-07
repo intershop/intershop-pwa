@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -74,10 +74,11 @@ describe('Textarea Description Wrapper Component', () => {
     expect(element.querySelector('[data-testing-id="textarea-description"]')?.textContent.trim()).toEqual('1000');
   });
 
-  it('should display correct remaining length if field is not empty', () => {
+  it('should display correct remaining length if field is not empty', fakeAsync(() => {
     fixture.detectChanges();
     component.form.get('textarea')?.setValue('0123456789');
+    tick(1000);
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="textarea-description"]')?.textContent.trim()).toEqual('990');
-  });
+  }));
 });
