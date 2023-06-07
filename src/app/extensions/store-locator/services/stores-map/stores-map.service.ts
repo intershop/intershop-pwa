@@ -35,8 +35,8 @@ export class StoresMapService {
       apiKey: gmaKey,
       version: 'weekly',
     });
-    loader.load().then(() => {
-      this.map = new google.maps.Map(container, {
+    loader.importLibrary('maps').then(({ Map }) => {
+      this.map = new Map(container, {
         center: { lat: 0, lng: 0 },
         zoom: 2,
         minZoom: 2,

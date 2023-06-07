@@ -700,7 +700,6 @@
         "jsdoc/check-values": "warn",
         "jsdoc/empty-tags": "warn",
         "jsdoc/implements-on-classes": "warn",
-        "jsdoc/no-undefined-types": "warn",
         "jsdoc/require-property-description": "warn",
         "jsdoc/require-property-name": "warn",
         "jsdoc/require-property-type": "warn",
