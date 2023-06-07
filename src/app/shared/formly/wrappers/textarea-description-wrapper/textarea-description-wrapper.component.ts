@@ -27,7 +27,7 @@ export class TextareaDescriptionWrapperComponent extends FieldWrapper implements
   ngOnInit() {
     this.description$ = this.formControl.valueChanges.pipe(
       startWith(this.formControl.value),
-      throttleTime(1000, undefined, { leading: true, trailing: true }),
+      throttleTime(500, undefined, { leading: true, trailing: true }),
       switchMap(value => this.getDescription$(value))
     );
   }
