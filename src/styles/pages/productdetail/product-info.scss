@@ -65,12 +65,6 @@ a.product-title {
       text-transform: uppercase;
     }
 
-    &.read-only {
-      .product-variation-info {
-        padding-right: divide($space-default, 3);
-      }
-    }
-
     .form-group {
       margin-right: 0;
       margin-left: 0;
