@@ -7,7 +7,7 @@
           <span> {{ cause.message }}</span>
           <span *ngIf="cause.parameters?.sku" class="product-id"
             ><br />
-            <span class="product-id-name">{{ 'product.itemNumber.label' | translate }}</span>
+            <span class="product-id-label">{{ 'product.itemNumber.label' | translate }}</span>
             <span itemprop="sku">{{ cause.parameters.sku }}</span>
           </span>
         </p>
