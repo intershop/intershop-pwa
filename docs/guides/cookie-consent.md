@@ -33,7 +33,7 @@ cookieConsentOptions: {
       description: 'cookie.consent.option.tracking.description',
     },
   },
-  allowedCookies: ['cookieConsent', 'apiToken'],
+  allowedCookies: ['apiToken', 'cookieConsent', 'preferredLocale'],
 },
 ```
 
@@ -42,7 +42,7 @@ The `options` array configures the presented options in the _Cookie Preferences_
 - The option `id` is the value that will be stored in the user's `cookieConsent` settings.
 - The `name` makes up the checkbox label name, usually given as localization key.
 - The `description` contains the additional option description, usually given as localization key.
-- With the `required` flag, an option can be marked as not deselectable.
+- With the `required` flag, an option can be marked as not non-selectable.
   In this way, the user can be informed that necessary cookies are always set without explicit consent of the user.
 
 The following screenshot is the rendered representation of the default cookie consent options configuration:
@@ -100,10 +100,11 @@ This route can be linked to from anywhere within the application.
 
 ## PWA Required Cookies
 
-| Name          | Expiration | Provider      | Description                                                       | Category    |
-| ------------- | ---------- | ------------- | ----------------------------------------------------------------- | ----------- |
-| apiToken      | 1 year     | Intershop PWA | The API token used by the Intershop Commerce Management REST API. | First Party |
-| cookieConsent | 1 year     | Intershop PWA | Saves the user's cookie consent settings.                         | First Party |
+| Name            | Expiration | Provider      | Description                                                       | Category    |
+| --------------- | ---------- | ------------- | ----------------------------------------------------------------- | ----------- |
+| apiToken        | 1 year     | Intershop PWA | The API token used by the Intershop Commerce Management REST API. | First Party |
+| cookieConsent   | 1 year     | Intershop PWA | Saves the user's cookie consent settings.                         | First Party |
+| preferredLocale | 1 year     | Intershop PWA | Saves the user's language selection.                              | First Party |
 
 ## Disabling the Integrated Cookie Consent Handling
 
