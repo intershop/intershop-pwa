@@ -109,7 +109,7 @@ export class ProductVariationHelper {
             // attribute is not selected
             !selectedFacets.find(([key]) => key === attr.variationAttributeId) ||
             // selection is variation
-            selectedFacets.find(([key, val]) => key === attr.variationAttributeId && val === attr.value)
+            selectedFacets.find(([key, val]) => key === attr.variationAttributeId && val === attr.value.toString())
         )
       ).length;
   }
