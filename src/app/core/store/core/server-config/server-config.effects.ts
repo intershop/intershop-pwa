@@ -3,15 +3,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, identity } from 'rxjs';
-import { concatMap, first, map, switchMap, takeWhile } from 'rxjs/operators';
+import { concatMap, filter, first, map, switchMap, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { applyConfiguration } from 'ish-core/store/core/configuration';
+import { applyConfiguration, getCurrentLocale } from 'ish-core/store/core/configuration';
 import { ConfigurationState } from 'ish-core/store/core/configuration/configuration.reducer';
 import { serverConfigError } from 'ish-core/store/core/error';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
+import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 import { delayUntil, mapErrorToAction, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import {
@@ -29,7 +31,9 @@ export class ServerConfigEffects {
     private actions$: Actions,
     private store: Store,
     private configService: ConfigurationService,
-    private featureToggleService: FeatureToggleService
+    private featureToggleService: FeatureToggleService,
+    private cookiesService: CookiesService,
+    private multiSiteService: MultiSiteService
   ) {}
 
   /**
@@ -55,6 +59,34 @@ export class ServerConfigEffects {
         )
       )
     )
+  );
+
+  switchToPreferredLanguage$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loadServerConfigSuccess),
+        withLatestFrom(this.store.pipe(select(getCurrentLocale))),
+        map(([, currentLocale]) => [this.cookiesService.get('preferredLocale'), currentLocale]),
+        filter(([preferredLocale, locale]) => preferredLocale && preferredLocale !== locale),
+        concatMap(([preferredLocale]) => {
+          const splittedUrl = location.pathname?.split('?');
+          const newUrl = splittedUrl?.[0];
+
+          return this.multiSiteService.getLangUpdatedUrl(preferredLocale, newUrl).pipe(
+            whenTruthy(),
+            take(1),
+            map(modifiedUrl => {
+              const modifiedUrlParams = modifiedUrl === newUrl ? { lang: preferredLocale } : {};
+              return this.multiSiteService.appendUrlParams(modifiedUrl, modifiedUrlParams, splittedUrl?.[1]);
+            }),
+            concatMap(url => {
+              location.assign(url);
+              return EMPTY;
+            })
+          );
+        })
+      ),
+    { dispatch: false }
   );
 
   loadExtraServerConfig$ = createEffect(() =>

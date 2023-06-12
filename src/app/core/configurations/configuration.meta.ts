@@ -20,7 +20,9 @@ class SimpleParamMap {
 
 // eslint-disable-next-line complexity
 function extractConfigurationParameters(state: ConfigurationState, paramMap: SimpleParamMap) {
-  const keys: (keyof ConfigurationState)[] = ['channel', 'application', 'lang', 'currency', 'identityProvider'];
+  const keys: (keyof ConfigurationState)[] = PRODUCTION_MODE
+    ? ['lang']
+    : ['channel', 'application', 'lang', 'currency', 'identityProvider'];
   const properties: Partial<ConfigurationState> = keys
     .filter(key => paramMap.has(key) && paramMap.get(key) !== 'default')
     .map(key => ({ [key]: paramMap.get(key) }))
@@ -51,12 +53,14 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
   if (Object.keys(properties).length) {
     return configurationReducer(state, applyConfiguration(properties));
   }
+
   return state;
 }
 
 /**
  * meta reducer for overriding client side state if supplied by server
  */
+
 export function configurationMeta(reducer: ActionReducer<CoreState>): ActionReducer<CoreState> {
   let first = false;
 

@@ -1,18 +1,21 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable, of, throwError } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { Observable, noop, of, throwError } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
+import { getCurrentLocale } from 'ish-core/store/core/configuration/configuration.selectors';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { serverConfigError } from 'ish-core/store/core/error';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { routerTestNavigationAction } from 'ish-core/utils/dev/routing';
+import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { loadServerConfig, loadServerConfigFail, loadServerConfigSuccess } from './server-config.actions';
 import { ServerConfigEffects } from './server-config.effects';
@@ -23,15 +26,20 @@ describe('Server Config Effects', () => {
 
   beforeEach(() => {
     const configurationServiceMock = mock(ConfigurationService);
+    const cookiesServiceMock = mock(CookiesService);
+    const multiSiteServiceMock = mock(MultiSiteService);
+
     when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
+    when(cookiesServiceMock.get(anything())).thenReturn('de_DE');
+    when(multiSiteServiceMock.getLangUpdatedUrl(anything(), anything())).thenReturn(of('/home;lang=de_DE'));
+    when(multiSiteServiceMock.appendUrlParams(anything(), anything(), anything())).thenReturn('/home;lang=de_DE');
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['serverConfig'], [ServerConfigEffects]),
-        FeatureToggleModule.forTesting('extraConfiguration'),
-      ],
+      imports: [CoreStoreModule.forTesting(['serverConfig', 'configuration'], [ServerConfigEffects])],
       providers: [
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
+        { provide: CookiesService, useFactory: () => instance(cookiesServiceMock) },
+        { provide: MultiSiteService, useFactory: () => instance(multiSiteServiceMock) },
         provideStoreSnapshots(),
       ],
     });
@@ -44,6 +52,10 @@ describe('Server Config Effects', () => {
   });
 
   it('should trigger the loading of config data on the first page', () => {
+    Object.defineProperty(window, 'location', {
+      value: { assign: jest.fn() },
+      writable: true,
+    });
     store$.dispatch(routerTestNavigationAction({ routerState: { url: '/any' } }));
 
     expect(store$.actionsArray()).toMatchInlineSnapshot(`
@@ -60,13 +72,19 @@ describe('Server Config Effects', () => {
   let effects: ServerConfigEffects;
   let store$: MockStore;
   let configurationServiceMock: ConfigurationService;
+  let cookiesServiceMock: CookiesService;
+  let multiSiteServiceMock: MultiSiteService;
 
   beforeEach(() => {
     configurationServiceMock = mock(ConfigurationService);
+    cookiesServiceMock = mock(CookiesService);
+    multiSiteServiceMock = mock(MultiSiteService);
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
+        { provide: CookiesService, useFactory: () => instance(cookiesServiceMock) },
+        { provide: MultiSiteService, useFactory: () => instance(multiSiteServiceMock) },
         provideMockActions(() => actions$),
         provideMockStore(),
         ServerConfigEffects,
@@ -102,9 +120,11 @@ describe('Server Config Effects', () => {
   describe('loadServerConfig$', () => {
     beforeEach(() => {
       when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
+      when(multiSiteServiceMock.getLangUpdatedUrl(anything(), anything())).thenReturn(of('/home;lang=de_DE'));
+      when(multiSiteServiceMock.appendUrlParams(anything(), anything(), anything())).thenReturn('/home;lang=de_DE');
     });
 
-    it('should map to action of type ApplyConfiguration', () => {
+    it('should map to action of type LoadServerConfigSuccess', () => {
       const action = loadServerConfig();
       const completion = loadServerConfigSuccess({ config: {} });
 
@@ -135,5 +155,45 @@ describe('Server Config Effects', () => {
 
       expect(effects.mapToServerConfigError$).toBeObservable(expected$);
     });
+
+    it("should reload the current page if the user's locale cookie differs from the current locale", fakeAsync(() => {
+      when(cookiesServiceMock.get(anything())).thenReturn('de_DE');
+      store$.overrideSelector(getCurrentLocale, 'en_US');
+
+      // mock location.assign() with jest.fn()
+      Object.defineProperty(window, 'location', {
+        value: { assign: jest.fn() },
+        writable: true,
+      });
+
+      const action = loadServerConfigSuccess({ config: {} as ServerConfig });
+      actions$ = of(action);
+
+      effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
+
+      tick(500);
+
+      expect(window.location.assign).toHaveBeenCalled();
+    }));
+
+    it("should not reload the current page if the user's locale cookie is equal to the current locale", fakeAsync(() => {
+      when(cookiesServiceMock.get(anything())).thenReturn('en_US');
+      store$.overrideSelector(getCurrentLocale, 'en_US');
+
+      // mock location.assign() with jest.fn()
+      Object.defineProperty(window, 'location', {
+        value: { assign: jest.fn() },
+        writable: true,
+      });
+
+      const action = loadServerConfigSuccess({ config: {} as ServerConfig });
+      actions$ = of(action);
+
+      effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
+
+      tick(500);
+
+      expect(window.location.assign).not.toHaveBeenCalled();
+    }));
   });
 });

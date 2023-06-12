@@ -19,7 +19,10 @@ const _ = {
 
 describe('Language Changing User', () => {
   describe('when logged in', () => {
-    before(() => LoginPage.navigateTo());
+    before(() => {
+      cy.clearCookie('preferredLocale');
+      LoginPage.navigateTo();
+    });
 
     it('should log in', () => {
       createUserViaREST(_.user);
@@ -47,6 +50,7 @@ describe('Language Changing User', () => {
   describe('when accessing protected content without cookie', () => {
     before(() => {
       cy.clearCookie('apiToken');
+      cy.clearCookie('preferredLocale');
       MyAccountPage.navigateTo();
     });
 
