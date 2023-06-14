@@ -1,4 +1,4 @@
-<div [ngClass]="field.type === 'ish-checkbox-field' ? 'form-group' : 'mb-2'" class="row">
+<div [ngClass]="{ 'form-group': field.type === 'ish-checkbox-field' }" class="row">
   <div *ngIf="props.title" class="col-form-label" [ngClass]="props.titleClass ? props.titleClass : dprops.titleClass">
     {{ props.title | translate }}<span class="required" *ngIf="props.required && !props.hideRequiredMarker">*</span>
   </div>
