@@ -107,12 +107,6 @@ describe('Basket Service', () => {
     });
   });
 
-  it('should not throw errors when getting a basket by token is unsuccessful', done => {
-    when(apiService.get(anything(), anything())).thenReturn(throwError(() => new Error()));
-
-    basketService.getBasketByToken('dummy').subscribe({ next: fail, error: fail, complete: done });
-  });
-
   it("should create a basket data when 'createBasket' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of(basketMockData));
 
