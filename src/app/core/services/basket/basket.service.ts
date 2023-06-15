@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, Observable, forkJoin, iif, of, throwError } from 'rxjs';
+import { Observable, forkJoin, iif, of, throwError } from 'rxjs';
 import { catchError, concatMap, first, map, take } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
@@ -213,12 +213,8 @@ export class BasketService {
       .get<BasketData>(`baskets/current`, {
         headers: this.basketHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
         params,
-        skipApiErrorHandling: true,
       })
-      .pipe(
-        map(BasketMapper.fromData),
-        catchError(() => EMPTY)
-      );
+      .pipe(map(BasketMapper.fromData));
   }
 
   /**

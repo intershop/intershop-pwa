@@ -26,6 +26,8 @@ export const loadBasketByAPIToken = createAction(
   payload<{ apiToken: string }>()
 );
 
+export const loadBasketByAPITokenFail = createAction('[Basket API] Load Basket by API Token Fail', httpError());
+
 export const loadBasketFail = createAction('[Basket API] Load Basket Fail', httpError());
 
 export const loadBasketSuccess = createAction('[Basket API] Load Basket Success', payload<{ basket: Basket }>());

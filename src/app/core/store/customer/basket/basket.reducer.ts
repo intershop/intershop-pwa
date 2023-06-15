@@ -38,6 +38,7 @@ import {
   deleteBasketPaymentSuccess,
   loadBasket,
   loadBasketByAPIToken,
+  loadBasketByAPITokenFail,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
   loadBasketEligiblePaymentMethodsSuccess,
@@ -149,7 +150,12 @@ export const basketReducer = createReducer(
     mergeBasketInProgress,
     setBasketDesiredDeliveryDate
   ),
-  unsetLoadingOn(addPromotionCodeToBasketSuccess, addPromotionCodeToBasketFail, loadBasketSuccess),
+  unsetLoadingOn(
+    addPromotionCodeToBasketSuccess,
+    addPromotionCodeToBasketFail,
+    loadBasketSuccess,
+    loadBasketByAPITokenFail
+  ),
   unsetLoadingAndErrorOn(
     mergeBasketSuccess,
     updateBasketItemSuccess,
