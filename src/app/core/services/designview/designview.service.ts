@@ -15,7 +15,11 @@ interface StorefrontEditingMessage {
 @Injectable({ providedIn: 'root' })
 export class DesignviewService {
   private iapBaseURL = environment.iapBaseURL;
-  private allowedHostMessageTypes = ['dv-clientRefresh'];
+  private allowedHostMessageTypes = [
+    'dv-clientRefresh',
+    'dv-tmpToggleLastElementHighlighting',
+    'dv-tmpToggleCmsHierarchyHighlighting',
+  ];
   private hostMessagesSubject$ = new Subject<StorefrontEditingMessage>();
 
   constructor(private router: Router, private appRef: ApplicationRef) {
@@ -106,6 +110,28 @@ export class DesignviewService {
     switch (message.type) {
       case 'dv-clientRefresh': {
         location.reload();
+        return;
+      }
+      // temporary features
+      case 'dv-tmpToggleLastElementHighlighting': {
+        // toggle the class to see only the highlighting for the last CMS element without any further elements within
+        const body = document?.querySelector('body');
+        body.classList.toggle('tmp-designview-highlight-last');
+
+        this.messageToHost({ type: 'dv-clientReady' });
+        return;
+      }
+      case 'dv-tmpToggleCmsHierarchyHighlighting': {
+        // toggle the class to see the CMS hierarchy / nesting of CMS elements
+        const body = document?.querySelector('body');
+        body.classList.toggle('tmp-designview-show-cms-hierarchy');
+
+        const designViewWrappers = document.querySelectorAll('.designview-wrapper');
+        for (let i = 0; i < designViewWrappers.length; i++) {
+          designViewWrappers[i].classList.toggle('clearfix');
+        }
+
+        this.messageToHost({ type: 'dv-clientReady' });
         return;
       }
     }
