@@ -1,3 +1,3 @@
-export type ViewType = 'grid' | 'list';
+export type ViewType<T extends string = ''> = T | ('grid' | 'list');
 
-export type DeviceType = 'mobile' | 'tablet' | 'desktop';
+export type DeviceType<T extends string = ''> = T | ('mobile' | 'tablet' | 'desktop');
