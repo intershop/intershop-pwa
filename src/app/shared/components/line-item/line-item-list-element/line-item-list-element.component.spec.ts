@@ -21,6 +21,7 @@ import { ProductIdComponent } from 'ish-shared/components/product/product-id/pro
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
+import { ProductQuantityLabelComponent } from 'ish-shared/components/product/product-quantity-label/product-quantity-label.component';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
@@ -55,6 +56,7 @@ describe('Line Item List Element Component', () => {
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductNameComponent),
         MockComponent(ProductQuantityComponent),
+        MockComponent(ProductQuantityLabelComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductVariationDisplayComponent),
         MockDirective(NgbPopover),
@@ -134,23 +136,24 @@ describe('Line Item List Element Component', () => {
     it('should display standard elements for normal products', () => {
       fixture.detectChanges();
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      [
-        "ish-product-image",
-        "ish-product-name",
-        "ish-product-id",
-        "ish-product-variation-display",
-        "ish-product-bundle-display",
-        "ish-line-item-edit",
-        "ish-product-inventory",
-        "ish-product-shipment",
-        "fa-icon",
-        "ish-lazy-product-add-to-order-template",
-        "ish-lazy-product-add-to-wishlist",
-        "fa-icon",
-        "ish-product-quantity",
-        "ish-product-quantity",
-      ]
-    `);
+        [
+          "ish-product-image",
+          "ish-product-name",
+          "ish-product-id",
+          "ish-product-variation-display",
+          "ish-product-bundle-display",
+          "ish-line-item-edit",
+          "ish-product-inventory",
+          "ish-product-shipment",
+          "fa-icon",
+          "ish-lazy-product-add-to-order-template",
+          "ish-lazy-product-add-to-wishlist",
+          "fa-icon",
+          "ish-product-quantity-label",
+          "ish-product-quantity",
+          "ish-product-quantity",
+        ]
+      `);
     });
 
     it('should display bundle parts for bundle products', () => {

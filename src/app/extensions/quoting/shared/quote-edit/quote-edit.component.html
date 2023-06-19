@@ -1,17 +1,15 @@
 <ng-container *ngIf="quote$ | async as quote">
   <form [formGroup]="form" class="form-horizontal">
     <div class="row">
-      <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
-        'quote.edit.unsubmitted.quote_no.label' | translate
-      }}</label>
+      <div class="col-4 col-md-3 col-xl-2 col-form-label">
+        {{ 'quote.edit.unsubmitted.quote_no.label' | translate }}
+      </div>
       <div class="col-8 col-md-9 col-xl-10">
         <p class="form-control-plaintext">{{ quote.number }}</p>
       </div>
     </div>
     <div class="row">
-      <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
-        'quote.edit.unsubmitted.status.label' | translate
-      }}</label>
+      <div class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.status.label' | translate }}</div>
       <div class="col-8 col-md-9 col-xl-10">
         <p class="form-control-plaintext"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></p>
       </div>
@@ -20,7 +18,7 @@
     <div class="section">
       <!-- displayName -->
       <div class="row">
-        <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
+        <label for="quote-displayname" class="col-4 col-md-3 col-xl-2 col-form-label">{{
           'quote.edit.unsubmitted.name.label' | translate
         }}</label>
         <div class="col-8 col-md-9 col-xl-10">
@@ -28,7 +26,7 @@
             <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
               {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
             </p>
-            <input type="text" formControlName="displayName" class="form-control" />
+            <input type="text" formControlName="displayName" class="form-control" id="quote-displayname" />
           </ish-in-place-edit>
         </div>
       </div>

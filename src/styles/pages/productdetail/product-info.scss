@@ -13,7 +13,7 @@ a.product-title {
   font-size: $font-size-corporate;
   color: $text-color-quaternary;
 
-  label {
+  .product-id-label {
     padding-right: divide($space-default, 3);
   }
 }
@@ -63,12 +63,6 @@ a.product-title {
       padding-bottom: 0;
       text-align: left;
       text-transform: uppercase;
-    }
-
-    &.read-only {
-      label {
-        padding-right: divide($space-default, 3);
-      }
     }
 
     .form-group {
