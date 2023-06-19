@@ -1,5 +1,10 @@
 <ng-container *ngIf="isDesignviewMode && type; else cmsOutlet">
   <div class="designview-wrapper" [ngClass]="type">
+    <!-- <ng-container *ngIf="type === 'pagelet'">
+      <ng-container *ngIf="pagelet$ | async as pagelet">
+        {{ pagelet.displayName }}
+      </ng-container>
+    </ng-container> -->
     <div class="designview-wrapper-actions">
       <!-- pagelet -->
       <ng-container *ngIf="type === 'pagelet'">
