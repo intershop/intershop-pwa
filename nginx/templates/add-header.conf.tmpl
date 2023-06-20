@@ -1,0 +1,7 @@
+{{ $headers := (datasource "additionalHeaders").headers -}}
+
+{{- range $headers }}
+  {{- range $key, $val := (.) }}
+    add_header {{ $key }} "{{ $val }}";
+  {{- end}}
+{{- end }}

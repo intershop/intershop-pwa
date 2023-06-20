@@ -29,4 +29,14 @@ then
   fi
 fi
 
-/gomplate -d "domains=$MULTI_CHANNEL_SOURCE" -d "overrideIdentityProviders=$OVERRIDE_IDENTITY_PROVIDERS_SOURCE" -d "cachingIgnoreParams=$CACHING_IGNORE_PARAMS_SOURCE" -d 'ipwhitelist=env:///BASIC_AUTH_IP_WHITELIST?type=application/yaml' --input-dir="/etc/nginx/templates" --output-map='/etc/nginx/conf.d/{{ .in | strings.ReplaceAll ".conf.tmpl" ".conf" }}'
+if [ -z "$ADDITIONAL_HEADERS_SOURCE" ]
+then
+  if [ -z "$ADDITIONAL_HEADERS" ]
+  then
+    ADDITIONAL_HEADERS_SOURCE="./additional-headers.yaml"
+  else
+    ADDITIONAL_HEADERS_SOURCE="env:///ADDITIONAL_HEADERS?type=application/yaml"
+  fi
+fi
+
+/gomplate -d "domains=$MULTI_CHANNEL_SOURCE" -d "overrideIdentityProviders=$OVERRIDE_IDENTITY_PROVIDERS_SOURCE" -d "cachingIgnoreParams=$CACHING_IGNORE_PARAMS_SOURCE" -d "additionalHeaders=$ADDITIONAL_HEADERS_SOURCE" -d 'ipwhitelist=env:///BASIC_AUTH_IP_WHITELIST?type=application/yaml' --input-dir="/etc/nginx/templates" --output-map='/etc/nginx/conf.d/{{ .in | strings.ReplaceAll ".conf.tmpl" ".conf" }}'

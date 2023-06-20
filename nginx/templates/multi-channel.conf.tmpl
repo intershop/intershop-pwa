@@ -161,6 +161,7 @@ server {
   {{ if (has $mapping "channel") }}
     location / {
         {{- tmpl.Exec "LOCATION_TEMPLATE" $mapping }}
+        include /etc/nginx/conf.d/add-header.conf;
     }
     location ^~ /sitemap_ {
         {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $mapping }}
@@ -169,6 +170,7 @@ server {
     {{ range $mapping }}
     location {{ .baseHref }} {
         {{- tmpl.Exec "LOCATION_TEMPLATE" . }}
+        include /etc/nginx/conf.d/add-header.conf;
     }
     location ^~ {{ .baseHref }}{{if not ( .baseHref | strings.HasSuffix "/")}}/{{end}}sitemap_ {
         {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" . }}

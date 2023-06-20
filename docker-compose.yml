@@ -109,6 +109,9 @@ services:
           - baseHref: /b2c
             channel: default
             theme: b2c
+      # ADDITIONAL_HEADERS: |
+      #   headers:
+      #     - X-Frame-Options: 'SAMEORIGIN'
 
     # Logging to an External Device (see logging.md)
     # volumes:
