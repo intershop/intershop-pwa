@@ -1,5 +1,6 @@
 import { ofType } from '@ngrx/effects';
 import { Action, ActionCreator } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 import {
   MonoTypeOperatorFunction,
   NEVER,
@@ -64,6 +65,17 @@ export function whenTruthy<T>(): MonoTypeOperatorFunction<T> {
 
 export function whenFalsy<T>(): MonoTypeOperatorFunction<T> {
   return (source$: Observable<T>) => source$.pipe(filter(x => !x));
+}
+
+/**
+ * Stream will fire only emissions when the current value T of the source$ stream provides the value V for property T[K]
+ */
+export function whenPropertyHasValue<T, K extends keyof T, V>(property: K, value: V) {
+  return (source$: Observable<T>) =>
+    source$.pipe(
+      whenTruthy(),
+      filter(x => !!x[property] && isEqual(x[property], value))
+    );
 }
 
 /**

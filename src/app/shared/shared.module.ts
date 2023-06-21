@@ -20,6 +20,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
+import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
@@ -304,7 +305,8 @@ const exportedComponents = [
   exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {
-  constructor(moduleLoader: ModuleLoaderService, injector: Injector) {
+  constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {
     moduleLoader.init(injector);
+    featureEventNotifier.setupAvailableResultListener(injector);
   }
 }

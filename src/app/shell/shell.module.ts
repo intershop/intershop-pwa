@@ -10,6 +10,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
+import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
@@ -82,7 +83,8 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
   exports: [...exportedComponents],
 })
 export class ShellModule {
-  constructor(moduleLoader: ModuleLoaderService, injector: Injector) {
+  constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {
     moduleLoader.init(injector);
+    featureEventNotifier.setupAvailableResultListener(injector);
   }
 }

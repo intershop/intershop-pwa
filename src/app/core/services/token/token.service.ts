@@ -9,9 +9,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { InstanceCreators } from 'ish-core/utils/instance-creators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class TokenService {
   private oAuthService: OAuthService;
   private serviceConfigured$ = new BehaviorSubject<boolean>(false);
