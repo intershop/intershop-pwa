@@ -52,9 +52,9 @@ kb_sync_latest_only
 
 - [Concept - Progressive Web App](./concepts/progressive-web-app.md)
 - [Guide - Customizations](./guides/customizations.md)
-  - [Guide - Multiple Themes](./guides/multiple-themes.md)
-- [Guide - Cookie Consent](./guides/cookie-consent.md)
+- [Guide - Themes](./guides/themes.md)
 - [Guide - Migration](./guides/migrations.md)
+- [Guide - Cookie Consent](./guides/cookie-consent.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
 - [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
 
@@ -80,8 +80,9 @@ kb_sync_latest_only
 
 ### Third-party Integrations
 
-- [Guide - Google Tag Manager](./guides/google-tag-manager.md)
+- [Guide - Tracking with Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
 - [Guide - Extended Product Configurations with Tacton](./guides/tacton-product-configuration.md)
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)
 - [Guide - Store Locator with Google Maps](./guides/store-locator.md)
+- [Guide - Address Check with Address Doctor](./guides/address-doctor.md)

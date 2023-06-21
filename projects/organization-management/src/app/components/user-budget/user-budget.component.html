@@ -25,25 +25,21 @@
           [ngClass]="{ 'bg-danger': usedBudgetPercentage * 100 > 90 }"
           [ngStyle]="{ width: usedBudgetPercentage | percent }"
           role="progressbar"
+          aria-label="Spent budget"
+          [attr.aria-valuetext]="usedBudgetPercentage | percent"
         >
           <span class="progress-display">{{ usedBudgetPercentage | percent }}</span>
           <ng-template #BudgetPopover>
             <div class="row">
-              <div class="col-md-6">
-                <label>{{ 'account.budget.label' | translate : { '0': budget.budgetPeriod } }}:</label>
-              </div>
+              <div class="col-md-6 mb-2">{{ 'account.budget.label' | translate : { '0': budget.budgetPeriod } }}:</div>
               <div class="col-md-6 text-right">{{ budget.budget | ishPrice }}</div>
             </div>
             <div class="row">
-              <div class="col-md-6">
-                <label>{{ 'account.budget.already_spent.label' | translate }}:</label>
-              </div>
+              <div class="col-md-6 mb-2">{{ 'account.budget.already_spent.label' | translate }}:</div>
               <div class="col-md-6 text-right">{{ usedBudget | ishPrice }} ({{ usedBudgetPercentage | percent }})</div>
             </div>
             <div class="row">
-              <div class="col-md-6">
-                <label>{{ 'account.budget.left.label' | translate }}:</label>
-              </div>
+              <div class="col-md-6 mb-2">{{ 'account.budget.left.label' | translate }}:</div>
               <div class="col-md-6 text-right">
                 {{ budget.remainingBudget | ishPrice }} ({{ remainingBudgetPercentage | percent }})
               </div>

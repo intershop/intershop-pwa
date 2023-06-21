@@ -123,6 +123,8 @@ export class RegistrationFormConfigurationService {
       lastName: formValue.lastName,
       ...formValue.address,
       phoneHome: formValue.phoneHome,
+      companyName1: formValue.companyName1,
+      companyName2: formValue.companyName2,
     };
 
     if (registrationConfig.sso && registrationConfig.userId) {

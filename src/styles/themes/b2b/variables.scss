@@ -19,9 +19,6 @@ $logo-mobile-height: 41px;
 // General spaces
 $space-default: 15px;
 
-// General adjustment variables
-$default-color-adjust: 10%;
-
 //
 // FONTS
 $font-family-regular: 'robotoregular', 'Helvetica', 'Arial', sans-serif;
@@ -38,6 +35,9 @@ $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1r
 
 $CORPORATE-PRIMARY: #688dc3; // BLUE
 $CORPORATE-SECONDARY: darken($CORPORATE-PRIMARY, 10%);
+$CORPORATE-LIGHT: lighten($CORPORATE-PRIMARY, 10%);
+$CORPORATE-DARK: darken($CORPORATE-PRIMARY, 20%);
+$CORPORATE-SHADOW: #7f9ecc80; // with alpha transparency
 
 //
 //TEXT COLORS
@@ -61,6 +61,7 @@ $color-corporate: $CORPORATE-PRIMARY;
 $color-primary: #222;
 $color-secondary: #2c2d2e;
 $color-tertiary: #eee;
+$color-quaternary: #d5d5d5;
 
 $color-dark: #000;
 $color-inverse: #fff;
@@ -91,6 +92,7 @@ $border-width-default: 1px;
 // primary buttons
 $button-primary-bg: $CORPORATE-PRIMARY;
 $button-primary-border: $CORPORATE-SECONDARY;
+$button-focus-box-shadow: $CORPORATE-SHADOW;
 
 // default buttons
 $button-default-color: $CORPORATE-PRIMARY;
@@ -158,11 +160,6 @@ $toast-info-color: rgba(12, 84, 96, 0.999999);
 // Color system
 //
 
-// @gray-darker:            lighten(#000, 13.5%); // #222
-// @gray-dark:              lighten(#000, 20%);   // #333
-// @gray:                   lighten(#000, 33.5%); // #555
-// @gray-light:             lighten(#000, 60%);   // #999
-// @gray-lighter:           lighten(#000, 93.5%); // #eee
 $white: #fff;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
@@ -194,8 +191,8 @@ $body-color: $color-primary;
 //
 // Style anchor elements.
 
-$link-color: $primary;
-$link-hover-color: darken($link-color, 10%);
+$link-color: $CORPORATE-PRIMARY;
+$link-hover-color: $CORPORATE-SECONDARY;
 
 // Components
 //

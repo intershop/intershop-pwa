@@ -13,6 +13,7 @@ import { HybridEffects, SSR_HYBRID_STATE } from './hybrid.effects';
 })
 export class HybridStoreModule {
   constructor(router: Router, transferState: TransferState) {
+    // enable the Hybrid Approach handling for the browser side if Hybrid Approach is configured
     if (!SSR && transferState.get(SSR_HYBRID_STATE, false)) {
       addGlobalGuard(router, hybridRedirectGuard);
     }

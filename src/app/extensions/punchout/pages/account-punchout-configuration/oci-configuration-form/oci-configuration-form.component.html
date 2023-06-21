@@ -1,0 +1,70 @@
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<div class="container">
+  <ng-container *ngIf="configItems$ | async">
+    <div class="row list-header d-sm-flex">
+      <div class="col-md-3 list-header-item no-seperator">
+        {{ 'account.punchout.configuration.form.heading.attribute' | translate }}
+      </div>
+      <div class="col-md-3 list-header-item no-seperator">
+        {{ 'account.punchout.configuration.form.heading.transformed-attribute' | translate }}
+        <ng-template #OciConfigurationPlaceholder>
+          <ng-container *ngIf="availablePlaceholders$ | async as placeholders">
+            <div *ngFor="let placeholder of placeholders">{{ '{' + placeholder + '}' }}</div>
+          </ng-container>
+        </ng-template>
+        <a
+          class="header-note pl-2"
+          [ngbPopover]="OciConfigurationPlaceholder"
+          placement="bottom"
+          triggers="click"
+          [autoClose]="'outside'"
+          popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
+        >
+          <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+        </a>
+      </div>
+      <div class="col-md-3 list-header-item no-seperator">
+        {{ 'account.punchout.configuration.form.heading.mapping' | translate }}
+        <ng-template #OciConfigurationMapping>
+          <div
+            innerHTML="{{ 'account.punchout.configuration.form.tooltip.mapping.content' | translate }}"
+            class="list-position-outside"
+          ></div>
+        </ng-template>
+        <a
+          class="header-note pl-2"
+          [ngbPopover]="OciConfigurationMapping"
+          placement="bottom"
+          triggers="click"
+          [autoClose]="'outside'"
+          popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
+        >
+          <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+        </a>
+      </div>
+      <div class="col-md-3 list-header-item no-seperator">
+        {{ 'account.punchout.configuration.form.heading.format' | translate }}
+      </div>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="submitForm()" class="pt-1">
+      <div class="list-body">
+        <formly-form [model]="model$ | async" [fields]="fields$ | async" [form]="form" class="pt-1"></formly-form>
+      </div>
+      <div class="row justify-content-end">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="formDisabled"
+          data-testing-id="update-oci-configuration"
+        >
+          {{ 'account.update.button.label' | translate }}
+        </button>
+        <a [routerLink]="['/account/punchout', { format: 'oci' }]" class="btn btn-secondary">{{
+          'account.cancel.link' | translate
+        }}</a>
+      </div>
+    </form>
+  </ng-container>
+</div>
+<ish-loading *ngIf="loading$ | async"></ish-loading>

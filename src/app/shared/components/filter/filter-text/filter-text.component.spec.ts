@@ -38,7 +38,7 @@ describe('Filter Text Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
-      <ul class="filter-list">
+      <ul class="filter-list" id="filter-list_Brands">
         <li class="filter-item filter-layer0">
           <a
             class="filter-item-name"

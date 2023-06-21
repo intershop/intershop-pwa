@@ -4,7 +4,7 @@
     (keydown.enter)="toggle()"
     tabindex="0"
     [attr.aria-expanded]="!isCollapsed"
-    aria-controls="collapseFilter"
+    [attr.aria-controls]="'filter-list_' + title"
   >
     {{ title }}
     <fa-icon [icon]="['fas', isCollapsed ? 'angle-right' : 'angle-down']" class="float-right"></fa-icon>

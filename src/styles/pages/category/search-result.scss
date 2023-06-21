@@ -8,36 +8,14 @@
   padding: $space-default 0 $space-default 0;
 }
 
-.search-content-list {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.form-check.search-result-toggle {
-  margin: $space-default 0;
-
-  label {
-    padding-left: 0;
-  }
-}
-
 .no-search-result {
   padding: $space-default 0 $space-default 0;
   clear: both;
-
-  .result-count-message {
-    padding-left: $space-default;
-  }
 }
 
 .no-search-result-title {
   span {
     font-size: $font-size-lg;
-
-    &.result-count-message {
-      font-size: $font-size-corporate;
-    }
   }
 }
 

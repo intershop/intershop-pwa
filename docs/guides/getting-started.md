@@ -10,7 +10,7 @@ kb_sync_latest_only
 ## Quick Start
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
-Currently Node.js 18.15.0 LTS with the corresponding npm 9.5.0 is used for development.
+Currently Node.js 18.16.0 LTS with the corresponding npm 9.5.1 is used for development.
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install`.
 

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
@@ -6,6 +7,7 @@ import { filter, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
+import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
@@ -18,9 +20,12 @@ export class TrackingConfigEffects {
     private actions$: Actions,
     private featureToggleService: FeatureToggleService,
     private stateProperties: StatePropertiesService,
+    private domService: DomService,
+
     angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
     store: Store,
-    cookiesService: CookiesService
+    cookiesService: CookiesService,
+    @Inject(DOCUMENT) private document: Document
   ) {
     if (!SSR && cookiesService.cookieConsentFor('tracking')) {
       store
@@ -51,11 +56,10 @@ export class TrackingConfigEffects {
   private gtm(w: any, l: string, i: string) {
     w[l] = w[l] || [];
     w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-    const gtmScript = document.createElement('script');
+    const gtmScript = this.domService.createElement<HTMLScriptElement>('script', this.document.head);
     const dl = l !== 'dataLayer' ? `&l=${l}` : '';
-    gtmScript.async = true;
-    gtmScript.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
-    const f = document.getElementsByTagName('script')[0];
-    f.parentNode.insertBefore(gtmScript, f);
+
+    this.domService.setProperty(gtmScript, 'async', true);
+    this.domService.setProperty(gtmScript, 'src', `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`);
   }
 }

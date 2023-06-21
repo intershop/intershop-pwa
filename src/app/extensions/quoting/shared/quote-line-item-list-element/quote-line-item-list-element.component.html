@@ -43,8 +43,14 @@
     <!-- mobile quantity -->
     <div class="quantity d-xl-none">
       <div class="form-group">
-        <label class="col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
-        <ish-product-quantity *ngIf="editable$ | async; else readonlyQuantity"></ish-product-quantity>
+        <ish-product-quantity-label
+          translationKey="shopping_cart.pli.qty.label"
+          [for]="'quote-quantity_' + lineItem.id"
+        ></ish-product-quantity-label>
+        <ish-product-quantity
+          *ngIf="editable$ | async; else readonlyQuantity"
+          [elementId]="'quote-quantity_' + lineItem.id"
+        ></ish-product-quantity>
         <ng-template #readonlyQuantity>
           {{ lineItem.quantity.value | number }}
         </ng-template>
@@ -57,7 +63,6 @@
     <div class="form-group w-100" [ngClass]="{ 'text-right': editable$ | async }">
       <ish-product-quantity *ngIf="editable$ | async; else readonlyQuantity"></ish-product-quantity>
       <ng-template #readonlyQuantity>
-        <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
         {{ lineItem.quantity.value | number }}
       </ng-template>
     </div>

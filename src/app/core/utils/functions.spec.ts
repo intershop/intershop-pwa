@@ -1,4 +1,4 @@
-import { arraySlices, isArrayEqual, mergeDeep, omit, parseTimeToSeconds } from './functions';
+import { arraySlices, decamelizeString, isArrayEqual, mergeDeep, omit, parseTimeToSeconds } from './functions';
 
 describe('Functions', () => {
   describe('arraySlices', () => {
@@ -226,6 +226,18 @@ describe('Functions', () => {
     it('should throw if value does not match format', () => {
       expect(() => parseTimeToSeconds('20x')).toThrowErrorMatchingInlineSnapshot(`"Cannot parse "20x" as time."`);
       expect(() => parseTimeToSeconds('asdf')).toThrowErrorMatchingInlineSnapshot(`"Cannot parse "asdf" as time."`);
+    });
+  });
+
+  describe('decamelizeString', () => {
+    it.each([
+      [undefined, undefined],
+      ['', ''],
+      ['A', 'A'],
+      ['A', 'a'],
+      ['Aaa Bbb', 'aaaBbb'],
+    ])(`should return '%s' when decamelize '%p'`, (result, str) => {
+      expect(decamelizeString(str)).toEqual(result);
     });
   });
 });

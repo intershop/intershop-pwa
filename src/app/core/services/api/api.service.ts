@@ -14,7 +14,7 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { catchError, concatMap, filter, first, map, take, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
@@ -25,6 +25,7 @@ import {
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
 import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
+import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
@@ -152,9 +153,15 @@ export class ApiService {
   private getLocale$(options: AvailableOptions): Observable<string> {
     return options?.sendLocale === undefined || options.sendLocale
       ? this.store.pipe(
-          select(getCurrentLocale),
+          select(isServerConfigurationLoaded),
           whenTruthy(),
-          map(l => `;loc=${l}`)
+          switchMap(() =>
+            this.store.pipe(
+              select(getCurrentLocale),
+              whenTruthy(),
+              map(l => `;loc=${l}`)
+            )
+          )
         )
       : of('');
   }
@@ -162,9 +169,15 @@ export class ApiService {
   private getCurrency$(options: AvailableOptions): Observable<string> {
     return options?.sendCurrency === undefined || options.sendCurrency
       ? this.store.pipe(
-          select(getCurrentCurrency),
+          select(isServerConfigurationLoaded),
           whenTruthy(),
-          map(l => `;cur=${l}`)
+          switchMap(() =>
+            this.store.pipe(
+              select(getCurrentCurrency),
+              whenTruthy(),
+              map(l => `;cur=${l}`)
+            )
+          )
         )
       : of('');
   }

@@ -19,6 +19,8 @@ describe('Filter Collapsible Component', () => {
     fixture = TestBed.createComponent(FilterCollapsibleComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    component.title = 'Price';
   });
 
   it('should be created', () => {
@@ -31,8 +33,8 @@ describe('Filter Collapsible Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <div class="filter-group">
-        <h3 tabindex="0" aria-controls="collapseFilter" aria-expanded="true">
-          <fa-icon class="float-right" ng-reflect-icon="fas,angle-down"></fa-icon>
+        <h3 tabindex="0" aria-expanded="true" aria-controls="filter-list_Price">
+          Price <fa-icon class="float-right" ng-reflect-icon="fas,angle-down"></fa-icon>
         </h3>
       </div>
     `);
@@ -43,8 +45,8 @@ describe('Filter Collapsible Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div class="filter-group collapsed">
-        <h3 tabindex="0" aria-controls="collapseFilter" aria-expanded="false">
-          <fa-icon class="float-right" ng-reflect-icon="fas,angle-right"></fa-icon>
+        <h3 tabindex="0" aria-expanded="false" aria-controls="filter-list_Price">
+          Price <fa-icon class="float-right" ng-reflect-icon="fas,angle-right"></fa-icon>
         </h3>
       </div>
     `);

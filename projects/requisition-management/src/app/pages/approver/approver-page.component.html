@@ -3,17 +3,17 @@
 <p>{{ 'account.requisitions.approvals.text' | translate }}</p>
 
 <ul ngbNav class="nav-tabs" [(activeId)]="status">
-  <li ngbNavItem="PENDING">
+  <li ngbNavItem="PENDING" role="presentation">
     <a ngbNavLink [routerLink]="['../approver', { status: 'PENDING' }]" data-testing-id="tab-link-pending">{{
       'account.requisitions.approvals.navtab.waiting' | translate
     }}</a>
   </li>
-  <li ngbNavItem="APPROVED">
+  <li ngbNavItem="APPROVED" role="presentation">
     <a ngbNavLink [routerLink]="['../approver', { status: 'APPROVED' }]" data-testing-id="tab-link-approved">{{
       'account.requisitions.approvals.navtab.approved' | translate
     }}</a>
   </li>
-  <li ngbNavItem="REJECTED">
+  <li ngbNavItem="REJECTED" role="presentation">
     <a ngbNavLink [routerLink]="['../approver', { status: 'REJECTED' }]" data-testing-id="tab-link-rejected">{{
       'account.requisitions.approvals.navtab.rejected' | translate
     }}</a>

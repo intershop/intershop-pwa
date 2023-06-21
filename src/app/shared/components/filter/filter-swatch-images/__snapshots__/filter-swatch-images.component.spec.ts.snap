@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Filter Swatch Images Component should be created 1`] = `
-<ul class="filter-list clearfix">
+<ul class="filter-list clearfix" id="filter-list_Color">
   <li class="filter-item filter-color">
     <a
       class="filter-swatch"

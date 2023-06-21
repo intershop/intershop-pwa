@@ -21,6 +21,10 @@
 }
 
 // Global Styles
+body {
+  color: $text-color-primary;
+}
+
 h1,
 .h1,
 h2,
@@ -76,6 +80,16 @@ a {
   }
 }
 
+.text {
+  &-primary {
+    color: $CORPORATE-PRIMARY !important;
+  }
+
+  &-secondary {
+    color: $CORPORATE-SECONDARY !important;
+  }
+}
+
 .link-separator {
   &::before {
     margin-right: 7.5px;
@@ -111,15 +125,6 @@ img {
   max-width: 100%;
   height: auto;
   vertical-align: middle;
-}
-
-.img-fluid {
-  width: 100%;
-}
-
-// General styles
-.show-inline {
-  display: inline;
 }
 
 //
@@ -233,7 +238,7 @@ img.marketing {
 
     &:hover {
       color: $text-color-inverse;
-      background: lighten($CORPORATE-PRIMARY, 5%);
+      background: $CORPORATE-SECONDARY;
     }
   }
 }
@@ -243,9 +248,22 @@ img.marketing {
   font-weight: normal;
 }
 
+.badge-primary {
+  background-color: #1db5b5;
+}
+
+.badge.border-primary {
+  border-color: #1db5b5 !important;
+}
+
 .alert {
   > p,
   > ul {
     margin-bottom: 0;
   }
+}
+
+.section {
+  margin-bottom: ($space-default * 2);
+  clear: both;
 }

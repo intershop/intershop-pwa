@@ -219,7 +219,7 @@
               "message": "use star imports only for aggregation of deeper lying imports"
             },
             {
-              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick|differenceBy|unionBy|mergeWith)$).*",
+              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick|differenceBy|unionBy|mergeWith|snakeCase|capitalize)$).*",
               "name": "lodash.*",
               "filePattern": "^.*/src/app/(?!.*\\.spec\\.ts$).*\\.ts$",
               "message": "importing this operator from lodash is forbidden"
@@ -361,6 +361,12 @@
               "name": "@typescript-eslint/experimental-utils",
               "filePattern": ".*eslint-rules/.*",
               "message": "Change to \"@typescript-eslint/utils\"."
+            },
+            {
+              "importNamePattern": "^DomService$",
+              "name": "ish-core/utils/dom/dom.service",
+              "filePattern": "^.*\\.(component|directive)\\.ts*$",
+              "message": "The \"DomService\" should only be used in injectable classes. Use the Angular \"Renderer2\" instead."
             }
           ]
         ],
@@ -694,8 +700,6 @@
         "jsdoc/check-values": "warn",
         "jsdoc/empty-tags": "warn",
         "jsdoc/implements-on-classes": "warn",
-        "jsdoc/newline-after-description": ["warn", "always"],
-        "jsdoc/no-undefined-types": "warn",
         "jsdoc/require-property-description": "warn",
         "jsdoc/require-property-name": "warn",
         "jsdoc/require-property-type": "warn",
@@ -910,6 +914,7 @@
       "rules": {
         "@angular-eslint/template/accessibility-alt-text": "error",
         "@angular-eslint/template/accessibility-elements-content": "error",
+        "@angular-eslint/template/accessibility-label-for": "error",
         "@angular-eslint/template/accessibility-valid-aria": "error",
         "@angular-eslint/template/click-events-have-key-events": "error",
         "@angular-eslint/template/mouse-events-have-key-events": "error",

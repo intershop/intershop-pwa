@@ -21,6 +21,9 @@
         class="dropdown-toggle"
         [ngClass]="{ 'd-none': view === 'full' }"
         (click)="toggleOpen(subcategory.uniqueId)"
+        [attr.aria-label]="
+          isOpened(subcategory.uniqueId) ? 'collapse ' + subcategory.name : 'expand ' + subcategory.name
+        "
       >
         <fa-icon *ngIf="isOpened(subcategory.uniqueId); else closed" [icon]="['fas', 'minus']"></fa-icon>
         <ng-template #closed> <fa-icon [icon]="['fas', 'plus']"></fa-icon> </ng-template>

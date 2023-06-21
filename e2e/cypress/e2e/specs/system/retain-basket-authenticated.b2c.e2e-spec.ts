@@ -10,8 +10,8 @@ import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
   user: {
-    login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
+    login: `test${new Date().getTime()}@testcity.de`,
   },
   catalog: 'Home-Entertainment',
   category: {

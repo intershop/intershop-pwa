@@ -1,9 +1,8 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { pick } from 'lodash-es';
-import { Observable, combineLatest, defer, forkJoin, from, of, throwError } from 'rxjs';
+import { Observable, combineLatest, defer, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -20,11 +19,11 @@ import {
 } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
-import { FetchTokenOptions, GrantType } from 'ish-core/models/token/token.interface';
 import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -58,7 +57,7 @@ export class UserService {
     private apiTokenService: ApiTokenService,
     private appFacade: AppFacade,
     private store: Store,
-    private oauthService: OAuthService
+    private tokenService: TokenService
   ) {}
 
   /**
@@ -72,9 +71,9 @@ export class UserService {
   signInUser(loginCredentials: Credentials): Observable<CustomerLoginType> {
     return defer(() =>
       loginCredentials
-        ? this.fetchToken('password', { username: loginCredentials.login, password: loginCredentials.password }).pipe(
-            switchMap(() => this.fetchCustomer())
-          )
+        ? this.tokenService
+            .fetchToken('password', { username: loginCredentials.login, password: loginCredentials.password })
+            .pipe(switchMap(() => this.fetchCustomer()))
         : this.fetchCustomer()
     );
   }
@@ -89,7 +88,9 @@ export class UserService {
    */
   signInUserByToken(token?: string): Observable<CustomerLoginType> {
     if (token) {
-      return this.fetchToken('refresh_token', { refresh_token: token }).pipe(switchMap(() => this.fetchCustomer()));
+      return this.tokenService
+        .fetchToken('refresh_token', { refresh_token: token })
+        .pipe(switchMap(() => this.fetchCustomer()));
     } else {
       return this.fetchCustomer({ skipApiErrorHandling: true });
     }
@@ -107,26 +108,6 @@ export class UserService {
         ])
       ),
       map(([data, pgid]) => ({ ...CustomerMapper.mapLoginData(data), pgid }))
-    );
-  }
-
-  /**
-   * Fetches a new user token. Based on the grantType the user has to apply certain token options to the method.
-   *
-   * @param grantType   The given type ('anonymous', 'password', 'client_credentials', 'refresh_token') is used to specify, how the user token should be fetched.
-   */
-  fetchToken<T extends 'anonymous'>(grantType: T): Observable<TokenResponse>;
-  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(grantType: T, options: R): Observable<TokenResponse>;
-  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(
-    grantType: T,
-    options?: R
-  ): Observable<TokenResponse> {
-    return from(
-      this.oauthService.fetchTokenUsingGrant(
-        grantType,
-        options ?? {},
-        new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' })
-      )
     );
   }
 

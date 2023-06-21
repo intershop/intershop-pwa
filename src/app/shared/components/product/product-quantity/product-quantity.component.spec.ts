@@ -31,7 +31,7 @@ describe('Product Quantity Component', () => {
     fixture = TestBed.createComponent(ProductQuantityComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.id = 'ASDF';
+    component.elementId = 'ASDF';
   });
 
   it('should be created', () => {
@@ -60,6 +60,7 @@ describe('Product Quantity Component', () => {
         data-testing-id="quantity"
         type="number"
         pattern="[0-9]*"
+        aria-label="quantity"
         class="form-control text-center"
         id="ASDF"
         min="2"

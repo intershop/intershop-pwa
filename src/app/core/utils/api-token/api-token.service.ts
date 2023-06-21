@@ -9,6 +9,7 @@ import {
   ReplaySubject,
   Subject,
   combineLatest,
+  iif,
   interval,
   of,
   race,
@@ -28,6 +29,7 @@ import {
   startWith,
   switchMap,
   take,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -185,17 +187,13 @@ export class ApiTokenService {
     return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
   }
 
-  restore$(types: ApiTokenCookieType[] = ['user', 'order'], fetchAnonymousToken = true): Observable<boolean> {
+  restore$(types: ApiTokenCookieType[] = ['user', 'order']): Observable<boolean> {
     if (SSR) {
       return of(true);
     }
     return this.initialCookie$.pipe(
       first(),
-      withLatestFrom(this.apiToken$),
-      switchMap(([cookie, apiToken]) => {
-        if (!apiToken && fetchAnonymousToken) {
-          this.store.dispatch(fetchAnonymousUserToken());
-        }
+      switchMap(cookie => {
         if (types.includes(cookie?.type)) {
           switch (cookie?.type) {
             case 'user': {
@@ -288,32 +286,57 @@ export class ApiTokenService {
     );
   }
 
-  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return this.appendAuthentication(req).pipe(
-      concatMap(request =>
-        next.handle(request).pipe(
-          map(event => {
-            // remove id_token from /token response
-            // TODO: remove http request body adaptions if correct id_tokens are returned
-            if (event instanceof HttpResponse && event.url.endsWith('token') && request.body instanceof HttpParams) {
-              const { id_token: _, ...body } = event.body;
-              return event.clone({
-                body,
-              });
-            }
-            return event;
-          }),
-          catchError(err => {
-            if (this.isAuthTokenError(err)) {
-              this.invalidateApiToken();
+  private anonymousUserTokenMechanism(): Observable<unknown> {
+    return this.apiToken$.pipe(
+      switchMap(
+        apiToken =>
+          iif(() => !apiToken, of(false).pipe(tap(() => this.store.dispatch(fetchAnonymousUserToken()))), of(true)) // fetch anonymous user token only when api token is not available
+      ),
+      whenTruthy(),
+      first()
+    );
+  }
 
-              // retry request without auth token
-              const retryRequest = request.clone({ headers: request.headers.delete(ApiService.TOKEN_HEADER_KEY) });
-              // timer introduced for testability
-              return timer(500).pipe(switchMap(() => next.handle(retryRequest)));
-            }
-            return throwError(() => err);
-          })
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    return iif(
+      () => req.url.endsWith('/baskets') && req.method === 'POST', // only on basket creation an anonymous user token can be created
+      this.anonymousUserTokenMechanism(),
+      of(true)
+    ).pipe(
+      switchMap(() =>
+        this.appendAuthentication(req).pipe(
+          concatMap(request =>
+            next.handle(request).pipe(
+              map(event => {
+                // remove id_token from /token response
+                // TODO: remove http request body adaptions if correct id_tokens are returned
+                if (
+                  event instanceof HttpResponse &&
+                  event.url.endsWith('token') &&
+                  request.body instanceof HttpParams
+                ) {
+                  const { id_token: _, ...body } = event.body;
+                  return event.clone({
+                    body,
+                  });
+                }
+                return event;
+              }),
+              catchError(err => {
+                if (this.isAuthTokenError(err)) {
+                  this.invalidateApiToken();
+
+                  // retry request without auth token
+                  const retryRequest = request.clone({
+                    headers: request.headers.delete(ApiService.TOKEN_HEADER_KEY),
+                  });
+                  // timer introduced for testability
+                  return timer(500).pipe(switchMap(() => next.handle(retryRequest)));
+                }
+                return throwError(() => err);
+              })
+            )
+          )
         )
       )
     );

@@ -10,7 +10,7 @@ import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
+import { getBasketIdOrCurrent, getCurrentBasket } from 'ish-core/store/customer/basket';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -59,7 +59,10 @@ describe('Basket Service', () => {
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: OrderService, useFactory: () => instance(orderService) },
         provideMockStore({
-          selectors: [{ selector: getBasketIdOrCurrent, value: 'current' }],
+          selectors: [
+            { selector: getBasketIdOrCurrent, value: 'current' },
+            { selector: getCurrentBasket, value: { id: '123' } },
+          ],
         }),
       ],
     });
@@ -102,12 +105,6 @@ describe('Basket Service', () => {
       expect(data).toHaveProperty('id', 'test');
       done();
     });
-  });
-
-  it('should not throw errors when getting a basket by token is unsuccessful', done => {
-    when(apiService.get(anything(), anything())).thenReturn(throwError(() => new Error()));
-
-    basketService.getBasketByToken('dummy').subscribe({ next: fail, error: fail, complete: done });
   });
 
   it("should create a basket data when 'createBasket' is called", done => {

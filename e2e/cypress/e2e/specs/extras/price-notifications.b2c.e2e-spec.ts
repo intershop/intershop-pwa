@@ -11,8 +11,8 @@ import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 describe('Product Notification MyAccount Functionality', () => {
   const _ = {
     user: {
-      login: `test${new Date().getTime()}@testcity.de`,
       ...sensibleDefaults,
+      login: `test${new Date().getTime()}@testcity.de`,
     },
     category: 'Home-Entertainment',
     subcategory: 'Home-Entertainment.SmartHome',

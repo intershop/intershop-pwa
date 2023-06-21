@@ -12,6 +12,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
+import { ProductQuantityLabelComponent } from 'ish-shared/components/product/product-quantity-label/product-quantity-label.component';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 
@@ -34,6 +35,7 @@ describe('Line Item Edit Dialog Component', () => {
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductQuantityComponent),
+        MockComponent(ProductQuantityLabelComponent),
         MockComponent(ProductVariationSelectComponent),
         MockPipe(PricePipe),
       ],

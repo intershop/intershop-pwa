@@ -20,8 +20,7 @@ The following identity providers are supported: The default [ICM server](../guid
 There is a lot of functionality related to authentication, e.g., logging a user in and out, registering a new user, keeping the user identified even if the user opens further browser tabs, etc.
 
 The PWA uses the library [angular-oauth2-oidc](https://github.com/manfredsteyer/angular-oauth2-oidc#readme) to support the implementation of these functionalities.
-It can be configured to provide access to identity providers.
-You can find the initialization of this library in the [oauth-configuration-service.ts](../../src/app/shared/../core/utils/oauth-configuration/oauth-configuration.service.ts).
+It is used to fetching data from the the [icm token endpoint service](../../src/app/core/services/token/token.service.ts) and can be configured to provide access to other identity providers.
 
 ## Implementation and Configuration of Identity Providers
 
@@ -31,30 +30,35 @@ To add or change the functionality of an identity provider, the following steps 
 
    In the following code you see a typical implementation of the init method of an IdP class.
 
-   Note that all authentication-related functionality must not be executed before the oAuth service has been configured.
-
    ```typescript
    @Injectable({ providedIn: 'root' })
    export class ExampleIdentityProvider implements IdentityProvider {
-     private configured$ = new BehaviorSubject<boolean>(false);
-
-     constructor(private oAuthService: OAuthService, private configService: OAuthConfigurationService) {}
+     constructor(
+       private router: Router,
+       private apiTokenService: ApiTokenService,
+       private accountFacade: AccountFacade
+     ) {}
 
      init() {
-       this.configService.config$.subscribe(config => {
-         this.oAuthService.configure(config);
-         this.configured.next(true);
-       });
+       this.apiTokenService.restore$().subscribe(noop);
 
-       this.configured
-         .pipe(
-           whenTruthy(),
-           switchMap(() => from(this.oAuthService.fetchTokenUsingGrant('anonymous')))
-         )
-         .subscribe();
+       this.apiTokenService.cookieVanishes$.subscribe(([type]) => {
+         this.accountFacade.logoutUser({ revokeApiToken: false });
+         if (type === 'user') {
+           this.router.navigate(['/login'], {
+             queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
+           });
+         }
+       });
      }
    }
    ```
+
+   > **Note**
+   >
+   > If a identity provider is using the OAuthService for authentication, then the identity provider have to inject the OAuthService with a new instance.
+   > Otherwise difficult side effects with the [TokenService](../../src/app/core/services/token/token.service.ts) will occur.
+   > Please checkout the [Auth0IdentityProvider](../../src/app/core/identity-provider/auth0.identity-provider.ts) for an example.
 
 2. Register the `<idp>.identity-provider.ts` in the [`IdentityProviderModule`](../../src/app/core/identity-provider.module.ts). The `APP_INITIALIZER` injection token is used to configure and initialize the identity provider before app initialization.
 
@@ -63,8 +67,8 @@ To add or change the functionality of an identity provider, the following steps 
 ## PWA Initialization
 
 A PWA user has to be identified by the ICM server by a unique authentication token, even if it is an anonymous user.
-Once a user opens the PWA for the first time, an authentication token is requested by the [ICM Token REST endpoint](https://support.intershop.com/kb/index.php?c=Display&q1=U29770&q2=Text).
-This happens in the [`init()`](../../src/app/core/identity-provider/icm.identity-provider.ts) method of the active identity provider.
+Once a unknown user create a basket in the PWA, an anonymous authentication token is requested by the [ICM Token REST endpoint](https://support.intershop.com/kb/index.php?c=Display&q1=U29770&q2=Text).
+This happens in the [`apiToken http interceptor`](../../src/app/core/utils/api-token/api-token.service.ts) method.
 Subsequently, this token will be saved as `apiToken` cookie and added to all REST requests in the request header, e.g.:
 
 ```typescript

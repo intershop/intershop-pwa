@@ -11,8 +11,8 @@ import { HomePage } from '../../pages/home.page';
 
 const _ = {
   user: {
-    login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
+    login: `test${new Date().getTime()}@testcity.de`,
   },
   product1: {
     sku: '201807171',

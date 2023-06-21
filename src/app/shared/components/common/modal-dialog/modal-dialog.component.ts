@@ -1,7 +1,9 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnDestroy,
   Output,
@@ -65,7 +67,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private ngbModal: NgbModal) {}
+  constructor(private ngbModal: NgbModal, @Inject(DOCUMENT) private document: Document) {}
 
   /**
    * Configure and show modal dialog.
@@ -104,7 +106,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
    */
   scrollToAnchor(anchor: string) {
     if (this.options.scrollable) {
-      const element = document.getElementById(anchor);
+      const element = this.document.getElementById(anchor);
       if (element) {
         setTimeout(() => {
           element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });

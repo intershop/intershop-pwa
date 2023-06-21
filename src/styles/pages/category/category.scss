@@ -24,15 +24,3 @@
     display: block;
   }
 }
-
-.secondary-actions {
-  button {
-    &:first-child {
-      margin-right: ($space-default * 3);
-    }
-  }
-}
-
-.add-new-wishlist {
-  display: inline-block;
-}

@@ -12,7 +12,7 @@ kb_sync_latest_only
 To **simply** build the Intershop PWA in server-side rendering mode, you can use the _package.json_ script `npm run build`, which builds the Intershop PWA with the `production` configuration of the `angular.json` with the default theme.
 Afterwards you can start the application with `npm run serve` (or do both by using `npm run start`).
 
-To build a specific theme (see [Guide - Multiple Themes][multiple-themes]), you can build (and run) via `npm` using the `--configuration=` argument.
+To build a specific theme (see [Guide - Themes][themes]), you can build (and run) via `npm` using the `--configuration=` argument.
 All `configuration` options must be in the format `--configuration=<theme>,(production|development)`.
 
 ## Building Multiple Themes
@@ -66,8 +66,9 @@ Make sure to use them as written in the table below.
 |                     | GMA_KEY               | string               | API key for Google Maps                                                                          |
 |                     | SENTRY_DSN            | string               | Sentry DSN URL for using Sentry Error Monitor                                                    |
 |                     | PROMETHEUS            | switch               | Exposes Prometheus metrics                                                                       |
-|                     | IDENTITY_PROVIDER     | string               | ID of the default Identity Provider if other than `ICM`                                          |
-|                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of additional Identity Providers besides the default `ICM`                         |
+|                     | IDENTITY_PROVIDER     | string               | ID of the default identity provider if other than `ICM`                                          |
+|                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of additional identity providers besides the default `ICM`                         |
+|                     | ADDRESS_DOCTOR        | JSON                 | Configuration of address doctor with login, password, maxResultCount and url                     |
 
 ## Development
 
@@ -84,7 +85,7 @@ If the SSR development environment needs to run with `https`, this can be achiev
 npm run start:ssr-dev -- --ssl
 ```
 
-To provide specific certificates that can be valid in your local development environment this is an example command how to achieve this.
+The following is an example command for how to provide specific certificates that can be valid in your local development environment:
 
 ```
 ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
@@ -115,15 +116,16 @@ This feature can also be used to benchmark the SSR render performance locally by
 - [Concept - Deploy URL][concept-deploy-url]
 - [Concept - Hybrid Approach][concept-hybrid]
 - [Concept - Logging](../concepts/logging.md)
-- [Guide - Multiple Themes][multiple-themes]
+- [Guide - Themes][themes]
 - [Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
 - [Guide - Google Tag Manager](./google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
 - [PM2][pm2]
 - [YouTube - Server Side Rendering and Pre Rendering with Angular Universal](https://www.youtube.com/watch?v=-VDOAjzLcvQ)
 - [Google Developers - Rendering on the Web](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
+- [Angular Universal: a Complete Practical Guide](https://blog.angular-university.io/angular-universal/)
 
 [concept-hybrid]: ../concepts/hybrid-approach.md
 [concept-deploy-url]: ../concepts/deploy-url.md
-[multiple-themes]: ./multiple-themes.md
+[themes]: ./themes.md
 [pm2]: https://pm2.keymetrics.io

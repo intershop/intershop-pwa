@@ -38,7 +38,8 @@ export interface ProductData {
   productMasterSKU?: string;
   minOrderQuantity: number;
   maxOrderQuantity?: number;
-  stepOrderQuantity?: number;
+  stepOrderQuantity?: number; // property name used by the product detail response (will be deprecated)
+  stepQuantity?: number; // property name used in product list response (will become the consistent name)
   packingUnit: string;
 
   variationAttributeValuesExtended?: VariationAttributeData[];

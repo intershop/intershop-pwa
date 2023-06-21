@@ -30,38 +30,6 @@
     margin-top: divide($space-default, 3);
     margin-bottom: ($space-default);
   }
-
-  .product-rating {
-    float: right;
-
-    .rating-display {
-      margin-left: $space-default;
-    }
-  }
-}
-
-.product-photo {
-  float: left;
-}
-
-.product-alt-images {
-  float: left;
-
-  .product-alt-images-list {
-    float: left;
-    padding-left: 0;
-    list-style: none;
-
-    .product-alt-images-list-item {
-      padding: $space-default;
-      margin-bottom: $space-default;
-      border: 1px solid $border-color-lighter;
-    }
-  }
-}
-
-.tab-pane {
-  padding-top: $space-default;
 }
 
 .panel-group {
@@ -74,7 +42,7 @@
       color: $text-color-quaternary;
 
       &:hover {
-        color: darken($text-color-quaternary, 10%);
+        color: $text-color-tertiary;
       }
     }
 
@@ -143,5 +111,25 @@
     dd {
       margin-bottom: $space-default * 0.5;
     }
+  }
+}
+
+//
+// PRODUCT REVIEWS
+
+.review-item {
+  margin-bottom: $space-default * 2;
+
+  .review-item-created {
+    color: $text-color-quaternary;
+  }
+
+  .review-item-header-title {
+    font-size: $font-size-lg;
+    line-height: $line-height-base * 1.5;
+  }
+
+  + .pagination {
+    margin-top: 0;
   }
 }

@@ -4,6 +4,7 @@ import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
 
+import { AddressDoctorConfig } from '../app/extensions/address-doctor/models/address-doctor/address-doctor-config.model';
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
@@ -29,6 +30,7 @@ export interface Environment {
     | 'productNotifications'
     | 'storeLocator'
     | 'contactUs'
+    | 'extraConfiguration'
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'
@@ -41,6 +43,7 @@ export interface Environment {
     | 'guestCheckout'
     | 'wishlists'
     /* Third-party Integrations */
+    | 'addressDoctor'
     | 'sentry'
     | 'tracking'
     | 'tacton'
@@ -60,6 +63,9 @@ export interface Environment {
 
   // tacton integration
   tacton?: TactonConfig;
+
+  // address doctor integration
+  addressDoctor?: AddressDoctorConfig;
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
 

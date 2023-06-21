@@ -1,4 +1,3 @@
-import { DOCUMENT } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, isDevMode } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
@@ -12,6 +11,7 @@ import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
+import { DomService } from 'ish-core/utils/dom/dom.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { distinctCompareWith, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
@@ -28,12 +28,13 @@ import { getCurrentLocale, getDeviceType } from './configuration.selectors';
 export class ConfigurationEffects {
   constructor(
     private actions$: Actions,
+    private domService: DomService,
     private store: Store,
     private stateProperties: StatePropertiesService,
     private transferState: TransferState,
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: InjectSingle<typeof MEDIUM_BREAKPOINT_WIDTH>,
     @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>,
-    @Inject(DOCUMENT) document: Document,
+
     translateService: TranslateService,
     appRef: ApplicationRef,
     private localizationsService: LocalizationsService
@@ -53,7 +54,7 @@ export class ConfigurationEffects {
       .subscribe(lang => {
         this.transferState.set(SSR_LOCALE, lang);
         translateService.use(lang);
-        document.querySelector('html').setAttribute('lang', lang.replace('_', '-'));
+        this.domService.setAttributeForSelector('html', 'lang', lang.replace('_', '-'));
       });
   }
 

@@ -13,7 +13,7 @@ a.product-title {
   font-size: $font-size-corporate;
   color: $text-color-quaternary;
 
-  label {
+  .product-id-label {
     padding-right: divide($space-default, 3);
   }
 }
@@ -33,7 +33,7 @@ a.product-title {
       color: $text-color-quaternary;
 
       &:hover {
-        color: darken($text-color-quaternary, 10%);
+        color: $text-color-tertiary;
       }
     }
   }
@@ -63,12 +63,6 @@ a.product-title {
       padding-bottom: 0;
       text-align: left;
       text-transform: uppercase;
-    }
-
-    &.read-only {
-      label {
-        padding-right: divide($space-default, 3);
-      }
     }
 
     .form-group {
@@ -104,91 +98,8 @@ a.product-title {
     margin-bottom: $space-default * 0.5;
   }
 
-  .secondary-actions {
-    button {
-      &:first-child {
-        margin-right: 0;
-      }
-
-      &:last-child {
-        float: right;
-
-        @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
-          float: left;
-        }
-      }
-    }
-  }
-
   .promotion-list {
     border-spacing: 0 $space-default;
     border-collapse: separate;
-  }
-}
-
-.cross-sell-product {
-  padding-top: ($space-default * 4);
-  clear: both;
-  text-align: center;
-
-  a {
-    &.product-title {
-      display: block;
-      padding-top: ($space-default * 0.5);
-      font-family: $font-family-condensedregular;
-      font-size: 14px;
-      color: $text-color-secondary;
-      text-align: center;
-      text-decoration: none !important;
-    }
-  }
-}
-
-.bundle-product {
-  position: relative;
-  padding-top: ($space-default * 4);
-  margin-top: ($space-default * 6);
-  clear: both;
-  text-align: center;
-  border-top: $border-width-default solid $border-color-light;
-
-  h3 {
-    position: absolute;
-    top: -35px;
-    left: 38%;
-    width: 28%;
-    font-weight: bold;
-    text-transform: uppercase;
-    background-color: $color-inverse;
-  }
-
-  a {
-    &.product-title {
-      display: block;
-      padding-top: ($space-default * 0.5);
-      font-family: $font-family-condensedregular;
-      font-size: 14px;
-      color: $text-color-secondary;
-      text-align: center;
-      text-decoration: none !important;
-    }
-  }
-}
-
-.product-end-of-live-status {
-  padding-bottom: divide($space-default, 3);
-}
-
-.product-lifecycle-status {
-  padding-bottom: divide($space-default, 3);
-  color: $text-color-special;
-
-  span {
-    display: block;
-  }
-
-  span.product-lifecycle-status-title {
-    font-family: $font-family-bold;
-    font-size: $font-size-lg;
   }
 }

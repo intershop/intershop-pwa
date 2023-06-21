@@ -80,6 +80,7 @@ describe('Header Navigation Component', () => {
         </li>
         <ish-lazy-content-include
           includeid="include.header.navigation.pagelet2-Include"
+          role="listitem"
           ng-reflect-include-id="include.header.navigation.page"
         ></ish-lazy-content-include>
       </ul>

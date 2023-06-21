@@ -38,6 +38,7 @@ import {
   deleteBasketAttributeSuccess,
   loadBasket,
   loadBasketByAPIToken,
+  loadBasketByAPITokenFail,
   loadBasketEligibleShippingMethods,
   loadBasketEligibleShippingMethodsFail,
   loadBasketEligibleShippingMethodsSuccess,
@@ -116,7 +117,10 @@ export class BasketEffects {
       ofType(loadBasketByAPIToken),
       mapToPayloadProperty('apiToken'),
       concatMap(apiToken =>
-        this.basketService.getBasketByToken(apiToken).pipe(map(basket => loadBasketSuccess({ basket })))
+        this.basketService.getBasketByToken(apiToken).pipe(
+          map(basket => loadBasketSuccess({ basket })),
+          mapErrorToAction(loadBasketByAPITokenFail)
+        )
       )
     )
   );

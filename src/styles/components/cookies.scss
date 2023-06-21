@@ -12,7 +12,8 @@
     color: $color-inverse;
   }
 
-  a {
+  a,
+  .btn-link {
     color: $color-inverse !important;
     text-decoration: underline;
 

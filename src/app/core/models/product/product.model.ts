@@ -13,7 +13,7 @@ export interface Product {
   availableStock?: number;
   minOrderQuantity: number;
   maxOrderQuantity: number;
-  stepOrderQuantity: number;
+  stepQuantity: number;
   attributes: Attribute[];
   attributeGroups?: { [id: string]: AttributeGroup };
   attachments?: Attachment[];

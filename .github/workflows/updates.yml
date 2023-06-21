@@ -10,7 +10,7 @@ on:
     - cron: '0 0 * * *'
 
 env:
-  NODE_VERSION: 18.15.0
+  NODE_VERSION: 18.16.0
 
 jobs:
   Updates:
@@ -40,7 +40,7 @@ jobs:
         run: npm outdated --long || true
 
       - name: Must Have Updates for PWA
-        run: npm audit --production
+        run: npm audit --omit=dev
         if: always()
 
       - name: Peer Dependency Incompatibilities

@@ -1,9 +1,9 @@
-<div role="search" class="search clearfix">
+<div class="search clearfix">
   <input
     #searchInput
     [placeholder]="configuration?.placeholder || ''"
     autocomplete="off"
-    type="text"
+    type="search"
     class="form-control searchTerm"
     (input)="searchSuggest($event.target)"
     [value]="inputSearchTerms$ | async"

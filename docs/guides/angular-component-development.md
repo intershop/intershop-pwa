@@ -156,6 +156,16 @@ UPDATE src/app/shared/components/common/accordion/accordion.component.ts (425 by
 
 To reduce the number of ChangeDetection computation cycles, all components should have their `Component` decorator property `changeDetection` set to `ChangeDetectionStrategy.OnPush`.
 
+## DOM Manipulations
+
+When using Angular, avoid to access or change the DOM directly because this may lead to several issues:
+
+- If you use direct DOM accessors like window, document etc., it might not refer to something relevant on the server-side code.
+- It might open up your app as an easy target for the XSS injection attack or other security issues.
+- The angular synchronization of components amd views are bypassed and this might lead to unwanted side effects.
+
+However, if you need to manipulate the DOM use the multiple DOM manipulation methods of the Angular Renderer2 API or the pwa [DomService](../../src/app/core/utils/dom/dom.service.ts) or other angular techniques.
+
 ## Split Components When Necessary
 
 Consider splitting one into multiple components when:

@@ -1,4 +1,9 @@
-<h1>{{ 'account.punchout.heading' | translate }}</h1>
+<h1>
+  {{ 'account.punchout.heading' | translate }}
+  <a *ngIf="selectedType === 'oci'" routerLink="configuration" class="btn btn-secondary">{{
+    'account.punchout.configuration.button.label' | translate
+  }}</a>
+</h1>
 <ish-error-message [error]="error"></ish-error-message>
 
 <p *ngIf="punchoutTypes?.length > 0; else noPunchoutTypes">
@@ -10,7 +15,7 @@
 
 <div *ngIf="punchoutTypes?.length > 1">
   <ul ngbNav class="nav-tabs section" [(activeId)]="selectedType">
-    <li *ngFor="let type of punchoutTypes" [ngbNavItem]="type">
+    <li *ngFor="let type of punchoutTypes" [ngbNavItem]="type" role="presentation">
       <a ngbNavLink [routerLink]="['../punchout', { format: type }]">{{
         'account.punchout.type.text' | translate : { '0': type }
       }}</a>

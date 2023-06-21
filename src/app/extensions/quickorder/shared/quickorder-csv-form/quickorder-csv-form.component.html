@@ -3,7 +3,7 @@
     <h3>{{ 'quickorder.page.csv.title' | translate }}</h3>
     <p>{{ 'quickorder.page.csv.subtitle' | translate }}</p>
     <form [formGroup]="csvForm" (ngSubmit)="addCsvToCart()">
-      <div class="form-group section section-seperator">
+      <div class="form-group section">
         <input
           type="file"
           name="csvFile"
@@ -12,6 +12,7 @@
           class="form-control"
           accept=".csv"
           (change)="uploadListener($event.target)"
+          aria-label="Upload CSV File"
         />
         <div [ngSwitch]="status">
           <small *ngSwitchCase="'IncorrectInput'" class="has-error"

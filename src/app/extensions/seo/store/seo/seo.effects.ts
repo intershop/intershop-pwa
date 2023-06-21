@@ -23,6 +23,7 @@ import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/confi
 import { ofUrl, selectRouteData, selectRouteParam } from 'ish-core/store/core/router';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories/categories.selectors';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
+import { DomService } from 'ish-core/utils/dom/dom.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -31,6 +32,7 @@ export class SeoEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
+    private domService: DomService,
     private metaService: Meta,
     private titleService: Title,
     private translate: TranslateService,
@@ -197,13 +199,11 @@ export class SeoEffects {
     // the canonical URL of a production system should always be with 'https:'
     // even though the PWA SSR container itself is usually not deployed in an SSL environment so the URLs need manual adaption
     const canonicalUrl = encodeURI(url.replace('http:', 'https:'));
-    let canonicalLink = this.doc.querySelector('link[rel="canonical"]');
-    if (!canonicalLink) {
-      canonicalLink = this.doc.createElement('link');
-      canonicalLink.setAttribute('rel', 'canonical');
-      this.doc.head.appendChild(canonicalLink);
-    }
-    canonicalLink.setAttribute('href', canonicalUrl);
+    const canonicalLink = this.domService.getOrCreateElement('link[rel="canonical"]', 'link', this.doc.head);
+
+    this.domService.setAttribute(canonicalLink, 'rel', 'canonical');
+    this.domService.setAttribute(canonicalLink, 'href', canonicalUrl);
+
     this.addOrModifyTag({ property: 'og:url', content: canonicalUrl });
   }
 

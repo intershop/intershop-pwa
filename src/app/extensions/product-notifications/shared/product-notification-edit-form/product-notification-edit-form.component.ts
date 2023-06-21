@@ -85,7 +85,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
         type: 'ish-radio-field',
         props: {
           label: 'product.notification.edit.form.no_notification.label',
-          fieldClass: 'py-0',
+          fieldClass: ' ',
           value: 'delete',
         },
       },
@@ -132,7 +132,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
         type: 'ish-radio-field',
         props: {
           label: 'product.notification.edit.form.price_notification.label',
-          fieldClass: 'py-0',
+          fieldClass: ' ',
           value: 'price',
         },
       },
@@ -148,7 +148,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
         type: 'ish-radio-field',
         props: {
           label: 'product.notification.edit.form.instock_notification.label',
-          fieldClass: 'py-0',
+          fieldClass: ' ',
           value: 'stock',
         },
       },

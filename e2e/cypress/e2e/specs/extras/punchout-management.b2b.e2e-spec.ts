@@ -8,8 +8,8 @@ import { sensibleDefaults } from '../../pages/account/registration.page';
 
 const _ = {
   user: {
-    login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
+    login: `test${new Date().getTime()}@testcity.de`,
   },
   punchoutUser: {
     login: `punchoutuser${new Date().getTime()}@test.intershop.de`,

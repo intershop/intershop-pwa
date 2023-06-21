@@ -22,10 +22,6 @@
         color: $text-color-corporate;
         white-space: nowrap;
       }
-
-      &.js-cart-count {
-        display: none;
-      }
     }
 
     .ng-fa-icon {
@@ -89,34 +85,6 @@
       }
     }
 
-    .btn-scroll-up {
-      width: 100%;
-      padding: 2px 0 0;
-      margin: $space-default 0 0;
-      font-size: $font-size-lg;
-      color: $text-color-corporate;
-      text-align: center;
-      cursor: pointer;
-
-      &.disabled {
-        color: $text-color-quinary;
-      }
-    }
-
-    .btn-scroll-down {
-      width: 100%;
-      padding: 2px 0 0;
-      margin: 0 0 $space-default;
-      font-size: $font-size-lg;
-      color: $text-color-corporate;
-      text-align: center;
-      cursor: pointer;
-
-      &.disabled {
-        color: $text-color-quinary;
-      }
-    }
-
     .view-cart {
       margin-top: ($space-default * 2);
       font-family: $font-family-condensedbold;
@@ -170,12 +138,6 @@
       color: $text-color-primary;
     }
 
-    .product-size {
-      font-family: $font-family-condensedregular;
-      font-size: $font-size-base;
-      color: $text-color-secondary;
-    }
-
     .cart-pli-data {
       font-size: 85%;
       color: $text-color-quaternary;
@@ -183,16 +145,6 @@
       span {
         display: inline-block;
         width: 80px;
-      }
-    }
-
-    .qty-label {
-      font-size: 85%;
-      color: $text-color-quaternary;
-
-      span {
-        display: inline-block;
-        width: 75px;
       }
     }
   }

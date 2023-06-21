@@ -3,18 +3,6 @@
 
 /************* Checkout Step 1 - Address ***************/
 
-.multiple-address-container {
-  .list-body .list-item-row .list-item {
-    overflow: inherit;
-
-    @media (min-width: $screen-lg-min) {
-      address {
-        margin-bottom: 0;
-      }
-    }
-  }
-}
-
 /************* Checkout Step 2 - Shipping ***************/
 
 .shipping-methods {
@@ -38,38 +26,7 @@
   }
 }
 
-.packslip-message {
-  .form-check {
-    margin-bottom: ($space-default * 0.5);
-  }
-}
-
-//
-// GIFT WRAP
-
-.dialog-giftwrap-content {
-  width: 100%;
-  padding: $space-default * 2;
-  text-align: center;
-}
-
 /************* Checkout Step 5 - Checkout Receipt ***************/
-
-.checkout-signup {
-  height: 100%;
-  padding-bottom: ($space-default * 2);
-  color: $text-color-inverse;
-  background: $color-secondary;
-
-  @media (max-width: $screen-xs-max) {
-    padding-top: 1px;
-    margin-top: ($space-default * 2);
-  }
-
-  input {
-    border: $border-width-default solid $border-color-default;
-  }
-}
 
 .infobox-wrapper {
   display: flex;
@@ -107,7 +64,7 @@
         text-transform: none;
 
         &:hover {
-          color: darken($text-color-inverse, 15%);
+          color: $text-color-quaternary;
         }
       }
 
@@ -115,7 +72,7 @@
         color: $text-color-inverse;
 
         &:hover {
-          color: darken($text-color-inverse, 15%);
+          color: $text-color-quaternary;
         }
       }
 

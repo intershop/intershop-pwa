@@ -37,25 +37,37 @@ export class ContentConfigurationParameterMapper {
       case 'bc_pmc:types.pagelet2-ImageFileRef':
       case 'bc_pmc:types.pagelet2-FileRef':
         if (Array.isArray(data.value)) {
-          return data.value.map(x => this.resolveStaticURL(x));
+          return data.value.map(x => this.processFileReferences(x));
         } else {
-          return this.resolveStaticURL(data.value.toString());
+          return this.processFileReferences(data.value.toString());
         }
       default:
+        // parse values of configuration parameters that end in 'JSON' to JSON objects
+        if (data.definitionQualifiedName.endsWith('JSON')) {
+          return JSON.parse(data.value as string);
+        }
         return data.value;
     }
   }
 
-  // convert ICM file references to full server URLs
-  private resolveStaticURL(value: string): string {
+  // process file reference values according to their type
+  private processFileReferences(value: string): string {
+    // absolute URL references - keep them as they are (http:// and https://)
     if (value.startsWith('http')) {
       return value;
     }
 
+    // relative URL references, e.g. to asset files are prefixed with 'file://'
+    if (value.startsWith('file://')) {
+      return value.split('file://')[1];
+    }
+
+    // everything else that does not include ':/' is not an ICM file reference and is left as it is
     if (!value.includes(':/')) {
       return value;
     }
 
+    // convert ICM file references to full server URLs
     const split = value.split(':');
     return encodeURI(`${this.staticURL}/${split[0]}/${this.lang}${split[1]}`);
   }
