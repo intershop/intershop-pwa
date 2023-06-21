@@ -7,6 +7,51 @@ kb_everyone
 
 # Changelog
 
+## [4.1.0](https://github.com/intershop/intershop-pwa/releases/tag/4.1.0) (2023-06-21)
+
+### Features
+
+- add Address Doctor integration (#1337) ([28eb2ce](https://github.com/intershop/intershop-pwa/commit/28eb2ce))
+- introduce FeatureEventService as addition to the FeatureToggleService ([c5973ac](https://github.com/intershop/intershop-pwa/commit/c5973ac))
+- fetch anonymous user token only on basket creation when no apiToken is available ([a16501f](https://github.com/intershop/intershop-pwa/commit/a16501f))
+- improve token endpoint handling ([2aa15ba](https://github.com/intershop/intershop-pwa/commit/2aa15ba))
+- OCI punchout configuration (#1431) ([dfc19ac](https://github.com/intershop/intershop-pwa/commit/dfc19ac))
+- load extra configuration from Configuration CMS component for dynamic storefront configuration (#1427) ([f50671a](https://github.com/intershop/intershop-pwa/commit/f50671a))
+- make the 'b2c' theme a configurable theme dynamically customizable with CSS custom properties (#1427) ([849ebc1](https://github.com/intershop/intershop-pwa/commit/849ebc1))
+- add "accept only essential" cookies to Cookie Consent banner (#1430) ([34d138c](https://github.com/intershop/intershop-pwa/commit/34d138c))
+- accessibility improvements - lighthouse report (#1405) ([4e38080](https://github.com/intershop/intershop-pwa/commit/4e38080))
+- add domService for DOM manipulations ([3232241](https://github.com/intershop/intershop-pwa/commit/3232241))
+
+### Bug Fixes
+
+- handle failing basket fetching for anonymous ICM apiToken without an assigned basket ([a55751f](https://github.com/intershop/intershop-pwa/commit/a55751f))
+- product variation master facet selection does not work for non-string filters (#1439, #1449) ([94967fa](https://github.com/intershop/intershop-pwa/commit/94967fa))
+- parameters ;loc and ;cur may overlook server configuration ([ff102e3](https://github.com/intershop/intershop-pwa/commit/ff102e3))
+- save company name(s) at address after b2b customer registration (#1444) ([4d81e6b](https://github.com/intershop/intershop-pwa/commit/4d81e6b))
+- force a name attribute on radio inputs (#1435) ([a8f0817](https://github.com/intershop/intershop-pwa/commit/a8f0817))
+- 'ishIntersectionObserver' emits 'NotVisible' events when target element moves out of viewport (#1433) ([237a1a8](https://github.com/intershop/intershop-pwa/commit/237a1a8))
+- use 'stepQuantitiy' instead of 'stepOrderQuantity' to fetch the correct data in product listings (#1432) ([bd20419](https://github.com/intershop/intershop-pwa/commit/bd20419))
+- add promotion code encoding to the REST call for promotion code removal (#1428) ([db1860d](https://github.com/intershop/intershop-pwa/commit/db1860d))
+- adapt 'addGlobalGuard' function to work with functional guards (#1425) ([2bf9828](https://github.com/intershop/intershop-pwa/commit/2bf9828))
+- add items to basket with common shipping method (#1419) ([6ee9909](https://github.com/intershop/intershop-pwa/commit/6ee9909))
+- identity Provider init() should be triggered async (#1415) ([61c4b0f](https://github.com/intershop/intershop-pwa/commit/61c4b0f))
+
+### Performance Improvements
+
+- textarea description wrapper trigger to much changes (#1438) ([7cd3933](https://github.com/intershop/intershop-pwa/commit/7cd3933))
+
+### Documentation
+
+- add Configurable Theme documentation (#1427) ([7a48e20](https://github.com/intershop/intershop-pwa/commit/7a48e20))
+- added "Disabling the Integrated Cookie Consent Handling" documentation ([38f3751](https://github.com/intershop/intershop-pwa/commit/38f3751))
+- extend logging documentation for logging to an external device (#1417) ([20f75a2](https://github.com/intershop/intershop-pwa/commit/20f75a2))
+
+### BREAKING CHANGES
+
+- The `/token` endpoint handling was improved (see [Migrations / 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#40-to-41) for more details).
+- The `ishIntersectionObserver` returns `NotVisible` status now too (see [Migrations / 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#40-to-41) for more details).
+- The two standard themes `b2b` and `b2c` where refactored in such a way that the `b2c` theme could be changed into a configurable theme (see [Migrations / 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#40-to-41) for more details).
+
 ## [4.0.0](https://github.com/intershop/intershop-pwa/releases/tag/4.0.0) (2023-04-06)
 
 **required Intershop Commerce Management version: 7.10.39.2**
