@@ -5,6 +5,7 @@ export interface SparqueOptionsResponse {
   options: {
     id: string;
     score: number;
+    value: string;
     title: string;
   }[];
 }

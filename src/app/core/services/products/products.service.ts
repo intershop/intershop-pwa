@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { flatten, range } from 'lodash-es';
-import { Observable, OperatorFunction, from, identity, of, throwError } from 'rxjs';
+import { Observable, from, identity, of, throwError } from 'rxjs';
 import { defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -29,14 +29,10 @@ import STUB_ATTRS from './products-list-attributes';
 /**
  * The Products Service handles the interaction with the 'products' REST API.
  */
-@Injectable({ providedIn: 'root' })
-export class ProductsService {
-  constructor(
-    private apiService: ApiService,
-    private productMapper: ProductMapper,
-    private appFacade: AppFacade,
-  ) {}
-
+export abstract class ProductsService {
+  private apiService = inject(ApiService);
+  private productMapper = inject(ProductMapper);
+  private appFacade = inject(AppFacade);
   /**
    * Get the full Product data for the given Product SKU.
    *
@@ -126,30 +122,6 @@ export class ProductsService {
       return throwError(() => new Error('searchProducts() called without searchTerm'));
     }
 
-    /*if(this.featureToggle.enabled('sparque'))
-  {
-		console.log(this.featureToggle.enabled('sparque'));
-		// sortableAttributes and total are missing in REST response
-		// request should wait some time to get recent basket --> could be optimized
-		return this.sparqueApiService
-      .getRelevantInformation$()
-      .pipe(
-        switchMap(([basketSKUs, userId, locale]) =>
-          this.sparqueApiService
-            .get<[SparqueFacetOptionsResponse, SparqueCountResponse]>(
-              `${SparqueApiService.getSearchPath(
-                searchTerm,
-                locale,
-                userId,
-                basketSKUs
-              )}/results,count?config=default&count=${amount}&offset=${offset}`
-            )
-            .pipe(this.getProductsAfterSearch())
-        )
-      );
-	}
-	else
-	{*/
     let params = new HttpParams()
       .set('searchTerm', searchTerm)
       .set('amount', amount.toString())
@@ -183,15 +155,6 @@ export class ProductsService {
           total,
         }))
       );
-    //}
-  }
-
-  // TODO: find a better solution instead of this stub method for overriding filter.service.b2b.ts usage
-  getProductsAfterSearch(): OperatorFunction<
-    [never, never],
-    { products: never; sortableAttributes: never; total: never }
-  > {
-    return;
   }
 
   getProductsForMaster(
@@ -394,3 +357,6 @@ export class ProductsService {
     );
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class ICMProductsService extends ProductsService {}

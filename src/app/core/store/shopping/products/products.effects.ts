@@ -71,10 +71,10 @@ export class ProductsEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private productsService: ProductsService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
-    private router: Router
+    private router: Router,
+    private productsService: ProductsService
   ) {}
 
   loadProduct$ = createEffect(() =>

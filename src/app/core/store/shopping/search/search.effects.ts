@@ -46,12 +46,12 @@ export class SearchEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private productsService: ProductsService,
-    private suggestService: SuggestService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private translateService: TranslateService,
-    private router: Router
+    private router: Router,
+    private productsService: ProductsService,
+    private suggestService: SuggestService
   ) {}
 
   /**
