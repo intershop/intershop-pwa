@@ -36,6 +36,8 @@ services:
       #     clientID: ASDF12345
       #   Punchout:
       #     type: PUNCHOUT
+      #   CoBrowse:
+      #     type: cobrowse
 
     # Logging to an External Device (see logging.md)
     # volumes:

@@ -6,6 +6,7 @@ import { noop } from 'rxjs';
 import { PunchoutIdentityProviderModule } from '../extensions/punchout/identity-provider/punchout-identity-provider.module';
 
 import { Auth0IdentityProvider } from './identity-provider/auth0.identity-provider';
+import { CoBrowseIdentityProvider } from './identity-provider/co-browse.identity-provider';
 import { ICMIdentityProvider } from './identity-provider/icm.identity-provider';
 import { IDENTITY_PROVIDER_IMPLEMENTOR, IdentityProviderFactory } from './identity-provider/identity-provider.factory';
 import { IdentityProviderCapabilities } from './identity-provider/identity-provider.interface';
@@ -38,6 +39,14 @@ export function storageFactory(): OAuthStorage {
       useValue: {
         type: 'auth0',
         implementor: Auth0IdentityProvider,
+      },
+    },
+    {
+      provide: IDENTITY_PROVIDER_IMPLEMENTOR,
+      multi: true,
+      useValue: {
+        type: 'cobrowse',
+        implementor: CoBrowseIdentityProvider,
       },
     },
   ],

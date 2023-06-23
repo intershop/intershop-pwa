@@ -819,6 +819,7 @@
   "checkout.widget.shipping-address.heading": "Lieferadresse",
   "checkout.widget.shipping_method.desired_delivery_date": "Wunschlieferdatum",
   "checkout.widget.shipping_method.heading": "Versandart",
+  "cobrowse.error.missing.parameter": "Fehler beim Starten des Co-Browsens. Benötigter Startparameter fehlt.",
   "common.button.navbarCollapsed.text": "Navigation umschalten",
   "common.button.spinning.label": "Wird hinzugefügt...",
   "common.date_format.letters.M": "m",
