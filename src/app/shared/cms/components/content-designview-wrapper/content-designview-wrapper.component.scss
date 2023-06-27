@@ -5,41 +5,42 @@ $designview-color-pagelet: #00b8d9;
 $designview-color-slot: #399;
 $designview-color-include: #ce5399;
 
-::ng-deep body:not(.tmp-designview-highlight-last):not(.tmp-designview-highlight-children) {
-  .designview-wrapper {
-    position: relative;
+.designview-wrapper {
+  position: relative;
 
-    > .designview-wrapper-actions {
-      position: absolute;
-      top: -43px;
-      left: -2px;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      color: $color-inverse;
-      background-color: $designview-color-pagelet;
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
+  > .designview-wrapper-actions {
+    position: absolute;
+    top: -43px;
+    left: -2px;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: flex-end;
+    color: $color-inverse;
 
-      .name {
-        padding: 0 $space-default;
-        white-space: nowrap;
-      }
-
-      .btn {
-        margin-bottom: 0;
-        font-size: 20px;
-        color: $color-inverse;
-      }
+    .name {
+      padding: 0 $space-default;
+      white-space: nowrap;
     }
 
+    .btn {
+      margin-bottom: 0;
+      font-size: 20px;
+      color: $color-inverse;
+    }
+  }
+
+  &.pagelet:not(:has(.designview-wrapper)) {
+    // highlight only the last .pagelet element in the hierarchy and highlight neither slot nor include
+    // slots and includes will be highlighted in future
+
     &:hover {
-      outline: 3px solid $designview-color-pagelet;
+      outline-width: 3px;
+      outline-style: solid;
       outline-offset: -1px;
 
       > .designview-wrapper-actions {
-        opacity: 1;
+        display: flex;
       }
     }
 
@@ -49,13 +50,23 @@ $designview-color-include: #ce5399;
       min-height: 30px;
     }
 
+    &.pagelet {
+      > .designview-wrapper-actions {
+        background-color: $designview-color-pagelet;
+      }
+
+      &:hover {
+        outline-color: $designview-color-pagelet;
+      }
+    }
+
     &.slot {
       > .designview-wrapper-actions {
         background-color: $designview-color-slot;
       }
 
       &:hover {
-        outline: 3px solid $designview-color-slot;
+        outline-color: $designview-color-slot;
       }
     }
 
@@ -65,183 +76,14 @@ $designview-color-include: #ce5399;
       }
 
       &:hover {
-        outline: 3px solid $designview-color-include;
+        outline-color: $designview-color-include;
       }
     }
   }
 }
 
-::ng-deep .tmp-designview-show-cms-hierarchy {
-  .designview-wrapper {
-    padding: calc(($space-default * 2) / 3) $space-default;
-    outline-offset: -3px;
-
-    &::before {
-      display: block;
-      margin-bottom: calc($space-default / 3);
-      content: attr(ng-reflect-ng-class);
-    }
-
-    &.pagelet {
-      background-color: transparent;
-      outline: 3px solid $designview-color-pagelet;
-    }
-
-    &.slot {
-      background-color: transparent;
-      outline: 3px dashed $designview-color-slot;
-    }
-
-    &.include {
-      background-color: transparent;
-      outline: 3px dashed $designview-color-include;
-    }
-  }
-}
-
-// temporary solution to highlight only the last one
-::ng-deep .tmp-designview-highlight-last {
-  .designview-wrapper {
-    position: relative;
-
-    > .designview-wrapper-actions {
-      position: absolute;
-      top: -43px;
-      left: -2px;
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: flex-end;
-      color: $color-inverse;
-
-      .name {
-        padding: 0 $space-default;
-        white-space: nowrap;
-      }
-
-      .btn {
-        margin-bottom: 0;
-        font-size: 20px;
-        color: $color-inverse;
-      }
-    }
-
-    &:not(:has(.designview-wrapper)) {
-      // show designview-wrapper-actions only if there are no further nested .designview-wrapper elements
-
-      &:hover {
-        outline-offset: -1px;
-
-        > .designview-wrapper-actions {
-          display: flex;
-        }
-      }
-
-      &.slot,
-      &.include {
-        min-width: 100px;
-        min-height: 30px;
-      }
-
-      &.pagelet {
-        > .designview-wrapper-actions {
-          background-color: $designview-color-pagelet;
-        }
-
-        &:hover {
-          outline: 3px solid $designview-color-pagelet;
-        }
-      }
-
-      &.slot {
-        > .designview-wrapper-actions {
-          background-color: $designview-color-slot;
-        }
-
-        &:hover {
-          outline: 3px solid $designview-color-slot;
-        }
-      }
-
-      &.include {
-        > .designview-wrapper-actions {
-          background-color: $designview-color-include;
-        }
-
-        &:hover {
-          outline: 3px solid $designview-color-include;
-        }
-      }
-    }
-  }
-}
-
-// temporary solution to highlight the children in a separate layer
-::ng-deep .tmp-designview-highlight-children {
-  .designview-wrapper {
-    position: relative;
-
-    > .designview-wrapper-actions {
-      position: absolute;
-      top: -43px;
-      left: -2px;
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: flex-end;
-      color: $color-inverse;
-
-      .name {
-        padding: 0 $space-default;
-        white-space: nowrap;
-      }
-
-      .btn {
-        margin-bottom: 0;
-        font-size: 20px;
-        color: $color-inverse;
-      }
-    }
-
-    &.pagelet:not(:has(.pagelet .pagelet)) {
-      // show designview-wrapper-actions only if there are no further nested .designview-wrapper elements
-
-      &:hover {
-        outline: 3px solid $designview-color-pagelet;
-        outline-offset: -1px;
-
-        & > .designview-wrapper-actions {
-          display: flex;
-          background-color: $designview-color-pagelet;
-        }
-      }
-
-      &.slot,
-      &.include {
-        min-width: 100px;
-        min-height: 30px;
-      }
-
-      & .designview-wrapper {
-        position: static;
-
-        > .designview-wrapper-actions {
-          top: 0;
-          left: 10px;
-          align-items: center;
-          justify-content: flex-end;
-          color: #444;
-          background-color: #fff;
-          border: 2px solid #ccc;
-          outline: none;
-        }
-      }
-
-      & .designview-wrapper.slot {
-        > .designview-wrapper-actions {
-          display: none;
-        }
-      }
-    }
-  }
+// apply design view specific changes to be able to edit all components
+::ng-deep .carousel-inner {
+  // carousel slide item
+  overflow: inherit;
 }
