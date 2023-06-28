@@ -11,18 +11,20 @@ services:
         # activeThemes: b2b
         # activeThemes: b2c
     environment:
-      # ICM_BASE_URL:
+      #ICM_BASE_URL: 'https://localhost:8443'
       LOGGING: 'true'
       SOURCE_MAPS: 'true'
       TRUST_ICM: 'true'
+      #SPARQUE: |
+      # endPoint: 'http://localhost:28090/1/intershop-obi/api/PWA',
       # PROXY_ICM: 'true'
       # PROMETHEUS: 'true'
       # MULTI_SITE_LOCALE_MAP: |
       #   en_US: /en
       #   de_DE: /de
       #   fr_FR: /fr
-      # FEATURES: |
-      #   - compare
+      #FEATURES: |
+      #  sparque
       #   - rating
       # IDENTITY_PROVIDER: 'Auth0'
       # IDENTITY_PROVIDERS: |

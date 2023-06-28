@@ -8,9 +8,9 @@ export const environment: Environment = {
 
   themeColor: '#688dc3',
 
-  sparque: {
-    endPoint: 'search/4/testintershop/api/PWA',
-  },
+  //sparque: {
+  //  endPoint: 'search/4/testintershop/api/PWA',
+  //},
 
   features: [
     ...ENVIRONMENT_DEFAULTS.features,

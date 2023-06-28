@@ -49,7 +49,7 @@ export class SparqueFilterService extends FilterService {
               locale,
               userId,
               basketSKUs
-            )}${appliedFilterPath}/options/${facet}?config=default`
+            )}${appliedFilterPath}/e/${facet}?config=default`
           )
           .pipe(
             map(

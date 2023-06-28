@@ -1,11 +1,11 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
+import { SparqueConfig } from 'ish-core/models/sparque-config/sparque-config.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { AddressDoctorConfig } from '../app/extensions/address-doctor/models/address-doctor/address-doctor-config.model';
-import { SparqueConfig } from '../app/core/models/sparque-config/sparque-config.model';
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
@@ -149,14 +149,15 @@ export interface Environment {
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+  //icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+  icmBaseURL: 'https://localhost:8443',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
   hybridApplication: '-',
 
   /* FEATURE TOGGLES */
-  features: ['compare', 'contactUs', 'productNotifications', 'rating', 'recently', 'storeLocator'],
+  features: ['compare', 'contactUs', 'productNotifications', 'rating', 'recently', 'storeLocator', 'sparque'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,
@@ -203,6 +204,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     tacton: 'forever',
   },
   priceUpdate: 'always',
-
-  sparqueBaseURL: '/search/4/testintershop/api/PWA',
+  sparque: {
+    endPoint: 'http://localhost:28090/1/intershop-obi/api/PWA',
+  },
 };

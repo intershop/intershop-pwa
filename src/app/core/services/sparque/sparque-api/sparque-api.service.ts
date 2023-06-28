@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, defer, forkJoin, of } from 'rxjs';
+import { Observable, combineLatest, defer, forkJoin, iif, of } from 'rxjs';
 import { auditTime, concatMap, first, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { SparqueConfig } from 'ish-core/models/sparque-config/sparque-config.model';
 import { AvailableOptions } from 'ish-core/services/api/api.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
@@ -22,7 +23,8 @@ export class SparqueApiService {
     private httpClient: HttpClient,
     private store: Store,
     private apiTokenService: ApiTokenService,
-    private statePropertiesService: StatePropertiesService
+    private statePropertiesService: StatePropertiesService,
+    private tokenService: TokenService
   ) {}
 
   static getSearchPath(searchTerm: string, locale: string, userId: string, basketSKUs: string[]): string {
@@ -50,19 +52,24 @@ export class SparqueApiService {
    */
   private constructHeaders(options?: AvailableOptions): Observable<HttpHeaders> {
     return this.apiTokenService.apiToken$.pipe(
-      whenTruthy(),
       first(),
-      switchMap(apiToken => {
-        const defaultHeader = new HttpHeaders().set('Authorization', `bearer ${apiToken}`);
+      switchMap(apiToken =>
+        iif(() => !!apiToken, of(apiToken), this.tokenService.fetchToken('anonymous')).pipe(
+          whenTruthy(),
+          first(),
+          switchMap(apiToken => {
+            const defaultHeader = new HttpHeaders().set('Authorization', `bearer ${apiToken}`);
 
-        return of(
-          options?.headers
-            ? // append incoming headers to default ones
-              options.headers.keys().reduce((acc, key) => acc.set(key, options.headers.get(key)), defaultHeader)
-            : // just use default headers
-              defaultHeader
-        );
-      })
+            return of(
+              options?.headers
+                ? // append incoming headers to default ones
+                  options.headers.keys().reduce((acc, key) => acc.set(key, options.headers.get(key)), defaultHeader)
+                : // just use default headers
+                  defaultHeader
+            );
+          })
+        )
+      )
     );
   }
 
