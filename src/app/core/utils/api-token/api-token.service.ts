@@ -271,9 +271,7 @@ export class ApiTokenService {
 
   private isAuthTokenError(err: unknown) {
     return (
-      err instanceof HttpErrorResponse &&
-      typeof err.error === 'string' &&
-      (err.error.includes('AuthenticationToken') || err.error.includes('Unable to decode token'))
+      err instanceof HttpErrorResponse && typeof err.error === 'string' && err.error?.toLowerCase().includes('token')
     );
   }
 
