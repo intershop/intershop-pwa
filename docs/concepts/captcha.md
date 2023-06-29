@@ -23,22 +23,66 @@ The following class diagram shows the major classes of the CAPTCHA workflow that
 
 ```mermaid
 classDiagram
+direction TB
 
-class basiccomponent["src.app.extensions.captcha.shared.captcha-vX"]
+namespace Captcha Basic Components{
+class basiccomponentv2["src.app.extensions.captcha.shared.captcha-v2"]
+class basiccomponentv3["src.app.extensions.captcha.shared.captcha-v3"]
+}
 
-
-basiccomponent --> exports : generates
-    class exports["src.app.extensions.captcha.exports"]{
+basiccomponentv2 --> extensionscaptchaexports : generates
+basiccomponentv3 --> extensionscaptchaexports : generates
+class extensionscaptchaexports["src.app.extensions.captcha.exports"]{
       lazy-captcha.component.ts
       lazy-captcha.component.html
       captcha-exports.module.ts
     }
 
-exports --> captchaexports : exports
 
-note for exports "test"
+class sharedmodule["src.app.shared.shared.module.ts"]
+class captchafascade["src.app.extensions.captcha.facadecaptcha.fascade.ts"]
 
-class captchaexports["src.app.shared.shared.module.ts"]
+captchafascade --> ngrxstore : ask for current state
+configurationservice --> ngrxstore: get ICM captcha configuration
+
+captchafascade --> sharedmodule : provides version and sitekey
+extensionscaptchaexports --> sharedmodule : exports
+
+sharedmodule --> captchafieldcomponents : provides access to lazy component
+
+class captchafieldcomponents["src.app.shared.formly.types.captcha-field.captcha-field.component.ts"]
+
+class fieldtype["ngx-formlyFieldType"]
+class formlyfieldconfig["ngx-formlyFormlyFieldConfig"]
+
+captchafieldcomponents --> fieldtype : extends
+captchafieldcomponents --> formlyfieldconfig : consumnes
+
+namespace Form Components{
+
+class registrationpagecomponent["src.app.pages.registration.registration-page.component.ts"]
+class requestreminderformcomponent["src.app.pages.forgot-password.request-reminder-form.request-reminder-form.component.ts"]
+class contactformcomponent["src.app.extensions.contact-us.pages.contact.contact-form.contact-form.component.ts"]
+}
+
+captchafieldcomponents --> registrationpagecomponent : used by
+captchafieldcomponents --> requestreminderformcomponent : used by
+captchafieldcomponents --> contactformcomponent : used by
+
+class apiservice["src.app.core.services.api.api.service.ts"]
+
+apiservice --> apiservice : add captcha token as header param
+
+registrationpagecomponent --> apiservice: submit form and trigger request
+requestreminderformcomponent --> apiservice: submit form and trigger request
+contactformcomponent --> apiservice: submit form and trigger request
+
+class configurationservice["src.app.core.services.configuration.configuration.service.ts"]
+class ngrxstore["NgRX Store Server Config State"]
+class ICM-REST-API
+
+apiservice --> ICM-REST-API
+configurationservice --> ICM-REST-API
 ```
 
 The overview diagram shows:
