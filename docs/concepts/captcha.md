@@ -25,10 +25,8 @@ The following class diagram shows the major classes of the CAPTCHA workflow that
 classDiagram
 direction TB
 
-namespace Captcha Basic Components{
 class basiccomponentv2["src.app.extensions.captcha.shared.captcha-v2"]
 class basiccomponentv3["src.app.extensions.captcha.shared.captcha-v3"]
-}
 
 basiccomponentv2 --> extensionscaptchaexports : generates
 basiccomponentv3 --> extensionscaptchaexports : generates
@@ -58,12 +56,11 @@ class formlyfieldconfig["ngx-formlyFormlyFieldConfig"]
 captchafieldcomponents --> fieldtype : extends
 captchafieldcomponents --> formlyfieldconfig : consumnes
 
-namespace Form Components{
 
 class registrationpagecomponent["src.app.pages.registration.registration-page.component.ts"]
 class requestreminderformcomponent["src.app.pages.forgot-password.request-reminder-form.request-reminder-form.component.ts"]
 class contactformcomponent["src.app.extensions.contact-us.pages.contact.contact-form.contact-form.component.ts"]
-}
+
 
 captchafieldcomponents --> registrationpagecomponent : used by
 captchafieldcomponents --> requestreminderformcomponent : used by
