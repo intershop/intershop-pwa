@@ -4,6 +4,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 /**
  * Type for a basic textarea field
  *
+ * @props **ariaLabel** adds an aria-label to the component for better accessibility, recommended if there is no associated label
  * @props **cols** - the amount of columns the textarea should have
  * @props **rows** - the amount of rows the textarea should have
  *
