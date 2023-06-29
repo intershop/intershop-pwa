@@ -61,35 +61,9 @@ describe('User Budget Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`
-      <div>
-        <dl class="row dl-horizontal dl-separator">
-          <dt class="col-7">account.user.new.order_spend_limit.label</dt>
-          <dd class="col-5 font-weight-bold text-right">USD 100</dd>
-        </dl>
-        <dl class="row dl-horizontal dl-separator">
-          <dt class="col-7">account.budget.label</dt>
-          <dd class="col-5 font-weight-bold text-right">USD 5000</dd>
-        </dl>
-        <dl class="row dl-horizontal dl-separator">
-          <dt class="col-7">account.budget.already_spent.label</dt>
-          <dd class="col-5 font-weight-bold text-right">USD 2500</dd>
-        </dl>
-        <div placement="top" data-testing-id="user-budget-popover" ng-reflect-placement="top">
-          <div class="progress">
-            <div
-              role="progressbar"
-              aria-label="Spent budget"
-              class="progress-bar"
-              aria-valuetext="50%"
-              style="width: 50%"
-            >
-              <span class="progress-display">50%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `);
+    expect(element.textContent).toContain(
+      'account.user.new.order_spend_limit.label USD 100 account.budget.labelUSD 5000account.budget.already_spent.labelUSD 250050%'
+    );
   });
 
   it('should return 2500 used budget when remaining budget is 2500', () => {

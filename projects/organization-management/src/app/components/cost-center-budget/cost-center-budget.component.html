@@ -6,7 +6,7 @@
         [ngClass]="{ 'bg-danger': spentBudgetPercentage * 100 > 90 }"
         [ngStyle]="{ width: progressBarWidth | percent }"
         role="progressbar"
-        [attr.aria-label]="'Spent budget of cost center ' + costCenter.name"
+        [attr.aria-label]="'account.budget.already_spent.costcenter.aria_label' | translate : { '0': costCenter.name }"
         [attr.aria-valuetext]="spentBudgetPercentage | percent"
       >
         <span class="progress-display">{{ spentBudgetPercentage | percent }}</span>

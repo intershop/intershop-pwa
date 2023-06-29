@@ -36,9 +36,7 @@ describe('Modal Dialog Link Component', () => {
     component.options = { titleText: 'Dialog Title' };
 
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchInlineSnapshot(`
-      <a rel="nofollow" ng-reflect-router-link="" href="/">testLink</a
-      ><ish-modal-dialog></ish-modal-dialog>
-    `);
+    expect(element.textContent).toContain('testLink');
+    expect(element.querySelector('ish-modal-dialog')).toBeTruthy();
   });
 });

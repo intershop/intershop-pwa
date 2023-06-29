@@ -1,4 +1,4 @@
-<nav class="breadcrumbs row" aria-label="breadcrumbs">
+<nav class="breadcrumbs row" [attr.aria-label]="'breadcrumbs.aria_label' | translate">
   <ol class="breadcrumbs-list">
     <li *ngIf="showHome" class="breadcrumbs-list breadcrumbs-list-home">
       <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/home">{{

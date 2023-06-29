@@ -22,7 +22,9 @@
         [ngClass]="{ 'd-none': view === 'full' }"
         (click)="toggleOpen(subcategory.uniqueId)"
         [attr.aria-label]="
-          isOpened(subcategory.uniqueId) ? 'collapse ' + subcategory.name : 'expand ' + subcategory.name
+          isOpened(subcategory.uniqueId)
+            ? ('header.navigation.collapse_category.aria_label' | translate : { '0': subcategory.name })
+            : ('header.navigation.expand_category.aria_label' | translate : { '0': subcategory.name })
         "
       >
         <fa-icon *ngIf="isOpened(subcategory.uniqueId); else closed" [icon]="['fas', 'minus']"></fa-icon>

@@ -18,9 +18,9 @@
     <div class="section">
       <!-- displayName -->
       <div class="row">
-        <label for="quote-displayname" class="col-4 col-md-3 col-xl-2 col-form-label">
-          {{ 'quote.edit.unsubmitted.name.label' | translate }}
-        </label>
+        <label for="quote-displayname" class="col-4 col-md-3 col-xl-2 col-form-label">{{
+          'quote.edit.unsubmitted.name.label' | translate
+        }}</label>
         <div class="col-8 col-md-9 col-xl-10">
           <ish-in-place-edit (edited)="update()" (aborted)="reset()">
             <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
@@ -33,9 +33,9 @@
 
       <!-- Comment -->
       <div class="row">
-        <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label">
-          {{ 'quote.edit.unsubmitted.comment.label' | translate }}
-        </label>
+        <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label">{{
+          'quote.edit.unsubmitted.comment.label' | translate
+        }}</label>
         <div class="col-8 col-md-9 col-xl-10">
           <ish-in-place-edit (edited)="update()" (aborted)="reset()">
             <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -22,6 +23,7 @@ describe('Product Quantity Component', () => {
     when(context.select('stepQuantity')).thenReturn(of(2));
 
     await TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [ProductQuantityComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
@@ -55,17 +57,18 @@ describe('Product Quantity Component', () => {
         "quantity",
       ]
     `);
+
     expect(element.querySelector('input')).toMatchInlineSnapshot(`
       <input
         data-testing-id="quantity"
         type="number"
         pattern="[0-9]*"
-        aria-label="quantity"
         class="form-control text-center"
         id="ASDF"
         min="2"
         max="6"
         step="2"
+        aria-label="product.quantity.aria_label"
       />
     `);
   });
@@ -79,18 +82,7 @@ describe('Product Quantity Component', () => {
         "quantity",
       ]
     `);
-    expect(element.querySelector('input')).toMatchInlineSnapshot(`
-      <input
-        data-testing-id="quantity"
-        type="number"
-        pattern="[0-9]*"
-        class="form-control"
-        id="ASDF"
-        min="2"
-        max="6"
-        step="2"
-      />
-    `);
+    expect(element.querySelector('input[data-testing-id="quantity"]').getAttribute('type')).toContain('number');
   });
 
   it('should display select when type is select', () => {

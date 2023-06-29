@@ -4,8 +4,7 @@
     <a
       class="float-right btn-tool"
       routerLink="/checkout/address"
-      title="{{ 'checkout.address.update.label' | translate }}"
-      aria-label="Edit invoice address"
+      [title]="'checkout.address.update.invoice.label' | translate"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
@@ -20,8 +19,7 @@
     <a
       class="float-right btn-tool"
       routerLink="/checkout/address"
-      title="{{ 'checkout.address.update.label' | translate }}"
-      aria-label="Edit shipping address"
+      [title]="'checkout.address.update.shipping.label' | translate"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
