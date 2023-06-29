@@ -25,7 +25,7 @@
           [ngClass]="{ 'bg-danger': usedBudgetPercentage * 100 > 90 }"
           [ngStyle]="{ width: usedBudgetPercentage | percent }"
           role="progressbar"
-          aria-label="Spent budget"
+          [attr.aria-label]="'account.budget.already_spent.label' | translate"
           [attr.aria-valuetext]="usedBudgetPercentage | percent"
         >
           <span class="progress-display">{{ usedBudgetPercentage | percent }}</span>

@@ -4,7 +4,7 @@
       type="checkbox"
       data-testing-id="productCheckbox"
       [formControl]="checkBox"
-      aria-label="Select item to add to cart"
+      [attr.aria-label]="'account.order_template.add_to_template.checkbox.aria_label' | translate"
     />
     <div class="d-none d-md-inline">
       <ish-product-image imageType="S" [link]="true"></ish-product-image>

@@ -58,7 +58,7 @@
           [step]="step$ | async"
           (change)="change($event.target)"
           (keyup)="change($event.target)"
-          aria-label="quantity"
+          [attr.aria-label]="'product.quantity.aria_label' | translate"
         />
       </div>
     </ng-template>

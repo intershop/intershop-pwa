@@ -12,7 +12,7 @@
           class="form-control"
           accept=".csv"
           (change)="uploadListener($event.target)"
-          aria-label="Upload CSV File"
+          [attr.aria-label]="'quickorder.page.csv.file.upload.aria_label' | translate"
         />
         <div [ngSwitch]="status">
           <small *ngSwitchCase="'IncorrectInput'" class="has-error"

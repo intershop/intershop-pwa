@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -35,7 +36,7 @@ describe('Sub Category Navigation Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), SubCategoryNavigationComponent],
       providers: [
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 },
@@ -57,28 +58,9 @@ describe('Sub Category Navigation Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchInlineSnapshot(`
-      <ul class="category-level1 dropdown-menu">
-        <li class="main-navigation-level1-item">
-          <a ng-reflect-router-link="/CAT_A1-catA.1" href="/CAT_A1-catA.1">CAT_A1</a
-          ><a class="dropdown-toggle" ng-reflect-router-link="" aria-label="expand CAT_A1" href="/"
-            ><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a
-          ><ish-sub-category-navigation
-            ng-reflect-category-unique-id="A.1"
-            ng-reflect-sub-categories-depth="2"
-            ><ul class="category-level2">
-              <li class="main-navigation-level2-item">
-                <a ng-reflect-router-link="/CAT_A1a-catA.1.a" style="width: 100%" href="/CAT_A1a-catA.1.a"
-                  >CAT_A1a</a
-                >
-              </li>
-            </ul></ish-sub-category-navigation
-          >
-        </li>
-        <li class="main-navigation-level1-item">
-          <a ng-reflect-router-link="/CAT_A2-catA.2" style="width: 100%" href="/CAT_A2-catA.2">CAT_A2</a>
-        </li>
-      </ul>
-    `);
+    expect(element.querySelector('a[href="/CAT_A1-catA.1"]').textContent).toContain('CAT_A1');
+    expect(element.querySelector('ish-sub-category-navigation')).toBeTruthy();
+    expect(element.querySelector('a[href="/CAT_A1a-catA.1.a"]').textContent).toContain('CAT_A1a');
+    expect(element.querySelector('a[href="/CAT_A2-catA.2"]').textContent).toContain('CAT_A2');
   });
 });

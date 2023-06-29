@@ -55,11 +55,16 @@ describe('Cookies Modal Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render cookie modal', () => {
+    fixture.detectChanges();
+
     expect(element).toMatchInlineSnapshot(`
       <div class="cookies-modal">
         <div class="modal-header">
           <h2>cookie.preferences.heading</h2>
-          <button type="button" class="close" title="dialog.close.text" aria-label="dialog.close.text">
+          <button type="button" class="close" title="dialog.close.text">
             <span aria-hidden="true">×</span>
           </button>
         </div>

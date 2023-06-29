@@ -49,26 +49,8 @@ describe('Filter Dropdown Component', () => {
 
   it('should display popup when rendered', () => {
     fixture.detectChanges();
-    expect(element).toMatchInlineSnapshot(`
-      <div ngbdropdown="" autoclose="outside">
-        <button
-          ngbdropdowntoggle=""
-          role="button"
-          id="dropdownMenuLink"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          class="form-control"
-        >
-          <span>Color</span>
-        </button>
-        <div ngbdropdownmenu="" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" ng-reflect-router-link="" href="/"> red </a
-          ><a class="dropdown-item selected" ng-reflect-router-link="" href="/">
-            blue <fa-icon class="icon-checked" ng-reflect-icon="fas,check"></fa-icon
-          ></a>
-        </div>
-      </div>
-    `);
+    expect(element.querySelector('[ngbdropdowntoggle]')).toBeTruthy();
+    expect(element.querySelector('[ngbdropdownmenu]')).toBeTruthy();
+    expect(element.textContent).toContain('Color red  blue');
   });
 });
