@@ -4,6 +4,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 /**
  * Basic type for radio buttons
  *
+ * @props **ariaLabel** adds an aria-label to the component for better accessibility, recommended if there is no associated label
  * @props **label** - the text that should be shown next to the radio button
  * @props **value** - the value that should be associated with this radio button
  *
