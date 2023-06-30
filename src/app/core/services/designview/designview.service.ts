@@ -94,8 +94,15 @@ export class DesignviewService {
     // send `dv-clientNavigation` event for each route change
     navigation$.subscribe(e => this.messageToHost({ type: 'dv-clientNavigation', payload: { url: e.url } }));
 
+    stable$.subscribe(() => {
+      this.applyHierarchyHighlighting();
+    });
+
     // send `dv-clientStable` event when application is stable or loading of the content included finished
-    navigationStable$.subscribe(() => this.messageToHost({ type: 'dv-clientStable' }));
+    navigationStable$.subscribe(() => {
+      this.messageToHost({ type: 'dv-clientStable' });
+      this.applyHierarchyHighlighting();
+    });
   }
 
   /**
@@ -109,5 +116,20 @@ export class DesignviewService {
         return;
       }
     }
+  }
+
+  /**
+   * Workaround for the missing Firefox CSS support for :has to highlight
+   * only the last .designview-wrapper in the .designview-wrapper hierarchy.
+   *
+   */
+  private applyHierarchyHighlighting() {
+    const designViewWrapper = document.querySelectorAll('.designview-wrapper');
+
+    designViewWrapper.forEach(element => {
+      if (!element.querySelector('.designview-wrapper')) {
+        element.classList.add('last-designview-wrapper');
+      }
+    });
   }
 }

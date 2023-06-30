@@ -30,10 +30,12 @@ $designview-color-include: #ce5399;
     }
   }
 
-  &.pagelet:not(:has(.designview-wrapper)) {
-    // highlight only the last .pagelet element in the hierarchy and highlight neither slot nor include
-    // slots and includes will be highlighted in future
-
+  &.pagelet.last-designview-wrapper {
+    /*
+     * Highlight only the last .pagelet element in the hierarchy and highlight neither slot nor include.
+     * The class .last-designview-wrapper is applied in TypeScript because &.pagelet:not(:has(.designview-wrapper))
+     * does not work in Firefox yet. So it cannot be done in CSS only.
+    */
     &:hover {
       outline-width: 3px;
       outline-style: solid;
