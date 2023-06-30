@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, shareReplay, tap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -50,9 +50,12 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   constructor(private appFacade: AppFacade, private afcProvider: AddressFormConfigurationProvider) {}
 
   ngOnInit(): void {
-    this.countries$ = this.appFacade
-      .countries$()
-      ?.pipe(map(countries => countries?.map(country => ({ value: country.countryCode, label: country.name }))));
+    this.countries$ = this.appFacade.countries$()?.pipe(
+      filter(countries => !!countries?.length),
+      map(countries => countries?.map(country => ({ value: country.countryCode, label: country.name }))),
+      tap(() => this.fillForm(this.prefilledAddress)),
+      shareReplay(1)
+    );
     this.initForm();
     this.parentForm?.setControl('address', this.addressForm);
   }
@@ -123,12 +126,16 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
       ...configuration.getModel(),
     };
     this.addressFields = [this.createCountrySelectField()].concat(configuration.getFieldConfiguration());
-    this.fillForm(this.prefilledAddress);
   }
 
   private fillForm(prefilledAddress: Partial<Address> = {}) {
-    if (!this.addressForm || Object.keys(prefilledAddress).length === 0) {
+    if (!this.addressForm) {
       return;
+    }
+    if (Object.keys(prefilledAddress).length === 0) {
+      this.addressModel = {
+        countryCode: '',
+      };
     }
 
     this.addressModel.countryCode = prefilledAddress.countryCode;
