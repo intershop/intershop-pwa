@@ -47,6 +47,7 @@ kb_sync_latest_only
 - [Guide - Data Handling with Mappers](./guides/data-handling-with-mappers.md)
 - [Guide - Working with ESLint](./guides/eslint.md)
 - [Guide - Accessibility](./guides/accessibility.md)
+- [Concept - Captcha](./concepts/captcha.md)
 
 ### Customization
 
