@@ -34,19 +34,21 @@ export class PreviewService {
     private route: ActivatedRoute
   ) {
     this.init();
-    race([
-      this.route.queryParams.pipe(
-        filter(params => params.PreviewContextID),
-        map(params => params.PreviewContextID),
-        take(1)
-      ),
-      // end listening for PreviewContextID if there is no such parameter at initialization
-      timer(3000),
-    ]).subscribe(value => {
-      if (!this.previewContextId && value) {
-        this.previewContextId = value;
-      }
-    });
+    if (!SSR) {
+      race([
+        this.route.queryParams.pipe(
+          filter(params => params.PreviewContextID),
+          map(params => params.PreviewContextID),
+          take(1)
+        ),
+        // end listening for PreviewContextID if there is no such parameter at initialization
+        timer(3000),
+      ]).subscribe(value => {
+        if (!this.previewContextId && value) {
+          this.previewContextId = value;
+        }
+      });
+    }
   }
 
   /**
