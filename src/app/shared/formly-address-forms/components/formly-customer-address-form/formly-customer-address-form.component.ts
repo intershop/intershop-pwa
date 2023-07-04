@@ -112,7 +112,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
     let formAddress: Address = this.form.value.address;
     if (this.address) {
       // update form values in the original address
-      formAddress = { ...this.address, ...formAddress };
+      formAddress = { ...this.address, mainDivisionCode: '', ...formAddress };
     }
     if (this.extension) {
       formAddress = { ...formAddress, email: this.extensionForm.get('email')?.value };
