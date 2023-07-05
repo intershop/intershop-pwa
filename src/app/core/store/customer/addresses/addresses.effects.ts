@@ -73,7 +73,7 @@ export class AddressesEffects {
       filter(([address, customer]) => !!address || !!customer),
       mergeMap(([address]) =>
         this.addressService.updateCustomerAddress('-', address).pipe(
-          mergeMap(() => [
+          mergeMap(address => [
             updateCustomerAddressSuccess({ address }),
             displaySuccessMessage({ message: 'account.addresses.address_updated.message' }),
           ]),
