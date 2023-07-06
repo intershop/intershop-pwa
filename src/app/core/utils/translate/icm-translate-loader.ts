@@ -36,6 +36,7 @@ export class ICMTranslateLoader implements TranslateLoader {
     const server$ = iif(
       () => !SSR && this.transferState.hasKey(SSR_TRANSLATIONS),
       of(this.transferState.get(SSR_TRANSLATIONS, {})),
+      // the localization call should wait until all server supplied configuration parameter are applied to the state
       this.actions$.pipe(
         ofType(routerNavigationAction),
         first(),
