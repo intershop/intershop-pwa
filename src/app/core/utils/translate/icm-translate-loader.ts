@@ -4,8 +4,8 @@ import { Actions, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { TranslateLoader } from '@ngx-translate/core';
 import { memoize } from 'lodash-es';
-import { combineLatest, defer, from, iif, of } from 'rxjs';
-import { catchError, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { Subject, combineLatest, defer, from, iif, of } from 'rxjs';
+import { catchError, filter, first, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { InjectSingle } from 'ish-core/utils/injection';
@@ -21,6 +21,8 @@ export const LOCAL_TRANSLATIONS = new InjectionToken<LocalTranslations>('transla
 
 @Injectable()
 export class ICMTranslateLoader implements TranslateLoader {
+  newLanguage$ = new Subject<string>();
+
   constructor(
     private actions$: Actions,
     private transferState: TransferState,
@@ -29,6 +31,7 @@ export class ICMTranslateLoader implements TranslateLoader {
   ) {}
 
   getTranslation = memoize(lang => {
+    this.newLanguage$.next(lang);
     const SSR_TRANSLATIONS = makeStateKey<Translations>(`ssrTranslations-${lang}`);
 
     const local$ = defer(() => from(this.localTranslations.useFactory(lang)).pipe(catchError(() => of({}))));
@@ -46,7 +49,9 @@ export class ICMTranslateLoader implements TranslateLoader {
               this.transferState.set(SSR_TRANSLATIONS, data);
             })
           )
-        )
+        ),
+        // close current localization call when a new language is requested
+        takeUntil(this.newLanguage$.pipe(filter(newLang => newLang !== lang)))
       )
     );
     return combineLatest([local$, server$]).pipe(
