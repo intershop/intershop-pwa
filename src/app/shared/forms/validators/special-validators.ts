@@ -149,6 +149,6 @@ export class SpecialValidators {
   private static noDay(control: FormControl, day: 'saturday' | 'sunday'): boolean {
     const date = control.value as Date;
 
-    return !(day === 'saturday' ? date?.getDay() === 6 : date?.getDate() === 0);
+    return !(day === 'saturday' ? date?.getDay() === 6 : date?.getDay() === 0);
   }
 }
