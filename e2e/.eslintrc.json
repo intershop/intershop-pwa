@@ -3,6 +3,10 @@
   "overrides": [
     {
       "files": ["*.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./"
+      },
       "rules": {
         "@typescript-eslint/naming-convention": [
           "error",

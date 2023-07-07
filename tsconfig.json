@@ -40,5 +40,5 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "exclude": ["e2e/**"]
+  "exclude": ["e2e/cypress.config.ts", "e2e/cypress-ci-e2e.ts"]
 }

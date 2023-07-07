@@ -4,6 +4,10 @@
   "overrides": [
     {
       "files": ["*.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./"
+      },
       "rules": {
         "no-console": "off",
         "no-param-reassign": "off",
