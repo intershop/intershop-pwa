@@ -24,4 +24,5 @@ export abstract class SuggestService {
 }
 
 @Injectable({ providedIn: 'root' })
+// eslint-disable-next-line ish-custom-rules/project-structure
 export class ICMSuggestService extends SuggestService {}

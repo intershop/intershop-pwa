@@ -11,21 +11,20 @@ services:
         # activeThemes: b2b
         # activeThemes: b2c
     environment:
-      #ICM_BASE_URL: 'https://localhost:8443'
+      # ICM_BASE_URL:
       LOGGING: 'true'
       SOURCE_MAPS: 'true'
       TRUST_ICM: 'true'
-      #SPARQUE: |
-      # endPoint: 'http://localhost:28090/1/intershop-obi/api/PWA',
       # PROXY_ICM: 'true'
       # PROMETHEUS: 'true'
       # MULTI_SITE_LOCALE_MAP: |
       #   en_US: /en
       #   de_DE: /de
       #   fr_FR: /fr
-      #FEATURES: |
-      #  sparque
+      # FEATURES: |
+      #   - compare
       #   - rating
+      #   - sparque
       # IDENTITY_PROVIDER: 'Auth0'
       # IDENTITY_PROVIDERS: |
       #   Auth0:
@@ -66,7 +65,6 @@ services:
       # - '9113:9113'
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
-      DEBUG: 0
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
       # SSL: 1
@@ -99,10 +97,6 @@ services:
           - baseHref: /b2c
             channel: default
             theme: b2c
-networks:
-  default:
-    name: a-responsive-network
-
 
     # Logging to an External Device (see logging.md)
     # volumes:

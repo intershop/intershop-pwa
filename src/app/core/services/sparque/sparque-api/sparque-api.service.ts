@@ -41,8 +41,8 @@ export class SparqueApiService {
       .filter(key => key !== 'searchTerm')
       .map(key =>
         DEFINED_FACETS.includes(key)
-          ? `e/${encodeURIComponent(key)}:FILTER/p/value/1(${encodeURIComponent(searchParameter[key][0])})`
-          : `e/facet_filter/p/attribute/${key}/p/value/1(${encodeURI(searchParameter[key][0])})`
+          ? `/e/${encodeURIComponent(key)}:FILTER/p/value/1(${encodeURIComponent(searchParameter[key][0])})`
+          : `/e/facet_filter/p/attribute/${key}/p/value/1(${encodeURI(searchParameter[key][0])})`
       )
       .reduce((prev, curr, idx, arr) => prev.concat(curr, idx !== arr.length - 1 ? '/' : ''), '');
   }

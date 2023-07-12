@@ -359,4 +359,5 @@ export abstract class ProductsService {
 }
 
 @Injectable({ providedIn: 'root' })
+// eslint-disable-next-line ish-custom-rules/project-structure
 export class ICMProductsService extends ProductsService {}

@@ -87,3 +87,4 @@ kb_sync_latest_only
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)
 - [Guide - Store Locator with Google Maps](./guides/store-locator.md)
 - [Guide - Address Check with Address Doctor](./guides/address-doctor.md)
+- [Guide - Sparque AI Integration](./guides/sparque.md)

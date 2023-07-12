@@ -143,21 +143,18 @@ export interface Environment {
    * - 'stable': only fetch prices once per application lifetime
    */
   priceUpdate: 'stable' | 'always';
-
-  sparqueBaseURL?: string;
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  //icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
-  icmBaseURL: 'https://localhost:8443',
+  icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
   hybridApplication: '-',
 
   /* FEATURE TOGGLES */
-  features: ['compare', 'contactUs', 'productNotifications', 'rating', 'recently', 'storeLocator', 'sparque'],
+  features: ['compare', 'contactUs', 'productNotifications', 'rating', 'recently', 'storeLocator'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,
@@ -204,7 +201,4 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     tacton: 'forever',
   },
   priceUpdate: 'always',
-  sparque: {
-    endPoint: 'http://localhost:28090/1/intershop-obi/api/PWA',
-  },
 };

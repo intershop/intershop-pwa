@@ -18,34 +18,24 @@ export interface SparqueCountResponse {
   }[];
 }
 
-export interface SparqueFacetResponse {
+export interface SparqueResponse {
   offset: number;
   count: number;
   type: string[];
-  items: SparqueFacetItem[];
+  items: SparqueItems[];
 }
 
-interface SparqueFacetItem {
+export interface SparqueItems {
   rank: number;
   probability: number;
-  tuple: {
-    id: string;
-    class: string[];
-    attributes: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      [key: string]: any;
-    };
-  }[];
+  tuple: SparqueTupel[];
 }
 
-export interface SparqueFacetOptionsResponse {
-  offset: number;
-  count: number;
-  type: string[];
-  items: {
-    rank: number;
-    probability: number;
+export interface SparqueTupel {
+  id: string;
+  class: string[];
+  attributes: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    tuple: any[];
-  }[];
+    [key: string]: any;
+  };
 }

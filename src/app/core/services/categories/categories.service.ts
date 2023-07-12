@@ -13,7 +13,7 @@ import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
  * The Categories Service handles the interaction with the 'categories' REST API.
  */
 @Injectable({ providedIn: 'root' })
-export class CategoriesService {
+export abstract class CategoriesService {
   constructor(private apiService: ApiService, private categoryMapper: CategoryMapper) {}
 
   /**
@@ -62,3 +62,6 @@ export class CategoriesService {
     );
   }
 }
+@Injectable({ providedIn: 'root' })
+// eslint-disable-next-line ish-custom-rules/project-structure
+export class ICMCategoriesService extends CategoriesService {}

@@ -1,8 +1,11 @@
 import { NgModule, inject } from '@angular/core';
 
 import { FeatureToggleService } from './feature-toggle.module';
+import { CategoriesService, ICMCategoriesService } from './services/categories/categories.service';
 import { FilterService, ICMFilterService } from './services/filter/filter.service';
 import { ICMProductsService, ProductsService } from './services/products/products.service';
+import { SparqueCategoriesService } from './services/sparque/sparque-categories/sparque-categories.service';
+import { SparqueFilterService } from './services/sparque/sparque-filter/sparque-filter.service';
 import { SparqueProductService } from './services/sparque/sparque-product/sparque-product.service';
 import { SparqueSuggestService } from './services/sparque/sparque-suggest/sparque-suggest.service';
 import { ICMSuggestService, SuggestService } from './services/suggest/suggest.service';
@@ -21,8 +24,15 @@ import { ICMSuggestService, SuggestService } from './services/suggest/suggest.se
     },
     {
       provide: FilterService,
-      useFactory: () => inject(ICMFilterService),
-      //inject(FeatureToggleService).enabled('sparque') ? inject(SparqueFilterService) : inject(ICMFilterService),
+      useFactory: () =>
+        inject(FeatureToggleService).enabled('sparque') ? inject(SparqueFilterService) : inject(ICMFilterService),
+    },
+    {
+      provide: CategoriesService,
+      useFactory: () =>
+        inject(FeatureToggleService).enabled('sparque')
+          ? inject(SparqueCategoriesService)
+          : inject(ICMCategoriesService),
     },
   ],
 })

@@ -54,4 +54,5 @@ export abstract class FilterService {
 }
 
 @Injectable({ providedIn: 'root' })
+// eslint-disable-next-line ish-custom-rules/project-structure
 export class ICMFilterService extends FilterService {}
