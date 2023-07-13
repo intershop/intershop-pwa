@@ -1,5 +1,4 @@
-import { ApplicationRef, Inject, Injectable, isDevMode } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { ApplicationRef, Inject, Injectable, TransferState, isDevMode } from '@angular/core';
 import { Actions, ROOT_EFFECTS_INIT, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';

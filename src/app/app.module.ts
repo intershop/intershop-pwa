@@ -1,5 +1,5 @@
-import { APP_ID, NgModule } from '@angular/core';
-import { BrowserModule, TransferState } from '@angular/platform-browser';
+import { APP_ID, NgModule, TransferState } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UrlSerializer } from '@angular/router';
 

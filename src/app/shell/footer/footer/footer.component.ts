@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component, Input, OnInit, TransferState } from '@angular/core';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';

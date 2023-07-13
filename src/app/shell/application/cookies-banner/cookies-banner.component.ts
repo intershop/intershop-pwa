@@ -1,6 +1,5 @@
 import { AnimationEvent } from '@angular/animations';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component, OnInit, TransferState } from '@angular/core';
 
 import bottomOutAnimation from 'ish-core/animations/bottom-out.animation';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
@@ -21,7 +20,10 @@ export class CookiesBannerComponent implements OnInit {
   transitionBanner: string = undefined;
   cookiesConsentFor: string[] = undefined;
 
-  constructor(private transferState: TransferState, private cookiesService: CookiesService) {}
+  constructor(
+    private transferState: TransferState,
+    private cookiesService: CookiesService
+  ) {}
 
   ngOnInit() {
     this.showBannerIfNecessary();

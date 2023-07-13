@@ -1,5 +1,4 @@
-import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { TransferState, makeStateKey } from '@angular/platform-browser';
+import { Inject, Injectable, InjectionToken, TransferState, makeStateKey } from '@angular/core';
 import { Actions, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { TranslateLoader } from '@ngx-translate/core';
