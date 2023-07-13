@@ -9,6 +9,9 @@ kb_sync_latest_only
 
 ## From 4.2 to 5.0
 
+The project has been updated to work with Angular 16.
+Besides this a lot of other dependencies (NgRx, Typescript) have also been updated.
+
 For the optional usage of a shared Redis cache we switched from the plain standard NGINX Docker image to an [OpenResty](https://openresty.org/en/) Docker image that provides more flexibility to configure the underlying NGINX.
 If the NGINX container was customized in the project it has to be checked if those customizations work in the same way with the OpenResty image.
 Without any customizations the switch should not be noticeable and does not require any adaptions.

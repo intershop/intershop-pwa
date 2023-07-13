@@ -10,7 +10,7 @@ on:
     - cron: '0 0 * * 1'
 
 env:
-  NODE_VERSION: 16.16.0
+  NODE_VERSION: 18.16.0
 
 jobs:
   CancelPrevious:
