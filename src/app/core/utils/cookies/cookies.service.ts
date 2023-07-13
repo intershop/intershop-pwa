@@ -1,6 +1,5 @@
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { Inject, Injectable, TransferState } from '@angular/core';
 
 import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
