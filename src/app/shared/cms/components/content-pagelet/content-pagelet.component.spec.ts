@@ -38,11 +38,10 @@ describe('Content Pagelet Component', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
+        { provide: ContentPageletComponent, useClass: CMSTextComponent }, // Here the original should be replaced by the override
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-      .overrideComponent(ContentPageletComponent, { set: { entryComponents: [CMSTextComponent] } })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

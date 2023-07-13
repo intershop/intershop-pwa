@@ -30,12 +30,11 @@ describe('Lazy Captcha Component', () => {
     await TestBed.configureTestingModule({
       providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     })
-      .overrideModule(CaptchaV2ComponentModule, { set: { entryComponents: [CaptchaV2Component] } })
+      .overrideModule(CaptchaV2ComponentModule, { set: { declarations: [CaptchaV2Component] } })
       .overrideModule(CaptchaV3ComponentModule, {
         set: {
           imports: [TranslateModule.forRoot()],
           declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
-          entryComponents: [CaptchaV3Component],
           providers: [
             { provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' },
             { provide: ReCaptchaV3Service },
