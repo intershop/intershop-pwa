@@ -47,6 +47,8 @@ export class ContentDesignviewWrapperComponent implements OnInit {
   }
 
   action(id: string, action: string) {
+    console.log('PWA - action() - id:', id);
+    console.log('PWA - action() - action:', action);
     this.designviewService.messageToHost({ type: 'dv-clientAction', payload: { id, action } });
   }
 }
