@@ -22,7 +22,7 @@ describe('Content Pagelet Mapper', () => {
   });
 
   it('should throw on empty input', () => {
-    expect(() => contentPageletMapper.fromData(undefined)).toThrowError('falsy input');
+    expect(() => contentPageletMapper.fromData(undefined)).toThrow('falsy input');
   });
 
   it('should convert simple pagelet to single array instance', () => {

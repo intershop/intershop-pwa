@@ -16,7 +16,6 @@ describe('Content Page Tree Mapper', () => {
 
   describe('mapContentPageTreeElementPath()', () => {
     it('should throw on falsy or empty input', () => {
-      expect(() => contentPageTreeMapper.mapContentPageTreeElementPath(undefined)).toThrowError('input is falsy');
       expect(() => contentPageTreeMapper.mapContentPageTreeElementPath(undefined)).toThrow('input is falsy');
       expect(() => contentPageTreeMapper.mapContentPageTreeElementPath([])).toThrow('input is falsy');
     });

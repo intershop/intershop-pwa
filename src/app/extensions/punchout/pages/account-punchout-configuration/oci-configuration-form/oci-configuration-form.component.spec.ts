@@ -27,7 +27,7 @@ describe('Oci Configuration Form Component', () => {
     types: [
       {
         name: 'repeat-oci-config',
-        component: MockComponent(OciConfigurationRepeatFieldComponent),
+        component: OciConfigurationRepeatFieldComponent,
       },
     ],
   };
@@ -47,6 +47,7 @@ describe('Oci Configuration Form Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         OciConfigurationFormComponent,
+        OciConfigurationRepeatFieldComponent,
       ],
       providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
     }).compileComponents();

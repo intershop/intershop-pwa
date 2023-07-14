@@ -18,12 +18,12 @@ describe('Content Page Tree Helper', () => {
 
   describe('single()', () => {
     it('should throw if given element is falsy', () => {
-      expect(() => ContentPageTreeHelper.single(undefined)).toThrowError('falsy input');
+      expect(() => ContentPageTreeHelper.single(undefined)).toThrow('falsy input');
     });
 
     it('should throw if given element has no contentPageId', () => {
       const element = {} as ContentPageTreeElement;
-      expect(() => ContentPageTreeHelper.single(element)).toThrowError('content tree element has no contentPageId');
+      expect(() => ContentPageTreeHelper.single(element)).toThrow('content tree element has no contentPageId');
     });
 
     it('should create a tree if a simple root element is put in', () => {
@@ -63,8 +63,8 @@ describe('Content Page Tree Helper', () => {
       const tree = ContentPageTreeHelper.empty();
       const element = { contentPageId: 'A' } as ContentPageTreeElement;
 
-      expect(() => ContentPageTreeHelper.add(undefined, element)).toThrowError('falsy input');
-      expect(() => ContentPageTreeHelper.add(tree, undefined)).toThrowError('falsy input');
+      expect(() => ContentPageTreeHelper.add(undefined, element)).toThrow('falsy input');
+      expect(() => ContentPageTreeHelper.add(tree, undefined)).toThrow('falsy input');
     });
 
     it('should add a node to an empty tree when called', () => {
@@ -94,7 +94,7 @@ describe('Content Page Tree Helper', () => {
     it('should fail if the supplied element has no contentPageId', () => {
       const tree = ContentPageTreeHelper.empty();
       const element = {} as ContentPageTreeElement;
-      expect(() => ContentPageTreeHelper.add(tree, element)).toThrowError('content tree element has no contentPageId');
+      expect(() => ContentPageTreeHelper.add(tree, element)).toThrow('content tree element has no contentPageId');
     });
 
     it('should add a given element to the tree as additional root', () => {
