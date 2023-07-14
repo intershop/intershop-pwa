@@ -14,9 +14,7 @@ interface StorefrontEditingMessage {
 
 @Injectable({ providedIn: 'root' })
 export class DesignviewService {
-  private iapBaseURL = environment.iapBaseURL?.endsWith('/')
-    ? environment.iapBaseURL.substring(0, environment.iapBaseURL.length - 1)
-    : environment.iapBaseURL;
+  private iapBaseURL = environment.iapBaseURL?.replace(/\/$/, '');
   private allowedHostMessageTypes = ['dv-clientRefresh'];
   private hostMessagesSubject$ = new Subject<StorefrontEditingMessage>();
 
