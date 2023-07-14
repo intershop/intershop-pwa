@@ -54,10 +54,10 @@ describe('Direct Order Component', () => {
     expect(element.querySelectorAll('formly-group formly-field')).toMatchInlineSnapshot(`
       NodeList [
         <formly-field
-        ><ng-component
+        ><ish-input-test-field
           >TextInputFieldComponent: sku ish-text-input-field { "fieldClass": "col-12", "placeholder":
           "shopping_cart.direct_order.item_placeholder", "attributes": { "autocomplete": "on" }, "label":
-          "", "disabled": false}</ng-component
+          "", "disabled": false}</ish-input-test-field
         ></formly-field
       >,
       ]
