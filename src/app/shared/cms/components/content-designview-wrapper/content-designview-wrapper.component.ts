@@ -46,9 +46,7 @@ export class ContentDesignviewWrapperComponent implements OnInit {
     this.isDesignviewMode = this.previewService.previewContextId === 'DESIGNVIEW';
   }
 
-  action(id: string, action: string) {
-    console.log('PWA - action() - id:', id);
-    console.log('PWA - action() - action:', action);
+  triggerAction(id: string, action: string) {
     this.designviewService.messageToHost({ type: 'dv-clientAction', payload: { id, action } });
   }
 }

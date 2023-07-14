@@ -14,7 +14,9 @@ interface StorefrontEditingMessage {
 
 @Injectable({ providedIn: 'root' })
 export class DesignviewService {
-  private iapBaseURL = environment.iapBaseURL;
+  private iapBaseURL = environment.iapBaseURL?.endsWith('/')
+    ? environment.iapBaseURL.substring(0, environment.iapBaseURL.length - 1)
+    : environment.iapBaseURL;
   private allowedHostMessageTypes = ['dv-clientRefresh'];
   private hostMessagesSubject$ = new Subject<StorefrontEditingMessage>();
 
@@ -28,8 +30,6 @@ export class DesignviewService {
    * @param message The message to send to the host (including type and payload)
    */
   messageToHost(message: StorefrontEditingMessage) {
-    console.log('PWA - messageToHost() - message:', message);
-    console.log('PWA - messageToHost() - this.iapBaseURL:', this.iapBaseURL);
     window.parent.postMessage(message, this.iapBaseURL);
   }
 
@@ -112,7 +112,6 @@ export class DesignviewService {
    * Invoked by the event listener in `listenToHostMessages()` when a new message arrives.
    */
   private handleHostMessage(message: StorefrontEditingMessage) {
-    console.log('PWA - handleHostMessage() - message:', message);
     switch (message.type) {
       case 'dv-clientRefresh': {
         location.reload();

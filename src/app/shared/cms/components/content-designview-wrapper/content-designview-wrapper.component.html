@@ -6,14 +6,14 @@
         <ng-container *ngIf="pagelet$ | async as pagelet">
           <div class="name">{{ pagelet.displayName }}</div>
           <button
-            (click)="action(pagelet.id, 'pageletEdit')"
+            (click)="triggerAction(pagelet.id, 'pageletEdit')"
             class="btn"
             title="{{ 'designview.edit.link.title' | translate }}"
           >
             <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
           </button>
           <!-- <button
-            (click)="action(pagelet.id, 'pageletDelete')"
+            (click)="triggerAction(pagelet.id, 'pageletDelete')"
             class="btn"
             title="{{ 'designview.delete.link.title' | translate }}"
           >
@@ -25,7 +25,7 @@
       <ng-container *ngIf="type === 'slot'">
         <div class="name">{{ pagelet.slot(this.slotId).displayName }}</div>
         <button
-          (click)="action(this.slotId, 'slotAdd')"
+          (click)="triggerAction(this.slotId, 'slotAdd')"
           class="btn"
           title="{{ 'designview.add.link.title' | translate }}"
         >
@@ -36,7 +36,7 @@
       <ng-container *ngIf="type === 'include'">
         <div class="name">{{ include.displayName }}</div>
         <button
-          (click)="action(include.id, 'includeAdd')"
+          (click)="triggerAction(include.id, 'includeAdd')"
           class="btn"
           title="{{ 'designview.add.link.title' | translate }}"
         >
