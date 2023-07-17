@@ -59,6 +59,31 @@ The resulting distribution has to be executed in a node environment.
 The _server.js_ executable handles client requests on the server and pre-renders the content of the page, basically executing everything in a _Node.js_ environment.
 The resulting initial page response to the browser is mainly prepared and can be displayed quickly on the client side while the client-side application is booting up.
 
+```mermaid
+sequenceDiagram
+participant REST API
+participant Angular Server (dynamic)
+participant Browser App
+activate Browser App
+Browser App->>Angular Server (dynamic): .
+activate Angular Server (dynamic)
+deactivate Browser App
+Angular Server (dynamic)->>Angular Server (dynamic): .
+Angular Server (dynamic)->>+REST API: .
+REST API->>-Angular Server (dynamic): .
+Angular Server (dynamic)->>Angular Server (dynamic): .
+Angular Server (dynamic)->>+REST API: .
+Angular Server (dynamic)->>+REST API: .
+REST API->>-Angular Server (dynamic): .
+REST API->>-Angular Server (dynamic): .
+Angular Server (dynamic)->>+Browser App: .
+deactivate Angular Server (dynamic)
+Browser App->>Browser App: .
+Browser App->>+REST API: .
+REST API->>-Browser App: .
+Browser App->>-Browser App: .
+```
+
 ![Angular-ServerSideRendering-Sequence](deployment-angular-serversiderendering-sequence.jpg 'Angular-ServerSideRendering-Sequence')
 
 This method is the default setup for the Intershop PWA.
