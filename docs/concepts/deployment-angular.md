@@ -14,6 +14,23 @@ When running `npm run build` in any shape or form, the build output is aggregate
 
 When the application is served this way, the initial page response for the browser is minimal (`index.html` with scripts inserted) and the application gets composed and rendered on the client side.
 
+```mermaid
+sequenceDiagram
+Browser App->>+HTTP Server (static): Initial request
+activate Browser App
+HTTP Server (static)->>-Browser App:
+Browser App->>+REST API:
+    Browser App->>+HTTP Server (static): Lazy loading
+    HTTP Server (static)->>-Browser App:
+    Browser App->>Browser App:
+REST API->>-Browser App:
+Browser App->>+REST API:
+Browser App->>+REST API:
+REST API->>-Browser App:
+REST API->>-Browser App:
+deactivate Browser App
+```
+
 ![Angular-BrowserSideApp-Sequence](deployment-angular-browsersideapp-sequence.jpg 'Angular-BrowserSideApp-Sequence')
 
 You can get your hands on that HTTP Server by building a container image based on file `Dockerfile_noSSR`.
