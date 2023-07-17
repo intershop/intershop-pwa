@@ -16,9 +16,13 @@ When the application is served this way, the initial page response for the brows
 
 ```mermaid
 sequenceDiagram
+participant REST API
+participant HTTP Server (static)
+participant Browser App
 Browser App->>+HTTP Server (static): Initial request
 activate Browser App
 HTTP Server (static)->>-Browser App: .
+Browser App->>Browser App: .
 Browser App->>+REST API: .
 Browser App->>+HTTP Server (static): Lazy loading
 HTTP Server (static)->>-Browser App: .
@@ -28,6 +32,8 @@ Browser App->>+REST API: .
 Browser App->>+REST API: .
 REST API->>-Browser App: .
 REST API->>-Browser App: .
+Browser App->>Browser App: .
+Browser App->>Browser App: .
 deactivate Browser App
 ```
 
