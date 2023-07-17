@@ -52,7 +52,7 @@ It is the client's responsibility to interpret and "render" such a composition t
 In the PWA this is done by mapping each element onto an Angular specific render component.
 
 ```mermaid
-%%{ init: { 'flowchart': { 'curve': 'natural', 'theme': 'neutral' } } }%%
+%%{init: {'theme':'neutral'}}%%
 flowchart LR
 B--'includes/pwa.include...'-->A
 A-->B
