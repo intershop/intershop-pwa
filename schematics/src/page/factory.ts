@@ -68,7 +68,7 @@ async function determineRoutingModule(
   let subPaging: boolean;
 
   const match = options.name.match(/(.*)\-([a-z0-9]+)/);
-  if (options.lazy && match && match[1] && match[2]) {
+  if (options.lazy && match?.[1] && match[2]) {
     const parent = match[1];
     const possibleChild = match[2];
     routingModuleLocation = options.extension

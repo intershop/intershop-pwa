@@ -1,3 +1,4 @@
+/* eslint-disable prefer-rest-params */
 export function logMethod(target: object, key: string, descriptor: PropertyDescriptor) {
   const original = descriptor.value;
   descriptor.value = function () {

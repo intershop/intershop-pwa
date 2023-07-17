@@ -48,7 +48,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
     combineLatest([this.shippingMethods$, this.basket$])
       .pipe(take(1), takeUntil(this.destroy$))
       .subscribe(([shippingMethods, basket]) => {
-        this.nextDisabled = !basket || !shippingMethods || !shippingMethods.length || !basket.commonShippingMethod;
+        this.nextDisabled = !basket || !shippingMethods?.length || !basket.commonShippingMethod;
         this.cd.markForCheck();
         if (!this.nextDisabled) {
           this.checkoutFacade.continue(CheckoutStepType.Payment);
