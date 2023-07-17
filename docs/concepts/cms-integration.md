@@ -51,6 +51,23 @@ With this API, a client can retrieve a composition of involved CMS objects (e.g.
 It is the client's responsibility to interpret and "render" such a composition tree.
 In the PWA this is done by mapping each element onto an Angular specific render component.
 
+```mermaid
+%%{ init: { 'flowchart': { 'curve': 'stepBefore' } } }%%
+flowchart LR
+B--'includes/pwa.include...'-->A
+A-->B
+subgraph CMS Integration
+subgraph Server
+A("JSON-formatted composition")
+end
+subgraph Angular Client
+B("home-page.component.html")
+C("carousel")--maps---D("cms-carousel.component.html")
+E("image")--maps---F("cms-image.component.html")
+end
+end
+```
+
 ![CMS Integration Overview](cms-integration.png)
 
 ## Angular CMS Components
