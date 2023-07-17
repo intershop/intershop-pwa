@@ -72,6 +72,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
 
   ngOnInit() {
     // keep reference for payone cc component
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisComp = this;
 
     // register helper function to call the callback function of this component

@@ -20,10 +20,7 @@ export class CookiesBannerComponent implements OnInit {
   transitionBanner: string = undefined;
   cookiesConsentFor: string[] = undefined;
 
-  constructor(
-    private transferState: TransferState,
-    private cookiesService: CookiesService
-  ) {}
+  constructor(private transferState: TransferState, private cookiesService: CookiesService) {}
 
   ngOnInit() {
     this.showBannerIfNecessary();

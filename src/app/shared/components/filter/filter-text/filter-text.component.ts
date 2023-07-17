@@ -41,11 +41,8 @@ export class FilterTextComponent implements OnInit {
   facets: Facet[] = [];
 
   ngOnInit() {
-    this.maxLevel =
-      Math.max.apply(
-        Math,
-        this.filterElement.facets.map(o => o.level)
-      ) || 0;
+    this.maxLevel = Math.max(...this.filterElement.facets.map(o => o.level)) || 0;
+
     this.facets = this.filterElement.facets.filter(x => x.selected || !this.maxLevel || x.level >= this.maxLevel);
   }
 

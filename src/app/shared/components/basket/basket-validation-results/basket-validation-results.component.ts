@@ -59,49 +59,44 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
     this.errorMessages$ = this.validationResults$.pipe(
       map(results =>
         uniq(
-          results?.errors &&
-            results.errors
-              .filter(
-                error =>
-                  !this.isLineItemMessage(error) &&
-                  ![
-                    'basket.validation.line_item_shipping_restrictions.error',
-                    'basket.validation.basket_not_covered.error',
-                  ].includes(error.code)
-              )
-              .map(error =>
-                error.parameters?.shippingRestriction ? error.parameters.shippingRestriction : error.message
-              )
+          results?.errors
+            ?.filter(
+              error =>
+                !this.isLineItemMessage(error) &&
+                ![
+                  'basket.validation.line_item_shipping_restrictions.error',
+                  'basket.validation.basket_not_covered.error',
+                ].includes(error.code)
+            )
+            .map(error =>
+              error.parameters?.shippingRestriction ? error.parameters.shippingRestriction : error.message
+            )
         ).filter(message => !!message)
       )
     );
 
     this.undeliverableItems$ = this.validationResults$.pipe(
-      map(
-        results =>
-          results?.errors &&
-          results.errors
-            .filter(error => error.code === 'basket.validation.line_item_shipping_restrictions.error' && error.lineItem)
-            .map(error => ({ ...error.lineItem }))
+      map(results =>
+        results?.errors
+          ?.filter(error => error.code === 'basket.validation.line_item_shipping_restrictions.error' && error.lineItem)
+          .map(error => ({ ...error.lineItem }))
       )
     );
 
     this.removedItems$ = this.validationResults$.pipe(
-      map(
-        results =>
-          results?.infos &&
-          results.infos
-            .map(info => ({
-              message: info.message,
-              productSKU: info.parameters?.productSku,
-              price: info.lineItem?.price,
-            }))
-            .filter(info => !!info.productSKU)
+      map(results =>
+        results?.infos
+          ?.map(info => ({
+            message: info.message,
+            productSKU: info.parameters?.productSku,
+            price: info.lineItem?.price,
+          }))
+          .filter(info => !!info.productSKU)
       )
     );
 
     this.infoMessages$ = this.validationResults$.pipe(
-      map(results => uniq(results?.infos && results.infos.map(info => info.message)).filter(message => !!message))
+      map(results => uniq(results?.infos?.map(info => info.message)).filter(message => !!message))
     );
   }
 
