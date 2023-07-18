@@ -13,9 +13,11 @@ export class SparqueSuggestService extends SuggestService {
 
   search(searchTerm: string): Observable<SuggestTerm[]> {
     return this.sparqueApiService.get<SparqueResponse>(`e/keywordsuggest/p/keyword/${searchTerm}/results`).pipe(
-      map((object: SparqueResponse) =>
-        // eslint-disable-next-line ish-custom-rules/no-object-literal-type-assertion
-        object.items.map((item: SparqueItems) => ({ term: item.tuple[0] } as unknown as SuggestTerm))
+      map(response =>
+        response?.items?.map(
+          // eslint-disable-next-line ish-custom-rules/no-object-literal-type-assertion
+          (item: SparqueItems) => ({ type: undefined, term: item.tuple[0] } as unknown as SuggestTerm)
+        )
       )
     );
   }

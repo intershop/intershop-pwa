@@ -6,7 +6,7 @@ import { FilterService, ICMFilterService } from './services/filter/filter.servic
 import { ICMProductsService, ProductsService } from './services/products/products.service';
 import { SparqueCategoriesService } from './services/sparque/sparque-categories/sparque-categories.service';
 import { SparqueFilterService } from './services/sparque/sparque-filter/sparque-filter.service';
-import { SparqueProductService } from './services/sparque/sparque-product/sparque-product.service';
+import { SparqueProductsService } from './services/sparque/sparque-products/sparque-products.service';
 import { SparqueSuggestService } from './services/sparque/sparque-suggest/sparque-suggest.service';
 import { ICMSuggestService, SuggestService } from './services/suggest/suggest.service';
 
@@ -15,7 +15,7 @@ import { ICMSuggestService, SuggestService } from './services/suggest/suggest.se
     {
       provide: ProductsService,
       useFactory: () =>
-        inject(FeatureToggleService).enabled('sparque') ? inject(SparqueProductService) : inject(ICMProductsService),
+        inject(FeatureToggleService).enabled('sparque') ? inject(SparqueProductsService) : inject(ICMProductsService),
     },
     {
       provide: SuggestService,

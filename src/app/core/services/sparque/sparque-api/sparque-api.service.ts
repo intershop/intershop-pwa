@@ -38,11 +38,11 @@ export class SparqueApiService {
 
   static getAppliedFilterPath(searchParameter: URLFormParams): string {
     return Object.keys(searchParameter)
-      .filter(key => key !== 'searchTerm')
+      .filter(key => key !== 'searchTerm' && key !== 'SearchParameter')
       .map(key =>
         DEFINED_FACETS.includes(key)
-          ? `/e/${encodeURIComponent(key)}:FILTER/p/value/1(${encodeURIComponent(searchParameter[key][0])})`
-          : `/e/facet_filter/p/attribute/${key}/p/value/1(${encodeURI(searchParameter[key][0])})`
+          ? `e/${encodeURIComponent(key)}:FILTER/p/value/1(${encodeURIComponent(searchParameter[key][0])})`
+          : `e/facet_filter/p/attribute/${key}/p/value/1(${encodeURI(searchParameter[key][0])})`
       )
       .reduce((prev, curr, idx, arr) => prev.concat(curr, idx !== arr.length - 1 ? '/' : ''), '');
   }

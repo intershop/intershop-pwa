@@ -9,7 +9,7 @@ import { SparqueApiService } from 'ish-core/services/sparque/sparque-api/sparque
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })
-export class SparqueProductService extends ProductsService {
+export class SparqueProductsService extends ProductsService {
   private sparqueApiService = inject(SparqueApiService);
 
   searchProducts(
@@ -41,7 +41,7 @@ export class SparqueProductService extends ProductsService {
     _sortKey?: string,
     offset = 0
   ): Observable<{ total: number; products: Partial<Product>[]; sortableAttributes: SortableAttributesType[] }> {
-    const searchterm = searchParameter.searchTerm[0];
+    const searchterm = searchParameter.searchTerm ? searchParameter.searchTerm[0] : '';
     return this.searchProductKeys(searchterm, amount, offset, searchParameter).pipe(
       switchMap(({ skus, sortableAttributes, total }) =>
         iif(
@@ -93,7 +93,7 @@ export class SparqueProductService extends ProductsService {
   ): Observable<{ skus: string[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     return this.sparqueApiService
       .get<[SparqueResponse, SparqueCountResponse]>(
-        `e/category/p/value/${
+        `e/categoryproducts/p/value/${
           categoryUniqueId.split('.')[categoryUniqueId.split('.').length - 1]
         }/results,count?count=${amount}&offset=${offset}`
       )
@@ -112,10 +112,6 @@ export class SparqueProductService extends ProductsService {
     offset?: number,
     searchParameter?: URLFormParams
   ): Observable<{ skus: string[]; sortableAttributes: SortableAttributesType[]; total: number }> {
-    if (!searchTerm) {
-      return throwError(() => new Error('searchProducts() called without searchTerm'));
-    }
-
     const appliedFilterPath = searchParameter ? SparqueApiService.getAppliedFilterPath(searchParameter) : '';
 
     // sortableAttributes and total are missing in REST response

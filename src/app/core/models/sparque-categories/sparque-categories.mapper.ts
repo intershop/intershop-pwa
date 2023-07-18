@@ -1,53 +1,47 @@
-import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { SparqueItems, SparqueResponse, SparqueTupel } from 'ish-core/models/sparque/sparque.interface';
 
 export class SparqueCategoriesMapper {
   static fromData(data: SparqueResponse, locale: string): CategoryTree {
-    return data.items.reduce(
-      (prev, curr, _idx, array) => {
-        const cachedCustomIds = new Map<string, string>();
-        const parent = curr.tuple[0];
-        if (!cachedCustomIds.has(parent.attributes.identifier)) {
-          cachedCustomIds.set(
-            parent.attributes.identifier,
-            SparqueCategoriesMapper.getCustomId(array, parent.attributes.identifier)
-          );
-        }
-        const customParentId = cachedCustomIds.get(parent.attributes.identifier);
+    return data.items.reduce((prev, curr, _idx, array) => {
+      const cachedCustomIds = new Map<string, string>();
+      const parent = curr.tuple[0];
+      if (!cachedCustomIds.has(parent.attributes.identifier)) {
+        cachedCustomIds.set(
+          parent.attributes.identifier,
+          SparqueCategoriesMapper.getCustomId(array, parent.attributes.identifier)
+        );
+      }
+      const customParentId = cachedCustomIds.get(parent.attributes.identifier);
 
-        const child = curr.tuple[1];
-        if (!cachedCustomIds.has(child.attributes.identifier)) {
-          cachedCustomIds.set(
-            child.attributes.identifier,
-            SparqueCategoriesMapper.getCustomId(array, child.attributes.identifier)
-          );
-        }
-        const customChildId = cachedCustomIds.get(child.attributes.identifier);
+      const child = curr.tuple[1];
+      if (!cachedCustomIds.has(child.attributes.identifier)) {
+        cachedCustomIds.set(
+          child.attributes.identifier,
+          SparqueCategoriesMapper.getCustomId(array, child.attributes.identifier)
+        );
+      }
+      const customChildId = cachedCustomIds.get(child.attributes.identifier);
 
-        return {
-          ...prev,
-          rootIds:
-            parent.attributes.root === 1 && !prev.rootIds.includes(customParentId)
-              ? [...prev.rootIds, customParentId]
-              : prev.rootIds,
-          nodes: {
-            ...prev.nodes,
-            [customParentId]: SparqueCategoriesMapper.fromSingle(parent, customParentId, locale),
-            [customChildId]: SparqueCategoriesMapper.fromSingle(child, customChildId, locale),
-          },
-          edges: {
-            ...prev.edges,
-            [customParentId]:
-              prev.edges[customParentId] === undefined
-                ? [customChildId]
-                : [...prev.edges[customParentId], customChildId],
-          },
-        };
-      },
-      // eslint-disable-next-line ish-custom-rules/no-object-literal-type-assertion
-      { nodes: {}, edges: {}, rootIds: [] } as CategoryTree
-    );
+      return {
+        ...prev,
+        rootIds:
+          parent.attributes.root === 1 && !prev.rootIds.includes(customParentId)
+            ? [...prev.rootIds, customParentId]
+            : prev.rootIds,
+        nodes: {
+          ...prev.nodes,
+          [customParentId]: SparqueCategoriesMapper.fromSingle(parent, customParentId, locale),
+          [customChildId]: SparqueCategoriesMapper.fromSingle(child, customChildId, locale),
+        },
+        edges: {
+          ...prev.edges,
+          [customParentId]:
+            prev.edges[customParentId] === undefined ? [customChildId] : [...prev.edges[customParentId], customChildId],
+        },
+      };
+    }, CategoryTreeHelper.empty());
   }
 
   private static fromSingle(data: SparqueTupel, customId: string, locale: string): Category {

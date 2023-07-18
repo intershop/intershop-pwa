@@ -28,7 +28,13 @@ export class SparqueFilterService extends FilterService {
       .getRelevantInformation$()
       .pipe(
         switchMap(([basketSKUs, userId, locale]) =>
-          this.getAllFilters$(searchParameter.searchTerm[0], locale, userId, basketSKUs, searchParameter)
+          this.getAllFilters$(
+            searchParameter.searchTerm ? searchParameter.searchTerm[0] : '',
+            locale,
+            userId,
+            basketSKUs,
+            searchParameter
+          )
         )
       );
   }
