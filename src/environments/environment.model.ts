@@ -201,5 +201,5 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   priceUpdate: 'always',
 
   /* STOREFRONT EDITING IAP URL */
-  iapBaseURL: 'http://localhost:4200',
+  iapBaseURL: 'https://iap-app-int.test.intershop.com',
 };
