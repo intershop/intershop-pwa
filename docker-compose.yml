@@ -68,7 +68,7 @@ services:
       UPSTREAM_PWA: 'http://pwa:4200'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
-      # SSL: 1
+      SSL: 1
       # SSR: 0
       # DEBUG: 1
       # PROMETHEUS: 1
