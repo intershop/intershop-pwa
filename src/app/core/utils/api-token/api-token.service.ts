@@ -26,6 +26,7 @@ import {
   map,
   mergeMap,
   pairwise,
+  shareReplay,
   startWith,
   switchMap,
   take,
@@ -69,6 +70,8 @@ export class ApiTokenService {
 
   private initialCookie$: Subject<ApiTokenCookie>;
 
+  private cookieChangeEvent$: Observable<[ApiTokenCookie, ApiTokenCookie]>;
+
   constructor(private cookiesService: CookiesService, private store: Store, private appRef: ApplicationRef) {
     // setup initial values
     const initialCookie = this.parseCookie();
@@ -76,12 +79,27 @@ export class ApiTokenService {
     this.apiToken$ = new BehaviorSubject<string>(initialCookie?.apiToken);
 
     if (!SSR) {
+      this.cookieChangeEvent$ = this.checkCookieRoutine().pipe(shareReplay(1));
       this.saveTokenRoutine();
       this.logoutRoutine();
       this.tokenVanishRoutine();
       this.tokenVanishOnAnotherTabRoutine();
       this.tokenCreatedOnAnotherTabRoutine();
     }
+  }
+
+  private checkCookieRoutine() {
+    return this.appRef.isStable.pipe(
+      whenTruthy(),
+      first(),
+      mergeMap(() =>
+        interval(1000).pipe(
+          map(() => this.parseCookie()),
+          pairwise(),
+          distinctUntilChanged((prev, curr) => isEqual(prev, curr))
+        )
+      )
+    );
   }
 
   private logoutRoutine() {
@@ -123,20 +141,12 @@ export class ApiTokenService {
 
   private tokenVanishRoutine() {
     // access token vanishes routine
-    this.appRef.isStable
+
+    this.cookieChangeEvent$
       .pipe(
-        whenTruthy(),
-        first(),
-        mergeMap(() =>
-          interval(1000).pipe(
-            map(() => this.parseCookie()),
-            pairwise(),
-            // trigger only if application token exists but external token vanished
-            withLatestFrom(this.apiToken$),
-            filter(([[previous, current], apiToken]) => !!previous && !current && !!apiToken),
-            map(([[previous]]) => previous.type)
-          )
-        )
+        withLatestFrom(this.apiToken$),
+        filter(([[previous, current], apiToken]) => !!previous && !current && !!apiToken),
+        map(([[previous]]) => previous.type)
       )
       .subscribe(type => {
         this.apiToken$.next(undefined);
@@ -146,32 +156,24 @@ export class ApiTokenService {
 
   private tokenVanishOnAnotherTabRoutine() {
     // cookie vanishes routine when user is logged out in an another tab
-    this.appRef.isStable
+
+    this.cookieChangeEvent$
       .pipe(
-        whenTruthy(),
-        first(),
-        mergeMap(() =>
-          interval(1000).pipe(
-            map(() => this.parseCookie()),
-            pairwise(),
-            filter(([previous, current]) => previous?.type === 'user' && current?.type === 'anonymous'), // user is logged out and got a new token as an anonymous user
-            withLatestFrom(
-              this.store.pipe(select(getLoggedInUser), startWith(undefined), pairwise()),
-              this.store.pipe(select(getCurrentBasket)),
-              this.store.pipe(select(getSelectedOrderId)),
-              this.apiToken$
-            ),
-            switchMap(([[previous, current], ...ctx]) =>
-              of(ctx).pipe(
-                this.mapToApiTokenCookie(),
-                filter(calculated => calculated?.type === 'user'), // application calculated an user api token cookie although an anonymous cookie is stored
-                map<ApiTokenCookie, [ApiTokenCookieType, string]>(() => [previous.type, current.apiToken])
-              )
-            )
+        filter(([previous, current]) => previous?.type === 'user' && current?.type === 'anonymous'), // user is logged out and got a new token as an anonymous user
+        withLatestFrom(
+          this.store.pipe(select(getLoggedInUser), startWith(undefined), pairwise()),
+          this.store.pipe(select(getCurrentBasket)),
+          this.store.pipe(select(getSelectedOrderId)),
+          this.apiToken$
+        ),
+        switchMap(([[previous, current], ...ctx]) =>
+          of(ctx).pipe(
+            this.mapToApiTokenCookie(),
+            filter(calculated => calculated?.type === 'user'), // application calculated an user api token cookie although an anonymous cookie is stored
+            map<ApiTokenCookie, [ApiTokenCookieType, string]>(() => [previous.type, current.apiToken])
           )
         )
       )
-
       .subscribe(([type, apiToken]) => {
         this.apiToken$.next(apiToken);
         this.cookieVanishes$.next(type);
@@ -180,31 +182,23 @@ export class ApiTokenService {
 
   private tokenCreatedOnAnotherTabRoutine() {
     // cookie created routine when user is logged in in an another tab
-    this.appRef.isStable
+    this.cookieChangeEvent$
       .pipe(
-        whenTruthy(),
-        first(),
-        mergeMap(() =>
-          interval(1000).pipe(
-            map(() => this.parseCookie()),
-            pairwise(),
-            filter(
-              ([previous, current]) =>
-                (!previous || previous?.type === 'anonymous') && current?.type === 'user' && !!current?.apiToken
-            ), // first time after a login cookie appears
-            withLatestFrom(
-              this.store.pipe(select(getLoggedInUser), startWith(undefined), pairwise()),
-              this.store.pipe(select(getCurrentBasket)),
-              this.store.pipe(select(getSelectedOrderId)),
-              this.apiToken$
-            ),
-            switchMap(([[, current], ...ctx]) =>
-              of(ctx).pipe(
-                this.mapToApiTokenCookie(),
-                filter(calculated => !calculated || calculated?.type === 'anonymous'), // application calculated an anonymous  api token cookie although an user cookie is stored
-                map(() => current)
-              )
-            )
+        filter(
+          ([previous, current]) =>
+            (!previous || previous?.type === 'anonymous') && current?.type === 'user' && !!current?.apiToken
+        ), // first time after a login cookie appears
+        withLatestFrom(
+          this.store.pipe(select(getLoggedInUser), startWith(undefined), pairwise()),
+          this.store.pipe(select(getCurrentBasket)),
+          this.store.pipe(select(getSelectedOrderId)),
+          this.apiToken$
+        ),
+        switchMap(([[, current], ...ctx]) =>
+          of(ctx).pipe(
+            this.mapToApiTokenCookie(),
+            filter(calculated => !calculated || calculated?.type === 'anonymous'), // application calculated an anonymous  api token cookie although an user cookie is stored
+            map(() => current)
           )
         ),
         tap(cookieValue => {
