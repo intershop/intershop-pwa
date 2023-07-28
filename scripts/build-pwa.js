@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 
+const angularJson = JSON.parse(fs.readFileSync('./angular.json', { encoding: 'utf-8' }));
+
 /**
  * remove service worker cache check for resources (especially index.html)
  * https://github.com/angular/angular/issues/23613#issuecomment-415886919
@@ -15,7 +17,6 @@ function removeServiceWorkerCacheCheck(args) {
     outputPath = outputPathArg.split('=')[1];
   } else {
     // get default outputPath from angular.json
-    const angularJson = JSON.parse(fs.readFileSync('./angular.json', { encoding: 'utf-8' }));
     outputPath = angularJson.projects[angularJson.defaultProject].architect.build.options.outputPath;
   }
 
@@ -47,7 +48,7 @@ const server = processArgs.includes('server') || !processArgs.includes('client')
 const remainingArgs = processArgs.filter(a => a !== 'client' && a !== 'server');
 
 if (client) {
-  execSync(`npm run ng -- build ${configString} ${remainingArgs.join(' ')}`, {
+  execSync(`npm run ng -- build ${angularJson.defaultProject} ${configString} ${remainingArgs.join(' ')}`, {
     stdio: 'inherit',
   });
   removeServiceWorkerCacheCheck(remainingArgs);
@@ -58,7 +59,7 @@ if (configuration) {
 }
 
 if (server) {
-  execSync(`npm run ng -- run intershop-pwa:server${configString} ${remainingArgs.join(' ')}`, {
+  execSync(`npm run ng -- run ${angularJson.defaultProject}:server${configString} ${remainingArgs.join(' ')}`, {
     stdio: 'inherit',
   });
 }
