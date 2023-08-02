@@ -9,6 +9,10 @@ kb_sync_latest_only
 
 ## From 4.2 to 5.0
 
+For the optional usage of a shared Redis cache we switched from the plain standard NGINX Docker image to an [OpenResty](https://openresty.org/en/) Docker image that provides more flexibility to configure the underlying NGINX.
+If the NGINX container was customized in the project it has to be checked if those customizations work in the same way with the OpenResty image.
+Without any customizations the switch should not be noticeable and does not require any adaptions.
+
 We renamed the input parameter 'id' to 'productListingId' for the product listing component to avoid unintentionally having more than one element with the same id in the HTML document.
 The api-token.service has been refactored and the class variables `apiToken$` and `cookieVanishes$` have got the private modifier.
 Use the public getter/setter methods to access these variables outside the class.
