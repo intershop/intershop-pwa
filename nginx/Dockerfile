@@ -1,4 +1,12 @@
-FROM nginx:1.22
+FROM openresty/openresty:1.21.4.2-0-jammy
+COPY --from=nginx:mainline /docker-entrypoint.sh /
+COPY --from=nginx:mainline /docker-entrypoint.d/*.sh /docker-entrypoint.d/
+RUN cp /usr/local/openresty/nginx/conf/mime.types /etc/nginx/mime.types \
+  && useradd -Ms /bin/false nginx
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
+
+# FROM nginx:1.22.1
 RUN apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils libnss3-tools
 COPY nginx.conf /etc/nginx/nginx.conf
