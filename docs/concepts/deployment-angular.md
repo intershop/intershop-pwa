@@ -35,6 +35,8 @@ In a second step in the build process, a server-side application can be built by
 The resulting distribution has to be executed in a node environment.
 The _server.js_ executable handles client requests on the server and pre-renders the content of the page, basically executing everything in a _Node.js_ environment.
 The resulting initial page response to the browser is mainly prepared and can be displayed quickly on the client side while the client-side application is booting up.
+With the introduction of the non-destructive [Client Hydration](https://angular.io/guide/hydration) in Angular V16 the server side rendered application is restored on the client, reusing the server-rendered DOM structures, preserving the application state, transferring application data that was already retrieved by the server, and other processes.
+This leads to significant performance improvements.
 
 ![Angular-ServerSideRendering-Sequence](deployment-angular-serversiderendering-sequence.jpg 'Angular-ServerSideRendering-Sequence')
 

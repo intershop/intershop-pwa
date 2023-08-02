@@ -16,6 +16,8 @@ The spelling of the OCI punchout actions has changed due to a changed naming sch
 
 Because `defaultProject` is not a valid option in the `angular.json` any more it has been removed and the root project (project with an empty root) is used instead.
 
+We enabled the [Angular Hydration](https://angular.io/guide/hydration) to improve the performance and avoid the UI flickering when a page is rendered - please note, that this feature is still in developer preview and may also have some constraints.
+
 For the optional usage of a shared Redis cache we switched from the plain standard NGINX Docker image to an [OpenResty](https://openresty.org/en/) Docker image that provides more flexibility to configure the underlying NGINX.
 If the NGINX container was customized in the project it has to be checked if those customizations work in the same way with the OpenResty image.
 Without any customizations the switch should not be noticeable and does not require any adaptions.
