@@ -543,7 +543,7 @@
   "account.wishlists.widget.heading": "Articles sur votre liste de souhaits",
   "account.wishlists.wishlist_form.cancel_button.text": "Annuler",
   "account.wishlists.wishlist_form.name.error.maxlength": "Le nom de la liste de souhaits ne doit pas dépasser 35 caractères. ",
-  "account.wishlists.wishlist_form.name.error.required": "Veuillez entrer un nom pour la liste de souhaits.",
+  "account.wishlists.wishlist_form.name.error.required": "Veuillez saisir un nom pour la liste de souhaits.",
   "account.wishlists.wishlist_form.name.label": "Nom de la liste de souhaits",
   "account.wishlists.wishlist_form.preferred.label": "Liste préférée",
   "account.wishlists.wishlist_form.preferred.tooltip.content": "La sélection marquera la liste de souhaits comme liste préférée et ramenera tous les autres (s’il y en a) au statut normal. Tous les produits ajoutés seront ajoutés par défaut à cette liste de souhaits.",
