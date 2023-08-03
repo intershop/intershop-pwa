@@ -167,6 +167,7 @@ sitekey
 sku
 skus
 spgid
+srcache
 sslmode
 storefinder
 stylelint

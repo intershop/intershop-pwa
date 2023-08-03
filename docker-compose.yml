@@ -57,10 +57,15 @@ services:
   #
   # </CDN-Example>
 
+  memcached:
+    image: memcached
+    command: memcached -vv -m 2048 -I 10M
+
   nginx:
     build: nginx
     depends_on:
       - pwa
+      - memcached
     ports:
       - '4200:80'
       # - '4200:443'
@@ -70,6 +75,7 @@ services:
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
       # LOG_ALL: off
+      # CACHE_DURATION_NGINX: 1d
       # SSL: 1
       # SSR: 0
       # DEBUG: 1

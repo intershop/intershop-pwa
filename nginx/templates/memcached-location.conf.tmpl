@@ -1,0 +1,22 @@
+location = /memc {
+    internal;
+    memc_connect_timeout 100ms;
+    memc_send_timeout 100ms;
+    memc_read_timeout 100ms;
+    memc_ignore_client_abort on;
+    client_max_body_size 0;
+
+    set_unescape_uri $memc_key $arg_key;
+
+    set_by_lua_block $memc_exptime {
+        if ngx.var.arg_exptime ~= nil then
+            if tonumber(ngx.var.arg_exptime) > 2592000 then
+                return "2592000"
+            end
+            return ngx.var.arg_exptime
+        end
+        return "0"
+    }
+
+    memc_pass my_memcached;
+}

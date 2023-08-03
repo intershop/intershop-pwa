@@ -1,4 +1,5 @@
 {{ $UPSTREAM_PWA := getenv "UPSTREAM_PWA" }}
+{{ $CACHE_ACTIVE := getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes" }}
 
 {{ define "LOCATION_TEMPLATE" }}
         {{- $channel := .channel }}
@@ -25,20 +26,28 @@
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
 
-        add_header X-Cache-Status $upstream_cache_status;
-        proxy_ignore_headers Cache-Control;
-        proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
-        proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
 
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;
         add_header X-ua-device $ua_device always;
 
         rewrite ^.*$ $ssr_rewrite;
-        set $c_uri $ssr_curi;
+
+      {{- if getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes" }}
+        srcache_store_statuses 200 404;
+        srcache_store_max_size 10000k;
+        add_header X-Cache-Fetch-Status $srcache_fetch_status always;
+        add_header X-Cache-Store-Status $srcache_store_status always;
+
+        srcache_default_expire {{ getenv "CACHE_DURATION_NGINX" }};
 
         # make a nice cache key without parameters
-        proxy_cache_key $scheme://$host$uri$c_uri;
+        set $c_uri $ssr_curi;
+        # for debugging set a readable key using `set_escape_uri`
+        set_sha1 $key $scheme://$host$uri$c_uri;
+        srcache_fetch GET /memc key=$key;
+        srcache_store PUT /memc key=$key&exptime=$srcache_expire&status=$status;
+      {{- end }}
 
         rewrite ^.*/index.html$ {{ $baseHref }}/loading;
 
@@ -79,6 +88,13 @@
       {{- end -}}
 {{- end }}
 
+{{- if $CACHE_ACTIVE }}
+upstream my_memcached {
+    server {{ getenv "MEMCACHED_HOSTNAME" "memcached" }}:11211;
+    keepalive 10;
+}
+{{- end }}
+
 {{- range $domain, $mapping := (ds "domains") }}
 server {
     server_name ~^{{ $domain }}$;
@@ -100,6 +116,9 @@ server {
 
     include /etc/nginx/conf.d/cache-blacklist.conf;
 
+  {{- if $CACHE_ACTIVE }}
+    include /etc/nginx/conf.d/memcached-location.conf;
+  {{- end }}
 
   {{- if getenv "OVERRIDE_IDENTITY_PROVIDERS" }}
     {{- range $domainOverride, $identyProviderOverride := (ds "overrideIdentityProviders") }}
@@ -157,9 +176,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
 
-        proxy_ignore_headers Cache-Control;
-        proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
-        proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
+        add_header X-Cache-Status $upstream_cache_status;
 
         proxy_pass {{ $UPSTREAM_PWA }};
         proxy_buffer_size 128k;

@@ -160,8 +160,8 @@ The feature name must only contain word characters (letters, numbers, and unders
 
 If the cache feature is switched off, all caching for pre-rendered pages is disabled.
 
-The cache duration for pre-rendered pages can be customized using `CACHE_DURATION_NGINX_OK` (for successful responses) and `CACHE_DURATION_NGINX_NF` (for 404 responses).
-The value supplied must be in the `time` format that is supported by [nginx proxy_cache_valid](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid).
+The cache duration for pre-rendered pages can be customized using `CACHE_DURATION_NGINX`.
+The value supplied must be in the `time` format that is supported by [srcache_default_expire](https://github.com/openresty/srcache-nginx-module#srcache_default_expire).
 
 ## Further References
 
