@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { distinctUntilChanged, filter, map, shareReplay, take, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -23,7 +24,7 @@ import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
   templateUrl: './account-addresses.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountAddressesComponent implements OnInit, OnDestroy {
+export class AccountAddressesComponent implements OnInit {
   @Input() error: HttpError;
 
   addresses$: Observable<Address[]>;
@@ -42,7 +43,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
   preferredAddressForm: FormGroup = new FormGroup({});
   furtherAddresses: Address[] = [];
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private accountFacade: AccountFacade,
@@ -61,7 +62,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
         map(value => value.preferredInvoiceAddressUrn),
         distinctUntilChanged(),
         withLatestFrom(this.user$),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([urn, user]) => {
         if (urn) {
@@ -80,7 +81,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
         map(value => value.preferredShippingAddressUrn),
         distinctUntilChanged(),
         withLatestFrom(this.user$),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([urn, user]) => {
         if (urn) {
@@ -135,7 +136,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
       },
     };
 
-    addressesAndUser$.pipe(takeUntil(this.destroy$)).subscribe(([addresses, user]) => {
+    addressesAndUser$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(([addresses, user]) => {
       this.calculateFurtherAddresses(addresses, user);
 
       this.hasPreferredAddresses = !!user.preferredInvoiceToAddressUrn || !!user.preferredShipToAddressUrn;
@@ -179,7 +180,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
 
       this.featureEventService
         .eventResultListener$('addressDoctor', 'check-address', id)
-        .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+        .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
         .subscribe(({ data }) => {
           if (data) {
             this.accountFacade.createCustomerAddress(data);
@@ -198,7 +199,7 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
 
       this.featureEventService
         .eventResultListener$('addressDoctor', 'check-address', id)
-        .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+        .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
         .subscribe(({ data }) => {
           if (data) {
             this.accountFacade.updateCustomerAddress(data);
@@ -227,10 +228,5 @@ export class AccountAddressesComponent implements OnInit, OnDestroy {
         (!user.preferredInvoiceToAddressUrn || address.urn !== user.preferredInvoiceToAddressUrn) &&
         (!user.preferredShipToAddressUrn || address.urn !== user.preferredShipToAddressUrn)
     );
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

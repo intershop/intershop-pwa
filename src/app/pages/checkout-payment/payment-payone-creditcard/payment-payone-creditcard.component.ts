@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
   Inject,
   Input,
@@ -13,9 +14,8 @@ import {
   Renderer2,
   inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -55,7 +55,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   @Output() cancelPayment = new EventEmitter<void>();
   @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   /**
    * flag to make sure that the init script is executed only once
@@ -99,9 +99,6 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
     // unregister helper function again
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).payoneCreditCardCallback = undefined;
-
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   protected getParamValue(name: string, errorMessage: string): string {
@@ -122,7 +119,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
       this.scriptLoaded = true;
       this.scriptLoader
         .load('https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js')
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           // append localization language: Payone.ClientApi.Language.en, Language to display error-messages (default:Payone.ClientApi.Language.en)
           // eslint-disable-next-line no-eval

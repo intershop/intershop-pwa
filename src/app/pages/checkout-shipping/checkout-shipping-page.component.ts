@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, combineLatest } from 'rxjs';
-import { shareReplay, take, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, combineLatest } from 'rxjs';
+import { shareReplay, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -14,7 +15,7 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
   templateUrl: './checkout-shipping-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
+export class CheckoutShippingPageComponent implements OnInit {
   loading$: Observable<boolean>;
   basketError$: Observable<HttpError>;
   basket$: Observable<BasketView>;
@@ -22,7 +23,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
   isBusinessCustomer$: Observable<boolean>;
   isDesiredDeliveryDate$: Observable<boolean>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   nextDisabled = false;
 
@@ -46,7 +47,7 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
    */
   goToNextStep() {
     combineLatest([this.shippingMethods$, this.basket$])
-      .pipe(take(1), takeUntil(this.destroy$))
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe(([shippingMethods, basket]) => {
         this.nextDisabled = !basket || !shippingMethods?.length || !basket.commonShippingMethod;
         this.cd.markForCheck();
@@ -54,10 +55,5 @@ export class CheckoutShippingPageComponent implements OnInit, OnDestroy {
           this.checkoutFacade.continue(CheckoutStepType.Payment);
         }
       });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

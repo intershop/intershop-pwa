@@ -1,6 +1,16 @@
-import { ApplicationRef, Injectable, InjectionToken, Injector, OnDestroy, Type, createNgModule } from '@angular/core';
+import {
+  ApplicationRef,
+  DestroyRef,
+  Injectable,
+  InjectionToken,
+  Injector,
+  Type,
+  createNgModule,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store, select } from '@ngrx/store';
-import { Subject, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
@@ -14,10 +24,10 @@ declare interface LazyModuleType {
 export const LAZY_FEATURE_MODULE = new InjectionToken<LazyModuleType>('lazyModule');
 
 @Injectable({ providedIn: 'root' })
-export class ModuleLoaderService implements OnDestroy {
+export class ModuleLoaderService {
   private loadedModules: Type<unknown>[] = [];
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private featureToggleService: FeatureToggleService,
@@ -31,7 +41,7 @@ export class ModuleLoaderService implements OnDestroy {
         select(getFeatures),
         whenTruthy(),
         takeUntil(this.appRef.isStable.pipe(whenTruthy())),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         const lazyModules = injector.get<LazyModuleType[]>(LAZY_FEATURE_MODULE, []);
@@ -45,10 +55,5 @@ export class ModuleLoaderService implements OnDestroy {
             }
           });
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

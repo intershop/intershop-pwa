@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
@@ -21,10 +21,10 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
  */
 
 @GenerateLazyComponent()
-export class BasketCreateOrderTemplateComponent implements OnDestroy {
+export class BasketCreateOrderTemplateComponent {
   @Input() products: LineItemView[];
   @Input() cssClass: string;
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,
@@ -35,7 +35,7 @@ export class BasketCreateOrderTemplateComponent implements OnDestroy {
    * if the user is not logged in display login dialog, else open select order template dialog
    */
   openModal(modal: OrderTemplatePreferencesDialogComponent) {
-    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntil(this.destroy$)).subscribe(isLoggedIn => {
+    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
         modal.show();
       } else {
@@ -48,10 +48,5 @@ export class BasketCreateOrderTemplateComponent implements OnDestroy {
 
   createOrderTemplate(orderTemplate: OrderTemplate) {
     this.orderTemplatesFacade.addBasketToNewOrderTemplate(orderTemplate);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

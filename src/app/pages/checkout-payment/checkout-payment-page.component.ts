@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { filter, first, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
+import { filter, first, map, shareReplay, withLatestFrom } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -14,14 +15,14 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
   templateUrl: './checkout-payment-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutPaymentPageComponent implements OnInit, OnDestroy {
+export class CheckoutPaymentPageComponent implements OnInit {
   basket$: Observable<BasketView>;
   basketError$: Observable<HttpError>;
   loading$: Observable<boolean>;
   paymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<'gross' | 'net'>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 
@@ -41,7 +42,7 @@ export class CheckoutPaymentPageComponent implements OnInit, OnDestroy {
         first(),
         withLatestFrom(this.basket$),
         filter(([, basket]) => !basket?.payment),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([pm]) => this.updateBasketPaymentMethod(pm.id));
   }
@@ -70,10 +71,5 @@ export class CheckoutPaymentPageComponent implements OnInit, OnDestroy {
    */
   nextStep() {
     this.checkoutFacade.continue(CheckoutStepType.Review);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

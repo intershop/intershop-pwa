@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable, Subject, combineLatest, of } from 'rxjs';
-import { map, shareReplay, switchMap, take, takeUntil } from 'rxjs/operators';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -15,7 +16,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   templateUrl: './user-edit-roles-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserEditRolesPageComponent implements OnInit, OnDestroy {
+export class UserEditRolesPageComponent implements OnInit {
   selectedUser$: Observable<B2bUser>;
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
@@ -23,7 +24,7 @@ export class UserEditRolesPageComponent implements OnInit, OnDestroy {
   staticRoles$: Observable<string[]>;
 
   form$: Observable<FormGroup>;
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private fb: FormBuilder,
@@ -53,13 +54,8 @@ export class UserEditRolesPageComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    this.form$.pipe(take(1), takeUntil(this.destroy$)).subscribe(form => {
+    this.form$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(form => {
       this.organizationManagementFacade.setSelectedUserRoles(form.value.roleIDs);
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

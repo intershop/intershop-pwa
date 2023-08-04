@@ -2,17 +2,19 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   Injector,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChange,
   ViewChild,
   ViewContainerRef,
+  inject,
 } from '@angular/core';
-import { ReplaySubject, Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReplaySubject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
@@ -33,7 +35,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './content-pagelet.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentPageletComponent implements OnChanges, OnInit, OnDestroy {
+export class ContentPageletComponent implements OnChanges, OnInit {
   /**
    * The Id of the Pagelet that is to be rendered.
    */
@@ -42,21 +44,15 @@ export class ContentPageletComponent implements OnChanges, OnInit, OnDestroy {
   @ViewChild('cmsOutlet', { read: ViewContainerRef, static: true }) cmsOutlet: ViewContainerRef;
 
   private pageletId$ = new ReplaySubject<string>(1);
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private injector: Injector, private cmsFacade: CMSFacade, private cdRef: ChangeDetectorRef) {}
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   ngOnInit() {
     this.pageletId$
       .pipe(
         switchMap(pageletId => this.cmsFacade.pagelet$(pageletId)),
         whenTruthy(),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(pagelet => {
         this.mapComponent(pagelet);

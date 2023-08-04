@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subject, filter, takeUntil } from 'rxjs';
+import { filter } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -18,7 +19,7 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './account-payment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountPaymentComponent implements OnInit, OnChanges, OnDestroy {
+export class AccountPaymentComponent implements OnInit, OnChanges {
   @Input() paymentMethods: PaymentMethod[];
   @Input() user: User;
 
@@ -28,7 +29,7 @@ export class AccountPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   paymentForm: FormGroup;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private accountFacade: AccountFacade) {}
 
@@ -42,7 +43,7 @@ export class AccountPaymentComponent implements OnInit, OnChanges, OnDestroy {
       .get('id')
       .valueChanges.pipe(
         filter(paymentInstrumentId => paymentInstrumentId !== this.user.preferredPaymentInstrumentId),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(id => {
         this.setAsDefaultPayment(id);
@@ -116,10 +117,5 @@ export class AccountPaymentComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.accountFacade.updateUserPreferredPaymentInstrument(this.user, id, this.preferredPaymentInstrument);
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SelectedProductContextFacade } from 'ish-core/facades/selected-product-context.facade';
@@ -21,7 +22,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: ProductContextFacade, useClass: SelectedProductContextFacade }],
 })
-export class ConfigurePageComponent implements OnInit, OnDestroy {
+export class ConfigurePageComponent implements OnInit {
   @ViewChild('conflictResolutionDialog') conflictResolutionDialog: ModalDialogComponent<
     TactonProductConfigurationConflictItem[]
   >;
@@ -30,7 +31,7 @@ export class ConfigurePageComponent implements OnInit, OnDestroy {
   step$: Observable<TactonProductConfigurationGroup>;
   loading$: Observable<boolean>;
   product$: Observable<ProductView>;
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private tactonFacade: TactonFacade, private context: ProductContextFacade) {}
 
@@ -45,7 +46,7 @@ export class ConfigurePageComponent implements OnInit, OnDestroy {
       .pipe(
         whenTruthy(),
         filter(() => !!this.conflictResolutionDialog),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(conflicts => {
         this.conflictResolutionDialog.show(conflicts);
@@ -54,10 +55,5 @@ export class ConfigurePageComponent implements OnInit, OnDestroy {
 
   acceptResolution() {
     this.tactonFacade.acceptConflictResolution();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

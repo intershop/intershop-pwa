@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { first, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -13,7 +14,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './basket-buyer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasketBuyerComponent implements OnInit, OnDestroy {
+export class BasketBuyerComponent implements OnInit {
   @Input() object: Basket | Order;
   /**
    * Router link for editing the order reference id. If a routerLink is given a link is displayed to route to an edit page.
@@ -28,7 +29,7 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
   companyName1: string;
   companyName2: string;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private accountFacade: AccountFacade) {}
 
@@ -48,17 +49,12 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
     this.customer$ = this.accountFacade.customer$;
 
     // values for registered users and basket
-    this.customer$.pipe(whenTruthy(), first(), takeUntil(this.destroy$)).subscribe(customer => {
+    this.customer$.pipe(whenTruthy(), first(), takeUntilDestroyed(this.destroyRef)).subscribe(customer => {
       this.taxationID = this.taxationID || customer?.taxationID;
     });
   }
 
   private getAttributeValue(attributeName: string): string {
     return this.object.attributes?.find(attr => attr.name === attributeName)?.value as string;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

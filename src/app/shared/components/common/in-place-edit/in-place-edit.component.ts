@@ -4,14 +4,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Inject,
-  OnDestroy,
   Output,
+  inject,
 } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { fromEvent } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'ish-in-place-edit',
@@ -19,12 +21,12 @@ import { filter, map, takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./in-place-edit.component.scss'],
 })
-export class InPlaceEditComponent implements AfterViewInit, OnDestroy {
+export class InPlaceEditComponent implements AfterViewInit {
   @Output() edited = new EventEmitter<void>();
   @Output() aborted = new EventEmitter<void>();
 
   private mode: 'view' | 'edit' = 'view';
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   hover: boolean;
 
@@ -41,7 +43,7 @@ export class InPlaceEditComponent implements AfterViewInit, OnDestroy {
         // only main button clicks
         filter((event: MouseEvent) => !event.button),
         map(({ target }) => this.host.nativeElement.contains(target)),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(click => {
         const newMode = click ? 'edit' : 'view';
@@ -83,10 +85,5 @@ export class InPlaceEditComponent implements AfterViewInit, OnDestroy {
 
   get viewMode() {
     return this.mode === 'view';
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

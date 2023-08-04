@@ -2,17 +2,17 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { range } from 'lodash-es';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -29,7 +29,7 @@ declare let Flex: any;
   styleUrls: ['./payment-cybersource-creditcard.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestroy, OnInit {
+export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit {
   cyberSourceCreditCardForm: FormGroup;
 
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
@@ -60,7 +60,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
   @Output() cancelPayment = new EventEmitter<void>();
   @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   /**
    * flag to make sure that the init script is executed only once
@@ -102,11 +102,6 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
     }
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   /**
    * gets a parameter value from payment method
    * sets the general error message (key) if the parameter is not available
@@ -129,7 +124,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnDestr
       this.scriptLoaded = true;
       this.scriptLoader
         .load('https://flex.cybersource.com/cybersource/assets/microform/0.11/flex-microform.min.js')
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           // the capture context that was requested server-side for this transaction
           const captureContext = flexkeyId;
