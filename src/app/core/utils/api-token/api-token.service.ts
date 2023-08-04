@@ -64,7 +64,7 @@ const DEFAULT_EXPIRY_TIME = 3600000;
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
   apiToken$: Subject<string>;
-  cookieVanishes$: Subject<ApiTokenCookieType>;
+  cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
   private cookieOptions: CookieOptions = {};
 
