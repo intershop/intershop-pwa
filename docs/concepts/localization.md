@@ -152,31 +152,27 @@ Usage in HTML:
 If you want to get the translation for a key within a component file, you have to:
 
 - Inject `TranslateService` in the component
-- Use the `get` method of the translation service, e.g., `translate.get('ID')`
-- Use `subscribe` to assign the translation to the data array
+- Use the `get` or the `instant` method of the translation service, e.g., `translate.get('ID')`
+- Use `subscribe` to assign the translation to the data array if you use the `get` method
 
 **\*.component.ts**
 
 ```typescript
-export class ProductTileComponent implements OnDestroy {
+export class ProductTileComponent {
   ...
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
   constructor(protected translate: TranslateService) {}
   ...
   toggleCompare() {
     this.compareToggle.emit();
     this.translate
       .get('compare.message.add.text', { 0: this.product.name })
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((message: string) => {
         this.toastr.success(message);
       });
   }
   ...
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }
 ```
 

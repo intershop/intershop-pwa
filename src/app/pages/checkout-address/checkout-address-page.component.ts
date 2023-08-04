@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { filter, first, map, take, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, first, map, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -20,7 +21,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './checkout-address-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
+export class CheckoutAddressPageComponent implements OnInit {
   basket$: Observable<BasketView>;
   basketError$: Observable<HttpError>;
   basketLoading$: Observable<boolean>;
@@ -35,7 +36,7 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
    */
   validBasketAddresses$: Observable<boolean>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade, private router: Router) {}
 
@@ -59,7 +60,7 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
         whenTruthy(),
         filter(basket => !basket.lineItems?.length),
         take(1),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.router.navigate(['/basket']));
   }
@@ -71,10 +72,5 @@ export class CheckoutAddressPageComponent implements OnInit, OnDestroy {
   nextStep() {
     this.nextStepRequested = true;
     this.checkoutFacade.continue(CheckoutStepType.Shipping);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

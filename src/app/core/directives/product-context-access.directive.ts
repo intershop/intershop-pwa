@@ -1,6 +1,5 @@
-import { Directive, EmbeddedViewRef, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Directive, EmbeddedViewRef, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ProductContext, ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
@@ -9,11 +8,10 @@ type ProductContextAccessContext = ProductContext & { context: ProductContextFac
 @Directive({
   selector: '[ishProductContextAccess]',
 })
-export class ProductContextAccessDirective implements OnDestroy {
+export class ProductContextAccessDirective {
   @Input() ishProductContextAccessAlways = false;
 
   private view: EmbeddedViewRef<ProductContextAccessContext>;
-  private destroy$ = new Subject<void>();
 
   constructor(
     context: ProductContextFacade,
@@ -22,7 +20,7 @@ export class ProductContextAccessDirective implements OnDestroy {
   ) {
     context
       .select()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe(ctx => {
         if (!this.view && this.check(ctx)) {
           this.view = viewContainer.createEmbeddedView(template, { ...ctx, context });
@@ -43,10 +41,5 @@ export class ProductContextAccessDirective implements OnDestroy {
 
   private check(ctx: ProductContext): boolean {
     return this.ishProductContextAccessAlways || !!ctx?.product;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

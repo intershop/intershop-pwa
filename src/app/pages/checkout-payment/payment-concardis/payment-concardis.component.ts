@@ -2,16 +2,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
+  inject,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { Subject } from 'rxjs';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -26,7 +26,7 @@ export type ConcardisErrorMessageType =
   template: ' ',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
+export class PaymentConcardisComponent implements OnInit, OnChanges {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {}
   /**
    * concardis payment method, needed to get configuration parameters
@@ -72,8 +72,8 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
     expiryMonth: { messageKey: '', message: '', code: 0 },
   };
 
-  // eslint-disable-next-line ish-custom-rules/private-destroy-field
-  protected destroy$ = new Subject<void>();
+  // eslint-disable-next-line ish-custom-rules/private-destroyRef-field
+  protected destroyRef = inject(DestroyRef);
 
   getPayEngineURL() {
     return this.getParamValue('ConcardisPaymentService.Environment', '') === 'LIVE'
@@ -99,10 +99,6 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
     if (this.paymentMethod) {
       this.loadScript();
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

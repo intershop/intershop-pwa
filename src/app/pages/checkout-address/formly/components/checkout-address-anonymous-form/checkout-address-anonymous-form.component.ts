@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 
@@ -11,7 +10,7 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
   templateUrl: './checkout-address-anonymous-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy {
+export class CheckoutAddressAnonymousFormComponent implements OnInit {
   @Input() parentForm: FormGroup;
 
   invoiceAddressForm = new FormGroup({});
@@ -23,7 +22,7 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
 
   isBusinessCustomer = false;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   get isShippingAddressFormExpanded() {
     return this.shipOptionForm && this.shipOptionForm.get('shipOption').value === 'shipToDifferentAddress';
@@ -63,16 +62,11 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit, OnDestroy 
     // add / remove shipping form if shipTo address option changes
     this.parentForm
       .get('shipOptions')
-      .valueChanges.pipe(takeUntil(this.destroy$))
+      .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(options => {
         options.shipOption === 'shipToInvoiceAddress'
           ? this.parentForm.removeControl('shippingAddress')
           : this.parentForm.setControl('shippingAddress', this.shippingAddressForm);
       });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

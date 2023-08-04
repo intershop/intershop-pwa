@@ -394,7 +394,8 @@
         "ish-custom-rules/no-testbed-with-then": "error",
         "ish-custom-rules/no-var-before-return": "warn",
         "ish-custom-rules/ordered-imports": "warn",
-        "ish-custom-rules/private-destroy-field": "error",
+        "ish-custom-rules/private-destroy-field": "warn",
+        "ish-custom-rules/private-destroyRef-field": "error",
         "ish-custom-rules/project-structure": [
           "warn",
           {
@@ -819,8 +820,7 @@
         "rxjs-angular/prefer-takeuntil": [
           "error",
           {
-            "checkDestroy": true,
-            "checkComplete": true,
+            "alias": ["takeUntilDestroyed"],
             "checkDecorators": ["Component", "Pipe", "Directive"]
           }
         ],
@@ -849,7 +849,12 @@
         "rxjs/no-unsafe-catch": "error",
         "rxjs/no-unsafe-subject-next": "error",
         "rxjs/no-unsafe-switchmap": "error",
-        "rxjs/no-unsafe-takeuntil": "error",
+        "rxjs/no-unsafe-takeuntil": [
+          "error",
+          {
+            "alias": ["takeUntilDestroyed"]
+          }
+        ],
         "unicorn/no-null": [
           "warn",
           {

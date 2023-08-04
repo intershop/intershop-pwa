@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -14,7 +15,7 @@ import {
   templateUrl: './account-product-notifications-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProductNotificationsPageComponent implements OnInit, OnDestroy {
+export class AccountProductNotificationsPageComponent implements OnInit {
   productNotifications$: Observable<ProductNotification[]>;
   productNotificationsPrice$: Observable<ProductNotification[]>;
   productNotificationsInStock$: Observable<ProductNotification[]>;
@@ -25,7 +26,7 @@ export class AccountProductNotificationsPageComponent implements OnInit, OnDestr
   constructor(private productNotificationsFacade: ProductNotificationsFacade) {}
 
   active: ProductNotificationType;
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.productNotifications$ = this.productNotificationsFacade.productNotificationsByRoute$;
@@ -34,13 +35,8 @@ export class AccountProductNotificationsPageComponent implements OnInit, OnDestr
 
     this.active$ = this.productNotificationsFacade.productNotificationType$ as Observable<ProductNotificationType>;
 
-    this.active$.pipe(takeUntil(this.destroy$)).subscribe(active => {
+    this.active$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(active => {
       this.active = active;
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

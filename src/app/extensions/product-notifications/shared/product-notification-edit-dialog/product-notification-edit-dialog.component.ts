@@ -1,7 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject, of, shareReplay, switchMap, takeUntil } from 'rxjs';
+import { Observable, of, shareReplay, switchMap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -33,7 +43,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
   templateUrl: './product-notification-edit-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy {
+export class ProductNotificationEditDialogComponent implements OnInit {
   @Input() productNotification: ProductNotification;
 
   modal: NgbModalRef;
@@ -47,7 +57,7 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
 
   productNotification$: Observable<ProductNotification>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
@@ -65,7 +75,7 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
     this.userEmail$ = this.accountFacade.userEmail$;
 
     // determine current currency
-    this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(currency => {
+    this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(currency => {
       this.currentCurrency = currency;
     });
 
@@ -139,10 +149,5 @@ export class ProductNotificationEditDialogComponent implements OnInit, OnDestroy
 
       this.hide();
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

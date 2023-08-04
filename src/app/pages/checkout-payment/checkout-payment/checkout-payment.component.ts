@@ -1,18 +1,19 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -31,7 +32,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './checkout-payment.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
+export class CheckoutPaymentComponent implements OnInit, OnChanges {
   @Input() basket: Basket;
   @Input() paymentMethods: PaymentMethod[];
   @Input() priceType: 'gross' | 'net';
@@ -56,7 +57,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   private openFormIndex = -1; // index of the open parameter form
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private route: ActivatedRoute) {}
 
@@ -74,7 +75,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       .get('name')
       .valueChanges.pipe(
         filter(paymentInstrumentId => paymentInstrumentId !== this.getBasketPayment()),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(id => {
         this.redirectStatus = undefined;
@@ -82,7 +83,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       });
 
     // if page is shown after cancelled/faulty redirect determine error message variable
-    this.route.queryParamMap.pipe(take(1), takeUntil(this.destroy$)).subscribe(params => {
+    this.route.queryParamMap.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(params => {
       const redirect = params.get('redirect');
       this.redirectStatus = redirect;
     });
@@ -251,10 +252,5 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   get submitDisabled() {
     return this.paymentForm.invalid && this.formSubmitted;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

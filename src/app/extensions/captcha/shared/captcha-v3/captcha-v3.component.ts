@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, NgModule, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, NgModule, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha';
-import { Subject, timer } from 'rxjs';
-import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
+import { timer } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -23,10 +24,10 @@ import {
   templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CaptchaV3Component implements OnInit, OnDestroy {
+export class CaptchaV3Component implements OnInit {
   @Input() parentForm: FormGroup;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private recaptchaV3Service: ReCaptchaV3Service) {}
 
@@ -45,7 +46,7 @@ export class CaptchaV3Component implements OnInit, OnDestroy {
             )
           ),
           whenTruthy(),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed(this.destroyRef)
         )
         .subscribe(token => {
           this.parentForm.get('captcha').setValue(token);
@@ -59,18 +60,13 @@ export class CaptchaV3Component implements OnInit, OnDestroy {
           filter(token => token === undefined),
           switchMap(() => this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value)),
           whenTruthy(),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed(this.destroyRef)
         )
         .subscribe(token => {
           this.parentForm.get('captcha').setValue(token);
           this.parentForm.get('captcha').updateValueAndValidity();
         });
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
 

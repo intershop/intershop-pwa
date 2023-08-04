@@ -18,6 +18,13 @@ Because `defaultProject` is not a valid option in the `angular.json` any more it
 
 We enabled the [Angular Hydration](https://angular.io/guide/hydration) to improve the performance and avoid the UI flickering when a page is rendered - please note, that this feature is still in developer preview and may also have some constraints.
 
+We take the [`takeUntilDestroyed`](https://indepth.dev/posts/1518/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
+The `add-destroy` schematic has been removed but you can keep the `takeUntil(destroy$)` mechanism for a transitional period.
+A [migration script](../../scripts/migrate-destroy-subject.ts) is created to support the migration to the new way to complete open observable subscriptions on destroy.
+This script can be executed with `npx ts-node .\scripts\migrate-destroy-subject.ts`.
+Please look through all changes after running the script and make sure that all files are working as expected.
+In addition all unused imports within the files have to be removed (`npm run lint --fix` can be used).
+
 For the optional usage of a shared Redis cache we switched from the plain standard NGINX Docker image to an [OpenResty](https://openresty.org/en/) Docker image that provides more flexibility to configure the underlying NGINX.
 If the NGINX container was customized in the project it has to be checked if those customizations work in the same way with the OpenResty image.
 Without any customizations the switch should not be noticeable and does not require any adaptions.

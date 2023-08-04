@@ -86,11 +86,6 @@
       "schema": "./helpers/move-component/schema.json",
       "hidden": true
     },
-    "add-destroy": {
-      "factory": "./helpers/add-destroy/factory#add",
-      "description": "Add destroy subject to an existing Angular artifact.",
-      "schema": "./helpers/add-destroy/schema.json"
-    },
     "override": {
       "factory": "./helpers/override/factory#override",
       "description": "Override a source for customization.",

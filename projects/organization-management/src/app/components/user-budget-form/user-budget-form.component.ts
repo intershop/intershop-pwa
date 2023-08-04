@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -22,7 +21,7 @@ interface UserBudgetModel {
   templateUrl: './user-budget-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class UserBudgetFormComponent implements OnInit, OnDestroy {
+export class UserBudgetFormComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() budget: UserBudget;
 
@@ -33,7 +32,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
 
   periods = ['weekly', 'monthly', 'quarterly'];
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private appFacade: AppFacade) {}
 
@@ -43,7 +42,7 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
     }
 
     // determine current currency
-    this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(currency => {
+    this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(currency => {
       this.currentCurrency = currency;
     });
 
@@ -143,10 +142,5 @@ export class UserBudgetFormComponent implements OnInit, OnDestroy {
         ],
       },
     ];
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -24,13 +25,13 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
  * ></ish-product-add-to-wishlist>
  */
 @GenerateLazyComponent()
-export class ProductAddToWishlistComponent implements OnDestroy, OnInit {
+export class ProductAddToWishlistComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
   @Input() cssClass: string;
 
   visible$: Observable<boolean>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private wishlistsFacade: WishlistsFacade,
@@ -47,7 +48,7 @@ export class ProductAddToWishlistComponent implements OnDestroy, OnInit {
    * if the user is not logged in display login dialog, else open select wishlist dialog
    */
   openModal(modal: SelectWishlistModalComponent) {
-    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntil(this.destroy$)).subscribe(isLoggedIn => {
+    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
         modal.show();
       } else {
@@ -64,10 +65,5 @@ export class ProductAddToWishlistComponent implements OnDestroy, OnInit {
     } else {
       this.wishlistsFacade.addProductToWishlist(wishlist.id, this.context.get('sku'));
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

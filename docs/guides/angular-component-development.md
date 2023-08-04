@@ -119,38 +119,24 @@ export class AnyComponent implements OnInit, OnDestroy {
 
 The custom trackBy function needs to return unique values for all unique inputs.
 
-## Do Not Unsubscribe, Use Destroy Observable and takeUntil Instead
+## Do Not Unsubscribe, Use the takeUntilDestroyed Operator Instead
 
-Following the ideas of the article [RxJS: Don’t Unsubscribe](https://benlesh.medium.com/rxjs-dont-unsubscribe-6753ed4fda87), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.
+Following the ideas of the article [takeUntilDestroyed in Angular v16](https://indepth.dev/posts/1518/takeuntildestroy-in-angular-v16), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.
 
-:heavy_check_mark: **'unsubscribe' via destroy\$ Subject**
+:heavy_check_mark: **'unsubscribe' via takeUntilDestroyed**
 
 ```typescript
-export class AnyComponent implements OnInit, OnDestroy {
-  ...
-  private destroy$ = new Subject<void>();
+export class AnyComponent implements OnInit {
   ...
   ngOnInit() {
     ...
-    observable$.pipe(takeUntil(this.destroy$))
+    observable$.pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(/* ... */);
-  }
-  ...
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
 ```
 
-The ESLint rule `rxjs-angular/prefer-takeuntil` enforces the usage of a `destroy$` Subject with `takeUntil` when subscribing in an Angular artifact.
-You can use the schematic `add-destroy` to automatically generate the required logic:
-
-```
-$ ng g add-destroy shared/components/common/accordion
-
-UPDATE src/app/shared/components/common/accordion/accordion.component.ts (425 bytes)
-```
+The ESLint rule `rxjs-angular/prefer-takeuntil` enforces the usage of `takeUntilDestroyed` when subscribing in an Angular artifact.
 
 ## Use `OnPush` Change Detection if Possible
 

@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription, combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
+import { ChangeDetectorRef, DestroyRef, Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
@@ -19,13 +20,13 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
 @Directive({
   selector: '[ishFeature]',
 })
-export class FeatureToggleDirective implements OnDestroy {
+export class FeatureToggleDirective {
   private otherTemplateRef: TemplateRef<unknown>;
   private subscription: Subscription;
   private enabled$ = new BehaviorSubject<boolean>(undefined);
   private tick$ = new BehaviorSubject<void>(undefined);
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private templateRef: TemplateRef<unknown>,
@@ -40,7 +41,7 @@ export class FeatureToggleDirective implements OnDestroy {
       ),
       this.tick$,
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe(([enabled]) => {
         this.viewContainer.clear();
         if (enabled) {
@@ -61,17 +62,12 @@ export class FeatureToggleDirective implements OnDestroy {
 
     this.subscription = this.featureToggle
       .enabled$(feature)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({ next: val => this.enabled$.next(val) });
   }
 
   @Input() set ishFeatureElse(otherTemplateRef: TemplateRef<unknown>) {
     this.otherTemplateRef = otherTemplateRef;
     this.tick$.next();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

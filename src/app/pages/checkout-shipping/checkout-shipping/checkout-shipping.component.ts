@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -14,7 +15,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './checkout-shipping.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutShippingComponent implements OnInit, OnDestroy {
+export class CheckoutShippingComponent implements OnInit {
   isBusinessCustomer$: Observable<boolean>;
 
   shippingMethods$: Observable<ShippingMethod[]>;
@@ -24,7 +25,7 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
   model: { shippingMethod: string };
   shippingConfig$: Observable<FormlyFieldConfig[]>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private checkoutFacade: CheckoutFacade) {}
   ngOnInit() {
@@ -61,7 +62,7 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
         map(vc => vc.shippingMethod),
         whenTruthy(),
         distinctUntilChanged(),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(shippingId => {
         this.checkoutFacade.updateBasketShippingMethod(shippingId);
@@ -75,7 +76,7 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
   private setupShippingMethodPreselection() {
     this.checkoutFacade
       .getValidShippingMethod$()
-      .pipe(withLatestFrom(this.basket$), takeUntil(this.destroy$))
+      .pipe(withLatestFrom(this.basket$), takeUntilDestroyed(this.destroyRef))
       .subscribe(([shippingMethod, basket]) => {
         if (basket.commonShippingMethod?.id !== shippingMethod) {
           this.checkoutFacade.updateBasketShippingMethod(shippingMethod);
@@ -86,10 +87,5 @@ export class CheckoutShippingComponent implements OnInit, OnDestroy {
           shippingMethod,
         };
       });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
