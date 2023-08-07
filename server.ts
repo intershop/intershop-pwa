@@ -304,6 +304,16 @@ export function app() {
     server.use('/INTERSHOP', icmProxy);
   }
 
+  function defaultCacheControl(path: string): string {
+    if (/\.[0-9a-f]{16,}\./.test(path)) {
+      // file was output-hashed -> 1y
+      return 'public, max-age=31557600';
+    } else {
+      // file should be re-checked more frequently -> 5m
+      return 'public, max-age=300';
+    }
+  }
+
   const SOURCE_MAPS_ACTIVE = /on|1|true|yes/.test(process.env.SOURCE_MAPS?.toLowerCase());
   if (SOURCE_MAPS_ACTIVE) {
     console.warn('SOURCE_MAPS are active - never use this in production!');
@@ -312,7 +322,11 @@ export function app() {
   // Serve static files from browser folder
   server.get(/\/.*\.js\.map$/, (req, res, next) => {
     if (SOURCE_MAPS_ACTIVE) {
-      return express.static(BROWSER_FOLDER)(req, res, next);
+      return express.static(BROWSER_FOLDER, {
+        setHeaders: (res, path) => {
+          res.set('Cache-Control', defaultCacheControl(path));
+        },
+      })(req, res, next);
     } else {
       return res.sendStatus(404);
     }
@@ -327,6 +341,7 @@ export function app() {
           res.sendStatus(404);
         } else {
           res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
+          res.set('Cache-Control', defaultCacheControl(path));
           res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
         }
       });
@@ -352,13 +367,7 @@ export function app() {
     '*.*',
     express.static(BROWSER_FOLDER, {
       setHeaders: (res, path) => {
-        if (/\.[0-9a-f]{20,}\./.test(path)) {
-          // file was output-hashed -> 1y
-          res.set('Cache-Control', 'public, max-age=31557600');
-        } else {
-          // file should be re-checked more frequently -> 5m
-          res.set('Cache-Control', 'public, max-age=300');
-        }
+        res.set('Cache-Control', defaultCacheControl(path));
         // add cors headers for required resources
         if (
           DEPLOY_URL.startsWith('http') &&
