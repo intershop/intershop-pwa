@@ -96,7 +96,7 @@ server {
   {{- end }}
 
     access_log /var/log/nginx-access.log {{ getenv "LOGFORMAT" }};
-    access_log /dev/stdout {{ getenv "LOGFORMAT" }};
+    access_log /dev/stdout {{ getenv "LOGFORMAT" }} if=$loggable;
 
     include /etc/nginx/conf.d/cache-blacklist.conf;
 
