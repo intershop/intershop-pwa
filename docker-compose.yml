@@ -10,6 +10,8 @@ services:
         serviceWorker: 'false'
         # activeThemes: b2b
         # activeThemes: b2c
+    # command: ['node', 'dist/b2c/run-standalone']
+    # command: ['node', 'dist/b2b/run-standalone']
     environment:
       # ICM_BASE_URL:
       LOGGING: 'true'
