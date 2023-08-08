@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { distinctUntilKeyChanged, map, shareReplay, tap } from 'rxjs/operators';
 import SwiperCore, { Navigation } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 SwiperCore.use([Navigation]);
@@ -36,7 +37,16 @@ export class ProductImagesComponent implements OnInit {
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.product$ = this.context.select('product');
+    this.product$ = this.context.select('product').pipe(
+      whenTruthy(),
+      distinctUntilKeyChanged('sku'),
+      tap(() => {
+        if (this.carousel?.swiperRef?.activeIndex) {
+          this.setActiveSlide(0);
+        }
+      }),
+      shareReplay(1)
+    );
     this.zoomImageIds$ = this.getImageViewIDs$('ZOOM').pipe(shareReplay(1));
   }
 
