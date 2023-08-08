@@ -55,13 +55,13 @@ export class CoBrowseIdentityProvider implements IdentityProvider {
   triggerLogin(route: ActivatedRouteSnapshot): TriggerReturnType {
     // check for required start parameters before doing anything with the co-browse route
     // ToDo: adapt parameter name
-    if (!route.queryParamMap.has('access-token')) {
+    if (!route.queryParamMap.has('token')) {
       this.appFacade.setBusinessError('cobrowse.error.missing.parameter');
       return false;
     }
 
     // ToDo: this functionality will change
-    this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
+    this.accountFacade.loginUserWithToken(route.queryParamMap.get('token'));
 
     return race(
       // throw an error if a user login error occurs

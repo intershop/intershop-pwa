@@ -121,11 +121,11 @@ describe('Co Browse Identity Provider', () => {
       expect(result$).toBeFalsy();
     });
 
-    describe('with access-token', () => {
+    describe('with token', () => {
       const accessToken = 'login-access-token';
 
       beforeEach(() => {
-        queryParams = { 'access-token': accessToken };
+        queryParams = { token: accessToken };
       });
 
       it('should trigger loginUserWithToken method on login', done => {
