@@ -63,12 +63,12 @@ const DEFAULT_EXPIRY_TIME = 3600000;
 
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
-  apiToken$: Subject<string>;
+  apiToken$: BehaviorSubject<string>;
   cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
   private cookieOptions: CookieOptions = {};
 
-  private initialCookie$: Subject<ApiTokenCookie>;
+  private initialCookie$: BehaviorSubject<ApiTokenCookie>;
 
   private cookieChangeEvent$: Observable<[ApiTokenCookie, ApiTokenCookie]>;
 
@@ -79,127 +79,34 @@ export class ApiTokenService {
     this.apiToken$ = new BehaviorSubject<string>(initialCookie?.apiToken);
 
     if (!SSR) {
-      this.cookieChangeEvent$ = this.checkCookieRoutine().pipe(shareReplay(1));
-      this.saveTokenRoutine();
-      this.logoutRoutine();
-      this.tokenVanishRoutine();
-      this.tokenCreatedOnAnotherTabRoutine();
-    }
-  }
+      // multicast apiTokenCookieChange$ to avoid multiple listeners
+      this.cookieChangeEvent$ = this.apiTokenCookieChange$().pipe(shareReplay(1));
 
-  private checkCookieRoutine() {
-    return this.appRef.isStable.pipe(
-      whenTruthy(),
-      first(),
-      mergeMap(() =>
-        interval(1000).pipe(
-          map(() => this.parseCookie()),
-          pairwise(),
-          distinctUntilChanged((prev, curr) => isEqual(prev, curr))
-        )
-      )
-    );
-  }
-
-  private logoutRoutine() {
-    this.store
-      .pipe(select(getLoggedInUser), startWith(undefined), pairwise())
-      .pipe(filter(([previous, current]) => !!previous && !current))
-      .subscribe(() => {
-        this.cookiesService.remove('apiToken', { path: '/' });
-      });
-  }
-
-  private saveTokenRoutine() {
-    combineLatest([
-      this.store.pipe(select(getLoggedInUser)),
-      this.store.pipe(select(getCurrentBasket)),
-      this.store.pipe(select(getSelectedOrderId)),
-      this.apiToken$,
-    ])
-      .pipe(
-        switchMap(value => of(value)),
-        this.mapToApiTokenCookie(),
-        filter(apiToken => !!apiToken?.apiToken),
-        distinctUntilChanged<ApiTokenCookie>(isEqual)
-      )
-      .subscribe(apiToken => {
+      // save internal calculated apiToken as cookie
+      this.getInternalApiTokenCookieValue$().subscribe(apiToken => {
         const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
         if (cookieContent) {
           this.cookiesService.put('apiToken', cookieContent, {
-            expires: this.cookieOptions?.expires
-              ? new Date(this.cookieOptions.expires.getTime() + 60000)
-              : new Date(Date.now() + DEFAULT_EXPIRY_TIME),
+            expires: this.cookieOptions?.expires ?? new Date(Date.now() + DEFAULT_EXPIRY_TIME),
             secure: this.cookieOptions?.secure ?? true,
             sameSite: 'Strict',
             path: '/',
           });
         }
       });
-  }
 
-  private tokenVanishRoutine() {
-    // access token vanishes routine
+      // remove apiToken cookie on logout
+      this.logoutUser$().subscribe(() => this.cookiesService.remove('apiToken', { path: '/' }));
 
-    this.cookieChangeEvent$
-      .pipe(
-        withLatestFrom(this.apiToken$),
-        filter(([[previous, current], apiToken]) => !!previous && !current && !!apiToken),
-        map(([[previous]]) => previous.type)
-      )
-      .subscribe(type => {
+      // unset apiToken when cookie vanishes and notify public event stream
+      this.tokenVanish$().subscribe(type => {
         this.apiToken$.next(undefined);
         this.cookieVanishes$.next(type);
       });
-  }
 
-  private tokenCreatedOnAnotherTabRoutine() {
-    // cookie created routine when user is logged in in an another tab
-    this.cookieChangeEvent$
-      .pipe(
-        filter(([previous, current]) => !previous && current?.type === 'user' && !!current?.apiToken), // first time after a login cookie appears
-        withLatestFrom(
-          this.store.pipe(select(getLoggedInUser)),
-          this.store.pipe(select(getCurrentBasket)),
-          this.store.pipe(select(getSelectedOrderId)),
-          this.apiToken$
-        ),
-        switchMap(([[, current], ...ctx]) =>
-          of(ctx).pipe(
-            this.mapToApiTokenCookie(),
-            filter(calculated => !calculated), // application calculated no api token cookie although an user cookie is stored
-            map(() => current)
-          )
-        ),
-        tap(cookieValue => {
-          this.apiToken$.next(cookieValue.apiToken);
-          this.initialCookie$.next(cookieValue);
-        }),
-        switchMap(() => this.restore$())
-      )
-
-      .subscribe(noop);
-  }
-
-  private mapToApiTokenCookie(): OperatorFunction<[User, BasketView, string, string], ApiTokenCookie> {
-    return (source$: Observable<[User, BasketView, string, string]>) =>
-      source$.pipe(
-        map(([user, basket, orderId, apiToken]): ApiTokenCookie => {
-          if (user) {
-            return { apiToken, type: 'user', isAnonymous: false, creator: 'pwa' };
-          } else if (basket) {
-            return { apiToken, type: 'user', isAnonymous: true, creator: 'pwa' };
-          } else if (orderId) {
-            return { apiToken, type: 'order', orderId, creator: 'pwa' };
-          }
-
-          const apiTokenCookieString = this.cookiesService.get('apiToken');
-          const apiTokenCookie: ApiTokenCookie = apiTokenCookieString ? JSON.parse(apiTokenCookieString) : undefined;
-          if (apiToken && apiTokenCookie) {
-            return { ...apiTokenCookie, apiToken }; // overwrite existing cookie information with new apiToken
-          }
-        })
-      );
+      // initialize restore$ mechanism when apiToken cookie is created outside of current PWA context
+      this.tokenCreatedOnAnotherTab$().subscribe(noop);
+    }
   }
 
   hasUserApiTokenCookie() {
@@ -255,18 +162,6 @@ export class ApiTokenService {
     );
   }
 
-  private parseCookie(): ApiTokenCookie {
-    const cookieContent = this.cookiesService.get('apiToken');
-    if (cookieContent) {
-      try {
-        return JSON.parse(cookieContent);
-      } catch (err) {
-        // ignore
-      }
-    }
-    return;
-  }
-
   /**
    * Should remove the actual apiToken cookie and fetch a new anonymous user token
    */
@@ -277,46 +172,6 @@ export class ApiTokenService {
   setApiToken(apiToken: string, options?: CookieOptions) {
     this.cookieOptions = options;
     this.apiToken$.next(apiToken);
-  }
-
-  private invalidateApiToken() {
-    const cookie = this.parseCookie();
-
-    this.removeApiToken();
-
-    if (cookie) {
-      this.cookieVanishes$.next(cookie?.type);
-    }
-  }
-
-  private isAuthTokenError(err: unknown) {
-    return (
-      err instanceof HttpErrorResponse &&
-      typeof err.error === 'string' &&
-      (err.error.includes('AuthenticationToken') || err.error.includes('Unable to decode token'))
-    );
-  }
-
-  private appendAuthentication(req: HttpRequest<unknown>): Observable<HttpRequest<unknown>> {
-    return this.apiToken$.pipe(
-      map(apiToken =>
-        apiToken && !req.headers?.has(ApiService.TOKEN_HEADER_KEY)
-          ? req.clone({ headers: req.headers.set(ApiService.TOKEN_HEADER_KEY, apiToken) })
-          : req
-      ),
-      first()
-    );
-  }
-
-  private anonymousUserTokenMechanism(): Observable<unknown> {
-    return this.apiToken$.pipe(
-      switchMap(
-        apiToken =>
-          iif(() => !apiToken, of(false).pipe(tap(() => this.store.dispatch(fetchAnonymousUserToken()))), of(true)) // fetch anonymous user token only when api token is not available
-      ),
-      whenTruthy(),
-      first()
-    );
   }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -362,5 +217,166 @@ export class ApiTokenService {
         )
       )
     );
+  }
+
+  private invalidateApiToken() {
+    const cookie = this.parseCookie();
+
+    this.removeApiToken();
+
+    if (cookie) {
+      this.cookieVanishes$.next(cookie?.type);
+    }
+  }
+
+  private isAuthTokenError(err: unknown) {
+    return (
+      err instanceof HttpErrorResponse &&
+      typeof err.error === 'string' &&
+      (err.error.includes('AuthenticationToken') || err.error.includes('Unable to decode token'))
+    );
+  }
+
+  private appendAuthentication(req: HttpRequest<unknown>): Observable<HttpRequest<unknown>> {
+    return this.apiToken$.pipe(
+      map(apiToken =>
+        apiToken && !req.headers?.has(ApiService.TOKEN_HEADER_KEY)
+          ? req.clone({ headers: req.headers.set(ApiService.TOKEN_HEADER_KEY, apiToken) })
+          : req
+      ),
+      first()
+    );
+  }
+
+  private anonymousUserTokenMechanism(): Observable<unknown> {
+    return this.apiToken$.pipe(
+      switchMap(
+        apiToken =>
+          iif(() => !apiToken, of(false).pipe(tap(() => this.store.dispatch(fetchAnonymousUserToken()))), of(true)) // fetch anonymous user token only when api token is not available
+      ),
+      whenTruthy(),
+      first()
+    );
+  }
+
+  /**
+   * @returns Observable, which emits the last two different apiToken cookie values
+   */
+  private apiTokenCookieChange$(): Observable<[ApiTokenCookie, ApiTokenCookie]> {
+    return this.appRef.isStable.pipe(
+      whenTruthy(),
+      first(),
+      mergeMap(() =>
+        interval(1000).pipe(
+          map(() => this.parseCookie()),
+          pairwise(),
+          distinctUntilChanged((prev, curr) => isEqual(prev, curr))
+        )
+      )
+    );
+  }
+
+  /**
+   * @returns true within a Observable stream, when the user is logged out
+   */
+  private logoutUser$(): Observable<boolean> {
+    return this.store.pipe(
+      select(getLoggedInUser),
+      startWith(undefined),
+      pairwise(),
+      filter(([previous, current]) => !!previous && !current),
+      map(() => true)
+    );
+  }
+
+  /**
+   * @returns calculate current apiToken cookie value based on the internal store$ state
+   */
+  private getInternalApiTokenCookieValue$(): Observable<ApiTokenCookie> {
+    return combineLatest([
+      this.store.pipe(select(getLoggedInUser)),
+      this.store.pipe(select(getCurrentBasket)),
+      this.store.pipe(select(getSelectedOrderId)),
+      this.apiToken$,
+    ]).pipe(
+      switchMap(value => of(value)),
+      this.mapToApiTokenCookie(),
+      filter(apiToken => !!apiToken?.apiToken),
+      distinctUntilChanged<ApiTokenCookie>(isEqual)
+    );
+  }
+
+  /**
+   * @returns previous apiToken cookie type when the cookie vanishes
+   */
+  private tokenVanish$(): Observable<ApiTokenCookieType> {
+    // access token vanishes routine
+
+    return this.cookieChangeEvent$.pipe(
+      withLatestFrom(this.apiToken$),
+      filter(([[previous, current], apiToken]) => !!previous && !current && !!apiToken),
+      map(([[previous]]) => previous.type)
+    );
+  }
+
+  /**
+   * @returns initialize restore$ mechanism when apiToken cookie is created outside of current PWA context
+   */
+  private tokenCreatedOnAnotherTab$(): Observable<boolean> {
+    // cookie created routine when user is logged in in an another tab
+    return this.cookieChangeEvent$.pipe(
+      filter(([previous, current]) => !previous && current?.type === 'user' && !!current?.apiToken), // first time after a login cookie appears
+      withLatestFrom(
+        this.store.pipe(select(getLoggedInUser)),
+        this.store.pipe(select(getCurrentBasket)),
+        this.store.pipe(select(getSelectedOrderId)),
+        this.apiToken$
+      ),
+      switchMap(([[, current], ...ctx]) =>
+        of(ctx).pipe(
+          this.mapToApiTokenCookie(),
+          filter(calculated => !calculated), // application calculated no api token cookie although an user cookie is stored
+          map(() => current)
+        )
+      ),
+      tap(cookieValue => {
+        this.apiToken$.next(cookieValue.apiToken);
+        this.initialCookie$.next(cookieValue);
+      }),
+      switchMap(() => this.restore$())
+    );
+  }
+
+  private mapToApiTokenCookie(): OperatorFunction<[User, BasketView, string, string], ApiTokenCookie> {
+    return (source$: Observable<[User, BasketView, string, string]>) =>
+      source$.pipe(
+        map(([user, basket, orderId, apiToken]): ApiTokenCookie => {
+          if (user) {
+            return { apiToken, type: 'user', isAnonymous: false, creator: 'pwa' };
+          } else if (basket) {
+            return { apiToken, type: 'user', isAnonymous: true, creator: 'pwa' };
+          } else if (orderId) {
+            return { apiToken, type: 'order', orderId, creator: 'pwa' };
+          }
+
+          const apiTokenCookieString = this.cookiesService.get('apiToken');
+          const apiTokenCookie: ApiTokenCookie = apiTokenCookieString ? JSON.parse(apiTokenCookieString) : undefined;
+          if (apiToken && apiTokenCookie) {
+            return { ...apiTokenCookie, apiToken }; // overwrite existing cookie information with new apiToken
+          }
+        })
+      );
+  }
+
+  private parseCookie(): ApiTokenCookie {
+    const cookieContent = this.cookiesService.get('apiToken');
+    if (cookieContent) {
+      try {
+        return JSON.parse(cookieContent);
+      } catch (err) {
+        // ignore
+      }
+    }
+    return;
   }
 }
