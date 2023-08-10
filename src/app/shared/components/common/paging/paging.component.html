@@ -26,6 +26,7 @@
             ? ('navigation.paging.current_page.aria_label' | translate : { '0': p })
             : ('navigation.paging.go_to_page.aria_label' | translate : { '0': p })
         "
+        tabindex="0"
         (click)="setPage(p)"
         (keyup.enter)="setPage(p)"
         >{{ p }}</a
