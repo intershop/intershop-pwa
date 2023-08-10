@@ -1,24 +1,24 @@
-/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
-import { ApplicationRef, Injectable } from '@angular/core';
+import { ApplicationRef, Inject, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subject, filter, first, fromEvent, map, switchMap } from 'rxjs';
+import { filter, first, fromEvent, map, switchMap } from 'rxjs';
 
+import { IAP_BASE_URL } from 'ish-core/configurations/injection-keys';
+import { StorefrontEditingMessage } from 'ish-core/services/preview/preview.service';
+import { DomService } from 'ish-core/utils/dom/dom.service';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-import { environment } from '../../../../environments/environment';
-
-interface StorefrontEditingMessage {
-  type: string;
-  payload?: {};
-}
-
 @Injectable({ providedIn: 'root' })
-export class DesignviewService {
-  private iapBaseURL = environment.iapBaseURL?.replace(/\/$/, '');
+export class DesignViewService {
   private allowedHostMessageTypes = ['dv-clientRefresh'];
-  private hostMessagesSubject$ = new Subject<StorefrontEditingMessage>();
 
-  constructor(private router: Router, private appRef: ApplicationRef) {
+  constructor(
+    @Inject(IAP_BASE_URL) private iapBaseURL: InjectSingle<typeof IAP_BASE_URL>,
+    private router: Router,
+    private appRef: ApplicationRef,
+    private domService: DomService
+  ) {
+    this.iapBaseURL = this.iapBaseURL?.replace(/\/$/, '');
     this.init();
   }
 
@@ -33,7 +33,7 @@ export class DesignviewService {
 
   /**
    * Start method that sets up Design View communication.
-   * Needs to be called *once* for the whole application, e.g. in the `AppModule` constructor.
+   * Needs to be called *once* for the whole application.
    */
   private init() {
     if (!this.shouldInit()) {
@@ -42,8 +42,6 @@ export class DesignviewService {
 
     this.listenToHostMessages();
     this.listenToApplication();
-
-    this.hostMessagesSubject$.asObservable().subscribe(message => this.handleHostMessage(message));
 
     // tell the host client is ready
     this.messageToHost({ type: 'dv-clientReady' });
@@ -75,7 +73,7 @@ export class DesignviewService {
         ),
         map(message => message.data)
       )
-      .subscribe(this.hostMessagesSubject$);
+      .subscribe(message => this.handleHostMessage(message));
   }
 
   /**
@@ -124,11 +122,11 @@ export class DesignviewService {
    *
    */
   private applyHierarchyHighlighting() {
-    const designViewWrapper = document.querySelectorAll('.designview-wrapper');
+    const designViewWrapper: NodeListOf<HTMLElement> = document.querySelectorAll('.designview-wrapper');
 
     designViewWrapper.forEach(element => {
       if (!element.querySelector('.designview-wrapper')) {
-        element.classList.add('last-designview-wrapper');
+        this.domService.addClass(element, 'last-designview-wrapper');
       }
     });
   }

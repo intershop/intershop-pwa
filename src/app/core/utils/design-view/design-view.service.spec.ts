@@ -3,18 +3,18 @@ import { instance, mock } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
 
-import { DesignviewService } from './designview.service';
+import { DesignViewService } from './design-view.service';
 
-describe('Designview Service', () => {
+describe('Design View Service', () => {
   let apiServiceMock: ApiService;
-  let designviewService: DesignviewService;
+  let designviewService: DesignViewService;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
-    designviewService = TestBed.inject(DesignviewService);
+    designviewService = TestBed.inject(DesignViewService);
   });
 
   it('should be created', () => {

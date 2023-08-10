@@ -60,3 +60,9 @@ export const SMALL_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('smallBrea
 export const MEDIUM_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('mediumBreakpointWidth');
 
 export const LARGE_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('largeBreakpointWidth');
+
+/*
+ * Design View
+ */
+
+export const IAP_BASE_URL = createEnvironmentInjectionToken('iapBaseURL');

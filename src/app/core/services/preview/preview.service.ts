@@ -7,7 +7,7 @@ import { Subject, delay, filter, first, fromEvent, map, race, switchMap, take, t
 import { getICMBaseURL } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-interface StorefrontEditingMessage {
+export interface StorefrontEditingMessage {
   type: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
