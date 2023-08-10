@@ -3,10 +3,10 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, first, fromEvent, map, switchMap } from 'rxjs';
 
 import { IAP_BASE_URL } from 'ish-core/configurations/injection-keys';
-import { StorefrontEditingMessage } from 'ish-core/services/preview/preview.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { StorefrontEditingMessage } from 'ish-core/utils/preview/preview.service';
 
 @Injectable({ providedIn: 'root' })
 export class DesignViewService {

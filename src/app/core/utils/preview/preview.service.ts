@@ -1,4 +1,3 @@
-/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ApplicationRef, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';

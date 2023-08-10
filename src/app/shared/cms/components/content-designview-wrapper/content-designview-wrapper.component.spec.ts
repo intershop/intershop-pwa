@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
-import { PreviewService } from 'ish-core/services/preview/preview.service';
+import { PreviewService } from 'ish-core/utils/preview/preview.service';
 
 import { ContentDesignviewWrapperComponent } from './content-designview-wrapper.component';
 

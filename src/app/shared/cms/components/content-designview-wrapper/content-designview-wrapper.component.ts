@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { PreviewService } from 'ish-core/services/preview/preview.service';
 import { DesignViewService } from 'ish-core/utils/design-view/design-view.service';
+import { PreviewService } from 'ish-core/utils/preview/preview.service';
 
 @Component({
   selector: 'ish-content-designview-wrapper',
