@@ -154,8 +154,8 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   hybridApplication: '-',
 
   /* MATOMO ANALYTICS CONFIGURATION*/
-  matomoTrackerUrl: 'http://localhost:8080',
-  matomoSiteId: '2',
+  matomoTrackerUrl: 'http://localhost:80',
+  matomoSiteId: '1',
 
   /* FEATURE TOGGLES */
   features: ['compare', 'contactUs', 'productNotifications', 'rating', 'recently', 'storeLocator', 'matomo'],
