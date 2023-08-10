@@ -819,7 +819,7 @@
   "checkout.widget.shipping-address.heading": "Shipping Address",
   "checkout.widget.shipping_method.desired_delivery_date": "Desired Delivery Date",
   "checkout.widget.shipping_method.heading": "Shipping Method",
-  "cobrowse.error.missing.parameter": "Error starting co-browsing. Required start parameter is missing.",
+  "cobrowse.error.missing.parameter": "Error starting co-browsing. The required start parameter is missing.",
   "common.button.navbarCollapsed.text": "Toggle navigation",
   "common.button.spinning.label": "Adding...",
   "common.date_format.letters.M": "m",
