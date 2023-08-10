@@ -18,7 +18,7 @@
       <swiper #carousel [navigation]="true">
         <ng-container *ngFor="let imageView of largeImages; let i = index">
           <ng-template swiperSlide>
-            <div (click)="openZoomModal(i)" (keydown.enter)="openZoomModal(i)">
+            <div (click)="openZoomModal(i)" (keydown.enter)="openZoomModal(i)" tabindex="0">
               <ish-product-image
                 [ngClass]="{ 'product-image-zoom': zoomImageIds$ | async }"
                 imageType="L"
