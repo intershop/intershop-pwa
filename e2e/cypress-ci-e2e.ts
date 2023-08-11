@@ -71,10 +71,18 @@ const run = (
   config = { ...config, env: { ...config.env, numRuns: num } };
 
   // activate video only for last run
-  if (num >= MAX_NUM_RUNS) config.config.video = true;
-  if (num > 1) config.config.trashAssetsBeforeRuns = false;
-  if (spec) config.spec = spec;
-  if (retryGroup) config.group = retryGroup;
+  if (num >= MAX_NUM_RUNS) {
+    config.config.video = true;
+  }
+  if (num > 1) {
+    config.config.trashAssetsBeforeRuns = false;
+  }
+  if (spec) {
+    config.spec = spec;
+  }
+  if (retryGroup) {
+    config.group = retryGroup;
+  }
 
   console.log(config);
 
