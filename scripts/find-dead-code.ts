@@ -146,13 +146,17 @@ function checkNode(node: Node) {
       .getLeadingCommentRanges()
       .some(c => c.getText().includes('not-dead-code'))
   ) {
-    if (process.env.DEBUG) console.warn('ignoring (1)', node.getText());
+    if (process.env.DEBUG) {
+      console.warn('ignoring (1)', node.getText());
+    }
     return;
   }
 
   const ignoreComment = node.getPreviousSiblingIfKind(SyntaxKind.SingleLineCommentTrivia);
   if (ignoreComment?.getText().includes('not-dead-code')) {
-    if (process.env.DEBUG) console.warn('ignoring (2)', node.getText());
+    if (process.env.DEBUG) {
+      console.warn('ignoring (2)', node.getText());
+    }
     return;
   }
 
