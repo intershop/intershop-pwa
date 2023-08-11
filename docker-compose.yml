@@ -67,7 +67,9 @@ services:
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
-      CACHE: 0
+      # CACHE: 0
+      CACHE_DURATION_NGINX_OK: 20s
+      CACHE_DURATION_NGINX_NF: 1d
       # SSL: 1
       # SSR: 0
       # DEBUG: 1

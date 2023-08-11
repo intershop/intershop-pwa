@@ -2,7 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { flatten, range } from 'lodash-es';
 import { Observable, from, identity, of, throwError } from 'rxjs';
-import { defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
+import { defaultIfEmpty, delay, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
@@ -46,9 +46,10 @@ export class ProductsService {
 
     const params = new HttpParams().set('allImages', true).set('extended', true);
 
-    return this.apiService
-      .get<ProductData>(`products/${sku}`, { sendSPGID: true, params })
-      .pipe(map(element => this.productMapper.fromData(element)));
+    return this.apiService.get<ProductData>(`products/${sku}`, { sendSPGID: true, params }).pipe(
+      delay(5000),
+      map(element => this.productMapper.fromData(element))
+    );
   }
 
   /**
