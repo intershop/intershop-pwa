@@ -1,4 +1,4 @@
-<ish-content-designview-wrapper [slotId]="slot" [pagelet]="pagelet">
+<ish-content-design-view-wrapper [slotId]="slot" [pagelet]="pagelet">
   <ng-content *ngIf="wrapper; else renderPagelets"></ng-content>
 
   <ng-template #renderPagelets>
@@ -7,4 +7,4 @@
       [pageletId]="pagelet"
     ></ish-content-pagelet>
   </ng-template>
-</ish-content-designview-wrapper>
+</ish-content-design-view-wrapper>

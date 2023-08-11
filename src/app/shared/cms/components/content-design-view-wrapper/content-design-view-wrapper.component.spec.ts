@@ -7,11 +7,11 @@ import { instance, mock } from 'ts-mockito';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { PreviewService } from 'ish-core/utils/preview/preview.service';
 
-import { ContentDesignviewWrapperComponent } from './content-designview-wrapper.component';
+import { ContentDesignViewWrapperComponent } from './content-design-view-wrapper.component';
 
-describe('Content Designview Wrapper Component', () => {
-  let component: ContentDesignviewWrapperComponent;
-  let fixture: ComponentFixture<ContentDesignviewWrapperComponent>;
+describe('Content Design View Wrapper Component', () => {
+  let component: ContentDesignViewWrapperComponent;
+  let fixture: ComponentFixture<ContentDesignViewWrapperComponent>;
   let element: HTMLElement;
   let cmsFacade: CMSFacade;
   let previewService: PreviewService;
@@ -22,7 +22,7 @@ describe('Content Designview Wrapper Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [ContentDesignviewWrapperComponent, MockComponent(FaIconComponent)],
+      declarations: [ContentDesignViewWrapperComponent, MockComponent(FaIconComponent)],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: PreviewService, useFactory: () => instance(previewService) },
@@ -31,7 +31,7 @@ describe('Content Designview Wrapper Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContentDesignviewWrapperComponent);
+    fixture = TestBed.createComponent(ContentDesignViewWrapperComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

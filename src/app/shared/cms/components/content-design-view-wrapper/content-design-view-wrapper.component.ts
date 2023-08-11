@@ -7,17 +7,17 @@ import { DesignViewService } from 'ish-core/utils/design-view/design-view.servic
 import { PreviewService } from 'ish-core/utils/preview/preview.service';
 
 @Component({
-  selector: 'ish-content-designview-wrapper',
-  templateUrl: './content-designview-wrapper.component.html',
-  styleUrls: ['./content-designview-wrapper.component.scss'],
+  selector: 'ish-content-design-view-wrapper',
+  templateUrl: './content-design-view-wrapper.component.html',
+  styleUrls: ['./content-design-view-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentDesignviewWrapperComponent implements OnInit {
+export class ContentDesignViewWrapperComponent implements OnInit {
   // pagelet parameter
   @Input() pageletId: string;
   // slot parameters
-  @Input() pagelet: ContentPageletView;
   @Input() slotId: string;
+  @Input() pagelet: ContentPageletView;
   // include parameter
   @Input() include: ContentPageletEntryPointView;
 
