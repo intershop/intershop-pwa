@@ -69,7 +69,7 @@ describe('Content Pagelet Component', () => {
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
 
-    expect(element).toMatchInlineSnapshot(`N/A`);
+    expect(element).toMatchInlineSnapshot(`<ish-content-design-view-wrapper></ish-content-design-view-wrapper>`);
     expect(consoleSpy).toHaveBeenCalledWith('did not find mapping for id (fq)');
   });
 
@@ -80,6 +80,10 @@ describe('Content Pagelet Component', () => {
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
 
-    expect(element).toMatchInlineSnapshot(`<ish-cms-text><span>foo</span></ish-cms-text>`);
+    expect(element).toMatchInlineSnapshot(`
+      <ish-content-design-view-wrapper
+        ><ish-cms-text><span>foo</span></ish-cms-text></ish-content-design-view-wrapper
+      >
+    `);
   });
 });
