@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -23,7 +22,7 @@ export class ProductListToolbarComponent implements OnChanges {
 
   sortOptions: SelectOption[] = [];
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private translate: TranslateService) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnChanges() {
     this.sortOptions = this.mapSortableAttributesToSelectOptions(this.sortableAttributes);
@@ -41,12 +40,10 @@ export class ProductListToolbarComponent implements OnChanges {
   }
 
   private mapSortableAttributesToSelectOptions(sortableAttributes: SortableAttributesType[] = []): SelectOption[] {
-    const options = sortableAttributes
+    return sortableAttributes
       .filter(x => !!x)
       .map(sk => ({ value: sk.name, label: sk.displayName || sk.name }))
       .sort((a, b) => a.label.localeCompare(b.label));
-    options.unshift({ value: 'default', label: this.translate.instant('product.items.sorting.default.label') });
-    return options;
   }
 
   get listView() {

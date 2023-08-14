@@ -58,6 +58,9 @@
       name="SortingAttribute"
       (change)="changeSortBy($event.target)"
     >
+      <option value="default" [selected]="sortBy === 'default'">
+        {{ 'product.items.sorting.default.label' | translate }}
+      </option>
       <option *ngFor="let o of sortOptions" [value]="o.value" [selected]="o.value === sortBy">{{ o.label }}</option>
     </select>
   </div>
