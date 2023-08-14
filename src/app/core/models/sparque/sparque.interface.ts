@@ -25,6 +25,23 @@ export interface SparqueResponse {
   items: SparqueItems[];
 }
 
+export interface SparqueSearchWrapperResponse {
+  products: SparqueWrapperProduct[];
+  total: number;
+  fixedFacetsList: SparqueWrapperFacet[];
+}
+
+export interface SparqueWrapperFacet {
+  //[key: string]: string | object | number;
+  // id: string;
+  // key: string;
+  //options:
+  [key: string]: { id: string; score: number; value: string; title: string }[];
+}
+export interface SparqueWrapperProduct {
+  sku: string;
+}
+
 export interface SparqueItems {
   rank: number;
   probability: number;

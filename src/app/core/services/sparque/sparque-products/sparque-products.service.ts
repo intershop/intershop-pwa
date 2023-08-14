@@ -1,16 +1,24 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, forkJoin, iif, map, of, switchMap, throwError } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, catchError, combineLatest, forkJoin, iif, map, of, switchMap, throwError } from 'rxjs';
 
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { SparqueCountResponse, SparqueResponse } from 'ish-core/models/sparque/sparque.interface';
+import {
+  SparqueCountResponse,
+  SparqueResponse,
+  SparqueSearchWrapperResponse,
+} from 'ish-core/models/sparque/sparque.interface';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueApiService } from 'ish-core/services/sparque/sparque-api/sparque-api.service';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
+import { SparqueSortingMapper } from './sparque-sorting.mapper';
+
 @Injectable({ providedIn: 'root' })
 export class SparqueProductsService extends ProductsService {
   private sparqueApiService = inject(SparqueApiService);
+  private store = inject(Store);
 
   searchProducts(
     searchTerm: string,
@@ -18,7 +26,11 @@ export class SparqueProductsService extends ProductsService {
     _sortKey?: string,
     offset?: number
   ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
-    return this.searchProductKeys(searchTerm, amount, offset).pipe(
+    console.log('searchProducts');
+    const aaa$ = this.searchProductKeys(searchTerm, amount, offset);
+
+    //aaa$.subscribe(a => console.log(a));
+    const bbb$ = aaa$.pipe(
       switchMap(({ skus, sortableAttributes, total }) =>
         iif(
           () => !!total,
@@ -33,6 +45,8 @@ export class SparqueProductsService extends ProductsService {
         )
       )
     );
+    bbb$.subscribe(b => console.log(b));
+    return bbb$;
   }
 
   getFilteredProducts(
@@ -62,14 +76,15 @@ export class SparqueProductsService extends ProductsService {
   getCategoryProducts(
     categoryUniqueId: string,
     amount: number,
-    _sortKey?: string,
+    sortKey?: string,
     offset = 0
   ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     if (!categoryUniqueId) {
       return throwError(() => new Error('getCategoryProducts() called without categoryUniqueId'));
     }
 
-    return this.getCategoryProductKeys(categoryUniqueId, amount, offset).pipe(
+    //return
+    return this.getCategoryProductKeys(categoryUniqueId, amount, sortKey, offset).pipe(
       switchMap(({ skus, sortableAttributes, total }) =>
         iif(
           () => !!total,
@@ -89,21 +104,26 @@ export class SparqueProductsService extends ProductsService {
   private getCategoryProductKeys(
     categoryUniqueId: string,
     amount: number,
+    sortKey?: string,
     offset?: number
   ): Observable<{ skus: string[]; sortableAttributes: SortableAttributesType[]; total: number }> {
-    return this.sparqueApiService
-      .get<[SparqueResponse, SparqueCountResponse]>(
+    const sortingKey = sortKey ? `e/${sortKey}` : '';
+
+    return combineLatest(
+      this.sparqueApiService.get<[SparqueResponse, SparqueCountResponse]>(
         `e/categoryproducts/p/value/${
           categoryUniqueId.split('.')[categoryUniqueId.split('.').length - 1]
-        }/results,count?count=${amount}&offset=${offset}`
-      )
-      .pipe(
-        map(([result, count]) => ({
-          skus: result?.items.map(item => item.tuple[0].attributes.sku),
-          sortableAttributes: [],
-          total: count.total,
-        }))
-      );
+        }/${sortingKey}/results,count?count=${amount}&offset=${offset}`
+      ),
+      this.sparqueApiService.get<SparqueResponse>('e/sorting/results?config=default') //,
+      //this.store.pipe(select(getCurrentLocale))
+    ).pipe(
+      map(results => ({
+        skus: results[0][0].items.map(item => item.tuple[0].attributes.sku),
+        sortableAttributes: SparqueSortingMapper.fromData(results[1], 'en-US'),
+        total: results[0][1].total,
+      }))
+    );
   }
 
   private searchProductKeys(
@@ -114,27 +134,29 @@ export class SparqueProductsService extends ProductsService {
   ): Observable<{ skus: string[]; sortableAttributes: SortableAttributesType[]; total: number }> {
     const appliedFilterPath = searchParameter ? SparqueApiService.getAppliedFilterPath(searchParameter) : '';
 
-    // sortableAttributes and total are missing in REST response
+    //const search = searchParameter.searchTerm ? searchParameter.searchTerm[0] : '';
     // request should wait some time to get recent basket --> could be optimized
-    return this.sparqueApiService.getRelevantInformation$().pipe(
-      switchMap(([basketSKUs, userId, locale]) =>
-        this.sparqueApiService
-          .get<[SparqueResponse, SparqueCountResponse]>(
-            `${SparqueApiService.getSearchPath(
+    console.log('searchTerm', searchTerm);
+    return this.sparqueApiService.getRelevantInformation$().pipe(() =>
+      this.sparqueApiService
+        .get<SparqueSearchWrapperResponse>(
+          `api/v2/search?Keyword=${searchTerm}&WorkspaceName=intershop-obi&ApiName=PWA&Locale=en-US&count=${amount}&offset=${offset}`
+          /*`${SparqueApiService.getSearchPath(
               searchTerm,
               locale,
               userId,
               basketSKUs
-            )}${appliedFilterPath}/results,count?count=${amount}&offset=${offset}`
-          )
-          .pipe(
-            map(([result, count]) => ({
-              skus: result?.items.map(item => item.tuple[0].attributes.sku),
-              sortableAttributes: [],
-              total: count.total,
-            }))
-          )
-      )
+            )}${appliedFilterPath}/results,count?count=${amount}&offset=${offset}`*/
+        )
+        //this.sparqueApiService.get<SparqueResponse>('e/sorting/results?config=default'),
+        // this.store.pipe(select(getCurrentLocale))
+        .pipe(
+          map(results => ({
+            skus: results.products.map(item => item.sku), //results...items.map(item => item.tuple[0].attributes.sku),
+            sortableAttributes: [], //: SparqueSortingMapper.fromData(results[0][0], 'en-US'),
+            total: results.total, //results[0][1].total,
+          }))
+        )
     );
   }
 }

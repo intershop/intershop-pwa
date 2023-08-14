@@ -19,13 +19,15 @@ export class SparqueCategoriesService extends CategoriesService {
   private store = inject(Store);
 
   getTopLevelCategories(_limit: number): Observable<CategoryTree> {
-    return this.sparqueApiService.get<SparqueResponse>('e/categorytree/results?count=200').pipe(
-      switchMap(categoriesData =>
-        this.store.pipe(
-          select(getCurrentLocale),
-          map(locale => SparqueCategoriesMapper.fromData(categoriesData, locale))
+    return this.sparqueApiService
+      .get<SparqueResponse>('api/v2/categorytree?WorkspaceName=intershop-obi&ApiName=PWA&Locale=en-US')
+      .pipe(
+        switchMap(categoriesData =>
+          this.store.pipe(
+            select(getCurrentLocale),
+            map(locale => SparqueCategoriesMapper.fromData(categoriesData, locale))
+          )
         )
-      )
-    );
+      );
   }
 }
