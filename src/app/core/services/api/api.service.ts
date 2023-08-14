@@ -12,7 +12,9 @@ import {
   identity,
   iif,
   of,
+  race,
   throwError,
+  timer,
 } from 'rxjs';
 import { catchError, concatMap, filter, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
@@ -28,6 +30,8 @@ import { communicationTimeoutError, serverError } from 'ish-core/store/core/erro
 import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
+import { ApiTokenCookie } from 'ish-core/utils/api-token/api-token.service';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
@@ -69,7 +73,7 @@ export class ApiService {
   static TOKEN_HEADER_KEY = 'authentication-token';
   static AUTHORIZATION_HEADER_KEY = 'Authorization';
 
-  constructor(private httpClient: HttpClient, private store: Store) {}
+  constructor(private httpClient: HttpClient, private store: Store, private cookiesService: CookiesService) {}
 
   /**
 -  * sets the request header for the appropriate captcha service
@@ -132,6 +136,10 @@ export class ApiService {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return of(path);
     }
+
+    // get current apiToken cookie information
+    const apiToken = this.getApiTokenFromCookie();
+
     return combineLatest([
       this.store.pipe(select(getRestEndpoint), whenTruthy()),
       this.getLocale$(options),
@@ -139,8 +147,15 @@ export class ApiService {
       of('/'),
       of(path.includes('/') ? path.split('/')[0] : path),
       // pgid
-      this.store.pipe(
-        select(getPGID),
+      race(
+        this.store.pipe(
+          select(getPGID),
+          // when an apiToken is available, then the pgid has to be set when the options are enabled
+          apiToken && (options?.sendPGID || options?.sendSPGID) ? whenTruthy() : identity
+        ),
+        // on timeout current pgid will be selected
+        timer(3000).pipe(switchMap(() => this.store.pipe(select(getPGID))))
+      ).pipe(
         map(pgid => (options?.sendPGID && pgid ? `;pgid=${pgid}` : options?.sendSPGID && pgid ? `;spgid=${pgid}` : ''))
       ),
       // remaining path
@@ -199,6 +214,22 @@ export class ApiService {
         )
       ),
     ]);
+  }
+
+  /**
+   * retrieve an apiToken when it is assigned to an authenticated user
+   */
+  private getApiTokenFromCookie(): string {
+    const cookieContent = this.cookiesService.get('apiToken');
+    if (cookieContent) {
+      try {
+        const apiTokenCookie: ApiTokenCookie = JSON.parse(cookieContent);
+        return !apiTokenCookie?.isAnonymous ? apiTokenCookie.apiToken : undefined;
+      } catch (err) {
+        // ignore
+      }
+    }
+    return;
   }
 
   /**
