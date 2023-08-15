@@ -28,6 +28,7 @@ RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
 FROM node:18.16.0-alpine
+RUN apk add --no-cache tini
 COPY --from=buildstep /workspace/dist /dist
 RUN cd dist && npm install
 ARG displayVersion=
@@ -37,4 +38,4 @@ EXPOSE 4200 9113
 RUN mkdir /.pm2 && chmod 777 -Rf /.pm2 && touch /dist/ecosystem.yml && chmod 777 -f /dist/ecosystem.yml
 USER nobody
 HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node /dist/healthcheck.js
-ENTRYPOINT ["sh","/dist/entrypoint.sh"]
+ENTRYPOINT [ "/sbin/tini", "--", "sh", "/dist/entrypoint.sh" ]
