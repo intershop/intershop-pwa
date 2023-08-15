@@ -4,6 +4,7 @@
     data-testing-id="product-image-link"
     [routerLink]="linkTarget || (productURL$ | async)"
     [queryParamsHandling]="computedQueryParamsHandling"
+    [queryParams]="{ page: null }"
     ><ng-container *ngTemplateOutlet="image"></ng-container>
   </a>
 </div>
