@@ -125,7 +125,7 @@ describe('Co Browse Identity Provider', () => {
       const accessToken = 'login-access-token';
 
       beforeEach(() => {
-        queryParams = { token: accessToken };
+        queryParams = { 'access-token': accessToken };
       });
 
       it('should trigger loginUserWithToken method on login', done => {
