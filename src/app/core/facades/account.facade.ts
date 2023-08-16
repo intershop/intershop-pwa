@@ -38,7 +38,6 @@ import {
 import {
   createUser,
   deleteUserPaymentInstrument,
-  fetchAnonymousUserToken,
   getCustomerApprovalEmail,
   getLoggedInCustomer,
   getLoggedInUser,
@@ -101,10 +100,6 @@ export class AccountFacade {
    */
   logoutUser(options = { revokeApiToken: true }) {
     options?.revokeApiToken ? this.store.dispatch(logoutUser()) : this.store.dispatch(logoutUserSuccess());
-  }
-
-  fetchAnonymousToken() {
-    this.store.dispatch(fetchAnonymousUserToken());
   }
 
   createUser(body: CustomerRegistrationType) {
