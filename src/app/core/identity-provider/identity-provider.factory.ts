@@ -1,11 +1,12 @@
 import { Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { once } from 'lodash-es';
-import { noop } from 'rxjs';
+import { BehaviorSubject, combineLatest, noop } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { getIdentityProvider } from 'ish-core/store/core/configuration';
+import { selectPath } from 'ish-core/store/core/router';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { IdentityProvider } from './identity-provider.interface';
@@ -14,6 +15,7 @@ interface IdentityProviderImplementor {
   type: string;
   implementor: Type<IdentityProvider<unknown>>;
   feature?: string;
+  activeOnPath?: string;
 }
 
 export const IDENTITY_PROVIDER_IMPLEMENTOR = new InjectionToken<IdentityProviderImplementor>(
@@ -28,33 +30,48 @@ export class IdentityProviderFactory {
     type?: string;
   };
 
+  initialized$ = new BehaviorSubject<boolean>(false);
+
   constructor(private store: Store, private injector: Injector, private featureToggleService: FeatureToggleService) {
     if (!SSR) {
-      this.store.pipe(select(getIdentityProvider), whenTruthy(), first()).subscribe(config => {
-        const provider = this.injector
-          .get<IdentityProviderImplementor[]>(IDENTITY_PROVIDER_IMPLEMENTOR, [])
-          .filter(p => (p.feature ? this.featureToggleService.enabled(p.feature) : true))
-          .find(p => p.type === config?.type);
+      combineLatest([
+        this.store.pipe(select(getIdentityProvider), whenTruthy()),
+        this.store.pipe(select(selectPath), whenTruthy()),
+      ])
+        .pipe(first())
+        .subscribe(([config, path]) => {
+          const availableProviders = this.injector
+            .get<IdentityProviderImplementor[]>(IDENTITY_PROVIDER_IMPLEMENTOR, [])
+            .filter(p => (p.feature ? this.featureToggleService.enabled(p.feature) : true));
 
-        if (!provider) {
-          console.error('did not find identity provider for config', config);
-        } else {
-          const instance = this.injector.get(provider.implementor);
+          // select provider by
+          // (1) current url path matches configured activeOnPath property from availableProviders
+          // (2) selected identity provider matches type property from availableProviders
+          const provider =
+            availableProviders.find(p => p.activeOnPath === path) ??
+            availableProviders.find(p => p.type === config?.type);
 
-          /*
+          if (!provider) {
+            console.error('did not find identity provider for config', config);
+          } else {
+            const instance = this.injector.get(provider.implementor);
+
+            /*
             If the code is called synchronously, the init method can call other actions that can trigger http requests.
             If an HTTP request is triggered before the identity provider constructor is finished, a "Null Pointer Exception" will be thrown in the identity-provider.interceptor.
             A delay with setTimeout is added to mitigate this problem
           */
-          // TODO: Find a way to implement this without setTimeout()
-          setTimeout(() => {
-            instance.init(config);
-          }, 1);
+            // TODO: Find a way to implement this without setTimeout()
+            setTimeout(() => {
+              instance.init(config);
+            }, 1);
 
-          this.instance = instance;
-          this.config = config;
-        }
-      });
+            this.instance = instance;
+            this.config = config;
+
+            this.initialized$.next(true);
+          }
+        });
     } else {
       this.instance = {
         init: noop,
@@ -64,6 +81,8 @@ export class IdentityProviderFactory {
         triggerInvite: () => true,
         getCapabilities: () => ({}),
       };
+
+      this.initialized$.next(true);
     }
   }
 

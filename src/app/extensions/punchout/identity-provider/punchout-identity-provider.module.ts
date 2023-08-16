@@ -13,6 +13,7 @@ import { PunchoutIdentityProvider } from './punchout-identity-provider';
         type: 'PUNCHOUT',
         implementor: PunchoutIdentityProvider,
         feature: 'punchout',
+        activeOnPath: 'punchout',
       },
     },
   ],
