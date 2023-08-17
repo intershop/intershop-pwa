@@ -8,6 +8,10 @@ const up = new client.Gauge({
   name: 'up',
   help: '1 = up, 0 = not up',
 });
+const pm2SSRMemoryLimit = new client.Gauge({
+  name: 'pm2_ssr_memory_limit',
+  help: 'ssr memory limit',
+});
 up.set({}, 1);
 const pm2Processes = new client.Gauge({
   name: 'pm2_processes',
@@ -88,6 +92,10 @@ app.get('/metrics', (_, res) => {
           list.forEach(({ name, pm_id, monit }) => {
             pm2Memory.labels({ name, pm2_id: pm_id }).set(monit?.memory || 0);
           });
+          const maxMem = list.map(p => p.pm2_env.max_memory_restart).find(Boolean);
+          if (maxMem) {
+            pm2SSRMemoryLimit.set(maxMem);
+          }
           const pm2Restarts = list.reduce(
             (acc, p) => ({ ...acc, [p.name]: (acc[p.name] || 0) + p.pm2_env.restart_time || 0 }),
             {}
