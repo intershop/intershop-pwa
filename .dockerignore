@@ -34,7 +34,6 @@
 /dist/**/*
 !/dist/.gitignore
 !/dist/entrypoint.sh
-!/dist/healthcheck.js
 !/dist/robots.txt
 
 # from docs/.gitignore
