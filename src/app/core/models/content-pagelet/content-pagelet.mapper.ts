@@ -16,7 +16,8 @@ export class ContentPageletMapper {
       throw new Error('falsy input');
     }
 
-    const { definitionQualifiedName, id, domain, displayName } = data;
+    const { definitionQualifiedName, id, domain } = data;
+    const displayName = data.displayName ? data.displayName : '(Language missing)';
     const configurationParameters = this.contentConfigurationParameterMapper.fromData(data.configurationParameters);
 
     let slots: ContentSlot[] = [];
