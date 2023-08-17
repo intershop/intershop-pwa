@@ -1,16 +1,19 @@
 import { inject } from '@angular/core';
-import { isObservable, of } from 'rxjs';
+import { first, isObservable, of, switchMap } from 'rxjs';
 
 import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
+import { isPromise } from 'ish-core/utils/functions';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 export function identityProviderLogoutGuard() {
   const identityProviderFactory = inject(IdentityProviderFactory);
 
-  const logoutReturn$ = identityProviderFactory.getInstance().triggerLogout();
-  return isObservable(logoutReturn$) || isPromise(logoutReturn$) ? logoutReturn$ : of(logoutReturn$);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isPromise(obj: any): obj is Promise<any> {
-  return !!obj && typeof obj.then === 'function';
+  return identityProviderFactory.initialized$.pipe(
+    whenTruthy(),
+    first(),
+    switchMap(() => {
+      const logoutReturn$ = identityProviderFactory.getInstance().triggerLogout();
+      return isObservable(logoutReturn$) || isPromise(logoutReturn$) ? logoutReturn$ : of(logoutReturn$);
+    })
+  );
 }
