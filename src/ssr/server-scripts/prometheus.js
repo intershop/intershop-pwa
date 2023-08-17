@@ -22,7 +22,7 @@ const pm2ProcessRestarts = new client.Gauge({
 const pm2Memory = new client.Gauge({
   name: 'pm2_memory',
   help: 'counter for pm2 memory',
-  labelNames: ['name'],
+  labelNames: ['name', 'pm2_id'],
 });
 const pm2GetmetricsSuccess = new client.Counter({
   name: 'pm2_getmetrics_success',
@@ -85,12 +85,8 @@ app.get('/metrics', (_, res) => {
           Object.entries(pm2ProcessCounts).forEach(([name, value]) => {
             pm2Processes.labels({ name }).set(value);
           });
-          const pm2ProcessMemory = list.reduce(
-            (acc, p) => ({ ...acc, [p.name]: (acc[p.name] || 0) + p.monit?.memory || 0 }),
-            {}
-          );
-          Object.entries(pm2ProcessMemory).forEach(([name, value]) => {
-            pm2Memory.labels({ name }).set(value);
+          list.forEach(({ name, pm_id, monit }) => {
+            pm2Memory.labels({ name, pm2_id: pm_id }).set(monit?.memory || 0);
           });
           const pm2Restarts = list.reduce(
             (acc, p) => ({ ...acc, [p.name]: (acc[p.name] || 0) + p.pm2_env.restart_time || 0 }),
