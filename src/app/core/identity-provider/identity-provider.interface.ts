@@ -1,8 +1,16 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, isObservable, of } from 'rxjs';
+
+import { isPromise } from 'ish-core/utils/functions';
 
 export type TriggerReturnType = Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
+
+export function getTriggerReturnType$(
+  returnType: TriggerReturnType
+): Observable<TriggerReturnType> | Promise<TriggerReturnType> {
+  return isObservable(returnType) || isPromise(returnType) ? returnType : of(returnType);
+}
 
 export interface IdentityProviderCapabilities {
   editPassword?: boolean;

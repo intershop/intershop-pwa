@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
-import { first, isObservable, of, switchMap } from 'rxjs';
+import { first, switchMap } from 'rxjs';
 
 import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
-import { isPromise } from 'ish-core/utils/functions';
+import { getTriggerReturnType$ } from 'ish-core/identity-provider/identity-provider.interface';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 export function identityProviderLogoutGuard() {
@@ -13,7 +13,7 @@ export function identityProviderLogoutGuard() {
     first(),
     switchMap(() => {
       const logoutReturn$ = identityProviderFactory.getInstance().triggerLogout();
-      return isObservable(logoutReturn$) || isPromise(logoutReturn$) ? logoutReturn$ : of(logoutReturn$);
+      return getTriggerReturnType$(logoutReturn$);
     })
   );
 }

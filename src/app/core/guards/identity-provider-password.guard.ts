@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { first, isObservable, of, switchMap } from 'rxjs';
+import { first, of, switchMap } from 'rxjs';
 
 import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
-import { isPromise } from 'ish-core/utils/functions';
+import { getTriggerReturnType$ } from 'ish-core/identity-provider/identity-provider.interface';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 export function identityProviderPasswordGuard(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -15,7 +15,7 @@ export function identityProviderPasswordGuard(route: ActivatedRouteSnapshot, sta
     switchMap(() => {
       if (identityProviderFactory.getType() !== 'ICM' && identityProviderFactory.getInstance().triggerInvite) {
         const inviteReturn$ = identityProviderFactory.getInstance().triggerInvite(route, state);
-        return isObservable(inviteReturn$) || isPromise(inviteReturn$) ? inviteReturn$ : of(inviteReturn$);
+        return getTriggerReturnType$(inviteReturn$);
       } else {
         return of(true);
       }
