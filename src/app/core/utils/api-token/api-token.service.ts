@@ -88,8 +88,7 @@ export class ApiTokenService {
         if (cookieContent) {
           this.cookiesService.put('apiToken', cookieContent, {
             expires: this.cookieOptions?.expires ?? new Date(Date.now() + DEFAULT_EXPIRY_TIME),
-            secure: this.cookieOptions?.secure ?? true,
-            sameSite: 'Strict',
+            secure: this.cookieOptions?.secure,
             path: '/',
           });
         }

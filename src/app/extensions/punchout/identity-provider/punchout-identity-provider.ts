@@ -149,18 +149,9 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     return this.punchoutService.getCxmlPunchoutSession(route.queryParamMap.get('sid')).pipe(
       // persist cXML session information (sid, returnURL, basketId) in cookies for later basket transfer
       tap(data => {
-        this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'), {
-          sameSite: 'None',
-          secure: true,
-        });
-        this.cookiesService.put('punchout_ReturnURL', data.returnURL, {
-          sameSite: 'None',
-          secure: true,
-        });
-        this.cookiesService.put('punchout_BasketID', data.basketId, {
-          sameSite: 'None',
-          secure: true,
-        });
+        this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'));
+        this.cookiesService.put('punchout_ReturnURL', data.returnURL);
+        this.cookiesService.put('punchout_BasketID', data.basketId);
       }),
       // use the basketId basket for the current PWA session (instead of default current basket)
       // TODO: if load basket error (currently no error page) -> logout and do not use default 'current' basket
@@ -173,10 +164,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
 
   private handleOciPunchoutLogin(route: ActivatedRouteSnapshot) {
     // save HOOK_URL to cookie for later basket transfer
-    this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'), {
-      sameSite: 'None',
-      secure: true,
-    });
+    this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'));
 
     const basketId = window.sessionStorage.getItem('basket-id');
     if (!basketId) {
