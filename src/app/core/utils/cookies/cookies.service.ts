@@ -148,8 +148,14 @@ export class CookiesService {
     str += `;path=${path}`;
     str += opts.domain ? `;domain=${opts.domain}` : '';
     str += expires ? `;expires=${expires.toUTCString()}` : '';
-    str += opts.sameSite ? `;SameSite=${opts.sameSite}` : '';
-    str += opts.secure && location.protocol === 'https:' ? ';secure' : '';
+
+    // if in an iframe set cookies always with SameSite=None, otherwise set the given SameSite, default to SameSite=Strict
+    str += `;SameSite=${window.parent !== window ? 'None' : opts.sameSite || 'Strict'}`;
+
+    // if in http mode (should only be in development) or if explicitly set to false do not set the cookie secure, default to secure
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+    str += window.location.protocol === 'http:' || opts.secure === false ? '' : ';secure';
+
     const cookiesLength = str.length + 1;
     if (cookiesLength > 4096) {
       // eslint-disable-next-line no-console
