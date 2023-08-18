@@ -7,6 +7,17 @@ kb_sync_latest_only
 
 # Migrations
 
+## 4.1 to 4.2
+
+A better handling for cookie `SameSite` and `secure` settings was implemented with new defaults to `SameSite=Strict` and `secure`.
+This can still be overridden when calling `cookies.services` `put` method with explicitly set values.
+Now the `secure` setting is always set to `true` if in `https` mode, you can prevent this by explicitly setting it to `false`.
+If the PWA is run with `http` (should only be in development environments) `secure` is not set.
+Additionally if the PWA is run in an iframe all cookies are set with `SameSite=None` (e.g. for punchout or Design View).
+Be aware that some browsers no longer accept cookies with `SameSite=None` without `secure`.
+Before by default no `SameSite` was set so browsers treated it as `SameSite=Lax`, this needs to be set explicitly now if it is really intended.
+For migrating check the calls of the `cookies.service` `put` method whether they need to be adapted.
+
 ## 4.0 to 4.1
 
 The Intershop PWA now uses Node.js 18.16.0 LTS with the corresponding npm version 9.5.1 to resolve an issue with Azure Docker deployments (see #1416).
