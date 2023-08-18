@@ -91,7 +91,7 @@ export class ApiTokenService {
 
   constructor(private cookiesService: CookiesService, private store: Store, private appRef: ApplicationRef) {
     // setup initial values
-    const initialCookie = this.parseCookie();
+    const initialCookie = this.cookiesService.getApiTokenCookie();
     this.initialCookie$ = new BehaviorSubject<ApiTokenCookie>(!SSR ? initialCookie : undefined);
     this.apiToken$ = new BehaviorSubject<string>(initialCookie?.apiToken);
 
@@ -145,11 +145,6 @@ export class ApiTokenService {
       this.cookieOptions = options;
     }
     this.apiToken$.next(apiToken);
-  }
-
-  hasUserApiTokenCookie() {
-    const apiTokenCookie = this.parseCookie();
-    return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
   }
 
   /**
@@ -259,7 +254,7 @@ export class ApiTokenService {
    * will remove apiToken and inform cookieVanishes$ listeners that cookie in not working as expected
    */
   private invalidateApiToken() {
-    const cookie = this.parseCookie();
+    const cookie = this.cookiesService.getApiTokenCookie();
 
     this.removeApiToken();
 
@@ -313,7 +308,7 @@ export class ApiTokenService {
       first(),
       mergeMap(() =>
         interval(1000).pipe(
-          map(() => this.parseCookie()),
+          map(() => this.cookiesService.getApiTokenCookie()),
           pairwise(),
           distinctUntilChanged((prev, curr) => isEqual(prev, curr))
         )
@@ -417,24 +412,11 @@ export class ApiTokenService {
             return { apiToken, type: 'order', orderId, creator: 'pwa' };
           }
 
-          const apiTokenCookieString = this.cookiesService.get('apiToken');
-          const apiTokenCookie: ApiTokenCookie = apiTokenCookieString ? JSON.parse(apiTokenCookieString) : undefined;
+          const apiTokenCookie: ApiTokenCookie = this.cookiesService.getApiTokenCookie() || undefined;
           if (apiToken && apiTokenCookie) {
             return { ...apiTokenCookie, apiToken }; // overwrite existing cookie information with new apiToken
           }
         })
       );
-  }
-
-  private parseCookie(): ApiTokenCookie {
-    const cookieContent = this.cookiesService.get('apiToken');
-    if (cookieContent) {
-      try {
-        return JSON.parse(cookieContent);
-      } catch (err) {
-        // ignore
-      }
-    }
-    return;
   }
 }
