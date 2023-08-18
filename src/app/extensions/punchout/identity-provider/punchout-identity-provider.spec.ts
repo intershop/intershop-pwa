@@ -192,9 +192,9 @@ describe('Punchout Identity Provider', () => {
               boolean | UrlTree
             >;
             login$.subscribe(() => {
-              verify(cookiesService.put('punchout_SID', 'sid', anything())).once();
-              verify(cookiesService.put('punchout_ReturnURL', 'home', anything())).once();
-              verify(cookiesService.put('punchout_BasketID', 'basket-id', anything())).once();
+              verify(cookiesService.put('punchout_SID', 'sid')).once();
+              verify(cookiesService.put('punchout_ReturnURL', 'home')).once();
+              verify(cookiesService.put('punchout_BasketID', 'basket-id')).once();
             });
 
             tick(500);
@@ -213,7 +213,7 @@ describe('Punchout Identity Provider', () => {
               boolean | UrlTree
             >;
             login$.subscribe(() => {
-              verify(cookiesService.put('punchout_HookURL', 'url', anything())).once();
+              verify(cookiesService.put('punchout_HookURL', 'url')).once();
               verify(checkoutFacade.createBasket()).once();
               expect(routerSpy).toHaveBeenCalledWith('/home');
               done();
