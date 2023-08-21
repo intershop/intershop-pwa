@@ -1,5 +1,10 @@
 <ng-container *ngIf="isDesignViewMode && type; else cmsOutlet">
-  <div class="designview-wrapper" [ngClass]="type">
+  <div
+    class="designview-wrapper clearfix {{ pageletId }}"
+    [ngClass]="type"
+    (mouseenter)="setHover('.' + pageletId, 'hover-in')"
+    (mouseleave)="unsetHover('.' + pageletId, 'hover-out')"
+  >
     <div class="designview-wrapper-actions">
       <ng-container [ngSwitch]="type">
         <!-- pagelet -->

@@ -10,7 +10,7 @@ import { StorefrontEditingMessage } from 'ish-core/utils/preview/preview.service
 
 @Injectable({ providedIn: 'root' })
 export class DesignViewService {
-  private allowedHostMessageTypes = ['dv-clientRefresh'];
+  private allowedHostMessageTypes = ['dv-clientRefresh', 'dv-tmpToggleElementHighlighting'];
 
   constructor(
     @Inject(IAP_BASE_URL) private iapBaseURL: InjectSingle<typeof IAP_BASE_URL>,
@@ -113,6 +113,27 @@ export class DesignViewService {
         location.reload();
         return;
       }
+      case 'dv-tmpToggleElementHighlighting': {
+        const element = document?.querySelector(message.payload.id);
+
+        if (element) {
+          // scroll
+          window.scrollTo({
+            behavior: 'smooth',
+            top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - 100,
+          });
+
+          // hover
+          if (message.payload.action === 'hover-in') {
+            element.classList.add('hover');
+          } else if (message.payload.action === 'hover-out') {
+            element.classList.remove('hover');
+          }
+        }
+
+        this.messageToHost({ type: 'dv-clientReady' });
+        return;
+      }
     }
   }
 
@@ -129,5 +150,12 @@ export class DesignViewService {
         this.domService.addClass(element, 'last-designview-wrapper');
       }
     });
+  }
+
+  /**
+   * temporary functionality
+   */
+  tmpToggleElementHighlighting(id: string, action: string) {
+    this.messageToHost({ type: 'dv-tmpToggleElementHighlighting', payload: { id, action } });
   }
 }

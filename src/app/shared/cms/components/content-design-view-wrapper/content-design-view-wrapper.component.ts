@@ -49,4 +49,12 @@ export class ContentDesignViewWrapperComponent implements OnInit {
   triggerAction(id: string, action: string) {
     this.designViewService.messageToHost({ type: 'dv-clientAction', payload: { id, action } });
   }
+
+  setHover(id: string, action: string) {
+    this.designViewService.tmpToggleElementHighlighting(id, action);
+  }
+
+  unsetHover(id: string, action: string) {
+    this.designViewService.tmpToggleElementHighlighting(id, action);
+  }
 }
