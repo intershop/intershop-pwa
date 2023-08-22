@@ -9,6 +9,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { IdentityProvider, TriggerReturnType } from 'ish-core/identity-provider/identity-provider.interface';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -26,7 +27,8 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     private accountFacade: AccountFacade,
     private punchoutService: PunchoutService,
     private cookiesService: CookiesService,
-    private checkoutFacade: CheckoutFacade
+    private checkoutFacade: CheckoutFacade,
+    private tokenService: TokenService
   ) {}
 
   getCapabilities() {
@@ -132,6 +134,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls
       filter(loggedIn => !loggedIn),
       take(1),
+      tap(() => this.tokenService.logOut()), // remove token from storage when user is logged out
       switchMap(() =>
         this.store.pipe(
           select(selectQueryParam('returnUrl')),
