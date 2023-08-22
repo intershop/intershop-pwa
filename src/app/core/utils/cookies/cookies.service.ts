@@ -34,9 +34,9 @@ export class CookiesService {
     return !SSR ? (this.cookiesReader()[key] as string) : undefined;
   }
 
-  remove(key: string) {
+  remove(key: string, options?: CookiesOptions) {
     if (!SSR) {
-      this.cookiesWriter()(key, undefined);
+      this.cookiesWriter()(key, undefined, options);
     }
   }
 

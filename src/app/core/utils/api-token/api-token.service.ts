@@ -96,7 +96,7 @@ export class ApiTokenService {
               path: '/',
             });
           } else {
-            cookiesService.remove('apiToken');
+            cookiesService.remove('apiToken', { path: '/' });
           }
         });
 
