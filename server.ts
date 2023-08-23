@@ -38,6 +38,13 @@ const requestDuration = new client.Histogram({
   labelNames: ['status_code', 'base_href', 'path'],
 });
 
+const restRequestDuration = new client.Summary({
+  name: 'pwa_rest_request_duration_seconds',
+  help: 'duration histogram of ICM rest responses',
+  percentiles: [0.5, 0.9, 0.95, 0.99],
+  labelNames: ['endpoint'],
+});
+
 const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
 
 if (PM2) {
@@ -163,12 +170,17 @@ export function app() {
   // Express server
   const server = express();
 
+  const prometheusRest: { endpoint: string; duration: number }[] = [];
+
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine(
     'html',
     ngExpressEngine({
       bootstrap: AppServerModule,
-      providers: [{ provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID }],
+      providers: [
+        { provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID },
+        { provide: 'PROMETHEUS_REST', useValue: prometheusRest },
+      ],
       inlineCriticalCss: false,
     })
   );
@@ -450,12 +462,19 @@ export function app() {
       onFinished(res, () => {
         const duration = Date.now() - start;
         const matched = /;baseHref=([^;?]*)/.exec(req.originalUrl);
-        const base_href = matched?.[1] ? `${decodeURIComponent(decodeURIComponent(matched[1]))}/` : '/';
+        let base_href = matched?.[1] ? `${decodeURIComponent(decodeURIComponent(matched[1]))}` : '/';
+        if (!base_href.endsWith('/')) {
+          base_href += '/';
+        }
         const cleanUrl = req.originalUrl.replace(/[;?].*/g, '');
         const path = cleanUrl.replace(base_href, '');
 
         requestCounts.inc({ method: req.method, status_code: res.statusCode, base_href, path });
         requestDuration.labels({ status_code: res.statusCode, base_href, path }).observe(duration / 1000);
+        prometheusRest.forEach(({ endpoint, duration }) => {
+          restRequestDuration.labels({ endpoint }).observe(duration / 1000);
+        });
+        prometheusRest.length = 0;
       });
       next();
     });
