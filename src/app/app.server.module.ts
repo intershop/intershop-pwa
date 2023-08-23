@@ -10,6 +10,7 @@ import { COOKIE_CONSENT_VERSION, DISPLAY_VERSION } from 'ish-core/configurations
 import { UniversalCacheInterceptor } from 'ish-core/interceptors/universal-cache.interceptor';
 import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
+import { UniversalPrometheusInterceptor } from 'ish-core/interceptors/universal-prometheus.interceptor';
 
 import { environment } from '../environments/environment';
 
@@ -40,6 +41,7 @@ export class UniversalErrorHandler implements ErrorHandler {
     { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: UniversalCacheInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UniversalPrometheusInterceptor, multi: true },
     { provide: ErrorHandler, useClass: UniversalErrorHandler },
     { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
     // disable data retention for SSR
