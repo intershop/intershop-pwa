@@ -5,6 +5,7 @@ import { Observable, Subject, of } from 'rxjs';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
@@ -23,6 +24,7 @@ describe('Icm Identity Provider', () => {
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
+        { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
         provideMockStore(),
       ],
     }).compileComponents();

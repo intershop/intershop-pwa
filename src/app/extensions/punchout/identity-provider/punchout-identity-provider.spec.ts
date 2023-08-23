@@ -8,6 +8,7 @@ import { anyString, anything, instance, mock, resetCalls, verify, when } from 't
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -46,6 +47,7 @@ describe('Punchout Identity Provider', () => {
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: CookiesService, useFactory: () => instance(cookiesService) },
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
+        { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
         provideMockStore(),
       ],
     }).compileComponents();

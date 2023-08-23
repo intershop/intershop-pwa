@@ -32,11 +32,32 @@ describe('Returning User', () => {
       });
     });
 
+    it('should have saved apiToken as cookie and within localStorage', () => {
+      cy.getCookie('apiToken').then(cookie => {
+        expect(cookie).to.not.be.empty;
+        cy.wrap(JSON.parse(decodeURIComponent(cookie.value))).should('have.property', 'type', 'user');
+      });
+
+      cy.getAllLocalStorage().then(
+        localStorage => expect(localStorage[Cypress.config('baseUrl')].access_token).to.not.be.empty
+      );
+    });
+
     it('should logout and be redirected to home page', () => {
       at(MyAccountPage, page => {
         page.header.logout();
       });
       at(HomePage);
+    });
+
+    it('should have removed apiToken cookie and infos from localStorage', () => {
+      cy.getCookie('apiToken').then(cookie => {
+        expect(cookie).to.be.null;
+      });
+
+      cy.getAllLocalStorage().then(
+        localStorage => expect(localStorage[Cypress.config('baseUrl')].access_token).to.be.undefined
+      );
     });
   });
 
