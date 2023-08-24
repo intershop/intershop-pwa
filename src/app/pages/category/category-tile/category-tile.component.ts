@@ -20,7 +20,7 @@ export class CategoryTileComponent implements OnInit {
   /**
    * The Category to render a tile for
    */
-  @Input() categoryUniqueId: string;
+  @Input({ required: true }) categoryUniqueId: string;
 
   category$: Observable<CategoryView>;
 

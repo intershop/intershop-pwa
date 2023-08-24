@@ -12,7 +12,7 @@ interface FormErrorMessages {
 })
 export class FormControlFeedbackComponent implements DoCheck {
   @Input() messages: FormErrorMessages = {};
-  @Input() control: AbstractControl;
+  @Input({ required: true }) control: AbstractControl;
 
   errors: string[];
 

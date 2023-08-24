@@ -21,7 +21,7 @@ import { User } from 'ish-core/models/user/user.model';
 })
 export class AccountPaymentComponent implements OnInit, OnChanges {
   @Input() paymentMethods: PaymentMethod[];
-  @Input() user: User;
+  @Input({ required: true }) user: User;
 
   preferredPaymentInstrument: PaymentInstrument;
   savedPaymentMethods: PaymentMethod[];
@@ -35,7 +35,7 @@ export class AccountPaymentComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.paymentForm = new FormGroup({
-      id: new FormControl(this.user?.preferredPaymentInstrumentId),
+      id: new FormControl(this.user.preferredPaymentInstrumentId),
     });
 
     // trigger update preferred payment method if payment selection changes

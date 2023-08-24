@@ -21,12 +21,12 @@ export class SearchResultComponent implements OnInit, OnChanges {
   /**
    * The the search term leading to the displayed result.
    */
-  @Input() searchTerm: string;
+  @Input({ required: true }) searchTerm: string;
 
   /**
    * The total number of product search results (might be different from products.length if paging is applied).
    */
-  @Input() totalItems: number;
+  @Input({ required: true }) totalItems: number;
   @Input() deviceType: DeviceType;
 
   isCollapsed = false;

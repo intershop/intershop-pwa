@@ -16,8 +16,8 @@ import { InjectSingle } from 'ish-core/utils/injection';
 })
 export class SubCategoryNavigationComponent implements OnInit {
   @Input() view = 'auto';
-  @Input() categoryUniqueId: string;
-  @Input() subCategoriesDepth: number;
+  @Input({ required: true }) categoryUniqueId: string;
+  @Input({ required: true }) subCategoriesDepth: number;
 
   openedCategories: string[] = [];
 

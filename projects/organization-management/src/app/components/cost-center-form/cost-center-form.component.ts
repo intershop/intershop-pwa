@@ -19,7 +19,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CostCenterFormComponent implements OnInit {
-  @Input() form: FormGroup;
+  @Input({ required: true }) form: FormGroup;
   @Input() costCenter: CostCenter;
 
   fields$: Observable<FormlyFieldConfig[]>;
@@ -30,10 +30,6 @@ export class CostCenterFormComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
-    if (!this.form) {
-      throw new Error('required input parameter <form> is missing for CostCenterFormComponent');
-    }
-
     const currencyAndManagerOptions$ = combineLatest([
       this.appFacade.currentCurrency$.pipe(whenTruthy()),
       this.organizationManagementFacade.costCenterManagerSelectOptions$(),

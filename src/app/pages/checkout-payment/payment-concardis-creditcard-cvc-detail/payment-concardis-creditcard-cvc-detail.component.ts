@@ -20,7 +20,7 @@ declare let PayEngine: any;
 })
 // eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
-  @Input() paymentInstrument: PaymentInstrument;
+  @Input({ required: true }) paymentInstrument: PaymentInstrument;
 
   validityTimeInMinutes: string;
   cvcDetailForm = new FormGroup({});

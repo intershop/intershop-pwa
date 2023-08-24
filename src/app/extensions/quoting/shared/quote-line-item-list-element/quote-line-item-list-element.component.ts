@@ -12,7 +12,7 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteLineItemListElementComponent implements OnInit {
-  @Input() lineItem: Partial<
+  @Input({ required: true }) lineItem: Partial<
     Pick<QuoteRequestItem, 'id' | 'productSKU' | 'quantity' | 'singleBasePrice' | 'total'> &
       Pick<
         QuoteItem,
@@ -29,7 +29,7 @@ export class QuoteLineItemListElementComponent implements OnInit {
 
     this.productContext.hold(this.productContext.validDebouncedQuantityUpdate$(), quantity => {
       this.quoteContext.updateItem({
-        itemId: this.lineItem?.id,
+        itemId: this.lineItem.id,
         quantity,
       });
     });

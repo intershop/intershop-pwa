@@ -19,7 +19,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 })
 export class AccountProfileEmailComponent implements OnInit {
   @Input() error: HttpError;
-  @Input() currentUser: User;
+  @Input({ required: true }) currentUser: User;
 
   @Output() updateEmail = new EventEmitter<{ user: User; credentials: Credentials }>();
 

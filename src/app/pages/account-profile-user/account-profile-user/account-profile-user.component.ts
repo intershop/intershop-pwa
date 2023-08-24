@@ -18,7 +18,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountProfileUserComponent implements OnInit {
-  @Input() currentUser: User;
+  @Input({ required: true }) currentUser: User;
   @Input() error: HttpError;
 
   @Output() updateUserProfile = new EventEmitter<User>();

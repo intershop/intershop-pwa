@@ -12,7 +12,7 @@ export class CategoryProductsComponent implements OnInit, OnChanges {
   /**
    * The the category leading to the displayed result.
    */
-  @Input() category: CategoryView;
+  @Input({ required: true }) category: CategoryView;
   @Input() deviceType: DeviceType;
 
   isCollapsed = false;

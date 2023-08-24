@@ -10,13 +10,13 @@ import { Quote, QuoteStatus } from '../../models/quoting/quoting.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteExpirationDateComponent implements OnChanges {
-  @Input() quote: Partial<Pick<Quote, 'id' | 'validToDate'>>;
+  @Input({ required: true }) quote: Partial<Pick<Quote, 'id' | 'validToDate'>>;
 
   state$: Observable<QuoteStatus>;
 
   constructor(private quotingFacade: QuotingFacade) {}
 
   ngOnChanges() {
-    this.state$ = this.quotingFacade.state$(this.quote?.id);
+    this.state$ = this.quotingFacade.state$(this.quote.id);
   }
 }
