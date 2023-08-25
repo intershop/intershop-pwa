@@ -5,7 +5,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
-import { SuggestService } from './suggest.service';
+import { ICMSuggestService, SuggestService } from './suggest.service';
 
 describe('Suggest Service', () => {
   let apiService: ApiService;
@@ -15,7 +15,10 @@ describe('Suggest Service', () => {
     apiService = mock(ApiService);
     when(apiService.get(anything(), anything())).thenReturn(of<SuggestTerm[]>([]));
     TestBed.configureTestingModule({
-      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: SuggestService, useClass: ICMSuggestService },
+      ],
     });
     suggestService = TestBed.inject(SuggestService);
   });
