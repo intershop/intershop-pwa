@@ -8,7 +8,7 @@ import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service'
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
-import { FilterService } from './filter.service';
+import { FilterService, ICMFilterService } from './filter.service';
 
 describe('Filter Service', () => {
   let apiService: ApiService;
@@ -36,7 +36,10 @@ describe('Filter Service', () => {
 
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['configuration'])],
-      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: FilterService, useClass: ICMFilterService },
+      ],
     });
     filterService = TestBed.inject(FilterService);
 

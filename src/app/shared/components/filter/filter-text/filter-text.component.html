@@ -5,7 +5,9 @@
       <ng-container *ngIf="facet.selected; else notSelectedBox">
         <a [routerLink]="[]" (click)="filter(facet)" [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)">
           <span class="filter-item-name"> {{ facet.displayName }} </span>
-          <span class="count"> ({{ facet.count }}) </span>
+          <ng-container *ngIf="facet.count"
+            ><span class="count"> ({{ facet.count }}) </span></ng-container
+          >
           <ng-container *ngIf="filterElement.displayType === 'text_clear'">
             <fa-icon [icon]="['fas', 'times']" class="float-right filter-clear"></fa-icon>
           </ng-container>
@@ -21,7 +23,7 @@
           [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
         >
           {{ facet.displayName }}
-          <ng-container *ngIf="facet.level === maxLevel"> ({{ facet.count }}) </ng-container>
+          <ng-container *ngIf="facet.level === maxLevel && facet.count">({{ facet.count }}) </ng-container>
         </a>
       </ng-template>
     </li>
