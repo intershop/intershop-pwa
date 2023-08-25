@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map } from 'rxjs/operators';
+import { concatMap, map, switchMap } from 'rxjs/operators';
 
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -25,7 +25,7 @@ export class ContactEffects {
   loadSubjects$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadContact),
-      concatMap(() =>
+      switchMap(() =>
         this.contactService.getContactSubjects().pipe(
           map(subjects => loadContactSuccess({ subjects })),
           mapErrorToAction(loadContactFail)

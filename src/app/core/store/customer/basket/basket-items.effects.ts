@@ -105,7 +105,7 @@ export class BasketItemsEffects {
     this.actions$.pipe(
       ofType(addItemsToBasket),
       mapToPayload(),
-      concatMap(payload => [...payload.items.map(item => loadProduct({ sku: item.sku }))])
+      mergeMap(payload => [...payload.items.map(item => loadProduct({ sku: item.sku }))])
     )
   );
 

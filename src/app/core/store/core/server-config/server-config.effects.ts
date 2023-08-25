@@ -48,7 +48,7 @@ export class ServerConfigEffects {
   loadServerConfig$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadServerConfig),
-      concatMap(() =>
+      switchMap(() =>
         this.configService.getServerConfiguration().pipe(
           map(config => loadServerConfigSuccess({ config })),
           mapErrorToAction(loadServerConfigFail)
@@ -64,7 +64,7 @@ export class ServerConfigEffects {
       switchMap(() => this.store.pipe(select(isExtraConfigurationLoaded))),
       whenFalsy(),
       delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
-      concatMap(() =>
+      switchMap(() =>
         this.configService.getExtraConfiguration().pipe(
           map(extra => loadExtraConfigSuccess({ extra })),
           mapErrorToAction(loadExtraConfigFail)

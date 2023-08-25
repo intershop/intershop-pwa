@@ -116,7 +116,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(loadBasketByAPIToken),
       mapToPayloadProperty('apiToken'),
-      concatMap(apiToken =>
+      switchMap(apiToken =>
         this.basketService.getBasketByToken(apiToken).pipe(
           map(basket => loadBasketSuccess({ basket })),
           mapErrorToAction(loadBasketByAPITokenFail)

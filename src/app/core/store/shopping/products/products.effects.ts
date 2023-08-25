@@ -117,7 +117,7 @@ export class ProductsEffects {
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage('category')))),
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
-      concatMap(({ categoryId, amount, sorting, offset, page }) =>
+      mergeMap(({ categoryId, amount, sorting, offset, page }) =>
         this.productsService.getCategoryProducts(categoryId, amount, sorting, offset).pipe(
           concatMap(({ total, products, sortableAttributes }) => [
             ...products.map(product => loadProductSuccess({ product })),
@@ -152,8 +152,7 @@ export class ProductsEffects {
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage('master')))),
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
-
-      concatMap(({ masterSKU, amount, sorting, offset, page }) =>
+      mergeMap(({ masterSKU, amount, sorting, offset, page }) =>
         this.productsService.getProductsForMaster(masterSKU, amount, sorting, offset).pipe(
           concatMap(({ total, products, sortableAttributes }) => [
             ...products.map(product => loadProductSuccess({ product })),

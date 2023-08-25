@@ -122,7 +122,7 @@ export class OrdersEffects {
   loadOrders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrders),
-      concatMap(() =>
+      switchMap(() =>
         this.orderService.getOrders().pipe(
           map(orders => loadOrdersSuccess({ orders })),
           mapErrorToAction(loadOrdersFail)
