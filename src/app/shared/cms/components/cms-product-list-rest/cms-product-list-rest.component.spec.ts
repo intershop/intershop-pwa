@@ -1,10 +1,12 @@
 // eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
 import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { getRestEndpoint } from 'ish-core/store/core/configuration';
 
 import { CMSProductListRestComponent } from './cms-product-list-rest.component';
 
@@ -37,17 +39,22 @@ const restJson = {
 const skuArray = ['aaa', 'bbb', 'ccc'];
 
 describe('Cms Product List Rest Component', () => {
+  const BASE_URL = 'http://example.org/WFS/site/-';
   let component: CMSProductListRestComponent;
   let fixture: ComponentFixture<CMSProductListRestComponent>;
   let element: HTMLElement;
   let httpClient: HttpClient;
+  let store$: MockStore;
 
   beforeEach(async () => {
     httpClient = mock(HttpClient);
 
     await TestBed.configureTestingModule({
       declarations: [CMSProductListRestComponent],
-      providers: [{ provide: HttpClient, useFactory: () => instance(httpClient) }],
+      providers: [
+        { provide: HttpClient, useFactory: () => instance(httpClient) },
+        provideMockStore({ selectors: [{ selector: getRestEndpoint, value: BASE_URL }] }),
+      ],
     }).compileComponents();
   });
 

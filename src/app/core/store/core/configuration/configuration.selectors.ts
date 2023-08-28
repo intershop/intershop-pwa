@@ -36,6 +36,8 @@ export const getICMStaticURL = createSelector(getConfigurationState, getICMAppli
 
 export const getICMBaseURL = createSelector(getConfigurationState, state => state.baseURL);
 
+export const getSparqueEndpoint = createSelector(getConfigurationState, state => state.sparqueEndPoint);
+
 export const getFeatures = createSelector(getConfigurationState, state =>
   state.features ? [...state.features, ...state.addFeatures] : undefined
 );
