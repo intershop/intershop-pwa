@@ -84,6 +84,8 @@ const filtered = externalLinks
   .filter((val, idx, arr) => arr.indexOf(val) === idx)
   .filter(
     link =>
+      !link.includes('sparque.ai') &&
+      !link.includes('spinque.com') &&
       !link.includes('tacton.com') &&
       !link.includes('repository.intershop.de') &&
       !link.includes('support.intershop.') &&

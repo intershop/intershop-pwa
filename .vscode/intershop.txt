@@ -166,6 +166,7 @@ signup
 sitekey
 sku
 skus
+sparque
 spgid
 sslmode
 storefinder

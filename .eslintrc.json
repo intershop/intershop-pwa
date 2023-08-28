@@ -546,6 +546,11 @@
                 "name": "^([A-Z].*)ProductContextDisplayPropertiesService",
                 "file": ".*/extensions/<kebab>/exports/<kebab>-product-context-display-properties/<kebab>-product-context-display-properties\\.service(<theme>)?\\.ts$"
               },
+              // sparque
+              {
+                "name": "^(Sparque[A-Z].*)Service",
+                "file": ".*/services/sparque/<kebab>/<kebab>\\.service\\.ts$"
+              },
               {
                 "name": "^([A-Z].*)Service$",
                 "file": "(/utils.*|/services/<kebab>|/exports/<kebab>)/<kebab>\\.service(<theme>)?\\.ts$"
