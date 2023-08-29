@@ -34,7 +34,7 @@ Object.entries(ports).forEach(([theme, port]) => {
     name: ${theme}
     instances: ${process.env.CONCURRENCY_SSR || 2}
     exec_mode: cluster
-    max_memory_restart: ${process.env.SSR_MAX_MEM || '400M'}
+    max_memory_restart: ${process.env.SSR_MAX_MEM || '600M'}
     env:
       BROWSER_FOLDER: dist/${theme}/browser
       PORT: ${port}
