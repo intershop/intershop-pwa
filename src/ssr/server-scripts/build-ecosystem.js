@@ -16,8 +16,6 @@ if (Object.keys(ports).length === 1) {
   content += `
   - script: dist/server.js
     name: distributor
-    instances: ${process.env.CONCURRENCY_DISTRIBUTOR || 'max'}
-    exec_mode: cluster
   `;
 }
 
