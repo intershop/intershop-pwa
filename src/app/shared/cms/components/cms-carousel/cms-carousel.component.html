@@ -4,7 +4,7 @@
       <ngb-carousel
         #ngbCarousel
         [interval]="0"
-        [showNavigationArrows]="pageletSlides.length > 1"
+        [showNavigationArrows]="pageletSlides?.length > 1"
         [showNavigationIndicators]="pagelet.booleanParam('ShowIndicators')"
       >
         <ng-template ngbSlide *ngFor="let slidePagelets of pageletSlides">
