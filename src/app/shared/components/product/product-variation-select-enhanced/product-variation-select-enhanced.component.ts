@@ -12,7 +12,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationSelectEnhancedComponent implements OnInit {
-  @Input() group: VariationOptionGroup;
+  @Input({ required: true }) group: VariationOptionGroup;
   @Input() uuid: string;
   @Input() multipleOptions: boolean;
 

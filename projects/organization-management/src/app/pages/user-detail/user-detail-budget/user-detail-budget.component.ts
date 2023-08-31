@@ -11,5 +11,5 @@ import { UserBudget } from '../../../models/user-budget/user-budget.model';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UserDetailBudgetComponent {
-  @Input() budget: UserBudget;
+  @Input({ required: true }) budget: UserBudget;
 }

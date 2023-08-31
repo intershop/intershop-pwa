@@ -11,7 +11,7 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutAddressAnonymousFormComponent implements OnInit {
-  @Input() parentForm: FormGroup;
+  @Input({ required: true }) parentForm: FormGroup;
 
   invoiceAddressForm = new FormGroup({});
   shippingAddressForm = new FormGroup({});

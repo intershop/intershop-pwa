@@ -37,6 +37,10 @@ export class UserBudgetFormComponent implements OnInit {
   constructor(private appFacade: AppFacade) {}
 
   ngOnInit() {
+    if (!this.form) {
+      throw new Error('required input parameter <form> is missing for UserBudgetFormComponent');
+    }
+
     // determine current currency
     this.appFacade.currentCurrency$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(currency => {
       this.currentCurrency = currency;

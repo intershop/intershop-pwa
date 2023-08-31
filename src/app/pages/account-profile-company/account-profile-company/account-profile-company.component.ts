@@ -19,7 +19,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 })
 export class AccountProfileCompanyComponent implements OnInit {
   @Input() error: HttpError;
-  @Input() currentCustomer: Customer;
+  @Input({ required: true }) currentCustomer: Customer;
   @Output() updateCompanyProfile = new EventEmitter<Customer>();
 
   submitted = false;

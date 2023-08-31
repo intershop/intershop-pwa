@@ -15,7 +15,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListPagingComponent {
-  @Input() currentPage: number;
-  @Input() pageIndices: { value: number; display: string }[];
+  @Input({ required: true }) currentPage: number;
+  @Input({ required: true }) pageIndices: { value: number; display: string }[];
   @Input() fragmentOnRouting: string;
 }

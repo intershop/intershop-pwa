@@ -31,7 +31,7 @@ export class PaymentConcardisComponent implements OnInit, OnChanges {
   /**
    * concardis payment method, needed to get configuration parameters
    */
-  @Input() paymentMethod: PaymentMethod;
+  @Input({ required: true }) paymentMethod: PaymentMethod;
 
   /**
    * should be set to true by the parent, if component is visible

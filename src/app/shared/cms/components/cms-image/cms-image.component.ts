@@ -10,7 +10,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSImageComponent implements CMSComponent {
-  @Input() pagelet: ContentPageletView;
+  @Input({ required: true }) pagelet: ContentPageletView;
 
   isRouterLink = ContentViewHelper.isRouterLink;
   routerLink = ContentViewHelper.getRouterLink;

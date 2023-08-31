@@ -15,7 +15,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSVideoComponent implements CMSComponent, OnInit {
-  @Input() pagelet: ContentPageletView;
+  @Input({ required: true }) pagelet: ContentPageletView;
 
   @ViewChild('videoPlayer') videoPlayer: ElementRef;
 

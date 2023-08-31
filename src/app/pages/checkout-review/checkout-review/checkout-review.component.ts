@@ -21,7 +21,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReviewComponent implements OnInit, OnChanges {
-  @Input() basket: Basket;
+  @Input({ required: true }) basket: Basket;
   @Input() error: HttpError;
   @Input() submitting: boolean;
   @Output() createOrder = new EventEmitter<void>();

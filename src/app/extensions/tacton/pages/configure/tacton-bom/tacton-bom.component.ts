@@ -8,5 +8,5 @@ import { TactonProductConfigurationBomItem } from '../../../models/tacton-produc
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TactonBomComponent {
-  @Input() bom: TactonProductConfigurationBomItem[];
+  @Input({ required: true }) bom: TactonProductConfigurationBomItem[];
 }

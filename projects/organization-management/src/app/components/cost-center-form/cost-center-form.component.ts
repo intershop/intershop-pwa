@@ -30,6 +30,10 @@ export class CostCenterFormComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
+    if (!this.form) {
+      throw new Error('required input parameter <form> is missing for CostCenterFormComponent');
+    }
+
     const currencyAndManagerOptions$ = combineLatest([
       this.appFacade.currentCurrency$.pipe(whenTruthy()),
       this.organizationManagementFacade.costCenterManagerSelectOptions$(),

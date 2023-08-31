@@ -45,7 +45,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   /**
    * payone payment method, needed to get configuration parameters
    */
-  @Input() paymentMethod: PaymentMethod;
+  @Input({ required: true }) paymentMethod: PaymentMethod;
 
   /**
    * should be set to true by the parent, if component is visible

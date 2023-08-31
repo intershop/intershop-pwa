@@ -29,7 +29,7 @@ export class QuoteLineItemListElementComponent implements OnInit {
 
     this.productContext.hold(this.productContext.validDebouncedQuantityUpdate$(), quantity => {
       this.quoteContext.updateItem({
-        itemId: this.lineItem.id,
+        itemId: this.lineItem?.id,
         quantity,
       });
     });

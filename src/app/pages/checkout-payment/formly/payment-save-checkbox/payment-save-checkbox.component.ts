@@ -15,7 +15,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 })
 export class PaymentSaveCheckboxComponent implements OnInit {
   @Input({ required: true }) paymentMethod: PaymentMethod;
-  @Input() form: FormGroup;
+  @Input({ required: true }) form: FormGroup;
 
   fields: FormlyFieldConfig[];
   model = { saveForLater: true };

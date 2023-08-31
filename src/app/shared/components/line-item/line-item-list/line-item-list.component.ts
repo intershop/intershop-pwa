@@ -24,7 +24,7 @@ import { Price } from 'ish-core/models/price/price.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemListComponent implements OnChanges {
-  @Input() lineItems: Partial<LineItemView & OrderLineItem>[];
+  @Input({ required: true }) lineItems: Partial<LineItemView & OrderLineItem>[];
   @Input() editable = true;
   @Input() total: Price;
   @Input() lineItemViewType: 'simple' | 'availability';

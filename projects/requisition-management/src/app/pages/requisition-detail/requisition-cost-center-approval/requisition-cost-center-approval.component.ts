@@ -37,19 +37,20 @@ export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges
   }
 
   ngOnChanges() {
-    this.costCenter = this.requisition.approval?.costCenterApproval?.costCenter;
+    this.costCenter = this.requisition?.approval?.costCenterApproval?.costCenter;
 
     this.orderTotal = {
       type: 'Money',
-      value: this.requisition.totals?.total?.gross,
-      currency: this.requisition.totals?.total?.currency,
+      value: this.requisition?.totals?.total?.gross,
+      currency: this.requisition?.totals?.total?.currency,
     };
 
     if (this.costCenter) {
       this.ccVal = this.determineBudgetValues(this.costCenter);
 
       this.buyer =
-        this.costCenter.buyers?.length && this.costCenter.buyers?.find(buyer => buyer.email === this.requisition.email);
+        this.costCenter.buyers?.length &&
+        this.costCenter.buyers?.find(buyer => buyer.email === this.requisition?.email);
       this.bVal = this.determineBudgetValues(this.buyer);
     }
   }

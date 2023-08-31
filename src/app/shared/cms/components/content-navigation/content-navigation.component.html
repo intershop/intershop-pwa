@@ -14,7 +14,7 @@
     >
       <a [routerLink]="treeNode | ishContentPageRoute" [title]="treeNode.name">{{ treeNode.name }}</a>
       <ul
-        *ngIf="treeNode.children.length > 0 && (depth !== 0 || depth >= counter)"
+        *ngIf="treeNode.children.length > 0 && ((!depth && depth !== 0) || depth >= counter)"
         [ngClass]="'page-navigation-' + counter"
       >
         <ng-container

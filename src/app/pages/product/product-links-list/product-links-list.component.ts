@@ -24,11 +24,11 @@ export class ProductLinksListComponent implements OnChanges {
   /**
    * list of products which are assigned to the specific product link type
    */
-  @Input() links: ProductLinks;
+  @Input({ required: true }) links: ProductLinks;
   /**
    * title that should displayed for the specific product link type
    */
-  @Input() productLinkTitle: string;
+  @Input({ required: true }) productLinkTitle: string;
   /**
    * display only available products if set to 'true'
    */

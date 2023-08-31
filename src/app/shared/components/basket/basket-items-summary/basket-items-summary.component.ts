@@ -8,7 +8,7 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketItemsSummaryComponent {
-  @Input() basket: BasketView;
+  @Input({ required: true }) basket: BasketView;
 
   isCollapsed = true;
   collapsedItemsCount = 3;

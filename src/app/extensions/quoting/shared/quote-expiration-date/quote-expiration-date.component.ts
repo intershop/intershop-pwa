@@ -17,6 +17,6 @@ export class QuoteExpirationDateComponent implements OnChanges {
   constructor(private quotingFacade: QuotingFacade) {}
 
   ngOnChanges() {
-    this.state$ = this.quotingFacade.state$(this.quote.id);
+    this.state$ = this.quotingFacade.state$(this.quote?.id);
   }
 }
