@@ -1,5 +1,3 @@
-declare module 'express-http-proxy';
-
 declare module 'express-robots-txt';
 
 declare const PRODUCTION_MODE: boolean;
