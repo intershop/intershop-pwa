@@ -8,7 +8,7 @@ import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { getCurrentLocale } from 'ish-core/store/core/configuration/configuration.selectors';
+import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration/configuration.selectors';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { serverConfigError } from 'ish-core/store/core/error';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -122,6 +122,7 @@ describe('Server Config Effects', () => {
       when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
       when(multiSiteServiceMock.getLangUpdatedUrl(anything(), anything())).thenReturn(of('/home;lang=de_DE'));
       when(multiSiteServiceMock.appendUrlParams(anything(), anything(), anything())).thenReturn('/home;lang=de_DE');
+      store$.overrideSelector(getAvailableLocales, ['en_US', 'de_DE', 'fr_FR']);
     });
 
     it('should map to action of type LoadServerConfigSuccess', () => {
@@ -178,6 +179,26 @@ describe('Server Config Effects', () => {
 
     it("should not reload the current page if the user's locale cookie is equal to the current locale", fakeAsync(() => {
       when(cookiesServiceMock.get(anything())).thenReturn('en_US');
+      store$.overrideSelector(getCurrentLocale, 'en_US');
+
+      // mock location.assign() with jest.fn()
+      Object.defineProperty(window, 'location', {
+        value: { assign: jest.fn() },
+        writable: true,
+      });
+
+      const action = loadServerConfigSuccess({ config: {} as ServerConfig });
+      actions$ = of(action);
+
+      effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
+
+      tick(500);
+
+      expect(window.location.assign).not.toHaveBeenCalled();
+    }));
+
+    it("should not reload the current page if the user's cookie locale is not available", fakeAsync(() => {
+      when(cookiesServiceMock.get(anything())).thenReturn('it_IT');
       store$.overrideSelector(getCurrentLocale, 'en_US');
 
       // mock location.assign() with jest.fn()

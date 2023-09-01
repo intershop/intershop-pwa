@@ -8,7 +8,7 @@ import { concatMap, filter, first, map, switchMap, take, takeWhile, withLatestFr
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { applyConfiguration, getCurrentLocale } from 'ish-core/store/core/configuration';
+import { applyConfiguration, getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
 import { ConfigurationState } from 'ish-core/store/core/configuration/configuration.reducer';
 import { serverConfigError } from 'ish-core/store/core/error';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -65,18 +65,25 @@ export class ServerConfigEffects {
     () =>
       this.actions$.pipe(
         ofType(loadServerConfigSuccess),
-        withLatestFrom(this.store.pipe(select(getCurrentLocale))),
-        map(([, currentLocale]) => [this.cookiesService.get('preferredLocale'), currentLocale]),
-        filter(([preferredLocale, locale]) => preferredLocale && preferredLocale !== locale),
-        concatMap(([preferredLocale]) => {
+        withLatestFrom(this.store.pipe(select(getAvailableLocales)), this.store.pipe(select(getCurrentLocale))),
+        map(([, availableLocales, currentLocale]) => ({
+          cookieLocale: this.cookiesService.get('preferredLocale'),
+          availableLocales,
+          currentLocale,
+        })),
+        filter(
+          ({ cookieLocale, availableLocales, currentLocale }) =>
+            cookieLocale && availableLocales?.includes(cookieLocale) && cookieLocale !== currentLocale
+        ),
+        concatMap(({ cookieLocale }) => {
           const splittedUrl = location.pathname?.split('?');
           const newUrl = splittedUrl?.[0];
 
-          return this.multiSiteService.getLangUpdatedUrl(preferredLocale, newUrl).pipe(
+          return this.multiSiteService.getLangUpdatedUrl(cookieLocale, newUrl).pipe(
             whenTruthy(),
             take(1),
             map(modifiedUrl => {
-              const modifiedUrlParams = modifiedUrl === newUrl ? { lang: preferredLocale } : {};
+              const modifiedUrlParams = modifiedUrl === newUrl ? { lang: cookieLocale } : {};
               return this.multiSiteService.appendUrlParams(modifiedUrl, modifiedUrlParams, splittedUrl?.[1]);
             }),
             concatMap(url => {
