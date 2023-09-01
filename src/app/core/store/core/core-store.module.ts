@@ -29,7 +29,10 @@ const coreReducers: ActionReducerMap<CoreState> = {
 
 const coreEffects = [ErrorEffects, ViewconfEffects, ConfigurationEffects, MessagesEffects, ServerConfigEffects];
 
-const coreMetaReducers: MetaReducer<CoreState>[] = [ngrxStateTransferMeta, configurationMeta];
+const coreMetaReducers: MetaReducer<CoreState>[] = [
+  ngrxStateTransferMeta,
+  ...(PRODUCTION_MODE ? [] : [configurationMeta]),
+];
 
 @NgModule({
   imports: [
