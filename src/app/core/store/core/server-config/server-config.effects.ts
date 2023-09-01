@@ -65,6 +65,7 @@ export class ServerConfigEffects {
     () =>
       this.actions$.pipe(
         ofType(loadServerConfigSuccess),
+        takeWhile(() => this.featureToggleService.enabled('saveLanguageSelection')),
         withLatestFrom(this.store.pipe(select(getAvailableLocales)), this.store.pipe(select(getCurrentLocale))),
         map(([, availableLocales, currentLocale]) => ({
           cookieLocale: this.cookiesService.get('preferredLocale'),

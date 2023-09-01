@@ -18,6 +18,9 @@ Be aware that some browsers no longer accept cookies with `SameSite=None` withou
 Before by default no `SameSite` was set so browsers treated it as `SameSite=Lax`, this needs to be set explicitly now if it is really intended.
 For migrating check the calls of the `cookies.service` `put` method whether they need to be adapted.
 
+The user's language selection is saved as a cookie now and restored after the pwa is loaded.
+This functionality can be enabled/disabled by the feature toggle `saveLanguageSelection`.
+
 ## 4.0 to 4.1
 
 The Intershop PWA now uses Node.js 18.16.0 LTS with the corresponding npm version 9.5.1 to resolve an issue with Azure Docker deployments (see #1416).

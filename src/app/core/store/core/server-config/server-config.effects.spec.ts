@@ -6,6 +6,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration/configuration.selectors';
@@ -74,16 +75,19 @@ describe('Server Config Effects', () => {
   let configurationServiceMock: ConfigurationService;
   let cookiesServiceMock: CookiesService;
   let multiSiteServiceMock: MultiSiteService;
+  let featureToggleServiceMock: FeatureToggleService;
 
   beforeEach(() => {
     configurationServiceMock = mock(ConfigurationService);
     cookiesServiceMock = mock(CookiesService);
     multiSiteServiceMock = mock(MultiSiteService);
+    featureToggleServiceMock = mock(FeatureToggleService);
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
         { provide: CookiesService, useFactory: () => instance(cookiesServiceMock) },
+        { provide: FeatureToggleService, useFactory: () => instance(featureToggleServiceMock) },
         { provide: MultiSiteService, useFactory: () => instance(multiSiteServiceMock) },
         provideMockActions(() => actions$),
         provideMockStore(),
@@ -120,9 +124,6 @@ describe('Server Config Effects', () => {
   describe('loadServerConfig$', () => {
     beforeEach(() => {
       when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
-      when(multiSiteServiceMock.getLangUpdatedUrl(anything(), anything())).thenReturn(of('/home;lang=de_DE'));
-      when(multiSiteServiceMock.appendUrlParams(anything(), anything(), anything())).thenReturn('/home;lang=de_DE');
-      store$.overrideSelector(getAvailableLocales, ['en_US', 'de_DE', 'fr_FR']);
     });
 
     it('should map to action of type LoadServerConfigSuccess', () => {
@@ -157,64 +158,62 @@ describe('Server Config Effects', () => {
       expect(effects.mapToServerConfigError$).toBeObservable(expected$);
     });
 
-    it("should reload the current page if the user's locale cookie differs from the current locale", fakeAsync(() => {
-      when(cookiesServiceMock.get(anything())).thenReturn('de_DE');
-      store$.overrideSelector(getCurrentLocale, 'en_US');
+    describe('restore language after loadServerConfigSuccess$', () => {
+      const action = loadServerConfigSuccess({ config: {} as ServerConfig });
+      beforeEach(() => {
+        when(multiSiteServiceMock.getLangUpdatedUrl(anything(), anything())).thenReturn(of('/home;lang=de_DE'));
+        when(multiSiteServiceMock.appendUrlParams(anything(), anything(), anything())).thenReturn('/home;lang=de_DE');
+        when(featureToggleServiceMock.enabled(anything())).thenReturn(true);
+        store$.overrideSelector(getAvailableLocales, ['en_US', 'de_DE', 'fr_FR']);
+        store$.overrideSelector(getCurrentLocale, 'en_US');
 
-      // mock location.assign() with jest.fn()
-      Object.defineProperty(window, 'location', {
-        value: { assign: jest.fn() },
-        writable: true,
+        // mock location.assign() with jest.fn()
+        Object.defineProperty(window, 'location', {
+          value: { assign: jest.fn() },
+          writable: true,
+        });
       });
 
-      const action = loadServerConfigSuccess({ config: {} as ServerConfig });
-      actions$ = of(action);
+      it("should reload the current page if the user's locale cookie differs from the current locale", fakeAsync(() => {
+        when(cookiesServiceMock.get(anything())).thenReturn('de_DE');
 
-      effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
+        actions$ = of(action);
+        effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
 
-      tick(500);
+        tick(500);
+        expect(window.location.assign).toHaveBeenCalled();
+      }));
 
-      expect(window.location.assign).toHaveBeenCalled();
-    }));
+      it("should not reload the current page if the user's locale cookie is equal to the current locale", fakeAsync(() => {
+        when(cookiesServiceMock.get(anything())).thenReturn('en_US');
 
-    it("should not reload the current page if the user's locale cookie is equal to the current locale", fakeAsync(() => {
-      when(cookiesServiceMock.get(anything())).thenReturn('en_US');
-      store$.overrideSelector(getCurrentLocale, 'en_US');
+        actions$ = of(action);
+        effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
 
-      // mock location.assign() with jest.fn()
-      Object.defineProperty(window, 'location', {
-        value: { assign: jest.fn() },
-        writable: true,
-      });
+        tick(500);
+        expect(window.location.assign).not.toHaveBeenCalled();
+      }));
 
-      const action = loadServerConfigSuccess({ config: {} as ServerConfig });
-      actions$ = of(action);
+      it('should not reload the current page if the feature toggle `saveLanguageSelection` is off', fakeAsync(() => {
+        when(cookiesServiceMock.get(anything())).thenReturn('de_DE');
+        when(featureToggleServiceMock.enabled(anything())).thenReturn(false);
 
-      effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
+        actions$ = of(action);
+        effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
 
-      tick(500);
+        tick(500);
+        expect(window.location.assign).not.toHaveBeenCalled();
+      }));
 
-      expect(window.location.assign).not.toHaveBeenCalled();
-    }));
+      it("should not reload the current page if the user's cookie locale is not available", fakeAsync(() => {
+        when(cookiesServiceMock.get(anything())).thenReturn('it_IT');
 
-    it("should not reload the current page if the user's cookie locale is not available", fakeAsync(() => {
-      when(cookiesServiceMock.get(anything())).thenReturn('it_IT');
-      store$.overrideSelector(getCurrentLocale, 'en_US');
+        actions$ = of(action);
+        effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
 
-      // mock location.assign() with jest.fn()
-      Object.defineProperty(window, 'location', {
-        value: { assign: jest.fn() },
-        writable: true,
-      });
-
-      const action = loadServerConfigSuccess({ config: {} as ServerConfig });
-      actions$ = of(action);
-
-      effects.switchToPreferredLanguage$.subscribe({ next: noop, error: fail, complete: noop });
-
-      tick(500);
-
-      expect(window.location.assign).not.toHaveBeenCalled();
-    }));
+        tick(500);
+        expect(window.location.assign).not.toHaveBeenCalled();
+      }));
+    });
   });
 });
