@@ -17,6 +17,7 @@ describe('Make Href Pipe', () => {
       providers: [{ provide: MultiSiteService, useFactory: () => instance(multiSiteService) }, MakeHrefPipe],
     });
     makeHrefPipe = TestBed.inject(MakeHrefPipe);
+
     when(multiSiteService.getLangUpdatedUrl(anything(), anything())).thenCall((url: string, _: LocationStrategy) =>
       of(url)
     );
@@ -28,23 +29,30 @@ describe('Make Href Pipe', () => {
   it('should be created', () => {
     expect(makeHrefPipe).toBeTruthy();
   });
-  // workaround for https://github.com/DefinitelyTyped/DefinitelyTyped/issues/34617
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  it.each<any | jest.DoneCallback>([
-    [undefined, undefined, 'undefined'],
-    ['/test', undefined, '/test'],
-  ])(`should transform "%s" with %j to "%s"`, (url, params, expected, done: jest.DoneCallback) => {
-    makeHrefPipe.transform({ path: () => url, getBaseHref: () => '/' } as LocationStrategy, params).subscribe(res => {
-      expect(res).toEqual(expected);
-      done();
-    });
+
+  it('should call appendUrlParams from the multiSiteService if no parameter exists', done => {
+    makeHrefPipe
+      .transform({ path: () => '/de/test', getBaseHref: () => '/de' } as LocationStrategy, undefined)
+      .subscribe(() => {
+        verify(multiSiteService.appendUrlParams(anything(), anything(), anything())).once();
+        done();
+      });
   });
 
-  it('should call the multiSiteService if lang parameter exists', done => {
+  it('should call getLangUpdatedUrl from the multiSiteService if lang parameter exists', done => {
     makeHrefPipe
       .transform({ path: () => '/de/test', getBaseHref: () => '/de' } as LocationStrategy, { lang: 'en_US' })
       .subscribe(() => {
         verify(multiSiteService.getLangUpdatedUrl(anything(), anything())).once();
+        done();
+      });
+  });
+
+  it('should call appendUrlParams from the multiSiteService if other parameter exists', done => {
+    makeHrefPipe
+      .transform({ path: () => '/de/test', getBaseHref: () => '/de' } as LocationStrategy, { foo: 'bar' })
+      .subscribe(() => {
+        verify(multiSiteService.appendUrlParams(anything(), anything(), anything())).once();
         done();
       });
   });
