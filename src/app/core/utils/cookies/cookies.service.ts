@@ -5,6 +5,7 @@ import { TransferState } from '@angular/platform-browser';
 import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
+import { browserNameVersion } from 'ish-core/utils/browser-detection';
 import { InjectSingle } from 'ish-core/utils/injection';
 
 interface CookiesOptions {
@@ -143,6 +144,12 @@ export class CookiesService {
     if (typeof expires === 'string') {
       expires = new Date(expires);
     }
+
+    // fix for Safari 14 not keeping 'SameSite=Strict' cookies when redirecting to a payment provider etc.
+    if (browserNameVersion() === 'Safari 14' && opts.sameSite !== 'None') {
+      opts.sameSite = 'Lax';
+    }
+
     let str = `${encodeURIComponent(name)}=${encodeURIComponent(value || '')}`;
     str += `;path=${path}`;
     str += opts.domain ? `;domain=${opts.domain}` : '';
