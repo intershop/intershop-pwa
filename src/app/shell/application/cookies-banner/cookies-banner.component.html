@@ -1,7 +1,7 @@
 <div
   *ngIf="showBanner"
   [@bottomOut]="transitionBanner"
-  (@bottomOut.done)="acceptAllAnimationDone($event)"
+  (@bottomOut.done)="setCookiesConsent($event)"
   class="cookies-banner"
 >
   <div [ishServerHtml]="'cookies.banner.text' | translate"></div>
