@@ -281,7 +281,7 @@ export function app() {
 
   const icmProxy = proxy(SSR_HYBRID_BACKEND, {
     // preserve original path
-    proxyReqPathResolver: (req: express.Request) => req.originalUrl,
+    proxyReqPathResolver: req => req.originalUrl,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     proxyReqOptDecorator: (options: any) => {
       if (process.env.TRUST_ICM) {
