@@ -61,41 +61,44 @@ export class ServerConfigEffects {
     )
   );
 
-  switchToPreferredLanguage$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(loadServerConfigSuccess),
-        takeWhile(() => this.featureToggleService.enabled('saveLanguageSelection')),
-        withLatestFrom(this.store.pipe(select(getAvailableLocales)), this.store.pipe(select(getCurrentLocale))),
-        map(([, availableLocales, currentLocale]) => ({
-          cookieLocale: this.cookiesService.get('preferredLocale'),
-          availableLocales,
-          currentLocale,
-        })),
-        filter(
-          ({ cookieLocale, availableLocales, currentLocale }) =>
-            cookieLocale && availableLocales?.includes(cookieLocale) && cookieLocale !== currentLocale
-        ),
-        concatMap(({ cookieLocale }) => {
-          const splittedUrl = location.pathname?.split('?');
-          const newUrl = splittedUrl?.[0];
+  switchToPreferredLanguage$ =
+    !SSR &&
+    createEffect(
+      () =>
+        this.actions$.pipe(
+          ofType(loadServerConfigSuccess),
+          take(1),
+          takeWhile(() => this.featureToggleService.enabled('saveLanguageSelection')),
+          withLatestFrom(this.store.pipe(select(getAvailableLocales)), this.store.pipe(select(getCurrentLocale))),
+          map(([, availableLocales, currentLocale]) => ({
+            cookieLocale: this.cookiesService.get('preferredLocale'),
+            availableLocales,
+            currentLocale,
+          })),
+          filter(
+            ({ cookieLocale, availableLocales, currentLocale }) =>
+              cookieLocale && availableLocales?.includes(cookieLocale) && cookieLocale !== currentLocale
+          ),
+          concatMap(({ cookieLocale }) => {
+            const splittedUrl = location.pathname?.split('?');
+            const newUrl = splittedUrl?.[0];
 
-          return this.multiSiteService.getLangUpdatedUrl(cookieLocale, newUrl).pipe(
-            whenTruthy(),
-            take(1),
-            map(modifiedUrl => {
-              const modifiedUrlParams = modifiedUrl === newUrl ? { lang: cookieLocale } : {};
-              return this.multiSiteService.appendUrlParams(modifiedUrl, modifiedUrlParams, splittedUrl?.[1]);
-            }),
-            concatMap(url => {
-              location.assign(url);
-              return EMPTY;
-            })
-          );
-        })
-      ),
-    { dispatch: false }
-  );
+            return this.multiSiteService.getLangUpdatedUrl(cookieLocale, newUrl).pipe(
+              whenTruthy(),
+              take(1),
+              map(modifiedUrl => {
+                const modifiedUrlParams = modifiedUrl === newUrl ? { lang: cookieLocale } : {};
+                return this.multiSiteService.appendUrlParams(modifiedUrl, modifiedUrlParams, splittedUrl?.[1]);
+              }),
+              concatMap(url => {
+                location.assign(url);
+                return EMPTY;
+              })
+            );
+          })
+        ),
+      { dispatch: false }
+    );
 
   loadExtraServerConfig$ = createEffect(() =>
     this.actions$.pipe(
