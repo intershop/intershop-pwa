@@ -92,8 +92,46 @@ When the cookie vanishes, the PWA emits a new value for the [`cookieVanishes$` s
 The identity provider implementation defines how the application should behave in such a case.
 With the ICM identity provider, for example, the user is then automatically logged out and routed to the `/login` page.
 
+## Activate Identity Provider on specific paths
+
+For specific use cases the PWA have to activate the identity provider for specific pwa url paths.
+This is the case when the PWA enters a `/punchout` route in order to automatically login a punchout user.
+The behavior can be configured primarily by adding `activeOnPath` property for the IDENTITY_PROVIDER_IMPLEMENTOR.
+
+```typescript
+  providers: [
+    {
+      provide: IDENTITY_PROVIDER_IMPLEMENTOR,
+      multi: true,
+      useValue: {
+        type: 'PUNCHOUT',
+        implementor: PunchoutIdentityProvider,
+        feature: 'punchout',
+        activeOnPath: 'punchout', // without slash at beginning
+      },
+    },
+  ],
+```
+
+This configuration would activate the specific identity provider, when the PWA initially routes to a specific url.
+
+An another possibility is to use the `OVERRIDE_IDENTITY_PROVIDERS` environment variable within the nginx deployment.
+
+```yaml
+nginx:
+  environment:
+    OVERRIDE_IDENTITY_PROVIDERS: |
+      .+:
+        - path: /punchout
+          type: Punchout
+```
+
+The feature will like the `MULTI_CHANNEL` configuration add `identityProvider` parameter to generated PWA url, when the nginx retrieves a request with a certain domain and path.
+More details can be seen in [Further References](#further-references) below.
+
 ## Further References
 
 - [Guide - ICM Identity Provider](../guides/authentication_icm.md)
 - [Guide - Punchout Identity Provider](../guides/authentication_punchout.md)
 - [Guide - Single Sign-On (SSO) Identity Provider](../guides/authentication_sso.md)
+- [Guide - NGINX Startup](../guides/nginx-startup.md)
