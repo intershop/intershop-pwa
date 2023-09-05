@@ -31,11 +31,12 @@ import { getBasketIdOrCurrent, getCurrentBasket } from 'ish-core/store/customer/
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 export type BasketUpdateType =
-  | { invoiceToAddress: string }
-  | { commonShipToAddress: string }
   | { commonShippingMethod: string }
-  | { costCenter: string }
+  | { commonShipToAddress: string }
   | { calculated: boolean }
+  | { costCenter: string }
+  | { externalOrderReference: string }
+  | { invoiceToAddress: string }
   | { messageToMerchant: string };
 
 export type BasketItemUpdateType =

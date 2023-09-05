@@ -61,17 +61,14 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (this.basket) {
       this.successMessage(changes.basket);
-      this.model = { ...this.model, orderReferenceId: this.getOrderReferenceId(this.basket) };
+      this.model = { ...this.model, orderReferenceId: this.basket.externalOrderReference };
     }
-  }
-
-  private getOrderReferenceId(basket: Basket): string {
-    return basket?.attributes?.find(attr => attr.name === 'orderReferenceID')?.value as string;
   }
 
   private successMessage(basketChange: SimpleChange) {
     if (
-      this.getOrderReferenceId(basketChange?.previousValue) !== this.getOrderReferenceId(basketChange?.currentValue) &&
+      (basketChange?.previousValue as Basket)?.externalOrderReference !==
+        (basketChange?.currentValue as Basket)?.externalOrderReference &&
       !basketChange?.firstChange
     ) {
       this.showSuccessMessage = true;
@@ -83,16 +80,13 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
   }
 
   get disabled() {
-    return this.form.invalid || (!this.getOrderReferenceId(this.basket) && !this.form.get('orderReferenceId').value);
+    return this.form.invalid || (!this.basket?.externalOrderReference && !this.form.get('orderReferenceId').value);
   }
 
   submitForm() {
     if (this.disabled) {
       return;
     }
-    this.checkoutFacade.setBasketCustomAttribute({
-      name: 'orderReferenceID',
-      value: this.form.get('orderReferenceId').value,
-    });
+    this.checkoutFacade.updateBasketExternalOrderReference(this.form.get('orderReferenceId').value);
   }
 }

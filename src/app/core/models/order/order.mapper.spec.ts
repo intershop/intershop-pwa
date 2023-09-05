@@ -64,6 +64,8 @@ describe('Order Mapper', () => {
         },
       ],
     },
+    messageToMerchant: 'test message',
+    externalOrderReference: 'EXT12345',
     attributes: [
       { name: 'BusinessObjectAttributes#OrderApproval_ApprovalDate', value: '2020-10-12T13:40:00+02:00', type: 'Date' },
       { name: 'BusinessObjectAttributes#OrderApproval_ApproverFirstName', value: 'Patricia', type: 'String' },
@@ -160,6 +162,9 @@ describe('Order Mapper', () => {
 
       expect(order.approval.approverFirstName).toBe('Patricia');
       expect(order.requisitionNo).toBe(orderBaseData.requisitionDocumentNo);
+
+      expect(order.messageToMerchant).toBe(orderBaseData.messageToMerchant);
+      expect(order.externalOrderReference).toBe(orderBaseData.externalOrderReference);
     });
   });
 });

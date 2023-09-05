@@ -68,6 +68,7 @@ export class BasketMapper {
       attributes: data.attributes,
       taxationId: data.attributes?.find(attr => attr.name === 'taxationID')?.value as string,
       user: data.buyer,
+      externalOrderReference: data.externalOrderReference,
       messageToMerchant: data.messageToMerchant,
     };
   }

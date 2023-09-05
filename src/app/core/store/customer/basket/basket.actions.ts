@@ -71,7 +71,7 @@ export const addMessageToMerchant = createAction(
   '[Basket] Message to Merchant',
   payload<{ messageToMerchant: string }>()
 );
-export const updateBasket = createAction('[Basket Internal] Update Basket', payload<{ update: BasketUpdateType }>());
+export const updateBasket = createAction('[Basket API] Update Basket', payload<{ update: BasketUpdateType }>());
 
 export const updateBasketFail = createAction('[Basket API] Update Basket Fail', httpError());
 

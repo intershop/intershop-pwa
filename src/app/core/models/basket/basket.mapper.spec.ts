@@ -81,6 +81,8 @@ describe('Basket Mapper', () => {
         },
       ],
     },
+    messageToMerchant: 'test message',
+    externalOrderReference: 'EXT12345',
   };
 
   const basketIncludedData = {
@@ -179,6 +181,10 @@ describe('Basket Mapper', () => {
       expect(basket.totals.bucketSurchargeTotalsByType[0].amount.gross).toBe(
         basketData.data.surcharges.bucketSurcharges[0].amount.gross.value
       );
+
+      expect(basket.messageToMerchant).toBe(basketData.data.messageToMerchant);
+      expect(basket.externalOrderReference).toBe(basketData.data.externalOrderReference);
+
       expect(basket.totals.isEstimated).toBeTrue();
     });
 

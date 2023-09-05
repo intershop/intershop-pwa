@@ -49,7 +49,7 @@ describe('Basket Order Reference Component', () => {
 
   it('should read the order reference id from the basket', () => {
     component.basket = {
-      attributes: [{ name: 'orderReferenceID', value: '4711' }],
+      externalOrderReference: '4711',
     } as Basket;
 
     fixture.detectChanges();
@@ -66,7 +66,7 @@ describe('Basket Order Reference Component', () => {
     });
     component.submitForm();
 
-    verify(checkoutFacade.setBasketCustomAttribute(anything())).once();
+    verify(checkoutFacade.updateBasketExternalOrderReference(anything())).once();
   });
 
   it('should not emit form when an invalid form is submitted', () => {
@@ -77,6 +77,6 @@ describe('Basket Order Reference Component', () => {
     });
     component.submitForm();
 
-    verify(checkoutFacade.setBasketCustomAttribute(anything())).never();
+    verify(checkoutFacade.updateBasketExternalOrderReference(anything())).never();
   });
 });
