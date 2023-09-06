@@ -16,7 +16,7 @@ export class ProductPricesEffects {
       ofType(loadProductPrices),
       mapToPayloadProperty('skus'),
       whenTruthy(),
-      window(this.actions$.pipe(ofType(loadProductPrices), debounceTime(500))),
+      window(this.actions$.pipe(ofType(loadProductPrices), debounceTime(SSR ? 20 : 500))),
       mergeMap(window$ =>
         window$.pipe(
           toArray(),
