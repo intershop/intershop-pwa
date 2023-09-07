@@ -6,15 +6,13 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketData } from 'ish-core/models/basket/basket.interface';
-import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
-import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { getBasketIdOrCurrent, getCurrentBasket } from 'ish-core/store/customer/basket';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
-import { BasketItemUpdateType, BasketService } from './basket.service';
+import { BasketService } from './basket.service';
 
 describe('Basket Service', () => {
   let basketService: BasketService;
@@ -34,21 +32,6 @@ describe('Basket Service', () => {
       totals: undefined,
     },
   } as BasketData;
-
-  const lineItemData = {
-    id: 'test',
-    quantity: {
-      type: 'Quantity',
-      unit: '',
-      value: 1,
-    },
-  };
-
-  const itemMockData = {
-    sku: 'test',
-    quantity: 10,
-    unit: 'pcs.',
-  };
 
   beforeEach(() => {
     apiService = mock(ApiService);
@@ -145,15 +128,6 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should post item to basket when 'addItemsToBasket' is called", done => {
-    when(apiService.post(anything(), anything(), anything())).thenReturn(of({ data: [], infos: undefined }));
-
-    basketService.addItemsToBasket([itemMockData]).subscribe(() => {
-      verify(apiService.post(`baskets/current/items`, anything(), anything())).once();
-      done();
-    });
-  });
-
   it("should post source basket to basket when 'mergeBasket' is called", done => {
     when(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).thenReturn(
       of({
@@ -186,27 +160,6 @@ describe('Basket Service', () => {
 
     basketService.mergeBasket('012345', 'TOKEN', basketMockData.data.id).subscribe(() => {
       verify(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).once();
-      done();
-    });
-  });
-
-  it("should patch updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
-    when(apiService.patch(anyString(), anything(), anything())).thenReturn(
-      of({ data: { id: lineItemData.id, calculated: false } as LineItemData, infos: undefined })
-    );
-
-    const payload = { quantity: { value: 2 } } as BasketItemUpdateType;
-    basketService.updateBasketItem(lineItemData.id, payload).subscribe(() => {
-      verify(apiService.patch(`baskets/current/items/${lineItemData.id}`, payload, anything())).once();
-      done();
-    });
-  });
-
-  it("should remove line item from specific basket when 'deleteBasketItem' is called", done => {
-    when(apiService.delete(anyString(), anything())).thenReturn(of({}));
-
-    basketService.deleteBasketItem(lineItemData.id).subscribe(() => {
-      verify(apiService.delete(`baskets/current/items/${lineItemData.id}`, anything())).once();
       done();
     });
   });
@@ -266,35 +219,6 @@ describe('Basket Service', () => {
     basketService.createRequisition('basketId').subscribe(() => {
       verify(orderService.createOrder('basketId', anything())).once();
       done();
-    });
-  });
-
-  describe('Update Basket Items desired delivery date', () => {
-    const lineItems: LineItem[] = [
-      ...BasketMockData.getBasket().lineItems,
-      { id: 'withdesiredDeliveryDate', desiredDeliveryDate: '2022-20-02' } as LineItem,
-    ];
-
-    it("should update the desired delivery date at all basket items when 'updateBasketItemsDesiredDeliveryDate' is called", done => {
-      when(apiService.patch(anyString(), anything(), anything())).thenReturn(
-        of({ data: { id: lineItemData.id, calculated: false } as LineItemData, infos: undefined })
-      );
-
-      basketService.updateBasketItemsDesiredDeliveryDate('2022-22-02', lineItems).subscribe(() => {
-        verify(apiService.patch(anything(), anything(), anything())).twice();
-        done();
-      });
-    });
-
-    it("should not update the desired delivery date at those basket items that have already the correct date when 'updateBasketItemsDesiredDeliveryDate' is called", done => {
-      when(apiService.patch(anyString(), anything(), anything())).thenReturn(
-        of({ data: { id: lineItemData.id, calculated: false } as LineItemData, infos: undefined })
-      );
-
-      basketService.updateBasketItemsDesiredDeliveryDate('2022-20-02', lineItems).subscribe(() => {
-        verify(apiService.patch(anything(), anything(), anything())).once();
-        done();
-      });
     });
   });
 

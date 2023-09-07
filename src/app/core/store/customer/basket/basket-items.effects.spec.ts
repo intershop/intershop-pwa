@@ -11,6 +11,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
@@ -41,12 +42,14 @@ import {
 describe('Basket Items Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
+  let basketItemsServiceMock: BasketItemsService;
   let effects: BasketItemsEffects;
   let store: Store;
   let location: Location;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
+    basketItemsServiceMock = mock(BasketItemsService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -56,6 +59,7 @@ describe('Basket Items Effects', () => {
         ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
+        { provide: BasketItemsService, useFactory: () => instance(basketItemsServiceMock) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketItemsEffects,
         provideMockActions(() => actions$),
@@ -90,12 +94,12 @@ describe('Basket Items Effects', () => {
 
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(
+      when(basketItemsServiceMock.addItemsToBasket(anything())).thenReturn(
         of({ lineItems: [], info: undefined, errors: undefined })
       );
     });
 
-    it('should call the basketService for addItemsToBasket', done => {
+    it('should call the basketItemsService for addItemsToBasket', done => {
       store.dispatch(
         loadBasketSuccess({
           basket: {
@@ -110,12 +114,12 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.addItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket(items)).once();
+        verify(basketItemsServiceMock.addItemsToBasket(items)).once();
         done();
       });
     });
 
-    it('should call the basketService for createBasket and addItemsToBasket when no basket is present', done => {
+    it('should call the basketService for createBasket and call basketItemsService for addItemsToBasket when no basket is present', done => {
       when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
 
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
@@ -124,7 +128,7 @@ describe('Basket Items Effects', () => {
 
       effects.addItemsToBasket$.subscribe(() => {
         verify(basketServiceMock.createBasket()).once();
-        verify(basketServiceMock.addItemsToBasket(items)).once();
+        verify(basketItemsServiceMock.addItemsToBasket(items)).once();
         done();
       });
     });
@@ -152,7 +156,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type AddItemsToBasketFail', () => {
-      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(
+      when(basketItemsServiceMock.addItemsToBasket(anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
@@ -203,7 +207,7 @@ describe('Basket Items Effects', () => {
 
   describe('updateBasketItem$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
+      when(basketItemsServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
         of({ lineItem: undefined, info: undefined })
       );
 
@@ -225,11 +229,11 @@ describe('Basket Items Effects', () => {
       },
     });
 
-    it('should call the basketService for UpdateBasketItem action', done => {
+    it('should call the basketItemsService for UpdateBasketItem action', done => {
       actions$ = of(updateItemAction);
 
       effects.updateBasketItem$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItem(itemId, anything())).once();
+        verify(basketItemsServiceMock.updateBasketItem(itemId, anything())).once();
         done();
       });
     });
@@ -243,7 +247,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type UpdateBasketItemFail', () => {
-      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
+      when(basketItemsServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
@@ -268,7 +272,7 @@ describe('Basket Items Effects', () => {
 
   describe('updateBasketItems$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
+      when(basketItemsServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
         of({ lineItem: undefined, info: undefined })
       );
 
@@ -289,7 +293,7 @@ describe('Basket Items Effects', () => {
       );
     });
 
-    it('should call the basketService for updateBasketItem if quantity > 0', done => {
+    it('should call the basketItemsService for updateBasketItem if quantity > 0', done => {
       const payload = {
         lineItemUpdates: [
           {
@@ -310,8 +314,8 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItem(payload.lineItemUpdates[1].itemId, anything())).thrice();
-        expect(capture(basketServiceMock.updateBasketItem).first()).toMatchInlineSnapshot(`
+        verify(basketItemsServiceMock.updateBasketItem(payload.lineItemUpdates[1].itemId, anything())).thrice();
+        expect(capture(basketItemsServiceMock.updateBasketItem).first()).toMatchInlineSnapshot(`
           [
             "BIID",
             {
@@ -323,7 +327,7 @@ describe('Basket Items Effects', () => {
             },
           ]
         `);
-        expect(capture(basketServiceMock.updateBasketItem).second()).toMatchInlineSnapshot(`
+        expect(capture(basketItemsServiceMock.updateBasketItem).second()).toMatchInlineSnapshot(`
           [
             "BIID",
             {
@@ -335,7 +339,7 @@ describe('Basket Items Effects', () => {
             },
           ]
         `);
-        expect(capture(basketServiceMock.updateBasketItem).third()).toMatchInlineSnapshot(`
+        expect(capture(basketItemsServiceMock.updateBasketItem).third()).toMatchInlineSnapshot(`
           [
             "BIID",
             {
@@ -351,8 +355,8 @@ describe('Basket Items Effects', () => {
       });
     });
 
-    it('should call the basketService for deleteBasketItem if quantity = 0', done => {
-      when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(of());
+    it('should call the basketItemsService for deleteBasketItem if quantity = 0', done => {
+      when(basketItemsServiceMock.deleteBasketItem(anyString())).thenReturn(of());
 
       const payload = {
         lineItemUpdates: [
@@ -366,7 +370,7 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem(payload.lineItemUpdates[0].itemId)).once();
+        verify(basketItemsServiceMock.deleteBasketItem(payload.lineItemUpdates[0].itemId)).once();
         done();
       });
     });
@@ -389,7 +393,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type UpdateBasketItemsFail', () => {
-      when(basketServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
+      when(basketItemsServiceMock.updateBasketItem(anyString(), anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
@@ -434,7 +438,7 @@ describe('Basket Items Effects', () => {
 
   describe('deleteBasketItem$', () => {
     beforeEach(() => {
-      when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(of(undefined));
+      when(basketItemsServiceMock.deleteBasketItem(anyString())).thenReturn(of(undefined));
 
       store.dispatch(
         loadBasketSuccess({
@@ -446,13 +450,13 @@ describe('Basket Items Effects', () => {
       );
     });
 
-    it('should call the basketService for DeleteBasketItem action', done => {
+    it('should call the basketItemsService for DeleteBasketItem action', done => {
       const itemId = 'BIID';
       const action = deleteBasketItem({ itemId });
       actions$ = of(action);
 
       effects.deleteBasketItem$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem('BIID')).once();
+        verify(basketItemsServiceMock.deleteBasketItem('BIID')).once();
         done();
       });
     });
@@ -468,7 +472,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteBasketItemFail', () => {
-      when(basketServiceMock.deleteBasketItem(anyString())).thenReturn(
+      when(basketItemsServiceMock.deleteBasketItem(anyString())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
