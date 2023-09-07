@@ -112,6 +112,8 @@ export interface ProductContext {
   stepQuantity: number;
   quantityError: string;
   hasQuantityError: boolean;
+  partialOrderNo: string;
+  customerProductID: string;
 
   // child contexts
   propagateActive: boolean;

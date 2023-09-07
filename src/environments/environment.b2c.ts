@@ -8,7 +8,7 @@ export const environment: Environment = {
 
   themeColor: '#ff6d00',
 
-  features: [...ENVIRONMENT_DEFAULTS.features, 'guestCheckout', 'wishlists'],
+  features: [...ENVIRONMENT_DEFAULTS.features, 'guestCheckout', 'wishlists', 'extendedLineItemContent'],
 
   ...overrides,
 };

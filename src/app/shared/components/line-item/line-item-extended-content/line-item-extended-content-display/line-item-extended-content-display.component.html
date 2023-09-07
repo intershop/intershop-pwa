@@ -1,0 +1,11 @@
+<div *ngIf="pli.partialOrderNo || pli.customerProductID" class="product-variation read-only">
+  <ng-container *ngIf="pli.partialOrderNo">
+    <span class="product-variation-info span-separator">{{ 'line-item.partialOrderNo.label' | translate }}</span>
+    <span>{{ pli.partialOrderNo }}</span
+    ><br />
+  </ng-container>
+  <ng-container *ngIf="pli.customerProductID">
+    <span class="product-variation-info span-separator">{{ 'line-item.customerProductID.label' | translate }}</span>
+    <span>{{ pli.customerProductID }}</span>
+  </ng-container>
+</div>

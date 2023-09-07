@@ -35,4 +35,6 @@ export interface LineItemData {
   quantityFixed?: boolean;
   quote?: string;
   desiredDelivery?: string;
+  partialOrderNo?: string;
+  customerProductID?: string;
 }

@@ -31,6 +31,7 @@ export interface Environment {
     | 'storeLocator'
     | 'contactUs'
     | 'extraConfiguration'
+    | 'extendedLineItemContent'
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'

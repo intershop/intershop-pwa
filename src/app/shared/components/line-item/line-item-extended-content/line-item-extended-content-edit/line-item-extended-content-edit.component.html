@@ -1,0 +1,26 @@
+<div *ngIf="isFeatureEnabled" class="row extended-info">
+  <label for="line-item-edit-partial-order-no" class="col-form-label col">{{
+    'line-item.partialOrderNo.label' | translate
+  }}</label>
+  <input
+    class="form-control col"
+    type="text"
+    id="line-item-edit-partial-order-no"
+    name="partialOrderNo"
+    (change)="changePartialOrderNo($event.target)"
+    [value]="partialOrderNo"
+  />
+</div>
+<div class="row extended-info">
+  <label for="line-item-edit-customer-product-id" class="col-form-label col">{{
+    'line-item.customerProductID.label' | translate
+  }}</label>
+  <input
+    class="form-control col"
+    type="text"
+    id="line-item-edit-customer-product-id"
+    name="customerProductID"
+    (change)="changeCustomerProductID($event.target)"
+    [value]="customerProductID"
+  />
+</div>

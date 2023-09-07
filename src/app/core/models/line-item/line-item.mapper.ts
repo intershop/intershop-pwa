@@ -50,6 +50,8 @@ export class LineItemMapper {
         editable: !data.quantityFixed,
         quote: data.quote ? data.quote : undefined,
         desiredDeliveryDate: data.desiredDelivery,
+        partialOrderNo: data.partialOrderNo,
+        customerProductID: data.customerProductID,
       };
     } else {
       throw new Error(`'LineItemData' is required for the mapping`);

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -22,10 +23,14 @@ export class LineItemEditComponent implements OnInit {
 
   product$: Observable<ProductView>;
 
-  constructor(private context: ProductContextFacade) {}
+  // extendedLineItemContent feature toggle value
+  isFeatureEnabled = false;
+
+  constructor(private context: ProductContextFacade, private featureToggleService: FeatureToggleService) {}
 
   ngOnInit() {
     this.product$ = this.context.select('product');
+    this.isFeatureEnabled = this.featureToggleService.enabled('extendedLineItemContent');
   }
 
   show() {
@@ -40,6 +45,8 @@ export class LineItemEditComponent implements OnInit {
         itemId: this.itemId,
         sku: this.context.get('sku'),
         quantity: this.context.get('quantity'),
+        partialOrderNo: this.context.get('partialOrderNo'),
+        customerProductID: this.context.get('customerProductID'),
       })
     );
   }

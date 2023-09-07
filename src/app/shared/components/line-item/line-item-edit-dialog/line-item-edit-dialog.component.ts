@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -17,6 +17,7 @@ export class LineItemEditDialogComponent implements OnInit {
   variation$: Observable<ProductView>;
   variationSalePrice$: Observable<Price>;
   loading$: Observable<boolean>;
+  @Input() itemId: string;
 
   constructor(private context: ProductContextFacade) {}
 

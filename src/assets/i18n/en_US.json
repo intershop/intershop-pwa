@@ -893,6 +893,8 @@
   "locale.en_US.short": "en",
   "locale.fr_FR.long": "Français",
   "locale.fr_FR.short": "fr",
+  "line-item.partialOrderNo.label": "Partial Order Number",
+  "line-item.customerProductID.label": "Customer Product ID",
   "modal.heading.remove.order.template": "Remove Product From Order Template",
   "navigation.main.aria_label": "Main navigation",
   "navigation.paging.aria_label": "Pagination",
