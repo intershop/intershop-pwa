@@ -17,7 +17,7 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 })
 export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
   @Input() categoryId: string;
-  @Input() id: ProductListingID;
+  @Input() productListingId: ProductListingID;
   @Input() mode: 'endless-scrolling' | 'paging' = 'endless-scrolling';
   @Input() fragmentOnRouting = 'product-list-top';
 
@@ -50,8 +50,10 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.id && this.id?.value) {
-      this.productListingView$ = this.shoppingFacade.productListingView$(this.id).pipe(takeUntil(this.destroy$));
+    if (changes.id && this.productListingId?.value) {
+      this.productListingView$ = this.shoppingFacade
+        .productListingView$(this.productListingId)
+        .pipe(takeUntil(this.destroy$));
     }
   }
 
@@ -86,7 +88,7 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(page => {
-        this.shoppingFacade.loadMoreProducts(this.id, page);
+        this.shoppingFacade.loadMoreProducts(this.productListingId, page);
       });
   }
 

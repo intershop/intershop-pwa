@@ -60,7 +60,7 @@ describe('Product Master Variations Component', () => {
     const productList = fixture.debugElement.query(By.css('ish-product-listing'))
       .componentInstance as ProductListingComponent;
 
-    expect(productList.id).toMatchInlineSnapshot(`
+    expect(productList.productListingId).toMatchInlineSnapshot(`
       {
         "type": "master",
         "value": "123456789",

@@ -50,7 +50,7 @@ describe('Product Listing Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductListingComponent);
     component = fixture.componentInstance;
-    component.id = TEST_ID;
+    component.productListingId = TEST_ID;
     element = fixture.nativeElement;
   });
 
