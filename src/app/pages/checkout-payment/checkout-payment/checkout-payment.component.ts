@@ -37,7 +37,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 })
 export class CheckoutPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;
-  @Input() paymentMethods: PaymentMethod[];
+  @Input({ required: true }) paymentMethods: PaymentMethod[];
   @Input() priceType: 'gross' | 'net';
   @Input() error: HttpError;
 

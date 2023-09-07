@@ -44,12 +44,12 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
    */
   @Input({ required: true }) form: FormGroup | FormArray;
 
+  @Input({ required: true }) topic: CaptchaTopic;
+
   /**
     css Class for rendering the captcha V2 control, default='offset-md-4 col-md-8'
    */
   @Input() cssClass = 'offset-md-4 col-md-8';
-
-  @Input({ required: true }) topic: CaptchaTopic;
 
   private destroyRef = inject(DestroyRef);
 

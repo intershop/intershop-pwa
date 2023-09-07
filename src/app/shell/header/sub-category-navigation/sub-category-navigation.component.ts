@@ -15,9 +15,9 @@ import { InjectSingle } from 'ish-core/utils/injection';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubCategoryNavigationComponent implements OnInit {
-  @Input() view = 'auto';
   @Input({ required: true }) categoryUniqueId: string;
   @Input({ required: true }) subCategoriesDepth: number;
+  @Input() view = 'auto';
 
   openedCategories: string[] = [];
 

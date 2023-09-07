@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterCollapsibleComponent implements OnInit {
-  @Input() title: string;
+  @Input({ required: true }) title: string;
   @Input() collapsed: boolean;
   @Output() collapsedChange = new EventEmitter<boolean>();
 
