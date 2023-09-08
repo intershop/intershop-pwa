@@ -79,21 +79,19 @@ export class BasketEffects {
   /**
    * The load basket effect.
    */
-  loadBasket$ =
-    !SSR &&
-    createEffect(() =>
-      this.actions$.pipe(
-        ofType(loadBasket),
-        mergeMap(() =>
-          window.sessionStorage.getItem('basket-id')
-            ? of(loadBasketWithId({ basketId: window.sessionStorage.getItem('basket-id') }))
-            : this.basketService.getBasket().pipe(
-                map(basket => loadBasketSuccess({ basket })),
-                mapErrorToAction(loadBasketFail)
-              )
-        )
+  loadBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasket),
+      mergeMap(() =>
+        !SSR && window.sessionStorage.getItem('basket-id')
+          ? of(loadBasketWithId({ basketId: window.sessionStorage.getItem('basket-id') }))
+          : this.basketService.getBasket().pipe(
+              map(basket => loadBasketSuccess({ basket })),
+              mapErrorToAction(loadBasketFail)
+            )
       )
-    );
+    )
+  );
 
   /**
    * Loads a basket with the given id.
