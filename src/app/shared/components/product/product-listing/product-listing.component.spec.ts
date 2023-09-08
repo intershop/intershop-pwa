@@ -62,7 +62,7 @@ describe('Product Listing Component', () => {
   });
 
   it('should display components without paging on the page', () => {
-    component.ngOnChanges({ id: new SimpleChange(undefined, TEST_ID, true) });
+    component.ngOnChanges({ productListingId: new SimpleChange(undefined, TEST_ID, true) });
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-product-list', 'ish-product-list-toolbar']);
@@ -70,7 +70,7 @@ describe('Product Listing Component', () => {
 
   describe('display modes', () => {
     beforeEach(() => {
-      component.ngOnChanges({ id: new SimpleChange(undefined, TEST_ID, true) });
+      component.ngOnChanges({ productListingId: new SimpleChange(undefined, TEST_ID, true) });
     });
 
     it('should display components with paging on the page if available and mode is endless-scrolling', () => {
