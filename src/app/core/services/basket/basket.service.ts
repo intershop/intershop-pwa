@@ -34,12 +34,6 @@ export type BasketUpdateType =
   | { invoiceToAddress: string }
   | { messageToMerchant: string };
 
-export type BasketItemUpdateType =
-  | { quantity?: { value: number; unit: string }; product?: string }
-  | { shippingMethod?: { id: string } }
-  | { desiredDelivery?: string }
-  | { calculated: boolean };
-
 type BasketIncludeType =
   | 'invoiceToAddress'
   | 'commonShipToAddress'

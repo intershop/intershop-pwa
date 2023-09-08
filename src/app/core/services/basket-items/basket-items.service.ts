@@ -15,14 +15,6 @@ import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 
-export type BasketUpdateType =
-  | { invoiceToAddress: string }
-  | { commonShipToAddress: string }
-  | { commonShippingMethod: string }
-  | { costCenter: string }
-  | { calculated: boolean }
-  | { messageToMerchant: string };
-
 export type BasketItemUpdateType =
   | { quantity?: { value: number; unit: string }; product?: string }
   | { shippingMethod?: { id: string } }
