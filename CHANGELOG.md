@@ -52,9 +52,9 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- The `/token` endpoint handling was improved (see [Migrations / 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#40-to-41) for more details).
-- The `ishIntersectionObserver` returns `NotVisible` status now too (see [Migrations / 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#40-to-41) for more details).
-- The two standard themes `b2b` and `b2c` where refactored in such a way that the `b2c` theme could be changed into a configurable theme (see [Migrations / 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#40-to-41) for more details).
+- The `/token` endpoint handling was improved (see [Migrations / From 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-40-to-41) for more details).
+- The `ishIntersectionObserver` returns `NotVisible` status now too (see [Migrations / From 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-40-to-41) for more details).
+- The two standard themes `b2b` and `b2c` where refactored in such a way that the `b2c` theme could be changed into a configurable theme (see [Migrations / From 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-40-to-41) for more details).
 
 ## [4.0.0](https://github.com/intershop/intershop-pwa/releases/tag/4.0.0) (2023-04-06)
 
@@ -110,8 +110,8 @@ kb_everyone
 ### BREAKING CHANGES
 
 - The `TODO` code cleanup removed some implementation fixes to work with ICM versions prior to 7.10.39.2.
-- **Angular 15:** Class-based route guards are replaced by functional guards (see [Migrations / 3.3 to 4.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#33-to-40) for more details).
-- **Angular 15:** ICM Translate Loader needs new configuration for `LOCAL_TRANSLATIONS` (see [Migrations / 3.3 to 4.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#33-to-40) for more details).
+- **Angular 15:** Class-based route guards are replaced by functional guards (see [Migrations / From 3.3 to 4.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-33-to-40) for more details).
+- **Angular 15:** ICM Translate Loader needs new configuration for `LOCAL_TRANSLATIONS` (see [Migrations / From 3.3 to 4.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-33-to-40) for more details).
 - **Angular 15:** Angular 15 and dependencies update (removed Browserslist configuration, update TypeScript compiler `target`, Stylelint adaptions, Jest tests adaptions).
 - Intershop PWA development is now based on Node.js 18.15.0 with npm 9.5.0 and the `"lockfileVersion": 3,`.
 - All deprecated formly field configuration properties are replaced.
@@ -206,12 +206,12 @@ kb_everyone
 ### BREAKING CHANGES
 
 - PWA uses the ICM `/token` REST endpoint to retrieve user token, every anonymous user will get a anonymous user token, every identity provider has to configure the `oAuthService` with information about the token endpoint, before expiration the given token should be refreshed.
-- Changed the rendering of the `ProductVariationSelectComponent` and introduced additional product variation select rendering components (see [Migrations / 3.1 to 3.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#31-to-32) for more details).
-- `ProductsService` was changed to use an `extended=true` details and variations call. `VariationAttribute` model was cleaned up and extended (see [Migrations / 3.1 to 3.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#31-to-32) for more details).
+- Changed the rendering of the `ProductVariationSelectComponent` and introduced additional product variation select rendering components (see [Migrations / From 3.1 to 3.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-31-to-32) for more details).
+- `ProductsService` was changed to use an `extended=true` details and variations call. `VariationAttribute` model was cleaned up and extended (see [Migrations / From 3.1 to 3.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-31-to-32) for more details).
 - The product label ribbon image is replaced with localized text and CSS styling.
 - The empty cart image is removed and replaced with localized text and CSS styling.
 - The `active_catalog.png` and `budget-bar-indicator.png` are removed and replaced with CSS styling.
-- Formly has been upgraded from version 5 to 6 (see [Migrations / 3.1 to 3.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#31-to-32) for more details).
+- Formly has been upgraded from version 5 to 6 (see [Migrations / From 3.1 to 3.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-31-to-32) for more details).
 
 ## [3.1.0](https://github.com/intershop/intershop-pwa/releases/tag/3.1.0) (2022-10-17)
 
@@ -266,8 +266,8 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- We removed the `not_available.png` image and replaced it with an SVG image (without text inside the image) and adjusted file references (see [Migrations / 3.0 to 3.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#30-to-31) for more details).
-- We changed the default queryParamsHandling for product detail links via product image or product name component (see [Migrations / 3.0 to 3.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#30-to-31) for more details).
+- We removed the `not_available.png` image and replaced it with an SVG image (without text inside the image) and adjusted file references (see [Migrations / From 3.0 to 3.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-30-to-31) for more details).
+- We changed the default queryParamsHandling for product detail links via product image or product name component (see [Migrations / From 3.0 to 3.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-30-to-31) for more details).
 - The validator `equalToControl` did not work properly. For that reason we removed it. Use the validator `equalTo` instead. Find more information in the method description in the `special-validators.ts`.
 
 ### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
@@ -353,18 +353,18 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- **seo:** Content page routes/URLs were changed (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
-- **seo:** Product routes/URLs were changed (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
-- **seo:** Category routes/URLs were changed (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
+- **seo:** Content page routes/URLs were changed (see [Migrations / From 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-24-to-30) for more details).
+- **seo:** Product routes/URLs were changed (see [Migrations / From 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-24-to-30) for more details).
+- **seo:** Category routes/URLs were changed (see [Migrations / From 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-24-to-30) for more details).
 - The `footer.content` localization key was replaced for most of its content by a CMS manageable content include.
-- Introduced double encoding of resource ids in REST API calls for user login (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#2.4-to-30) for more details).
-- Introduced the build variable `SSR` that is now used for all checks if the application is running in SSR or Browser context (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#2.4-to-30) for more details).
-- Angular 14 and dependencies update (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
+- Introduced double encoding of resource ids in REST API calls for user login (see [Migrations / From 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-2.4-to-30) for more details).
+- Introduced the build variable `SSR` that is now used for all checks if the application is running in SSR or Browser context (see [Migrations / From 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-2.4-to-30) for more details).
+- Angular 14 and dependencies update (see [Migrations / From 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-24-to-30) for more details).
 - Jest upgrade to version 28, the jest-marbles package has been replaced by jasmine-marbles.
 - The @ngx-translate/http-loader has been removed from the dependencies.
 - The [pagespeed module](https://www.modpagespeed.com) of NGINX has been removed without replacement.
-- We removed the unmaintained `angular2-uuid` library in favor of the standard `uuid` library (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
-- Removed `(deferLoad)` directive and replaced it with `loading="lazy"` (see [Migrations / 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#24-to-30) for more details).
+- We removed the unmaintained `angular2-uuid` library in favor of the standard `uuid` library (see [Migrations / From 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-24-to-30) for more details).
+- Removed `(deferLoad)` directive and replaced it with `loading="lazy"` (see [Migrations / From 2.4 to 3.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-24-to-30) for more details).
 - The cypress test files moved from cypress/integration folder to cypress/e2e. The cypress config file changed and also some scripts have been adapted to reflect the new config structure.
 - **schematics:** The `cms` schematic's `noCMSPrefixing` option has been renamed to `cmsPrefixing` with an inverted behavior.
 
@@ -427,8 +427,8 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- Angular 13.3.10 and dependencies update (see [Migrations / 2.3 to 2.4](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#23-to-24) for more details).
-- The ratings & reviews functionality was moved into an extension (see [Migrations / 2.3 to 2.4](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#23-to-24) for more details).
+- Angular 13.3.10 and dependencies update (see [Migrations / From 2.3 to 2.4](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-23-to-24) for more details).
+- The ratings & reviews functionality was moved into an extension (see [Migrations / From 2.3 to 2.4](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-23-to-24) for more details).
 - Removed unused newsletter localization keys.
 
 ## [2.3.0](https://github.com/intershop/intershop-pwa/releases/tag/2.3.0) (2022-05-03)
@@ -512,9 +512,9 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- Angular 13.3.0 and dependencies update (see [Migrations / 2.1 to 2.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#21-to-22) for more details).
+- Angular 13.3.0 and dependencies update (see [Migrations / From 2.1 to 2.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-21-to-22) for more details).
 - Node.js 16 is now used for development and deployment.
-- The compare functionality was moved into an extension (see [Migrations / 2.1 to 2.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#21-to-22) for more details).
+- The compare functionality was moved into an extension (see [Migrations / From 2.1 to 2.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-21-to-22) for more details).
 
 ## [2.1.0](https://github.com/intershop/intershop-pwa/releases/tag/2.1.0) (2022-03-08)
 
@@ -555,8 +555,8 @@ kb_everyone
 ### BREAKING CHANGES
 
 - Product prices are now fetched by separate `productprices` REST calls instead of using the information fetched with the products REST call.
-- Handling personalized REST calls for category and product data required some possibly breaking changes (see [Migrations / 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#20-to-21) for more details).
-- The recently viewed products functionality was moved into an extension (see [Migrations / 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#20-to-21) for more details).
+- Handling personalized REST calls for category and product data required some possibly breaking changes (see [Migrations / From 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-20-to-21) for more details).
+- The recently viewed products functionality was moved into an extension (see [Migrations / From 2.0 to 2.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-20-to-21) for more details).
 
 ## [2.0.0](https://github.com/intershop/intershop-pwa/releases/tag/2.0.0) (2022-02-08)
 
@@ -639,16 +639,16 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- Switch linting from `tslint` to `eslint` (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
+- Switch linting from `tslint` to `eslint` (see [Migrations / From 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-14-to-20) for more details).
 - Swiper 7 upgrade (see [Migration Guide to Swiper 7](https://v7.swiperjs.com/migration-guide) for more details).
 - Formly 6 upgrade (see [upgrade from 5.0 to 6.0](https://github.com/ngx-formly/ngx-formly/blob/v6.0.0-next.7/UPGRADE-6.0.md) for more details).
-- Angular 13 and dependencies update (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details).
+- Angular 13 and dependencies update (see [Migrations / From 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-14-to-20) for more details).
 - Angular 13 removes support for IE 11 (see [Internet Explorer 11 support deprecation and removal](https://github.com/angular/angular/issues/41840) for more details).
-- The feature toggle 'advancedVariationHandling' has been removed. Use the ICM channel preference for 'Variations List View' now. (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details.
+- The feature toggle 'advancedVariationHandling' has been removed. Use the ICM channel preference for 'Variations List View' now. (see [Migrations / From 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-14-to-20) for more details.
 - The input parameter `class` was changed to `cssClass` for the following components: `ish-basket-create-order-template`,`ish-lazy-basket-create-order-template`, `ish-lazy-product-add-to-order-template`,`ish-lazy-product-add-to-quote`, `ish-lazy-product-add-to-wishlist`, `ish-product-add-to-basket`, `ish-product-add-to-compare`, `ish-product-add-to-order-template`, `ish-product-add-to-quote`, `ish-product-add-to-wishlist`. All uses of these components need to be adapted in custom code.
-- Our deprecated form components have been removed, use Formly to generate and maintain your forms. (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details.
+- Our deprecated form components have been removed, use Formly to generate and maintain your forms. (see [Migrations / From 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-14-to-20) for more details.
 - The `SelectOption` interface has been moved to the select-option.model.ts file of the core/model folder, the related import statements have been adapted.
-- The B2C theme `default` is renamed to `b2c` and the B2B theme `blue` is renamed to `b2b` and `b2b` is now used as the default theme (see [Migrations / 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#14-to-20) for more details.
+- The B2C theme `default` is renamed to `b2c` and the B2B theme `blue` is renamed to `b2b` and `b2b` is now used as the default theme (see [Migrations / From 1.4 to 2.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-14-to-20) for more details.
 
 ## [1.4.0](https://github.com/intershop/intershop-pwa/releases/tag/1.4.0) (2021-12-07)
 
@@ -769,7 +769,7 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- JavaScript files from `dist` folder have been moved. See [Migrations / 1.1 to 1.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#11-to-12) for more details.
+- JavaScript files from `dist` folder have been moved. See [Migrations / From 1.1 to 1.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-11-to-12) for more details.
 - The identity provider's `triggerLogout` method now takes 0 instead of 2 arguments.
 
 ## [1.1.0](https://github.com/intershop/intershop-pwa/releases/tag/1.1.0) (2021-09-03)
@@ -873,7 +873,7 @@ kb_everyone
 
 - Webpack 5 upgrade - custom webpack configuration has to be updated if customized.
 - Build process in docker image was enhanced to enable multiple configurations at runtime.
-- The `environment.ts` handling and with that the handling of `environment.local.ts` was changed. See [Migrations / 0.30 to 1.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#031-to-10) for more details.
+- The `environment.ts` handling and with that the handling of `environment.local.ts` was changed. See [Migrations / From 0.30 to 1.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-031-to-10) for more details.
 - Locale definitions in `environment.ts` models are no longer supported, only ICM channel configurations are now used for switching locales.
 
 ## [0.31.0](https://github.com/intershop/intershop-pwa/releases/tag/0.31.0) (2021-06-02)
@@ -1041,7 +1041,7 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- Introduced formly for standard form handling. See [Migrations / 0.27 to 0.28](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#027-to-028) for more details.
+- Introduced formly for standard form handling. See [Migrations / From 0.27 to 0.28](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-027-to-028) for more details.
 - Refactoring the way product memoization is done and additional product components retrieve data with context facade
 - Removed the dependency to ngx-swiper-wrapper and used swiper with native Angular support.
 - Refactored setting `production` mode to support running Angular CLI with multiple configurations (`ng serve -c brand,production`).
@@ -1571,7 +1571,7 @@ kb_everyone
 ### BREAKING CHANGES
 
 - Using containers and components is no longer a recommended pattern. See [Migrations /
-  0.16 to 0.17](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#016-to-017) for more details.
+  0.16 to 0.17](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-016-to-017) for more details.
 
 ## [0.16.1](https://github.com/intershop/intershop-pwa/releases/tag/0.16.1) (2019-12-13)
 
