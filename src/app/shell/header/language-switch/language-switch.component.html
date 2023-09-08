@@ -25,7 +25,7 @@
         <ul *ngIf="availableLocales.length">
           <ng-container *ngFor="let l of availableLocales">
             <li *ngIf="l !== locale">
-              <a [href]="location | makeHref : { lang: l } | async" role="menuitem">
+              <a [href]="location | makeHref : { lang: l } | async" (click)="setLocaleCookie(l)" role="menuitem">
                 {{ 'locale.' + l + '.long' | translate }}
               </a>
             </li>

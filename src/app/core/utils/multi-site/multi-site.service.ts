@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -9,7 +10,7 @@ export type MultiSiteLocaleMap = Record<string, unknown> | undefined;
 
 @Injectable({ providedIn: 'root' })
 export class MultiSiteService {
-  constructor(private store: Store) {}
+  constructor(private store: Store, @Inject(APP_BASE_HREF) private baseHref: string) {}
 
   /**
    * returns the current url, modified to fit the locale parameter if the environment parameter "multiSiteLocaleMap" is set
@@ -19,7 +20,7 @@ export class MultiSiteService {
    * @param baseHref the current baseHref which needs to be replaced
    * @returns the modified url
    */
-  getLangUpdatedUrl(locale: string, url: string, baseHref: string): Observable<string> {
+  getLangUpdatedUrl(locale: string, url: string): Observable<string> {
     return this.store.pipe(
       select(getMultiSiteLocaleMap),
       take(1),
@@ -33,14 +34,24 @@ export class MultiSiteService {
          */
         if (
           multiSiteLocaleMap &&
-          Object.values(multiSiteLocaleMap).includes(baseHref) &&
+          Object.values(multiSiteLocaleMap).includes(this.baseHref) &&
           localeMapHasLangString(locale, multiSiteLocaleMap)
         ) {
-          newUrl = newUrl.replace(baseHref, multiSiteLocaleMap[locale]);
+          newUrl = newUrl.replace(this.baseHref, multiSiteLocaleMap[locale]);
         }
         return newUrl;
       })
     );
+  }
+
+  appendUrlParams(url: string, urlParams: Record<string, string>, queryParams: string | undefined): string {
+    return `${url}${
+      urlParams
+        ? Object.keys(urlParams)
+            .map(k => `;${k}=${urlParams[k]}`)
+            .join('')
+        : ''
+    }${queryParams ? `?${queryParams}` : ''}`;
   }
 }
 

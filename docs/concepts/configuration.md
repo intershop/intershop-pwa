@@ -159,6 +159,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | productNotifications         | Product notifications feature for price and in stock notifications                                                                              |
 | rating                       | Display product ratings                                                                                                                         |
 | recently                     | Display recently viewed products (additional configuration via `dataRetention` configuration options)                                           |
+| saveLanguageSelection        | Save the user's language selection and restore it after PWA load                                                                                |
 | storeLocator                 | Display physical stores and their addresses                                                                                                     |
 | **B2B Features**             |                                                                                                                                                 |
 | businessCustomerRegistration | Create business customers on registration                                                                                                       |

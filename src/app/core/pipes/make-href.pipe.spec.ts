@@ -17,38 +17,42 @@ describe('Make Href Pipe', () => {
       providers: [{ provide: MultiSiteService, useFactory: () => instance(multiSiteService) }, MakeHrefPipe],
     });
     makeHrefPipe = TestBed.inject(MakeHrefPipe);
-    when(multiSiteService.getLangUpdatedUrl(anything(), anything(), anything())).thenCall(
-      (url: string, _: LocationStrategy) => of(url)
+
+    when(multiSiteService.getLangUpdatedUrl(anything(), anything())).thenCall((url: string, _: LocationStrategy) =>
+      of(url)
+    );
+    when(multiSiteService.appendUrlParams(anything(), anything(), anything())).thenCall(
+      (url: string, _, __: string) => url
     );
   });
 
   it('should be created', () => {
     expect(makeHrefPipe).toBeTruthy();
   });
-  // workaround for https://github.com/DefinitelyTyped/DefinitelyTyped/issues/34617
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  it.each<any | jest.DoneCallback>([
-    [undefined, undefined, 'undefined'],
-    ['/test', undefined, '/test'],
-    ['/test', {}, '/test'],
-    ['/test', { foo: 'bar' }, '/test;foo=bar'],
-    ['/test', { foo: 'bar', marco: 'polo' }, '/test;foo=bar;marco=polo'],
-    ['/test?query=q', undefined, '/test?query=q'],
-    ['/test?query=q', {}, '/test?query=q'],
-    ['/test?query=q', { foo: 'bar' }, '/test;foo=bar?query=q'],
-    ['/test?query=q', { foo: 'bar', marco: 'polo' }, '/test;foo=bar;marco=polo?query=q'],
-  ])(`should transform "%s" with %j to "%s"`, (url, params, expected, done: jest.DoneCallback) => {
-    makeHrefPipe.transform({ path: () => url, getBaseHref: () => '/' } as LocationStrategy, params).subscribe(res => {
-      expect(res).toEqual(expected);
-      done();
-    });
+
+  it('should call appendUrlParams from the multiSiteService if no parameter exists', done => {
+    makeHrefPipe
+      .transform({ path: () => '/de/test', getBaseHref: () => '/de' } as LocationStrategy, undefined)
+      .subscribe(() => {
+        verify(multiSiteService.appendUrlParams(anything(), anything(), anything())).once();
+        done();
+      });
   });
 
-  it('should call the multiSiteService if lang parameter exists', done => {
+  it('should call getLangUpdatedUrl from the multiSiteService if lang parameter exists', done => {
     makeHrefPipe
       .transform({ path: () => '/de/test', getBaseHref: () => '/de' } as LocationStrategy, { lang: 'en_US' })
       .subscribe(() => {
-        verify(multiSiteService.getLangUpdatedUrl(anything(), anything(), anything())).once();
+        verify(multiSiteService.getLangUpdatedUrl(anything(), anything())).once();
+        done();
+      });
+  });
+
+  it('should call appendUrlParams from the multiSiteService if other parameter exists', done => {
+    makeHrefPipe
+      .transform({ path: () => '/de/test', getBaseHref: () => '/de' } as LocationStrategy, { foo: 'bar' })
+      .subscribe(() => {
+        verify(multiSiteService.appendUrlParams(anything(), anything(), anything())).once();
         done();
       });
   });

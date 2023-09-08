@@ -8,7 +8,9 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { MakeHrefPipe } from 'ish-core/pipes/make-href.pipe';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 import { LanguageSwitchComponent } from './language-switch.component';
 
@@ -18,6 +20,8 @@ describe('Language Switch Component', () => {
   let element: HTMLElement;
   let appFacade: AppFacade;
   const locales = ['en_US', 'de_DE', 'fr_FR'];
+  const cookiesServiceMock = mock(CookiesService);
+  const featureToggleServiceMock = mock(FeatureToggleService);
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);
@@ -29,7 +33,11 @@ describe('Language Switch Component', () => {
         MockPipe(MakeHrefPipe, (_, urlParams) => of(urlParams.lang)),
       ],
       imports: [NgbDropdownModule, TranslateModule.forRoot()],
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: CookiesService, useValue: instance(cookiesServiceMock) },
+        { provide: FeatureToggleService, useValue: instance(featureToggleServiceMock) },
+      ],
     }).compileComponents();
   });
 
