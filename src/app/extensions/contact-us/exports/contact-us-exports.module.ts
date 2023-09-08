@@ -1,19 +1,14 @@
 import { NgModule } from '@angular/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
+import { loadFeatureProvider } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 @NgModule({
   imports: [FeatureToggleModule],
   providers: [
-    {
-      provide: LAZY_FEATURE_MODULE,
-      useValue: {
-        feature: 'contactUs',
-        location: () => import('../store/contact-us-store.module').then(m => m.ContactUsStoreModule),
-      },
-      multi: true,
-    },
+    loadFeatureProvider('contactUs', true, {
+      location: () => import('../store/contact-us-store.module').then(m => m.ContactUsStoreModule),
+    }),
   ],
   declarations: [],
   exports: [],

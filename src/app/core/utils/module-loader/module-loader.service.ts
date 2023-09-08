@@ -1,11 +1,13 @@
 import { Injectable, InjectionToken, Injector, Type, createNgModule } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
+import { distinctUntilChanged } from 'rxjs';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-declare interface LazyModuleType {
+export interface LazyModuleType {
   feature: string;
   location(): Promise<Type<unknown>>;
 }
@@ -19,7 +21,7 @@ export class ModuleLoaderService {
   constructor(private featureToggleService: FeatureToggleService, private store: Store) {}
 
   init(injector: Injector) {
-    this.store.pipe(select(getFeatures), whenTruthy()).subscribe(() => {
+    this.store.pipe(select(getFeatures), whenTruthy(), distinctUntilChanged(isEqual)).subscribe(() => {
       const lazyModules = injector.get<LazyModuleType[]>(LAZY_FEATURE_MODULE, []);
       lazyModules
         .filter(mod => this.featureToggleService.enabled(mod.feature))
@@ -28,6 +30,7 @@ export class ModuleLoaderService {
           if (!this.loadedModules.includes(loaded)) {
             createNgModule(loaded, injector);
             this.loadedModules.push(loaded);
+            this.featureToggleService.addLoadedFeatureToList(mod.feature);
           }
         });
     });

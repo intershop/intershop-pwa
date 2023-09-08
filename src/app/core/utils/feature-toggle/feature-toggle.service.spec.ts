@@ -28,9 +28,15 @@ describe('Feature Toggle Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [provideMockStore({ selectors: [{ selector: getFeatures, value: ['feature1'] }] })],
+        providers: [
+          provideMockStore({
+            selectors: [{ selector: getFeatures, value: ['feature1'] }],
+          }),
+        ],
       });
       featureToggle = TestBed.inject(FeatureToggleService);
+
+      featureToggle.addLoadedFeatureToList('feature1');
     });
 
     it.each([

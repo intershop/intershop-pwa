@@ -5,10 +5,11 @@ import {
   <% if (inputNames.length) { %>Input, OnChanges, <% } %>
   <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
-
 <% if(guardDisplay) { %>
+  import { switchMap, takeUntil } from 'rxjs/operators';
+
   import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-  import { takeUntil } from 'rxjs/operators';
+  import { whenTruthy } from 'ish-core/utils/operators';
 <% } %>
 
 import type { <%= classify(originalName) %>Component as OriginalComponent } from '<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
@@ -43,8 +44,11 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   ) {}
 
   <% if(!guardDisplay) { %>async<% } %> ngOnInit() {
-    <% if(guardDisplay) { %> this.featureToggleService.enabled$('<%= camelize(guardDisplay) %>').pipe(takeUntil(this.destroy$)).subscribe(async enabled => {
-      if (enabled) {
+    <% if(guardDisplay) { %> this.featureToggleService.enabled$('<%= camelize(guardDisplay) %>').pipe(
+        whenTruthy(),
+        switchMap(() => this.featureToggleService.loaded$('<%= camelize(guardDisplay) %>')),
+        takeUntil(this.destroy$)).subscribe(async loaded => {
+          if (loaded) {
     <% } %>
 
       await this.renderComponent();
