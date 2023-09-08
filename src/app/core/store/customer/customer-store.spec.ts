@@ -14,6 +14,7 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
+import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
@@ -123,7 +124,6 @@ describe('Customer Store', () => {
     when(basketServiceMock.createBasket()).thenReturn(of(basket));
     when(basketServiceMock.getBaskets()).thenReturn(of([]));
     when(basketServiceMock.mergeBasket(anything(), anything(), anything())).thenReturn(of(basket));
-    when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
     when(basketServiceMock.validateBasket(anything())).thenReturn(
       of({
         basket,
@@ -133,6 +133,9 @@ describe('Customer Store', () => {
         },
       })
     );
+
+    const basketItemsServiceMock = mock(BasketItemsService);
+    when(basketItemsServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
 
     const productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
