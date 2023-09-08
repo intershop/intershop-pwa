@@ -13,7 +13,7 @@
     <p>{{ object.costCenter }} {{ costCenterName }}</p>
   </div>
 
-  <div *ngIf="orderReferenceID" data-testing-id="orderReferenceID">
+  <div *ngIf="object.externalOrderReference" data-testing-id="orderReferenceID">
     <a
       *ngIf="editRouterLink"
       class="float-right btn-tool"
@@ -23,6 +23,6 @@
       <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
     <strong>{{ 'checkout.widget.buyer.orderReferenceId' | translate }}</strong>
-    <p>{{ orderReferenceID }}</p>
+    <p>{{ object.externalOrderReference }}</p>
   </div>
 </div>

@@ -46,6 +46,7 @@ import {
   setBasketPayment,
   startCheckout,
   submitOrder,
+  updateBasket,
   updateBasketAddress,
   updateBasketCostCenter,
   updateBasketItem,
@@ -130,6 +131,10 @@ export class CheckoutFacade {
 
   updateBasketCostCenter(costCenter: string) {
     this.store.dispatch(updateBasketCostCenter({ costCenter }));
+  }
+
+  updateBasketExternalOrderReference(externalOrderReference: string) {
+    this.store.dispatch(updateBasket({ update: { externalOrderReference } }));
   }
 
   setBasketCustomAttribute(attribute: Attribute): void {

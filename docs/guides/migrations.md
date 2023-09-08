@@ -9,6 +9,8 @@ kb_sync_latest_only
 
 ## 4.1 to 4.2
 
+The basket attribute 'orderReferenceId' is now saved as native attribute 'externalOrderReference' at the basket, but it still exists at the basket and can be displayed further on, if needed.
+
 A better handling for cookie `SameSite` and `secure` settings was implemented with new defaults to `SameSite=Strict` and `secure`.
 This can still be overridden when calling `cookies.services` `put` method with explicitly set values.
 Now the `secure` setting is always set to `true` if in `https` mode, you can prevent this by explicitly setting it to `false`.

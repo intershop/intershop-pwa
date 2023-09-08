@@ -224,9 +224,9 @@ describe('Basket Effects', () => {
 
       effects.recalculateBasketAfterCurrencyChange$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-                  [Basket Internal] Update Basket:
-                    update: {"calculated":true}
-                `);
+          [Basket API] Update Basket:
+            update: {"calculated":true}
+        `);
         done();
       });
     });

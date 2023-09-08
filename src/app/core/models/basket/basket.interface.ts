@@ -13,8 +13,8 @@ import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-met
 
 export interface BasketBaseData {
   id: string;
-  purchaseCurrency?: string;
   calculated: boolean;
+  purchaseCurrency?: string;
   invoiceToAddress?: string;
   commonShipToAddress?: string;
   commonShippingMethod?: string;
@@ -27,6 +27,7 @@ export interface BasketBaseData {
     valueBasedDiscounts?: string[];
   };
   buckets?: string[];
+  externalOrderReference?: string;
   lineItems?: string[];
   messageToMerchant?: string;
   payments?: string[];
