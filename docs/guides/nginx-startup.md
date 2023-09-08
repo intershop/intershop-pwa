@@ -146,6 +146,8 @@ Built-in features can be enabled and disabled:
 - `DEVICE_DETECTION=off` disables user-agent detection (default `on`)
 - `PROMETHEUS=on` enables [Prometheus](https://prometheus.io) metrics exports on port `9113` (default `off`)
 - `SSL=on` to switch on HTTPS. See [HTTPS or SSL](#https-or-ssl) above for further explanation.
+- `DEBUG=on` to log extra information like path matching.
+- `LOG_ALL=off` to restrict logging to errors.
 
 ## Features
 

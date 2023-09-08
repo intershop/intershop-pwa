@@ -96,6 +96,7 @@ global['navigator'] = win.navigator;
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
+  const log_all = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
 
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
@@ -197,7 +198,8 @@ export function app() {
     }
     server.use(
       morgan(logFormat, {
-        skip: (req: express.Request) => req.originalUrl.startsWith('/INTERSHOP/static'),
+        skip: (req: express.Request, res: express.Response) =>
+          req.originalUrl.startsWith('/INTERSHOP/static') || (res.statusCode < 400 && !log_all),
       })
     );
   }
@@ -392,7 +394,7 @@ export function app() {
   );
 
   const angularUniversal = (req: express.Request, res: express.Response) => {
-    if (logging) {
+    if (logging && log_all) {
       console.log(`SSR ${req.originalUrl}`);
     }
 
@@ -445,7 +447,9 @@ export function app() {
           res.status(500).send(err.message);
         }
         if (logging) {
-          console.log(`RES ${res.statusCode} ${req.originalUrl}`);
+          if (log_all || res.statusCode >= 400) {
+            console.log(`RES ${res.statusCode} ${req.originalUrl}`);
+          }
           if (err) {
             console.log(err);
           }
