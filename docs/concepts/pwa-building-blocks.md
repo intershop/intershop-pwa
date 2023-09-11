@@ -88,7 +88,7 @@ Upon completing the Angular Universal pre-rendering, all URLs referring explicit
 ## Stateless vs. Stateful Building Blocks
 
 For scalability and parallelization reasons, considering whether each building block is stateful or stateless is important.
-The **ICM** deals with large databases, caches write and read requests and therefore manages a high amount of internal states.
+The **ICM** deals with large databases, caches write and read requests and, therefore, manages a high amount of internal states.
 Substituting ICM instances at runtime and managing fail-over capacities is not trivial.
 The **SSR container** acts like a pure function.
 Making the same request is always going to return the same result.

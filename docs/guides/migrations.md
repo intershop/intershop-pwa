@@ -9,18 +9,20 @@ kb_sync_latest_only
 
 ## From 4.1 to 4.2
 
-The basket attribute 'orderReferenceId' is now saved as native attribute 'externalOrderReference' at the basket, but it still exists at the basket and can be displayed further on, if needed.
+The basket attribute 'orderReferenceId' is now saved as native attribute 'externalOrderReference' at the basket, but it still exists at the basket and can be displayed further on if needed.
 
 A better handling for cookie `SameSite` and `secure` settings was implemented with new defaults to `SameSite=Strict` and `secure`.
-This can still be overridden when calling `cookies.services` `put` method with explicitly set values.
-Now the `secure` setting is always set to `true` if in `https` mode, you can prevent this by explicitly setting it to `false`.
-If the PWA is run with `http` (should only be in development environments) `secure` is not set.
-Additionally if the PWA is run in an iframe all cookies are set with `SameSite=None` (e.g. for punchout or Design View).
+This can still be overridden when calling the `cookies.services` `put` method with explicitly set values.
+Now the `secure` setting is always set to `true` if in `https` mode.
+You can prevent this by explicitly setting it to `false`.
+If the PWA is run with `http` (should only be in development environments), `secure` is not set.
+Additionally, if the PWA is run in an iframe, all cookies are set with `SameSite=None` (e.g., for punchout or Design View).
 Be aware that some browsers no longer accept cookies with `SameSite=None` without `secure`.
-Before by default no `SameSite` was set so browsers treated it as `SameSite=Lax`, this needs to be set explicitly now if it is really intended.
-For migrating check the calls of the `cookies.service` `put` method whether they need to be adapted.
+Before, by default no `SameSite` was set so browsers treated it as `SameSite=Lax`.
+This needs to be set explicitly now if it is really intended.
+For migrating, check whether the calls of the `cookies.service` `put` method need to be adapted.
 
-The user's language selection is saved as a cookie (`preferredLocale`) now and restored after the PWA is loaded.
+The user's language selection is saved as a cookie (`preferredLocale`) now and restored after the PWA has loaded.
 This functionality can be enabled/disabled with the feature toggle `saveLanguageSelection`.
 
 ## From 4.0 to 4.1
@@ -34,8 +36,8 @@ The input parameter `id` of the component `ish-product-quantity` caused issues w
 Therefore, it was renamed to `elementId`.
 If the input parameter 'id' of this component has already been used, it has to be renamed accordingly.
 
-The `ishIntersectionObserver` returns all 3 `IntersectionStatus` change events `Visible`, `Pending` and now `NotVisible` as well.
-The custom project code needs to be adapted if it does not filter the events where it is used (e.g `if (event === 'Visible')`).
+The `ishIntersectionObserver` returns all three `IntersectionStatus` change events: `Visible`, `Pending`, and `NotVisible` as well now.
+The custom project code needs to be adapted if it does not filter the events where it is used (e.g., `if (event === 'Visible')`).
 
 The two standard themes `b2b` and `b2c` where refactored in such a way that the `b2c` theme could be changed into a [configurable theme](./themes.md#configurable-theme) that uses CSS custom properties (CSS variables).
 Since SCSS color calculations do not work with CSS custom properties (they need real values instead of `var(--corporate-primary)`), SCSS functions like `darken()` and `lighten()` were removed from the standard Intershop PWA SCSS styling.
@@ -44,10 +46,10 @@ Existing projects that do not want to use a configurable theme do not need to ap
 To use the new [configurable theme](./themes.md#configurable-theme) feature, the feature toggle `extraConfiguration` needs to be enabled.
 
 A new `TokenService` is introduced to be only responsible for fetching token data from the ICM.
-However all necessary adaptions for the identity providers and the `fetchToken()` method of the UserService are removed in order to be completely independent of `TokenService`.
+However, all necessary adaptions for the identity providers and the `fetchToken()` method of the UserService are removed in order to be completely independent of `TokenService`.
 If your identity providers should use the `OAuthService` to handle the authentication, please make sure to instantiate a new `OAuthService` entity within the identity provider.
 The `getOAuthServiceInstance()` static method from the `InstanceCreators` class can be used for that.
-Furthermore the handling of the anonymous user token has been changed.
+Furthermore, the handling of the anonymous user token has been changed.
 It will only be fetched when an anonymous user intends to create a basket.
 
 We added an Address Doctor integration as a new extension which can be enabled with the feature toggle `addressDoctor` and [additional configuration](./address-doctor.md).
@@ -55,10 +57,10 @@ We added an Address Doctor integration as a new extension which can be enabled w
 ## From 3.3 to 4.0
 
 The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm version 9.5.0 and the `"lockfileVersion": 3,`.
-For migrating the `package-lock.json` it is always advised to use the `package-lock.json` from the Intershop PWA and then run `npm install` to update it with the additional custom dependencies from the customer project's `package.json`.
+For migrating the `package-lock.json`, it is always advised to use the `package-lock.json` from the Intershop PWA and then run `npm install` to update it with the additional custom dependencies from the customer project's `package.json`.
 
 The project was updated to work with Angular 15.
-This includes the removal of the Browserslist configuration and an updated TypeScript compiler `target` and `lib` to `ES2022` (for browser support requirements that differ from the Angular 15 standard configuration see the [configuring browser compatibility](https://angular.io/guide/build#configuring-browser-compatibility) guide and the [TypeScript configuration](https://angular.io/guide/typescript-configuration) reference).
+This includes the removal of the Browserslist configuration and an updated TypeScript compiler `target` and `lib` to `ES2022` (for browser support requirements that differ from the Angular 15 standard configuration, see the [configuring browser compatibility](https://angular.io/guide/build#configuring-browser-compatibility) guide and the [TypeScript configuration](https://angular.io/guide/typescript-configuration) reference).
 Adaptions of the Schematics configurations and tests were also necessary.
 In addition, all other dependencies were updated as well and resulted in necessary Stylelint and Jest test adaptions.
 
@@ -93,7 +95,7 @@ Please adapt the `useFactory()` function to return all imported local translatio
 
 With Angular 15 class-based route guards are deprecated in favor of functional guards.
 Thus, we removed the guard classes and replaced them by functions.
-For the `canActivate/canChildActivate` methods only change the class name into the function name by lowercasing the first letter, e.g.,
+For the `canActivate/canChildActivate` methods, only change the class name into the function name by lowercasing the first letter, e.g.,
 
 ```typescript
 {
@@ -123,9 +125,9 @@ After updating [Jest to version 29](https://jestjs.io/docs/upgrading-to-jest29#s
 Run `npm run test -- -u` to update your test snapshots.
 
 The account navigation has been reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
-For better maintainability and brand-specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
+For better maintainability and brand-specific overriding, the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
 With this rework also the navigation items data structure was changed from a key value object to a simpler `NavigationItem` array.
-With this data structure accessing the data was changed for the key access from `item.key` to `item.routerLink` or for the value example from `item.value.localizationKey` to `item.localizationKey`.
+With this data structure accessing the data was changed for the key access from `item.key` to `item.routerLink`, or for the value example from `item.value.localizationKey` to `item.localizationKey`.
 To migrate to this new account navigation item handling, any account navigation customization needs to be adapted accordingly.
 
 The deprecated SSR environment variable `ICM_IDENTITY_PROVIDER` was completely removed.
@@ -145,7 +147,7 @@ Please run the following command for each configured Angular project (e.g., 'int
 
 > **NOTE:** Not all scenarios where a deprecated property could be found are taken into consideration for the `formly-migrate` schematic. Please check and adapt your code manually for additional changes. For further information, see the [formly migration guide](https://formly.dev/docs/guide/migration/).
 
-The templates of `account-order-template-detail-page.component.ts`, `quote-line-item-list.component.ts`, `quoting-basket-line-items.component.ts` and `account-wishlist-detail-page.component.ts` have been updated to ensure correct DOM element updates for `ngFor` loop changes.
+The templates of `account-order-template-detail-page.component.ts`, `quote-line-item-list.component.ts`, `quoting-basket-line-items.component.ts`, and `account-wishlist-detail-page.component.ts` have been updated to ensure correct DOM element updates for `ngFor` loop changes.
 A [trackBy function](https://angular.io/api/core/TrackByFunction) will be used now.
 
 Obsolete functionality that is no longer needed with the current state of the Intershop PWA was removed from the project source code:
