@@ -7,23 +7,25 @@ kb_sync_latest_only
 
 # Migrations
 
-## 4.1 to 4.2
+## From 4.1 to 4.2
 
-The basket attribute 'orderReferenceId' is now saved as native attribute 'externalOrderReference' at the basket, but it still exists at the basket and can be displayed further on, if needed.
+The basket attribute 'orderReferenceId' is now saved as native attribute 'externalOrderReference' at the basket, but it still exists at the basket and can be displayed further on if needed.
 
 A better handling for cookie `SameSite` and `secure` settings was implemented with new defaults to `SameSite=Strict` and `secure`.
-This can still be overridden when calling `cookies.services` `put` method with explicitly set values.
-Now the `secure` setting is always set to `true` if in `https` mode, you can prevent this by explicitly setting it to `false`.
-If the PWA is run with `http` (should only be in development environments) `secure` is not set.
-Additionally if the PWA is run in an iframe all cookies are set with `SameSite=None` (e.g. for punchout or Design View).
+This can still be overridden when calling the `cookies.services` `put` method with explicitly set values.
+Now the `secure` setting is always set to `true` if in `https` mode.
+You can prevent this by explicitly setting it to `false`.
+If the PWA is run with `http` (should only be in development environments), `secure` is not set.
+Additionally, if the PWA is run in an iframe, all cookies are set with `SameSite=None` (e.g., for punchout or Design View).
 Be aware that some browsers no longer accept cookies with `SameSite=None` without `secure`.
-Before by default no `SameSite` was set so browsers treated it as `SameSite=Lax`, this needs to be set explicitly now if it is really intended.
-For migrating check the calls of the `cookies.service` `put` method whether they need to be adapted.
+Before, by default no `SameSite` was set so browsers treated it as `SameSite=Lax`.
+This needs to be set explicitly now if it is really intended.
+For migrating, check whether the calls of the `cookies.service` `put` method need to be adapted.
 
-The user's language selection is saved as a cookie (`preferredLocale`) now and restored after the PWA is loaded.
+The user's language selection is saved as a cookie (`preferredLocale`) now and restored after the PWA has loaded.
 This functionality can be enabled/disabled with the feature toggle `saveLanguageSelection`.
 
-## 4.0 to 4.1
+## From 4.0 to 4.1
 
 The Intershop PWA now uses Node.js 18.16.0 LTS with the corresponding npm version 9.5.1 to resolve an issue with Azure Docker deployments (see #1416).
 
@@ -34,8 +36,8 @@ The input parameter `id` of the component `ish-product-quantity` caused issues w
 Therefore, it was renamed to `elementId`.
 If the input parameter 'id' of this component has already been used, it has to be renamed accordingly.
 
-The `ishIntersectionObserver` returns all 3 `IntersectionStatus` change events `Visible`, `Pending` and now `NotVisible` as well.
-The custom project code needs to be adapted if it does not filter the events where it is used (e.g `if (event === 'Visible')`).
+The `ishIntersectionObserver` returns all three `IntersectionStatus` change events: `Visible`, `Pending`, and `NotVisible` as well now.
+The custom project code needs to be adapted if it does not filter the events where it is used (e.g., `if (event === 'Visible')`).
 
 The two standard themes `b2b` and `b2c` where refactored in such a way that the `b2c` theme could be changed into a [configurable theme](./themes.md#configurable-theme) that uses CSS custom properties (CSS variables).
 Since SCSS color calculations do not work with CSS custom properties (they need real values instead of `var(--corporate-primary)`), SCSS functions like `darken()` and `lighten()` were removed from the standard Intershop PWA SCSS styling.
@@ -44,21 +46,21 @@ Existing projects that do not want to use a configurable theme do not need to ap
 To use the new [configurable theme](./themes.md#configurable-theme) feature, the feature toggle `extraConfiguration` needs to be enabled.
 
 A new `TokenService` is introduced to be only responsible for fetching token data from the ICM.
-However all necessary adaptions for the identity providers and the `fetchToken()` method of the UserService are removed in order to be completely independent of `TokenService`.
+However, all necessary adaptions for the identity providers and the `fetchToken()` method of the UserService are removed in order to be completely independent of `TokenService`.
 If your identity providers should use the `OAuthService` to handle the authentication, please make sure to instantiate a new `OAuthService` entity within the identity provider.
 The `getOAuthServiceInstance()` static method from the `InstanceCreators` class can be used for that.
-Furthermore the handling of the anonymous user token has been changed.
+Furthermore, the handling of the anonymous user token has been changed.
 It will only be fetched when an anonymous user intends to create a basket.
 
 We added an Address Doctor integration as a new extension which can be enabled with the feature toggle `addressDoctor` and [additional configuration](./address-doctor.md).
 
-## 3.3 to 4.0
+## From 3.3 to 4.0
 
 The Intershop PWA now uses Node.js 18.15.0 LTS with the corresponding npm version 9.5.0 and the `"lockfileVersion": 3,`.
-For migrating the `package-lock.json` it is always advised to use the `package-lock.json` from the Intershop PWA and then run `npm install` to update it with the additional custom dependencies from the customer project's `package.json`.
+For migrating the `package-lock.json`, it is always advised to use the `package-lock.json` from the Intershop PWA and then run `npm install` to update it with the additional custom dependencies from the customer project's `package.json`.
 
 The project was updated to work with Angular 15.
-This includes the removal of the Browserslist configuration and an updated TypeScript compiler `target` and `lib` to `ES2022` (for browser support requirements that differ from the Angular 15 standard configuration see the [configuring browser compatibility](https://angular.io/guide/build#configuring-browser-compatibility) guide and the [TypeScript configuration](https://angular.io/guide/typescript-configuration) reference).
+This includes the removal of the Browserslist configuration and an updated TypeScript compiler `target` and `lib` to `ES2022` (for browser support requirements that differ from the Angular 15 standard configuration, see the [configuring browser compatibility](https://angular.io/guide/build#configuring-browser-compatibility) guide and the [TypeScript configuration](https://angular.io/guide/typescript-configuration) reference).
 Adaptions of the Schematics configurations and tests were also necessary.
 In addition, all other dependencies were updated as well and resulted in necessary Stylelint and Jest test adaptions.
 
@@ -93,7 +95,7 @@ Please adapt the `useFactory()` function to return all imported local translatio
 
 With Angular 15 class-based route guards are deprecated in favor of functional guards.
 Thus, we removed the guard classes and replaced them by functions.
-For the `canActivate/canChildActivate` methods only change the class name into the function name by lowercasing the first letter, e.g.,
+For the `canActivate/canChildActivate` methods, only change the class name into the function name by lowercasing the first letter, e.g.,
 
 ```typescript
 {
@@ -123,9 +125,9 @@ After updating [Jest to version 29](https://jestjs.io/docs/upgrading-to-jest29#s
 Run `npm run test -- -u` to update your test snapshots.
 
 The account navigation has been reworked to support navigation grouping (used in `b2b` theme, see [`account-navigation.items.ts`](https://github.com/intershop/intershop-pwa/blob/4.0.0/src/app/pages/account/account-navigation/account-navigation.items.ts)).
-For better maintainability and brand-specific overriding the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
+For better maintainability and brand-specific overriding, the account navigation items were externalized in an extra file `account-navigation.items.ts` used by the `account-navigation.component.ts`.
 With this rework also the navigation items data structure was changed from a key value object to a simpler `NavigationItem` array.
-With this data structure accessing the data was changed for the key access from `item.key` to `item.routerLink` or for the value example from `item.value.localizationKey` to `item.localizationKey`.
+With this data structure accessing the data was changed for the key access from `item.key` to `item.routerLink`, or for the value example from `item.value.localizationKey` to `item.localizationKey`.
 To migrate to this new account navigation item handling, any account navigation customization needs to be adapted accordingly.
 
 The deprecated SSR environment variable `ICM_IDENTITY_PROVIDER` was completely removed.
@@ -145,7 +147,7 @@ Please run the following command for each configured Angular project (e.g., 'int
 
 > **NOTE:** Not all scenarios where a deprecated property could be found are taken into consideration for the `formly-migrate` schematic. Please check and adapt your code manually for additional changes. For further information, see the [formly migration guide](https://formly.dev/docs/guide/migration/).
 
-The templates of `account-order-template-detail-page.component.ts`, `quote-line-item-list.component.ts`, `quoting-basket-line-items.component.ts` and `account-wishlist-detail-page.component.ts` have been updated to ensure correct DOM element updates for `ngFor` loop changes.
+The templates of `account-order-template-detail-page.component.ts`, `quote-line-item-list.component.ts`, `quoting-basket-line-items.component.ts`, and `account-wishlist-detail-page.component.ts` have been updated to ensure correct DOM element updates for `ngFor` loop changes.
 A [trackBy function](https://angular.io/api/core/TrackByFunction) will be used now.
 
 Obsolete functionality that is no longer needed with the current state of the Intershop PWA was removed from the project source code:
@@ -166,14 +168,14 @@ For more information, see the [Configuration Concept](../concepts/configuration.
 
 We introduced the product notifications feature as a new extension which can be enabled with the feature toggle `productNotifications`.
 
-## 3.2 to 3.3
+## From 3.2 to 3.3
 
 To improve the accessibility of the PWA in regards to more elements being tab focusable, a lot of `[routerLink]="[]"` where added to links that previously did not have a link reference.
 Also some `(keydown.enter)` event bindings with `tabindex="0"` were added to ensure a better interactivity with the keyboard only.
 If the according commits lead to problems, they could be skipped and resolved later by fixing the accessibility linting issues manually.
 More information regarding accessibility in the PWA and the used ESLint rules can be found in the [Accessibility Guide](./accessibility.md).
 
-## 3.1 to 3.2
+## From 3.1 to 3.2
 
 A styling adaption was made to the application shell to expand it to the full page height, so the footer now always stays at the bottom.
 Together with that an inline style of the `main-container` was moved to the global styling definition.
@@ -202,7 +204,7 @@ Regarding this, the logout action triggers a service which revokes the currently
 If the logout was successful, all personalized information is removed from the ngrx store.
 Please use `logoutUser({ revokeToken: false })` from the account facade or dispatch `logoutUserSuccess` instead of the `logoutUser` action to use the old behavior.
 
-## 3.0 to 3.1
+## From 3.0 to 3.1
 
 The SSR environment variable `ICM_IDENTITY_PROVIDER` will be removed in the next major release (PWA 4.0).
 Use variable `IDENTITY_PROVIDER` to select the provider to be used instead.
@@ -223,7 +225,7 @@ The "Product Image Not Available" PNG image `not_available.png` is removed and r
 The file references are updated accordingly, the product image component is updated to use the correct image attributes, a localized alternative text is added, and the product and image mapper files are updated to provide the correct data.
 In case the current PNG image file and the handling is customized in a project, you have to ensure to keep the project changes.
 
-## 2.4 to 3.0
+## From 2.4 to 3.0
 
 With the 2.4.1 Hotfix we introduced a more fixed Node.js version handling to the version used and tested by us.
 We set Node.js 16.16.0 and npm 8.11.0 as our application runtime and package management versions.
@@ -283,7 +285,7 @@ To improve the support of large baskets we update the ngrx store immediately aft
 Therefore, we had to change the return values of the corresponding basket service functions as well as the payload of the success actions.
 We also limited the number of displayed line items in the mini basket and introduced a paging bar on the basket page to speed up the rendering of these components.
 
-## 2.3 to 2.4
+## From 2.3 to 2.4
 
 The PWA 2.4 contains an Angular update to version 13.3.10 and many other dependencies updates.
 These updates did not require any updates to the PWA source code.
@@ -297,7 +299,7 @@ The 'ratings' functionality (components concerning the display of product rating
 
 With the display of product reviews the attribute 'numberOfReviews' has been added to the product model, and the number of reviews is displayed behind the product rating stars now instead of the average rating that is already depicted in the stars.
 
-## 2.2 to 2.3
+## From 2.2 to 2.3
 
 The 'contact us' functionality has been moved into an extension and we have introduced the feature toggle `contactUs` in the `environment.model.ts` that is switched on by default.
 
@@ -309,7 +311,7 @@ During this refactoring, the `DateHelper` class has been removed. **This will no
 However, if you use `NgbDatepicker` outside of formly, some helpers you might have used are gone.
 Please use the underlying functions from `Date`, [`NgbCalendar`](https://ng-bootstrap.github.io/#/components/datepicker/api#NgbCalendar) and [`date-fns`](https://date-fns.org) directly, or create your own `DateHelper`.
 
-## 2.1 to 2.2
+## From 2.1 to 2.2
 
 The PWA 2.2 contains an Angular update to version 13.3.0 and many other dependencies updates.<br/>
 These updates required some internal webpack handling changes especially for the template overloading.<br/>
@@ -340,7 +342,7 @@ The compare products functionality was moved into an extension.
 The already existing `compare` feature toggle works as before but the compare components integration changed to lazy components, e.g., `<ish-product-add-to-compare displayType="icon"></ish-product-add-to-compare>` to `<ish-lazy-product-add-to-compare displayType="icon"></ish-lazy-product-add-to-compare>`.
 For other compare components, check the compare-exports.module.ts file.
 
-## 2.0 to 2.1
+## From 2.0 to 2.1
 
 The recently viewed products functionality was moved into an extension.
 The already existing `recently` feature toggle works as before but the recently viewed component integration changed from `<ish-recently-viewed *ishFeature="'recently'"></ish-recently-viewed>` to `<ish-lazy-recently-viewed></ish-lazy-recently-viewed>`.
@@ -360,7 +362,7 @@ In addition, a mechanism was introduced to trigger such personalized REST calls 
 This way of loading personalized data might need to be added to any custom implementations that potentially fetch personalized data.
 To get an idea of the necessary mechanism, search for the usage of `useCombinedObservableOnAction` and `personalizationStatusDetermined` in the source code.
 
-## 1.4 to 2.0
+## From 1.4 to 2.0
 
 Since [TSLint has been deprecated](https://blog.palantir.com/tslint-in-2019-1a144c2317a9) for a while now, and Angular removed the TSLint support, we had to migrate our project from TSLint to ESLint as well.
 This means in version 2.0 all TSLint rules and configurations were removed and replaced by ESLint where possible.
@@ -410,12 +412,12 @@ The following official guides might help to migrate custom code as well:
 To help with the necessary rxjs refactorings, consider using [rxjs-fixers-morph](https://github.com/timdeschryver/rxjs-fixers-morph).
 Simply run `npx rxjs-fixers-morph ./tsconfig.json`.
 
-## 1.1 to 1.2
+## From 1.1 to 1.2
 
 The `dist` folder now only contains results of the build process (except for `healthcheck.js`).
 You must **not** edit any file inside that `dist` folder, since this would include not being able to change Kubernetes liveness or readiness probes we included SSR container related source code under `src/ssr/server-scripts/`
 
-## 0.31 to 1.0
+## From 0.31 to 1.0
 
 The Angular configuration mechanism of the Intershop PWA was refactored to support running multiple configurations in one Docker image (see [Guide - Multiple Themes](./themes.md)).
 This now means that the former `environment.local.ts` which had a standalone configuration can no longer be supported.
@@ -425,19 +427,19 @@ The `environment.local.ts` itself becomes obsolete and can be deleted.
 
 Locale definitions in `environment.ts` models are no longer supported, only ICM channel configurations are now used for switching locales.
 
-## 0.29 to 0.30
+## From 0.29 to 0.30
 
 We introduced the feature toggle 'guestCheckout' in the `environment.model.ts`.
 
 We switched to encode user logins when used in the api service.
 This is to enable special characters (like the #) that are sometimes present in user logins (SSO case!) but would have led to errors before.
 
-## 0.28 to 0.29
+## From 0.28 to 0.29
 
 We activated TypeScript's [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny).
 Please refer to the [Type Safety](./getting-started.md#type-safety) part in the Getting Started Guide for motivations.
 
-## 0.27 to 0.28
+## From 0.27 to 0.28
 
 We removed the property `production` from Angular CLI `environment.ts` files.
 Production mode can consistently be set by using Angular CLI configurations now.
@@ -454,7 +456,7 @@ To implement your country-specific address forms in formly, see [Forms](./forms.
 
 We introduced an improved usage of memoized selectors for product selectors, split up state, saved additionally retrieved data in separate places, and migrated almost all product-related components to use the previously introduced product context facade (see changes #528).
 
-## 0.26 to 0.27
+## From 0.26 to 0.27
 
 We upgraded Cypress from Version 4 to 6 and followed all migrations in their [Migration Guide](https://docs.cypress.io/guides/references/migration-guide).
 
@@ -466,7 +468,7 @@ This includes:
 - Product quantity handling moved almost completely to the context.
 - The decision for displaying certain components on product tiles and rows also moved into the context.
 
-## 0.25 to 0.26
+## From 0.25 to 0.26
 
 The project configuration was updated to use and test with Node.js version 14.15.0 LTS (including npm 6.14.8) for any further development.
 
@@ -479,7 +481,7 @@ We removed the Intershop PWA mock-data, as there are currently public servers pr
 The handling for mocking REST API calls during development is hereby untouched.
 The Angular CLI environment property `mockServerAPI` became obsolete, the property `mustMockPaths` was renamed to `apiMockPaths`.
 
-## 0.24 to 0.25
+## From 0.24 to 0.25
 
 We replaced the simple [ngx-cookie-banner](https://github.com/exportarts/ngx-cookie-banner) cookie banner with an own implementation that provides the means to configure and set more fine grained cookie consent options.
 A basic configuration is already provided.
@@ -490,7 +492,7 @@ We reworked the configuration format for setting up multiple channels in the ngi
 Multiple `PWA_X_` environment properties are no longer supported, instead a structured configuration has to be supplied.
 For more information, see [Nginx documentation](./nginx-startup.md).
 
-## 0.23 to 0.24
+## From 0.23 to 0.24
 
 We introduced a [localization file clean up script](../concepts/localization.md#localization-file-clean-up-process) that removes all unused localization keys from the localization files and sorts the remaining keys.
 The clean up result is contained in a separate commit that should probably not be applied during a migration and instead a `npm run clean-localizations` should be performed on the project sources.
@@ -503,7 +505,7 @@ We refactored our code base to use native async/await instead, which was possibl
 The TSLint rule `use-new-async-in-tests` takes care of automatically transforming TestBed initialization code in component tests.
 Other cases have to be refactored manually.
 
-## 0.22 to 0.23
+## From 0.22 to 0.23
 
 We removed deprecated exports related to the NgRx testing refactorings introduced in version 0.21.
 
@@ -517,7 +519,7 @@ Tests emulating HTTP errors now have to use the helper function `makeHttpError` 
 We removed grouping folders of shared components in extensions and sub projects for a better overview.
 You can migrate using the script `node schematics/migration/0.22-to-0.23` (for running this script Git version 2.28 or above is recommended since earlier versions resulted in problems).
 
-## 0.20 to 0.21
+## From 0.20 to 0.21
 
 We deprecated and reworked the way of testing with NgRx.
 The old format using `ngrxTesting` with `combineReducers` is now deprecated and replaced by the [new approach](./state-management.md#testing-ngrx-artifacts).
@@ -554,7 +556,7 @@ Using these creator functions simplifies code and removes a lot of boiler plate 
 You can automatically migrate your existing code by executing `node schematics/migration/0.20-to-0.21`.
 Doing this will set related ts-lint rules and update each store or notify you of work previously needed.
 
-## 0.19.1 to 0.20
+## From 0.19.1 to 0.20
 
 We upgraded from Angular 8 to version 9 and activated the new rendering engine Ivy with this (following the [official upgrade guide](https://update.angular.io/#8.0:9.0l3)).
 This was a major upgrade and comes with some changes:
@@ -593,14 +595,14 @@ This was a major upgrade and comes with some changes:
 
   - We overhauled the integration of utility libraries for our custom schematics and TSLint rules. These libraries now get built when `npm install`ing the PWA and transpiled JavaScript sources are no longer part of version control. Also, they mainly reuse libraries from the project root now.
 
-## 0.18 to 0.19
+## From 0.18 to 0.19
 
 We migrated from using [ngrx-router](https://github.com/amcdnl/ngrx-router) to the official and better supported [@ngrx/router-store](https://ngrx.io/guide/router-store).
 This means that throughout the code all usage of the `ofRoute` operator and `RouteNavigation` actions are no longer available.
 
 As some of these implementations were very specific, we cannot provide a migration script.
 
-## 0.16 to 0.17
+## From 0.16 to 0.17
 
 In this version change, we decided to no longer recommend the container-component-pattern and, therefore, changed the folder structure of the project.
 
