@@ -36,6 +36,8 @@ describe('Basket Items Service', () => {
     apiService = mock(ApiService);
     orderService = mock(OrderService);
 
+    when(apiService.currentBasketEndpoint()).thenReturn(instance(apiService));
+
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },

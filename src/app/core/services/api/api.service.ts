@@ -26,6 +26,7 @@ import {
 } from 'ish-core/store/core/configuration';
 import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
 import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
+import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
@@ -360,6 +361,33 @@ export class ApiService {
             )
           )
         ),
+    };
+  }
+
+  /**
+   * Basket REST API wrapper to work with the currently selected basket id or 'current' as fallback.
+   */
+  currentBasketEndpoint() {
+    const basketUrl$ = this.store
+      .pipe(
+        select(getBasketIdOrCurrent),
+        map(basketId => `baskets/${basketId}`)
+      )
+      .pipe(take(1));
+
+    return {
+      get: <T>(path: string, options?: AvailableOptions) =>
+        basketUrl$.pipe(concatMap(basketUrl => this.get<T>(path ? `${basketUrl}/${path}` : basketUrl, options))),
+      delete: <T>(path: string, options?: AvailableOptions) =>
+        basketUrl$.pipe(concatMap(basketUrl => this.delete<T>(path ? `${basketUrl}/${path}` : basketUrl, options))),
+      put: <T>(path: string, body = {}, options?: AvailableOptions) =>
+        basketUrl$.pipe(concatMap(basketUrl => this.put<T>(path ? `${basketUrl}/${path}` : basketUrl, body, options))),
+      patch: <T>(path: string, body = {}, options?: AvailableOptions) =>
+        basketUrl$.pipe(
+          concatMap(basketUrl => this.patch<T>(path ? `${basketUrl}/${path}` : basketUrl, body, options))
+        ),
+      post: <T>(path: string, body = {}, options?: AvailableOptions) =>
+        basketUrl$.pipe(concatMap(basketUrl => this.post<T>(path ? `${basketUrl}/${path}` : basketUrl, body, options))),
     };
   }
 }

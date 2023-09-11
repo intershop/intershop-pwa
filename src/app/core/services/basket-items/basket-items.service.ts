@@ -12,7 +12,7 @@ import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
-import { BasketService } from 'ish-core/services/basket/basket.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 
 export type BasketItemUpdateType =
@@ -26,7 +26,7 @@ export type BasketItemUpdateType =
  */
 @Injectable({ providedIn: 'root' })
 export class BasketItemsService {
-  constructor(private basketService: BasketService, private store: Store) {}
+  constructor(private apiService: ApiService, private store: Store) {}
 
   /**
    * http header for Basket API v1
@@ -53,7 +53,7 @@ export class BasketItemsService {
     return this.store.pipe(select(getCurrentBasket)).pipe(
       first(),
       concatMap(basket =>
-        this.basketService
+        this.apiService
           .currentBasketEndpoint()
           .post<{ data: LineItemData[]; infos: BasketInfo[]; errors?: ErrorFeedback[] }>(
             'items',
@@ -93,7 +93,7 @@ export class BasketItemsService {
    * @returns         The line item and possible infos after the update.
    */
   updateBasketItem(itemId: string, body: BasketItemUpdateType): Observable<{ lineItem: LineItem; info: BasketInfo[] }> {
-    return this.basketService
+    return this.apiService
       .currentBasketEndpoint()
       .patch<{ data: LineItemData; infos: BasketInfo[] }>(`items/${itemId}`, body, {
         headers: this.basketHeaders,
@@ -112,7 +112,7 @@ export class BasketItemsService {
    * @param itemId    The id of the line item that should be deleted.
    */
   deleteBasketItem(itemId: string): Observable<BasketInfo[]> {
-    return this.basketService
+    return this.apiService
       .currentBasketEndpoint()
       .delete<{ infos: BasketInfo[] }>(`items/${itemId}`, {
         headers: this.basketHeaders,

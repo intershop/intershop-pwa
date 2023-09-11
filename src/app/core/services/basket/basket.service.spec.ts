@@ -37,6 +37,8 @@ describe('Basket Service', () => {
     apiService = mock(ApiService);
     orderService = mock(OrderService);
 
+    when(apiService.currentBasketEndpoint()).thenReturn(instance(apiService));
+
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
@@ -49,12 +51,13 @@ describe('Basket Service', () => {
         }),
       ],
     });
+
     basketService = TestBed.inject(BasketService);
     store$ = TestBed.inject(MockStore);
   });
 
   it("should get basket data when 'getBasket' is called", done => {
-    when(apiService.get(`baskets/current`, anything())).thenReturn(of(basketMockData));
+    when(apiService.get(anything(), anything())).thenReturn(of(basketMockData));
 
     basketService.getBasket().subscribe(data => {
       expect(data.id).toEqual(basketMockData.data.id);
@@ -254,7 +257,7 @@ describe('Basket Service', () => {
     basketService.addQuoteToBasket('quoteId').subscribe(() => {
       verify(apiService.post(anything(), anything(), anything())).once();
       const [path, body] = capture(apiService.post).last();
-      expect(path).toMatchInlineSnapshot(`"baskets/current/quotes"`);
+      expect(path).toMatchInlineSnapshot(`"quotes"`);
       expect(body).toMatchInlineSnapshot(`
         {
           "calculated": true,
@@ -271,7 +274,7 @@ describe('Basket Service', () => {
     basketService.deleteQuoteFromBasket('quoteId').subscribe(() => {
       verify(apiService.delete(anything(), anything())).once();
       const [path] = capture(apiService.delete).last();
-      expect(path).toMatchInlineSnapshot(`"baskets/current/quotes/quoteId"`);
+      expect(path).toMatchInlineSnapshot(`"quotes/quoteId"`);
       done();
     });
   });
