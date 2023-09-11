@@ -110,14 +110,8 @@ describe('Customer Store', () => {
   } as Promotion;
 
   beforeEach(() => {
-    const categoriesServiceMock = mock(CategoriesService);
-    when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
-
-    const configurationServiceMock = mock(ConfigurationService);
-    when(configurationServiceMock.getServerConfiguration()).thenReturn(EMPTY);
-
-    const countryServiceMock = mock(CountryService);
-    when(countryServiceMock.getCountries()).thenReturn(of([{ countryCode: 'DE', name: 'Germany' }]));
+    const basketItemsServiceMock = mock(BasketItemsService);
+    when(basketItemsServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
 
     const basketServiceMock = mock(BasketService);
     when(basketServiceMock.getBasket()).thenReturn(of(basket));
@@ -134,8 +128,14 @@ describe('Customer Store', () => {
       })
     );
 
-    const basketItemsServiceMock = mock(BasketItemsService);
-    when(basketItemsServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
+    const categoriesServiceMock = mock(CategoriesService);
+    when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
+
+    const configurationServiceMock = mock(ConfigurationService);
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(EMPTY);
+
+    const countryServiceMock = mock(CountryService);
+    when(countryServiceMock.getCountries()).thenReturn(of([{ countryCode: 'DE', name: 'Germany' }]));
 
     const productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
@@ -143,19 +143,14 @@ describe('Customer Store', () => {
     const promotionsServiceMock = mock(PromotionsService);
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
-    const userServiceMock = mock(UserService);
-    when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
-
-    const dataRequestsServiceMock = mock(DataRequestsService);
-    const filterServiceMock = mock(FilterService);
-    const orderServiceMock = mock(OrderService);
-    const authorizationServiceMock = mock(AuthorizationService);
-
     const productPriceServiceMock = mock(PricesService);
     when(productPriceServiceMock.getProductPrices(anything())).thenReturn(of([]));
 
     const oAuthService = mock(OAuthService);
     when(oAuthService.events).thenReturn(of());
+
+    const userServiceMock = mock(UserService);
+    when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
 
     TestBed.configureTestingModule({
       imports: [
@@ -176,13 +171,14 @@ describe('Customer Store', () => {
       ],
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
-        { provide: AuthorizationService, useFactory: () => instance(authorizationServiceMock) },
+        { provide: AuthorizationService, useFactory: () => instance(mock(AuthorizationService)) },
+        { provide: BasketItemsService, useFactory: () => instance(basketItemsServiceMock) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
-        { provide: DataRequestsService, useFactory: () => instance(dataRequestsServiceMock) },
-        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
+        { provide: DataRequestsService, useFactory: () => instance(mock(DataRequestsService)) },
+        { provide: FilterService, useFactory: () => instance(mock(FilterService)) },
+        { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },

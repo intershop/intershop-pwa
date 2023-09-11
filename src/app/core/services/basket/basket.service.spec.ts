@@ -1,6 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { noop, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -8,7 +7,6 @@ import { Address } from 'ish-core/models/address/address.model';
 import { BasketData } from 'ish-core/models/basket/basket.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { getBasketIdOrCurrent, getCurrentBasket } from 'ish-core/store/customer/basket';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -18,7 +16,6 @@ describe('Basket Service', () => {
   let basketService: BasketService;
   let apiService: ApiService;
   let orderService: OrderService;
-  let store$: MockStore;
 
   const basketMockData = {
     data: {
@@ -43,17 +40,10 @@ describe('Basket Service', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: OrderService, useFactory: () => instance(orderService) },
-        provideMockStore({
-          selectors: [
-            { selector: getBasketIdOrCurrent, value: 'current' },
-            { selector: getCurrentBasket, value: { id: '123' } },
-          ],
-        }),
       ],
     });
 
     basketService = TestBed.inject(BasketService);
-    store$ = TestBed.inject(MockStore);
   });
 
   it("should get basket data when 'getBasket' is called", done => {
@@ -61,7 +51,8 @@ describe('Basket Service', () => {
 
     basketService.getBasket().subscribe(data => {
       expect(data.id).toEqual(basketMockData.data.id);
-      verify(apiService.get(`baskets/current`, anything())).once();
+      // basket-endpoint 'baskets/current' is not considered in the verify, only data that comes after it
+      verify(apiService.get('', anything())).once();
       done();
     });
   });
@@ -69,14 +60,13 @@ describe('Basket Service', () => {
   it('should fetch the basket with the basket id from the state or the given id', done => {
     const basketId = 'basket123';
     const basketData = { data: { id: basketId } } as BasketData;
-    when(apiService.get(`baskets/${basketId}`, anything())).thenReturn(of(basketData));
+    when(apiService.get(anything(), anything())).thenReturn(of(basketData));
 
     basketService.getBasket().subscribe(noop);
     basketService.getBasketWithId(basketId).subscribe(noop);
-    store$.overrideSelector(getBasketIdOrCurrent, basketId);
     basketService.getBasket().subscribe(noop);
-    verify(apiService.get(`baskets/current`, anything())).once();
-    verify(apiService.get(`baskets/${basketId}`, anything())).twice();
+    verify(apiService.get('', anything())).twice();
+    verify(apiService.get(`baskets/${basketId}`, anything())).once();
     done();
   });
 
@@ -108,7 +98,7 @@ describe('Basket Service', () => {
     const payload = { invoiceToAddress: '123456' };
 
     basketService.updateBasket(payload).subscribe(() => {
-      verify(apiService.patch(`baskets/current`, payload, anything())).once();
+      verify(apiService.patch('', payload, anything())).once();
       done();
     });
   });
@@ -117,7 +107,7 @@ describe('Basket Service', () => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of(undefined));
 
     basketService.validateBasket().subscribe(() => {
-      verify(apiService.post(`baskets/current/validations`, anything(), anything())).once();
+      verify(apiService.post('validations', anything(), anything())).once();
       done();
     });
   });
@@ -126,7 +116,7 @@ describe('Basket Service', () => {
     when(apiService.get(anything(), anything())).thenReturn(of({}));
 
     basketService.getBaskets().subscribe(() => {
-      verify(apiService.get(`baskets`, anything())).once();
+      verify(apiService.get('baskets', anything())).once();
       done();
     });
   });
@@ -171,7 +161,7 @@ describe('Basket Service', () => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
     basketService.addPromotionCodeToBasket('code').subscribe(() => {
-      verify(apiService.post(`baskets/current/promotioncodes`, anything(), anything())).once();
+      verify(apiService.post('promotioncodes', anything(), anything())).once();
       done();
     });
   });
@@ -180,7 +170,7 @@ describe('Basket Service', () => {
     when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
     basketService.removePromotionCodeFromBasket('promoCode').subscribe(() => {
-      verify(apiService.delete(`baskets/current/promotioncodes/promoCode`, anything())).once();
+      verify(apiService.delete('promotioncodes/promoCode', anything())).once();
       done();
     });
   });
@@ -189,7 +179,7 @@ describe('Basket Service', () => {
     when(apiService.post(anyString(), anything(), anything())).thenReturn(of({ data: {} as Address }));
 
     basketService.createBasketAddress(BasketMockData.getAddress()).subscribe(() => {
-      verify(apiService.post(`baskets/current/addresses`, anything(), anything())).once();
+      verify(apiService.post('addresses', anything(), anything())).once();
       done();
     });
   });
@@ -200,7 +190,7 @@ describe('Basket Service', () => {
     const address = BasketMockData.getAddress();
 
     basketService.updateBasketAddress(address).subscribe(() => {
-      verify(apiService.patch(`baskets/current/addresses/${address.id}`, anything(), anything())).once();
+      verify(apiService.patch(`addresses/${address.id}`, anything(), anything())).once();
       done();
     });
   });
@@ -209,7 +199,7 @@ describe('Basket Service', () => {
     when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
     basketService.getBasketEligibleShippingMethods().subscribe(() => {
-      verify(apiService.get(`baskets/current/eligible-shipping-methods`, anything())).once();
+      verify(apiService.get('eligible-shipping-methods', anything())).once();
       done();
     });
   });
@@ -229,7 +219,7 @@ describe('Basket Service', () => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
     basketService.createBasketAttribute({ name: 'attr', value: 'xyz' }).subscribe(() => {
-      verify(apiService.post('baskets/current/attributes', anything(), anything())).once();
+      verify(apiService.post('attributes', anything(), anything())).once();
       done();
     });
   });
@@ -238,7 +228,7 @@ describe('Basket Service', () => {
     when(apiService.patch(anything(), anything(), anything())).thenReturn(of({}));
 
     basketService.updateBasketAttribute({ name: 'attr', value: 'xyz' }).subscribe(() => {
-      verify(apiService.patch('baskets/current/attributes/attr', anything(), anything())).once();
+      verify(apiService.patch('attributes/attr', anything(), anything())).once();
       done();
     });
   });
@@ -247,7 +237,7 @@ describe('Basket Service', () => {
     when(apiService.delete(anything(), anything())).thenReturn(of({}));
 
     basketService.deleteBasketAttribute('attr').subscribe(() => {
-      verify(apiService.delete('baskets/current/attributes/attr', anything())).once();
+      verify(apiService.delete('attributes/attr', anything())).once();
       done();
     });
   });
