@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h2 class="modal-title">{{ 'account.register.confirm_leave_modal.title' | translate }}</h2>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss(false)">
+  <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="activeModal.dismiss(false)">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>

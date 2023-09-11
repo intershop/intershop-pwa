@@ -3,15 +3,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, identity } from 'rxjs';
-import { concatMap, first, map, switchMap, takeWhile } from 'rxjs/operators';
+import { concatMap, filter, first, map, switchMap, take, takeWhile, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { applyConfiguration } from 'ish-core/store/core/configuration';
+import { applyConfiguration, getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
 import { ConfigurationState } from 'ish-core/store/core/configuration/configuration.reducer';
 import { serverConfigError } from 'ish-core/store/core/error';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
+import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 import { delayUntil, mapErrorToAction, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import {
@@ -29,7 +31,9 @@ export class ServerConfigEffects {
     private actions$: Actions,
     private store: Store,
     private configService: ConfigurationService,
-    private featureToggleService: FeatureToggleService
+    private featureToggleService: FeatureToggleService,
+    private cookiesService: CookiesService,
+    private multiSiteService: MultiSiteService
   ) {}
 
   /**
@@ -48,7 +52,7 @@ export class ServerConfigEffects {
   loadServerConfig$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadServerConfig),
-      concatMap(() =>
+      switchMap(() =>
         this.configService.getServerConfiguration().pipe(
           map(config => loadServerConfigSuccess({ config })),
           mapErrorToAction(loadServerConfigFail)
@@ -57,6 +61,45 @@ export class ServerConfigEffects {
     )
   );
 
+  switchToPreferredLanguage$ =
+    !SSR &&
+    createEffect(
+      () =>
+        this.actions$.pipe(
+          ofType(loadServerConfigSuccess),
+          take(1),
+          takeWhile(() => this.featureToggleService.enabled('saveLanguageSelection')),
+          withLatestFrom(this.store.pipe(select(getAvailableLocales)), this.store.pipe(select(getCurrentLocale))),
+          map(([, availableLocales, currentLocale]) => ({
+            cookieLocale: this.cookiesService.get('preferredLocale'),
+            availableLocales,
+            currentLocale,
+          })),
+          filter(
+            ({ cookieLocale, availableLocales, currentLocale }) =>
+              cookieLocale && availableLocales?.includes(cookieLocale) && cookieLocale !== currentLocale
+          ),
+          concatMap(({ cookieLocale }) => {
+            const splittedUrl = location.pathname?.split('?');
+            const newUrl = splittedUrl?.[0];
+
+            return this.multiSiteService.getLangUpdatedUrl(cookieLocale, newUrl).pipe(
+              whenTruthy(),
+              take(1),
+              map(modifiedUrl => {
+                const modifiedUrlParams = modifiedUrl === newUrl ? { lang: cookieLocale } : {};
+                return this.multiSiteService.appendUrlParams(modifiedUrl, modifiedUrlParams, splittedUrl?.[1]);
+              }),
+              concatMap(url => {
+                location.assign(url);
+                return EMPTY;
+              })
+            );
+          })
+        ),
+      { dispatch: false }
+    );
+
   loadExtraServerConfig$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadServerConfig),
@@ -64,7 +107,7 @@ export class ServerConfigEffects {
       switchMap(() => this.store.pipe(select(isExtraConfigurationLoaded))),
       whenFalsy(),
       delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
-      concatMap(() =>
+      switchMap(() =>
         this.configService.getExtraConfiguration().pipe(
           map(extra => loadExtraConfigSuccess({ extra })),
           mapErrorToAction(loadExtraConfigFail)

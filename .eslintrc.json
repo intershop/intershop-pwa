@@ -179,6 +179,7 @@
             "max": 10
           }
         ],
+        "curly": "warn",
         "dot-notation": "off", // disabled in favor of @typescript-eslint/dot-notation
         "eqeqeq": ["error", "always"],
         "etc/no-commented-out-code": "warn",

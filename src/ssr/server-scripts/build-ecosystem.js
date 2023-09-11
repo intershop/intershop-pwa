@@ -16,8 +16,6 @@ if (Object.keys(ports).length === 1) {
   content += `
   - script: dist/server.js
     name: distributor
-    instances: ${process.env.CONCURRENCY_DISTRIBUTOR || 'max'}
-    exec_mode: cluster
   `;
 }
 
@@ -34,7 +32,7 @@ Object.entries(ports).forEach(([theme, port]) => {
     name: ${theme}
     instances: ${process.env.CONCURRENCY_SSR || 2}
     exec_mode: cluster
-    max_memory_restart: ${process.env.SSR_MAX_MEM || '400M'}
+    max_memory_restart: ${process.env.SSR_MAX_MEM || '600M'}
     env:
       BROWSER_FOLDER: dist/${theme}/browser
       PORT: ${port}

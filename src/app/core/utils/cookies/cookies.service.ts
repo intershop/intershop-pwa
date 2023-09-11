@@ -5,6 +5,7 @@ import { TransferState } from '@angular/platform-browser';
 import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
+import { browserNameVersion } from 'ish-core/utils/browser-detection';
 import { InjectSingle } from 'ish-core/utils/injection';
 
 interface CookiesOptions {
@@ -34,9 +35,9 @@ export class CookiesService {
     return !SSR ? (this.cookiesReader()[key] as string) : undefined;
   }
 
-  remove(key: string) {
+  remove(key: string, options?: CookiesOptions) {
     if (!SSR) {
-      this.cookiesWriter()(key, undefined);
+      this.cookiesWriter()(key, undefined, options);
     }
   }
 
@@ -57,7 +58,6 @@ export class CookiesService {
     this.deleteAllCookies();
     this.put('cookieConsent', JSON.stringify({ enabledOptions: options, version: cookieConsentVersion }), {
       expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-      sameSite: 'Strict',
     });
     window.location.reload();
   }
@@ -144,12 +144,24 @@ export class CookiesService {
     if (typeof expires === 'string') {
       expires = new Date(expires);
     }
+
+    // fix for Safari 14 not keeping 'SameSite=Strict' cookies when redirecting to a payment provider etc.
+    if (browserNameVersion() === 'Safari 14' && opts.sameSite !== 'None') {
+      opts.sameSite = 'Lax';
+    }
+
     let str = `${encodeURIComponent(name)}=${encodeURIComponent(value || '')}`;
     str += `;path=${path}`;
     str += opts.domain ? `;domain=${opts.domain}` : '';
     str += expires ? `;expires=${expires.toUTCString()}` : '';
-    str += opts.sameSite ? `;SameSite=${opts.sameSite}` : '';
-    str += opts.secure && location.protocol === 'https:' ? ';secure' : '';
+
+    // if in an iframe set cookies always with SameSite=None, otherwise set the given SameSite, default to SameSite=Strict
+    str += `;SameSite=${window.parent !== window ? 'None' : opts.sameSite || 'Strict'}`;
+
+    // if in http mode (should only be in development) or if explicitly set to false do not set the cookie secure, default to secure
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+    str += window.location.protocol === 'http:' || opts.secure === false ? '' : ';secure';
+
     const cookiesLength = str.length + 1;
     if (cookiesLength > 4096) {
       // eslint-disable-next-line no-console

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
@@ -11,6 +12,7 @@ describe('Cms Image Enhanced Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [CMSImageEnhancedComponent],
     }).compileComponents();
   });

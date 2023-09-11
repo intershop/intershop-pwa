@@ -1,11 +1,11 @@
-<nav *ngIf="currentPage && lastPage" aria-label="Pagination">
+<nav *ngIf="currentPage && lastPage" [attr.aria-label]="'navigation.paging.aria_label' | translate">
   <ul class="pagination">
     <li class="page-item">
       <button
         class="btn btn-primary mb-0"
         [disabled]="currentPage === 1"
         (click)="setPage(currentPage - 1)"
-        aria-label="Go To Previous Page"
+        [attr.aria-label]="'navigation.paging.previous_page.aria_label' | translate"
         [attr.aria-disabled]="currentPage === 1"
         data-testing-id="paging-previous-button"
       >
@@ -21,7 +21,11 @@
       <a
         *ngIf="p !== -1; else more"
         [attr.aria-current]="p === currentPage ? 'page' : null"
-        [attr.aria-label]="p === currentPage ? 'Current Page, Page ' + p : 'Go to Page ' + p"
+        [attr.aria-label]="
+          p === currentPage
+            ? ('navigation.paging.current_page.aria_label' | translate : { '0': p })
+            : ('navigation.paging.go_to_page.aria_label' | translate : { '0': p })
+        "
         (click)="setPage(p)"
         (keyup.enter)="setPage(p)"
         >{{ p }}</a
@@ -33,7 +37,7 @@
         class="btn btn-primary m-0"
         [disabled]="currentPage === lastPage"
         (click)="setPage(currentPage + 1)"
-        aria-label="Go To Next Page"
+        [attr.aria-label]="'navigation.paging.next_page.aria_label' | translate"
         [attr.aria-disabled]="currentPage === lastPage"
         data-testing-id="paging-next-button"
       >

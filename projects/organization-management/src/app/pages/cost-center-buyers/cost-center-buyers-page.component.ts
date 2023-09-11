@@ -105,6 +105,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
               className: 'col-1 col-md-2 list-item pb-0',
               props: {
                 fieldClass: 'offset-md-2 col-2 mt-1',
+                ariaLabel: 'Select buyer to add to costcenter',
               },
             },
             {
@@ -125,6 +126,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
                 addonLeft: {
                   text: this.appFacade.currencySymbol$(),
                 },
+                ariaLabel: 'Buyer budget',
               },
               validators: {
                 validation: [SpecialValidators.moneyAmount],

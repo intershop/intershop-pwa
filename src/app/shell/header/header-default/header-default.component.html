@@ -62,6 +62,7 @@
           routerLink="/home"
           class="logo"
           [attr.aria-label]="'common.home.link' | translate"
+          role="img"
           data-testing-id="header-home-link-desktop"
         ></a>
         <a
@@ -70,6 +71,7 @@
           routerLink="/home"
           class="mobile-logo"
           [attr.aria-label]="'common.home.link' | translate"
+          role="img"
           data-testing-id="header-home-link-mobile"
         ></a>
       </div>
@@ -93,7 +95,11 @@
   </button>
 
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md" [ngbCollapse]="!showNavBar" aria-label="main">
+    <nav
+      class="global-nav navbar-expand-md"
+      [ngbCollapse]="!showNavBar"
+      [attr.aria-label]="'navigation.main.aria_label' | translate"
+    >
       <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation>
         <ish-user-information-mobile></ish-user-information-mobile>

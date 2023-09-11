@@ -10,7 +10,7 @@ kb_sync_latest_only
 ## Intershop Commerce Management (ICM)
 
 The Intershop Commerce Management (ICM) provides the necessary data for running the [default Intershop PWA deployment](https://intershoppwa.azurewebsites.net/home) via a REST API.
-Since release [0.23](https://github.com/intershop/intershop-pwa/releases/tag/0.23.0), it uses the new headless application type (see [Migrations - 0.22 to 0.23](../guides/migrations.md#022-to-023)).
+Since release [0.23](https://github.com/intershop/intershop-pwa/releases/tag/0.23.0), it uses the new headless application type (see [Migrations / From 0.22 to 0.23](../guides/migrations.md#from-022-to-023)).
 
 Using another backend is also possible as long as it provides a [compatible REST API](cms-integration.md#integration-with-an-external-cms).
 
@@ -88,7 +88,7 @@ Upon completing the Angular Universal pre-rendering, all URLs referring explicit
 ## Stateless vs. Stateful Building Blocks
 
 For scalability and parallelization reasons, considering whether each building block is stateful or stateless is important.
-The **ICM** deals with large databases, caches write and read requests and therefore manages a high amount of internal states.
+The **ICM** deals with large databases, caches write and read requests and, therefore, manages a high amount of internal states.
 Substituting ICM instances at runtime and managing fail-over capacities is not trivial.
 The **SSR container** acts like a pure function.
 Making the same request is always going to return the same result.

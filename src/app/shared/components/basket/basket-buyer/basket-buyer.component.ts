@@ -23,7 +23,6 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
   customer$: Observable<Customer>;
 
   taxationID: string;
-  orderReferenceID: string;
   costCenterName: string;
   userName: string;
   companyName1: string;
@@ -35,7 +34,6 @@ export class BasketBuyerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.taxationID = this.object.taxationId;
-    this.orderReferenceID = this.getAttributeValue('orderReferenceID');
     this.costCenterName = this.getAttributeValue('BusinessObjectAttributes#Order_CostCenter_Name');
 
     this.userName = this.object.user

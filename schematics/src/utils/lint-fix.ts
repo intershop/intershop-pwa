@@ -33,7 +33,9 @@ export function applyLintFix(): Rule {
       .map(action => action.path.substring(1))
       .filter(path => path.endsWith('.ts') || path.endsWith('.html'))
       .forEach(file => {
-        if (!lintFiles.includes(file)) lintFiles.push(file);
+        if (!lintFiles.includes(file)) {
+          lintFiles.push(file);
+        }
       });
 
     registerLintAtEnd(findProjectRoot());

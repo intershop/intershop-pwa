@@ -5,6 +5,7 @@
   class="form-control"
   [ngClass]="props.inputClass"
   [attr.data-testing-id]="field.key"
+  [attr.aria-label]="props.ariaLabel"
 >
   <ng-container *ngIf="selectOptions && selectOptions | formlySelectOptions : field | async as opts">
     <ng-container *ngFor="let opt of opts">

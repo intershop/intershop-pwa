@@ -10,13 +10,7 @@
           {{ quote.displayName || quote.number }}
         </ng-template>
       </h2>
-      <button
-        type="button"
-        class="close"
-        [title]="'dialog.close.text' | translate"
-        [attr.aria-label]="'dialog.close.text' | translate"
-        (click)="hide()"
-      >
+      <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

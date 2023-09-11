@@ -10,9 +10,12 @@ services:
         serviceWorker: 'false'
         # activeThemes: b2b
         # activeThemes: b2c
+    # command: ['node', 'dist/b2c/run-standalone']
+    # command: ['node', 'dist/b2b/run-standalone']
     environment:
       # ICM_BASE_URL:
       LOGGING: 'true'
+      # LOG_ALL: 'false'
       SOURCE_MAPS: 'true'
       TRUST_ICM: 'true'
       # PROXY_ICM: 'true'
@@ -66,6 +69,7 @@ services:
       UPSTREAM_PWA: 'http://pwa:4200'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
+      # LOG_ALL: off
       # SSL: 1
       # SSR: 0
       # DEBUG: 1

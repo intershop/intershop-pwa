@@ -7,8 +7,14 @@
   background-color: $color-tertiary;
 
   .sort-by {
+    float: right;
+
+    @include media-breakpoint-down(xs) {
+      float: none;
+    }
+
     a {
-      float: right;
+      float: left;
 
       @include media-breakpoint-down(xs) {
         float: none;

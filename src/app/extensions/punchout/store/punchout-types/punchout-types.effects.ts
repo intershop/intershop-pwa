@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { concatMap, filter, map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -25,7 +25,7 @@ export class PunchoutTypesEffects {
   loadPunchoutTypes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadPunchoutTypes),
-      concatMap(() =>
+      switchMap(() =>
         this.punchoutService.getPunchoutTypes().pipe(
           map(types => loadPunchoutTypesSuccess({ types })),
           mapErrorToAction(loadPunchoutTypesFail)

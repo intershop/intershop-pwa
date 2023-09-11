@@ -34,6 +34,7 @@ export interface AbstractBasket<T> {
     firstName: string;
     lastName: string;
   };
+  externalOrderReference?: string;
   messageToMerchant?: string;
 }
 

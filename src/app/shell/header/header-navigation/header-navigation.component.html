@@ -22,7 +22,11 @@
         [routerLink]="[]"
         class="dropdown-toggle"
         (click)="toggleOpen(category.uniqueId)"
-        [attr.aria-label]="isOpened(category.uniqueId) ? 'collapse ' + category.name : 'expand ' + category.name"
+        [attr.aria-label]="
+          isOpened(category.uniqueId)
+            ? ('header.navigation.collapse_category.aria_label' | translate : { '0': category.name })
+            : ('header.navigation.expand_category.aria_label' | translate : { '0': category.name })
+        "
       >
         <fa-icon *ngIf="isOpened(category.uniqueId); else closed" [icon]="['fas', 'minus']"></fa-icon>
         <ng-template #closed> <fa-icon [icon]="['fas', 'plus']"></fa-icon> </ng-template>

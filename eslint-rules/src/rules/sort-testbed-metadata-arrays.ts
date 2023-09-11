@@ -33,7 +33,9 @@ const sortTestbedMetadataArraysRule: TSESLint.RuleModule<keyof typeof messages> 
           .map((current, index, list) => [current, list[index + 1]])
           .find(([current, next]) => next && getText(current).localeCompare(getText(next)) === 1);
 
-        if (!unorderedNodes) return;
+        if (!unorderedNodes) {
+          return;
+        }
 
         const [unorderedNode, nextNode] = unorderedNodes;
         context.report({

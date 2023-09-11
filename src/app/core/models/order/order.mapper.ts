@@ -85,6 +85,8 @@ export class OrderMapper {
         attributes: data.attributes,
         taxationId: data.taxIdentificationNumber,
         user: data.buyer,
+        messageToMerchant: data.messageToMerchant,
+        externalOrderReference: data.externalOrderReference,
       };
     }
   }

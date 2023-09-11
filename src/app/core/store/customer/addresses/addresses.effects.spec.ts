@@ -173,7 +173,7 @@ describe('Addresses Effects', () => {
     });
 
     it('should map to action of type updateCustomerSuccess', () => {
-      const address = { urn: '123' } as Address;
+      const address = { urn: 'test' } as Address;
       const action = updateCustomerAddress({ address });
       const completion = updateCustomerAddressSuccess({ address });
       const completion2 = displaySuccessMessage({

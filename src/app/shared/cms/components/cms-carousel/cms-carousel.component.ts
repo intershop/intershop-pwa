@@ -43,19 +43,21 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges, OnDestroy 
     const slotPagelets = this.pagelet.slot('app_sf_base_cm:slot.carousel.items.pagelet2-Slot').pageletIDs;
     this.pageletSlides = arraySlices(slotPagelets, this.slideItems);
 
-    this.appRef.isStable
-      .pipe(
-        whenTruthy(),
-        map(() => (this.pagelet.booleanParam('StartCycling') ? this.pagelet.numberParam('SlideInterval', 5000) : 0)),
-        take(1),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(val => {
-        if (val) {
-          this.carousel.interval = val;
-          this.carousel.cycle();
-        }
-      });
+    if (!SSR) {
+      this.appRef.isStable
+        .pipe(
+          whenTruthy(),
+          map(() => (this.pagelet.booleanParam('StartCycling') ? this.pagelet.numberParam('SlideInterval', 5000) : 0)),
+          take(1),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(val => {
+          if (val && this.carousel) {
+            this.carousel.interval = val;
+            this.carousel.cycle();
+          }
+        });
+    }
   }
 
   ngOnDestroy() {

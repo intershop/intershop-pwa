@@ -19,6 +19,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 export class CookiesBannerComponent implements OnInit {
   showBanner = false;
   transitionBanner: string = undefined;
+  cookiesConsentFor: string[] = undefined;
 
   constructor(private transferState: TransferState, private cookiesService: CookiesService) {}
 
@@ -47,13 +48,18 @@ export class CookiesBannerComponent implements OnInit {
     this.transitionBanner = 'bottom-out';
   }
 
-  acceptAllAnimationDone(event: AnimationEvent): void {
-    if (event.toState === 'bottom-out') {
-      this.cookiesService.setCookiesConsentForAll();
-    }
+  acceptOnlyRequired() {
+    this.transitionBanner = 'bottom-out';
+    this.cookiesConsentFor = ['required'];
   }
 
-  acceptOnlyRequired() {
-    this.cookiesService.setCookiesConsentFor(['required']);
+  setCookiesConsent(event: AnimationEvent): void {
+    if (event.toState === this.transitionBanner) {
+      if (this.cookiesConsentFor === undefined) {
+        this.cookiesService.setCookiesConsentForAll();
+      } else {
+        this.cookiesService.setCookiesConsentFor(this.cookiesConsentFor);
+      }
+    }
   }
 }

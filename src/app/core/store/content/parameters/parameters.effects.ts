@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, mergeMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
@@ -21,7 +21,7 @@ export class ParametersEffects {
     this.actions$.pipe(
       ofType(loadParametersProductListFilter),
       mapToPayload(),
-      concatMap(({ id, searchParameter, amount }) =>
+      mergeMap(({ id, searchParameter, amount }) =>
         this.productsService.getFilteredProducts(searchParameter, amount).pipe(
           mergeMap(({ products }) => [
             ...products.map((product: Product) => loadProductSuccess({ product })),

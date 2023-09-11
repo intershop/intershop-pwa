@@ -15,7 +15,12 @@
         *cdkCellDef="let requisition"
         [attr.data-label]="'account.approvallist.table.id_of_order' | translate"
       >
-        <a [routerLink]="[requisition.id, { status: status }]">{{ requisition.requisitionNo }}</a>
+        <a
+          [routerLink]="[requisition.id, { status: status }]"
+          [attr.aria-label]="'account.approvallist.table.id_of_order.aria_label' | translate"
+        >
+          {{ requisition.requisitionNo }}
+        </a>
       </td>
     </ng-container>
 

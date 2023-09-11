@@ -1,4 +1,4 @@
-<div class="breadcrumbs row">
+<nav class="breadcrumbs row" [attr.aria-label]="'breadcrumbs.aria_label' | translate">
   <ol class="breadcrumbs-list">
     <li *ngIf="showHome" class="breadcrumbs-list breadcrumbs-list-home">
       <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/home">{{
@@ -25,8 +25,10 @@
       <a *ngIf="item.link; else noLink" [routerLink]="item.link" class="breadcrumbs-list-link">{{
         item.text || (item.key | translate)
       }}</a>
-      <ng-template #noLink>{{ item.text || (item.key | translate) }}</ng-template>
-      <span *ngIf="!last" class="breadcrumb-list-separator">{{ separator }}</span>
+      <ng-template #noLink>
+        <div aria-current="location">{{ item.text || (item.key | translate) }}</div>
+      </ng-template>
+      <span *ngIf="!last" class="breadcrumb-list-separator" aria-hidden="true">{{ separator }}</span>
     </li>
   </ol>
-</div>
+</nav>

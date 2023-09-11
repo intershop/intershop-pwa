@@ -6,7 +6,7 @@
       *ngIf="collapseChange | async"
       [routerLink]="[]"
       class="btn-tool float-right"
-      title="{{ 'checkout.address.update.button.label' | translate }}"
+      [title]="'checkout.address.update.invoice.label' | translate"
       (click)="showAddressForm(address)"
       data-testing-id="edit-invoice-address-link"
     >
@@ -37,7 +37,7 @@
     [attr.aria-expanded]="(collapseChange | async) === false"
     aria-controls="invoice-address-panel"
   >
-    {{ 'checkout.create_address.link' | translate }}
+    {{ 'checkout.create_invoice_address.link' | translate }}
   </button>
 </div>
 

@@ -88,6 +88,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
                 className: 'list-item col-md-3',
                 props: {
                   fieldClass: 'col-md-11',
+                  ariaLabel: 'Parameter value',
                 },
               },
               {
@@ -112,6 +113,9 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
                           dependentlyRequired: 'account.punchout.configuration.form.mapping.from.error',
                         },
                       },
+                      props: {
+                        ariaLabel: 'Map from value',
+                      },
                     },
                     {
                       key: 'mapToValue',
@@ -120,6 +124,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
                       props: {
                         fieldClass: 'ml-1',
                         arrowRight: true,
+                        ariaLabel: 'Map to value',
                       },
                       validation: {
                         messages: {
@@ -138,6 +143,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
                 props: {
                   fieldClass: 'col-12',
                   options,
+                  ariaLabel: 'Format of value',
                 },
               },
             ],

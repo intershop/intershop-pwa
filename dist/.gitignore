@@ -1,5 +1,4 @@
 /**/*
 !.gitignore
 !/entrypoint.sh
-!/healthcheck.js
 !/robots.txt

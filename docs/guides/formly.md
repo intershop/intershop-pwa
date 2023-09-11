@@ -251,7 +251,8 @@ Refer to the tables below for an overview of these parts.
 
 ### Field Types
 
-Template option `inputClass`: These css class(es) will be added to all input/select/textarea/text tags.
+- Template option `inputClass`: These CSS class(es) will be added to all input/select/textarea/text tags.
+- Template option `ariaLabel`: Adds an aria-label to all input/select/textarea tags.
 
 | Name                 | Description                                                                                  | Relevant props                                                                                                                                                                                                                                                                    |
 | -------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -38,6 +38,13 @@ const requestDuration = new client.Histogram({
   labelNames: ['status_code', 'base_href', 'path'],
 });
 
+const restRequestDuration = new client.Summary({
+  name: 'pwa_rest_request_duration_seconds',
+  help: 'duration histogram of ICM rest responses',
+  percentiles: [0.5, 0.9, 0.95, 0.99],
+  labelNames: ['endpoint'],
+});
+
 const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
 
 if (PM2) {
@@ -89,6 +96,7 @@ global['navigator'] = win.navigator;
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
+  const log_all = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
 
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
@@ -163,12 +171,17 @@ export function app() {
   // Express server
   const server = express();
 
+  const prometheusRest: { endpoint: string; duration: number }[] = [];
+
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine(
     'html',
     ngExpressEngine({
       bootstrap: AppServerModule,
-      providers: [{ provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID }],
+      providers: [
+        { provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID },
+        { provide: 'PROMETHEUS_REST', useValue: prometheusRest },
+      ],
       inlineCriticalCss: false,
     })
   );
@@ -185,7 +198,8 @@ export function app() {
     }
     server.use(
       morgan(logFormat, {
-        skip: (req: express.Request) => req.originalUrl.startsWith('/INTERSHOP/static'),
+        skip: (req: express.Request, res: express.Response) =>
+          req.originalUrl.startsWith('/INTERSHOP/static') || (res.statusCode < 400 && !log_all),
       })
     );
   }
@@ -281,7 +295,7 @@ export function app() {
 
   const icmProxy = proxy(SSR_HYBRID_BACKEND, {
     // preserve original path
-    proxyReqPathResolver: (req: express.Request) => req.originalUrl,
+    proxyReqPathResolver: req => req.originalUrl,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     proxyReqOptDecorator: (options: any) => {
       if (process.env.TRUST_ICM) {
@@ -304,6 +318,16 @@ export function app() {
     server.use('/INTERSHOP', icmProxy);
   }
 
+  function defaultCacheControl(path: string): string {
+    if (/\.[0-9a-f]{16,}\./.test(path)) {
+      // file was output-hashed -> 1y
+      return 'public, max-age=31557600';
+    } else {
+      // file should be re-checked more frequently -> 5m
+      return 'public, max-age=300';
+    }
+  }
+
   const SOURCE_MAPS_ACTIVE = /on|1|true|yes/.test(process.env.SOURCE_MAPS?.toLowerCase());
   if (SOURCE_MAPS_ACTIVE) {
     console.warn('SOURCE_MAPS are active - never use this in production!');
@@ -312,7 +336,11 @@ export function app() {
   // Serve static files from browser folder
   server.get(/\/.*\.js\.map$/, (req, res, next) => {
     if (SOURCE_MAPS_ACTIVE) {
-      return express.static(BROWSER_FOLDER)(req, res, next);
+      return express.static(BROWSER_FOLDER, {
+        setHeaders: (res, path) => {
+          res.set('Cache-Control', defaultCacheControl(path));
+        },
+      })(req, res, next);
     } else {
       return res.sendStatus(404);
     }
@@ -327,6 +355,7 @@ export function app() {
           res.sendStatus(404);
         } else {
           res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
+          res.set('Cache-Control', defaultCacheControl(path));
           res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
         }
       });
@@ -352,13 +381,7 @@ export function app() {
     '*.*',
     express.static(BROWSER_FOLDER, {
       setHeaders: (res, path) => {
-        if (/\.[0-9a-f]{20,}\./.test(path)) {
-          // file was output-hashed -> 1y
-          res.set('Cache-Control', 'public, max-age=31557600');
-        } else {
-          // file should be re-checked more frequently -> 5m
-          res.set('Cache-Control', 'public, max-age=300');
-        }
+        res.set('Cache-Control', defaultCacheControl(path));
         // add cors headers for required resources
         if (
           DEPLOY_URL.startsWith('http') &&
@@ -371,7 +394,7 @@ export function app() {
   );
 
   const angularUniversal = (req: express.Request, res: express.Response) => {
-    if (logging) {
+    if (logging && log_all) {
       console.log(`SSR ${req.originalUrl}`);
     }
 
@@ -424,7 +447,9 @@ export function app() {
           res.status(500).send(err.message);
         }
         if (logging) {
-          console.log(`RES ${res.statusCode} ${req.originalUrl}`);
+          if (log_all || res.statusCode >= 400) {
+            console.log(`RES ${res.statusCode} ${req.originalUrl}`);
+          }
           if (err) {
             console.log(err);
           }
@@ -441,12 +466,19 @@ export function app() {
       onFinished(res, () => {
         const duration = Date.now() - start;
         const matched = /;baseHref=([^;?]*)/.exec(req.originalUrl);
-        const base_href = matched?.[1] ? `${decodeURIComponent(decodeURIComponent(matched[1]))}/` : '/';
+        let base_href = matched?.[1] ? `${decodeURIComponent(decodeURIComponent(matched[1]))}` : '/';
+        if (!base_href.endsWith('/')) {
+          base_href += '/';
+        }
         const cleanUrl = req.originalUrl.replace(/[;?].*/g, '');
         const path = cleanUrl.replace(base_href, '');
 
         requestCounts.inc({ method: req.method, status_code: res.statusCode, base_href, path });
         requestDuration.labels({ status_code: res.statusCode, base_href, path }).observe(duration / 1000);
+        prometheusRest.forEach(({ endpoint, duration }) => {
+          restRequestDuration.labels({ endpoint }).observe(duration / 1000);
+        });
+        prometheusRest.length = 0;
       });
       next();
     });

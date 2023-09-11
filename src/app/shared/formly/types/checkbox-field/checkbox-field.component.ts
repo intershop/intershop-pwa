@@ -4,6 +4,8 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 /**
  * Type for a basic checkbox field.
  *
+ * @props **ariaLabel** adds an aria-label to the component for better accessibility, recommended if there is no associated label
+ *
  * @defaultWrappers form-field-checkbox-horizontal
  *
  * @usageNotes

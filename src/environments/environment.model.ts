@@ -25,12 +25,13 @@ export interface Environment {
   /* FEATURE TOGGLES */
   features: (
     | 'compare'
-    | 'rating'
-    | 'recently'
-    | 'productNotifications'
-    | 'storeLocator'
     | 'contactUs'
     | 'extraConfiguration'
+    | 'productNotifications'
+    | 'rating'
+    | 'recently'
+    | 'saveLanguageSelection'
+    | 'storeLocator'
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'
@@ -149,7 +150,15 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   hybridApplication: '-',
 
   /* FEATURE TOGGLES */
-  features: ['compare', 'contactUs', 'productNotifications', 'rating', 'recently', 'storeLocator'],
+  features: [
+    'compare',
+    'contactUs',
+    'productNotifications',
+    'rating',
+    'recently',
+    'saveLanguageSelection',
+    'storeLocator',
+  ],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,
@@ -186,7 +195,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
         description: 'cookie.consent.option.tracking.description',
       },
     },
-    allowedCookies: ['cookieConsent', 'apiToken'],
+    allowedCookies: ['apiToken', 'cookieConsent', 'preferredLocale'],
   },
   cookieConsentVersion: 1,
 

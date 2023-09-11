@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, noop, of, race, throwError } from 'rxjs';
-import { catchError, concatMap, delay, filter, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, delay, filter, first, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { IdentityProvider, TriggerReturnType } from 'ish-core/identity-provider/identity-provider.interface';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -26,7 +27,8 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     private accountFacade: AccountFacade,
     private punchoutService: PunchoutService,
     private cookiesService: CookiesService,
-    private checkoutFacade: CheckoutFacade
+    private checkoutFacade: CheckoutFacade,
+    private tokenService: TokenService
   ) {}
 
   getCapabilities() {
@@ -38,16 +40,11 @@ export class PunchoutIdentityProvider implements IdentityProvider {
   }
 
   init() {
-    this.apiTokenService.cookieVanishes$
-      .pipe(withLatestFrom(this.apiTokenService.apiToken$))
-      .subscribe(([type, apiToken]) => {
-        if (!apiToken) {
-          this.accountFacade.fetchAnonymousToken();
-        }
-        if (type === 'user') {
-          this.accountFacade.logoutUser({ revokeApiToken: false });
-        }
-      });
+    this.apiTokenService.cookieVanishes$.subscribe(type => {
+      if (type === 'user') {
+        this.accountFacade.logoutUser({ revokeApiToken: false });
+      }
+    });
 
     // OAuth Service should be configured before apiToken information are restored and the refresh token mechanism is setup
     this.apiTokenService.restore$(['user', 'order']).subscribe(noop);
@@ -132,6 +129,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls
       filter(loggedIn => !loggedIn),
       take(1),
+      tap(() => this.tokenService.logOut()), // remove token from storage when user is logged out
       switchMap(() =>
         this.store.pipe(
           select(selectQueryParam('returnUrl')),
@@ -151,18 +149,9 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     return this.punchoutService.getCxmlPunchoutSession(route.queryParamMap.get('sid')).pipe(
       // persist cXML session information (sid, returnURL, basketId) in cookies for later basket transfer
       tap(data => {
-        this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'), {
-          sameSite: 'None',
-          secure: true,
-        });
-        this.cookiesService.put('punchout_ReturnURL', data.returnURL, {
-          sameSite: 'None',
-          secure: true,
-        });
-        this.cookiesService.put('punchout_BasketID', data.basketId, {
-          sameSite: 'None',
-          secure: true,
-        });
+        this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'));
+        this.cookiesService.put('punchout_ReturnURL', data.returnURL);
+        this.cookiesService.put('punchout_BasketID', data.basketId);
       }),
       // use the basketId basket for the current PWA session (instead of default current basket)
       // TODO: if load basket error (currently no error page) -> logout and do not use default 'current' basket
@@ -175,10 +164,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
 
   private handleOciPunchoutLogin(route: ActivatedRouteSnapshot) {
     // save HOOK_URL to cookie for later basket transfer
-    this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'), {
-      sameSite: 'None',
-      secure: true,
-    });
+    this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'));
 
     const basketId = window.sessionStorage.getItem('basket-id');
     if (!basketId) {

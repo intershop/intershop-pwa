@@ -2,13 +2,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h2 class="modal-title">{{ 'approval.rejectform.reject_order.heading' | translate }}</h2>
-      <button
-        type="button"
-        class="close"
-        [title]="'dialog.close.text' | translate"
-        [attr.aria-label]="'dialog.close.text' | translate"
-        (click)="hide()"
-      >
+      <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

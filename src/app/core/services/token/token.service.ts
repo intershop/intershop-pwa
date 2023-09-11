@@ -67,6 +67,10 @@ export class TokenService {
     );
   }
 
+  logOut() {
+    this.oAuthService.logOut(true);
+  }
+
   /**
    * Refresh existing tokens, when token is about to expire
    *

@@ -59,8 +59,10 @@ describe('In Place Edit Component', () => {
       <ish-in-place-edit
         ><div class="d-flex flex-row align-items-baseline" title="inplace_edit.click_to_edit">
           <p class="form-control-plaintext">VIEW</p>
-        </div></ish-in-place-edit
-      >
+          <button class="btn btn-link">
+            <fa-icon class="pl-2 mr-auto btn-link" ng-reflect-icon="fas,pencil-alt"></fa-icon>
+          </button></div
+      ></ish-in-place-edit>
     `);
   });
 
@@ -73,7 +75,7 @@ describe('In Place Edit Component', () => {
         ><div class="d-flex flex-row align-items-baseline">
           <input class="form-control" /><button
             data-testing-id="confirm"
-            class="btn btn-link ml-2"
+            class="btn btn-link"
             title="inplace_edit.save"
           >
             <fa-icon ng-reflect-icon="fas,check"></fa-icon></button
@@ -97,13 +99,7 @@ describe('In Place Edit Component', () => {
     it('should switch to view mode when clicked outside', () => {
       mousedown({ target: element });
 
-      expect(element).toMatchInlineSnapshot(`
-        <ish-in-place-edit
-          ><div class="d-flex flex-row align-items-baseline" title="inplace_edit.click_to_edit">
-            <p class="form-control-plaintext">VIEW</p>
-          </div></ish-in-place-edit
-        >
-      `);
+      expect(element.querySelector('.form-control-plaintext').textContent).toContain('VIEW');
     });
 
     it('should emit edited event when clicked outside', done => {
@@ -115,17 +111,11 @@ describe('In Place Edit Component', () => {
     });
 
     it('should switch to view mode when clicked on confirm', () => {
-      (element.querySelector('[data-testing-id="confirm"') as HTMLButtonElement).click();
+      (element.querySelector('[data-testing-id="confirm"]') as HTMLButtonElement).click();
 
       fixture.detectChanges();
 
-      expect(element).toMatchInlineSnapshot(`
-        <ish-in-place-edit
-          ><div class="d-flex flex-row align-items-baseline" title="inplace_edit.click_to_edit">
-            <p class="form-control-plaintext">VIEW</p>
-          </div></ish-in-place-edit
-        >
-      `);
+      expect(element.querySelector('input')).toBeFalsy();
     });
 
     it('should emit edited event when clicked on confirm', done => {
@@ -133,21 +123,15 @@ describe('In Place Edit Component', () => {
         done();
       });
 
-      (element.querySelector('[data-testing-id="confirm"') as HTMLButtonElement).click();
+      (element.querySelector('[data-testing-id="confirm"]') as HTMLButtonElement).click();
     });
 
     it('should switch to view mode when clicked on cancel', () => {
-      (element.querySelector('[data-testing-id="cancel"') as HTMLButtonElement).click();
+      (element.querySelector('[data-testing-id="cancel"]') as HTMLButtonElement).click();
 
       fixture.detectChanges();
 
-      expect(element).toMatchInlineSnapshot(`
-        <ish-in-place-edit
-          ><div class="d-flex flex-row align-items-baseline" title="inplace_edit.click_to_edit">
-            <p class="form-control-plaintext">VIEW</p>
-          </div></ish-in-place-edit
-        >
-      `);
+      expect(element.querySelector('.form-control-plaintext').textContent).toContain('VIEW');
     });
 
     it('should emit aborted event when clicked on cancel', done => {
@@ -155,7 +139,7 @@ describe('In Place Edit Component', () => {
         done();
       });
 
-      (element.querySelector('[data-testing-id="cancel"') as HTMLButtonElement).click();
+      (element.querySelector('[data-testing-id="cancel"]') as HTMLButtonElement).click();
     });
   });
 });

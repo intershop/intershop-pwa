@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, noop } from 'rxjs';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
@@ -17,7 +18,8 @@ export class ICMIdentityProvider implements IdentityProvider {
     private router: Router,
     private store: Store,
     private apiTokenService: ApiTokenService,
-    private accountFacade: AccountFacade
+    private accountFacade: AccountFacade,
+    private tokenService: TokenService
   ) {}
 
   getCapabilities() {
@@ -31,7 +33,7 @@ export class ICMIdentityProvider implements IdentityProvider {
   init() {
     this.apiTokenService.restore$().subscribe(noop);
 
-    this.apiTokenService.cookieVanishes$.subscribe(([type]) => {
+    this.apiTokenService.cookieVanishes$.subscribe(type => {
       this.accountFacade.logoutUser({ revokeApiToken: false });
       if (type === 'user') {
         this.router.navigate(['/login'], {
@@ -46,11 +48,13 @@ export class ICMIdentityProvider implements IdentityProvider {
   }
 
   triggerLogout(): TriggerReturnType {
+    // revoke current token
     this.accountFacade.logoutUser();
     return this.accountFacade.isLoggedIn$.pipe(
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls
       filter(loggedIn => !loggedIn),
       take(1),
+      tap(() => this.tokenService.logOut()), // remove token from storage when user is logged out
       switchMap(() =>
         this.store.pipe(
           select(selectQueryParam('returnUrl')),

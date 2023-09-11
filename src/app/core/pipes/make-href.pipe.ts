@@ -21,29 +21,19 @@ export class MakeHrefPipe implements PipeTransform {
 
         if (urlParams) {
           if (urlParams.lang) {
-            return this.multiSiteService.getLangUpdatedUrl(urlParams.lang, newUrl, location.getBaseHref()).pipe(
+            return this.multiSiteService.getLangUpdatedUrl(urlParams.lang, newUrl).pipe(
               map(modifiedUrl => {
                 const modifiedUrlParams = modifiedUrl === newUrl ? urlParams : omit(urlParams, 'lang');
-                return appendUrlParams(modifiedUrl, modifiedUrlParams, split?.[1]);
+                return this.multiSiteService.appendUrlParams(modifiedUrl, modifiedUrlParams, split?.[1]);
               })
             );
           } else {
-            return of(newUrl).pipe(map(url => appendUrlParams(url, urlParams, split?.[1])));
+            return of(newUrl).pipe(map(url => this.multiSiteService.appendUrlParams(url, urlParams, split?.[1])));
           }
         } else {
-          return of(appendUrlParams(newUrl, undefined, split?.[1]));
+          return of(this.multiSiteService.appendUrlParams(newUrl, undefined, split?.[1]));
         }
       })
     );
   }
-}
-
-function appendUrlParams(url: string, urlParams: Record<string, string>, queryParams: string | undefined): string {
-  return `${url}${
-    urlParams
-      ? Object.keys(urlParams)
-          .map(k => `;${k}=${urlParams[k]}`)
-          .join('')
-      : ''
-  }${queryParams ? `?${queryParams}` : ''}`;
 }
