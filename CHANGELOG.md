@@ -7,6 +7,66 @@ kb_everyone
 
 # Changelog
 
+## [4.2.0](https://github.com/intershop/intershop-pwa/releases/tag/4.2.0) (2023-09-11)
+
+**required Intershop Commerce Management version: 7.10.39.2**
+
+**required/tested Node.js version: 18.16.0 LTS (including npm 9.5.1)**
+
+### Features
+
+- save language selection as cookie (#1447) ([c2e43bb](https://github.com/intershop/intershop-pwa/commit/c2e43bb))
+- logging restriction to errors (#1472) ([2d0bf20](https://github.com/intershop/intershop-pwa/commit/2d0bf20))
+- save orderReferenceId as native basket attribute (#1499) ([7c160ce](https://github.com/intershop/intershop-pwa/commit/7c160ce))
+- export rest metrics ([d49262d](https://github.com/intershop/intershop-pwa/commit/d49262d))
+- report ssr max memory in prometheus ([0127488](https://github.com/intershop/intershop-pwa/commit/0127488))
+- report memory per pm2 process ([9c7d0cb](https://github.com/intershop/intershop-pwa/commit/9c7d0cb))
+- introduce simple browser detection to fix Safari 14 cookies issue ([94b25d5](https://github.com/intershop/intershop-pwa/commit/94b25d5))
+- implement better handling for cookie 'SameSite' and 'secure' settings (#1485) ([0d28fae](https://github.com/intershop/intershop-pwa/commit/0d28fae))
+- use aria-labels in forms ([2a895a2](https://github.com/intershop/intershop-pwa/commit/2a895a2))
+- add aria-label property to formly components ([d60c051](https://github.com/intershop/intershop-pwa/commit/d60c051))
+- accessibility improvements ([cfe40ff](https://github.com/intershop/intershop-pwa/commit/cfe40ff))
+
+### Bug Fixes
+
+- prevent invoking destroyed injector (#1500) ([6cabc7d](https://github.com/intershop/intershop-pwa/commit/6cabc7d))
+- cookies consent banner animation handling for both "accept" buttons ([0a2a380](https://github.com/intershop/intershop-pwa/commit/0a2a380))
+- make use of new cookies.service defaults when setting cookies (#1485) ([22944bc](https://github.com/intershop/intershop-pwa/commit/22944bc))
+- replace translate.instant in product-list-toolbar.component (#1482) ([191788a](https://github.com/intershop/intershop-pwa/commit/191788a))
+- prevent setting values on uninitialized field of the cms-carousel.component (#1492) ([8d3f6a1](https://github.com/intershop/intershop-pwa/commit/8d3f6a1))
+- handle multitab browsing (#1465) ([d5f749c](https://github.com/intershop/intershop-pwa/commit/d5f749c))
+- remove token informations from local storage after succesful logout (#1488) ([1c0bf6e](https://github.com/intershop/intershop-pwa/commit/1c0bf6e))
+- remove api-token cookie from root '/' path (#1487) ([9ce4cf6](https://github.com/intershop/intershop-pwa/commit/9ce4cf6))
+- complete current localization call, when a new language is requested ([4724fda](https://github.com/intershop/intershop-pwa/commit/4724fda))
+- remove interfering query parameter "page" for product detail page routes (#1481) ([28ba5f0](https://github.com/intershop/intershop-pwa/commit/28ba5f0))
+- properly handle system signals in pwa docker container (#1471) ([2b9d8ea](https://github.com/intershop/intershop-pwa/commit/2b9d8ea))
+- reload the application after the pgid changed (#1461) ([d0984ce](https://github.com/intershop/intershop-pwa/commit/d0984ce))
+- display first product image after switching products on product detail page (#1474) ([96737be](https://github.com/intershop/intershop-pwa/commit/96737be))
+- repair caching for output-hashed files (#1473) ([721b26a](https://github.com/intershop/intershop-pwa/commit/721b26a))
+- repair partial build with "active-themes" after npm upgrade (#1476) ([30cc36c](https://github.com/intershop/intershop-pwa/commit/30cc36c))
+- NoSunday date validator does not work properly (#1459) ([623921d](https://github.com/intershop/intershop-pwa/commit/623921d))
+- /localization call should wait until all server configurations are applied (#1457) ([31028be](https://github.com/intershop/intershop-pwa/commit/31028be))
+- display updated customer address on the myAccount address page (#1454) ([be31fef](https://github.com/intershop/intershop-pwa/commit/be31fef))
+- minor address form issues (#1451) ([8d9a803](https://github.com/intershop/intershop-pwa/commit/8d9a803))
+- remove apiToken cookie if a request fails due to an invalid token (#1452) ([57d0fa8](https://github.com/intershop/intershop-pwa/commit/57d0fa8))
+
+### Performance Improvements
+
+- reduce product price call aggregation delay in SSR (#1493) ([2c10245](https://github.com/intershop/intershop-pwa/commit/2c10245))
+- reduce number of distributors (#1496) ([12a8ca6](https://github.com/intershop/intershop-pwa/commit/12a8ca6))
+- increase pm2 SSR max memory (#1494) ([a081c94](https://github.com/intershop/intershop-pwa/commit/a081c94))
+- use better suited operators for REST requests (#1491) ([e54f611](https://github.com/intershop/intershop-pwa/commit/e54f611))
+- remove 3 sec SSR delay by enabling PreviewContextID listening only in browser (#1455) ([65c8c9a](https://github.com/intershop/intershop-pwa/commit/65c8c9a))
+
+### Documentation
+
+- change migration notes headings for better Knowledge Base syncing (#1506) ([dc4ed04](https://github.com/intershop/intershop-pwa/commit/dc4ed04))
+- concept for CAPTCHA in the PWA (#1453) ([38d8662](https://github.com/intershop/intershop-pwa/commit/38d8662))
+
+### BREAKING CHANGES
+
+- The `cookies.service` has new defaults: `SameSite=Strict` and `secure` (see [Migrations / From 4.1 to 4.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-41-to-42) for more details).
+
 ## [4.1.0](https://github.com/intershop/intershop-pwa/releases/tag/4.1.0) (2023-06-22)
 
 **required Intershop Commerce Management version: 7.10.39.2**
