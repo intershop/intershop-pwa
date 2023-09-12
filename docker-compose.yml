@@ -27,14 +27,14 @@ services:
       # FEATURES: |
       #   - compare
       #   - rating
-      # IDENTITY_PROVIDER: 'Auth0'
-      # IDENTITY_PROVIDERS: |
-      #   Auth0:
-      #     type: auth0
-      #     domain: some-domain.auth0.com
-      #     clientID: ASDF12345
-      #   Punchout:
-      #     type: PUNCHOUT
+      IDENTITY_PROVIDER: 'Auth0'
+      IDENTITY_PROVIDERS: |
+        Auth0:
+          type: auth0
+          domain: dev-9pqwi8uh.eu.auth0.com
+          clientID: V2xvLUo3YSfGdCmJz7u381dSevoVkOso
+        Punchout:
+          type: PUNCHOUT
 
     # Logging to an External Device (see logging.md)
     # volumes:
@@ -82,10 +82,10 @@ services:
       # BASIC_AUTH: 'developer:!InterShop00!'
       # BASIC_AUTH_IP_WHITELIST: |
       #   - 1.2.3.4
-      # OVERRIDE_IDENTITY_PROVIDERS: |
-      #   .+:
-      #     - path: /en/punchout
-      #       type: Punchout
+      OVERRIDE_IDENTITY_PROVIDERS: |
+        .+:
+          - path: /en/punchout
+            type: Punchout
       MULTI_CHANNEL: |
         .+:
           - baseHref: /en
