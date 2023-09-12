@@ -36,6 +36,9 @@ export interface LineItem {
   editable: boolean;
   quote?: string;
   desiredDeliveryDate?: string;
+
+  customerProductID?: string;
+  partialOrderNo?: string;
 }
 
 export interface LineItemView extends LineItem {

@@ -1,0 +1,40 @@
+<div class="line-item-attributes">
+  <ng-container *ngIf="!showExtendAttributeForm; else inputFields">
+    <a
+      [routerLink]="[]"
+      class="btn-tool"
+      (click)="openExtendAttributeForm(true)"
+      title="{{ 'line-item-attribute.show_more.link' | translate }}"
+    >
+      {{ 'line-item-attribute.show_more.link' | translate }}
+    </a>
+  </ng-container>
+  <ng-template #inputFields>
+    <form [formGroup]="extendedAttributesForm" (ngSubmit)="onSubmit()" data-testing-id="extended-attributes-form">
+      <formly-form [form]="extendedAttributesForm" [fields]="fields" [options]="options" [model]="model"></formly-form>
+      <div class="row">
+        <div class="offset-md-4 col-md-8">
+          <button type="submit" class="btn btn-secondary" [disabled]="extendedAttributesForm.pristine">
+            {{ 'line-item-attribute.apply.button.label' | translate }}
+          </button>
+          <a
+            *ngIf="!extendedAttributesForm.pristine"
+            class="btn btn-secondary"
+            [routerLink]=""
+            (click)="openExtendAttributeForm(false)"
+            data-testing-id="extended-attributes-form-cancel"
+            >{{ 'account.cancel.link' | translate }}</a
+          >
+        </div>
+      </div>
+    </form>
+    <a
+      [routerLink]="[]"
+      class="btn-tool"
+      (click)="openExtendAttributeForm(false)"
+      title="{{ 'line-item-attribute.show_less.link' | translate }}"
+    >
+      {{ 'line-item-attribute.show_less.link' | translate }}
+    </a>
+  </ng-template>
+</div>

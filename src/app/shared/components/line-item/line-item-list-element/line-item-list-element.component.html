@@ -22,8 +22,12 @@
 
       <!-- Product Variations -->
       <ish-product-variation-display />
+
       <!-- Product Bundles -->
       <ish-product-bundle-display />
+
+      <!-- Extended Attributes -->
+      <ish-line-item-extended-content-display [lineItem]="pli" />
 
       <!-- switch by lineItemViewType -->
       <ng-container [ngSwitch]="lineItemViewType">
@@ -146,5 +150,10 @@
 
     <!-- Gift -->
     <div *ngIf="pli.isFreeGift" class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
+  </div>
+
+  <!-- edit extended line item content-->
+  <div *ishFeature="'extendedLineItemContent'" class="extended-item-box col offset-2">
+    <ish-line-item-extended-content-edit [lineItem]="pli" *ngIf="editable" />
   </div>
 </div>

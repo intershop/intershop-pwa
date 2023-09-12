@@ -105,6 +105,8 @@ import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-i
 import { FilterTextComponent } from './components/filter/filter-text/filter-text.component';
 import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
+import { LineItemExtendedContentDisplayComponent } from './components/line-item/line-item-extended-content/line-item-extended-content-display/line-item-extended-content-display.component';
+import { LineItemExtendedContentEditComponent } from './components/line-item/line-item-extended-content/line-item-extended-content-edit/line-item-extended-content-edit.component';
 import { LineItemListElementComponent } from './components/line-item/line-item-list-element/line-item-list-element.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
 import { Auth0SignInComponent } from './components/login/auth0-sign-in/auth0-sign-in.component';
@@ -219,6 +221,8 @@ const declaredComponents = [
   FilterTextComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
+  LineItemExtendedContentEditComponent,
+  LineItemExtendedContentDisplayComponent,
   LineItemListElementComponent,
   LoginModalComponent,
   PagingComponent,

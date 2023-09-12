@@ -1,0 +1,11 @@
+<div class="line-item-attributes">
+  <div *ngIf="lineItem.partialOrderNo">
+    <span class="line-item-attributes-info span-separator">{{ 'line-item.partialOrderNo.label' | translate }}</span>
+    <span>{{ lineItem.partialOrderNo }}</span
+    ><br />
+  </div>
+  <div *ngIf="lineItem.customerProductID">
+    <span class="line-item-attributes-info span-separator">{{ 'line-item.customerProductID.label' | translate }}</span>
+    <span>{{ lineItem.customerProductID }}</span>
+  </div>
+</div>

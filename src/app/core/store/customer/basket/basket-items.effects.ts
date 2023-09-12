@@ -106,6 +106,8 @@ export class BasketItemsEffects {
           .updateBasketItem(lineItem.itemId, {
             quantity: lineItem.quantity > 0 ? { value: lineItem.quantity, unit: lineItem.unit } : undefined,
             product: lineItem.sku,
+            customerProductID: lineItem.customerProductID,
+            partialOrderNo: lineItem.partialOrderNo,
           })
           .pipe(
             map(payload => updateBasketItemSuccess(payload)),

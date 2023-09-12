@@ -10,12 +10,15 @@ import { instance, mock, when } from 'ts-mockito';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LineItemEditComponent } from 'ish-shared/components/line-item/line-item-edit/line-item-edit.component';
+import { LineItemExtendedContentDisplayComponent } from 'ish-shared/components/line-item/line-item-extended-content/line-item-extended-content-display/line-item-extended-content-display.component';
+import { LineItemExtendedContentEditComponent } from 'ish-shared/components/line-item/line-item-extended-content/line-item-extended-content-edit/line-item-extended-content-edit.component';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
@@ -43,13 +46,19 @@ describe('Line Item List Element Component', () => {
     when(context.select('quantity')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule.forTesting('extendedLineItemContent'),
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [
         LineItemListElementComponent,
         MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(LineItemEditComponent),
+        MockComponent(LineItemExtendedContentDisplayComponent),
+        MockComponent(LineItemExtendedContentEditComponent),
         MockComponent(ProductBundleDisplayComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
@@ -142,6 +151,7 @@ describe('Line Item List Element Component', () => {
           "ish-product-id",
           "ish-product-variation-display",
           "ish-product-bundle-display",
+          "ish-line-item-extended-content-display",
           "ish-line-item-edit",
           "ish-product-inventory",
           "ish-product-shipment",
@@ -152,6 +162,7 @@ describe('Line Item List Element Component', () => {
           "ish-product-quantity-label",
           "ish-product-quantity",
           "ish-product-quantity",
+          "ish-line-item-extended-content-edit",
         ]
       `);
     });
