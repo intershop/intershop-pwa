@@ -25,11 +25,6 @@
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $thescheme;
 
-        add_header X-Cache-Status $upstream_cache_status;
-        proxy_ignore_headers Cache-Control;
-        proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
-        proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
-
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;
         add_header X-ua-device $ua_device always;
@@ -37,8 +32,7 @@
         rewrite ^.*$ $ssr_rewrite;
         set $c_uri $ssr_curi;
 
-        # make a nice cache key without parameters
-        proxy_cache_key $scheme://$host$uri$c_uri;
+        include /etc/nginx/conf.d/cache-settings.conf;
 
         rewrite ^.*/index.html$ {{ $baseHref }}/loading;
 
@@ -99,7 +93,7 @@ server {
     access_log /dev/stdout {{ getenv "LOGFORMAT" }} if=$loggable;
 
     include /etc/nginx/conf.d/cache-blacklist.conf;
-
+    include /etc/nginx/conf.d/cache-locations.conf;
 
   {{- if getenv "OVERRIDE_IDENTITY_PROVIDERS" }}
     {{- range $domainOverride, $identyProviderOverride := (ds "overrideIdentityProviders") }}
@@ -157,7 +151,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $thescheme;
 
-        add_header X-Cache-Status $upstream_cache_status;
+        add_header X-Cache-Status $cache_status;
 
         proxy_pass {{ $UPSTREAM_PWA }};
         proxy_buffer_size 128k;

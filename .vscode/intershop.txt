@@ -11,6 +11,7 @@ appserver
 backoffice
 bar
 bars
+bitnami
 blocklist
 breakline
 categoryref
@@ -41,6 +42,7 @@ errorpage
 extralarge
 fastpay
 fieldgroup
+flushdb
 fontawesome
 foo
 foobar
@@ -142,6 +144,7 @@ quoterequest
 quoterequests
 rebased
 recaptcha
+rediss
 refactoring
 refactorings
 resetted
@@ -167,6 +170,7 @@ sitekey
 sku
 skus
 spgid
+srcache
 sslmode
 storefinder
 stylelint

@@ -58,6 +58,12 @@ services:
   #
   # </CDN-Example>
 
+  # redis:
+  #   image: bitnami/redis
+  #   container_name: redis
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=yes
+
   nginx:
     image: intershophub/intershop-pwa-nginx
     build: nginx
@@ -71,6 +77,7 @@ services:
       UPSTREAM_PWA: 'http://pwa:4200'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
+      # REDIS_URI: redis://redis:6379
       # LOG_ALL: off
       # SSL: 1
       # SSR: 0
