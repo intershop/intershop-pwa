@@ -45,8 +45,8 @@
         set $c_uri $ssr_curi;
         # for debugging set a readable key using `set_escape_uri`
         set_sha1 $key $scheme://$host$uri$c_uri;
-        srcache_fetch GET /memc key=$key;
-        srcache_store PUT /memc key=$key&exptime=$srcache_expire&status=$status;
+        srcache_fetch GET /memcget key=$key;
+        srcache_store PUT /memcset key=$key&exptime=$srcache_expire&status=$status;
       {{- end }}
 
         rewrite ^.*/index.html$ {{ $baseHref }}/loading;
@@ -89,8 +89,14 @@
 {{- end }}
 
 {{- if $CACHE_ACTIVE }}
-upstream my_memcached {
+upstream memcached_set {
     server {{ getenv "MEMCACHED_HOSTNAME" "memcached" }}:11211;
+    keepalive 10;
+}
+upstream memcached_get {
+    server {{ getenv "MEMCACHED_HOSTNAME" "memcached" }}-1:11211;
+    server {{ getenv "MEMCACHED_HOSTNAME" "memcached" }}-2:11211;
+    server {{ getenv "MEMCACHED_HOSTNAME" "memcached" }}-3:11211;
     keepalive 10;
 }
 {{- end }}

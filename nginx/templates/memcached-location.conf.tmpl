@@ -1,9 +1,8 @@
-location = /memc {
+location = /memcset {
     internal;
     memc_connect_timeout 100ms;
     memc_send_timeout 100ms;
     memc_read_timeout 100ms;
-    memc_ignore_client_abort on;
     client_max_body_size 0;
 
     set_unescape_uri $memc_key $arg_key;
@@ -18,5 +17,21 @@ location = /memc {
         return "0"
     }
 
-    memc_pass my_memcached;
+    memc_pass memcached_set;
+}
+
+location = /memcget {
+    internal;
+    memc_connect_timeout 100ms;
+    memc_send_timeout 100ms;
+    memc_read_timeout 100ms;
+    client_max_body_size 0;
+
+    set_unescape_uri $memc_key $arg_key;
+
+    memcached_next_upstream not_found;
+    memcached_next_upstream_tries 3;
+    memcached_next_upstream_timeout 1s;
+
+    memc_pass memcached_get;
 }

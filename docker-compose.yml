@@ -57,9 +57,32 @@ services:
   #
   # </CDN-Example>
 
-  memcached:
+  memcached-1: &memcached
+    container_name: memcached-1
     image: memcached
     command: memcached -vv -m 2048 -I 10M
+
+  memcached-2:
+    <<: *memcached
+    container_name: memcached-2
+
+  memcached-3:
+    <<: *memcached
+    container_name: memcached-3
+
+  memcached:
+    depends_on:
+      - memcached-1
+      - memcached-2
+      - memcached-3
+    container_name: memcached
+    build:
+      context: .
+      dockerfile: Dockerfile_memcached
+    expose:
+      - 11211
+    command: '-l 0.0.0.0:11211 -p memcached-1:11211 -m memcached-2:11211,memcached-3:11211'
+    restart: always
 
   nginx:
     build: nginx
