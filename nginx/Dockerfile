@@ -1,8 +1,12 @@
 FROM openresty/openresty:1.21.4.3-1-jammy
 COPY --from=nginx:mainline /docker-entrypoint.sh /
 COPY --from=nginx:mainline /docker-entrypoint.d/*.sh /docker-entrypoint.d/
-RUN cp /usr/local/openresty/nginx/conf/mime.types /etc/nginx/mime.types \
-  && useradd -Ms /bin/false nginx
+COPY lua/*.lua /usr/local/openresty/lualib/
+RUN ln -s /usr/local/openresty/nginx/conf/mime.types /etc/nginx/ \
+  && useradd -Ms /bin/false nginx \
+  && mkdir -p /etc/resolvconf/resolv.conf.d \
+  && echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail \
+  && luarocks install lua-resty-redis-connector
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
 

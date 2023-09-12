@@ -22,6 +22,7 @@
 *.properties
 *.crt
 *.key
+*.lua
 .*ignore
 .husky
 .gitattributes

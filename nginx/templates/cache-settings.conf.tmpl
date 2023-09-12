@@ -1,0 +1,24 @@
+{{- if getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes" -}}
+  {{- if getenv "REDIS_URI" -}}
+
+    srcache_response_cache_control off;
+    srcache_store_statuses 200 302 404;
+
+    srcache_default_expire {{ getenv "CACHE_DURATION_NGINX_OK" }};
+
+    # make a nice cache key without parameters
+    set_sha1 $key $scheme://$host$uri$c_uri;
+
+    srcache_fetch GET /redis-fetch key=$key;
+    srcache_store PUT /redis-store key=$key&exptime=$srcache_expire;
+  {{- else -}}
+    proxy_ignore_headers Cache-Control;
+    proxy_cache_valid 200 302 {{ getenv "CACHE_DURATION_NGINX_OK" }};
+    proxy_cache_valid 404     {{ getenv "CACHE_DURATION_NGINX_NF" }};
+
+    # make a nice cache key without parameters
+    proxy_cache_key $scheme://$host$uri$c_uri;
+  {{- end -}}
+
+    add_header X-Cache-Status $cache_status;
+{{- end -}}
