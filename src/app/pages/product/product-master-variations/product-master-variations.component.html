@@ -4,7 +4,7 @@
   <ish-product-listing
     mode="paging"
     [categoryId]="categoryId$ | async"
-    [id]="{ type: 'master', value: sku$ | async }"
+    [productListingId]="{ type: 'master', value: sku$ | async }"
     fragmentOnRouting="variation-list-top"
   ></ish-product-listing>
 </ng-container>
