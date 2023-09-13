@@ -115,9 +115,9 @@ export class ConfigurationEffects {
     )
   );
 
-  setDeviceType$ = createEffect(() =>
-    iif(
-      () => !SSR,
+  setDeviceType$ =
+    !SSR &&
+    createEffect(() =>
       defer(() =>
         merge(this.actions$.pipe(ofType(ROOT_EFFECTS_INIT)), fromEvent(window, 'resize')).pipe(
           map<unknown, DeviceType>(() => {
@@ -132,10 +132,8 @@ export class ConfigurationEffects {
           distinctCompareWith(this.store.pipe(select(getDeviceType))),
           map(deviceType => applyConfiguration({ _deviceType: deviceType }))
         )
-      ),
-      EMPTY
-    )
-  );
+      )
+    );
 
   loadSingleServerTranslation$ = createEffect(() =>
     this.actions$.pipe(

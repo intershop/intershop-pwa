@@ -4,7 +4,7 @@ import { routerRequestAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
-import { EMPTY, OperatorFunction, Subject, combineLatest, iif } from 'rxjs';
+import { OperatorFunction, Subject, combineLatest } from 'rxjs';
 import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { getDeviceType } from 'ish-core/store/core/configuration';
@@ -32,10 +32,10 @@ export class MessagesEffects {
 
   private applyStyle$ = new Subject<void>();
 
-  infoToast$ = createEffect(
-    () =>
-      iif(
-        () => !SSR,
+  infoToast$ =
+    !SSR &&
+    createEffect(
+      () =>
         this.actions$.pipe(
           ofType(displayInfoMessage),
           mapToPayload(),
@@ -46,15 +46,13 @@ export class MessagesEffects {
           }),
           this.closeToastOnRouting()
         ),
-        EMPTY
-      ),
-    { dispatch: false }
-  );
+      { dispatch: false }
+    );
 
-  errorToast$ = createEffect(
-    () =>
-      iif(
-        () => !SSR,
+  errorToast$ =
+    !SSR &&
+    createEffect(
+      () =>
         this.actions$.pipe(
           ofType(displayErrorMessage),
           mapToPayload(),
@@ -65,15 +63,13 @@ export class MessagesEffects {
           }),
           this.closeToastOnRouting()
         ),
-        EMPTY
-      ),
-    { dispatch: false }
-  );
+      { dispatch: false }
+    );
 
-  warningToast$ = createEffect(
-    () =>
-      iif(
-        () => !SSR,
+  warningToast$ =
+    !SSR &&
+    createEffect(
+      () =>
         this.actions$.pipe(
           ofType(displayWarningMessage),
           mapToPayload(),
@@ -84,15 +80,13 @@ export class MessagesEffects {
           }),
           this.closeToastOnRouting()
         ),
-        EMPTY
-      ),
-    { dispatch: false }
-  );
+      { dispatch: false }
+    );
 
-  successToast$ = createEffect(
-    () =>
-      iif(
-        () => !SSR,
+  successToast$ =
+    !SSR &&
+    createEffect(
+      () =>
         this.actions$.pipe(
           ofType(displaySuccessMessage),
           mapToPayload(),
@@ -103,15 +97,13 @@ export class MessagesEffects {
             this.applyStyle$.next();
           })
         ),
-        EMPTY
-      ),
-    { dispatch: false }
-  );
+      { dispatch: false }
+    );
 
-  setToastStickyClass$ = createEffect(
-    () =>
-      iif(
-        () => !SSR,
+  setToastStickyClass$ =
+    !SSR &&
+    createEffect(
+      () =>
         combineLatest([this.store.pipe(select(isStickyHeader)), this.applyStyle$]).pipe(
           tap(([sticky]) => {
             const container = this.domService.getElementById('toast-container');
@@ -125,10 +117,8 @@ export class MessagesEffects {
             }
           })
         ),
-        EMPTY
-      ),
-    { dispatch: false }
-  );
+      { dispatch: false }
+    );
 
   private closeToastOnRouting() {
     return switchMap((activeToast: ActiveToast<unknown>) =>

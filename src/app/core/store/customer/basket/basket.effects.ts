@@ -358,9 +358,9 @@ export class BasketEffects {
   /**
    * Reload basket information on basket route to ensure that rendered page is correct.
    */
-  loadBasketOnBasketPage$ = createEffect(() =>
-    iif(
-      () => !SSR,
+  loadBasketOnBasketPage$ =
+    !SSR &&
+    createEffect(() =>
       this.actions$.pipe(
         ofType(personalizationStatusDetermined),
         take(1),
@@ -372,10 +372,8 @@ export class BasketEffects {
             map(() => loadBasket())
           )
         )
-      ),
-      EMPTY
-    )
-  );
+      )
+    );
 
   /**
    * Creates a requisition based on the given basket, if approval is required
