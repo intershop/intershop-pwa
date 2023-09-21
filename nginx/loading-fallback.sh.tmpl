@@ -1,0 +1,27 @@
+{{- define "clean-domain" -}}
+{{ . | strings.ReplaceAll ".+" "_" | strings.ReplaceAll ".*" "_" }}
+{{- end -}}
+#!/bin/sh
+
+mkdir -p /tmp/loading
+
+fetch() {
+  target="/tmp/loading/$1/$2.html"
+  mkdir -p "$(dirname "$target")"
+  curl -s -o "$target" -H "Host: $1" "http://localhost:8080$2"
+}
+
+while true
+do
+{{- range $domain, $mapping := (ds "domains") }}
+  {{- $cdomain := tmpl.Exec "clean-domain" $domain -}}
+  {{- if $mapping | test.IsKind "map" }}
+      fetch "{{ $cdomain }}" "/loading"
+  {{- else }}
+    {{- range $mapping }}
+      fetch "{{ $cdomain }}" "{{ .baseHref }}/loading"
+    {{- end }}
+  {{- end }}
+{{- end }}
+      sleep 300
+done

@@ -7,6 +7,21 @@ kb_sync_latest_only
 
 # Building and Running NGINX Docker Image
 
+- [Building and Running NGINX Docker Image](#building-and-running-nginx-docker-image)
+  - [Building](#building)
+  - [Configuration](#configuration)
+    - [HTTPS or SSL](#https-or-ssl)
+    - [Basic Auth](#basic-auth)
+    - [Multi-Site](#multi-site)
+    - [Ignore Parameters During Caching](#ignore-parameters-during-caching)
+    - [Access ICM Sitemap](#access-icm-sitemap)
+    - [Override Identity Providers by Path](#override-identity-providers-by-path)
+    - [Other](#other)
+  - [Features](#features)
+    - [Cache](#cache)
+    - [Loading Fallback](#loading-fallback)
+  - [Further References](#further-references)
+
 We provide a Docker image based on [nginx](https://nginx.org/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx).
 
 ## Building
@@ -162,6 +177,21 @@ If the cache feature is switched off, all caching for pre-rendered pages is disa
 
 The cache duration for pre-rendered pages can be customized using `CACHE_DURATION_NGINX_OK` (for successful responses) and `CACHE_DURATION_NGINX_NF` (for 404 responses).
 The value supplied must be in the `time` format that is supported by [nginx proxy_cache_valid](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid).
+
+### Loading Fallback
+
+When encountering high loads on the SSR container, the nginx container can be configured to serve a loading page after a certain timeout.
+This way the user will get a fast response that can be completed by the browser using the ICM REST API.
+Meanwhile the nginx container will cache the page in the background after it finishes rendering.The fully rendered page will be served on the next request.
+
+Requests from Crawlers will bypass this mechanism and will be served directly from the SSR container with potentially longer response durations.
+
+To activate this feature, set the environment variable `LOADING_FALLBACK` to `"on"`.
+The timeout can be configured using the environment variable `LOADING_FALLBACK_TIMEOUT` using a time format (i.e. `40s`, `15m`, ...).
+
+> :warning: It is not recommended to use this feature by default, as it will not solve the underlying issue.
+> In most cases the SSR container should be scaled out dynamically to handle intermittent high loads.
+> It might also be worth investigating default render times and do some code optimizations to get faster SSR responses.
 
 ## Further References
 

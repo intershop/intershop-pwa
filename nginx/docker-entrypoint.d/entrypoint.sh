@@ -18,3 +18,8 @@ if env | grep -iqE "^PROMETHEUS=(on|1|true|yes)$"
 then
   (sleep 5 && /nginx-prometheus-exporter)&
 fi
+
+if env | grep -iqE "^LOADING_FALLBACK=(on|1|true|yes)$"
+then
+  (sleep 5 && /loading-fallback.sh)&
+fi

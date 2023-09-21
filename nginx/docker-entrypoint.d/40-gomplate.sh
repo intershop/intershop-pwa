@@ -30,3 +30,6 @@ then
 fi
 
 /gomplate -d "domains=$MULTI_CHANNEL_SOURCE" -d "overrideIdentityProviders=$OVERRIDE_IDENTITY_PROVIDERS_SOURCE" -d "cachingIgnoreParams=$CACHING_IGNORE_PARAMS_SOURCE" -d 'ipwhitelist=env:///BASIC_AUTH_IP_WHITELIST?type=application/yaml' --input-dir="/etc/nginx/templates" --output-map='/etc/nginx/conf.d/{{ .in | strings.ReplaceAll ".conf.tmpl" ".conf" }}'
+
+/gomplate -d "domains=$MULTI_CHANNEL_SOURCE" -f /loading-fallback.sh.tmpl -o /loading-fallback.sh
+chmod +x /loading-fallback.sh

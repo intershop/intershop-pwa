@@ -2,6 +2,7 @@ FROM nginx:1.22
 RUN apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils libnss3-tools
 COPY *.conf /etc/nginx/
+COPY loading-fallback.sh.tmpl /loading-fallback.sh.tmpl
 COPY features /etc/nginx/features/
 COPY templates /etc/nginx/templates/
 COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
@@ -21,5 +22,7 @@ ENV CACHE_DURATION_NGINX_OK=10m
 ENV CACHE_DURATION_NGINX_NF=60m
 ENV LOGFORMAT=main
 ENV LOG_ALL=on
+ENV LOADING_FALLBACK=off
+ENV LOADING_FALLBACK_TIMEOUT=10s
 
 EXPOSE 80 443 9113
