@@ -1,7 +1,7 @@
 FROM nginx:1.22
 RUN apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils libnss3-tools
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY *.conf /etc/nginx/
 COPY features /etc/nginx/features/
 COPY templates /etc/nginx/templates/
 COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
