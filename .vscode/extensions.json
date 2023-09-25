@@ -5,7 +5,6 @@
   "recommendations": [
     // synchronize-marker:vscode-extensions:begin
     // general
-    "eamodio.gitlens",
     "vscode-icons-team.vscode-icons",
     "vincaslt.highlight-matching-tag",
     // code assist
