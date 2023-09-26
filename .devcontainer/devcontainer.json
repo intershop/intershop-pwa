@@ -24,23 +24,19 @@
     // synchronize-marker:vscode-extensions:begin
     // general
     "vscode-icons-team.vscode-icons",
-    "vincaslt.highlight-matching-tag",
     // code assist
     "visualstudioexptteam.vscodeintellicode",
     "angular.ng-template",
     "mikael.angular-beastcode",
-    "formulahendry.auto-rename-tag",
     // code style + formatting
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint",
-    "csstools.postcss",
     "dbaeumer.vscode-eslint",
     // testing
     "andys8.jest-snippets",
     // documentation
-    "streetsidesoftware.code-spell-checker",
-    "yzhang.markdown-all-in-one"
+    "streetsidesoftware.code-spell-checker"
     // synchronize-marker:vscode-extensions:end
   ],
   "forwardPorts": [4200],
