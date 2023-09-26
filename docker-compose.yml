@@ -4,6 +4,7 @@
 version: '3'
 services:
   pwa:
+    image: intershophub/intershop-pwa-ssr
     build:
       context: .
       args:
@@ -58,6 +59,7 @@ services:
   # </CDN-Example>
 
   nginx:
+    image: intershophub/intershop-pwa-nginx
     build: nginx
     depends_on:
       - pwa
