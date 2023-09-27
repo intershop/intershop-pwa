@@ -141,7 +141,7 @@ jobs:
           node dist/$THEME/run-standalone &
 
       - name: Cypress
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v6
         with:
           install: false
           wait-on: 'http://localhost:4200'
