@@ -40,19 +40,15 @@ export class MatomoEffects {
         map(lineItems =>
           lineItems.forEach(lineItem => {
             // if the display price is not available, assign the display price
-            if (!this.displayPrice) {
-              this.store.pipe(select(getPriceDisplayType)).subscribe({
+            if (!this.displayPrice || this.displayPrice.length === 0) {
+              const sel = select(getPriceDisplayType);
+              const pip$ = this.store.pipe(sel);
+              pip$.subscribe({
                 next: item => {
                   this.displayPrice = item;
                 },
               });
             }
-
-            console.log(
-              `Price Type: ${
-                this.displayPrice === 'net' ? lineItem.singleBasePrice.net : lineItem.singleBasePrice.gross
-              }`
-            );
 
             // send product data to matomo
             const product$ = this.store.pipe(select(getProduct(lineItem.productSKU)));
@@ -171,18 +167,25 @@ export class MatomoEffects {
   /**
    * Triggered when a product detail page is called. Data is sent to Matomo and logged.
    */
-  trackPageView = createEffect(
+
+  //  seems broken
+  // as soon as the product detail page is called multiple times for some products (probably configurable products)
+  // also the map item is undefined after the first inital call which made a ts error in console
+
+  trackPageView$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(loadProductSuccess),
         mapToPayloadProperty('product'),
         withLatestFrom(this.store.pipe(ofProductUrl(), select(getSelectedProduct))),
+        //withLatestFrom(of({sku: '123', name: 'test'})),
         filter(product => product[0]?.sku === product[1]?.sku),
         log('SingleProduct'),
         mergeMap(product =>
           this.store.pipe(
             select(getProductPrice(product[1].sku)),
             log('Item'),
+            filter(item => item !== undefined),
             map(item => {
               const salePrice = item.prices.salePrice.net;
               this.tracker.setEcommerceView(product[0].sku, product[0].name, product[0].defaultCategoryId, salePrice);
@@ -199,7 +202,7 @@ export class MatomoEffects {
    * Executed when product detail page is called. It sends the information to Matomo using a manual event and not by using the eCommerce view.
    * This effects should be seen as a less favorable alternative to the trackPageView effect.
    */
-  trackPageViewTagManager = createEffect(
+  trackPageViewTagManager$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(loadProductPricesSuccess),
@@ -234,7 +237,6 @@ export class MatomoEffects {
             this.tracker.trackPageView();
             console.log(`Tracked order with id ${b?.id} and total amount of ${b?.totals.total.gross}`);
           });
-
           return EMPTY;
         })
       ),
