@@ -22,7 +22,7 @@ export type BasketItemUpdateType =
   | { calculated: boolean };
 
 /**
- * The Basket Service handles the interaction with the 'baskets' REST API.
+ * The Basket-Items Service handles basket line-item related calls for the 'baskets/items' REST API.
  */
 @Injectable({ providedIn: 'root' })
 export class BasketItemsService {

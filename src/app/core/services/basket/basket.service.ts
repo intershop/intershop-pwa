@@ -69,6 +69,8 @@ type ValidationBasketIncludeType =
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
+ * Methods related to basket-items are handled in the basket-items.service.
+ * Methods related to the payment are handled in the payment.service.
  */
 @Injectable({ providedIn: 'root' })
 export class BasketService {
