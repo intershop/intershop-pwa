@@ -6,7 +6,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getBasketIdOrCurrent, getCurrentBasket } from 'ish-core/store/customer/basket';
+import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketItemUpdateType, BasketItemsService } from './basket-items.service';
@@ -38,10 +38,7 @@ describe('Basket Items Service', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         provideMockStore({
-          selectors: [
-            { selector: getBasketIdOrCurrent, value: 'current' },
-            { selector: getCurrentBasket, value: { id: '123' } },
-          ],
+          selectors: [{ selector: getCurrentBasket, value: { id: '123' } }],
         }),
       ],
     });
