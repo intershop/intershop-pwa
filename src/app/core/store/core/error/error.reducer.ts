@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { pick } from 'lodash-es';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -23,7 +24,10 @@ export const errorReducer = createReducer(
     serverConfigError,
     (state, action): ErrorState => ({
       ...state,
-      current: action.payload.error,
+      current:
+        typeof action.payload.error === 'object'
+          ? pick(action.payload.error, 'code', 'errors', 'message', 'name', 'status')
+          : action.payload.error,
       type: action.type,
     })
   )
