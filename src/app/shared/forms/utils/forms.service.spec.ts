@@ -15,6 +15,7 @@ describe('Forms Service', () => {
 
   beforeEach(() => {
     translateServiceMock = mock(TranslateService);
+    when(translateServiceMock.get(anyString())).thenReturn(of([]));
 
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['configuration'])],
@@ -38,8 +39,6 @@ describe('Forms Service', () => {
     });
 
     it('should return salutations if countryCode is GB', done => {
-      when(translateServiceMock.get(anyString())).thenReturn(of([]));
-
       formsService.getSalutationOptionsForCountryCode('GB').subscribe(data => {
         expect(data).toHaveLength(3);
         done();
@@ -47,8 +46,6 @@ describe('Forms Service', () => {
     });
 
     it('should return salutations if countryCode is US', done => {
-      when(translateServiceMock.get(anyString())).thenReturn(of([]));
-
       formsService.getSalutationOptionsForCountryCode('US').subscribe(data => {
         expect(data).toHaveLength(3);
         done();
@@ -56,8 +53,6 @@ describe('Forms Service', () => {
     });
 
     it('should return salutations if countryCode is DE', done => {
-      when(translateServiceMock.get(anyString())).thenReturn(of([]));
-
       formsService.getSalutationOptionsForCountryCode('DE').subscribe(data => {
         expect(data).toHaveLength(3);
         done();
@@ -65,8 +60,6 @@ describe('Forms Service', () => {
     });
 
     it('should return salutations if countryCode is FR', done => {
-      when(translateServiceMock.get(anyString())).thenReturn(of([]));
-
       formsService.getSalutationOptionsForCountryCode('FR').subscribe(data => {
         expect(data).toHaveLength(3);
         done();
