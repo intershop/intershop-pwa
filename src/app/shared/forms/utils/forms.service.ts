@@ -56,7 +56,6 @@ export class FormsService {
   /**
    * Gets all possible salutation options for a certain country.
    *
-   * @param translate instance of a translation service
    * @param countryCode country code of the country for which the salutations should be determined.
    * @returns salutation select options
    */
@@ -71,8 +70,6 @@ export class FormsService {
   /**
    * Gets all possible salutation options for the current locale.
    *
-   * @param  appFacade instance of the an application facade
-   * @param translate instance of a translation service
    * @returns salutation select options
    */
   getSalutationOptions(): Observable<SelectOption[]> {
