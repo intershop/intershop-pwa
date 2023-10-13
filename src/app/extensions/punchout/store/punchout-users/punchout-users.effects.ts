@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
 import { concatMap, exhaustMap, map, mergeMap, withLatestFrom } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export class PunchoutUsersEffects {
     this.actions$.pipe(
       ofType(loadPunchoutTypesSuccess),
       mapToPayloadProperty('types'),
-      withLatestFrom(this.store.pipe(select(selectRouteParam('format')))),
+      concatLatestFrom(() => this.store.pipe(select(selectRouteParam('format')))),
       map(([types, selectedType]) => loadPunchoutUsers({ type: (selectedType as PunchoutType) || types[0] }))
     )
   );

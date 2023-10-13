@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -16,7 +16,7 @@ export class CompareEffects {
     this.actions$.pipe(
       ofType(toggleCompare),
       mapToPayloadProperty('sku'),
-      withLatestFrom(this.store.pipe(select(getCompareProductsSKUs))),
+      concatLatestFrom(() => this.store.pipe(select(getCompareProductsSKUs))),
       map(([sku, skuList]) => ({ sku, isInList: skuList.includes(sku) })),
       map(({ sku, isInList }) => (isInList ? removeFromCompare({ sku }) : addToCompare({ sku })))
     )

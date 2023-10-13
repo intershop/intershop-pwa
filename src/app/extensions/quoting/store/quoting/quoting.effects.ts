@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, from, iif, of } from 'rxjs';
-import { concatMap, filter, first, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, first, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -190,7 +190,7 @@ export class QuotingEffects {
   createQuoteRequestFromBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createQuoteRequestFromBasket),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
       concatMap(([, basketID]) =>
         this.quotingService.createQuoteRequestFromBasket(basketID).pipe(
           map(entity => createQuoteRequestFromBasketSuccess({ entity })),
@@ -217,7 +217,7 @@ export class QuotingEffects {
         ofType(createQuoteRequestFromQuoteRequestSuccess),
         mapToPayloadProperty('entity'),
         mapToProperty('id'),
-        withLatestFrom(this.store.pipe(select(selectUrl))),
+        concatLatestFrom(() => this.store.pipe(select(selectUrl))),
         filter(([, url]) => url.startsWith('/account/quotes')),
         concatMap(([id]) => from(this.router.navigateByUrl(`/account/quotes/${id}`)))
       ),
@@ -298,7 +298,7 @@ export class QuotingEffects {
       ofType(updateQuoteRequestSuccess),
       mapToPayloadProperty('entity'),
       map(QuotingHelper.asQuoteRequest),
-      withLatestFrom(this.store.pipe(select(selectUrl))),
+      concatLatestFrom(() => this.store.pipe(select(selectUrl))),
       filter(([, url]) => url.startsWith('/account/quotes')),
       map(([entity]) =>
         displaySuccessMessage({

@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -60,7 +60,7 @@ export class CategoriesEffects {
         personalizationStatusDetermined
       ),
       whenTruthy(),
-      withLatestFrom(this.store.pipe(select(getCategoryEntities))),
+      concatLatestFrom(() => this.store.pipe(select(getCategoryEntities))),
       filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
       map(([categoryId]) => loadCategory({ categoryId }))
     )
@@ -77,7 +77,7 @@ export class CategoriesEffects {
         personalizationStatusDetermined
       ),
       whenTruthy(),
-      withLatestFrom(this.store.pipe(select(getCategoryRefs)), this.store.pipe(select(getCategoryEntities))),
+      concatLatestFrom(() => [this.store.pipe(select(getCategoryRefs)), this.store.pipe(select(getCategoryEntities))]),
       filter(
         ([id, refs, entities]) =>
           !refs[id] || (refs[id] && !CategoryHelper.isCategoryCompletelyLoaded(entities[refs[id]]))

@@ -1,9 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { Actions, createEffect } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
-import { filter, map, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { filter, map, take, takeWhile } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -45,7 +45,7 @@ export class TrackingConfigEffects {
     this.actions$.pipe(
       takeWhile(() => SSR && this.featureToggleService.enabled('tracking')),
       take(1),
-      withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
+      concatLatestFrom(() => this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
       map(([, gtmToken]) => gtmToken),
       whenTruthy(),
       map(gtmToken => setGTMToken({ gtmToken }))

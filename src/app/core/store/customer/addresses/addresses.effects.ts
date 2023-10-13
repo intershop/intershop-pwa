@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { AddressService } from 'ish-core/services/address/address.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -46,7 +46,7 @@ export class AddressesEffects {
     this.actions$.pipe(
       ofType(createCustomerAddress),
       mapToPayloadProperty('address'),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       filter(([address, customer]) => !!address || !!customer),
       concatMap(([address, customer]) =>
         this.addressService.createCustomerAddress(customer.customerNo, address).pipe(
@@ -69,7 +69,7 @@ export class AddressesEffects {
     this.actions$.pipe(
       ofType(updateCustomerAddress),
       mapToPayloadProperty('address'),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       filter(([address, customer]) => !!address || !!customer),
       mergeMap(([address]) =>
         this.addressService.updateCustomerAddress('-', address).pipe(
@@ -90,7 +90,7 @@ export class AddressesEffects {
     this.actions$.pipe(
       ofType(deleteCustomerAddress),
       mapToPayloadProperty('addressId'),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       filter(([addressId, customer]) => !!addressId || !!customer),
       mergeMap(([addressId, customer]) =>
         this.addressService.deleteCustomerAddress(customer.customerNo, addressId).pipe(

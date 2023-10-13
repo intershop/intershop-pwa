@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
@@ -60,7 +60,7 @@ export class OrderTemplateEffects {
   loadOrderTemplates$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrderTemplates),
-      withLatestFrom(this.store.pipe(select(getUserAuthorized))),
+      concatLatestFrom(() => this.store.pipe(select(getUserAuthorized))),
       filter(([, authorized]) => authorized),
       switchMap(() =>
         this.orderTemplateService.getOrderTemplates().pipe(

@@ -50,7 +50,6 @@
         "@ngrx/avoid-mapping-selectors": "off",
         "@ngrx/no-store-subscription": "off",
         "@ngrx/prefer-effect-callback-in-block-statement": "off",
-        "@ngrx/prefer-concat-latest-from": "off",
         "@ngrx/prefix-selectors-with-select": "off",
         "@ngrx/select-style": ["warn", "operator"],
         "@typescript-eslint/ban-tslint-comment": "error",

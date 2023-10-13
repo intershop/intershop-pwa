@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -19,10 +19,10 @@ export class SavedTactonConfigurationEffects {
     this.actions$.pipe(
       ofType(setCurrentConfiguration),
       mapToPayloadProperty('configuration'),
-      withLatestFrom(
+      concatLatestFrom(() => [
         this.store.pipe(select(getTactonProductForSelectedProduct)),
-        this.store.pipe(select(getLoggedInUser))
-      ),
+        this.store.pipe(select(getLoggedInUser)),
+      ]),
       map(([configuration, tactonProduct, user]) =>
         saveTactonConfigurationReference({ configuration, tactonProduct, user: user?.login })
       )

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
 
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
@@ -74,7 +74,7 @@ export class BasketPaymentEffects {
     this.actions$.pipe(
       ofType(createBasketPayment),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       map(([payload, customer]) => ({
         saveForLater: payload.saveForLater,
         paymentInstrument: payload.paymentInstrument,
@@ -142,7 +142,7 @@ export class BasketPaymentEffects {
     this.actions$.pipe(
       ofType(deleteBasketPayment),
       mapToPayloadProperty('paymentInstrument'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       concatMap(([paymentInstrument, basket]) =>
         this.paymentService.deleteBasketPaymentInstrument(basket, paymentInstrument).pipe(
           map(() => deleteBasketPaymentSuccess()),
