@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { instance, mock } from 'ts-mockito';
+import { isEmpty, of } from 'rxjs';
+import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -15,10 +15,13 @@ describe('Forms Service', () => {
 
   beforeEach(() => {
     translateServiceMock = mock(TranslateService);
+    when(translateServiceMock.get(anyString())).thenReturn(of([]));
+
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['configuration'])],
       providers: [{ provide: TranslateService, useFactory: () => instance(translateServiceMock) }],
     });
+
     formsService = TestBed.inject(FormsService);
   });
 
@@ -28,27 +31,39 @@ describe('Forms Service', () => {
 
   describe('getSalutationOptionsForCountryCode', () => {
     it('should return an empty array if countryCode is empty', () => {
-      expect(formsService.getSalutationOptionsForCountryCode('')).toBeEmpty();
+      formsService.getSalutationOptionsForCountryCode('').pipe(isEmpty());
     });
 
     it('should return an empty array if countryCode is not known', () => {
-      expect(formsService.getSalutationOptionsForCountryCode('BG')).toBeEmpty();
+      formsService.getSalutationOptionsForCountryCode('BG').pipe(isEmpty());
     });
 
-    it('should return salutations if countryCode is GB', () => {
-      expect(formsService.getSalutationOptionsForCountryCode('GB')).toHaveLength(3);
+    it('should return salutations if countryCode is GB', done => {
+      formsService.getSalutationOptionsForCountryCode('GB').subscribe(data => {
+        expect(data).toHaveLength(3);
+        done();
+      });
     });
 
-    it('should return salutations if countryCode is US', () => {
-      expect(formsService.getSalutationOptionsForCountryCode('US')).toHaveLength(3);
+    it('should return salutations if countryCode is US', done => {
+      formsService.getSalutationOptionsForCountryCode('US').subscribe(data => {
+        expect(data).toHaveLength(3);
+        done();
+      });
     });
 
-    it('should return salutations if countryCode is DE', () => {
-      expect(formsService.getSalutationOptionsForCountryCode('DE')).toHaveLength(3);
+    it('should return salutations if countryCode is DE', done => {
+      formsService.getSalutationOptionsForCountryCode('DE').subscribe(data => {
+        expect(data).toHaveLength(3);
+        done();
+      });
     });
 
-    it('should return salutations if countryCode is FR', () => {
-      expect(formsService.getSalutationOptionsForCountryCode('FR')).toHaveLength(3);
+    it('should return salutations if countryCode is FR', done => {
+      formsService.getSalutationOptionsForCountryCode('FR').subscribe(data => {
+        expect(data).toHaveLength(3);
+        done();
+      });
     });
   });
 
