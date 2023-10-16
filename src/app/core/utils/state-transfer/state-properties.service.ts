@@ -30,9 +30,15 @@ export class StatePropertiesService {
   constructor(private store: Store) {}
 
   /**
-   * Retrieve property from first set property of server state, system environment or environment.ts
+   * Retrieve property from first set property of server state, system environment or environment.ts (default)
+   * optional the fallback to default can be disabled
+   * e.g. for production environments where there should not be a fallback for the system environment configuration
    */
-  getStateOrEnvOrDefault<T>(envKey: string, envPropKey: keyof Environment): Observable<T> {
+  getStateOrEnvOrDefault<T>(
+    envKey: string,
+    envPropKey: keyof Environment,
+    options?: { disableDefault: boolean }
+  ): Observable<T> {
     return this.store.pipe(
       select(getConfigurationState),
       mapToProperty(envPropKey as keyof ConfigurationType),
@@ -41,8 +47,10 @@ export class StatePropertiesService {
           return value;
         } else if (SSR && process.env[envKey]) {
           return process.env[envKey];
-        } else {
+        } else if (!options?.disableDefault) {
           return environment[envPropKey];
+        } else {
+          return;
         }
       }),
       SSR

@@ -65,7 +65,9 @@ export class ConfigurationEffects {
         ofType(ROOT_EFFECTS_INIT),
         take(1),
         withLatestFrom(
-          this.stateProperties.getStateOrEnvOrDefault<string>('ICM_BASE_URL', 'icmBaseURL'),
+          this.stateProperties.getStateOrEnvOrDefault<string>('ICM_BASE_URL', 'icmBaseURL', {
+            disableDefault: PRODUCTION_MODE,
+          }),
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER', 'icmServer'),
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER_STATIC', 'icmServerStatic'),
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_CHANNEL', 'icmChannel'),

@@ -27,7 +27,8 @@ export class UniversalErrorHandler implements ErrorHandler {
       try {
         console.error('ERROR', JSON.stringify(error));
       } catch (_) {
-        console.error('ERROR (cannot stringify)', error);
+        // do not log the error if it can't be stringified, it floods the log with irrelevant information
+        console.error('ERROR (cannot stringify)');
       }
     } else {
       console.error('ERROR', error);
