@@ -50,7 +50,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 type ApiTokenCookieType = 'user' | 'order';
 
-interface ApiTokenCookie {
+export interface ApiTokenCookie {
   apiToken: string;
   type: ApiTokenCookieType;
   isAnonymous?: boolean;
