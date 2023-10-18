@@ -131,7 +131,7 @@ describe('Api Token Service', () => {
 
     it('should vanish apiToken information when cookie is removed unexpectedly from the outside', done => {
       when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie), undefined);
-      combineLatest([apiTokenService.apiToken$, apiTokenService.cookieVanishes$]).subscribe(
+      combineLatest([apiTokenService.getApiToken$(), apiTokenService.getCookieVanishes$()]).subscribe(
         ([apiToken, cookieVanishes]) => {
           expect(apiToken).toBeUndefined();
           expect(cookieVanishes).toEqual('user');
@@ -150,10 +150,13 @@ describe('Api Token Service', () => {
 
     it('should set correct apiToken when new apiToken is set unexpectedly from the outside', done => {
       when(cookieServiceMock.get('apiToken')).thenReturn(undefined, JSON.stringify(initialApiTokenCookie));
-      apiTokenService.apiToken$.pipe(skip(1)).subscribe(apiToken => {
-        expect(apiToken).toEqual('123@apiToken');
-        done();
-      });
+      apiTokenService
+        .getApiToken$()
+        .pipe(skip(1))
+        .subscribe(apiToken => {
+          expect(apiToken).toEqual('123@apiToken');
+          done();
+        });
 
       setTimeout(() => undefined, 3000);
     });

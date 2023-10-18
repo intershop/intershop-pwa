@@ -56,12 +56,14 @@ import { BasketEffects } from './basket.effects';
 describe('Basket Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
+  let apiTokenMock: ApiTokenService;
   let effects: BasketEffects;
   let store: Store;
   let router: Router;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
+    apiTokenMock = mock(ApiTokenService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -70,11 +72,7 @@ describe('Basket Effects', () => {
         RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
       providers: [
-        {
-          provide: ApiTokenService,
-          useFactory: () => instance(mock(ApiTokenService)),
-          useValue: { apiToken$: of({ apiToken: 'apiToken' }) },
-        },
+        { provide: ApiTokenService, useFactory: () => instance(apiTokenMock) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketEffects,
         provideMockActions(() => actions$),
@@ -84,6 +82,8 @@ describe('Basket Effects', () => {
     effects = TestBed.inject(BasketEffects);
     store = TestBed.inject(Store);
     router = TestBed.inject(Router);
+
+    when(apiTokenMock.getApiToken$()).thenReturn(of('apiToken'));
   });
 
   describe('loadBasket$', () => {

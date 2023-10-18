@@ -63,8 +63,9 @@ const DEFAULT_EXPIRY_TIME = 3600000;
 
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
-  apiToken$: BehaviorSubject<string>;
-  cookieVanishes$ = new Subject<ApiTokenCookieType>();
+  private apiToken$: BehaviorSubject<string>;
+
+  private cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
   private cookieOptions: CookieOptions = {};
 
@@ -161,6 +162,10 @@ export class ApiTokenService {
     );
   }
 
+  getApiToken$(): Observable<string> {
+    return this.apiToken$.asObservable();
+  }
+
   /**
    * Should remove the actual apiToken cookie and fetch a new anonymous user token
    */
@@ -171,6 +176,10 @@ export class ApiTokenService {
   setApiToken(apiToken: string, options?: CookieOptions) {
     this.cookieOptions = options;
     this.apiToken$.next(apiToken);
+  }
+
+  getCookieVanishes$(): Observable<ApiTokenCookieType> {
+    return this.cookieVanishes$.asObservable();
   }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

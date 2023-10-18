@@ -36,7 +36,7 @@ describe('Icm Identity Provider', () => {
 
   beforeEach(() => {
     when(apiTokenService.restore$()).thenReturn(of(true));
-    when(apiTokenService.cookieVanishes$).thenReturn(new Subject());
+    when(apiTokenService.getCookieVanishes$()).thenReturn(new Subject());
 
     resetCalls(apiTokenService);
     resetCalls(accountFacade);
