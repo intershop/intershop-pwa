@@ -12,7 +12,7 @@ export function setDeployUrlInFile(deployUrl: string, path: string, input: strin
 
     let newInput = input;
 
-    const cssRegex = /url\((?!http)\/?(assets.*?|[a-zA-Z].*?woff2?)\)/g;
+    const cssRegex = /url\((?!http|data)\/?(assets.*?|[a-zA-Z].*?woff2?)\)/g;
     if (cssRegex.test(newInput)) {
       newInput = newInput.replace(cssRegex, (...args) => `url(${deployUrl}${args[1]})`);
     }
