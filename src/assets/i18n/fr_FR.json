@@ -1129,6 +1129,7 @@
   "recaptcha.v2.incorrect.error": "Veuillez vérifier que vous êtes une personne réelle.",
   "recaptcha.v3.info_text": "Ce site est protégé par reCAPTCHA et <a href=\"{{0}}\" target=\"_blank\">la politique de confidentialité</a> de Google ainsi que ses <a href=\"{{1}}\" target=\"_blank\">conditions de service</a> s’appliquent.",
   "recentlyViewed.component.heading": "Récemment consultés",
+  "registration.newsletter_subscription.text": "J’accepte de recevoir des bulletins d’information et d’être informé des ventes et des promotions (optionnel).",
   "registration.tac.error.tip": "Veuillez accepter les conditions pour continuer.",
   "registration.tac_privacy_policy.text": "J’accepte les <a href=\"{{0}}\" target=\"_blank\">Conditions générales</a> et <a href=\"{{1}}\" target=\"_blank\">la Politique de confidentialité</a>.",
   "restricted-items.Remove.button": "Supprimer l’article",

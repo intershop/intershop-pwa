@@ -25,6 +25,7 @@ import { OrganizationManagementEffects } from './organization-management/organiz
 import { RequisitionManagementEffects } from './requisition-management/requisition-management.effects';
 import { SsoRegistrationEffects } from './sso-registration/sso-registration.effects';
 import { ssoRegistrationReducer } from './sso-registration/sso-registration.reducer';
+import { UserNewsletterEffects } from './user/user-newsletter.effects';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
 
@@ -53,6 +54,7 @@ const customerEffects = [
   RequisitionManagementEffects,
   SsoRegistrationEffects,
   DataRequestsEffects,
+  UserNewsletterEffects,
 ];
 
 @Injectable()

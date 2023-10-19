@@ -63,6 +63,7 @@ import {
   updateUserPasswordSuccess,
   updateUserPreferredPayment,
   updateUserSuccess,
+  userNewsletterActions,
 } from './user.actions';
 import { UserEffects } from './user.effects';
 
@@ -412,6 +413,23 @@ describe('User Effects', () => {
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
+
+      expect(effects.createUser$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a subscribeUserToNewsletter action when the newsletter-subscription is checked', () => {
+      const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
+
+      when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
+
+      const action = createUser({ customer, credentials, subscribedToNewsletter: true } as CustomerRegistrationType);
+      const completion1 = createUserSuccess({ email: customerLoginType.user.email });
+      const completion2 = userNewsletterActions.subscribeUserToNewsletter({ userEmail: customerLoginType.user.email });
+      const completion3 = loginUser({ credentials });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(bcd)', { b: completion1, c: completion2, d: completion3 });
 
       expect(effects.createUser$).toBeObservable(expected$);
     });

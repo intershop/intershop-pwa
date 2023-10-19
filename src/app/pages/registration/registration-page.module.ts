@@ -7,6 +7,7 @@ import { SharedModule } from 'ish-shared/shared.module';
 import { disablePrefilledExtension } from './formly/disable-prefilled.extension';
 import { RegistrationAddressFieldComponent } from './formly/registration-address-field/registration-address-field.component';
 import { RegistrationHeadingFieldComponent } from './formly/registration-heading-field/registration-heading-field.component';
+import { RegistrationNewsletterFieldComponent } from './formly/registration-newsletter-field/registration-newsletter-field.component';
 import { RegistrationTacFieldComponent } from './formly/registration-tac-field/registration-tac-field.component';
 import { RegistrationApprovalComponent } from './registration-approval/registration-approval.component';
 import { RegistrationPageComponent } from './registration-page.component';
@@ -34,6 +35,7 @@ const registrationFormlyConfig: ConfigOption = {
     },
     { name: 'ish-registration-heading-field', component: RegistrationHeadingFieldComponent },
     { name: 'ish-registration-tac-field', component: RegistrationTacFieldComponent },
+    { name: 'ish-registration-newsletter-field', component: RegistrationNewsletterFieldComponent },
   ],
   extensions: [{ name: 'disable-prefilled', extension: disablePrefilledExtension }],
 };
@@ -48,6 +50,7 @@ const registrationFormlyConfig: ConfigOption = {
     RegistrationAddressFieldComponent,
     RegistrationApprovalComponent,
     RegistrationHeadingFieldComponent,
+    RegistrationNewsletterFieldComponent,
     RegistrationPageComponent,
     RegistrationTacFieldComponent,
   ],

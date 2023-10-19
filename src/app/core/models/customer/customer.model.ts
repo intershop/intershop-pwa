@@ -35,6 +35,7 @@ export type CustomerUserType = {
 export type CustomerRegistrationType = {
   credentials?: Credentials;
   address: Address;
+  subscribedToNewsletter?: boolean;
 } & CustomerUserType &
   Captcha;
 

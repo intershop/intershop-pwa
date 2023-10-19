@@ -80,6 +80,7 @@ describe('Registration Form Configuration Service', () => {
           ],
           [
             "termsAndConditions",
+            "newsletterSubscription",
           ],
         ]
       `);
@@ -113,6 +114,7 @@ describe('Registration Form Configuration Service', () => {
             ],
             [
               "termsAndConditions",
+              "newsletterSubscription",
             ],
           ]
         `);
@@ -139,6 +141,7 @@ describe('Registration Form Configuration Service', () => {
             ],
             [
               "termsAndConditions",
+              "newsletterSubscription",
             ],
           ]
         `);

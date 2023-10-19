@@ -21,6 +21,7 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { CountryService } from 'ish-core/services/country/country.service';
 import { DataRequestsService } from 'ish-core/services/data-requests/data-requests.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
+import { NewsletterService } from 'ish-core/services/newsletter/newsletter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
@@ -172,12 +173,12 @@ describe('Customer Store', () => {
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: AuthorizationService, useFactory: () => instance(mock(AuthorizationService)) },
-        { provide: BasketItemsService, useFactory: () => instance(basketItemsServiceMock) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: DataRequestsService, useFactory: () => instance(mock(DataRequestsService)) },
         { provide: FilterService, useFactory: () => instance(mock(FilterService)) },
+        { provide: NewsletterService, useFactory: () => instance(mock(NewsletterService)) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },
