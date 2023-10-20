@@ -12,7 +12,7 @@ export class IdentityProviderInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (req.url.startsWith(this.appFacade.icmBaseUrl)) {
-      return this.identityProviderFactory.initialized$.pipe(
+      return this.identityProviderFactory.getInitialized$().pipe(
         whenTruthy(),
         first(),
         switchMap(() => this.identityProviderFactory.getInstance()?.intercept(req, next) ?? next.handle(req))

@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { once } from 'lodash-es';
-import { BehaviorSubject, combineLatest, noop } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, noop } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -30,7 +30,7 @@ export class IdentityProviderFactory {
     type?: string;
   };
 
-  initialized$ = new BehaviorSubject<boolean>(false);
+  private initialized$ = new BehaviorSubject<boolean>(false);
 
   constructor(private store: Store, private injector: Injector, private featureToggleService: FeatureToggleService) {
     if (!SSR) {
@@ -99,5 +99,9 @@ export class IdentityProviderFactory {
 
   getType(): string {
     return this.config?.type;
+  }
+
+  getInitialized$(): Observable<boolean> {
+    return this.initialized$.asObservable();
   }
 }

@@ -1,6 +1,8 @@
 import { capitalize, range, snakeCase } from 'lodash-es';
 import { Observable, isObservable, of } from 'rxjs';
 
+import { TriggerReturnType } from 'ish-core/identity-provider/identity-provider.interface';
+
 /**
  * Returns an array of array slices with requested length.
  * Truncates whenever no complete remaining slice could be constructed.
@@ -84,6 +86,15 @@ export function decamelizeString(str: string): string {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isPromise(obj: any): obj is Promise<any> {
+function isPromise(obj: any): obj is Promise<any> {
   return !!obj && typeof obj.then === 'function';
+}
+
+/**
+ * Returns an observable or promise with a triggerReturnType as emitted value
+ */
+export function getTriggerReturnType$(
+  returnType: TriggerReturnType
+): Observable<TriggerReturnType> | Promise<TriggerReturnType> {
+  return isObservable(returnType) || isPromise(returnType) ? returnType : of(returnType);
 }
