@@ -101,6 +101,9 @@ export class IdentityProviderFactory {
     return this.config?.type;
   }
 
+  /**
+   * notifies when correct identity provider is selected
+   */
   getInitialized$(): Observable<boolean> {
     return this.initialized$.asObservable();
   }
