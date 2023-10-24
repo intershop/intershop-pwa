@@ -126,6 +126,27 @@ export class ApiTokenService {
     }
   }
 
+  getApiToken$(): Observable<string> {
+    return this.apiToken$.asObservable();
+  }
+
+  /**
+   * removes the current apiToken cookie
+   */
+  removeApiToken() {
+    this.apiToken$.next(undefined);
+  }
+
+  /**
+   * sets new apiToken and new apiToken cookie options when available
+   */
+  setApiToken(apiToken: string, options?: CookieOptions) {
+    if (options) {
+      this.cookieOptions = options;
+    }
+    this.apiToken$.next(apiToken);
+  }
+
   hasUserApiTokenCookie() {
     const apiTokenCookie = this.parseCookie();
     return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
@@ -183,27 +204,6 @@ export class ApiTokenService {
         return of(true);
       })
     );
-  }
-
-  getApiToken$(): Observable<string> {
-    return this.apiToken$.asObservable();
-  }
-
-  /**
-   * remove the actual apiToken cookie
-   */
-  removeApiToken() {
-    this.apiToken$.next(undefined);
-  }
-
-  /**
-   * sets new apiToken and new apiToken cookie options when available
-   */
-  setApiToken(apiToken: string, options?: CookieOptions) {
-    if (options) {
-      this.cookieOptions = options;
-    }
-    this.apiToken$.next(apiToken);
   }
 
   getCookieVanishes$(): Observable<ApiTokenCookieType> {
