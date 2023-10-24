@@ -94,8 +94,7 @@ With the ICM identity provider, for example, the user is then automatically logg
 
 ## Activate Identity Provider on specific paths
 
-In future the PWA will have more cases which needs to activate the identity provider for specific pwa url paths.
-This is the case when the PWA enters a `/punchout` route in order to automatically login a punchout user.
+It is possible to activate the identity provider for specific pwa url paths, e.g. login automatically a punchout user when the PWA enters a `/punchout` route.
 The behavior can be configured primarily by adding `activeOnPath` property for the IDENTITY_PROVIDER_IMPLEMENTOR.
 
 ```typescript
@@ -115,7 +114,7 @@ The behavior can be configured primarily by adding `activeOnPath` property for t
 
 This configuration would activate the specific identity provider, when the PWA initially routes to a specific url.
 
-Another possibility or the identity provider activation could be the usage of the `OVERRIDE_IDENTITY_PROVIDERS` environment variable within the nginx deployment.
+Another possibility of the identity provider activation could be the usage of the `OVERRIDE_IDENTITY_PROVIDERS` environment variable within the nginx deployment.
 
 ```yaml
 nginx:
