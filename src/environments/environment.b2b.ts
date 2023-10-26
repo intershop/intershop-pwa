@@ -8,6 +8,8 @@ export const environment: Environment = {
 
   themeColor: '#688dc3',
 
+  enableClearBasketButton: true,
+
   features: [
     ...ENVIRONMENT_DEFAULTS.features,
     'businessCustomerRegistration',

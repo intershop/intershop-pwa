@@ -98,6 +98,8 @@ export interface Environment {
    */
   defaultProductListingViewType?: ViewType | Partial<Record<DeviceType, ViewType>>;
 
+  enableClearBasketButton?: boolean;
+
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
 
@@ -172,6 +174,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     master: 6,
   },
   defaultDeviceType: 'mobile',
+  enableClearBasketButton: false,
   fallbackLocales: ['en_US', 'de_DE', 'fr_FR'],
   multiSiteLocaleMap: {
     en_US: '/en',

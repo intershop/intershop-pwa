@@ -1,0 +1,24 @@
+<button
+  *ngIf="visible"
+  type="submit"
+  name="clearBasket"
+  class="btn btn-secondary"
+  [ngClass]="cssClass"
+  [attr.title]="'shopping_cart.clear_basket' | translate"
+  data-testing-id="clearBasketButton"
+  (click)="clearDialog.show()"
+>
+  {{ 'shopping_cart.clear_basket' | translate }}
+</button>
+
+<ish-modal-dialog
+  #clearDialog
+  [options]="{
+    confirmText: 'shopping_cart.clear_basket.confirm_button' | translate,
+    rejectText: 'shopping_cart.clear_basket.cancel_button' | translate,
+    titleText: 'shopping_cart.clear_basket.dialog_header' | translate
+  }"
+  (confirmed)="clearBasket()"
+>
+  {{ 'shopping_cart.clear_basket.question' | translate }}
+</ish-modal-dialog>

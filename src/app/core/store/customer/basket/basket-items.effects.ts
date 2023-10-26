@@ -20,6 +20,9 @@ import {
   deleteBasketItem,
   deleteBasketItemFail,
   deleteBasketItemSuccess,
+  deleteBasketItems,
+  deleteBasketItemsFail,
+  deleteBasketItemsSuccess,
   loadBasket,
   updateBasketItem,
   updateBasketItemFail,
@@ -141,11 +144,26 @@ export class BasketItemsEffects {
   );
 
   /**
+   * Delete basket item effect.
+   */
+  deleteBasketItems$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteBasketItems),
+      concatMap(() =>
+        this.basketItemsService.deleteBasketItems().pipe(
+          map(info => deleteBasketItemsSuccess({ info })),
+          mapErrorToAction(deleteBasketItemsFail)
+        )
+      )
+    )
+  );
+
+  /**
    * Triggers a LoadBasket action after successful interaction with the Basket API.
    */
   loadBasketAfterBasketItemsChangeSuccess$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(addItemsToBasketSuccess, updateBasketItemSuccess, deleteBasketItemSuccess),
+      ofType(addItemsToBasketSuccess, updateBasketItemSuccess, deleteBasketItemSuccess, deleteBasketItemsSuccess),
       map(() => loadBasket())
     )
   );

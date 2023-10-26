@@ -124,6 +124,21 @@ export class BasketItemsService {
   }
 
   /**
+   * Remove all line items from the currently used basket.
+   */
+  deleteBasketItems(): Observable<BasketInfo[]> {
+    return this.apiService
+      .currentBasketEndpoint()
+      .delete<{ infos: BasketInfo[] }>(`items`, {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(payload => ({ ...payload })),
+        map(BasketInfoMapper.fromInfo)
+      );
+  }
+
+  /**
    * Updates the desired delivery date at all those line items of the current basket, whose desired delivery date differs from the given date.
    *
    * @param  desiredDeliveryDate      Desired delivery date in iso format, i.e. yyyy-mm-dd.

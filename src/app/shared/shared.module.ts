@@ -77,6 +77,7 @@ import { BasketShippingMethodComponent } from './components/basket/basket-shippi
 import { BasketValidationItemsComponent } from './components/basket/basket-validation-items/basket-validation-items.component';
 import { BasketValidationProductsComponent } from './components/basket/basket-validation-products/basket-validation-products.component';
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
+import { ClearBasketComponent } from './components/basket/clear-basket/clear-basket.component';
 import { MiniBasketContentComponent } from './components/basket/mini-basket-content/mini-basket-content.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
@@ -254,6 +255,7 @@ const exportedComponents = [
   BasketShippingMethodComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
+  ClearBasketComponent,
   ConfirmLeaveModalComponent,
   ContentIncludeComponent,
   ContentNavigationComponent,
