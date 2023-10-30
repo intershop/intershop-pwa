@@ -33,7 +33,7 @@ export class ICMIdentityProvider implements IdentityProvider {
   init() {
     this.apiTokenService.restore$().subscribe(noop);
 
-    this.apiTokenService.cookieVanishes$.subscribe(type => {
+    this.apiTokenService.getCookieVanishes$().subscribe(type => {
       this.accountFacade.logoutUser({ revokeApiToken: false });
       if (type === 'user') {
         this.router.navigate(['/login'], {

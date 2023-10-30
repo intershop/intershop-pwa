@@ -73,4 +73,13 @@ export class CustomerStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<CustomerState>)[]) {
     return StoreModule.forFeature('_customer', pick(customerReducers, reducers));
   }
+
+  /**
+   * Customer_STORE_CONFIG needs to be provided in test
+   * @example
+   * { provide: CUSTOMER_STORE_CONFIG, useClass: CustomerStoreConfig }
+   */
+  static forTestingWithMetaReducer(...reducers: (keyof ActionReducerMap<CustomerState>)[]) {
+    return StoreModule.forFeature('_customer', pick(customerReducers, reducers), CUSTOMER_STORE_CONFIG);
+  }
 }

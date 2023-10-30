@@ -10,6 +10,8 @@ kb_sync_latest_only
 ## From 4.2 to 5.0
 
 We renamed the input parameter 'id' to 'productListingId' for the product listing component to avoid unintentionally having more than one element with the same id in the HTML document.
+The api-token.service has been refactored and the class variables `apiToken$` and `cookieVanishes$` have got the private modifier.
+Use the public getter/setter methods to access these variables outside the class.
 
 ## From 4.1 to 4.2
 
