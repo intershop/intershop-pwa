@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
@@ -176,7 +176,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(updateUser),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       concatMap(([{ user, credentials, successMessage }, customer]) =>
         this.userService.updateUser({ user, customer }, credentials).pipe(
           map(changedUser => updateUserSuccess({ user: changedUser, successMessage })),
@@ -190,8 +190,8 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(updateUserPassword),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
-      withLatestFrom(this.store.pipe(select(getLoggedInUser))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInUser))),
       concatMap(([[payload, customer], user]) =>
         this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
           map(() =>
@@ -209,7 +209,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(updateCustomer),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
       concatMap(([{ customer, successMessage }]) =>
         this.userService.updateCustomer(customer).pipe(
@@ -224,7 +224,7 @@ export class UserEffects {
     () =>
       this.actions$.pipe(
         ofType(updateUserSuccess, updateCustomerSuccess, updateUserPasswordSuccess),
-        withLatestFrom(this.store.pipe(select(selectUrl))),
+        concatLatestFrom(() => this.store.pipe(select(selectUrl))),
         filter(([, url]) => url.includes('/account/profile')),
         concatMap(() => from(this.router.navigateByUrl('/account/profile')))
       ),
@@ -243,7 +243,7 @@ export class UserEffects {
   resetUserError$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigatedAction),
-      withLatestFrom(this.store.pipe(select(getUserError))),
+      concatLatestFrom(() => this.store.pipe(select(getUserError))),
       filter(([, error]) => !!error),
       map(() => userErrorReset())
     )
@@ -281,7 +281,7 @@ export class UserEffects {
   loadUserCostCenters$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserCostCenters),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
       mergeMap(() =>
         this.userService.getEligibleCostCenters().pipe(
@@ -295,7 +295,7 @@ export class UserEffects {
   loadUserPaymentMethods$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserPaymentMethods),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       filter(([, customer]) => !!customer),
       concatMap(([, customer]) =>
         this.paymentService.getUserPaymentMethods(customer).pipe(
@@ -310,7 +310,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(deleteUserPaymentInstrument),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       filter(([, customer]) => !!customer),
       concatMap(([payload, customer]) =>
         this.paymentService.deleteUserPaymentInstrument(customer.customerNo, payload.id).pipe(
@@ -333,7 +333,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(updateUserPreferredPayment),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       filter(([, customer]) => !!customer),
       concatMap(([payload, customer]) =>
         this.paymentService

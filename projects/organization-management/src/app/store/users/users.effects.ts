@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, exhaustMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, exhaustMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectPath, selectRouteParam } from 'ish-core/store/core/router';
@@ -75,7 +75,7 @@ export class UsersEffects {
   loadSystemRoles$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUsers),
-      withLatestFrom(this.store.pipe(select(isSystemUserRolesLoaded))),
+      concatLatestFrom(() => this.store.pipe(select(isSystemUserRolesLoaded))),
       filter(([, loaded]) => !loaded),
       switchMap(() => this.usersService.getAvailableRoles().pipe(map(roles => loadSystemUserRolesSuccess({ roles }))))
     )
@@ -143,7 +143,7 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(setUserRolesSuccess),
-        withLatestFrom(this.store.pipe(select(selectPath))),
+        concatLatestFrom(() => this.store.pipe(select(selectPath))),
         filter(([, path]) => path?.endsWith('users/:B2BCustomerLogin/roles')),
         concatMap(() => this.navigateTo('../'))
       ),
@@ -154,7 +154,7 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(setUserRolesSuccess),
       mapToPayloadProperty('login'),
-      withLatestFrom(this.store.pipe(select(getLoggedInUser))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInUser))),
       filter(([login, currentUser]) => login === currentUser.login),
       map(() => loadRolesAndPermissions())
     )
@@ -177,7 +177,7 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(setUserBudgetSuccess),
-        withLatestFrom(this.store.pipe(select(selectPath))),
+        concatLatestFrom(() => this.store.pipe(select(selectPath))),
         filter(([, path]) => path?.endsWith('users/:B2BCustomerLogin/budget')),
         concatMap(() => this.navigateTo('../'))
       ),
@@ -188,7 +188,7 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(updateUserSuccess),
       mapToPayloadProperty('user'),
-      withLatestFrom(this.store.pipe(select(getLoggedInUser), whenTruthy())),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInUser), whenTruthy())),
       filter(([updatedUser, currentUser]) => updatedUser.login === currentUser.login),
       map(() => loadCompanyUser())
     )
@@ -198,7 +198,7 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(setUserBudgetSuccess),
       mapToPayloadProperty('login'),
-      withLatestFrom(this.store.pipe(select(getLoggedInUser))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInUser))),
       filter(([login, currentUser]) => login === currentUser.login),
       map(() => loadRolesAndPermissions())
     )
@@ -207,7 +207,7 @@ export class UsersEffects {
   successMessageAfterUpdate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateUserSuccess, setUserRolesSuccess, setUserBudgetSuccess),
-      withLatestFrom(this.store.pipe(select(getSelectedUser), whenTruthy())),
+      concatLatestFrom(() => this.store.pipe(select(getSelectedUser), whenTruthy())),
       map(([, user]) =>
         displaySuccessMessage({
           message: 'account.organization.user_management.update_user.confirmation',

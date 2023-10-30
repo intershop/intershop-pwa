@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concat, from } from 'rxjs';
 import {
@@ -14,7 +14,6 @@ import {
   switchMap,
   toArray,
   window,
-  withLatestFrom,
 } from 'rxjs/operators';
 
 import {
@@ -64,7 +63,7 @@ export class BasketItemsEffects {
       ofType(addProductToBasket),
       mapToPayload(),
       // add unit
-      withLatestFrom(this.store.pipe(select(getProductEntities))),
+      concatLatestFrom(() => this.store.pipe(select(getProductEntities))),
       map(([val, entities]) => ({ ...val, unit: entities[val.sku]?.packingUnit })),
       // accumulate all actions
       window(this.actions$.pipe(ofType(addProductToBasket), debounceTime(500))),
@@ -77,7 +76,7 @@ export class BasketItemsEffects {
     this.actions$.pipe(
       ofType(addItemsToBasket),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
       concatMap(([{ items }, basketId]) => {
         if (basketId) {
           return this.basketService.addItemsToBasket(items).pipe(
@@ -113,7 +112,7 @@ export class BasketItemsEffects {
     this.actions$.pipe(
       ofType(updateBasketItem),
       mapToPayloadProperty('lineItemUpdate'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       filter(([payload, basket]) => !!basket.lineItems && !!payload),
       concatMap(([lineItem]) =>
         this.basketService
@@ -138,7 +137,7 @@ export class BasketItemsEffects {
     this.actions$.pipe(
       ofType(updateBasketItems),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       filter(([payload, basket]) => !!basket.lineItems && !!payload.lineItemUpdates),
       map(([{ lineItemUpdates }, { lineItems }]) =>
         LineItemUpdateHelper.filterUpdatesByItems(lineItemUpdates, lineItems as LineItemUpdateHelperItem[])
@@ -172,7 +171,7 @@ export class BasketItemsEffects {
     this.actions$.pipe(
       ofType(updateBasketItemsFail),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       map(() => validateBasket({ scopes: ['Products'] }))
     )
   );

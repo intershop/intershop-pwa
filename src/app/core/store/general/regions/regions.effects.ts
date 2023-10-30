@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 import { CountryService } from 'ish-core/services/country/country.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -17,7 +17,7 @@ export class RegionsEffects {
     this.actions$.pipe(
       ofType(loadRegions),
       mapToPayloadProperty('countryCode'),
-      withLatestFrom(this.store.pipe(select(getAllRegions))),
+      concatLatestFrom(() => this.store.pipe(select(getAllRegions))),
       filter(([countryCode, allRegions]) => !allRegions.some(r => r.countryCode === countryCode)),
       mergeMap(([countryCode]) =>
         this.countryService.getRegionsByCountry(countryCode).pipe(

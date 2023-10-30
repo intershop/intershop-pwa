@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, from, identity } from 'rxjs';
@@ -101,7 +101,7 @@ export class ProductsEffects {
     this.actions$.pipe(
       ofType(loadProductIfNotLoaded),
       mapToPayload(),
-      withLatestFrom(this.store.pipe(select(getProductEntities))),
+      concatLatestFrom(() => this.store.pipe(select(getProductEntities))),
       filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
       map(([{ sku }]) => loadProduct({ sku }))
     )
@@ -115,7 +115,7 @@ export class ProductsEffects {
       ofType(loadProductsForCategory),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-      withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage('category')))),
+      concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('category')))),
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
       mergeMap(({ categoryId, amount, sorting, offset, page }) =>
         this.productsService.getCategoryProducts(categoryId, amount, sorting, offset).pipe(
@@ -150,7 +150,7 @@ export class ProductsEffects {
       ofType(loadProductsForMaster),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-      withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage('master')))),
+      concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('master')))),
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
       mergeMap(({ masterSKU, amount, sorting, offset, page }) =>
         this.productsService.getProductsForMaster(masterSKU, amount, sorting, offset).pipe(

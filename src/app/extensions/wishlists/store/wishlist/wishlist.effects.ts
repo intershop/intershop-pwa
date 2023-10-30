@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { debounceTime, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
@@ -51,7 +51,7 @@ export class WishlistEffects {
   loadWishlists$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadWishlists),
-      withLatestFrom(this.store.pipe(select(getUserAuthorized))),
+      concatLatestFrom(() => this.store.pipe(select(getUserAuthorized))),
       filter(([, authorized]) => authorized),
       switchMap(() =>
         this.wishlistService.getWishlists().pipe(

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, identity } from 'rxjs';
-import { concatMap, filter, first, map, switchMap, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, first, map, switchMap, take, takeWhile } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
@@ -69,7 +69,10 @@ export class ServerConfigEffects {
           ofType(loadServerConfigSuccess),
           take(1),
           takeWhile(() => this.featureToggleService.enabled('saveLanguageSelection')),
-          withLatestFrom(this.store.pipe(select(getAvailableLocales)), this.store.pipe(select(getCurrentLocale))),
+          concatLatestFrom(() => [
+            this.store.pipe(select(getAvailableLocales)),
+            this.store.pipe(select(getCurrentLocale)),
+          ]),
           map(([, availableLocales, currentLocale]) => ({
             cookieLocale: this.cookiesService.get('preferredLocale'),
             availableLocales,

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService, BasketUpdateType } from 'ish-core/services/basket/basket.service';
@@ -42,7 +42,7 @@ export class BasketAddressesEffects {
   createAddressForBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createBasketAddress),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
 
       mergeMap(([action, customer]) => {
         // create address at customer for logged in user
@@ -114,7 +114,7 @@ export class BasketAddressesEffects {
     this.actions$.pipe(
       ofType(updateBasketAddress),
       mapToPayloadProperty('address'),
-      withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
       mergeMap(([address, customer]) => {
         // create address at customer for logged in user
         if (customer) {

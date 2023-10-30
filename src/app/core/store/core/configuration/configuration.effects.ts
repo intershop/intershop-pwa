@@ -1,10 +1,10 @@
 import { ApplicationRef, Inject, Injectable, isDevMode } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
-import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
+import { Actions, ROOT_EFFECTS_INIT, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, defer, fromEvent, iif, merge } from 'rxjs';
-import { distinctUntilChanged, map, mergeMap, take, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, mergeMap, take, takeWhile } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
@@ -64,7 +64,7 @@ export class ConfigurationEffects {
       this.actions$.pipe(
         ofType(ROOT_EFFECTS_INIT),
         take(1),
-        withLatestFrom(
+        concatLatestFrom(() => [
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_BASE_URL', 'icmBaseURL', {
             disableDefault: PRODUCTION_MODE,
           }),
@@ -85,8 +85,8 @@ export class ConfigurationEffects {
           this.stateProperties.getStateOrEnvOrDefault<ConfigurationType['multiSiteLocaleMap']>(
             'MULTI_SITE_LOCALE_MAP',
             'multiSiteLocaleMap'
-          )
-        ),
+          ),
+        ]),
         map(
           ([
             ,

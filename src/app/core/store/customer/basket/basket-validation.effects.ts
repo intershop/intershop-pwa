@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { intersection } from 'lodash-es';
 import { EMPTY, Observable, from } from 'rxjs';
@@ -61,7 +61,7 @@ export class BasketValidationEffects {
   startCheckoutWithoutAcceleration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(startCheckout),
-      withLatestFrom(this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
+      concatLatestFrom(() => this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
       filter(([, acc]) => !acc),
       map(() => continueCheckout({ targetStep: CheckoutStepType.Addresses }))
     )
@@ -73,7 +73,7 @@ export class BasketValidationEffects {
   startCheckoutWithAcceleration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(startCheckout),
-      withLatestFrom(this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
+      concatLatestFrom(() => this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
       filter(([, acc]) => acc),
       concatMap(() =>
         this.basketService.validateBasket(this.validationSteps[CheckoutStepType.BeforeCheckout].scopes).pipe(

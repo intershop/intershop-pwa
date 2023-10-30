@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, from, iif, of } from 'rxjs';
@@ -132,7 +132,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(loadBasketSuccess),
       mapToPayloadProperty('basket'),
-      withLatestFrom(this.store.pipe(select(getCurrentCurrency))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentCurrency))),
       filter(([basket, currency]) => basket.purchaseCurrency !== currency),
       take(1),
       map(() => updateBasket({ update: { calculated: true } }))
@@ -160,7 +160,7 @@ export class BasketEffects {
   loadBasketEligibleShippingMethods$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadBasketEligibleShippingMethods),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       concatMap(([, basket]) =>
         this.basketService.getBasketEligibleShippingMethods(basket.bucketId).pipe(
           map(result => loadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
@@ -227,7 +227,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(setBasketDesiredDeliveryDate),
       mapToPayloadProperty('desiredDeliveryDate'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       mergeMap(([date, basket]) =>
         this.basketService.updateBasketItemsDesiredDeliveryDate(date, basket?.lineItems).pipe(
           switchMap(() => [
@@ -252,7 +252,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(setBasketAttribute),
       mapToPayloadProperty('attribute'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       mergeMap(([attr, basket]) =>
         (this.basketContainsAttribute(basket, attr.name)
           ? this.basketService.updateBasketAttribute(attr)
@@ -272,7 +272,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(deleteBasketAttribute),
       mapToPayloadProperty('attributeName'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       mergeMap(([name, basket]) =>
         this.basketContainsAttribute(basket, name)
           ? this.basketService.deleteBasketAttribute(name).pipe(
@@ -309,7 +309,7 @@ export class BasketEffects {
   loadOrMergeBasketAfterLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loginUserSuccess),
-      withLatestFrom(this.anonymousBasket$),
+      concatLatestFrom(() => this.anonymousBasket$),
       switchMap(([, [sourceBasketId, sourceApiToken]]) =>
         this.basketService.getBaskets().pipe(
           switchMap(baskets => {
@@ -381,7 +381,7 @@ export class BasketEffects {
   createRequisition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitBasket),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
       concatMap(([, basketId]) =>
         this.basketService.createRequisition(basketId).pipe(
           mergeMap(() => from(this.router.navigate(['/checkout/receipt'])).pipe(map(() => submitBasketSuccess()))),
@@ -398,7 +398,7 @@ export class BasketEffects {
   submitOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitOrder),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       concatMap(([, basket]) => {
         const desiredDeliveryDate: string = AttributeHelper.getAttributeValueByAttributeName(
           basket.attributes,
