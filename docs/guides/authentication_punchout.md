@@ -7,13 +7,13 @@ kb_sync_latest_only
 
 # Authentication with the Punchout Identity Provider
 
-This document describes the main authentication mechanism if punchout is used as identity provider.
+This document describes the authentication mechanism if punchout is used as identity provider.
 If you need an introduction to this topic, read the [Authentication Concept](../concepts/authentication.md) first.
 
 ## Configuration
 
-The PWA must be configured in a correct way to use punchout as an identity provider.
-Apart from the enabled `punchout` feature flag, the following configuration can be added to the Angular CLI environment files for development purposes:
+The PWA must be configured in a specific way to use punchout as an identity provider.
+Apart from the enabled `punchout` feature flag, the following configuration can be added to the Angular CLI `environment.ts` files for development purposes:
 
 ```typescript
 features: [
@@ -27,12 +27,14 @@ identityProviders: {
 },
 ```
 
-For production, this configuration should be provided to the SSR process via environment variables (see [Building and Running Server-Side Rendering][ssr-startup]).
-The usage of identity providers can also be set in the multi-channel configuration (see [Building and Running nginx Docker Image][nginx-startup]).
+> :warning: **NOTE:** This configuration enables the `Punchout` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work. As said this configuration example is only relevant for punchout development purposes.
 
-Additionally, the PWA can be configured to use the punchout identity provider only, when the user enters the punchout route.
-In that case the nginx should be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path][nginx-startup]).
-Nevertheless, the SSR process needs to be provided with the punchout identity provider configuration.
+For production like deployments, the PWA has to be be configured to use the `Punchout` identity provider only when the user enters the `punchout` route.
+This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path][nginx-startup]) for the NGINX container.
+Nevertheless, the SSR process needs to be provided with the punchout identity provider configuration as one of the available identity providers.
+This way the global `identityProvider` configuration is left to be the default ICM configuration.
+
+The following is an example punchout identity provider configuration for `docker-compose` that enables the punchout identity provider on the `punchout` route only.
 
 ```yaml
 pwa:
@@ -47,6 +49,63 @@ nginx:
       .+:
         - path: /punchout
           type: Punchout
+```
+
+For the current PWA Helm Chart that is also used in the PWA Flux deployments the same punchout configuration would look like this.
+
+```yaml
+environment:
+  - name: IDENTITY_PROVIDERS
+    value: |
+      {
+        "Punchout": {"type": "PUNCHOUT"}
+      }
+
+cache:
+  extraEnvVars:
+    - name: OVERRIDE_IDENTITY_PROVIDERS
+      value: |
+        .+:
+          - path: /punchout
+            type: Punchout
+```
+
+> :exclamation: **NOTE:** Be aware that the `OVERRIDE_IDENTITY_PROVIDERS` configuration has to match a potentially used `multiChannel` configuration.
+
+```yaml
+environment:
+  - name: IDENTITY_PROVIDERS
+    value: |
+      {
+        "Punchout": {"type": "PUNCHOUT"}
+      }
+
+cache:
+  extraEnvVars:
+    - name: OVERRIDE_IDENTITY_PROVIDERS
+      value: |
+        .+:
+          - path: /en/punchout
+            type: Punchout
+          - path: /de/punchout
+            type: Punchout
+          - path: /fr/punchout
+            type: Punchout
+
+  multiChannel: |
+    .+:
+      - baseHref: /en
+        channel: default
+        lang: en_US
+      - baseHref: /de
+        channel: default
+        lang: de_DE
+      - baseHref: /fr
+        channel: default
+        lang: fr_FR
+      - baseHref: /b2c
+        channel: default
+        theme: b2c
 ```
 
 ## Login

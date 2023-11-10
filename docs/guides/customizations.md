@@ -273,9 +273,6 @@ This is also a possible way to migrate your custom project to the latest version
 
 Just add the Intershop PWA GitHub repository as a second remote in your project and `git merge` the release branch.
 
-> Prior to 0.16.1 the entire Git history changed completely.
-> Please see [Merging 0.16.1 as 2nd upstream repository: "refusing to merge unrelated histories"](https://github.com/intershop/intershop-pwa/issues/62) for suggestions on importing the new history.
-
 ## Hints
 
 - The Intershop PWA project is configured to follow consistent formatting rules.
