@@ -489,6 +489,10 @@ export function app() {
 
   console.log('ICM_BASE_URL is', ICM_BASE_URL);
 
+  // running behind nginx - make sure to use all x-forwarded headers correctly
+  // see https://expressjs.com/en/guide/behind-proxies.html
+  server.set('trust proxy', true);
+
   return server;
 }
 
