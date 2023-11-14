@@ -36,8 +36,6 @@ export class BasketMockData {
           displayName: 'test',
         },
       ],
-      customerProductID: 'testCustomerProductID',
-      partialOrderNo: 'testPartialOrderNo',
       totals: {},
     } as LineItemView;
   }

@@ -8,6 +8,7 @@ import { concatMap, debounceTime, filter, map, mergeMap, switchMap, toArray, win
 import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getProductEntities, loadProduct } from 'ish-core/store/shopping/products';
+import { omit } from 'ish-core/utils/functions';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import {
@@ -106,8 +107,7 @@ export class BasketItemsEffects {
           .updateBasketItem(lineItem.itemId, {
             quantity: lineItem.quantity > 0 ? { value: lineItem.quantity, unit: lineItem.unit } : undefined,
             product: lineItem.sku,
-            customerProductID: lineItem.customerProductID,
-            partialOrderNo: lineItem.partialOrderNo,
+            ...omit(lineItem, 'itemId', 'quantity', 'sku', 'unit'),
           })
           .pipe(
             map(payload => updateBasketItemSuccess(payload)),
