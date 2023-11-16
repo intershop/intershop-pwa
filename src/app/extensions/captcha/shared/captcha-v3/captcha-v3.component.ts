@@ -3,8 +3,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha';
-import { timer } from 'rxjs';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { throwError, timer } from 'rxjs';
+import { catchError, filter, switchMap, take, tap } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -25,6 +25,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptchaV3Component implements OnInit {
+  private static readonly RECAPTCHA_ERROR_PREFIX = 'Possible configuration error for applied ReCaptchaV3Service!';
+
   @Input({ required: true }) parentForm: FormGroup;
 
   private destroyRef = inject(DestroyRef);
@@ -40,11 +42,7 @@ export class CaptchaV3Component implements OnInit {
         .pipe(
           filter(status => status === 'VALID'),
           take(1),
-          switchMap(() =>
-            timer(0, 2 * (60 - 3) * 1000).pipe(
-              switchMap(() => this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value))
-            )
-          ),
+          switchMap(() => timer(0, 2 * (60 - 3) * 1000).pipe(switchMap(() => this.getRecaptchaToken()))),
           whenTruthy(),
           takeUntilDestroyed(this.destroyRef)
         )
@@ -58,7 +56,7 @@ export class CaptchaV3Component implements OnInit {
         .get('captcha')
         .valueChanges.pipe(
           filter(token => token === undefined),
-          switchMap(() => this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value)),
+          switchMap(() => this.getRecaptchaToken()),
           whenTruthy(),
           takeUntilDestroyed(this.destroyRef)
         )
@@ -67,6 +65,17 @@ export class CaptchaV3Component implements OnInit {
           this.parentForm.get('captcha').updateValueAndValidity();
         });
     }
+  }
+
+  getRecaptchaToken() {
+    return this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value).pipe(
+      tap(token => {
+        if (!token) {
+          throw new Error('The token created by the captcha service is empty.');
+        }
+      }),
+      catchError(err => throwError(() => new Error(CaptchaV3Component.RECAPTCHA_ERROR_PREFIX.concat(err.message))))
+    );
   }
 }
 
