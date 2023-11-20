@@ -68,7 +68,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - uses: 1arp/create-a-file-action@0.2
+      - uses: 1arp/create-a-file-action@0.3
         with:
           path: '.'
           file: 'script.bat'
