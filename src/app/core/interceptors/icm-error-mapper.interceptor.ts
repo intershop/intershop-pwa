@@ -22,7 +22,6 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
   // eslint-disable-next-line complexity
   private mapError(httpError: HttpErrorResponse, request: HttpRequest<unknown>): HttpError {
     const specialHandlers = this.injector.get<SpecialHttpErrorHandler[]>(SPECIAL_HTTP_ERROR_HANDLER, []);
-
     const specialHandler = specialHandlers.find(handler => handler.test(httpError, request));
 
     const responseError: HttpError = {
@@ -37,6 +36,7 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
     if (httpError.headers?.get('error-type') === 'error-missing-attributes') {
       return { ...responseError, message: httpError.error };
     }
+
     if (httpError.headers?.get('error-type') === 'error-invalid-attributes') {
       let message = httpError.error;
       if (typeof request.body === 'object') {
@@ -47,12 +47,14 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
         message,
       };
     }
+
     if (httpError.headers?.get('error-key')) {
       return {
         ...responseError,
         code: httpError.headers.get('error-key'),
       };
     }
+
     if (typeof httpError.error === 'string') {
       return {
         ...responseError,
@@ -60,17 +62,18 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
       };
     }
 
-    if (typeof httpError.error === 'object' && httpError.error) {
-      const errors: {
-        code: string;
-        message: string;
-        causes?: {
+    if (typeof httpError.error === 'object') {
+      // handle error objects with multiple errors
+      if (httpError.error?.errors?.length) {
+        const errors: {
           code: string;
           message: string;
-          paths: string[];
-        }[];
-      }[] = httpError.error?.errors;
-      if (errors?.length) {
+          causes?: {
+            code: string;
+            message: string;
+            paths: string[];
+          }[];
+        }[] = httpError.error.errors;
         if (errors.length === 1) {
           const error = errors[0];
           if (error.causes?.length) {
@@ -85,15 +88,18 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
           ...responseError,
           errors: httpError.error?.errors,
         };
-      } else {
-        return {
-          ...responseError,
-          ...httpError.error,
-        };
       }
+
+      // handle all other error responses with error object
+      return {
+        ...responseError,
+        code: httpError.error?.code || httpError.statusText,
+        message: httpError.error?.message || httpError.message,
+      };
     }
 
-    return pick(httpError, 'status', 'name', 'message');
+    // handle error responses without error object
+    return pick(httpError, 'name', 'status', 'message');
   }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

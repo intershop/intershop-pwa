@@ -33,12 +33,12 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-            {
-              "message": "Unauthorized",
-              "name": "HttpErrorResponse",
-              "status": 401,
-            }
-          `);
+          {
+            "message": "Unauthorized",
+            "name": "HttpErrorResponse",
+            "status": 401,
+          }
+        `);
         done();
       },
     });
@@ -51,12 +51,13 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-        {
-          "message": "Http failure response for some: 400 Bad Request",
-          "name": "HttpErrorResponse",
-          "status": 400,
-        }
-      `);
+          {
+            "code": "Bad Request",
+            "message": "Http failure response for some: 400 Bad Request",
+            "name": "HttpErrorResponse",
+            "status": 400,
+          }
+        `);
         done();
       },
     });
@@ -73,35 +74,35 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-{
-  "errors": [
-    {
-      "causes": [
-        {
-          "code": "basket.promotion_code.add_code_promotion_code_not_found.error",
-          "message": "The promotion code could not be found.",
-          "paths": [
-            "$.code",
-          ],
-        },
-        {
-          "code": "some.other.error",
-          "message": "Some other error.",
-          "paths": [
-            "$.code",
-          ],
-        },
-      ],
-      "code": "basket.promotion_code.add_not_successful.error",
-      "message": "The promotion code could not be added.",
-      "status": "422",
-    },
-  ],
-  "message": "The promotion code could not be added. The promotion code could not be found. Some other error.",
-  "name": "HttpErrorResponse",
-  "status": 422,
-}
-`);
+          {
+            "errors": [
+              {
+                "causes": [
+                  {
+                    "code": "basket.promotion_code.add_code_promotion_code_not_found.error",
+                    "message": "The promotion code could not be found.",
+                    "paths": [
+                      "$.code",
+                    ],
+                  },
+                  {
+                    "code": "some.other.error",
+                    "message": "Some other error.",
+                    "paths": [
+                      "$.code",
+                    ],
+                  },
+                ],
+                "code": "basket.promotion_code.add_not_successful.error",
+                "message": "The promotion code could not be added.",
+                "status": "422",
+              },
+            ],
+            "message": "The promotion code could not be added. The promotion code could not be found. Some other error.",
+            "name": "HttpErrorResponse",
+            "status": 422,
+          }
+        `);
         done();
       },
     });
@@ -137,21 +138,21 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-{
-  "errors": [
-    {
-      "code": "basket.add_line_item_not_successful.error",
-      "message": "The product could not be added to your cart.",
-      "paths": [
-        "$[0]",
-      ],
-      "status": "422",
-    },
-  ],
-  "name": "HttpErrorResponse",
-  "status": 422,
-}
-`);
+          {
+            "errors": [
+              {
+                "code": "basket.add_line_item_not_successful.error",
+                "message": "The product could not be added to your cart.",
+                "paths": [
+                  "$[0]",
+                ],
+                "status": "422",
+              },
+            ],
+            "name": "HttpErrorResponse",
+            "status": 422,
+          }
+        `);
         done();
       },
     });
@@ -176,12 +177,12 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-        {
-          "code": "customer.credentials.login.not_unique.error",
-          "name": "HttpErrorResponse",
-          "status": 409,
-        }
-      `);
+          {
+            "code": "customer.credentials.login.not_unique.error",
+            "name": "HttpErrorResponse",
+            "status": 409,
+          }
+        `);
         done();
       },
     });
@@ -198,12 +199,12 @@ describe('Icm Error Mapper Interceptor', () => {
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
-        {
-          "message": "Bad Request (The following attributes are missing: email,preferredLanguage)",
-          "name": "HttpErrorResponse",
-          "status": 400,
-        }
-      `);
+          {
+            "message": "Bad Request (The following attributes are missing: email,preferredLanguage)",
+            "name": "HttpErrorResponse",
+            "status": 400,
+          }
+        `);
         done();
       },
     });
@@ -232,12 +233,12 @@ describe('Icm Error Mapper Interceptor', () => {
         next: fail,
         error: error => {
           expect(error).toMatchInlineSnapshot(`
-{
-  "message": "Bad Request (The following attributes are invalid: email,preferredLanguage){"email":"asdf@.","preferredLanguage":"ASDF"}",
-  "name": "HttpErrorResponse",
-  "status": 400,
-}
-`);
+            {
+              "message": "Bad Request (The following attributes are invalid: email,preferredLanguage){"email":"asdf@.","preferredLanguage":"ASDF"}",
+              "name": "HttpErrorResponse",
+              "status": 400,
+            }
+          `);
           done();
         },
       });
@@ -255,14 +256,14 @@ describe('Icm Error Mapper Interceptor', () => {
       });
   });
 
-  it('should convert other error responses directly for a fallback', done => {
+  it('should convert other error responses to simplified format', done => {
     http.get('some').subscribe({
       next: fail,
       error: error => {
         expect(error).toMatchInlineSnapshot(`
           {
-            "error": "some other format",
-            "key": "value",
+            "code": "Bad Request",
+            "message": "Http failure response for some: 400 Bad Request",
             "name": "HttpErrorResponse",
             "status": 400,
           }
