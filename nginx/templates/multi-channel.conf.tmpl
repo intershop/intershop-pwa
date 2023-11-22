@@ -55,6 +55,10 @@
 
         rewrite '^(.*)$' '$1$default_rewrite_params' break;
 
+      {{ if getenv "LOADING_FALLBACK" | strings.ToLower | regexp.Match "on|1|true|yes" }}
+        proxy_ignore_client_abort on;
+      {{ end }}
+
         proxy_pass {{ getenv "UPSTREAM_PWA" }};
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
@@ -91,6 +95,8 @@ server {
 
     # https://ma.ttias.be/force-redirect-http-https-custom-port-nginx/
     error_page  497 https://$http_host$request_uri;
+  {{ else if getenv "LOADING_FALLBACK" | strings.ToLower | regexp.Match "on|1|true|yes" }}
+    listen 8080;
   {{ else }}
     listen 80;
   {{- end }}

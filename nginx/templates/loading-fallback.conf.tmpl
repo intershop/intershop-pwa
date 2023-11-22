@@ -1,0 +1,53 @@
+{{- define "clean-domain" -}}
+{{ . | strings.ReplaceAll ".+" "_" | strings.ReplaceAll ".*" "_" }}
+{{- end -}}
+
+{{ if getenv "LOADING_FALLBACK" | strings.ToLower | regexp.Match "on|1|true|yes" }}
+upstream real_server {
+    server localhost:8080 fail_timeout=0;
+    keepalive 15;
+}
+
+  {{- range $domain, $mapping := (ds "domains") }}
+server {
+    listen 80;
+    server_name ~^{{ $domain }}$;
+    proxy_set_header Host $http_host;
+    proxy_cache_bypass true;
+
+    # https://mailman.nginx.org/pipermail/nginx/2007-May/001031.html
+    if ($is_bot) {
+      rewrite ^(.*)$ /bot-bypass$1;
+    }
+    location /bot-bypass {
+      rewrite ^/bot-bypass(.*)$ $1 break;
+      proxy_pass http://real_server;
+    }
+
+  {{ if (has $mapping "channel") }}
+    location / {
+        proxy_pass http://real_server;
+        proxy_read_timeout {{ getenv "LOADING_FALLBACK_TIMEOUT" }};
+        error_page 504 =200 /loading.html;
+    }
+    location = /loading.html {
+        root /tmp/loading/{{ tmpl.Exec "clean-domain" $domain }};
+    }
+  {{- else -}}
+    {{ range $mapping }}
+    location {{ .baseHref }} {
+        proxy_pass http://real_server;
+        proxy_read_timeout {{ getenv "LOADING_FALLBACK_TIMEOUT" }};
+        error_page 504 =200 {{ .baseHref }}/loading.html;
+    }
+    location = {{ .baseHref }}/loading.html {
+        root /tmp/loading/{{ tmpl.Exec "clean-domain" $domain }};
+    }
+    {{ end }}
+    location / {
+        proxy_pass http://real_server;
+    }
+  {{ end }}
+  {{ end }}
+}
+{{ end }}
