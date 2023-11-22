@@ -22,7 +22,6 @@ import { loadProductsForCategory, loadProductsForMaster } from 'ish-core/store/s
 import { searchProducts } from 'ish-core/store/shopping/search';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
-import { stringToFormParams } from 'ish-core/utils/url-form-params';
 
 import {
   loadMoreProducts,
@@ -31,6 +30,7 @@ import {
   setViewType,
 } from './product-listing.actions';
 import { getProductListingViewType } from './product-listing.selectors';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Injectable()
 export class ProductListingEffects {
@@ -103,13 +103,12 @@ export class ProductListingEffects {
               Object.keys(params)?.length === 0
           ),
           map(params => {
-            const filters = params.filters
-              ? {
-                  ...stringToFormParams(params.filters),
-                  ...(id.type === 'search' ? { searchTerm: id.value } : {}),
-                  ...(id.type === 'master' ? { MasterSKU: id.value } : {}),
-                }
-              : undefined;
+            const filters = new URLFormParams(params.filters);
+            if (id.type === 'search') {
+              filters.setSingle('searchTerm', id.value);
+            } else if (id.type === 'master') {
+              filters.setSingle('MasterSKU', id.value);
+            }
 
             const p = initialPage || +params.page || undefined; // determine page
 

@@ -8,8 +8,7 @@ import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-n
 import { FilterNavigationMapper } from 'ish-core/models/filter-navigation/filter-navigation.mapper';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { omit } from 'ish-core/utils/functions';
-import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {
@@ -41,10 +40,15 @@ export class FilterService {
   }
 
   applyFilter(searchParameter: URLFormParams): Observable<FilterNavigation> {
-    const params = appendFormParamsToHttpParams(omit(searchParameter, 'category'));
+    const category = searchParameter.getSingle('category');
 
-    const resource = searchParameter.category
-      ? `categories/${searchParameter.category}/productfilters`
+    if (category) {
+      searchParameter.delete('category');
+    }
+    const params = searchParameter.appendToHttpParams();
+    
+    const resource = category
+      ? `categories/${category}/productfilters`
       : 'productfilters';
 
     return this.apiService

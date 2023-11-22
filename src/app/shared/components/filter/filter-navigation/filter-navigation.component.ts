@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { URLFormParams, formParamsToString } from 'ish-core/utils/url-form-params';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Component({
   selector: 'ish-filter-navigation',
@@ -25,7 +25,7 @@ export class FilterNavigationComponent implements OnInit {
   }
 
   applyFilter(event: { searchParameter: URLFormParams }) {
-    const params = formParamsToString(event.searchParameter);
+    const params = event.searchParameter.toURI();
     this.router.navigate([], {
       queryParamsHandling: 'merge',
       relativeTo: this.activatedRoute,

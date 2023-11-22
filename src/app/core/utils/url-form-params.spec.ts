@@ -1,17 +1,17 @@
 import { HttpParams } from '@angular/common/http';
 
-import { appendFormParamsToHttpParams, formParamsToString, stringToFormParams } from './url-form-params';
+import { URLFormParams } from './url-form-params';
 
-describe('Url Form Params', () => {
+describe('UrlFormParams', () => {
   describe('stringToFormParams', () => {
     it('should return empty object for invalid input', () => {
-      expect(stringToFormParams(undefined)).toMatchInlineSnapshot(`{}`);
-      expect(stringToFormParams('')).toMatchInlineSnapshot(`{}`);
-      expect(stringToFormParams('test')).toMatchInlineSnapshot(`{}`);
+      expect(new URLFormParams(undefined)).toMatchInlineSnapshot(`{}`);
+      expect(new URLFormParams('')).toMatchInlineSnapshot(`{}`);
+      expect(new URLFormParams('test')).toMatchInlineSnapshot(`{}`);
     });
 
     it('should handle single value transformation for single parameters', () => {
-      expect(stringToFormParams('test=a')).toMatchInlineSnapshot(`
+      expect(new URLFormParams('test=a')).toMatchInlineSnapshot(`
         {
           "test": "a",
         }
@@ -19,7 +19,7 @@ describe('Url Form Params', () => {
     });
 
     it('should handle multi value transformation for single parameters', () => {
-      expect(stringToFormParams('test=a,b')).toMatchInlineSnapshot(`
+      expect(new URLFormParams('test=a,b')).toMatchInlineSnapshot(`
         {
           "test": [
             "a",
@@ -30,7 +30,7 @@ describe('Url Form Params', () => {
     });
 
     it('should respect separator option when handling input', () => {
-      expect(stringToFormParams('foo=a_or_b&bar=c', '_or_')).toMatchInlineSnapshot(`
+      expect(new URLFormParams('foo=a_or_b&bar=c', '_or_')).toMatchInlineSnapshot(`
         {
           "bar": "c",
           "foo": [
@@ -42,7 +42,7 @@ describe('Url Form Params', () => {
     });
 
     it('should not fail if string starts with &', () => {
-      expect(stringToFormParams('&test=a')).toMatchInlineSnapshot(`
+      expect(new URLFormParams('&test=a')).toMatchInlineSnapshot(`
         {
           "test": "a",
         }
@@ -50,7 +50,7 @@ describe('Url Form Params', () => {
     });
 
     it('should handle complex strings for input', () => {
-      expect(stringToFormParams('test=a,b&foo=c&bar=d,e')).toMatchInlineSnapshot(`
+      expect(new URLFormParams('test=a,b&foo=c&bar=d,e')).toMatchInlineSnapshot(`
         {
           "bar": [
             "d",
@@ -66,20 +66,20 @@ describe('Url Form Params', () => {
     });
   });
 
-  describe('formParamsToString', () => {
+  describe('toURI', () => {
     it('should return empty strings for falsy input', () => {
-      expect(formParamsToString(undefined)).toMatchInlineSnapshot(`""`);
-      expect(formParamsToString({})).toMatchInlineSnapshot(`""`);
+      expect(new URLFormParams(undefined)).toMatchInlineSnapshot(`""`);
+      expect(new URLFormParams({})).toMatchInlineSnapshot(`""`);
     });
 
     it('should return empty string values for falsy or empty values', () => {
-      expect(formParamsToString({ test: undefined })).toMatchInlineSnapshot(`""`);
-      expect(formParamsToString({ test: [] })).toMatchInlineSnapshot(`""`);
+      expect(new URLFormParams({ test: undefined })).toMatchInlineSnapshot(`""`);
+      expect(new URLFormParams({ test: [] })).toMatchInlineSnapshot(`""`);
     });
 
     it('should handle complex examples for given input', () => {
       expect(
-        formParamsToString({
+        new URLFormParams({
           bar: ['d', 'e'],
           foo: ['c'],
           test: ['a', 'b'],
@@ -90,7 +90,7 @@ describe('Url Form Params', () => {
 
     it('should respect the separator option when merging form params', () => {
       expect(
-        formParamsToString(
+        new URLFormParams(
           {
             bar: ['d', 'e'],
             foo: ['c'],
@@ -101,13 +101,13 @@ describe('Url Form Params', () => {
     });
 
     it('should url-encode the incoming val', () => {
-      expect(formParamsToString({ test: ['Laptops & Convertibles'] })).toMatchInlineSnapshot(
+      expect(new URLFormParams({ test: ['Laptops & Convertibles'] })).toMatchInlineSnapshot(
         `"test=Laptops%20%26%20Convertibles"`
       );
     });
 
     it('should not url-encode the given seperator', () => {
-      expect(formParamsToString({ test: ['Laptops & Convertibles', 'Desktop Computers'] })).toMatchInlineSnapshot(
+      expect(new URLFormParams({ test: ['Laptops & Convertibles', 'Desktop Computers'] })).toMatchInlineSnapshot(
         `"test=Laptops%20%26%20Convertibles,Desktop%20Computers"`
       );
     });

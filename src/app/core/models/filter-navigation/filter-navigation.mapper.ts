@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { FacetData } from 'ish-core/models/facet/facet.interface';
 import { FilterData } from 'ish-core/models/filter/filter.interface';
 import { getICMStaticURL } from 'ish-core/store/core/configuration';
-import { stringToFormParams } from 'ish-core/utils/url-form-params';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { FilterNavigationData } from './filter-navigation.interface';
 import { FilterNavigation } from './filter-navigation.model';
@@ -50,16 +50,15 @@ export class FilterNavigationMapper {
           const category = uri.includes('/categories/')
             ? uri.split('/productfilters')[0].split('/categories/')[1]
             : undefined;
+          const searchParameter = new URLFormParams(facet.link.uri.split('?')[1])
+          searchParameter.setSingle('category', category);
           if (facet.name !== 'Show all') {
             acc.push({
               name: facet.name,
               count: facet.count,
               selected: facet.selected,
               displayName: facet.displayValue || undefined,
-              searchParameter: {
-                ...stringToFormParams(facet.link.uri.split('?')[1]?.replace(/\+/g, '%20') || ''),
-                category,
-              },
+              searchParameter,
               level: facet.level || 0,
               mappedValue: this.parseFilterValue(facet),
               mappedType: facet.mappedType || undefined,

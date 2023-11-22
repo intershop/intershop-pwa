@@ -20,9 +20,8 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
-import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import STUB_ATTRS from './products-list-attributes';
 
@@ -208,9 +207,15 @@ export class ProductsService {
     if (sortKey) {
       params = params.set('sortKey', sortKey);
     }
-    params = appendFormParamsToHttpParams(omit(searchParameter, 'category'), params);
 
-    const resource = searchParameter.category ? `categories/${searchParameter.category}/products` : 'products';
+    const category = searchParameter.getSingle('category');
+    if (category) {
+      searchParameter.delete('category');
+    }
+
+    params = searchParameter.appendToHttpParams(params);
+
+    const resource = category ? `categories/${category}/products` : 'products';
 
     return this.apiService
       .get<{

@@ -77,7 +77,7 @@ export class CMSFacade {
     amount?: number
   ): { id: string; searchParameter: URLFormParams } {
     let id = '';
-    const searchParameter: URLFormParams = {};
+    const searchParameter= new URLFormParams();
 
     id = categoryId ? `${id}@${categoryId}` : id;
     id = productFilter ? `${id}@${productFilter}` : id;
@@ -85,10 +85,11 @@ export class CMSFacade {
     id = amount ? `${id}@${amount}` : id;
 
     if (categoryId && scope !== 'GlobalScope') {
-      searchParameter.category = [CategoryHelper.getCategoryPath(categoryId)];
+      searchParameter.setSingle('category', CategoryHelper.getCategoryPath(categoryId));
     }
 
-    searchParameter.productFilter = productFilter ?? 'fallback_searchquerydefinition';
+    
+    searchParameter.setSingle('productFilter', productFilter ?? 'fallback_searchquerydefinition');
 
     return { id, searchParameter };
   }

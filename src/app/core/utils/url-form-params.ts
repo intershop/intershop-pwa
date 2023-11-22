@@ -1,51 +1,69 @@
 import { HttpParams } from '@angular/common/http';
 
-export interface URLFormParams {
-  [facet: string]: string[] | string;
-}
 
-function concat(val: string[] | string, separator: string): string {
-  return Array.isArray(val) ? val.join(separator) : val;
-}
 
-function encodeAndConcat(val: string[] | string, separator: string): string {
-  return Array.isArray(val) ? val.map(encodeURIComponent).join(separator) : encodeURIComponent(val);
-}
+export class URLFormParams {
+  private data = new Map<string, string[]>();
 
-export function formParamsToString(object: URLFormParams, separator = ','): string {
-  return object
-    ? Object.entries(object)
-        .filter(([, value]) => (Array.isArray(value) || typeof value === 'string') && value.length)
-        .map(([key, val]) => `${key}=${encodeAndConcat(val, separator)}`)
-        .join('&')
-    : '';
-}
-
-export function appendFormParamsToHttpParams(
-  object: URLFormParams,
-  params: HttpParams = new HttpParams(),
-  separator = ','
-): HttpParams {
-  return object
-    ? Object.entries(object)
-        .filter(([, value]) => (Array.isArray(value) || typeof value === 'string') && value.length)
-        .reduce((p, [key, val]) => p.set(key, concat(val, separator)), params)
-    : params;
-}
-
-function splitAndDecode(val: string, separator: string): string[] | string {
-  return val.includes(separator) ? val.split(separator).map(decodeURIComponent) : decodeURIComponent(val);
-}
-
-export function stringToFormParams(object: string, separator = ','): URLFormParams {
-  return object
-    ? object
-        .split('&')
+  constructor(fromURI?: string) {
+    if (fromURI) {
+      fromURI.split('&')
         .filter(val => val?.includes('='))
-        .map(val => {
+        .forEach(val => {
           const [key, values] = val.split('=');
-          return { key: decodeURIComponent(key), value: splitAndDecode(values, separator) };
+          this.data.set(decodeURIComponent(key), values.split(',').map(decodeURIComponent));
         })
-        .reduce((acc, val) => ({ ...acc, [val.key]: val.value }), {})
-    : {};
+    }
+  }
+
+  getSingle(key: string): string {
+    return this.data.get(key)?.[0];
+  }
+
+  getMulti(key: string): string[] {
+    return this.data.get(key) || [];
+  }
+
+  entries(): IterableIterator<[string, string[]]> {
+    return this.data.entries();
+  }
+
+  setSingle(key: string, value: string): void {
+    this.data.set(key, [value]);
+  }
+
+  setMulti(key: string, value: string[]): void {
+    this.data.set(key, value);
+  }
+
+  delete(key: string): void {
+    this.data.delete(key);
+  }
+
+  toURI(): string {
+    const parts = [];
+    for (const [key, values] of this.data) {
+      if (!values?.length) continue;
+      parts.push(`${encodeURIComponent(key)}=${values.map(encodeURIComponent).join(',')}`);
+    }
+    return parts.join('&');
+  }
+
+  appendToHttpParams(params: HttpParams = new HttpParams()): HttpParams {
+    for (const [key, values] of this.data) {
+      if (!values?.length) continue;
+      params = params.set(key, values.join(','));
+    }
+    
+    return params;
+  }
+
+  serialize(): Record<string, string[]> {
+    const serialized: Record<string, string[]> = {};
+    for (const [key, values] of this.data) {
+      if (!values?.length) continue;
+      serialized[key] = values;
+    }
+    return serialized;
+  }
 }
