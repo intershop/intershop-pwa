@@ -210,7 +210,7 @@ export class ProductsService {
     }
     params = appendFormParamsToHttpParams(omit(searchParameter, 'category'), params);
 
-    const resource = searchParameter.category ? `categories/${searchParameter.category[0]}/products` : 'products';
+    const resource = searchParameter.category ? `categories/${searchParameter.category}/products` : 'products';
 
     return this.apiService
       .get<{

@@ -44,7 +44,7 @@ export class FilterService {
     const params = appendFormParamsToHttpParams(omit(searchParameter, 'category'));
 
     const resource = searchParameter.category
-      ? `categories/${searchParameter.category[0]}/productfilters`
+      ? `categories/${searchParameter.category}/productfilters`
       : 'productfilters';
 
     return this.apiService

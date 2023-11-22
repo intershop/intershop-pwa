@@ -88,7 +88,7 @@ export class CMSFacade {
       searchParameter.category = [CategoryHelper.getCategoryPath(categoryId)];
     }
 
-    searchParameter.productFilter = productFilter ? [productFilter] : ['fallback_searchquerydefinition'];
+    searchParameter.productFilter = productFilter ?? 'fallback_searchquerydefinition';
 
     return { id, searchParameter };
   }

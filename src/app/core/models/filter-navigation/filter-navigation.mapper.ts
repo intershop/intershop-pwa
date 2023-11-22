@@ -48,7 +48,7 @@ export class FilterNavigationMapper {
       ? filterData.filterEntries.reduce((acc, facet) => {
           const uri = this.removeSpgidFromUri(facet.link.uri);
           const category = uri.includes('/categories/')
-            ? [uri.split('/productfilters')[0].split('/categories/')[1]]
+            ? uri.split('/productfilters')[0].split('/categories/')[1]
             : undefined;
           if (facet.name !== 'Show all') {
             acc.push({

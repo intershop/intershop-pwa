@@ -13,9 +13,7 @@ describe('Url Form Params', () => {
     it('should handle single value transformation for single parameters', () => {
       expect(stringToFormParams('test=a')).toMatchInlineSnapshot(`
         {
-          "test": [
-            "a",
-          ],
+          "test": "a",
         }
       `);
     });
@@ -34,9 +32,7 @@ describe('Url Form Params', () => {
     it('should respect separator option when handling input', () => {
       expect(stringToFormParams('foo=a_or_b&bar=c', '_or_')).toMatchInlineSnapshot(`
         {
-          "bar": [
-            "c",
-          ],
+          "bar": "c",
           "foo": [
             "a",
             "b",
@@ -48,9 +44,7 @@ describe('Url Form Params', () => {
     it('should not fail if string starts with &', () => {
       expect(stringToFormParams('&test=a')).toMatchInlineSnapshot(`
         {
-          "test": [
-            "a",
-          ],
+          "test": "a",
         }
       `);
     });
@@ -62,9 +56,7 @@ describe('Url Form Params', () => {
             "d",
             "e",
           ],
-          "foo": [
-            "c",
-          ],
+          "foo": "c",
           "test": [
             "a",
             "b",

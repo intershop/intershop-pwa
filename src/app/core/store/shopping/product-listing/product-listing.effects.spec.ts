@@ -128,20 +128,20 @@ describe('Product Listing Effects', () => {
         [Product Listing] Load More Products:
           id: {"type":"search","value":"term"}
         [Product Listing Internal] Load More Products For Params:
-          id: {"type":"search","value":"term","filters":{"param":[1],"sear...
-          filters: {"param":[1],"searchTerm":[1]}
+          id: {"type":"search","value":"term","filters":{"param":"foobar",...
+          filters: {"param":"foobar","searchTerm":"term"}
           sorting: undefined
           page: undefined
         [Filter Internal] Load Products For Filter:
-          id: {"type":"search","value":"term","filters":{"param":[1],"sear...
-          searchParameter: {"param":[1],"searchTerm":[1]}
+          id: {"type":"search","value":"term","filters":{"param":"foobar",...
+          searchParameter: {"param":"foobar","searchTerm":"term"}
           page: undefined
           sorting: undefined
         [Filter] Apply Filter:
-          searchParameter: {"param":[1],"searchTerm":[1]}
+          searchParameter: {"param":"foobar","searchTerm":"term"}
       `);
-      expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.param', ['foobar']);
-      expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.searchTerm', ['term']);
+      expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.param', 'foobar');
+      expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.searchTerm', 'term');
     }));
 
     it('should fire all necessary actions for family page', fakeAsync(() => {
@@ -153,17 +153,17 @@ describe('Product Listing Effects', () => {
         [Product Listing] Load More Products:
           id: {"type":"category","value":"cat"}
         [Product Listing Internal] Load More Products For Params:
-          id: {"type":"category","value":"cat","filters":{"param":[1]}}
-          filters: {"param":[1]}
+          id: {"type":"category","value":"cat","filters":{"param":"foobar"}}
+          filters: {"param":"foobar"}
           sorting: undefined
           page: undefined
         [Filter Internal] Load Products For Filter:
-          id: {"type":"category","value":"cat","filters":{"param":[1]}}
-          searchParameter: {"param":[1]}
+          id: {"type":"category","value":"cat","filters":{"param":"foobar"}}
+          searchParameter: {"param":"foobar"}
           page: undefined
           sorting: undefined
         [Filter] Apply Filter:
-          searchParameter: {"param":[1]}
+          searchParameter: {"param":"foobar"}
       `);
     }));
   });

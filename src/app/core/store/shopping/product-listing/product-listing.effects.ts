@@ -106,8 +106,8 @@ export class ProductListingEffects {
             const filters = params.filters
               ? {
                   ...stringToFormParams(params.filters),
-                  ...(id.type === 'search' ? { searchTerm: [id.value] } : {}),
-                  ...(id.type === 'master' ? { MasterSKU: [id.value] } : {}),
+                  ...(id.type === 'search' ? { searchTerm: id.value } : {}),
+                  ...(id.type === 'master' ? { MasterSKU: id.value } : {}),
                 }
               : undefined;
 
