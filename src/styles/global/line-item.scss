@@ -23,6 +23,11 @@
 }
 
 .line-item-attributes {
+  .line-item-attribute {
+    display: flex;
+    align-items: center;
+  }
+
   label,
   .line-item-attributes-info {
     padding-right: divide($space-default, 3);

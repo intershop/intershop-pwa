@@ -1,0 +1,14 @@
+<div class="line-item-attribute" *ngIf="editable || control.value">
+  <ng-template #display>
+    <!-- keep-localization-pattern: ^line-item\..*\.placeholder$ -->
+    {{ control.value || 'line-item.' + key + '.placeholder' | translate }}
+  </ng-template>
+  <!-- keep-localization-pattern: ^line-item\..*\.label$ -->
+  <span class="line-item-attributes-info span-separator">{{ 'line-item.' + key + '.label' | translate }}</span>
+  <ish-in-place-edit *ngIf="editable; else display" (edited)="update()" (aborted)="reset()">
+    <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !control.value }">
+      <ng-container *ngTemplateOutlet="display"></ng-container>
+    </p>
+    <input type="text" [formControl]="control" class="form-control" />
+  </ish-in-place-edit>
+</div>
