@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { ProfileEditDetailsPage, ProfileEditDetailsTypes } from '../../pages/account/profile-edit-details.page';
@@ -20,9 +20,12 @@ describe('Changing User', () => {
     createUserViaREST(_.user);
 
     LoginPage.navigateTo('/account/profile');
+
     at(LoginPage, page =>
       page.fillForm(_.user.login, _.user.password).submit().its('response.statusCode').should('equal', 200)
     );
+
+    waitLoadingEnd(2000);
 
     at(ProfilePage, page => {
       page.name.should('contain', `${_.user.firstName} ${_.user.lastName}`);
