@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { createB2BUserViaREST } from '../../framework/b2b-user';
 import { AddressDetailsTypes, AddressesPage } from '../../pages/account/addresses.page';
 import { LoginPage } from '../../pages/account/login.page';
@@ -47,6 +47,7 @@ describe('Addresses Page Functionality', () => {
       page.fillForm(_.user.login, _.user.password);
       page.submit().its('response.statusCode').should('equal', 200);
     });
+    waitLoadingEnd(2000);
     at(AddressesPage, page => {
       page.defaultAddress.should('exist');
     });
