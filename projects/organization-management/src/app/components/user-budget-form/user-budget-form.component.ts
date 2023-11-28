@@ -30,7 +30,7 @@ export class UserBudgetFormComponent implements OnInit {
 
   currentCurrency: string;
 
-  periods = ['weekly', 'monthly', 'quarterly'];
+  periods = ['weekly', 'monthly', 'quarterly', 'half-yearly', 'yearly'];
 
   private destroyRef = inject(DestroyRef);
 
