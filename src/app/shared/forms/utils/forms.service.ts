@@ -44,7 +44,7 @@ export class FormsService {
    * Gets budget period select options for cost center budgets.
    */
   static getCostCenterBudgetPeriodOptions() {
-    const periods = ['fixed', 'weekly', 'monthly', 'quarterly'];
+    const periods = ['fixed', 'weekly', 'monthly', 'quarterly', 'half-yearly', 'yearly'];
 
     return periods.map(period => ({
       value: period,
