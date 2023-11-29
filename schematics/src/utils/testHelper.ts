@@ -17,22 +17,24 @@ export function createApplication(schematicRunner: SchematicTestRunner) {
     })
   ).pipe(
     switchMap(workspace =>
-      schematicRunner.runExternalSchematic(
-        '@schematics/angular',
-        'application',
-        {
-          name: 'bar',
-          inlineStyle: false,
-          inlineTemplate: false,
-          routing: true,
-          style: 'scss',
-          skipTests: false,
-          skipPackageJson: false,
-          prefix: 'ish',
-          projectRoot: '',
-        },
-        workspace
-      )
+      from(
+        schematicRunner.runExternalSchematic(
+          '@schematics/angular',
+          'application',
+          {
+            name: 'bar',
+            inlineStyle: false,
+            inlineTemplate: false,
+            routing: true,
+            style: 'scss',
+            skipTests: false,
+            skipPackageJson: false,
+            prefix: 'ish',
+            projectRoot: '',
+          },
+          workspace
+        )
+      ).pipe(copyFileFromPWA('src/environments/environment.model.ts'))
     )
   );
 }

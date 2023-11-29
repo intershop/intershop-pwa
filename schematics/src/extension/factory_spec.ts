@@ -97,6 +97,14 @@ describe('Extension Schematic', () => {
     `);
   });
 
+  it('should add extension to the environment model feature list', async () => {
+    const options = { ...defaultOptions };
+
+    const tree = await schematicRunner.runSchematic('extension', options, appTree);
+    const environmentModelContent = tree.readContent('/src/environments/environment.model.ts');
+    expect(environmentModelContent).toInclude("| 'foo'");
+  });
+
   it('should throw if app module does not contain AppLastRoutingModule', done => {
     appTree.overwrite(
       '/src/app/app.module.ts',
