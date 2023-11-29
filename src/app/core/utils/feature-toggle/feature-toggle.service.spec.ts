@@ -6,6 +6,8 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { getFeatures } from 'ish-core/store/core/configuration';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 
+import { FeatureToggleType } from './feature-toggle.service';
+
 describe('Feature Toggle Service', () => {
   describe('without features defined', () => {
     let featureToggle: FeatureToggleService;
@@ -18,8 +20,9 @@ describe('Feature Toggle Service', () => {
     });
 
     it('should report feature as deactivated, when no settings are defined', () => {
-      expect(featureToggle.enabled('something')).toBeFalse();
-      expect(featureToggle.enabled$('something')).toBeObservable(cold('a', { a: false }));
+      const feature = 'something' as FeatureToggleType;
+      expect(featureToggle.enabled(feature)).toBeFalse();
+      expect(featureToggle.enabled$(feature)).toBeObservable(cold('a', { a: false }));
     });
   });
 
@@ -38,7 +41,7 @@ describe('Feature Toggle Service', () => {
       ['never', false],
       ['feature1', true],
       ['feature2', false],
-    ])(`should have %s == %s when asked`, (feature, expected) => {
+    ])(`should have %s == %s when asked`, (feature: FeatureToggleType, expected) => {
       expect(featureToggle.enabled(feature)).toEqual(expected);
       expect(featureToggle.enabled$(feature)).toBeObservable(cold('a', { a: expected }));
     });

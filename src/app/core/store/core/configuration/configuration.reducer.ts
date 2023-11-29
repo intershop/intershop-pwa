@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { Translations } from 'ish-core/utils/translate/translations.type';
 
 import { environment } from '../../../../../environments/environment';
@@ -16,8 +17,8 @@ export interface ConfigurationState {
   hybridApplication?: string;
   identityProvider?: string;
   identityProviders?: { [id: string]: { type?: string; [key: string]: unknown } };
-  features?: string[];
-  addFeatures?: string[];
+  features?: FeatureToggleType[];
+  addFeatures?: FeatureToggleType[];
   defaultLocale?: string;
   fallbackLocales?: string[];
   localeCurrencyOverride?: { [locale: string]: string | string[] };

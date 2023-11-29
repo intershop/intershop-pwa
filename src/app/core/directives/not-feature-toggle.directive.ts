@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 /**
  * Structural directive.
@@ -41,7 +41,7 @@ export class NotFeatureToggleDirective {
     });
   }
 
-  @Input() set ishNotFeature(val: string) {
+  @Input() set ishNotFeature(val: 'always' | 'never' | FeatureToggleType) {
     // end previous subscription and newly subscribe
     if (this.subscription) {
       // eslint-disable-next-line ban/ban
