@@ -3,7 +3,7 @@ import { Injectable, InjectionToken, Injector, inject } from '@angular/core';
 import { Observable, Subject, switchMap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { InjectMultiple } from 'ish-core/utils/injection';
 
 export interface FeatureEventResultListener {
@@ -101,7 +101,7 @@ export class FeatureEventService {
    * @param id id of generated notification event
    * @returns result listener stream, which should notify about results of notification event
    */
-  eventResultListener$(feature: string, event: string, id: string): Observable<FeatureEventResult> {
+  eventResultListener$(feature: FeatureToggleType, event: string, id: string): Observable<FeatureEventResult> {
     return this.featureToggleService
       .enabled$(feature)
       .pipe(

@@ -3,11 +3,11 @@ import { Store, select } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 declare interface LazyModuleType {
-  feature: string;
+  feature: FeatureToggleType;
   location(): Promise<Type<unknown>>;
 }
 

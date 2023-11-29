@@ -6,6 +6,7 @@ import { applyConfiguration } from 'ish-core/store/core/configuration';
 import { ConfigurationState, configurationReducer } from 'ish-core/store/core/configuration/configuration.reducer';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { RouterState } from 'ish-core/store/core/router/router.reducer';
+import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { mergeDeep } from 'ish-core/utils/functions';
 
 class SimpleParamMap {
@@ -36,12 +37,12 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
     if (paramMap.get('features') === 'none') {
       properties.features = [];
     } else {
-      properties.features = paramMap.get<string>('features').split(/,/g);
+      properties.features = paramMap.get<string>('features').split(/,/g) as FeatureToggleType[];
     }
   }
 
   if (paramMap.has('addFeatures')) {
-    properties.addFeatures = paramMap.get<string>('addFeatures').split(/,/g);
+    properties.addFeatures = paramMap.get<string>('addFeatures').split(/,/g) as FeatureToggleType[];
   }
 
   if (paramMap.has('device')) {

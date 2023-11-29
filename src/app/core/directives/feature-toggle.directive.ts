@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Directive, Input, OnDestroy, TemplateRef, ViewContai
 import { BehaviorSubject, Subject, Subscription, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 /**
  * Structural directive.
@@ -52,7 +52,7 @@ export class FeatureToggleDirective implements OnDestroy {
       });
   }
 
-  @Input() set ishFeature(feature: string) {
+  @Input() set ishFeature(feature: 'always' | 'never' | FeatureToggleType) {
     // end previous subscription and newly subscribe
     if (this.subscription) {
       // eslint-disable-next-line ban/ban

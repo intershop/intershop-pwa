@@ -2,7 +2,7 @@ import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 /**
  * Pipe
@@ -21,7 +21,7 @@ export class FeatureTogglePipe implements PipeTransform, OnDestroy {
 
   constructor(private featureToggleService: FeatureToggleService, private cdRef: ChangeDetectorRef) {}
 
-  transform(feature: string): boolean {
+  transform(feature: 'always' | 'never' | FeatureToggleType): boolean {
     if (this.subscription) {
       // eslint-disable-next-line ban/ban
       this.subscription.unsubscribe();

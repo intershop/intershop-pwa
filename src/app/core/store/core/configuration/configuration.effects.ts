@@ -12,6 +12,7 @@ import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
+import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { distinctCompareWith, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
@@ -72,7 +73,7 @@ export class ConfigurationEffects {
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_APPLICATION', 'icmApplication'),
           this.stateProperties
             .getStateOrEnvOrDefault<string | string[]>('FEATURES', 'features')
-            .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x))),
+            .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x) as FeatureToggleType[])),
           this.stateProperties
             .getStateOrEnvOrDefault<string>('IDENTITY_PROVIDER', 'identityProvider')
             .pipe(map(x => x || 'ICM')),
