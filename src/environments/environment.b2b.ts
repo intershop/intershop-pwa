@@ -12,7 +12,6 @@ export const environment: Environment = {
     ...ENVIRONMENT_DEFAULTS.features,
     'businessCustomerRegistration',
     'costCenters',
-    'extendedLineItemContent',
     'maps',
     'messageToMerchant',
     'punchout',

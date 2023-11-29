@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { InPlaceEditComponent } from 'ish-shared/components/common/in-place-edit/in-place-edit.component';
 
@@ -12,11 +13,18 @@ describe('Line Item Extended Content Entry Component', () => {
   let component: LineItemExtendedContentEntryComponent;
   let fixture: ComponentFixture<LineItemExtendedContentEntryComponent>;
   let element: HTMLElement;
+  let settingEnabled: boolean;
 
   beforeEach(async () => {
+    settingEnabled = true;
+
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [LineItemExtendedContentEntryComponent, MockComponent(InPlaceEditComponent)],
+      declarations: [
+        LineItemExtendedContentEntryComponent,
+        MockComponent(InPlaceEditComponent),
+        MockPipe(ServerSettingPipe, () => settingEnabled),
+      ],
     }).compileComponents();
   });
 
@@ -30,6 +38,19 @@ describe('Line Item Extended Content Entry Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  describe('with disabled setting', () => {
+    beforeEach(() => {
+      settingEnabled = false;
+    });
+
+    it('should not display', () => {
+      component.ngOnChanges();
+      fixture.detectChanges();
+
+      expect(element).toMatchInlineSnapshot(`N/A`);
+    });
   });
 
   describe('with line item', () => {

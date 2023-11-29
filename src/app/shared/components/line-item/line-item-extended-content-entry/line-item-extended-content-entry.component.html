@@ -1,4 +1,4 @@
-<div class="line-item-attribute" *ngIf="editable || control.value">
+<div class="line-item-attribute" *ngIf="('basket.' + key | ishServerSetting) && (editable || control.value)">
   <ng-template #display>
     <!-- keep-localization-pattern: ^line-item\..*\.placeholder$ -->
     {{ control.value || 'line-item.' + key + '.placeholder' | translate }}

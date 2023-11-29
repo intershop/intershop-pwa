@@ -23,7 +23,9 @@ export class LineItemExtendedContentEntryComponent implements OnChanges {
   }
 
   reset() {
-    this.control.setValue(this.lineItem[this.key]);
+    if (this.lineItem && this.key) {
+      this.control.setValue(this.lineItem[this.key]);
+    }
   }
 
   update() {
