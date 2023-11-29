@@ -48,7 +48,7 @@
     </ish-info-box>
   </div>
 
-  <ng-container *ishFeature="'messageToMerchant'">
+  <ng-container *ngIf="'shipping.messageToMerchant' | ishServerSetting">
     <!-- MessageToMerchant-->
     <ish-basket-merchant-message-view [data]="order" />
   </ng-container>
