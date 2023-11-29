@@ -2,12 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -47,9 +48,10 @@ describe('Checkout Review Component', () => {
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
         MockDirective(ServerHtmlDirective),
+        MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
       imports: [
-        FeatureToggleModule.forTesting('messageToMerchant'),
+        FeatureToggleModule.forTesting(),
         FormlyModule.forRoot({
           types: [{ name: 'ish-checkout-review-tac-field', component: CheckoutReviewTacFieldComponent }],
         }),

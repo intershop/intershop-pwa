@@ -32,7 +32,7 @@
         <ish-basket-order-reference [basket]="basket$ | async"></ish-basket-order-reference>
       </ng-container>
 
-      <ng-container *ishFeature="'messageToMerchant'">
+      <ng-container *ngIf="'shipping.messageToMerchant' | ishServerSetting">
         <ish-basket-merchant-message [basket]="basket$ | async"></ish-basket-merchant-message>
       </ng-container>
     </div>

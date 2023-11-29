@@ -5,6 +5,7 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
@@ -32,8 +33,9 @@ describe('Account Order Component', () => {
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockPipe(DatePipe),
+        MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
-      imports: [FeatureToggleModule.forTesting('messageToMerchant'), TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
     }).compileComponents();
   });
 

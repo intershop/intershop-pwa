@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
@@ -31,8 +32,9 @@ describe('Checkout Receipt Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
+        MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
-      imports: [FeatureToggleModule.forTesting('messageToMerchant'), TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
     }).compileComponents();
   });
 

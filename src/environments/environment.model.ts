@@ -35,7 +35,6 @@ export interface Environment {
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'
-    | 'messageToMerchant'
     | 'quoting'
     | 'quickorder'
     | 'orderTemplates'
