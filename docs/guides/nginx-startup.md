@@ -136,6 +136,26 @@ Alternatively, the source can be supplied by setting `OVERRIDE_IDENTITY_PROVIDER
 
 If no environment variable is set, this feature is disabled.
 
+### Add additional headers
+
+For some security or functional reasons it is necessary to add additional headers to page responses.
+To make such headers configurable, the environment variable `ADDITIONAL_HEADERS` is introduced.
+
+```yaml
+nginx:
+  environment:
+    ADDITIONAL_HEADERS: |
+      headers:
+        - header-a: 'value-a'
+        - header-b: 'value-b'
+```
+
+Alternatively, the source can be supplied by setting `ADDITIONAL_HEADERS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
+
+For every entry nginx will add this header to every possible response.
+
+To make the additional headers available during build-time, the value for the environment variable `ADDITIONAL_HEADERS` can be put into the [additional-headers.yaml](../../nginx/additional-headers.yaml) file.
+
 ### Other
 
 Built-in features can be enabled and disabled:

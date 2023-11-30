@@ -79,6 +79,7 @@ keyvalue
 kubernetes
 lessthan
 logformat
+loglevel
 maxlength
 mergeable
 minibasket
