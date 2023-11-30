@@ -14,6 +14,9 @@ describe('Server Html Directive', () => {
     let element: HTMLElement;
 
     beforeEach(() => {
+      const appFacade = mock(AppFacade);
+      when(appFacade.icmBaseUrl).thenReturn('http://example.org');
+
       @Component({
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,14 +24,15 @@ describe('Server Html Directive', () => {
       class TestComponent {
         html = `<div><a href="product://8182790134362@inSPIRED-inTRONICS">Product</a></div>
         <div><a href="http://google.de">Google</a></div>
-        <div><a href="route://basket">Basket</a></div>`;
+        <div><a href="route://basket">Basket</a></div>
+        <div><a href="/INTERSHOP/static/WFS/channel/test.pdf">Relative Pdf link</a></div>`;
       }
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
-          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+          { provide: AppFacade, useFactory: () => instance(appFacade) },
         ],
       }).compileComponents();
 
@@ -43,6 +47,9 @@ describe('Server Html Directive', () => {
           <div><a href="/product/8182790134362">Product</a></div>
           <div><a href="http://google.de">Google</a></div>
           <div><a href="/basket">Basket</a></div>
+          <div>
+            <a href="http://example.org/INTERSHOP/static/WFS/channel/test.pdf">Relative Pdf link</a>
+          </div>
         </div>
       `);
     });
