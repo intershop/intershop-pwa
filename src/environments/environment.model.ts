@@ -48,6 +48,8 @@ export interface Environment {
     | 'tracking'
     | 'tacton'
     | 'maps'
+    /* ICM 10 compatibility */
+    | 'messageToMerchant'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */

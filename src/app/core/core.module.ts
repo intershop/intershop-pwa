@@ -8,6 +8,7 @@ import { AppearanceModule } from './appearance.module';
 import { ConfigurationModule } from './configuration.module';
 import { FeatureToggleModule } from './feature-toggle.module';
 import { IdentityProviderModule } from './identity-provider.module';
+import { ICM10CompatibilityInterceptor } from './interceptors/icm-10-compatibility.interceptor';
 import { ICMErrorMapperInterceptor } from './interceptors/icm-error-mapper.interceptor';
 import { IdentityProviderInterceptor } from './interceptors/identity-provider.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
@@ -38,6 +39,7 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
       multi: true,
     },
     { provide: HTTP_INTERCEPTORS, useClass: PaymentPayoneInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ICM10CompatibilityInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: PreviewInterceptor, multi: true },
     { provide: ErrorHandler, useClass: DefaultErrorHandler },
