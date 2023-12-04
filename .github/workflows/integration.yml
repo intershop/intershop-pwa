@@ -14,7 +14,7 @@ on:
 
 env:
   NODE_VERSION: 18.16.0
-  NODE_OPTIONS: --max_old_space_size=8192
+  NODE_OPTIONS: --max_old_space_size=10240
   ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
 
 jobs:
