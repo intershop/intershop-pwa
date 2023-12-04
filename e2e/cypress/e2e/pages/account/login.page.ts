@@ -22,7 +22,7 @@ export class LoginPage {
 
   submit() {
     cy.intercept('POST', /.*\/token/).as('token');
-    cy.wait(500);
+    cy.wait(1000);
 
     cy.get('button[name="login"]').click();
 
