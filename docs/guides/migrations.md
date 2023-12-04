@@ -12,6 +12,10 @@ kb_sync_latest_only
 The OrderListComponent is strictly presentational, components using it have to supply the data.
 The getOrders method of the OrderService doesn't fetch all related order data by default, you can provide an additional parameter to include the data you need.
 
+In ICM 11 the `messageToMerchant` flag can be configured in the back office and its setting is supplied by the `/configurations` REST call.
+For this reason the `messageToMerchant` feature toggle is removed as a configurable feature toggle.
+To still be able to configure the message to merchant feature via feature toggle in ICM 7.10 environments an [`ICMCompatibilityInterceptor`](../../src/app/core/interceptors/icm-compatibility.interceptor.ts) was introduced that can be enabled in ICM 7.10 based projects in the [`core.module.ts`](../../src/app/core/core.module.ts).
+
 ## From 4.2 to 5.0
 
 Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.
