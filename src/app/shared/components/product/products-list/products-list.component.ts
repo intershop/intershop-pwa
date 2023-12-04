@@ -1,7 +1,4 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
-import { isEqual } from 'lodash-es';
-import { Observable, combineLatest, of } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
 import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
 
 import {
@@ -10,7 +7,6 @@ import {
   SMALL_BREAKPOINT_WIDTH,
 } from 'ish-core/configurations/injection-keys';
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
 
@@ -29,8 +25,6 @@ export class ProductsListComponent implements OnChanges {
   @Input() listItemCSSClass: string;
   @Input() listItemConfiguration: Partial<ProductContextDisplayProperties>;
 
-  productSKUs$: Observable<string[]>;
-
   /**
    * configuration of swiper carousel
    * https://swiperjs.com/swiper-api
@@ -40,8 +34,7 @@ export class ProductsListComponent implements OnChanges {
   constructor(
     @Inject(SMALL_BREAKPOINT_WIDTH) private smallBreakpointWidth: InjectSingle<typeof SMALL_BREAKPOINT_WIDTH>,
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: InjectSingle<typeof MEDIUM_BREAKPOINT_WIDTH>,
-    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>,
-    private shoppingFacade: ShoppingFacade
+    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>
   ) {
     this.swiperConfig = {
       direction: 'horizontal',
@@ -56,12 +49,6 @@ export class ProductsListComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.configureSlides(this.slideItems);
-
-    // remove all SKUs from the productSKUs Array that are also contained in the failed products Array
-    this.productSKUs$ = combineLatest([of(this.productSKUs), this.shoppingFacade.failedProducts$]).pipe(
-      distinctUntilChanged<[string[], string[]]>(isEqual),
-      map(([skus, failed]) => skus.filter(x => !failed.includes(x)))
-    );
   }
 
   /**

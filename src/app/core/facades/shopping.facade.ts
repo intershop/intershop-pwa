@@ -28,7 +28,6 @@ import {
 import { loadProductPrices } from 'ish-core/store/shopping/product-prices';
 import { getProductPrice } from 'ish-core/store/shopping/product-prices/product-prices.selectors';
 import {
-  getFailedProducts,
   getProduct,
   getProductLinks,
   getProductParts,
@@ -108,8 +107,6 @@ export class ShoppingFacade {
       )
     );
   }
-
-  failedProducts$ = this.store.pipe(select(getFailedProducts));
 
   productPrices$(sku: string | Observable<string>, fresh = false) {
     return toObservable(sku).pipe(

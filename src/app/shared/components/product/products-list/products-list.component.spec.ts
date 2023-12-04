@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { of } from 'rxjs';
 import { SwiperComponent } from 'swiper/angular';
-import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductsListComponent } from './products-list.component';
@@ -15,11 +12,8 @@ describe('Products List Component', () => {
   let component: ProductsListComponent;
   let fixture: ComponentFixture<ProductsListComponent>;
   let element: HTMLElement;
-  let shoppingFacade: ShoppingFacade;
 
   beforeEach(async () => {
-    shoppingFacade = mock(ShoppingFacade);
-
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(ProductItemComponent),
@@ -27,7 +21,6 @@ describe('Products List Component', () => {
         MockDirective(ProductContextDirective),
         ProductsListComponent,
       ],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });
 
@@ -35,8 +28,6 @@ describe('Products List Component', () => {
     fixture = TestBed.createComponent(ProductsListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    when(shoppingFacade.failedProducts$).thenReturn(of([]));
   });
 
   it('should be created', () => {
@@ -91,21 +82,6 @@ describe('Products List Component', () => {
         ng-reflect-sku="3"
         ng-reflect-display-type="row"
       ></ish-product-item>,
-      ]
-    `);
-  });
-
-  it('should display product items only for not failed product skus', () => {
-    when(shoppingFacade.failedProducts$).thenReturn(of(['1']));
-    component.productSKUs = ['1', '2', '3'];
-    component.ngOnChanges();
-    fixture.detectChanges();
-
-    expect(element.querySelectorAll('ish-product-item')).toHaveLength(2);
-    expect(element.querySelectorAll('ish-product-item')).toMatchInlineSnapshot(`
-      NodeList [
-        <ish-product-item ishproductcontext="" ng-reflect-sku="2"></ish-product-item>,
-        <ish-product-item ishproductcontext="" ng-reflect-sku="3"></ish-product-item>,
       ]
     `);
   });
