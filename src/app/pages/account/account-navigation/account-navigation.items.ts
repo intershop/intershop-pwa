@@ -93,6 +93,12 @@ export const navigationItems: NavigationItem[] = [
         feature: 'punchout',
         permission: 'APP_B2B_MANAGE_PUNCHOUT',
       },
+      {
+        id: 'hierarchies',
+        localizationKey: 'account.company_structure.link',
+        routerLink: '/account/organization/hierarchies',
+        feature: 'organizationHierarchies',
+      },
     ],
   },
   {

@@ -81,6 +81,7 @@
   "account.company_profile.industry.label": "Industry",
   "account.company_profile.name.label": "Company Name",
   "account.company_profile.taxation_id.label": "Taxation ID",
+  "account.company_structure.link": "Company Structure",
   "account.costCenter.active.label": "Active",
   "account.costCenter.active.title": "Cost Center Status",
   "account.costCenter.status.inactive": "(Inactive)",
@@ -1227,5 +1228,22 @@
   "tacton.submit.error.message": "A technical error occurred while processing your request. Please try again later.",
   "tacton.submit.success.message": "Your request has been successfully submitted. We will e-mail <strong>{{0}}</strong> to keep you updated on the status of your request.",
   "tacton.undo.tooltip": "Undo",
-  "textarea.max_limit": "Your message: {{0}} characters remaining."
+  "textarea.max_limit": "Your message: {{0}} characters remaining.",
+
+  "account.organization.hierarchies": "Company Structure",
+  "account.organization.hierarchies.description": "Manage the structure of \"{{0}}\".",
+  "account.organization.hierarchies.grouppath.tooltip.close": "Collapse",
+  "account.organization.hierarchies.grouppath.tooltip.open": "Show All Groups",
+  "account.organization.hierarchies.groups.add": "Add Group",
+  "account.organization.hierarchies.groups.new.button.label": "Create",
+  "account.organization.hierarchies.groups.new.confirmation": "The group \"{{0}}\" has been created.",
+  "account.organization.hierarchies.groups.new.heading": "Add Group",
+  "account.organization.hierarchies.groups.new.message": "Creating a new group to track your company structure. You can assign users to it.",
+  "organization.group.label": "Group:",
+  "organization.groups.description.label": "Description",
+  "organization.groups.name.label": "Name",
+  "organization.groups.new.name.error.required": "Please enter a name.",
+  "organization.groups.new.parent.error.required": "Please select a parent group.",
+  "organization.groups.parent.label": "Parent Group",
+  "organization.groups.parent.placeholder": "Select any parent group"
 }

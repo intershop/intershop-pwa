@@ -39,6 +39,7 @@ export interface Environment {
     | 'quoting'
     | 'quickorder'
     | 'orderTemplates'
+    | 'organizationHierarchies'
     | 'punchout'
     /* B2C features */
     | 'guestCheckout'

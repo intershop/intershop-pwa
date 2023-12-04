@@ -1,0 +1,79 @@
+@use 'sass:math';
+
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
+
+$tree-height: 3rem;
+$tree-top-bottom-padding: math.div($tree-height - $line-height-base, 2);
+$tree-indent-spacer: 1rem;
+
+$caret-width: 7px;
+
+.cdk-tree {
+  display: block;
+
+  .cdk-tree-node {
+    display: block;
+    padding-top: $tree-top-bottom-padding;
+    padding-bottom: $tree-top-bottom-padding;
+    padding-left: 2 * $tree-indent-spacer;
+    //background-color: $CORPORATE-PRIMARY;
+    //border-bottom: 1px solid $CORPORATE-DARK;
+
+    &:hover {
+     // background-color: $CORPORATE-SECONDARY;
+    }
+
+    button {
+      @include caret(down);
+
+      width: 2rem;
+    //  color: $CORPORATE-PRIMARY;
+      background: none;
+      border: none;
+
+      & + input[type='radio'] {
+        margin-left: 0;
+      }
+
+      &.closed {
+        position: relative;
+        top: 5px;
+
+        @include caret(right);
+      }
+    }
+
+    label {
+      margin-bottom: 0;
+      cursor: pointer;
+    }
+
+    input[type='radio'] {
+      position: relative;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-top: -4px;
+      margin-right: 6px;
+      margin-left: 33px;
+      vertical-align: middle;
+   //   accent-color: $CORPORATE-PRIMARY;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    &.active {
+ //     background-color: $CORPORATE-PRIMARY;
+
+      &:hover {
+  //      background-color: $CORPORATE-PRIMARY;
+      }
+    }
+
+    .tree-invisible {
+      display: none;
+    }
+  }
+}

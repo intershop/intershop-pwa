@@ -1,4 +1,5 @@
 import { CdkTableModule } from '@angular/cdk/table';
+import { CdkTreeModule } from '@angular/cdk/tree';
 import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -92,6 +93,7 @@ import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
 import { PagingComponent } from './components/common/paging/paging.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
+import { TreeComponent } from './components/common/tree/tree.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
@@ -154,6 +156,7 @@ const importExportModules = [
   CMSModule,
   CaptchaExportsModule,
   CdkTableModule,
+  CdkTreeModule,
   CommonModule,
   CompareExportsModule,
   ContactUsExportsModule,
@@ -229,6 +232,7 @@ const declaredComponents = [
   ProductListToolbarComponent,
   ProductRowComponent,
   ProductTileComponent,
+  TreeComponent,
 ];
 
 const exportedComponents = [
@@ -299,6 +303,7 @@ const exportedComponents = [
   PromotionRemoveComponent,
   SearchBoxComponent,
   SuccessMessageComponent,
+  TreeComponent,
 ];
 
 @NgModule({

@@ -2,15 +2,18 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { differenceBy } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
+import { TreeFacade } from 'ish-core/facades/common/tree.facade';
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { getUserPermissions, getUserRoles } from 'ish-core/store/customer/authorization';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import { DynamicFlatNode } from 'ish-core/utils/tree/tree.interface';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
+import { Group } from '../models/group/group.model';
 import { UserBudget } from '../models/user-budget/user-budget.model';
 import {
   getCurrentUserBudget,
@@ -32,6 +35,15 @@ import {
   updateCostCenterBuyer,
 } from '../store/cost-centers';
 import {
+  createGroup,
+  getChilds,
+  getGroups,
+  getGroupsByID,
+  getOrganizationGroupsError,
+  getOrganizationGroupsLoading,
+  loadGroups,
+} from '../store/organization-hierarchies';
+import {
   addUser,
   deleteUser,
   getCostCenterManagers,
@@ -50,7 +62,7 @@ import {
 
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
-export class OrganizationManagementFacade {
+export class OrganizationManagementFacade implements TreeFacade {
   constructor(private store: Store) {}
 
   usersError$ = this.store.pipe(select(getUsersError));
@@ -67,6 +79,10 @@ export class OrganizationManagementFacade {
   costCentersError$ = this.store.pipe(select(getCostCentersError));
   costCentersLoading$ = this.store.pipe(select(getCostCentersLoading));
   selectedCostCenter$ = this.store.pipe(select(getSelectedCostCenter));
+
+  groups$ = this.store.pipe(select(getGroups));
+  groupsLoading$ = this.store.pipe(select(getOrganizationGroupsLoading));
+  groupsError$ = this.store.pipe(select(getOrganizationGroupsError));
 
   /**
    * user methods
@@ -231,6 +247,68 @@ export class OrganizationManagementFacade {
           costCenterId,
           login,
         })
+      )
+    );
+  }
+
+  /**loadGroups(): Observable<Group[]> {
+    const customer$ = this.store.pipe(select(getLoggedInCustomer));
+    return customer$.pipe(
+      whenTruthy(),
+      take(1),
+      tap(() => this.store.dispatch(loadGroups())),
+      switchMap(() => this.store.pipe(select(getGroups)))
+    );
+  }**/
+
+  groupsOfCurrentUser$() {
+    this.store.dispatch(loadGroups());
+    return this.groups$;
+  }
+
+  getChildrenByParentId(nodeId: string): Observable<Group[]> {
+    const childIds$ = this.store.pipe(select(getChilds(nodeId)));
+    return childIds$.pipe(
+      whenTruthy(),
+      switchMap(ids => this.store.pipe(select(getGroupsByID(ids))))
+    );
+  }
+
+  createAndAddGroup(parentGroupId: string, child: Group) {
+    this.store.dispatch(createGroup({ parentGroupId, child }));
+  }
+
+  initialData$(): Observable<DynamicFlatNode[]> {
+    const tree$ = this.store.pipe(select(getGroups));
+    return tree$.pipe(
+      whenTruthy(),
+      take(1),
+      tap(groups => console.log('Number of Groups: ', groups.length)),
+      map(groups =>
+        groups
+          .filter(group => !group.parentId)
+          .map<DynamicFlatNode>(group => ({
+            id: group.id,
+            displayName: group.name,
+            level: 0, // root
+            expandable: group.childrenIds?.length > 0 ? true : false,
+          }))
+      )
+    );
+  }
+
+  /**
+   * Retrieve all children tree nodes for a specific node
+   * The method will fetch the new data from server when no information is stored in cache
+   */
+  getChildren$(nodeId: string): Observable<Omit<DynamicFlatNode, 'level'>[]> {
+    return this.getChildrenByParentId(nodeId).pipe(
+      map(childNodes =>
+        childNodes.map(child => ({
+          id: child.id,
+          displayName: child.name,
+          expandable: child.childrenIds?.length > 0 ? true : false,
+        }))
       )
     );
   }

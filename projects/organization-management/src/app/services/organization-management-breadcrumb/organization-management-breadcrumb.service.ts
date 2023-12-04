@@ -82,7 +82,15 @@ export class OrganizationManagementBreadcrumbService {
                   ]
             )
           );
+        } else if (path.endsWith('hierarchies')) {
+          return of([{ key: 'account.organization.hierarchies' }]);
+        } else if (path.endsWith('hierarchies/create-group')) {
+          return of([
+            { key: 'account.organization.hierarchies', link: `${prefix}/hierarchies` },
+            { key: 'account.organization.hierarchies.groups.add' },
+          ]);
         }
+
         return EMPTY;
       })
     );

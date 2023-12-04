@@ -1,0 +1,10 @@
+<h1>
+  {{ 'account.organization.hierarchies' | translate }}
+  <a routerLink="create-group" class="btn btn-secondary" data-testing-id="add-group-link">{{
+    'account.organization.hierarchies.groups.add' | translate
+  }}</a>
+</h1>
+
+<ish-error-message [error]="error$ | async"></ish-error-message>
+
+<ish-tree />
