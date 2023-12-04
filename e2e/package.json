@@ -14,7 +14,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "cypress": "^13.2.0",
+    "cypress": "^13.6.0",
     "cypress-failed-log": "^2.10.0",
     "cypress-log-to-output": "^1.1.2",
     "lodash": "^4.17.21",
