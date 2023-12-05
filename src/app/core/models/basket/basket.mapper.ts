@@ -27,6 +27,7 @@ export class BasketMapper {
       bucketId: (data.buckets?.length === 1 && data.buckets[0]) || undefined,
       purchaseCurrency: data.purchaseCurrency,
       dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
+      buyingContext: data.buyingContext ? data.buyingContext : undefined,
       invoiceToAddress:
         included?.invoiceToAddress && data.invoiceToAddress
           ? AddressMapper.fromData(included.invoiceToAddress[data.invoiceToAddress])
@@ -41,6 +42,7 @@ export class BasketMapper {
           : undefined,
       costCenter: data.costCenter,
       customerNo: data.customer,
+
       email: data.user,
       lineItems:
         included?.lineItems && data.lineItems?.length

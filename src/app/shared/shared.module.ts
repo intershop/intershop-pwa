@@ -29,6 +29,7 @@ import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-expo
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
+import { OrganizationHierarchiesExportsModule } from '../extensions/organization-hierarchies/exports/organization-hierarchies-exports.module';
 import { ProductNotificationsExportsModule } from '../extensions/product-notifications/exports/product-notifications-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
@@ -188,6 +189,7 @@ const importExportModules = [
   TactonExportsModule,
   TranslateModule,
   WishlistsExportsModule,
+  OrganizationHierarchiesExportsModule,
 ];
 
 const declaredComponents = [

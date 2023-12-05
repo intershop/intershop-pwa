@@ -27,6 +27,11 @@
             <ng-template #orderNumberWithLink>
               <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
             </ng-template>
+
+            <ish-lazy-hierarchy-group-name
+              *ishFeature="'organizationHierarchies'"
+              [buyingGroupId]="order.buyingContext"
+            ></ish-lazy-hierarchy-group-name>
           </td>
         </ng-container>
 
