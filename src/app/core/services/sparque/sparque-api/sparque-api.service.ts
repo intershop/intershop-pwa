@@ -4,15 +4,13 @@ import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, defer, forkJoin, iif, of } from 'rxjs';
 import { auditTime, concatMap, first, map, switchMap, take, tap } from 'rxjs/operators';
 
-import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { AvailableOptions } from 'ish-core/services/api/api.service';
 import { TokenService } from 'ish-core/services/token/token.service';
-import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { getCurrentLocale, getSparqueConfiguration } from 'ish-core/store/core/configuration';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 export const DEFINED_FACETS = ['category', 'brand'];
@@ -23,7 +21,6 @@ export class SparqueApiService {
     private httpClient: HttpClient,
     private store: Store,
     private apiTokenService: ApiTokenService,
-    private statePropertiesService: StatePropertiesService,
     private tokenService: TokenService
   ) {}
 
@@ -77,14 +74,15 @@ export class SparqueApiService {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return of(path);
     }
-
     return combineLatest([
-      this.statePropertiesService.getStateOrEnvOrDefault<SparqueConfig>('SPARQUE', 'sparque').pipe(
+      this.store.pipe(
+        select(getSparqueConfiguration),
         whenTruthy(),
         map(config => config.endPoint)
       ),
       of(`/${path}`),
     ]).pipe(
+      tap(data => console.log('SPARQUE REST CALL', data)),
       first(),
       map(arr => arr.join(''))
     );

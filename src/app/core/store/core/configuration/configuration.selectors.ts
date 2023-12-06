@@ -134,3 +134,8 @@ export const getMultiSiteLocaleMap = createSelector(
   getConfigurationState,
   (state: ConfigurationState) => state.multiSiteLocaleMap
 );
+
+export const getSparqueConfiguration = createSelector(
+  getConfigurationState,
+  (state: ConfigurationState) => state.sparque
+);

@@ -9,6 +9,7 @@ import { distinctUntilChanged, map, mergeMap, take, takeWhile } from 'rxjs/opera
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
+import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
@@ -84,6 +85,7 @@ export class ConfigurationEffects {
             'MULTI_SITE_LOCALE_MAP',
             'multiSiteLocaleMap'
           ),
+          this.stateProperties.getStateOrEnvOrDefault<SparqueConfig>('SPARQUE', 'sparque'),
         ]),
         map(
           ([
@@ -97,6 +99,7 @@ export class ConfigurationEffects {
             identityProvider,
             identityProviders,
             multiSiteLocaleMap,
+            sparque,
           ]) =>
             applyConfiguration({
               baseURL,
@@ -108,6 +111,7 @@ export class ConfigurationEffects {
               identityProvider,
               identityProviders,
               multiSiteLocaleMap,
+              sparque,
             })
         )
       ),
