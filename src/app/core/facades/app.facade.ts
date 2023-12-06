@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, sample, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
+import { CustomFieldDefinitionScopes } from 'ish-core/models/server-config/server-config.interface';
 import {
   getAvailableLocales,
   getCurrentCurrency,
@@ -15,7 +16,11 @@ import {
 } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
-import { getExtraConfigParameter, getServerConfigParameter } from 'ish-core/store/core/server-config';
+import {
+  getCustomFieldIdsForScope,
+  getExtraConfigParameter,
+  getServerConfigParameter,
+} from 'ish-core/store/core/server-config';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
@@ -121,6 +126,10 @@ export class AppFacade {
    */
   extraSetting$<T>(path: string) {
     return this.store.pipe(select(getExtraConfigParameter<T>(path)));
+  }
+
+  customFieldsForScope$(scope: CustomFieldDefinitionScopes) {
+    return this.store.pipe(select(getCustomFieldIdsForScope(scope)));
   }
 
   /**
