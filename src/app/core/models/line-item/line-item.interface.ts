@@ -1,3 +1,4 @@
+import { CustomFieldData } from 'ish-core/models/custom-field/custom-field.interface';
 import { PriceItemData } from 'ish-core/models/price-item/price-item.interface';
 import { PriceData } from 'ish-core/models/price/price.interface';
 
@@ -37,4 +38,5 @@ export interface LineItemData {
   desiredDelivery?: string;
   customerProductID?: string;
   partialOrderNo?: string;
+  customFields?: CustomFieldData[];
 }
