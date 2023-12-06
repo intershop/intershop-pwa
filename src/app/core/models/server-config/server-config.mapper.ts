@@ -1,14 +1,16 @@
 import { omit } from 'ish-core/utils/functions';
 
-import { ServerConfigData, ServerConfigDataEntry } from './server-config.interface';
-import { ServerConfig } from './server-config.model';
+import { CustomFieldDefinitionsData, ServerConfigData, ServerConfigDataEntry } from './server-config.interface';
+import { CustomFieldDefinitions, ServerConfig } from './server-config.model';
 
 export class ServerConfigMapper {
-  static fromData(payload: ServerConfigData): ServerConfig {
+  static fromData(payload: ServerConfigData): [ServerConfig, CustomFieldDefinitions | undefined] {
     if (payload?.data) {
-      return ServerConfigMapper.mapEntries(payload.data);
+      const config = ServerConfigMapper.mapEntries(omit(payload.data, 'customFieldDefinitions'));
+      const definitions = ServerConfigMapper.mapCustomFields(payload.data.customFieldDefinitions);
+      return [config, definitions];
     }
-    return {};
+    return [{}, undefined];
   }
 
   private static transformType(val: unknown) {
@@ -41,5 +43,40 @@ export class ServerConfigMapper {
       }),
       {}
     );
+  }
+
+  private static mapCustomFields(data: CustomFieldDefinitionsData[] = []): CustomFieldDefinitions {
+    const entities = data.reduce<CustomFieldDefinitions['entities']>(
+      (acc, entry) => ({
+        ...acc,
+        [entry.name]: {
+          description: entry.description,
+          displayName: entry.displayName,
+          name: entry.name,
+          type: entry.type,
+        },
+      }),
+      {}
+    );
+
+    const scopes = data
+      .sort((a, b) => a.position - b.position)
+      .reduce<CustomFieldDefinitions['scopes']>((acc, entry) => {
+        entry.scopes.forEach(scope => {
+          if (!scope.isVisible) {
+            return;
+          }
+          if (!acc[scope.name]) {
+            acc[scope.name] = [];
+          }
+          acc[scope.name].push({
+            name: entry.name,
+            editable: scope.isEditable,
+          });
+        });
+        return acc;
+      }, {});
+
+    return { entities, scopes };
   }
 }

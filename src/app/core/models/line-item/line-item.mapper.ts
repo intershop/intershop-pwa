@@ -2,6 +2,7 @@ import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.in
 import { BasketRebateMapper } from 'ish-core/models/basket-rebate/basket-rebate.mapper';
 import { BasketWarrantyData } from 'ish-core/models/basket-warranty/basket-warranty.interface';
 import { BasketWarrantyMapper } from 'ish-core/models/basket-warranty/basket-warranty.mapper';
+import { CustomFieldMapper } from 'ish-core/models/custom-field/custom-field.mapper';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
 import { OrderLineItem } from 'ish-core/models/order/order.model';
 import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
@@ -56,6 +57,7 @@ export class LineItemMapper {
         editable: !data.quantityFixed,
         quote: data.quote ? data.quote : undefined,
         desiredDeliveryDate: data.desiredDelivery,
+        customFields: CustomFieldMapper.fromData(data.customFields),
         warranty:
           data.warranty && warrantyData ? BasketWarrantyMapper.fromData(warrantyData[data.warranty]) : undefined,
       };
