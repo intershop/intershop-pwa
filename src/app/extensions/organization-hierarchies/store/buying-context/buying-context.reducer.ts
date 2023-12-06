@@ -16,7 +16,7 @@ const initialState: BuyingContextState = {
 
 export const buyingContextReducer = createReducer(
   initialState,
-  on(assignBuyingContextSuccess, (state: BuyingContextState, action) => {
+  on(assignBuyingContextSuccess, (state: BuyingContextState, action): BuyingContextState => {
     const payload = action.payload;
     return {
       ...state,

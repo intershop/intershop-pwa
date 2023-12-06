@@ -24,7 +24,7 @@ describe('Order Group Path Effects', () => {
   let effects: OrderGroupPathEffects;
   let orgServiceMock: OrganizationHierarchiesService;
   let orderServiceMock: OrderService;
-  let store$: Store;
+  let store: Store;
 
   const orderWithBuyingContent = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
   const orderWithoutBuyingContent = { id: '2', documentNo: '00000002', lineItems: [] } as Order;
@@ -68,12 +68,12 @@ describe('Order Group Path Effects', () => {
     });
 
     effects = TestBed.inject(OrderGroupPathEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('loadOrdersWithGroupPaths$', () => {
     beforeEach(() => {
-      store$.dispatch(assignBuyingContextSuccess({ group: leafGroupGroup, bctx: buyingContext }));
+      store.dispatch(assignBuyingContextSuccess({ group: leafGroupGroup, bctx: buyingContext }));
     });
 
     it('should dispatch loadGroupsSuccess and loadOrdersWithGroupPathsSuccess actions when encountering LoadOrdersWithGroupPaths actions with non root group', () => {
@@ -87,7 +87,7 @@ describe('Order Group Path Effects', () => {
     });
 
     it('should dispatch loadGroupsSuccess actions when encountering LoadOrdersWithGroupPaths actions with root group', () => {
-      store$.dispatch(
+      store.dispatch(
         assignBuyingContextSuccess({ group: rootGroup, bctx: rootGroup.id.concat('@', orderGroupPath.organizationId) })
       );
       const action = loadOrdersWithGroupPaths();

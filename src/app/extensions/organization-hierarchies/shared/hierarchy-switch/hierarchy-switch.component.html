@@ -16,9 +16,13 @@
       <ng-container *ngIf="groups$ | async as groups">
         <ul *ngIf="groups.length">
           <li *ngFor="let g of groups">
-            <a *ngIf="(selectedElement$ | async).id !== g.id" class="d-block" (click)="groupSelected(g)">{{
-              g.name
-            }}</a>
+            <a
+              *ngIf="(selectedElement$ | async).id !== g.id"
+              class="d-block"
+              (click)="groupSelected(g)"
+              title="{{ g.name }}"
+              >{{ g.name | slice : 0 : 20 }}<span *ngIf="g.name.length >= 20">...</span></a
+            >
           </li>
         </ul>
       </ng-container>

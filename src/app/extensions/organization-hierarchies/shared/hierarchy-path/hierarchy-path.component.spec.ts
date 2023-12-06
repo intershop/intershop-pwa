@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { Order } from 'ish-core/models/order/order.model';
@@ -30,7 +30,7 @@ describe('Hierarchy Path Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
-        MockComponent(NgbCollapse),
+        MockDirective(NgbCollapse),
       ],
       providers: [
         { provide: OrganizationHierarchiesFacade, useFactory: () => instance(organizationHierarchiesFacade) },

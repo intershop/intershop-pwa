@@ -52,7 +52,7 @@ describe('Group Selectors', () => {
       expect(getGroupsOfOrganizationCount(store$.state)).toBe(2);
       expect(getGroupDetails('not-existing')(store$.state)).toBeUndefined();
       expect(getGroupDetails('1')(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "id": "1",
           "name": "Test 1",
         }
@@ -80,7 +80,7 @@ describe('Group Selectors', () => {
     it('should set selected to 1', () => {
       store$.dispatch(assignGroup({ id: '1' }));
       expect(getSelectedGroupDetails(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "id": "1",
           "name": "Test 1",
         }
@@ -90,7 +90,7 @@ describe('Group Selectors', () => {
     it('should set selected to 2', () => {
       store$.dispatch(assignGroup({ id: '2' }));
       expect(getSelectedGroupDetails(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "id": "2",
           "name": "Test 2",
           "parentid": "1",
@@ -118,19 +118,19 @@ describe('Group Selectors', () => {
     it('should get group path of selected group', () => {
       store$.dispatch(assignGroup({ id: '3' }));
       expect(getCurrentGroupPath(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "groupId": "3",
           "groupName": "Test 3",
-          "groupPath": Array [
-            Object {
+          "groupPath": [
+            {
               "groupId": "1",
               "groupName": "Test 1",
             },
-            Object {
+            {
               "groupId": "2",
               "groupName": "Test 2",
             },
-            Object {
+            {
               "groupId": "3",
               "groupName": "Test 3",
             },

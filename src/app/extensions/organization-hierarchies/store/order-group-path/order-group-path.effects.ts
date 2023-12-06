@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, map, switchMap } from 'rxjs/operators';
 
 import { OrderService } from 'ish-core/services/order/order.service';
 import { loadOrdersSuccess } from 'ish-core/store/customer/orders';
@@ -31,7 +31,7 @@ export class OrderGroupPathEffects {
   loadOrdersWithGroupPaths$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrdersWithGroupPaths),
-      withLatestFrom(this.store.pipe(select(getBuyingContext))),
+      concatLatestFrom(() => this.store.pipe(select(getBuyingContext))),
       concatMap(([, buyingContext]) => {
         if (buyingContext.group?.parentid) {
           return this.organizationHierarchiesService.getOrders(30, buyingContext.bctx).pipe(

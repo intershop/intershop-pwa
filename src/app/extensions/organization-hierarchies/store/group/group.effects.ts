@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { createBasket, loadBasketWithId } from 'ish-core/store/customer/basket';
@@ -27,7 +27,10 @@ export class GroupEffects {
   loadGroups$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadGroups),
-      withLatestFrom(this.store.pipe(select(getSelectedGroupDetails)), this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => [
+        this.store.pipe(select(getSelectedGroupDetails)),
+        this.store.pipe(select(getLoggedInCustomer)),
+      ]),
       switchMap(([, selectedGroup, customer]) =>
         this.organizationService.getGroups(customer).pipe(
           switchMap(groups => [
@@ -43,7 +46,10 @@ export class GroupEffects {
   assignGroup$ = createEffect(() =>
     this.actions$.pipe(
       ofType(assignGroup, assignBuyingContext),
-      withLatestFrom(this.store.pipe(select(getSelectedGroupDetails)), this.store.pipe(select(getLoggedInCustomer))),
+      concatLatestFrom(() => [
+        this.store.pipe(select(getSelectedGroupDetails)),
+        this.store.pipe(select(getLoggedInCustomer)),
+      ]),
       map(([, group, customer]) =>
         assignBuyingContextSuccess({ group, bctx: group.id.concat('@', customer.customerNo) })
       )

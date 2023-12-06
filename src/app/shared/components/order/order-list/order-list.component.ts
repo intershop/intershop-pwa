@@ -68,7 +68,6 @@ export class OrderListComponent implements OnInit {
 
   ngOnInit() {
     this.init();
-    console.log('OrderListComponent');
   }
 
   init() {

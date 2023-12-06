@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { Group } from '../../models/group/group.model';
 
@@ -26,14 +28,8 @@ describe('Group Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        GroupFormComponent,
-        MockComponent(ErrorMessageComponent),
-        //  MockComponent(InputComponent),
-        //   MockComponent(SelectComponent),
-        //    MockComponent(TextareaComponent),
-      ],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      declarations: [GroupFormComponent, MockComponent(ErrorMessageComponent)],
     }).compileComponents();
   });
 
@@ -41,7 +37,7 @@ describe('Group Form Component', () => {
     fixture = TestBed.createComponent(GroupFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.groups = groupTree;
+    component.groups$ = of(groupTree);
   });
 
   it('should be created', () => {
@@ -53,8 +49,8 @@ describe('Group Form Component', () => {
   it('should display form input fields on creation', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('[controlname=name]')).toBeTruthy();
-    expect(element.querySelector('[controlname=parent]')).toBeTruthy();
-    expect(element.querySelector('[controlname=description]')).toBeTruthy();
+    expect(element.innerHTML).toContain('groupName');
+    expect(element.innerHTML).toContain('groupDescription');
+    expect(element.innerHTML).toContain('parentGroupId');
   });
 });

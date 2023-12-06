@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
@@ -19,7 +20,7 @@ describe('Account Order History Page Component', () => {
         MockComponent(OrderListComponent),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
     }).compileComponents();
   });
 

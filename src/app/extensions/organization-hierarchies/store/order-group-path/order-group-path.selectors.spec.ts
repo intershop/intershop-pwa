@@ -48,15 +48,15 @@ describe('Order Group Path Selectors', () => {
 
     it('should get entity for valid id', () => {
       expect(getOrderGroupPathDetails(paths[0].orderId)(store$.state)).toMatchInlineSnapshot(`
-      Object {
+      {
         "groupId": "leafID",
         "groupName": "leafName",
-        "groupPath": Array [
-          Object {
+        "groupPath": [
+          {
             "groupId": "rootID",
             "groupName": "rootName",
           },
-          Object {
+          {
             "groupId": "leafID",
             "groupName": "leafName",
           },

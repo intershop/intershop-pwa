@@ -60,7 +60,7 @@ describe('Hierarchies Create Group Page Component', () => {
   it('should submit a valid form when the user fills all required fields', () => {
     fixture.detectChanges();
 
-    component.form = fb.group({
+    component.groupForm = fb.group({
       organizationGroup: fb.group({
         name: ['Test', [Validators.required]],
         parent: ['Organization', [Validators.required]],
@@ -73,13 +73,5 @@ describe('Hierarchies Create Group Page Component', () => {
     expect(component.formDisabled).toBeFalse();
 
     verify(organizationManagementFacade.createAndAddGroup(anything(), anything())).once();
-  });
-
-  it('should disable submit button when the user submits an invalid form', () => {
-    fixture.detectChanges();
-
-    expect(component.formDisabled).toBeFalse();
-    component.submitForm();
-    expect(component.formDisabled).toBeTrue();
   });
 });

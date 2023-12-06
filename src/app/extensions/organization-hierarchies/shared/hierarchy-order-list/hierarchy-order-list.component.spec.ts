@@ -10,6 +10,7 @@ import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
 import { LazyHierarchyGroupNameComponent } from '../../exports/lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
@@ -33,6 +34,7 @@ describe('Hierarchy Order List Component', () => {
         MockComponent(AddressComponent),
         MockComponent(LazyHierarchyGroupNameComponent),
         MockComponent(LoadingComponent),
+        MockComponent(OrderListComponent),
         MockDirective(FeatureToggleDirective),
         MockPipe(DatePipe),
         MockPipe(PricePipe),

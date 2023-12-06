@@ -27,7 +27,7 @@ describe('Group Effects', () => {
   let effects: GroupEffects;
   let orgServiceMock: OrganizationHierarchiesService;
   let basketServiceMock: BasketService;
-  let store$: Store;
+  let store: Store;
 
   const basket = { id: '1', calculated: true, totals: undefined } as BasketBaseData;
   const baskets = [basket] as BasketBaseData[];
@@ -55,7 +55,7 @@ describe('Group Effects', () => {
     });
 
     effects = TestBed.inject(GroupEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
   });
 
   describe('loadGroups$', () => {
@@ -69,7 +69,7 @@ describe('Group Effects', () => {
       expect(effects.loadGroups$).toBeObservable(expected$);
     });
     it('should dispatch loadGroupsSuccess actions when loadGroups actions triggered by reloading', () => {
-      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: selectedGroup.id }));
+      store.dispatch(loadGroupsSuccess({ groups, selectedGroupId: selectedGroup.id }));
 
       const action = loadGroups();
       const completion1 = loadGroupsSuccess({ groups, selectedGroupId: selectedGroup.id });
@@ -83,9 +83,9 @@ describe('Group Effects', () => {
 
   describe('assignGroup$', () => {
     beforeEach(() => {
-      store$.dispatch(loginUserSuccess({ customer }));
-      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: undefined }));
-      store$.dispatch(assignGroup({ id: 'subgroup' }));
+      store.dispatch(loginUserSuccess({ customer }));
+      store.dispatch(loadGroupsSuccess({ groups, selectedGroupId: undefined }));
+      store.dispatch(assignGroup({ id: 'subgroup' }));
     });
 
     it('should dispatch action of type AssignBuyingContextSuccess when triggered by AssignGroup', () => {

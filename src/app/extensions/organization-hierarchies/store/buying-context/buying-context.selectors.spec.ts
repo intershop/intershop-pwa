@@ -36,9 +36,9 @@ describe('Buying Context Selectors', () => {
 
     it('should always return the assigned buying context', () => {
       expect(getBuyingContext(store$.state)).toMatchInlineSnapshot(`
-        Object {
+        {
           "bctx": "Anna@Aaron",
-          "group": Object {
+          "group": {
             "id": "Aaron",
             "name": "Anna",
           },

@@ -4,13 +4,12 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { GroupHelper } from '../../models/group/group.helper';
 import { Group } from '../../models/group/group.model';
 import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
 import { loadGroups, loadGroupsFail, loadGroupsSuccess } from './organization-hierarchies.actions';
 import {
-  getOrganizationGroups,
+  getGroups,
   getOrganizationGroupsError,
   getOrganizationGroupsLoading,
 } from './organization-hierarchies.selectors';
@@ -40,7 +39,7 @@ describe('Organization Hierarchies Selectors', () => {
     });
 
     it('should not have entities when in initial state', () => {
-      expect(getOrganizationGroups(store$.state)).toEqual(GroupHelper.empty());
+      expect(getGroups(store$.state)).toBeEmpty();
     });
   });
 
@@ -56,15 +55,14 @@ describe('Organization Hierarchies Selectors', () => {
     });
 
     describe('LoadOrganizationHierarchiesSuccess', () => {
-      const groupTree = GroupHelper.empty();
-      groupTree.groups = {
-        test: {
+      const groups = [
+        {
           id: 'test',
           name: 'Test Group',
         } as Group,
-      };
-      groupTree.rootIds = ['test'];
-      const successAction = loadGroupsSuccess({ groupTree });
+      ];
+
+      const successAction = loadGroupsSuccess({ groups });
 
       beforeEach(() => {
         store$.dispatch(successAction);
@@ -79,12 +77,10 @@ describe('Organization Hierarchies Selectors', () => {
       });
 
       it('should have a group object when successfully loading', () => {
-        const loadedTree = getOrganizationGroups(store$.state);
+        const loadedTree = getGroups(store$.state);
         expect(loadedTree).not.toBeUndefined();
-        expect(loadedTree.rootIds).toContain('test');
-        expect(loadedTree.edges).toBeEmpty();
-        expect(loadedTree.groups.test).toHaveProperty('id', 'test');
-        expect(loadedTree.groups.test).toHaveProperty('name', 'Test Group');
+        expect(loadedTree[0]).toHaveProperty('id', 'test');
+        expect(loadedTree[0]).toHaveProperty('name', 'Test Group');
       });
     });
 
@@ -105,11 +101,9 @@ describe('Organization Hierarchies Selectors', () => {
       });
 
       it('should not have a group object when reducing error', () => {
-        const loadedTree = getOrganizationGroups(store$.state);
+        const loadedTree = getGroups(store$.state);
         expect(loadedTree).not.toBeUndefined();
-        expect(loadedTree.rootIds).toBeEmpty();
-        expect(loadedTree.edges).toBeEmpty();
-        expect(loadedTree.groups).toBeEmpty();
+        expect(loadedTree).toBeEmpty();
       });
     });
   });

@@ -1,13 +1,6 @@
 import { CollectionViewer, DataSource, SelectionChange } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, merge, of } from 'rxjs';
 import { map, take, takeUntil, tap } from 'rxjs/operators';
 
@@ -135,7 +128,7 @@ export class TreeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   //used to get the selected node in the using component
-  activeNode: DynamicFlatNode | null = null;
+  activeNode: DynamicFlatNode | null = undefined;
 
   constructor(private injector: Injector, private cdRef: ChangeDetectorRef) {}
 

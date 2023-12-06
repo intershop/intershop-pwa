@@ -17,13 +17,11 @@ export class HierarchiesPageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   error$: Observable<HttpError>;
-  loading$: Observable<boolean>;
   groups: Group[];
 
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit() {
-    this.loading$ = this.organizationManagementFacade.groupsLoading$;
     this.error$ = this.organizationManagementFacade.groupsError$;
     this.organizationManagementFacade
       .groupsOfCurrentUser$()

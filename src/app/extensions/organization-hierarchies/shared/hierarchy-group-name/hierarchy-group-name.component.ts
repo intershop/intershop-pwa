@@ -13,15 +13,15 @@ import { OrganizationGroup } from '../../models/organization-group/organization-
 })
 @GenerateLazyComponent()
 export class HierarchyGroupNameComponent implements OnInit {
-  @Input() buyingGroupId: string;
-  @Input() showLabel = true;
+  @Input() buyingContext: string;
+  @Input() showLabel: boolean;
   group$: Observable<OrganizationGroup>;
 
   constructor(private facade: OrganizationHierarchiesFacade) {}
 
   ngOnInit() {
-    if (this.buyingGroupId) {
-      this.group$ = this.facade.getDetailsOfGroup$(this.buyingGroupId.split('@')[0]);
+    if (this.buyingContext) {
+      this.group$ = this.facade.getDetailsOfGroup$(this.buyingContext.split('@')[0]);
     }
   }
 }

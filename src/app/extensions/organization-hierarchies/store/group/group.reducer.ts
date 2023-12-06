@@ -41,7 +41,7 @@ export const groupReducer = createReducer(
       ...newState,
     };
   }),
-  on(assignGroup, (state: GroupState, action) => {
+  on(assignGroup, (state: GroupState, action): GroupState => {
     const { id } = action.payload;
     return {
       ...state,

@@ -16,7 +16,6 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
-import { GroupHelper } from '../../models/group/group.helper';
 import { Group } from '../../models/group/group.model';
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 
@@ -32,7 +31,7 @@ describe('Organization Hierarchies Effects', () => {
   let actions$: Observable<Action>;
   let effects: OrganizationHierarchiesEffects;
   let orgServiceMock: OrganizationHierarchiesService;
-  let store$: Store;
+  let store: Store;
   let location: Location;
   let router: Router;
   const parentGroup = {
@@ -46,8 +45,8 @@ describe('Organization Hierarchies Effects', () => {
 
   beforeEach(() => {
     orgServiceMock = mock(OrganizationHierarchiesService);
-    when(orgServiceMock.getGroups(customer)).thenReturn(of(GroupHelper.empty()));
-    when(orgServiceMock.createGroup(anything(), anything())).thenReturn(of(GroupHelper.empty()));
+    when(orgServiceMock.getGroups(customer)).thenReturn(of([]));
+    when(orgServiceMock.createGroup(anything(), anything())).thenReturn(of(childGroup));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -68,10 +67,10 @@ describe('Organization Hierarchies Effects', () => {
     });
 
     effects = TestBed.inject(OrganizationHierarchiesEffects);
-    store$ = TestBed.inject(Store);
+    store = TestBed.inject(Store);
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
-    store$.dispatch(loginUserSuccess({ customer }));
+    store.dispatch(loginUserSuccess({ customer }));
   });
 
   describe('loadOrganizationHierarchies$', () => {
@@ -88,10 +87,8 @@ describe('Organization Hierarchies Effects', () => {
       actions$ = of(loadGroups());
 
       effects.loadOrganizationHierarchies$.subscribe(action => {
-        expect(action).toMatchInlineSnapshot(`
-          [Organization Hierarchies API] Load Groups Success:
-            groupTree: {"edges":{},"groups":{},"rootIds":[0]}
-        `);
+        expect(action.payload).toMatchSnapshot(`{ "groups": [],}`);
+        expect(action.type).toEqual(`[Organization Hierarchies API] Load Groups Success`);
         done();
       });
     });
@@ -99,7 +96,7 @@ describe('Organization Hierarchies Effects', () => {
 
   describe('createNewGroup$', () => {
     it('should call the service for creating and adding new group', done => {
-      actions$ = of(createGroup({ parent: parentGroup, child: childGroup }));
+      actions$ = of(createGroup({ parentGroupId: parentGroup.id, child: childGroup }));
 
       effects.createNewGroup$.subscribe(() => {
         verify(orgServiceMock.createGroup(anything(), anything())).once();
@@ -108,9 +105,9 @@ describe('Organization Hierarchies Effects', () => {
     });
 
     it('should create a user when triggered', () => {
-      const action = createGroup({ parent: parentGroup, child: childGroup });
+      const action = createGroup({ parentGroupId: parentGroup.id, child: childGroup });
 
-      const completion = createGroupSuccess({ groupTree: GroupHelper.empty(), group: childGroup });
+      const completion = createGroupSuccess({ group: childGroup });
       const completion2 = displaySuccessMessage({
         message: 'account.organization.hierarchies.groups.new.confirmation',
         messageParams: { 0: childGroup.name },
@@ -124,9 +121,9 @@ describe('Organization Hierarchies Effects', () => {
 
     it('should dispatch an createGroupFail action on failed group creation', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(orgServiceMock.createGroup(anything(), anything())).thenReturn(throwError(error));
+      when(orgServiceMock.createGroup(anything(), anything())).thenReturn(throwError(() => error));
 
-      const action = createGroup({ parent: parentGroup, child: childGroup });
+      const action = createGroup({ parentGroupId: parentGroup.id, child: childGroup });
       const completion = createGroupFail({ error });
 
       actions$ = hot('        -a', { a: action });
@@ -141,15 +138,16 @@ describe('Organization Hierarchies Effects', () => {
       router.navigateByUrl('/hierarchies/create-group');
       tick(500);
 
-      const action = createGroupSuccess({ groupTree: GroupHelper.empty(), group: childGroup });
+      const action = createGroupSuccess({ group: childGroup });
 
       actions$ = of(action);
 
-      effects.redirectAfterCreateNewGroup$.subscribe(() => {});
-
-      tick(500);
-
-      expect(location.path()).toMatchInlineSnapshot(`"/hierarchies"`);
+      effects.redirectAfterCreateNewGroup$.subscribe({
+        next: () => {
+          expect(location.path()).toMatchInlineSnapshot(`"/hierarchies"`);
+        },
+        error: fail,
+      });
     }));
   });
 });

@@ -40,8 +40,11 @@ export const orderGroupPathReducer = createReducer(
       ids: paths.map(p => p.orderId),
     };
   }),
-  on(loadOrdersSuccess, (state: OrderGroupPathState) => ({
-    ...state,
-    loading: false,
-  }))
+  on(
+    loadOrdersSuccess,
+    (state: OrderGroupPathState): OrderGroupPathState => ({
+      ...state,
+      loading: false,
+    })
+  )
 );
