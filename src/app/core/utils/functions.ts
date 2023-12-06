@@ -49,11 +49,14 @@ export function mergeDeep(target: any, source: any): any {
 /**
  * Returns a copy of the object composed of the own and inherited enumerable property paths of the object that are not omitted.
  */
-export function omit<T>(from: T, ...keys: (keyof T | string)[]) {
+export function omit<T extends object, K extends (string | number | symbol)[]>(
+  from: T,
+  ...keys: K
+): Omit<T, K[number]> {
   return !!from && !Array.isArray(from)
-    ? Object.entries(from)
+    ? (Object.entries(from)
         .filter(([key]) => !keys.includes(key))
-        .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {})
+        .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {}) as T)
     : from;
 }
 
