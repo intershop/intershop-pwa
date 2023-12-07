@@ -16,7 +16,10 @@ Generally speaking:
 
 It can be tempting to always modify existing templates, component and style files inline when doing customization.
 However, when merging incoming upgrades the number of merge conflicts can possibly be large.
-So if you want to upgrade to new PWA versions later, stick to the following recommendations.
+So if you want to upgrade to new PWA versions later, stick to the recommendations in this guide.
+
+If modifications to standard files seem absolutely inevitable it is good practice to mark the customizations with some `// CUSTOMIZATION` or `<!-- CUSTOMIZATION -->` comments.
+Either to mark a changed line or as a beginning and end marker for added blocks.
 
 ## Set up an Intershop PWA-based Project
 
@@ -65,6 +68,17 @@ $ ng g c shared/components/basket/custom-basket-display
 CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-display.component.ts (275 bytes)
 ...
 ```
+
+> [!NOTE]
+> The Intershop PWA project is configured to work by default against a publicly available Intershop Commerce Management server (see `environment.model.ts`).
+>
+> ```
+> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> ```
+>
+> To configure your PWA project to use an own default ICM server set the `icmBaseURL` in your projects `environment.model.ts` accordingly.
+>
+> In the same way the default `icmChannel` configurations need to be adapted in your theme specific `environment.<THEME>.ts` files.
 
 ## Specific Concerns
 

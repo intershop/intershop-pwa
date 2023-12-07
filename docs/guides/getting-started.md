@@ -12,36 +12,86 @@ kb_sync_latest_only
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
 Currently Node.js 18.16.0 LTS with the corresponding npm 9.5.1 is used for development.
 
-After having cloned the project from the Git repository, open a command line in the project folder and run `npm install`.
-
-The project uses Angular CLI which has to be installed globally.
+The project uses [Angular CLI](https://angular.io/cli) which has to be installed globally.
 Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine.
 
-Use `ng serve --open` to start up the development server and open the Progressive Web App in your browser.
+### Step 1 - Clone the Project
 
-For more information about environment configuration, server and tools consult the according chapters in the [Development Guide](./development.md).
+```bash
+git clone https://github.com/intershop/intershop-pwa.git
+```
+
+### Step 2 - Install the Dependencies
+
+After having cloned the project from the Git repository, change into the project folder and run:
+
+```bash
+npm install
+```
+
+### Step 3 - Start the Intershop PWA
+
+To start the development server (meaning that changes to the projects source code will automatically be build and reloaded) and open the Intershop PWA in your browser run:
+
+```bash
+ng serve --open
+```
+
+> [!NOTE]
+> The project is configured to work by default against a publicly available Intershop Commerce Management server (see `environment.model.ts`).
+>
+> ```
+> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> ```
+>
+> To run your PWA against an own ICM server configure the `icmBaseURL` in your local `environment.development.ts` or set the `icmBaseURL` in your projects `environment.model.ts` to your own ICM default server.
+>
+> In the same way the default `icmChannel` configuration needs to be adapted if your own ICM with your own organization should be used.
+
+For more information about the development environment configuration, server and tools consult the according chapters in the [Development Guide](./development.md).
+
+To simply build and start the Intershop PWA with Server Side Rendering for testing but without the automatic building and reloading of code changes `npm start` works as well and does not require Angular CLI to be installed.
 
 ## Customization
 
-Before customizing the PWA for your specific needs, have a look at our [Customization Guide](./customizations.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
+When starting your own project based on the Intershop PWA that includes customizing the PWA for your specific needs, have a look at our [Customization Guide](./customizations.md) first.
 
 ## Deployment
 
-Deployments are generated to the _dist_ folder of the project.
+For production and production like deployments we provide an [Intershop PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) for Kubernetes deployments.
 
+> [!NOTE]
+> For a Helm chart deployment the configuration property `upstream.icmBaseURL` is a required parameter that should point to your own ICM server.
+>
+> ```yaml
+> upstream:
+>   icmBaseURL: https://pwa-ish-demo.test.intershop.com
+> ```
+
+For a simple production like development or testing deployment of the current project state the project includes a `docker-compose.yml` that can be deployed with `docker compose up --build` in the project root.
+This will deploy both containers of the Intershop PWA - the pwa (SSR) container as well as the nginx container.
+
+> [!NOTE]
+> For the docker compose deployment an own ICM server can be configured with:
+>
+> ```yaml
+> services:
+>   pwa:
+>     environment:
+>       ICM_BASE_URL: 'https://pwa-ish-demo.test.intershop.com'
+> ```
+
+You can also manually build the docker image supplied with the `Dockerfile` in the root folder of the project.
+Build it with `docker build -t my_pwa .`.
+To run the PWA with multiple channels you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
+
+In general the deployment artifacts of the Intershop PWA are generated to the _dist_ folder of the project.
 Use `npm run build` to generate an Angular Universal enabled version.
 On the server the _dist/server.js_ script has to be executed with `node`.
-
 Alternatively, you can use `npm run build client` to get an application using browser rendering.
 All the files under `dist/browser` have to be served statically.
 The server has to be configured for fallback routing,
 see [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration).
-
-For a production setup we recommend building the docker image supplied with the `Dockerfile` in the root folder of the project.
-Build it with `docker build -t my_pwa .`.
-To run the PWA with multiple channels you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
-
-We provide [Helm Charts](https://github.com/intershop/helm-charts/tree/main/charts/pwa) for Kubernetes deployments.
 
 ## Running Tests
 
