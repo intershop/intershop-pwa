@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { differenceBy } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { TreeFacade } from 'ish-core/facades/common/tree.facade';
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
@@ -251,16 +251,6 @@ export class OrganizationManagementFacade implements TreeFacade {
     );
   }
 
-  /**loadGroups(): Observable<Group[]> {
-    const customer$ = this.store.pipe(select(getLoggedInCustomer));
-    return customer$.pipe(
-      whenTruthy(),
-      take(1),
-      tap(() => this.store.dispatch(loadGroups())),
-      switchMap(() => this.store.pipe(select(getGroups)))
-    );
-  }**/
-
   groupsOfCurrentUser$() {
     this.store.dispatch(loadGroups());
     return this.groups$;
@@ -283,7 +273,6 @@ export class OrganizationManagementFacade implements TreeFacade {
     return tree$.pipe(
       whenTruthy(),
       take(1),
-      tap(groups => console.log('Number of Groups: ', groups.length)),
       map(groups =>
         groups
           .filter(group => !group.parentId)

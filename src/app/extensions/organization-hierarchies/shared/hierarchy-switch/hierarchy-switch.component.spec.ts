@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
@@ -31,7 +32,7 @@ describe('Hierarchy Switch Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [HierarchySwitchComponent],
-      imports: [NgbDropdownModule],
+      imports: [NgbDropdownModule, RouterTestingModule],
       providers: [
         { provide: OrganizationHierarchiesFacade, useFactory: () => instance(organizationHierarchiesFacade) },
       ],

@@ -134,3 +134,5 @@ export const getMultiSiteLocaleMap = createSelector(
   getConfigurationState,
   (state: ConfigurationState) => state.multiSiteLocaleMap
 );
+
+export const getExternalURLs = createSelector(getConfigurationState, state => state.externalURLs);

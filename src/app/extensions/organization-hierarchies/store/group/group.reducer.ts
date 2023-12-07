@@ -1,7 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { createGroupSuccess } from '../../../../../../projects/organization-management/src/app/store/organization-hierarchies';
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
 import { assignGroup, loadGroupsSuccess } from './group.actions';
@@ -32,13 +31,6 @@ export const groupReducer = createReducer(
         : newState?.ids?.length
         ? (newState.ids[0] as string)
         : undefined,
-    };
-  }),
-  on(createGroupSuccess, (state: GroupState, action) => {
-    const group = action.payload.group;
-    const newState = groupAdapter.upsertOne(group, state);
-    return {
-      ...newState,
     };
   }),
   on(assignGroup, (state: GroupState, action): GroupState => {

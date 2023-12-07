@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, exhaustMap, map, mergeMap, tap } from 'rxjs/operators';
+import { concatMap, exhaustMap, map, mergeMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
@@ -32,7 +32,6 @@ export class OrganizationHierarchiesEffects {
     this.actions$.pipe(
       ofType(loadGroups),
       concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
-      tap(() => console.log('TREFFER effect loadOrganizationHierarchies')),
       exhaustMap(([, customer]) =>
         this.organizationService.getGroups(customer).pipe(
           map(tree => loadGroupsSuccess({ groups: tree })),

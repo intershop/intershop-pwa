@@ -9,7 +9,6 @@ import { loadGroups } from '../store/organization-hierarchies';
  */
 export function fetchHierachiesGroupsGuard(): boolean | Observable<boolean> {
   const store = inject(Store);
-  console.log('Fetch hierachies groups for hierarchies page module ');
   store.dispatch(loadGroups());
   return of(true);
 }

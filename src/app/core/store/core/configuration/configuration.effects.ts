@@ -84,6 +84,7 @@ export class ConfigurationEffects {
             'MULTI_SITE_LOCALE_MAP',
             'multiSiteLocaleMap'
           ),
+          this.stateProperties.getStateOrEnvOrDefault<string[]>('EXTERNAL_BASE_URLS', 'externalBaseURLs'),
         ]),
         map(
           ([
@@ -97,6 +98,7 @@ export class ConfigurationEffects {
             identityProvider,
             identityProviders,
             multiSiteLocaleMap,
+            externalURLs,
           ]) =>
             applyConfiguration({
               baseURL,
@@ -108,6 +110,7 @@ export class ConfigurationEffects {
               identityProvider,
               identityProviders,
               multiSiteLocaleMap,
+              externalURLs,
             })
         )
       ),

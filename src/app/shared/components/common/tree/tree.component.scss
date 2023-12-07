@@ -22,14 +22,14 @@ $caret-width: 7px;
     //border-bottom: 1px solid $CORPORATE-DARK;
 
     &:hover {
-     // background-color: $CORPORATE-SECONDARY;
+      // background-color: $CORPORATE-SECONDARY;
     }
 
     button {
       @include caret(down);
 
       width: 2rem;
-    //  color: $CORPORATE-PRIMARY;
+      //  color: $CORPORATE-PRIMARY;
       background: none;
       border: none;
 
@@ -59,16 +59,16 @@ $caret-width: 7px;
       margin-right: 6px;
       margin-left: 33px;
       vertical-align: middle;
-   //   accent-color: $CORPORATE-PRIMARY;
+      //   accent-color: $CORPORATE-PRIMARY;
       cursor: pointer;
       background: #fff;
     }
 
     &.active {
- //     background-color: $CORPORATE-PRIMARY;
+      //     background-color: $CORPORATE-PRIMARY;
 
       &:hover {
-  //      background-color: $CORPORATE-PRIMARY;
+        //      background-color: $CORPORATE-PRIMARY;
       }
     }
 

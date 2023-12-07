@@ -38,7 +38,6 @@ export const organizationHierarchiesReducer = createReducer(
   unsetLoadingAndErrorOn(loadGroupsSuccess, createGroupSuccess),
   on(loadGroupsSuccess, (state, action) => {
     const { groups } = action.payload;
-    console.log('REDUCER GROUP LOADED SUCCEFUL!!! Number of Groups: ', groups.length);
     return {
       ...groupAdapter.setAll(groups, state),
     };

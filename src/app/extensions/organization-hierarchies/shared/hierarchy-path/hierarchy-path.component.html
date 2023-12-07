@@ -6,6 +6,7 @@
       <span *ngIf="path.groupPath.length > 3">&nbsp;&#124;&nbsp;</span>
       <a
         *ngIf="path.groupPath.length > 3 && !isCollapsed"
+        [routerLink]="[]"
         (click)="toggle()"
         title="{{ 'account.organization.hierarchies.grouppath.tooltip.open' | translate }}"
       >
@@ -20,6 +21,7 @@
       <span *ngIf="path.groupPath.length > 2"> &#124; {{ path.groupPath[path.groupPath.length - 1].groupName }}</span>
       <a
         *ngIf="path.groupPath.length > 3 && isCollapsed"
+        [routerLink]="[]"
         (click)="toggle()"
         title="{{ 'account.organization.hierarchies.grouppath.tooltip.close' | translate }}"
         >&nbsp;

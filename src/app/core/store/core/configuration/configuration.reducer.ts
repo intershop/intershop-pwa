@@ -27,6 +27,7 @@ export interface ConfigurationState {
   multiSiteLocaleMap: Record<string, unknown>;
   // not synced via state transfer
   _deviceType?: DeviceType;
+  externalURLs?: string[];
 }
 
 const initialState: ConfigurationState = {
@@ -46,6 +47,7 @@ const initialState: ConfigurationState = {
   serverTranslations: {},
   multiSiteLocaleMap: undefined,
   _deviceType: environment.defaultDeviceType,
+  externalURLs: [],
 };
 
 function addSingleTranslation(

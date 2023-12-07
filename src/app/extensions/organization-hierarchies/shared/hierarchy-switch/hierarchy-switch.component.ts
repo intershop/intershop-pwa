@@ -25,6 +25,8 @@ export class HierarchySwitchComponent implements OnInit {
 
   constructor(private facade: OrganizationHierarchiesFacade) {}
 
+  homeHref: string;
+
   ngOnInit(): void {
     this.groups$ = this.facade.groups$;
     this.count$ = this.facade.groupsCount$();

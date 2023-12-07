@@ -16,6 +16,9 @@ export interface Environment {
   icmApplication?: string;
   hybridApplication?: string;
 
+  // array of urls to external systems
+  externalBaseURLs?: string[];
+
   // array of REST path expressions that should always be mocked
   apiMockPaths?: string[];
 

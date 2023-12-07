@@ -18,6 +18,7 @@
           <li *ngFor="let g of groups">
             <a
               *ngIf="(selectedElement$ | async).id !== g.id"
+              [routerLink]="[]"
               class="d-block"
               (click)="groupSelected(g)"
               title="{{ g.name }}"
