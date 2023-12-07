@@ -912,7 +912,8 @@
         "plugin:@angular-eslint/template/accessibility"
       ],
       "rules": {
-        "@angular-eslint/template/no-positive-tabindex": "error"
+        "@angular-eslint/template/no-positive-tabindex": "error",
+        "@angular-eslint/template/prefer-self-closing-tags": "error"
       }
     },
     {

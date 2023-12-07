@@ -32,7 +32,7 @@
         [title]="'account.profile.update.link' | translate"
         data-testing-id="edit-user"
       >
-        <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+        <fa-icon [icon]="['fas', 'pencil-alt']" />
       </a>
     </div>
   </div>
@@ -61,7 +61,7 @@
         [title]="'account.profile.update.link' | translate"
         data-testing-id="edit-roles"
       >
-        <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+        <fa-icon [icon]="['fas', 'pencil-alt']" />
       </a>
     </div>
   </div>
@@ -69,7 +69,7 @@
   <ish-user-detail-budget
     *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
     [budget]="user.userBudget"
-  ></ish-user-detail-budget>
+  />
 </ng-container>
 
 <a routerLink=".." data-testing-id="back-to-user-management">{{

@@ -10,15 +10,15 @@
       <div ishProductContext [sku]="pli.productSKU" class="row clearfix">
         <!---Product Image --->
         <div class="col-2 list-item">
-          <ish-product-image imageType="S" [link]="true"></ish-product-image>
+          <ish-product-image imageType="S" [link]="true" />
         </div>
         <!---Product Description --->
         <div class="col-5 col-md-4 list-item">
-          <ish-product-name></ish-product-name>
+          <ish-product-name />
           <p class="product-id">{{ 'product.itemNumber.label' | translate }}&nbsp;{{ pli.productSKU }}</p>
 
           <!---Out of Stock --->
-          <ish-product-inventory></ish-product-inventory>
+          <ish-product-inventory />
         </div>
         <div class="col-2 list-item column-price">
           {{ pli.quantity.value }}

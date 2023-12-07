@@ -1,14 +1,14 @@
 <div *ngIf="selectedType$ | async as selectedType">
   <h1>{{ 'account.punchout.create.heading' | translate : { '0': selectedType } }}</h1>
 
-  <ish-error-message [error]="error$ | async"></ish-error-message>
+  <ish-error-message [error]="error$ | async" />
 
   <p>{{ 'account.punchout.create.description' | translate : { '0': selectedType } }}</p>
 
   <div class="row">
     <div class="col-md-10 col-xl-8">
-      <ish-punchout-user-form [punchoutType]="selectedType" (submitUser)="submitForm($event)"></ish-punchout-user-form>
+      <ish-punchout-user-form [punchoutType]="selectedType" (submitUser)="submitForm($event)" />
     </div>
   </div>
 </div>
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

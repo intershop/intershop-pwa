@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.status.label' | translate }}</div>
       <div class="col-8 col-md-9 col-xl-10">
-        <p class="form-control-plaintext"><ish-quote-state [quoteId]="quote.id"></ish-quote-state></p>
+        <p class="form-control-plaintext"><ish-quote-state [quoteId]="quote.id" /></p>
       </div>
     </div>
 
@@ -50,7 +50,7 @@
     <!-- Quote Item List -->
     <div class="section">
       <h3>{{ 'quote.items.table.heading' | translate }}</h3>
-      <ish-quote-line-item-list *ngIf="quote.items"></ish-quote-line-item-list>
+      <ish-quote-line-item-list *ngIf="quote.items" />
     </div>
   </form>
 </ng-container>

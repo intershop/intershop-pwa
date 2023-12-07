@@ -1,5 +1,5 @@
 <ng-container *ngIf="error$ | async as generalError; else notFoundError">
-  <ish-server-error [error]="generalError" [type]="type$ | async"></ish-server-error>
+  <ish-server-error [error]="generalError" [type]="type$ | async" />
 </ng-container>
 
-<ng-template #notFoundError><ish-error></ish-error></ng-template>
+<ng-template #notFoundError><ish-error /></ng-template>

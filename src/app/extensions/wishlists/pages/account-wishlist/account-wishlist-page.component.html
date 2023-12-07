@@ -11,7 +11,7 @@
       popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
     >
       {{ 'account.wishlists.heading.tooltip.link' | translate }}
-      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+      <fa-icon [icon]="['fas', 'info-circle']" />
     </a>
     <a class="btn btn-secondary" data-testing-id="add-wishlist" [routerLink]="[]" (click)="addWishlistDialog.show()">{{
       'account.wishlists.add_wishlist' | translate
@@ -19,21 +19,15 @@
   </h1>
 
   <!-- Error message -->
-  <ish-error-message [error]="wishlistError$ | async"></ish-error-message>
+  <ish-error-message [error]="wishlistError$ | async" />
 
   <div class="section">
-    <ish-account-wishlist-list
-      [wishlists]="wishlists$ | async"
-      (deleteWishlist)="deleteWishlist($event)"
-    ></ish-account-wishlist-list>
+    <ish-account-wishlist-list [wishlists]="wishlists$ | async" (deleteWishlist)="deleteWishlist($event)" />
   </div>
 
   <a routerLink="/home">{{ 'account.wishlist.searchform.continue_shopping.link' | translate }}</a>
 </div>
 
-<ish-wishlist-preferences-dialog
-  #addWishlistDialog
-  (submitWishlist)="addWishlist($event)"
-></ish-wishlist-preferences-dialog>
+<ish-wishlist-preferences-dialog #addWishlistDialog (submitWishlist)="addWishlist($event)" />
 
-<ish-loading *ngIf="wishlistLoading$ | async"></ish-loading>
+<ish-loading *ngIf="wishlistLoading$ | async" />

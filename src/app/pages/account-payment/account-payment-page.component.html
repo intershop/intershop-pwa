@@ -2,10 +2,10 @@
   <ng-container>
     <h1>{{ 'account.payment.heading' | translate }}</h1>
 
-    <ish-error-message [error]="error$ | async"></ish-error-message>
+    <ish-error-message [error]="error$ | async" />
 
-    <ish-account-payment [paymentMethods]="paymentMethods$ | async" [user]="user$ | async"> </ish-account-payment>
+    <ish-account-payment [paymentMethods]="paymentMethods$ | async" [user]="user$ | async" />
   </ng-container>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>

@@ -4,7 +4,7 @@
     in ICM versions lower than 7.10.38 the cost center admin is not allowed to read the list of users for the customer
     keep-localization-pattern: ^subject.has.no.permission.assigned$
   -->
-<ish-error-message [error]="error$ | async"></ish-error-message>
+<ish-error-message [error]="error$ | async" />
 
 <ng-container *ngIf="buyers$ | async as buyers; else emptyList">
   <div *ngIf="buyers.length; else emptyList">
@@ -30,7 +30,7 @@
 
       <form (ngSubmit)="submitForm()" [formGroup]="form">
         <div class="list-body">
-          <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1"></formly-form>
+          <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1" />
         </div>
         <div class="row justify-content-end">
           <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="add-buyers-submit">
@@ -56,4 +56,4 @@
   </div>
 </ng-template>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

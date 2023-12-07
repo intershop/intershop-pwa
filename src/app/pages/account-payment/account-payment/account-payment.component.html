@@ -20,7 +20,7 @@
           >
             <ng-container
               *ngTemplateOutlet="paymentWidget; context: { pi: preferredPaymentInstrument, isPreferred: true }"
-            ></ng-container>
+            />
           </div>
         </ng-container>
         <ng-template #noPreferredPayment>{{ 'account.payment.no_preferred_method' | translate }}</ng-template>
@@ -36,7 +36,7 @@
         </div>
 
         <div *ngFor="let payment of method.paymentInstruments" class="row">
-          <ng-container *ngTemplateOutlet="paymentWidget; context: { pi: payment, isPreferred: false }"></ng-container>
+          <ng-container *ngTemplateOutlet="paymentWidget; context: { pi: payment, isPreferred: false }" />
         </div>
       </div>
 
@@ -87,7 +87,7 @@
           {{ pi.accountIdentifier }}
         </label>
 
-        <ish-account-payment-concardis-directdebit [paymentInstrument]="pi"></ish-account-payment-concardis-directdebit>
+        <ish-account-payment-concardis-directdebit [paymentInstrument]="pi" />
       </div>
     </ng-template>
   </form>

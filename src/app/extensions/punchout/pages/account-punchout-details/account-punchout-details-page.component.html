@@ -2,7 +2,7 @@
   <h1>
     {{ 'account.punchout.user.details.heading' | translate : { '0': user.login } }}
   </h1>
-  <ish-error-message [error]="error$ | async"></ish-error-message>
+  <ish-error-message [error]="error$ | async" />
 
   <p>{{ 'account.punchout.update.description' | translate }}</p>
 
@@ -12,9 +12,9 @@
         [punchoutUser]="user"
         [punchoutType]="user.punchoutType"
         (submitUser)="submitForm($event)"
-      ></ish-punchout-user-form>
+      />
     </div>
   </div>
 </ng-container>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

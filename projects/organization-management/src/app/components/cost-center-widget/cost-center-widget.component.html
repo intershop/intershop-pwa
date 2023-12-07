@@ -11,10 +11,7 @@
                 </a>
               </div>
               <div class="col-12 col-md-7">
-                <ish-cost-center-budget
-                  [costCenter]="cc"
-                  progressBarClass="background-inverse"
-                ></ish-cost-center-budget>
+                <ish-cost-center-budget [costCenter]="cc" progressBarClass="background-inverse" />
               </div>
             </div>
           </ng-container>
@@ -33,7 +30,7 @@
     </div>
 
     <ng-template #loading>
-      <ish-loading></ish-loading>
+      <ish-loading />
     </ng-template>
   </div>
 </ish-info-box>

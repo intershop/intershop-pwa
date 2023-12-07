@@ -3,10 +3,10 @@
   <form [formGroup]="directOrderForm" (ngSubmit)="onSubmit()" data-testing-id="direct-order-form">
     <div class="row mb-1">
       <div class="col-7 col-sm-5">
-        <formly-form [form]="directOrderForm" [fields]="fields" [model]="model"></formly-form>
+        <formly-form [form]="directOrderForm" [fields]="fields" [model]="model" />
       </div>
       <div class="col-5 col-sm-3">
-        <ish-product-quantity></ish-product-quantity>
+        <ish-product-quantity />
       </div>
       <div class="col-12 col-sm-4">
         <button

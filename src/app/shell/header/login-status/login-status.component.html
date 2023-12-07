@@ -1,7 +1,7 @@
 <ng-container *ngIf="logoutOnly; else loginStatus">
   <ng-container *ngIf="user$ | async as user; else notLoggedIn">
     <a routerLink="/logout" data-testing-id="link-logout" [attr.aria-label]="'account.logout.link' | translate">
-      <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
+      <fa-icon [icon]="['fas', 'user']" class="header-icon" />
       <span *ngIf="view !== 'small'"> {{ 'account.logout.link' | translate }} </span>
     </a>
   </ng-container>
@@ -17,7 +17,7 @@
       data-testing-id="link-myaccount"
       [attr.aria-label]="'account.go_to_account.aria_label' | translate"
     >
-      <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
+      <fa-icon [icon]="['fas', 'user']" class="header-icon" />
       <span *ngIf="user.lastName; else nameNotDisplayed" class="login-name" [ngClass]="getViewClasses()">{{
         user.firstName + ' ' + user.lastName
       }}</span>
@@ -46,7 +46,7 @@
       rel="nofollow"
       [attr.aria-label]="'account.login.link' | translate"
     >
-      <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
+      <fa-icon [icon]="['fas', 'user']" class="header-icon" />
       <span [ngClass]="getViewClasses()">{{ 'account.login.link' | translate }}</span>
     </a>
     <span class="separator" [ngClass]="getViewClasses()">&#124;</span

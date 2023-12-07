@@ -1,6 +1,6 @@
 <h1>{{ 'account.company_profile.heading' | translate }}</h1>
 
-<ish-error-message [error]="error"></ish-error-message>
+<ish-error-message [error]="error" />
 
 <p>{{ 'account.company_profile.heading.text' | translate }}</p>
 
@@ -11,7 +11,7 @@
         <span class="required">*</span>{{ 'account.required_field.message' | translate }}
       </p>
       <form class="form-horizontal" [formGroup]="accountProfileCompanyForm" (ngSubmit)="submit()">
-        <formly-form [form]="accountProfileCompanyForm" [fields]="fields" [model]="model"></formly-form>
+        <formly-form [form]="accountProfileCompanyForm" [fields]="fields" [model]="model" />
         <div class="row">
           <div class="offset-md-4 col-md-8">
             <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">

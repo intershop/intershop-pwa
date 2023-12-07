@@ -1,12 +1,12 @@
 <div class="content-page">
-  <ish-breadcrumb></ish-breadcrumb>
+  <ish-breadcrumb />
 
   <h1>{{ 'helpdesk.contact_us.heading' | translate }}</h1>
 
   <ng-container *ngIf="(success$ | async) === undefined; else contactConfirmation">
     <div class="row">
       <div class="col-md-10 col-lg-8 col-xl-7">
-        <ish-contact-form (request)="createRequest($event)"></ish-contact-form>
+        <ish-contact-form (request)="createRequest($event)" />
       </div>
     </div>
 
@@ -14,8 +14,8 @@
   </ng-container>
 
   <ng-template #contactConfirmation>
-    <ish-contact-confirmation [success]="success$ | async"></ish-contact-confirmation>
+    <ish-contact-confirmation [success]="success$ | async" />
   </ng-template>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>

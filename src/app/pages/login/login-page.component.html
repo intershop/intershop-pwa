@@ -1,5 +1,5 @@
 <ng-container *ngIf="routingInProgress$ | async; else ready">
-  <ish-loading></ish-loading>
+  <ish-loading />
 </ng-container>
 
 <ng-template #ready>
@@ -14,7 +14,7 @@
             {{ loginMessageKey | translate }}
           </p>
 
-          <ish-identity-provider-login></ish-identity-provider-login>
+          <ish-identity-provider-login />
         </div>
       </div>
     </div>

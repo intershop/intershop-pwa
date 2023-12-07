@@ -27,7 +27,7 @@
       style="right: 40px"
       (click)="searchSuggest(''); searchInput.focus()"
     >
-      <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+      <fa-icon [icon]="['fas', 'times-circle']" />
     </button>
 
     <button
@@ -39,7 +39,7 @@
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">
-        <fa-icon [icon]="['fas', usedIcon]"></fa-icon>
+        <fa-icon [icon]="['fas', usedIcon]" />
       </ng-container>
       <!-- search button with text -->
       <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>

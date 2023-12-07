@@ -6,15 +6,12 @@
   data-testing-id="checkout-receipt-page"
 >
   <ish-checkout-receipt [order]="data.basket || data.order">
-    <ish-lazy-checkout-receipt-requisition
-      *ngIf="data.basket; else orderReceiptHeader"
-      [basket]="data.basket"
-    ></ish-lazy-checkout-receipt-requisition>
+    <ish-lazy-checkout-receipt-requisition *ngIf="data.basket; else orderReceiptHeader" [basket]="data.basket" />
 
     <ng-template #orderReceiptHeader>
-      <ish-checkout-receipt-order [order]="data.order"></ish-checkout-receipt-order>
+      <ish-checkout-receipt-order [order]="data.order" />
     </ng-template>
   </ish-checkout-receipt>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>

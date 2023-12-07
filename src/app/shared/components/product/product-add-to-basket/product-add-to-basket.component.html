@@ -13,14 +13,14 @@
     <ng-container *ngIf="(displaySpinner$ | async) !== true; else spinning">
       <!-- Add to Cart button -->
       <ng-container *ngIf="displayIcon; else defaultButton">
-        <fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon>
+        <fa-icon [icon]="['fas', 'shopping-cart']" />
       </ng-container>
 
       <ng-template #defaultButton>{{ translationKey$ | async | translate }}</ng-template>
     </ng-container>
     <!-- button with spinning animation after Add to Cart -->
     <ng-template #spinning>
-      <fa-icon [icon]="['fas', 'spinner']" [spin]="true" [ngClass]="{ 'pr-3': !displayIcon }"></fa-icon>
+      <fa-icon [icon]="['fas', 'spinner']" [spin]="true" [ngClass]="{ 'pr-3': !displayIcon }" />
       <span *ngIf="!displayIcon">{{ 'common.button.spinning.label' | translate }}</span>
     </ng-template>
   </button>

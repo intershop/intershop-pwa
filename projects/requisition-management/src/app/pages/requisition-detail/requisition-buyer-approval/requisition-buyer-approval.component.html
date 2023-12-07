@@ -25,7 +25,7 @@
         </dl>
       </div>
       <div *ngIf="requisition.userBudget?.orderSpentLimit" class="col-md-6 mb-2">
-        <ish-budget-bar [budget]="requisition.userBudget?.orderSpentLimit" [spentBudget]="orderTotal"></ish-budget-bar>
+        <ish-budget-bar [budget]="requisition.userBudget?.orderSpentLimit" [spentBudget]="orderTotal" />
       </div>
     </div>
     <div class="row">
@@ -77,7 +77,7 @@
           [budget]="requisition.userBudget?.budget"
           [spentBudget]="requisition.userBudget?.spentBudget"
           [additionalAmount]="requisition.approval.statusCode !== 'APPROVED' ? orderTotal : undefined"
-        ></ish-budget-bar>
+        />
       </div>
     </div>
   </ish-info-box>

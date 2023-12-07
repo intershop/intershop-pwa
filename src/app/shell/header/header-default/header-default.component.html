@@ -8,50 +8,50 @@
       icon: icon,
       showLastSearchTerm: true
     }"
-  ></ish-lazy-search-box>
+  />
 </ng-template>
 
 <div class="header container" [ngClass]="deviceType">
   <ul *ngIf="!isSticky" class="user-links">
     <li *ngIf="!isSticky && deviceType !== 'mobile'">
-      <ish-login-status data-testing-id="user-status-desktop"></ish-login-status>
+      <ish-login-status data-testing-id="user-status-desktop" />
     </li>
     <li *ishFeature="'compare'" class="d-none d-md-block">
-      <ish-lazy-product-compare-status data-testing-id="compare-status-desktop"> </ish-lazy-product-compare-status>
+      <ish-lazy-product-compare-status data-testing-id="compare-status-desktop" />
     </li>
     <li *ishFeature="'wishlists'" class="d-none d-md-block">
-      <ish-lazy-wishlists-link></ish-lazy-wishlists-link>
+      <ish-lazy-wishlists-link />
     </li>
   </ul>
 
   <div class="header-utility">
     <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
-      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')"></fa-icon>
+      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')" />
       <div
         *ngIf="isSticky || showSearch"
         class="search-container header-search-container"
         [ngbCollapse]="!showSearch"
         [ngClass]="{ show: !isSticky }"
       >
-        <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }"></ng-container>
+        <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }" />
       </div>
     </a>
     <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop"> </ish-language-switch>
+      <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop" />
     </div>
-    <ish-login-status *ngIf="isSticky || deviceType === 'mobile'" view="small"></ish-login-status>
+    <ish-login-status *ngIf="isSticky || deviceType === 'mobile'" view="small" />
 
     <ish-mini-basket
       data-testing-id="mini-basket-desktop"
       view="full"
       class="d-none"
       [ngClass]="isSticky ? 'd-lg-block' : 'd-md-block'"
-    ></ish-mini-basket>
+    />
     <ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
       [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
-    ></ish-mini-basket>
+    />
   </div>
   <div class="mid-header row align-items-center">
     <div class="col-md-3 logo-col">
@@ -77,11 +77,11 @@
       </div>
     </div>
     <div class="col-md-5 text-right">
-      <ish-lazy-quickorder-link></ish-lazy-quickorder-link>
+      <ish-lazy-quickorder-link />
     </div>
     <div class="col-md-4">
       <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">
-        <ng-container *ngTemplateOutlet="searchBoxTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="searchBoxTemplate" />
       </div>
     </div>
   </div>
@@ -101,8 +101,8 @@
       [attr.aria-label]="'navigation.main.aria_label' | translate"
     >
       <div class="main-navigation">
-        <ish-header-navigation></ish-header-navigation>
-        <ish-user-information-mobile></ish-user-information-mobile>
+        <ish-header-navigation />
+        <ish-user-information-mobile />
       </div>
     </nav>
   </div>

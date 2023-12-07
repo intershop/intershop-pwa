@@ -7,8 +7,7 @@
       [slideItems]="pagelet.numberParam('SlideItems')"
       [listItemStyle]="$any(pagelet.stringParam('ListItemStyle'))"
       [listItemCSSClass]="pagelet.stringParam('ListItemCSSClass')"
-    >
-    </ish-products-list>
+    />
     <a *ngIf="pagelet.booleanParam('ShowViewAll')" [routerLink]="['/categoryref', pagelet.stringParam('Category')]">{{
       'common.view_all.link' | translate
     }}</a>

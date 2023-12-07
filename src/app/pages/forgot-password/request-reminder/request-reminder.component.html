@@ -7,13 +7,13 @@
 <ng-template #forgotPasswordForm>
   <p [ishServerHtml]="'account.forgotdata.password_retrieval_info.text' | translate"></p>
 
-  <ish-error-message [error]="error$ | async"></ish-error-message>
+  <ish-error-message [error]="error$ | async" />
 
   <div class="row">
     <div class="col-md-10 col-lg-8 col-xl-6">
-      <ish-request-reminder-form (submitPasswordReminder)="requestPasswordReminder($event)"></ish-request-reminder-form>
+      <ish-request-reminder-form (submitPasswordReminder)="requestPasswordReminder($event)" />
     </div>
   </div>
 </ng-template>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

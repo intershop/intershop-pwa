@@ -5,7 +5,7 @@
     [routerLink]="editRouterLink"
     [title]="'checkout.update.label' | translate : { '0': heading | translate }"
   >
-    <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+    <fa-icon [icon]="['fas', 'pencil-alt']" />
   </a>
   <h3 *ngIf="heading">{{ heading | translate }}</h3>
   <ng-content></ng-content>

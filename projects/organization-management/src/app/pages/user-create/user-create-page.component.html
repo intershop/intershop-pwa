@@ -2,12 +2,12 @@
   <div class="col-md-12">
     <h1>{{ 'account.user.new.heading' | translate }}</h1>
     <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
-      <ish-user-profile-form [form]="profile" [error]="userError$ | async"></ish-user-profile-form>
-      <ish-user-roles-selection formControlName="roleIDs"></ish-user-roles-selection>
+      <ish-user-profile-form [form]="profile" [error]="userError$ | async" />
+      <ish-user-roles-selection formControlName="roleIDs" />
       <ish-user-budget-form
         *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
         [form]="budgetForm"
-      ></ish-user-budget-form>
+      />
       <div class="row">
         <div class="offset-md-4 col-md-8">
           <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="create-user-submit">
@@ -20,5 +20,5 @@
       </div>
     </form>
   </div>
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>
