@@ -13,7 +13,8 @@ In addition, the PWA, when run with Angular Universal, consists of a server-side
 
 ## Ways of Configuring Angular Applications
 
-> :warning: If available, always prefer configuration via system environment variables and running the PWA with Universal Rendering.
+> [!WARNING]
+> If available, always prefer configuration via system environment variables and running the PWA with Universal Rendering.
 
 ### Angular CLI Environments
 

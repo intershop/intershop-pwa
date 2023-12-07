@@ -32,7 +32,8 @@ Formly naturally facilitates the reuse of forms through its configuration-based,
 In the Intershop PWA, there are a number of ways to enhance this reusability and provide developers with the ability to centrally define common form field configurations that can be used throughout the app.
 This article showcases the different ways this can be done.
 
-> **Note:** To understand this documentation, a basic understanding of [Formly](./formly.md) is required.
+> [!NOTE]
+> To understand this documentation, a basic understanding of [Formly](./formly.md) is required.
 
 ## The Field Library
 
@@ -115,7 +116,8 @@ To define a new reusable field configuration, use the `field-library-configurati
 It will generate a `.configuration.ts` file and register the configuration in the `providers` array of the module. <br/> Populate the file with whatever logic you need and let the `getConfiguration()` method return a `FormlyFieldConfig`.
 You can return a static value or inject services and create a dynamic, smart configuration.
 
-> **Note:** A field library configuration is a typescript file. If you need to adapt these configurations in a project, consider using a [theme-specific override](./customizations.md#theme-specific-overrides) for maximum flexibility.
+> [!NOTE]
+> A field library configuration is a typescript file. If you need to adapt these configurations in a project, consider using a [theme-specific override](./customizations.md#theme-specific-overrides) for maximum flexibility.
 
 #### Defining a FieldLibraryConfigurationGroup
 
@@ -168,7 +170,8 @@ For example, defining a new label text works like this:
 
 This is equivalent to the example given in [Retrieving configurations](#retrieving-configurations) but doesn't require you to inject the library.
 
-> **Note:** Currently, it is not possible to use configuration groups with this shorthand syntax. This is a known limitation and might be addressed in future versions.
+> [!NOTE]
+> Currently, it is not possible to use configuration groups with this shorthand syntax. This is a known limitation and might be addressed in future versions.
 
 ## Address Forms
 

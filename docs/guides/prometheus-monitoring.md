@@ -36,7 +36,8 @@ To get started, you can import our example [Grafana Dashboard][grafana-pwa-dashb
 
 ![Example Dashboard](./prometheus-monitoring-dashboard-annotated.png)
 
-:warning: We recommend to switch off the SSR container health-check and define alerts in Grafana instead.
+> [!WARNING]
+> We recommend to switch off the SSR container health-check and define alerts in Grafana instead.
 
 # Further References
 

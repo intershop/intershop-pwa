@@ -80,7 +80,7 @@ For all of those aspects – Design View, Service Workers and Universal renderin
 If not, those aspects will not work properly, e.g.
 Universal rendering will never return the rendered HTML and the Design View will never render the component tree view.
 
-> **Note**  
+> [!NOTE]
 > Avoid long-running timers and intervals. If this is unavoidable, make sure the async tasks do not start before the zone has become stable once.
 
 If you have any intervals in the application, wait for zone stability first before starting them.

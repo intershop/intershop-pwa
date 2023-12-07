@@ -181,7 +181,8 @@ Please run the following command for each configured Angular project (e.g., 'int
   ng g formly-migrate --project=${ANGULAR_PROJECT}
 ```
 
-> **NOTE:** Not all scenarios where a deprecated property could be found are taken into consideration for the `formly-migrate` schematic. Please check and adapt your code manually for additional changes. For further information, see the [formly migration guide](https://formly.dev/docs/guide/migration/).
+> [!NOTE]
+> Not all scenarios where a deprecated property could be found are taken into consideration for the `formly-migrate` schematic. Please check and adapt your code manually for additional changes. For further information, see the [formly migration guide](https://formly.dev/docs/guide/migration/).
 
 The templates of `account-order-template-detail-page.component.ts`, `quote-line-item-list.component.ts`, `quoting-basket-line-items.component.ts`, and `account-wishlist-detail-page.component.ts` have been updated to ensure correct DOM element updates for `ngFor` loop changes.
 A [trackBy function](https://angular.io/api/core/TrackByFunction) will be used now.

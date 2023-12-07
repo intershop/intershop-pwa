@@ -54,8 +54,7 @@ To add or change the functionality of an identity provider, the following steps 
    }
    ```
 
-   > **Note**
-   >
+   > [!NOTE]
    > If a identity provider is using the OAuthService for authentication, then the identity provider have to inject the OAuthService with a new instance.
    > Otherwise difficult side effects with the [TokenService](../../src/app/core/services/token/token.service.ts) will occur.
    > Please checkout the [Auth0IdentityProvider](../../src/app/core/identity-provider/auth0.identity-provider.ts) for an example.
