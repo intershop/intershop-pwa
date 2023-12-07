@@ -8,8 +8,8 @@
 >
   <a class="accordion-toggle" [attr.aria-expanded]="isCollapsed">
     {{ heading }}
-    <fa-icon *ngIf="!isCollapsed; else collapsed" class="float-right" [icon]="['fas', 'plus']"></fa-icon>
-    <ng-template #collapsed> <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon> </ng-template>
+    <fa-icon *ngIf="!isCollapsed; else collapsed" class="float-right" [icon]="['fas', 'plus']" />
+    <ng-template #collapsed> <fa-icon class="float-right" [icon]="['fas', 'minus']" /> </ng-template>
   </a>
 </div>
 <div class="panel-collapse collapse" role="tabpanel" [ngbCollapse]="!isCollapsed">

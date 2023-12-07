@@ -1,10 +1,10 @@
 <div *ngIf="selectedUser$ | async as user">
   <h1>{{ 'account.user.update_roles.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
 
-  <ish-error-message [error]="error$ | async"></ish-error-message>
+  <ish-error-message [error]="error$ | async" />
 
   <form *ngIf="form$ | async as form" [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal">
-    <ish-user-roles-selection formControlName="roleIDs" [staticRoles]="staticRoles$ | async"></ish-user-roles-selection>
+    <ish-user-roles-selection formControlName="roleIDs" [staticRoles]="staticRoles$ | async" />
 
     <div class="row">
       <div class="offset-md-4 col-md-8">
@@ -18,5 +18,5 @@
     </div>
   </form>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>

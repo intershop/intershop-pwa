@@ -69,7 +69,7 @@
             *cdkCellDef="let costCenter"
             [attr.data-label]="'account.costcenter.list.header.budgetspent' | translate"
           >
-            <ish-cost-center-budget [costCenter]="costCenter"></ish-cost-center-budget>
+            <ish-cost-center-budget [costCenter]="costCenter" />
           </td>
         </ng-container>
 
@@ -86,8 +86,8 @@
                 title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deactivateDialog)"
                 data-testing-id="deactivate-cost-center"
-                ><fa-icon [icon]="['fas', 'ban']"></fa-icon
-              ></a>
+                ><fa-icon [icon]="['fas', 'ban']"
+              /></a>
 
               <!-- Activate -->
               <ng-template #activateCostCenter>
@@ -97,8 +97,8 @@
                   title="{{ 'account.costcenter.activate.button.title' | translate }}"
                   (click)="activate(costCenter)"
                   data-testing-id="activate-cost-center"
-                  ><fa-icon [icon]="['fas', 'check-circle']"></fa-icon
-                ></a>
+                  ><fa-icon [icon]="['fas', 'check-circle']"
+                /></a>
               </ng-template>
 
               <!-- Delete -->
@@ -109,11 +109,11 @@
                 title="{{ 'account.costcenter.delete.link' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deleteDialog)"
                 data-testing-id="delete-cost-center"
-                ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
-              ></a>
+                ><fa-icon [icon]="['fas', 'trash-alt']"
+              /></a>
               <ng-template #deleteButtonDisabled>
                 <span class="btn-tool inactive" title="{{ 'account.costcenter.delete.disabled.icon' | translate }}">
-                  <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+                  <fa-icon [icon]="['fas', 'trash-alt']" />
                 </span>
               </ng-template>
             </ng-container>
@@ -132,7 +132,7 @@
     </ng-template>
   </ng-container>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>
 
 <!--  dialogs -->

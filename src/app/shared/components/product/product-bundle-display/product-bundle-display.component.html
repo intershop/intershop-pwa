@@ -1,7 +1,7 @@
 <ng-container *ngIf="visible$ | async">
   <ul>
     <li *ngFor="let item of parts$ | async">
-      {{ item.quantity }} x <ish-product-name ishProductContext [sku]="item.sku" [link]="false"></ish-product-name>
+      {{ item.quantity }} x <ish-product-name ishProductContext [sku]="item.sku" [link]="false" />
     </li>
   </ul>
 </ng-container>

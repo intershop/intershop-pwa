@@ -25,6 +25,8 @@ This script can be executed with `npx ts-node .\scripts\migrate-destroy-subject.
 Please look through all changes after running the script and make sure that all files are working as expected.
 In addition all unused imports within the files have to be removed (`npm run lint --fix` can be used).
 
+We added the eslint rule `@angular-eslint/template/prefer-self-closing-tags` to use self-closing tags in html files (`npm run lint --fix` can be used to update your html files).
+
 For the optional usage of a shared Redis cache we switched from the plain standard NGINX Docker image to an [OpenResty](https://openresty.org/en/) Docker image that provides more flexibility to configure the underlying NGINX.
 If the NGINX container was customized in the project it has to be checked if those customizations work in the same way with the OpenResty image.
 Without any customizations the switch should not be noticeable and does not require any adaptions.

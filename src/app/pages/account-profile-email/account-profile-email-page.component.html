@@ -2,6 +2,6 @@
   [currentUser]="currentUser$ | async"
   [error]="userError$ | async"
   (updateEmail)="updateUserEmail($event)"
-></ish-account-profile-email>
+/>
 
-<ish-loading *ngIf="userLoading$ | async"></ish-loading>
+<ish-loading *ngIf="userLoading$ | async" />

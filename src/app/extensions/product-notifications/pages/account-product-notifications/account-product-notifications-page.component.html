@@ -2,7 +2,7 @@
   <h1>{{ 'account.notifications.heading' | translate }}</h1>
 
   <!-- Error message -->
-  <ish-error-message [error]="productNotificationsError$ | async"></ish-error-message>
+  <ish-error-message [error]="productNotificationsError$ | async" />
 
   <ul ngbNav class="nav-tabs" [(activeId)]="active">
     <li ngbNavItem="price">
@@ -24,10 +24,8 @@
   </ul>
 
   <div class="section">
-    <ish-account-product-notifications-list
-      [productNotifications]="productNotifications$ | async"
-    ></ish-account-product-notifications-list>
+    <ish-account-product-notifications-list [productNotifications]="productNotifications$ | async" />
   </div>
 </div>
 
-<ish-loading *ngIf="productNotificationsLoading$ | async"></ish-loading>
+<ish-loading *ngIf="productNotificationsLoading$ | async" />

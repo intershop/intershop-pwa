@@ -1,7 +1,7 @@
 <h1>{{ 'account.update_email.heading' | translate }}</h1>
 
 <!-- Error message -->
-<ish-error-message [error]="error"></ish-error-message>
+<ish-error-message [error]="error" />
 
 <div class="row">
   <div class="col-md-10 col-xl-8">
@@ -12,7 +12,7 @@
           <div *ngIf="currentUser" class="col-md-8 col-form-label">{{ currentUser.email }}</div>
         </div>
 
-        <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+        <formly-form [form]="form" [fields]="fields" [model]="model" />
 
         <div class="row">
           <div class="offset-md-4 col-md-8">

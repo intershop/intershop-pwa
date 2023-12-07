@@ -12,7 +12,7 @@
     <div class="col-12 font-weight-bold">{{ conflict.description }}</div>
     <div class="row w-100 border m-1 mx-3 p-1">
       <div class="col-5 text-right">{{ conflict.oldValueDescription }}</div>
-      <div class="col-2 text-center"><fa-icon [icon]="['fas', 'arrow-alt-circle-right']"></fa-icon></div>
+      <div class="col-2 text-center"><fa-icon [icon]="['fas', 'arrow-alt-circle-right']" /></div>
       <div class="col-5 text-left">{{ conflict.newValueDescription }}</div>
     </div>
   </div>
@@ -20,16 +20,16 @@
 
 <div *ngIf="product$ | async" class="row flex-nowrap">
   <div class="tacton-navigation col-md-3">
-    <ish-tacton-configure-navigation></ish-tacton-configure-navigation>
+    <ish-tacton-configure-navigation />
   </div>
   <div *ngIf="state$ | async as state" class="tacton-sidebar d-none d-md-block d-md-3">
-    <ish-product-image imageType="M"></ish-product-image>
-    <ish-tacton-bom [bom]="state.bom"></ish-tacton-bom>
+    <ish-product-image imageType="M" />
+    <ish-tacton-bom [bom]="state.bom" />
   </div>
   <div class="tacton-main-panel col-lg-6" *ngIf="step$ | async as step">
-    <ish-tacton-group [group]="step"></ish-tacton-group>
-    <ish-tacton-step-buttons></ish-tacton-step-buttons>
+    <ish-tacton-group [group]="step" />
+    <ish-tacton-step-buttons />
   </div>
 </div>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

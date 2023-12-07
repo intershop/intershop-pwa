@@ -1,3 +1,3 @@
 <ng-container *ngIf="contentInclude$ | async as contentInclude">
-  <ish-content-pagelet *ngFor="let pagelet of contentInclude.pageletIDs" [pageletId]="pagelet"></ish-content-pagelet>
+  <ish-content-pagelet *ngFor="let pagelet of contentInclude.pageletIDs" [pageletId]="pagelet" />
 </ng-container>

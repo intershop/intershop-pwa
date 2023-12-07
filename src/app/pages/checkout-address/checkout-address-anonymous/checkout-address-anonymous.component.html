@@ -1,13 +1,13 @@
 <div class="row">
   <!-- Error message -->
   <div class="col-md-12">
-    <ish-error-message [error]="error" [toast]="false"></ish-error-message>
+    <ish-error-message [error]="error" [toast]="false" />
   </div>
 
   <!-- login -->
   <div class="col-lg-6">
     <h2>{{ 'checkout.account.login.returning_customer.heading' | translate }}</h2>
-    <ish-identity-provider-login></ish-identity-provider-login>
+    <ish-identity-provider-login />
   </div>
 
   <div class="col-lg-6">
@@ -61,7 +61,7 @@
           class="form-horizontal"
           novalidate="novalidate"
         >
-          <ish-checkout-address-anonymous-form [parentForm]="form"></ish-checkout-address-anonymous-form>
+          <ish-checkout-address-anonymous-form [parentForm]="form" />
           <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
             <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">
               <button class="btn btn-primary" type="submit" [disabled]="nextDisabled">

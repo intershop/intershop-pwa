@@ -8,20 +8,20 @@
       *ngIf="category.categoryRef"
       viewContextId="viewcontext.include.family.base.top"
       [callParameters]="{ Category: category.categoryRef }"
-    ></ish-content-viewcontext>
+    />
   </div>
 
   <div class="row">
     <div class="col-md-3">
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
-        <ish-category-navigation [uniqueId]="category.categoryPath[0]"></ish-category-navigation>
+        <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
         <br />
-        <ish-filter-navigation [showCategoryFilter]="false"></ish-filter-navigation>
+        <ish-filter-navigation [showCategoryFilter]="false" />
       </div>
 
       <a [routerLink]="[]" class="d-md-none mobile-filter-toggle" (click)="toggle()">
         {{ 'search.mobile.filter.trigger' | translate }}
-        <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']"></fa-icon>
+        <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
       </a>
 
       <div class="marketing-area">
@@ -29,11 +29,11 @@
           *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.family.navigation"
           [callParameters]="{ Category: category.categoryRef }"
-        ></ish-content-viewcontext>
+        />
       </div>
     </div>
     <div class="col-md-9">
-      <ish-breadcrumb></ish-breadcrumb>
+      <ish-breadcrumb />
       <h1>{{ category.name }}</h1>
 
       <div class="marketing-area">
@@ -41,21 +41,21 @@
           *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.family.content.top"
           [callParameters]="{ Category: category.categoryRef }"
-        ></ish-content-viewcontext>
+        />
       </div>
 
       <ish-product-listing
         [categoryId]="category.uniqueId"
         [productListingId]="{ type: 'category', value: category.uniqueId }"
         fragmentOnRouting="family-page-top"
-      ></ish-product-listing>
+      />
 
       <div class="marketing-area">
         <ish-content-viewcontext
           *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.family.content.bottom"
           [callParameters]="{ Category: category.categoryRef }"
-        ></ish-content-viewcontext>
+        />
       </div>
     </div>
   </div>
@@ -65,6 +65,6 @@
       *ngIf="category.categoryRef"
       viewContextId="viewcontext.include.family.base.bottom"
       [callParameters]="{ Category: category.categoryRef }"
-    ></ish-content-viewcontext>
+    />
   </div>
 </div>

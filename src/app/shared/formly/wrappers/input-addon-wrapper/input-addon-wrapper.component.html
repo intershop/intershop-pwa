@@ -2,7 +2,7 @@
   <div *ngIf="props.addonLeft" class="input-group-prepend">
     <span class="input-group-text">{{ addonLeftText | async | translate }}</span>
   </div>
-  <div class="flex-grow-1"><ng-container #fieldComponent></ng-container></div>
+  <div class="flex-grow-1"><ng-container #fieldComponent /></div>
   <div *ngIf="props.addonRight" class="input-group-append">
     <span class="input-group-text">{{ addonRightText | async | translate }}</span>
   </div>

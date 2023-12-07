@@ -10,11 +10,11 @@
       (click)="showAddressForm(address)"
       data-testing-id="edit-invoice-address-link"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+      <fa-icon [icon]="['fas', 'pencil-alt']" />
     </a>
 
     <!-- display invoice address -->
-    <ish-address [address]="address" [displayEmail]="true"></ish-address>
+    <ish-address [address]="address" [displayEmail]="true" />
   </div>
   <p *ngIf="!address && showErrors" class="text-danger">
     {{ 'checkout.addresses.no_Selection.invoice.error' | translate }}
@@ -24,7 +24,7 @@
 <!-- invoice address selection -->
 <ng-container *ngIf="addresses$ | async as addresses">
   <form *ngIf="addresses.length" [formGroup]="form">
-    <formly-form [form]="form" [fields]="fields"></formly-form>
+    <formly-form [form]="form" [fields]="fields" />
   </form>
 </ng-container>
 
@@ -49,10 +49,9 @@
     [extension]="(isLoggedIn$ | async) === false"
     (save)="saveAddress($event)"
     (cancel)="cancelEditAddress()"
-  >
-  </ish-formly-customer-address-form>
+  />
 </div>
 
 <ng-container *ngIf="(collapseChange | async) === false">
-  <ish-lazy-address-doctor></ish-lazy-address-doctor>
+  <ish-lazy-address-doctor />
 </ng-container>

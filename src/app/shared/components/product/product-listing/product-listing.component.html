@@ -14,13 +14,9 @@
       [viewType]="viewType$ | async"
       [sortBy]="sortBy$ | async"
       [fragmentOnRouting]="fragmentOnRouting"
-    ></ish-product-list-toolbar>
+    />
 
-    <ish-product-list
-      [products]="listing.products()"
-      [categoryId]="categoryId"
-      [viewType]="viewType$ | async"
-    ></ish-product-list>
+    <ish-product-list [products]="listing.products()" [categoryId]="categoryId" [viewType]="viewType$ | async" />
 
     <div class="row justify-content-center">
       <ish-product-list-paging
@@ -28,7 +24,7 @@
         [currentPage]="listing.lastPage"
         [pageIndices]="listing.pageIndices()"
         [fragmentOnRouting]="fragmentOnRouting"
-      ></ish-product-list-paging>
+      />
     </div>
   </div>
 
@@ -44,20 +40,20 @@
           [pageIndices]="listing.pageIndices(currentPage)"
           [fragmentOnRouting]="fragmentOnRouting"
           [isPaging]="true"
-        ></ish-product-list-toolbar>
+        />
       </ng-template>
 
-      <ng-container *ngTemplateOutlet="pagingToolbar"></ng-container>
+      <ng-container *ngTemplateOutlet="pagingToolbar" />
 
       <ish-product-list
         [products]="listing.productsOfPage(currentPage)"
         [categoryId]="categoryId"
         [viewType]="viewType$ | async"
-      ></ish-product-list>
+      />
 
-      <ish-loading *ngIf="listingLoading$ | async" [standalone]="true"></ish-loading>
+      <ish-loading *ngIf="listingLoading$ | async" [standalone]="true" />
 
-      <ng-container *ngTemplateOutlet="pagingToolbar"></ng-container>
+      <ng-container *ngTemplateOutlet="pagingToolbar" />
     </ng-container>
   </div>
 </ng-container>
