@@ -93,6 +93,7 @@ describe('Requisition Mapper', () => {
           },
           "attributes": undefined,
           "bucketId": undefined,
+          "buyingContext": undefined,
           "commonShipToAddress": undefined,
           "commonShippingMethod": undefined,
           "costCenter": "CostCenter123",

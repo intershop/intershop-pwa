@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { User } from 'ish-core/models/user/user.model';
 
 import { LoginStatusComponent } from './login-status.component';
@@ -16,6 +17,7 @@ describe('Login Status Component', () => {
   let fixture: ComponentFixture<LoginStatusComponent>;
   let element: HTMLElement;
   let accountFacade: AccountFacade;
+  let appFacade: AppFacade;
 
   const userData = {
     firstName: 'Patricia',
@@ -24,10 +26,14 @@ describe('Login Status Component', () => {
 
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
+    appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
       declarations: [LoginStatusComponent, MockComponent(FaIconComponent)],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+      ],
     }).compileComponents();
   });
 

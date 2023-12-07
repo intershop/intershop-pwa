@@ -64,7 +64,7 @@ export class OrderListComponent implements OnInit {
 
   noOrdersMessageKey = 'account.orderlist.no_orders_message';
 
-  constructor(private accountFacade: AccountFacade) {}
+  constructor(protected accountFacade: AccountFacade) {}
 
   ngOnInit() {
     this.init();

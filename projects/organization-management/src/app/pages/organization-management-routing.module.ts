@@ -5,8 +5,11 @@ import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
 import { fetchCostCentersGuard } from '../guards/fetch-cost-centers.guard';
+import { fetchHierachiesGroupsGuard } from '../guards/fetch-hierachies-groups.guard';
 import { fetchUsersGuard } from '../guards/fetch-users.guard';
 import { redirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
+
+import { HierarchiesCreateGroupPageComponent } from './hierarchies-create-group/hierarchies-create-group-page.component';
 
 /**
  * routes for the organization management
@@ -82,6 +85,18 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./cost-center-buyers/cost-center-buyers-page.module').then(m => m.CostCenterBuyersPageModule),
     canActivate: [redirectFirstToParentGuard, fetchUsersGuard],
+  },
+  {
+    path: 'hierarchies',
+    loadChildren: () => import('./hierarchies/hierarchies-page.module').then(m => m.HierarchiesPageModule),
+    canActivate: [featureToggleGuard, fetchHierachiesGroupsGuard],
+    data: { feature: 'organizationHierarchies' },
+  },
+  {
+    path: 'hierarchies/create-group',
+    component: HierarchiesCreateGroupPageComponent,
+    canActivate: [featureToggleGuard],
+    data: { feature: 'organizationHierarchies' },
   },
 ];
 

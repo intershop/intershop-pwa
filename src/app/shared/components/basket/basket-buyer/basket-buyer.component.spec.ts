@@ -4,8 +4,11 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+
+import { LazyHierarchyPathComponent } from '../../../../extensions/organization-hierarchies/exports/lazy-hierarchy-path/lazy-hierarchy-path.component';
 
 import { BasketBuyerComponent } from './basket-buyer.component';
 
@@ -19,8 +22,8 @@ describe('Basket Buyer Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [BasketBuyerComponent],
+      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
+      declarations: [BasketBuyerComponent, LazyHierarchyPathComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

@@ -8,10 +8,12 @@ import { CostCenterBuyerEditDialogComponent } from './components/cost-center-buy
 import { CostCenterFormComponent } from './components/cost-center-form/cost-center-form.component';
 import { CostCenterUsersListComponent } from './components/cost-center-users-list/cost-center-users-list.component';
 import { CostCenterWidgetComponent } from './components/cost-center-widget/cost-center-widget.component';
+import { GroupFormComponent } from './components/group-form/group-form.component';
 import { UserBudgetFormComponent } from './components/user-budget-form/user-budget-form.component';
 import { UserBudgetComponent } from './components/user-budget/user-budget.component';
 import { UserProfileFormComponent } from './components/user-profile-form/user-profile-form.component';
 import { UserRolesSelectionComponent } from './components/user-roles-selection/user-roles-selection.component';
+import { HierarchiesCreateGroupPageComponent } from './pages/hierarchies-create-group/hierarchies-create-group-page.component';
 import { OrganizationManagementStoreModule } from './store/organization-management-store.module';
 
 const exportedComponents = [
@@ -19,6 +21,8 @@ const exportedComponents = [
   CostCenterBuyerEditDialogComponent,
   CostCenterFormComponent,
   CostCenterUsersListComponent,
+  GroupFormComponent,
+  HierarchiesCreateGroupPageComponent,
   UserBudgetComponent,
   UserBudgetFormComponent,
   UserProfileFormComponent,

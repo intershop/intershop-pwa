@@ -7,11 +7,14 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Order } from 'ish-core/models/order/order.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
+import { LazyHierarchyGroupNameComponent } from '../../../../extensions/organization-hierarchies/exports/lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
 
 import { OrderListComponent } from './order-list.component';
 
@@ -29,9 +32,10 @@ describe('Order List Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, FeatureToggleModule.forTesting(), RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(AddressComponent),
+        MockComponent(LazyHierarchyGroupNameComponent),
         MockComponent(LoadingComponent),
         MockPipe(DatePipe),
         MockPipe(PricePipe),

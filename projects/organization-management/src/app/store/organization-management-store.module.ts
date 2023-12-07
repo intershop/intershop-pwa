@@ -9,6 +9,8 @@ import { BudgetEffects } from './budget/budget.effects';
 import { budgetReducer } from './budget/budget.reducer';
 import { CostCentersEffects } from './cost-centers/cost-centers.effects';
 import { costCentersReducer } from './cost-centers/cost-centers.reducer';
+import { OrganizationHierarchiesEffects } from './organization-hierarchies/organization-hierarchies.effects';
+import { organizationHierarchiesReducer } from './organization-hierarchies/organization-hierarchies.reducer';
 import { OrganizationManagementState } from './organization-management-store';
 import { UsersEffects } from './users/users.effects';
 import { usersReducer } from './users/users.reducer';
@@ -17,9 +19,10 @@ const organizationManagementReducers: ActionReducerMap<OrganizationManagementSta
   users: usersReducer,
   costCenters: costCentersReducer,
   budget: budgetReducer,
+  organizationHierarchies: organizationHierarchiesReducer,
 };
 
-const organizationManagementEffects = [UsersEffects, CostCentersEffects, BudgetEffects];
+const organizationManagementEffects = [UsersEffects, CostCentersEffects, BudgetEffects, OrganizationHierarchiesEffects];
 
 @Injectable()
 export class DefaultOrganizationManagementStoreConfig implements StoreConfig<OrganizationManagementState> {
