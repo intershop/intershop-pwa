@@ -59,7 +59,8 @@ It will:
 - change the project prefix for new Angular artifacts from `ish` to `custom`
 - customize ESLint in `.eslintrc.json` to support your new theme files (specifically, the `project-structure` rule)
 
-> **NOTE:** If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
+> [!NOTE]
+> If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
 
 After that we recommend to additionally use the prefix `custom` in every component to further help identifying customized components.
 
@@ -172,7 +173,8 @@ There are two approaches to apply a theme-specific styling:
 Just putting a theme override file next to the original file in the `src/styles` folder will not lead to the expected results.
 The lookup starts with the file `style.scss` in the theme-specific folder.
 
-> **Note:** You should
+> [!NOTE]
+> You should
 >
 > - not change global `*.scss` files in `src/styles` and only apply style changes in your theme folder by copying files into the this folder and adjusting file references
 > - not delete the standard theme folders to prevent merge conflicts when migrating the PWA (changes in standard files but deleted in your project).
@@ -186,9 +188,11 @@ You can re-use variables from the global styling on component level by importing
 @import 'variables';
 ```
 
-> **Note:** Be aware that Visual Studio Code will not resolve all import references correctly but it works in the build PWA version anyways.
+> [!NOTE]
+> Be aware that Visual Studio Code will not resolve all import references correctly but it works in the build PWA version anyways.
 
-> **Note:** For bundled styles optimization PurgeCSS is used. Please read [the additional documentation](./optimizations.md#purgecss) regarding the usage and configuration of PurgeCSS in the Intershop PWA.
+> [!NOTE]
+> For bundled styles optimization PurgeCSS is used. Please read [the additional documentation](./optimizations.md#purgecss) regarding the usage and configuration of PurgeCSS in the Intershop PWA.
 
 ### Static Assets
 

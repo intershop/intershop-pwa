@@ -27,7 +27,8 @@ However, this way they cannot be deployed together with a combined Helm chart.
 - ICM 7.10.32.16-LTS or 7.10.38.6-LTS
 - PWA 2.3.0
 
-> :exclamation: **NOTE:** This feature relies on the PWA and ICM being able to read and write each other's `apiToken` cookies.
+> [!NOTE]
+> This feature relies on the PWA and ICM being able to read and write each other's `apiToken` cookies.
 >
 > This means that cookies written by the PWA and ICM must have the same domain and the same path. This works since all Responsive Starter Store requests and responses are proxied through the PWA SSR, simulating a common domain (an actual common domain for PWA and ICM is not required).
 >
@@ -79,11 +80,19 @@ INTERSHOP_WEBSERVERSECUREURL: https://<icm-web>
 
 The server-side rendering process must be started with `SSR_HYBRID=1`.
 
-> :warning: **Only for development environments**: The PWA must also be run with secure URLs if NGINX to handle `https` access to the PWA is not deployed.
+> [!WARNING]
+>
+> **Only for development environments**
+>
+> The PWA must also be run with secure URLs if NGINX to handle `https` access to the PWA is not deployed.
 >
 > See [SSR Startup - Development](../guides/ssr-startup.md#development) for a reference on how you to achieve this locally.
 
-> :warning: **Only for development environments**: It might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
+> [!WARNING]
+>
+> **Only for development environments**
+>
+> It might be necessary to set `TRUST_ICM=1` if the used development ICM is deployed with an insecure certificate.
 
 Also, the **Service Worker must be disabled** for the PWA, as it installs itself in the browser of the client device and takes over the routing process, making it impossible to break out of the PWA and delegate to the ICM.
 The Service Worker is disabled by default.
@@ -126,7 +135,8 @@ For this reason, the PWA must be configured to know which application to use to 
 - Configure `hybridApplication` setting to denote the Responsive Starter Store application (this is usually `-`).
 - Follow the Hybrid configuration setup
 
-> **NOTE:** If for some reason the CMS content of the Responsive Starter Store is to be reused directly in the PWA in a Hybrid Approach, the PWA needs some code adaptions and has to use the same application as the Responsive Starter Store. For more details see the older version of this documentation - [Hybrid Approach - PWA Adaptions (3.0.0)](https://github.com/intershop/intershop-pwa/blob/3.0.0/docs/concepts/hybrid-approach.md#pwa-adaptions).
+> [!NOTE]
+> If for some reason the CMS content of the Responsive Starter Store is to be reused directly in the PWA in a Hybrid Approach, the PWA needs some code adaptions and has to use the same application as the Responsive Starter Store. For more details see the older version of this documentation - [Hybrid Approach - PWA Adaptions (3.0.0)](https://github.com/intershop/intershop-pwa/blob/3.0.0/docs/concepts/hybrid-approach.md#pwa-adaptions).
 
 ## Development Environment
 
@@ -194,7 +204,8 @@ The configurations relevant to the Hybrid Approach for running the PWA are:
 - `LOGGING=true` helps with analysis and debugging
 - Setting the port of the SSR process to `7200`
 
-> **NOTE:** The PWA SSR process itself does not need to run with SSL/https.
+> [!NOTE]
+> The PWA SSR process itself does not need to run with SSL/https.
 > This is taken care of by the NGINX container to provide the secure access to the PWA.
 
 A local PWA built from the current PWA project sources can be run in a number of ways:
@@ -217,7 +228,8 @@ ICM_BASE_URL=https://hybrid.local:7443 TRUST_ICM=true SSR_HYBRID=true LOGGING=tr
 ICM_BASE_URL=https://hybrid.local:7443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run start:ssr-dev -- --port 7200
 ```
 
-> **NOTE:** A development Hybrid Approach setup can also be tested without NGINX.
+> [!NOTE]
+> A development Hybrid Approach setup can also be tested without NGINX.
 > In this case, the PWA SSR process must run with SSL.
 > This can be achieved by using `--ssl` as an additional parameter.
 > The PWA with Hybrid Approach would then be reachable at `https://hybrid.local:7200`.
@@ -241,7 +253,8 @@ To start the NGINX container from the project sources with Docker:
 docker build -t dev_nginx nginx && docker run -it -p 443:443 -e UPSTREAM_PWA=http://hybrid.local:7200 -e SSL=true -e CACHE=false --name hybrid-nginx dev_nginx
 ```
 
-> **NOTE:** The NGINX of PWA releases prior to 3.1.0 does not support the `SSL=true` configuration.
+> [!NOTE]
+> The NGINX of PWA releases prior to 3.1.0 does not support the `SSL=true` configuration.
 > Previous versions needed the `UPSTREAM_PWA` to be configured with `https` and the the files `server.key` and `server.crt` had to be supplied in the container folder `/etx/nginx` to start the NGINX with SSL.
 
 ```bash

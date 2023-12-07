@@ -39,7 +39,8 @@ The mapper should be a class with static methods that will be used in the corres
 In special cases, the mapper class might need some dependencies to transform data correctly.
 In that case, you can declare it as an `Injectable` and use Angular's dependency injection mechanism to provide an instance in your service.
 
-> :warning: If the mapper needs no dependencies, always use static methods!
+> [!WARNING]
+> If the mapper needs no dependencies, always use static methods!
 
 **category.mapper.ts**
 

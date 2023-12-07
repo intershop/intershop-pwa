@@ -75,9 +75,7 @@ bootstrap                             4.4.1     4.5.0    4.5.0  intershop-pwa  d
 
 Perform updates with `ng update` as well.
 
-> **Warning**
->
-> `@types/node` should always remain on the LTS version.
+> [!IMPORTANT] > `@types/node` should always remain on the LTS version.
 > You can upgrade to specific versions with `ng update @types/node@12`.
 
 ### 3. Update Project Utilities for Testing, Reporting and Linting
@@ -110,8 +108,7 @@ One recommendation would be to combine all manipulations to `package-lock.json` 
 Further commits should be focused on descriptive commit messages, so the upgrading project can follow them easily.
 At the end code re-formatting and optional refactorings should reside in individual commits.
 
-> **Warning**
->
+> [!IMPORTANT]
 > Every commit along the way must be consistent.
 > `npm run check` must be runnable without errors, so the customer project can use it to assure consistency.
 
@@ -125,8 +122,7 @@ Afterwards `npm install` must be run to get a new clean `package-lock.json` that
 
 ---
 
-> **Note**
->
+> [!NOTE]
 > A node script `node scripts/upgrade-pwa` is provided that is supposed to do the previously explained update steps in an automated fashion.
 > It can be used to ease the update process but it might need regular adaptions and the results need to be checked.
 
@@ -160,8 +156,7 @@ If a package (in most cases a transitive dependency) poses a security risk, most
 Go ahead and update the package following the steps above.
 The output of `npm audit` will also give useful information about packages.
 
-> **Warning**
->
+> [!TIP]
 > Avoid running `npm audit fix`
 >
 > This would upgrade versions of transitive dependencies directly in `package-lock.json` and occasionally the affected utilities will stop working.

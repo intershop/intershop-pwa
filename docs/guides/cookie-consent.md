@@ -122,7 +122,7 @@ In addition, the `cookies` route should be removed from [`app-routing.module.ts`
 { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
 ```
 
-> **Warning**
+> [!IMPORTANT]
 > When disabling the integrated cookie consent handling, the `cookieConsentFor()` check will no longer work as intended and must be adapted to suit the alternative cookie consent implementation used.
 > To still use the internal `cookieConsentFor()` checks of the current implementation, it may be possible to have the alternative cookie consent implementation store the same `"enabledOptions"` information.
 

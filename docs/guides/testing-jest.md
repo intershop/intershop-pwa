@@ -381,7 +381,7 @@ element.querySelectorAll('[data-testing-id]')[0].innerHTML;
 element.querySelectorAll("[data-testing-id='en']").length;
 ```
 
-> :warning: **Note**
+> [!WARNING]
 > Do not overuse this feature!
 
 ## Stick to Intershop Conventions Regarding Angular Tests
@@ -415,7 +415,7 @@ See [Three Ways to Test Angular Components](https://vsavkin.com/three-ways-to-te
 
 Be careful when using `toBeDefined`, because a dynamic language like JavaScript has another meaning of defined (see: [Is It Defined? toBeDefined, toBeUndefined](https://www.oreilly.com/library/view/javascript-testing-with/9781449356729/ch04.html)).
 
-> :warning: **Warning**  
+> [!WARNING]
 > Do not use `toBeDefined` if you really want to check for not null because technically 'null' is defined. Use `toBeTruthy` instead.
 
 ### Be Careful With Variable Initialization
@@ -423,7 +423,7 @@ Be careful when using `toBeDefined`, because a dynamic language like JavaScript 
 Jasmine does not automatically reset all your variables for each test like other test frameworks do.
 If you initialize directly under `describe`, the variable is initialized only once.
 
-> :warning: **Warning**  
+> [!WARNING]
 > Since tests should be independent of each other, do not do this.
 
 ```typescript
