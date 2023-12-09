@@ -116,28 +116,39 @@ a {
 .wrapper {
   padding: 0 0 50px;
 
+  // Assuming container width for xs breakpoint
   @include media-breakpoint-down(xs) {
-    aspect-ratio: 0.26 / 1;
+    $container-width-xs: 100vw; // Example value, adjust as needed
+
+    min-height: calc($container-width-xs * (1 / 0.26));
   }
 
+  // Assuming container width for sm-md breakpoint
   @include media-breakpoint-between(sm, md) {
-    aspect-ratio: 0.3 / 1;
+    $container-width-sm-md: 100vw; // Example value, adjust as needed
+
+    min-height: calc($container-width-sm-md * (1 / 0.3));
   }
 
+  // Assuming container width for md-lg breakpoint
   @include media-breakpoint-between(md, lg) {
-    aspect-ratio: 0.45 / 1;
+    $container-width-md-lg: 100vw; // Example value, adjust as needed
+
+    min-height: calc($container-width-md-lg * (1 / 0.45));
   }
 
+  // Assuming container width for lg-xl breakpoint
   @include media-breakpoint-between(lg, xl) {
-    aspect-ratio: 0.73 / 1;
+    $container-width-lg-xl: 100vw; // Example value, adjust as needed
+
+    min-height: calc($container-width-lg-xl * (1 / 0.73));
   }
 
+  // Assuming container width for xl breakpoint
   @include media-breakpoint-up(xl) {
-    aspect-ratio: 0.84 / 1; // avg of 0.81 and 0.87
-  }
+    $container-width-xl: 100vw; // Example value, adjust as needed
 
-  @include media-breakpoint-down(sm) {
-    padding-top: $search-container-height;
+    min-height: calc($container-width-xl * (1 / 0.84)); // Average of 0.81 and 0.87
   }
 }
 
