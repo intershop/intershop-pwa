@@ -89,6 +89,7 @@
   .product-list-item {
     position: relative;
     min-height: 100px;
+    aspect-ratio: 2 / 3;
     padding-right: $space-default;
     padding-bottom: ($space-default * 2);
     padding-left: $space-default;
