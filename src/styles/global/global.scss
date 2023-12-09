@@ -116,6 +116,26 @@ a {
 .wrapper {
   padding: 0 0 50px;
 
+  @include media-breakpoint-down(xs) {
+    aspect-ratio: 0.26 / 1;
+  }
+
+  @include media-breakpoint-between(sm, md) {
+    aspect-ratio: 0.3 / 1;
+  }
+
+  @include media-breakpoint-between(md, lg) {
+    aspect-ratio: 0.45 / 1;
+  }
+
+  @include media-breakpoint-between(lg, xl) {
+    aspect-ratio: 0.73 / 1;
+  }
+
+  @include media-breakpoint-up(xl) {
+    aspect-ratio: 0.84 / 1; // avg of 0.81 and 0.87
+  }
+
   @include media-breakpoint-down(sm) {
     padding-top: $search-container-height;
   }
