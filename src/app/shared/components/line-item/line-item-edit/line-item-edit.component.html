@@ -2,11 +2,11 @@
   <a
     [routerLink]="[]"
     (click)="show()"
-    class="line-item-edit-link"
+    class="line-item-edit-link btn-tool"
     rel="nofollow"
     title="{{ 'checkout.variation.edit.button.label' | translate }}"
-    >{{ 'checkout.variation.edit.button.label' | translate }}</a
-  >
+    ><fa-icon [icon]="['fas', 'pencil']"
+  /></a>
 </ng-container>
 <ish-modal-dialog
   #modalDialog

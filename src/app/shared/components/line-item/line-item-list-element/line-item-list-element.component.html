@@ -43,11 +43,6 @@
 
         <!-- default lineItemViewType -->
         <ng-container *ngSwitchDefault>
-          <!-- edit variation & quantity -->
-          <ng-container *ngIf="editable">
-            <ish-line-item-edit [lineItem]="pli" (updateItem)="onUpdateItem($event)" />
-          </ng-container>
-
           <!-- availability -->
           <ish-product-inventory />
 
@@ -96,6 +91,9 @@
         >
           <fa-icon [icon]="['fas', 'trash-alt']" />
         </a>
+        <ng-container *ngIf="editable">
+          <ish-line-item-edit [lineItem]="pli" (updateItem)="onUpdateItem($event)" />
+        </ng-container>
       </div>
     </div>
 
