@@ -132,26 +132,25 @@ describe('Line Item List Element Component', () => {
   it('should display standard elements for normal products', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        [
-          "ish-product-image",
-          "ish-product-name",
-          "ish-product-id",
-          "ish-line-item-custom-fields",
-          "ish-product-variation-display",
-          "ish-product-bundle-display",
-          "ish-line-item-edit",
-          "ish-product-inventory",
-          "ish-product-shipment",
-          "fa-icon",
-          "ish-lazy-product-add-to-order-template",
-          "ish-lazy-product-add-to-wishlist",
-          "fa-icon",
-          "ish-product-quantity-label",
-          "ish-product-quantity",
-          "ish-product-quantity",
-          "ish-line-item-warranty",
-        ]
-      `);
+      [
+        "ish-product-image",
+        "ish-product-name",
+        "ish-product-id",
+        "ish-line-item-custom-fields",
+        "ish-product-variation-display",
+        "ish-product-bundle-display",
+        "ish-product-inventory",
+        "ish-product-shipment",
+        "fa-icon",
+        "ish-lazy-product-add-to-order-template",
+        "ish-lazy-product-add-to-wishlist",
+        "fa-icon",
+        "ish-line-item-edit",
+        "ish-product-quantity-label",
+        "ish-product-quantity",
+        "ish-product-quantity",
+      ]
+    `);
   });
 
   it('should display bundle parts for bundle products', () => {

@@ -2,10 +2,11 @@
   <button
     type="button"
     (click)="show()"
-    class="line-item-edit-link btn btn-link btn-link-action"
+    class="line-item-edit-link btn btn-link btn-link-action btn-tool"
+    rel="nofollow"
     title="{{ 'checkout.variation.edit.button.label' | translate }}"
   >
-    {{ 'checkout.variation.edit.button.label' | translate }}
+    <fa-icon [icon]="['fas', 'pencil']" />
   </button>
 </ng-container>
 
