@@ -76,7 +76,7 @@ export class ProductsService {
       .set('offset', offset.toString())
       .set('returnSortKeys', 'true')
       .set('productFilter', 'fallback_searchquerydefinition');
-    if (sortKey) {
+    if (sortKey && sortKey !== 'default') {
       params = params.set('sortKey', sortKey);
     }
 
@@ -129,7 +129,7 @@ export class ProductsService {
       .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
-    if (sortKey) {
+    if (sortKey && sortKey !== 'default') {
       params = params.set('sortKey', sortKey);
     }
 
@@ -174,7 +174,7 @@ export class ProductsService {
       .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
-    if (sortKey) {
+    if (sortKey && sortKey !== 'default') {
       params = params.set('sortKey', sortKey);
     }
 
@@ -205,7 +205,7 @@ export class ProductsService {
       .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
-    if (sortKey) {
+    if (sortKey && sortKey !== 'default') {
       params = params.set('sortKey', sortKey);
     }
     params = appendFormParamsToHttpParams(omit(searchParameter, 'category'), params);
