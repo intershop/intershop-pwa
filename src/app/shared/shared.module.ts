@@ -81,6 +81,7 @@ import { BasketValidationProductsComponent } from './components/basket/basket-va
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
 import { ClearBasketComponent } from './components/basket/clear-basket/clear-basket.component';
 import { MiniBasketContentComponent } from './components/basket/mini-basket-content/mini-basket-content.component';
+import { BasketCustomFieldsViewComponent } from './components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
@@ -309,6 +310,7 @@ const exportedComponents = [
   CustomFieldsFormlyComponent,
   LineItemCustomFieldsComponent,
   CustomFieldsViewComponent,
+  BasketCustomFieldsViewComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   SearchBoxComponent,

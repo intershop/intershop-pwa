@@ -44,6 +44,9 @@
         <ish-basket-buyer [object]="basket" editRouterLink="/checkout/shipping" />
       </ish-info-box>
     </div>
+
+    <ish-basket-custom-fields-view [data]="basket" editRouterLink="/basket" />
+
     <div class="row d-flex">
       <!-- Invoice Address -->
       <ish-info-box
