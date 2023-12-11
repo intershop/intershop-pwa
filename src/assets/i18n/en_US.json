@@ -878,6 +878,7 @@
   "checkout.widget.buyer.costcenter": "Cost center",
   "checkout.widget.buyer.heading": "Buyer",
   "checkout.widget.buyer.orderReferenceId": "Customer order ID",
+  "checkout.widget.custom_fields": "Custom fields",
   "checkout.widget.message_to_merchant": "Message to merchant",
   "checkout.widget.payment_method.heading": "Payment method",
   "checkout.widget.promotion.discount": "Discount",
