@@ -14,8 +14,6 @@ export const USER_REGISTRATION_LOGIN_TYPE = new InjectionToken<string>('userRegi
   factory: () => 'email',
 });
 
-export const ENABLE_CLEAR_BASKET_BUTTON = createEnvironmentInjectionToken('enableClearBasketButton');
-
 /**
  * The maximum subcategories level depth rendered in the main navigation
  */
