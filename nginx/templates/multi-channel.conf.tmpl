@@ -35,7 +35,7 @@
         include /etc/nginx/conf.d/cache-settings.conf;
 
         rewrite ^.*/index.html$ {{ $baseHref }}/loading;
-
+        rewrite ^(.*)/$ $1;
         rewrite ^{{ $baseHref }}/?$ {{ $baseHref }}/home;
 
         rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang={{ $lang }}';
