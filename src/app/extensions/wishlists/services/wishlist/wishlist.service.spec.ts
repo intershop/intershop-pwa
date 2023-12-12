@@ -51,7 +51,7 @@ describe('Wishlist Service', () => {
             "itemsCount": 0,
             "preferred": true,
             "public": undefined,
-            "title": undefined,
+            "title": null,
           },
         ]
       `);
@@ -75,7 +75,7 @@ describe('Wishlist Service', () => {
             "itemsCount": 0,
             "preferred": true,
             "public": undefined,
-            "title": undefined,
+            "title": null,
           },
         ]
       `);
