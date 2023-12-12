@@ -25,6 +25,7 @@ export interface ConfigurationState {
   currency?: string;
   serverTranslations: { [lang: string]: Translations };
   multiSiteLocaleMap: Record<string, unknown>;
+  sparqueEndPoint?: string;
   // not synced via state transfer
   _deviceType?: DeviceType;
 }
@@ -45,6 +46,7 @@ const initialState: ConfigurationState = {
   currency: undefined,
   serverTranslations: {},
   multiSiteLocaleMap: undefined,
+  sparqueEndPoint: environment.sparque?.endPoint,
   _deviceType: environment.defaultDeviceType,
 };
 

@@ -10,7 +10,7 @@ import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/p
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
-import { ProductsService } from './products.service';
+import { ICMProductsService, ProductsService } from './products.service';
 
 describe('Products Service', () => {
   let productsService: ProductsService;
@@ -74,6 +74,7 @@ describe('Products Service', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
+        { provide: ProductsService, useClass: ICMProductsService },
       ],
     });
     productsService = TestBed.inject(ProductsService);
