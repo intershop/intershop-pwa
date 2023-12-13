@@ -40,6 +40,8 @@ We renamed the input parameter 'id' to 'productListingId' for the product listin
 The api-token.service has been refactored and the class variables `apiToken$` and `cookieVanishes$` have got the private modifier.
 Use the public getter/setter methods to access these variables outside the class.
 
+Basket line-item functionalities have been extracted from the `basket.service` into a separate `basket-items.service`.
+
 ## From 4.1 to 4.2
 
 The basket attribute 'orderReferenceId' is now saved as native attribute 'externalOrderReference' at the basket, but it still exists at the basket and can be displayed further on if needed.
