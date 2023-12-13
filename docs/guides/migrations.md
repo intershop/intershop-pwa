@@ -40,6 +40,11 @@ We renamed the input parameter 'id' to 'productListingId' for the product listin
 The api-token.service has been refactored and the class variables `apiToken$` and `cookieVanishes$` have got the private modifier.
 Use the public getter/setter methods to access these variables outside the class.
 
+A new way to activate an identity provider on a specific route is introduced (see #1484).
+The property `activeOnPath` is added as an additional configuration for the `IDENTITY_PROVIDER_IMPLEMENTOR` [injection token](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.module.ts).
+The punchout identity provider is now configured per default, that the `PunchoutIdentityProvider` is activated, when the PWA is initially rendered with the `/punchout` path.
+Please remove the `activeOnPath` property to use the old behavior.
+
 ## From 4.1 to 4.2
 
 The basket attribute 'orderReferenceId' is now saved as native attribute 'externalOrderReference' at the basket, but it still exists at the basket and can be displayed further on if needed.

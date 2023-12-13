@@ -42,13 +42,6 @@ pwa:
     IDENTITY_PROVIDERS: |
       Punchout:
         type: PUNCHOUT
-
-nginx:
-  environment:
-    OVERRIDE_IDENTITY_PROVIDERS: |
-      .+:
-        - path: /punchout
-          type: Punchout
 ```
 
 For the current PWA Helm Chart that is also used in the PWA Flux deployments the same punchout configuration would look like this.
@@ -107,6 +100,9 @@ cache:
         channel: default
         theme: b2c
 ```
+
+With the PWA 5.0 release there is another possibility to configure the PUNCHOUT authentication that works in development and production environments: The PUNCHOUT identity provider is activated when the user enters a certain route ('/punchout').
+Find more information in the [Authentication Concept](../concepts/authentication.md).
 
 ## Login
 

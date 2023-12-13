@@ -1,13 +1,26 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { first, switchMap } from 'rxjs';
 
 import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
+import { getTriggerReturnType$ } from 'ish-core/utils/functions';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 export function identityProviderRegisterGuard(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
   const identityProviderFactory = inject(IdentityProviderFactory);
 
-  const identityProvider = identityProviderFactory.getInstance();
-  return identityProvider.triggerRegister
-    ? identityProvider.triggerRegister(route, state)
-    : identityProvider.triggerLogin(route, state);
+  return identityProviderFactory.getInitialized$().pipe(
+    whenTruthy(),
+    first(),
+    switchMap(() => {
+      const identityProvider = identityProviderFactory.getInstance();
+      if (identityProvider.triggerRegister) {
+        const registerReturn$ = identityProvider.triggerRegister(route, state);
+        return getTriggerReturnType$(registerReturn$);
+      } else {
+        const loginReturn$ = identityProvider.triggerLogin(route, state);
+        return getTriggerReturnType$(loginReturn$);
+      }
+    })
+  );
 }
