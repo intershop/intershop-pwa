@@ -29,6 +29,9 @@ We added the eslint rule `@angular-eslint/template/prefer-self-closing-tags` to 
 
 The `ngcc` command has been removed from the `package.json` because it is no longer supported and necessary in Angular 16.
 
+Mandatory component input parameters are declared as [required](https://angular.io/guide/update-to-version-16#required-inputs) to ensure that all necessary data is provided.
+This way data dependencies are enforced and potential errors are caught during compilation.
+
 For the optional usage of a shared Redis cache we switched from the plain standard NGINX Docker image to an [OpenResty](https://openresty.org/en/) Docker image that provides more flexibility to configure the underlying NGINX.
 If the NGINX container was customized in the project it has to be checked if those customizations work in the same way with the OpenResty image.
 Without any customizations the switch should not be noticeable and does not require any adaptions.
