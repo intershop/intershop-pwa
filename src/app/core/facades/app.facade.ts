@@ -17,6 +17,7 @@ import {
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
 import {
+  getCustomFieldDefinition,
   getCustomFieldIdsForScope,
   getExtraConfigParameter,
   getServerConfigParameter,
@@ -130,6 +131,10 @@ export class AppFacade {
 
   customFieldsForScope$(scope: CustomFieldDefinitionScopes) {
     return this.store.pipe(select(getCustomFieldIdsForScope(scope)));
+  }
+
+  customField$(name: string) {
+    return this.store.pipe(select(getCustomFieldDefinition(name)));
   }
 
   /**
