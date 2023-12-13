@@ -8,6 +8,7 @@ import { concatMap, first, map } from 'rxjs/operators';
 import { BasketInfoMapper } from 'ish-core/models/basket-info/basket-info.mapper';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { CustomFieldData } from 'ish-core/models/custom-field/custom-field.interface';
 import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
@@ -16,12 +17,15 @@ import { ApiService } from 'ish-core/services/api/api.service';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 
-export type BasketItemUpdateType =
-  | { quantity?: { value: number; unit: string }; product?: string }
-  | { shippingMethod?: { id: string } }
-  | { desiredDelivery?: string }
-  | { calculated: boolean }
-  | { warranty?: string };
+export interface BasketItemUpdateType {
+  quantity?: { value: number; unit: string };
+  product?: string;
+  shippingMethod?: { id: string };
+  desiredDelivery?: string;
+  customFields?: CustomFieldData[];
+  calculated?: boolean;
+  warranty?: string;
+}
 
 /**
  * The Basket-Items Service handles basket line-item related calls for the 'baskets/items' REST API.

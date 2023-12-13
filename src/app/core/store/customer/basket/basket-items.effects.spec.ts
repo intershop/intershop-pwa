@@ -13,6 +13,7 @@ import { Product } from 'ish-core/models/product/product.model';
 import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -52,7 +53,7 @@ describe('Basket Items Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(),
+        CoreStoreModule.forTesting(['serverConfig']),
         CustomerStoreModule.forTesting('basket'),
         RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
         ShoppingStoreModule.forTesting('products', 'categories'),
@@ -68,6 +69,8 @@ describe('Basket Items Effects', () => {
     effects = TestBed.inject(BasketItemsEffects);
     store = TestBed.inject(Store);
     location = TestBed.inject(Location);
+
+    store.dispatch(loadServerConfigSuccess({ config: {} }));
   });
 
   describe('addProductToBasket$', () => {
