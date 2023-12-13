@@ -20,8 +20,8 @@ import { User } from 'ish-core/models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountPaymentComponent implements OnInit, OnChanges {
-  @Input() paymentMethods: PaymentMethod[];
-  @Input() user: User;
+  @Input({ required: true }) paymentMethods: PaymentMethod[];
+  @Input({ required: true }) user: User;
 
   preferredPaymentInstrument: PaymentInstrument;
   savedPaymentMethods: PaymentMethod[];

@@ -8,6 +8,6 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAttributesComponent {
-  @Input() product: ProductView;
+  @Input({ required: true }) product: ProductView;
   @Input() multipleValuesSeparator = ', ';
 }

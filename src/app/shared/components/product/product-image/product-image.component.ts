@@ -21,20 +21,20 @@ import { Image } from 'ish-core/models/image/image.model';
 })
 export class ProductImageComponent implements OnInit {
   /**
+   * The image type (size), i.e. 'S' for the small image.
+   */
+  @Input({ required: true }) imageType: string;
+  /**
+   * The image view, e.g. 'front', 'back'.
+   */
+  @Input() imageView: string;
+  /**
    * If true, a product link is generated around the component or the given link target is taken
    */
   @Input() link = false;
   @Input() linkTarget: string;
 
   @Input() queryParamsHandling: QueryParamsHandling = '';
-  /**
-   * The image type (size), i.e. 'S' for the small image.
-   */
-  @Input() imageType: string;
-  /**
-   * The image view, e.g. 'front', 'back'.
-   */
-  @Input() imageView: string;
   /**
    * A custom alt text for the img tag.
    */

@@ -9,7 +9,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterNavigationBadgesComponent implements OnChanges {
-  @Input() filterNavigation: FilterNavigation;
+  @Input({ required: true }) filterNavigation: FilterNavigation;
   @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
   @Output() clearFilters = new EventEmitter<void>();
   selected: { searchParameter: URLFormParams; displayName: string; filterName: string }[];

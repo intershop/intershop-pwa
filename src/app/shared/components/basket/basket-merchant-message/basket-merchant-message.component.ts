@@ -25,7 +25,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketMerchantMessageComponent implements OnInit, OnChanges {
-  @Input() basket: Basket;
+  @Input({ required: true }) basket: Basket;
 
   form = new FormGroup({});
   model: { messageToMerchant: string } = { messageToMerchant: '' };

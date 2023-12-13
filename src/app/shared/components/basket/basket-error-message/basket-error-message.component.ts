@@ -8,6 +8,6 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketErrorMessageComponent {
-  @Input() error: HttpError;
+  @Input({ required: true }) error: HttpError;
   @Input() cssClass = 'alert alert-danger';
 }

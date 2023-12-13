@@ -22,7 +22,7 @@ SwiperCore.use([Pagination, Navigation]);
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsListComponent implements OnChanges {
-  @Input() productSKUs: string[];
+  @Input({ required: true }) productSKUs: string[];
   @Input() listStyle: string;
   @Input() slideItems: number;
   @Input() listItemStyle: ProductItemDisplayType;

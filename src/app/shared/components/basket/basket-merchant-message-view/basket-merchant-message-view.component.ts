@@ -15,7 +15,7 @@ import { Order } from 'ish-core/models/order/order.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketMerchantMessageViewComponent implements OnChanges {
-  @Input() data: Basket | Order | Requisition;
+  @Input({ required: true }) data: Basket | Order | Requisition;
   @Input() editRouterLink: string;
 
   messageToMerchant: string;

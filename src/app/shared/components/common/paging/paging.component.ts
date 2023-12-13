@@ -7,8 +7,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PagingComponent implements OnChanges {
-  @Input() currentPage: number;
-  @Input() lastPage: number;
+  @Input({ required: true }) currentPage: number;
+  @Input({ required: true }) lastPage: number;
 
   @Output() goToPage: EventEmitter<number> = new EventEmitter<number>();
 

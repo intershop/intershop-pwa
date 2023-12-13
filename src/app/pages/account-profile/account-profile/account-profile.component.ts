@@ -9,6 +9,6 @@ import { User } from 'ish-core/models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountProfileComponent {
-  @Input() user: User;
+  @Input({ required: true }) user: User;
   @Input() customer: Customer;
 }

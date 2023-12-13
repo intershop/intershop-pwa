@@ -12,7 +12,7 @@ import { startWith, switchMap } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValidationMessageComponent implements OnChanges {
-  @Input() field: FormlyFieldConfig;
+  @Input({ required: true }) field: FormlyFieldConfig;
   errorMessage$: Observable<string>;
 
   constructor(private config: FormlyConfig) {}

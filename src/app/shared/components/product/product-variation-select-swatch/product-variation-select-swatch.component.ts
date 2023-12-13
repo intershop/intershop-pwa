@@ -9,7 +9,7 @@ import { VariationOptionGroup } from 'ish-core/models/product-variation/variatio
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationSelectSwatchComponent {
-  @Input() group: VariationOptionGroup;
+  @Input({ required: true }) group: VariationOptionGroup;
 
   @Output() changeOption = new EventEmitter<{ group: string; value: string }>();
 

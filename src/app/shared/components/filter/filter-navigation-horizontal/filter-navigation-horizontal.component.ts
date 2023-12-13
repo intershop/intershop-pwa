@@ -10,7 +10,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterNavigationHorizontalComponent {
-  @Input() filterNavigation: FilterNavigation;
+  @Input({ required: true }) filterNavigation: FilterNavigation;
   @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
   trackByFn(_: number, item: Filter) {

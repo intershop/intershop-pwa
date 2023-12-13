@@ -19,7 +19,7 @@ export class ServerErrorComponent {
   /**
    * The occurred error.
    */
-  @Input() error: HttpError | string;
+  @Input({ required: true }) error: HttpError | string;
   @Input() type: string;
 
   expanded = false;

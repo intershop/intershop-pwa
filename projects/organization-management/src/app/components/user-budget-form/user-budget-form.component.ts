@@ -22,7 +22,7 @@ interface UserBudgetModel {
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UserBudgetFormComponent implements OnInit {
-  @Input() form: FormGroup;
+  @Input({ required: true }) form: FormGroup;
   @Input() budget: UserBudget;
 
   fields: FormlyFieldConfig[];

@@ -13,7 +13,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSProductListFilterComponent implements CMSComponent, OnChanges {
-  @Input() pagelet: ContentPageletView;
+  @Input({ required: true }) pagelet: ContentPageletView;
 
   productSKUs$: Observable<string[]>;
 

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 /**
- * The Info Box Component renders the parent's outlet html in a box. If an edit routerLink is given a link is displayed to route to an edit page
+ * The Info Box Component renders the parent's outlet html in a box.
+ * If an edit routerLink is given a link is displayed to route to an edit page
  *
  * @example
  * <ish-info-box heading="checkout.widget.billing-address.heading" editRouterLink="/checkout/address">

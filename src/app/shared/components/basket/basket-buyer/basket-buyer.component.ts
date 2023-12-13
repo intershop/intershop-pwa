@@ -15,7 +15,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketBuyerComponent implements OnInit {
-  @Input() object: Basket | Order;
+  @Input({ required: true }) object: Basket | Order;
   /**
    * Router link for editing the order reference id. If a routerLink is given a link is displayed to route to an edit page.
    */

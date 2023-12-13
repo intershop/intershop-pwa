@@ -23,7 +23,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSCarouselComponent implements CMSComponent, OnChanges {
-  @Input() pagelet: ContentPageletView;
+  @Input({ required: true }) pagelet: ContentPageletView;
 
   @ViewChild('ngbCarousel') carousel: NgbCarousel;
 

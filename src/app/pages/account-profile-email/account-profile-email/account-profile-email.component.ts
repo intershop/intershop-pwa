@@ -18,8 +18,8 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountProfileEmailComponent implements OnInit {
+  @Input({ required: true }) currentUser: User;
   @Input() error: HttpError;
-  @Input() currentUser: User;
 
   @Output() updateEmail = new EventEmitter<{ user: User; credentials: Credentials }>();
 

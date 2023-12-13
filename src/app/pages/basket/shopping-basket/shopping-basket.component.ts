@@ -26,7 +26,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShoppingBasketComponent {
-  @Input() basket: BasketView;
+  @Input({ required: true }) basket: BasketView;
   @Input() error: HttpError;
   @Input() loading = false;
 

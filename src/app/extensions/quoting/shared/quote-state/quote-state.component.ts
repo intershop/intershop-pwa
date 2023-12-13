@@ -16,7 +16,7 @@ import { QuoteStatus } from '../../models/quoting/quoting.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteStateComponent implements OnChanges {
-  @Input() quoteId: string;
+  @Input({ required: true }) quoteId: string;
 
   state$: Observable<QuoteStatus>;
 

@@ -10,7 +10,7 @@ import { PunchoutType } from '../../../models/punchout-user/punchout-user.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountPunchoutHeaderComponent {
+  @Input({ required: true }) selectedType: PunchoutType;
   @Input() punchoutTypes: PunchoutType[];
-  @Input() selectedType: PunchoutType;
   @Input() error: HttpError;
 }

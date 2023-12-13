@@ -28,7 +28,7 @@ export class ContentSlotComponent {
   /**
    * The DefinitionQualifiedName of the slot that should be rendered.
    */
-  @Input() slot: string;
+  @Input({ required: true }) slot: string;
   /**
    * The parent Pagelet that contains the slot.
    */

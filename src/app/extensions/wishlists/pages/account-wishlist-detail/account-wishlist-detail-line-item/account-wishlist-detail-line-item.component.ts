@@ -14,8 +14,8 @@ import { Wishlist, WishlistItem } from '../../../models/wishlist/wishlist.model'
 export class AccountWishlistDetailLineItemComponent {
   constructor(private wishlistsFacade: WishlistsFacade) {}
 
-  @Input() wishlistItemData: WishlistItem;
-  @Input() currentWishlist: Wishlist;
+  @Input({ required: true }) wishlistItemData: WishlistItem;
+  @Input({ required: true }) currentWishlist: Wishlist;
 
   moveItemToOtherWishlist(sku: string, wishlistMoveData: { id: string; title: string }) {
     if (wishlistMoveData.id) {

@@ -25,7 +25,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptchaV3Component implements OnInit {
-  @Input() parentForm: FormGroup;
+  @Input({ required: true }) parentForm: FormGroup;
 
   private destroyRef = inject(DestroyRef);
 

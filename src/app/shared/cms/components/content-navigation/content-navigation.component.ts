@@ -17,11 +17,11 @@ export class ContentNavigationComponent implements OnInit {
   /**
    * Content Page Tree to be rendered
    */
-  @Input() contentPageTree: ContentPageTreeView;
+  @Input({ required: true }) contentPageTree: ContentPageTreeView;
   /**
    * Max Depth of page tree
    */
-  @Input() depth: number;
+  @Input({ required: true }) depth: number;
 
   currentContentPage$: Observable<ContentPageletEntryPointView>;
 

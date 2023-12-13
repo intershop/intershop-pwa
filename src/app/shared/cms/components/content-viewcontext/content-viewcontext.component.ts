@@ -25,12 +25,12 @@ export class ContentViewcontextComponent implements OnChanges {
   /**
    * The ID of the View Context whose content is to be rendered.
    */
-  @Input() viewContextId: string;
+  @Input({ required: true }) viewContextId: string;
 
   /**
    * The call parameter object to provide the context, e.g. { Product: product.sku, Category: category.categoryRef }.
    */
-  @Input() callParameters: CallParameters;
+  @Input({ required: true }) callParameters: CallParameters;
 
   viewContextEntrypoint$: Observable<ContentPageletEntryPointView>;
 
