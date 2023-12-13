@@ -1,3 +1,5 @@
+import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
+
 export interface LineItemUpdate {
   itemId: string;
   quantity?: number;
@@ -5,4 +7,5 @@ export interface LineItemUpdate {
   unit?: string;
   customerProductID?: string;
   partialOrderNo?: string;
+  customFields?: CustomFields;
 }

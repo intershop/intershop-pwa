@@ -23,6 +23,7 @@ import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
+import { getCustomFieldsForScope } from 'ish-core/store/core/server-config';
 import { resetOrderErrors } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer, loginUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -53,6 +54,7 @@ import {
   setBasketAttribute,
   setBasketAttributeFail,
   setBasketAttributeSuccess,
+  setBasketCustomFields,
   setBasketDesiredDeliveryDate,
   setBasketDesiredDeliveryDateFail,
   setBasketDesiredDeliveryDateSuccess,
@@ -219,6 +221,22 @@ export class BasketEffects {
       ofType(addMessageToMerchant),
       mapToPayloadProperty('messageToMerchant'),
       map(messageToMerchant => updateBasket({ update: { messageToMerchant } }))
+    )
+  );
+
+  setBasketCustomFields$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setBasketCustomFields),
+      mapToPayloadProperty('customFields'),
+      concatLatestFrom(() => this.store.pipe(select(getCustomFieldsForScope('Basket')))),
+      map(([customFields, definitions]) =>
+        definitions.map(definition => ({
+          name: definition.name,
+          value: customFields[definition.name],
+          type: definition.type,
+        }))
+      ),
+      map(customFields => updateBasket({ update: { customFields } }))
     )
   );
 

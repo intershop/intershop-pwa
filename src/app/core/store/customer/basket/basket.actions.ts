@@ -7,6 +7,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -72,6 +73,10 @@ export const updateBasketCostCenter = createAction(
 export const addMessageToMerchant = createAction(
   '[Basket] Message to Merchant',
   payload<{ messageToMerchant: string }>()
+);
+export const setBasketCustomFields = createAction(
+  '[Basket] Set Basket Custom Fields',
+  payload<{ customFields: CustomFields }>()
 );
 export const updateBasket = createAction('[Basket API] Update Basket', payload<{ update: BasketUpdateType }>());
 
