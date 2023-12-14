@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, noop, of, race, throwError } from 'rxjs';
-import { catchError, concatMap, delay, filter, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, delay, filter, first, map, switchMap, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -33,16 +33,11 @@ export class CoBrowseIdentityProvider implements IdentityProvider {
   }
 
   init() {
-    this.apiTokenService.cookieVanishes$
-      .pipe(withLatestFrom(this.apiTokenService.apiToken$))
-      .subscribe(([type, apiToken]) => {
-        if (!apiToken) {
-          this.accountFacade.fetchAnonymousToken();
-        }
-        if (type === 'user') {
-          this.accountFacade.logoutUser({ revokeApiToken: false });
-        }
-      });
+    this.apiTokenService.getCookieVanishes$().subscribe(type => {
+      if (type === 'user') {
+        this.accountFacade.logoutUser({ revokeApiToken: false });
+      }
+    });
 
     // OAuth Service should be configured before apiToken information are restored and the refresh token mechanism is setup
     this.apiTokenService.restore$(['user', 'order']).subscribe(noop);

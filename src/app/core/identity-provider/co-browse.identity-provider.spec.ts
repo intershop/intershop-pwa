@@ -48,7 +48,7 @@ describe('Co Browse Identity Provider', () => {
 
   beforeEach(() => {
     when(apiTokenService.restore$(anything())).thenReturn(of(true));
-    when(apiTokenService.cookieVanishes$).thenReturn(new Subject());
+    when(apiTokenService.getCookieVanishes$()).thenReturn(new Subject());
     when(checkoutFacade.basket$).thenReturn(EMPTY);
 
     resetCalls(apiTokenService);
