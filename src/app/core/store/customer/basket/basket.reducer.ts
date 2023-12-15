@@ -75,9 +75,6 @@ import {
   updateBasketItem,
   updateBasketItemFail,
   updateBasketItemSuccess,
-  updateBasketItems,
-  updateBasketItemsFail,
-  updateBasketItemsSuccess,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -134,7 +131,6 @@ export const basketReducer = createReducer(
     addItemsToBasket,
     continueCheckout,
     updateBasketItem,
-    updateBasketItems,
     deleteBasketItem,
     setBasketAttribute,
     deleteBasketAttribute,
@@ -159,7 +155,6 @@ export const basketReducer = createReducer(
   unsetLoadingAndErrorOn(
     mergeBasketSuccess,
     updateBasketItemSuccess,
-    updateBasketItemsSuccess,
     deleteBasketItemSuccess,
     addItemsToBasketSuccess,
     setBasketPaymentSuccess,
@@ -184,7 +179,6 @@ export const basketReducer = createReducer(
     addItemsToBasketFail,
     removePromotionCodeFromBasketFail,
     updateBasketItemFail,
-    updateBasketItemsFail,
     deleteBasketItemFail,
     setBasketAttributeFail,
     deleteBasketAttributeFail,
@@ -222,14 +216,6 @@ export const basketReducer = createReducer(
     info: action.payload.info,
     validationResults: initialValidationResults,
   })),
-  on(
-    updateBasketItemsSuccess,
-    (state, action): BasketState => ({
-      ...state,
-      info: action.payload.info,
-      validationResults: initialValidationResults,
-    })
-  ),
   on(deleteBasketItemSuccess, (state, action) => ({
     ...state,
     basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
