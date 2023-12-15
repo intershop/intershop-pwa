@@ -139,6 +139,8 @@ export interface Environment {
    * - 'stable': only fetch prices once per application lifetime
    */
   priceUpdate: 'stable' | 'always';
+  //Contentful configuration
+  contentful: Partial<{ apiUrl: string; spaceId: string; accessToken: string; environment: string }>;
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
@@ -205,4 +207,5 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     tacton: 'forever',
   },
   priceUpdate: 'always',
+  contentful: {},
 };

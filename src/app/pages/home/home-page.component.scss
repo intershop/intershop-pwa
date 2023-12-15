@@ -1,0 +1,58 @@
+// Example component made by Fenego NV (https://www.fenego.be/)
+
+.banner {
+  position: relative;
+  align-items: center;
+  max-height: 700px;
+
+  &-background {
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    object-fit: cover;
+  }
+
+  &-product-image {
+    position: absolute;
+    bottom: 25%;
+    left: 5%;
+    z-index: 1;
+    max-width: 30%;
+  }
+
+  &-caption {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40%;
+    text-align: center;
+    background-color: rgba(255, 109, 0, 0.7);
+
+    &-title {
+      font-size: 5vw;
+    }
+  }
+}
+
+.category {
+  padding: 0;
+  opacity: 1;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &-image {
+    aspect-ratio: 16/9;
+  }
+}
+
+@media (width <= 800px) {
+  .banner-caption-description {
+    display: none;
+  }
+}

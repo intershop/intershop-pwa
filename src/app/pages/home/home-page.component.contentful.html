@@ -1,0 +1,39 @@
+<!-- Example component made by Fenego NV (https://www.fenego.be/) -->
+<div class="container-fluid">
+  <!--Banner-->
+  <!--Creates banner from first item in the carousel in Contentful (can be changed to a carousel)-->
+  <div class="row">
+    <div *ngIf="bannerData$ | async as banner" class="banner">
+      <img class="banner-background" src="http:{{ banner.backgroundImage.fields.file.url }}" alt="..." />
+      <img class="banner-product-image" src="http:{{ banner.productImage.fields.file.url }}" alt="..." />
+      <div class="banner-caption">
+        <h1 class="banner-caption-title">{{ banner.title }}</h1>
+        <h2 class="banner-caption-description mx-4">{{ banner.description }}</h2>
+      </div>
+    </div>
+  </div>
+  <!--Categories-->
+  <div id="categories" class="row">
+    <ng-container *ngIf="categories$ | async as categories">
+      <div *ngFor="let category of categories" class="category col-12 col-sm-4">
+        <a [routerLink]="navigateToCategoryPage(category.category.categories[0]) | async">
+          <img
+            class="category-image"
+            src="http:{{ category.categoryImage.fields.file.url }}"
+            alt="{{ category.categoryImage.fields.title }}"
+          />
+        </a>
+      </div>
+    </ng-container>
+  </div>
+  <!--Featured products-->
+  <div *ngIf="productSkus$ | async as products" class="m-3">
+    <h3>{{ products.title }}</h3>
+    <ish-products-list
+      [productSKUs]="products.productCategorySelector.products"
+      [listItemStyle]="'tile'"
+      [listItemConfiguration]="properties"
+      [listStyle]="'plainList'"
+    ></ish-products-list>
+  </div>
+</div>
