@@ -107,7 +107,7 @@ export class BasketItemsService {
   }
 
   /**
-   * Remove specific line item from the currently used basket.
+   * Removes a specific line item from the currently used basket.
    *
    * @param itemId    The id of the line item that should be deleted.
    */
@@ -124,7 +124,7 @@ export class BasketItemsService {
   }
 
   /**
-   * Remove all line items from the currently used basket.
+   * Removes all line items from the currently used basket.
    */
   deleteBasketItems(): Observable<BasketInfo[]> {
     return this.apiService

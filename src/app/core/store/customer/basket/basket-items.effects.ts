@@ -144,7 +144,7 @@ export class BasketItemsEffects {
   );
 
   /**
-   * Delete basket item effect.
+   * Delete all basket items effect.
    */
   deleteBasketItems$ = createEffect(() =>
     this.actions$.pipe(
