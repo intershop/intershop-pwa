@@ -15,6 +15,7 @@ RUN apt-get update \
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY features /etc/nginx/features/
 COPY templates /etc/nginx/templates/
+COPY robots /etc/nginx/conf.d/robots/
 COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
 COPY *.yaml /
 COPY 50x.html /usr/share/nginx/html/

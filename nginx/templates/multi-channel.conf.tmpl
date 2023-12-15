@@ -159,6 +159,9 @@ server {
         proxy_busy_buffers_size 256k;
     }
   {{ if (has $mapping "channel") }}
+   location = /robots.txt {
+      alias /etc/nginx/conf.d/robots/{{ .channel }}_robots.txt;
+    }
     location / {
         {{- tmpl.Exec "LOCATION_TEMPLATE" $mapping }}
         include /etc/nginx/conf.d/add-header.conf;
