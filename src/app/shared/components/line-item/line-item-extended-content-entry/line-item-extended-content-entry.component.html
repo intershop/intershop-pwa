@@ -7,7 +7,7 @@
   <span class="line-item-attributes-info span-separator">{{ 'line-item.' + key + '.label' | translate }}</span>
   <ish-in-place-edit *ngIf="editable; else display" (edited)="update()" (aborted)="reset()">
     <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !control.value }">
-      <ng-container *ngTemplateOutlet="display"></ng-container>
+      <ng-container *ngTemplateOutlet="display" />
     </p>
     <input type="text" [formControl]="control" class="form-control" />
   </ish-in-place-edit>
