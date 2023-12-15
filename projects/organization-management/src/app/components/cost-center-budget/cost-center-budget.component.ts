@@ -8,7 +8,7 @@ import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CostCenterBudgetComponent implements OnChanges {
-  @Input() costCenter: CostCenter;
+  @Input({ required: true }) costCenter: CostCenter;
   @Input() progressBarClass: string;
 
   spentBudgetPercentage: number;

@@ -20,7 +20,7 @@
       [pli]="pli"
       [lineItemViewType]="lineItemViewType"
       [editable]="editable && pli.editable"
-    ></ish-line-item-list-element>
+    />
   </div>
 
   <div *ngIf="showPagingBar" class="row">
@@ -28,7 +28,7 @@
       class="col-12 d-flex grey-panel align-items-center flex-column flex-md-row justify-content-between px-3 py-2 mb-3"
     >
       <span>{{ 'shopping_cart.paging.items.label' | translate : { '0': lineItems.length } }}</span>
-      <ish-paging [currentPage]="currentPage" [lastPage]="lastPage" (goToPage)="goToPage($event)"></ish-paging>
+      <ish-paging [currentPage]="currentPage" [lastPage]="lastPage" (goToPage)="goToPage($event)" />
     </div>
   </div>
 

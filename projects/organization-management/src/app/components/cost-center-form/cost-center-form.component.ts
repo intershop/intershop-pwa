@@ -19,7 +19,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CostCenterFormComponent implements OnInit {
-  @Input() form: FormGroup;
+  @Input({ required: true }) form: FormGroup;
   @Input() costCenter: CostCenter;
 
   fields$: Observable<FormlyFieldConfig[]>;

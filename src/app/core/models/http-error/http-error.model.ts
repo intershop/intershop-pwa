@@ -14,7 +14,6 @@ export interface ErrorFeedback {
 export interface HttpError {
   /** name for distinguishing with other errors */
   name: 'HttpErrorResponse';
-
   /** unique reference for identifying the problem - in our case the error translation key */
   code?: string;
 

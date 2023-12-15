@@ -2,7 +2,7 @@
   [punchoutTypes]="punchoutTypes$ | async"
   [selectedType]="selectedPunchoutType$ | async"
   [error]="error$ | async"
-></ish-account-punchout-header>
+/>
 
 <div *ngIf="selectedPunchoutType$ | async as selectedType" class="section">
   <h2 class="mt-1">
@@ -36,7 +36,7 @@
                 title="{{ 'account.profile.update.link' | translate }}"
                 data-testing-id="edit-user"
               >
-                <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+                <fa-icon [icon]="['fas', 'pencil-alt']" />
               </a>
               <a
                 [routerLink]="[]"
@@ -45,7 +45,7 @@
                 (click)="modalDialog.show(user)"
                 data-testing-id="delete-user"
               >
-                <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+                <fa-icon [icon]="['fas', 'trash-alt']" />
               </a>
 
               <ish-modal-dialog
@@ -86,4 +86,4 @@
   </ng-template>
 </div>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

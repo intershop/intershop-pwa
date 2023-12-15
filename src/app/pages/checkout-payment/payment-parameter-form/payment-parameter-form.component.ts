@@ -10,8 +10,8 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentParameterFormComponent implements OnInit, OnChanges {
-  @Input() parentForm: FormGroup;
-  @Input() paymentMethod: PaymentMethod;
+  @Input({ required: true }) parentForm: FormGroup;
+  @Input({ required: true }) paymentMethod: PaymentMethod;
   @Input() submitDisabled: boolean;
   /**
    * should be set to true by the parent, if component is visible

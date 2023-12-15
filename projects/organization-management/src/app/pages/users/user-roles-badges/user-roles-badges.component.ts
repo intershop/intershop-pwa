@@ -10,7 +10,7 @@ import { B2bRole } from '../../../models/b2b-role/b2b-role.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRolesBadgesComponent implements OnChanges {
-  @Input() roleIDs: string[];
+  @Input({ required: true }) roleIDs: string[];
 
   roles$: Observable<B2bRole[]>;
 

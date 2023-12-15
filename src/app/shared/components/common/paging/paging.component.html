@@ -9,7 +9,7 @@
         [attr.aria-disabled]="currentPage === 1"
         data-testing-id="paging-previous-button"
       >
-        <fa-icon [icon]="['fas', 'angle-left']"></fa-icon>
+        <fa-icon [icon]="['fas', 'angle-left']" />
       </button>
     </li>
     <li
@@ -26,6 +26,7 @@
             ? ('navigation.paging.current_page.aria_label' | translate : { '0': p })
             : ('navigation.paging.go_to_page.aria_label' | translate : { '0': p })
         "
+        tabindex="0"
         (click)="setPage(p)"
         (keyup.enter)="setPage(p)"
         >{{ p }}</a
@@ -41,7 +42,7 @@
         [attr.aria-disabled]="currentPage === lastPage"
         data-testing-id="paging-next-button"
       >
-        <fa-icon [icon]="['fas', 'angle-right']"></fa-icon>
+        <fa-icon [icon]="['fas', 'angle-right']" />
       </button>
     </li>
   </ul>

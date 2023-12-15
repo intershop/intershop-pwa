@@ -1,8 +1,8 @@
 <div *ngIf="wishlists?.length > 0; else noWishlist" class="list-body">
-  <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: preferredWishlist }"></ng-container>
+  <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: preferredWishlist }" />
   <ng-container *ngFor="let wishlist of wishlists">
     <ng-container *ngIf="!preferredWishlist || wishlist.id !== preferredWishlist.id">
-      <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: wishlist }"></ng-container>
+      <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: wishlist }" />
     </ng-container>
   </ng-container>
 </div>
@@ -29,8 +29,8 @@
         title="{{ 'account.wishlist.list.remove' | translate }}"
         (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
         data-testing-id="delete-wishlist"
-        ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
-      ></a>
+        ><fa-icon [icon]="['fas', 'trash-alt']"
+      /></a>
     </div>
   </div>
 </ng-template>

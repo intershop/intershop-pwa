@@ -6,7 +6,7 @@
   </div>
 
   <div *ngIf="listingLoading$ | async" class="product-list-loading">
-    <ish-loading [standalone]="true"></ish-loading>
+    <ish-loading [standalone]="true" />
   </div>
 
   <ng-container
@@ -17,15 +17,15 @@
     [configuration]="{ shipment: false }"
   >
     <div *ngIf="isGrid" class="col-6 col-lg-4 product-list-item grid-view">
-      <ish-product-item displayType="tile"></ish-product-item>
+      <ish-product-item displayType="tile" />
     </div>
 
     <div *ngIf="isList" class="col-lg-12 product-list-item list-view">
-      <ish-product-item displayType="row"></ish-product-item>
+      <ish-product-item displayType="row" />
     </div>
   </ng-container>
 
   <div *ngIf="listingLoading$ | async" class="col-12">
-    <ish-loading [standalone]="true"></ish-loading>
+    <ish-loading [standalone]="true" />
   </div>
 </div>

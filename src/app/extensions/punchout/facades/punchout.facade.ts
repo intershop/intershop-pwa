@@ -79,7 +79,7 @@ export class PunchoutFacade {
   }
 
   ociConfiguration$() {
-    this.store.dispatch(ociConfigurationActions.loadOciOptionsAndConfiguration());
+    this.store.dispatch(ociConfigurationActions.loadOCIOptionsAndConfiguration());
     return this.store.pipe(select(getOciConfiguration));
   }
   ociConfigurationLoading$ = this.store.pipe(select(getOciConfigurationLoading));
@@ -99,6 +99,6 @@ export class PunchoutFacade {
   ociPlaceholders$ = this.store.pipe(select(getOciPlaceholders));
 
   updateOciConfiguration(configuration: OciConfigurationItem[]) {
-    this.store.dispatch(ociConfigurationActions.updateOciConfiguration({ configuration }));
+    this.store.dispatch(ociConfigurationActions.updateOCIConfiguration({ configuration }));
   }
 }

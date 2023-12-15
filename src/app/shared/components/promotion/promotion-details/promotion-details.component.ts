@@ -17,5 +17,5 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PromotionDetailsComponent {
-  @Input() promotion: Promotion;
+  @Input({ required: true }) promotion: Promotion;
 }

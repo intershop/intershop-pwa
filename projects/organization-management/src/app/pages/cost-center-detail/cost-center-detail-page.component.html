@@ -1,7 +1,7 @@
 <div *ngIf="costCenter$ | async as costCenter">
   <h1>{{ costCenter.name }}</h1>
 
-  <ish-error-message [error]="costCentersError$ | async"></ish-error-message>
+  <ish-error-message [error]="costCentersError$ | async" />
 
   <div class="row section">
     <div class="col-10 col-lg-8">
@@ -29,7 +29,7 @@
           </dl>
         </div>
         <div class="offset-md-4 col-md-8">
-          <ish-cost-center-budget [costCenter]="costCenter"></ish-cost-center-budget>
+          <ish-cost-center-budget [costCenter]="costCenter" />
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@
         [title]="'account.costcenter.update.link' | translate"
         data-testing-id="edit-cost-center"
       >
-        <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+        <fa-icon [icon]="['fas', 'pencil-alt']" />
       </a>
     </div>
   </div>
@@ -53,7 +53,7 @@
       [orders]="costCenter?.orders || []"
       [maxListItems]="10"
       [columnsToDisplay]="['creationDate', 'orderNo', 'buyer', 'lineItems', 'status', 'orderTotal']"
-    ></ish-order-list>
+    />
   </ng-container>
 
   <h3>
@@ -67,7 +67,7 @@
     >
   </h3>
 
-  <ish-cost-center-users-list [costCenter]="costCenter" [isEditable]="isEditable$ | async"></ish-cost-center-users-list>
+  <ish-cost-center-users-list [costCenter]="costCenter" [isEditable]="isEditable$ | async" />
 </div>
 
 <a routerLink=".." data-testing-id="back-to-cost-center-management">{{

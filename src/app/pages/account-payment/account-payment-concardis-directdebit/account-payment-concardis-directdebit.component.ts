@@ -8,7 +8,7 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountPaymentConcardisDirectdebitComponent {
-  @Input() paymentInstrument: PaymentInstrument;
+  @Input({ required: true }) paymentInstrument: PaymentInstrument;
 
   mandateReference: string;
   mandateText: string;

@@ -21,7 +21,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketOrderReferenceComponent implements OnInit, OnChanges {
-  @Input() basket: Basket;
+  @Input({ required: true }) basket: Basket;
 
   form = new FormGroup({});
   model: { orderReferenceId: string } = { orderReferenceId: '' };

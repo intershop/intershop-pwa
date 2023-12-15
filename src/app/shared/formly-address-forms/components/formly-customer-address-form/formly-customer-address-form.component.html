@@ -10,13 +10,9 @@
     [parentForm]="form"
     [businessCustomer]="businessCustomer$ | async"
     [prefilledAddress]="address"
-  ></ish-formly-address-form>
+  />
 
-  <ish-formly-address-extension-form
-    *ngIf="extension"
-    [form]="extensionForm"
-    [model]="extensionModel"
-  ></ish-formly-address-extension-form>
+  <ish-formly-address-extension-form *ngIf="extension" [form]="extensionForm" [model]="extensionModel" />
 
   <div class="row">
     <div class="offset-md-4 col-md-8 offset-lg-0 col-lg-12 offset-lg-4 col-xl-8">

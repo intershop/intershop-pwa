@@ -51,7 +51,7 @@ With the subscribe on the [eventResultListener$](../../src/app/core/utils/featur
 ```typescript
 this.featureEventService
   .eventResultListener$('addressDoctor', 'check-address', id)
-  .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+  .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
   .subscribe(({ address }) => {
     if (address) {
       this.accountFacade.updateCustomerAddress(address);

@@ -3,7 +3,7 @@
     <ng-container
       [ngTemplateOutlet]="pageTreeNode"
       [ngTemplateOutletContext]="{ treeNodes: [contentPageTree], counter: 0 }"
-    ></ng-container>
+    />
   </ul>
 
   <!-- the recursively used template to render the tree nodes -->
@@ -20,7 +20,7 @@
         <ng-container
           [ngTemplateOutlet]="pageTreeNode"
           [ngTemplateOutletContext]="{ treeNodes: treeNode.children, counter: counter + 1 }"
-        ></ng-container>
+        />
       </ul>
     </li>
   </ng-template>

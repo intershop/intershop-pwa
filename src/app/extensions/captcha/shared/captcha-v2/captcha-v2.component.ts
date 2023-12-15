@@ -18,7 +18,7 @@ import { CaptchaFacade } from '../../facades/captcha.facade';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CaptchaV2Component implements OnInit {
-  @Input() parentForm: FormGroup;
+  @Input({ required: true }) parentForm: FormGroup;
   @Input() cssClass: string;
 
   captchaSiteKey$: Observable<string>;

@@ -72,7 +72,7 @@ const createView = (data: ProductListingType, itemsPerPage: number): ProductList
   const firstPage = data?.pages?.[0] || NaN;
   return {
     products: once(() => (data ? mergeAllPages(data) : [])),
-    productsOfPage: memoize(page => (data && data[page || 1]) || [], identity),
+    productsOfPage: memoize(page => data?.[page || 1] || [], identity),
     nextPage: once(() => (data ? (lastPage * itemsPerPage < data.itemCount && lastPage + 1) || undefined : 1)),
     previousPage: once(() => (data && firstPage !== 1 ? firstPage - 1 : undefined)),
     lastPage,

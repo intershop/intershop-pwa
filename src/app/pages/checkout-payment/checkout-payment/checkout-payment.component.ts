@@ -1,18 +1,19 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -23,17 +24,20 @@ import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
- * The Checkout Payment Component renders the checkout payment page. On this page the user can select a payment method. Some payment methods require the user to enter some additional data, like credit card data. For some payment methods there is special javascript functionality necessary provided by an external payment host. See also {@link CheckoutPaymentPageComponent}
- *
+ * The Checkout Payment Component renders the checkout payment page.
+ * On this page the user can select a payment method.
+ * Some payment methods require the user to enter some additional data, like credit card data.
+ * For some payment methods there is special javascript functionality necessary provided by an external payment host.
+ * See also {@link CheckoutPaymentPageComponent}
  */
 @Component({
   selector: 'ish-checkout-payment',
   templateUrl: './checkout-payment.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() basket: Basket;
-  @Input() paymentMethods: PaymentMethod[];
+export class CheckoutPaymentComponent implements OnInit, OnChanges {
+  @Input({ required: true }) basket: Basket;
+  @Input({ required: true }) paymentMethods: PaymentMethod[];
   @Input() priceType: 'gross' | 'net';
   @Input() error: HttpError;
 
@@ -56,7 +60,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   private openFormIndex = -1; // index of the open parameter form
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private route: ActivatedRoute) {}
 
@@ -74,7 +78,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       .get('name')
       .valueChanges.pipe(
         filter(paymentInstrumentId => paymentInstrumentId !== this.getBasketPayment()),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(id => {
         this.redirectStatus = undefined;
@@ -82,7 +86,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       });
 
     // if page is shown after cancelled/faulty redirect determine error message variable
-    this.route.queryParamMap.pipe(take(1), takeUntil(this.destroy$)).subscribe(params => {
+    this.route.queryParamMap.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(params => {
       const redirect = params.get('redirect');
       this.redirectStatus = redirect;
     });
@@ -251,10 +255,5 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   get submitDisabled() {
     return this.paymentForm.invalid && this.formSubmitted;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

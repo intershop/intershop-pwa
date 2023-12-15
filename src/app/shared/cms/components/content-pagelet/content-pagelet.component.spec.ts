@@ -40,9 +40,7 @@ describe('Content Pagelet Component', () => {
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-      .overrideComponent(ContentPageletComponent, { set: { entryComponents: [CMSTextComponent] } })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

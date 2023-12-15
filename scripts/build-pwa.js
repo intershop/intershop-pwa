@@ -2,6 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 
+const angularJson = JSON.parse(fs.readFileSync('./angular.json', { encoding: 'utf-8' }));
+const defaultProject = Object.keys(angularJson.projects).find(project => angularJson.projects[project].root === '');
+
 /**
  * remove service worker cache check for resources (especially index.html)
  * https://github.com/angular/angular/issues/23613#issuecomment-415886919
@@ -15,8 +18,7 @@ function removeServiceWorkerCacheCheck(args) {
     outputPath = outputPathArg.split('=')[1];
   } else {
     // get default outputPath from angular.json
-    const angularJson = JSON.parse(fs.readFileSync('./angular.json', { encoding: 'utf-8' }));
-    outputPath = angularJson.projects[angularJson.defaultProject].architect.build.options.outputPath;
+    outputPath = angularJson.projects[defaultProject].architect.build.options.outputPath;
   }
 
   const serviceWorkerScript = path.join(outputPath, 'ngsw-worker.js');
@@ -58,7 +60,7 @@ if (configuration) {
 }
 
 if (server) {
-  execSync(`npm run ng -- run intershop-pwa:server${configString} ${remainingArgs.join(' ')}`, {
+  execSync(`npm run ng -- run ${defaultProject}:server${configString} ${remainingArgs.join(' ')}`, {
     stdio: 'inherit',
   });
 }

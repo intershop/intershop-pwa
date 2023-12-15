@@ -9,6 +9,29 @@ kb_sync_latest_only
 
 ## From 4.2 to 5.0
 
+The project has been updated to work with Angular 16.
+Besides this a lot of other dependencies (NgRx, Typescript) have also been updated.
+
+The spelling of the OCI punchout actions has changed due to a changed naming schema of the ngrx action creator functions.
+
+Because `defaultProject` is not a valid option in the `angular.json` any more it has been removed and the root project (project with an empty root) is used instead.
+
+We enabled the [Angular Hydration](https://angular.io/guide/hydration) to improve the performance and avoid the UI flickering when a page is rendered - please note, that this feature is still in developer preview and may also have some constraints.
+
+We take the [`takeUntilDestroyed`](https://indepth.dev/posts/1518/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
+The `add-destroy` schematic has been removed but you can keep the `takeUntil(destroy$)` mechanism for a transitional period.
+A [migration script](../../scripts/migrate-destroy-subject.ts) is created to support the migration to the new way to complete open observable subscriptions on destroy.
+This script can be executed with `npx ts-node .\scripts\migrate-destroy-subject.ts`.
+Please look through all changes after running the script and make sure that all files are working as expected.
+In addition all unused imports within the files have to be removed (`npm run lint --fix` can be used).
+
+We added the eslint rule `@angular-eslint/template/prefer-self-closing-tags` to use self-closing tags in html files (`npm run lint --fix` can be used to update your html files).
+
+The `ngcc` command has been removed from the `package.json` because it is no longer supported and necessary in Angular 16.
+
+Mandatory component input parameters are declared as [required](https://angular.io/guide/update-to-version-16#required-inputs) to ensure that all necessary data is provided.
+This way data dependencies are enforced and potential errors are caught during compilation.
+
 For the optional usage of a shared Redis cache we switched from the plain standard NGINX Docker image to an [OpenResty](https://openresty.org/en/) Docker image that provides more flexibility to configure the underlying NGINX.
 If the NGINX container was customized in the project it has to be checked if those customizations work in the same way with the OpenResty image.
 Without any customizations the switch should not be noticeable and does not require any adaptions.
@@ -16,6 +39,8 @@ Without any customizations the switch should not be noticeable and does not requ
 We renamed the input parameter 'id' to 'productListingId' for the product listing component to avoid unintentionally having more than one element with the same id in the HTML document.
 The api-token.service has been refactored and the class variables `apiToken$` and `cookieVanishes$` have got the private modifier.
 Use the public getter/setter methods to access these variables outside the class.
+
+Basket line-item functionalities have been extracted from the `basket.service` into a separate `basket-items.service`.
 
 ## From 4.1 to 4.2
 

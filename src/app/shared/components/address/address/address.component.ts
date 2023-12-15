@@ -20,7 +20,7 @@ export class AddressComponent {
    * The Address to be displayed.
    *
    */
-  @Input() address: Address;
+  @Input({ required: true }) address: Address;
 
   /**
    * If set to true, the email is displayed as part of the address.

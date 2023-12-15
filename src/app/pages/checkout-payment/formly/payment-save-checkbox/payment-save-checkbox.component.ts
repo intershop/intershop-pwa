@@ -14,8 +14,8 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentSaveCheckboxComponent implements OnInit {
-  @Input() paymentMethod: PaymentMethod;
-  @Input() form: FormGroup;
+  @Input({ required: true }) paymentMethod: PaymentMethod;
+  @Input({ required: true }) form: FormGroup;
 
   fields: FormlyFieldConfig[];
   model = { saveForLater: true };

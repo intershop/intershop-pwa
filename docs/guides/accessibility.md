@@ -7,70 +7,116 @@ kb_sync_latest_only
 
 # Accessibility
 
+- [Accessibility](#accessibility)
+  - [General](#general)
+    - [Attributes and Roles](#attributes-and-roles)
+    - [Titles instead of ARIA-Attributes](#titles-instead-of-aria-attributes)
+    - [Usage of native HTML-Elements](#usage-of-native-html-elements)
+  - [ESLint Rules](#eslint-rules)
+    - [Accessibility Plugin](#accessibility-plugin)
+    - [Additional Rules](#additional-rules)
+  - [Project specific Applications](#project-specific-applications)
+    - [How to fix `click-events-have-key-events` problems](#how-to-fix-click-events-have-key-events-problems)
+    - [Form Submission using the key "Enter"](#form-submission-using-the-key-enter)
+    - [Form submission in dialogs](#form-submission-in-dialogs)
+  - [Further References](#further-references)
+
 The goal of accessibility is to unlock the full potential of the Web and enable people with disabilities to participate equally.
 The `@angular-eslint` repo contains a number of linting rules that can help enforce accessibility best practices in Angular component templates.
 
-The accessibility rules that are enabled in the Intershop PWA are listed/described in this document and configured in the `.eslintrc.json` file of the project.
+Most of the accessibility rules that are enabled in the Intershop PWA are contained in the plugin `@angular-eslint/template/accessibility` that is configured in the `.eslintrc.json` file of the project.
 To check whether the rules are followed in your custom code or not, run `npm run lint`.
 
-## General Rules
+## General
+
+### Attributes and Roles
+
+Generally it is checked if valid `aria-*` and `role=*` attributes are used and that every necessary element is reachable with the keyboard, and that an action (like pressing enter) can be performed on them.
+
+### Titles instead of ARIA-Attributes
+
+If an element has to be made more descriptive by adding a title-attribute or an aria-label, we decided to use the title and not the label, because a title provides visual feedback and can also be read as a label by screen-readers.
+
+:x: **Wrong HTML structure, title and aria-label would be read by a screen-reader**
+
+```html
+<button [title]="Close" [aria-label]="close">
+  <span>x</span>
+</button>
+```
+
+:warning: **Only use when no title is needed**
+
+```html
+<button [title]="Close" [aria-label]="close">
+  <span>x</span>
+</button>
+```
+
+:heavy_check_mark: **Preferred HTML structure**
+
+```html
+<button [title]="Close">
+  <span>x</span>
+</button>
+```
+
+### Usage of native HTML-Elements
+
+It is generally advised to use native HTML-elements instead of giving roles to container-elements like a `<div>`, because native elements already bring most accessibility functionalities with them, like tab-focus and confirm by pressing enter.
+If, for example, instead of a `<button>` a `<div role="button">` is used, the functionality of pressing enter to activate the button has to be manually implemented via code.
+
+:warning: **Don't assign roles to HTML-elements that exist natively**
+
+```html
+<div role="button">
+  <span>x</span>
+</div>
+```
+
+:heavy_check_mark: **Use native HTML-elements if they exist**
+
+```html
+<button [title]="Close">
+  <span>x</span>
+</button>
+```
+
+## ESLint Rules
+
+ESLint provides a plugin that includes most of the necessary accessibility-rules.
+Only some individual rules that do not come with this plugin are specifically written down here.
+
+### Accessibility Plugin
 
 ```
-@angular-eslint/template/accessibility-valid-aria
+plugin:@angular-eslint/template/accessibility
 ```
 
-This rule makes sure that all `aria-*` attributes used are valid.
-The rule will fail if a non-existent `aria-*` attribute is used, or a valid `aria-*` attribute is given an unexpected value.
+For reference on which rules the plugin currently includes, please check the official repository:
 
-## Content Rules
+- [ESLint-Plugin Accessibility Rules](https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/src/configs/accessibility.json)
 
-```
-@angular-eslint/template/accessibility-alt-text
-```
-
-```
-@angular-eslint/template/accessibility-elements-content
-```
-
-## Interactivity Rules
-
-The navigation is the most important way to find and access the different contents of the website.
-For this reason, it is essential that the navigation is accessible.
+### Additional Rules
 
 ```
 @angular-eslint/template/no-positive-tabindex
 ```
 
-This rule ensures that `tabindex` is set to `0` (element is tab focusable) or `-1` (element is not tab focusable), and not a positive value that interferes with the automatic tab order of elements.
+If an unreachable element has to be made reachable by providing a `tabindex`, the index should never be a positive number, only `0` (element is tab focusable) or `-1` (element is not tab focusable).
+The tab-order has to be determined by the HTML-structure, not by the index.
 
-> **How to fix problems with unreachable elements**
->
-> To make HTML elements tab-focusable that are not reachable by default (like `<a>` tags, `<button>`, etc.), `tabindex="0"` can be added to most HTML tags like `<div>` or `<span>`.
+## Project specific Applications
 
-```
-@angular-eslint/template/click-events-have-key-events
-```
+### How to fix `click-events-have-key-events` problems
 
-This rule ensures, that elements with click event handlers also handle at least one key event (keyup, keydown or keypress).
+To fix this, all of the `<a>` tags in the HTML files should have a `routerLink` attribute.
+If adding a meaningful `routerLink` is not possible, `[routerLink]="[]"` should be added to fix the error.
 
-> **How to fix `click-events-have-key-events` problems**
->
-> To fix this, all of the `<a>` tags in the HTML files should have a `routerLink` attribute.
-> If adding a meaningful `routerLink` is not possible, `[routerLink]="[]"` should be added to fix the error.
->
-> Other HTML elements (`<div>`, `<span>`, etc.) with a `click()` event that report this ESLint error can be fixed by adding a `(keydown.enter)` event that should be assigned with the `click()` event's method.
-> In addition a `tabindex="0"` needs to be added to such elements to make them tab focusable.
->
-> The outcome is testable when navigating the page in the browser with the tabulator key.
-> The clickable areas will be focused and a click event is triggered by pressing the Enter key.
+Other HTML elements (`<div>`, `<span>`, etc.) with a `click()` event that report this ESLint error can be fixed by adding a `(keydown.enter)` event that should be assigned with the `click()` event's method.
+In addition, a `tabindex="0"` needs to be added to such elements to make them tab focusable.
 
-```
-@angular-eslint/template/mouse-events-have-key-events
-```
-
-Requires any element with a `mouseout` event handler to also handle `blur` events, and any element with a `mouseover` event handler to also handle `focus` events.
-
-## Form Submission using the key "Enter"
+### Form Submission using the key "Enter"
 
 Implicit form submission using the "Enter" key is vital to assistive technologies, see also [HTML5 specification](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission).
 Therefore, the `form` tag has to include an `input` of `type="submit"`, for example

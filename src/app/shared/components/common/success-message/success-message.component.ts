@@ -9,7 +9,7 @@ import { MessageFacade } from 'ish-core/facades/message.facade';
 })
 export class SuccessMessageComponent implements OnChanges {
   /**  key or message is accepted */
-  @Input() message: string;
+  @Input({ required: true }) message: string;
   @Input() toast = true;
 
   constructor(private messageFacade: MessageFacade) {}

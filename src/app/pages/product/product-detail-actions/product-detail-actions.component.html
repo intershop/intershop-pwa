@@ -7,18 +7,18 @@
           class="mr-2"
           [attr.data-testing-id]="'wishlist-' + product.sku"
         >
-          <ish-lazy-product-add-to-wishlist displayType="animated"></ish-lazy-product-add-to-wishlist>
+          <ish-lazy-product-add-to-wishlist displayType="animated" />
         </li>
       </ng-container>
       <ng-container *ishFeature="'compare'">
         <li *ngIf="configuration$('addToCompare') | async" [attr.data-testing-id]="'compare-' + product.sku">
-          <ish-lazy-product-send-to-compare></ish-lazy-product-send-to-compare>
+          <ish-lazy-product-send-to-compare />
         </li>
       </ng-container>
 
       <li>
         <a href="javascript:window.print();" class="link-print" rel="nofollow">
-          <fa-icon [icon]="['fas', 'print']"></fa-icon>
+          <fa-icon [icon]="['fas', 'print']" />
           <span class="share-label">{{ 'product.print_page.link' | translate }}</span>
         </a>
       </li>
@@ -29,7 +29,7 @@
           ?subject={{ 'email.recommended_product.heading' | translate : { '0': channelName } }}
           &body={{ 'email.recommended_product.text' | translate : { '0': product.name + '%0A', '1': document.URL } }}"
         >
-          <fa-icon [icon]="['fas', 'paper-plane']"></fa-icon>
+          <fa-icon [icon]="['fas', 'paper-plane']" />
           <span class="share-label">{{ 'product.email_a_friend.link' | translate }}</span>
         </a>
       </li>

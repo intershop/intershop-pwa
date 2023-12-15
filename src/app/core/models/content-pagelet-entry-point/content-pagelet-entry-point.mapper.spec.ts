@@ -15,7 +15,7 @@ describe('Content Pagelet Entry Point Mapper', () => {
   });
 
   it('should throw on falsy input', () => {
-    expect(() => contentPageletEntryPointMapper.fromData(undefined)).toThrowError('falsy input');
+    expect(() => contentPageletEntryPointMapper.fromData(undefined)).toThrow('falsy input');
   });
 
   it('should convert a complex example to complex type', () => {

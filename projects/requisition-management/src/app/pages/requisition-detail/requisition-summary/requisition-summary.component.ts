@@ -10,7 +10,7 @@ import { Requisition, RequisitionViewer } from '../../../models/requisition/requ
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequisitionSummaryComponent implements OnInit {
-  @Input() requisition: Requisition;
+  @Input({ required: true }) requisition: Requisition;
   @Input() view: RequisitionViewer = 'buyer';
 
   costCenterName: string;

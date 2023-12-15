@@ -10,7 +10,7 @@ import { TactonProductConfigurationParameter } from '../../../models/tacton-prod
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TactonParameterComponent {
-  @Input() item: TactonProductConfigurationParameter;
+  @Input({ required: true }) item: TactonProductConfigurationParameter;
 
   constructor(private facade: TactonFacade) {}
 

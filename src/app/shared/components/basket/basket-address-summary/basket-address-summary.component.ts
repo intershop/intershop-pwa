@@ -8,5 +8,5 @@ import { Basket } from 'ish-core/models/basket/basket.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketAddressSummaryComponent {
-  @Input() basket: Basket;
+  @Input({ required: true }) basket: Basket;
 }

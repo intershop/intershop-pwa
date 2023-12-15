@@ -110,9 +110,6 @@ grep "LazyUserRolesSelectionComponent" projects/organization-management/src/app/
 node schematics/customization/service-worker false
 grep '"serviceWorker": false' angular.json
 
-npx ng g add-destroy src/app/extensions/awesome/shared/dummy/dummy.component.ts
-grep destroy src/app/extensions/awesome/shared/dummy/dummy.component.ts
-
 export NODE_OPTIONS=--max_old_space_size=8192
 
 npm exec npm-run-all format "lint -- --fix" compile build

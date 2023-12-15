@@ -81,8 +81,8 @@
             [routerLink]=""
             data-testing-id="cost-center-buyer-edit"
             (click)="openEditCostCenterBuyerDialog(buyer, editCostCenterBuyerDialog)"
-            ><fa-icon icon="pencil-alt"></fa-icon
-          ></a>
+            ><fa-icon icon="pencil-alt"
+          /></a>
 
           <!-- Remove buyer -->
           <a
@@ -91,8 +91,8 @@
             title="{{ 'account.costcenter.remove.button.label' | translate }}"
             (click)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
             data-testing-id="cost-center-buyer-remove"
-            ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
-          ></a>
+            ><fa-icon [icon]="['fas', 'trash-alt']"
+          /></a>
         </td>
       </ng-container>
 
@@ -102,7 +102,7 @@
     </table>
   </ng-container>
 
-  <ish-cost-center-buyer-edit-dialog #editCostCenterBuyerDialog></ish-cost-center-buyer-edit-dialog>
+  <ish-cost-center-buyer-edit-dialog #editCostCenterBuyerDialog />
 
   <!-- Empty List -->
   <ng-template #emptyList>

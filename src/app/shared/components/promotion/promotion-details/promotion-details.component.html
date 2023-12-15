@@ -19,11 +19,11 @@
       [ngClass]="'details-link promotion-details-link'"
     >
       <ng-container *ngIf="promotion.longTitle; else title">
-        <!-- eslint-disable-next-line @angular-eslint/template/accessibility-elements-content -->
+        <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
         <h3 [ishServerHtml]="promotion.longTitle"></h3>
       </ng-container>
       <ng-template #title>
-        <!-- eslint-disable-next-line @angular-eslint/template/accessibility-elements-content -->
+        <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
         <h3 [ishServerHtml]="promotion.title"></h3>
       </ng-template>
 

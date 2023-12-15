@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -26,14 +27,14 @@ import { ProductNotificationEditDialogComponent } from '../product-notification-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
-export class ProductNotificationEditComponent implements OnDestroy, OnInit {
+export class ProductNotificationEditComponent implements OnInit {
   @Input() productNotification: ProductNotification;
   @Input() displayType: 'button' | 'icon' = 'button';
   @Input() cssClass: string;
 
   visible$: Observable<boolean>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private context: ProductContextFacade, private accountFacade: AccountFacade, private router: Router) {}
 
@@ -50,7 +51,7 @@ export class ProductNotificationEditComponent implements OnDestroy, OnInit {
 
   // if the user is not logged in display login dialog, else open notification dialog
   openModal(modal: ProductNotificationEditDialogComponent) {
-    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntil(this.destroy$)).subscribe(isLoggedIn => {
+    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
         modal.show();
       } else {
@@ -59,10 +60,5 @@ export class ProductNotificationEditComponent implements OnDestroy, OnInit {
         this.router.navigate(['/login'], { queryParams });
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

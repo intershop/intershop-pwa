@@ -9,7 +9,7 @@
   (click)="addToQuote()"
 >
   <ng-container *ngIf="displayType === 'icon'; else defaultButton">
-    <fa-icon [icon]="['fas', 'inbox']"></fa-icon>
+    <fa-icon [icon]="['fas', 'inbox']" />
   </ng-container>
 
   <ng-template #defaultButton> {{ 'quote.add_product_to_quote.button.add_to_quote.label' | translate }} </ng-template>

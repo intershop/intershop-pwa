@@ -31,7 +31,7 @@ export class ModalDialogLinkComponent {
   /**
    * Link Text (translation key).
    */
-  @Input() linkText: string;
+  @Input({ required: true }) linkText: string;
 
   /**
    * Modal dialog options (see also @ModalDialogComponent).

@@ -13,7 +13,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BasketApprovalInfoComponent {
-  @Input() approval: BasketApproval;
+  @Input({ required: true }) approval: BasketApproval;
 
   @ViewChild(ModalDialogLinkComponent)
   modalComponent: ModalDialogLinkComponent;

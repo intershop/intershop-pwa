@@ -285,7 +285,6 @@
       }
     }
   },
-  "defaultProject": "intershop-pwa",
   "cli": {
     "analytics": false
   }

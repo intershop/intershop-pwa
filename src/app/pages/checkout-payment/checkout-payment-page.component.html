@@ -10,7 +10,7 @@
     (createPaymentInstrument)="createPaymentInstrument($event)"
     (deletePaymentInstrument)="deletePaymentInstrument($event)"
     (nextStep)="nextStep()"
-  ></ish-checkout-payment>
+  />
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>

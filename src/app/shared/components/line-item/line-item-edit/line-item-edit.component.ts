@@ -17,7 +17,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 export class LineItemEditComponent implements OnInit {
   @ViewChild('modalDialog') modalDialogRef: ModalDialogComponent<unknown>;
 
-  @Input() itemId: string;
+  @Input({ required: true }) itemId: string;
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
 
   product$: Observable<ProductView>;

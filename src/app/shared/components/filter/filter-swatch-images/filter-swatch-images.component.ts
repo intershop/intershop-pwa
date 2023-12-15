@@ -22,7 +22,7 @@ export class FilterSwatchImagesComponent {
   /**
    * The filter group.
    */
-  @Input() filterElement: Filter;
+  @Input({ required: true }) filterElement: Filter;
   @Output() applyFilter: EventEmitter<{ searchParameter: URLFormParams }> = new EventEmitter();
 
   /**

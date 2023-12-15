@@ -9,5 +9,5 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSTextComponent implements CMSComponent {
-  @Input() pagelet: ContentPageletView;
+  @Input({ required: true }) pagelet: ContentPageletView;
 }

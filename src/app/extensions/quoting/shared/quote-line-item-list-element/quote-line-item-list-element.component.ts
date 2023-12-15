@@ -12,7 +12,7 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteLineItemListElementComponent implements OnInit {
-  @Input() lineItem: Partial<
+  @Input({ required: true }) lineItem: Partial<
     Pick<QuoteRequestItem, 'id' | 'productSKU' | 'quantity' | 'singleBasePrice' | 'total'> &
       Pick<
         QuoteItem,

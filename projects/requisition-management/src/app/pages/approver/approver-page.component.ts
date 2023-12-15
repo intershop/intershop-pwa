@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -13,7 +13,7 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
   templateUrl: './approver-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ApproverPageComponent implements OnInit, OnDestroy {
+export class ApproverPageComponent implements OnInit {
   requisitions$: Observable<Requisition[]>;
   error$: Observable<HttpError>;
   loading$: Observable<boolean>;
@@ -23,7 +23,7 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
 
   status: RequisitionStatus;
   columnsToDisplay: RequisitionColumnsType[];
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.requisitions$ = this.requisitionManagementFacade.requisitionsByRoute$;
@@ -31,7 +31,7 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
     this.loading$ = this.requisitionManagementFacade.requisitionsLoading$;
     this.status$ = this.requisitionManagementFacade.requisitionsStatus$ as Observable<RequisitionStatus>;
 
-    this.status$.pipe(takeUntil(this.destroy$)).subscribe(status => {
+    this.status$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(status => {
       this.status = status;
       switch (status) {
         case 'APPROVED':
@@ -59,10 +59,5 @@ export class ApproverPageComponent implements OnInit, OnDestroy {
           break;
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

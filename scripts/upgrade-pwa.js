@@ -9,6 +9,9 @@ const pinned = {
   swiper: 8, // 9 requires integration rework
   jest: '29',
   '@types/jest': '29',
+  prettier: '2', // 3 requires jest 30
+  'stylelint-prettier': '3',
+  'eslint-plugin-prettier': '4',
 };
 
 // <HELPERS>

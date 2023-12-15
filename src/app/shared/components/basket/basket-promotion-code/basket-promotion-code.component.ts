@@ -1,7 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -20,7 +28,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './basket-promotion-code.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
+export class BasketPromotionCodeComponent implements OnInit {
   @Input() toast = true;
 
   basket$: Observable<BasketView>;
@@ -32,7 +40,7 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
   basketPromoCodes: string[];
   lastEnteredPromoCode = '';
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
 
@@ -43,7 +51,7 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
     this.codeInput = new FormControl('', [Validators.required, Validators.maxLength(this.codeMaxLength)]);
 
     // update emitted to display spinning animation
-    this.basket$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(basket => {
+    this.basket$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(basket => {
       this.basketPromoCodes = basket.promotionCodes;
       if (this.displaySuccessMessage) {
         this.codeInput.reset();
@@ -65,12 +73,6 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
     // prevent further form submit
     return false;
   }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   get displaySuccessMessage(): boolean {
     return this.basketPromoCodes?.includes(this.lastEnteredPromoCode);
   }

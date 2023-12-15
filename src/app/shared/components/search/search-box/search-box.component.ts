@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
@@ -24,7 +25,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
-export class SearchBoxComponent implements OnInit, OnDestroy {
+export class SearchBoxComponent implements OnInit {
   /**
    * the search box configuration for this component
    */
@@ -36,7 +37,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   activeIndex = -1;
   inputFocused: boolean;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
 
@@ -49,19 +50,13 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
     this.shoppingFacade.searchTerm$
       .pipe(
         map(x => (x ? x : '')),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(term => this.inputSearchTerms$.next(term));
 
     // suggests are triggered solely via stream
     this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$);
   }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   blur() {
     this.inputFocused = false;
     this.activeIndex = -1;
@@ -85,7 +80,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
 
     if (this.activeIndex !== -1) {
       // something was selected via keyboard
-      this.searchResults$.pipe(take(1), takeUntil(this.destroy$)).subscribe(results => {
+      this.searchResults$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(results => {
         this.router.navigate(['/search', results[this.activeIndex].term]);
         this.activeIndex = -1;
       });
@@ -98,7 +93,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   }
 
   selectSuggestedTerm(index: number) {
-    this.searchResults$.pipe(take(1), takeUntil(this.destroy$)).subscribe(results => {
+    this.searchResults$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(results => {
       if (
         (this.configuration?.maxAutoSuggests && index > this.configuration.maxAutoSuggests - 1) ||
         index < -1 ||

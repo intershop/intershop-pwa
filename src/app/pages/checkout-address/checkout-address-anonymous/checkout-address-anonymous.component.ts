@@ -23,7 +23,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutAddressAnonymousComponent implements OnChanges {
-  @Input() basket: Basket;
+  @Input({ required: true }) basket: Basket;
   @Input() error: HttpError;
 
   @Output() nextStep = new EventEmitter<void>();

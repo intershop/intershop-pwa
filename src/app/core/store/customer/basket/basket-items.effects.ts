@@ -20,6 +20,7 @@ import {
   LineItemUpdateHelper,
   LineItemUpdateHelperItem,
 } from 'ish-core/models/line-item-update/line-item-update.helper';
+import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getProductEntities, loadProduct } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -51,7 +52,8 @@ export class BasketItemsEffects {
     private actions$: Actions,
     private router: Router,
     private store: Store,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private basketItemsService: BasketItemsService
   ) {}
 
   /**
@@ -79,14 +81,14 @@ export class BasketItemsEffects {
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
       concatMap(([{ items }, basketId]) => {
         if (basketId) {
-          return this.basketService.addItemsToBasket(items).pipe(
+          return this.basketItemsService.addItemsToBasket(items).pipe(
             map(payload => addItemsToBasketSuccess(payload)),
             mapErrorToAction(addItemsToBasketFail)
           );
         } else {
           return this.basketService.createBasket().pipe(
             switchMap(basket =>
-              this.basketService.addItemsToBasket(items).pipe(
+              this.basketItemsService.addItemsToBasket(items).pipe(
                 mergeMap(payload => [createBasketSuccess({ basket }), addItemsToBasketSuccess(payload)]),
                 mapErrorToAction(addItemsToBasketFail)
               )
@@ -115,7 +117,7 @@ export class BasketItemsEffects {
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       filter(([payload, basket]) => !!basket.lineItems && !!payload),
       concatMap(([lineItem]) =>
-        this.basketService
+        this.basketItemsService
           .updateBasketItem(lineItem.itemId, {
             quantity: lineItem.quantity > 0 ? { value: lineItem.quantity, unit: lineItem.unit } : undefined,
             product: lineItem.sku,
@@ -146,9 +148,9 @@ export class BasketItemsEffects {
         concat(
           ...updates.map(update => {
             if (update.quantity === 0) {
-              return this.basketService.deleteBasketItem(update.itemId);
+              return this.basketItemsService.deleteBasketItem(update.itemId);
             } else {
-              return this.basketService.updateBasketItem(update.itemId, {
+              return this.basketItemsService.updateBasketItem(update.itemId, {
                 quantity: update.quantity > 0 ? { value: update.quantity, unit: update.unit } : undefined,
                 product: update.sku,
               });
@@ -184,7 +186,7 @@ export class BasketItemsEffects {
       ofType(deleteBasketItem),
       mapToPayloadProperty('itemId'),
       concatMap(itemId =>
-        this.basketService.deleteBasketItem(itemId).pipe(
+        this.basketItemsService.deleteBasketItem(itemId).pipe(
           map(info => deleteBasketItemSuccess({ itemId, info })),
           mapErrorToAction(deleteBasketItemFail)
         )

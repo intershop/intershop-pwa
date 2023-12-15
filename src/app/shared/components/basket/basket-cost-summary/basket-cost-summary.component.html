@@ -8,7 +8,7 @@
     <ng-container *ngIf="totals.valueRebates?.length > 0">
       <ng-container *ngFor="let rebate of totals.valueRebates">
         <dt *ngIf="rebate?.promotionId" class="col-6">
-          <ish-basket-promotion [rebate]="rebate"></ish-basket-promotion>
+          <ish-basket-promotion [rebate]="rebate" />
         </dt>
         <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
       </ng-container>
@@ -25,7 +25,7 @@
     <ng-container *ngIf="totals.shippingRebates?.length > 0">
       <ng-container *ngFor="let rebate of totals.shippingRebates">
         <dt class="col-6">
-          <ish-basket-promotion [rebate]="rebate"></ish-basket-promotion>
+          <ish-basket-promotion [rebate]="rebate" />
         </dt>
         <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
       </ng-container>
@@ -33,12 +33,12 @@
 
     <!-- Item Surcharges -->
     <ng-container *ngFor="let surcharge of totals.itemSurchargeTotalsByType">
-      <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }"></ng-container>
+      <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }" />
     </ng-container>
 
     <!-- Bucket Surcharges -->
     <ng-container *ngFor="let surcharge of totals.bucketSurchargeTotalsByType">
-      <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }"></ng-container>
+      <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }" />
     </ng-container>
 
     <!-- Payment costs -->
@@ -74,7 +74,7 @@
       placement="top"
     >
       {{ 'shopping_cart.detail.text' | translate }}
-      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+      <fa-icon [icon]="['fas', 'info-circle']" />
     </a>
   </dt>
   <dd class="col-6">{{ surcharge.amount | ishPrice }}</dd>

@@ -1,5 +1,4 @@
-import { Inject, Injectable, Optional } from '@angular/core';
-import { TransferState, makeStateKey } from '@angular/platform-browser';
+import { Inject, Injectable, Optional, TransferState, makeStateKey } from '@angular/core';
 import { Actions } from '@ngrx/effects';
 import { filter, take } from 'rxjs/operators';
 

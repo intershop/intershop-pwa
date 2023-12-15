@@ -17,6 +17,7 @@
     "import-notation": "string",
     "media-feature-name-no-vendor-prefix": true,
     "media-feature-name-no-unknown": true,
+    "media-query-no-invalid": null,
     "no-descending-specificity": null,
     "no-duplicate-selectors": true,
     "property-no-vendor-prefix": true,

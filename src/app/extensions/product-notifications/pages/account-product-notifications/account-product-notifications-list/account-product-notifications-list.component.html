@@ -12,7 +12,7 @@
       </th>
       <td cdk-cell *cdkCellDef="let productNotification">
         <div class="list-item" ishProductContext [sku]="productNotification.sku">
-          <ish-product-image imageType="S" [link]="true"></ish-product-image>
+          <ish-product-image imageType="S" [link]="true" />
         </div>
       </td>
     </ng-container>
@@ -22,8 +22,8 @@
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-product"></th>
       <td cdk-cell *cdkCellDef="let productNotification">
         <div class="list-item" ishProductContext [sku]="productNotification.sku">
-          <ish-product-name></ish-product-name>
-          <ish-product-price [showInformationalPrice]="true"></ish-product-price>
+          <ish-product-name />
+          <ish-product-price [showInformationalPrice]="true" />
         </div>
       </td>
     </ng-container>
@@ -69,11 +69,11 @@
             cssClass="btn-link btn-tool mr-0 pt-1"
             [productNotification]="productNotification"
             displayType="icon"
-          ></ish-product-notification-edit>
+          />
           <ish-product-notification-delete
             cssClass="btn-link btn-tool mr-0 pt-1 px-0"
             [productNotification]="productNotification"
-          ></ish-product-notification-delete>
+          />
         </div>
       </td>
     </ng-container>

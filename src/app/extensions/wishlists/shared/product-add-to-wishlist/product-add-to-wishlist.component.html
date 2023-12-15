@@ -11,13 +11,13 @@
   <ng-container [ngSwitch]="displayType">
     <ng-template [ngSwitchCase]="'link'">{{ 'product.add_to_wishlist.link' | translate }}</ng-template>
     <ng-template [ngSwitchCase]="'animated'">
-      <fa-icon [icon]="['fas', 'heart']" [title]="'product.add_to_wishlist.link' | translate"></fa-icon>
+      <fa-icon [icon]="['fas', 'heart']" [title]="'product.add_to_wishlist.link' | translate" />
       <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
     </ng-template>
     <ng-template ngSwitchDefault>
-      <fa-icon [icon]="['fas', 'heart']" [title]="'product.add_to_wishlist.link' | translate"></fa-icon>
+      <fa-icon [icon]="['fas', 'heart']" [title]="'product.add_to_wishlist.link' | translate" />
     </ng-template>
   </ng-container>
 </button>
 
-<ish-select-wishlist-modal #modal (submitEmitter)="addProductToWishlist($event)"></ish-select-wishlist-modal>
+<ish-select-wishlist-modal #modal (submitEmitter)="addProductToWishlist($event)" />

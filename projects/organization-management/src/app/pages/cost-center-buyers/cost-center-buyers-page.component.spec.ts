@@ -27,7 +27,7 @@ describe('Cost Center Buyers Page Component', () => {
     types: [
       {
         name: 'repeatCostCenterBuyers',
-        component: MockComponent(CostCenterBuyersRepeatFieldComponent),
+        component: CostCenterBuyersRepeatFieldComponent,
       },
     ],
   };
@@ -45,6 +45,7 @@ describe('Cost Center Buyers Page Component', () => {
       ],
       declarations: [
         CostCenterBuyersPageComponent,
+        CostCenterBuyersRepeatFieldComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
       ],

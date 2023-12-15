@@ -20,7 +20,7 @@ import { Price } from 'ish-core/models/price/price.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BudgetBarComponent implements OnChanges {
-  @Input() budget: Price;
+  @Input({ required: true }) budget: Price;
   @Input() spentBudget: Price;
   @Input() additionalAmount: Price;
 

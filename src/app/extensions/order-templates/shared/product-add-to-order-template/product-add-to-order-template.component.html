@@ -14,7 +14,7 @@
       <fa-icon
         [icon]="['fas', 'list']"
         [title]="'account.order_template.add_to_template.button.add_to_template.label' | translate"
-      ></fa-icon>
+      />
       <span class="share-label">{{
         'account.order_template.add_to_template.button.add_to_template.label' | translate
       }}</span>
@@ -23,7 +23,7 @@
       <fa-icon
         [icon]="['fas', 'list']"
         [title]="'account.order_template.add_to_template.button.add_to_template.label' | translate"
-      ></fa-icon>
+      />
     </ng-template>
     <ng-template ngSwitchDefault>
       {{ 'account.order_template.add_to_template.button.add_to_template.label' | translate }}
@@ -31,7 +31,4 @@
   </ng-container>
 </button>
 
-<ish-select-order-template-modal
-  #modal
-  (submitEmitter)="addProductToOrderTemplate($event)"
-></ish-select-order-template-modal>
+<ish-select-order-template-modal #modal (submitEmitter)="addProductToOrderTemplate($event)" />
