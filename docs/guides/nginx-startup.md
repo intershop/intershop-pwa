@@ -103,12 +103,12 @@ http://pwa/sitemap_pwa.xml
 ```
 
 To make above sitemap index file available under your deployment, you need to add the environment variable `ICM_BASE_URL` to your nginx container.
-Let `ICM_BASE_URL` point to your ICM backend installation, e.g., `https://pwa-ish-demo.test.intershop.com`.
+Let `ICM_BASE_URL` point to your ICM backend installation, e.g., `https://develop.icm.intershop.de`.
 When the container is started it will process cache-ignore and multi-channel templates as well as sitemap proxy rules like this:
 
 ```yaml
 location /sitemap_ {
-proxy_pass https://pwa-ish-demo.test.intershop.com/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/rest/inSPIRED-inTRONICS/en_US/sitemaps/pwa/sitemap_;
+proxy_pass https://develop.icm.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/rest/inSPIRED-inTRONICS/en_US/sitemaps/pwa/sitemap_;
 }
 ```
 
