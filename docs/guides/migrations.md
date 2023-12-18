@@ -9,6 +9,15 @@ kb_sync_latest_only
 
 ## From 4.2 to 5.0
 
+Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.
+For this reason the official Intershop Commerce Management requirement is now ICM 11 even though the PWA 5.0 will continue to work with current ICM 7.10 versions as well.
+In the [changelog](../../CHANGELOG.md) of this project we will inform about features that will only work with ICM 11 or ICM versions above 7.10.38.x-LTS releases.
+With the transition to ICM 11 the configured default `icmBaseURL` is now `'https://develop.icm.intershop.de'`.
+
+With the switch to ICM 11 we switched to ICM deployments without the Responsive Starter Store as well.
+Because of this the default `icmApplication` is now configured to `'-'`.
+For ICM deployments with the Responsive Starter Store this probably has to be configured as it was before with `'rest'`.
+
 The project has been updated to work with Angular 16.
 Besides this a lot of other dependencies (NgRx, Typescript) have also been updated.
 

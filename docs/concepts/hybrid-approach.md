@@ -127,8 +127,8 @@ For this reason, the PWA must be configured to know which application to use to 
 ### Preparing the PWA for the Hybrid Approach with the Responsive Starter Store
 
 - Use a recent PWA version
-- Configure `icmApplication` setting to denote the `intershop.REST`-based application used by the PWA (`rest` in the demo scenario).
-- Configure `hybridApplication` setting to denote the Responsive Starter Store application (this is usually `-`).
+- Configure `icmApplication` setting to denote the `intershop.REST`-based application used by the PWA (usually `rest` in the inSPIRED demo scenario).
+- Configure `hybridApplication` setting to denote the Responsive Starter Store application (usually `-` in the inSPIRED demo scenario).
 - Follow the Hybrid configuration setup
 
 > [!NOTE]

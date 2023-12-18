@@ -30,7 +30,7 @@ Use `ng serve --open` to start the development server and open the Progressive W
 > The project is configured to work against a publicly available Intershop Commerce Management server by default (see `environment.model.ts`).
 >
 > ```
-> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> icmBaseURL: 'https://develop.icm.intershop.de',
 > ```
 
 For actually setting up a customer project based on the Intershop PWA, read the [Customization Guide](customizations.md).
