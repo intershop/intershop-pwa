@@ -2,7 +2,10 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
+import { Observable, map, of, withLatestFrom } from 'rxjs';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
@@ -27,13 +30,36 @@ export class AccountProfileUserComponent implements OnInit {
 
   accountProfileUserForm = new FormGroup({});
   model: Partial<User>;
-  fields: FormlyFieldConfig[];
+  fields$: Observable<FormlyFieldConfig[]>;
 
-  constructor(private fieldLibrary: FieldLibrary) {}
+  constructor(private fieldLibrary: FieldLibrary, private accountFacade: AccountFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
+    // TODO: change model into stream and read form values from it instead from the form fields,
+    //       also dynamically add newsletter subscription to it
     this.model = pick(this.currentUser, 'title', 'firstName', 'lastName', 'phoneHome');
-    this.fields = this.fieldLibrary.getConfigurationGroup('personalInfo');
+
+    this.fields$ = of(this.fieldLibrary.getConfigurationGroup('personalInfo')).pipe(
+      withLatestFrom(
+        this.appFacade.serverSetting$<boolean>('marketing.newsletterSubscriptionEnabled'),
+        this.accountFacade.subscribedToNewsletter$
+      ),
+      map(([fields, newsletterSubscriptionEnabled, subscribedToNewsletter]) =>
+        newsletterSubscriptionEnabled
+          ? [
+              ...fields,
+              {
+                type: 'ish-checkbox-field',
+                key: 'newsletter',
+                defaultValue: subscribedToNewsletter,
+                props: {
+                  label: 'registration.newsletter_subscription.text',
+                },
+              },
+            ]
+          : fields
+      )
+    );
   }
 
   /**
@@ -50,6 +76,9 @@ export class AccountProfileUserComponent implements OnInit {
     const firstName = this.accountProfileUserForm.get('firstName').value;
     const lastName = this.accountProfileUserForm.get('lastName').value;
     const phoneHome = this.accountProfileUserForm.get('phoneHome').value;
+
+    const subscribedToNewsletter = this.accountProfileUserForm.get('newsletter').value;
+    this.accountFacade.updateNewsletterSubscription(subscribedToNewsletter);
 
     this.updateUserProfile.emit({ ...this.currentUser, title, firstName, lastName, phoneHome });
   }

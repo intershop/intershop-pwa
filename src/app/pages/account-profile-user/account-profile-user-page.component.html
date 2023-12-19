@@ -1,7 +1,9 @@
-<ish-account-profile-user
-  [currentUser]="currentUser$ | async"
-  [error]="userError$ | async"
-  (updateUserProfile)="updateUserProfile($event)"
-/>
+<ng-container *ngIf="currentUser$ | async as user">
+  <ish-account-profile-user
+    [currentUser]="user"
+    [error]="userError$ | async"
+    (updateUserProfile)="updateUserProfile($event)"
+  ></ish-account-profile-user>
 
-<ish-loading *ngIf="userLoading$ | async" />
+  <ish-loading *ngIf="userLoading$ | async"></ish-loading>
+</ng-container>

@@ -155,7 +155,12 @@ export class UserEffects {
           concatMap(([createUserResponse, customerTypeForLoginApproval]) => [
             createUserSuccess({ email: createUserResponse.user.email }),
             ...(data.subscribedToNewsletter
-              ? [userNewsletterActions.subscribeUserToNewsletter({ userEmail: createUserResponse.user.email })]
+              ? [
+                  userNewsletterActions.updateUserNewsletterStatus({
+                    subscriptionStatus: true,
+                    userEmail: createUserResponse.user.email,
+                  }),
+                ]
               : []),
             customerTypeForLoginApproval?.includes(createUserResponse.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
               ? createUserApprovalRequired({ email: createUserResponse.user.email })

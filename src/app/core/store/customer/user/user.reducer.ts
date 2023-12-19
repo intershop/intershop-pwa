@@ -107,8 +107,7 @@ export const userReducer = createReducer(
     loginUserWithToken,
     logoutUser,
     userNewsletterActions.loadUserNewsletterSubscription,
-    userNewsletterActions.subscribeUserToNewsletter,
-    userNewsletterActions.unsubscribeUserFromNewsletter
+    userNewsletterActions.updateUserNewsletterStatus
   ),
   unsetLoadingOn(
     loadUserCostCentersFail,
@@ -129,8 +128,7 @@ export const userReducer = createReducer(
     deleteUserPaymentInstrumentSuccess,
     logoutUserSuccess,
     userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess,
-    userNewsletterApiActions.subscribeUserToNewsletterSuccess,
-    userNewsletterApiActions.unsubscribeUserFromNewsletterSuccess
+    userNewsletterApiActions.updateUserNewsletterStatusSuccess
   ),
   setErrorOn(
     updateUserFail,
@@ -141,8 +139,7 @@ export const userReducer = createReducer(
     loadRolesAndPermissionsFail,
     logoutUserFail,
     userNewsletterApiActions.loadUserNewsletterSubscriptionFail,
-    userNewsletterApiActions.subscribeUserToNewsletterFail,
-    userNewsletterApiActions.unsubscribeUserFromNewsletterFail
+    userNewsletterApiActions.updateUserNewsletterStatusFail
   ),
   on(loginUserFail, loadCompanyUserFail, createUserFail, (_, action): UserState => {
     const error = action.payload.error;
@@ -225,6 +222,7 @@ export const userReducer = createReducer(
       ...state,
     })
   ),
+  // Password Reminder
   on(
     updateUserPasswordByPasswordReminder,
     requestPasswordReminder,
@@ -260,18 +258,19 @@ export const userReducer = createReducer(
       passwordReminderError: undefined,
     })
   ),
+  // Newsletter
   on(
-    userNewsletterApiActions.subscribeUserToNewsletterSuccess,
-    (state): UserState => ({
+    userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess,
+    (state, action): UserState => ({
       ...state,
-      subscribedToNewsletter: true,
+      subscribedToNewsletter: action.payload.subscribed,
     })
   ),
   on(
-    userNewsletterApiActions.unsubscribeUserFromNewsletterSuccess,
-    (state): UserState => ({
+    userNewsletterApiActions.updateUserNewsletterStatusSuccess,
+    (state, action): UserState => ({
       ...state,
-      subscribedToNewsletter: false,
+      subscribedToNewsletter: action.payload.subscriptionStatus,
     })
   )
 );

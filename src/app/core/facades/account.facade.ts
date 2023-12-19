@@ -48,6 +48,7 @@ import {
   getCustomerApprovalEmail,
   getLoggedInCustomer,
   getLoggedInUser,
+  getNewsletterSubscriptionStatus,
   getPasswordReminderError,
   getPasswordReminderSuccess,
   getPriceDisplayType,
@@ -68,6 +69,7 @@ import {
   updateUserPassword,
   updateUserPasswordByPasswordReminder,
   updateUserPreferredPayment,
+  userNewsletterActions,
 } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -257,6 +259,16 @@ export class AccountFacade {
 
   updateCustomerAddress(address: Address) {
     this.store.dispatch(updateCustomerAddress({ address }));
+  }
+
+  // NEWSLETTER
+
+  subscribedToNewsletter$ = this.store.pipe(select(getNewsletterSubscriptionStatus));
+
+  updateNewsletterSubscription(subscribedToNewsletter: boolean) {
+    this.store.dispatch(
+      userNewsletterActions.updateUserNewsletterStatus({ subscriptionStatus: subscribedToNewsletter })
+    );
   }
 
   // DATA REQUESTS

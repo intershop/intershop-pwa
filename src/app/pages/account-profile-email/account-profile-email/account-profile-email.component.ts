@@ -27,18 +27,11 @@ export class AccountProfileEmailComponent implements OnInit {
   fields: FormlyFieldConfig[];
   model: Partial<User>;
 
-  // newsletterService: NewsletterService;
-  subscribedToNewsletter: boolean;
-
   submitted = false;
 
   ngOnInit() {
     this.model = {};
     this.fields = this.getFields();
-
-    // this.newsletterService
-    //   .getSubscription(this.currentUser.email)
-    //   .pipe(map((subscribed: boolean) => (this.subscribedToNewsletter = subscribed)));
   }
 
   private getFields() {
@@ -90,20 +83,6 @@ export class AccountProfileEmailComponent implements OnInit {
               },
             },
           },
-          // Newsletter
-          // eslint-disable-next-line etc/no-commented-out-code
-          /*
-          {
-            // TODO: how to check for feature enabled?
-            // TODO: not displayed
-            key: 'newsletterSubscription',
-            type: 'ish-registration-newsletter-field',
-            default: this.subscribedToNewsletter,
-            props: {
-              required: false,
-              label: 'Newsletter',
-            },
-          },*/
         ],
       },
     ];
