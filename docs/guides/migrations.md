@@ -41,6 +41,7 @@ The api-token.service has been refactored and the class variables `apiToken$` an
 Use the public getter/setter methods to access these variables outside the class.
 
 Basket line-item functionalities have been extracted from the `basket.service` into a separate `basket-items.service`.
+The action `UpdateBasketLineItems` as well as the `LineItemUpdateHelper` have been removed because they were unused for a long time.
 
 ## From 4.1 to 4.2
 

@@ -2,24 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concat, from } from 'rxjs';
-import {
-  concatMap,
-  debounceTime,
-  defaultIfEmpty,
-  filter,
-  last,
-  map,
-  mergeMap,
-  switchMap,
-  toArray,
-  window,
-} from 'rxjs/operators';
+import { from } from 'rxjs';
+import { concatMap, debounceTime, filter, map, mergeMap, switchMap, toArray, window } from 'rxjs/operators';
 
-import {
-  LineItemUpdateHelper,
-  LineItemUpdateHelperItem,
-} from 'ish-core/models/line-item-update/line-item-update.helper';
 import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getProductEntities, loadProduct } from 'ish-core/store/shopping/products';
@@ -39,9 +24,6 @@ import {
   updateBasketItem,
   updateBasketItemFail,
   updateBasketItemSuccess,
-  updateBasketItems,
-  updateBasketItemsFail,
-  updateBasketItemsSuccess,
   validateBasket,
 } from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
@@ -131,47 +113,11 @@ export class BasketItemsEffects {
   );
 
   /**
-   * Update basket items effect.
-   * Triggers update item request if item quantity has changed and is greater zero
-   * Triggers delete item request if item quantity set to zero
-   */
-  updateBasketItems$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(updateBasketItems),
-      mapToPayload(),
-      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
-      filter(([payload, basket]) => !!basket.lineItems && !!payload.lineItemUpdates),
-      map(([{ lineItemUpdates }, { lineItems }]) =>
-        LineItemUpdateHelper.filterUpdatesByItems(lineItemUpdates, lineItems as LineItemUpdateHelperItem[])
-      ),
-      concatMap(updates =>
-        concat(
-          ...updates.map(update => {
-            if (update.quantity === 0) {
-              return this.basketItemsService.deleteBasketItem(update.itemId);
-            } else {
-              return this.basketItemsService.updateBasketItem(update.itemId, {
-                quantity: update.quantity > 0 ? { value: update.quantity, unit: update.unit } : undefined,
-                product: update.sku,
-              });
-            }
-          })
-        ).pipe(
-          defaultIfEmpty(undefined),
-          last(),
-          map(info => updateBasketItemsSuccess({ info })),
-          mapErrorToAction(updateBasketItemsFail)
-        )
-      )
-    )
-  );
-
-  /**
    * Validates the basket after an update item error occurred
    */
   validateBasketAfterUpdateFailure$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateBasketItemsFail),
+      ofType(updateBasketItemFail),
       mapToPayload(),
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       map(() => validateBasket({ scopes: ['Products'] }))
@@ -199,7 +145,7 @@ export class BasketItemsEffects {
    */
   loadBasketAfterBasketItemsChangeSuccess$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(addItemsToBasketSuccess, updateBasketItemSuccess, updateBasketItemsSuccess, deleteBasketItemSuccess),
+      ofType(addItemsToBasketSuccess, updateBasketItemSuccess, deleteBasketItemSuccess),
       map(() => loadBasket())
     )
   );
@@ -207,7 +153,7 @@ export class BasketItemsEffects {
   redirectToBasketIfBasketInteractionHasInfo$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(addItemsToBasketSuccess, updateBasketItemSuccess, updateBasketItemsSuccess, deleteBasketItemSuccess),
+        ofType(addItemsToBasketSuccess, updateBasketItemSuccess, deleteBasketItemSuccess),
         mapToPayloadProperty('info'),
         filter(info => !!info?.[0]?.message),
         concatMap(() => from(this.router.navigate(['/basket'], { queryParams: { error: true } })))

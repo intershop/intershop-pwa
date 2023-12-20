@@ -146,18 +146,6 @@ export const updateBasketItemSuccess = createAction(
   payload<{ lineItem: LineItem; info: BasketInfo[] }>()
 );
 
-export const updateBasketItems = createAction(
-  '[Basket] Update Basket Items',
-  payload<{ lineItemUpdates: LineItemUpdate[] }>()
-);
-
-export const updateBasketItemsFail = createAction('[Basket API] Update Basket Items Fail', httpError());
-
-export const updateBasketItemsSuccess = createAction(
-  '[Basket API] Update Basket Items Success',
-  payload<{ info: BasketInfo[] }>()
-);
-
 export const deleteBasketItem = createAction('[Basket] Delete Basket Item', payload<{ itemId: string }>());
 
 export const deleteBasketItemFail = createAction('[Basket API] Delete Basket Item Fail', httpError());
