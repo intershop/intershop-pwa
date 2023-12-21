@@ -1,11 +1,11 @@
-name: AutomatedUpgrade
+name: AutomatedUpdate
 
 on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize]
     paths:
-      - scripts/upgrade-pwa.js
+      - scripts/update-pwa.js
   schedule:
     - cron: '0 0 * * 1'
 
@@ -23,7 +23,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  AutomatedUpgrade:
+  AutomatedUpdate:
     needs: [CancelPrevious]
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -45,25 +45,25 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Create Upgrade Branch
+      - name: Create Update Branch
         run: |
           git config --global user.email "pwa@intershop.de"
           git config --global user.name "GitHub CI"
-          git switch -c upgrade/automated-upgrade
+          git switch -c update/automated-update
 
-      - name: Run Upgrade Script
-        run: node scripts/upgrade-pwa
+      - name: Run Update Script
+        run: node scripts/update-pwa
 
       - name: Run Automated Fixes
         run: |
           npm run lint -- --fix
           npm run format
           git add .
-          git commit -m "chore: post upgrade fixes" --allow-empty
+          git commit -m "chore: post update fixes" --allow-empty
 
       - name: Run Tests
         run: npm run test
 
-      - name: Push Upgrade Branch
+      - name: Push Update Branch
         if: always()
-        run: git push --force origin upgrade/automated-upgrade
+        run: git push --force origin update/automated-update

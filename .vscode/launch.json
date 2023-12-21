@@ -28,10 +28,10 @@
       "internalConsoleOptions": "neverOpen"
     },
     {
-      "name": "Upgrade PWA",
+      "name": "Update PWA",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/upgrade-pwa",
+      "program": "${workspaceFolder}/scripts/update-pwa",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
