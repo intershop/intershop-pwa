@@ -77,6 +77,15 @@ describe('Basket Items Service', () => {
     });
   });
 
+  it("should remove all line items from specific basket when 'deleteBasketItems' is called", done => {
+    when(apiServiceMock.delete(anyString(), anything())).thenReturn(of({}));
+
+    basketItemsService.deleteBasketItems().subscribe(() => {
+      verify(apiServiceMock.delete(`items`, anything())).once();
+      done();
+    });
+  });
+
   describe('Update Basket Items desired delivery date', () => {
     const lineItems: LineItem[] = [
       ...BasketMockData.getBasket().lineItems,

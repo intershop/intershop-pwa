@@ -55,13 +55,16 @@
 
           <ish-loading *ngIf="loading" />
 
-          <div class="button-group">
-            <ish-lazy-basket-add-to-quote />
-            <ish-lazy-basket-create-order-template
-              *ngIf="basket"
-              [cssClass]="'btn btn-secondary'"
-              [products]="basket.lineItems"
-            />
+          <div class="button-group clearfix">
+            <div class="float-md-left">
+              <ish-lazy-basket-add-to-quote />
+              <ish-lazy-basket-create-order-template
+                *ngIf="basket"
+                [cssClass]="'btn btn-secondary'"
+                [products]="basket.lineItems"
+              />
+            </div>
+            <ish-clear-basket cssClass="float-md-right" />
           </div>
         </div>
         <ish-lazy-direct-order />

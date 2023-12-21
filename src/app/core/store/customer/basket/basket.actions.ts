@@ -155,6 +155,15 @@ export const deleteBasketItemSuccess = createAction(
   payload<{ itemId: string; info: BasketInfo[] }>()
 );
 
+export const deleteBasketItems = createAction('[Basket] Delete Basket Items');
+
+export const deleteBasketItemsFail = createAction('[Basket API] Delete Basket Items Fail', httpError());
+
+export const deleteBasketItemsSuccess = createAction(
+  '[Basket API] Delete Basket Items Success',
+  payload<{ info: BasketInfo[] }>()
+);
+
 export const removePromotionCodeFromBasket = createAction(
   '[Basket Internal] Remove Promotion Code From Basket',
   payload<{ code: string }>()

@@ -27,6 +27,9 @@ import {
   deleteBasketItem,
   deleteBasketItemFail,
   deleteBasketItemSuccess,
+  deleteBasketItems,
+  deleteBasketItemsFail,
+  deleteBasketItemsSuccess,
   loadBasket,
   loadBasketSuccess,
   updateBasketItem,
@@ -327,9 +330,65 @@ describe('Basket Items Effects', () => {
     });
   });
 
-  describe('loadBasketAfterDeleteBasketItem$', () => {
+  describe('deleteBasketItems$', () => {
+    beforeEach(() => {
+      when(basketItemsServiceMock.deleteBasketItems()).thenReturn(of(undefined));
+
+      store.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the basketItemService for DeleteBasketItems action', done => {
+      const action = deleteBasketItems();
+      actions$ = of(action);
+
+      effects.deleteBasketItems$.subscribe(() => {
+        verify(basketItemsServiceMock.deleteBasketItems()).once();
+        done();
+      });
+    });
+
+    it('should map to action of type DeleteBasketItemsSuccess', () => {
+      const action = deleteBasketItems();
+      const completion = deleteBasketItemsSuccess({ info: undefined });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteBasketItems$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type DeleteBasketItemsFail', () => {
+      when(basketItemsServiceMock.deleteBasketItems()).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+
+      const action = deleteBasketItems();
+      const completion = deleteBasketItemsFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteBasketItems$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadBasketAfterBasketItemsChangeSuccess$', () => {
     it('should map to action of type LoadBasket if DeleteBasketItemSuccess action triggered', () => {
       const action = deleteBasketItemSuccess({ itemId: '123', info: undefined });
+      const completion = loadBasket();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketAfterBasketItemsChangeSuccess$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type LoadBasket if DeleteBasketItemsSuccess action triggered', () => {
+      const action = deleteBasketItemsSuccess({ info: undefined });
       const completion = loadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
