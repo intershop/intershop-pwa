@@ -12,7 +12,7 @@ kb_sync_latest_only
 It is possible to create multiple themes for the PWA, and the Intershop Progressive Web App currently uses multi-theming to provide different features, configurations, and styles for the B2B and the B2C application.
 This mechanism uses Angular configurations to replace files for each configuration.
 
-The styles for B2B are defined in `src/styles/themes/b2b/style.scss`, for B2C in `src/styles/themes/b2c/style.scss`.
+The styles for B2B are defined in _src/styles/themes/b2b/style.scss_, for B2C in _src/styles/themes/b2c/style.scss_.
 
 ## Developing the PWA with Several Themes
 
@@ -24,19 +24,19 @@ Now add another theme **without** using `--default`:
 node schematics/customization/add <theme-prefix>
 ```
 
-This will add the theme to the according files and create styling-specific folders and files, see [Customizations - Start Customization](./customizations.md#start-customization).
+This will add the theme to the corresponding files and creates styling-specific folders and files, see [Customizations - Start Customization](./customizations.md#start-customization).
 
 ## Configurable Theme
 
 > [!NOTE]
-> To use this feature, the feature toggle `extraConfiguration` needs to be enabled.
+> To use this feature, the feature toggle `extraConfiguration` must be enabled.
 
 > [!WARNING]
 > Multiple themes (e.g., for different channels or brands) increase the build and deployment time of the PWA SSR container.
 > This is okay for a limited number of themes (2-3) but will become problematic the higher the number gets.
 > A solution could be to use only one theme that can be configured for the different channels/brands at runtime.
 
-With the Intershop PWA 4.1 the two standard themes `b2b` and `b2c` where refactored so that the `b2c` theme could be changed into a configurable theme.
+With Intershop PWA 4.1 the two standard themes `b2b` and `b2c` were refactored so that the `b2c` theme could be changed into a configurable theme.
 Configurable in this context means adaptable at runtime [using CSS custom properties (CSS variables)](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties).
 This way only one configurable theme is needed at build time that can then be adapted through an ICM back office CMS _Configuration_ component on channel or application level.
 This differs from compiling different themes at build time, e.g., with SCSS variables and using them for different channels through the [Multi Site Configuration](./multi-site-configurations.md).
@@ -79,7 +79,7 @@ $CORPORATE-SHADOW: var(--corporate-shadow);
 $text-color-corporate: var(--text-color-corporate);
 ```
 
-In the [`properties.scss`](../../src/styles/themes/b2c/properties.scss) then actual values are assigned to these CSS custom properties.
+In the [`properties.scss`](../../src/styles/themes/b2c/properties.scss) actual values are assigned to these CSS custom properties.
 
 `b2c - properties.scss`
 
@@ -100,7 +100,7 @@ In the [`properties.scss`](../../src/styles/themes/b2c/properties.scss) then act
 }
 ```
 
-With the introduction of such CSS custom properties the values of these properties can be overridden at runtime, in our case through defining them as inline styles at the `html` tag.
+With the introduction of CSS custom properties, the values of these properties can be overridden at runtime, in our case by defining them as inline styles in the `html` tag.
 
 ```
 <html style="--logo: url(https://localhost/INTERSHOP/static/WFS/inSPIRED-inTRONICS_Business-Site/rest/inSPIRED-inTRONICS_Business-rest/en_US/config/logo.png); --logo-width: 260px; -font-family-regular: Open+Sans; --corporate-primary: #688dc3;" lang="en-US">
@@ -112,23 +112,23 @@ With the introduction of such CSS custom properties the values of these properti
 > The standard Intershop PWA SCSS styling was adapted to no longer use such functions.
 > The underlying Bootstrap styling still uses color calculations based on the SCSS variables `$primary` and `$secondary`.
 > For that reason these variables have to be set with actual values so the default Bootstrap stylings can be generated.
-> If necessary, such Bootstrap generated styles with non-fitting colors then need to be overridden in project styles (see [`button.scss`](../../src/styles/global/buttons.scss)).
+> If necessary, such bootstrap-generated styles with mismatching colors must be overridden in the project styles (see [`button.scss`](../../src/styles/global/buttons.scss)).
 
 ### ICM Requirements
 
-To configure the configurable `b2c` theme within the ICM back office, a specific _Configuration_ CMS include (`include.configuration.pagelet2-Include`) with an assigned _Configuration_ CMS component (`component.configuration.pagelet2-Component`) is needed.
+To configure the configurable `b2c` theme within the ICM back office, a specific _Configuration_ CMS include (`include.configuration.pagelet2-Include`) with an assigned _Configuration_ CMS component (`component.configuration.pagelet2-Component`) is required.
 The sources are available with ICM 7.10.40.3 (in the `app_sf_pwa_cm` cartridge) but can be integrated in any earlier ICM version as well.
 
 With the _Configuration_ component in place, the theme configuration can be changed via CMS on organization, channel, or application level.
 
 ### Configuration Parameters
 
-The _Configuration_ component provides several configuration parameters for the PWA.
+The _Configuration_ component provides various configuration parameters for the PWA.
 
-Regarding CSS custom properties for a configurable theme it provides options to change the _Logo_, _Logo (mobile)_ and _CSS Properties_ in general.
-Besides that, additional _CSS Fonts_ can be integrated that can then be referenced in the _CSS Properties_.
+Regarding CSS custom properties for a configurable theme, it provides options to change the _Logo_, _Logo (mobile)_ and _CSS Properties_ in general.
+You can also include additional _CSS fonts_ that can be referenced in the _CSS properties_.
 
-Independent of the used theme being configurable via CSS custom properties, the _Configuration_ Component can be used to change the _Favicon_, or an additional _CSS File_ can be referenced, or additional _CSS Styling_ can be added.
+Independent of the used theme, which is configurable via CSS custom properties, the _Configuration_ component can be used to change the _Favicon_, to reference an additional _CSS File_, or to add additional _CSS Styling_.
 
 Also the used feature set can be changed with the _Features_ and _Additional Features_ parameters, and additional custom _Configuration JSON_ can be provided for any specific customization needs.
 
@@ -147,7 +147,7 @@ Also the used feature set can be changed with the _Features_ and _Additional Fea
 
 ### Configuration JSON
 
-The _Configuration_ CMS component provides a generic _Configuration JSON_ parameter that can be used to add any structured data in JSON format for the specific needs of the PWA customization in projects without the need to change/extend the CMS component model.
+The _Configuration_ CMS component provides a generic _Configuration JSON_ parameter that can be used to add any structured data in JSON format for the specific needs of the PWA customization in projects without having to change or extend the CMS component model.
 This could be used, for example, to provide additional tracking configuration information.
 The data is available as JSON in the PWA state and can easily be accessed via a facade method.
 

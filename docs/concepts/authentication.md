@@ -20,7 +20,7 @@ The following identity providers are supported: The default [ICM server](../guid
 There is a lot of functionality related to authentication, e.g., logging a user in and out, registering a new user, keeping the user identified even if the user opens further browser tabs, etc.
 
 The PWA uses the library [angular-oauth2-oidc](https://github.com/manfredsteyer/angular-oauth2-oidc#readme) to support the implementation of these functionalities.
-It is used to fetching data from the the [icm token endpoint service](../../src/app/core/services/token/token.service.ts) and can be configured to provide access to other identity providers.
+It is used to fetch data from the [icm token endpoint service](../../src/app/core/services/token/token.service.ts) and can be configured to provide access to other identity providers.
 
 ## Implementation and Configuration of Identity Providers
 
@@ -55,8 +55,8 @@ To add or change the functionality of an identity provider, the following steps 
    ```
 
    > [!NOTE]
-   > If a identity provider is using the OAuthService for authentication, then the identity provider have to inject the OAuthService with a new instance.
-   > Otherwise difficult side effects with the [TokenService](../../src/app/core/services/token/token.service.ts) will occur.
+   > If an identity provider is using the OAuthService for authentication, the identity provider have to inject the OAuthService with a new instance.
+   > Otherwise, difficult side effects with the [TokenService](../../src/app/core/services/token/token.service.ts) will occur.
    > Please checkout the [Auth0IdentityProvider](../../src/app/core/identity-provider/auth0.identity-provider.ts) for an example.
 
 2. Register the `<idp>.identity-provider.ts` in the [`IdentityProviderModule`](../../src/app/core/identity-provider.module.ts). The `APP_INITIALIZER` injection token is used to configure and initialize the identity provider before app initialization.
@@ -66,7 +66,7 @@ To add or change the functionality of an identity provider, the following steps 
 ## PWA Initialization
 
 A PWA user has to be identified by the ICM server by a unique authentication token, even if it is an anonymous user.
-Once a unknown user create a basket in the PWA, an anonymous authentication token is requested by the [ICM Token REST endpoint](https://support.intershop.com/kb/index.php?c=Display&q1=U29770&q2=Text).
+Once an unknown user creates a basket in the PWA, an anonymous authentication token is requested by the [ICM Token REST endpoint](https://support.intershop.com/kb/index.php?c=Display&q1=U29770&q2=Text).
 This happens in the [`apiToken http interceptor`](../../src/app/core/utils/api-token/api-token.service.ts) method.
 Subsequently, this token will be saved as `apiToken` cookie and added to all REST requests in the request header, e.g.:
 
@@ -74,7 +74,7 @@ Subsequently, this token will be saved as `apiToken` cookie and added to all RES
 authentication-token: encryption0@PBEWithMD5AndTripleDES:1D7T8HyFqQ0=|k3PQLgujzUq0tudtw+6HLjWnExiwrd4o9/jVU7ZH74kTfTy3RS7/sYadsg7ODRM2
 ```
 
-This way it is possible to identify users even they are opening a new browser tab or refreshing the PWA in the browser.
+In this way, it is possible to identify users even if they are opening a new browser tab or refreshing the PWA in the browser.
 
 If a user opens the PWA and already has a valid apiToken cookie, no new token is requested by the ICM server but this token is used in the header of the REST requests.
 
@@ -89,7 +89,7 @@ The PWA needs to react in case the `apiToken` cookie is not available anymore.
 This could happen if a PWA is opened in many tabs and the user logs out, or when users remove the cookie themselves.
 When the cookie vanishes, the PWA emits a new value for the [`cookieVanishes$` subject](../../src/app/core/utils/api-token/api-token.service.ts).
 The identity provider implementation defines how the application should behave in such a case.
-With the ICM identity provider, for example, the user is then automatically logged out and routed to the `/login` page.
+With the ICM identity provider, for example, the user is automatically logged out and routed to the `/login` page in that case.
 
 ## Further References
 

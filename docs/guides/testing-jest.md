@@ -35,7 +35,7 @@ kb_sync_latest_only
   - [Be Aware of Common Pitfalls](#be-aware-of-common-pitfalls)
     - [Be Careful When Using `toBeDefined`](#be-careful-when-using-tobedefined)
     - [Be Careful With Variable Initialization](#be-careful-with-variable-initialization)
-    - [Use the right way to test EventEmitter](#use-the-right-way-to-test-eventemitter)
+    - [Use the Right Way to Test EventEmitter](#use-the-right-way-to-test-eventemitter)
 
 <!-- cSpell: enable -->
 
@@ -46,11 +46,11 @@ kb_sync_latest_only
 A test should test only one thing.
 One given behavior is tested in one and _only_ one test.
 
-The tests should be independent from others, that means no chaining and no run in a specific order is necessary.
+The tests should be independent of each other, i.e. there is no need to chain them together or run them in any particular order.
 
 ### Test Functionality - Not Implementation
 
-A test is implemented incorrectly or the test scenario is meaningless if changes in the HTML structure of the component destroy the test result.
+A test is incorrectly implemented or the test scenario is meaningless if changes to the HTML structure of the component destroy the test result.
 
 Example: The test fails if an additional input field is added to the form.
 
@@ -68,8 +68,8 @@ it('should check if input fields are rendered on HTML', () => {
 
 ### Do not Comment out Tests
 
-Instead use the `xdescribe` or `xit` feature (just add an '`x`' before the method declaration) to exclude tests.
-This way excluded tests are still visible as skipped and can be repaired later on.
+Instead, use the `xdescribe` or `xit` feature (just add an `x` before the method declaration) to exclude tests.
+This way, excluded tests are still visible as skipped and can be repaired later on.
 
 :heavy_check_mark:
 
@@ -83,8 +83,8 @@ xdescribe("description", function() {
 
 ### Always Test the Initial State of a Service/Component/Module/...
 
-This way the test itself documents the initial behavior of the unit under test.
-Especially if you test that your action triggers a change: Test for the previous state!
+With this approach, the test itself documents the initial behavior of the unit under test.
+This is especially true if you are testing whether your action triggers a change: Test for the previous state!
 
 :heavy_check_mark:
 
@@ -104,14 +104,14 @@ it('should call the cache when data is available', () => {
 
 ### Do not Test the Obvious
 
-Testing should not be done for the sake of tests existing:
+Testing should not be done for the sake of having tests:
 
-- It is not useful to test getter and setter methods and use spy on methods which are directly called later on.
-- Do not use assertions which are logically always true.
+- It is not useful to test getter and setter methods and use spy on methods that are called directly later on.
+- Do not use assertions that are logically always true.
 
 ### Make Stronger Assertions
 
-It is easy to always test with `toBeTruthy` or `toBeFalsy` when you expect something as a return value, but it is better to make stronger assertions like `toBeTrue`, `toBeNull` or `toEqual(12)`.
+It is easy to always test with `toBeTruthy` or `toBeFalsy` when you expect something as a return value, but it is better to use stronger assertions like `toBeTrue`, `toBeNull` or `toEqual(12)`.
 
 :warning:
 
@@ -158,7 +158,7 @@ it('should test if tags with their text are getting rendered on the HTML', () =>
 
 ### Do not Meddle with the Framework
 
-Methods like `ngOnInit()` are lifecycle-hook methods which are called by Angular – The test should not call it directly.
+Methods like `ngOnInit()` are lifecycle-hook methods which are called by Angular – The test should not call them directly.
 When doing component testing, you most likely use `TestBed` anyway, so use the `detectChanges()` method of your available `ComponentFixture`.
 
 :warning: **Wrong Test with ngOnInit() Method Calling**
@@ -183,7 +183,7 @@ it('should contain the login form', () => {
 
 ### Stick to Meaningful Naming
 
-The test name describes perfectly what the test is doing.
+The test name perfectly describes what the test does.
 
 :warning: **Wrong Naming**
 
@@ -197,7 +197,7 @@ it ('wishlist test', () => {...})
 it ('should add a product to an existing wishlist when the button is clicked', () => {...})
 ```
 
-Basically it should read like a documentation for the unit under test, not a documentation about what the test does. [Jasmine](https://jasmine.github.io) has named the methods accordingly.
+Basically, it should read like a documentation of the unit under test, not a documentation of what the test does. [Jasmine](https://jasmine.github.io) has named the methods accordingly.
 Read it like \`I am describing <component>, it should <do> when/if/on <condition/trigger> (because/to <reason>)\`.
 
 This also applies to assertions.
@@ -225,15 +225,15 @@ expect(accountService.isAuthorized()).toBeTrue();
 
 ### Avoid Global Variables
 
-Tests should define Variables only in the scope where they are needed.
-Do not define Variables before `describe` or respective `it` methods.
+Tests should define variables only in the scope where they are needed.
+Do not define variables before `describe` or respective `it` methods.
 
 ### Avoid Code Duplication in Tests
 
 This increases readability of test cases.
 
 - Common initialization code of constants or sub-elements should be located in `beforeEach` methods.
-- When using `TestBed` you can handle injection to variables in a separate `beforeEach` method.
+- When using `TestBed`, you can handle injection to variables in a separate `beforeEach` method.
 
 :warning:
 
@@ -277,14 +277,12 @@ describe('AppComponent', () => {
 
 This increases readability of test cases.
 
-If you do not need the functionality of :
+If you do not need the following features, do not use them:
 
 - `ComponentFixture.debugElement`
 - `TestBed`
 - `async, fakeAsync`
 - `inject`
-
-... do not use it.
 
 :warning: **Wrong Test With Useless Features (TestBed, ComponentFixture.debugElement)**
 
@@ -325,14 +323,14 @@ describe('AccountLogin Component', () => {
 
 ### Avoid Having Dead Code
 
-Always only declare what you need.
+Declare only what you need.
 Unused variables, classes and imports reduce the readability of unit tests.
 
 ### Use a Mocking Framework Instead of Dealing with Stubbed Classes
 
-This way less code needs to be implemented which again increases readability of unit tests.
-Also mocks can be stubbed on time, depending on the current method.
-We decided to use [ts-mockito](https://github.com/NagRock/ts-mockito) as the Test Mocking Framework.
+This way, less code needs to be implemented, which in turn increases the readability of unit tests.
+Mocks can also be stubbed on time, depending on the current method.
+We decided to use [ts-mockito](https://github.com/NagRock/ts-mockito) as our test mocking framework.
 
 ## Do not Change Implementation to Satisfy Tests
 
@@ -389,7 +387,7 @@ element.querySelectorAll("[data-testing-id='en']").length;
 ### Every Component Should Have a 'should be created' Test
 
 Every component should have a 'should be created' test like the one Angular CLI auto-generates.
-This test handles runtime initialization Errors.
+This test handles runtime initialization errors.
 
 :heavy_check_mark:
 
@@ -403,9 +401,9 @@ it('should be created', () => {
 
 ### Choose the Right Level of Abstraction
 
-- When working mainly with stubs for specific services which mock dependencies of services under test, you should mainly use spies to check whether the right methods of the stub are called.
+- When working mainly with stubs for specific services that mock dependencies of services under test, you should mainly use spies to check whether the correct methods of the stub are called.
 - When working mainly with fully configured services, it is best to check return values.
-- When testing complex scenarios (e.g., when the test has to handle multiple pages), it might be better to implement a Geb+Spock end to end test.
+- When testing complex scenarios (e.g., when the test has to handle multiple pages), it may be better to implement a Geb+Spock end-to-end test.
 
 See [Three Ways to Test Angular Components](https://vsavkin.com/three-ways-to-test-angular-2-components-dcea8e90bd8d) for more information.
 
@@ -452,9 +450,9 @@ describe('...', () => {
 As shown in the above example, `a` shows the wrong way of initializing variables in tests.
 
 If you do not need to change the value, use a `const` declaration for primitive variables like `b`.
-If you need to change the value in some tests, assure it is reinitialized each time in the `beforeEach` method like `c`.
+If you need to change the value in some tests, make sure it is reinitialized each time in the `beforeEach` method like `c`.
 
-A `const` declaration like `b` should not be used for complex values, as the object behind `b` is still mutable and has to be re-initialized properly:
+A `const` declaration like `b` should not be used for complex values, as the object behind `b` is still mutable and needs to be reinitialized properly:
 
 ```typescript
 describe('...', () => {
@@ -477,9 +475,9 @@ describe('...', () => {
 });
 ```
 
-### Use the right way to test EventEmitter
+### Use the Right Way to Test EventEmitter
 
-Testing `EventEmitter` firing can be done in multiple ways that have advantages and disadvantages.
+Testing `EventEmitter` firing can be done in several ways, each with advantages and disadvantages.
 Consider the following example:
 
 ```typescript
@@ -535,11 +533,11 @@ describe('Emitter', () => {
 
 As `EventEmitter` is `Observable`, subscribing to it might be the most logical way of testing it.
 We, however, would recommend using [ts-mockito](https://github.com/NagRock/ts-mockito) to increase readability.
-The ways 1 and 2 portrait two options, we would recommend using the first one.
+Ways 1 and 2 illustrate two options, we would recommend using the first one.
 
 |                                | 1 (preferred)                                                                                                                     | 2                                                                          | 3                                                                            |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Description                    | - Using ts-mockito spy and then verify it has fired - Then check argument for expected value                                      | Using ts-mockito spy and then verify it has fired with the expected value  | - Using subscription and asynchronous method safeguard                       |
+| Description                    | Using ts-mockito spy and then verify it has fired - Then check argument for expected value                                        | Using ts-mockito spy and then verify it has fired with the expected value  | Using subscription and asynchronous method safeguard                         |
 | Readability                    | Capturing arguments with ts-mockito might seem tricky and therefore reduces readability, but the test is done in the right order. | :heavy_check_mark: Right order, fewest lines of code                       | :warning: Order is reversed.                                                 |
 | In case it does not emit       | :heavy_check_mark: Correct line number and a missing emission is reported.                                                        | :heavy_check_mark: Correct line number and a missing emission is reported. | :warning: Test runs into timeout as the asynchronous callback is not called. |
 | In case it emits another value | :heavy_check_mark: Correct line number and an incorrect value is reported.                                                        | :warning: Missing emission is reported.                                    | :heavy_check_mark: Correct line number and an incorrect value is reported.   |
