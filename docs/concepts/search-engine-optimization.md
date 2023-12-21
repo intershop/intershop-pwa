@@ -26,7 +26,7 @@ Official documentation for Angular Universal can be found at [https://angular.io
 
 We use the library [express-robots-txt](https://github.com/modosc/express-robots-txt) in the express.js server (`server.ts` in the project root) to supply a response to `robots.txt` for crawlers.
 
-By default the universal server provides a response with access to all pages except some restricted paths (e.g. `/error` or `/account`).
+By default, the universal server provides a response with access to all pages except some restricted paths (e.g. `/error` or `/account`).
 To use a custom `robots.txt`, place it as a file in the `dist` folder.
 
 ## Page Metadata
@@ -54,10 +54,12 @@ Parameters are appended to theses paths that contain localization-independent an
 | product      | complete category path with product name | **-prd**: product sku, </br>**-ctg**: category id | /computers/notebooks-and-pcs/notebook-accessories/kensington-keyfolio-prd5981602-ctgComputers.1835.1284 |
 | content page | complete content page path               | **-pg**: content page id                          | /help/faq/seo/how-to-pghow-to-seo                                                                       |
 
-**_NOTE:_** The given parameters for each url are needed to differentiate category, product, and content page routes.
-It is important to ensure that no identifier contains the specified parameter id.
-For example, a category name including a `-ctg` substring could lead to unwanted behavior.
+> [!NOTE]
+> The given parameters for each url are needed to differentiate category, product, and content page routes.
+> It is important to ensure that no identifier contains the specified parameter id.
+> For example, a category name including a `-ctg` substring could lead to unwanted behavior.
 
-**_NOTE:_** Route generation and parsing for category, product, and content-page routes can be customized.
-This will require changes to the well documented [`product.route.ts`](../../src/app/core/routing/product/product.route.ts), [`category.route.ts`](../../src/app/core/routing/category/category.route.ts), or [`content-page.route.ts`](../../src/app/core/routing/content-page/content-page.route.ts) files.
-Additionally, the corresponding pipes (e.g., [`product-route.pipe.ts`](../../src/app/core/routing/product/product-route.pipe.ts)) may have to be updated to fit your needs as will [`routing.ts`](../../src/app/core/utils/routing.ts).
+> [!NOTE]
+> Route generation and parsing for category, product, and content-page routes can be customized.
+> This will require changes to the well documented [`product.route.ts`](../../src/app/core/routing/product/product.route.ts), [`category.route.ts`](../../src/app/core/routing/category/category.route.ts), or [`content-page.route.ts`](../../src/app/core/routing/content-page/content-page.route.ts) files.
+> Additionally, the corresponding pipes (e.g., [`product-route.pipe.ts`](../../src/app/core/routing/product/product-route.pipe.ts)) may have to be updated to fit your needs, as will [`routing.ts`](../../src/app/core/utils/routing.ts).

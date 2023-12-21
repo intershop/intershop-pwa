@@ -7,12 +7,12 @@ kb_sync_latest_only
 
 # Angular Change Detection
 
-Change detection is on of the core concepts of Angular.
+Change detection is one of the core concepts of Angular.
 Component templates contain data bindings that embed data from the component class into the view.
 The change detection cycle keeps view and data in sync.
 To do so, Angular re-evaluates all data expressions from the templates every time the CD runs.
 If the newly returned value differs from the current value, the corresponding DOM element will be updated in the view.
-This way, the template stays synchronized with the underlying data.
+In this way, the template stays synchronized with the underlying data.
 
 ## Zones
 
@@ -21,19 +21,19 @@ Data changes are most likely invoked by async events (timeout/interval or XHR) o
 Running CD whenever such an event occurs is – in most cases – enough for establishing a solid view update mechanism.
 
 To access those events, Angular uses the concept of zones.
-In short words, a zone is an asynchronous execution context that keeps track of all events happening and reports their status to our program.
+In short, a zone is an asynchronous execution context that keeps track of all events happening and reports their status to our program.
 See also: [Using Zones in Angular for better performance](https://blog.thoughtram.io/angular/2017/02/21/using-zones-in-angular-for-better-performance.html)
 
-Zones wrap asynchronous browser APIs, and notify a consumer when an asynchronous task has started or ended.
+Zones wrap asynchronous browser APIs and notify a consumer when an asynchronous task has started or ended.
 Angular takes advantage of these APIs to get notified when any asynchronous task is done.
-This includes things like XHR calls, `setTimeout()` and pretty much all user events like `click`, `submit`, `mousedown`, … etc.
+This includes things like XHR calls, `setTimeout()` and basically all user events like `click`, `submit`, `mousedown`, etc.
 
-When async events happen in the application, the zone informs Angular which then triggers change detection.
+When async events happen in the application, the zone informs Angular, which then triggers change detection.
 
 ## Zone Stability
 
-The zone tracks all ongoing async events and does also know whether there are pending tasks in the queue.
-If so (e.g., a running timer or XHR) it is likely that some change will happen in near future.
+The zone tracks all ongoing async events and also knows whether there are pending tasks in the queue.
+If so (e.g., a running timer or XHR), it is likely that some change will happen in the near future.
 This makes the zone **unstable**.
 Once all async tasks have been finished, the zone enters the **stable** status.
 
@@ -63,21 +63,21 @@ export class MyComponent {
 ## Using Zone Stability
 
 Getting to know whether a zone is stable or not is crucial when programmatically accessing the application from the "outside".
-Having a stable zone means that Angular has finished rendering and that we do not expect any async tasks to finish in near future.
+Having a stable zone means that Angular has finished rendering and that we do not expect any async tasks to finish in the near future.
 The Intershop PWA effectively uses this concept for communication with the CMS Design View.
 Also, Angular waits for stability in Service Workers and in Universal Rendering (Server-Side Rendering).
 
 ### Service Workers and Universal
 
 Both `@angular/service-worker` and `@angular/platform-server` use zone stability information internally.
-The Service Worker will not be attached to the page before the zone has become stable.
+The Service Worker will not be attached to the page before the zone will have become stable.
 The same applies for server-side rendering: The page will be rendered as soon as the zone is stable.
 This is necessary because data from HTTP requests must be resolved to render meaningful content.
 
 ### Pitfall: The Zone Must Become Stable
 
-For all of those aspects – Design View, Service Workers and Universal rendering – it is essential to get a stable zone at some point.
-If not, those aspects will not work properly, e.g.
+For all of those aspects – Design View, Service Workers, and Universal rendering – it is essential to get a stable zone at some point.
+If not, those aspects will not work properly, e.g.,
 Universal rendering will never return the rendered HTML and the Design View will never render the component tree view.
 
 > [!NOTE]

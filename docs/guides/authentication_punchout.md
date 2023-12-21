@@ -28,14 +28,14 @@ identityProviders: {
 ```
 
 > [!WARNING]
-> This configuration enables the `Punchout` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work. As said this configuration example is only relevant for punchout development purposes.
+> This configuration enables the `Punchout` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work. As mentioned above, this configuration example is only relevant for punchout development purposes.
 
-For production like deployments, the PWA has to be be configured to use the `Punchout` identity provider only when the user enters the `punchout` route.
+For production-like deployments, the PWA has to be configured to use the `Punchout` identity provider only when the user enters the `punchout` route.
 This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path][nginx-startup]) for the NGINX container.
 Nevertheless, the SSR process needs to be provided with the punchout identity provider configuration as one of the available identity providers.
-This way the global `identityProvider` configuration is left to be the default ICM configuration.
+In this way, the global `identityProvider` configuration is left to be the default ICM configuration.
 
-The following is an example punchout identity provider configuration for `docker-compose` that enables the punchout identity provider on the `punchout` route only.
+The following is a sample punchout identity provider configuration for `docker-compose` that enables the punchout identity provider on the `punchout` route only.
 
 ```yaml
 pwa:
@@ -52,7 +52,7 @@ nginx:
           type: Punchout
 ```
 
-For the current PWA Helm Chart that is also used in the PWA Flux deployments the same punchout configuration would look like this.
+For the current PWA Helm Chart that is also used in the PWA Flux deployments, the same punchout configuration would look like this:
 
 ```yaml
 environment:
@@ -112,9 +112,9 @@ cache:
 
 ## Login
 
-A user can login by navigating to the `/punchout` or `/login` route.
-For this purpose [specific query params](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts) need to be added to the given route depending on whether the OCI or the cXML punchout should be used.
-For the OCI punchout login the user needs to add the `HOOK_URL`, `USERNAME` and `PASSWORD` as query parameters, while the cXML user has to include the `sid` and `access-token`.
+A user can log in by navigating to the `/punchout` or `/login` route.
+For this purpose, [specific query params](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts) need to be added to the given route depending on whether the OCI or the cXML punchout should be used.
+For the OCI punchout login, the user needs to add the `HOOK_URL`, `USERNAME` and `PASSWORD` as query parameters, while the cXML user has to include the `sid` and `access-token`.
 In addition, the [cXML punchout tester](https://punchoutcommerce.com/tools/cxml-punchout-tester) could be used to log in a cXML punchout user.
 The request [/customers/${CustomersKey}/punchouts/cxml1.2/setuprequest](https://support.intershop.com/kb/index.php/Display/29L952#l1142) to create a new cXML punchout session must be inserted as the URL with the credentials of the cXML punchout user.
 When the session is created successfully, the punchout tester will redirect to the ICM configured PWA deployment `/punchout` route.
