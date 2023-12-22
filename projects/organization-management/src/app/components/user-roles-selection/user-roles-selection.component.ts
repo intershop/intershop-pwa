@@ -8,7 +8,7 @@ import {
   FormGroup,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, noop } from 'rxjs';
 import { first, map, shareReplay, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -31,6 +31,8 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
   form$: Observable<FormGroup>;
 
   private onTouched: Function;
+  private onChange: (roles: string[]) => void = noop;
+
   private staticRoles$ = new ReplaySubject<string[]>(1);
   private destroyRef = inject(DestroyRef);
 
@@ -59,6 +61,20 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
       ),
       shareReplay(1)
     );
+
+    this.form$
+      .pipe(
+        switchMap(form => form.valueChanges.pipe(startWith(form.value))),
+        withLatestFrom(this.staticRoles$),
+        map(([value, staticRoles]) => this.modelToRoles(value, staticRoles)),
+        tap(() => {
+          if (this.onTouched) {
+            this.onTouched();
+          }
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(v => this.onChange(v));
   }
 
   private createFormControl(isStatic: boolean, disable: boolean) {
@@ -114,19 +130,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
   }
 
   registerOnChange(fn: (roles: string[]) => void): void {
-    this.form$
-      .pipe(
-        switchMap(form => form.valueChanges.pipe(startWith(form.value))),
-        withLatestFrom(this.staticRoles$),
-        map(([value, staticRoles]) => this.modelToRoles(value, staticRoles)),
-        tap(() => {
-          if (this.onTouched) {
-            this.onTouched();
-          }
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(fn);
+    this.onChange = fn;
   }
 
   registerOnTouched(fn: Function): void {
