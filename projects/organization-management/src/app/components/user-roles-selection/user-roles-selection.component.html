@@ -25,11 +25,11 @@
             </ul>
             <p>
               <!-- Expand/Collapse user permissions -->
-              <a *ngIf="!isExpanded[i]" [routerLink]="[]" (click)="toggleExpanded(i)">
+              <a *ngIf="!isExpanded[i]" (click)="toggleExpanded(i)" (keydown.enter)="toggleExpanded(i)" tabindex="0">
                 {{ 'account.user.details.profile.role.show_permissions.link' | translate }}&nbsp;
                 <fa-icon [icon]="['fas', 'angle-down']" />
               </a>
-              <a *ngIf="isExpanded[i]" [routerLink]="[]" (click)="toggleExpanded(i)">
+              <a *ngIf="isExpanded[i]" (click)="toggleExpanded(i)" (keydown.enter)="toggleExpanded(i)" tabindex="0">
                 {{ 'account.user.details.profile.role.hide_permissions.link' | translate }}&nbsp;
                 <fa-icon [icon]="['fas', 'angle-up']" />
               </a>
