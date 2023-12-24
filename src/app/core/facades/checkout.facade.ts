@@ -22,6 +22,7 @@ import {
   createBasketPayment,
   deleteBasketAttribute,
   deleteBasketItem,
+  deleteBasketItems,
   deleteBasketPayment,
   deleteBasketShippingAddress,
   getBasketEligiblePaymentMethods,
@@ -115,6 +116,10 @@ export class CheckoutFacade {
 
   deleteBasketItem(itemId: string) {
     this.store.dispatch(deleteBasketItem({ itemId }));
+  }
+
+  deleteBasketItems() {
+    this.store.dispatch(deleteBasketItems());
   }
 
   updateBasketItem(update: LineItemUpdate) {

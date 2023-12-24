@@ -14,7 +14,7 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketValidationItemsComponent {
-  @Input() lineItems: LineItemView[];
+  @Input({ required: true }) lineItems: LineItemView[];
   @Output() deleteItem = new EventEmitter<string>();
 
   /**

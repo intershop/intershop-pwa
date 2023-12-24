@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { NgModule, TransferState } from '@angular/core';
 import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 

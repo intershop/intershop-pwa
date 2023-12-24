@@ -11,9 +11,9 @@
   />
 
   <ng-container *ngFor="let item of group?.members; let last = last">
-    <ish-tacton-group *ngIf="isGroup(item); else parameter" [group]="item" [level]="level + 1"></ish-tacton-group>
+    <ish-tacton-group *ngIf="isGroup(item); else parameter" [group]="item" [level]="level + 1" />
     <ng-template #parameter>
-      <ish-tacton-parameter *ngIf="isParameter(item)" [item]="item"></ish-tacton-parameter>
+      <ish-tacton-parameter *ngIf="isParameter(item)" [item]="item" />
     </ng-template>
     <span *ngIf="!last" ishIntersectionObserver (visibilityChange)="onIntersection(group.name, $event)"></span>
   </ng-container>

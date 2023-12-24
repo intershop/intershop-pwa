@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, SecurityContext, inject } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -8,6 +9,8 @@ import { OrderTemplate, OrderTemplateItem } from './order-template.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderTemplateMapper {
+  private sanitizer = inject(DomSanitizer);
+
   private static parseIdFromURI(uri: string): string {
     const match = /wishlists[^\/]*\/([^\?]*)/.exec(uri);
     if (match) {
@@ -40,7 +43,7 @@ export class OrderTemplateMapper {
 
       return {
         id: orderTemplateId,
-        title: orderTemplateData.title,
+        title: this.sanitizer.sanitize(SecurityContext.HTML, orderTemplateData.title),
         itemsCount: orderTemplateData.itemsCount || 0,
         creationDate: orderTemplateData.creationDate,
         items,
@@ -54,7 +57,7 @@ export class OrderTemplateMapper {
     if (orderTemplate && id) {
       return {
         id,
-        title: orderTemplate.title,
+        title: this.sanitizer.sanitize(SecurityContext.HTML, orderTemplate.title),
         creationDate: orderTemplate.creationDate,
       };
     }
@@ -63,12 +66,7 @@ export class OrderTemplateMapper {
   /**
    * extract ID from URI
    */
-  fromDataToIds(orderTemplateData: OrderTemplateData): OrderTemplate {
-    if (orderTemplateData) {
-      return {
-        id: OrderTemplateMapper.parseIdFromURI(orderTemplateData.uri),
-        title: orderTemplateData.title,
-      };
-    }
+  fromDataToId(orderTemplateData: OrderTemplateData): string {
+    return orderTemplateData ? OrderTemplateMapper.parseIdFromURI(orderTemplateData.uri) : undefined;
   }
 }

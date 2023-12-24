@@ -4,7 +4,7 @@
     [currentCustomer]="customer"
     [error]="userError$ | async"
     (updateCompanyProfile)="updateCompanyProfile($event)"
-  ></ish-account-profile-company>
+  />
 
-  <ish-loading *ngIf="userLoading$ | async"></ish-loading>
+  <ish-loading *ngIf="userLoading$ | async" />
 </ng-container>

@@ -11,14 +11,11 @@
   </h1>
 
   <!-- Error message -->
-  <ish-error-message [error]="orderTemplateError$ | async"></ish-error-message>
+  <ish-error-message [error]="orderTemplateError$ | async" />
 
-  <ish-account-order-template-list [orderTemplates]="orderTemplates$ | async"></ish-account-order-template-list>
+  <ish-account-order-template-list [orderTemplates]="orderTemplates$ | async" />
 </div>
 
-<ish-order-template-preferences-dialog
-  #addOrderTemplateDialog
-  (submitOrderTemplate)="addOrderTemplate($event)"
-></ish-order-template-preferences-dialog>
+<ish-order-template-preferences-dialog #addOrderTemplateDialog (submitOrderTemplate)="addOrderTemplate($event)" />
 
-<ish-loading *ngIf="orderTemplateLoading$ | async"></ish-loading>
+<ish-loading *ngIf="orderTemplateLoading$ | async" />

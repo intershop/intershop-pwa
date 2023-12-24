@@ -13,19 +13,19 @@
       </ng-template>
     </h1>
 
-    <ish-error-message [error]="error$ | async"></ish-error-message>
+    <ish-error-message [error]="error$ | async" />
 
     <ng-container *ngIf="state === 'New'; else elseTemplate">
-      <ish-quote-edit></ish-quote-edit>
+      <ish-quote-edit />
     </ng-container>
     <ng-template #elseTemplate>
-      <ish-quote-view></ish-quote-view>
+      <ish-quote-view />
     </ng-template>
 
-    <ish-quote-interactions></ish-quote-interactions>
+    <ish-quote-interactions />
 
     <a class="btn btn-link" [routerLink]="['/account/quotes']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
   </ng-container>
 </ng-container>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

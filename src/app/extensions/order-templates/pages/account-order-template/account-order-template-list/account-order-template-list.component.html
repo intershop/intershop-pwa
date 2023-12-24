@@ -59,23 +59,23 @@
             [parts]="getParts(orderTemplate)"
             displayType="icon"
             cssClass="text-primary p-0"
-          ></ish-product-add-to-basket>
+          />
         </a>
         <a
           class="btn-tool"
           [title]="'account.order_template.edit.heading' | translate"
           [routerLink]="'/account/order-templates/' + orderTemplate.id"
           data-testing-id="order-template-details-edit"
-          ><fa-icon icon="pencil-alt"></fa-icon
-        ></a>
+          ><fa-icon icon="pencil-alt"
+        /></a>
         <a
           [routerLink]="[]"
           class="btn-tool"
           title="{{ 'account.order_template.list.link.remove' | translate }}"
           (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
           data-testing-id="delete-order-template"
-          ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
-        ></a>
+          ><fa-icon [icon]="['fas', 'trash-alt']"
+        /></a>
       </td>
     </ng-container>
 

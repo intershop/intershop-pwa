@@ -16,7 +16,10 @@ Generally speaking:
 
 It can be tempting to always modify existing templates, component and style files inline when doing customization.
 However, when merging incoming upgrades the number of merge conflicts can possibly be large.
-So if you want to upgrade to new PWA versions later, stick to the following recommendations.
+So if you want to upgrade to new PWA versions later, stick to the recommendations in this guide.
+
+If modifications to standard files seem absolutely inevitable, it is good practice to mark the customizations with some `// CUSTOMIZATION` or `<!-- CUSTOMIZATION -->` comments.
+Either mark a changed line like this or use it as a beginning and end marker for added blocks.
 
 ## Set up an Intershop PWA-based Project
 
@@ -48,7 +51,7 @@ node schematics/customization/add --default <theme-prefix>
 
 It will:
 
-- add an Angular theme configuration in `angular.json` which is used to configure your individual theme. This **default** theme will be used instead of the existing B2B and B2C themes. It is possible to configure and run multiple themes next to each other, see [Guide - Themes](./themes.md)).
+- add an Angular theme configuration in `angular.json` which is used to configure your individual theme. This **default** theme will be used instead of the existing B2B and B2C themes. It is possible to configure and run multiple themes next to each other, see [Guide - Themes](./themes.md).
 - add the theme-prefix as the active theme in `package.json` and replace all active themes (if `--default` is used)
 - add the theme-prefix specific file `environment.<theme-prefix>.ts` which should be used for further theme configuration
 - add initial style files for styling customization under `src/styles/themes/<theme-prefix>`
@@ -56,7 +59,8 @@ It will:
 - change the project prefix for new Angular artifacts from `ish` to `custom`
 - customize ESLint in `.eslintrc.json` to support your new theme files (specifically, the `project-structure` rule)
 
-> **NOTE:** If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
+> [!NOTE]
+> If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
 
 After that we recommend to additionally use the prefix `custom` in every component to further help identifying customized components.
 
@@ -65,6 +69,17 @@ $ ng g c shared/components/basket/custom-basket-display
 CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-display.component.ts (275 bytes)
 ...
 ```
+
+> [!NOTE]
+> The Intershop PWA project is configured to work against a publicly available Intershop Commerce Management server by default (see `environment.model.ts`).
+>
+> ```
+> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> ```
+>
+> To configure your PWA project to use an own default ICM server, set the `icmBaseURL` in your projects `environment.model.ts` accordingly.
+>
+> In the same way, the default `icmChannel` configurations need to be adapted in your theme-specific `environment.<THEME>.ts` files.
 
 ## Specific Concerns
 
@@ -75,10 +90,10 @@ That way the modifications on existing code are most often kept to a single line
 
 When **heavily customizing** existing components it is better to **copy components** and change all references.
 If 20 % of the component has to be changed, it is already a good idea to duplicate it.
-That way incoming changes will not affect your customizations.
+That way, incoming changes will not affect your customizations.
 Typical hot-spots where copying is a good idea are header-related or product-detail-page-related customizations.
 
-#### Theme Specific Overrides
+#### Theme-Specific Overrides
 
 The [customized webpack build](./optimizations.md) supports replacing any file with an environment suffix in front of the file extension.
 If you, for example, want to customize the template `product-detail.component.html`, put your customized content in the parallel file `product-detail.component.theme.html` and run a build with `--configuration=theme`.
@@ -88,7 +103,7 @@ This also works for multiple configurations: `product-detail.component.foo.bar.b
 
 There is also a virtual theme `all` that can be used to always override a specific file.
 However, the `all` theme cannot be used in combination with other themes.
-If a theme specific override is available next to an override for `all`, the specific override will be chosen.
+If a theme-specific override is available next to an override for `all`, the specific override will be chosen.
 
 As an example, imagine the following files/overrides exist:
 
@@ -123,13 +138,13 @@ Some of the provided components supply **configuration parameters** which can be
 
 When adding new independent features to the PWA, it might be a good idea to **add an extension** first.
 Use the provided schematics `ng g extension <name>` to scaffold the extension.
-Adding all related pages, components, models and services here is less intrusive than adding them to the existing folder structure.
+Adding all related pages, components, models, and services here is less intrusive than adding them to the existing folder structure.
 Add additional artifacts to extensions by supplying the `--extension` flag to schematics calls.
 
 ### Data
 
 When **adding new fields** to PWA data models, add them to interfaces and **map them as early as possible** in mapper classes to model classes.
-That way the data can be readily used on templates.
+That way, the data can be readily used on templates.
 Improving and parsing improper data too late could lead to more modifications on components and templates which will be harder to upgrade later on.
 
 ### NgRx
@@ -137,7 +152,7 @@ Improving and parsing improper data too late could lead to more modifications on
 Adding **new data** to the state should always almost exclusively be done by adding new stores in **store groups**.
 Add one with `ng g store-group <group>` and then add consecutive stores with `ng g store --feature <group> <store>`.
 Keep modifications to the existing store as little as possible.
-As NgRx is loosely coupled by nature, you can deactivate effects by simply commenting out the `@Effect` decorator.
+As NgRx is loosely coupled by nature, you can deactivate effects by commenting out the `@Effect` decorator.
 
 ### Testing
 
@@ -158,7 +173,8 @@ There are two approaches to apply a theme-specific styling:
 Just putting a theme override file next to the original file in the `src/styles` folder will not lead to the expected results.
 The lookup starts with the file `style.scss` in the theme-specific folder.
 
-> **Note:** You should
+> [!NOTE]
+> You should
 >
 > - not change global `*.scss` files in `src/styles` and only apply style changes in your theme folder by copying files into the this folder and adjusting file references
 > - not delete the standard theme folders to prevent merge conflicts when migrating the PWA (changes in standard files but deleted in your project).
@@ -172,9 +188,11 @@ You can re-use variables from the global styling on component level by importing
 @import 'variables';
 ```
 
-> **Note:** Be aware that Visual Studio Code will not resolve all import references correctly but it works in the build PWA version anyways.
+> [!NOTE]
+> Be aware that Visual Studio Code will not resolve all import references correctly but it still works in the build PWA version.
 
-> **Note:** For bundled styles optimization PurgeCSS is used. Please read [the additional documentation](./optimizations.md#purgecss) regarding the usage and configuration of PurgeCSS in the Intershop PWA.
+> [!NOTE]
+> For bundled styles optimization PurgeCSS is used. Please read [the additional documentation](./optimizations.md#purgecss) regarding the usage and configuration of PurgeCSS in the Intershop PWA.
 
 ### Static Assets
 
@@ -224,7 +242,7 @@ git checkout -b migration_to_1.1
 ```
 
 Now the Git commits of the new Intershop PWA release will be cherry picked into this migration branch.
-For this, one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g., `1.0.0` to `1.1.0` (since the end tag is a merge commit it will lead to an error at the end of the cherry pick, to prevent this only the commits up to the second parent should be used with `^2`).
+For this, one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g., `1.0.0` to `1.1.0` (since the end tag is a merge commit, it will lead to an error at the end of the cherry pick; to prevent this, only the commits up to the second parent should be used with `^2`).
 If there are any problems with the tags, using the specific commit SHAs should always work.
 
 ```
@@ -251,7 +269,7 @@ git checkout -b migration_to_1.1 1.1.0
 Now the branch with the Git commits of the new Intershop PWA release will be rebased onto the current project's main development branch.
 To do so, you need to provide the branch name of the target branch to rebase onto.
 In addition, a commit is needed where the current migration branch should be "cut off".
-This is usually the current version tag of the Intershop PWA used currently in the custom project, e.g., `1.0.0`.
+This is usually the current version tag of the Intershop PWA used in the custom project, e.g., `1.0.0`.
 If there are any problems with the tag, using the specific commit SHAs should always work.
 
 ```

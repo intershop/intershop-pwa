@@ -1,6 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { ErrorHandler, NgModule, TransferState } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 

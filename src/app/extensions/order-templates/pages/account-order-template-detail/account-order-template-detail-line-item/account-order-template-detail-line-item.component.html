@@ -7,22 +7,22 @@
       [attr.aria-label]="'account.order_template.add_to_template.checkbox.aria_label' | translate"
     />
     <div class="d-none d-md-inline">
-      <ish-product-image imageType="S" [link]="true"></ish-product-image>
+      <ish-product-image imageType="S" [link]="true" />
     </div>
   </div>
   <div class="col-8 col-md-6 list-item d-block d-md-flex">
     <div class="col-12 col-md-9 pli-description">
-      <ish-product-name></ish-product-name>
-      <ish-product-id></ish-product-id>
-      <ish-product-variation-display></ish-product-variation-display>
-      <ish-product-bundle-display></ish-product-bundle-display>
-      <ish-product-inventory></ish-product-inventory>
+      <ish-product-name />
+      <ish-product-id />
+      <ish-product-variation-display />
+      <ish-product-bundle-display />
+      <ish-product-inventory />
       <div>
         <a [routerLink]="[]" class="btn-tool" (click)="moveDialog.show()" data-testing-id="move-order-template">
           <fa-icon
             [icon]="['fas', 'arrows-alt']"
             [title]="'account.order_template.table.options.move_to_template' | translate"
-          ></fa-icon>
+          />
         </a>
         <a
           [routerLink]="[]"
@@ -30,19 +30,19 @@
           (click)="removeProductFromOrderTemplate(orderTemplateItemData.sku)"
           data-testing-id="delete-order-template"
         >
-          <fa-icon [icon]="['fas', 'trash-alt']" [title]="'modal.heading.remove.order.template' | translate"></fa-icon>
+          <fa-icon [icon]="['fas', 'trash-alt']" [title]="'modal.heading.remove.order.template' | translate" />
         </a>
       </div>
     </div>
     <div class="col-6 col-md-3 p-md-0 text-right">
-      <ish-product-quantity></ish-product-quantity>
+      <ish-product-quantity />
     </div>
   </div>
   <div class="col-2 list-item d-none d-md-block text-right">
     {{ orderTemplateItemData?.creationDate | ishDate : 'shortDate' }}
   </div>
   <div class="col-4 col-md-2 list-item column-price">
-    <ish-product-price></ish-product-price>
+    <ish-product-price />
   </div>
 </div>
 
@@ -50,4 +50,4 @@
   #moveDialog
   addMoveProduct="move"
   (submitEmitter)="moveItemToOtherOrderTemplate(orderTemplateItemData.sku, $event)"
-></ish-select-order-template-modal>
+/>

@@ -10,14 +10,14 @@
     <li *ngIf="product.attributes?.length" [ngbNavItem]="'DETAILS'" role="presentation">
       <a ngbNavLink>{{ 'product.details.heading' | translate }}</a>
       <ng-template ngbNavContent>
-        <ish-product-attributes [product]="product"></ish-product-attributes>
+        <ish-product-attributes [product]="product" />
       </ng-template>
     </li>
 
     <li *ngIf="product.attachments?.length" [ngbNavItem]="'ATTACHMENTS'" role="presentation">
       <a ngbNavLink>{{ 'product.attachments.heading' | translate }}</a>
       <ng-template ngbNavContent>
-        <ish-product-attachments></ish-product-attachments>
+        <ish-product-attachments />
       </ng-template>
     </li>
 
@@ -25,7 +25,7 @@
       <li *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'" role="presentation">
         <a ngbNavLink>{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a>
         <ng-template ngbNavContent>
-          <ish-lazy-product-reviews></ish-lazy-product-reviews>
+          <ish-lazy-product-reviews />
         </ng-template>
       </li>
     </ng-container>

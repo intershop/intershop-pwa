@@ -4,10 +4,7 @@
       <li *ngIf="!promotion.disableMessages" class="promotion-list-item">
         <ng-container *ngIf="displayType === 'simple' || displayType === 'simpleWithDetail'; else default">
           <span class="promotion-short-title" [ishServerHtml]="promotion.title"></span>
-          <ish-promotion-details
-            *ngIf="displayType === 'simpleWithDetail'"
-            [promotion]="promotion"
-          ></ish-promotion-details>
+          <ish-promotion-details *ngIf="displayType === 'simpleWithDetail'" [promotion]="promotion" />
         </ng-container>
 
         <ng-template #default>
@@ -16,7 +13,7 @@
           <br />
           <div>
             <span *ngIf="promotion.longTitle" class="promotion-long-title" [ishServerHtml]="promotion.longTitle"></span>
-            <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+            <ish-promotion-details [promotion]="promotion" />
           </div>
         </ng-template>
       </li>

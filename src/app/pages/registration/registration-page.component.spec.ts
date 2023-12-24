@@ -73,9 +73,9 @@ describe('Registration Page Component', () => {
     expect(element.querySelectorAll('formly-group formly-field')).toMatchInlineSnapshot(`
       NodeList [
         <formly-field
-        ><ng-component
+        ><ish-input-test-field
           >TextInputFieldComponent: test ish-text-input-field { "label": "", "placeholder": "",
-          "disabled": false}</ng-component
+          "disabled": false}</ish-input-test-field
         ></formly-field
       >,
       ]

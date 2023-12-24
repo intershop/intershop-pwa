@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
-import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { filter, map, shareReplay, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -20,7 +21,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   templateUrl: './basket-invoice-address-widget.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
+export class BasketInvoiceAddressWidgetComponent implements OnInit {
   @Input() showErrors = true;
 
   @Output() collapseChange = new BehaviorSubject(true);
@@ -42,7 +43,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
   editAddress: Partial<Address>;
   emptyOptionLabel = 'checkout.addresses.select_invoice_address.button';
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private checkoutFacade: CheckoutFacade,
@@ -62,7 +63,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
             ? 'checkout.addresses.select_a_different_invoice_address.default'
             : 'checkout.addresses.select_invoice_address.button'
         ),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(label => (this.emptyOptionLabel = label));
 
@@ -87,7 +88,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
           onInit: field => {
             field.form
               .get('id')
-              .valueChanges.pipe(whenTruthy(), takeUntil(this.destroy$))
+              .valueChanges.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef))
               .subscribe(addressId => this.checkoutFacade.assignBasketAddress(addressId, 'invoice'));
           },
         },
@@ -100,7 +101,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
         // prevent assigning the address at an anonymous basket after login
         filter(([addresses, basket]) => !!basket?.customerNo && !!addresses?.length),
         take(1),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([addresses, basket]) => {
         if (!basket.invoiceToAddress && addresses.length === 1) {
@@ -108,14 +109,8 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.invoiceAddress$.pipe(takeUntil(this.destroy$)).subscribe(() => (this.collapse = true));
+    this.invoiceAddress$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => (this.collapse = true));
   }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   showAddressForm(address?: Address) {
     if (address) {
       this.editAddress = { ...address };
@@ -134,7 +129,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
 
         this.featureEventService
           .eventResultListener$('addressDoctor', 'check-address', id)
-          .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+          .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
           .subscribe(({ data }) => {
             if (data) {
               this.checkoutFacade.updateBasketAddress(data);
@@ -153,7 +148,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit, OnDestroy {
 
         this.featureEventService
           .eventResultListener$('addressDoctor', 'check-address', id)
-          .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+          .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
           .subscribe(({ data }) => {
             if (data) {
               this.checkoutFacade.createBasketAddress(data, 'invoice');

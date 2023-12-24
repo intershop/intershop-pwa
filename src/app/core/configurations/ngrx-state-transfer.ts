@@ -1,4 +1,4 @@
-import { TransferState, makeStateKey } from '@angular/platform-browser';
+import { TransferState, makeStateKey } from '@angular/core';
 import { Actions } from '@ngrx/effects';
 import { Action, ActionReducer, Store, UPDATE } from '@ngrx/store';
 import { pick } from 'lodash-es';

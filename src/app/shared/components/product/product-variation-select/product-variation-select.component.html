@@ -7,10 +7,7 @@
         <!-- multiple switch case expressions - https://stackoverflow.com/a/45950368 -->
         <ng-container [ngSwitch]="true">
           <ng-container *ngSwitchCase="group.attributeType === 'colorCode' || group.attributeType === 'swatchImage'">
-            <ish-product-variation-select-swatch
-              [group]="group"
-              (changeOption)="optionChange($event)"
-            ></ish-product-variation-select-swatch>
+            <ish-product-variation-select-swatch [group]="group" (changeOption)="optionChange($event)" />
           </ng-container>
           <ng-container
             *ngSwitchCase="
@@ -22,7 +19,7 @@
               [uuid]="uuid"
               [multipleOptions]="variationOptions.length > 1"
               (changeOption)="optionChange($event)"
-            ></ish-product-variation-select-enhanced>
+            />
           </ng-container>
           <ng-container *ngSwitchDefault>
             <ish-product-variation-select-default
@@ -30,7 +27,7 @@
               [uuid]="uuid"
               [multipleOptions]="variationOptions.length > 1"
               (changeOption)="optionChange($event)"
-            ></ish-product-variation-select-default>
+            />
           </ng-container>
         </ng-container>
       </div>

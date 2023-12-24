@@ -7,23 +7,22 @@
   data-testing-id="invoiceAddressForm"
   [parentForm]="invoiceAddressForm"
   [businessCustomer]="isBusinessCustomer"
->
-</ish-formly-address-form>
+/>
 
 <!-- Taxation ID and Email address input field-->
-<ish-formly-address-extension-form
-  [form]="attributesForm"
-  [businessCustomer]="isBusinessCustomer"
-></ish-formly-address-extension-form>
+<ish-formly-address-extension-form [form]="attributesForm" [businessCustomer]="isBusinessCustomer" />
 
 <!-- Shipping Address Selection Radio boxes-->
 <div class="section">
   <h3>{{ 'checkout.addresses.shipping_address.heading' | translate }}</h3>
-  <formly-form [form]="shipOptionForm" [fields]="shipOptionFields"></formly-form>
+  <formly-form [form]="shipOptionForm" [fields]="shipOptionFields" />
 </div>
 
 <!-- Shipping Address -->
 <div [ngbCollapse]="!isShippingAddressFormExpanded" data-testing-id="shipping-address-form">
-  <ish-formly-address-form #shippingAddress [parentForm]="shippingAddressForm" [businessCustomer]="isBusinessCustomer">
-  </ish-formly-address-form>
+  <ish-formly-address-form
+    #shippingAddress
+    [parentForm]="shippingAddressForm"
+    [businessCustomer]="isBusinessCustomer"
+  />
 </div>

@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -18,14 +19,14 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './basket-cost-center-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
+export class BasketCostCenterSelectionComponent implements OnInit {
   form = new UntypedFormGroup({});
   fields$: Observable<FormlyFieldConfig[]>;
   model: { costCenter: string };
 
   costCenterOptions$: Observable<SelectOption[]>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private checkoutFacade: CheckoutFacade,
@@ -54,7 +55,7 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
 
     // initialize model with the basket costCenter
     this.checkoutFacade.basket$
-      .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+      .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe(basket => (this.model = { costCenter: basket.costCenter }));
 
     // save changes after form value changed
@@ -64,7 +65,7 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
         map(val => val.costCenter),
         distinctUntilChanged(),
         withLatestFrom(this.checkoutFacade.basket$),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([costCenter, basket]) => {
         if (costCenter !== basket.costCenter && !!costCenter) {
@@ -73,7 +74,7 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
       });
 
     // mark form as dirty to display validation errors
-    this.checkoutFacade.basketValidationResults$.pipe(takeUntil(this.destroy$)).subscribe(results => {
+    this.checkoutFacade.basketValidationResults$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(results => {
       if (
         !results?.valid &&
         results?.errors?.find(error => error.code === 'basket.validation.cost_center_missing.error')
@@ -83,12 +84,6 @@ export class BasketCostCenterSelectionComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   private getFields(options: SelectOption[]): FormlyFieldConfig[] {
     if (options.length === 1 && options[0].value && !this.model?.costCenter) {
       this.model = { ...this.model, costCenter: options[0].value };

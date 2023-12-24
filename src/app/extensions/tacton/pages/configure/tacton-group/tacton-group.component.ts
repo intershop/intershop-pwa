@@ -13,7 +13,7 @@ import { TactonProductConfigurationGroup } from '../../../models/tacton-product-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TactonGroupComponent {
-  @Input() group: TactonProductConfigurationGroup;
+  @Input({ required: true }) group: TactonProductConfigurationGroup;
   @Input() level = 0;
 
   constructor(private facade: TactonFacade) {}

@@ -1,5 +1,5 @@
 <ng-container *ngIf="error$ | async">
-  <ish-error-message [error]="error$ | async" [toast]="false"></ish-error-message>
+  <ish-error-message [error]="error$ | async" [toast]="false" />
   <h1 data-testing-id="empty-confirmation-title">
     {{ 'personal.data.request.confirmation.empty.heading' | translate }}
   </h1>
@@ -19,4 +19,4 @@
     <div [ishServerHtml]="'personal.data.request.confirmation.confirmed.message' | translate"></div>
   </ng-template>
 </ng-container>
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

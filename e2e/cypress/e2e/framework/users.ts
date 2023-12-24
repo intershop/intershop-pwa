@@ -30,7 +30,7 @@ export function createUserViaREST(user: Partial<Registration>) {
 
   cy.request(
     'POST',
-    `${Cypress.env('ICM_BASE_URL')}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/customers`,
+    `${Cypress.env('ICM_BASE_URL')}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/privatecustomers`,
     customer
   ).then(response => {
     expect(response.status).to.equal(201);

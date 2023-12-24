@@ -4,7 +4,7 @@
     <div class="col-md-2 list-header-item no-seperator">{{ 'quickorder.page.product.quantity' | translate }}</div>
   </div>
 
-  <formly-form [model]="model" [fields]="fields" [options]="options" [form]="quickOrderForm" class="pt-1"></formly-form>
+  <formly-form [model]="model" [fields]="fields" [options]="options" [form]="quickOrderForm" class="pt-1" />
 
   <button type="submit" class="btn btn-primary" [disabled]="quickOrderForm.pristine" data-testing-id="add-form-to-cart">
     {{ 'quickorder.page.add.cart' | translate }}

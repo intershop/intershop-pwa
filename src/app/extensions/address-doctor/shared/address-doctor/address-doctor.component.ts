@@ -1,5 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, ViewChild, inject } from '@angular/core';
-import { Subject, filter, map, takeUntil, tap } from 'rxjs';
+import { AfterViewInit, ChangeDetectionStrategy, Component, DestroyRef, Input, ViewChild, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter, map, tap } from 'rxjs';
 import { concatMap, first } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -19,16 +20,16 @@ import { AddressDoctorModalComponent } from '../address-doctor-modal/address-doc
   changeDetection: ChangeDetectionStrategy.Default,
 })
 @GenerateLazyComponent()
-export class AddressDoctorComponent implements OnDestroy, AfterViewInit {
+export class AddressDoctorComponent implements AfterViewInit {
   @Input() options: ModalOptions;
   // related address doctor modal
   @ViewChild('modal') modal: AddressDoctorModalComponent;
 
   private featureEventService = inject(FeatureEventService);
   private addressDoctorFacade = inject(AddressDoctorFacade);
+  private destroyRef = inject(DestroyRef);
 
   private eventId: string;
-  private destroy$ = new Subject<void>();
 
   ngAfterViewInit(): void {
     // react on all CheckAddress event notifier for 'addressDoctor' feature
@@ -45,7 +46,7 @@ export class AddressDoctorComponent implements OnDestroy, AfterViewInit {
             map(suggestions => ({ address, suggestions }))
           )
         ),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       // open related address doctor modal with event notifier address data
       .subscribe(({ address, suggestions }) => {
@@ -91,10 +92,5 @@ export class AddressDoctorComponent implements OnDestroy, AfterViewInit {
     if (hidden) {
       this.featureEventService.sendResult(this.eventId, AddressDoctorEvents.CheckAddressCancelled, true);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

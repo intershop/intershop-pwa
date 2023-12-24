@@ -21,13 +21,13 @@
 </ul>
 
 <div class="section loading-container">
-  <ish-error-message [error]="error$ | async"></ish-error-message>
+  <ish-error-message [error]="error$ | async" />
 
   <ish-requisitions-list
     [requisitions]="requisitions$ | async"
     [status]="status"
     [columnsToDisplay]="columnsToDisplay"
-  ></ish-requisitions-list>
+  />
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>

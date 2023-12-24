@@ -29,7 +29,7 @@
       <p [innerHTML]="'approval.cart.notification.mail.text' | translate : { '0': basket.invoiceToAddress.email }"></p>
     </ng-template>
     <div>
-      <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval"></ish-basket-approval-info>
+      <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval" />
     </div>
   </div>
 </div>

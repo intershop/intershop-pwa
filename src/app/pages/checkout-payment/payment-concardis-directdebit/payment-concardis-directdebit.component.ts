@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { pairwise, startWith, takeUntil } from 'rxjs/operators';
+import { pairwise, startWith } from 'rxjs/operators';
 
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -56,7 +57,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     super.formInit();
     this.fieldConfig = this.getFieldConfig();
     this.parameterForm.valueChanges
-      .pipe(startWith({}), pairwise(), takeUntil(this.destroy$))
+      .pipe(startWith({}), pairwise(), takeUntilDestroyed(this.destroyRef))
       .subscribe(([prevValues, currentValues]) =>
         Object.keys(currentValues).forEach(key => {
           if (
@@ -88,7 +89,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
       this.scriptLoaded = true;
       this.scriptLoader
         .load(this.getPayEngineURL())
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: () => {
             PayEngine.setPublishableKey(merchantId);

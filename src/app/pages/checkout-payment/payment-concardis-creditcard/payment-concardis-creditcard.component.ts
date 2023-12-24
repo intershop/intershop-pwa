@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { range } from 'lodash-es';
-import { takeUntil } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
@@ -93,7 +93,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
       this.scriptLoaded = true;
       this.scriptLoader
         .load(this.getPayEngineURL())
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: () => {
             PayEngine.setPublishableKey(merchantId);

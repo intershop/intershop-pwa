@@ -20,7 +20,7 @@ type CostCenterBuyersListColumnsType = 'buyerName' | 'orders' | 'pendingOrders' 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CostCenterUsersListComponent implements OnInit {
-  @Input() costCenter: CostCenter;
+  @Input({ required: true }) costCenter: CostCenter;
   @Input() isEditable = false;
 
   columnsToDisplay: CostCenterBuyersListColumnsType[] = ['buyerName', 'pendingOrders', 'orders', 'budget', 'actions'];

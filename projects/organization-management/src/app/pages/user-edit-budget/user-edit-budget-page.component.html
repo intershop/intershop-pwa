@@ -1,7 +1,7 @@
 <div *ngIf="selectedUser$ | async as user">
   <h1>{{ 'account.user.update_budget.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
 
-  <ish-error-message [error]="error$ | async"></ish-error-message>
+  <ish-error-message [error]="error$ | async" />
 
   <form
     *ngIf="budgetForm && 'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
@@ -10,7 +10,7 @@
     class="form-horizontal"
     novalidate="novalidate"
   >
-    <ish-user-budget-form [form]="budgetForm" [budget]="user.userBudget"></ish-user-budget-form>
+    <ish-user-budget-form [form]="budgetForm" [budget]="user.userBudget" />
 
     <div class="row">
       <div class="offset-md-4 col-md-8">
@@ -24,5 +24,5 @@
     </div>
   </form>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>

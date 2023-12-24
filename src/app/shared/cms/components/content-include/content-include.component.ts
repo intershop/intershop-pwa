@@ -21,7 +21,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 })
 @GenerateLazyComponent()
 export class ContentIncludeComponent implements OnInit, OnChanges {
-  @Input() includeId: string;
+  @Input({ required: true }) includeId: string;
 
   contentInclude$: Observable<ContentPageletEntryPointView>;
 

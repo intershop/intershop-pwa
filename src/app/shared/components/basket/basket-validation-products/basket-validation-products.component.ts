@@ -14,5 +14,5 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketValidationProductsComponent {
-  @Input() items: { message: string; productSKU: string; price: PriceItem }[];
+  @Input({ required: true }) items: { message: string; productSKU: string; price: PriceItem }[];
 }

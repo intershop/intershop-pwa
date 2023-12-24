@@ -9,30 +9,30 @@
 
   <!-- Product Image -->
   <div class="col-2 list-item">
-    <ish-product-image imageType="S" [link]="true"></ish-product-image>
+    <ish-product-image imageType="S" [link]="true" />
   </div>
 
   <div class="col-7 col-md-6 col-xl-4 list-item">
     <!--Product Description -->
     <div class="pli-description">
-      <ish-product-name [alternate]="pli.name"></ish-product-name>
+      <ish-product-name [alternate]="pli.name" />
 
       <!-- Product ID -->
-      <ish-product-id></ish-product-id>
+      <ish-product-id />
 
       <!-- Product Variations -->
-      <ish-product-variation-display></ish-product-variation-display>
+      <ish-product-variation-display />
       <!-- Product Bundles -->
-      <ish-product-bundle-display></ish-product-bundle-display>
+      <ish-product-bundle-display />
 
       <!-- switch by lineItemViewType -->
       <ng-container [ngSwitch]="lineItemViewType">
         <!-- lineItemViewType = 'simple' -->
-        <ng-container *ngSwitchCase="'simple'"></ng-container>
+        <ng-container *ngSwitchCase="'simple'" />
 
         <!-- lineItemViewType = 'availability' -->
         <ng-container *ngSwitchCase="'availability'">
-          <ish-product-inventory></ish-product-inventory>
+          <ish-product-inventory />
         </ng-container>
 
         <!-- default lineItemViewType -->
@@ -46,14 +46,14 @@
               [quantity]="pli.quantity.value"
               [itemId]="pli.id"
               (updateItem)="onUpdateItem($event)"
-            ></ish-line-item-edit>
+            />
           </ng-container>
 
           <!-- availability -->
-          <ish-product-inventory></ish-product-inventory>
+          <ish-product-inventory />
 
           <!-- ship window message -->
-          <ish-product-shipment></ish-product-shipment>
+          <ish-product-shipment />
 
           <!-- surcharges -->
           <div *ngFor="let surcharge of pli.itemSurcharges">
@@ -67,7 +67,7 @@
               placement="top"
             >
               {{ 'shopping_cart.detail.text' | translate }}
-              <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+              <fa-icon [icon]="['fas', 'info-circle']" />
             </a>
           </div>
         </ng-container>
@@ -76,7 +76,7 @@
       <!-- promotions -->
       <div *ngIf="pli.valueRebates?.length">
         <ng-container *ngFor="let rebate of pli.valueRebates">
-          <ish-basket-promotion [rebate]="rebate" class="list-item-promo"></ish-basket-promotion>
+          <ish-basket-promotion [rebate]="rebate" class="list-item-promo" />
         </ng-container>
       </div>
       <div class="d-flex align-items-end">
@@ -84,12 +84,8 @@
           *ngIf="editable"
           [cssClass]="'btn-link btn-tool pl-0 add-to-order-template'"
           displayType="icon"
-        ></ish-lazy-product-add-to-order-template>
-        <ish-lazy-product-add-to-wishlist
-          *ngIf="editable"
-          [cssClass]="'btn-link btn-tool pl-0'"
-          displayType="icon"
-        ></ish-lazy-product-add-to-wishlist>
+        />
+        <ish-lazy-product-add-to-wishlist *ngIf="editable" [cssClass]="'btn-link btn-tool pl-0'" displayType="icon" />
         <a
           *ngIf="!pli.isFreeGift && editable"
           [routerLink]="[]"
@@ -99,7 +95,7 @@
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem(pli.id)"
         >
-          <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+          <fa-icon [icon]="['fas', 'trash-alt']" />
         </a>
       </div>
     </div>
@@ -111,11 +107,8 @@
           translationKey="shopping_cart.pli.qty.label"
           [for]="'pli-quantity_' + pli.position"
           class="d-xl-none col-form-label"
-        ></ish-product-quantity-label>
-        <ish-product-quantity
-          *ngIf="editable; else readonly"
-          [elementId]="'pli-quantity_' + pli.position"
-        ></ish-product-quantity>
+        />
+        <ish-product-quantity *ngIf="editable; else readonly" [elementId]="'pli-quantity_' + pli.position" />
         <ng-template #readonly>{{ pli.quantity.value | number }}</ng-template>
       </div>
     </div>
@@ -124,10 +117,7 @@
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
     <div class="form-group w-100 text-right" [ngClass]="{ 'pr-2': !editable }">
-      <ish-product-quantity
-        *ngIf="editable; else readonly"
-        [elementId]="'pli-quantity_' + pli.position"
-      ></ish-product-quantity>
+      <ish-product-quantity *ngIf="editable; else readonly" [elementId]="'pli-quantity_' + pli.position" />
       <ng-template #readonly>{{ pli.quantity.value | number }}</ng-template>
     </div>
   </div>

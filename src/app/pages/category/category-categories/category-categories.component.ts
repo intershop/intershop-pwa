@@ -9,7 +9,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryCategoriesComponent implements OnInit, OnChanges {
-  @Input() category: CategoryView;
+  @Input({ required: true }) category: CategoryView;
   @Input() deviceType: DeviceType;
 
   isCollapsed = false;

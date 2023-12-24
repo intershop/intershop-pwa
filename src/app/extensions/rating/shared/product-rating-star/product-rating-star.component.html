@@ -1,14 +1,14 @@
 <ng-container *ngIf="filled === 'half'; else fullOrEmpty">
   <span class="star-half-left star">
-    <fa-icon [icon]="['fas', 'star-half']"></fa-icon>
+    <fa-icon [icon]="['fas', 'star-half']" />
   </span>
   <span class="star-empty star-half-right star star-margin">
-    <fa-icon [icon]="['fas', 'star-half']" transform="flip-h"></fa-icon>
+    <fa-icon [icon]="['fas', 'star-half']" transform="flip-h" />
   </span>
 </ng-container>
 
 <ng-template #fullOrEmpty>
   <span class="star star-margin" [ngClass]="[filled === 'full' ? '' : 'star-empty']">
-    <fa-icon [icon]="['fas', 'star']"></fa-icon>
+    <fa-icon [icon]="['fas', 'star']" />
   </span>
 </ng-template>

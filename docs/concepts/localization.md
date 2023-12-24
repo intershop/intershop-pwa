@@ -96,7 +96,8 @@ Refer to [this explanation](https://www.gnu.org/savannah-checkouts/gnu/gettext/m
 
 Have a look at the spec for [PWATranslateCompiler](../../src/app/core/utils/translate/pwa-translate-compiler.spec.ts) for an overview of supported methods.
 
-> :warning: Translations with large values (> 1000 characters) will not be compiled to improve performance. We recommend using CMS components instead. If you _really_ need to increase this limit, adapt the `MAX_COMPILATION_LENGTH` variable of [PWATranslateCompiler](../../src/app/core/utils/translate/pwa-translate-compiler.ts).
+> [!WARNING]
+> Translations with large values (> 1000 characters) will not be compiled to improve performance. We recommend using CMS components instead. If you _really_ need to increase this limit, adapt the `MAX_COMPILATION_LENGTH` variable of [PWATranslateCompiler](../../src/app/core/utils/translate/pwa-translate-compiler.ts).
 
 ### Localization with Formatted Dates
 
@@ -152,31 +153,27 @@ Usage in HTML:
 If you want to get the translation for a key within a component file, you have to:
 
 - Inject `TranslateService` in the component
-- Use the `get` method of the translation service, e.g., `translate.get('ID')`
-- Use `subscribe` to assign the translation to the data array
+- Use the `get` or the `instant` method of the translation service, e.g., `translate.get('ID')`
+- Use `subscribe` to assign the translation to the data array if you use the `get` method
 
 **\*.component.ts**
 
 ```typescript
-export class ProductTileComponent implements OnDestroy {
+export class ProductTileComponent {
   ...
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
   constructor(protected translate: TranslateService) {}
   ...
   toggleCompare() {
     this.compareToggle.emit();
     this.translate
       .get('compare.message.add.text', { 0: this.product.name })
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((message: string) => {
         this.toastr.success(message);
       });
   }
   ...
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }
 ```
 
@@ -253,12 +250,14 @@ Here is how:
 2. Upload and import each `.xliff` file to ICM. Please mind below warning to select the correct application type and target locale.
 3. Refer to [Localization Management](https://docs.intershop.com/icm/7.10/olh/icm/en/operation_maintenance/topic_localization_management.html) in the ICM online help for further details.
 
-:warning: Make sure to select the correct application type for which you want to import generated XLIFF data.
-This has to fit to your PWA environment.
+> [!WARNING]
+> Make sure to select the correct application type for which you want to import generated XLIFF data.
+> This has to fit to your PWA environment.
 
-:warning: The generated `.xliff` files prefix translation keys with `pwa-`.
-This allows to enable easy filtering.
-The prefixes will be removed when the translations are loaded into the PWA.
+> [!WARNING]
+> The generated `.xliff` files prefix translation keys with `pwa-`.
+> This allows to enable easy filtering.
+> The prefixes will be removed when the translations are loaded into the PWA.
 
 ## External Localization Sources
 

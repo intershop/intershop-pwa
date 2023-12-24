@@ -25,30 +25,30 @@ const initialState: OciConfigurationState = {
 export const ociConfigurationReducer = createReducer(
   initialState,
   setLoadingOn(
-    ociConfigurationActions.loadOciConfiguration,
-    ociConfigurationActions.loadOciConfigurationOptions,
-    ociConfigurationActions.updateOciConfiguration
+    ociConfigurationActions.loadOCIConfiguration,
+    ociConfigurationActions.loadOCIConfigurationOptions,
+    ociConfigurationActions.updateOCIConfiguration
   ),
   unsetLoadingAndErrorOn(
-    ociConfigurationApiActions.loadOciConfigurationSuccess,
-    ociConfigurationApiActions.loadOciConfigurationOptionsSuccess,
-    ociConfigurationApiActions.updateOciConfigurationSuccess
+    ociConfigurationApiActions.loadOCIConfigurationSuccess,
+    ociConfigurationApiActions.loadOCIConfigurationOptionsSuccess,
+    ociConfigurationApiActions.updateOCIConfigurationSuccess
   ),
   setErrorOn(
-    ociConfigurationApiActions.loadOciConfigurationFail,
-    ociConfigurationApiActions.loadOciConfigurationOptionsFail,
-    ociConfigurationApiActions.updateOciConfigurationFail
+    ociConfigurationApiActions.loadOCIConfigurationFail,
+    ociConfigurationApiActions.loadOCIConfigurationOptionsFail,
+    ociConfigurationApiActions.updateOCIConfigurationFail
   ),
   on(
-    ociConfigurationApiActions.loadOciConfigurationSuccess,
-    ociConfigurationApiActions.updateOciConfigurationSuccess,
+    ociConfigurationApiActions.loadOCIConfigurationSuccess,
+    ociConfigurationApiActions.updateOCIConfigurationSuccess,
     (state, { payload: { configuration } }): OciConfigurationState => ({
       ...state,
       configuration,
     })
   ),
   on(
-    ociConfigurationApiActions.loadOciConfigurationOptionsSuccess,
+    ociConfigurationApiActions.loadOCIConfigurationOptionsSuccess,
     (state, { payload: { options } }): OciConfigurationState => ({
       ...state,
       options,

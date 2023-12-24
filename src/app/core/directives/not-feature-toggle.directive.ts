@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { ChangeDetectorRef, DestroyRef, Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReplaySubject, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
@@ -18,11 +19,11 @@ import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-togg
 @Directive({
   selector: '[ishNotFeature]',
 })
-export class NotFeatureToggleDirective implements OnDestroy {
+export class NotFeatureToggleDirective {
   private subscription: Subscription;
   private disabled$ = new ReplaySubject<boolean>(1);
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private templateRef: TemplateRef<unknown>,
@@ -30,7 +31,7 @@ export class NotFeatureToggleDirective implements OnDestroy {
     private featureToggle: FeatureToggleService,
     private cdRef: ChangeDetectorRef
   ) {
-    this.disabled$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(disabled => {
+    this.disabled$.pipe(distinctUntilChanged(), takeUntilDestroyed()).subscribe(disabled => {
       if (disabled) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       } else {
@@ -49,12 +50,7 @@ export class NotFeatureToggleDirective implements OnDestroy {
 
     this.subscription = this.featureToggle
       .enabled$(val)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({ next: value => this.disabled$.next(!value) });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

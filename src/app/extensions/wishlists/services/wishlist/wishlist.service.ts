@@ -23,9 +23,8 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService.get(`${restResource}/-/wishlists`).pipe(
-          unpackEnvelope(),
-          map(wishlistData => wishlistData.map(this.wishlistMapper.fromDataToIds)),
-          map(wishlistData => wishlistData.map(wishlist => this.getWishlist(wishlist.id))),
+          unpackEnvelope<WishlistData>(),
+          map(wishlistData => wishlistData.map(data => this.getWishlist(this.wishlistMapper.fromDataToId(data)))),
           switchMap(obsArray => (obsArray.length ? forkJoin(obsArray) : of([])))
         )
       )

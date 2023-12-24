@@ -22,7 +22,6 @@ module.exports = {
   maxWorkers: process.env.JEST_MAX_WORKERS || '75%', // keep some cpu for moving the mouse
   roots: ['src', 'projects'],
   setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
-  globalSetup: 'jest-preset-angular/global-setup',
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
   moduleNameMapper: {
     ...pathsToModuleNameMapper(tsConfig.compilerOptions.paths, { prefix: '<rootDir>' }),

@@ -19,7 +19,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterCheckboxComponent {
-  @Input() filterElement: Filter;
+  @Input({ required: true }) filterElement: Filter;
   @Output() applyFilter: EventEmitter<{ searchParameter: URLFormParams }> = new EventEmitter();
 
   /**

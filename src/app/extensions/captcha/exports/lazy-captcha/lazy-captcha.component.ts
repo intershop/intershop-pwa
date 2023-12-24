@@ -2,17 +2,18 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   Injector,
   Input,
-  OnDestroy,
   OnInit,
   ViewChild,
   ViewContainerRef,
   createNgModule,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { switchMap, take, takeUntil } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -35,32 +36,27 @@ import { CaptchaFacade, CaptchaTopic } from '../../facades/captcha.facade';
   templateUrl: './lazy-captcha.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
+export class LazyCaptchaComponent implements OnInit, AfterViewInit {
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
 
   /**
     form containing the captcha form controls
    */
-  @Input() form: FormGroup | FormArray;
+  @Input({ required: true }) form: FormGroup | FormArray;
+
+  @Input({ required: true }) topic: CaptchaTopic;
 
   /**
     css Class for rendering the captcha V2 control, default='offset-md-4 col-md-8'
    */
   @Input() cssClass = 'offset-md-4 col-md-8';
 
-  @Input() topic: CaptchaTopic;
-
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private captchaFacade: CaptchaFacade, private injector: Injector) {}
 
   ngOnInit() {
     this.sanityCheck();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   ngAfterViewInit() {
@@ -71,7 +67,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit, OnDestroy {
         switchMap(() => this.captchaFacade.captchaVersion$),
         whenTruthy(),
         take(1),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(async version => {
         if (version === 3) {

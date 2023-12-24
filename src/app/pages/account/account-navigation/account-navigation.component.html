@@ -1,7 +1,7 @@
 <!-- account navigation with hierarchy -->
 <ng-container *ngIf="!(deviceType === 'mobile' || deviceType === 'tablet'); else mobileNavigation">
   <ul class="account-navigation list-unstyled">
-    <ish-account-user-info role="listitem"></ish-account-user-info>
+    <ish-account-user-info role="listitem" />
     <ng-container *ngFor="let item of navItems">
       <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
         <ng-container *ishHasNotRole="item.notRole">
@@ -18,7 +18,7 @@
                 [attr.data-testing-id]="item.id + '-nav-link'"
               >
                 <span>
-                  <fa-icon *ngIf="item.faIcon" [icon]="item.faIcon"></fa-icon>
+                  <fa-icon *ngIf="item.faIcon" [icon]="item.faIcon" />
                   {{ item.localizationKey | translate }}
                 </span>
               </li>
@@ -56,7 +56,7 @@
                 [routerLinkActiveOptions]="{ exact: item.routerLink === '/account' ? true : false }"
               >
                 <a [routerLink]="item.routerLink" [attr.data-testing-id]="item.id + '-nav-link'">
-                  <fa-icon *ngIf="item.faIcon" [icon]="item.faIcon"></fa-icon>
+                  <fa-icon *ngIf="item.faIcon" [icon]="item.faIcon" />
                   {{ item.localizationKey | translate }}
                 </a>
               </li>

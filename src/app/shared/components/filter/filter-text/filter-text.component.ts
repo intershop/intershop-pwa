@@ -19,7 +19,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterTextComponent implements OnInit {
-  @Input() filterElement: Filter;
+  @Input({ required: true }) filterElement: Filter;
   @Output() applyFilter: EventEmitter<{ searchParameter: URLFormParams }> = new EventEmitter();
 
   /**
@@ -41,11 +41,8 @@ export class FilterTextComponent implements OnInit {
   facets: Facet[] = [];
 
   ngOnInit() {
-    this.maxLevel =
-      Math.max.apply(
-        Math,
-        this.filterElement.facets.map(o => o.level)
-      ) || 0;
+    this.maxLevel = Math.max(...this.filterElement.facets.map(o => o.level)) || 0;
+
     this.facets = this.filterElement.facets.filter(x => x.selected || !this.maxLevel || x.level >= this.maxLevel);
   }
 

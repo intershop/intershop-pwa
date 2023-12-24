@@ -11,7 +11,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   styleUrls: ['./filter-dropdown.component.scss'],
 })
 export class FilterDropdownComponent implements OnInit {
-  @Input() filterElement: Filter;
+  @Input({ required: true }) filterElement: Filter;
   @Input() placeholderType: 'groupName' | 'selectedFacets' = 'groupName';
   @Output() applyFilter: EventEmitter<{ searchParameter: URLFormParams }> = new EventEmitter();
 

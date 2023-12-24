@@ -10,7 +10,7 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShippingInfoComponent implements OnInit {
-  @Input() shippingMethodId: string;
+  @Input({ required: true }) shippingMethodId: string;
 
   shippingMethod$: Observable<ShippingMethod>;
 

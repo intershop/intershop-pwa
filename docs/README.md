@@ -61,7 +61,7 @@ kb_sync_latest_only
 
 ### Maintenance
 
-- [Guide - Upgrading Dependencies](./guides/upgrading-pwa.md)
+- [Guide - Updating Dependencies](./guides/updating-pwa.md)
 
 ## Operations
 

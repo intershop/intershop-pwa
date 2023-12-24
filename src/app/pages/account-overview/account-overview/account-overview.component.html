@@ -23,25 +23,25 @@
   <div class="row account-dashboard">
     <div class="col-6 col-sm-4 col-md-3 dashboard-item">
       <a routerLink="/account/orders">
-        <div class="circle-icon"><fa-icon [icon]="['fas', 'list-alt']"></fa-icon></div>
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'list-alt']" /></div>
         {{ 'account.order_history.link' | translate }}
       </a>
     </div>
     <div *ishFeature="'wishlists'" class="col-6 col-sm-4 col-md-3 dashboard-item">
       <a routerLink="/account/wishlists">
-        <div class="circle-icon"><fa-icon [icon]="['fas', 'heart']"></fa-icon></div>
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'heart']" /></div>
         {{ 'account.wishlists.link' | translate }}
       </a>
     </div>
     <div class="col-6 col-sm-4 col-md-3 dashboard-item">
       <a routerLink="/account/addresses">
-        <div class="circle-icon"><fa-icon [icon]="['fas', 'address-book']"></fa-icon></div>
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'address-book']" /></div>
         {{ 'account.saved_addresses.link' | translate }}
       </a>
     </div>
     <div class="col-6 col-sm-4 col-md-3 dashboard-item">
       <a routerLink="/account/profile">
-        <div class="circle-icon"><fa-icon [icon]="['fas', 'cog']"></fa-icon></div>
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'cog']" /></div>
         {{ 'account.profile.link' | translate }}
       </a>
     </div>
@@ -52,38 +52,32 @@
 <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
   <div class="row">
     <ng-container *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting">
-      <ish-lazy-budget-widget class="col-12 col-md-8"></ish-lazy-budget-widget>
+      <ish-lazy-budget-widget class="col-12 col-md-8" />
 
-      <ish-lazy-requisition-widget class="col-12 col-md-4"></ish-lazy-requisition-widget>
+      <ish-lazy-requisition-widget class="col-12 col-md-4" />
 
       <ng-container *ishFeature="'costCenters'">
-        <ish-lazy-cost-center-widget
-          *ishIsAuthorizedTo="'APP_B2B_MANAGE_COSTCENTER'"
-          class="col-12 col-md-8"
-        ></ish-lazy-cost-center-widget>
+        <ish-lazy-cost-center-widget *ishIsAuthorizedTo="'APP_B2B_MANAGE_COSTCENTER'" class="col-12 col-md-8" />
       </ng-container>
 
       <ng-container>
         <ish-lazy-approval-widget
           *ishIsAuthorizedTo="['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER']"
           class="col-12 col-md-4"
-        ></ish-lazy-approval-widget>
+        />
       </ng-container>
     </ng-container>
 
     <!-- ishFeature directives are needed for styling purposes here -->
-    <ish-lazy-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4"></ish-lazy-quote-widget>
-    <ish-lazy-order-template-widget
-      *ishFeature="'orderTemplates'"
-      class="col-12 col-md-4"
-    ></ish-lazy-order-template-widget>
+    <ish-lazy-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4" />
+    <ish-lazy-order-template-widget *ishFeature="'orderTemplates'" class="col-12 col-md-4" />
   </div>
 
   <!-- Order Widget - displays latest orders as list -->
-  <ish-order-widget></ish-order-widget>
+  <ish-order-widget />
 
   <!-- Wishlist Widget - displays all unique items from all wishlists (if wishlists feature is enabled) -->
-  <ish-lazy-wishlist-widget></ish-lazy-wishlist-widget>
+  <ish-lazy-wishlist-widget />
 </ng-container>
 
 <p class="form-text">

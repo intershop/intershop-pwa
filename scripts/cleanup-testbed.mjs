@@ -1,6 +1,6 @@
 import { execSync, spawnSync } from 'child_process';
 import { copyFileSync, existsSync, statSync } from 'fs';
-import glob from 'glob';
+import { sync } from 'glob';
 import minimatch from 'minimatch';
 import runAll from 'npm-run-all';
 import { cpus } from 'os';
@@ -90,7 +90,7 @@ let files;
 
 if (args.length === 0) {
   console.log('searching for tests in project');
-  files = glob.sync(jestPathPattern, { ignore: ['node_modules/**'] });
+  files = sync(jestPathPattern, { ignore: ['node_modules/**'] });
 } else if (args.length === 1) {
   const normalizedPath = normalize(args[0]);
   let statRes;
@@ -104,7 +104,7 @@ if (args.length === 0) {
     files = findTests(spawnSync('git', ['--no-pager', 'diff', args[0], '--name-only']).stdout.toString().split('\n'));
   } else if (statRes?.isDirectory()) {
     console.log('using', args[0], 'as folder');
-    files = glob.sync(join(args[0], jestPattern));
+    files = sync(join(args[0], jestPattern));
   } else if (statRes?.isFile()) {
     files = findTests(args);
   } else {

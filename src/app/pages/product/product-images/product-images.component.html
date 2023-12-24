@@ -9,7 +9,7 @@
         (keydown.enter)="setActiveSlide(i)"
         tabindex="0"
       >
-        <ish-product-image imageType="S" [imageView]="imageView"></ish-product-image>
+        <ish-product-image imageType="S" [imageView]="imageView" />
       </div>
     </div>
   </div>
@@ -18,17 +18,17 @@
       <swiper #carousel [navigation]="true">
         <ng-container *ngFor="let imageView of largeImages; let i = index">
           <ng-template swiperSlide>
-            <div (click)="openZoomModal(i)" (keydown.enter)="openZoomModal(i)">
+            <div (click)="openZoomModal(i)" (keydown.enter)="openZoomModal(i)" tabindex="0">
               <ish-product-image
                 [ngClass]="{ 'product-image-zoom': zoomImageIds$ | async }"
                 imageType="L"
                 [imageView]="imageView"
-              ></ish-product-image>
+              />
             </div>
           </ng-template>
         </ng-container>
       </swiper>
-      <ish-product-label></ish-product-label>
+      <ish-product-label />
     </div>
   </div>
 </div>
@@ -46,5 +46,5 @@
     [id]="getZoomImageAnchorId(i)"
     imageType="ZOOM"
     [imageView]="imageView"
-  ></ish-product-image>
+  />
 </ish-modal-dialog>

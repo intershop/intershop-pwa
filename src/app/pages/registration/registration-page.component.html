@@ -1,8 +1,8 @@
-<ish-error-message [error]="error$ | async"></ish-error-message>
+<ish-error-message [error]="error$ | async" />
 
 <div data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="onCreate()">
-    <formly-form [model]="model" [form]="form" [options]="options" [fields]="fields"></formly-form>
+    <formly-form [model]="model" [form]="form" [options]="options" [fields]="fields" />
     <div class="row">
       <div class="col-md-10 col-lg-8 col-xl-6">
         <div class="row form-group">
@@ -26,6 +26,6 @@
   </form>
 </div>
 
-<ish-lazy-address-doctor></ish-lazy-address-doctor>
+<ish-lazy-address-doctor />
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

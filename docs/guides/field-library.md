@@ -14,13 +14,13 @@ kb_sync_latest_only
   - [The Field Library](#the-field-library)
     - [Retrieving Configurations](#retrieving-configurations)
     - [Retrieving Configuration Groups](#retrieving-configuration-groups)
-    - [Defining your own Configurations \& Configuration Groups](#defining-your-own-configurations--configuration-groups)
+    - [Defining Your Own Configurations \& Configuration Groups](#defining-your-own-configurations--configuration-groups)
       - [Defining a FieldLibraryConfiguration](#defining-a-fieldlibraryconfiguration)
       - [Defining a FieldLibraryConfigurationGroup](#defining-a-fieldlibraryconfigurationgroup)
-  - [Automatic Field Replacement using the '#' Pseudo-type](#automatic-field-replacement-using-the--pseudo-type)
+  - [Automatic Field Replacement Using the '#' Pseudo-Type](#automatic-field-replacement-using-the--pseudo-type)
   - [Address Forms](#address-forms)
-    - [How to Use the formly-address-form Component](#how-to-use-the-formly-address-form-component)
-    - [How to Create a New Country Specific Form](#how-to-create-a-new-country-specific-form)
+    - [Using the formly-address-form Component](#using-the-formly-address-form-component)
+    - [Creating a New Country Specific Form](#creating-a-new-country-specific-form)
   - [Standard Reusable Form Configurations](#standard-reusable-form-configurations)
 - [Further References](#further-references)
 
@@ -32,7 +32,8 @@ Formly naturally facilitates the reuse of forms through its configuration-based,
 In the Intershop PWA, there are a number of ways to enhance this reusability and provide developers with the ability to centrally define common form field configurations that can be used throughout the app.
 This article showcases the different ways this can be done.
 
-> **Note:** To understand this documentation, a basic understanding of [Formly](./formly.md) is required.
+> [!NOTE]
+> To understand this documentation, basic knowledge of [Formly](./formly.md) is required.
 
 ## The Field Library
 
@@ -102,9 +103,9 @@ this.fieldLibrary.getConfigurationGroup('personalInfo', {
 });
 ```
 
-### Defining your own Configurations & Configuration Groups
+### Defining Your Own Configurations & Configuration Groups
 
-Whether you're customizing the PWA in a project or contributing to the standard, you might need to expand the field library with further field configurations.
+Whether you are customizing the PWA in a project or contributing to the standard, you might need to expand the field library with further field configurations.
 These provided configurations & configurations groups will be processed by the `FieldLibrary` and made accessible via the relevant methods.
 
 All configurations are registered in the `field-library.module.ts`.
@@ -115,7 +116,8 @@ To define a new reusable field configuration, use the `field-library-configurati
 It will generate a `.configuration.ts` file and register the configuration in the `providers` array of the module. <br/> Populate the file with whatever logic you need and let the `getConfiguration()` method return a `FormlyFieldConfig`.
 You can return a static value or inject services and create a dynamic, smart configuration.
 
-> **Note:** A field library configuration is a typescript file. If you need to adapt these configurations in a project, consider using a [theme-specific override](./customizations.md#theme-specific-overrides) for maximum flexibility.
+> [!NOTE]
+> A field library configuration is a typescript file. If you need to adapt these configurations in a project, consider using a [theme-specific override](./customizations.md#theme-specific-overrides) for maximum flexibility.
 
 #### Defining a FieldLibraryConfigurationGroup
 
@@ -140,12 +142,12 @@ Use the `id` property to define the id through which developers will access the 
 The `shortcutFor` property defines which configurations the group will be mapped to.
 You can introduce dynamic behavior by using [factory providers](https://angular.io/guide/dependency-injection-providers#using-factory-providers) to generate `ConfigurationGroup` objects.
 
-## Automatic Field Replacement using the '#' Pseudo-type
+## Automatic Field Replacement Using the '#' Pseudo-Type
 
 For an even cleaner development experience, it is possible to reuse formly field configurations without using the `FieldLibrary`, saving a lot of boiler-plate code.
 
 To take advantage of this feature, you can use the pseudo-types prefixed by a `#`.
-For example, if you want to use the `firstName` configuration in your form, simply add the following object to your `FormlyFieldConfig[]`:
+For example, if you want to use the `firstName` configuration in your form, add the following object to your `FormlyFieldConfig[]`:
 
 ```typescript
 {
@@ -154,7 +156,7 @@ For example, if you want to use the `firstName` configuration in your form, simp
 ```
 
 Behind the scenes, this will automatically be replaced by the `firstName` configuration.
-To take advantage of override logic, simply add the modifications to the object.
+To take advantage of override logic, add the modifications to the object.
 For example, defining a new label text works like this:
 
 ```typescript
@@ -166,18 +168,19 @@ For example, defining a new label text works like this:
 }
 ```
 
-This is equivalent to the example given in [Retrieving configurations](#retrieving-configurations) but doesn't require you to inject the library.
+This is equivalent to the example given in [Retrieving configurations](#retrieving-configurations) but does not require you to inject the library.
 
-> **Note:** Currently, it is not possible to use configuration groups with this shorthand syntax. This is a known limitation and might be addressed in future versions.
+> [!NOTE]
+> Currently, it is not possible to use configuration groups with this shorthand syntax. This is a known limitation and might be addressed in future versions.
 
 ## Address Forms
 
 Address forms are a special kind of reusable forms and as such are treated differently in the Intershop PWA.
 Under the hood, they also use the functionality explained above, but the address configurations are declared in their own module and access to address forms is simplified via the `formly-address-form` component.
 
-### How to Use the formly-address-form Component
+### Using the formly-address-form Component
 
-The following steps describe how to use the formly-address-form component on your form (see also the example below):
+The following steps describe how to use the formly-address-form component on your form (also see the example below):
 
 Container component:
 
@@ -185,12 +188,12 @@ Container component:
 
 Container template:
 
-1. Add a `<ish-formly-address-form>` component to your template
+1. Add a `<ish-formly-address-form>` component to your template.
 2. Pass your `FormGroup` via the `parentForm` input.
 3. Optional: Define whether you want to display business customer addresses via the `businessCustomer` input.
 4. Optional: Define whether you want to have the address form pre-filled via the `prefilledAddress` input.
 
-### How to Create a New Country Specific Form
+### Creating a New Country Specific Form
 
 Use the _address-form-configuration_ (or shortcut _afc_) schematic with your desired `countryCode` parameter.
 This will create a new configuration under _src/app/shared/formly-address-forms/configurations_ and register it in the `formlyAddressFormsModule`.
@@ -226,7 +229,7 @@ export class AddressFormEXConfiguration extends AddressFormConfiguration {
 
 - Define the model for the country form in `getModel`. The method will be called with the previous model to make keeping field values between countries possible.
 
-- use the `addressesFieldConfiguration` helper method to quickly reuse common address field configurations (see `standardFields`).
+- Use the `addressesFieldConfiguration` helper method to quickly reuse common address field configurations (see `standardFields`).
 
 ## Standard Reusable Form Configurations
 

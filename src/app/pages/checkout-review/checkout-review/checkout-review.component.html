@@ -8,10 +8,7 @@
         [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
         class="details-link"
       >
-        <ish-content-include
-          includeId="include.dialog.safeAndSecure.pagelet2-Include"
-          *ishLazyLoadingContent
-        ></ish-content-include>
+        <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include" *ishLazyLoadingContent />
       </ish-modal-dialog-link>
     </span>
   </h1>
@@ -20,11 +17,11 @@
 <div *ngIf="basket" class="row">
   <!-- Error Message-->
   <div class="col-md-12">
-    <ish-error-message [error]="error" [toast]="false"></ish-error-message>
+    <ish-error-message [error]="error" [toast]="false" />
     <div *ngIf="multipleBuckets" role="alert" class="alert alert-danger">
       {{ 'checkout.shipping.no_methods.message' | translate }}
     </div>
-    <ish-basket-validation-results></ish-basket-validation-results>
+    <ish-basket-validation-results />
   </div>
 
   <div class="col-md-12 col-lg-8">
@@ -34,20 +31,17 @@
         <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
       </p>
     </div>
-    <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval"></ish-basket-approval-info>
+    <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval" />
 
     <ng-container *ishFeature="'messageToMerchant'">
       <!-- MessageToMerchant-->
-      <ish-basket-merchant-message-view
-        [data]="basket"
-        editRouterLink="/checkout/shipping"
-      ></ish-basket-merchant-message-view>
+      <ish-basket-merchant-message-view [data]="basket" editRouterLink="/checkout/shipping" />
     </ng-container>
 
     <div *ishFeature="'businessCustomerRegistration'" class="row">
       <!-- Buyer-->
       <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
-        <ish-basket-buyer [object]="basket" editRouterLink="/checkout/shipping"></ish-basket-buyer>
+        <ish-basket-buyer [object]="basket" editRouterLink="/checkout/shipping" />
       </ish-info-box>
     </div>
     <div class="row d-flex">
@@ -57,7 +51,7 @@
         editRouterLink="/checkout/address"
         class="infobox-wrapper col-md-6"
       >
-        <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true"></ish-address>
+        <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true" />
       </ish-info-box>
 
       <!-- Shipping Address -->
@@ -66,7 +60,7 @@
         editRouterLink="/checkout/address"
         class="infobox-wrapper col-md-6"
       >
-        <ish-address [address]="basket.commonShipToAddress"></ish-address>
+        <ish-address [address]="basket.commonShipToAddress" />
       </ish-info-box>
     </div>
 
@@ -77,7 +71,7 @@
         editRouterLink="/checkout/shipping"
         class="infobox-wrapper col-md-6"
       >
-        <ish-basket-shipping-method [data]="basket"></ish-basket-shipping-method>
+        <ish-basket-shipping-method [data]="basket" />
       </ish-info-box>
 
       <!-- Payment Method -->
@@ -96,11 +90,7 @@
     </div>
 
     <!-- Line Items -->
-    <ish-line-item-list
-      *ngIf="basket.lineItems?.length > 0"
-      [lineItems]="basket.lineItems"
-      [editable]="false"
-    ></ish-line-item-list>
+    <ish-line-item-list *ngIf="basket.lineItems?.length > 0" [lineItems]="basket.lineItems" [editable]="false" />
   </div>
 
   <!-- basket summary -->
@@ -108,12 +98,12 @@
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
     <div class="cost-summary">
-      <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+      <ish-basket-cost-summary [totals]="basket.totals" />
       <form [formGroup]="form" (ngSubmit)="submitOrder()">
-        <formly-form [form]="form" [model]="model" [fields]="fields" [options]="options"></formly-form>
+        <formly-form [form]="form" [model]="model" [fields]="fields" [options]="options" />
         <button class="btn btn-lg btn-block btn-primary" type="submit" [disabled]="formDisabled || submitting">
           <ng-container *ngIf="submitting">
-            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3"></fa-icon>
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3" />
           </ng-container>
           {{ 'checkout.order_review.send.button' | translate }}
         </button>

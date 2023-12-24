@@ -9,7 +9,7 @@
   >
 </h1>
 
-<ish-error-message [error]="error$ | async"></ish-error-message>
+<ish-error-message [error]="error$ | async" />
 
 <div class="section">
   <div class="list-body" data-testing-id="user-list">
@@ -23,7 +23,7 @@
         </div>
         <div class="col-5 col-sm-4 list-item order-2">
           <dl [attr.data-testing-id]="'user-roles-' + user.login">
-            <ish-user-roles-badges [roleIDs]="user.roleIDs"></ish-user-roles-badges>
+            <ish-user-roles-badges [roleIDs]="user.roleIDs" />
           </dl>
         </div>
         <div class="col-12 col-sm-5 list-item order-4 order-sm-3">
@@ -31,7 +31,7 @@
             *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
             [budget]="user.userBudget"
             [attr.data-testing-id]="'user-budget-' + user.login"
-          ></ish-user-budget>
+          />
         </div>
         <div class="col-1 list-item text-right order-sm-4 order-3">
           <div *ngIf="user.login !== (currentUser$ | async)?.login" class="float-right">
@@ -44,7 +44,7 @@
               }}"
               (click)="modalDialog.show(user)"
             >
-              <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+              <fa-icon [icon]="['fas', 'trash-alt']" />
             </a>
 
             <ish-modal-dialog
@@ -66,4 +66,4 @@
   </div>
 </div>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

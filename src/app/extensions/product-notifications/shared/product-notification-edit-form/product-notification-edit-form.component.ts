@@ -33,7 +33,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductNotificationEditFormComponent implements OnChanges {
-  @Input() form: FormGroup;
+  @Input({ required: true }) form: FormGroup;
   @Input() productNotification: ProductNotification;
   @Input() userEmail: string;
 

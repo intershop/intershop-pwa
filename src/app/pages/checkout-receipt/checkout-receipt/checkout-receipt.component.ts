@@ -9,5 +9,5 @@ import { Order } from 'ish-core/models/order/order.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReceiptComponent {
-  @Input() order: Order | Basket;
+  @Input({ required: true }) order: Order | Basket;
 }

@@ -4,7 +4,7 @@
     [itemsPerPage]="itemsPerPage"
     [currentPage]="currentPage"
     (changePage)="changeCurrentPage($event)"
-  ></ish-product-compare-paging>
+  />
 
   <div class="product-list table-compare">
     <div class="table-responsive">
@@ -19,57 +19,53 @@
               class="legacy-col-6 legacy-col-md-3 no-border"
             >
               <div class="product-image">
-                <ish-product-image imageType="M" [link]="true"></ish-product-image>
+                <ish-product-image imageType="M" [link]="true" />
                 <a
                   [routerLink]="[]"
                   class="btn-tool"
                   [title]="'product.compare.remove.link' | translate"
                   (click)="removeFromCompare(product.sku)"
                 >
-                  <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+                  <fa-icon [icon]="['fas', 'trash-alt']" />
                 </a>
               </div>
 
               <div>
-                <ish-product-name></ish-product-name>
+                <ish-product-name />
               </div>
             </td>
           </tr>
           <tr>
             <th class="legacy-col-6 legacy-col-md-3 no-border">&nbsp;</th>
             <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3 no-border">
-              <ish-product-id ishProductContext [sku]="product?.sku"></ish-product-id>
+              <ish-product-id ishProductContext [sku]="product?.sku" />
             </td>
           </tr>
           <tr>
             <th class="legacy-col-6 legacy-col-md-3">&nbsp;</th>
             <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3">
-              <ish-product-add-to-basket ishProductContext [sku]="product?.sku"></ish-product-add-to-basket>
+              <ish-product-add-to-basket ishProductContext [sku]="product?.sku" />
             </td>
           </tr>
 
           <tr>
             <th>{{ 'product.compare.price.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
-              <ish-product-price
-                ishProductContext
-                [sku]="product?.sku"
-                [showInformationalPrice]="true"
-              ></ish-product-price>
+              <ish-product-price ishProductContext [sku]="product?.sku" [showInformationalPrice]="true" />
             </td>
           </tr>
 
           <tr>
             <th></th>
             <td *ngFor="let product of visibleProducts">
-              <ish-product-inventory ishProductContext [sku]="product?.sku"></ish-product-inventory>
+              <ish-product-inventory ishProductContext [sku]="product?.sku" />
             </td>
           </tr>
 
           <tr *ishFeature="'rating'">
             <th>{{ 'product.compare.ratings.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
-              <ish-lazy-product-rating ishProductContext [sku]="product?.sku"></ish-lazy-product-rating>
+              <ish-lazy-product-rating ishProductContext [sku]="product?.sku" />
             </td>
           </tr>
 
@@ -95,9 +91,7 @@
           <tr>
             <th>{{ 'product.specific_attributes.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
-              <ish-product-attributes
-                [product]="getProductWithoutCommonAttributes(product, visibleProducts)"
-              ></ish-product-attributes>
+              <ish-product-attributes [product]="getProductWithoutCommonAttributes(product, visibleProducts)" />
             </td>
           </tr>
         </tbody>
@@ -110,5 +104,5 @@
     [itemsPerPage]="itemsPerPage"
     [currentPage]="currentPage"
     (changePage)="changeCurrentPage($event)"
-  ></ish-product-compare-paging>
+  />
 </ng-container>

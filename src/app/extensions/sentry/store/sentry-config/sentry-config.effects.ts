@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { Injectable, TransferState } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect } from '@ngrx/effects';
 import { Action, Store, select } from '@ngrx/store';
 import { addBreadcrumb, captureEvent, configureScope, init } from '@sentry/browser';

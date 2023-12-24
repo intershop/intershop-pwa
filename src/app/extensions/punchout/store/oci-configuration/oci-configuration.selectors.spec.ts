@@ -49,8 +49,8 @@ describe('Oci Configuration Selectors', () => {
     });
   });
 
-  describe('loadOciConfigurationOptions', () => {
-    const action = ociConfigurationActions.loadOciConfigurationOptions();
+  describe('loadOCIConfigurationOptions', () => {
+    const action = ociConfigurationActions.loadOCIConfigurationOptions();
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -60,10 +60,10 @@ describe('Oci Configuration Selectors', () => {
       expect(getOciConfigurationLoading(store$.state)).toBeTrue();
     });
 
-    describe('loadOciConfigurationOptionsSuccess', () => {
+    describe('loadOCIConfigurationOptionsSuccess', () => {
       const availableFormatters = ['Lowercase', 'Uppercase'];
       const availablePlaceholders = ['Currency', 'Price'];
-      const successAction = ociConfigurationApiActions.loadOciConfigurationOptionsSuccess({
+      const successAction = ociConfigurationApiActions.loadOCIConfigurationOptionsSuccess({
         options: { availableFormatters, availablePlaceholders },
       });
 
@@ -95,9 +95,9 @@ describe('Oci Configuration Selectors', () => {
       });
     });
 
-    describe('loadOciConfigurationOptionsFail', () => {
+    describe('loadOCIConfigurationOptionsFail', () => {
       const error = makeHttpError({ message: 'ERROR' });
-      const failAction = ociConfigurationApiActions.loadOciConfigurationOptionsFail({ error });
+      const failAction = ociConfigurationApiActions.loadOCIConfigurationOptionsFail({ error });
 
       beforeEach(() => {
         store$.dispatch(failAction);
@@ -118,8 +118,8 @@ describe('Oci Configuration Selectors', () => {
     });
   });
 
-  describe('loadOciConfiguration', () => {
-    const action = ociConfigurationActions.loadOciConfiguration();
+  describe('loadOCIConfiguration', () => {
+    const action = ociConfigurationActions.loadOCIConfiguration();
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -129,7 +129,7 @@ describe('Oci Configuration Selectors', () => {
       expect(getOciConfigurationLoading(store$.state)).toBeTrue();
     });
 
-    describe('loadOciConfigurationSuccess', () => {
+    describe('loadOCIConfigurationSuccess', () => {
       const configuration = [
         {
           field: 'NEW_ITEM-UNIT',
@@ -137,7 +137,7 @@ describe('Oci Configuration Selectors', () => {
           formatter: '',
         },
       ];
-      const successAction = ociConfigurationApiActions.loadOciConfigurationSuccess({
+      const successAction = ociConfigurationApiActions.loadOCIConfigurationSuccess({
         configuration,
       });
 
@@ -166,9 +166,9 @@ describe('Oci Configuration Selectors', () => {
       });
     });
 
-    describe('loadOciConfigurationFail', () => {
+    describe('loadOCIConfigurationFail', () => {
       const error = makeHttpError({ message: 'ERROR' });
-      const failAction = ociConfigurationApiActions.loadOciConfigurationFail({ error });
+      const failAction = ociConfigurationApiActions.loadOCIConfigurationFail({ error });
 
       beforeEach(() => {
         store$.dispatch(failAction);
@@ -188,7 +188,7 @@ describe('Oci Configuration Selectors', () => {
     });
   });
 
-  describe('loadOciConfiguration', () => {
+  describe('updateOCIConfiguration', () => {
     const configuration = [
       {
         field: 'NEW_ITEM-UNIT',
@@ -197,7 +197,7 @@ describe('Oci Configuration Selectors', () => {
       },
     ];
 
-    const action = ociConfigurationActions.updateOciConfiguration({ configuration });
+    const action = ociConfigurationActions.updateOCIConfiguration({ configuration });
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -207,8 +207,8 @@ describe('Oci Configuration Selectors', () => {
       expect(getOciConfigurationLoading(store$.state)).toBeTrue();
     });
 
-    describe('updateOciConfigurationSuccess', () => {
-      const successAction = ociConfigurationApiActions.updateOciConfigurationSuccess({
+    describe('updateOCIConfigurationSuccess', () => {
+      const successAction = ociConfigurationApiActions.updateOCIConfigurationSuccess({
         configuration,
       });
 
@@ -237,9 +237,9 @@ describe('Oci Configuration Selectors', () => {
       });
     });
 
-    describe('updateOciConfigurationFail', () => {
+    describe('updateOCIConfigurationFail', () => {
       const error = makeHttpError({ message: 'ERROR' });
-      const failAction = ociConfigurationApiActions.updateOciConfigurationFail({ error });
+      const failAction = ociConfigurationApiActions.updateOCIConfigurationFail({ error });
 
       beforeEach(() => {
         store$.dispatch(failAction);

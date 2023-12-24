@@ -6,7 +6,7 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()">
   <div class="row">
     <fieldset class="col-sm-8">
-      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+      <formly-form [form]="form" [fields]="fields" [model]="model" />
       <div class="form-group row align-items-baseline">
         <div class="col-sm-4"></div>
         <div class="col-sm-offset-4 col-sm-8">
@@ -33,7 +33,7 @@
     <ng-container *ishNotFeature="'maps'">
       <div class="row">
         <div *ngFor="let store of stores$ | async" class="col-md-4 col-xs-12 col-sm-6">
-          <ish-store-address [store]="store"></ish-store-address>
+          <ish-store-address [store]="store" />
         </div>
       </div>
     </ng-container>
@@ -51,11 +51,11 @@
             scrollContainer="parent"
             [scrollDuration]="500"
           >
-            <ish-store-address [store]="store"></ish-store-address>
+            <ish-store-address [store]="store" />
           </div>
         </div>
         <div class="col-12 col-lg-9 pl-lg-0 map-height">
-          <ish-stores-map #map></ish-stores-map>
+          <ish-stores-map #map />
         </div>
         <div class="col-12 d-lg-none">
           <div class="row container p-0">
@@ -67,7 +67,7 @@
               tabindex="0"
               [class.highlight-store]="highlighted$(store) | async"
             >
-              <ish-store-address [store]="store"></ish-store-address>
+              <ish-store-address [store]="store" />
             </div>
           </div>
         </div>
@@ -76,6 +76,6 @@
   </ng-template>
 </ng-container>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />
 
-<ish-error-message [error]="error$ | async"></ish-error-message>
+<ish-error-message [error]="error$ | async" />

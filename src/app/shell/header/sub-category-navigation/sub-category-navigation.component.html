@@ -27,13 +27,13 @@
             : ('header.navigation.expand_category.aria_label' | translate : { '0': subcategory.name })
         "
       >
-        <fa-icon *ngIf="isOpened(subcategory.uniqueId); else closed" [icon]="['fas', 'minus']"></fa-icon>
-        <ng-template #closed> <fa-icon [icon]="['fas', 'plus']"></fa-icon> </ng-template>
+        <fa-icon *ngIf="isOpened(subcategory.uniqueId); else closed" [icon]="['fas', 'minus']" />
+        <ng-template #closed> <fa-icon [icon]="['fas', 'plus']" /> </ng-template>
       </a>
       <ish-sub-category-navigation
         [categoryUniqueId]="subcategory.uniqueId"
         [subCategoriesDepth]="subCategoriesDepth + 1"
-      ></ish-sub-category-navigation>
+      />
     </ng-container>
   </li>
 </ul>

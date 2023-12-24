@@ -37,10 +37,10 @@ describe('Oci Configuration Effects', () => {
 
   describe('loadOciOptionsAndConfiguration$', () => {
     it('should map to actions of type loadOciConfigurationOptions and loadOciConfiguration', () => {
-      const action = ociConfigurationActions.loadOciOptionsAndConfiguration();
+      const action = ociConfigurationActions.loadOCIOptionsAndConfiguration();
 
-      const completion1 = ociConfigurationActions.loadOciConfigurationOptions();
-      const completion2 = ociConfigurationActions.loadOciConfiguration();
+      const completion1 = ociConfigurationActions.loadOCIConfigurationOptions();
+      const completion2 = ociConfigurationActions.loadOCIConfiguration();
 
       actions$ = hot('-a----a----a----', { a: action });
       const expected$ = cold('-(bc)-(bc)-(bc)', { b: completion1, c: completion2 });
@@ -51,7 +51,7 @@ describe('Oci Configuration Effects', () => {
 
   describe('loadOciConfigurationOptions$', () => {
     it('should call the punchoutService for getOciConfigurationOptions', done => {
-      const action = ociConfigurationActions.loadOciConfigurationOptions;
+      const action = ociConfigurationActions.loadOCIConfigurationOptions;
       actions$ = of(action);
 
       effects.loadOciConfigurationOptions$.subscribe(() => {
@@ -61,9 +61,9 @@ describe('Oci Configuration Effects', () => {
     });
 
     it('should map to action of type loadOciConfigurationOptionsSuccess', () => {
-      const action = ociConfigurationActions.loadOciConfigurationOptions;
+      const action = ociConfigurationActions.loadOCIConfigurationOptions;
 
-      const completion = ociConfigurationApiActions.loadOciConfigurationOptionsSuccess({ options: undefined });
+      const completion = ociConfigurationApiActions.loadOCIConfigurationOptionsSuccess({ options: undefined });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-b-b-b)', { b: completion });
@@ -76,9 +76,9 @@ describe('Oci Configuration Effects', () => {
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
-      const action = ociConfigurationActions.loadOciConfigurationOptions;
+      const action = ociConfigurationActions.loadOCIConfigurationOptions;
       const error = makeHttpError({ message: 'invalid' });
-      const completion = ociConfigurationApiActions.loadOciConfigurationOptionsFail({ error });
+      const completion = ociConfigurationApiActions.loadOCIConfigurationOptionsFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -88,7 +88,7 @@ describe('Oci Configuration Effects', () => {
 
   describe('loadOciConfiguration$', () => {
     it('should call the punchoutService for getOciConfiguration', done => {
-      const action = ociConfigurationActions.loadOciConfiguration;
+      const action = ociConfigurationActions.loadOCIConfiguration;
       actions$ = of(action);
 
       effects.loadOciConfiguration$.subscribe(() => {
@@ -98,9 +98,9 @@ describe('Oci Configuration Effects', () => {
     });
 
     it('should map to action of type loadOciConfigurationSuccess', () => {
-      const action = ociConfigurationActions.loadOciConfiguration;
+      const action = ociConfigurationActions.loadOCIConfiguration;
 
-      const completion = ociConfigurationApiActions.loadOciConfigurationSuccess({ configuration: undefined });
+      const completion = ociConfigurationApiActions.loadOCIConfigurationSuccess({ configuration: undefined });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-b-b-b)', { b: completion });
@@ -111,9 +111,9 @@ describe('Oci Configuration Effects', () => {
     it('should map invalid request to action of type loadOciConfigurationFail', () => {
       when(punchoutService.getOciConfiguration()).thenReturn(throwError(() => makeHttpError({ message: 'invalid' })));
 
-      const action = ociConfigurationActions.loadOciConfiguration;
+      const action = ociConfigurationActions.loadOCIConfiguration;
       const error = makeHttpError({ message: 'invalid' });
-      const completion = ociConfigurationApiActions.loadOciConfigurationFail({ error });
+      const completion = ociConfigurationApiActions.loadOCIConfigurationFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -123,7 +123,7 @@ describe('Oci Configuration Effects', () => {
 
   describe('updateOciConfiguration$', () => {
     it('should call the punchoutService for updateOciConfiguration', done => {
-      const action = ociConfigurationActions.updateOciConfiguration({ configuration: [] });
+      const action = ociConfigurationActions.updateOCIConfiguration({ configuration: [] });
       actions$ = of(action);
 
       effects.updateOciConfiguration$.subscribe(() => {
@@ -133,9 +133,9 @@ describe('Oci Configuration Effects', () => {
     });
 
     it('should map to actions of type updateOciConfigurationSuccess and displaySuccessMessage', () => {
-      const action = ociConfigurationActions.updateOciConfiguration({ configuration: [] });
+      const action = ociConfigurationActions.updateOCIConfiguration({ configuration: [] });
 
-      const completion1 = ociConfigurationApiActions.updateOciConfigurationSuccess({ configuration: undefined });
+      const completion1 = ociConfigurationApiActions.updateOCIConfigurationSuccess({ configuration: undefined });
       const completion2 = displaySuccessMessage({ message: 'account.punchout.configuration.save_success.message' });
 
       actions$ = hot('-a----a----a----', { a: action });
@@ -149,9 +149,9 @@ describe('Oci Configuration Effects', () => {
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
-      const action = ociConfigurationActions.updateOciConfiguration({ configuration: [] });
+      const action = ociConfigurationActions.updateOCIConfiguration({ configuration: [] });
       const error = makeHttpError({ message: 'invalid' });
-      const completion = ociConfigurationApiActions.updateOciConfigurationFail({ error });
+      const completion = ociConfigurationApiActions.updateOCIConfigurationFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

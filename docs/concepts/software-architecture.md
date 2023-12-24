@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 This concept introduces some decisions made from an architectural point of view.
 
-The Intershop Progressive Web App is a REST API based storefront client that works on top of the Intershop Commerce Management server version 7.10.
+The Intershop Progressive Web App is a REST API based storefront client that works together with the Intershop Commerce Management server version 11 or 7.10.
 This means that the communication between the Angular based storefront and Intershop Commerce Management only functions via REST.
 Customizations should fit into that REST based pattern as well.
 

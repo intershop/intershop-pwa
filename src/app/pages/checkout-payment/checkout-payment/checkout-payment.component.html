@@ -1,8 +1,8 @@
 <div class="row" *ngIf="basket">
   <div class="col-md-12">
     <!-- Messages -->
-    <ish-error-message [error]="error" [toast]="false"></ish-error-message>
-    <ish-basket-validation-results></ish-basket-validation-results>
+    <ish-error-message [error]="error" [toast]="false" />
+    <ish-basket-validation-results />
 
     <div *ngIf="redirectStatus" role="alert" class="alert alert-danger">
       {{ 'checkout.payment.sorry_message.text' | translate }}
@@ -102,8 +102,7 @@
                     <ish-payment-concardis-creditcard-cvc-detail
                       [paymentInstrument]="basket.payment.paymentInstrument"
                       [paymentMethod]="paymentMethod"
-                    >
-                    </ish-payment-concardis-creditcard-cvc-detail>
+                    />
                   </div>
                 </div>
                 <div class="panel">
@@ -127,7 +126,7 @@
                         [activated]="formIsOpen(i)"
                         (submitPayment)="createNewPaymentInstrument($event)"
                         (cancelPayment)="cancelNewPaymentInstrument()"
-                      ></ish-payment-concardis-creditcard>
+                      />
                     </ng-template>
 
                     <ng-template [ngSwitchCase]="'Concardis_DirectDebit'">
@@ -136,7 +135,7 @@
                         [activated]="formIsOpen(i)"
                         (submitPayment)="createNewPaymentInstrument($event)"
                         (cancelPayment)="cancelNewPaymentInstrument()"
-                      ></ish-payment-concardis-directdebit>
+                      />
                     </ng-template>
 
                     <ng-template [ngSwitchCase]="'CyberSource_CreditCard'">
@@ -145,7 +144,7 @@
                         [activated]="formIsOpen(i)"
                         (submitPayment)="createNewPaymentInstrument($event)"
                         (cancelPayment)="cancelNewPaymentInstrument()"
-                      ></ish-payment-cybersource-creditcard>
+                      />
                     </ng-template>
 
                     <ng-template [ngSwitchCase]="'Payone_CreditCard'">
@@ -154,7 +153,7 @@
                         [activated]="formIsOpen(i)"
                         (submitPayment)="createNewPaymentInstrument($event)"
                         (cancelPayment)="cancelNewPaymentInstrument()"
-                      ></ish-payment-payone-creditcard>
+                      />
                     </ng-template>
 
                     <ng-template ngSwitchDefault>
@@ -165,7 +164,7 @@
                         [activated]="formIsOpen(i)"
                         (cancelPayment)="cancelNewPaymentInstrument()"
                         (submitPayment)="submitParameterForm()"
-                      ></ish-payment-parameter-form>
+                      />
                     </ng-template>
                   </ng-container>
                 </div>
@@ -181,20 +180,20 @@
           'checkout.payment.no_selection_required.info' | translate : { '0': basket.totals?.total | ishPrice }
         }}"
         [toast]="false"
-      ></ish-info-message>
+      />
     </ng-template>
   </div>
   <!-- basket summary -->
   <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
-    <ish-basket-promotion-code [toast]="false"></ish-basket-promotion-code>
+    <ish-basket-promotion-code [toast]="false" />
 
-    <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
-    <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+    <ish-basket-address-summary [basket]="basket" />
+    <ish-basket-items-summary [basket]="basket" />
 
     <div class="cost-summary">
-      <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+      <ish-basket-cost-summary [totals]="basket.totals" />
 
       <button
         class="btn btn-lg btn-block btn-primary"

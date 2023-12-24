@@ -1,8 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
-import { Inject, LOCALE_ID, NgModule } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { Inject, LOCALE_ID, NgModule, TransferState } from '@angular/core';
 import {
   MissingTranslationHandler,
   TranslateCompiler,

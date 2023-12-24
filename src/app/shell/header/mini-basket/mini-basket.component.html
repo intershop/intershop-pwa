@@ -5,7 +5,7 @@
   (isClickedOutside)="collapse()"
 >
   <a [routerLink]="[]" (click)="toggleCollapse()">
-    <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon"></fa-icon>
+    <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
     <span>{{ 'shopping_cart.ministatus.items.text' | translate : { '0': itemCount$ | async } }}</span>
     <ng-container *ngIf="itemTotal$ | async as itemTotal">
       <span> / </span> <span class="mini-cart-price">{{ itemTotal | ishPrice }}</span>
@@ -13,12 +13,12 @@
   </a>
 
   <div *ngIf="!isCollapsed" class="mini-cart">
-    <ish-lazy-mini-basket-content></ish-lazy-mini-basket-content>
+    <ish-lazy-mini-basket-content />
   </div>
 </div>
 
 <a routerLink="/basket" *ngIf="view === 'small'" class="item-count-container position-relative">
-  <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon"></fa-icon>
+  <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
   <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">{{ itemCount$ | async }}</span>
 </a>
 

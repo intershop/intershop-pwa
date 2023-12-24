@@ -19,7 +19,7 @@ interface BudgetValues {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges {
-  @Input() requisition: Requisition;
+  @Input({ required: true }) requisition: Requisition;
 
   costCenter: CostCenter;
   orderTotal: Price;

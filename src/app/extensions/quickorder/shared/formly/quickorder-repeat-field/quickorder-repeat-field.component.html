@@ -6,8 +6,8 @@
   [(quantity)]="model[i].quantity"
   [configuration]="{ quantity: true }"
 >
-  <formly-field class="col-6" [field]="field"></formly-field>
-  <ish-product-quantity class="col-3 col-sm-2 quickorder-line-item"></ish-product-quantity>
+  <formly-field class="col-6" [field]="field" />
+  <ish-product-quantity class="col-3 col-sm-2 quickorder-line-item" />
   <div class="col-3 col-sm-2 d-flex quickorder-line-item">
     <a
       [routerLink]="[]"
@@ -15,7 +15,7 @@
       (click)="remove(i); updateContexts()"
       title="{{ 'quickorder.page.remove.row' | translate }}"
     >
-      <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+      <fa-icon [icon]="['fas', 'trash-alt']" />
     </a>
   </div>
 </div>
