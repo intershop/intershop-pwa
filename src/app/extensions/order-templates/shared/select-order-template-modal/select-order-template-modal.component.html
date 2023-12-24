@@ -9,10 +9,7 @@
   <ng-container *ngIf="showForm; else showSuccess">
     <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
       <div class="modal-body">
-        <ish-select-order-template-form
-          [formGroup]="formGroup"
-          [addMoveProduct]="addMoveProduct"
-        ></ish-select-order-template-form>
+        <ish-select-order-template-form [formGroup]="formGroup" [addMoveProduct]="addMoveProduct" />
       </div>
 
       <div class="modal-footer">

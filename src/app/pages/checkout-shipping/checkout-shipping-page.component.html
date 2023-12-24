@@ -4,8 +4,8 @@
   <div class="row">
     <!-- Messages -->
     <div class="col-md-12">
-      <ish-error-message [error]="basketError$ | async" [toast]="false"></ish-error-message>
-      <ish-basket-validation-results></ish-basket-validation-results>
+      <ish-error-message [error]="basketError$ | async" [toast]="false" />
+      <ish-basket-validation-results />
     </div>
     <!-- Shipping method form-->
     <div *ngIf="shippingMethods$ | async as shippingMethods" class="col-md-12 col-lg-8">
@@ -15,7 +15,7 @@
             {{ 'checkout.shipping_method.no_Selection.error' | translate }}
           </div>
           <h3>{{ 'checkout.shipping_method.selection.heading' | translate }}</h3>
-          <ish-checkout-shipping></ish-checkout-shipping>
+          <ish-checkout-shipping />
         </div>
 
         <ng-template #noShippingMethods>
@@ -25,25 +25,25 @@
       </div>
 
       <ng-container *ngIf="isDesiredDeliveryDate$ | async">
-        <ish-basket-desired-delivery-date [basket]="basket$ | async"> </ish-basket-desired-delivery-date>
+        <ish-basket-desired-delivery-date [basket]="basket$ | async" />
       </ng-container>
 
       <ng-container *ngIf="isBusinessCustomer$ | async">
-        <ish-basket-order-reference [basket]="basket$ | async"></ish-basket-order-reference>
+        <ish-basket-order-reference [basket]="basket$ | async" />
       </ng-container>
 
       <ng-container *ishFeature="'messageToMerchant'">
-        <ish-basket-merchant-message [basket]="basket$ | async"></ish-basket-merchant-message>
+        <ish-basket-merchant-message [basket]="basket$ | async" />
       </ng-container>
     </div>
     <!-- basket summary -->
     <div class="col-md-12 col-lg-4 order-summary" *ngIf="basket$ | async as basket">
       <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-      <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
-      <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+      <ish-basket-address-summary [basket]="basket" />
+      <ish-basket-items-summary [basket]="basket" />
 
       <div class="cost-summary">
-        <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+        <ish-basket-cost-summary [totals]="basket.totals" />
 
         <button
           class="btn btn-lg btn-block btn-primary"
@@ -63,6 +63,6 @@
       ></span>
     </div>
 
-    <ish-loading *ngIf="loading$ | async"></ish-loading>
+    <ish-loading *ngIf="loading$ | async" />
   </div>
 </div>

@@ -19,9 +19,10 @@ export class OrderTemplateService {
    */
   getOrderTemplates(): Observable<OrderTemplate[]> {
     return this.apiService.get(`customers/-/users/-/wishlists`).pipe(
-      unpackEnvelope(),
-      map(orderTemplateData => orderTemplateData.map(this.orderTemplateMapper.fromDataToIds)),
-      map(orderTemplateData => orderTemplateData.map(orderTemplate => this.getOrderTemplate(orderTemplate.id))),
+      unpackEnvelope<OrderTemplateData>(),
+      map(orderTemplateData =>
+        orderTemplateData.map(data => this.getOrderTemplate(this.orderTemplateMapper.fromDataToId(data)))
+      ),
       switchMap(obsArray => (obsArray.length ? forkJoin(obsArray) : of([])))
     );
   }

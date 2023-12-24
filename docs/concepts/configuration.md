@@ -13,7 +13,8 @@ In addition, the PWA, when run with Angular Universal, consists of a server-side
 
 ## Ways of Configuring Angular Applications
 
-> :warning: If available, always prefer configuration via system environment variables and running the PWA with Universal Rendering.
+> [!WARNING]
+> If available, always prefer configuration via system environment variables and running the PWA with Universal Rendering.
 
 ### Angular CLI Environments
 
@@ -54,7 +55,7 @@ As can be seen here, only build-time and deploy-time configuration parameters ca
 
 When running the application in Angular Universal mode within a _Node.js_ environment, we can additionally access the process environment variables via _process.env_.
 This method provides a way to configure the application at deploy time, e.g., when using Docker images.
-Configuration can then be consumed and passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/platform-browser/TransferState).
+Configuration can then be consumed and passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/core/TransferState).
 
 To introduce a new `TransferState` key, add it to the [`state-keys.ts`](../../src/app/core/configurations/state-keys.ts).
 

@@ -47,11 +47,7 @@
   </div>
 </div>
 
-<ish-payment-save-checkbox
-  *ngIf="paymentMethod"
-  [paymentMethod]="paymentMethod"
-  [form]="payoneCreditCardForm"
-></ish-payment-save-checkbox>
+<ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="payoneCreditCardForm" />
 
 <div class="row">
   <div class="offset-md-4 col-md-8">

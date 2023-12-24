@@ -10,11 +10,11 @@
     <div class="modal-body">
       <ng-container *ishProductContextAccess="let product = product">
         <div class="d-flex">
-          <ish-product-image imageType="S" [link]="true"></ish-product-image>
+          <ish-product-image imageType="S" [link]="true" />
           <div>
-            <ish-product-name [link]="false"></ish-product-name>
-            <ish-product-id></ish-product-id>
-            <ish-product-variation-display></ish-product-variation-display>
+            <ish-product-name [link]="false" />
+            <ish-product-id />
+            <ish-product-variation-display />
           </div>
         </div>
 
@@ -26,7 +26,7 @@
           [formGroup]="form"
           (ngSubmit)="submitForm(product.sku)"
         >
-          <formly-form [form]="form" [fields]="fields" [model]="model$ | async"></formly-form>
+          <formly-form [form]="form" [fields]="fields" [model]="model$ | async" />
         </form>
       </ng-container>
     </div>

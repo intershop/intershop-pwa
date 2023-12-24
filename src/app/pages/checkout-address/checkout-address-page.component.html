@@ -11,7 +11,7 @@
         [basket]="basket"
         [error]="(basketError$ | async) || (addressesError$ | async)"
         (nextStep)="nextStep()"
-      ></ish-checkout-address>
+      />
     </ng-container>
     <ng-template #anonymousCheckoutStart>
       <h1>&nbsp;</h1>
@@ -20,9 +20,9 @@
         [basket]="basket"
         [error]="(basketError$ | async) || (addressesError$ | async)"
         (nextStep)="nextStep()"
-      ></ish-checkout-address-anonymous>
+      />
     </ng-template>
   </ng-container>
 
-  <ish-loading *ngIf="(basketLoading$ | async) || (addressesLoading$ | async)"></ish-loading>
+  <ish-loading *ngIf="(basketLoading$ | async) || (addressesLoading$ | async)" />
 </div>

@@ -1,19 +1,19 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
-  OnDestroy,
   Output,
   TemplateRef,
   ViewChild,
   inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, takeUntil } from 'rxjs';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -23,7 +23,7 @@ import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-di
   templateUrl: './address-doctor-modal.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class AddressDoctorModalComponent implements OnDestroy {
+export class AddressDoctorModalComponent {
   @Input() options: ModalOptions;
   @Output() confirmAddress = new EventEmitter<Address>();
   @Output() hidden = new EventEmitter<boolean>();
@@ -31,6 +31,7 @@ export class AddressDoctorModalComponent implements OnDestroy {
 
   private ngbModal = inject(NgbModal);
   private translateService = inject(TranslateService);
+  private destroyRef = inject(DestroyRef);
 
   ngbModalRef: NgbModalRef;
 
@@ -41,8 +42,6 @@ export class AddressDoctorModalComponent implements OnDestroy {
     suggestionText: string;
     address: Address;
   };
-
-  private destroy$ = new Subject<void>();
 
   openModal(address: Address, suggestions: Address[]) {
     this.fields = this.getFields(address, suggestions);
@@ -55,7 +54,7 @@ export class AddressDoctorModalComponent implements OnDestroy {
     };
 
     this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, this.options || { size: 'lg' });
-    this.ngbModalRef.hidden.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.ngbModalRef.hidden.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.hidden.emit(true);
     });
   }
@@ -112,10 +111,5 @@ export class AddressDoctorModalComponent implements OnDestroy {
 
   private formatAddress(address: Address): string {
     return `${address.addressLine1}, ${address.postalCode}, ${address.city}`;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

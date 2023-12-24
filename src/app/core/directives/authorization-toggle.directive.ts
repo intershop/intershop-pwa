@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { ChangeDetectorRef, DestroyRef, Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReplaySubject, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 import { AuthorizationToggleService } from 'ish-core/utils/authorization-toggle/authorization-toggle.service';
 
@@ -20,11 +21,11 @@ import { AuthorizationToggleService } from 'ish-core/utils/authorization-toggle/
 @Directive({
   selector: '[ishIsAuthorizedTo]',
 })
-export class AuthorizationToggleDirective implements OnDestroy {
+export class AuthorizationToggleDirective {
   private subscription: Subscription;
   private enabled$ = new ReplaySubject<boolean>(1);
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -32,7 +33,7 @@ export class AuthorizationToggleDirective implements OnDestroy {
     private viewContainer: ViewContainerRef,
     private authorizationToggle: AuthorizationToggleService
   ) {
-    this.enabled$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(enabled => {
+    this.enabled$.pipe(distinctUntilChanged(), takeUntilDestroyed()).subscribe(enabled => {
       if (enabled) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       } else {
@@ -50,12 +51,7 @@ export class AuthorizationToggleDirective implements OnDestroy {
     }
     this.subscription = this.authorizationToggle
       .isAuthorizedTo(permission)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({ next: val => this.enabled$.next(val) });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -42,7 +42,7 @@ The `options` array configures the presented options in the _Cookie Preferences_
 - The option `id` is the value that will be stored in the user's `cookieConsent` settings.
 - The `name` makes up the checkbox label name, usually given as localization key.
 - The `description` contains the additional option description, usually given as localization key.
-- With the `required` flag, an option can be marked as not non-selectable.
+- With the `required` flag, an option can be marked as not being able to be deselected.
   In this way, the user can be informed that necessary cookies are always set without explicit consent of the user.
 
 The following screenshot is the rendered representation of the default cookie consent options configuration:
@@ -59,7 +59,7 @@ To request the user's cookie consent and to inform the user about the usage of c
 
 ![Cookie Banner](./cookie-banner.png)
 
-This banner is displayed if the user has not yet accepted any of the cookie options, meaning the user does not have the `cookieConsent` cookie set in their browser.
+This banner is displayed if the user has not yet accepted any of the cookie options, meaning the user does not have the `cookieConsent` cookie set in the browser.
 
 Once the user confirms the cookie consent, the cookie is set and the application will reload with the new cookie preferences set and without displaying the cookie banner again.
 When the cookie expires, the cookie banner will be displayed again.
@@ -75,7 +75,7 @@ cookieConsentVersion: 1,
 ```
 
 The cookie consent version can also be set via the environment variable `COOKIE_CONSENT_VERSION` of the deployment.
-This way a re-required cookie consent banner display can be controlled independent from the PWA source code just with a deployment setting.
+In this way, a re-required cookie consent banner display can be controlled independently of the PWA source code just with a deployment setting.
 
 ## Cookie Consent Settings
 
@@ -88,7 +88,7 @@ Its value contains the enabled cookie consent options and the cookie consent ver
 
 ## Enable PWA Functionality Dependent on Cookie Consent Settings
 
-To enable certain functionalities based on a given cookie consent of the user, e.g. because they require setting specific cookies or collect user data, the PWA's `CookiesService` provides a method [`cookieConsentFor()`](../../src/app/core/utils/cookies/cookies.service.ts) to check for the required cookie consent.
+To enable certain functionalities based on a given cookie consent of the user, e.g., because they require setting specific cookies or collect user data, the PWA's `CookiesService` provides a method [`cookieConsentFor()`](../../src/app/core/utils/cookies/cookies.service.ts) to check for the required cookie consent.
 
 The default implementation of the Intershop PWA currently requires an enabled `tracking` option for the cookie consent to start the [Google Tag Manager](https://support.google.com/tagmanager) integration and the [Sentry](https://sentry.io) application monitoring and error tracking.
 In addition, these features must be enabled in the deployment via feature toggle.
@@ -122,7 +122,7 @@ In addition, the `cookies` route should be removed from [`app-routing.module.ts`
 { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
 ```
 
-> **Warning**
+> [!IMPORTANT]
 > When disabling the integrated cookie consent handling, the `cookieConsentFor()` check will no longer work as intended and must be adapted to suit the alternative cookie consent implementation used.
 > To still use the internal `cookieConsentFor()` checks of the current implementation, it may be possible to have the alternative cookie consent implementation store the same `"enabledOptions"` information.
 

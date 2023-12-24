@@ -15,7 +15,7 @@
   </h1>
 
   <!-- Error message -->
-  <ish-error-message [error]="error"></ish-error-message>
+  <ish-error-message [error]="error" />
 
   <!-- create address form -->
   <div id="collapseBasic" class="section" *ngIf="!isCreateAddressFormCollapsed" data-testing-id="create-address-form">
@@ -25,8 +25,7 @@
           [resetForm]="isCreateAddressFormCollapsed"
           (save)="createAddress($event)"
           (cancel)="hideCreateAddressForm()"
-        >
-        </ish-formly-customer-address-form>
+        />
       </div>
     </div>
   </div>
@@ -47,13 +46,10 @@
                 address: preferredInvoiceToAddress
               }
             "
-          ></ng-container>
+          />
           <div *ngIf="isUpdateAddressFormCollapsed(preferredInvoiceToAddress)" class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
-              <formly-form
-                [form]="preferredAddressForm"
-                [fields]="[selectInvoiceConfig, selectShippingConfig]"
-              ></formly-form>
+              <formly-form [form]="preferredAddressForm" [fields]="[selectInvoiceConfig, selectShippingConfig]" />
             </form>
           </div>
         </div>
@@ -72,14 +68,14 @@
                   address: preferredInvoiceToAddress
                 }
               "
-            ></ng-container>
+            />
           </ng-container>
           <ng-template #noInvoiceToAddress>
             <p class="no-address-info">{{ 'account.addresses.no_preferred_invoice_address.text' | translate }}</p>
           </ng-template>
           <div *ngIf="isUpdateAddressFormCollapsed(preferredInvoiceToAddress)" class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
-              <formly-form [form]="preferredAddressForm" [fields]="[selectInvoiceConfig]"></formly-form>
+              <formly-form [form]="preferredAddressForm" [fields]="[selectInvoiceConfig]" />
             </form>
           </div>
         </div>
@@ -95,14 +91,14 @@
                   address: preferredShipToAddress
                 }
               "
-            ></ng-container>
+            />
           </ng-container>
           <ng-template #noShipToAddress>
             <p class="no-address-info">{{ 'account.addresses.no_preferred_shipping_address.text' | translate }}</p>
           </ng-template>
           <div *ngIf="isUpdateAddressFormCollapsed(preferredShipToAddress)" class="col-sm-7 col-md-5">
             <form [formGroup]="preferredAddressForm">
-              <formly-form [form]="preferredAddressForm" [fields]="[selectShippingConfig]"></formly-form>
+              <formly-form [form]="preferredAddressForm" [fields]="[selectShippingConfig]" />
             </form>
           </div>
         </div>
@@ -121,7 +117,7 @@
                   deletable: (addresses$ | async)?.length > 1
                 }
               "
-            ></ng-container>
+            />
           </div>
         </div>
       </ng-container>
@@ -147,7 +143,7 @@
               aria-controls="CollapseBasicEdit"
               data-testing-id="update-address-button"
             >
-              <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+              <fa-icon [icon]="['fas', 'pencil-alt']" />
             </a>
 
             <a
@@ -158,7 +154,7 @@
               (click)="modalDialog.show(address)"
               data-testing-id="delete-address-icon"
             >
-              <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+              <fa-icon [icon]="['fas', 'trash-alt']" />
             </a>
 
             <ish-modal-dialog
@@ -173,7 +169,7 @@
               <p>{{ 'account.addresses.remove_dialog.message_line2' | translate }}</p>
             </ish-modal-dialog>
           </div>
-          <ish-address [address]="address"></ish-address>
+          <ish-address [address]="address" />
         </div>
       </div>
       <!-- edit address form -->
@@ -190,13 +186,12 @@
               [resetForm]="isUpdateAddressFormCollapsed(address)"
               (save)="updateAddress($event)"
               (cancel)="hideUpdateAddressForm()"
-            >
-            </ish-formly-customer-address-form>
+            />
           </div>
         </div>
       </div>
     </ng-template>
   </div>
 
-  <ish-lazy-address-doctor></ish-lazy-address-doctor>
+  <ish-lazy-address-doctor />
 </div>

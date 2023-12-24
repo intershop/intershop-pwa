@@ -1,20 +1,22 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, of } from 'rxjs';
-import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -29,7 +31,7 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
   templateUrl: './select-order-template-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
+export class SelectOrderTemplateModalComponent implements OnInit {
   /**
    * changes the some logic and the translations keys between add or move a product (default: 'add')
    */
@@ -52,7 +54,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
   showForm: boolean;
   modal: NgbModalRef;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
 
@@ -64,11 +66,6 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.orderTemplateOptions$ = this.orderTemplatesFacade.orderTemplatesSelectOptions$(this.addMoveProduct === 'move');
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   /** emit results when the form is valid */
@@ -92,7 +89,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
         filter(options => options.length > 0),
         map(options => options.find(option => option.value === orderTemplateId).label),
         take(1),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(label => {
         this.submitEmitter.emit({
@@ -127,7 +124,7 @@ export class SelectOrderTemplateModalComponent implements OnInit, OnDestroy {
         filter(opts => opts.length > 0),
         map(options => options[0]),
         take(1),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(option => {
         const defaultValue = this.translate.instant('account.order_template.new_order_template.text');

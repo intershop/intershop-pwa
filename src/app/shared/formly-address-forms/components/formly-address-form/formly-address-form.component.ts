@@ -31,7 +31,7 @@ import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-form
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FormlyAddressFormComponent implements OnInit, OnChanges {
-  @Input() parentForm: FormGroup;
+  @Input({ required: true }) parentForm: FormGroup;
   @Input() businessCustomer: boolean;
   @Input() shortForm: boolean;
   @Input() prefilledAddress: Partial<Address>;

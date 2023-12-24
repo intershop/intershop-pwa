@@ -1,7 +1,7 @@
-<ish-error-message [error]="loginError$ | async" [toast]="false"></ish-error-message>
+<ish-error-message [error]="loginError$ | async" [toast]="false" />
 
 <form [formGroup]="form" class="form-horizontal" (ngSubmit)="loginUser()">
-  <formly-form [form]="form" [fields]="fields"></formly-form>
+  <formly-form [form]="form" [fields]="fields" />
 
   <div class="row form-group">
     <div [ngClass]="signInClass || 'offset-md-3 col-md-auto'">

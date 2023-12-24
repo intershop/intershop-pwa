@@ -2,14 +2,15 @@ import {
   ApplicationRef,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   Input,
   OnChanges,
-  OnDestroy,
   ViewChild,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { arraySlices } from 'ish-core/utils/functions';
@@ -21,8 +22,8 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSCarouselComponent implements CMSComponent, OnChanges, OnDestroy {
-  @Input() pagelet: ContentPageletView;
+export class CMSCarouselComponent implements CMSComponent, OnChanges {
+  @Input({ required: true }) pagelet: ContentPageletView;
 
   @ViewChild('ngbCarousel') carousel: NgbCarousel;
 
@@ -32,7 +33,7 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges, OnDestroy 
 
   constructor(private appRef: ApplicationRef) {}
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   ngOnChanges() {
     if (this.pagelet.hasParam('SlideItems')) {
@@ -49,7 +50,7 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges, OnDestroy 
           whenTruthy(),
           map(() => (this.pagelet.booleanParam('StartCycling') ? this.pagelet.numberParam('SlideInterval', 5000) : 0)),
           take(1),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed(this.destroyRef)
         )
         .subscribe(val => {
           if (val && this.carousel) {
@@ -58,10 +59,5 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges, OnDestroy 
           }
         });
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -76,7 +76,8 @@ The configuration can be supplied by setting the environment variable `MULTI_CHA
 Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
 If no environment variables for multi-channel configuration are provided, the configuration will fall back to the content of [`nginx/multi-channel.yaml`](../../nginx/multi-channel.yaml), which can also be customized.
 
-> :warning: Multi-Channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker).
+> [!WARNING]
+> Multi-Channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker).
 
 An extended list of examples can be found in the [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax) guide.
 
@@ -102,12 +103,12 @@ http://pwa/sitemap_pwa.xml
 ```
 
 To make above sitemap index file available under your deployment, you need to add the environment variable `ICM_BASE_URL` to your nginx container.
-Let `ICM_BASE_URL` point to your ICM backend installation, e.g., `https://pwa-ish-demo.test.intershop.com`.
+Let `ICM_BASE_URL` point to your ICM backend installation, e.g., `https://develop.icm.intershop.de`.
 When the container is started it will process cache-ignore and multi-channel templates as well as sitemap proxy rules like this:
 
 ```yaml
 location /sitemap_ {
-proxy_pass https://pwa-ish-demo.test.intershop.com/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/rest/inSPIRED-inTRONICS/en_US/sitemaps/pwa/sitemap_;
+proxy_pass https://develop.icm.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/rest/inSPIRED-inTRONICS/en_US/sitemaps/pwa/sitemap_;
 }
 ```
 

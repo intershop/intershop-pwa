@@ -23,7 +23,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductNotificationDeleteComponent implements OnInit {
-  @Input() productNotification: ProductNotification;
+  @Input({ required: true }) productNotification: ProductNotification;
   @Input() cssClass: string;
 
   productName$: Observable<string>;

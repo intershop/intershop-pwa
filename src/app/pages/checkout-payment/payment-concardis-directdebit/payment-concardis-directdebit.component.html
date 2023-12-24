@@ -1,10 +1,6 @@
-<formly-form [form]="parameterForm" [options]="options" [model]="model" [fields]="fieldConfig"></formly-form>
+<formly-form [form]="parameterForm" [options]="options" [model]="model" [fields]="fieldConfig" />
 
-<ish-payment-save-checkbox
-  *ngIf="paymentMethod"
-  [paymentMethod]="paymentMethod"
-  [form]="parameterForm"
-></ish-payment-save-checkbox>
+<ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="parameterForm" />
 
 <div class="row">
   <div class="offset-md-4 col-md-8">

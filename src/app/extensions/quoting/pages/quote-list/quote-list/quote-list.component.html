@@ -46,7 +46,7 @@
         {{ 'quote.list.table.expiration_date' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.expiration_date' | translate">
-        <ish-quote-expiration-date [quote]="quote"></ish-quote-expiration-date>
+        <ish-quote-expiration-date [quote]="quote" />
       </td>
     </ng-container>
 
@@ -56,7 +56,7 @@
         {{ 'quote.list.table.status' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.status' | translate">
-        <ish-quote-state [quoteId]="quote.id"></ish-quote-state>
+        <ish-quote-state [quoteId]="quote.id" />
       </td>
     </ng-container>
 
@@ -70,7 +70,7 @@
           [title]="'quote.list.delete.button.delete.label' | translate"
           (click)="modalDialog.show(quote)"
         >
-          <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+          <fa-icon [icon]="['fas', 'trash-alt']" />
         </a>
       </td>
     </ng-container>

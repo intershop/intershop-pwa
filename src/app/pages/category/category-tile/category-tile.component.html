@@ -4,7 +4,7 @@
   [attr.data-testing-id]="'category-' + category.uniqueId"
 >
   <a [routerLink]="category | ishCategoryRoute">
-    <ish-category-image [category]="category"></ish-category-image>
+    <ish-category-image [category]="category" />
     <h3>{{ category.name }}</h3>
   </a>
 </div>

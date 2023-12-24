@@ -1,7 +1,7 @@
 <h1>{{ 'account.costcenter.create.heading' | translate }}</h1>
 
 <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
-  <ish-cost-center-form [form]="form"></ish-cost-center-form>
+  <ish-cost-center-form [form]="form" />
   <div class="row">
     <div class="offset-md-4 col-md-8">
       <button
@@ -19,4 +19,4 @@
   </div>
 </form>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

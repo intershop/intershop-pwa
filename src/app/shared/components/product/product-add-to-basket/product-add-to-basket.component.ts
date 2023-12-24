@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
-import { map, startWith, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -21,7 +22,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductAddToBasketComponent implements OnInit, OnDestroy {
+export class ProductAddToBasketComponent implements OnInit {
   /**
    * when 'icon', the button label is an icon, otherwise it is text
    */
@@ -48,7 +49,7 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
    */
   displaySpinner$ = new BehaviorSubject(false);
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'addToBasket');
@@ -62,7 +63,7 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
     this.basketLoading$ = this.checkoutFacade.basketLoading$;
 
     // update emitted to display spinning animation
-    this.basketLoading$.pipe(whenFalsy(), takeUntil(this.destroy$)).subscribe(this.displaySpinner$); // false
+    this.basketLoading$.pipe(whenFalsy(), takeUntilDestroyed(this.destroyRef)).subscribe(this.displaySpinner$); // false
 
     const hasQuantityError$ = this.context.select('hasQuantityError');
     const hasProductError$ = this.context.select('hasProductError');
@@ -87,10 +88,5 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
 
   get displayIcon(): boolean {
     return this.displayType === 'icon';
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, combineLatest, iif, of } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, combineLatest, iif, of } from 'rxjs';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
@@ -12,13 +13,13 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
-export class QuoteWidgetComponent implements OnInit, OnDestroy {
+export class QuoteWidgetComponent implements OnInit {
   loading$: Observable<boolean>;
 
   respondedQuotes: number;
   submittedQuoteRequests: number;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private quotingFacade: QuotingFacade, private cd: ChangeDetectorRef) {}
 
@@ -43,16 +44,11 @@ export class QuoteWidgetComponent implements OnInit, OnDestroy {
         distinctUntilChanged()
       ),
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([responded, submitted]) => {
         this.respondedQuotes = responded;
         this.submittedQuoteRequests = submitted;
         this.cd.detectChanges();
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

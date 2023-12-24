@@ -8,7 +8,7 @@ import { VariationOptionGroup } from 'ish-core/models/product-variation/variatio
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationSelectDefaultComponent {
-  @Input() group: VariationOptionGroup;
+  @Input({ required: true }) group: VariationOptionGroup;
   @Input() uuid: string;
   @Input() multipleOptions: boolean;
 

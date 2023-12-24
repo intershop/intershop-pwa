@@ -4,7 +4,7 @@
     <button ngbDropdownToggle type="button" class="btn variation-select" [id]="uuid + group.id">
       <ng-container *ngFor="let option of group.options">
         <ng-container *ngIf="option.active">
-          <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }"></ng-container>
+          <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
         </ng-container>
       </ng-container>
     </button>
@@ -17,7 +17,7 @@
           [attr.data-testing-id]="group.id + '-' + option.value"
           (click)="optionChange(group.id, option.value)"
         >
-          <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }"></ng-container>
+          <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
         </button>
       </ng-container>
     </div>
@@ -29,7 +29,7 @@
   <div class="mobile-variation-select">
     <div *ngFor="let option of group.options" class="mobile-variation-option">
       <a [routerLink]="[]" (click)="optionChange(group.id, option.value)">
-        <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }"></ng-container>
+        <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
       </a>
     </div>
   </div>

@@ -2,7 +2,7 @@
   <div *ngIf="products.length" class="product-list-container" data-testing-id="recently-viewed">
     <h2>{{ 'recentlyViewed.component.heading' | translate }}</h2>
 
-    <ish-products-list [productSKUs]="products" listStyle="carousel" listItemStyle="tile"></ish-products-list>
+    <ish-products-list [productSKUs]="products" listStyle="carousel" listItemStyle="tile" />
 
     <a [routerLink]="['/recently']" class="view-all" data-testing-id="view-all">{{
       'common.view_all.link' | translate

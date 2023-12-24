@@ -15,11 +15,14 @@ export function resetOnLogoutMeta<S>(reducer: ActionReducer<S>): ActionReducer<S
   };
 }
 
-export function resetSubStatesOnActionsMeta<S>(subStates: (keyof S)[], actions: Action[]): MetaReducer<S, Action> {
+export function resetSubStatesOnActionsMeta<S extends object>(
+  subStates: (keyof S)[],
+  actions: Action[]
+): MetaReducer<S, Action> {
   return (reducer): ActionReducer<S> =>
     (state: S, action: Action) => {
       if (actions?.some(a => a.type === action.type)) {
-        return reducer(omit<S>(state, ...subStates) as S, action);
+        return reducer(omit(state, ...subStates) as S, action);
       }
       return reducer(state, action);
     };

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject, filter, map, shareReplay, take, takeUntil } from 'rxjs';
+import { Observable, filter, map, shareReplay, take } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -16,7 +17,7 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
   templateUrl: './oci-configuration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OciConfigurationFormComponent implements OnInit, OnDestroy {
+export class OciConfigurationFormComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   submitted = false;
 
@@ -31,7 +32,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
   fields: FormlyFieldConfig[];
   fields$: Observable<FormlyFieldConfig[]>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private punchoutFacade: PunchoutFacade) {}
 
@@ -47,7 +48,7 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
       filter(configItems => configItems?.length > 0),
       take(1),
       map(this.getModel),
-      takeUntil(this.destroy$)
+      takeUntilDestroyed(this.destroyRef)
     );
   }
 
@@ -164,10 +165,5 @@ export class OciConfigurationFormComponent implements OnInit, OnDestroy {
 
   get formDisabled() {
     return this.form.invalid && this.submitted;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

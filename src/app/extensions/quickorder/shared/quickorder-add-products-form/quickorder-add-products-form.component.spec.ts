@@ -1,13 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
-
-import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-field/quickorder-repeat-field.component';
 
 import { QuickorderAddProductsFormComponent } from './quickorder-add-products-form.component';
 
@@ -17,19 +13,10 @@ describe('Quickorder Add Products Form Component', () => {
   let element: HTMLElement;
   const shoppingFacade = mock(ShoppingFacade);
 
-  const quickOrderFormlyConfig: ConfigOption = {
-    types: [
-      {
-        name: 'repeat',
-        component: MockComponent(QuickorderRepeatFieldComponent),
-      },
-    ],
-  };
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [QuickorderAddProductsFormComponent],
-      imports: [FormlyModule.forChild(quickOrderFormlyConfig), FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });
@@ -50,7 +37,13 @@ describe('Quickorder Add Products Form Component', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('formly-group formly-field')).toMatchInlineSnapshot(`
       NodeList [
-        <formly-field><ish-quickorder-repeat-field></ish-quickorder-repeat-field></formly-field>,
+        <formly-field
+        ><ish-repeat-test-field
+          >RepeatFieldComponent: addProducts repeat { "addText": "quickorder.page.add.row", "addMoreText":
+          "quickorder.page.add.row.multiple", "numberMoreRows": 5, "label": "", "placeholder": "",
+          "disabled": false}</ish-repeat-test-field
+        ></formly-field
+      >,
       ]
     `);
   });

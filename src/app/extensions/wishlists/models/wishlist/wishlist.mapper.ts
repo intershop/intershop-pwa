@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, SecurityContext, inject } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -8,7 +9,9 @@ import { Wishlist, WishlistItem } from './wishlist.model';
 
 @Injectable({ providedIn: 'root' })
 export class WishlistMapper {
-  private static parseIDfromURI(uri: string): string {
+  private sanitizer = inject(DomSanitizer);
+
+  private static parseIdFromURI(uri: string): string {
     const match = /wishlists[^\/]*\/([^\?]*)/.exec(uri);
     if (match) {
       return match[1];
@@ -17,6 +20,7 @@ export class WishlistMapper {
       return;
     }
   }
+
   fromData(wishlistData: WishlistData, wishlistId: string): Wishlist {
     if (wishlistData) {
       let items: WishlistItem[];
@@ -39,7 +43,7 @@ export class WishlistMapper {
       }
       return {
         id: wishlistId,
-        title: wishlistData.title,
+        title: this.sanitizer.sanitize(SecurityContext.HTML, wishlistData.title),
         itemsCount: wishlistData.itemsCount || 0,
         preferred: wishlistData.preferred,
         public: wishlistData.public,
@@ -54,7 +58,7 @@ export class WishlistMapper {
     if (wishlist && id) {
       return {
         id,
-        title: wishlist.title,
+        title: this.sanitizer.sanitize(SecurityContext.HTML, wishlist.title),
         preferred: wishlist.preferred,
         public: wishlist.public,
       };
@@ -64,13 +68,7 @@ export class WishlistMapper {
   /**
    * extract ID from URI
    */
-  fromDataToIds(wishlistData: WishlistData): Wishlist {
-    if (wishlistData) {
-      return {
-        id: WishlistMapper.parseIDfromURI(wishlistData.uri),
-        title: wishlistData.title,
-        preferred: wishlistData.preferred,
-      };
-    }
+  fromDataToId(wishlistData: WishlistData): string {
+    return wishlistData ? WishlistMapper.parseIdFromURI(wishlistData.uri) : undefined;
   }
 }

@@ -7,19 +7,15 @@
         }}</a>
       </div>
       <div class="col-md-9">
-        <ish-breadcrumb></ish-breadcrumb>
+        <ish-breadcrumb />
         <h1>{{ 'application.recentlyViewed.product.heading' | translate }}</h1>
-        <ish-products-list
-          [productSKUs]="products"
-          listItemCSSClass="col-6 col-lg-4"
-          listItemStyle="tile"
-        ></ish-products-list>
+        <ish-products-list [productSKUs]="products" listItemCSSClass="col-6 col-lg-4" listItemStyle="tile" />
       </div>
     </ng-container>
 
     <ng-template #empty>
       <div class="col-md-12">
-        <ish-breadcrumb></ish-breadcrumb>
+        <ish-breadcrumb />
         <h1>{{ 'application.recentlyViewed.heading' | translate }}</h1>
         <p>{{ 'application.recentlyViewed.empty' | translate }}</p>
       </div>

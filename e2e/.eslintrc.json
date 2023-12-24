@@ -3,6 +3,9 @@
   "overrides": [
     {
       "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["e2e/tsconfig.json", "e2e/cypress/tsconfig.json"]
+      },
       "rules": {
         "@typescript-eslint/naming-convention": [
           "error",

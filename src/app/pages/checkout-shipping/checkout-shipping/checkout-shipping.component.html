@@ -1,6 +1,6 @@
 <div *ngIf="(basket$ | async) && (shippingMethods$ | async)">
   <!-- shipping method selection -->
   <form [formGroup]="shippingForm" class="form-horizontal">
-    <formly-form [form]="shippingForm" [fields]="shippingConfig$ | async" [model]="model"> </formly-form>
+    <formly-form [form]="shippingForm" [fields]="shippingConfig$ | async" [model]="model" />
   </form>
 </div>

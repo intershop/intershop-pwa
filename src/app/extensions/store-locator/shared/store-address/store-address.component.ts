@@ -8,5 +8,5 @@ import { StoreLocation as StoreModel } from '../../models/store-location/store-l
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoreAddressComponent {
-  @Input() store: StoreModel;
+  @Input({ required: true }) store: StoreModel;
 }

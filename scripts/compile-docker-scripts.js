@@ -25,7 +25,7 @@ fs.writeFileSync(
   { encoding: 'utf-8' }
 );
 
-glob.sync('./src/ssr/server-scripts/*.js').forEach(file => {
+glob.sync('./src/ssr/server-scripts/*.js', { dotRelative: true }).forEach(file => {
   console.log('compiling', file);
   webpack(
     {

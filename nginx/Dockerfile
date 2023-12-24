@@ -22,7 +22,7 @@ ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.8.0/gomplate
 RUN chmod 700 /gomplate
 ADD https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert
 RUN chmod 700 /usr/bin/mkcert
-COPY --from=nginx/nginx-prometheus-exporter:0.11.0 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
+COPY --from=nginx/nginx-prometheus-exporter:1.0.0 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
 ENV CACHE=on
 ENV COMPRESSION=on
 ENV DEVICE_DETECTION=on

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { uniq } from 'lodash-es';
-import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
@@ -20,7 +21,7 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
   templateUrl: './basket-validation-results.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class BasketValidationResultsComponent implements OnInit, OnDestroy {
+export class BasketValidationResultsComponent implements OnInit {
   validationResults$: Observable<BasketValidationResultType>;
 
   hasGeneralBasketError$: Observable<boolean>;
@@ -35,7 +36,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
   scrollDuration = 500;
   scrollSpacing = 64;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 
@@ -45,7 +46,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
     this.validationResults$ = this.checkoutFacade.basketValidationResults$;
 
     // update emitted to display spinning animation
-    this.validationResults$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.validationResults$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       if (this.itemHasBeenRemoved) {
         this.continueCheckout.emit();
         this.itemHasBeenRemoved = false;
@@ -59,49 +60,44 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
     this.errorMessages$ = this.validationResults$.pipe(
       map(results =>
         uniq(
-          results?.errors &&
-            results.errors
-              .filter(
-                error =>
-                  !this.isLineItemMessage(error) &&
-                  ![
-                    'basket.validation.line_item_shipping_restrictions.error',
-                    'basket.validation.basket_not_covered.error',
-                  ].includes(error.code)
-              )
-              .map(error =>
-                error.parameters?.shippingRestriction ? error.parameters.shippingRestriction : error.message
-              )
+          results?.errors
+            ?.filter(
+              error =>
+                !this.isLineItemMessage(error) &&
+                ![
+                  'basket.validation.line_item_shipping_restrictions.error',
+                  'basket.validation.basket_not_covered.error',
+                ].includes(error.code)
+            )
+            .map(error =>
+              error.parameters?.shippingRestriction ? error.parameters.shippingRestriction : error.message
+            )
         ).filter(message => !!message)
       )
     );
 
     this.undeliverableItems$ = this.validationResults$.pipe(
-      map(
-        results =>
-          results?.errors &&
-          results.errors
-            .filter(error => error.code === 'basket.validation.line_item_shipping_restrictions.error' && error.lineItem)
-            .map(error => ({ ...error.lineItem }))
+      map(results =>
+        results?.errors
+          ?.filter(error => error.code === 'basket.validation.line_item_shipping_restrictions.error' && error.lineItem)
+          .map(error => ({ ...error.lineItem }))
       )
     );
 
     this.removedItems$ = this.validationResults$.pipe(
-      map(
-        results =>
-          results?.infos &&
-          results.infos
-            .map(info => ({
-              message: info.message,
-              productSKU: info.parameters?.productSku,
-              price: info.lineItem?.price,
-            }))
-            .filter(info => !!info.productSKU)
+      map(results =>
+        results?.infos
+          ?.map(info => ({
+            message: info.message,
+            productSKU: info.parameters?.productSku,
+            price: info.lineItem?.price,
+          }))
+          .filter(info => !!info.productSKU)
       )
     );
 
     this.infoMessages$ = this.validationResults$.pipe(
-      map(results => uniq(results?.infos && results.infos.map(info => info.message)).filter(message => !!message))
+      map(results => uniq(results?.infos?.map(info => info.message)).filter(message => !!message))
     );
   }
 
@@ -118,10 +114,5 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
   deleteItem(itemId: string) {
     this.checkoutFacade.deleteBasketItem(itemId);
     this.itemHasBeenRemoved = true;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

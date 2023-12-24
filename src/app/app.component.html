@@ -1,15 +1,15 @@
 <div [ngClass]="wrapperClasses$ | async" class="d-flex flex-column min-vh-100">
-  <header data-testing-id="page-header" class="top"><ish-header></ish-header></header>
+  <header data-testing-id="page-header" class="top"><ish-header /></header>
 
   <div class="wrapper">
     <div role="main" class="container main-container">
-      <router-outlet></router-outlet>
+      <router-outlet />
     </div>
   </div>
 
   <footer data-testing-id="section-footer" class="mt-auto">
-    <ish-footer [deviceType]="deviceType$ | async"></ish-footer>
+    <ish-footer [deviceType]="deviceType$ | async" />
   </footer>
 </div>
 
-<ish-cookies-banner></ish-cookies-banner>
+<ish-cookies-banner />

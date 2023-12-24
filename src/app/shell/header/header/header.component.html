@@ -1,15 +1,11 @@
 <ng-container [ngSwitch]="headerType$ | async">
-  <ish-header-error *ngSwitchCase="'error'"></ish-header-error>
-  <ish-header-simple *ngSwitchCase="'simple'"></ish-header-simple>
-  <ish-header-checkout *ngSwitchCase="'checkout'"></ish-header-checkout>
+  <ish-header-error *ngSwitchCase="'error'" />
+  <ish-header-simple *ngSwitchCase="'simple'" />
+  <ish-header-checkout *ngSwitchCase="'checkout'" />
 
   <ng-container *ngSwitchDefault>
-    <ish-header-default
-      [isSticky]="isSticky$ | async"
-      [deviceType]="deviceType$ | async"
-      [reset]="reset$ | async"
-    ></ish-header-default>
+    <ish-header-default [isSticky]="isSticky$ | async" [deviceType]="deviceType$ | async" [reset]="reset$ | async" />
   </ng-container>
 </ng-container>
 
-<ish-back-to-top></ish-back-to-top>
+<ish-back-to-top />

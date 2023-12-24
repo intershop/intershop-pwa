@@ -1,14 +1,14 @@
 <div class="container user-info-box">
   <div class="user-info-box-item">{{ 'header.welcome.text' | translate }}</div>
-  <div class="user-info-box-item"><ish-login-status view="full"></ish-login-status></div>
+  <div class="user-info-box-item"><ish-login-status view="full" /></div>
   <div *ishFeature="'compare'" class="user-info-box-item">
-    <ish-lazy-product-compare-status view="full"></ish-lazy-product-compare-status>
+    <ish-lazy-product-compare-status view="full" />
   </div>
   <div *ishFeature="'quickorder'" class="user-info-box-item">
-    <ish-lazy-quickorder-link></ish-lazy-quickorder-link>
+    <ish-lazy-quickorder-link />
   </div>
   <div *ishFeature="'wishlists'" class="user-info-box-item">
-    <ish-lazy-wishlists-link view="full"></ish-lazy-wishlists-link>
+    <ish-lazy-wishlists-link view="full" />
   </div>
-  <div class="user-info-box-item"><ish-language-switch view="accordion" placement="up"></ish-language-switch></div>
+  <div class="user-info-box-item"><ish-language-switch view="accordion" placement="up" /></div>
 </div>

@@ -43,7 +43,7 @@
           <ish-form-control-feedback
             [messages]="{ required: 'account.date.month.error.required' }"
             [control]="cyberSourceCreditCardForm.controls.expirationMonth"
-          ></ish-form-control-feedback>
+          />
         </div>
         <div class="col-6">
           <select
@@ -58,7 +58,7 @@
           <ish-form-control-feedback
             [messages]="{ required: 'account.date.year.error.required' }"
             [control]="cyberSourceCreditCardForm.controls.expirationYear"
-          ></ish-form-control-feedback>
+          />
         </div>
       </div>
     </div>
@@ -80,14 +80,13 @@
         <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
       </ng-template>
       <a [ngbPopover]="CVCHelp" [popoverTitle]="'checkout.credit_card.cvc.popover.title' | translate" placement="auto"
-        ><fa-icon [icon]="['fas', 'question-circle']"></fa-icon>
+        ><fa-icon [icon]="['fas', 'question-circle']" />
       </a>
     </div>
   </div>
 </div>
 
-<ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="cyberSourceCreditCardForm">
-</ish-payment-save-checkbox>
+<ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="cyberSourceCreditCardForm" />
 
 <div class="offset-md-4 col-md-8">
   <div class="form-group">

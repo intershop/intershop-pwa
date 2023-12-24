@@ -4,14 +4,11 @@
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": [
-          "tsconfig.json",
-          "e2e/cypress/tsconfig.json",
-          "schematics/tsconfig.json"
-        ],
+        "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [
+        "plugin:@typescript-eslint/recommended",
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:@ngrx/recommended",
@@ -26,6 +23,7 @@
         "jsdoc",
         "unicorn",
         "unused-imports",
+        "@typescript-eslint",
         "ish-custom-rules"
       ],
       "rules": {
@@ -122,7 +120,6 @@
         ],
         "@typescript-eslint/no-empty-function": "warn",
         "@typescript-eslint/no-empty-interface": "warn",
-        "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/no-inferrable-types": [
           "warn",
           {
@@ -137,7 +134,7 @@
             "allowTernary": true
           }
         ],
-        "@typescript-eslint/no-var-requires": "error",
+        "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/prefer-optional-chain": "warn",
         "arrow-body-style": ["warn", "as-needed"],
         "arrow-parens": ["warn", "as-needed"],
@@ -358,11 +355,6 @@
               "message": "The usage of \"tap\" in effects, if not related to 3rd party integrations, can usually be transformed properly into RxJS stream code."
             },
             {
-              "name": "@typescript-eslint/experimental-utils",
-              "filePattern": ".*eslint-rules/.*",
-              "message": "Change to \"@typescript-eslint/utils\"."
-            },
-            {
               "importNamePattern": "^DomService$",
               "name": "ish-core/utils/dom/dom.service",
               "filePattern": "^.*\\.(component|directive)\\.ts*$",
@@ -402,7 +394,8 @@
         "ish-custom-rules/no-testbed-with-then": "error",
         "ish-custom-rules/no-var-before-return": "warn",
         "ish-custom-rules/ordered-imports": "warn",
-        "ish-custom-rules/private-destroy-field": "error",
+        "ish-custom-rules/private-destroy-field": "warn",
+        "ish-custom-rules/private-destroyRef-field": "error",
         "ish-custom-rules/project-structure": [
           "warn",
           {
@@ -827,8 +820,7 @@
         "rxjs-angular/prefer-takeuntil": [
           "error",
           {
-            "checkDestroy": true,
-            "checkComplete": true,
+            "alias": ["takeUntilDestroyed"],
             "checkDecorators": ["Component", "Pipe", "Directive"]
           }
         ],
@@ -857,7 +849,12 @@
         "rxjs/no-unsafe-catch": "error",
         "rxjs/no-unsafe-subject-next": "error",
         "rxjs/no-unsafe-switchmap": "error",
-        "rxjs/no-unsafe-takeuntil": "error",
+        "rxjs/no-unsafe-takeuntil": [
+          "error",
+          {
+            "alias": ["takeUntilDestroyed"]
+          }
+        ],
         "unicorn/no-null": [
           "warn",
           {
@@ -910,15 +907,13 @@
     },
     {
       "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:@angular-eslint/template/accessibility"
+      ],
       "rules": {
-        "@angular-eslint/template/accessibility-alt-text": "error",
-        "@angular-eslint/template/accessibility-elements-content": "error",
-        "@angular-eslint/template/accessibility-label-for": "error",
-        "@angular-eslint/template/accessibility-valid-aria": "error",
-        "@angular-eslint/template/click-events-have-key-events": "error",
-        "@angular-eslint/template/mouse-events-have-key-events": "error",
-        "@angular-eslint/template/no-positive-tabindex": "error"
+        "@angular-eslint/template/no-positive-tabindex": "error",
+        "@angular-eslint/template/prefer-self-closing-tags": "error"
       }
     },
     {

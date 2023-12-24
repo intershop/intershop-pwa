@@ -116,7 +116,7 @@ describe('Basket Shipping Address Widget Component', () => {
           "formly-field",
           "formly-group",
           "formly-field",
-          "ng-component",
+          "ish-select-test-field",
           "ish-formly-customer-address-form",
         ]
       `);
@@ -142,7 +142,7 @@ describe('Basket Shipping Address Widget Component', () => {
           "formly-field",
           "formly-group",
           "formly-field",
-          "ng-component",
+          "ish-select-test-field",
           "ish-formly-customer-address-form",
           "ish-lazy-address-doctor",
         ]
@@ -172,7 +172,7 @@ describe('Basket Shipping Address Widget Component', () => {
             "formly-field",
             "formly-group",
             "formly-field",
-            "ng-component",
+            "ish-select-test-field",
             "ish-formly-customer-address-form",
           ]
         `);
@@ -196,7 +196,7 @@ describe('Basket Shipping Address Widget Component', () => {
             "formly-field",
             "formly-group",
             "formly-field",
-            "ng-component",
+            "ish-select-test-field",
             "ish-formly-customer-address-form",
             "ish-lazy-address-doctor",
           ]

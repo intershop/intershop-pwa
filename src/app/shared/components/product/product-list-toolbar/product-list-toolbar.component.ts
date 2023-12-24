@@ -11,10 +11,10 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListToolbarComponent implements OnChanges {
+  @Input({ required: true }) sortableAttributes: SortableAttributesType[];
   @Input() itemCount: number;
   @Input() viewType: ViewType = 'grid';
   @Input() sortBy = 'default';
-  @Input() sortableAttributes: SortableAttributesType[];
   @Input() currentPage: number;
   @Input() pageIndices: { value: number; display: string }[];
   @Input() fragmentOnRouting: string;

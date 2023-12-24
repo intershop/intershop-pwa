@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, merge } from 'rxjs';
-import { take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Observable, merge } from 'rxjs';
+import { take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
@@ -25,7 +26,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   templateUrl: './cost-center-buyers-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
+export class CostCenterBuyersPageComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
   buyers$: Observable<B2bUser[]>;
@@ -49,7 +50,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
 
   selectAll = true;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private appFacade: AppFacade,
@@ -66,7 +67,7 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
     this.buyers$ = this.organizationManagementFacade.costCenterUnassignedBuyers$();
     // set model and form fields
     this.buyers$
-      .pipe(withLatestFrom(this.appFacade.currentCurrency$), take(1), takeUntil(this.destroy$))
+      .pipe(withLatestFrom(this.appFacade.currentCurrency$), take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe(([buyers, currency]) => {
         this.model = this.getModel(buyers, currency);
         this.fields = this.getFields();
@@ -185,10 +186,5 @@ export class CostCenterBuyersPageComponent implements OnDestroy, OnInit {
 
   get formDisabled() {
     return (this.form.invalid && this.submitted) || !this.model.addBuyers.some(buyer => buyer.selected);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

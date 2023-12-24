@@ -55,10 +55,7 @@
     </div>
 
     <div class="alert-box-body">
-      <ish-basket-validation-items
-        [lineItems]="undeliverableItems"
-        (deleteItem)="deleteItem($event)"
-      ></ish-basket-validation-items>
+      <ish-basket-validation-items [lineItems]="undeliverableItems" (deleteItem)="deleteItem($event)" />
     </div>
   </div>
 </ng-container>
@@ -75,5 +72,5 @@
   >
     {{ 'shopping_cart.adjusted_items.warnung' | translate }}
   </div>
-  <ish-basket-validation-products [items]="removedItems"></ish-basket-validation-products>
+  <ish-basket-validation-products [items]="removedItems" />
 </ng-container>

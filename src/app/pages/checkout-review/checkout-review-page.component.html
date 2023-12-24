@@ -4,7 +4,7 @@
     [error]="error$ | async"
     [submitting]="orderLoading$ | async"
     (createOrder)="onCreateOrder()"
-  ></ish-checkout-review>
+  />
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async" />
 </div>

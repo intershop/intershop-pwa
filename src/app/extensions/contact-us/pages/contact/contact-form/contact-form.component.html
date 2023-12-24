@@ -1,7 +1,7 @@
 <p>{{ 'helpdesk.contactus.prolog' | translate }}</p>
 <p class="indicates-required"><span class="required">*</span>{{ 'helpdesk.contactus.indicates' | translate }}</p>
 <form class="form-horizontal" [formGroup]="contactForm" name="ContactUsForm" (ngSubmit)="submitForm()">
-  <formly-form [form]="contactForm" [fields]="fields" [model]="model$ | async"></formly-form>
+  <formly-form [form]="contactForm" [fields]="fields" [model]="model$ | async" />
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">

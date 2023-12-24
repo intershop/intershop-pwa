@@ -13,13 +13,13 @@
   <ng-container *ngIf="productNotification$ | async as productNotification; else createNotificationButton">
     <form [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
       <div class="modal-body">
-        <ish-product-image imageType="L"></ish-product-image>
+        <ish-product-image imageType="L" />
 
         <ish-product-notification-edit-form
           [form]="productNotificationForm"
           [productNotification]="productNotification"
           [userEmail]="userEmail$ | async"
-        ></ish-product-notification-edit-form>
+        />
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary" data-testing-id="product-notification-edit-dialog-edit">
@@ -35,12 +35,9 @@
   <ng-template #createNotificationButton>
     <form [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
       <div class="modal-body">
-        <ish-product-image imageType="L"></ish-product-image>
+        <ish-product-image imageType="L" />
 
-        <ish-product-notification-edit-form
-          [form]="productNotificationForm"
-          [userEmail]="userEmail$ | async"
-        ></ish-product-notification-edit-form>
+        <ish-product-notification-edit-form [form]="productNotificationForm" [userEmail]="userEmail$ | async" />
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary">

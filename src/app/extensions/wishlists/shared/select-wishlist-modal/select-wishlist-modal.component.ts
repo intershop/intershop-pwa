@@ -1,19 +1,21 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject, of } from 'rxjs';
-import { filter, map, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -29,7 +31,7 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
   templateUrl: './select-wishlist-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectWishlistModalComponent implements OnInit, OnDestroy {
+export class SelectWishlistModalComponent implements OnInit {
   /**
    * changes the some logic and the translations keys between add or move a product (default: 'add')
    */
@@ -53,7 +55,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
 
   modal: NgbModalRef;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
@@ -85,7 +87,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
         filter(options => options.length > 0),
         map(options => options.find(option => option.value === wishlistId).label),
         take(1),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(label => {
         this.submitEmitter.emit({
@@ -121,7 +123,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
         take(1),
         withLatestFrom(this.wishlistsFacade.currentWishlist$),
         map(([preferredWishlist, selectedWishlist]) => ({ preferredWishlist, selectedWishlist })),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(data => {
         // don't show wishlist selection form but add a product immediately if there is a preferred wishlist
@@ -191,10 +193,5 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     return this.addMoveProduct === 'add'
       ? 'account.wishlists.add_to_wishlist.confirmation'
       : 'account.wishlists.move_wishlist_item.confirmation';
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

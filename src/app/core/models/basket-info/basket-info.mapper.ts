@@ -12,7 +12,7 @@ export class BasketInfoMapper {
     const { itemId } = payload;
     const infos = payload?.infos
       ?.filter(info => !minorInfos.includes(info.code))
-      ?.filter(info => !info.causes.find(cause => minorCauses.includes(cause.code)));
+      ?.filter(info => !info.causes?.find(cause => minorCauses.includes(cause.code)));
 
     return itemId
       ? infos?.map(info => ({

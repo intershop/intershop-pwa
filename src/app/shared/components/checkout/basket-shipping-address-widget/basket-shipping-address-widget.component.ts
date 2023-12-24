@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core/lib/core';
-import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
-import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { filter, map, shareReplay, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -20,7 +21,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   templateUrl: './basket-shipping-address-widget.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
+export class BasketShippingAddressWidgetComponent implements OnInit {
   @Input() showErrors = true;
 
   @Output() collapseChange = new BehaviorSubject(true);
@@ -46,7 +47,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
   editAddress: Partial<Address>;
   emptyOptionLabel = 'checkout.addresses.select_shipping_address.button';
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private accountFacade: AccountFacade,
@@ -72,7 +73,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
             ? 'checkout.addresses.select_a_different_shipping_address.default'
             : 'checkout.addresses.select_shipping_address.button'
         ),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(label => (this.emptyOptionLabel = label));
 
@@ -102,7 +103,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
           onInit: field => {
             field.form
               .get('id')
-              .valueChanges.pipe(whenTruthy(), takeUntil(this.destroy$))
+              .valueChanges.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef))
               .subscribe(addressId => this.checkoutFacade.assignBasketAddress(addressId, 'shipping'));
           },
         },
@@ -115,7 +116,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
         // prevent assigning the address at an anonymous basket after login
         filter(([addresses, basket]) => !!basket?.customerNo && !!addresses?.length),
         take(1),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([addresses, basket]) => {
         if (!basket.commonShipToAddress && addresses.length === 1) {
@@ -123,14 +124,8 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.shippingAddress$.pipe(takeUntil(this.destroy$)).subscribe(() => (this.collapse = true));
+    this.shippingAddress$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => (this.collapse = true));
   }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   showAddressForm(address?: Address) {
     if (address) {
       this.editAddress = { ...address };
@@ -149,7 +144,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
 
         this.featureEventService
           .eventResultListener$('addressDoctor', 'check-address', id)
-          .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+          .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
           .subscribe(({ data }) => {
             if (data) {
               this.checkoutFacade.updateBasketAddress(data);
@@ -168,7 +163,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
 
         this.featureEventService
           .eventResultListener$('addressDoctor', 'check-address', id)
-          .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+          .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
           .subscribe(({ data }) => {
             if (data) {
               this.checkoutFacade.createBasketAddress(data, 'shipping');

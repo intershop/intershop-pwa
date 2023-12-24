@@ -4,13 +4,13 @@
     'account.punchout.configuration.button.label' | translate
   }}</a>
 </h1>
-<ish-error-message [error]="error"></ish-error-message>
+<ish-error-message [error]="error" />
 
 <p *ngIf="punchoutTypes?.length > 0; else noPunchoutTypes">
   {{ 'account.punchout.subtitle' | translate }}
 </p>
 <ng-template #noPunchoutTypes>
-  <ish-info-message message="account.punchout.no.protocols.info" [toast]="false"></ish-info-message>
+  <ish-info-message message="account.punchout.no.protocols.info" [toast]="false" />
 </ng-template>
 
 <div *ngIf="punchoutTypes?.length > 1">

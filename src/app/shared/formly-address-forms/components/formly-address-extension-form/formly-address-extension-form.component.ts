@@ -11,7 +11,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyAddressExtensionFormComponent implements OnInit {
-  @Input() form: FormGroup;
+  @Input({ required: true }) form: FormGroup;
   @Input() businessCustomer: boolean;
   @Input() model: Partial<{ email: string; taxationId: string }> = {}; // model with data for the update mode.
 

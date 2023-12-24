@@ -1,5 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { APP_INITIALIZER, NgModule, TransferState } from '@angular/core';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 

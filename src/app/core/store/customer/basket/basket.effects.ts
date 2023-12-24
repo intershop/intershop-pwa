@@ -19,6 +19,7 @@ import {
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
@@ -71,6 +72,7 @@ export class BasketEffects {
   constructor(
     private actions$: Actions,
     private basketService: BasketService,
+    private basketItemsService: BasketItemsService,
     private apiTokenService: ApiTokenService,
     private router: Router,
     private store: Store
@@ -229,7 +231,7 @@ export class BasketEffects {
       mapToPayloadProperty('desiredDeliveryDate'),
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       mergeMap(([date, basket]) =>
-        this.basketService.updateBasketItemsDesiredDeliveryDate(date, basket?.lineItems).pipe(
+        this.basketItemsService.updateBasketItemsDesiredDeliveryDate(date, basket?.lineItems).pipe(
           switchMap(() => [
             setBasketAttribute({
               attribute: {
@@ -407,7 +409,7 @@ export class BasketEffects {
 
         return (
           desiredDeliveryDate
-            ? this.basketService.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, basket.lineItems)
+            ? this.basketItemsService.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, basket.lineItems)
             : of([])
         ).pipe(
           map(() => continueCheckout({ targetStep: CheckoutStepType.Receipt })),

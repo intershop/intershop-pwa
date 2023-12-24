@@ -16,7 +16,7 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectWishlistFormComponent implements OnInit {
-  @Input() formGroup: FormGroup;
+  @Input({ required: true }) formGroup: FormGroup;
   /**
    * changes the some logic and the translations keys between add or move a product (default: 'add')
    */

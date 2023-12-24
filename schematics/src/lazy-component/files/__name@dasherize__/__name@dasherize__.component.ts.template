@@ -3,12 +3,13 @@ import {
   Injector,
   ComponentRef,
   <% if (inputNames.length) { %>Input, OnChanges, <% } %>
+  <% if (guardDisplay) { %>inject, DestroyRef,<% } %>
   <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
 
 <% if(guardDisplay) { %>
   import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-  import { takeUntil } from 'rxjs/operators';
+  import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 <% } %>
 
 import type { <%= classify(originalName) %>Component as OriginalComponent } from '<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
@@ -36,6 +37,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
 <% } %>
 
   private component: ComponentRef<OriginalComponent>;
+  <% if (guardDisplay) { %> private destroyRef = inject(DestroyRef);<% } %>
 
   constructor(
     <% if(guardDisplay) { %>private featureToggleService: FeatureToggleService,<% } %>
@@ -43,7 +45,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   ) {}
 
   <% if(!guardDisplay) { %>async<% } %> ngOnInit() {
-    <% if(guardDisplay) { %> this.featureToggleService.enabled$('<%= camelize(guardDisplay) %>').pipe(takeUntil(this.destroy$)).subscribe(async enabled => {
+    <% if(guardDisplay) { %> this.featureToggleService.enabled$('<%= camelize(guardDisplay) %>').pipe(takeUntilDestroyed(this.destroyRef)).subscribe(async enabled => {
       if (enabled) {
     <% } %>
 

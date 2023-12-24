@@ -121,7 +121,7 @@ export class TactonSelfServiceApiService {
       map(result => ({
         ...result,
         // override faulty API response
-        response: { status: 'OK' as 'OK' },
+        response: { status: 'OK' as const },
       }))
     );
   }

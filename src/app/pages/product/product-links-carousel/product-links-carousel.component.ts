@@ -32,13 +32,13 @@ export class ProductLinksCarouselComponent {
   /**
    * list of products which are assigned to the specific product link type
    */
-  @Input() set links(links: ProductLinks) {
+  @Input({ required: true }) set links(links: ProductLinks) {
     this.state.set('products', () => links.products);
   }
   /**
    * title that should displayed for the specific product link type
    */
-  @Input() productLinkTitle: string;
+  @Input({ required: true }) productLinkTitle: string;
   /**
    * display only available products if set to 'true'
    */

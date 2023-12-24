@@ -30,12 +30,11 @@ describe('Lazy Captcha Component', () => {
     await TestBed.configureTestingModule({
       providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     })
-      .overrideModule(CaptchaV2ComponentModule, { set: { entryComponents: [CaptchaV2Component] } })
+      .overrideModule(CaptchaV2ComponentModule, { set: { declarations: [CaptchaV2Component] } })
       .overrideModule(CaptchaV3ComponentModule, {
         set: {
           imports: [TranslateModule.forRoot()],
           declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
-          entryComponents: [CaptchaV3Component],
           providers: [
             { provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' },
             { provide: ReCaptchaV3Service },
@@ -65,7 +64,7 @@ describe('Lazy Captcha Component', () => {
 
   /* eslint-disable jest/no-disabled-tests */
   xit('should render v2 component when configured', fakeAsync(() => {
-    when(captchaFacade.captchaVersion$).thenReturn(of(2 as 2));
+    when(captchaFacade.captchaVersion$).thenReturn(of(2 as const));
     fixture.detectChanges();
 
     tick(500);
@@ -75,7 +74,7 @@ describe('Lazy Captcha Component', () => {
     expect(v2Cmp.cssClass).toEqual('d-none');
   }));
   xit('should render v3 component when configured', fakeAsync(() => {
-    when(captchaFacade.captchaVersion$).thenReturn(of(3 as 3));
+    when(captchaFacade.captchaVersion$).thenReturn(of(3 as const));
     fixture.detectChanges();
 
     tick(500);

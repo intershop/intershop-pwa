@@ -22,7 +22,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
-  @Input() basket: Basket;
+  @Input({ required: true }) basket: Basket;
 
   form = new FormGroup({});
   fields: FormlyFieldConfig[];

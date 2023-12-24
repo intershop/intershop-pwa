@@ -1,5 +1,5 @@
 <div class="marketing-area">
-  <ish-content-include includeId="include.basket.base.top.pagelet2-Include"></ish-content-include>
+  <ish-content-include includeId="include.basket.base.top.pagelet2-Include" />
 </div>
 
 <ng-container *ngIf="basket$ | async as basket; else emptyBasket">
@@ -9,18 +9,18 @@
       [error]="basketError$ | async"
       [loading]="basketLoading$ | async"
       (nextStep)="nextStep()"
-    ></ish-shopping-basket>
+    />
   </ng-container>
 </ng-container>
 
 <ng-template #emptyBasket>
-  <ish-shopping-basket-empty [error]="basketError$ | async"></ish-shopping-basket-empty>
+  <ish-shopping-basket-empty [error]="basketError$ | async" />
 
-  <ish-loading *ngIf="basketLoading$ | async"></ish-loading>
+  <ish-loading *ngIf="basketLoading$ | async" />
 </ng-template>
 
-<ish-lazy-recently-viewed></ish-lazy-recently-viewed>
+<ish-lazy-recently-viewed />
 
 <div class="marketing-area">
-  <ish-content-include includeId="include.basket.base.bottom.pagelet2-Include"></ish-content-include>
+  <ish-content-include includeId="include.basket.base.bottom.pagelet2-Include" />
 </div>

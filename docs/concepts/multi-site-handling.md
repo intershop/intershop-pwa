@@ -21,7 +21,8 @@ The aforementioned scenario can now be run with just one PWA instance and a reve
 
 ## Configuration
 
-:warning: Refer to [Multi-Site Configurations](../guides/multi-site-configurations.md) for an explanation of what is possible with multi-site configurations and how to define them.
+> [!WARNING]
+> Refer to [Multi-Site Configurations](../guides/multi-site-configurations.md) for an explanation of what is possible with multi-site configurations and how to define them.
 
 To set ICM channels and applications dynamically, you have to use URL rewriting in a reverse proxy running in front of the PWA instances.
 The values have to be provided as URL parameters (not to be confused with query parameters).

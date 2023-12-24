@@ -14,7 +14,7 @@ import { Requisition } from '../../models/requisition/requisition.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReceiptRequisitionComponent implements OnInit {
-  @Input() basket: Basket;
+  @Input({ required: true }) basket: Basket;
 
   requisition$: Observable<Requisition>;
 

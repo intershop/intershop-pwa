@@ -2,14 +2,16 @@ const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
 
-function countFolders(path) {
-  return (path.match(/\//g) || []).length;
+function countFolders(pathName) {
+  return (pathName.match(/\//g) || []).length;
 }
 
 const content = glob
   .sync('**/.gitignore')
   .sort((a, b) => countFolders(a) - countFolders(b))
+  .sort()
   .map(gitignore => {
+    gitignore = gitignore.replace(/\\/g, '/');
     const dir = path.dirname(gitignore);
     let part = `# from ${gitignore}\n`;
     part += fs
