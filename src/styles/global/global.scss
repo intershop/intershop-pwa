@@ -148,7 +148,7 @@ a {
   @include media-breakpoint-up(xl) {
     $container-width-xl: 100vw; // Example value, adjust as needed
 
-    min-height: calc($container-width-xl * (1 / 0.84)); // Average of 0.81 and 0.87
+    min-height: calc($container-width-xl * (1 / 1.1));
   }
 
   @include media-breakpoint-down(sm) {
