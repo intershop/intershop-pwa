@@ -5,17 +5,20 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Introduction
+# Authentication with the Co-Browse Identity Provider
+
+> [!IMPORTANT]
+> To use the Co-Browse functionality ICM version 11.8.0 or above is needed.
+
+This document describes the authentication mechanism if the co-browse identity provider is used to enable an agent to log in on behalf of a user.
+If you need an introduction regarding authentication in the PWA, read the [Authentication Concept](../concepts/authentication.md) first.
+
+## Introduction
 
 The co-browse functionality is needed for the Intershop Customer Engagement Center (CEC).
 In this application a contact center agent can start a "co-browsing" storefront session.
 That means, the agent is logged in to the PWA on behalf of the user.
 Technically a special identity provider (the co-browse identity provider) is needed to handle the authentication of the user with the help of an authentication token that is provided by the CEC as an URL parameter.
-
-# Authentication with the Co-Browse Identity Provider
-
-This document describes the authentication mechanism if the co-browse identity provider is used to enable an agent to log in on behalf of a user.
-If you need an introduction regarding authentication in the PWA, read the [Authentication Concept](../concepts/authentication.md) first.
 
 ## Configuration
 
@@ -31,14 +34,16 @@ identityProviders: {
 },
 ```
 
-> :warning: **NOTE:** This configuration enables the `Co-Browse` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work. As said this configuration example is only relevant for development purposes.
+> [!WARNING]
+> This configuration enables the `Co-Browse` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work.
+> As mentioned above, this configuration example is only relevant for development purposes.
 
-For production like deployments, the PWA has to be be configured to use the `Co-Browse` identity provider only when the user enters the `cobrowse` route.
+For production-like deployments, the PWA has to be be configured to use the `Co-Browse` identity provider only when the user enters the `cobrowse` route.
 This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path][nginx-startup]) for the NGINX container.
 Nevertheless, the SSR process needs to be provided with the co-browse identity provider configuration as one of the available identity providers.
-This way the global `identityProvider` configuration is left to be the default ICM configuration.
+In this way, the global `identityProvider` configuration is left to be the default ICM configuration.
 
-The following is an example co-browse identity provider configuration for `docker-compose` that enables the co-browse identity provider on the `cobrowse` route only.
+The following is a sample co-browse identity provider configuration for `docker-compose` that enables the co-browse identity provider on the `cobrowse` route only.
 
 ```yaml
 pwa:
@@ -52,10 +57,10 @@ nginx:
     OVERRIDE_IDENTITY_PROVIDERS: |
       .+:
         - path: /cobrowse
-          type: cobrowse
+          type: CoBrowse
 ```
 
-For the current PWA Helm Chart that is also used in the PWA Flux deployments the same co-browse configuration would look like this.
+For the current PWA Helm Chart that is also used in the PWA Flux deployments, the same co-browse configuration would look like this:
 
 ```yaml
 environment:
@@ -71,10 +76,11 @@ cache:
       value: |
         .+:
           - path: /cobrowse
-            type: cobrowse
+            type: CoBrowse
 ```
 
-> :exclamation: **NOTE:** Be aware that the `OVERRIDE_IDENTITY_PROVIDERS` configuration has to match a potentially used `multiChannel` configuration.
+> [!IMPORTANT]
+> Be aware that the `OVERRIDE_IDENTITY_PROVIDERS` configuration has to match a potentially used `multiChannel` configuration.
 
 ```yaml
 environment:
@@ -90,11 +96,13 @@ cache:
       value: |
         .+:
           - path: /en/cobrowse
-            type: cobrowse
+            type: CoBrowse
           - path: /de/cobrowse
-            type: cobrowse
+            type: CoBrowse
           - path: /fr/cobrowse
-            type: cobrowse
+            type: CoBrowse
+          - path: /b2c/cobrowse
+            type: CoBrowse
 
   multiChannel: |
     .+:
@@ -114,8 +122,8 @@ cache:
 
 ## Login
 
-A user can login by navigating to the `/cobrowse` route.
-For this purpose the query param `access-token` needs to be added to the given route.
+A user can log in by navigating to the `/cobrowse` route.
+For this purpose, the query param `access-token` needs to be added to the given route.
 When the login is successful the call center agent user is logged in on behalf of a customer.
 The catalogs and products, prices, promotions, content etc. are displayed to the agent in the same way as to the user.
 

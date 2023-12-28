@@ -28,7 +28,8 @@ identityProviders: {
 ```
 
 > [!WARNING]
-> This configuration enables the `Punchout` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work. As mentioned above, this configuration example is only relevant for punchout development purposes.
+> This configuration enables the `Punchout` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work.
+> As mentioned above, this configuration example is only relevant for punchout development purposes.
 
 For production-like deployments, the PWA has to be configured to use the `Punchout` identity provider only when the user enters the `punchout` route.
 This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path][nginx-startup]) for the NGINX container.
@@ -71,7 +72,7 @@ cache:
             type: Punchout
 ```
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > Be aware that the `OVERRIDE_IDENTITY_PROVIDERS` configuration has to match a potentially used `multiChannel` configuration.
 
 ```yaml

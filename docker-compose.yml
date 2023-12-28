@@ -97,6 +97,8 @@ services:
       #   .+:
       #     - path: /en/punchout
       #       type: Punchout
+      #     - path: /en/cobrowse
+      #       type: CoBrowse
       MULTI_CHANNEL: |
         .+:
           - baseHref: /en

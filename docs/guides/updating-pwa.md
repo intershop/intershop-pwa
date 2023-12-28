@@ -75,7 +75,9 @@ bootstrap                             4.4.1     4.5.0    4.5.0  intershop-pwa  d
 
 Perform updates with `ng update` as well.
 
-> [!IMPORTANT] > `@types/node` should always remain on the LTS version.
+> [!IMPORTANT]
+>
+> `@types/node` should always remain on the LTS version.
 > You can update to specific versions with `ng update @types/node@12`.
 
 ### 3. Update Project Utilities for Testing, Reporting and Linting
