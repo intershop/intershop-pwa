@@ -15,6 +15,7 @@ bitnami
 blocklist
 breakline
 categoryref
+cobrowse
 colorcode
 compodoc
 concardis

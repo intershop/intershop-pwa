@@ -819,6 +819,7 @@
   "checkout.widget.shipping-address.heading": "Adresse de livraison",
   "checkout.widget.shipping_method.desired_delivery_date": "Date de livraison souhaitée",
   "checkout.widget.shipping_method.heading": "Mode d’expédition",
+  "cobrowse.error.missing.parameter": "Échec de démarrer la co-navigation. Le paramètre de départ est requis.",
   "common.button.navbarCollapsed.text": "Basculer la navigation",
   "common.button.spinning.label": "En cours d’ajout...",
   "common.date_format.letters.M": "m",
