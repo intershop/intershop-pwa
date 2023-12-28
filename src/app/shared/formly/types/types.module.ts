@@ -15,6 +15,10 @@ import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha
 
 import { DirectivesModule } from 'ish-core/directives.module';
 import { IconModule } from 'ish-core/icon.module';
+import { ContentIncludeModule } from 'ish-shared/cms/components/content-include/content-include.module';
+import { ContentPageletModule } from 'ish-shared/cms/components/content-pagelet/content-pagelet.module';
+import { ComponentsModule } from 'ish-shared/formly/components/components.module';
+import { CheckboxFieldWithIncludeComponent } from 'ish-shared/formly/types/checkbox-field-with-include/checkbox-field-with-include.component';
 import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
 import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
@@ -33,6 +37,7 @@ import { TextareaFieldComponent } from './textarea-field/textarea-field.componen
 const fieldComponents = [
   CaptchaFieldComponent,
   CheckboxFieldComponent,
+  CheckboxFieldWithIncludeComponent,
   DatePickerFieldComponent,
   FieldsetFieldComponent,
   HtmlTextFieldComponent,
@@ -47,12 +52,15 @@ const fieldComponents = [
   imports: [
     CaptchaExportsModule,
     CommonModule,
+    ComponentsModule,
+    ContentIncludeModule,
+    ContentPageletModule,
     DirectivesModule,
     FormlySelectModule,
     IconModule,
     NgbDatepickerModule,
+    NgbDatepickerModule,
     ReactiveFormsModule,
-    TranslateModule,
 
     FormlyBaseModule.forChild({
       types: [
@@ -141,6 +149,10 @@ const fieldComponents = [
           component: CheckboxFieldComponent,
           wrappers: ['form-field-checkbox-horizontal'],
         },
+        {
+          name: 'ish-checkbox-field-with-include',
+          component: CheckboxFieldWithIncludeComponent,
+        },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
         {
           name: 'ish-fieldset-field',
@@ -158,6 +170,9 @@ const fieldComponents = [
         },
       ],
     }),
+    ReactiveFormsModule,
+    TranslateModule,
+    TranslateModule,
   ],
   providers: [
     { provide: NgbDateParserFormatter, useClass: LocalizedParserFormatter, deps: [TranslateService] },

@@ -22,6 +22,8 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
+import { ContentIncludeModule } from 'ish-shared/cms/components/content-include/content-include.module';
+import { ContentPageletModule } from 'ish-shared/cms/components/content-pagelet/content-pagelet.module';
 
 import { AddressDoctorExportsModule } from '../extensions/address-doctor/exports/address-doctor-exports.module';
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
@@ -53,9 +55,7 @@ import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms
 import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './cms/components/cms-video/cms-video.component';
-import { ContentIncludeComponent } from './cms/components/content-include/content-include.component';
 import { ContentNavigationComponent } from './cms/components/content-navigation/content-navigation.component';
-import { ContentPageletComponent } from './cms/components/content-pagelet/content-pagelet.component';
 import { ContentSlotComponent } from './cms/components/content-slot/content-slot.component';
 import { ContentViewcontextComponent } from './cms/components/content-viewcontext/content-viewcontext.component';
 import { AddressComponent } from './components/address/address/address.component';
@@ -157,6 +157,8 @@ const importExportModules = [
   CdkTableModule,
   CommonModule,
   CompareExportsModule,
+  ContentIncludeModule,
+  ContentPageletModule,
   ContactUsExportsModule,
   DirectivesModule,
   FeatureToggleModule,
@@ -257,9 +259,7 @@ const exportedComponents = [
   BreadcrumbComponent,
   ClearBasketComponent,
   ConfirmLeaveModalComponent,
-  ContentIncludeComponent,
   ContentNavigationComponent,
-  ContentPageletComponent,
   ContentViewcontextComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,
