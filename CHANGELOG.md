@@ -7,6 +7,63 @@ kb_everyone
 
 # Changelog
 
+## [5.0.0](https://github.com/intershop/intershop-pwa/releases/tag/5.0.0) (2023-12-31)
+
+**The Intershop PWA 5.0.0 was developed and tested with Intershop Commerce Management version 11.7.0.**
+
+_The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newer ICM 7.10.x versions. The section "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" will list functionalities that are only available with ICM releases newer than the listed LTS version._
+
+**For development and testing of the PWA Node.js version 18.16.0 LTS (including npm 9.5.1) was used and is therefore the recommended version.**
+
+**It is recommended to use the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 for PWA 5.0.0 deployments.**
+
+### Features
+
+- button for clearing cart (#1537) ([dd5f34f](https://github.com/intershop/intershop-pwa/commit/dd5f34f))
+- add custom response headers with NGINX (#1456) ([28268d8](https://github.com/intershop/intershop-pwa/commit/28268d8))
+- use an optional shared Redis cache for multiple NGINX instances ([e266e28](https://github.com/intershop/intershop-pwa/commit/e266e28))
+- use OpenResty image instead of NGINX ([7d7c8ec](https://github.com/intershop/intershop-pwa/commit/7d7c8ec))
+- **ICM 11:** experimental Design View support for the PWA (within the Intershop Administration Portal) (#1462) ([8452343](https://github.com/intershop/intershop-pwa/commit/8452343))
+- **ICM 11:** co-browsing support via Customer Engagement Center (#1475) ([e7346b5](https://github.com/intershop/intershop-pwa/commit/e7346b5))
+- **ICM 11:** switch to ICM 11 as project dependency and configuration for develop, demo and review servers ([0594bcc](https://github.com/intershop/intershop-pwa/commit/0594bcc))
+
+### Bug Fixes
+
+- console error after saving user roles selection ([cbb77f5](https://github.com/intershop/intershop-pwa/commit/cbb77f5))
+- avoid scrolling up after show/hide permissions ([6263074](https://github.com/intershop/intershop-pwa/commit/6263074))
+- use take instead of first to prevent EmptyError on missing translation (#1554) ([0904c9e](https://github.com/intershop/intershop-pwa/commit/0904c9e))
+- sanitize potentially malicious values in order template and wishlist titles (#1551) ([4602463](https://github.com/intershop/intershop-pwa/commit/4602463))
+- remove sortkey 'default' from product list REST calls to prevent inconsistent results (#1550) ([cf7541c](https://github.com/intershop/intershop-pwa/commit/cf7541c))
+- trailing '/' in path results to a wrong multi channel configuration (#1553) ([c500625](https://github.com/intershop/intershop-pwa/commit/c500625))
+- handle static ICM content links in CMS content (#1543) ([eb03fde](https://github.com/intershop/intershop-pwa/commit/eb03fde))
+- respect cache settings for static files from PWA ([cc2057a](https://github.com/intershop/intershop-pwa/commit/cc2057a))
+- navigate to anchor on master filter selection (#1534) ([f1e8947](https://github.com/intershop/intershop-pwa/commit/f1e8947))
+- include rewriting for scripts artifact in deploy-url handling (#1532) ([4304cf2](https://github.com/intershop/intershop-pwa/commit/4304cf2))
+- revert irrelevant changes of "wrong ICM is used with errors on SSR" (#1533) ([a48c7ae](https://github.com/intershop/intershop-pwa/commit/a48c7ae))
+- forward protocol correctly from reverse proxy (#1524) ([eca77f9](https://github.com/intershop/intershop-pwa/commit/eca77f9))
+- deploy URL not set right for all CSS 'url' references (e.g. fonts) (#1521) ([e6d4dfb](https://github.com/intershop/intershop-pwa/commit/e6d4dfb))
+- wrong ICM is used when configured ICM throws errors on SSR (#1519) ([8c2c203](https://github.com/intershop/intershop-pwa/commit/8c2c203))
+- display salutions on registration page rendering (#1518) ([51b52ad](https://github.com/intershop/intershop-pwa/commit/51b52ad))
+- **ICM 11:** sort basket line items by position - missing in ICM 11 REST API ([67bba20](https://github.com/intershop/intershop-pwa/commit/67bba20))
+
+### Documentation
+
+- rename 'upgrade' to 'update' as suggested ([367fe70](https://github.com/intershop/intershop-pwa/commit/367fe70))
+- documentation review adjustments ([7123e81](https://github.com/intershop/intershop-pwa/commit/7123e81))
+- use new GitHub blockquote highlighting options ([6423534](https://github.com/intershop/intershop-pwa/commit/6423534))
+- improved getting started guide ([39f1ba4](https://github.com/intershop/intershop-pwa/commit/39f1ba4))
+- punchout identity provider documentation improvement ([bb21aab](https://github.com/intershop/intershop-pwa/commit/bb21aab))
+
+### BREAKING CHANGES
+
+- Switch to ICM 11 as required/tested version and `-` as default application.
+- Switch from the plain standard NGINX Docker image to an OpenResty Docker image that provides more flexibility to configure the underlying NGINX (see [Migrations / From 4.2 to 5.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-42-to-50) for more details).
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- experimental Design View support for the PWA (within the Intershop Administration Portal) (#1462) - ICM 11.7.0
+- co-browsing support via Customer Engagement Center (#1475) - ICM 11.8.0
+
 ## [4.2.0](https://github.com/intershop/intershop-pwa/releases/tag/4.2.0) (2023-09-11)
 
 **required Intershop Commerce Management version: 7.10.39.2**
