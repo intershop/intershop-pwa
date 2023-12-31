@@ -139,6 +139,9 @@ If no environment variable is set, this feature is disabled.
 
 ### Add additional headers
 
+> [!IMPORTANT]
+> To configure additional headers the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 or above should be used.
+
 For some security or functional reasons it is necessary to add additional headers to page responses.
 To make such headers configurable, the environment variable `ADDITIONAL_HEADERS` is introduced.
 
@@ -185,6 +188,9 @@ The cache duration for pre-rendered pages can be customized using `CACHE_DURATIO
 The value supplied must be in the `time` format that is supported by [nginx proxy_cache_valid](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid).
 
 ### Shared Redis Cache
+
+> [!IMPORTANT]
+> To configure additional headers the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 or above should be used.
 
 Multiple nginx instances can share the same Redis cache if this feature is activated.
 To use the shared Redis cache, the environment variable `REDIS_URI` must be provided with a valid Redis Entrypoint.
