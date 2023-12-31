@@ -41,7 +41,7 @@ describe('Price Helper', () => {
     it.each(dataProviderInvalid)(
       `should throw something like %s when diffing '%j' and '%j'`,
       (error: RegExp, p1: Price, p2: Price) => {
-        expect(() => PriceHelper.diff(p1, p2)).toThrowError(error);
+        expect(() => PriceHelper.diff(p1, p2)).toThrow(error);
       }
     );
   });
@@ -75,7 +75,7 @@ describe('Price Helper', () => {
     it.each(dataProviderInvalid)(
       `should throw something like %s when summing '%j' and '%j'`,
       (error: RegExp, p1: Price, p2: Price) => {
-        expect(() => PriceHelper.sum(p1, p2)).toThrowError(error);
+        expect(() => PriceHelper.sum(p1, p2)).toThrow(error);
       }
     );
   });
@@ -109,7 +109,7 @@ describe('Price Helper', () => {
     it.each(dataProviderInvalid)(
       `should throw something like %s when finding minimum '%j' and '%j'`,
       (error: RegExp, p1: Price, p2: Price) => {
-        expect(() => PriceHelper.min(p1, p2)).toThrowError(error);
+        expect(() => PriceHelper.min(p1, p2)).toThrow(error);
       }
     );
   });
@@ -143,11 +143,11 @@ describe('Price Helper', () => {
     });
 
     it('should throw an error if no currency is given', () => {
-      expect(() => PriceHelper.getPrice(undefined, 9000)).toThrowError('getPrice cannot handle undefined currency');
+      expect(() => PriceHelper.getPrice(undefined, 9000)).toThrow('getPrice cannot handle undefined currency');
     });
 
     it('should throw an error if no value is given', () => {
-      expect(() => PriceHelper.getPrice('USD', undefined)).toThrowError('getPrice cannot handle undefined value');
+      expect(() => PriceHelper.getPrice('USD', undefined)).toThrow('getPrice cannot handle undefined value');
     });
   });
 });

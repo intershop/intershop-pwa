@@ -44,7 +44,9 @@ describe('Product Master Variations Component', () => {
       <a id="variation-list-top" title="top"></a
       ><ish-filter-navigation
         orientation="horizontal"
+        fragmentonrouting="variation-list-top"
         ng-reflect-orientation="horizontal"
+        ng-reflect-fragment-on-routing="variation-list-top"
       ></ish-filter-navigation
       ><ish-product-listing
         mode="paging"
@@ -60,7 +62,7 @@ describe('Product Master Variations Component', () => {
     const productList = fixture.debugElement.query(By.css('ish-product-listing'))
       .componentInstance as ProductListingComponent;
 
-    expect(productList.id).toMatchInlineSnapshot(`
+    expect(productList.productListingId).toMatchInlineSnapshot(`
       {
         "type": "master",
         "value": "123456789",

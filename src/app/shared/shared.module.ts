@@ -53,6 +53,7 @@ import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms
 import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './cms/components/cms-video/cms-video.component';
+import { ContentDesignViewWrapperComponent } from './cms/components/content-design-view-wrapper/content-design-view-wrapper.component';
 import { ContentIncludeComponent } from './cms/components/content-include/content-include.component';
 import { ContentNavigationComponent } from './cms/components/content-navigation/content-navigation.component';
 import { ContentPageletComponent } from './cms/components/content-pagelet/content-pagelet.component';
@@ -77,6 +78,7 @@ import { BasketShippingMethodComponent } from './components/basket/basket-shippi
 import { BasketValidationItemsComponent } from './components/basket/basket-validation-items/basket-validation-items.component';
 import { BasketValidationProductsComponent } from './components/basket/basket-validation-products/basket-validation-products.component';
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
+import { ClearBasketComponent } from './components/basket/clear-basket/clear-basket.component';
 import { MiniBasketContentComponent } from './components/basket/mini-basket-content/mini-basket-content.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
@@ -254,10 +256,12 @@ const exportedComponents = [
   BasketShippingMethodComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
+  ClearBasketComponent,
   ConfirmLeaveModalComponent,
   ContentIncludeComponent,
   ContentNavigationComponent,
   ContentPageletComponent,
+  ContentDesignViewWrapperComponent,
   ContentViewcontextComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,

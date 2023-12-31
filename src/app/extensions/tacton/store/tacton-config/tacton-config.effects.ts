@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { getProductEntities, loadProductSuccess, productSpecialUpdate } from 'ish-core/store/shopping/products';
 import { mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -43,7 +43,7 @@ export class TactonConfigEffects {
     this.actions$.pipe(
       ofType(loadProductSuccess),
       mapToPayloadProperty('product'),
-      withLatestFrom(this.store.pipe(select(getTactonConfig))),
+      concatLatestFrom(() => this.store.pipe(select(getTactonConfig))),
       filter(([product, config]) => !!config && !!config?.productMappings?.[product.sku]),
       map(([{ sku }]) => productSpecialUpdate({ sku, update: { type: 'TactonProduct' } }))
     )
@@ -54,7 +54,7 @@ export class TactonConfigEffects {
       ofType(setTactonConfig),
       mapToPayloadProperty('config'),
       whenTruthy(),
-      withLatestFrom(this.store.pipe(select(getProductEntities))),
+      concatLatestFrom(() => this.store.pipe(select(getProductEntities))),
       mergeMap(([config, entities]) =>
         Object.keys(entities)
           .filter(sku => !!config && !!config?.productMappings?.[sku])

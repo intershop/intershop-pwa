@@ -1,9 +1,10 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -26,7 +27,7 @@ import {
   templateUrl: './registration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegistrationPageComponent implements OnInit, OnDestroy {
+export class RegistrationPageComponent implements OnInit {
   error$: Observable<HttpError>;
 
   constructor(
@@ -47,7 +48,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
   options: FormlyFormOptions;
   form = new UntypedFormGroup({});
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.error$ = this.registrationFormConfiguration.getErrorSources().pipe(
@@ -81,7 +82,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
 
       this.featureEventService
         .eventResultListener$('addressDoctor', 'check-address', id)
-        .pipe(whenTruthy(), take(1), takeUntil(this.destroy$))
+        .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
         .subscribe(({ data }) => {
           if (data) {
             this.onCreateWithSuggestion(data);
@@ -110,10 +111,5 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
 
   private clearCaptchaToken() {
     this.form.get('captcha')?.setValue(undefined);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

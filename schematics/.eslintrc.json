@@ -1,5 +1,8 @@
 {
   "extends": "../.eslintrc.json",
+  "parserOptions": {
+    "project": ["schematics/tsconfig.json"]
+  },
   "ignorePatterns": "**/utils/lint-fix-mock.js",
   "overrides": [
     {

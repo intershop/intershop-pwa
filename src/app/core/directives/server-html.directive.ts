@@ -55,7 +55,13 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
   private patchElements() {
     // use setAttribute here to bypass security check
     Array.from(this.elementRef.nativeElement.querySelectorAll('[href]')).forEach((element: HTMLElement) => {
-      this.renderer.setAttribute(element, 'href', LinkParser.parseLink(element.getAttribute('href'), this.baseHref));
+      const href = element.getAttribute('href');
+
+      this.renderer.setAttribute(
+        element,
+        'href',
+        href.startsWith('/INTERSHOP/') ? this.transformMediaObjectSrc(href) : LinkParser.parseLink(href, this.baseHref)
+      );
     });
     Array.from(this.elementRef.nativeElement.querySelectorAll('[src]')).forEach((element: HTMLElement) => {
       this.renderer.setAttribute(element, 'src', this.transformMediaObjectSrc(element.getAttribute('src')));

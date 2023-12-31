@@ -1,5 +1,5 @@
 <!-- Error message -->
-<ish-error-message [error]="orderTemplateError$ | async"></ish-error-message>
+<ish-error-message [error]="orderTemplateError$ | async" />
 
 <ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
   <h1 class="clearfix">
@@ -46,16 +46,13 @@
               [quantity]="item.desiredQuantity.value"
               [orderTemplateItemData]="item"
               [currentOrderTemplate]="orderTemplate"
-            ></ish-account-order-template-detail-line-item>
+            />
           </div>
         </ng-container>
       </div>
     </ng-container>
   </div>
-  <ish-product-add-to-basket
-    *ngIf="orderTemplate.itemsCount"
-    [cssClass]="'btn btn-primary float-right'"
-  ></ish-product-add-to-basket>
+  <ish-product-add-to-basket *ngIf="orderTemplate.itemsCount" [cssClass]="'btn btn-primary float-right'" />
 
   <ng-template #noItems>
     <p>{{ 'account.order_template.no_entries' | translate }}</p>
@@ -65,8 +62,8 @@
     #editOrderTemplateDialog
     [orderTemplate]="orderTemplate"
     (submitOrderTemplate)="editPreferences($event, orderTemplate.id)"
-  ></ish-order-template-preferences-dialog>
+  />
 </ng-container>
 
 <a routerLink="/account/order-templates">{{ 'account.order_template.list.link.back' | translate }}</a>
-<ish-loading *ngIf="orderTemplateLoading$ | async"></ish-loading>
+<ish-loading *ngIf="orderTemplateLoading$ | async" />

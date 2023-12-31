@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, from, of } from 'rxjs';
@@ -197,7 +197,7 @@ export class ProductConfigurationEffects {
   submitTactonConfigurationSuccessToast$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitTactonConfigurationSuccess),
-      withLatestFrom(this.store.pipe(select(getLoggedInUser))),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInUser))),
       map(([, user]) =>
         displaySuccessMessage({
           message: 'tacton.submit.success.message',
@@ -222,7 +222,7 @@ export class ProductConfigurationEffects {
     () =>
       this.actions$.pipe(
         ofType(submitTactonConfigurationSuccess, submitTactonConfigurationFail),
-        withLatestFrom(this.store.pipe(select(getSelectedProduct))),
+        concatLatestFrom(() => this.store.pipe(select(getSelectedProduct))),
         switchMap(([, product]) => from(this.router.navigateByUrl(generateProductUrl(product))))
       ),
     { dispatch: false }

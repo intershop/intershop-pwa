@@ -15,21 +15,21 @@ export class OciConfigurationEffects {
 
   loadOciOptionsAndConfiguration$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ociConfigurationActions.loadOciOptionsAndConfiguration),
+      ofType(ociConfigurationActions.loadOCIOptionsAndConfiguration),
       concatMap(() => [
-        ociConfigurationActions.loadOciConfigurationOptions(),
-        ociConfigurationActions.loadOciConfiguration(),
+        ociConfigurationActions.loadOCIConfigurationOptions(),
+        ociConfigurationActions.loadOCIConfiguration(),
       ])
     )
   );
 
   loadOciConfigurationOptions$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ociConfigurationActions.loadOciConfigurationOptions),
+      ofType(ociConfigurationActions.loadOCIConfigurationOptions),
       switchMap(() =>
         this.punchoutService.getOciConfigurationOptions().pipe(
-          map(options => ociConfigurationApiActions.loadOciConfigurationOptionsSuccess({ options })),
-          mapErrorToAction(ociConfigurationApiActions.loadOciConfigurationOptionsFail)
+          map(options => ociConfigurationApiActions.loadOCIConfigurationOptionsSuccess({ options })),
+          mapErrorToAction(ociConfigurationApiActions.loadOCIConfigurationOptionsFail)
         )
       )
     )
@@ -37,11 +37,11 @@ export class OciConfigurationEffects {
 
   loadOciConfiguration$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ociConfigurationActions.loadOciConfiguration),
+      ofType(ociConfigurationActions.loadOCIConfiguration),
       switchMap(() =>
         this.punchoutService.getOciConfiguration().pipe(
-          map(configuration => ociConfigurationApiActions.loadOciConfigurationSuccess({ configuration })),
-          mapErrorToAction(ociConfigurationApiActions.loadOciConfigurationFail)
+          map(configuration => ociConfigurationApiActions.loadOCIConfigurationSuccess({ configuration })),
+          mapErrorToAction(ociConfigurationApiActions.loadOCIConfigurationFail)
         )
       )
     )
@@ -49,17 +49,17 @@ export class OciConfigurationEffects {
 
   updateOciConfiguration$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ociConfigurationActions.updateOciConfiguration),
+      ofType(ociConfigurationActions.updateOCIConfiguration),
       mapToPayloadProperty('configuration'),
       concatMap(configuration =>
         this.punchoutService.updateOciConfiguration(configuration).pipe(
           mergeMap(configuration => [
-            ociConfigurationApiActions.updateOciConfigurationSuccess({ configuration }),
+            ociConfigurationApiActions.updateOCIConfigurationSuccess({ configuration }),
             displaySuccessMessage({
               message: 'account.punchout.configuration.save_success.message',
             }),
           ]),
-          mapErrorToAction(ociConfigurationApiActions.updateOciConfigurationFail)
+          mapErrorToAction(ociConfigurationApiActions.updateOCIConfigurationFail)
         )
       )
     )

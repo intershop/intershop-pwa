@@ -1,7 +1,16 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -18,7 +27,7 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
   templateUrl: './account-wishlist-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountWishlistListComponent implements OnChanges, OnDestroy {
+export class AccountWishlistListComponent implements OnChanges {
   /**
    * The list of wishlists of the customer.
    */
@@ -32,14 +41,9 @@ export class AccountWishlistListComponent implements OnChanges, OnDestroy {
   deleteHeader: string;
   preferredWishlist: Wishlist;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private translate: TranslateService) {}
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   ngOnChanges() {
     // determine preferred wishlist
@@ -55,7 +59,7 @@ export class AccountWishlistListComponent implements OnChanges, OnDestroy {
   openDeleteConfirmationDialog(wishlist: Wishlist, modal: ModalDialogComponent<string>) {
     this.translate
       .get('account.wishlists.delete_wishlist_dialog.header', { 0: wishlist.title })
-      .pipe(take(1), takeUntil(this.destroy$))
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe(res => (modal.options.titleText = res));
 
     modal.show(wishlist.id);

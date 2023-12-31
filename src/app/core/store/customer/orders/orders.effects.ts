@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { EMPTY, from, iif, merge, race } from 'rxjs';
+import { EMPTY, from, merge, race } from 'rxjs';
 import {
   concatMap,
   distinctUntilChanged,
@@ -57,7 +57,7 @@ export class OrdersEffects {
   createOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createOrder),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
       mergeMap(([, basketId]) =>
         this.orderService.createOrder(basketId, true).pipe(
           map(order => createOrderSuccess({ order })),
@@ -163,18 +163,16 @@ export class OrdersEffects {
   /**
    * Selects and loads an order.
    */
-  loadOrderForSelectedOrder$ = createEffect(() =>
-    iif(
-      () => !SSR,
+  loadOrderForSelectedOrder$ =
+    !SSR &&
+    createEffect(() =>
       this.actions$.pipe(
         ofType(selectOrder),
         mapToPayloadProperty('orderId'),
         whenTruthy(),
         map(orderId => loadOrder({ orderId }))
-      ),
-      EMPTY
-    )
-  );
+      )
+    );
 
   /**
    * Triggers a SelectOrder action if route contains orderId query or route parameter.

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, from, iif, of } from 'rxjs';
@@ -19,6 +19,7 @@ import {
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
@@ -71,6 +72,7 @@ export class BasketEffects {
   constructor(
     private actions$: Actions,
     private basketService: BasketService,
+    private basketItemsService: BasketItemsService,
     private apiTokenService: ApiTokenService,
     private router: Router,
     private store: Store
@@ -132,7 +134,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(loadBasketSuccess),
       mapToPayloadProperty('basket'),
-      withLatestFrom(this.store.pipe(select(getCurrentCurrency))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentCurrency))),
       filter(([basket, currency]) => basket.purchaseCurrency !== currency),
       take(1),
       map(() => updateBasket({ update: { calculated: true } }))
@@ -160,7 +162,7 @@ export class BasketEffects {
   loadBasketEligibleShippingMethods$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadBasketEligibleShippingMethods),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       concatMap(([, basket]) =>
         this.basketService.getBasketEligibleShippingMethods(basket.bucketId).pipe(
           map(result => loadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
@@ -227,9 +229,9 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(setBasketDesiredDeliveryDate),
       mapToPayloadProperty('desiredDeliveryDate'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       mergeMap(([date, basket]) =>
-        this.basketService.updateBasketItemsDesiredDeliveryDate(date, basket?.lineItems).pipe(
+        this.basketItemsService.updateBasketItemsDesiredDeliveryDate(date, basket?.lineItems).pipe(
           switchMap(() => [
             setBasketAttribute({
               attribute: {
@@ -252,7 +254,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(setBasketAttribute),
       mapToPayloadProperty('attribute'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       mergeMap(([attr, basket]) =>
         (this.basketContainsAttribute(basket, attr.name)
           ? this.basketService.updateBasketAttribute(attr)
@@ -272,7 +274,7 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(deleteBasketAttribute),
       mapToPayloadProperty('attributeName'),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       mergeMap(([name, basket]) =>
         this.basketContainsAttribute(basket, name)
           ? this.basketService.deleteBasketAttribute(name).pipe(
@@ -294,7 +296,7 @@ export class BasketEffects {
         select(getCurrentBasket),
         mapToProperty('id'),
         // append corresponding apiToken and customer
-        withLatestFrom(this.apiTokenService.apiToken$, this.store.pipe(select(getLoggedInCustomer))),
+        withLatestFrom(this.apiTokenService.getApiToken$(), this.store.pipe(select(getLoggedInCustomer))),
         // don't emit when there is a customer
         filter(([, , customer]) => !customer),
         startWith([]),
@@ -309,7 +311,7 @@ export class BasketEffects {
   loadOrMergeBasketAfterLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loginUserSuccess),
-      withLatestFrom(this.anonymousBasket$),
+      concatLatestFrom(() => this.anonymousBasket$),
       switchMap(([, [sourceBasketId, sourceApiToken]]) =>
         this.basketService.getBaskets().pipe(
           switchMap(baskets => {
@@ -358,9 +360,9 @@ export class BasketEffects {
   /**
    * Reload basket information on basket route to ensure that rendered page is correct.
    */
-  loadBasketOnBasketPage$ = createEffect(() =>
-    iif(
-      () => !SSR,
+  loadBasketOnBasketPage$ =
+    !SSR &&
+    createEffect(() =>
       this.actions$.pipe(
         ofType(personalizationStatusDetermined),
         take(1),
@@ -372,10 +374,8 @@ export class BasketEffects {
             map(() => loadBasket())
           )
         )
-      ),
-      EMPTY
-    )
-  );
+      )
+    );
 
   /**
    * Creates a requisition based on the given basket, if approval is required
@@ -383,7 +383,7 @@ export class BasketEffects {
   createRequisition$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitBasket),
-      withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
       concatMap(([, basketId]) =>
         this.basketService.createRequisition(basketId).pipe(
           mergeMap(() => from(this.router.navigate(['/checkout/receipt'])).pipe(map(() => submitBasketSuccess()))),
@@ -400,7 +400,7 @@ export class BasketEffects {
   submitOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(submitOrder),
-      withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       concatMap(([, basket]) => {
         const desiredDeliveryDate: string = AttributeHelper.getAttributeValueByAttributeName(
           basket.attributes,
@@ -409,7 +409,7 @@ export class BasketEffects {
 
         return (
           desiredDeliveryDate
-            ? this.basketService.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, basket.lineItems)
+            ? this.basketItemsService.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, basket.lineItems)
             : of([])
         ).pipe(
           map(() => continueCheckout({ targetStep: CheckoutStepType.Receipt })),

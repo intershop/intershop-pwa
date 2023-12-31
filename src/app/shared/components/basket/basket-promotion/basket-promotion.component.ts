@@ -11,7 +11,7 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketPromotionComponent implements OnChanges {
-  @Input() rebate: BasketRebate;
+  @Input({ required: true }) rebate: BasketRebate;
 
   promotion$: Observable<Promotion>;
 

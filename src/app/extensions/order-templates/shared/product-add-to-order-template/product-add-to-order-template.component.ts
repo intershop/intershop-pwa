@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -24,14 +25,14 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
-export class ProductAddToOrderTemplateComponent implements OnDestroy, OnInit {
+export class ProductAddToOrderTemplateComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
   @Input() cssClass: string;
 
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,
@@ -49,7 +50,7 @@ export class ProductAddToOrderTemplateComponent implements OnDestroy, OnInit {
    * if the user is not logged in display login dialog, else open select order template dialog
    */
   openModal(modal: SelectOrderTemplateModalComponent) {
-    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntil(this.destroy$)).subscribe(isLoggedIn => {
+    this.accountFacade.isLoggedIn$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(isLoggedIn => {
       if (isLoggedIn) {
         modal.show();
       } else {
@@ -74,10 +75,5 @@ export class ProductAddToOrderTemplateComponent implements OnDestroy, OnInit {
         this.context.get('quantity')
       );
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

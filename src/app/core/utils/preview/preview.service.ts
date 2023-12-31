@@ -1,4 +1,3 @@
-/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ApplicationRef, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
@@ -8,7 +7,7 @@ import { getICMBaseURL } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 interface StorefrontEditingMessage {
-  type: string;
+  type: 'sfe-pwaready' | 'sfe-pwanavigation' | 'sfe-pwastable' | 'sfe-setcontext';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
 }
@@ -79,7 +78,11 @@ export class PreviewService {
    * (3) OR the debug mode is on (`initOnTopLevel`).
    */
   private shouldInit() {
-    return typeof window !== 'undefined' && ((window.parent && window.parent !== window) || this.initOnTopLevel);
+    return (
+      typeof window !== 'undefined' &&
+      ((window.parent && window.parent !== window) || this.initOnTopLevel) &&
+      !this.isDesignViewMode
+    );
   }
 
   /**
@@ -174,5 +177,10 @@ export class PreviewService {
 
   get previewContextId() {
     return this._previewContextId ?? (!SSR ? sessionStorage.getItem('PreviewContextID') : undefined);
+  }
+
+  // TODO: replace usage of previewContextId to identify Design View mode
+  get isDesignViewMode(): boolean {
+    return this.previewContextId === 'DESIGNVIEW';
   }
 }

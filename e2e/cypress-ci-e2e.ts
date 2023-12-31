@@ -60,6 +60,13 @@ const newGroupName = (num: number) => {
   }
 };
 
+function isFailure(
+  results: CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult
+): results is CypressCommandLine.CypressFailedRunResult {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (results as any).status === 'failed';
+}
+
 const run = (
   num: number,
   spec,
@@ -89,7 +96,7 @@ const run = (
   return cypress
     .run(config)
     .then(results => {
-      if (results.status === 'failed') {
+      if (isFailure(results)) {
         throw new Error(results.message);
       } else if (results.totalFailed) {
         // rerun again with only the failed tests

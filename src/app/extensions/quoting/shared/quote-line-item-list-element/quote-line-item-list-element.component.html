@@ -1,32 +1,29 @@
 <div class="row list-item-row" data-testing-id="product-list-item">
   <!-- Product Image -->
   <div class="col-2 list-item">
-    <ish-product-image imageType="S" [link]="true"></ish-product-image>
+    <ish-product-image imageType="S" [link]="true" />
   </div>
 
   <div class="col-7 col-md-6 col-xl-4 list-item">
     <!--Product Description -->
     <div class="pli-description">
-      <ish-product-name></ish-product-name>
+      <ish-product-name />
 
       <!-- Product ID -->
-      <ish-product-id></ish-product-id>
+      <ish-product-id />
 
       <!-- Product Variations -->
-      <ish-product-variation-display></ish-product-variation-display>
+      <ish-product-variation-display />
       <!-- Product Bundles -->
-      <ish-product-bundle-display></ish-product-bundle-display>
+      <ish-product-bundle-display />
 
-      <ish-product-inventory></ish-product-inventory>
+      <ish-product-inventory />
       <div *ngIf="editable$ | async" class="d-flex align-items-center">
         <ish-lazy-product-add-to-order-template
           [cssClass]="'btn btn-link btn-tool add-to-order-template'"
           displayType="icon"
-        ></ish-lazy-product-add-to-order-template>
-        <ish-lazy-product-add-to-wishlist
-          [cssClass]="'btn-link btn-tool ml-0'"
-          displayType="icon"
-        ></ish-lazy-product-add-to-wishlist>
+        />
+        <ish-lazy-product-add-to-wishlist [cssClass]="'btn-link btn-tool ml-0'" displayType="icon" />
         <a
           [routerLink]="[]"
           class="btn-tool"
@@ -35,7 +32,7 @@
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem()"
         >
-          <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+          <fa-icon [icon]="['fas', 'trash-alt']" />
         </a>
       </div>
     </div>
@@ -46,11 +43,11 @@
         <ish-product-quantity-label
           translationKey="shopping_cart.pli.qty.label"
           [for]="'quote-quantity_' + lineItem.id"
-        ></ish-product-quantity-label>
+        />
         <ish-product-quantity
           *ngIf="editable$ | async; else readonlyQuantity"
           [elementId]="'quote-quantity_' + lineItem.id"
-        ></ish-product-quantity>
+        />
         <ng-template #readonlyQuantity>
           {{ lineItem.quantity.value | number }}
         </ng-template>
@@ -61,7 +58,7 @@
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
     <div class="form-group w-100" [ngClass]="{ 'text-right': editable$ | async }">
-      <ish-product-quantity *ngIf="editable$ | async; else readonlyQuantity"></ish-product-quantity>
+      <ish-product-quantity *ngIf="editable$ | async; else readonlyQuantity" />
       <ng-template #readonlyQuantity>
         {{ lineItem.quantity.value | number }}
       </ng-template>

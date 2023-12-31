@@ -9,6 +9,9 @@ const pinned = {
   swiper: 8, // 9 requires integration rework
   jest: '29',
   '@types/jest': '29',
+  prettier: '2', // 3 requires jest 30
+  'stylelint-prettier': '3',
+  'eslint-plugin-prettier': '4',
 };
 
 // <HELPERS>
@@ -55,8 +58,8 @@ modifyPackageJson(packageJson => {
 });
 commit('chore: temporarily deactivate full postinstall');
 
-// upgrade core libraries
-console.log('upgrade @schematics/angular to find compatible versions');
+// update core libraries
+console.log('update @schematics/angular to find compatible versions');
 execute('npx ng update @schematics/angular');
 
 const { latestVersions } = require('@schematics/angular/utility/latest-versions');
@@ -91,7 +94,7 @@ commit('chore: reactivate full postinstall');
 
 // update all remaining libraries
 const libs = Object.keys(JSON.parse(spawnSync(NPM, ['outdated', '--json']).stdout.toString('utf-8')))
-  // prettier upgrades should be done separately
+  // prettier updates should be done separately
   .filter(lib => lib !== 'prettier')
   .map(lib => (pinned[lib] ? `${lib}@${pinned[lib]}` : lib));
 execute('npx ng update -C --force ' + libs.join(' '));
@@ -109,7 +112,7 @@ modifyPackageJson(packageJson => {
     if (!write.startsWith(version)) {
       console.warn('####### something went wrong #######');
       console.warn(`package ${dep} was not pinned down correctly to version ${version} and is now on version ${write}`);
-      console.warn('some dependency upgrade must have pulled a newer version');
+      console.warn('some dependency update must have pulled a newer version');
       console.warn('####################################');
     }
   });
@@ -125,5 +128,5 @@ spawnSync(NPM, ['ls', '-a'])
     console.warn(line);
   });
 
-console.warn('###### Not upgraded:');
+console.warn('###### Not updated:');
 console.log(spawnSync(NPM, ['outdated']).stdout.toString('utf-8'));

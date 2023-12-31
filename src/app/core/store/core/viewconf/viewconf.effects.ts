@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerRequestAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, defer, fromEvent, iif } from 'rxjs';
+import { defer, fromEvent } from 'rxjs';
 import { bufferToggle, concatMap, delay, distinctUntilChanged, filter, first, map } from 'rxjs/operators';
 
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
@@ -15,19 +15,17 @@ import { setBreadcrumbData, setStickyHeader } from './viewconf.actions';
 export class ViewconfEffects {
   constructor(private store: Store, private actions$: Actions) {}
 
-  toggleStickyHeader$ = createEffect(() =>
-    iif(
-      () => !SSR,
+  toggleStickyHeader$ =
+    !SSR &&
+    createEffect(() =>
       defer(() =>
         fromEvent(window, 'scroll').pipe(
           map(() => window.scrollY >= 170),
           distinctUntilChanged(),
           map(sticky => setStickyHeader({ sticky }))
         )
-      ),
-      EMPTY
-    )
-  );
+      )
+    );
 
   retrieveBreadcrumbDataFromRouting$ = createEffect(() =>
     this.actions$.pipe(

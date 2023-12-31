@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, forwardRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -7,8 +8,8 @@ import {
   FormGroup,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { first, map, shareReplay, startWith, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable, ReplaySubject, noop } from 'rxjs';
+import { first, map, shareReplay, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -24,14 +25,16 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     },
   ],
 })
-export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit, OnDestroy {
+export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit {
   @Input() staticRoles: string[];
 
   form$: Observable<FormGroup>;
 
   private onTouched: Function;
+  private onChange: (roles: string[]) => void = noop;
+
   private staticRoles$ = new ReplaySubject<string[]>(1);
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   isExpanded: boolean[] = [];
 
@@ -58,6 +61,20 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
       ),
       shareReplay(1)
     );
+
+    this.form$
+      .pipe(
+        switchMap(form => form.valueChanges.pipe(startWith(form.value))),
+        withLatestFrom(this.staticRoles$),
+        map(([value, staticRoles]) => this.modelToRoles(value, staticRoles)),
+        tap(() => {
+          if (this.onTouched) {
+            this.onTouched();
+          }
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(v => this.onChange(v));
   }
 
   private createFormControl(isStatic: boolean, disable: boolean) {
@@ -74,7 +91,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
       .pipe(
         take(1),
         map(roles => roles.filter(r => r.fixed).map(r => r.id)),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(roles => {
         this.staticRoles$.next(this.staticRoles ? roles.concat(this.staticRoles) : roles);
@@ -95,7 +112,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
 
   writeValue(initialRoleIDs: string[]): void {
     if (initialRoleIDs?.length) {
-      this.form$.pipe(first(), takeUntil(this.destroy$)).subscribe(form => {
+      this.form$.pipe(first(), takeUntilDestroyed(this.destroyRef)).subscribe(form => {
         initialRoleIDs
           .filter(id => form.get(id))
           .forEach(id => {
@@ -113,19 +130,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
   }
 
   registerOnChange(fn: (roles: string[]) => void): void {
-    this.form$
-      .pipe(
-        switchMap(form => form.valueChanges.pipe(startWith(form.value))),
-        withLatestFrom(this.staticRoles$),
-        map(([value, staticRoles]) => this.modelToRoles(value, staticRoles)),
-        tap(() => {
-          if (this.onTouched) {
-            this.onTouched();
-          }
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(fn);
+    this.onChange = fn;
   }
 
   registerOnTouched(fn: Function): void {
@@ -134,10 +139,5 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
 
   toggleExpanded(index: number) {
     this.isExpanded[index] = !this.isExpanded[index];
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

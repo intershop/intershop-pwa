@@ -94,7 +94,10 @@ searchProducts(
  */
 ```
 
-> :warning: **Indentation Warning**  
+> [!WARNING]
+>
+> **Indentation Warning**
+>
 > TypeScript has an internal margin for new lines. If you want to keep a level of indentation, put a minimum of 13 space characters as shown in the example:
 
 **Example with Indentation Keeping**
@@ -128,7 +131,7 @@ searchProducts(
  */
 ```
 
-## :warning: Document only if documentation is needed!
+## Document only if documentation is needed!
 
 This is not a project with obligatory documentation, so: Do not document the obvious! For example, if behavior and requirements can be implied by a method signature, no additional documentation is needed.
 Instead **pay attention to useful names**.

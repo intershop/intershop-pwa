@@ -1,7 +1,7 @@
 <div *ngIf="basket" class="row checkout-address-book">
   <!-- Error Message -->
   <div *ngIf="error" class="col-md-12">
-    <ish-error-message [error]="error" [toast]="false"></ish-error-message>
+    <ish-error-message [error]="error" [toast]="false" />
   </div>
 
   <div *ngIf="nextDisabled && !error" class="col-md-12">
@@ -10,7 +10,7 @@
 
   <!-- Validation messages-->
   <div class="col-md-12">
-    <ish-basket-validation-results (continueCheckout)="goToNextStep()"></ish-basket-validation-results>
+    <ish-basket-validation-results (continueCheckout)="goToNextStep()" />
   </div>
 
   <!-- ------------------------------- invoice address ---------------------------------- -->
@@ -19,7 +19,7 @@
       [showErrors]="nextDisabled"
       [collapse]="active === 'shipping'"
       (collapseChange)="invoiceCollapsed($event)"
-    ></ish-basket-invoice-address-widget>
+    />
   </div>
 
   <!-- ------------------------------ shipping address ----------------------------------------- -->
@@ -28,17 +28,17 @@
       [showErrors]="nextDisabled"
       [collapse]="active === 'invoice'"
       (collapseChange)="shippingCollapsed($event)"
-    ></ish-basket-shipping-address-widget>
+    />
   </div>
 
   <!-- Cart Summary -->
   <div class="col-md-12 col-lg-4">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
-    <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+    <ish-basket-items-summary [basket]="basket" />
 
     <div class="cost-summary">
-      <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+      <ish-basket-cost-summary [totals]="basket.totals" />
 
       <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="nextDisabled" (click)="goToNextStep()">
         {{ 'checkout.button.label' | translate }}

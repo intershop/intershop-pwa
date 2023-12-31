@@ -14,8 +14,8 @@ on:
 
 env:
   NODE_VERSION: 18.16.0
-  NODE_OPTIONS: --max_old_space_size=8192
-  ICM_BASE_URL: http://pwa-review.northeurope.cloudapp.azure.com:8081
+  NODE_OPTIONS: --max_old_space_size=10240
+  ICM_BASE_URL: https://review.icm.intershop.de
 
 jobs:
   CancelPrevious:
@@ -141,7 +141,7 @@ jobs:
           node dist/$THEME/run-standalone &
 
       - name: Cypress
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v6
         with:
           install: false
           wait-on: 'http://localhost:4200'

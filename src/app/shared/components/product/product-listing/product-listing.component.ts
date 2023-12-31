@@ -1,7 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { concatMap, map, take, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { concatMap, map, take } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
@@ -15,9 +25,9 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
   // merged query parameters for product detail links are needed to apply previously selected filter options for variation masters too
   providers: [{ provide: 'PRODUCT_QUERY_PARAMS_HANDLING', useValue: 'merge' }],
 })
-export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
+export class ProductListingComponent implements OnInit, OnChanges {
   @Input() categoryId: string;
-  @Input() id: ProductListingID;
+  @Input() productListingId: ProductListingID;
   @Input() mode: 'endless-scrolling' | 'paging' = 'endless-scrolling';
   @Input() fragmentOnRouting = 'product-list-top';
 
@@ -27,7 +37,7 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
   currentPage$: Observable<number>;
   sortBy$: Observable<string>;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router, private activatedRoute: ActivatedRoute) {}
 
@@ -44,22 +54,18 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
         take(1),
         whenFalsy(),
         concatMap(() => this.viewType$.pipe(whenTruthy(), take(1))),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(view => this.changeViewType(view));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.id && this.id?.value) {
-      this.productListingView$ = this.shoppingFacade.productListingView$(this.id).pipe(takeUntil(this.destroy$));
+    if (changes.productListingId && this.productListingId?.value) {
+      this.productListingView$ = this.shoppingFacade
+        .productListingView$(this.productListingId)
+        .pipe(takeUntilDestroyed(this.destroyRef));
     }
   }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   /**
    * Emits the event for switching the view type of the product list.
    *
@@ -83,10 +89,10 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
         take(1),
         map(view => (direction === 'down' ? view.nextPage() : view.previousPage())),
         whenTruthy(),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(page => {
-        this.shoppingFacade.loadMoreProducts(this.id, page);
+        this.shoppingFacade.loadMoreProducts(this.productListingId, page);
       });
   }
 

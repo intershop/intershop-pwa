@@ -31,6 +31,7 @@ kb_sync_latest_only
   - [Guide - Authentication by the ICM Server](./guides/authentication_icm.md)
   - [Guide - Authentication with Single Sign-On (SSO)](./guides/authentication_sso.md)
   - [Guide - Authentication with the Punchout Identity Provider](./guides/authentication_punchout.md)
+  - [Guide - Authentication with the Co-Browse Identity Provider](./guides/authentication_co_browse.md)
 
 ### Developing
 
@@ -61,7 +62,7 @@ kb_sync_latest_only
 
 ### Maintenance
 
-- [Guide - Upgrading Dependencies](./guides/upgrading-pwa.md)
+- [Guide - Updating Dependencies](./guides/updating-pwa.md)
 
 ## Operations
 

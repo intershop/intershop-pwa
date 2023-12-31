@@ -21,7 +21,7 @@ import { PriceHelper } from 'ish-core/models/price/price.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketCostSummaryComponent implements OnInit {
-  @Input() totals: BasketTotal;
+  @Input({ required: true }) totals: BasketTotal;
 
   taxTranslation$: Observable<string>;
   invert = PriceHelper.invert;

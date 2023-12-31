@@ -1,6 +1,7 @@
-import { Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { DestroyRef, Directive, ElementRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 
 /**
  * detect visibility status of components via IntersectionObserver
@@ -10,7 +11,7 @@ import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 @Directive({
   selector: '[ishIntersectionObserver]',
 })
-export class IntersectionObserverDirective implements OnInit, OnDestroy {
+export class IntersectionObserverDirective implements OnInit {
   @Input() intersectionDebounce = 0;
   @Input() intersectionRootMargin = '0px';
   @Input() intersectionRoot: HTMLElement;
@@ -18,7 +19,7 @@ export class IntersectionObserverDirective implements OnInit, OnDestroy {
 
   @Output() visibilityChange = new EventEmitter<IntersectionStatus>();
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private element: ElementRef) {}
 
@@ -32,16 +33,11 @@ export class IntersectionObserverDirective implements OnInit, OnDestroy {
       };
 
       fromIntersectionObserver(element, config, this.intersectionDebounce)
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(status => {
           this.visibilityChange.emit(status);
         });
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
 

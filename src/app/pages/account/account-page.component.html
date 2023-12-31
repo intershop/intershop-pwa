@@ -1,11 +1,11 @@
 <div class="account-wrapper">
   <div class="row account-main">
     <div class="col-lg-3 account-nav-box">
-      <ish-account-navigation [deviceType]="deviceType$ | async"></ish-account-navigation>
+      <ish-account-navigation [deviceType]="deviceType$ | async" />
     </div>
     <div class="col-lg-9">
-      <ish-breadcrumb [account]="true"></ish-breadcrumb>
-      <router-outlet></router-outlet>
+      <ish-breadcrumb [account]="true" />
+      <router-outlet />
     </div>
   </div>
 </div>

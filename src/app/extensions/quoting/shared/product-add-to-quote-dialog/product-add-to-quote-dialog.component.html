@@ -16,13 +16,13 @@
     </div>
 
     <div class="modal-body">
-      <ish-error-message [error]="error$ | async"></ish-error-message>
+      <ish-error-message [error]="error$ | async" />
 
       <ng-container *ngIf="state === 'New'; else elseTemplate">
-        <ish-quote-edit></ish-quote-edit>
+        <ish-quote-edit />
       </ng-container>
       <ng-template #elseTemplate>
-        <ish-quote-view></ish-quote-view>
+        <ish-quote-view />
       </ng-template>
     </div>
 
@@ -30,9 +30,9 @@
       <a class="btn btn-link mr-auto" [routerLink]="['/account/quotes']">{{
         'account.quotes.widget.view_all_quotes.link' | translate
       }}</a>
-      <ish-quote-interactions></ish-quote-interactions>
+      <ish-quote-interactions />
     </div>
   </ng-container>
 </ng-container>
 
-<ish-loading *ngIf="loading$ | async"></ish-loading>
+<ish-loading *ngIf="loading$ | async" />

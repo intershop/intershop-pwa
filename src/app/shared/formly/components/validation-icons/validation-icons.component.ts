@@ -14,7 +14,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ValidationIconsComponent {
-  @Input() field: FormlyFieldConfig;
+  @Input({ required: true }) field: FormlyFieldConfig;
   @Input() showError: boolean;
 
   defaultShowValidation() {

@@ -81,7 +81,10 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
     process.exit(1);
   }
 
-  const availableThemes = Object.keys(angularJson.projects[angularJson.defaultProject].architect.build.configurations);
+  const availableThemes = Object.keys(
+    angularJson.projects[Object.keys(angularJson.projects).find(project => angularJson.projects[project].root === '')]
+      .architect.build.configurations
+  );
 
   const normalConfigTest = (x: string) => x !== 'development' && x !== 'production';
 

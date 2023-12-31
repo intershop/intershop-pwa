@@ -7,34 +7,79 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 4.2 to 5.0
+
+Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.
+For this reason the official Intershop Commerce Management requirement is now ICM 11 even though the PWA 5.0 will continue to work with current ICM 7.10 versions as well.
+In the [changelog](../../CHANGELOG.md) of this project we will inform about features that will only work with ICM 11 or ICM versions above 7.10.38.x-LTS releases.
+With the transition to ICM 11 the configured default `icmBaseURL` is now `'https://develop.icm.intershop.de'`.
+
+With the switch to ICM 11 we switched to ICM deployments without the Responsive Starter Store as well.
+Because of this the default `icmApplication` is now configured to `'-'`.
+For ICM deployments with the Responsive Starter Store this probably has to be configured as it was before with `'rest'`.
+
+The project has been updated to work with Angular 16.
+Besides this a lot of other dependencies (NgRx, Typescript) have also been updated.
+
+The spelling of the OCI punchout actions has changed due to a changed naming schema of the NgRx action creator functions.
+
+Since `defaultProject` is no longer a valid option in `angular.json`, it has been removed and the root project (project with an empty root) is used instead.
+
+We enabled the [Angular Hydration](https://angular.io/guide/hydration) to improve performance and prevent the UI from flickering when a page renders - please note that this feature is still in developer preview and may have some limitations.
+
+From this version, we use the [`takeUntilDestroyed`](https://indepth.dev/posts/1518/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
+The `add-destroy` schematic has been removed but you can keep the `takeUntil(destroy$)` mechanism for a transitional period.
+A [migration script](../../scripts/migrate-destroy-subject.ts) is created to support the migration to the new way to complete open observable subscriptions on destroy.
+This script can be executed with `npx ts-node .\scripts\migrate-destroy-subject.ts`.
+Please review all changes after running the script and make sure all files work as expected.
+Also, any unused imports within the files must be removed (`npm run lint --fix` can be used).
+
+We added the ESLint rule `@angular-eslint/template/prefer-self-closing-tags` to use self-closing tags in HTML files (`npm run lint --fix` can be used to update your HTML files).
+
+The `ngcc` command has been removed from the `package.json` because it is no longer supported or needed in Angular 16.
+
+Mandatory component input parameters are declared as [required](https://angular.io/guide/update-to-version-16#required-inputs) to ensure that all required data is provided.
+This enforces data dependencies and catches potential errors during compilation.
+
+For the optional use of a shared Redis cache we switched from the plain standard NGINX Docker image to an [OpenResty](https://openresty.org/en/) Docker image, which provides more flexibility in configuring the underlying NGINX.
+If the NGINX container has been customized in the project, you need to check that these customizations work with the OpenResty image in the same way.
+Without any customizations, the switch should be unnoticeable and does not require any adaptions.
+
+The input parameter `id` for the product listing component is now called `productListingId` to avoid unintentionally having more than one element with the same ID in the HTML document.
+The _api-token.service_ has been refactored and the class variables `apiToken$` and `cookieVanishes$` have the `private` modifier.
+Use the public getter/setter methods to access these variables outside the class.
+
+Basket line-item functionalities have been extracted from the `basket.service` into a separate `basket-items.service`.
+The action `UpdateBasketLineItems` as well as the `LineItemUpdateHelper` have been removed because they were unused for a long time.
+
 ## From 4.1 to 4.2
 
-The basket attribute 'orderReferenceId' is now saved as native attribute 'externalOrderReference' at the basket, but it still exists at the basket and can be displayed further on if needed.
+The basket attribute `orderReferenceId` is now saved as native attribute `externalOrderReference` at the basket, but it still exists at the basket and can still be displayed if required.
 
-A better handling for cookie `SameSite` and `secure` settings was implemented with new defaults to `SameSite=Strict` and `secure`.
-This can still be overridden when calling the `cookies.services` `put` method with explicitly set values.
-Now the `secure` setting is always set to `true` if in `https` mode.
+A better handling of cookie `SameSite` and `secure` settings was implemented with new defaults to `SameSite=Strict` and `secure`.
+This can still be overridden by calling the `cookies.services` `put` method with explicitly set values.
+The `secure` setting is now always set to `true` when in `https` mode.
 You can prevent this by explicitly setting it to `false`.
-If the PWA is run with `http` (should only be in development environments), `secure` is not set.
-Additionally, if the PWA is run in an iframe, all cookies are set with `SameSite=None` (e.g., for punchout or Design View).
-Be aware that some browsers no longer accept cookies with `SameSite=None` without `secure`.
-Before, by default no `SameSite` was set so browsers treated it as `SameSite=Lax`.
+If the PWA is run in `http` (which should only be in development environments), `secure` is not set.
+Additionally, if the PWA is run in an iframe, all cookies are set with `SameSite=None` (e.g., for Punchout or Design View).
+Be aware that some browsers will not accept cookies with `SameSite=None` without `secure`.
+Previously, no `SameSite` was set by default, so browsers treated it as `SameSite=Lax`.
 This needs to be set explicitly now if it is really intended.
-For migrating, check whether the calls of the `cookies.service` `put` method need to be adapted.
+To migrate, check if the `cookies.service` `put` method calls need to be adjusted.
 
-The user's language selection is saved as a cookie (`preferredLocale`) now and restored after the PWA has loaded.
-This functionality can be enabled/disabled with the feature toggle `saveLanguageSelection`.
+The user's language selection is now saved as a cookie (`preferredLocale`) and restored after the PWA has loaded.
+This functionality can be enabled or disabled with the feature toggle `saveLanguageSelection`.
 
 ## From 4.0 to 4.1
 
 The Intershop PWA now uses Node.js 18.16.0 LTS with the corresponding npm version 9.5.1 to resolve an issue with Azure Docker deployments (see #1416).
 
-As a leftover adaption regarding the switch from deprecated class-based route guards in favor of functional guards the `addGlobalGuard` function was adapted to work with functional guards.
+As a leftover adaption regarding the switch from deprecated class-based route guards in favor of functional guards, the `addGlobalGuard` function was adapted to work with functional guards.
 If the `addGlobalGuard` function is used for customizations, make sure it now works as expected.
 
-The input parameter `id` of the component `ish-product-quantity` caused issues with duplicate IDs within the page html.
+The input parameter `id` of the component `ish-product-quantity` caused issues with duplicate IDs within the page's html.
 Therefore, it was renamed to `elementId`.
-If the input parameter 'id' of this component has already been used, it has to be renamed accordingly.
+If the input parameter `id` of this component has already been used, it has to be renamed accordingly.
 
 The `ishIntersectionObserver` returns all three `IntersectionStatus` change events: `Visible`, `Pending`, and `NotVisible` as well now.
 The custom project code needs to be adapted if it does not filter the events where it is used (e.g., `if (event === 'Visible')`).
@@ -45,7 +90,7 @@ Existing projects that do not want to use a configurable theme do not need to ap
 
 To use the new [configurable theme](./themes.md#configurable-theme) feature, the feature toggle `extraConfiguration` needs to be enabled.
 
-A new `TokenService` is introduced to be only responsible for fetching token data from the ICM.
+A new `TokenService` is introduced, which is only responsible for fetching token data from the ICM.
 However, all necessary adaptions for the identity providers and the `fetchToken()` method of the UserService are removed in order to be completely independent of `TokenService`.
 If your identity providers should use the `OAuthService` to handle the authentication, please make sure to instantiate a new `OAuthService` entity within the identity provider.
 The `getOAuthServiceInstance()` static method from the `InstanceCreators` class can be used for that.
@@ -145,7 +190,8 @@ Please run the following command for each configured Angular project (e.g., 'int
   ng g formly-migrate --project=${ANGULAR_PROJECT}
 ```
 
-> **NOTE:** Not all scenarios where a deprecated property could be found are taken into consideration for the `formly-migrate` schematic. Please check and adapt your code manually for additional changes. For further information, see the [formly migration guide](https://formly.dev/docs/guide/migration/).
+> [!NOTE]
+> Not all scenarios where a deprecated property could be found are taken into consideration for the `formly-migrate` schematic. Please check and adapt your code manually for additional changes. For further information, see the [formly migration guide](https://formly.dev/docs/guide/migration/).
 
 The templates of `account-order-template-detail-page.component.ts`, `quote-line-item-list.component.ts`, `quoting-basket-line-items.component.ts`, and `account-wishlist-detail-page.component.ts` have been updated to ensure correct DOM element updates for `ngFor` loop changes.
 A [trackBy function](https://angular.io/api/core/TrackByFunction) will be used now.

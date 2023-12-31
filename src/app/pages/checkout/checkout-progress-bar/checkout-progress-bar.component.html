@@ -9,7 +9,7 @@
     >
       <ng-container *ngIf="checkoutStepLink(checkoutStep.step); else noLink">
         <a [routerLink]="checkoutStep.link">
-          <div class="progress-number"><fa-icon [icon]="['fas', 'check']"></fa-icon></div>
+          <div class="progress-number"><fa-icon [icon]="['fas', 'check']" /></div>
           <span class="progress-label"> {{ checkoutStep.labelKey | translate }} </span>
         </a>
       </ng-container>

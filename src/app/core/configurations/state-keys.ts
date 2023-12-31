@@ -1,4 +1,4 @@
-import { makeStateKey } from '@angular/platform-browser';
+import { makeStateKey } from '@angular/core';
 
 export const DISPLAY_VERSION = makeStateKey<string>('displayVersion');
 

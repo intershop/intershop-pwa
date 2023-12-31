@@ -1,7 +1,16 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, concat, of, timer } from 'rxjs';
-import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, concat, of, timer } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -14,7 +23,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './mini-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MiniBasketComponent implements OnInit, OnDestroy {
+export class MiniBasketComponent implements OnInit {
   basketAnimation$: Observable<string>;
   itemTotal$: Observable<PriceItem>;
   itemCount$: Observable<number>;
@@ -25,7 +34,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
   private basketError$: Observable<HttpError>;
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private checkoutFacade: CheckoutFacade,
@@ -33,12 +42,6 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
     private location: Location,
     private cdRef: ChangeDetectorRef
   ) {}
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   ngOnInit() {
     this.itemCount$ = this.checkoutFacade.basketItemCount$;
     this.itemTotal$ = this.checkoutFacade.basketItemTotal$;
@@ -49,7 +52,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
       .pipe(
         whenTruthy(),
         filter(() => this.location.path() !== '/basket'),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.open());
 
@@ -58,7 +61,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
       switchMap(() => concat(of('mini-basket-animation'), timer(2500).pipe(map(() => ''))))
     );
 
-    this.basketAnimation$.pipe(takeUntil(this.destroy$)).subscribe(animation => {
+    this.basketAnimation$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(animation => {
       if (animation) {
         this.open();
       } else {
@@ -66,7 +69,7 @@ export class MiniBasketComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.appFacade.routingInProgress$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(() => {
+    this.appFacade.routingInProgress$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.collapse();
     });
   }

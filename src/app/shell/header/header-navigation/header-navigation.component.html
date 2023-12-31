@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <ul class="navbar-nav main-navigation-list">
   <li
@@ -28,18 +29,11 @@
             : ('header.navigation.expand_category.aria_label' | translate : { '0': category.name })
         "
       >
-        <fa-icon *ngIf="isOpened(category.uniqueId); else closed" [icon]="['fas', 'minus']"></fa-icon>
-        <ng-template #closed> <fa-icon [icon]="['fas', 'plus']"></fa-icon> </ng-template>
+        <fa-icon *ngIf="isOpened(category.uniqueId); else closed" [icon]="['fas', 'minus']" />
+        <ng-template #closed> <fa-icon [icon]="['fas', 'plus']" /> </ng-template>
       </a>
-      <ish-sub-category-navigation
-        [categoryUniqueId]="category.uniqueId"
-        [subCategoriesDepth]="1"
-        [view]="view"
-      ></ish-sub-category-navigation>
+      <ish-sub-category-navigation [categoryUniqueId]="category.uniqueId" [subCategoriesDepth]="1" [view]="view" />
     </ng-container>
   </li>
-  <ish-lazy-content-include
-    includeId="include.header.navigation.pagelet2-Include"
-    role="listitem"
-  ></ish-lazy-content-include>
+  <ish-lazy-content-include includeId="include.header.navigation.pagelet2-Include" role="listitem" />
 </ul>

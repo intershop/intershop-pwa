@@ -46,7 +46,7 @@
             [budget]="costCenter.budget"
             [spentBudget]="costCenter.spentBudget"
             [additionalAmount]="orderTotal"
-          ></ish-budget-bar>
+          />
         </div>
       </div>
 
@@ -82,11 +82,7 @@
           </dl>
         </div>
         <div *ngIf="buyer.budget" class="col-md-6 mb-2">
-          <ish-budget-bar
-            [budget]="buyer.budget"
-            [spentBudget]="buyer.spentBudget"
-            [additionalAmount]="orderTotal"
-          ></ish-budget-bar>
+          <ish-budget-bar [budget]="buyer.budget" [spentBudget]="buyer.spentBudget" [additionalAmount]="orderTotal" />
         </div>
       </div>
     </ish-info-box>

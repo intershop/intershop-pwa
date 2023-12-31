@@ -6,5 +6,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryListComponent {
-  @Input() categories: string[];
+  @Input({ required: true }) categories: string[];
 }

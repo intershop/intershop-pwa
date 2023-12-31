@@ -12,7 +12,7 @@
           (click)="showAddressForm(address)"
           data-testing-id="edit-shipping-address-link"
         >
-          <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+          <fa-icon [icon]="['fas', 'pencil-alt']" />
         </a>
 
         <!-- delete shipping address -->
@@ -23,7 +23,7 @@
           title="{{ 'checkout.address.delete.button.label' | translate }}"
           (click)="modalDialog.show(address)"
         >
-          <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+          <fa-icon [icon]="['fas', 'trash-alt']" />
         </a>
 
         <ish-modal-dialog
@@ -41,7 +41,7 @@
       </div>
 
       <!-- display shipping address -->
-      <ish-address [address]="address"></ish-address>
+      <ish-address [address]="address" />
     </ng-container>
 
     <p *ngIf="basketInvoiceAndShippingAddressEqual$ | async" data-testing-id="sameAsInvoice" class="section">
@@ -59,7 +59,7 @@
 <!-- shipping address selection -->
 <ng-container *ngIf="addresses$ | async as addresses">
   <form *ngIf="addresses.length" [formGroup]="form">
-    <formly-form [form]="form" [fields]="fields"></formly-form>
+    <formly-form [form]="form" [fields]="fields" />
   </form>
 </ng-container>
 
@@ -83,10 +83,9 @@
     [resetForm]="collapseChange | async"
     (save)="saveAddress($event)"
     (cancel)="cancelEditAddress()"
-  >
-  </ish-formly-customer-address-form>
+  />
 </div>
 
 <ng-container *ngIf="(collapseChange | async) === false">
-  <ish-lazy-address-doctor></ish-lazy-address-doctor>
+  <ish-lazy-address-doctor />
 </ng-container>

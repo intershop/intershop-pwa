@@ -18,11 +18,11 @@
         [ngClass]="props.labelClass ? props.labelClass : dprops.labelClass"
       >
         <span *ngIf="props.label">{{ props.label | translate }}</span>
-        <ish-field-tooltip *ngIf="props.tooltip" [tooltipInfo]="props.tooltip"> </ish-field-tooltip>
+        <ish-field-tooltip *ngIf="props.tooltip" [tooltipInfo]="props.tooltip" />
       </label>
     </div>
     <ng-container *ngIf="showError" class="invalid-feedback d-block">
-      <ish-validation-message [field]="field" class="validation-message"></ish-validation-message>
+      <ish-validation-message [field]="field" class="validation-message" />
     </ng-container>
   </div>
 </div>

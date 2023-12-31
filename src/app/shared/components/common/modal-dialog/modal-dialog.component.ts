@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   Inject,
   Input,
@@ -9,9 +10,11 @@ import {
   Output,
   TemplateRef,
   ViewChild,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, race, take } from 'rxjs';
 
 export interface ModalOptions extends NgbModalOptions {
   /**
@@ -65,7 +68,9 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
   data: T;
 
-  private destroy$ = new Subject<void>();
+  private hide$ = new Subject<void>();
+
+  private destroyRef = inject(DestroyRef);
 
   constructor(private ngbModal: NgbModal, @Inject(DOCUMENT) private document: Document) {}
 
@@ -77,7 +82,11 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
     this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, this.options);
 
-    this.ngbModalRef.dismissed.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => this.closed.emit(this.data));
+    race(this.ngbModalRef.dismissed, this.hide$)
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.closed.emit(this.data);
+      });
 
     this.shown.emit(this.data);
   }
@@ -87,8 +96,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
    */
   hide() {
     this.ngbModalRef.close();
-    this.destroy$.next();
-    this.closed.emit(this.data);
+    this.hide$.next();
   }
 
   /**
@@ -116,7 +124,6 @@ export class ModalDialogComponent<T> implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.hide$.complete(); // complete open hide$ subscription
   }
 }

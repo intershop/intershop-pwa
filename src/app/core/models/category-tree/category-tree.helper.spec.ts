@@ -22,12 +22,12 @@ describe('Category Tree Helper', () => {
 
   describe('single()', () => {
     it('should throw if given category is falsy', () => {
-      expect(() => CategoryTreeHelper.single(undefined)).toThrowError('falsy input');
+      expect(() => CategoryTreeHelper.single(undefined)).toThrow('falsy input');
     });
 
     it('should throw if given category has no uniqueId', () => {
       const cat = {} as Category;
-      expect(() => CategoryTreeHelper.single(cat)).toThrowError('category has no uniqueId');
+      expect(() => CategoryTreeHelper.single(cat)).toThrow('category has no uniqueId');
     });
 
     it('should create a tree if a simple root category is put in', () => {
@@ -79,8 +79,8 @@ describe('Category Tree Helper', () => {
       const tree = CategoryTreeHelper.empty();
       const cat = { uniqueId: 'A' } as Category;
 
-      expect(() => CategoryTreeHelper.add(undefined, cat)).toThrowError('falsy input');
-      expect(() => CategoryTreeHelper.add(tree, undefined)).toThrowError('falsy input');
+      expect(() => CategoryTreeHelper.add(undefined, cat)).toThrow('falsy input');
+      expect(() => CategoryTreeHelper.add(tree, undefined)).toThrow('falsy input');
     });
 
     it('should add a node to an empty tree when called', () => {
@@ -108,7 +108,7 @@ describe('Category Tree Helper', () => {
     it('should fail if the supplied category has no uniqueId', () => {
       const tree = CategoryTreeHelper.empty();
       const cat = {} as Category;
-      expect(() => CategoryTreeHelper.add(tree, cat)).toThrowError('category has no uniqueId');
+      expect(() => CategoryTreeHelper.add(tree, cat)).toThrow('category has no uniqueId');
     });
 
     it('should add a given category to the tree as additional root when not supplied with optional parameter', () => {

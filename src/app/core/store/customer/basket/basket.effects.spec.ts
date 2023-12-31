@@ -9,6 +9,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
@@ -56,12 +57,16 @@ import { BasketEffects } from './basket.effects';
 describe('Basket Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
+  let apiTokenMock: ApiTokenService;
+  let basketItemsServiceMock: BasketItemsService;
   let effects: BasketEffects;
   let store: Store;
   let router: Router;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
+    apiTokenMock = mock(ApiTokenService);
+    basketItemsServiceMock = mock(BasketItemsService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -70,11 +75,8 @@ describe('Basket Effects', () => {
         RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
       providers: [
-        {
-          provide: ApiTokenService,
-          useFactory: () => instance(mock(ApiTokenService)),
-          useValue: { apiToken$: of({ apiToken: 'apiToken' }) },
-        },
+        { provide: ApiTokenService, useFactory: () => instance(apiTokenMock) },
+        { provide: BasketItemsService, useFactory: () => instance(basketItemsServiceMock) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketEffects,
         provideMockActions(() => actions$),
@@ -84,6 +86,8 @@ describe('Basket Effects', () => {
     effects = TestBed.inject(BasketEffects);
     store = TestBed.inject(Store);
     router = TestBed.inject(Router);
+
+    when(apiTokenMock.getApiToken$()).thenReturn(of('apiToken'));
   });
 
   describe('loadBasket$', () => {
@@ -414,7 +418,7 @@ describe('Basket Effects', () => {
 
   describe('setBasketDesiredDeliveryDate$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).thenReturn(of([]));
+      when(basketItemsServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).thenReturn(of([]));
       store.dispatch(
         loadBasketSuccess({
           basket: {
@@ -428,12 +432,12 @@ describe('Basket Effects', () => {
     const desiredDeliveryDate = '2022-02-20';
     const lineItems: LineItem[] = [{ id: '1', desiredDeliveryDate: undefined } as LineItem];
 
-    it('should call the basketService for setBasketDesiredDeliveryDate', done => {
+    it('should call the basketItemsService for setBasketDesiredDeliveryDate', done => {
       const action = setBasketDesiredDeliveryDate({ desiredDeliveryDate });
       actions$ = of(action);
 
       effects.setBasketDesiredDeliveryDate$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, anything())).once();
+        verify(basketItemsServiceMock.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, anything())).once();
         done();
       });
     });
@@ -451,7 +455,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type setBasketDesiredDeliveryDateFail', () => {
-      when(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).thenReturn(
+      when(basketItemsServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
 
@@ -717,7 +721,7 @@ describe('Basket Effects', () => {
 
   describe('submitOrder$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).thenReturn(of([]));
+      when(basketItemsServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).thenReturn(of([]));
       store.dispatch(
         loadBasketSuccess({
           basket: {
@@ -731,17 +735,17 @@ describe('Basket Effects', () => {
     const desiredDeliveryDate = '2022-02-20';
     const lineItems: LineItem[] = [{ id: '1', desiredDeliveryDate: undefined } as LineItem];
 
-    it('should call the basketService for submitOrder if the basket has a desired delivery date', done => {
+    it('should call the basketItemsService for submitOrder if the basket has a desired delivery date', done => {
       const action = submitOrder();
       actions$ = of(action);
 
       effects.submitOrder$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, anything())).once();
+        verify(basketItemsServiceMock.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, anything())).once();
         done();
       });
     });
 
-    it('should not call the basketService for submitOrder if the basket has no desired delivery date', done => {
+    it('should not call the basketItemsService for submitOrder if the basket has no desired delivery date', done => {
       store.dispatch(
         loadBasketSuccess({
           basket: { id: 'BID', attributes: [] } as Basket,
@@ -753,7 +757,7 @@ describe('Basket Effects', () => {
 
       effects.submitOrder$.subscribe({
         next: () => {
-          verify(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).never();
+          verify(basketItemsServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).never();
         },
         error: fail,
         complete: done,
@@ -773,7 +777,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map an invalid request to action of type setBasketDesiredDeliveryDateFail', () => {
-      when(basketServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).thenReturn(
+      when(basketItemsServiceMock.updateBasketItemsDesiredDeliveryDate(anything(), anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = submitOrder();

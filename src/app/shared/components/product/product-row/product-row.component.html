@@ -2,19 +2,19 @@
   <div *ngIf="!product.failed" class="product-tile-list row" [attr.data-testing-sku]="product.sku">
     <div class="col-3 col-md-2">
       <div class="product-image-container">
-        <ish-product-image imageType="S" [link]="true"></ish-product-image>
-        <ish-product-label></ish-product-label>
+        <ish-product-image imageType="S" [link]="true" />
+        <ish-product-label />
       </div>
     </div>
 
     <div class="col-9 col-md-10">
       <div class="row">
         <div class="col-md-7">
-          <ish-product-name></ish-product-name>
+          <ish-product-name />
 
-          <ish-lazy-product-rating [hideNumberOfReviews]="true"></ish-lazy-product-rating>
+          <ish-lazy-product-rating [hideNumberOfReviews]="true" />
 
-          <ish-product-id></ish-product-id>
+          <ish-product-id />
 
           <div
             *ngIf="configuration$('description') | async"
@@ -22,28 +22,25 @@
             [ishServerHtml]="product.shortDescription"
           ></div>
 
-          <ish-product-promotion displayType="simpleWithDetail"></ish-product-promotion>
+          <ish-product-promotion displayType="simpleWithDetail" />
 
           <div class="product-tile-actions btn-group">
-            <ish-lazy-product-add-to-quote displayType="icon" cssClass="btn-link"></ish-lazy-product-add-to-quote>
-            <ish-lazy-product-add-to-compare displayType="icon" cssClass="btn-link"></ish-lazy-product-add-to-compare>
-            <ish-lazy-product-add-to-wishlist displayType="icon" cssClass="btn-link"></ish-lazy-product-add-to-wishlist>
-            <ish-lazy-product-add-to-order-template
-              displayType="icon"
-              cssClass="btn-link"
-            ></ish-lazy-product-add-to-order-template>
+            <ish-lazy-product-add-to-quote displayType="icon" cssClass="btn-link" />
+            <ish-lazy-product-add-to-compare displayType="icon" cssClass="btn-link" />
+            <ish-lazy-product-add-to-wishlist displayType="icon" cssClass="btn-link" />
+            <ish-lazy-product-add-to-order-template displayType="icon" cssClass="btn-link" />
           </div>
         </div>
 
         <div class="col-12 col-md-5 text-md-right">
-          <ish-product-price [showInformationalPrice]="true"></ish-product-price>
-          <ish-product-inventory></ish-product-inventory>
-          <ish-product-shipment></ish-product-shipment>
+          <ish-product-price [showInformationalPrice]="true" />
+          <ish-product-inventory />
+          <ish-product-shipment />
 
-          <ish-product-item-variations></ish-product-item-variations>
+          <ish-product-item-variations />
 
           <div class="product-list-actions-container">
-            <ish-lazy-tacton-configure-product displayType="list-button"></ish-lazy-tacton-configure-product>
+            <ish-lazy-tacton-configure-product displayType="list-button" />
 
             <div class="product-form form-horizontal row">
               <ng-container *ngIf="configuration$('readOnly') | async; else quantityInput">
@@ -55,13 +52,13 @@
               </ng-container>
               <ng-template #quantityInput>
                 <div class="action-container col-6 offset-md-6 col-lg-5 offset-lg-0">
-                  <ish-product-quantity></ish-product-quantity>
+                  <ish-product-quantity />
                 </div>
               </ng-template>
 
               <div class="action-container addtocart-container col-12 col-lg-7">
-                <ish-product-add-to-basket></ish-product-add-to-basket>
-                <ish-product-choose-variation></ish-product-choose-variation>
+                <ish-product-add-to-basket />
+                <ish-product-choose-variation />
               </div>
             </div>
           </div>

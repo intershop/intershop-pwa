@@ -190,10 +190,6 @@ export function createLazyComponent(options: Options): Rule {
       )
     );
 
-    if (guardDisplay) {
-      operations.push(schematic('add-destroy', { project: options.project, name: `${options.path}/${options.name}` }));
-    }
-
     operations.push(applyLintFix());
 
     return chain(operations);

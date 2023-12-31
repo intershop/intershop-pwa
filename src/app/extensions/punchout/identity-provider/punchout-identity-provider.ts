@@ -40,7 +40,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
   }
 
   init() {
-    this.apiTokenService.cookieVanishes$.subscribe(type => {
+    this.apiTokenService.getCookieVanishes$().subscribe(type => {
       if (type === 'user') {
         this.accountFacade.logoutUser({ revokeApiToken: false });
       }

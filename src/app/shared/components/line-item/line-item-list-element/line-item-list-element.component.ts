@@ -13,7 +13,7 @@ import { OrderLineItem } from 'ish-core/models/order/order.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemListElementComponent implements OnInit {
-  @Input() pli: Partial<LineItemView & OrderLineItem>;
+  @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;
   @Input() editable = true;
   @Input() lineItemViewType: 'simple' | 'availability';
 

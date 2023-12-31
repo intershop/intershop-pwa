@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, OperatorFunction } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, OperatorFunction, forkJoin } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -56,28 +56,26 @@ export class FormsService {
   /**
    * Gets all possible salutation options for a certain country.
    *
-   * @param translate instance of a translation service
    * @param countryCode country code of the country for which the salutations should be determined.
    * @returns salutation select options
    */
-  getSalutationOptionsForCountryCode(countryCode: string): SelectOption[] {
-    return this.determineSalutations(countryCode).map(title => ({
-      value: this.translate.instant(title),
-      label: title,
-    }));
+  getSalutationOptionsForCountryCode(countryCode: string): Observable<SelectOption[]> {
+    return forkJoin<SelectOption[]>(
+      this.determineSalutations(countryCode).map(title =>
+        this.translate.get(title).pipe(map(translation => ({ value: translation, label: title })))
+      )
+    );
   }
 
   /**
    * Gets all possible salutation options for the current locale.
    *
-   * @param  appFacade instance of the an application facade
-   * @param translate instance of a translation service
    * @returns salutation select options
    */
   getSalutationOptions(): Observable<SelectOption[]> {
     return this.store.pipe(select(getCurrentLocale)).pipe(
       whenTruthy(),
-      map(locale => this.getSalutationOptionsForCountryCode(locale?.substring(3)))
+      switchMap(locale => this.getSalutationOptionsForCountryCode(locale?.substring(3)))
     );
   }
 

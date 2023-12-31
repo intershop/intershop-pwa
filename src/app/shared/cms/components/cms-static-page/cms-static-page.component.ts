@@ -16,7 +16,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSStaticPageComponent implements CMSComponent, OnChanges {
-  @Input() pagelet: ContentPageletView;
+  @Input({ required: true }) pagelet: ContentPageletView;
 
   contentPageTree$: Observable<ContentPageTreeView>;
 

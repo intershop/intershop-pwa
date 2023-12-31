@@ -1,6 +1,6 @@
-import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, Pipe, PipeTransform, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subscription } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 
@@ -14,10 +14,10 @@ import { AppFacade } from 'ish-core/facades/app.facade';
  * <example *ngIf="'services.ABC.runnable' | ishServerSetting"> ...</example>
  */
 @Pipe({ name: 'ishServerSetting', pure: false })
-export class ServerSettingPipe implements PipeTransform, OnDestroy {
+export class ServerSettingPipe implements PipeTransform {
   private returnValue: unknown;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
   private sub: Subscription;
 
   constructor(private appFacade: AppFacade) {}
@@ -31,17 +31,12 @@ export class ServerSettingPipe implements PipeTransform, OnDestroy {
       if (!this.sub) {
         this.sub = this.appFacade
           .serverSetting$(path)
-          .pipe(takeUntil(this.destroy$))
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(value => {
             this.returnValue = value;
           });
       }
       return this.returnValue;
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

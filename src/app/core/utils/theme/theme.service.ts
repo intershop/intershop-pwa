@@ -1,5 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { Inject, Injectable, TransferState } from '@angular/core';
 
 import { THEME_COLOR } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';

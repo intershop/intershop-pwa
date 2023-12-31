@@ -13,7 +13,7 @@
     aria-haspopup="menu"
     [attr.aria-label]="'locale.' + locale + '.long' | translate"
   >
-    <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon"></fa-icon>
+    <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon" />
     <span class="language-switch-current-selection d-inline"
       >{{ 'locale.' + locale + (view === 'accordion' ? '.long' : '.short') | translate
       }}<span class="switch_arrow"></span

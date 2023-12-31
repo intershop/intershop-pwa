@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -7,6 +8,7 @@ import {
   ContentPageletEntryPointView,
   createContentPageletEntryPointView,
 } from 'ish-core/models/content-view/content-view.model';
+import { ContentDesignViewWrapperComponent } from 'ish-shared/cms/components/content-design-view-wrapper/content-design-view-wrapper.component';
 
 import { ContentIncludeComponent } from './content-include.component';
 
@@ -33,7 +35,7 @@ describe('Content Include Component', () => {
     when(cmsFacade.contentInclude$(anything())).thenReturn(of(include));
 
     await TestBed.configureTestingModule({
-      declarations: [ContentIncludeComponent],
+      declarations: [ContentIncludeComponent, MockComponent(ContentDesignViewWrapperComponent)],
       providers: [{ provide: CMSFacade, useValue: instance(cmsFacade) }],
     }).compileComponents();
   });

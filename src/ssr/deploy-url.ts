@@ -12,7 +12,7 @@ export function setDeployUrlInFile(deployUrl: string, path: string, input: strin
 
     let newInput = input;
 
-    const cssRegex = /url\((?!http)\/?(assets.*?|[a-zA-Z].*?woff2?)\)/g;
+    const cssRegex = /url\((?!http|data)\/?(assets.*?|[a-zA-Z].*?woff2?)\)/g;
     if (cssRegex.test(newInput)) {
       newInput = newInput.replace(cssRegex, (...args) => `url(${deployUrl}${args[1]})`);
     }
@@ -22,7 +22,8 @@ export function setDeployUrlInFile(deployUrl: string, path: string, input: strin
       newInput = newInput.replace(assetsRegex, (...args) => `"${deployUrl}${args[1]}"`);
     }
 
-    const javascriptRegex = /"(DEPLOY_URL_PLACEHOLDER|\/)?((runtime|vendor|main|polyfills|styles)[^"]*\.(js|css))"/g;
+    const javascriptRegex =
+      /"(DEPLOY_URL_PLACEHOLDER|\/)?((runtime|vendor|main|polyfills|styles|scripts)[^"]*\.(js|css))"/g;
     if (javascriptRegex.test(newInput)) {
       newInput = newInput.replace(javascriptRegex, (...args) => `"${deployUrl}${args[2]}"`);
     }

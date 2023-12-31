@@ -12,7 +12,7 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
 export class PromotionRemoveComponent implements OnInit {
   basket$: Observable<BasketView>;
 
-  @Input() code: string;
+  @Input({ required: true }) code: string;
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 

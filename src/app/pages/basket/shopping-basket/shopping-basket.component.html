@@ -9,10 +9,7 @@
           [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
           class="details-link"
         >
-          <ish-content-include
-            includeId="include.dialog.safeAndSecure.pagelet2-Include"
-            *ishLazyLoadingContent
-          ></ish-content-include>
+          <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include" *ishLazyLoadingContent />
         </ish-modal-dialog-link>
       </span>
     </h1>
@@ -20,15 +17,15 @@
 
   <div>
     <!-- Error message -->
-    <ish-error-message *ngIf="error?.message" [error]="error"></ish-error-message>
+    <ish-error-message *ngIf="error?.message" [error]="error" />
 
-    <ish-basket-error-message [error]="error"></ish-basket-error-message>
+    <ish-basket-error-message [error]="error" />
 
     <!-- Basket Info messages -->
-    <ish-basket-info></ish-basket-info>
+    <ish-basket-info />
 
     <!-- Validation messages-->
-    <ish-basket-validation-results></ish-basket-validation-results>
+    <ish-basket-validation-results />
 
     <!-- Dynamic Promotion Message -->
     <div *ngIf="basket?.dynamicMessages?.length" class="alert alert-info">
@@ -44,30 +41,33 @@
     <div class="row">
       <div class="col-md-12 col-lg-8">
         <div class="marketing-area">
-          <ish-content-include includeId="include.basket.content.top.pagelet2-Include"></ish-content-include>
+          <ish-content-include includeId="include.basket.content.top.pagelet2-Include" />
         </div>
 
-        <ish-basket-cost-center-selection></ish-basket-cost-center-selection>
+        <ish-basket-cost-center-selection />
         <div class="section">
           <ng-container *ishFeature="'quoting'; else elseTemplate">
-            <ish-lazy-quoting-basket-line-items></ish-lazy-quoting-basket-line-items>
+            <ish-lazy-quoting-basket-line-items />
           </ng-container>
           <ng-template #elseTemplate>
-            <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems"></ish-line-item-list>
+            <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems" />
           </ng-template>
 
-          <ish-loading *ngIf="loading"></ish-loading>
+          <ish-loading *ngIf="loading" />
 
-          <div class="button-group">
-            <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
-            <ish-lazy-basket-create-order-template
-              *ngIf="basket"
-              [cssClass]="'btn btn-secondary'"
-              [products]="basket.lineItems"
-            ></ish-lazy-basket-create-order-template>
+          <div class="button-group clearfix">
+            <div class="float-md-left">
+              <ish-lazy-basket-add-to-quote />
+              <ish-lazy-basket-create-order-template
+                *ngIf="basket"
+                [cssClass]="'btn btn-secondary'"
+                [products]="basket.lineItems"
+              />
+            </div>
+            <ish-clear-basket cssClass="float-md-right" />
           </div>
         </div>
-        <ish-lazy-direct-order></ish-lazy-direct-order>
+        <ish-lazy-direct-order />
 
         <p>
           <a routerLink="/home" class="text-nowrap no-print">{{
@@ -76,18 +76,18 @@
         </p>
 
         <div class="marketing-area">
-          <ish-content-include includeId="include.basket.content.bottom.pagelet2-Include"></ish-content-include>
+          <ish-content-include includeId="include.basket.content.bottom.pagelet2-Include" />
         </div>
       </div>
 
       <div class="col-md-12 col-lg-4 order-summary">
         <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
-        <ish-basket-promotion-code></ish-basket-promotion-code>
+        <ish-basket-promotion-code />
 
         <div class="cost-summary">
           <!-- Cost Summary Component -->
-          <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+          <ish-basket-cost-summary [totals]="basket.totals" />
 
           <button
             *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
@@ -97,13 +97,11 @@
           >
             {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}
           </button>
-          <ish-lazy-punchout-transfer-basket
-            *ishIsAuthorizedTo="'APP_B2B_SEND_PUNCHOUT_BASKET'"
-          ></ish-lazy-punchout-transfer-basket>
+          <ish-lazy-punchout-transfer-basket *ishIsAuthorizedTo="'APP_B2B_SEND_PUNCHOUT_BASKET'" />
         </div>
 
         <div class="marketing-area">
-          <ish-content-include includeId="include.basket.ordersummary.pagelet2-Include"></ish-content-include>
+          <ish-content-include includeId="include.basket.ordersummary.pagelet2-Include" />
         </div>
       </div>
     </div>

@@ -21,7 +21,6 @@ describe('Category Mapper', () => {
 
   describe('mapCategoryPath()', () => {
     it('should throw on falsy or empty input', () => {
-      expect(() => categoryMapper.mapCategoryPath(undefined)).toThrowError('input is falsy');
       expect(() => categoryMapper.mapCategoryPath(undefined)).toThrow('input is falsy');
       expect(() => categoryMapper.mapCategoryPath([])).toThrow('input is falsy');
     });

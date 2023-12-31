@@ -8,10 +8,10 @@
         title="{{ 'quote.basket_items.remove.button.label' | translate }}"
         (click)="onDeleteQuote(item[0])"
       >
-        <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+        <fa-icon [icon]="['fas', 'trash-alt']" />
         <span class="pl-1">{{ 'quote.basket_items.remove.button.label' | translate }}</span>
       </a>
     </h2>
   </div>
-  <ish-line-item-list [lineItems]="item[1]"></ish-line-item-list>
+  <ish-line-item-list [lineItems]="item[1]" />
 </ng-container>

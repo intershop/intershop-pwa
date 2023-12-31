@@ -12,7 +12,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutAddressComponent {
-  @Input() basket: Basket;
+  @Input({ required: true }) basket: Basket;
   @Input() error: HttpError;
 
   @Output() nextStep = new EventEmitter<void>();

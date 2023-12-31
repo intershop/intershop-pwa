@@ -11,9 +11,11 @@ appserver
 backoffice
 bar
 bars
+bitnami
 blocklist
 breakline
 categoryref
+cobrowse
 colorcode
 compodoc
 concardis
@@ -41,6 +43,7 @@ errorpage
 extralarge
 fastpay
 fieldgroup
+flushdb
 fontawesome
 foo
 foobar
@@ -77,6 +80,7 @@ keyvalue
 kubernetes
 lessthan
 logformat
+loglevel
 maxlength
 mergeable
 minibasket
@@ -142,6 +146,7 @@ quoterequest
 quoterequests
 rebased
 recaptcha
+rediss
 refactoring
 refactorings
 resetted
@@ -167,6 +172,7 @@ sitekey
 sku
 skus
 spgid
+srcache
 sslmode
 storefinder
 stylelint

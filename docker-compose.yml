@@ -4,6 +4,7 @@
 version: '3'
 services:
   pwa:
+    image: intershophub/intershop-pwa-ssr
     build:
       context: .
       args:
@@ -35,6 +36,8 @@ services:
       #     clientID: ASDF12345
       #   Punchout:
       #     type: PUNCHOUT
+      #   CoBrowse:
+      #     type: cobrowse
 
     # Logging to an External Device (see logging.md)
     # volumes:
@@ -57,7 +60,14 @@ services:
   #
   # </CDN-Example>
 
+  # redis:
+  #   image: bitnami/redis
+  #   container_name: redis
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=yes
+
   nginx:
+    image: intershophub/intershop-pwa-nginx
     build: nginx
     depends_on:
       - pwa
@@ -69,6 +79,7 @@ services:
       UPSTREAM_PWA: 'http://pwa:4200'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
+      # REDIS_URI: redis://redis:6379
       # LOG_ALL: off
       # SSL: 1
       # SSR: 0
@@ -86,6 +97,8 @@ services:
       #   .+:
       #     - path: /en/punchout
       #       type: Punchout
+      #     - path: /en/cobrowse
+      #       type: CoBrowse
       MULTI_CHANNEL: |
         .+:
           - baseHref: /en
@@ -100,6 +113,9 @@ services:
           - baseHref: /b2c
             channel: default
             theme: b2c
+      # ADDITIONAL_HEADERS: |
+      #   headers:
+      #     - X-Frame-Options: 'SAMEORIGIN'
 
     # Logging to an External Device (see logging.md)
     # volumes:

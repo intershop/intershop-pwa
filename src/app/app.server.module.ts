@@ -1,6 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { ErrorHandler, NgModule, TransferState } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
@@ -27,7 +26,8 @@ export class UniversalErrorHandler implements ErrorHandler {
       try {
         console.error('ERROR', JSON.stringify(error));
       } catch (_) {
-        console.error('ERROR (cannot stringify)', error);
+        // do not log the error if it can't be stringified, it floods the log with irrelevant information
+        console.error('ERROR (cannot stringify)');
       }
     } else {
       console.error('ERROR', error);

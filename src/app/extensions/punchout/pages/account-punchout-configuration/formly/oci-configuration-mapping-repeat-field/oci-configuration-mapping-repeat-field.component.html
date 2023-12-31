@@ -1,5 +1,5 @@
 <span *ngFor="let field of field?.fieldGroup; let i = index" [attr.data-testing-id]="'oci-config-mapping-line-' + i">
-  <formly-field [field]="field"></formly-field>
+  <formly-field [field]="field" />
 </span>
 <a [routerLink]="[]" (click)="addRow()" data-testing-id="add-config-line">{{
   'account.punchout.configuration.form.add_row.link' | translate

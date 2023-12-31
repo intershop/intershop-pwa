@@ -14,7 +14,7 @@ import { MessageFacade } from 'ish-core/facades/message.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoMessageComponent implements OnChanges {
-  @Input() message: string;
+  @Input({ required: true }) message: string;
   @Input() toast = true;
 
   constructor(private messageFacade: MessageFacade) {}

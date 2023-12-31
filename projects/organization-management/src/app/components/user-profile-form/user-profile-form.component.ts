@@ -13,7 +13,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UserProfileFormComponent implements OnInit {
-  @Input() form: FormGroup;
+  @Input({ required: true }) form: FormGroup;
   @Input() error: HttpError;
   @Input() user: B2bUser;
 

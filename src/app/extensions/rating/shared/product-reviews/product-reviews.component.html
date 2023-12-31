@@ -1,11 +1,11 @@
-<ish-error-message [error]="error$ | async"></ish-error-message>
+<ish-error-message [error]="error$ | async" />
 
 <!-- display the user's own review -->
 <div *ngIf="ownProductReview$ | async as ownReview; else rateProduct" data-testing-id="own-product-review">
   <h3>{{ 'product.reviews.your_review.heading' | translate }}</h3>
   <p *ngIf="ownReview.status === 'NEW'">{{ 'product.review.status.new.text' | translate }}</p>
   <p *ngIf="ownReview.status === 'REJECTED'">{{ 'product.review.status.rejected.text' | translate }}</p>
-  <ng-container *ngTemplateOutlet="reviewItem; context: { review: ownReview }"></ng-container>
+  <ng-container *ngTemplateOutlet="reviewItem; context: { review: ownReview }" />
 </div>
 <!-- display the rate product link if the user has not rated this product yet -->
 <ng-template #rateProduct>
@@ -35,7 +35,7 @@
   <ng-container *ngIf="recentProductReviews$ | async as recentProductReviews; else noReviews">
     <div *ngIf="recentProductReviews?.length; else noReviews">
       <ng-container *ngFor="let review of recentProductReviews">
-        <ng-container *ngTemplateOutlet="reviewItem; context: { review: review }"></ng-container>
+        <ng-container *ngTemplateOutlet="reviewItem; context: { review: review }" />
       </ng-container>
     </div>
   </ng-container>
@@ -56,7 +56,7 @@
     <div class="col-md-9">
       <div class="review-item-header-title">
         <ng-container *ngFor="let fill of getStars(review.rating)">
-          <ish-product-rating-star [filled]="fill"></ish-product-rating-star>
+          <ish-product-rating-star [filled]="fill" />
         </ng-container>
         <span class="pl-1">{{ review.title }}</span>
       </div>
@@ -83,12 +83,12 @@
 </ish-modal-dialog>
 
 <!-- create dialog -->
-<ish-product-review-create-dialog #reviewCreateDialog></ish-product-review-create-dialog>
+<ish-product-review-create-dialog #reviewCreateDialog />
 
 <ng-template #noReviews>
   {{ 'product.reviews.no_reviews_yet.text' | translate }}
 </ng-template>
 
 <div *ngIf="(loading$ | async) === true">
-  <ish-loading></ish-loading>
+  <ish-loading />
 </div>

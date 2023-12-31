@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +13,6 @@ import {
   map,
   sample,
   switchMap,
-  takeWhile,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -80,7 +79,7 @@ export class SearchEffects {
       ofType(searchProducts),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-      withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage('search')))),
+      concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('search')))),
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
       concatMap(({ searchTerm, amount, sorting, offset, page }) =>
         this.productsService.searchProducts(searchTerm, amount, sorting, offset).pipe(
@@ -114,22 +113,23 @@ export class SearchEffects {
     )
   );
 
-  suggestSearch$ = createEffect(() =>
-    this.actions$.pipe(
-      takeWhile(() => !SSR),
-      ofType(suggestSearch),
-      mapToPayloadProperty('searchTerm'),
-      debounceTime(400),
-      distinctUntilChanged(),
-      whenTruthy(),
-      switchMap(searchTerm =>
-        this.suggestService.search(searchTerm).pipe(
-          map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
-          catchError(() => EMPTY)
+  suggestSearch$ =
+    !SSR &&
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(suggestSearch),
+        mapToPayloadProperty('searchTerm'),
+        debounceTime(400),
+        distinctUntilChanged(),
+        whenTruthy(),
+        switchMap(searchTerm =>
+          this.suggestService.search(searchTerm).pipe(
+            map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
+            catchError(() => EMPTY)
+          )
         )
       )
-    )
-  );
+    );
 
   redirectIfSearchProductFail$ = createEffect(
     () =>

@@ -1,10 +1,10 @@
 <ng-container *ngIf="variationCount$ | async">
   <a id="variation-list-top" title="top"></a>
-  <ish-filter-navigation orientation="horizontal"></ish-filter-navigation>
+  <ish-filter-navigation orientation="horizontal" fragmentOnRouting="variation-list-top" />
   <ish-product-listing
     mode="paging"
     [categoryId]="categoryId$ | async"
-    [id]="{ type: 'master', value: sku$ | async }"
+    [productListingId]="{ type: 'master', value: sku$ | async }"
     fragmentOnRouting="variation-list-top"
-  ></ish-product-listing>
+  />
 </ng-container>

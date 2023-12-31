@@ -43,10 +43,21 @@
 /e2e/node_modules
 /e2e/reports
 
+# from e2e/cypress/.gitignore
+/e2e/cypress/videos
+/e2e/cypress/screenshots
+/e2e/cypress/logs
+
 # from eslint-rules/.gitignore
 /eslint-rules/node_modules
 /eslint-rules/package-lock.json
 /eslint-rules/dist
+
+# from projects/organization-management/src/app/exports/.gitignore
+/projects/organization-management/src/app/exports/**/lazy*
+
+# from projects/requisition-management/src/app/exports/.gitignore
+/projects/requisition-management/src/app/exports/**/lazy*
 
 # from reports/.gitignore
 /reports/junit.xml
@@ -63,31 +74,8 @@
 /schematics/dist
 /schematics/package-lock.json
 
-# from e2e/cypress/.gitignore
-/e2e/cypress/videos
-/e2e/cypress/screenshots
-/e2e/cypress/logs
-
-# from node_modules/eslint-plugin-ish-custom-rules/.gitignore
-/node_modules/eslint-plugin-ish-custom-rules/node_modules
-/node_modules/eslint-plugin-ish-custom-rules/package-lock.json
-/node_modules/eslint-plugin-ish-custom-rules/dist
-
-# from node_modules/intershop-schematics/.gitignore
-/node_modules/intershop-schematics/dist
-/node_modules/intershop-schematics/package-lock.json
-
-# from src/ssr/server-scripts/.gitignore
-/src/ssr/server-scripts/ecosystem-ports.json
-
-# from src/app/shell/shared/.gitignore
-/src/app/shell/shared/**/lazy*
-
-# from projects/organization-management/src/app/exports/.gitignore
-/projects/organization-management/src/app/exports/**/lazy*
-
-# from projects/requisition-management/src/app/exports/.gitignore
-/projects/requisition-management/src/app/exports/**/lazy*
+# from schematics/src/extension/files/__name@dasherize__/exports/.gitignore
+/schematics/src/extension/files/__name@dasherize__/exports/**/lazy*
 
 # from src/app/extensions/address-doctor/exports/.gitignore
 /src/app/extensions/address-doctor/exports/**/lazy*
@@ -125,8 +113,11 @@
 # from src/app/extensions/wishlists/exports/.gitignore
 /src/app/extensions/wishlists/exports/**/lazy*
 
-# from schematics/src/extension/files/__name@dasherize__/exports/.gitignore
-/schematics/src/extension/files/__name@dasherize__/exports/**/lazy*
+# from src/app/shell/shared/.gitignore
+/src/app/shell/shared/**/lazy*
+
+# from src/ssr/server-scripts/.gitignore
+/src/ssr/server-scripts/ecosystem-ports.json
 
 # The content between these markers is generated.
 # It can be synchronized using 'npm run update-dockerignore'

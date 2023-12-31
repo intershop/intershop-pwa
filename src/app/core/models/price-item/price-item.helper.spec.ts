@@ -7,7 +7,7 @@ describe('Price Item Helper', () => {
       currency: 'USD',
       gross: 43.34,
       net: 40.34,
-      type: 'PriceItem' as 'PriceItem',
+      type: 'PriceItem' as const,
     };
 
     it('should select gross price if requested', () => {
@@ -35,7 +35,7 @@ describe('Price Item Helper', () => {
       currency: 'USD',
       gross: 43.34,
       net: 40.34,
-      type: 'PriceItem' as 'PriceItem',
+      type: 'PriceItem' as const,
       minQuantity: 2,
     };
 

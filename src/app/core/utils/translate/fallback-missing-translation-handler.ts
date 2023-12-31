@@ -9,7 +9,7 @@ import {
 } from '@ngx-translate/core';
 import { memoize } from 'lodash-es';
 import { EMPTY, concat, defer, iif, of } from 'rxjs';
-import { filter, first, map, tap } from 'rxjs/operators';
+import { filter, map, take, tap } from 'rxjs/operators';
 
 import { getSpecificServerTranslation, loadSingleServerTranslation } from 'ish-core/store/core/configuration';
 import { InjectSingle } from 'ish-core/utils/injection';
@@ -46,7 +46,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
         }),
         filter(translation => translation !== undefined),
         map((translation: string) => this.translateCompiler.compile(translation, lang)),
-        first()
+        take(1)
       )
     );
   }
@@ -60,7 +60,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
           this.reportMissingTranslation(lang, key);
         }
       }),
-      first()
+      take(1)
     );
   }
 
@@ -93,7 +93,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
       ).pipe(
         // stop after first emission
         whenTruthy(),
-        first(),
+        take(1),
         map(translation => this.translateParser.interpolate(translation, params.interpolateParams)),
         map(translation => (PRODUCTION_MODE ? translation : `TRANSLATE_ME ${translation}`))
       );

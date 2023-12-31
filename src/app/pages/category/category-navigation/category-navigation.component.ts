@@ -11,7 +11,7 @@ import { NavigationCategory } from 'ish-core/models/navigation-category/navigati
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryNavigationComponent implements OnInit, OnChanges {
-  @Input() uniqueId: string;
+  @Input({ required: true }) uniqueId: string;
 
   navigationCategories$: Observable<NavigationCategory[]>;
   currentCategoryId$: Observable<string>;

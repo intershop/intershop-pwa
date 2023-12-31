@@ -1,9 +1,9 @@
 <ng-container *ngIf="(wishlistOptions$ | async).length === 0; else radioButtonForm">
-  <formly-form [fields]="singleFieldConfig" [form]="formGroup"></formly-form>
+  <formly-form [fields]="singleFieldConfig" [form]="formGroup" />
 </ng-container>
 
 <ng-template #radioButtonForm>
   <div class="col-md-12">
-    <formly-form [fields]="multipleFieldConfig$ | async" [form]="formGroup"></formly-form>
+    <formly-form [fields]="multipleFieldConfig$ | async" [form]="formGroup" />
   </div>
 </ng-template>

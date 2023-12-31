@@ -1,5 +1,5 @@
 <ng-container *ngIf="visible$ | async">
-  <ng-container *ngIf="isPriceRange$ | async; then priceRange; else singlePrice"></ng-container>
+  <ng-container *ngIf="isPriceRange$ | async; then priceRange; else singlePrice" />
 </ng-container>
 
 <ng-template #singlePrice>

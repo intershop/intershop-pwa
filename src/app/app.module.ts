@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule, TransferState } from '@angular/platform-browser';
+import { APP_ID, NgModule, TransferState } from '@angular/core';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UrlSerializer } from '@angular/router';
 
@@ -26,7 +26,7 @@ import { ShellModule } from './shell/shell.module';
   declarations: [AppComponent],
   /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
   imports: [
-    BrowserModule.withServerTransition({ appId: 'intershop-pwa' }),
+    BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
     ShellModule,
@@ -43,7 +43,11 @@ import { ShellModule } from './shell/shell.module';
   ],
   /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],
-  providers: [{ provide: UrlSerializer, useClass: PWAUrlSerializer }],
+  providers: [
+    { provide: UrlSerializer, useClass: PWAUrlSerializer },
+    { provide: APP_ID, useValue: 'intershop-pwa' },
+    provideClientHydration(),
+  ],
 })
 export class AppModule {
   constructor(transferState: TransferState) {

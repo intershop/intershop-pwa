@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
-import { Actions, createEffect } from '@ngrx/effects';
+import { Injectable, TransferState } from '@angular/core';
+import { Actions, concatLatestFrom, createEffect } from '@ngrx/effects';
 import { Action, Store, select } from '@ngrx/store';
 import { addBreadcrumb, captureEvent, configureScope, init } from '@sentry/browser';
 import { EMPTY, iif } from 'rxjs';
-import { distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, take, takeWhile, tap } from 'rxjs/operators';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -33,7 +32,7 @@ export class SentryConfigEffects {
     this.actions$.pipe(
       takeWhile(() => SSR && this.featureToggleService.enabled('sentry')),
       take(1),
-      withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('SENTRY_DSN', 'sentryDSN')),
+      concatLatestFrom(() => this.stateProperties.getStateOrEnvOrDefault<string>('SENTRY_DSN', 'sentryDSN')),
       map(([, sentryDSN]) => sentryDSN),
       whenTruthy(),
       map(dsn => setSentryConfig({ dsn }))

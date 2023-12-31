@@ -7,7 +7,7 @@ import { TactonProductConfigurationParameter } from '../../../models/tacton-prod
 // eslint-disable-next-line ish-custom-rules/use-component-change-detection
 @Component({ template: '' })
 export abstract class TactonConfigParameterComponent {
-  @Input() parameter: TactonProductConfigurationParameter;
+  @Input({ required: true }) parameter: TactonProductConfigurationParameter;
 
   constructor(protected facade: TactonFacade) {}
 

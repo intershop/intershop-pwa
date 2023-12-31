@@ -87,13 +87,24 @@ CREATE src/app/cms/components/cms-inventory/cms-inventory.component.spec.ts (795
 UPDATE src/app/cms/cms.module.ts (4956 bytes)
 ```
 
+## Design View
+
+> [!IMPORTANT]
+> To use the new Design View for the PWA within the Intershop Administration Portal ICM version 11.7.0 or above is needed.
+
+The Intershop PWA 5.0.0 introduces experimental support for the new Design View that can be used within the Intershop Administration Portal (IAP).
+Besides access to the IAP ICM 11 is required, that provides the necessary CMS Management REST API to get information about available CMS models and the CMS page tree and to edit CMS components.
+
+ICM 11 does not provide the basic support for a design preview (as mentioned in the next section) so the _Design View_ tab in the ICM backoffice cannot be used to preview content changes in the PWA.
+The new Design View in the IAP currently only supports content editing but not content preview.
+
 ## Design Preview
 
 In conjunction with Intershop Commerce Management (ICM) 7.10.39.1, Intershop PWA 3.3.0 introduced basic support for a design preview.
 This means the _Design View_ tab in the ICM backoffice can be used to preview content changes in the PWA, but without any direct editing capabilities.
 Direct item preview for products, categories and content pages works now as well in the context of the PWA.
 
-The preview feature basically consists of the [`PreviewService`](../../src/app/core/services/preview/preview.service.ts) that handles the preview functionality by listening for `PreviewContextID` initialization or changes and saving it to the browser session storage.
+The preview feature basically consists of the [`PreviewService`](../../src/app/core/utils/preview/preview.service.ts) that handles the preview functionality by listening for `PreviewContextID` initialization or changes and saving it to the browser session storage.
 The [`PreviewInterceptor`](../../src/app/core/interceptors/preview.interceptor.ts) than handles adding a currently available PreviewContextID as matrix parameter `;prectx=` to all REST requests so they can be evaluated on the ICM side returning content fitting to the set preview context.
 
 To end a preview session and to delete the saved `PreviewContextID` in the browser session storage, use the _Finish Preview_ button of the _Design View_ configuration.

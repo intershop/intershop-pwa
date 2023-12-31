@@ -9,16 +9,16 @@
         else normalVariationDisplay
       "
     >
-      <ish-product-variation-display></ish-product-variation-display>
+      <ish-product-variation-display />
     </ng-container>
     <ng-template #normalVariationDisplay>
       <ng-container *ngIf="readOnly$ | async; else variationSelect">
-        <ish-product-variation-display></ish-product-variation-display>
+        <ish-product-variation-display />
       </ng-container>
     </ng-template>
   </div>
 
   <ng-template #variationSelect>
-    <ish-product-variation-select></ish-product-variation-select>
+    <ish-product-variation-select />
   </ng-template>
 </ng-template>

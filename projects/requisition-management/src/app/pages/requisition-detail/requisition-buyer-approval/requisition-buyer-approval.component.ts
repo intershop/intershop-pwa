@@ -14,7 +14,7 @@ import { Requisition } from '../../../models/requisition/requisition.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequisitionBuyerApprovalComponent implements OnChanges {
-  @Input() requisition: Requisition;
+  @Input({ required: true }) requisition: Requisition;
 
   orderTotal: Price;
   spentPercentage: number;

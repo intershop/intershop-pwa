@@ -10,9 +10,10 @@ kb_sync_latest_only
 Developing with the Intershop PWA requires to download and install [Node.js](https://nodejs.org) with the included npm package manager.
 Check the project's `package.json` in the `engines` section for the recommended node version.
 
-> **Note:** If you will work with different Node.js based projects or different PWA versions we recommend using a Node Version Manager (see [NVM](https://github.com/nvm-sh/nvm) or [NVM for Windows](https://github.com/coreybutler/nvm-windows)).
+> [!NOTE]
+> If you will work with different Node.js based projects or different PWA versions, we recommend using a Node Version Manager (see [NVM](https://github.com/nvm-sh/nvm) or [NVM for Windows](https://github.com/coreybutler/nvm-windows)).
 
-Clone or download the Intershop PWA GitHub project to your computer, e.g.
+Clone or download the Intershop PWA GitHub project to your computer, e.g.,
 
 ```bash
 git clone https://github.com/intershop/intershop-pwa.git
@@ -23,22 +24,23 @@ After having cloned the project from the Git repository, open a command line in 
 The project uses [Angular CLI](https://angular.io/cli) - a command line interface for Angular - that has to be installed globally.
 Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine.
 
-Use `ng serve --open` to start up the development server and open the Progressive Web app in your browser.
+Use `ng serve --open` to start the development server and open the Progressive Web app in your browser.
 
-> **Note:** The project is configured to work by default against a publicly available Intershop Commerce Management server (see `environment.model.ts`).
+> [!NOTE]
+> The project is configured to work against a publicly available Intershop Commerce Management server by default (see `environment.model.ts`).
 >
 > ```
-> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> icmBaseURL: 'https://develop.icm.intershop.de',
 > ```
 
-For actually setting up a customer project based on the Intershop PWA read the [Customization Guide](customizations.md).
+For actually setting up a customer project based on the Intershop PWA, read the [Customization Guide](customizations.md).
 
 ## Local Environment Configuration
 
-The project is configured to support the usage of an own local environment file `environment.development.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
+The project is configured to support the usage of an own local environment file `environment.development.ts` that can be configured according to your local development environment needs, e.g., with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
 Overrides in this file will be included in the theme environments and override parts of it.
 For production builds, no overrides should be used.
-The docker build automatically creates this file as an empty file.
+The Docker build automatically creates this file as an empty file.
 The `environment.development.ts` will be ignored by Git so the developer-specific settings will not be committed and accidentally shared.
 It is initially created when running `npm install`.
 
@@ -48,7 +50,7 @@ The default development configuration is set in `angular.json`:
 "defaultConfiguration": "b2b,development",
 ```
 
-Therefore the b2b related environment file `environment.b2b.ts` is used when starting the server where further B2B theme specific configurations are made.
+Therefore, the B2B related environment file `environment.b2b.ts` is used when starting the server where further B2B theme-specific configurations are made.
 This environment file references two more files:
 
 - `environment.model.ts` where "ENVIRONMENT_DEFAULTS" are taken from
@@ -63,21 +65,22 @@ The [local environment configuration](#local-environment-configuration) will aut
 Once the server is running, navigate to http://localhost:4200 in your browser to see the application.
 The app will automatically reload if you change any of the source files.
 
-Running `ng serve --port 4300` will start the server on a different port than the default 4200 port, e.g. if one wants to run multiple instances in parallel for comparison.
+Running `ng serve --port 4300` will start the server on a different port than the default 4200 port, e.g., if one wants to run multiple instances in parallel for comparison.
 
 Running `ng serve --open` will automatically open a new browser tab with the started application.
 
 Running `ng serve --ssl` will run the development server with `https` support.
 
-The development server can be started with different configurations besides the default configuration as well, e.g. `ng serve --configuration "b2c,production"` or a bit shorter `ng s -c=b2c,production`.
+The development server can be started with different configurations besides the default configuration as well, e.g., `ng serve --configuration "b2c,production"` or a bit shorter `ng s -c=b2c,production`.
 
 The different start options can be combined.
 
 Further options of the development server can be found running `ng serve --help`.
 
-> **Warning:** DO NOT USE the webpack-dev-server IN PRODUCTION environments!
+> [!CAUTION]
+> DO NOT USE the webpack-dev-server IN PRODUCTION environments!
 
-The project can alternatively be run in server side rendering mode, see [Building and Running Server-Side Rendering](ssr-startup.md).
+The project can alternatively be run in server-side rendering mode, see [Building and Running Server-Side Rendering](ssr-startup.md).
 
 ## Testing Production Setups
 
@@ -87,7 +90,7 @@ For usage instructions, check the comments in that file.
 
 ## Development Tools
 
-The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS and other files.
+The used IDE or editor should support the [Prettier - Code formatter](https://prettier.io) that is configured to apply a common formatting style on all TypeScript, Javascript, JSON, HTML, SCSS, and other files.
 In addition, especially for the file types that are not handled by Prettier, the editor needs to follow the [EditorConfig](https://editorconfig.org) configuration of the project to help maintain consistent coding styles.
 Besides that the project has [ESLint](https://eslint.org) and [Stylelint](https://stylelint.io) configured to unify the coding style even further.
 
@@ -100,7 +103,7 @@ It is a free IDE built on Open Source and available for the different platforms 
 Within the PWA project we supply configuration files for VS Code that suggest downloading recommended plugins and apply best-practice settings (see the `.vscode` folder of the project).
 
 If your editor or IDE provides no support for the formatting and linting, make sure the rules are applied otherwise.
-E.g. the project provides npm tasks that perform code style checks as well.
+For instance, the project provides npm tasks that perform code style checks as well.
 Use `npm run lint` to run a static code analysis.
 Use `npm run format` to perform a formatting run on the code base.
 
@@ -119,7 +122,8 @@ You can use `npm run clean` to remove all unversioned files and folders from you
 This command uses `git clean` but preserves your `environment.development.ts`.
 Afterwards a clean `npm install` is performed.
 
-:warning: All unstaged files will be deleted!
+> [!WARNING]
+> All unstaged files will be deleted!
 
 ### Visual Studio Code Remote Development
 
@@ -128,9 +132,9 @@ An alternative development setup for the PWA is provided when using Visual Studi
 As prerequisite [Docker](https://docs.docker.com/get-docker/) has to be installed on your development machine.
 Furthermore, [Visual Studio Code](https://code.visualstudio.com) with the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension has to be used as IDE.
 
-After cloning your local working copy (e.g. with VS Code), VSCode will ask you if you want to reopen the folder in a container.
+After cloning your local working copy (e.g., with VS Code), VS Code will ask you if you want to reopen the folder in a container.
 By doing this, VS Code will prepare the environment for you inside the container.
-It installs Node.js LTS, Angular CLI and also performs all required setup steps to get you started in an isolated environment.
+It installs Node.js LTS, Angular CLI, and performs all required setup steps to get you started in an isolated environment.
 
 Open a console in VS Code and run `ng serve` to start developing.
 
@@ -150,7 +154,7 @@ As Angular runs in the browser, all the development tool functionality provided 
 If you encounter problems with `JavaScript heap out of memory`, you will have to increase the heap space size.
 This can be done by setting the environment variable `NODE_OPTIONS=--max_old_space_size=8192`.
 
-### Recommend Articles
+### Recommended Articles
 
 [Debugging Angular CLI Applications in Visual Studio Code](https://www.digitalocean.com/community/tutorials/how-to-debug-angular-cli-applications-in-visual-studio-code)
 
@@ -163,11 +167,11 @@ This can be done by setting the environment variable `NODE_OPTIONS=--max_old_spa
 - Use `ng.profiler.timeChangeDetection({record:true})` to profile a change detection cycle of the current page.
 - Use the `json` pipe in Angular to print out data on templates. Easy-to-use snippets are available with `ng-debug` and `ng-debug-async` .
 
-[Everything you need to know about debugging Angular applications](https://indepth.dev/posts/1138/everything-you-need-to-know-about-debugging-angular-applications)
+[Everything You Need to Know About Debugging Angular Applications](https://indepth.dev/posts/1138/everything-you-need-to-know-about-debugging-angular-applications)
 
 - Provides a more in-depth view about internals.
 
-[Debug Angular apps in production without revealing source maps](https://medium.com/angular-in-depth/debug-angular-apps-in-production-without-revealing-source-maps-ab4a235edd85)
+[Debug Angular Apps in Production without Revealing Source Maps](https://medium.com/angular-in-depth/debug-angular-apps-in-production-without-revealing-source-maps-ab4a235edd85)
 
 - If you also generate the source maps for production builds, you can load them in the browser development tools and use them for debugging production setups.
 
