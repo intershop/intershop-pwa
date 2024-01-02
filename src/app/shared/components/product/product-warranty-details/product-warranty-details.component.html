@@ -5,7 +5,7 @@
     [options]="{ titleText: warranty.name }"
     [ngClass]="'details-link'"
   >
-    <ish-error-message [error]="error$ | async" [toast]="false"></ish-error-message>
+    <ish-error-message [error]="error$ | async" [toast]="false" />
 
     <ng-container *ngIf="warrantyDetails$ | async as warrantyDetails">
       {{ 'product.warranty.short_description.label' | translate }}
@@ -29,6 +29,6 @@
         {{ getWarrantyAttribute(warrantyDetails.attributes, 'WarrantyType') }}
       </div>
     </ng-container>
-    <ish-loading *ngIf="loading$ | async"></ish-loading>
+    <ish-loading *ngIf="loading$ | async" />
   </ish-modal-dialog-link>
 </ng-container>

@@ -13,8 +13,7 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
  * @example
  * <ish-product-warranty
  *   [selectedWarranty]="warranty"
- *   viewType="select"
- * ></ish-product-warranty>
+ *   viewType="select" />
  */
 
 @Component({

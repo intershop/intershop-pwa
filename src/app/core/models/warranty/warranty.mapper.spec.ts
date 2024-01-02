@@ -20,9 +20,9 @@ describe('Warranty Mapper', () => {
         attributes: [{ name: 'attributeName', value: 'attributeValue' }],
       } as WarrantyData;
       expect(WarrantyMapper.fromData(data)).toMatchInlineSnapshot(`
-        Object {
-          "attributes": Array [
-            Object {
+        {
+          "attributes": [
+            {
               "name": "attributeName",
               "value": "attributeValue",
             },
@@ -30,7 +30,7 @@ describe('Warranty Mapper', () => {
           "id": "test",
           "longDescription": "Insurance against breakdown",
           "name": "testWarranty",
-          "price": Object {
+          "price": {
             "currency": "USD",
             "type": "Money",
             "value": 100,
@@ -64,11 +64,11 @@ describe('Warranty Mapper', () => {
       ];
 
       expect(WarrantyMapper.fromLinkData(warranties)).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "id": "1YLEDTVSUP",
             "name": "1-year LED TV Support",
-            "price": Object {
+            "price": {
               "currency": "USD",
               "type": "Money",
               "value": 106,

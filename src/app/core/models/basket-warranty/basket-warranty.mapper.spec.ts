@@ -18,8 +18,8 @@ describe('Basket Warranty Mapper', () => {
       });
 
       expect(basketWarranty).toMatchInlineSnapshot(`
-        Object {
-          "price": Object {
+        {
+          "price": {
             "currency": "USD",
             "gross": 43.34,
             "net": 40.34,

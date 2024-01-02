@@ -14,8 +14,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  * @example
  * <ish-line-item-warranty
  *    [pli]=pli
- *    [editable]="true'>
- * </ish-line-item-warranty>
+ *    [editable]="true' />
  */
 @Component({
   selector: 'ish-line-item-warranty',
@@ -23,8 +22,8 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemWarrantyComponent implements OnInit {
-  @Input() pli: Partial<LineItemView & OrderLineItem>;
-  @Input() editable: boolean;
+  @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;
+  @Input() editable = false;
 
   constructor(private context: ProductContextFacade, private checkoutFacade: CheckoutFacade) {}
 

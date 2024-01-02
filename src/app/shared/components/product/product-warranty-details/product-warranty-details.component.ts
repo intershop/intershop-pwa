@@ -14,7 +14,7 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
  * @example
  * <ish-warranty-details
  *   [warranty]="warranty"
- * ></ish-warranty-details>
+ * />
  */
 @Component({
   selector: 'ish-product-warranty-details',
@@ -22,7 +22,7 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductWarrantyDetailsComponent {
-  @Input() warranty: Warranty;
+  @Input({ required: true }) warranty: Warranty;
 
   warrantyDetails$: Observable<Warranty>;
   loading$: Observable<boolean>;

@@ -30,7 +30,7 @@
               />
               {{ warranty.name }}:
               <span class="pl-1 font-weight-bold">{{ warranty.price | ishPrice }}</span>
-              <ish-product-warranty-details [warranty]="warranty"></ish-product-warranty-details>
+              <ish-product-warranty-details [warranty]="warranty" />
             </label>
           </dd>
         </dl>
@@ -56,10 +56,7 @@
             {{ warranty.name }} - {{ warranty.price | ishPrice }}
           </option>
         </select>
-        <ish-product-warranty-details
-          *ngIf="selectedWarranty"
-          [warranty]="selectedWarranty"
-        ></ish-product-warranty-details>
+        <ish-product-warranty-details *ngIf="selectedWarranty" [warranty]="selectedWarranty" />
       </ng-template>
     </ng-container>
   </div>

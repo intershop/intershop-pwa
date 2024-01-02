@@ -8,7 +8,7 @@
           (submitWarranty)="updateLineItemWarranty($event)"
           [selectedWarranty]="selectedWarranty$ | async"
           viewType="select"
-        ></ish-product-warranty>
+        />
       </div>
 
       <ng-container *ngIf="pli.warranty">
@@ -24,7 +24,7 @@
     <ng-template #displayWarrantyName>
       <ng-container *ngIf="selectedWarranty$ | async as warranty">
         <div class="offset-2 col-7 col-md-6 list-item" data-testing-id="selectedPliWarranty">
-          {{ warranty.name }} <ish-product-warranty-details [warranty]="warranty"></ish-product-warranty-details>
+          {{ warranty.name }} <ish-product-warranty-details [warranty]="warranty" />
         </div>
       </ng-container>
     </ng-template>
