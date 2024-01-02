@@ -1,0 +1,4 @@
+<div *ngFor="let image of images$ | async">
+  <img [src]="dotCmsEnv + image.asset" alt="{{ image.title }}" />
+  <p>{{ image.title }}</p>
+</div>

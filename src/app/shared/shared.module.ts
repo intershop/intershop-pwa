@@ -148,6 +148,7 @@ import { SearchBoxComponent } from './components/search/search-box/search-box.co
 import { FormlyAddressFormsModule } from './formly-address-forms/formly-address-forms.module';
 import { FormlyModule } from './formly/formly.module';
 import { FormsSharedModule } from './forms/forms.module';
+import { DotCmsImageComponent } from './dot-cms-image/dot-cms-image.component';
 
 const importExportModules = [
   AddressDoctorExportsModule,
@@ -301,6 +302,7 @@ const exportedComponents = [
   PromotionRemoveComponent,
   SearchBoxComponent,
   SuccessMessageComponent,
+  DotCmsImageComponent,
 ];
 
 @NgModule({
