@@ -303,12 +303,12 @@ const exportedComponents = [
   ProductVariationSelectDefaultComponent,
   ProductVariationSelectEnhancedComponent,
   ProductVariationSelectSwatchComponent,
+  ProductWarrantyComponent,
+  ProductWarrantyDetailsComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   SearchBoxComponent,
   SuccessMessageComponent,
-  ProductWarrantyComponent,
-  ProductWarrantyDetailsComponent,
 ];
 
 @NgModule({

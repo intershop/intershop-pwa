@@ -18,7 +18,7 @@ export class CheckoutReviewPage {
     waitLoadingEnd(1000);
   }
 
-  lineItemWarranty(idx: number) {
-    return cy.get('ish-line-item-list-element').eq(idx).find('ish-line-item-warranty');
+  lineItemWarranty() {
+    return cy.get('ish-line-item-list-element').find('ish-line-item-warranty');
   }
 }

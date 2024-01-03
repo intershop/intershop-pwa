@@ -66,8 +66,8 @@ describe('Product Warranty Component', () => {
 
   it('should render a no-warranty option if warranties exist on the product', () => {
     fixture.detectChanges();
-    expect(element.getElementsByTagName('input')[0].value).toContain('noWarranty');
-    expect(element.getElementsByTagName('input')[1].value).toContain('1YearSupport');
+    expect(element.getElementsByTagName('input')[0].value).toContain('1YearSupport');
+    expect(element.getElementsByTagName('input')[1].value).toContain('');
   });
 
   it('should only render the component if warranties are available', () => {

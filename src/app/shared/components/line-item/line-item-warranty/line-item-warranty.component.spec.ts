@@ -8,7 +8,6 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductWarrantyDetailsComponent } from 'ish-shared/components/product/product-warranty-details/product-warranty-details.component';
 import { ProductWarrantyComponent } from 'ish-shared/components/product/product-warranty/product-warranty.component';
 
 import { LineItemWarrantyComponent } from './line-item-warranty.component';
@@ -32,12 +31,7 @@ describe('Line Item Warranty Component', () => {
     when(checkoutFacade.basketLineItems$).thenReturn(of([pli]));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        LineItemWarrantyComponent,
-        MockComponent(ProductWarrantyComponent),
-        MockComponent(ProductWarrantyDetailsComponent),
-        MockPipe(PricePipe),
-      ],
+      declarations: [LineItemWarrantyComponent, MockComponent(ProductWarrantyComponent), MockPipe(PricePipe)],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
@@ -64,15 +58,25 @@ describe('Line Item Warranty Component', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('ish-product-warranty')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id="selectedPliWarranty"]')).toBeFalsy();
+    expect(element.querySelector('ish-product-warranty')).toMatchInlineSnapshot(`
+      <ish-product-warranty
+        ng-reflect-selected-warranty-sku="war2"
+        ng-reflect-view-type="select"
+      ></ish-product-warranty>
+    `);
   });
 
   it('should render the pli warranty if the warranty is not editable', () => {
     component.editable = false;
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id="selectedPliWarranty"]')).toBeTruthy();
-    expect(element.querySelector('ish-product-warranty')).toBeFalsy();
+    expect(element.querySelector('ish-product-warranty')).toBeTruthy();
+    expect(element.querySelector('ish-product-warranty')).toMatchInlineSnapshot(`
+      <ish-product-warranty
+        ng-reflect-selected-warranty-sku="war2"
+        ng-reflect-view-type="display"
+      ></ish-product-warranty>
+    `);
   });
 
   it('should update warranty if updateLineItemWarranty is called', () => {

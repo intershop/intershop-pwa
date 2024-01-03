@@ -4,36 +4,26 @@
       <!-- default display option is radio-buttons -->
       <ng-template ngSwitchDefault>
         <div class="product-warranty-title">{{ 'product.warranty.heading.text' | translate }}</div>
-        <dl class="product-warranty-list" data-testing-id="product-warranties">
-          <!-- display a no-warranty option -->
-          <dd>
-            <label>
-              <input
-                type="radio"
-                [name]="'warranty_' + uuid"
-                value="noWarranty"
-                [checked]="!selectedWarranty"
-                (change)="updateWarranty(undefined)"
-              />
-              {{ 'product.warranty.no_protection_plan' | translate }}
+        <div class="product-warranty-list" data-testing-id="product-warranties">
+          <div class="mb-2" *ngFor="let warranty of warranties">
+            <input
+              type="radio"
+              [id]="'warranty_' + uuid"
+              [name]="'warranty_' + uuid"
+              [value]="warranty.id"
+              class="form-check-input"
+              [checked]="selectedWarrantySku ? selectedWarrantySku === warranty.id : !warranty.id"
+              (change)="updateWarranty(warranty.id)"
+            />
+            <label class="form-check-label" for="'warranty_' + uuid">
+              {{ warranty.name
+              }}<span *ngIf="warranty.id"
+                ><span class="product-warranty-price"> {{ warranty.price | ishPrice }}</span>
+                <ish-product-warranty-details [warranty]="warranty"
+              /></span>
             </label>
-          </dd>
-          <!-- generate all available warranties with radio-buttons -->
-          <dd *ngFor="let warranty of warranties">
-            <label>
-              <input
-                type="radio"
-                [name]="'warranty_' + uuid"
-                [value]="warranty.id"
-                [checked]="selectedWarranty?.id === warranty.id"
-                (change)="updateWarranty(warranty.id)"
-              />
-              {{ warranty.name }}:
-              <span class="pl-1 font-weight-bold">{{ warranty.price | ishPrice }}</span>
-              <ish-product-warranty-details [warranty]="warranty" />
-            </label>
-          </dd>
-        </dl>
+          </div>
+        </div>
       </ng-template>
 
       <!-- viewType select-box -->
@@ -43,20 +33,25 @@
           (change)="updateWarranty($event.target)"
           data-testing-id="product-warranties"
         >
-          <!-- display a no-warranty option -->
-          <option value="" [selected]="!selectedWarranty">
-            {{ 'product.warranty.no_protection_plan' | translate }}
-          </option>
           <!-- generate all available warranties in a select box -->
           <option
             *ngFor="let warranty of warranties$ | async"
             [value]="warranty.id"
-            [selected]="selectedWarranty?.id === warranty.id"
+            [selected]="selectedWarrantySku ? selectedWarrantySku === warranty.id : warranty.id === ''"
           >
-            {{ warranty.name }} - {{ warranty.price | ishPrice }}
+            {{ warranty.name }}<span *ngIf="warranty.id"> - {{ warranty.price | ishPrice }}</span>
           </option>
         </select>
-        <ish-product-warranty-details *ngIf="selectedWarranty" [warranty]="selectedWarranty" />
+        <ish-product-warranty-details
+          *ngIf="selectedWarrantySku"
+          [warranty]="getSelectedWarranty$(selectedWarrantySku) | async"
+        />
+      </ng-template>
+      <ng-template ngSwitchCase="display">
+        <ng-container *ngIf="getSelectedWarranty$(selectedWarrantySku) | async as selectedWarranty">
+          {{ selectedWarranty.name }}
+          <ish-product-warranty-details [warranty]="selectedWarranty" />
+        </ng-container>
       </ng-template>
     </ng-container>
   </div>

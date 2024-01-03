@@ -72,6 +72,7 @@
   color: $text-color-primary;
 
   .product-warranty-title {
+    margin-top: $space-default;
     font-weight: bold;
   }
 
@@ -80,6 +81,14 @@
 
     dd {
       margin-bottom: 0;
+    }
+  }
+
+  .product-warranty-price {
+    font-weight: bold;
+
+    &::before {
+      content: ':';
     }
   }
 }

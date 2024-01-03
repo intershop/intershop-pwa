@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { OrderLineItem } from 'ish-core/models/order/order.model';
-import { Warranty } from 'ish-core/models/warranty/warranty.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -28,20 +27,11 @@ export class LineItemWarrantyComponent implements OnInit {
   constructor(private context: ProductContextFacade, private checkoutFacade: CheckoutFacade) {}
 
   productHasWarranties$: Observable<boolean>;
-  selectedWarranty$: Observable<Warranty>;
 
   ngOnInit() {
     this.productHasWarranties$ = this.context.select('product').pipe(
       whenTruthy(),
       map(product => !!product.availableWarranties?.length)
-    );
-
-    this.selectedWarranty$ = this.checkoutFacade.basketLineItems$.pipe(
-      map(items => items.find(item => item.id === this.pli.id)?.warranty?.sku),
-      distinctUntilChanged(),
-      withLatestFrom(this.context.select('product')),
-      filter(([, product]) => !!product.availableWarranties?.length),
-      map(([warrantySku, product]) => product.availableWarranties?.find(warranty => warranty.id === warrantySku))
     );
   }
 
