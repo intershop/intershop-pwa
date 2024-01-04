@@ -12,15 +12,26 @@ import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 
 type OrderIncludeType =
-  | 'invoiceToAddress'
+  | 'all'
+  | 'buckets'
+  | 'buckets_discounts'
+  | 'buckets_shipToAddress'
+  | 'buckets_shippingMethod'
+  | 'buyingContext'
   | 'commonShipToAddress'
   | 'commonShippingMethod'
   | 'discounts'
-  | 'lineItems_discounts'
+  | 'discounts_promotion'
+  | 'invoiceToAddress'
   | 'lineItems'
+  | 'lineItems_discounts'
+  | 'lineItems_product'
+  | 'lineItems_shipToAddress'
+  | 'lineItems_shippingMethod'
+  | 'lineItems_warranty'
   | 'payments'
-  | 'payments_paymentMethod'
-  | 'payments_paymentInstrument';
+  | 'payments_paymentInstrument'
+  | 'payments_paymentMethod';
 
 export interface OrderListQuery {
   limit: number;
