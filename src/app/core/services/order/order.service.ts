@@ -5,38 +5,12 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators';
 
+import { OrderIncludeType, OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
-
-type OrderIncludeType =
-  | 'all'
-  | 'buckets'
-  | 'buckets_discounts'
-  | 'buckets_shipToAddress'
-  | 'buckets_shippingMethod'
-  | 'buyingContext'
-  | 'commonShipToAddress'
-  | 'commonShippingMethod'
-  | 'discounts'
-  | 'discounts_promotion'
-  | 'invoiceToAddress'
-  | 'lineItems'
-  | 'lineItems_discounts'
-  | 'lineItems_product'
-  | 'lineItems_shipToAddress'
-  | 'lineItems_shippingMethod'
-  | 'lineItems_warranty'
-  | 'payments'
-  | 'payments_paymentInstrument'
-  | 'payments_paymentMethod';
-
-export interface OrderListQuery {
-  limit: number;
-  include?: OrderIncludeType[];
-}
 
 export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
   return Object.entries(query).reduce(
@@ -44,8 +18,10 @@ export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
       if (Array.isArray(value)) {
         if (key === 'include') {
           return acc.set(key, value.join(','));
+        } else if (key === 'statusCode') {
+          return acc.set('filter[statusCode]', value.join(','));
         } else {
-          return value.reduce((acc, value) => acc.append(key, value.toString()), acc);
+          return (value as string[]).reduce((acc, value) => acc.append(key, value?.toString()), acc);
         }
       } else if (value !== undefined) {
         return acc.set(key, value.toString());

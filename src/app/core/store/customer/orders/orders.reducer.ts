@@ -2,6 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
@@ -26,12 +27,16 @@ export const orderAdapter = createEntityAdapter<Order>({
 export interface OrdersState extends EntityState<Order> {
   loading: boolean;
   selected: string;
+  query: OrderListQuery;
+  moreAvailable: boolean;
   error: HttpError;
 }
 
 const initialState: OrdersState = orderAdapter.getInitialState({
   loading: false,
   selected: undefined,
+  query: undefined,
+  moreAvailable: true,
   error: undefined,
 });
 
@@ -57,10 +62,13 @@ export const ordersReducer = createReducer(
     };
   }),
   on(loadOrdersSuccess, (state, action) => {
-    const { orders } = action.payload;
-    return {
-      ...orderAdapter.setAll(orders, state),
-    };
+    const { orders, query, allRetrieved } = action.payload;
+    const newState = { ...state, query, moreAvailable: !allRetrieved };
+    if (!query.offset) {
+      return orderAdapter.setAll(orders, newState);
+    } else {
+      return orderAdapter.addMany(orders, newState);
+    }
   }),
 
   on(

@@ -19,7 +19,9 @@ import {
   selectOrder,
 } from './orders.actions';
 import {
+  getMoreOrdersAvailable,
   getOrder,
+  getOrderListQuery,
   getOrders,
   getOrdersError,
   getOrdersLoading,
@@ -66,7 +68,7 @@ describe('Orders Selectors', () => {
 
   describe('select order', () => {
     beforeEach(() => {
-      store$.dispatch(loadOrdersSuccess({ orders }));
+      store$.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
       store$.dispatch(selectOrder({ orderId: orders[1].id }));
     });
     it('should get a certain order if they are loaded orders', () => {
@@ -92,18 +94,28 @@ describe('Orders Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(loadOrdersSuccess({ orders }));
+        store$.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 }, allRetrieved: true }));
       });
 
       it('should set loading to false', () => {
         expect(getOrdersLoading(store$.state)).toBeFalse();
         expect(getOrdersError(store$.state)).toBeUndefined();
+      });
 
+      it('should have orders', () => {
         const loadedOrders = getOrders(store$.state);
         expect(loadedOrders[1].documentNo).toEqual(orders[1].documentNo);
         expect(loadedOrders[1].lineItems).toHaveLength(1);
         expect(loadedOrders[1].lineItems[0].id).toEqual('test2');
         expect(loadedOrders[1].lineItems[0].productSKU).toEqual('sku');
+      });
+
+      it('should have a query', () => {
+        expect(getOrderListQuery(store$.state)).toEqual({ limit: 30 });
+      });
+
+      it('should have no more orders available', () => {
+        expect(getMoreOrdersAvailable(store$.state)).toBeFalse();
       });
     });
 

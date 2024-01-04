@@ -210,6 +210,7 @@
   "account.notifications.table.notification": "Notification",
   "account.notifications.table.product": "Produit",
   "account.option.select.text": "Veuillez sélectionner",
+  "account.order.load_more": "Charger plus",
   "account.order.most_recent.heading": "Les commandes les plus récentes",
   "account.order.questions.note": "Veuillez consulter la section <a href=\"{{0}}\">Aide</a> de notre site Web pour des renseignements détaillés sur votre commande et l’expédition ou <a href=\"{{1}}\">Contactez-nous</a> 24 heures sur 24.",
   "account.order.questions.title": "Avez-vous des questions supplémentaires ?",

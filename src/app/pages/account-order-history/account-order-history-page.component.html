@@ -9,6 +9,12 @@
   [loading]="ordersLoading$ | async"
 />
 
+<div *ngIf="moreOrdersAvailable$ | async" class="d-flex justify-content-center">
+  <button class="btn btn-secondary" (click)="loadMoreOrders()" [disabled]="ordersLoading$ | async">
+    {{ 'account.order.load_more' | translate }}
+  </button>
+</div>
+
 <h4 class="form-text">{{ 'account.order.questions.title' | translate }}</h4>
 <p
   class="form-text"

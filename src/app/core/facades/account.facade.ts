@@ -7,11 +7,11 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { User } from 'ish-core/models/user/user.model';
-import { OrderListQuery } from 'ish-core/services/order/order.service';
 import { MessagesPayloadType } from 'ish-core/store/core/messages';
 import {
   createCustomerAddress,
@@ -29,10 +29,12 @@ import {
   getDataRequestLoading,
 } from 'ish-core/store/customer/data-requests';
 import {
+  getMoreOrdersAvailable,
   getOrders,
   getOrdersError,
   getOrdersLoading,
   getSelectedOrder,
+  loadMoreOrders,
   loadOrders,
 } from 'ish-core/store/customer/orders';
 import {
@@ -170,9 +172,16 @@ export class AccountFacade {
 
   // ORDERS
 
-  orders$(query?: OrderListQuery) {
+  orders$ = this.store.pipe(select(getOrders));
+
+  loadOrders(query?: OrderListQuery) {
     this.store.dispatch(loadOrders({ query: query || { limit: 30 } }));
-    return this.store.pipe(select(getOrders));
+  }
+
+  moreOrdersAvailable$ = this.store.pipe(select(getMoreOrdersAvailable));
+
+  loadMoreOrders() {
+    this.store.dispatch(loadMoreOrders());
   }
 
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));

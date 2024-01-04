@@ -22,7 +22,8 @@ export class OrderWidgetComponent implements OnInit {
   constructor(private accountfacade: AccountFacade) {}
 
   ngOnInit(): void {
-    this.orders$ = this.accountfacade.orders$({ limit: 5 });
+    this.orders$ = this.accountfacade.orders$;
     this.ordersLoading$ = this.accountfacade.ordersLoading$;
+    this.accountfacade.loadOrders({ limit: 5 });
   }
 }

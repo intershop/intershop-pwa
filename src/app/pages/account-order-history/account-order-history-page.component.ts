@@ -17,12 +17,19 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   orders$: Observable<Order[]>;
   ordersLoading$: Observable<boolean>;
   ordersError$: Observable<HttpError>;
+  moreOrdersAvailable$: Observable<boolean>;
 
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit(): void {
-    this.orders$ = this.accountFacade.orders$({ limit: 30, include: ['commonShipToAddress'] });
+    this.orders$ = this.accountFacade.orders$;
+    this.accountFacade.loadOrders({ limit: 30, include: ['commonShipToAddress'] });
     this.ordersLoading$ = this.accountFacade.ordersLoading$;
     this.ordersError$ = this.accountFacade.ordersError$;
+    this.moreOrdersAvailable$ = this.accountFacade.moreOrdersAvailable$;
+  }
+
+  loadMoreOrders(): void {
+    this.accountFacade.loadMoreOrders();
   }
 }
