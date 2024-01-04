@@ -34,9 +34,10 @@
 
         include /etc/nginx/conf.d/cache-settings.conf;
 
-        rewrite ^.*/index.html$ {{ $baseHref }}/loading;
-        rewrite ^(.*)/$ $1;
-        rewrite ^{{ $baseHref }}/?$ {{ $baseHref }}/home;
+        {{- $baseHrefTrailingSlash := $baseHref }}{{if not ($baseHrefTrailingSlash | strings.HasSuffix "/")}}{{ $baseHrefTrailingSlash = print $baseHrefTrailingSlash "/" }}{{ end }}
+        rewrite ^.*/index.html$ {{ $baseHrefTrailingSlash }}loading;
+        rewrite ^{{ $baseHref }}/*?$ {{ $baseHrefTrailingSlash }}home;
+        rewrite ^(.*?)(/+)$ $1;
 
         rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang={{ $lang }}';
         rewrite '^(?!.*;currency=.*)(.*)$' '$1;currency={{ $currency }}';
