@@ -81,7 +81,7 @@ describe('Orders Selectors', () => {
 
   describe('loading orders', () => {
     beforeEach(() => {
-      store$.dispatch(loadOrders());
+      store$.dispatch(loadOrders({ amount: 30 }));
       store$.dispatch(loadProductSuccess({ product: { sku: 'sku' } as Product }));
     });
 

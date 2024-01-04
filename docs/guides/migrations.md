@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 5.0 to 5.1
+
+The OrderListComponent is strictly presentational, components using it have to supply the data.
+
 ## From 4.2 to 5.0
 
 Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.

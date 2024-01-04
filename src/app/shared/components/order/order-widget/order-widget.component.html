@@ -1,7 +1,9 @@
 <ish-info-box heading="account.order.most_recent.heading" class="infobox-wrapper" cssClass="infobox-widget">
   <ish-order-list
-    [maxListItems]="5"
-    [columnsToDisplay]="['creationDate', 'orderNo', 'lineItems', 'status', 'orderTotal']"
+    [orders]="orders$ | async"
+    [loading]="ordersLoading$ | async"
+    noOrdersMessageKey="account.orderlist.no_placed_orders_message"
+    [columnsToDisplay]="['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'orderTotal']"
   />
 
   <a routerLink="/account/orders">{{ 'account.order.view_all_order.link' | translate }}</a>

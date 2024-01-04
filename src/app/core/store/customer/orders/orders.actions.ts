@@ -10,7 +10,7 @@ export const createOrderFail = createAction('[Orders API] Create Order Fail', ht
 
 export const createOrderSuccess = createAction('[Orders API] Create Order Success', payload<{ order: Order }>());
 
-export const loadOrders = createAction('[Orders Internal] Load Orders');
+export const loadOrders = createAction('[Orders Internal] Load Orders', payload<{ amount: number }>());
 
 export const loadOrdersFail = createAction('[Orders API] Load Orders Fail', httpError());
 

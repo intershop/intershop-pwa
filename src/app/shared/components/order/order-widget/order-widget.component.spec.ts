@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
@@ -16,6 +18,7 @@ describe('Order Widget Component', () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [MockComponent(InfoBoxComponent), MockComponent(OrderListComponent), OrderWidgetComponent],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });
 

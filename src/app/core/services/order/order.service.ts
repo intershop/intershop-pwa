@@ -120,7 +120,7 @@ export class OrderService {
    * @param amount The count of items which should be fetched.
    * @returns      A list of the user's orders
    */
-  getOrders(amount: number = 30): Observable<Order[]> {
+  getOrders(amount: number): Observable<Order[]> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     return this.apiService

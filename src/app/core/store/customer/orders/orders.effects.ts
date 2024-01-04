@@ -122,8 +122,9 @@ export class OrdersEffects {
   loadOrders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrders),
-      switchMap(() =>
-        this.orderService.getOrders().pipe(
+      mapToPayloadProperty('amount'),
+      switchMap(amount =>
+        this.orderService.getOrders(amount).pipe(
           map(orders => loadOrdersSuccess({ orders })),
           mapErrorToAction(loadOrdersFail)
         )

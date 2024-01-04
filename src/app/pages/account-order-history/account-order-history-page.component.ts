@@ -1,4 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { Order } from 'ish-core/models/order/order.model';
 
 /**
  * The Order History Page Component renders the account history page of a logged in user.
@@ -8,4 +12,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './account-order-history-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountOrderHistoryPageComponent {}
+export class AccountOrderHistoryPageComponent implements OnInit {
+  orders$: Observable<Order[]>;
+  ordersLoading$: Observable<boolean>;
+
+  constructor(private accountfacade: AccountFacade) {}
+
+  ngOnInit(): void {
+    this.orders$ = this.accountfacade.orders$(30);
+    this.ordersLoading$ = this.accountfacade.ordersLoading$;
+  }
+}
