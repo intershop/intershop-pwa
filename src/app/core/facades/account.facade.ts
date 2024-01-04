@@ -163,8 +163,8 @@ export class AccountFacade {
 
   // ORDERS
 
-  orders$() {
-    this.store.dispatch(loadOrders());
+  orders$(amount: number) {
+    this.store.dispatch(loadOrders({ amount }));
     return this.store.pipe(select(getOrders));
   }
 

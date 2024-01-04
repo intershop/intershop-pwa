@@ -72,20 +72,10 @@ describe('Order Service', () => {
   });
 
   describe('getOrders', () => {
-    it("should get orders when 'getOrders' is called without amount", done => {
-      when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
-
-      orderService.getOrders().subscribe(() => {
-        verify(apiService.get(`orders?page[limit]=30`, anything())).once();
-        done();
-      });
-    });
-
     it("should get orders when 'getOrders' is called with amount", done => {
       when(apiService.get(anything(), anything())).thenReturn(of([]));
 
-      const amount = 10;
-      orderService.getOrders(amount).subscribe(() => {
+      orderService.getOrders(10).subscribe(() => {
         verify(apiService.get(`orders?page[limit]=10`, anything())).once();
         done();
       });

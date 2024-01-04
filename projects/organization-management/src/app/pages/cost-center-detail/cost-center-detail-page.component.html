@@ -50,8 +50,7 @@
   <ng-container *ngIf="(user$ | async)?.login === costCenter.costCenterOwner?.login">
     <h3>{{ 'account.costcenter.details.orders.list.title' | translate }}</h3>
     <ish-order-list
-      [orders]="costCenter?.orders || []"
-      [maxListItems]="10"
+      [orders]="costCenter?.orders | slice : 0 : 10"
       [columnsToDisplay]="['creationDate', 'orderNo', 'buyer', 'lineItems', 'status', 'orderTotal']"
     />
   </ng-container>

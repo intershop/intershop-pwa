@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -53,7 +53,7 @@ describe('Orders Effects', () => {
 
   beforeEach(() => {
     orderServiceMock = mock(OrderService);
-    when(orderServiceMock.getOrders()).thenReturn(of(orders));
+    when(orderServiceMock.getOrders(anyNumber())).thenReturn(of(orders));
     when(orderServiceMock.getOrder(anyString())).thenReturn(of(order));
     when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(of(order));
 
@@ -198,17 +198,17 @@ describe('Orders Effects', () => {
 
   describe('loadOrders$', () => {
     it('should call the orderService for loadOrders', done => {
-      const action = loadOrders();
+      const action = loadOrders({ amount: 30 });
       actions$ = of(action);
 
       effects.loadOrders$.subscribe(() => {
-        verify(orderServiceMock.getOrders()).once();
+        verify(orderServiceMock.getOrders(30)).once();
         done();
       });
     });
 
     it('should load all orders of a user and dispatch a LoadOrdersSuccess action', () => {
-      const action = loadOrders();
+      const action = loadOrders({ amount: 30 });
       const completion = loadOrdersSuccess({ orders });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -217,9 +217,9 @@ describe('Orders Effects', () => {
     });
 
     it('should dispatch a LoadOrdersFail action if a load error occurs', () => {
-      when(orderServiceMock.getOrders()).thenReturn(throwError(() => makeHttpError({ message: 'error' })));
+      when(orderServiceMock.getOrders(anyNumber())).thenReturn(throwError(() => makeHttpError({ message: 'error' })));
 
-      const action = loadOrders();
+      const action = loadOrders({ amount: 30 });
       const completion = loadOrdersFail({ error: makeHttpError({ message: 'error' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
