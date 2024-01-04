@@ -19,7 +19,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   constructor(private accountfacade: AccountFacade) {}
 
   ngOnInit(): void {
-    this.orders$ = this.accountfacade.orders$(30);
+    this.orders$ = this.accountfacade.orders$({ limit: 30, include: ['commonShipToAddress'] });
     this.ordersLoading$ = this.accountfacade.ordersLoading$;
   }
 }

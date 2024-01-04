@@ -6,16 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { EMPTY, from, merge, race } from 'rxjs';
-import {
-  concatMap,
-  distinctUntilChanged,
-  filter,
-  map,
-  mergeMap,
-  switchMap,
-  take,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ofUrl, selectQueryParam, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
@@ -39,7 +30,7 @@ import {
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
 } from './orders.actions';
-import { getOrder, getSelectedOrder, getSelectedOrderId } from './orders.selectors';
+import { getOrder, getSelectedOrder } from './orders.selectors';
 
 @Injectable()
 export class OrdersEffects {
@@ -122,9 +113,9 @@ export class OrdersEffects {
   loadOrders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrders),
-      mapToPayloadProperty('amount'),
-      switchMap(amount =>
-        this.orderService.getOrders(amount).pipe(
+      mapToPayloadProperty('query'),
+      switchMap(query =>
+        this.orderService.getOrders(query).pipe(
           map(orders => loadOrdersSuccess({ orders })),
           mapErrorToAction(loadOrdersFail)
         )
@@ -182,12 +173,7 @@ export class OrdersEffects {
     merge(
       this.store.pipe(ofUrl(/^\/account\/orders.*/), select(selectRouteParam('orderId'))),
       this.store.pipe(ofUrl(/^\/checkout\/receipt/), select(selectQueryParam('orderId')))
-    ).pipe(
-      withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
-      filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
-      map(([orderId]) => orderId),
-      map(orderId => selectOrder({ orderId }))
-    )
+    ).pipe(map(orderId => selectOrder({ orderId })))
   );
 
   /**
