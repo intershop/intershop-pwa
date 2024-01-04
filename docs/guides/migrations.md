@@ -10,6 +10,7 @@ kb_sync_latest_only
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.
+The getOrders method of the OrderService doesn't fetch all related order data by default, you can provide an additional parameter to include the data you need.
 
 ## From 4.2 to 5.0
 

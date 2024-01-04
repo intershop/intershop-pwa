@@ -7,11 +7,11 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { OrderBaseData } from 'ish-core/models/order/order.interface';
 import { Order } from 'ish-core/models/order/order.model';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
-import { OrderService } from './order.service';
+import { OrderListQuery, OrderService, orderListQueryToHttpParams } from './order.service';
 
 describe('Order Service', () => {
   let orderService: OrderService;
@@ -75,10 +75,23 @@ describe('Order Service', () => {
     it("should get orders when 'getOrders' is called with amount", done => {
       when(apiService.get(anything(), anything())).thenReturn(of([]));
 
-      orderService.getOrders(10).subscribe(() => {
-        verify(apiService.get(`orders?page[limit]=10`, anything())).once();
+      orderService.getOrders({ limit: 30 }).subscribe(() => {
+        verify(apiService.get('orders', anything())).once();
+        const options: AvailableOptions = capture(apiService.get).last()[1];
+        expect(options.params?.toString()).toMatchInlineSnapshot(`"limit=30&page%5Blimit%5D=30"`);
         done();
       });
+    });
+  });
+
+  describe('orderListQueryToHttpParams', () => {
+    it.each([
+      [{ limit: 10 }, 'limit=10'],
+      [{ limit: 10, include: ['commonShipToAddress'] }, 'limit=10&include=commonShipToAddress'],
+      [{ limit: 30, include: ['discounts', 'payments'] }, 'limit=30&include=discounts,payments'],
+    ] as [OrderListQuery, string][])('should convert %j to %s', (query, expected) => {
+      const params = orderListQueryToHttpParams(query);
+      expect(params.toString()).toEqual(expected);
     });
   });
 

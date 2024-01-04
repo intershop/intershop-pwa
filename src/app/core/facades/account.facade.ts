@@ -11,6 +11,7 @@ import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { User } from 'ish-core/models/user/user.model';
+import { OrderListQuery } from 'ish-core/services/order/order.service';
 import { MessagesPayloadType } from 'ish-core/store/core/messages';
 import {
   createCustomerAddress,
@@ -163,8 +164,8 @@ export class AccountFacade {
 
   // ORDERS
 
-  orders$(amount: number) {
-    this.store.dispatch(loadOrders({ amount }));
+  orders$(query?: OrderListQuery) {
+    this.store.dispatch(loadOrders({ query: query || { limit: 30 } }));
     return this.store.pipe(select(getOrders));
   }
 

@@ -2,6 +2,7 @@ import { Params } from '@angular/router';
 import { createAction } from '@ngrx/store';
 
 import { Order } from 'ish-core/models/order/order.model';
+import { OrderListQuery } from 'ish-core/services/order/order.service';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const createOrder = createAction('[Orders] Create Order');
@@ -10,7 +11,7 @@ export const createOrderFail = createAction('[Orders API] Create Order Fail', ht
 
 export const createOrderSuccess = createAction('[Orders API] Create Order Success', payload<{ order: Order }>());
 
-export const loadOrders = createAction('[Orders Internal] Load Orders', payload<{ amount: number }>());
+export const loadOrders = createAction('[Orders Internal] Load Orders', payload<{ query: OrderListQuery }>());
 
 export const loadOrdersFail = createAction('[Orders API] Load Orders Fail', httpError());
 
