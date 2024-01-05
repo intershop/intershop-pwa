@@ -34,7 +34,6 @@ describe('Basket Invoice Address Widget Component', () => {
     when(checkoutFacade.basketInvoiceAddress$).thenReturn(EMPTY);
 
     accountFacade = mock(AccountFacade);
-    when(accountFacade.addresses$()).thenReturn(EMPTY);
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
@@ -85,7 +84,6 @@ describe('Basket Invoice Address Widget Component', () => {
   describe('with address on basket', () => {
     beforeEach(() => {
       when(checkoutFacade.basketInvoiceAddress$).thenReturn(of(BasketMockData.getAddress()));
-      when(accountFacade.addresses$()).thenReturn(of([BasketMockData.getAddress()]));
     });
 
     it('should render if invoice is set', () => {
@@ -165,7 +163,7 @@ describe('Basket Invoice Address Widget Component', () => {
 
     beforeEach(() => {
       when(checkoutFacade.basketInvoiceAddress$).thenReturn(of(addresses[1]));
-      when(accountFacade.addresses$()).thenReturn(of(addresses));
+      component.eligibleAddresses$ = of(addresses);
     });
 
     it('should only use valid addresses for selection display', done => {

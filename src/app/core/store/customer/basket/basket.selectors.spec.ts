@@ -20,6 +20,9 @@ import {
   continueCheckoutSuccess,
   createBasketSuccess,
   loadBasket,
+  loadBasketEligibleAddresses,
+  loadBasketEligibleAddressesFail,
+  loadBasketEligibleAddressesSuccess,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
   loadBasketEligiblePaymentMethodsSuccess,
@@ -31,6 +34,7 @@ import {
   submitBasketSuccess,
 } from './basket.actions';
 import {
+  getBasketEligibleAddresses,
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
@@ -180,6 +184,44 @@ describe('Basket Selectors', () => {
           "name": "HttpErrorResponse",
         }
       `);
+    });
+  });
+
+  describe('loading eligible addresses', () => {
+    beforeEach(() => {
+      store$.dispatch(loadBasketEligibleAddresses());
+    });
+
+    it('should set the state to loading', () => {
+      expect(getBasketLoading(store$.state)).toBeTrue();
+    });
+
+    describe('and reporting success', () => {
+      beforeEach(() => {
+        store$.dispatch(loadBasketEligibleAddressesSuccess({ addresses: [BasketMockData.getAddress()] }));
+      });
+
+      it('should set loading to false', () => {
+        expect(getBasketLoading(store$.state)).toBeFalse();
+        expect(getBasketEligibleAddresses(store$.state)).toEqual([BasketMockData.getAddress()]);
+      });
+    });
+
+    describe('and reporting failure', () => {
+      beforeEach(() => {
+        store$.dispatch(loadBasketEligibleAddressesFail({ error: makeHttpError({ message: 'error' }) }));
+      });
+
+      it('should not have loaded addresses on error', () => {
+        expect(getBasketLoading(store$.state)).toBeFalse();
+        expect(getBasketEligibleAddresses(store$.state)).toBeUndefined();
+        expect(getBasketError(store$.state)).toMatchInlineSnapshot(`
+          {
+            "message": "error",
+            "name": "HttpErrorResponse",
+          }
+        `);
+      });
     });
   });
 

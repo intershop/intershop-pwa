@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { filter, map, shareReplay, take } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -22,6 +22,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BasketInvoiceAddressWidgetComponent implements OnInit {
+  @Input({ required: true }) eligibleAddresses$: Observable<Address[]>;
   @Input() showErrors = true;
 
   @Output() collapseChange = new BehaviorSubject(true);
@@ -35,7 +36,6 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit {
   }
   invoiceAddress$: Observable<Address>;
   addresses$: Observable<Address[]>;
-  customerAddresses$: Observable<Address[]>;
   isLoggedIn$: Observable<boolean>;
 
   form = new UntypedFormGroup({});
@@ -53,7 +53,6 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.customerAddresses$ = this.accountFacade.addresses$().pipe(shareReplay(1));
     this.invoiceAddress$ = this.checkoutFacade.basketInvoiceAddress$;
 
     this.invoiceAddress$
@@ -68,7 +67,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit {
       .subscribe(label => (this.emptyOptionLabel = label));
 
     // prepare data for invoice select drop down
-    this.addresses$ = combineLatest([this.customerAddresses$, this.invoiceAddress$]).pipe(
+    this.addresses$ = combineLatest([this.eligibleAddresses$, this.invoiceAddress$]).pipe(
       map(([addresses, invoiceAddress]) =>
         addresses?.filter(address => address.invoiceToAddress).filter(address => address.id !== invoiceAddress?.id)
       )
