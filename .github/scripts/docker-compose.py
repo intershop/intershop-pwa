@@ -19,12 +19,13 @@ def dockerComposeFile(dir: str='.', mode: str='r'):
 
 
 @easyargs
-def main(icm, ssrimage, nginximage):
+def main(icm, ssrimage, nginximage, tacton):
   data: Dict = load(dockerComposeFile(), Loader=Loader)
   data['services']['pwa'].pop('build')
   data['services']['nginx'].pop('build')
   data['services']['pwa'].update({'image': ssrimage})
   data['services']['pwa']['environment']['ICM_BASE_URL'] = icm
+  data['services']['pwa']['environment']['TACTON'] = tacton
   data['services']['nginx'].update({'image': nginximage})
   data['services']['nginx']['environment']['CACHE'] = 1
   dump(data, dockerComposeFile('./dist','w'), Dumper=Dumper)
