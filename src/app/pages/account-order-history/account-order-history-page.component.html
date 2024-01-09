@@ -1,4 +1,5 @@
 <h1>{{ 'account.order_history.heading' | translate }}</h1>
+<ish-error-message [error]="ordersError$ | async" />
 <p class="section">{{ 'account.order.subtitle' | translate }}</p>
 
 <ish-order-list
