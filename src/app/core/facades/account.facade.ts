@@ -28,7 +28,13 @@ import {
   getDataRequestError,
   getDataRequestLoading,
 } from 'ish-core/store/customer/data-requests';
-import { getOrders, getOrdersLoading, getSelectedOrder, loadOrders } from 'ish-core/store/customer/orders';
+import {
+  getOrders,
+  getOrdersError,
+  getOrdersLoading,
+  getSelectedOrder,
+  loadOrders,
+} from 'ish-core/store/customer/orders';
 import {
   cancelRegistration,
   getSsoRegistrationCancelled,
@@ -171,6 +177,7 @@ export class AccountFacade {
 
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
   ordersLoading$ = this.store.pipe(select(getOrdersLoading));
+  ordersError$ = this.store.pipe(select(getOrdersError));
 
   // PAYMENT
 
