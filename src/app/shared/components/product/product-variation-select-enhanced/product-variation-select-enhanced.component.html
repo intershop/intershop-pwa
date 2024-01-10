@@ -28,7 +28,11 @@
 <ng-template #mobile>
   <div class="mobile-variation-select">
     <div *ngFor="let option of group.options" class="mobile-variation-option">
-      <a [routerLink]="[]" (click)="optionChange(group.id, option.value)">
+      <a
+        (click)="optionChange(group.id, option.value)"
+        (keydown.enter)="optionChange(group.id, option.value)"
+        tabindex="0"
+      >
         <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
       </a>
     </div>

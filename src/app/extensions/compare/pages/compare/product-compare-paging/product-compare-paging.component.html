@@ -1,17 +1,19 @@
 <div class="d-flex">
   <a
     *ngIf="showPrevious"
-    [routerLink]="[]"
     class="btn btn-link control-previous"
     (click)="changeToPage(currentPage - 1)"
+    (keydown.enter)="changeToPage(currentPage - 1)"
+    tabindex="0"
   >
     {{ 'product.compare.previous.button.label' | translate }}
   </a>
   <a
     *ngIf="showNext"
-    [routerLink]="[]"
     class="btn btn-link control-next ml-auto"
     (click)="changeToPage(currentPage + 1)"
+    (keydown.enter)="changeToPage(currentPage + 1)"
+    tabindex="0"
   >
     {{ 'product.compare.next.button.label' | translate }}
   </a>

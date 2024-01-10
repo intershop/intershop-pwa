@@ -3,10 +3,11 @@
     <h2 class="col-12">
       {{ 'quote.basket_items.label' | translate : { '0': getName(item[0]) | async } }}
       <a
-        [routerLink]="[]"
         class="float-md-right pt-2 d-block d-md-inline header-note"
         title="{{ 'quote.basket_items.remove.button.label' | translate }}"
         (click)="onDeleteQuote(item[0])"
+        (keydown.enter)="onDeleteQuote(item[0])"
+        tabindex="0"
       >
         <fa-icon [icon]="['fas', 'trash-alt']" />
         <span class="pl-1">{{ 'quote.basket_items.remove.button.label' | translate }}</span>

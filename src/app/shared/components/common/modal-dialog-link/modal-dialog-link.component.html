@@ -1,4 +1,11 @@
-<a [routerLink]="[]" (click)="modalDialog.show()" rel="nofollow" aria-haspopup="dialog">{{ linkText | translate }}</a>
+<a
+  (click)="modalDialog.show()"
+  (keydown.enter)="modalDialog.show()"
+  tabindex="0"
+  rel="nofollow"
+  aria-haspopup="dialog"
+  >{{ linkText | translate }}</a
+>
 <ish-modal-dialog #modalDialog [options]="options" (shown)="shown()" (closed)="closed()">
   <ng-container *ngIf="lazyContent; else contentProjection">
     <div *ngIf="shown$ | async">

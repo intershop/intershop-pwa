@@ -35,9 +35,10 @@
 
           <div class="d-none d-lg-block">
             <a
-              [routerLink]="[]"
               class="btn btn-secondary"
               (click)="onDeleteItem(pli.id)"
+              (keydown.enter)="onDeleteItem(pli.id)"
+              tabindex="0"
               data-testing-id="delete-button"
               >{{ 'restricted-items.Remove.button' | translate }}</a
             >
@@ -45,9 +46,13 @@
         </div>
       </div>
       <div class="d-lg-none text-right">
-        <a [routerLink]="[]" class="btn btn-secondary" (click)="onDeleteItem(pli.id)">{{
-          'restricted-items.Remove.button' | translate
-        }}</a>
+        <a
+          class="btn btn-secondary"
+          (click)="onDeleteItem(pli.id)"
+          (keydown.enter)="onDeleteItem(pli.id)"
+          tabindex="0"
+          >{{ 'restricted-items.Remove.button' | translate }}</a
+        >
       </div>
     </div>
   </div>

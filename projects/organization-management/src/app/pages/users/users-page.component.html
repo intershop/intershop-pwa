@@ -36,13 +36,14 @@
         <div class="col-1 list-item text-right order-sm-4 order-3">
           <div *ngIf="user.login !== (currentUser$ | async)?.login" class="float-right">
             <a
-              [routerLink]="[]"
               data-testing-id="remove-user"
               class="btn-tool"
               title="{{
                 'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName }
               }}"
               (click)="modalDialog.show(user)"
+              (keydown.enter)="modalDialog.show(user)"
+              tabindex="0"
             >
               <fa-icon [icon]="['fas', 'trash-alt']" />
             </a>

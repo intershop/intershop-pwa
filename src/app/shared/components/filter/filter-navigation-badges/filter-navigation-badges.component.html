@@ -1,13 +1,15 @@
 <div *ngIf="selected" class="row">
   <div class="col-md-10">
     <div *ngFor="let select of selected" class="filter-navigation-badges">
-      <a [routerLink]="[]" (click)="apply(select.searchParameter)">
+      <a (click)="apply(select.searchParameter)" (keydown.enter)="apply(select.searchParameter)" tabindex="0">
         {{ select.filterName }}: {{ select.displayName }}
         <fa-icon [icon]="['fas', 'times']" class="form-control-feedback" />
       </a>
     </div>
   </div>
   <div *ngIf="selected.length" class="col-md-2 text-right">
-    <a [routerLink]="[]" (click)="clear()">{{ 'product.remove_all_product_filters.text' | translate }}</a>
+    <a (click)="clear()" (keydown.enter)="clear()" tabindex="0">{{
+      'product.remove_all_product_filters.text' | translate
+    }}</a>
   </div>
 </div>

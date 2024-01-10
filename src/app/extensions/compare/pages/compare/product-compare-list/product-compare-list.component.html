@@ -21,10 +21,11 @@
               <div class="product-image">
                 <ish-product-image imageType="M" [link]="true" />
                 <a
-                  [routerLink]="[]"
                   class="btn-tool"
                   [title]="'product.compare.remove.link' | translate"
                   (click)="removeFromCompare(product.sku)"
+                  (keydown.enter)="removeFromCompare(product.sku)"
+                  tabindex="0"
                 >
                   <fa-icon [icon]="['fas', 'trash-alt']" />
                 </a>

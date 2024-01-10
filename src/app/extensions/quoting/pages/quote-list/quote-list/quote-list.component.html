@@ -65,10 +65,11 @@
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-actions"></th>
       <td cdk-cell *cdkCellDef="let quote" class="column-price">
         <a
-          [routerLink]="[]"
           class="btn-tool"
           [title]="'quote.list.delete.button.delete.label' | translate"
           (click)="modalDialog.show(quote)"
+          (keydown.enter)="modalDialog.show(quote)"
+          tabindex="0"
         >
           <fa-icon [icon]="['fas', 'trash-alt']" />
         </a>

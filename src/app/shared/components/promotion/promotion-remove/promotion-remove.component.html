@@ -1,10 +1,11 @@
 <ng-container *ngIf="code && (basket$ | async)">
   <span class="promotion-links-separator">|</span>
   <a
-    [routerLink]="[]"
     data-testing-id="promo-remove-link"
     class="details-link promotion-remove-link"
     (click)="removePromotion()"
+    (keydown.enter)="removePromotion()"
+    tabindex="0"
     >{{ 'promotion.removelink.text' | translate }}</a
   >
 </ng-container>

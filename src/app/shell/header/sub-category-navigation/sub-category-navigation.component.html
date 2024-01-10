@@ -17,10 +17,11 @@
     >
     <ng-container *ngIf="subCategoriesDepth < mainNavigationMaxSubCategoriesDepth && subcategory.hasChildren">
       <a
-        [routerLink]="[]"
         class="dropdown-toggle"
         [ngClass]="{ 'd-none': view === 'full' }"
         (click)="toggleOpen(subcategory.uniqueId)"
+        (keydown.enter)="toggleOpen(subcategory.uniqueId)"
+        tabindex="0"
         [attr.aria-label]="
           isOpened(subcategory.uniqueId)
             ? ('header.navigation.collapse_category.aria_label' | translate : { '0': subcategory.name })

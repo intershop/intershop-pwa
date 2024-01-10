@@ -20,9 +20,10 @@
     </a>
     <ng-container *ngIf="0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren">
       <a
-        [routerLink]="[]"
         class="dropdown-toggle"
         (click)="toggleOpen(category.uniqueId)"
+        (keydown.enter)="toggleOpen(category.uniqueId)"
+        tabindex="0"
         [attr.aria-label]="
           isOpened(category.uniqueId)
             ? ('header.navigation.collapse_category.aria_label' | translate : { '0': category.name })

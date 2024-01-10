@@ -85,9 +85,10 @@
                       {{ paymentInstrument.accountIdentifier }}
                     </label>
                     <a
-                      [routerLink]="[]"
                       class="float-right"
                       (click)="deleteBasketPayment(paymentInstrument)"
+                      (keydown.enter)="deleteBasketPayment(paymentInstrument)"
+                      tabindex="0"
                       data-testing-id="delete-payment-link"
                       >{{ 'checkout.payment.method.delete.link' | translate }}</a
                     >
@@ -108,8 +109,9 @@
                 <div class="panel">
                   <a
                     *ngIf="!formIsOpen(i)"
-                    [routerLink]="[]"
                     (click)="openPaymentParameterForm(i)"
+                    (keydown.enter)="openPaymentParameterForm(i)"
+                    tabindex="0"
                     data-testing-id="add-payment-link"
                     >{{ 'checkout.payment.addPayment.link' | translate }}
                   </a>

@@ -25,12 +25,13 @@
         />
         <ish-lazy-product-add-to-wishlist [cssClass]="'btn-link btn-tool ml-0'" displayType="icon" />
         <a
-          [routerLink]="[]"
           class="btn-tool"
           [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="lineItem.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem()"
+          (keydown.enter)="onDeleteItem()"
+          tabindex="0"
         >
           <fa-icon [icon]="['fas', 'trash-alt']" />
         </a>

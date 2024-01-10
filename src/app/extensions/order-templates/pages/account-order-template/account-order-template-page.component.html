@@ -2,10 +2,11 @@
   <h1>
     {{ 'account.ordertemplates.heading' | translate
     }}<a
-      [routerLink]="[]"
       class="btn btn-secondary"
       data-testing-id="add-order-template"
       (click)="addOrderTemplateDialog.show()"
+      (keydown.enter)="addOrderTemplateDialog.show()"
+      tabindex="0"
       >{{ 'account.order_template.list.button.add_template.label' | translate }}</a
     >
   </h1>

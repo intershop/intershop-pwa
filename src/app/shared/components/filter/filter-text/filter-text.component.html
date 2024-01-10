@@ -3,7 +3,12 @@
     <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
       <!-- selected -->
       <ng-container *ngIf="facet.selected; else notSelectedBox">
-        <a [routerLink]="[]" (click)="filter(facet)" [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)">
+        <a
+          (click)="filter(facet)"
+          (keydown.enter)="filter(facet)"
+          tabindex="0"
+          [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
+        >
           <span class="filter-item-name"> {{ facet.displayName }} </span>
           <span class="count"> ({{ facet.count }}) </span>
           <ng-container *ngIf="filterElement.displayType === 'text_clear'">
@@ -15,9 +20,10 @@
       <!-- not selected -->
       <ng-template #notSelectedBox>
         <a
-          [routerLink]="[]"
           class="filter-item-name"
           (click)="filter(facet)"
+          (keydown.enter)="filter(facet)"
+          tabindex="0"
           [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
         >
           {{ facet.displayName }}
@@ -28,7 +34,7 @@
   </ng-container>
   <!-- show all/less -->
   <li class="filter-item" *ngIf="filterElement.limitCount !== -1 && facets.length > filterElement.limitCount">
-    <a [routerLink]="[]" class="btn-link" (click)="showAll = !showAll">{{
+    <a class="btn-link" (click)="showAll = !showAll" (keydown.enter)="showAll = !showAll" tabindex="0">{{
       (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate
     }}</a>
   </li>

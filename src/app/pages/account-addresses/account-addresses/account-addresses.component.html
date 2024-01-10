@@ -4,9 +4,10 @@
     <!-- Add address link -->
     <a
       *ngIf="isCreateAddressFormCollapsed && !updateFormExpandedAddressId"
-      [routerLink]="[]"
       class="btn btn-secondary float-right"
       (click)="showCreateAddressForm()"
+      (keydown.enter)="showCreateAddressForm()"
+      tabindex="0"
       [attr.aria-expanded]="!isCreateAddressFormCollapsed"
       aria-controls="collapseBasic"
       data-testing-id="create-address-button"
@@ -135,9 +136,10 @@
           <div *ngIf="isCreateAddressFormCollapsed" class="float-right">
             <a
               *ngIf="isUpdateAddressFormCollapsed(address)"
-              [routerLink]="[]"
               class="btn-tool"
               (click)="showUpdateAddressForm(address)"
+              (keydown.enter)="showUpdateAddressForm(address)"
+              tabindex="0"
               title="{{ 'checkout.address.update.button.label' | translate }}"
               [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
               aria-controls="CollapseBasicEdit"
@@ -148,10 +150,11 @@
 
             <a
               *ngIf="deletable"
-              [routerLink]="[]"
               class="btn-tool"
               title="{{ 'account.addresses.delete_address.text' | translate }}"
               (click)="modalDialog.show(address)"
+              (keydown.enter)="modalDialog.show(address)"
+              tabindex="0"
               data-testing-id="delete-address-icon"
             >
               <fa-icon [icon]="['fas', 'trash-alt']" />

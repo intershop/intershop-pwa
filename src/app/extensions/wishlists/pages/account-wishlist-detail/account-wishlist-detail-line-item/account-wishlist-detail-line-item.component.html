@@ -16,16 +16,23 @@
               {{ wishlistItemData?.creationDate | ishDate : 'shortDate' }}
             </div>
             <div class="mb-2">
-              <a [routerLink]="[]" class="btn-tool" (click)="moveDialog.show()" data-testing-id="move-wishlist">
+              <a
+                class="btn-tool"
+                (click)="moveDialog.show()"
+                (keydown.enter)="moveDialog.show()"
+                tabindex="0"
+                data-testing-id="move-wishlist"
+              >
                 <fa-icon
                   [icon]="['fas', 'arrows-alt']"
                   [title]="'account.wishlist.table.options.move_to_another_wishlist' | translate"
                 />
               </a>
               <a
-                [routerLink]="[]"
                 class="btn-tool"
                 (click)="removeProductFromWishlist(wishlistItemData.sku)"
+                (keydown.enter)="removeProductFromWishlist(wishlistItemData.sku)"
+                tabindex="0"
                 data-testing-id="delete-wishlist"
               >
                 <fa-icon [icon]="['fas', 'trash-alt']" [title]="'account.wishlist.table.options.remove' | translate" />

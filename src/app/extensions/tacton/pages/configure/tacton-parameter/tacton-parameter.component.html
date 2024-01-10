@@ -1,6 +1,12 @@
 <div *ngIf="item?.properties?.hidden === 'no'" class="border-bottom mb-4">
   <div *ngIf="item.committed" class="float-right">
-    <a [routerLink]="[]" class="btn-tool" (click)="uncommit()" title="{{ 'tacton.undo.tooltip' | translate }}">
+    <a
+      class="btn-tool"
+      (click)="uncommit()"
+      (keydown.enter)="uncommit()"
+      tabindex="0"
+      title="{{ 'tacton.undo.tooltip' | translate }}"
+    >
       <fa-icon [icon]="['fas', 'undo']" />
     </a>
   </div>

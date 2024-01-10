@@ -1,6 +1,11 @@
 <ul>
   <li *ngFor="let option of group.options" [ngClass]="{ selected: option.active }">
-    <a [routerLink]="[]" (click)="optionChange(group.id, option.value)" title="{{ option.label }}">
+    <a
+      (click)="optionChange(group.id, option.value)"
+      (keydown.enter)="optionChange(group.id, option.value)"
+      tabindex="0"
+      title="{{ option.label }}"
+    >
       <span
         *ngIf="group.attributeType === 'colorCode'"
         [ngStyle]="{ 'background-color': '#' + option.metaData }"

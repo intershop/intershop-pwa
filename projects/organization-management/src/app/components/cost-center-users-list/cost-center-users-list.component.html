@@ -86,10 +86,11 @@
 
           <!-- Remove buyer -->
           <a
-            [routerLink]="[]"
             class="btn-tool"
             title="{{ 'account.costcenter.remove.button.label' | translate }}"
             (click)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
+            (keydown.enter)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
+            tabindex="0"
             data-testing-id="cost-center-buyer-remove"
             ><fa-icon [icon]="['fas', 'trash-alt']"
           /></a>

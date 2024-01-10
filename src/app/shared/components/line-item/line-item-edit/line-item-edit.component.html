@@ -1,8 +1,9 @@
 <ng-container *ngIf="product$ | async as product">
   <a
     *ngIf="product.type === 'VariationProduct'"
-    [routerLink]="[]"
     (click)="show()"
+    (keydown.enter)="show()"
+    tabindex="0"
     class="line-item-edit-link"
     rel="nofollow"
     title="{{ 'checkout.variation.edit.button.label' | translate }}"

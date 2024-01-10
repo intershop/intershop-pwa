@@ -4,10 +4,11 @@
     <!-- edit invoice address -->
     <a
       *ngIf="collapseChange | async"
-      [routerLink]="[]"
       class="btn-tool float-right"
       [title]="'checkout.address.update.invoice.label' | translate"
       (click)="showAddressForm(address)"
+      (keydown.enter)="showAddressForm(address)"
+      tabindex="0"
       data-testing-id="edit-invoice-address-link"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />

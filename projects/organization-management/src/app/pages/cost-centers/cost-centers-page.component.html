@@ -81,10 +81,11 @@
               <!-- Deactivate -->
               <a
                 *ngIf="costCenter.active; else activateCostCenter"
-                [routerLink]="[]"
                 class="btn-tool"
                 title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deactivateDialog)"
+                (keydown.enter)="openConfirmationDialog(costCenter, deactivateDialog)"
+                tabindex="0"
                 data-testing-id="deactivate-cost-center"
                 ><fa-icon [icon]="['fas', 'ban']"
               /></a>
@@ -92,10 +93,11 @@
               <!-- Activate -->
               <ng-template #activateCostCenter>
                 <a
-                  [routerLink]="[]"
                   class="btn-tool"
                   title="{{ 'account.costcenter.activate.button.title' | translate }}"
                   (click)="activate(costCenter)"
+                  (keydown.enter)="activate(costCenter)"
+                  tabindex="0"
                   data-testing-id="activate-cost-center"
                   ><fa-icon [icon]="['fas', 'check-circle']"
                 /></a>
@@ -104,10 +106,11 @@
               <!-- Delete -->
               <a
                 *ngIf="!(costCenter.pendingOrders + costCenter.approvedOrders); else deleteButtonDisabled"
-                [routerLink]="[]"
                 class="btn-tool"
                 title="{{ 'account.costcenter.delete.link' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deleteDialog)"
+                (keydown.enter)="openConfirmationDialog(costCenter, deleteDialog)"
+                tabindex="0"
                 data-testing-id="delete-cost-center"
                 ><fa-icon [icon]="['fas', 'trash-alt']"
               /></a>

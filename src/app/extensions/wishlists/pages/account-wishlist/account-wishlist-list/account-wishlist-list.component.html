@@ -24,10 +24,11 @@
     </div>
     <div class="col-3 list-item text-right">
       <a
-        [routerLink]="[]"
         class="btn-tool"
         title="{{ 'account.wishlist.list.remove' | translate }}"
         (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
+        (keydown.enter)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
+        tabindex="0"
         data-testing-id="delete-wishlist"
         ><fa-icon [icon]="['fas', 'trash-alt']"
       /></a>
