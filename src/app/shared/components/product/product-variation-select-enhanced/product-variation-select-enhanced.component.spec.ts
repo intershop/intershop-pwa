@@ -62,13 +62,13 @@ describe('Product Variation Select Enhanced Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <div class="mobile-variation-select">
         <div class="mobile-variation-option">
-          <a ng-reflect-router-link="" href="/"
+          <a tabindex="0"
             ><span class="color-code" style="background-color: rgb(0, 0, 0)"></span
             ><span class="label selected">Black </span></a
           >
         </div>
         <div class="mobile-variation-option">
-          <a ng-reflect-router-link="" href="/"
+          <a tabindex="0"
             ><span class="color-code light-color" style="background-color: rgb(255, 255, 255)"></span
             ><span class="label">White </span></a
           >

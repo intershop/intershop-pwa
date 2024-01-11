@@ -62,24 +62,22 @@ describe('Filter Navigation Badges Component', () => {
       <div class="row">
         <div class="col-md-10">
           <div class="filter-navigation-badges">
-            <a ng-reflect-router-link="" href="/">
+            <a tabindex="0">
               Color: blue <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
             ></a>
           </div>
           <div class="filter-navigation-badges">
-            <a ng-reflect-router-link="" href="/">
+            <a tabindex="0">
               Color: black <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
             ></a>
           </div>
           <div class="filter-navigation-badges">
-            <a ng-reflect-router-link="" href="/">
+            <a tabindex="0">
               HDD: 456 <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
             ></a>
           </div>
         </div>
-        <div class="col-md-2 text-right">
-          <a ng-reflect-router-link="" href="/">product.remove_all_product_filters.text</a>
-        </div>
+        <div class="col-md-2 text-right"><a tabindex="0">product.remove_all_product_filters.text</a></div>
       </div>
     `);
   });

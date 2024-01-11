@@ -56,15 +56,13 @@ describe('Tacton Configure Navigation Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="list-unstyled bg-light p-3">
         <li class="pt-1 pb-1">
-          <a ng-reflect-router-link="" class="font-weight-bold" href="/">step 1 description</a>
+          <a tabindex="0" class="font-weight-bold">step 1 description</a>
           <ul class="list-unstyled pl-3">
-            <li class="pt-1 pb-1"><a ng-reflect-router-link="" href="/">step 1.1 description</a></li>
-            <li class="pt-1 pb-1">
-              <a ng-reflect-router-link="" class="font-weight-bold" href="/">step 1.2 description</a>
-            </li>
+            <li class="pt-1 pb-1"><a tabindex="0">step 1.1 description</a></li>
+            <li class="pt-1 pb-1"><a tabindex="0" class="font-weight-bold">step 1.2 description</a></li>
           </ul>
         </li>
-        <li class="pt-1 pb-1"><a ng-reflect-router-link="" href="/">step 2 description</a></li>
+        <li class="pt-1 pb-1"><a tabindex="0">step 2 description</a></li>
       </ul>
     `);
   });
