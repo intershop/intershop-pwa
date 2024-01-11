@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-6">
+    <div class="dp-hidden position-absolute">
+      <div class="">
+        <input
+          [formlyAttributes]="field"
+          [minDate]="minDate$ | async"
+          [maxDate]="maxDate$ | async"
+          navigation="select"
+          class="form-control"
+          [ngClass]="props.inputClass"
+          name="dp"
+          ngbDatepicker
+          #d="ngbDatepicker"
+          data-testing-id="date-range-picker"
+          [autoClose]="'outside'"
+          (dateSelect)="onDateSelection($event)"
+          [displayMonths]="2"
+          [dayTemplate]="t"
+          outsideDays="collapsed"
+          [startDate]="startDate$ | async"
+          tabindex="-1"
+        />
+        <ng-template #t let-date let-disabled="disabled">
+          <span
+            class="custom-day"
+            [class.disabled]="disabled"
+            [class.range]="isRange(date)"
+            [class.faded]="isHovered(date) || isInside(date)"
+            (mouseenter)="hoveredDate = date"
+            (mouseleave)="hoveredDate = null"
+          >
+            {{ date.day }}
+          </span>
+        </ng-template>
+      </div>
+    </div>
+    <div class="input-group">
+      <input
+        #dpFromDate
+        class="form-control"
+        [placeholder]="props.placeholder"
+        name="dpFromDate"
+        [value]="formatter.format(fromDate)"
+        (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+      />
+      <div class="input-group-append">
+        <div
+          class="btn btn-secondary"
+          (click)="d.toggle()"
+          (keydown.enter)="d.toggle()"
+          tabindex="-1"
+          type="button"
+          data-testing-id="btn-date-picker"
+        >
+          <fa-icon class="text-secondary" icon="calendar-day" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 input-group">
+    <input
+      #dpToDate
+      class="form-control"
+      [placeholder]="props.placeholder"
+      name="dpToDate"
+      [value]="formatter.format(toDate)"
+      (input)="toDate = validateInput(toDate, dpToDate.value)"
+    />
+    <div class="input-group-append">
+      <div class="btn btn-secondary" (click)="d.toggle()" (keydown.enter)="d.toggle()" tabindex="-1" type="button">
+        <fa-icon class="text-secondary" icon="calendar-day" />
+      </div>
+    </div>
+  </div>
+</div>

@@ -106,6 +106,12 @@ class DummyWrapperComponent extends FieldWrapper {}
 class DatePickerFieldComponent extends FieldType {}
 
 @Component({
+  selector: 'ish-date-range-picker-test-field',
+  template: 'DateRangePickerFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
+})
+class DateRangePickerFieldComponent extends FieldType {}
+
+@Component({
   selector: 'ish-repeat-test-field',
   template: 'RepeatFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
@@ -180,6 +186,7 @@ class RepeatFieldComponent extends FieldArrayType {}
         { name: 'ish-radio-field', component: RadioFieldComponent },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
         { name: 'ish-date-picker-field', component: DatePickerFieldComponent },
+        { name: 'ish-date-range-picker-field', component: DateRangePickerFieldComponent },
         { name: 'repeat', component: RepeatFieldComponent },
       ],
       wrappers: [

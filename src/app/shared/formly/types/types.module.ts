@@ -22,6 +22,7 @@ import { CheckboxFieldComponent } from './checkbox-field/checkbox-field.componen
 import { DatePickerFieldComponent } from './date-picker-field/date-picker-field.component';
 import { IshDatepickerI18n } from './date-picker-field/ish-datepicker-i18n';
 import { LocalizedParserFormatter } from './date-picker-field/localized-parser-formatter';
+import { DateRangePickerFieldComponent } from './date-range-picker-field/date-range-picker-field.component';
 import { FieldsetFieldComponent } from './fieldset-field/fieldset-field.component';
 import { HtmlTextFieldComponent } from './html-text-field/html-text-field.component';
 import { PlainTextFieldComponent } from './plain-text-field/plain-text-field.component';
@@ -34,6 +35,7 @@ const fieldComponents = [
   CaptchaFieldComponent,
   CheckboxFieldComponent,
   DatePickerFieldComponent,
+  DateRangePickerFieldComponent,
   FieldsetFieldComponent,
   HtmlTextFieldComponent,
   PlainTextFieldComponent,
@@ -154,6 +156,11 @@ const fieldComponents = [
         {
           name: 'ish-date-picker-field',
           component: DatePickerFieldComponent,
+          wrappers: ['form-field-horizontal', 'validation'],
+        },
+        {
+          name: 'ish-date-range-picker-field',
+          component: DateRangePickerFieldComponent,
           wrappers: ['form-field-horizontal', 'validation'],
         },
       ],
