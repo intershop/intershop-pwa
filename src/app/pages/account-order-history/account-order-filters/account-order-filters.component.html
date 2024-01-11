@@ -1,0 +1,16 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()">
+  <div class="row">
+    <div class="col-md-10">
+      <formly-form [form]="form" [fields]="fields" />
+    </div>
+
+    <div class="col-md-2 text-right d-flex flex-column justify-content-between pb-2">
+      <button type="reset" class="btn btn-secondary" (click)="resetForm()">
+        {{ 'account.order-history.filter.clear' | translate }}
+      </button>
+      <button type="submit" class="btn btn-primary">
+        {{ 'account.order-history.filter.apply' | translate }}
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,11 +1,14 @@
+<a id="order-list-top" title="top"></a>
 <h1>{{ 'account.order_history.heading' | translate }}</h1>
 <ish-error-message [error]="ordersError$ | async" />
 <p class="section">{{ 'account.order.subtitle' | translate }}</p>
 
+<ish-account-order-filters fragmentOnRouting="order-list-top" (modelChange)="filter($event)" />
+
 <ish-order-list
   [orders]="orders$ | async"
   [columnsToDisplay]="['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'destination', 'orderTotal']"
-  noOrdersMessageKey="account.orderlist.no_placed_orders_message"
+  [noOrdersMessageKey]="!filtersActive ? 'account.orderlist.no_placed_orders_message' : undefined"
   [loading]="ordersLoading$ | async"
 />
 

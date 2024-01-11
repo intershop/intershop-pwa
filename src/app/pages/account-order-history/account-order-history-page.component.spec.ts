@@ -8,6 +8,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
+import { AccountOrderFiltersComponent } from './account-order-filters/account-order-filters.component';
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 
 describe('Account Order History Page Component', () => {
@@ -19,6 +20,7 @@ describe('Account Order History Page Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderHistoryPageComponent,
+        MockComponent(AccountOrderFiltersComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(OrderListComponent),
         MockDirective(ServerHtmlDirective),

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { Order } from 'ish-core/models/order/order.model';
 
 /**
@@ -18,15 +19,24 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   ordersLoading$: Observable<boolean>;
   ordersError$: Observable<HttpError>;
   moreOrdersAvailable$: Observable<boolean>;
+  filtersActive: boolean;
 
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit(): void {
     this.orders$ = this.accountFacade.orders$;
-    this.accountFacade.loadOrders({ limit: 30, include: ['commonShipToAddress'] });
     this.ordersLoading$ = this.accountFacade.ordersLoading$;
     this.ordersError$ = this.accountFacade.ordersError$;
     this.moreOrdersAvailable$ = this.accountFacade.moreOrdersAvailable$;
+  }
+
+  filter(filters: Partial<OrderListQuery>) {
+    this.filtersActive = Object.keys(filters).length > 0;
+    this.accountFacade.loadOrders({
+      ...filters,
+      limit: 30,
+      include: ['commonShipToAddress'],
+    });
   }
 
   loadMoreOrders(): void {
