@@ -43,7 +43,7 @@ describe('Quote Line Item List Element Component', () => {
     quoteContext = mock(QuoteContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),

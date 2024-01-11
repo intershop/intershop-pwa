@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -36,7 +35,6 @@ describe('Product Variation Select Enhanced Component', () => {
   beforeEach(async () => {
     appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [ProductVariationSelectEnhancedComponent],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();

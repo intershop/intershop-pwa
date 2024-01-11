@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
@@ -32,7 +31,6 @@ describe('Product Variation Select Swatch Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [ProductVariationSelectSwatchComponent],
     }).compileComponents();
   });
