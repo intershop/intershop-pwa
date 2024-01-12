@@ -51,6 +51,7 @@ export interface Environment {
     | 'tracking'
     | 'tacton'
     | 'maps'
+    | 'returnRequest'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
@@ -159,6 +160,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     'recently',
     'saveLanguageSelection',
     'storeLocator',
+    'returnRequest',
   ],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */

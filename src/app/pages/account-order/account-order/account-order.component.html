@@ -94,6 +94,7 @@
     </ish-info-box>
   </div>
 
+  <ish-lazy-return-request-modal [order]="order" />
   <!-- Line Items -->
   <ish-line-item-list
     *ngIf="order.lineItems?.length > 0"

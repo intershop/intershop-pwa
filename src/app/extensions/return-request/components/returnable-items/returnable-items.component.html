@@ -1,0 +1,87 @@
+<table
+  *ngIf="returnableItems?.length"
+  [formGroup]="itemsForm"
+  cdk-table
+  [dataSource]="returnableItems"
+  class="table table-lg mobile-optimized"
+  data-testing-id="returnable-product-list"
+>
+  <!-- Checkbox -->
+  <ng-container cdkColumnDef="select">
+    <th cdk-header-cell *cdkHeaderCellDef></th>
+    <td cdk-cell *cdkCellDef="let row" [formGroupName]="row.sku">
+      <div class="form-group form-check pr-2">
+        <input
+          type="checkbox"
+          formControlName="checked"
+          class="form-check-input"
+          (change)="toggleFields($event, row.sku, row.maxReturnQty)"
+        />
+      </div>
+    </td>
+  </ng-container>
+
+  <!--Product -->
+  <ng-container cdkColumnDef="product">
+    <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-product">
+      {{ 'toolineo.account.return_request.modal.table.product_label' | translate }}
+    </th>
+    <td cdk-cell *cdkCellDef="let row">
+      <h4 class="mt-1">{{ row.productName }}</h4>
+      <div>EAN: {{ row.EAN }}</div>
+      <div>Artnr: {{ row.artnr }}</div>
+      <div>Mfg. Number: {{ row.mfg_number }}</div>
+    </td>
+  </ng-container>
+
+  <!-- Return Quantity Limit -->
+  <ng-container cdkColumnDef="returnable_qty">
+    <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-quantity-limit">
+      {{ 'toolineo.account.return_request.modal.table.returnable_qty' | translate }}
+    </th>
+    <td cdk-cell *cdkCellDef="let row" class="text-center">
+      {{ row.maxReturnQty }}
+    </td>
+  </ng-container>
+
+  <!-- Quantity to returns -->
+  <ng-container cdkColumnDef="qty">
+    <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-quantity" class="w-25">
+      {{ 'toolineo.account.return_request.modal.table.return_qty' | translate }}
+    </th>
+    <td cdk-cell *cdkCellDef="let row" [formGroupName]="row.sku">
+      <div class="position-relative form-group has-feedback" [ishShowFormFeedback]="[getControl(row.sku, 'qty')]">
+        <input type="number" formControlName="qty" [min]="1" [max]="row.qty" class="form-control" />
+        <ish-form-control-feedback
+          [messages]="{
+            required: 'toolineo.account.return_request.modal.error.qty.required',
+            max: 'toolineo.account.return_request.modal.error.qty.max'
+          }"
+          [control]="getControl(row.sku, 'qty')"
+        />
+      </div>
+    </td>
+  </ng-container>
+  <!-- Return Reason -->
+  <ng-container cdkColumnDef="reason">
+    <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-reason" class="w-25">
+      {{ 'toolineo.account.return_request.modal.table.reason' | translate }}
+    </th>
+    <td cdk-cell *cdkCellDef="let row" [formGroupName]="row.sku">
+      <div class="position-relative form-group has-feedback" [ishShowFormFeedback]="[getControl(row.sku, 'reason')]">
+        <select formControlName="reason" class="form-control">
+          <option value="">{{ 'toolineo.account.return_request.modal.form.select_reason_label' | translate }}</option>
+          <option *ngFor="let r of returnReasons" [value]="r.value">{{ r.label }}</option>
+        </select>
+        <ish-form-control-feedback
+          [messages]="{ required: 'toolineo.account.return_request.modal.error.reason.required' }"
+          [control]="getControl(row.sku, 'reason')"
+        />
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- Header and Row Declarations -->
+  <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+  <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+</table>
