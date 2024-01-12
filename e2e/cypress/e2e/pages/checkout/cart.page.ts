@@ -98,7 +98,8 @@ export class CartPage {
             .clear()
             .wait(1000)
             .type(num.toString())
-            .wait(1000),
+            .wait(1000)
+            .blur(),
         get: () =>
           cy
             .get(this.tag)
@@ -106,6 +107,12 @@ export class CartPage {
             .eq(idx)
             .invoke('val')
             .then(v => +v),
+      },
+      warranty: {
+        set: (warrantyId: string) => cy.get('[data-testing-id="product-warranties"]').eq(idx).select(warrantyId),
+        // Precondition for "get": all products except the last one has to have a warranty
+        // TODO: find a better way to detect if a line item has the warranty component
+        get: () => cy.get(this.tag).find('[data-testing-id="product-warranties"]').eq(idx),
       },
       remove: () => cy.get(this.tag).find('[data-testing-id="remove-line-item"]').eq(idx).click(),
       sku: cy.get(this.tag).find('.product-id').eq(idx),

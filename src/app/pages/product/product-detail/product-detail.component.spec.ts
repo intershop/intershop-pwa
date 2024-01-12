@@ -15,6 +15,7 @@ import { ProductPromotionComponent } from 'ish-shared/components/product/product
 import { ProductQuantityLabelComponent } from 'ish-shared/components/product/product-quantity-label/product-quantity-label.component';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
+import { ProductWarrantyComponent } from 'ish-shared/components/product/product-warranty/product-warranty.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductNotificationEditComponent } from '../../../extensions/product-notifications/exports/lazy-product-notification-edit/lazy-product-notification-edit.component';
@@ -58,6 +59,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductQuantityLabelComponent),
         MockComponent(ProductShipmentComponent),
+        MockComponent(ProductWarrantyComponent),
         ProductDetailComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
@@ -98,6 +100,7 @@ describe('Product Detail Component', () => {
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-quote",
         "ish-lazy-product-notification-edit",
+        "ish-product-warranty",
         "ish-content-viewcontext",
       ]
     `);

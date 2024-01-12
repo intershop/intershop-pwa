@@ -18,6 +18,7 @@ export class BasketMergeHelper {
             lineItems: basketMergeData.included.targetBasket_lineItems || undefined,
             discounts: basketMergeData.included.targetBasket_discounts || undefined,
             lineItems_discounts: basketMergeData.included.targetBasket_lineItems_discounts || undefined,
+            lineItems_warranty: basketMergeData.included.targetBasket_lineItems_warranty || undefined,
             commonShipToAddress: basketMergeData.included.targetBasket_commonShipToAddress || undefined,
             commonShippingMethod: basketMergeData.included.targetBasket_commonShippingMethod || undefined,
             payments: basketMergeData.included.targetBasket_payments || undefined,

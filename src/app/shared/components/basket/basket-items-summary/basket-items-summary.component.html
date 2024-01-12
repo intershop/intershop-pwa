@@ -5,7 +5,7 @@
       <div class="col-8">
         <ish-product-name ishProductContext [sku]="pli.productSKU" />
       </div>
-      <div class="col-4 text-right">{{ pli.totals.total | ishPrice }}</div>
+      <div class="col-4 text-right pt-1">{{ pli.totals.total | ishPrice }}</div>
 
       <!-- quantity and undiscounted price -->
       <div class="col-8 cart-pli-data">
@@ -24,6 +24,12 @@
           <ish-basket-promotion [rebate]="rebate" />
         </ng-container>
       </div>
+
+      <!-- warranty -->
+      <ng-container *ngIf="pli.warranty">
+        <div class="col-8">{{ pli.warranty.sku }}</div>
+        <div class="col-4 text-right">{{ pli.warranty.price | ishPrice }}</div>
+      </ng-container>
     </ng-container>
   </div>
 
