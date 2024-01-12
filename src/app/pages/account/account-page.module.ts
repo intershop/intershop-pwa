@@ -36,6 +36,14 @@ const accountPageRoutes: Routes = [
           ),
       },
       {
+        path: 'returns-overview',
+        data: { breadcrumbData: [{ key: 'toolineo.account.return_overview.link' }] },
+        loadChildren: () =>
+          import('../../extensions/return-request/pages/return-request-routing.module').then(
+            m => m.ReturnRequestRoutingModule
+          ),
+      },
+      {
         path: 'payment',
         data: { breadcrumbData: [{ key: 'account.payment.link' }] },
         loadChildren: () =>
