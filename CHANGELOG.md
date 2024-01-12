@@ -9,13 +9,16 @@ kb_everyone
 
 ## [5.0.0](https://github.com/intershop/intershop-pwa/releases/tag/5.0.0) (2023-12-31)
 
-**The Intershop PWA 5.0.0 has been developed and tested with Intershop Commerce Management (ICM) version 11.7.0. It will work with all versions from ICM 11.7.0 and later. Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.**
-
-_The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newer ICM 7.10.x versions. The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section lists functionalities that are only available with ICM releases newer than the listed LTS version._
-
-**The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.**
-
-**Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 for PWA 5.0.0 deployments.**
+> [!NOTE]
+> The Intershop PWA 5.0.0 has been developed and tested with Intershop Commerce Management (ICM) version 11.7.0.
+> It will work with all versions from ICM 11.7.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newer ICM 7.10.x versions. The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 for PWA 5.0.0 deployments.
 
 ### Features
 
@@ -66,10 +69,12 @@ _The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newe
 
 ## [4.2.0](https://github.com/intershop/intershop-pwa/releases/tag/4.2.0) (2023-09-11)
 
-**The Intershop PWA 4.2.0 has been developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2. It will work with all versions from ICM 7.10.39.2 and later. Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.**
-
-**The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.**
-
+> [!NOTE]
+> The Intershop PWA 4.2.0 has been developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2.
+> It will work with all versions from ICM 7.10.39.2 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 
 ### Features
 
@@ -127,10 +132,12 @@ _The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newe
 
 ## [4.1.0](https://github.com/intershop/intershop-pwa/releases/tag/4.1.0) (2023-06-22)
 
-**The Intershop PWA 4.1.0 has been developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2. It will work with all versions from ICM 7.10.39.2 and later. Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.**
-
-**The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.**
-
+> [!NOTE]
+> The Intershop PWA 4.1.0 has been developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2.
+> It will work with all versions from ICM 7.10.39.2 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 
 ### Features
 
@@ -177,9 +184,12 @@ _The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newe
 
 ## [4.0.0](https://github.com/intershop/intershop-pwa/releases/tag/4.0.0) (2023-04-06)
 
-**The Intershop PWA 4.2.0 has been developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2. It will work with all versions from ICM 7.10.39.2 and later. Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.**
-
-**The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.**
+> [!NOTE]
+> The Intershop PWA 4.0.0 has been developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2.
+> It will work with all versions from ICM 7.10.39.2 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 
 ### Features
 
