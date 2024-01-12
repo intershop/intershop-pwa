@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { createBasketAddress, createBasketAddressSuccess, updateBasketAddress } from 'ish-core/store/customer/basket';
+import { updateBasketAddress } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -102,46 +102,6 @@ describe('Addresses Selectors', () => {
       });
 
       it('should set loading to false and add address', () => {
-        expect(getAddressesLoading(store$.state)).toBeFalse();
-        expect(getAllAddresses(store$.state)).toEqual([address]);
-      });
-    });
-
-    describe('and reporting failure', () => {
-      beforeEach(() => {
-        store$.dispatch(createCustomerAddressFail({ error: makeHttpError({ message: 'error' }) }));
-      });
-
-      it('should not have loaded addresses on error', () => {
-        expect(getAddressesLoading(store$.state)).toBeFalse();
-        expect(getAllAddresses(store$.state)).toBeEmpty();
-        expect(getAddressesError(store$.state)).toMatchInlineSnapshot(`
-          {
-            "message": "error",
-            "name": "HttpErrorResponse",
-          }
-        `);
-      });
-    });
-  });
-
-  describe('create basket addresses', () => {
-    const address = BasketMockData.getAddress();
-
-    beforeEach(() => {
-      store$.dispatch(createBasketAddress({ address, scope: 'invoice' }));
-    });
-
-    it('should set the state to loading', () => {
-      expect(getAddressesLoading(store$.state)).toBeTrue();
-    });
-
-    describe('and reporting success', () => {
-      beforeEach(() => {
-        store$.dispatch(createBasketAddressSuccess({ address, scope: 'invoice' }));
-      });
-
-      it('should set loading to false and add basket address', () => {
         expect(getAddressesLoading(store$.state)).toBeFalse();
         expect(getAllAddresses(store$.state)).toEqual([address]);
       });

@@ -27,6 +27,9 @@ import {
   createBasketAddressSuccess,
   deleteBasketShippingAddress,
   loadBasket,
+  loadBasketEligibleAddresses,
+  loadBasketEligibleAddressesFail,
+  loadBasketEligibleAddressesSuccess,
   resetBasketErrors,
   updateBasket,
   updateBasketAddress,
@@ -55,6 +58,45 @@ describe('Basket Addresses Effects', () => {
 
     effects = TestBed.inject(BasketAddressesEffects);
     store = TestBed.inject(Store);
+  });
+
+  describe('loadBasketEligibleAddresses$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.getBasketEligibleAddresses()).thenReturn(of([]));
+    });
+
+    it('should call the basketService for loadBasketEligibleAddresses', done => {
+      const action = loadBasketEligibleAddresses();
+      actions$ = of(action);
+
+      effects.loadBasketEligibleAddresses$.subscribe(() => {
+        verify(basketServiceMock.getBasketEligibleAddresses()).once();
+        done();
+      });
+    });
+
+    it('should map to action of type LoadBasketEligibleAddressesSuccess', () => {
+      const action = loadBasketEligibleAddresses();
+      const completion = loadBasketEligibleAddressesSuccess({ addresses: [] });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketEligibleAddresses$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadBasketEligibleAddressesFail', () => {
+      when(basketServiceMock.getBasketEligibleAddresses()).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+
+      const action = loadBasketEligibleAddresses();
+      const completion = loadBasketEligibleAddressesFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketEligibleAddresses$).toBeObservable(expected$);
+    });
   });
 
   describe('createAddressForBasket$ for a logged in user', () => {
@@ -212,9 +254,10 @@ describe('Basket Addresses Effects', () => {
       const action = updateBasketAddress({ address });
       const completion1 = updateCustomerAddressSuccess({ address });
       const completion2 = loadBasket();
-      const completion3 = resetBasketErrors();
+      const completion3 = loadBasketEligibleAddresses();
+      const completion4 = resetBasketErrors();
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(cde)', { c: completion1, d: completion2, e: completion3 });
+      const expected$ = cold('-(cdef)', { c: completion1, d: completion2, e: completion3, f: completion4 });
 
       expect(effects.updateBasketAddress$).toBeObservable(expected$);
     });
@@ -298,8 +341,9 @@ describe('Basket Addresses Effects', () => {
       const action = deleteBasketShippingAddress({ addressId });
       const completion1 = deleteCustomerAddressSuccess({ addressId });
       const completion2 = loadBasket();
+      const completion3 = loadBasketEligibleAddresses();
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+      const expected$ = cold('-(cde)', { c: completion1, d: completion2, e: completion3 });
 
       expect(effects.deleteBasketShippingAddress$).toBeObservable(expected$);
     });

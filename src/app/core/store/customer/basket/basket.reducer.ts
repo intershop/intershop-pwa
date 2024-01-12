@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { unionBy } from 'lodash-es';
 
+import { Address } from 'ish-core/models/address/address.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -23,6 +24,9 @@ import {
   continueCheckoutFail,
   continueCheckoutSuccess,
   continueCheckoutWithIssues,
+  createBasketAddress,
+  createBasketAddressFail,
+  createBasketAddressSuccess,
   createBasketPayment,
   createBasketPaymentFail,
   createBasketPaymentSuccess,
@@ -39,6 +43,9 @@ import {
   loadBasket,
   loadBasketByAPIToken,
   loadBasketByAPITokenFail,
+  loadBasketEligibleAddresses,
+  loadBasketEligibleAddressesFail,
+  loadBasketEligibleAddressesSuccess,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
   loadBasketEligiblePaymentMethodsSuccess,
@@ -86,6 +93,7 @@ import {
 
 export interface BasketState {
   basket: Basket;
+  eligibleAddresses: Address[];
   eligibleShippingMethods: ShippingMethod[];
   eligiblePaymentMethods: PaymentMethod[];
   loading: boolean;
@@ -105,6 +113,7 @@ const initialValidationResults: BasketValidationResultType = {
 
 const initialState: BasketState = {
   basket: undefined,
+  eligibleAddresses: undefined,
   eligibleShippingMethods: undefined,
   eligiblePaymentMethods: undefined,
   loading: false,
@@ -134,6 +143,8 @@ export const basketReducer = createReducer(
     deleteBasketItem,
     setBasketAttribute,
     deleteBasketAttribute,
+    createBasketAddress,
+    loadBasketEligibleAddresses,
     loadBasketEligibleShippingMethods,
     loadBasketEligiblePaymentMethods,
     setBasketPayment,
@@ -158,12 +169,14 @@ export const basketReducer = createReducer(
     deleteBasketItemSuccess,
     addItemsToBasketSuccess,
     setBasketPaymentSuccess,
+    createBasketAddressSuccess,
     createBasketPaymentSuccess,
     updateBasketPaymentSuccess,
     deleteBasketPaymentSuccess,
     removePromotionCodeFromBasketSuccess,
     continueCheckoutSuccess,
     continueCheckoutWithIssues,
+    loadBasketEligibleAddressesSuccess,
     loadBasketEligibleShippingMethodsSuccess,
     loadBasketEligiblePaymentMethodsSuccess,
     updateConcardisCvcLastUpdatedSuccess,
@@ -182,6 +195,8 @@ export const basketReducer = createReducer(
     deleteBasketItemFail,
     setBasketAttributeFail,
     deleteBasketAttributeFail,
+    createBasketAddressFail,
+    loadBasketEligibleAddressesFail,
     loadBasketEligibleShippingMethodsFail,
     loadBasketEligiblePaymentMethodsFail,
     setBasketPaymentFail,
@@ -255,6 +270,22 @@ export const basketReducer = createReducer(
       validationResults: validation?.results,
     };
   }),
+  on(
+    loadBasketEligibleAddressesSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      eligibleAddresses: action.payload.addresses,
+    })
+  ),
+  on(
+    createBasketAddressSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      eligibleAddresses: state.eligibleAddresses
+        ? [...state.eligibleAddresses, action.payload.address]
+        : [action.payload.address],
+    })
+  ),
   on(
     loadBasketEligibleShippingMethodsSuccess,
     (state, action): BasketState => ({

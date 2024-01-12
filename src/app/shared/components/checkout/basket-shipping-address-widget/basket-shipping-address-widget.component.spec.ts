@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -38,15 +37,9 @@ describe('Basket Shipping Address Widget Component', () => {
     when(checkoutFacade.basketInvoiceAndShippingAddressEqual$).thenReturn(of(false));
 
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
-    when(accountFacade.addresses$()).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule.forTesting('addressDoctor'),
-        FormlyTestingModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [FeatureToggleModule.forTesting('addressDoctor'), FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [
         BasketShippingAddressWidgetComponent,
         MockComponent(AddressComponent),
@@ -102,7 +95,7 @@ describe('Basket Shipping Address Widget Component', () => {
     beforeEach(() => {
       const address = BasketMockData.getAddress();
       when(checkoutFacade.basketShippingAddress$).thenReturn(of(address));
-      when(accountFacade.addresses$()).thenReturn(of([address, { ...address, id: 'test' }]));
+      component.eligibleAddresses$ = of([address, { ...address, id: 'test' }]);
     });
 
     it('should render if shipping is set', () => {
@@ -226,7 +219,7 @@ describe('Basket Shipping Address Widget Component', () => {
 
     beforeEach(() => {
       when(checkoutFacade.basketShippingAddress$).thenReturn(of(addresses[1]));
-      when(accountFacade.addresses$()).thenReturn(of(addresses));
+      component.eligibleAddresses$ = of(addresses);
     });
 
     it('should only use valid addresses for selection display', done => {

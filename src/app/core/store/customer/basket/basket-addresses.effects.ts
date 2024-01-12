@@ -6,7 +6,6 @@ import { map, mergeMap } from 'rxjs/operators';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService, BasketUpdateType } from 'ish-core/services/basket/basket.service';
 import {
-  createCustomerAddressFail,
   deleteCustomerAddressFail,
   deleteCustomerAddressSuccess,
   updateCustomerAddressFail,
@@ -18,9 +17,13 @@ import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/u
 import {
   assignBasketAddress,
   createBasketAddress,
+  createBasketAddressFail,
   createBasketAddressSuccess,
   deleteBasketShippingAddress,
   loadBasket,
+  loadBasketEligibleAddresses,
+  loadBasketEligibleAddressesFail,
+  loadBasketEligibleAddressesSuccess,
   resetBasketErrors,
   updateBasket,
   updateBasketAddress,
@@ -36,6 +39,21 @@ export class BasketAddressesEffects {
   ) {}
 
   /**
+   * The load basket eligible addresses effect.
+   */
+  loadBasketEligibleAddresses$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasketEligibleAddresses),
+      mergeMap(() =>
+        this.basketService.getBasketEligibleAddresses().pipe(
+          map(result => loadBasketEligibleAddressesSuccess({ addresses: result })),
+          mapErrorToAction(loadBasketEligibleAddressesFail)
+        )
+      )
+    )
+  );
+
+  /**
    * Creates a new invoice/shipping address which is assigned to the basket later on
    * if the user is logged in a customer address will be created, otherwise a new basket address will be created
    */
@@ -49,13 +67,13 @@ export class BasketAddressesEffects {
         if (customer) {
           return this.addressService.createCustomerAddress('-', action.payload.address).pipe(
             map(newAddress => createBasketAddressSuccess({ address: newAddress, scope: action.payload.scope })),
-            mapErrorToAction(createCustomerAddressFail)
+            mapErrorToAction(createBasketAddressFail)
           );
           // create address at basket for anonymous user
         } else {
           return this.basketService.createBasketAddress(action.payload.address).pipe(
             map(newAddress => createBasketAddressSuccess({ address: newAddress, scope: action.payload.scope })),
-            mapErrorToAction(createCustomerAddressFail)
+            mapErrorToAction(createBasketAddressFail)
           );
         }
       })
@@ -119,7 +137,12 @@ export class BasketAddressesEffects {
         // create address at customer for logged in user
         if (customer) {
           return this.addressService.updateCustomerAddress('-', address).pipe(
-            mergeMap(() => [updateCustomerAddressSuccess({ address }), loadBasket(), resetBasketErrors()]),
+            mergeMap(() => [
+              updateCustomerAddressSuccess({ address }),
+              loadBasket(),
+              loadBasketEligibleAddresses(),
+              resetBasketErrors(),
+            ]),
             mapErrorToAction(updateCustomerAddressFail)
           );
           // create address at basket for anonymous user
@@ -142,7 +165,7 @@ export class BasketAddressesEffects {
       mapToPayloadProperty('addressId'),
       mergeMap(addressId =>
         this.addressService.deleteCustomerAddress('-', addressId).pipe(
-          mergeMap(() => [deleteCustomerAddressSuccess({ addressId }), loadBasket()]),
+          mergeMap(() => [deleteCustomerAddressSuccess({ addressId }), loadBasket(), loadBasketEligibleAddresses()]),
           mapErrorToAction(deleteCustomerAddressFail)
         )
       )

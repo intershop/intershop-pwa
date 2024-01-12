@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core/lib/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { filter, map, shareReplay, take } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -22,6 +22,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BasketShippingAddressWidgetComponent implements OnInit {
+  @Input({ required: true }) eligibleAddresses$: Observable<Address[]>;
   @Input() showErrors = true;
 
   @Output() collapseChange = new BehaviorSubject(true);
@@ -36,7 +37,6 @@ export class BasketShippingAddressWidgetComponent implements OnInit {
 
   shippingAddress$: Observable<Address>;
   addresses$: Observable<Address[]>;
-  customerAddresses$: Observable<Address[]>;
   displayAddAddressLink$: Observable<boolean>;
 
   basketInvoiceAndShippingAddressEqual$: Observable<boolean>;
@@ -61,7 +61,6 @@ export class BasketShippingAddressWidgetComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.customerAddresses$ = this.accountFacade.addresses$().pipe(shareReplay(1));
     this.shippingAddress$ = this.checkoutFacade.basketShippingAddress$;
     this.basketInvoiceAndShippingAddressEqual$ = this.checkoutFacade.basketInvoiceAndShippingAddressEqual$;
     this.basketShippingAddressDeletable$ = this.checkoutFacade.basketShippingAddressDeletable$;
@@ -78,7 +77,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit {
       .subscribe(label => (this.emptyOptionLabel = label));
 
     // prepare data for shipping select drop down
-    this.addresses$ = combineLatest([this.customerAddresses$, this.shippingAddress$]).pipe(
+    this.addresses$ = combineLatest([this.eligibleAddresses$, this.shippingAddress$]).pipe(
       map(([addresses, shippingAddress]) =>
         addresses?.filter(address => address.shipToAddress).filter(address => address.id !== shippingAddress?.id)
       )
