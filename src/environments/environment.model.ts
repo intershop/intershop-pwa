@@ -54,6 +54,7 @@ export interface Environment {
     | 'copilot'
     | 'maps'
     | 'tracking'
+    | 'returnRequest'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
@@ -168,6 +169,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     'saveLanguageSelection',
     'stickyHeader',
     'storeLocator',
+    'returnRequest',
   ],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */

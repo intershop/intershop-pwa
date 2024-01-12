@@ -1,0 +1,38 @@
+<ng-container *ngIf="orders.length; else noItems">
+  <ng-container *ngFor="let id of orderIds">
+    <h2 class="bg-light p-2">
+      {{ 'toolineo.account.return_overview.tab.content.order_from' | translate : { '0': id } }}
+      {{ groupOrders[id][0].creationDate | ishDate }}
+    </h2>
+    <ng-container *ngIf="groupOrders[id] as items">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">{{ 'toolineo.account.return_overview.tab.content.column.return' | translate }}</th>
+            <th scope="col">{{ 'toolineo.account.return_overview.tab.content.column.dealer' | translate }}</th>
+            <th scope="col">
+              {{ 'toolineo.account.return_overview.tab.content.column.created_on' | translate }}
+            </th>
+            <th scope="col">{{ 'toolineo.account.return_overview.tab.content.column.article' | translate }}</th>
+            <th scope="col">{{ 'toolineo.account.return_overview.tab.content.column.status' | translate }}</th>
+            <th scope="col">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of items; even as isEven">
+            <th scope="row">{{ item.productNumber }}</th>
+            <td>{{ item.supplierProductNumber }}</td>
+            <td>{{ item.creationDate | ishDate }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.status }}</td>
+            <td>{{ 'toolineo.account.return_overview.tab.content.download_return_label' | translate }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #noItems>
+  <p class="text-center font-weight-bold">{{ 'toolineo.account.return_overview.no_result_found' | translate }}</p>
+</ng-template>

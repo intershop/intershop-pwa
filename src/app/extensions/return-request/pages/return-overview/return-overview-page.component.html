@@ -1,0 +1,42 @@
+<ish-error-message [error]="error$ | async" />
+
+<div class="d-flex align-items-center mt-4">
+  <h1 class="my-0">{{ 'toolineo.account.return_overview.heading' | translate }}</h1>
+  <p class="px-2 mb-0">{{ 'toolineo.account.return_overview.subtitle' | translate }}</p>
+  <select class="form-control w-25">
+    <option value="3m">{{ 'toolineo.account.return_overview.dropdown.options.label1' | translate }}</option>
+    <option value="6m">{{ 'toolineo.account.return_overview.dropdown.options.label2' | translate }}</option>
+    <option value="12m">{{ 'toolineo.account.return_overview.dropdown.options.label3' | translate }}</option>
+    <option *ngFor="let year of getLast3Year()" [value]="year">{{ year }}</option>
+  </select>
+</div>
+
+<ng-container *ngIf="returnRequests?.length">
+  <ul ngbNav #nav="ngbNav" class="nav-tabs mt-4" [(activeId)]="active">
+    <li ngbNavItem="all">
+      <a ngbNavLink>{{ 'toolineo.account.return_overview.tab.all' | translate }}</a>
+      <ng-template ngbNavContent>
+        <ish-return-request-items [orders]="getOrders()" />
+      </ng-template>
+    </li>
+    <li ngbNavItem="requested">
+      <a ngbNavLink>{{ 'toolineo.account.return_overview.tab.requested' | translate }}</a>
+      <ng-template ngbNavContent> <ish-return-request-items [orders]="getOrders('INITIAL')" /> </ng-template>
+    </li>
+    <li ngbNavItem="confirmed">
+      <a ngbNavLink>{{ 'toolineo.account.return_overview.tab.confirmed' | translate }}</a>
+      <ng-template ngbNavContent> <ish-return-request-items [orders]="getOrders('ACCEPTED')" /> </ng-template>
+    </li>
+    <li ngbNavItem="completed">
+      <a ngbNavLink>{{ 'toolineo.account.return_overview.tab.completed' | translate }}</a>
+      <ng-template ngbNavContent> <ish-return-request-items [orders]="getOrders('CLOSED')" /> </ng-template>
+    </li>
+    <li ngbNavItem="Rejected">
+      <a ngbNavLink>{{ 'toolineo.account.return_overview.tab.rejected' | translate }}</a>
+      <ng-template ngbNavContent> <ish-return-request-items [orders]="getOrders('REJECTED')" /> </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav"></div>
+</ng-container>
+<ish-loading *ngIf="loading$ | async" />

@@ -1,0 +1,64 @@
+<ng-container *ngIf="order?.statusCode === 'EXPORTED'">
+  <ng-container *ngIf="returnableItems$ | async as returnItems">
+    <ng-container *ngIf="returnItems.length">
+      <div [ngClass]="cssClass">
+        <button class="btn btn-secondary" (click)="showModal()">
+          {{ 'toolineo.account.return_request.btn.label' | translate }}
+        </button>
+      </div>
+
+      <ish-modal-dialog
+        #returnRequestDialog
+        [options]="{
+          titleText: 'toolineo.account.return_request.modal.title' | translate,
+          size: 'xl'
+        }"
+      >
+        <div class="d-flex justify-content-between mb-2">
+          <div class="order-date">
+            <span class="h4">{{ 'toolineo.account.return_request.modal.orde_date' | translate }}</span>
+            {{ order.creationDate | ishDate }}
+          </div>
+          <div class="order-number">
+            <span class="h4">{{ 'toolineo.account.return_request.modal.orde_number' | translate }}</span>
+            {{ order.documentNo }}
+          </div>
+        </div>
+        <form [formGroup]="form" (submit)="submit()">
+          <label>
+            <input type="checkbox" formControlName="checkAll" />{{
+              'toolineo.account.return_request.modal.form.check_all_label' | translate
+            }}</label
+          >
+          <ish-returnable-items [returnableItems]="returnItems" (itemsUpdated)="onItemsUpdate($event)" [form]="form" />
+          <div class="form-group">
+            <label for="comment">
+              <span class="h4">{{ 'toolineo.account.return_request.modal.form.comment_label' | translate }}<br /></span>
+              <span class="font-weight-norma">{{
+                'toolineo.account.return_request.modal.form.comment_sub_label' | translate
+              }}</span>
+            </label>
+            <textarea class="form-control" formControlName="comment" rows="3"></textarea>
+          </div>
+          <div class="row">
+            <div class="col-4 offset-8">
+              <div class="summary-section">
+                <h3>{{ 'toolineo.account.return_request.modal.summary.title' | translate }}</h3>
+                <span
+                  >{{ selectionCount }} {{ 'toolineo.account.return_request.modal.summary.items' | translate }}</span
+                >
+                <button
+                  type="submit"
+                  [disabled]="form.invalid || selectionCount === 0"
+                  class="btn-block btn btn-primary"
+                >
+                  {{ 'toolineo.account.return_request.modal.form.btn.label' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </ish-modal-dialog>
+    </ng-container>
+  </ng-container>
+</ng-container>
