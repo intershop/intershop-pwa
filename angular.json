@@ -101,7 +101,8 @@
               ]
             },
             "b2b": {},
-            "b2c": {}
+            "b2c": {},
+            "contentful": {}
           }
         },
         "serve": {
@@ -122,6 +123,9 @@
             },
             "b2c": {
               "browserTarget": "intershop-pwa:build:b2c"
+            },
+            "contentful": {
+              "browserTarget": "intershop-pwa:build:contentful"
             }
           }
         },
@@ -158,7 +162,8 @@
             "production": {},
             "development": {},
             "b2b": {},
-            "b2c": {}
+            "b2c": {},
+            "contentful": {}
           }
         },
         "serve-ssr": {
@@ -176,6 +181,10 @@
             "b2c": {
               "browserTarget": "intershop-pwa:build:b2c,development",
               "serverTarget": "intershop-pwa:server:b2c,development"
+            },
+            "contentful": {
+              "browserTarget": "intershop-pwa:build:contentful,development",
+              "serverTarget": "intershop-pwa:server:contentful,development"
             }
           }
         }
