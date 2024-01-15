@@ -54,10 +54,12 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li class="selected">
-          <a tabindex="0" title="Black"><span style="background-color: rgb(0, 0, 0)"></span></a>
+          <a tabindex="0" role="button" title="Black"
+            ><span style="background-color: rgb(0, 0, 0)"></span
+          ></a>
         </li>
         <li>
-          <a tabindex="0" title="White"
+          <a tabindex="0" role="button" title="White"
             ><span class="light-color" style="background-color: rgb(255, 255, 255)"></span
           ></a>
         </li>
@@ -71,10 +73,10 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li>
-          <a tabindex="0" title="yyy"><img alt="yyy" src="imageY.png" /></a>
+          <a tabindex="0" role="button" title="yyy"><img alt="yyy" src="imageY.png" /></a>
         </li>
         <li class="selected">
-          <a tabindex="0" title="zzz"><img alt="zzz" src="imageZ.png" /></a>
+          <a tabindex="0" role="button" title="zzz"><img alt="zzz" src="imageZ.png" /></a>
         </li>
       </ul>
     `);

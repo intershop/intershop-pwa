@@ -38,10 +38,12 @@ describe('Filter Text Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="filter-list" id="filter-list_Brands">
         <li class="filter-item filter-layer0">
-          <a tabindex="0" class="filter-item-name" data-testing-id="filter-link-AsusName"> Asus (4) </a>
+          <a tabindex="0" role="button" class="filter-item-name" data-testing-id="filter-link-AsusName">
+            Asus (4)
+          </a>
         </li>
         <li class="filter-item filter-layer0 filter-selected">
-          <a tabindex="0" data-testing-id="filter-link-LogitechName"
+          <a tabindex="0" role="button" data-testing-id="filter-link-LogitechName"
             ><span class="filter-item-name"> Logitech </span><span class="count"> (5) </span></a
           >
         </li>
