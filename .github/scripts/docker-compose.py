@@ -26,7 +26,6 @@ def main(icm, ssrimage, nginximage):
   data['services']['pwa'].update({'image': ssrimage})
   data['services']['pwa']['environment']['ICM_BASE_URL'] = icm
   data['services']['nginx'].update({'image': nginximage})
-  data['services']['nginx']['environment']['CACHE'] = 1
   dump(data, dockerComposeFile('./dist','w'), Dumper=Dumper)
 
 if __name__ == "__main__":
