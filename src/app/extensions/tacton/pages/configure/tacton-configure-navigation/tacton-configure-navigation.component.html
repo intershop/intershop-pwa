@@ -4,6 +4,7 @@
       (click)="changeStep(mainItem.name)"
       (keydown.enter)="changeStep(mainItem.name)"
       tabindex="0"
+      role="button"
       [ngClass]="{ 'font-weight-bold': mainItem.active }"
       >{{ mainItem.description }}</a
     >
@@ -15,6 +16,7 @@
               (click)="scrollIntoView(subItem.name)"
               (keydown.enter)="scrollIntoView(subItem.name)"
               tabindex="0"
+              role="button"
               [ngClass]="{ 'font-weight-bold': isActive$(subItem.name) | async }"
               >{{ subItem.description }}</a
             >

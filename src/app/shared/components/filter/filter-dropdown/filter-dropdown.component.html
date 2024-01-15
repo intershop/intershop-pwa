@@ -19,6 +19,7 @@
       (click)="apply(facet)"
       (keydown.enter)="apply(facet)"
       tabindex="0"
+      role="button"
     >
       {{ facet.displayName }}
       <ng-container *ngIf="facet.count"> ({{ facet.count }})</ng-container>

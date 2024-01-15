@@ -21,6 +21,7 @@
                 (click)="moveDialog.show()"
                 (keydown.enter)="moveDialog.show()"
                 tabindex="0"
+                role="button"
                 data-testing-id="move-wishlist"
               >
                 <fa-icon
@@ -33,6 +34,7 @@
                 (click)="removeProductFromWishlist(wishlistItemData.sku)"
                 (keydown.enter)="removeProductFromWishlist(wishlistItemData.sku)"
                 tabindex="0"
+                role="button"
                 data-testing-id="delete-wishlist"
               >
                 <fa-icon [icon]="['fas', 'trash-alt']" [title]="'account.wishlist.table.options.remove' | translate" />

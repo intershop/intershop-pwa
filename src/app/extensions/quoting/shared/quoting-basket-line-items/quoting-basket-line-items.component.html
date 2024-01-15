@@ -8,6 +8,7 @@
         (click)="onDeleteQuote(item[0])"
         (keydown.enter)="onDeleteQuote(item[0])"
         tabindex="0"
+        role="button"
       >
         <fa-icon [icon]="['fas', 'trash-alt']" />
         <span class="pl-1">{{ 'quote.basket_items.remove.button.label' | translate }}</span>

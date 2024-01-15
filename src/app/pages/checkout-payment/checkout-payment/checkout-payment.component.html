@@ -89,6 +89,7 @@
                       (click)="deleteBasketPayment(paymentInstrument)"
                       (keydown.enter)="deleteBasketPayment(paymentInstrument)"
                       tabindex="0"
+                      role="button"
                       data-testing-id="delete-payment-link"
                       >{{ 'checkout.payment.method.delete.link' | translate }}</a
                     >
@@ -112,6 +113,7 @@
                     (click)="openPaymentParameterForm(i)"
                     (keydown.enter)="openPaymentParameterForm(i)"
                     tabindex="0"
+                    role="button"
                     data-testing-id="add-payment-link"
                     >{{ 'checkout.payment.addPayment.link' | translate }}
                   </a>

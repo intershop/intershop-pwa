@@ -22,6 +22,7 @@
         (click)="toggleOpen(subcategory.uniqueId)"
         (keydown.enter)="toggleOpen(subcategory.uniqueId)"
         tabindex="0"
+        role="button"
         [attr.aria-label]="
           isOpened(subcategory.uniqueId)
             ? ('header.navigation.collapse_category.aria_label' | translate : { '0': subcategory.name })

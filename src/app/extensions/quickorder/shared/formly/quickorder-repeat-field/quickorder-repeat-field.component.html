@@ -14,6 +14,7 @@
       (click)="remove(i); updateContexts()"
       (keydown.enter)="remove(i); updateContexts()"
       tabindex="0"
+      role="button"
       title="{{ 'quickorder.page.remove.row' | translate }}"
     >
       <fa-icon [icon]="['fas', 'trash-alt']" />
@@ -25,6 +26,7 @@
     (click)="addMultipleRows(1)"
     (keydown.enter)="addMultipleRows(1)"
     tabindex="0"
+    role="button"
     data-testing-id="add-quickorder-line"
     >{{ props?.addText | translate }}</a
   >
@@ -33,6 +35,7 @@
     (click)="addMultipleRows(props?.numberMoreRows)"
     (keydown.enter)="addMultipleRows(props?.numberMoreRows)"
     tabindex="0"
+    role="button"
     >{{ props?.addMoreText | translate : { '0': props?.numberMoreRows } }}</a
   >
 </div>

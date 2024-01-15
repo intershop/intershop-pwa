@@ -23,6 +23,7 @@
           (click)="moveDialog.show()"
           (keydown.enter)="moveDialog.show()"
           tabindex="0"
+          role="button"
           data-testing-id="move-order-template"
         >
           <fa-icon
@@ -35,6 +36,7 @@
           (click)="removeProductFromOrderTemplate(orderTemplateItemData.sku)"
           (keydown.enter)="removeProductFromOrderTemplate(orderTemplateItemData.sku)"
           tabindex="0"
+          role="button"
           data-testing-id="delete-order-template"
         >
           <fa-icon [icon]="['fas', 'trash-alt']" [title]="'modal.heading.remove.order.template' | translate" />

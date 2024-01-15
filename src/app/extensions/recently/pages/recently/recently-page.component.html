@@ -2,7 +2,7 @@
   <div class="content-page row">
     <ng-container *ngIf="products.length; else empty">
       <div class="col-md-3">
-        <a (click)="clearAll()" (keydown.enter)="clearAll()" tabindex="0" data-testing-id="clear-all">{{
+        <a (click)="clearAll()" (keydown.enter)="clearAll()" tabindex="0" role="button" data-testing-id="clear-all">{{
           'application.recentlyViewed.clear' | translate
         }}</a>
       </div>

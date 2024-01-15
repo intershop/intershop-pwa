@@ -32,6 +32,7 @@
         (click)="optionChange(group.id, option.value)"
         (keydown.enter)="optionChange(group.id, option.value)"
         tabindex="0"
+        role="button"
       >
         <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
       </a>

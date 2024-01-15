@@ -5,6 +5,7 @@
     (click)="changeToPage(currentPage - 1)"
     (keydown.enter)="changeToPage(currentPage - 1)"
     tabindex="0"
+    role="button"
   >
     {{ 'product.compare.previous.button.label' | translate }}
   </a>
@@ -14,6 +15,7 @@
     (click)="changeToPage(currentPage + 1)"
     (keydown.enter)="changeToPage(currentPage + 1)"
     tabindex="0"
+    role="button"
   >
     {{ 'product.compare.next.button.label' | translate }}
   </a>

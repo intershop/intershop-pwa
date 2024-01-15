@@ -8,6 +8,7 @@
       (click)="showCreateAddressForm()"
       (keydown.enter)="showCreateAddressForm()"
       tabindex="0"
+      role="button"
       [attr.aria-expanded]="!isCreateAddressFormCollapsed"
       aria-controls="collapseBasic"
       data-testing-id="create-address-button"
@@ -140,6 +141,7 @@
               (click)="showUpdateAddressForm(address)"
               (keydown.enter)="showUpdateAddressForm(address)"
               tabindex="0"
+              role="button"
               title="{{ 'checkout.address.update.button.label' | translate }}"
               [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
               aria-controls="CollapseBasicEdit"
@@ -155,6 +157,7 @@
               (click)="modalDialog.show(address)"
               (keydown.enter)="modalDialog.show(address)"
               tabindex="0"
+              role="button"
               data-testing-id="delete-address-icon"
             >
               <fa-icon [icon]="['fas', 'trash-alt']" />

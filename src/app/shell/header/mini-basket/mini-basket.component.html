@@ -4,7 +4,7 @@
   ishClickOutside
   (isClickedOutside)="collapse()"
 >
-  <a (click)="toggleCollapse()" (keydown.enter)="toggleCollapse()" tabindex="0">
+  <a (click)="toggleCollapse()" (keydown.enter)="toggleCollapse()" tabindex="0" role="button">
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
     <span>{{ 'shopping_cart.ministatus.items.text' | translate : { '0': itemCount$ | async } }}</span>
     <ng-container *ngIf="itemTotal$ | async as itemTotal">

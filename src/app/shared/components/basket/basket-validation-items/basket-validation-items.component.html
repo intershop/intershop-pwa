@@ -39,6 +39,7 @@
               (click)="onDeleteItem(pli.id)"
               (keydown.enter)="onDeleteItem(pli.id)"
               tabindex="0"
+              role="button"
               data-testing-id="delete-button"
               >{{ 'restricted-items.Remove.button' | translate }}</a
             >
@@ -51,6 +52,7 @@
           (click)="onDeleteItem(pli.id)"
           (keydown.enter)="onDeleteItem(pli.id)"
           tabindex="0"
+          role="button"
           >{{ 'restricted-items.Remove.button' | translate }}</a
         >
       </div>

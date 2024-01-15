@@ -11,6 +11,7 @@
           (click)="showAddressForm(address)"
           (keydown.enter)="showAddressForm(address)"
           tabindex="0"
+          role="button"
           data-testing-id="edit-shipping-address-link"
         >
           <fa-icon [icon]="['fas', 'pencil-alt']" />
@@ -24,6 +25,7 @@
           (click)="modalDialog.show(address)"
           (keydown.enter)="modalDialog.show(address)"
           tabindex="0"
+          role="button"
         >
           <fa-icon [icon]="['fas', 'trash-alt']" />
         </a>
