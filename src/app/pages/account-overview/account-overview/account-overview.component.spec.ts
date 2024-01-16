@@ -10,6 +10,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
+import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
@@ -38,6 +39,7 @@ describe('Account Overview Component', () => {
         MockComponent(OrderWidgetComponent),
         MockDirective(AuthorizationToggleDirective),
         MockDirective(ServerHtmlDirective),
+        MockPipe(HtmlEncodePipe),
         MockPipe(ServerSettingPipe, () => true),
       ],
       imports: [FeatureToggleModule.forTesting(), RoleToggleModule.forTesting(), TranslateModule.forRoot()],
