@@ -12,7 +12,7 @@ In addition the dependency to Angular's internationalization tools (i18n) is nee
 
 For more information refer to:
 
-- [NGX-Translate: The internationalization (i18n) library for Angular](http://www.ngx-translate.com/)
+- [NGX-Translate: The internationalization (i18n) library for Angular](https://github.com/ngx-translate/core)
 - [Angular - Internationalization (i18n)](https://angular.io/guide/i18n)
 - [ng-bootstrap Angular 9 support](https://github.com/ng-bootstrap/ng-bootstrap/issues/3537#issuecomment-586472803)
 
@@ -147,6 +147,13 @@ Usage in HTML:
 ```html
 <span [innerHTML]="'common.header.contact_no.text' | translate"></span>
 ```
+
+> [!WARNING]  
+> Be aware to HTML encode possibly malicious HTML code since the `[innerHTML]` value will not automatically be sanitized.
+> This is especially important if non validated user input is rendered directly.
+> To HTML encode content we provide the `htmlEncode` pipe.
+>
+> example: `<p [innerHTML]="'search.noResult.message' | translate : { '0': searchTerm | htmlEncode }"></p>`
 
 ### Localization in the component(.ts) File
 
