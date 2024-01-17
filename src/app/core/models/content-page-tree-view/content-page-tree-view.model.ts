@@ -31,11 +31,9 @@ function getContentPageTreeElements(
   // If current content page is part of element subtree or equals the element itself, then all children of elements should be analyzed
   if (tree.edges[elementId] && isContentPagePartOfPageTreeElement(tree, currentContentPageId, elementId)) {
     treeElements = tree.edges[elementId]
-      .map(child => (child === elementId ? [] : getContentPageTreeElements(tree, child, rootId, currentContentPageId)))
-      .reduce((a, b) => {
-        b.map(element => a.push(element));
-        return a;
-      });
+      .filter(child => child !== elementId)
+      .map(child => getContentPageTreeElements(tree, child, rootId, currentContentPageId))
+      .flat();
   }
 
   const parent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
