@@ -1,4 +1,4 @@
-<ng-container *ngIf="order?.statusCode === 'EXPORTED'">
+<ng-container *ngIf="hasStatusCode(order?.statusCode)">
   <ng-container *ngIf="returnableItems$ | async as returnItems">
     <ng-container *ngIf="returnItems.length">
       <div [ngClass]="cssClass">
@@ -30,7 +30,12 @@
               'toolineo.account.return_request.modal.form.check_all_label' | translate
             }}</label
           >
-          <ish-returnable-items [returnableItems]="returnItems" (itemsUpdated)="onItemsUpdate($event)" [form]="form" />
+          <ish-returnable-items
+            [returnableItems]="returnItems"
+            (itemsUpdated)="onItemsUpdate($event)"
+            [form]="form"
+            (quantityUpdated)="onQuantityUpdate($event)"
+          />
           <div class="form-group">
             <label for="comment">
               <span class="h4">{{ 'toolineo.account.return_request.modal.form.comment_label' | translate }}<br /></span>
@@ -45,11 +50,11 @@
               <div class="summary-section">
                 <h3>{{ 'toolineo.account.return_request.modal.summary.title' | translate }}</h3>
                 <span
-                  >{{ selectionCount }} {{ 'toolineo.account.return_request.modal.summary.items' | translate }}</span
+                  >{{ selectedQuantity }} {{ 'toolineo.account.return_request.modal.summary.items' | translate }}</span
                 >
                 <button
                   type="submit"
-                  [disabled]="form.invalid || selectionCount === 0"
+                  [disabled]="form.invalid || selectedQuantity === 0"
                   class="btn-block btn btn-primary"
                 >
                   {{ 'toolineo.account.return_request.modal.form.btn.label' | translate }}

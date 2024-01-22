@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -12,6 +12,7 @@ import {
   CreateReturnRequestPosition,
   ReturnablePosition,
 } from '../../models/return-request/return-request.model';
+import { allowedStatus } from '../../util';
 
 @Component({
   selector: 'ish-return-request-modal',
@@ -28,8 +29,9 @@ export class ReturnRequestModalComponent implements OnInit {
   returnableItems$: Observable<ReturnablePosition[]>;
 
   positions: CreateReturnRequestPosition[];
+  selectedQuantity = 0;
 
-  constructor(private returnRequestFacade: ReturnRequestFacade) {}
+  constructor(private returnRequestFacade: ReturnRequestFacade, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -39,10 +41,6 @@ export class ReturnRequestModalComponent implements OnInit {
     });
 
     this.returnableItems$ = this.returnRequestFacade.getOrderReturnableItems$(this.order?.id);
-  }
-
-  get selectionCount() {
-    return this.positions?.reduce((acc, nxt) => acc + nxt.quantity, 0) ?? 0;
   }
 
   showModal() {
@@ -57,12 +55,29 @@ export class ReturnRequestModalComponent implements OnInit {
     this.positions = data;
   }
 
+  onQuantityUpdate(data: number) {
+    this.selectedQuantity = data;
+    this.cdr.markForCheck();
+  }
+
   private request(): CreateReturnRequestPayload {
+    const customAttributes = [];
+    if (this.form.get('comment').value) {
+      customAttributes.push({
+        key: 'comment',
+        value: this.form.get('comment').value,
+      });
+    }
+
     return {
       type: 'RETURN',
       positions: this.positions,
-      customAttributes: [],
+      customAttributes,
     };
+  }
+
+  hasStatusCode(status: string) {
+    return allowedStatus(status);
   }
 
   submit() {

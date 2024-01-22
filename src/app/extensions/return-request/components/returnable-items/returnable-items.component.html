@@ -63,7 +63,7 @@
     </td>
   </ng-container>
   <!-- Return Reason -->
-  <ng-container cdkColumnDef="reason">
+  <ng-container cdkColumnDef="reason" *ngIf="isB2C">
     <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-reason" class="w-25">
       {{ 'toolineo.account.return_request.modal.table.reason' | translate }}
     </th>
