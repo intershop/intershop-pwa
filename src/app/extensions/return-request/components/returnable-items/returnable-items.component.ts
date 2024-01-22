@@ -11,6 +11,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
 import { ReturnRequestFacade } from '../../facades/return-request.facade';
@@ -31,15 +32,24 @@ export class ReturnableItemsComponent implements OnInit {
 
   returnReasons: SelectOption[] = [];
   @Output() itemsUpdated = new EventEmitter<CreateReturnRequestPosition[]>();
+  @Output() quantityUpdated = new EventEmitter<number>();
 
   private destroyRef = inject(DestroyRef);
+  isB2C = false;
 
-  constructor(private returnRequestFacade: ReturnRequestFacade) {}
+  constructor(private returnRequestFacade: ReturnRequestFacade, private accountFacade: AccountFacade) {}
 
-  columnsToDisplay = ['select', 'product', 'returnable_qty', 'qty', 'reason'];
+  totalQuantity = 0;
+  columnsToDisplay = ['select', 'product', 'returnable_qty', 'qty'];
 
   ngOnInit(): void {
     this.generateFormGroup();
+    this.accountFacade.isBusinessCustomer$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(isBusinessCustomer => {
+      if (isBusinessCustomer !== undefined && !isBusinessCustomer) {
+        this.isB2C = true;
+        this.columnsToDisplay = [...this.columnsToDisplay, 'reason'];
+      }
+    });
 
     this.returnRequestFacade
       .getReturnReasons$()
@@ -54,12 +64,17 @@ export class ReturnableItemsComponent implements OnInit {
       this.returnableItems.forEach(({ sku, maxReturnQty }) => {
         this.getControl(sku, 'checked').setValue(isChecked);
         this.updateStatusAndValidity(`${sku}.qty`, isChecked, maxReturnQty);
-        this.updateStatusAndValidity(`${sku}.reason`, isChecked);
+        if (this.isB2C) {
+          this.updateStatusAndValidity(`${sku}.reason`, isChecked);
+        }
       });
     });
 
     this.itemsForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((items: FormItems) => {
       if (this.isItemformHasValidRow()) {
+        this.updatePositions(items);
+      }
+      if (this.itemsCheckState().every(item => !item)) {
         this.updatePositions(items);
       }
     });
@@ -71,24 +86,33 @@ export class ReturnableItemsComponent implements OnInit {
         d.sku,
         new FormGroup({
           checked: new FormControl(false),
-          qty: new FormControl({ value: '', disabled: true }),
-          reason: new FormControl({ value: '', disabled: true }),
+          qty: new FormControl({ value: '1', disabled: true }),
+          reason: new FormControl({ value: undefined, disabled: true }),
         })
       );
     });
   }
 
   updatePositions(items: FormItems) {
+    this.totalQuantity = 0;
     const positionItems = Object.keys(items)
       .filter(itemKey => this.itemsForm.value[itemKey].checked)
-      .map(itemKey => ({
-        positionNumber: this.returnableItems.find(pos => pos.sku === itemKey).positionNumber,
-        productNumber: itemKey,
-        reason: this.itemsForm.value[itemKey].reason,
-        quantity: this.itemsForm.value[itemKey].qty,
-      }));
+      .map(itemKey => {
+        this.totalQuantity += parseInt(this.itemsForm.value[itemKey].qty ?? 0, 10);
+        let reason;
+        if (this.isB2C) {
+          reason = this.itemsForm.value[itemKey].reason;
+        }
+        return {
+          positionNumber: this.returnableItems.find(pos => pos.sku === itemKey).positionNumber,
+          productNumber: itemKey,
+          quantity: this.itemsForm.value[itemKey].qty,
+          reason,
+        };
+      });
 
     this.itemsUpdated.emit(positionItems);
+    this.quantityUpdated.emit(this.totalQuantity);
   }
 
   get itemsForm() {
@@ -116,7 +140,10 @@ export class ReturnableItemsComponent implements OnInit {
 
   isItemformHasValidRow(): boolean {
     return !!Object.keys(this.itemsForm.value).filter(
-      key => this.itemsForm.value[key].checked && this.itemsForm.value[key].qty && this.itemsForm.value[key].reason
+      key =>
+        this.itemsForm.value[key].checked &&
+        this.itemsForm.value[key].qty &&
+        (!this.isB2C || (this.isB2C && this.itemsForm.value[key].reason))
     ).length;
   }
 
@@ -134,6 +161,8 @@ export class ReturnableItemsComponent implements OnInit {
     }
 
     this.updateStatusAndValidity(`${sku}.qty`, isChecked, maxQuantiy);
-    this.updateStatusAndValidity(`${sku}.reason`, isChecked);
+    if (this.isB2C) {
+      this.updateStatusAndValidity(`${sku}.reason`, isChecked);
+    }
   }
 }
