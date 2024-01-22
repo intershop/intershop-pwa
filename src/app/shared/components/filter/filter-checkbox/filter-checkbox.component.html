@@ -14,7 +14,7 @@
     class="filter-item"
     *ngIf="filterElement.limitCount !== -1 && filterElement.facets.length > filterElement.limitCount"
   >
-    <a class="btn-link" (click)="showAll = !showAll" (keydown.enter)="showAll = !showAll" tabindex="0" role="button">{{
+    <a class="btn-link" (click)="showAll = !showAll" (keyup.enter)="showAll = !showAll" tabindex="0" role="button">{{
       (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate
     }}</a>
   </li>

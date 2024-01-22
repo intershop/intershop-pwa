@@ -18,13 +18,7 @@
           />
         </div>
       </div>
-      <a
-        class="d-md-none mobile-filter-toggle"
-        (click)="toggle()"
-        (keydown.enter)="toggle()"
-        tabindex="0"
-        role="button"
-      >
+      <a class="d-md-none mobile-filter-toggle" (click)="toggle()" (keyup.enter)="toggle()" tabindex="0" role="button">
         {{ 'search.mobile.filter.trigger' | translate }}
         <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
       </a>

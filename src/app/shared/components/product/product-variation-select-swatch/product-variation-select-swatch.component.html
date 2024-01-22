@@ -2,7 +2,7 @@
   <li *ngFor="let option of group.options" [ngClass]="{ selected: option.active }">
     <a
       (click)="optionChange(group.id, option.value)"
-      (keydown.enter)="optionChange(group.id, option.value)"
+      (keyup.enter)="optionChange(group.id, option.value)"
       tabindex="0"
       role="button"
       title="{{ option.label }}"

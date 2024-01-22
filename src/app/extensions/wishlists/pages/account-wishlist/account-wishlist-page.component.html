@@ -17,7 +17,7 @@
       class="btn btn-secondary"
       data-testing-id="add-wishlist"
       (click)="addWishlistDialog.show()"
-      (keydown.enter)="addWishlistDialog.show()"
+      (keyup.enter)="addWishlistDialog.show()"
       tabindex="0"
       role="button"
       >{{ 'account.wishlists.add_wishlist' | translate }}</a

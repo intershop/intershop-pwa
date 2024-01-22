@@ -87,7 +87,7 @@
                     <a
                       class="float-right"
                       (click)="deleteBasketPayment(paymentInstrument)"
-                      (keydown.enter)="deleteBasketPayment(paymentInstrument)"
+                      (keyup.enter)="deleteBasketPayment(paymentInstrument)"
                       tabindex="0"
                       role="button"
                       data-testing-id="delete-payment-link"
@@ -111,7 +111,7 @@
                   <a
                     *ngIf="!formIsOpen(i)"
                     (click)="openPaymentParameterForm(i)"
-                    (keydown.enter)="openPaymentParameterForm(i)"
+                    (keyup.enter)="openPaymentParameterForm(i)"
                     tabindex="0"
                     role="button"
                     data-testing-id="add-payment-link"

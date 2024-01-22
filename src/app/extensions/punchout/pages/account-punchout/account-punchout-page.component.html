@@ -42,7 +42,7 @@
                 class="btn-tool"
                 title="{{ 'account.user.delete_user_dialog.header' | translate : { '0': user.login } }}"
                 (click)="modalDialog.show(user)"
-                (keydown.enter)="modalDialog.show(user)"
+                (keyup.enter)="modalDialog.show(user)"
                 tabindex="0"
                 role="button"
                 data-testing-id="delete-user"

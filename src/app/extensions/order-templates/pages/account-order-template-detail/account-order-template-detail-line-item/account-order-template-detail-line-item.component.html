@@ -21,7 +21,7 @@
         <a
           class="btn-tool"
           (click)="moveDialog.show()"
-          (keydown.enter)="moveDialog.show()"
+          (keyup.enter)="moveDialog.show()"
           tabindex="0"
           role="button"
           data-testing-id="move-order-template"
@@ -34,7 +34,7 @@
         <a
           class="btn-tool"
           (click)="removeProductFromOrderTemplate(orderTemplateItemData.sku)"
-          (keydown.enter)="removeProductFromOrderTemplate(orderTemplateItemData.sku)"
+          (keyup.enter)="removeProductFromOrderTemplate(orderTemplateItemData.sku)"
           tabindex="0"
           role="button"
           data-testing-id="delete-order-template"

@@ -2,7 +2,7 @@
   <li *ngFor="let mainItem of tree$ | async" class="pt-1 pb-1">
     <a
       (click)="changeStep(mainItem.name)"
-      (keydown.enter)="changeStep(mainItem.name)"
+      (keyup.enter)="changeStep(mainItem.name)"
       tabindex="0"
       role="button"
       [ngClass]="{ 'font-weight-bold': mainItem.active }"
@@ -14,7 +14,7 @@
           <li *ngIf="subItem.hasVisibleParameters" class="pt-1 pb-1">
             <a
               (click)="scrollIntoView(subItem.name)"
-              (keydown.enter)="scrollIntoView(subItem.name)"
+              (keyup.enter)="scrollIntoView(subItem.name)"
               tabindex="0"
               role="button"
               [ngClass]="{ 'font-weight-bold': isActive$(subItem.name) | async }"

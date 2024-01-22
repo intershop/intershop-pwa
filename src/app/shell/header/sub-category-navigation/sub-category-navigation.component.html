@@ -20,7 +20,7 @@
         class="dropdown-toggle"
         [ngClass]="{ 'd-none': view === 'full' }"
         (click)="toggleOpen(subcategory.uniqueId)"
-        (keydown.enter)="toggleOpen(subcategory.uniqueId)"
+        (keyup.enter)="toggleOpen(subcategory.uniqueId)"
         tabindex="0"
         role="button"
         [attr.aria-label]="

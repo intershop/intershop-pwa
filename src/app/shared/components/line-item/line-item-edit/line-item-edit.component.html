@@ -2,7 +2,7 @@
   <a
     *ngIf="product.type === 'VariationProduct'"
     (click)="show()"
-    (keydown.enter)="show()"
+    (keyup.enter)="show()"
     tabindex="0"
     role="button"
     class="line-item-edit-link"

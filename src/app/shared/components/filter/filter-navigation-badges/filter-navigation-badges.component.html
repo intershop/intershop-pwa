@@ -3,7 +3,7 @@
     <div *ngFor="let select of selected" class="filter-navigation-badges">
       <a
         (click)="apply(select.searchParameter)"
-        (keydown.enter)="apply(select.searchParameter)"
+        (keyup.enter)="apply(select.searchParameter)"
         tabindex="0"
         role="button"
       >
@@ -13,7 +13,7 @@
     </div>
   </div>
   <div *ngIf="selected.length" class="col-md-2 text-right">
-    <a (click)="clear()" (keydown.enter)="clear()" tabindex="0" role="button">{{
+    <a (click)="clear()" (keyup.enter)="clear()" tabindex="0" role="button">{{
       'product.remove_all_product_filters.text' | translate
     }}</a>
   </div>

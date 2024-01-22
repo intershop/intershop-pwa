@@ -17,7 +17,7 @@
       class="dropdown-item"
       [ngClass]="{ selected: facet.selected }"
       (click)="apply(facet)"
-      (keydown.enter)="apply(facet)"
+      (keyup.enter)="apply(facet)"
       tabindex="0"
       role="button"
     >

@@ -5,7 +5,7 @@
         class="filter-swatch"
         [title]="facet.displayName + ' (' + facet.count + ')'"
         (click)="filter(facet)"
-        (keydown.enter)="filter(facet)"
+        (keyup.enter)="filter(facet)"
         tabindex="0"
         role="button"
         [attr.data-testing-id]="'filter-link-' + (facet.displayName | sanitize)"

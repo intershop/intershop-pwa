@@ -89,7 +89,7 @@
             class="btn-tool"
             title="{{ 'account.costcenter.remove.button.label' | translate }}"
             (click)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
-            (keydown.enter)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
+            (keyup.enter)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
             tabindex="0"
             role="button"
             data-testing-id="cost-center-buyer-remove"

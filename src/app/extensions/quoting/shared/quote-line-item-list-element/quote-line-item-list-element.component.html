@@ -30,7 +30,7 @@
           [attr.data-id]="lineItem.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem()"
-          (keydown.enter)="onDeleteItem()"
+          (keyup.enter)="onDeleteItem()"
           tabindex="0"
           role="button"
         >

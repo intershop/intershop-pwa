@@ -19,7 +19,7 @@
               <a
                 class="btn-tool"
                 (click)="moveDialog.show()"
-                (keydown.enter)="moveDialog.show()"
+                (keyup.enter)="moveDialog.show()"
                 tabindex="0"
                 role="button"
                 data-testing-id="move-wishlist"
@@ -32,7 +32,7 @@
               <a
                 class="btn-tool"
                 (click)="removeProductFromWishlist(wishlistItemData.sku)"
-                (keydown.enter)="removeProductFromWishlist(wishlistItemData.sku)"
+                (keyup.enter)="removeProductFromWishlist(wishlistItemData.sku)"
                 tabindex="0"
                 role="button"
                 data-testing-id="delete-wishlist"

@@ -37,7 +37,7 @@
             <a
               class="btn btn-secondary"
               (click)="onDeleteItem(pli.id)"
-              (keydown.enter)="onDeleteItem(pli.id)"
+              (keyup.enter)="onDeleteItem(pli.id)"
               tabindex="0"
               role="button"
               data-testing-id="delete-button"
@@ -50,7 +50,7 @@
         <a
           class="btn btn-secondary"
           (click)="onDeleteItem(pli.id)"
-          (keydown.enter)="onDeleteItem(pli.id)"
+          (keyup.enter)="onDeleteItem(pli.id)"
           tabindex="0"
           role="button"
           >{{ 'restricted-items.Remove.button' | translate }}</a

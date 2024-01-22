@@ -30,7 +30,7 @@
     <div *ngFor="let option of group.options" class="mobile-variation-option">
       <a
         (click)="optionChange(group.id, option.value)"
-        (keydown.enter)="optionChange(group.id, option.value)"
+        (keyup.enter)="optionChange(group.id, option.value)"
         tabindex="0"
         role="button"
       >

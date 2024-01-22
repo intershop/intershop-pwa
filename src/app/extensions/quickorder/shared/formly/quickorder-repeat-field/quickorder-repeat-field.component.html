@@ -12,7 +12,7 @@
     <a
       class="btn btn-tool"
       (click)="remove(i); updateContexts()"
-      (keydown.enter)="remove(i); updateContexts()"
+      (keyup.enter)="remove(i); updateContexts()"
       tabindex="0"
       role="button"
       title="{{ 'quickorder.page.remove.row' | translate }}"
@@ -24,7 +24,7 @@
 <div class="section d-flex flex-nowrap">
   <a
     (click)="addMultipleRows(1)"
-    (keydown.enter)="addMultipleRows(1)"
+    (keyup.enter)="addMultipleRows(1)"
     tabindex="0"
     role="button"
     data-testing-id="add-quickorder-line"
@@ -33,7 +33,7 @@
   <span class="link-separator"></span>
   <a
     (click)="addMultipleRows(props?.numberMoreRows)"
-    (keydown.enter)="addMultipleRows(props?.numberMoreRows)"
+    (keyup.enter)="addMultipleRows(props?.numberMoreRows)"
     tabindex="0"
     role="button"
     >{{ props?.addMoreText | translate : { '0': props?.numberMoreRows } }}</a

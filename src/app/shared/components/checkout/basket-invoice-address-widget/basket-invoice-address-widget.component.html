@@ -7,7 +7,7 @@
       class="btn-tool float-right"
       [title]="'checkout.address.update.invoice.label' | translate"
       (click)="showAddressForm(address)"
-      (keydown.enter)="showAddressForm(address)"
+      (keyup.enter)="showAddressForm(address)"
       tabindex="0"
       role="button"
       data-testing-id="edit-invoice-address-link"

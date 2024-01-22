@@ -27,7 +27,7 @@
         class="btn-tool"
         title="{{ 'account.wishlist.list.remove' | translate }}"
         (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
-        (keydown.enter)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
+        (keyup.enter)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
         tabindex="0"
         role="button"
         data-testing-id="delete-wishlist"

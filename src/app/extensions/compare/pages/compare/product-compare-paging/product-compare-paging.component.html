@@ -3,7 +3,7 @@
     *ngIf="showPrevious"
     class="btn btn-link control-previous"
     (click)="changeToPage(currentPage - 1)"
-    (keydown.enter)="changeToPage(currentPage - 1)"
+    (keyup.enter)="changeToPage(currentPage - 1)"
     tabindex="0"
     role="button"
   >
@@ -13,7 +13,7 @@
     *ngIf="showNext"
     class="btn btn-link control-next ml-auto"
     (click)="changeToPage(currentPage + 1)"
-    (keydown.enter)="changeToPage(currentPage + 1)"
+    (keyup.enter)="changeToPage(currentPage + 1)"
     tabindex="0"
     role="button"
   >

@@ -17,7 +17,7 @@
     <a
       *ngIf="isUserLoggedIn$ | async; else loginLink"
       (click)="reviewCreateDialog.show()"
-      (keydown.enter)="reviewCreateDialog.show()"
+      (keyup.enter)="reviewCreateDialog.show()"
       tabindex="0"
       role="button"
       data-testing-id="open-review-dialog"
@@ -67,7 +67,7 @@
       <a
         *ngIf="review.own"
         (click)="modalDialog.show(review)"
-        (keydown.enter)="modalDialog.show(review)"
+        (keyup.enter)="modalDialog.show(review)"
         tabindex="0"
         role="button"
         data-testing-id="delete-review"

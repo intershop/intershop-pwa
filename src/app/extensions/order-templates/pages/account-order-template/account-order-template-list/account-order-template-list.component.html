@@ -72,7 +72,7 @@
           class="btn-tool"
           title="{{ 'account.order_template.list.link.remove' | translate }}"
           (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
-          (keydown.enter)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
+          (keyup.enter)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
           tabindex="0"
           role="button"
           data-testing-id="delete-order-template"

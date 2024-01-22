@@ -24,7 +24,7 @@
                   class="btn-tool"
                   [title]="'product.compare.remove.link' | translate"
                   (click)="removeFromCompare(product.sku)"
-                  (keydown.enter)="removeFromCompare(product.sku)"
+                  (keyup.enter)="removeFromCompare(product.sku)"
                   tabindex="0"
                   role="button"
                 >

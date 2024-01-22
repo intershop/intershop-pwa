@@ -31,20 +31,14 @@
   <a
     *ngIf="isShowAllLinkVisible()"
     (click)="toggleCollapse()"
-    (keydown.enter)="toggleCollapse()"
+    (keyup.enter)="toggleCollapse()"
     tabindex="0"
     role="button"
   >
     {{ 'checkout.show_all.link' | translate : { '0': basket.lineItems.length } }}&nbsp;
     <fa-icon [icon]="['fas', 'angle-down']" />
   </a>
-  <a
-    *ngIf="isHideLinkVisible()"
-    (click)="toggleCollapse()"
-    (keydown.enter)="toggleCollapse()"
-    tabindex="0"
-    role="button"
-  >
+  <a *ngIf="isHideLinkVisible()" (click)="toggleCollapse()" (keyup.enter)="toggleCollapse()" tabindex="0" role="button">
     {{ 'checkout.hide_all.link' | translate }}&nbsp;
     <fa-icon [icon]="['fas', 'angle-up']" />
   </a>

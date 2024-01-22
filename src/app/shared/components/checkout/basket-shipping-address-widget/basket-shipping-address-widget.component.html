@@ -9,7 +9,7 @@
           class="btn-tool"
           title="{{ 'checkout.address.update.shipping.label' | translate }}"
           (click)="showAddressForm(address)"
-          (keydown.enter)="showAddressForm(address)"
+          (keyup.enter)="showAddressForm(address)"
           tabindex="0"
           role="button"
           data-testing-id="edit-shipping-address-link"
@@ -23,7 +23,7 @@
           class="btn-tool"
           title="{{ 'checkout.address.delete.button.label' | translate }}"
           (click)="modalDialog.show(address)"
-          (keydown.enter)="modalDialog.show(address)"
+          (keyup.enter)="modalDialog.show(address)"
           tabindex="0"
           role="button"
         >

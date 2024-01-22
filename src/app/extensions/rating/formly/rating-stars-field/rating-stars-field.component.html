@@ -4,7 +4,7 @@
       class="text-muted mt-4"
       [title]="'product.review.rating.tooltip' | translate : { '0': i + 1 }"
       (click)="setStars(i + 1)"
-      (keydown.enter)="setStars(i + 1)"
+      (keyup.enter)="setStars(i + 1)"
       tabindex="0"
       role="button"
       ><ish-product-rating-star [filled]="fill"

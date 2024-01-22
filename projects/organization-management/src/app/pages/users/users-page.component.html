@@ -42,7 +42,7 @@
                 'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName }
               }}"
               (click)="modalDialog.show(user)"
-              (keydown.enter)="modalDialog.show(user)"
+              (keyup.enter)="modalDialog.show(user)"
               tabindex="0"
               role="button"
             >

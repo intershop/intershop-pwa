@@ -28,7 +28,7 @@
               <a
                 *ngIf="!isExpanded[i]"
                 (click)="toggleExpanded(i)"
-                (keydown.enter)="toggleExpanded(i)"
+                (keyup.enter)="toggleExpanded(i)"
                 tabindex="0"
                 role="button"
               >
@@ -38,7 +38,7 @@
               <a
                 *ngIf="isExpanded[i]"
                 (click)="toggleExpanded(i)"
-                (keydown.enter)="toggleExpanded(i)"
+                (keyup.enter)="toggleExpanded(i)"
                 tabindex="0"
                 role="button"
               >
