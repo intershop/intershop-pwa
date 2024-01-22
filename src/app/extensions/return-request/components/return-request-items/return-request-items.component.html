@@ -19,12 +19,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of items; even as isEven">
-            <th scope="row">{{ item.productNumber }}</th>
+          <tr *ngFor="let item of items">
+            <th scope="row">
+              <a [routerLink]="item.productNumber">{{ item.productNumber }}</a>
+            </th>
             <td>{{ item.supplierProductNumber }}</td>
             <td>{{ item.creationDate | ishDate }}</td>
             <td>{{ item.quantity }}</td>
             <td>{{ item.status }}</td>
+            <!-- TODO: diplay document link only when it's available-->
             <td>{{ 'toolineo.account.return_overview.tab.content.download_return_label' | translate }}</td>
           </tr>
         </tbody>

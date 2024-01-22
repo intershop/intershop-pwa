@@ -5,7 +5,7 @@ import { ReturnRequestModule } from '../../return-request.module';
 
 import { ReturnOverviewPageComponent } from './return-overview-page.component';
 
-const accountWishlistPageRoutes: Routes = [
+const returnRequestOverviewPageRoutes: Routes = [
   {
     path: '',
     component: ReturnOverviewPageComponent,
@@ -13,6 +13,6 @@ const accountWishlistPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(accountWishlistPageRoutes), ReturnRequestModule],
+  imports: [RouterModule.forChild(returnRequestOverviewPageRoutes), ReturnRequestModule],
 })
 export class ReturnOverviewPageModule {}

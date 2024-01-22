@@ -7,6 +7,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { ReturnRequestFacade } from '../../facades/return-request.facade';
 import { ReturnRequest, ReturnRequestStatus } from '../../models/return-request/return-request.model';
+import { allowedStatus } from '../../util';
 
 type TabName = 'all' | 'requested' | 'confirmed' | 'completed';
 
@@ -34,7 +35,7 @@ export class ReturnOverviewPageComponent implements OnInit {
     this.accountFacade
       .orders$()
       .pipe(
-        map(orders => orders.filter(order => order.statusCode === 'EXPORTED').map(order => order.id)),
+        map(orders => orders.filter(order => allowedStatus(order.statusCode)).map(order => order.id)),
         switchMap(ids => (ids.length ? this.returnRequestFacade.getOrderReturnRequests$(ids) : of(undefined))),
         takeUntilDestroyed(this.destroyRef)
       )
@@ -54,5 +55,9 @@ export class ReturnOverviewPageComponent implements OnInit {
 
   getOrders(status?: ReturnRequestStatus) {
     return this.returnRequests.filter(request => !status || request.status === status);
+  }
+
+  hasStatusCode(status: string) {
+    return allowedStatus(status);
   }
 }
