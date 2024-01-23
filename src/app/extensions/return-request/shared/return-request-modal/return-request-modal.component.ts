@@ -82,6 +82,7 @@ export class ReturnRequestModalComponent implements OnInit {
 
   submit() {
     this.returnRequestFacade.createRequest(this.order.id, this.request());
+    this.form.reset();
     this.hideModal();
   }
 }
