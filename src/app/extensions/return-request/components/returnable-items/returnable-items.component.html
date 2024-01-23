@@ -10,7 +10,7 @@
   <ng-container cdkColumnDef="select">
     <th cdk-header-cell *cdkHeaderCellDef></th>
     <td cdk-cell *cdkCellDef="let row" [formGroupName]="row.sku">
-      <div class="form-group form-check pr-2">
+      <div class="form-group form-check pr-4">
         <input
           type="checkbox"
           formControlName="checked"
@@ -24,20 +24,22 @@
   <!--Product -->
   <ng-container cdkColumnDef="product">
     <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-product">
-      {{ 'toolineo.account.return_request.modal.table.product_label' | translate }}
+      {{ 'toolineo.account.return_request.modal.table.heading.product_label' | translate }}
     </th>
     <td cdk-cell *cdkCellDef="let row">
-      <h4 class="mt-1">{{ row.productName }}</h4>
-      <div>EAN: {{ row.EAN }}</div>
-      <div>Artnr: {{ row.artnr }}</div>
-      <div>Mfg. Number: {{ row.mfg_number }}</div>
+      <ish-return-request-product-info [sku]="row.sku" />
     </td>
   </ng-container>
 
   <!-- Return Quantity Limit -->
   <ng-container cdkColumnDef="returnable_qty">
-    <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-quantity-limit">
-      {{ 'toolineo.account.return_request.modal.table.returnable_qty' | translate }}
+    <th
+      cdk-header-cell
+      *cdkHeaderCellDef
+      data-testing-id="th-return-request-quantity-limit"
+      [ngStyle]="{ 'width.px': 220 }"
+    >
+      {{ 'toolineo.account.return_request.modal.table.heading.returnable_qty' | translate }}
     </th>
     <td cdk-cell *cdkCellDef="let row" class="text-center">
       {{ row.maxReturnQty }}
@@ -46,8 +48,8 @@
 
   <!-- Quantity to returns -->
   <ng-container cdkColumnDef="qty">
-    <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-quantity" class="w-25">
-      {{ 'toolineo.account.return_request.modal.table.return_qty' | translate }}
+    <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-quantity" [ngStyle]="{ 'width.px': 220 }">
+      {{ 'toolineo.account.return_request.modal.table.heading.return_qty' | translate }}
     </th>
     <td cdk-cell *cdkCellDef="let row" [formGroupName]="row.sku">
       <div class="position-relative form-group has-feedback" [ishShowFormFeedback]="[getControl(row.sku, 'qty')]">
@@ -65,7 +67,7 @@
   <!-- Return Reason -->
   <ng-container cdkColumnDef="reason" *ngIf="isB2C">
     <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-return-request-reason" class="w-25">
-      {{ 'toolineo.account.return_request.modal.table.reason' | translate }}
+      {{ 'toolineo.account.return_request.modal.table.heading.reason' | translate }}
     </th>
     <td cdk-cell *cdkCellDef="let row" [formGroupName]="row.sku">
       <div class="position-relative form-group has-feedback" [ishShowFormFeedback]="[getControl(row.sku, 'reason')]">

@@ -45,7 +45,7 @@ export class ReturnableItemsComponent implements OnInit {
   ngOnInit(): void {
     this.generateFormGroup();
     this.accountFacade.isBusinessCustomer$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(isBusinessCustomer => {
-      if (isBusinessCustomer !== undefined && !isBusinessCustomer) {
+      if (isBusinessCustomer !== undefined && !false) {
         this.isB2C = true;
         this.columnsToDisplay = [...this.columnsToDisplay, 'reason'];
       }
