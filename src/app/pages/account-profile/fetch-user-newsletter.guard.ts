@@ -1,15 +1,15 @@
 import { inject } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
-import { userNewsletterActions } from 'ish-core/store/customer/user/user.actions';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 
 /**
  * Fetch the newsletter subscription status for the profile settings page
  */
 export function fetchUserNewsletterGuard(): boolean | Observable<boolean> {
-  const store = inject(Store);
+  const accountFacade = inject(AccountFacade);
 
-  store.dispatch(userNewsletterActions.loadUserNewsletterSubscription());
+  accountFacade.loadNewsletterSubscription();
+
   return of(true);
 }

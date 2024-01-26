@@ -151,7 +151,7 @@ export const userNewsletterActions = createActionGroup({
   source: 'User Newsletter',
   events: {
     'Load User Newsletter Subscription': emptyProps(),
-    'Update User Newsletter Status': payload<{ subscriptionStatus: boolean; userEmail?: string }>(),
+    'Update User Newsletter Subscription': payload<{ subscriptionStatus: boolean; userEmail?: string }>(),
   },
 });
 
@@ -160,7 +160,7 @@ export const userNewsletterApiActions = createActionGroup({
   events: {
     'Load User Newsletter Subscription Success': payload<{ subscribed: boolean }>(),
     'Load User Newsletter Subscription Fail': httpError<{}>(),
-    'Update User Newsletter Status Success': payload<{ subscriptionStatus: boolean }>(),
-    'Update User Newsletter Status Fail': httpError<{}>(),
+    'Update User Newsletter Subscription Success': payload<{ subscriptionStatus: boolean }>(),
+    'Update User Newsletter Subscription Fail': httpError<{}>(),
   },
 });

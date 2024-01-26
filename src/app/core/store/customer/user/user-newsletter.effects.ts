@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, switchMap } from 'rxjs/operators';
+import { concatMap, filter, map } from 'rxjs/operators';
 
 import { NewsletterService } from 'ish-core/services/newsletter/newsletter.service';
-import { getServerConfigParameter } from 'ish-core/store/core/server-config';
-import { mapErrorToAction, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
 
 import { userNewsletterActions, userNewsletterApiActions } from './user.actions';
 import { getLoggedInUser, getNewsletterSubscriptionStatus } from './user.selectors';
@@ -15,27 +14,19 @@ export class UserNewsletterEffects {
   constructor(private actions$: Actions, private store: Store, private newsletterService: NewsletterService) {}
 
   /**
-   * The newsletter-subscription-status is only loaded when the feature-toggle "newsletterSubscriptionEnabled"
-   * is enabled.
+   * The account facade has to check if the server configuration parameter 'newsletterSubscriptionEnabled' is 'true',
+   * and only then call 'loadUserNewsletterSubscription'.
    */
   loadUserNewsletterSubscription$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userNewsletterActions.loadUserNewsletterSubscription),
-      concatLatestFrom(() =>
-        this.store.pipe(select(getServerConfigParameter<boolean>('marketing.newsletterSubscriptionEnabled')))
-      ),
-      filter(([, newsletterSubscriptionEnabled]) => newsletterSubscriptionEnabled),
-      switchMap(() =>
-        this.store.pipe(select(getLoggedInUser)).pipe(
-          whenTruthy(),
-          concatMap(user =>
-            this.newsletterService.getSubscription(user.email).pipe(
-              map(subscriptionStatus =>
-                userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess({ subscribed: subscriptionStatus })
-              ),
-              mapErrorToAction(userNewsletterApiActions.loadUserNewsletterSubscriptionFail)
-            )
-          )
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInUser))),
+      concatMap(([, user]) =>
+        this.newsletterService.getSubscription(user.email).pipe(
+          map(subscriptionStatus =>
+            userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess({ subscribed: subscriptionStatus })
+          ),
+          mapErrorToAction(userNewsletterApiActions.loadUserNewsletterSubscriptionFail)
         )
       )
     )
@@ -46,9 +37,9 @@ export class UserNewsletterEffects {
    * because the user is not logged in yet.
    * If no user-email is passed in, the email of the logged-in user is used.
    */
-  subscribeUserToNewsletter$ = createEffect(() =>
+  updateNewsletterSubscription$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(userNewsletterActions.updateUserNewsletterStatus),
+      ofType(userNewsletterActions.updateUserNewsletterSubscription),
       mapToPayload(),
       concatLatestFrom(() => [
         this.store.pipe(select(getLoggedInUser)),
@@ -64,9 +55,9 @@ export class UserNewsletterEffects {
           )
           .pipe(
             map(subscriptionStatus =>
-              userNewsletterApiActions.updateUserNewsletterStatusSuccess({ subscriptionStatus })
+              userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess({ subscriptionStatus })
             ),
-            mapErrorToAction(userNewsletterApiActions.updateUserNewsletterStatusFail)
+            mapErrorToAction(userNewsletterApiActions.updateUserNewsletterSubscriptionFail)
           )
       )
     )

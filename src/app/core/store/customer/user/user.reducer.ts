@@ -107,7 +107,7 @@ export const userReducer = createReducer(
     loginUserWithToken,
     logoutUser,
     userNewsletterActions.loadUserNewsletterSubscription,
-    userNewsletterActions.updateUserNewsletterStatus
+    userNewsletterActions.updateUserNewsletterSubscription
   ),
   unsetLoadingOn(
     loadUserCostCentersFail,
@@ -128,7 +128,7 @@ export const userReducer = createReducer(
     deleteUserPaymentInstrumentSuccess,
     logoutUserSuccess,
     userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess,
-    userNewsletterApiActions.updateUserNewsletterStatusSuccess
+    userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess
   ),
   setErrorOn(
     updateUserFail,
@@ -139,7 +139,7 @@ export const userReducer = createReducer(
     loadRolesAndPermissionsFail,
     logoutUserFail,
     userNewsletterApiActions.loadUserNewsletterSubscriptionFail,
-    userNewsletterApiActions.updateUserNewsletterStatusFail
+    userNewsletterApiActions.updateUserNewsletterSubscriptionFail
   ),
   on(loginUserFail, loadCompanyUserFail, createUserFail, (_, action): UserState => {
     const error = action.payload.error;
@@ -267,7 +267,7 @@ export const userReducer = createReducer(
     })
   ),
   on(
-    userNewsletterApiActions.updateUserNewsletterStatusSuccess,
+    userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess,
     (state, action): UserState => ({
       ...state,
       subscribedToNewsletter: action.payload.subscriptionStatus,

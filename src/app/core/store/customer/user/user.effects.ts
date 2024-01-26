@@ -156,7 +156,7 @@ export class UserEffects {
             createUserSuccess({ email: createUserResponse.user.email }),
             ...(data.subscribedToNewsletter
               ? [
-                  userNewsletterActions.updateUserNewsletterStatus({
+                  userNewsletterActions.updateUserNewsletterSubscription({
                     subscriptionStatus: true,
                     userEmail: createUserResponse.user.email,
                   }),
