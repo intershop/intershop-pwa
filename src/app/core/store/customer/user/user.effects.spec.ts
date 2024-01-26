@@ -425,7 +425,10 @@ describe('User Effects', () => {
 
       const action = createUser({ customer, credentials, subscribedToNewsletter: true } as CustomerRegistrationType);
       const completion1 = createUserSuccess({ email: customerLoginType.user.email });
-      const completion2 = userNewsletterActions.subscribeUserToNewsletter({ userEmail: customerLoginType.user.email });
+      const completion2 = userNewsletterActions.updateUserNewsletterSubscription({
+        subscriptionStatus: true,
+        userEmail: customerLoginType.user.email,
+      });
       const completion3 = loginUser({ credentials });
 
       actions$ = hot('-a', { a: action });

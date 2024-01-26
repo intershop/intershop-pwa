@@ -173,6 +173,7 @@ describe('Customer Store', () => {
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: AuthorizationService, useFactory: () => instance(mock(AuthorizationService)) },
+        { provide: BasketItemsService, useFactory: () => instance(basketItemsServiceMock) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
