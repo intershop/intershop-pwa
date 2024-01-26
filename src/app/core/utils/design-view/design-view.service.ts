@@ -1,7 +1,7 @@
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { filter, first, fromEvent, map, switchMap } from 'rxjs';
+import { filter, first, fromEvent, map, switchMap, tap } from 'rxjs';
 
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { DomService } from 'ish-core/utils/dom/dom.service';
@@ -14,7 +14,8 @@ interface DesignViewMessage {
     | 'dv-clientReady'
     | 'dv-clientRefresh'
     | 'dv-clientLocale'
-    | 'dv-clientStable';
+    | 'dv-clientStable'
+    | 'dv-clientContentIds';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
 }
@@ -97,10 +98,18 @@ export class DesignViewService {
     const navigationStable$ = navigation$.pipe(switchMap(() => stable$));
 
     // send `dv-clientNavigation` event for each route change
-    navigation$.subscribe(e => this.messageToHost({ type: 'dv-clientNavigation', payload: { url: e.url } }));
+    navigation$
+      .pipe(
+        tap(e => this.messageToHost({ type: 'dv-clientNavigation', payload: { url: e.url } })),
+        switchMap(() => this.appRef.isStable.pipe(whenTruthy(), first()))
+      )
+      .subscribe(() => {
+        this.sendContentIds();
+      });
 
     stable$.subscribe(() => {
       this.applyHierarchyHighlighting();
+      this.sendContentIds();
     });
 
     // send `dv-clientStable` event when application is stable or loading of the content included finished
@@ -137,7 +146,6 @@ export class DesignViewService {
   /**
    * Workaround for the missing Firefox CSS support for :has to highlight
    * only the last .design-view-wrapper in the .design-view-wrapper hierarchy.
-   *
    */
   private applyHierarchyHighlighting() {
     const designViewWrapper: NodeListOf<HTMLElement> = document.querySelectorAll('.design-view-wrapper');
@@ -147,5 +155,31 @@ export class DesignViewService {
         this.domService.addClass(element, 'last-design-view-wrapper');
       }
     });
+  }
+
+  /**
+   * Send IDs of the content artifacts (content includes, content pages, view contexts) to the Design View system.
+   */
+  private sendContentIds() {
+    const contentIds: { id: string; resource: 'includes' | 'pages' | 'viewcontexts' }[] = [];
+    document.querySelectorAll('[includeid], [pageid], [viewcontextid]').forEach(element => {
+      // transfer only view contexts that have call parameters
+      if (element.getAttribute('viewcontextid')) {
+        const callParams = element.getAttribute('callparametersstring');
+        if (callParams) {
+          contentIds.push({
+            id: `${element.getAttribute('viewcontextid')}/entrypoint?${callParams}`,
+            resource: 'viewcontexts',
+          });
+        }
+      } else {
+        contentIds.push(
+          element.getAttribute('includeid')
+            ? { id: element.getAttribute('includeid'), resource: 'includes' }
+            : { id: element.getAttribute('pageid'), resource: 'pages' }
+        );
+      }
+    });
+    this.messageToHost({ type: 'dv-clientContentIds', payload: { contentIds } });
   }
 }
