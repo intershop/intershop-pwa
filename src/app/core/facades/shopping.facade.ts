@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, identity } from 'rxjs';
-import { debounce, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
+import { debounce, distinctUntilChanged, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { PRICE_UPDATE } from 'ish-core/configurations/injection-keys';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
@@ -120,6 +120,7 @@ export class ShoppingFacade {
             select(getProductPrice(plainSKU)),
             // reset state when updates are forced
             this.priceUpdate === 'always' || fresh ? startWith(undefined) : identity,
+            distinctUntilChanged(),
             tap(prices => {
               if (!prices) {
                 this.store.dispatch(loadProductPrices({ skus: [plainSKU] }));
