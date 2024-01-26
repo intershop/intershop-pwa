@@ -1,5 +1,10 @@
 <ng-container *ngIf="contentPage$ | async as contentPage">
-  <ish-content-pagelet *ngIf="contentPage.pageletIDs.length" [pageletId]="contentPage.pageletIDs[0]" />
+  <!-- the 'pageid' attribute is needed for the Design View and should not be removed -->
+  <ish-content-pagelet
+    *ngIf="contentPage.pageletIDs.length"
+    [pageletId]="contentPage.pageletIDs[0]"
+    [attr.pageid]="contentPage.id"
+  />
 </ng-container>
 
 <ish-loading *ngIf="contentPageLoading$ | async" />
