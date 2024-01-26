@@ -12,7 +12,7 @@
         <span class="required">*</span>{{ 'account.required_field.message' | translate }}
       </p>
       <form [formGroup]="accountProfileUserForm" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
-        <formly-form [form]="accountProfileUserForm" [fields]="fields$ | async" [model]="model"></formly-form>
+        <formly-form [form]="accountProfileUserForm" [fields]="fields$ | async" [model]="model" />
         <div class="row">
           <div class="offset-md-4 col-md-8">
             <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">

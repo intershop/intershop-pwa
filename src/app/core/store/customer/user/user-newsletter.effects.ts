@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap } from 'rxjs/operators';
 
 import { NewsletterService } from 'ish-core/services/newsletter/newsletter.service';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
@@ -21,7 +21,7 @@ export class UserNewsletterEffects {
   loadUserNewsletterSubscription$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userNewsletterActions.loadUserNewsletterSubscription),
-      withLatestFrom(
+      concatLatestFrom(() =>
         this.store.pipe(select(getServerConfigParameter<boolean>('marketing.newsletterSubscriptionEnabled')))
       ),
       filter(([, newsletterSubscriptionEnabled]) => newsletterSubscriptionEnabled),
@@ -50,10 +50,10 @@ export class UserNewsletterEffects {
     this.actions$.pipe(
       ofType(userNewsletterActions.updateUserNewsletterStatus),
       mapToPayload(),
-      withLatestFrom(
+      concatLatestFrom(() => [
         this.store.pipe(select(getLoggedInUser)),
-        this.store.pipe(select(getNewsletterSubscriptionStatus))
-      ),
+        this.store.pipe(select(getNewsletterSubscriptionStatus)),
+      ]),
       filter(([payload, user]) => !!payload.userEmail || !!user?.email),
       concatMap(([payload, user, currentNewsletterSubscriptionStatus]) =>
         this.newsletterService
