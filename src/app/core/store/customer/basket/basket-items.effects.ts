@@ -55,6 +55,7 @@ export class BasketItemsEffects {
       // accumulate all actions
       window(this.actions$.pipe(ofType(addProductToBasket), debounceTime(500))),
       mergeMap(window$ => window$.pipe(toArray())),
+      filter(items => items.length > 0),
       map(items => addItemsToBasket({ items }))
     )
   );
