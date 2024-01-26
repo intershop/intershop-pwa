@@ -163,10 +163,16 @@ export class ShoppingFacade {
   productLinks$(sku: string | Observable<string>) {
     return toObservable(sku).pipe(
       whenTruthy(),
-      tap(plainSKU => {
-        this.store.dispatch(loadProductLinks({ sku: plainSKU }));
-      }),
-      switchMap(plainSKU => this.store.pipe(select(getProductLinks(plainSKU))))
+      switchMap(plainSKU =>
+        this.store.pipe(
+          select(getProductLinks(plainSKU)),
+          tap(links => {
+            if (!links) {
+              this.store.dispatch(loadProductLinks({ sku: plainSKU }));
+            }
+          })
+        )
+      )
     );
   }
 
