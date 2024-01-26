@@ -1,7 +1,7 @@
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { filter, first, fromEvent, map, switchMap } from 'rxjs';
+import { filter, first, fromEvent, map, mergeMap, switchMap, tap } from 'rxjs';
 
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { DomService } from 'ish-core/utils/dom/dom.service';
@@ -14,7 +14,8 @@ interface DesignViewMessage {
     | 'dv-clientReady'
     | 'dv-clientRefresh'
     | 'dv-clientLocale'
-    | 'dv-clientStable';
+    | 'dv-clientStable'
+    | 'dv-clientContentIds';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
 }
@@ -97,10 +98,18 @@ export class DesignViewService {
     const navigationStable$ = navigation$.pipe(switchMap(() => stable$));
 
     // send `dv-clientNavigation` event for each route change
-    navigation$.subscribe(e => this.messageToHost({ type: 'dv-clientNavigation', payload: { url: e.url } }));
+    navigation$
+      .pipe(
+        tap(e => this.messageToHost({ type: 'dv-clientNavigation', payload: { url: e.url } })),
+        mergeMap(() => this.appRef.isStable.pipe(whenTruthy(), first()))
+      )
+      .subscribe(() => {
+        this.sendContentIncludeIds();
+      });
 
     stable$.subscribe(() => {
       this.applyHierarchyHighlighting();
+      this.sendContentIncludeIds();
     });
 
     // send `dv-clientStable` event when application is stable or loading of the content included finished
@@ -147,5 +156,11 @@ export class DesignViewService {
         this.domService.addClass(element, 'last-design-view-wrapper');
       }
     });
+  }
+
+  private sendContentIncludeIds() {
+    const includeIds: string[] = [];
+    document.querySelectorAll('[includeid]').forEach(element => includeIds.push(element.getAttribute('includeid')));
+    this.messageToHost({ type: 'dv-clientContentIds', payload: { includeIds } });
   }
 }
