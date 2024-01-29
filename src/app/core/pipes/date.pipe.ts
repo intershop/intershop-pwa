@@ -19,7 +19,8 @@ export function formatISHDate(
   } else {
     date = value;
   }
-  return formatDate(date, format, lang, timezone || '+0000');
+  // if no time zone is given take the user's current time zone
+  return formatDate(date, format, lang, timezone);
 }
 
 /**

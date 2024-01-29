@@ -38,11 +38,11 @@ describe('Date Pipe', () => {
   `('should transform $date to', ({ date, format, EN, DE }) => {
     test(`${EN} with format ${format} for english local`, () => {
       translateService.use('en');
-      expect(datePipe.transform(date, format)).toEqual(EN);
+      expect(datePipe.transform(date, format, '+0000')).toEqual(EN);
     });
     test(`${DE} with format ${format} for german locale`, () => {
       translateService.use('de');
-      expect(datePipe.transform(date, format)).toEqual(DE);
+      expect(datePipe.transform(date, format, '+0000')).toEqual(DE);
     });
   });
 });
