@@ -10,7 +10,7 @@ describe('Cost Center Mapper', () => {
           {
             orderNo: '1',
             items: 2,
-            orderDate: 1234,
+            orderDate: [2024, 1, 10],
             buyer: { attributes: [{ name: 'firstName', value: 'John' }] },
             orderTotalGross: { currency: 'USD', value: 1000.23 },
             orderTotalNet: { currency: 'USD', value: 800.87 },
@@ -18,7 +18,7 @@ describe('Cost Center Mapper', () => {
           {
             orderNo: '2',
             items: 4,
-            orderDate: 2341,
+            orderDate: [2024, 1, 10],
             buyer: { attributes: [{ name: 'firstName', value: 'Jack' }] },
             orderTotalGross: { currency: 'USD', value: 1000.23 },
             orderTotalNet: { currency: 'USD', value: 800.87 },
