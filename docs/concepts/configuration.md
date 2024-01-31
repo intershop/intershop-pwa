@@ -172,6 +172,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | **B2C Features**             |                                                                                                                                                 |
 | guestCheckout                | Allow unregistered guest checkout                                                                                                               |
 | wishlists                    | Wishlist product list feature                                                                                                                   |
+| wishlistSharing              | Share Wishlists with other users via E-mail (used with the `wishlists` feature)                                                                 |
 | **Third-party Integrations** |                                                                                                                                                 |
 | maps                         | Google Maps integration for locating stores (used with the `storeLocator` feature, additional configuration via `gmaKey`)                       |
 | sentry                       | Sentry error tracking and monitoring (additional configuration via `sentryDSN`)                                                                 |

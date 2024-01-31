@@ -16,6 +16,7 @@ import {
   whenTruthy,
 } from 'ish-core/utils/operators';
 
+import { WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
 
@@ -38,6 +39,12 @@ import {
   removeItemFromWishlistFail,
   removeItemFromWishlistSuccess,
   selectWishlist,
+  shareWishlist,
+  shareWishlistFail,
+  shareWishlistSuccess,
+  unshareWishlist,
+  unshareWishlistFail,
+  unshareWishlistSuccess,
   updateWishlist,
   updateWishlistFail,
   updateWishlistSuccess,
@@ -239,6 +246,31 @@ export class WishlistEffects {
               ],
             })
           )
+        )
+      )
+    )
+  );
+
+  shareWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(shareWishlist),
+      map(action => action.payload),
+      mergeMap(payload =>
+        this.wishlistService.shareWishlist(payload.wishlistId, payload.wishlistSharing).pipe(
+          map((response: WishlistSharingResponse) => shareWishlistSuccess({ wishlistSharingResponse: response })),
+          mapErrorToAction(shareWishlistFail)
+        )
+      )
+    )
+  );
+
+  unshareWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(unshareWishlist),
+      mergeMap(action =>
+        this.wishlistService.unshareWishlist(action.payload.wishlistId).pipe(
+          map(() => unshareWishlistSuccess({ wishlistId: action.payload.wishlistId })),
+          mapErrorToAction(unshareWishlistFail)
         )
       )
     )

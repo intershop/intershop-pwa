@@ -3,7 +3,12 @@
 
 <ng-container *ngIf="wishlist$ | async as wishlist">
   <ng-template #WishlistDescription>
-    <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+    <ng-container *ngIf="'wishlistSharing' | ishFeature; else defaultWishlistHeading">
+      <span innerHTML="{{ 'account.wishlists.wishlist_sharing.heading.tooltip.content' | translate }}"></span>
+    </ng-container>
+    <ng-template #defaultWishlistHeading>
+      <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+    </ng-template>
   </ng-template>
 
   <div>
@@ -24,6 +29,28 @@
   >
     <fa-icon icon="pencil-alt" />
   </button>
+
+  <ng-container *ishFeature="'wishlistSharing'">
+    <a
+      [routerLink]="[]"
+      (click)="shareWishlistDialog.show()"
+      class="btn-tool float-right ml-0 mr-4"
+      [title]="'account.wishlist.header.send_wishlist.label' | translate"
+      data-testing-id="wishlist-sharing"
+      ><fa-icon icon="paper-plane"
+    /></a>
+
+    <a
+      *ngIf="wishlist.shared"
+      [routerLink]="[]"
+      (click)="unshareWishlist(wishlist.id)"
+      class="btn-tool float-right ml-0 mr-4"
+      [title]="'account.wishlist.header.stop_wishlist_sharing.label' | translate"
+      data-testing-id="wishlist-stop-sharing"
+      ><fa-icon icon="pause"
+    /></a>
+  </ng-container>
+
   <h1>{{ wishlist?.title }}</h1>
 
   <p *ngIf="wishlist?.preferred" data-testing-id="preferred-wishlist-text">
@@ -61,6 +88,12 @@
     #editWishlistDialog
     [wishlist]="wishlist"
     (submitWishlist)="editPreferences($event, wishlist.id)"
+  />
+
+  <ish-wishlist-share-dialog
+    #shareWishlistDialog
+    [wishlist]="wishlist"
+    (submitWishlistSharing)="shareWishlist($event, wishlist)"
   />
 </ng-container>
 

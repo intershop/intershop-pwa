@@ -8,6 +8,9 @@ export interface Wishlist extends WishlistHeader {
   items?: WishlistItem[];
   itemsCount?: number;
   public?: boolean;
+  shared?: boolean;
+  owner?: string;
+  secureCode?: string;
 }
 
 export interface WishlistItem {
