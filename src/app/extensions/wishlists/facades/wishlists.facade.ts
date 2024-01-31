@@ -5,6 +5,7 @@ import { map, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
+import { WishlistSharing } from '../models/wishlist-sharing/wishlist-sharing.model';
 import { Wishlist, WishlistHeader } from '../models/wishlist/wishlist.model';
 import {
   addProductToNewWishlist,
@@ -19,6 +20,8 @@ import {
   getWishlistsLoading,
   moveItemToWishlist,
   removeItemFromWishlist,
+  shareWishlist,
+  unshareWishlist,
   updateWishlist,
 } from '../store/wishlist';
 
@@ -85,5 +88,13 @@ export class WishlistsFacade {
 
   removeProductFromWishlist(wishlistId: string, sku: string): void {
     this.store.dispatch(removeItemFromWishlist({ wishlistId, sku }));
+  }
+
+  shareWishlist(wishlistId: string, wishlistSharing: WishlistSharing): void {
+    this.store.dispatch(shareWishlist({ wishlistId, wishlistSharing }));
+  }
+
+  unshareWishlist(wishlistId: string): void {
+    this.store.dispatch(unshareWishlist({ wishlistId }));
   }
 }

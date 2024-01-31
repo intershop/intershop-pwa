@@ -21,6 +21,8 @@ import {
   removeItemFromWishlist,
   removeItemFromWishlistSuccess,
   selectWishlist,
+  shareWishlistSuccess,
+  unshareWishlistSuccess,
   updateWishlist,
   updateWishlistFail,
   updateWishlistSuccess,
@@ -30,6 +32,7 @@ export interface WishlistState extends EntityState<Wishlist> {
   loading: boolean;
   selected: string;
   error: HttpError;
+  wishlist: Wishlist | null;
 }
 
 export const wishlistsAdapter = createEntityAdapter<Wishlist>({
@@ -40,6 +43,7 @@ export const initialState: WishlistState = wishlistsAdapter.getInitialState({
   loading: false,
   selected: undefined,
   error: undefined,
+  wishlist: undefined,
 });
 
 export const wishlistReducer = createReducer(
@@ -95,6 +99,41 @@ export const wishlistReducer = createReducer(
     return {
       ...state,
       selected: id,
+    };
+  }),
+  on(shareWishlistSuccess, (state, action): WishlistState => {
+    const wishlistSharingResponse = action.payload.wishlistSharingResponse;
+    const wishlistId = wishlistSharingResponse.wishlistId;
+
+    const updatedWishlist: Wishlist = {
+      ...state.entities[wishlistId],
+      shared: true,
+      owner: wishlistSharingResponse.owner,
+      secureCode: wishlistSharingResponse.secureCode,
+    };
+
+    return {
+      ...state,
+      entities: {
+        ...state.entities,
+        [wishlistId]: updatedWishlist,
+      },
+    };
+  }),
+  on(unshareWishlistSuccess, (state, action): WishlistState => {
+    const wishlistId = action.payload.wishlistId;
+
+    const updatedWishlist: Wishlist = {
+      ...state.entities[wishlistId],
+      shared: false,
+    };
+
+    return {
+      ...state,
+      entities: {
+        ...state.entities,
+        [wishlistId]: updatedWishlist,
+      },
     };
   })
 );

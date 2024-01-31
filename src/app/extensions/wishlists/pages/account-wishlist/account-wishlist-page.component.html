@@ -2,7 +2,12 @@
   <h1 class="cart-header">
     {{ 'account.wishlists.heading' | translate }}
     <ng-template #WishlistDescription>
-      <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+      <ng-container *ngIf="'wishlistSharing' | ishFeature; else defaultWishlistHeading">
+        <span innerHTML="{{ 'account.wishlists.wishlist_sharing.heading.tooltip.content' | translate }}"></span>
+      </ng-container>
+      <ng-template #defaultWishlistHeading>
+        <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+      </ng-template>
     </ng-template>
     <a
       class="header-note pl-2"

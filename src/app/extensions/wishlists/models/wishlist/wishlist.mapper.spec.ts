@@ -22,6 +22,7 @@ describe('Wishlist Mapper', () => {
         itemsCount: 3,
         preferred: true,
         public: true,
+        shared: false,
         items: [
           {
             attributes: [
