@@ -140,7 +140,7 @@ If no environment variable is set, this feature is disabled.
 ### Add additional headers
 
 > [!IMPORTANT]
-> To configure additional headers the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 or above should be used.
+> To configure additional headers the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 or above has to be used.
 
 For some security or functional reasons it is necessary to add additional headers to page responses.
 To make such headers configurable, the environment variable `ADDITIONAL_HEADERS` is introduced.
@@ -189,8 +189,12 @@ The value supplied must be in the `time` format that is supported by [nginx prox
 
 ### Shared Redis Cache
 
+Each NGINX has its own cache so in a deployment with multiple NGINX (for redundancy), the cache hit rate is significantly lower than it could be.
+With the shared Redis cache the different NGINX instances push the cache to a shared Redis service and retrieve it from there.
+This way each NGINX profits from already rendered SSR results and the overall performance of such a deployment should be better.
+
 > [!IMPORTANT]
-> To configure additional headers the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 or above should be used.
+> To configure the shared Redis cache the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 or above has to be used.
 
 Multiple nginx instances can share the same Redis cache if this feature is activated.
 To use the shared Redis cache, the environment variable `REDIS_URI` must be provided with a valid Redis Entrypoint.
