@@ -7,7 +7,8 @@
   margin-left: $space-default;
   background: $color-tertiary;
 
-  a {
+  a,
+  .custom-btn-link {
     font-family: $font-family-bold;
     font-size: $font-size-base;
     text-decoration: none !important;
@@ -31,7 +32,8 @@
     }
   }
 
-  > a {
+  > a,
+  .custom-btn-link {
     padding: 0 ($space-default * 0.5);
     white-space: nowrap;
   }
@@ -39,7 +41,8 @@
   &.mini-cart-active {
     background: $color-corporate;
 
-    > a {
+    > a,
+    .custom-btn-link {
       span {
         color: $text-color-inverse;
 
@@ -116,7 +119,8 @@
     padding-left: $space-default;
     text-align: left;
 
-    a {
+    a,
+    .custom-btn-link {
       display: block;
       padding-top: ($space-default * 0.5);
       padding-bottom: ($space-default * 0.25);

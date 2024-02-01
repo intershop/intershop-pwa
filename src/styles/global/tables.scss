@@ -15,6 +15,13 @@
   font-size: 18px;
   font-weight: normal;
   text-transform: uppercase;
+
+  > .custom-btn-link {
+    font-family: $font-family-condensedregular;
+    font-size: 18px;
+    font-weight: normal;
+    text-transform: uppercase;
+  }
 }
 
 // RESPONSIVE TABLE
