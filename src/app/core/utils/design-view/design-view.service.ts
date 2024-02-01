@@ -104,12 +104,12 @@ export class DesignViewService {
         mergeMap(() => this.appRef.isStable.pipe(whenTruthy(), first()))
       )
       .subscribe(() => {
-        this.sendContentIncludeIds();
+        this.sendContentIds();
       });
 
     stable$.subscribe(() => {
       this.applyHierarchyHighlighting();
-      this.sendContentIncludeIds();
+      this.sendContentIds();
     });
 
     // send `dv-clientStable` event when application is stable or loading of the content included finished
@@ -158,9 +158,16 @@ export class DesignViewService {
     });
   }
 
-  private sendContentIncludeIds() {
-    const includeIds: string[] = [];
-    document.querySelectorAll('[includeid]').forEach(element => includeIds.push(element.getAttribute('includeid')));
-    this.messageToHost({ type: 'dv-clientContentIds', payload: { includeIds } });
+  // send ids of the content includes and content pages to the design view system
+  private sendContentIds() {
+    const contentIds: string[] = [];
+    document
+      .querySelectorAll('[includeid], [contentpageid]')
+      .forEach(element =>
+        contentIds.push(
+          element.getAttribute('includeid') ? element.getAttribute('includeid') : element.getAttribute('contentpageid')
+        )
+      );
+    this.messageToHost({ type: 'dv-clientContentIds', payload: { contentIds } });
   }
 }
