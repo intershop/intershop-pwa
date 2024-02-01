@@ -56,14 +56,14 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li class="selected">
-          <a title="Black" ng-reflect-router-link="" href="/"
-            ><span style="background-color: rgb(0, 0, 0)"></span
-          ></a>
+          <button type="button" class="btn btn-link custom-btn-link" title="Black">
+            <span style="background-color: rgb(0, 0, 0)"></span>
+          </button>
         </li>
         <li>
-          <a title="White" ng-reflect-router-link="" href="/"
-            ><span class="light-color" style="background-color: rgb(255, 255, 255)"></span
-          ></a>
+          <button type="button" class="btn btn-link custom-btn-link" title="White">
+            <span class="light-color" style="background-color: rgb(255, 255, 255)"></span>
+          </button>
         </li>
       </ul>
     `);
@@ -75,10 +75,14 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li>
-          <a title="yyy" ng-reflect-router-link="" href="/"><img alt="yyy" src="imageY.png" /></a>
+          <button type="button" class="btn btn-link custom-btn-link" title="yyy">
+            <img alt="yyy" src="imageY.png" />
+          </button>
         </li>
         <li class="selected">
-          <a title="zzz" ng-reflect-router-link="" href="/"><img alt="zzz" src="imageZ.png" /></a>
+          <button type="button" class="btn btn-link custom-btn-link" title="zzz">
+            <img alt="zzz" src="imageZ.png" />
+          </button>
         </li>
       </ul>
     `);

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -22,7 +21,6 @@ describe('Quickorder Repeat Field Component', () => {
           types: [{ name: 'repeat', component: QuickorderRepeatFieldComponent }],
         }),
         FormlyTestingComponentsModule,
-        RouterTestingModule,
         TranslateModule.forRoot(),
       ],
     }).compileComponents();

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -36,7 +35,6 @@ describe('Product Variation Select Enhanced Component', () => {
   beforeEach(async () => {
     appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [ProductVariationSelectEnhancedComponent],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
@@ -62,16 +60,16 @@ describe('Product Variation Select Enhanced Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <div class="mobile-variation-select">
         <div class="mobile-variation-option">
-          <a ng-reflect-router-link="" href="/"
-            ><span class="color-code" style="background-color: rgb(0, 0, 0)"></span
-            ><span class="label selected">Black </span></a
-          >
+          <button type="button" class="btn btn-link custom-btn-link">
+            <span class="color-code" style="background-color: rgb(0, 0, 0)"></span
+            ><span class="label selected">Black </span>
+          </button>
         </div>
         <div class="mobile-variation-option">
-          <a ng-reflect-router-link="" href="/"
-            ><span class="color-code light-color" style="background-color: rgb(255, 255, 255)"></span
-            ><span class="label">White </span></a
-          >
+          <button type="button" class="btn btn-link custom-btn-link">
+            <span class="color-code light-color" style="background-color: rgb(255, 255, 255)"></span
+            ><span class="label">White </span>
+          </button>
         </div>
       </div>
     `);

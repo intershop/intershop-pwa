@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -16,7 +15,7 @@ describe('Filter Navigation Badges Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [FilterNavigationBadgesComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   });
@@ -62,23 +61,25 @@ describe('Filter Navigation Badges Component', () => {
       <div class="row">
         <div class="col-md-10">
           <div class="filter-navigation-badges">
-            <a ng-reflect-router-link="" href="/">
-              Color: blue <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
-            ></a>
+            <button type="button" class="btn btn-link custom-btn-link">
+              Color: blue <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
+            </button>
           </div>
           <div class="filter-navigation-badges">
-            <a ng-reflect-router-link="" href="/">
-              Color: black <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
-            ></a>
+            <button type="button" class="btn btn-link custom-btn-link">
+              Color: black <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
+            </button>
           </div>
           <div class="filter-navigation-badges">
-            <a ng-reflect-router-link="" href="/">
-              HDD: 456 <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
-            ></a>
+            <button type="button" class="btn btn-link custom-btn-link">
+              HDD: 456 <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
+            </button>
           </div>
         </div>
         <div class="col-md-2 text-right">
-          <a ng-reflect-router-link="" href="/">product.remove_all_product_filters.text</a>
+          <button type="button" class="btn btn-link custom-btn-link">
+            product.remove_all_product_filters.text
+          </button>
         </div>
       </div>
     `);

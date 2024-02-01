@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -21,7 +20,6 @@ describe('Oci Configuration Mapping Repeat Field Component', () => {
           types: [{ name: 'repeat-oci-configuration-mapping', component: OciConfigurationMappingRepeatFieldComponent }],
         }),
         FormlyTestingComponentsModule,
-        RouterTestingModule,
         TranslateModule.forRoot(),
       ],
       declarations: [OciConfigurationMappingRepeatFieldComponent],
