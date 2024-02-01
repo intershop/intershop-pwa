@@ -110,8 +110,10 @@ The tab-order has to be determined by the HTML-structure, not by the index.
 
 ### How to fix `click-events-have-key-events` problems
 
-To fix this, all of the `<a>` tags in the HTML files should have a `routerLink` attribute.
-If adding a meaningful `routerLink` is not possible, `[routerLink]="[]"` should be added to fix the error.
+To address this issue, make sure that every `<a>` tag in the HTML files includes a `routerLink` attribute.
+If adding a meaningful `routerLink` is not possible, consider using `<button>` along with `type="button"` attribute and the `btn btn-link custom-btn-link` classes.
+
+For new use cases, it is recommended to prioritize the use of native `<button>` elements over `<a>` tags, as buttons inherently provide better support for keyboard interactions and enhance overall accessibility.
 
 Other HTML elements (`<div>`, `<span>`, etc.) with a `click()` event that report this ESLint error can be fixed by adding a `(keydown.enter)` event that should be assigned with the `click()` event's method.
 In addition, a `tabindex="0"` needs to be added to such elements to make them tab focusable.
