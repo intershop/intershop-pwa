@@ -35,17 +35,17 @@
         </div>
         <div class="col-1 list-item text-right order-sm-4 order-3">
           <div *ngIf="user.login !== (currentUser$ | async)?.login" class="float-right">
-            <a
-              [routerLink]="[]"
+            <button
+              type="button"
               data-testing-id="remove-user"
-              class="btn-tool"
+              class="btn btn-tool btn-link custom-btn-link"
               title="{{
                 'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName }
               }}"
               (click)="modalDialog.show(user)"
             >
               <fa-icon [icon]="['fas', 'trash-alt']" />
-            </a>
+            </button>
 
             <ish-modal-dialog
               #modalDialog

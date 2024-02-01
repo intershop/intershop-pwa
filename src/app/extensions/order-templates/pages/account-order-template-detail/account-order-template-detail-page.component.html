@@ -4,14 +4,15 @@
 <ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
   <h1 class="clearfix">
     {{ orderTemplate?.title }}
-    <a
-      [routerLink]="[]"
+    <button
+      type="button"
       (click)="editOrderTemplateDialog.show()"
       class="btn btn-secondary float-right"
       [title]="'account.order_template.edit.heading' | translate"
       data-testing-id="order-template-details-edit"
-      >{{ 'account.order_template.order_template.edit.rename' | translate }}</a
     >
+      {{ 'account.order_template.order_template.edit.rename' | translate }}
+    </button>
   </h1>
 
   <p

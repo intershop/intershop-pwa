@@ -1,7 +1,12 @@
 <div class="cart-summary">
-  <a [routerLink]="[]" (click)="isCollapsed = !isCollapsed" data-testing-id="promo-collapse-link">{{
-    'shopping_cart.promotional_code.heading' | translate
-  }}</a>
+  <button
+    type="button"
+    class="btn btn-link custom-btn-link"
+    (click)="isCollapsed = !isCollapsed"
+    data-testing-id="promo-collapse-link"
+  >
+    {{ 'shopping_cart.promotional_code.heading' | translate }}
+  </button>
 
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />
 

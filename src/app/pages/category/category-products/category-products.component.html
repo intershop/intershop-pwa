@@ -19,10 +19,10 @@
         <ish-filter-navigation [showCategoryFilter]="false" />
       </div>
 
-      <a [routerLink]="[]" class="d-md-none mobile-filter-toggle" (click)="toggle()">
+      <button type="button" class="d-md-none mobile-filter-toggle btn btn-link custom-btn-link" (click)="toggle()">
         {{ 'search.mobile.filter.trigger' | translate }}
         <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
-      </a>
+      </button>
 
       <div class="marketing-area">
         <ish-content-viewcontext

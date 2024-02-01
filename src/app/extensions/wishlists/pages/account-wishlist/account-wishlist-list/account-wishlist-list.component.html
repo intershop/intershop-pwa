@@ -23,14 +23,15 @@
       {{ 'account.wishlists.items' | translate : { '0': wishlist.itemsCount } }}
     </div>
     <div class="col-3 list-item text-right">
-      <a
-        [routerLink]="[]"
-        class="btn-tool"
+      <button
+        type="button"
+        class="btn btn-tool btn-link custom-btn-link"
         title="{{ 'account.wishlist.list.remove' | translate }}"
         (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
         data-testing-id="delete-wishlist"
-        ><fa-icon [icon]="['fas', 'trash-alt']"
-      /></a>
+      >
+        <fa-icon [icon]="['fas', 'trash-alt']" />
+      </button>
     </div>
   </div>
 </ng-template>

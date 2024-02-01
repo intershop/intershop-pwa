@@ -68,14 +68,15 @@
           data-testing-id="order-template-details-edit"
           ><fa-icon icon="pencil-alt"
         /></a>
-        <a
-          [routerLink]="[]"
-          class="btn-tool"
+        <button
+          type="button"
+          class="btn btn-tool btn-link custom-btn-link"
           title="{{ 'account.order_template.list.link.remove' | translate }}"
           (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
           data-testing-id="delete-order-template"
-          ><fa-icon [icon]="['fas', 'trash-alt']"
-        /></a>
+        >
+          <fa-icon [icon]="['fas', 'trash-alt']" />
+        </button>
       </td>
     </ng-container>
 

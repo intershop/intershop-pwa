@@ -1,18 +1,18 @@
 <div class="d-flex">
-  <a
+  <button
+    type="button"
     *ngIf="showPrevious"
-    [routerLink]="[]"
-    class="btn btn-link control-previous"
+    class="btn btn-link custom-btn-link control-previous"
     (click)="changeToPage(currentPage - 1)"
   >
     {{ 'product.compare.previous.button.label' | translate }}
-  </a>
-  <a
+  </button>
+  <button
+    type="button"
     *ngIf="showNext"
-    [routerLink]="[]"
-    class="btn btn-link control-next ml-auto"
+    class="btn btn-link custom-btn-link control-next ml-auto"
     (click)="changeToPage(currentPage + 1)"
   >
     {{ 'product.compare.next.button.label' | translate }}
-  </a>
+  </button>
 </div>

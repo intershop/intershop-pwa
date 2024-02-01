@@ -2,9 +2,9 @@
   <div class="content-page row">
     <ng-container *ngIf="products.length; else empty">
       <div class="col-md-3">
-        <a [routerLink]="[]" (click)="clearAll()" data-testing-id="clear-all">{{
-          'application.recentlyViewed.clear' | translate
-        }}</a>
+        <button type="button" class="btn btn-link custom-btn-link" (click)="clearAll()" data-testing-id="clear-all">
+          {{ 'application.recentlyViewed.clear' | translate }}
+        </button>
       </div>
       <div class="col-md-9">
         <ish-breadcrumb />

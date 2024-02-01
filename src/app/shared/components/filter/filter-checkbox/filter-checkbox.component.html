@@ -14,8 +14,8 @@
     class="filter-item"
     *ngIf="filterElement.limitCount !== -1 && filterElement.facets.length > filterElement.limitCount"
   >
-    <a [routerLink]="[]" class="btn-link" (click)="showAll = !showAll">{{
-      (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate
-    }}</a>
+    <button type="button" class="btn btn-link custom-btn-link" (click)="showAll = !showAll">
+      {{ (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate }}
+    </button>
   </li>
 </ul>

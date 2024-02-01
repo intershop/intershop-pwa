@@ -2,16 +2,17 @@
   <h1>
     {{ 'account.addresses.saved_address.heading' | translate }}
     <!-- Add address link -->
-    <a
+    <button
+      type="button"
       *ngIf="isCreateAddressFormCollapsed && !updateFormExpandedAddressId"
-      [routerLink]="[]"
       class="btn btn-secondary float-right"
       (click)="showCreateAddressForm()"
       [attr.aria-expanded]="!isCreateAddressFormCollapsed"
       aria-controls="collapseBasic"
       data-testing-id="create-address-button"
-      >{{ 'account.addresses.add_address.button.text' | translate }}</a
     >
+      {{ 'account.addresses.add_address.button.text' | translate }}
+    </button>
   </h1>
 
   <!-- Error message -->
@@ -133,10 +134,10 @@
       <div *ngIf="isUpdateAddressFormCollapsed(address)" class="row">
         <div class="col-sm-7 col-md-5">
           <div *ngIf="isCreateAddressFormCollapsed" class="float-right">
-            <a
+            <button
+              type="button"
               *ngIf="isUpdateAddressFormCollapsed(address)"
-              [routerLink]="[]"
-              class="btn-tool"
+              class="btn btn-tool btn-link custom-btn-link"
               (click)="showUpdateAddressForm(address)"
               title="{{ 'checkout.address.update.button.label' | translate }}"
               [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
@@ -144,18 +145,18 @@
               data-testing-id="update-address-button"
             >
               <fa-icon [icon]="['fas', 'pencil-alt']" />
-            </a>
+            </button>
 
-            <a
+            <button
+              type="button"
               *ngIf="deletable"
-              [routerLink]="[]"
-              class="btn-tool"
+              class="btn btn-tool btn-link custom-btn-link"
               title="{{ 'account.addresses.delete_address.text' | translate }}"
               (click)="modalDialog.show(address)"
               data-testing-id="delete-address-icon"
             >
               <fa-icon [icon]="['fas', 'trash-alt']" />
-            </a>
+            </button>
 
             <ish-modal-dialog
               #modalDialog

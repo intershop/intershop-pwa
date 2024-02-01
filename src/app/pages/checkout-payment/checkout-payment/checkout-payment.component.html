@@ -84,13 +84,14 @@
                     <label class="form-check-label" [for]="'paymentOption_' + paymentInstrument.id">
                       {{ paymentInstrument.accountIdentifier }}
                     </label>
-                    <a
-                      [routerLink]="[]"
-                      class="float-right"
+                    <button
+                      type="button"
+                      class="btn btn-link custom-btn-link float-right"
                       (click)="deleteBasketPayment(paymentInstrument)"
                       data-testing-id="delete-payment-link"
-                      >{{ 'checkout.payment.method.delete.link' | translate }}</a
                     >
+                      {{ 'checkout.payment.method.delete.link' | translate }}
+                    </button>
                   </div>
                   <div
                     *ngIf="

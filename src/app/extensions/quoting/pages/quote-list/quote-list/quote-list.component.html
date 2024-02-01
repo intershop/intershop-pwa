@@ -64,14 +64,14 @@
     <ng-container cdkColumnDef="actions">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-actions"></th>
       <td cdk-cell *cdkCellDef="let quote" class="column-price">
-        <a
-          [routerLink]="[]"
-          class="btn-tool"
+        <button
+          type="button"
+          class="btn btn-tool btn-link custom-btn-link"
           [title]="'quote.list.delete.button.delete.label' | translate"
           (click)="modalDialog.show(quote)"
         >
           <fa-icon [icon]="['fas', 'trash-alt']" />
-        </a>
+        </button>
       </td>
     </ng-container>
 

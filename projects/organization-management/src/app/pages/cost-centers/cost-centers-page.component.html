@@ -79,38 +79,40 @@
           <td cdk-cell *cdkCellDef="let costCenter" class="column-price">
             <ng-container *ngIf="isDeletable(costCenter) | async">
               <!-- Deactivate -->
-              <a
+              <button
                 *ngIf="costCenter.active; else activateCostCenter"
-                [routerLink]="[]"
-                class="btn-tool"
+                class="btn btn-tool btn-link custom-btn-link"
                 title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deactivateDialog)"
                 data-testing-id="deactivate-cost-center"
-                ><fa-icon [icon]="['fas', 'ban']"
-              /></a>
+              >
+                <fa-icon [icon]="['fas', 'ban']" />
+              </button>
 
               <!-- Activate -->
               <ng-template #activateCostCenter>
-                <a
-                  [routerLink]="[]"
-                  class="btn-tool"
+                <button
+                  type="button"
+                  class="btn btn-tool btn-link custom-btn-link"
                   title="{{ 'account.costcenter.activate.button.title' | translate }}"
                   (click)="activate(costCenter)"
                   data-testing-id="activate-cost-center"
-                  ><fa-icon [icon]="['fas', 'check-circle']"
-                /></a>
+                >
+                  <fa-icon [icon]="['fas', 'check-circle']" />
+                </button>
               </ng-template>
 
               <!-- Delete -->
-              <a
+              <button
+                type="button"
                 *ngIf="!(costCenter.pendingOrders + costCenter.approvedOrders); else deleteButtonDisabled"
-                [routerLink]="[]"
-                class="btn-tool"
+                class="btn btn-tool btn-link custom-btn-link"
                 title="{{ 'account.costcenter.delete.link' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deleteDialog)"
                 data-testing-id="delete-cost-center"
-                ><fa-icon [icon]="['fas', 'trash-alt']"
-              /></a>
+              >
+                <fa-icon [icon]="['fas', 'trash-alt']" />
+              </button>
               <ng-template #deleteButtonDisabled>
                 <span class="btn-tool inactive" title="{{ 'account.costcenter.delete.disabled.icon' | translate }}">
                   <fa-icon [icon]="['fas', 'trash-alt']" />

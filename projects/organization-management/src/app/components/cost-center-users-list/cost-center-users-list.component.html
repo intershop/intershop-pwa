@@ -75,24 +75,26 @@
       <ng-container cdkColumnDef="actions">
         <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-cost-center-buyers-actions"></th>
         <td cdk-cell *cdkCellDef="let buyer" class="column-price">
-          <a
-            class="btn-tool"
+          <button
+            type="button"
+            class="btn btn-tool btn-link custom-btn-link"
             [title]="'account.costcenter.details.action.edit' | translate"
-            [routerLink]=""
             data-testing-id="cost-center-buyer-edit"
             (click)="openEditCostCenterBuyerDialog(buyer, editCostCenterBuyerDialog)"
-            ><fa-icon icon="pencil-alt"
-          /></a>
+          >
+            <fa-icon icon="pencil-alt" />
+          </button>
 
           <!-- Remove buyer -->
-          <a
-            [routerLink]="[]"
-            class="btn-tool"
+          <button
+            type="button"
+            class="btn btn-tool btn-link custom-btn-link"
             title="{{ 'account.costcenter.remove.button.label' | translate }}"
             (click)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
             data-testing-id="cost-center-buyer-remove"
-            ><fa-icon [icon]="['fas', 'trash-alt']"
-          /></a>
+          >
+            <fa-icon [icon]="['fas', 'trash-alt']" />
+          </button>
         </td>
       </ng-container>
 

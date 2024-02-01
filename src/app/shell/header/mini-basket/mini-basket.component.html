@@ -4,13 +4,13 @@
   ishClickOutside
   (isClickedOutside)="collapse()"
 >
-  <a [routerLink]="[]" (click)="toggleCollapse()">
+  <button type="button" class="btn btn-link custom-btn-link" (click)="toggleCollapse()">
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
     <span>{{ 'shopping_cart.ministatus.items.text' | translate : { '0': itemCount$ | async } }}</span>
     <ng-container *ngIf="itemTotal$ | async as itemTotal">
       <span> / </span> <span class="mini-cart-price">{{ itemTotal | ishPrice }}</span>
     </ng-container>
-  </a>
+  </button>
 
   <div *ngIf="!isCollapsed" class="mini-cart">
     <ish-lazy-mini-basket-content />

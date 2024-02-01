@@ -15,14 +15,15 @@
     /></a>
   </div>
 
-  <a
-    [routerLink]="[]"
+  <button
+    type="button"
     (click)="editWishlistDialog.show()"
-    class="btn-tool float-right"
+    class="btn btn-tool btn-link custom-btn-link float-right"
     [title]="'account.wishlist.header.edit_wishlist.label' | translate"
     data-testing-id="wishlist-details-edit"
-    ><fa-icon icon="pencil-alt"
-  /></a>
+  >
+    <fa-icon icon="pencil-alt" />
+  </button>
   <h1>{{ wishlist?.title }}</h1>
 
   <p *ngIf="wishlist?.preferred" data-testing-id="preferred-wishlist-text">

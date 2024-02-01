@@ -16,9 +16,9 @@
       >{{ subcategory.name }}</a
     >
     <ng-container *ngIf="subCategoriesDepth < mainNavigationMaxSubCategoriesDepth && subcategory.hasChildren">
-      <a
-        [routerLink]="[]"
-        class="dropdown-toggle"
+      <button
+        type="button"
+        class="dropdown-toggle btn btn-link custom-btn-link"
         [ngClass]="{ 'd-none': view === 'full' }"
         (click)="toggleOpen(subcategory.uniqueId)"
         [attr.aria-label]="
@@ -29,7 +29,7 @@
       >
         <fa-icon *ngIf="isOpened(subcategory.uniqueId); else closed" [icon]="['fas', 'minus']" />
         <ng-template #closed> <fa-icon [icon]="['fas', 'plus']" /> </ng-template>
-      </a>
+      </button>
       <ish-sub-category-navigation
         [categoryUniqueId]="subcategory.uniqueId"
         [subCategoriesDepth]="subCategoriesDepth + 1"

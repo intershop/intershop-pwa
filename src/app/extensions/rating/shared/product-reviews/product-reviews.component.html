@@ -14,13 +14,15 @@
 
     {{ 'product.reviews.review_this_item.text' | translate }}
 
-    <a
+    <button
+      type="button"
       *ngIf="isUserLoggedIn$ | async; else loginLink"
-      [routerLink]="[]"
+      class="btn btn-link custom-btn-link"
       (click)="reviewCreateDialog.show()"
       data-testing-id="open-review-dialog"
-      >{{ 'product.reviews.review_this_item.link' | translate }}</a
     >
+      {{ 'product.reviews.review_this_item.link' | translate }}
+    </button>
     <ng-template #loginLink>
       <a routerLink="/login" [queryParams]="{ messageKey: 'review' }" data-testing-id="login-link">{{
         'product.reviews.review_this_item.link' | translate
@@ -62,9 +64,15 @@
       </div>
       <div class="review-item-text">{{ review.content }}</div>
 
-      <a *ngIf="review.own" [routerLink]="[]" (click)="modalDialog.show(review)" data-testing-id="delete-review">
+      <button
+        type="button"
+        *ngIf="review.own"
+        class="btn btn-link custom-btn-link"
+        (click)="modalDialog.show(review)"
+        data-testing-id="delete-review"
+      >
         {{ 'product.reviews.delete.review.link' | translate }}
-      </a>
+      </button>
     </div>
   </div>
 </ng-template>

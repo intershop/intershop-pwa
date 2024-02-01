@@ -105,6 +105,20 @@
   }
 }
 
+.custom-btn-link {
+  padding: 0;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  font-size: unset;
+  border: none;
+}
+
+@media (max-width: $screen-xs-max) {
+  .custom-btn-link {
+    display: unset !important;
+    width: unset !important;
+  }
+}
 // multiple buttons margin handling (use "button-group" in case the buttons are not direct siblings)
 .button-group .btn,
 .btn:not(:only-child) {

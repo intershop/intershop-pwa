@@ -38,15 +38,15 @@
               >
                 <fa-icon [icon]="['fas', 'pencil-alt']" />
               </a>
-              <a
-                [routerLink]="[]"
-                class="btn-tool"
+              <button
+                type="button"
+                class="btn btn-tool btn-link custom-btn-link"
                 title="{{ 'account.user.delete_user_dialog.header' | translate : { '0': user.login } }}"
                 (click)="modalDialog.show(user)"
                 data-testing-id="delete-user"
               >
                 <fa-icon [icon]="['fas', 'trash-alt']" />
-              </a>
+              </button>
 
               <ish-modal-dialog
                 #modalDialog

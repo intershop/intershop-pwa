@@ -33,9 +33,9 @@
 
     <div *ngIf="!autoplay && !playing" class="video-text">
       <h1 *ngIf="pagelet.hasParam('Heading')">{{ pagelet.stringParam('Heading') }}</h1>
-      <a [routerLink]="[]" class="video-link" (click)="playing = true; playVideo()">
-        <fa-icon [icon]="['fas', 'play-circle']"
-      /></a>
+      <button type="button" class="video-link btn btn-link custom-btn-link" (click)="playing = true; playVideo()">
+        <fa-icon [icon]="['fas', 'play-circle']" />
+      </button>
     </div>
   </ng-template>
 </div>
