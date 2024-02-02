@@ -92,7 +92,7 @@ describe('Product Variation Select Swatch Component', () => {
     component.group = group_colorCode;
     fixture.detectChanges();
     const emitter = spy(component.changeOption);
-    const link = fixture.debugElement.query(By.css('li.selected a')).nativeElement;
+    const link = fixture.debugElement.query(By.css('li.selected button')).nativeElement;
     link.dispatchEvent(new Event('click'));
 
     verify(emitter.emit(anything())).once();
@@ -109,7 +109,7 @@ describe('Product Variation Select Swatch Component', () => {
     component.group = group_swatchImage;
     fixture.detectChanges();
     const emitter = spy(component.changeOption);
-    const link = fixture.debugElement.query(By.css('li.selected a')).nativeElement;
+    const link = fixture.debugElement.query(By.css('li.selected button')).nativeElement;
     link.dispatchEvent(new Event('click'));
 
     verify(emitter.emit(anything())).once();

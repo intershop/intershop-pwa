@@ -70,9 +70,9 @@ describe('Rating Stars Field Component', () => {
   it('should be rendered after creation', () => {
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('a')).toHaveLength(5);
+    expect(element.querySelectorAll('button')).toHaveLength(5);
 
-    element.querySelectorAll('a').forEach((el, key) => {
+    element.querySelectorAll('button').forEach((el, key) => {
       el.click();
       expect(component.form.get('input').value).toEqual(key + 1);
     });

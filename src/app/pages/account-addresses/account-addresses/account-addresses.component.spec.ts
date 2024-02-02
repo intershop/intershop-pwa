@@ -259,7 +259,7 @@ describe('Account Addresses Component', () => {
 
     it('should render create address button after creation', () => {
       fixture.detectChanges();
-      expect(element.querySelector('a[data-testing-id=create-address-button]')).toBeTruthy();
+      expect(element.querySelector('button[data-testing-id=create-address-button]')).toBeTruthy();
       expect(element.querySelector('[data-testing-id=create-address-form]')).toBeFalsy();
     });
 
@@ -272,7 +272,7 @@ describe('Account Addresses Component', () => {
 
       expect(component.isCreateAddressFormCollapsed).toBeFalse();
       expect(element.querySelector('[data-testing-id=create-address-form]')).toBeTruthy();
-      expect(element.querySelector('a[data-testing-id=create-address-button]')).toBeFalsy();
+      expect(element.querySelector('button[data-testing-id=create-address-button]')).toBeFalsy();
     });
 
     it('should render an error if an error occurs', () => {
