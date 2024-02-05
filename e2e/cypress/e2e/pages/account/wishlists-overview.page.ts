@@ -8,7 +8,7 @@ export class WishlistsOverviewPage {
   readonly breadcrumb = new BreadcrumbModule();
 
   addWishlist(name: string, preferred: boolean) {
-    cy.get('a[data-testing-id="add-wishlist"').click();
+    cy.get('button[data-testing-id="add-wishlist"').click();
     cy.get('[data-testing-id="title-wrapper"]').find('[data-testing-id="title"]').clear().type(name);
     if (preferred) {
       cy.get('[data-testing-id="preferred-wrapper"]').find('[data-testing-id="preferred"]').check();
@@ -18,7 +18,7 @@ export class WishlistsOverviewPage {
 
   deleteWishlistById(id: string) {
     this.wishlistsArray
-      .find('a')
+      .find('button')
       .contains(id)
       .closest('[data-testing-id="wishlist-list-item-container"]')
       .find('[data-testing-id="delete-wishlist"]')
@@ -27,7 +27,7 @@ export class WishlistsOverviewPage {
   }
 
   goToWishlistDetailLink(name: string) {
-    cy.get('a').contains(name).click();
+    cy.get('button').contains(name).click();
   }
 
   get wishlistsArray() {

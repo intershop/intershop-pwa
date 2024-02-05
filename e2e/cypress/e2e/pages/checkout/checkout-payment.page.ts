@@ -48,7 +48,7 @@ export class CheckoutPaymentPage {
 
       delete() {
         cy.get(`[data-testing-id=payment-parameter-form-${method}]`)
-          .find('a[data-testing-id=delete-payment-link]')
+          .find('button[data-testing-id=delete-payment-link]')
           .first()
           .click();
         waitLoadingEnd(3000);
