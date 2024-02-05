@@ -32,7 +32,7 @@ export class QuoteDetailPage {
   }
 
   deleteItemFromQuoteRequest() {
-    cy.get(`a[title="Remove"]`).click();
+    cy.get(`button[title="Remove"]`).click();
     waitLoadingEnd(1000);
   }
 

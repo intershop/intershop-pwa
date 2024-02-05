@@ -18,7 +18,7 @@ export class QuickorderPage {
   }
 
   addLine() {
-    cy.get('a[data-testing-id="add-quickorder-line"]').click();
+    cy.get('button[data-testing-id="add-quickorder-line"]').click();
   }
 
   addToCart() {

@@ -17,7 +17,7 @@ export class QuoteListPage {
   }
 
   deleteQuote(idx: number) {
-    cy.get('a[title=Delete]').eq(idx).click();
+    cy.get('button[title=Delete]').eq(idx).click();
     cy.get('[data-testing-id="confirm"]').click();
     waitLoadingEnd(1000);
   }
