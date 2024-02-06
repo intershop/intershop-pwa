@@ -18,7 +18,7 @@ export class WishlistsOverviewPage {
 
   deleteWishlistById(id: string) {
     this.wishlistsArray
-      .find('button')
+      .find('a')
       .contains(id)
       .closest('[data-testing-id="wishlist-list-item-container"]')
       .find('[data-testing-id="delete-wishlist"]')
@@ -27,7 +27,7 @@ export class WishlistsOverviewPage {
   }
 
   goToWishlistDetailLink(name: string) {
-    cy.get('button').contains(name).click();
+    cy.get('a').contains(name).click();
   }
 
   get wishlistsArray() {
