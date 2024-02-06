@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
@@ -33,10 +33,17 @@ export class ContentViewcontextComponent implements OnChanges {
   @Input({ required: true }) callParameters: CallParameters;
 
   viewContextEntrypoint$: Observable<ContentPageletEntryPointView>;
+  callParamsStr: string;
 
-  constructor(private cmsFacade: CMSFacade) {}
+  constructor(private cmsFacade: CMSFacade, private hostElement: ElementRef) {}
 
   ngOnChanges() {
+    // the callParamsStr attribute is needed for the design view - do not remove this code
+    this.callParamsStr = Object.keys(this.callParameters)
+      .map(key => `${key}=${this.callParameters[key]}`)
+      .join('&');
+    this.hostElement.nativeElement.setAttribute('callParamsStr', this.callParamsStr);
+
     this.viewContextEntrypoint$ = this.cmsFacade.viewContext$(this.viewContextId, this.callParameters);
   }
 }

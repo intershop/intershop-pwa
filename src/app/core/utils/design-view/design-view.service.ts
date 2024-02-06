@@ -1,7 +1,7 @@
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { filter, first, fromEvent, map, mergeMap, switchMap, tap } from 'rxjs';
+import { filter, first, fromEvent, map, switchMap, tap } from 'rxjs';
 
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { DomService } from 'ish-core/utils/dom/dom.service';
@@ -101,7 +101,7 @@ export class DesignViewService {
     navigation$
       .pipe(
         tap(e => this.messageToHost({ type: 'dv-clientNavigation', payload: { url: e.url } })),
-        mergeMap(() => this.appRef.isStable.pipe(whenTruthy(), first()))
+        switchMap(() => this.appRef.isStable.pipe(whenTruthy(), first()))
       )
       .subscribe(() => {
         this.sendContentIds();
@@ -161,13 +161,19 @@ export class DesignViewService {
   // send ids of the content includes and content pages to the design view system
   private sendContentIds() {
     const contentIds: string[] = [];
-    document
-      .querySelectorAll('[includeid], [contentpageid]')
-      .forEach(element =>
+    document.querySelectorAll('[includeid], [contentpageid], [viewcontextid]').forEach(element => {
+      // transfer only viewcontexts that have call params
+      if (element.getAttribute('viewcontextid')) {
+        const callParams = element.getAttribute('callparamsstr');
+        if (callParams) {
+          contentIds.push(`${element.getAttribute('viewcontextid')}/entrypoint?${callParams}`);
+        }
+      } else {
         contentIds.push(
           element.getAttribute('includeid') ? element.getAttribute('includeid') : element.getAttribute('contentpageid')
-        )
-      );
+        );
+      }
+    });
     this.messageToHost({ type: 'dv-clientContentIds', payload: { contentIds } });
   }
 }
