@@ -11,11 +11,16 @@ import { RegistrationNewsletterFieldComponent } from './formly/registration-news
 import { RegistrationTacFieldComponent } from './formly/registration-tac-field/registration-tac-field.component';
 import { RegistrationApprovalComponent } from './registration-approval/registration-approval.component';
 import { RegistrationPageComponent } from './registration-page.component';
-import { canDeactivateRegistrationPage } from './registration-page.guard';
+import { canDeactivateRegistrationPage, registrationPageGuard } from './registration-page.guard';
 import { RegistrationFormConfigurationService } from './services/registration-form-configuration/registration-form-configuration.service';
 
 const registrationPageRoutes: Routes = [
-  { path: '', component: RegistrationPageComponent, canDeactivate: [canDeactivateRegistrationPage] },
+  {
+    path: '',
+    component: RegistrationPageComponent,
+    canActivate: [registrationPageGuard],
+    canDeactivate: [canDeactivateRegistrationPage],
+  },
   {
     path: 'sso',
     component: RegistrationPageComponent,
