@@ -262,18 +262,13 @@ export class AccountFacade {
   }
 
   // NEWSLETTER
+  // should only be called when the server-configuration-parameter 'marketing.newsletterSubscriptionEnabled' is true
+
+  subscribedToNewsletter$ = this.store.pipe(select(getNewsletterSubscriptionStatus));
 
   loadNewsletterSubscription() {
     this.store.dispatch(userNewsletterActions.loadUserNewsletterSubscription());
-
-    // this.store.pipe(select(getServerConfigParameter<boolean>('marketing.newsletterSubscriptionEnabled'))).pipe(
-    //   filter((newsletterSubscriptionEnabled: boolean) => newsletterSubscriptionEnabled),
-    //   whenTruthy(),
-    //   map(() => this.store.dispatch(userNewsletterActions.loadUserNewsletterSubscription()))
-    // );
   }
-
-  subscribedToNewsletter$ = this.store.pipe(select(getNewsletterSubscriptionStatus));
 
   updateNewsletterSubscription(subscribedToNewsletter: boolean) {
     this.store.dispatch(

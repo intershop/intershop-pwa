@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map } from 'rxjs/operators';
+import { concatMap, filter, map, take } from 'rxjs/operators';
 
 import { NewsletterService } from 'ish-core/services/newsletter/newsletter.service';
-import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
 
 import { userNewsletterActions, userNewsletterApiActions } from './user.actions';
 import { getLoggedInUser, getNewsletterSubscriptionStatus } from './user.selectors';
@@ -14,19 +14,25 @@ export class UserNewsletterEffects {
   constructor(private actions$: Actions, private store: Store, private newsletterService: NewsletterService) {}
 
   /**
-   * The account facade has to check if the server configuration parameter 'newsletterSubscriptionEnabled' is 'true',
-   * and only then call 'loadUserNewsletterSubscription'.
+   * The effect has to wait for the getLoggedInUser-selector because it is used in a page-guard that is called before
+   * the user is ready in the store
    */
   loadUserNewsletterSubscription$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userNewsletterActions.loadUserNewsletterSubscription),
-      concatLatestFrom(() => this.store.pipe(select(getLoggedInUser))),
-      concatMap(([, user]) =>
-        this.newsletterService.getSubscription(user.email).pipe(
-          map(subscriptionStatus =>
-            userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess({ subscribed: subscriptionStatus })
-          ),
-          mapErrorToAction(userNewsletterApiActions.loadUserNewsletterSubscriptionFail)
+      concatMap(() =>
+        this.store.pipe(
+          select(getLoggedInUser),
+          whenTruthy(),
+          take(1),
+          concatMap(user =>
+            this.newsletterService.getSubscription(user.email).pipe(
+              map(subscriptionStatus =>
+                userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess({ subscribed: subscriptionStatus })
+              ),
+              mapErrorToAction(userNewsletterApiActions.loadUserNewsletterSubscriptionFail)
+            )
+          )
         )
       )
     )

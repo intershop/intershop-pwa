@@ -60,8 +60,8 @@ describe('User Newsletter Effects', () => {
       const action = userNewsletterActions.loadUserNewsletterSubscription();
       const completion = userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess({ subscribed: true });
 
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
 
       expect(effects.loadUserNewsletterSubscription$).toBeObservable(expected$);
     });
@@ -117,8 +117,8 @@ describe('User Newsletter Effects', () => {
       });
       const completion = userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess({ subscriptionStatus: true });
 
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
 
       expect(effects.updateNewsletterSubscription$).toBeObservable(expected$);
     });
