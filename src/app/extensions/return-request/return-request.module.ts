@@ -7,6 +7,7 @@ import { ReturnRequestItemsComponent } from './components/return-request-items/r
 import { ReturnRequestProductInfoComponent } from './components/return-request-product-info/return-request-product-info.component';
 import { ReturnableItemsComponent } from './components/returnable-items/returnable-items.component';
 import { ReturnOverviewPageComponent } from './pages/return-overview/return-overview-page.component';
+import { ReturnRequestDetailPageComponent } from './pages/return-request-detail/return-request-detail-page.component';
 import { ReturnRequestModalComponent } from './shared/return-request-modal/return-request-modal.component';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ReturnRequestModalComponent } from './shared/return-request-modal/retur
   declarations: [
     ReturnableItemsComponent,
     ReturnOverviewPageComponent,
+    ReturnRequestDetailPageComponent,
     ReturnRequestItemsComponent,
     ReturnRequestModalComponent,
     ReturnRequestProductInfoComponent,

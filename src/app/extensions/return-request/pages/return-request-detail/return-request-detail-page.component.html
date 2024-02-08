@@ -1,0 +1,70 @@
+<div class="return-details">
+  <div class="row">
+    <div class="col-8">
+      <h1>{{ 'toolineo.account.return_detail.heading' | translate }} {{ returnId }}</h1>
+      <span
+        ><strong>{{ 'toolineo.account.return_detail.created_on' | translate }}</strong> June 12, 2023</span
+      ><br />
+      <a href="#"
+        ><strong>{{ 'toolineo.account.return_detail.dealer_link_label' | translate }}</strong> 12323213</a
+      ><br />
+      <span
+        ><strong>{{ 'toolineo.account.return_detail.order' | translate }}</strong> 000000000000</span
+      >
+      <div class=""></div>
+      <ish-info-box heading="toolineo.account.return_detail.message_to_dealer">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+      </ish-info-box>
+    </div>
+    <div class="col-4">
+      <div class="border mt-2 p-2">
+        <p>
+          <strong>{{ 'toolineo.account.return_detail.status' | translate }}</strong>
+          <br />
+          waiting for confiration from the Dealer
+        </p>
+        <span>
+          {{ 'toolineo.account.return_detail.before_date' | translate }}
+          <fa-icon class="ml-1" [icon]="['fas', 'info-circle']" />
+        </span>
+        <h3 class="mt-0">22.06.2023</h3>
+      </div>
+      <p class="mt-3">
+        <fa-icon class="mr-1" [icon]="['fas', 'info-circle']" />
+        {{ 'toolineo.account.return_detail.credit_return_note' | translate }}
+      </p>
+      <button class="btn btn-primary">{{ 'toolineo.account.return_detail.button.download_return' | translate }}</button>
+    </div>
+  </div>
+  <table class="table table-striped mt-4">
+    <thead>
+      <tr>
+        <th scope="col">{{ 'toolineo.account.return_detail.table.header.article' | translate }}</th>
+        <th scope="col">{{ 'toolineo.account.return_detail.table.header.quantity_reported' | translate }}</th>
+        <th scope="col">{{ 'toolineo.account.return_detail.table.header.reason' | translate }}</th>
+        <th scope="col">{{ 'toolineo.account.return_detail.table.header.confirmed' | translate }}</th>
+        <th scope="col">{{ 'toolineo.account.return_detail.table.header.returns_required' | translate }}</th>
+        <th scope="col">{{ 'toolineo.account.return_detail.table.header.graduation_date' | translate }}</th>
+        <th scope="col">{{ 'toolineo.account.return_detail.table.header.solution' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <ish-return-request-product-info [sku]="returnId" />
+        </td>
+        <td>4</td>
+        <td>I do not like it</td>
+        <td>2</td>
+        <td>Yes</td>
+        <td>October 12, 2023</td>
+        <td>xy</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="dealer-section">
+  <h3>{{ 'toolineo.account.return_detail.dealer.title' | translate }}</h3>
+  <ish-info-box heading="">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</ish-info-box>
+</div>
