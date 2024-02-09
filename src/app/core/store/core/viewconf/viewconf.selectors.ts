@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { HeaderType } from 'ish-core/models/viewtype/viewtype.types';
 import { getCoreState } from 'ish-core/store/core/core-store';
 import { selectRouteData } from 'ish-core/store/core/router';
 
@@ -13,7 +14,7 @@ const getViewconfState = createSelector(
 
 export const getWrapperClass = selectRouteData<string>('wrapperClass');
 
-export const getHeaderType = selectRouteData<string>('headerType');
+export const getHeaderType = selectRouteData<HeaderType>('headerType');
 
 export const getBreadcrumbData = createSelector(getViewconfState, state => state.breadcrumbData);
 

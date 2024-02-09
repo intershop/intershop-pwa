@@ -17,6 +17,9 @@ For this reason the `messageToMerchant` feature toggle is removed as a configura
 To still be able to configure the message to merchant feature via feature toggle in ICM 7.10 environments an [`ICMCompatibilityInterceptor`](../../src/app/core/interceptors/icm-compatibility.interceptor.ts) was introduced that can be enabled in ICM 7.10 based projects in the [`core.module.ts`](../../src/app/core/core.module.ts).
 In addition the `'messageToMerchant'` environment feature toggle option needs to be enabled in the [`environment.model.ts`](../../src/environments/environment.model.ts).
 
+To address an Angular hydration issue ([#1585](https://github.com/intershop/intershop-pwa/pull/1585)) the `header` component rendering was changed and in addition a `HeaderType` was introduced for the standard header types `['simple', 'error', 'checkout']`.
+If in a project other header types are used these header types and the rendering needs to be adapted accordingly.
+
 ## From 4.2 to 5.0
 
 Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.
