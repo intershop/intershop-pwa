@@ -7,7 +7,7 @@ import { CategoryData } from 'ish-core/models/category/category.interface';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { CategoriesService } from './categories.service';
+import { CategoriesService, ICMCategoriesService } from './categories.service';
 
 describe('Categories Service', () => {
   let apiServiceMock: ApiService;
@@ -27,7 +27,7 @@ describe('Categories Service', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, provideMockStore()],
     });
-    categoriesService = TestBed.inject(CategoriesService);
+    categoriesService = TestBed.inject(ICMCategoriesService);
   });
 
   describe('getTopLevelCategories()', () => {

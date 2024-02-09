@@ -15,6 +15,7 @@ import { PaymentPayoneInterceptor } from './interceptors/payment-payone.intercep
 import { PGIDChangeInterceptor } from './interceptors/pgid-change.interceptor';
 import { PreviewInterceptor } from './interceptors/preview.interceptor';
 import { InternationalizationModule } from './internationalization.module';
+import { ServicesModule } from './services.module';
 import { StateManagementModule } from './state-management.module';
 import { DefaultErrorHandler } from './utils/default-error-handler';
 
@@ -27,6 +28,7 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     IdentityProviderModule,
     InternationalizationModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: SERVICE_WORKER }),
+    ServicesModule,
     StateManagementModule,
   ],
   providers: [

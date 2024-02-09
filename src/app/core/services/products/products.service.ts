@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { flatten, range } from 'lodash-es';
 import { Observable, from, identity, of, throwError } from 'rxjs';
 import { defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
@@ -29,10 +29,10 @@ import STUB_ATTRS from './products-list-attributes';
 /**
  * The Products Service handles the interaction with the 'products' REST API.
  */
-@Injectable({ providedIn: 'root' })
-export class ProductsService {
-  constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
-
+export abstract class ProductsService {
+  private apiService = inject(ApiService);
+  private productMapper = inject(ProductMapper);
+  private appFacade = inject(AppFacade);
   /**
    * Get the full Product data for the given Product SKU.
    *
@@ -357,3 +357,7 @@ export class ProductsService {
     );
   }
 }
+
+@Injectable({ providedIn: 'root' })
+// eslint-disable-next-line ish-custom-rules/project-structure
+export class ICMProductsService extends ProductsService {}

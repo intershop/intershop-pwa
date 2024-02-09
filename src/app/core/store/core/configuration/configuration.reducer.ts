@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
+import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { Translations } from 'ish-core/utils/translate/translations.type';
@@ -26,6 +27,7 @@ export interface ConfigurationState {
   currency?: string;
   serverTranslations: { [lang: string]: Translations };
   multiSiteLocaleMap: Record<string, unknown>;
+  sparque?: SparqueConfig;
   // not synced via state transfer
   _deviceType?: DeviceType;
 }
@@ -46,6 +48,7 @@ const initialState: ConfigurationState = {
   currency: undefined,
   serverTranslations: {},
   multiSiteLocaleMap: undefined,
+  sparque: undefined,
   _deviceType: environment.defaultDeviceType,
 };
 
