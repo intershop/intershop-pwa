@@ -97,6 +97,7 @@ describe('Requisition Mapper', () => {
           "commonShippingMethod": undefined,
           "costCenter": "CostCenter123",
           "creationDate": 12345678,
+          "customFields": {},
           "customerNo": "OilCorp",
           "dynamicMessages": undefined,
           "email": "bboldner@test.intershop.de",

@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { ContentConfigurationParameterMapper } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
 import { ServerConfigMapper } from 'ish-core/models/server-config/server-config.mapper';
-import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
+import { CustomFieldDefinitions, ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 
@@ -30,7 +30,7 @@ export class ConfigurationService {
    *
    * @returns           The configuration object.
    */
-  getServerConfiguration(): Observable<ServerConfig> {
+  getServerConfiguration(): Observable<[ServerConfig, CustomFieldDefinitions]> {
     return this.apiService
       .get(`configurations`, {
         headers: this.configHeaders,

@@ -18,6 +18,7 @@ import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-
 import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
+import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
@@ -40,6 +41,7 @@ describe('Checkout Review Component', () => {
         MockComponent(AddressComponent),
         MockComponent(BasketApprovalInfoComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketCustomFieldsViewComponent),
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(BasketValidationResultsComponent),
@@ -115,6 +117,7 @@ describe('Checkout Review Component', () => {
         "ish-error-message",
         "ish-basket-validation-results",
         "ish-basket-merchant-message-view",
+        "ish-basket-custom-fields-view",
         "ish-info-box",
         "ish-address",
         "ish-info-box",

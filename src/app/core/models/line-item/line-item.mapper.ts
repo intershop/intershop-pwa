@@ -1,5 +1,6 @@
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketRebateMapper } from 'ish-core/models/basket-rebate/basket-rebate.mapper';
+import { CustomFieldMapper } from 'ish-core/models/custom-field/custom-field.mapper';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
 import { OrderLineItem } from 'ish-core/models/order/order.model';
 import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
@@ -50,6 +51,9 @@ export class LineItemMapper {
         editable: !data.quantityFixed,
         quote: data.quote ? data.quote : undefined,
         desiredDeliveryDate: data.desiredDelivery,
+        customerProductID: data.customerProductID,
+        partialOrderNo: data.partialOrderNo,
+        customFields: CustomFieldMapper.fromData(data.customFields),
       };
     } else {
       throw new Error(`'LineItemData' is required for the mapping`);

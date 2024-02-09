@@ -1,5 +1,6 @@
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
+import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 
@@ -36,6 +37,10 @@ export interface LineItem {
   editable: boolean;
   quote?: string;
   desiredDeliveryDate?: string;
+
+  customerProductID?: string;
+  partialOrderNo?: string;
+  customFields?: CustomFields;
 }
 
 export interface LineItemView extends LineItem {

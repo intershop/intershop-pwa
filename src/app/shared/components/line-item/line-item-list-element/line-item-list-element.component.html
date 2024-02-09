@@ -20,10 +20,16 @@
       <!-- Product ID -->
       <ish-product-id />
 
+      <ish-line-item-custom-fields [lineItem]="pli" [editable]="editable" />
+
       <!-- Product Variations -->
       <ish-product-variation-display />
+
       <!-- Product Bundles -->
       <ish-product-bundle-display />
+
+      <!-- Extended Attributes -->
+      <ish-line-item-extended-content [lineItem]="pli" [editable]="editable" />
 
       <!-- switch by lineItemViewType -->
       <ng-container [ngSwitch]="lineItemViewType">
@@ -37,18 +43,6 @@
 
         <!-- default lineItemViewType -->
         <ng-container *ngSwitchDefault>
-          <!-- edit variation & quantity -->
-          <ng-container *ngIf="editable">
-            <ish-line-item-edit
-              *ngIf="!('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting)"
-              ishProductContext
-              [sku]="pli.productSKU"
-              [quantity]="pli.quantity.value"
-              [itemId]="pli.id"
-              (updateItem)="onUpdateItem($event)"
-            />
-          </ng-container>
-
           <!-- availability -->
           <ish-product-inventory />
 
@@ -97,6 +91,9 @@
         >
           <fa-icon [icon]="['fas', 'trash-alt']" />
         </a>
+        <ng-container *ngIf="editable">
+          <ish-line-item-edit [lineItem]="pli" (updateItem)="onUpdateItem($event)" />
+        </ng-container>
       </div>
     </div>
 

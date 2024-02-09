@@ -30,7 +30,7 @@ describe('Server Config Effects', () => {
     const cookiesServiceMock = mock(CookiesService);
     const multiSiteServiceMock = mock(MultiSiteService);
 
-    when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(of([{}, undefined]));
     when(cookiesServiceMock.get(anything())).thenReturn('de_DE');
     when(multiSiteServiceMock.getLangUpdatedUrl(anything(), anything())).thenReturn(of('/home;lang=de_DE'));
     when(multiSiteServiceMock.appendUrlParams(anything(), anything(), anything())).thenReturn('/home;lang=de_DE');
@@ -64,6 +64,7 @@ describe('Server Config Effects', () => {
       [Configuration Internal] Get the ICM configuration
       [Configuration API] Get the ICM configuration Success:
         config: {}
+        definitions: undefined
     `);
   });
 });
@@ -123,7 +124,7 @@ describe('Server Config Effects', () => {
 
   describe('loadServerConfig$', () => {
     beforeEach(() => {
-      when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
+      when(configurationServiceMock.getServerConfiguration()).thenReturn(of([{}, undefined]));
     });
 
     it('should map to action of type LoadServerConfigSuccess', () => {

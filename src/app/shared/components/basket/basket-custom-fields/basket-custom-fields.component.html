@@ -1,0 +1,24 @@
+<ng-container *ngIf="visible$ | async">
+  <div class="d-flex">
+    <ish-custom-fields-view [fields]="customFields$ | async" />
+    <button type="button" class="btn btn-link mr-auto ml-4" (click)="dialog.show()">
+      <ng-container *ngIf="noValues$ | async">{{ 'checkout.custom-fields.define-cta' | translate }}&nbsp;</ng-container>
+      <fa-icon [icon]="['fas', 'pencil-alt']" [title]="'product.notification.edit.link.title' | translate" />
+    </button>
+  </div>
+
+  <ish-modal-dialog
+    #dialog
+    [options]="{
+      confirmText: 'checkout.custom-fields.basket.dialog.confirm' | translate,
+      rejectText: 'checkout.custom-fields.basket.dialog.reject' | translate,
+      titleText: 'checkout.custom-fields.basket.dialog.title' | translate,
+      size: 'lg'
+    }"
+    (confirmed)="submit()"
+  >
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <ish-custom-fields-formly [form]="form" [fields]="customFields$ | async" />
+    </form>
+  </ish-modal-dialog>
+</ng-container>

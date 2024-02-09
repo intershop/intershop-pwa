@@ -12,7 +12,7 @@
   </div>
   <div class="list-body">
     <ish-line-item-list-element
-      *ngFor="let pli of displayItems; index as i; trackBy: trackByFn"
+      *ngFor="let pli of displayItems; index as i"
       ishProductContext
       [sku]="pli.productSKU"
       [quantity]="pli.quantity.value"

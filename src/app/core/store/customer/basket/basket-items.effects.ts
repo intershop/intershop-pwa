@@ -5,8 +5,11 @@ import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
 import { concatMap, debounceTime, filter, map, mergeMap, switchMap, toArray, window } from 'rxjs/operators';
 
-import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
+import { CustomFieldDefinitionsData } from 'ish-core/models/server-config/server-config.interface';
+import { BasketItemUpdateType, BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
+import { getCustomFieldsForScope } from 'ish-core/store/core/server-config';
 import { getProductEntities, loadProduct } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -102,12 +105,10 @@ export class BasketItemsEffects {
       mapToPayloadProperty('lineItemUpdate'),
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       filter(([payload, basket]) => !!basket.lineItems && !!payload),
-      concatMap(([lineItem]) =>
+      concatLatestFrom(() => this.store.pipe(select(getCustomFieldsForScope('BasketLineItem')))),
+      concatMap(([[lineItem], customFieldDefinitions]) =>
         this.basketItemsService
-          .updateBasketItem(lineItem.itemId, {
-            quantity: lineItem.quantity > 0 ? { value: lineItem.quantity, unit: lineItem.unit } : undefined,
-            product: lineItem.sku,
-          })
+          .updateBasketItem(lineItem.itemId, this.mapLineItemUpdate(lineItem, customFieldDefinitions))
           .pipe(
             map(payload => updateBasketItemSuccess(payload)),
             mapErrorToAction(updateBasketItemFail)
@@ -179,4 +180,29 @@ export class BasketItemsEffects {
       ),
     { dispatch: false }
   );
+
+  private mapLineItemUpdate(
+    update: LineItemUpdate,
+    customFieldDefinitions: { name: string; type: CustomFieldDefinitionsData['type'] }[]
+  ): BasketItemUpdateType {
+    const itemUpdate: Partial<BasketItemUpdateType> = {
+      product: update.sku,
+    };
+
+    if (update.quantity > 0) {
+      itemUpdate.quantity = { value: update.quantity, unit: update.unit };
+    }
+    if (update.customFields) {
+      itemUpdate.customFields = customFieldDefinitions.map(({ name, type }) => ({
+        name,
+        type,
+        value: update.customFields[name],
+      }));
+    }
+
+    itemUpdate.customerProductID = update.customerProductID;
+    itemUpdate.partialOrderNo = update.partialOrderNo;
+
+    return itemUpdate;
+  }
 }
