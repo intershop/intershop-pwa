@@ -7,6 +7,7 @@ import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap }
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
@@ -44,6 +45,7 @@ import {
   loadBasketWithId,
   removePromotionCodeFromBasket,
   setBasketAttribute,
+  setBasketCustomFields,
   setBasketDesiredDeliveryDate,
   setBasketPayment,
   startCheckout,
@@ -154,6 +156,10 @@ export class CheckoutFacade {
   setBasketMessageToMerchant(messageToMerchant: string) {
     // eslint-disable-next-line unicorn/no-null
     this.store.dispatch(addMessageToMerchant({ messageToMerchant: messageToMerchant || null }));
+  }
+
+  setBasketCustomFields(customFields: CustomFields) {
+    this.store.dispatch(setBasketCustomFields({ customFields }));
   }
 
   // ORDERS

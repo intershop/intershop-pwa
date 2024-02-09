@@ -55,7 +55,7 @@ export class ServerConfigEffects {
       ofType(loadServerConfig),
       switchMap(() =>
         this.configService.getServerConfiguration().pipe(
-          map(config => loadServerConfigSuccess({ config })),
+          map(([config, definitions]) => loadServerConfigSuccess({ config, definitions })),
           mapErrorToAction(loadServerConfigFail)
         )
       )
