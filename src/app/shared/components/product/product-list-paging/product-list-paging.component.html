@@ -2,7 +2,7 @@
   <ul class="product-list-paging">
     <li>
       <ng-container *ngIf="currentPage > 1; else inactiveFirstLink">
-        <button
+        <a
           [routerLink]="[]"
           queryParamsHandling="merge"
           [queryParams]="{ page: currentPage - 1 }"
@@ -10,12 +10,12 @@
           class="product-list-paging-previous"
         >
           &laquo;
-        </button>
+        </a>
       </ng-container>
       <ng-template #inactiveFirstLink> &laquo; </ng-template>
     </li>
     <li *ngFor="let p of pageIndices">
-      <button
+      <a
         [routerLink]="[]"
         queryParamsHandling="merge"
         [queryParams]="{ page: p.value }"
@@ -23,7 +23,7 @@
         [ngClass]="{ active: p.value === currentPage }"
       >
         {{ p.display }}
-      </button>
+      </a>
     </li>
     <li class="pagination-list-next">
       <ng-container *ngIf="pageIndices[pageIndices.length - 1].value !== currentPage; else inactiveLastLink">
