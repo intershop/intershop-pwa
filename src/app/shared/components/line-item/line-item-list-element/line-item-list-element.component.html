@@ -86,17 +86,16 @@
           displayType="icon"
         />
         <ish-lazy-product-add-to-wishlist *ngIf="editable" [cssClass]="'btn-link btn-tool pl-0'" displayType="icon" />
-        <a
+        <button
           *ngIf="!pli.isFreeGift && editable"
-          [routerLink]="[]"
-          class="btn-tool"
+          class="btn btn-tool btn-link custom-btn-link"
           [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="pli.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem(pli.id)"
         >
           <fa-icon [icon]="['fas', 'trash-alt']" />
-        </a>
+        </button>
       </div>
     </div>
 
