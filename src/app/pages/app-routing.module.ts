@@ -127,6 +127,10 @@ const routes: Routes = [
   },
   { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
   { path: 'cobrowse', loadChildren: () => import('./co-browse/co-browse-page.module').then(m => m.CoBrowsePageModule) },
+  {
+    path: 'wishlists',
+    loadChildren: () => import('./wishlist/wishlist-page.module').then(m => m.WishlistPageModule),
+  },
 ];
 
 @NgModule({
