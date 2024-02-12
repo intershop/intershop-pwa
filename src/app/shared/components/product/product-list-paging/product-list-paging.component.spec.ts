@@ -40,35 +40,35 @@ describe('Product List Paging Component', () => {
       <ul class="product-list-paging">
         <li>«</li>
         <li>
-          <button
+          <a
             queryparamshandling="merge"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             class="active"
+            href="/?page=1"
           >
             1
-          </button>
+          </a>
         </li>
         <li>
-          <button
+          <a
             queryparamshandling="merge"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
+            href="/?page=2"
           >
             2
-          </button>
+          </a>
         </li>
         <li>
-          <button
+          <a
             queryparamshandling="merge"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
+            href="/?page=3"
           >
             3
-          </button>
+          </a>
         </li>
         <li class="pagination-list-next">
           <a
@@ -90,46 +90,46 @@ describe('Product List Paging Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="product-list-paging">
         <li>
-          <button
+          <a
             queryparamshandling="merge"
             class="product-list-paging-previous"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
+            href="/?page=1"
           >
             «
-          </button>
+          </a>
         </li>
         <li>
-          <button
+          <a
             queryparamshandling="merge"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
+            href="/?page=1"
           >
             1
-          </button>
+          </a>
         </li>
         <li>
-          <button
+          <a
             queryparamshandling="merge"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             class="active"
+            href="/?page=2"
           >
             2
-          </button>
+          </a>
         </li>
         <li>
-          <button
+          <a
             queryparamshandling="merge"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
+            href="/?page=3"
           >
             3
-          </button>
+          </a>
         </li>
         <li class="pagination-list-next">
           <a
@@ -151,46 +151,46 @@ describe('Product List Paging Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="product-list-paging">
         <li>
-          <button
+          <a
             queryparamshandling="merge"
             class="product-list-paging-previous"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
+            href="/?page=2"
           >
             «
-          </button>
+          </a>
         </li>
         <li>
-          <button
+          <a
             queryparamshandling="merge"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
+            href="/?page=1"
           >
             1
-          </button>
+          </a>
         </li>
         <li>
-          <button
+          <a
             queryparamshandling="merge"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
+            href="/?page=2"
           >
             2
-          </button>
+          </a>
         </li>
         <li>
-          <button
+          <a
             queryparamshandling="merge"
-            tabindex="0"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             class="active"
+            href="/?page=3"
           >
             3
-          </button>
+          </a>
         </li>
         <li class="pagination-list-next">»</li>
       </ul>

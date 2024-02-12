@@ -107,13 +107,15 @@
                   </div>
                 </div>
                 <div class="panel">
-                  <a
+                  <button
                     *ngIf="!formIsOpen(i)"
-                    [routerLink]="[]"
+                    type="button"
+                    class="btn btn-link custom-btn-link"
                     (click)="openPaymentParameterForm(i)"
                     data-testing-id="add-payment-link"
-                    >{{ 'checkout.payment.addPayment.link' | translate }}
-                  </a>
+                  >
+                    {{ 'checkout.payment.addPayment.link' | translate }}
+                  </button>
                 </div>
 
                 <div [ngbCollapse]="!formIsOpen(i)">

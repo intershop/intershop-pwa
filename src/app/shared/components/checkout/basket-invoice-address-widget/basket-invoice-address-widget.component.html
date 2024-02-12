@@ -2,16 +2,16 @@
 <ng-container *ngIf="invoiceAddress$ | async as address">
   <div class="address-box">
     <!-- edit invoice address -->
-    <a
+    <button
       *ngIf="collapseChange | async"
-      [routerLink]="[]"
-      class="btn-tool float-right"
+      type="button"
+      class="btn btn-tool btn-link custom-btn-link float-right"
       [title]="'checkout.address.update.invoice.label' | translate"
       (click)="showAddressForm(address)"
       data-testing-id="edit-invoice-address-link"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
-    </a>
+    </button>
 
     <!-- display invoice address -->
     <ish-address [address]="address" [displayEmail]="true" />

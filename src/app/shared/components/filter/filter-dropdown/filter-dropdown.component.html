@@ -12,16 +12,16 @@
     <span>{{ placeholder }}</span>
   </button>
   <div ngbDropdownMenu aria-labelledby="dropdownMenuLink">
-    <a
+    <button
       *ngFor="let facet of filterElement.facets; trackBy: trackByFn"
-      [routerLink]="[]"
-      class="dropdown-item"
+      type="button"
+      class="dropdown-item btn btn-link custom-btn-link"
       [ngClass]="{ selected: facet.selected }"
       (click)="apply(facet)"
     >
       {{ facet.displayName }}
       <ng-container *ngIf="facet.count"> ({{ facet.count }})</ng-container>
       <fa-icon *ngIf="facet.selected" [icon]="['fas', 'check']" class="icon-checked" />
-    </a>
+    </button>
   </div>
 </div>

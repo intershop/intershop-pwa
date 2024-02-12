@@ -107,7 +107,7 @@ describe('Basket Invoice Address Widget Component', () => {
 
     it('should expand form if invoice is edited', () => {
       fixture.detectChanges();
-      (element.querySelector('a[data-testing-id="edit-invoice-address-link"') as HTMLLinkElement).click();
+      (element.querySelector('button[data-testing-id="edit-invoice-address-link"') as HTMLLinkElement).click();
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
