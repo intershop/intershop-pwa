@@ -1291,5 +1291,11 @@
   "tacton.submit.error.message": "A technical error occurred while processing your request. Please try again later.",
   "tacton.submit.success.message": "Your request has been successfully submitted. We will e-mail <strong>{{0}}</strong> to keep you updated on the status of your request.",
   "tacton.undo.tooltip": "Undo",
-  "textarea.max_limit": "Your message: {{0}} characters remaining."
+  "textarea.max_limit": "Your message: {{0}} characters remaining.",
+  "wishlist.no_entries": "There are currently no items in this wish list.",
+  "wishlist.table.added_on": "Added on:",
+  "wishlist.table.header.item": "Item Description",
+  "wishlist.table.header.price": "Price",
+  "wishlist.table.in_stock": "In Stock",
+  "wishlist.table.not_accessible": "No longer available"
 }
