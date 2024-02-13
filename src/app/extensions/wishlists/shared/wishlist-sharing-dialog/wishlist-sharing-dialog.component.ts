@@ -69,7 +69,7 @@ export class WishlistSharingDialogComponent implements OnInit {
           required: true,
           label: 'account.wishlists.wishlist_sharing_form.friend_mails.label',
           customDescription: {
-            key: 'account.wishlists.wishlist_sharing_form.friend_mails.descriptiopn',
+            key: 'account.wishlists.wishlist_sharing_form.friend_mails.description',
           },
           hideRequiredMarker: false,
           maxLength: 256,
