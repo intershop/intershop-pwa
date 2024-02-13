@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WishlistShareDialogComponent } from './wishlist-share-dialog.component';
+import { WishlistSharingDialogComponent } from './wishlist-sharing-dialog.component';
 
-describe('Wishlist Share Dialog Component', () => {
-  let component: WishlistShareDialogComponent;
-  let fixture: ComponentFixture<WishlistShareDialogComponent>;
+describe('Wishlist Sharing Dialog Component', () => {
+  let component: WishlistSharingDialogComponent;
+  let fixture: ComponentFixture<WishlistSharingDialogComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WishlistShareDialogComponent],
+      declarations: [WishlistSharingDialogComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WishlistShareDialogComponent);
+    fixture = TestBed.createComponent(WishlistSharingDialogComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
