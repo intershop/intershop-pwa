@@ -19,20 +19,20 @@ import { WishlistSharing } from '../../models/wishlist-sharing/wishlist-sharing.
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 
 /**
- * The Wishlist Share Dialog shows the modal to share a wishlist.
+ * The Wishlist Sharing Dialog shows the modal to share a wishlist.
  *
  * @example
- * <ish-wishlist-share-dialog
+ * <ish-wishlist-sharing-dialog
     [wishlist]="wishlist"
     (submitWishlistSharing)="shareWishlist(wishlist.id)">
-   </ish-wishlist-share-dialog>
+   </ish-wishlist-sharing-dialog>
  */
 @Component({
-  selector: 'ish-wishlist-share-dialog',
-  templateUrl: './wishlist-share-dialog.component.html',
+  selector: 'ish-wishlist-sharing-dialog',
+  templateUrl: './wishlist-sharing-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WishlistShareDialogComponent implements OnInit {
+export class WishlistSharingDialogComponent implements OnInit {
   /**
    * Wishlist that should be shared
    */
