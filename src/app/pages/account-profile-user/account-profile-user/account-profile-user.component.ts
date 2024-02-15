@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
-import { Observable, map, of, withLatestFrom } from 'rxjs';
+import { Observable, concatMap, map, of, withLatestFrom } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -21,7 +21,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountProfileUserComponent implements OnInit {
-  @Input({ required: true }) currentUser: User;
+  @Input({ required: true }) currentUser$: Observable<User>;
   @Input() error: HttpError;
 
   @Output() updateUserProfile = new EventEmitter<User>();
@@ -29,58 +29,65 @@ export class AccountProfileUserComponent implements OnInit {
   submitted = false;
 
   accountProfileUserForm = new FormGroup({});
-  model: Partial<User>;
+  model$: Observable<Partial<User>>;
   fields$: Observable<FormlyFieldConfig[]>;
 
   constructor(private fieldLibrary: FieldLibrary, private accountFacade: AccountFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
-    // TODO: change model into stream and read form values from it instead from the form fields,
-    //       also dynamically add newsletter subscription to it
-    this.model = pick(this.currentUser, 'title', 'firstName', 'lastName', 'phoneHome');
-
-    this.fields$ = of(this.fieldLibrary.getConfigurationGroup('personalInfo')).pipe(
-      withLatestFrom(
-        this.appFacade.serverSetting$<boolean>('marketing.newsletterSubscriptionEnabled'),
-        this.accountFacade.subscribedToNewsletter$
-      ),
-      map(([fields, newsletterSubscriptionEnabled, subscribedToNewsletter]) =>
-        newsletterSubscriptionEnabled
-          ? [
-              ...fields,
-              {
-                type: 'ish-checkbox-field',
-                key: 'newsletter',
-                defaultValue: subscribedToNewsletter,
-                props: {
-                  label: 'registration.newsletter_subscription.text',
-                },
-              },
-            ]
-          : fields
+    // only retrieves and sets the newsletter-subscription-status in the model if the server-setting for it is enabled
+    this.model$ = this.currentUser$.pipe(
+      map(user => pick(user, 'title', 'firstName', 'lastName', 'phoneHome')),
+      withLatestFrom(this.appFacade.serverSetting$<boolean>('marketing.newsletterSubscriptionEnabled')),
+      concatMap(([userAttributes, newsletterSubscriptionEnabled]) =>
+        this.accountFacade.subscribedToNewsletter$.pipe(
+          map(subscribedToNewsletter =>
+            newsletterSubscriptionEnabled
+              ? {
+                  ...userAttributes,
+                  newsletter: subscribedToNewsletter,
+                }
+              : userAttributes
+          )
+        )
       )
     );
+
+    // only displays the newsletter-subscription-field if the server-setting for the newsletter is enabled
+    this.fields$ = of(this.fieldLibrary.getConfigurationGroup('personalInfo')).pipe(
+      withLatestFrom(this.appFacade.serverSetting$<boolean>('marketing.newsletterSubscriptionEnabled')),
+      map(([fields, newsletterSubscriptionEnabled]) =>
+        newsletterSubscriptionEnabled ? [...fields, this.newsletterCheckboxField()] : fields
+      )
+    );
+  }
+
+  newsletterCheckboxField(): FormlyFieldConfig {
+    return {
+      type: 'ish-checkbox-field',
+      key: 'newsletter',
+      props: {
+        label: 'registration.newsletter_subscription.text',
+      },
+    };
   }
 
   /**
    * Submits form and throws update event when form is valid
    */
-  submit() {
+  submitForm(currentUser: User) {
     if (this.accountProfileUserForm.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.accountProfileUserForm);
       return;
     }
 
-    const title = this.accountProfileUserForm.get('title').value;
-    const firstName = this.accountProfileUserForm.get('firstName').value;
-    const lastName = this.accountProfileUserForm.get('lastName').value;
-    const phoneHome = this.accountProfileUserForm.get('phoneHome').value;
+    if (this.accountProfileUserForm.get('newsletter')) {
+      const subscribedToNewsletter = this.accountProfileUserForm.get('newsletter').value;
+      this.accountFacade.updateNewsletterSubscription(subscribedToNewsletter);
+    }
 
-    const subscribedToNewsletter = this.accountProfileUserForm.get('newsletter').value;
-    this.accountFacade.updateNewsletterSubscription(subscribedToNewsletter);
-
-    this.updateUserProfile.emit({ ...this.currentUser, title, firstName, lastName, phoneHome });
+    this.updateUserProfile.emit({ ...currentUser, ...this.accountProfileUserForm.value });
   }
 
   get buttonDisabled() {

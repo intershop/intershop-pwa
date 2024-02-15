@@ -1,6 +1,6 @@
-<ng-container *ngIf="currentUser$ | async as user">
+<ng-container *ngIf="currentUser$">
   <ish-account-profile-user
-    [currentUser]="user"
+    [currentUser$]="currentUser$"
     [error]="userError$ | async"
     (updateUserProfile)="updateUserProfile($event)"
   />
