@@ -18,8 +18,6 @@ import { ServerConfigEffects } from './server-config/server-config.effects';
 import { serverConfigReducer } from './server-config/server-config.reducer';
 import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
-import { WishlistEffects } from './wishlist/wishlist.effects';
-import { wishlistReducer } from './wishlist/wishlist.reducer';
 
 const coreReducers: ActionReducerMap<CoreState> = {
   router: routerReducer,
@@ -27,17 +25,9 @@ const coreReducers: ActionReducerMap<CoreState> = {
   viewconf: viewconfReducer,
   configuration: configurationReducer,
   serverConfig: serverConfigReducer,
-  wishlist: wishlistReducer,
 };
 
-const coreEffects = [
-  ErrorEffects,
-  ViewconfEffects,
-  ConfigurationEffects,
-  MessagesEffects,
-  ServerConfigEffects,
-  WishlistEffects,
-];
+const coreEffects = [ErrorEffects, ViewconfEffects, ConfigurationEffects, MessagesEffects, ServerConfigEffects];
 
 const coreMetaReducers: MetaReducer<CoreState>[] = [
   ngrxStateTransferMeta,

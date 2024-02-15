@@ -8,13 +8,16 @@ import { countriesReducer } from './countries/countries.reducer';
 import { GeneralState } from './general-store';
 import { RegionsEffects } from './regions/regions.effects';
 import { regionsReducer } from './regions/regions.reducer';
+import { WishlistEffects } from './wishlist/wishlist.effects';
+import { wishlistReducer } from './wishlist/wishlist.reducer';
 
 const generalReducers: ActionReducerMap<GeneralState> = {
   countries: countriesReducer,
   regions: regionsReducer,
+  wishlist: wishlistReducer,
 };
 
-const generalEffects = [CountriesEffects, RegionsEffects];
+const generalEffects = [CountriesEffects, RegionsEffects, WishlistEffects];
 
 @NgModule({
   imports: [EffectsModule.forFeature(generalEffects), StoreModule.forFeature('general', generalReducers)],
