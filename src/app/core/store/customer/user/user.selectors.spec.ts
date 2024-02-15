@@ -25,11 +25,13 @@ import {
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
   updateUserPassword,
+  userNewsletterApiActions,
 } from './user.actions';
 import {
   getCustomerApprovalEmail,
   getLoggedInCustomer,
   getLoggedInUser,
+  getNewsletterSubscriptionStatus,
   getPasswordReminderError,
   getPasswordReminderSuccess,
   getPriceDisplayType,
@@ -283,6 +285,31 @@ describe('User Selectors', () => {
       const email = 'test@intershop.com';
       store$.dispatch(createUserApprovalRequired({ email }));
       expect(getCustomerApprovalEmail(store$.state)).toEqual(email);
+    });
+  });
+
+  describe('getNewsletterSubscriptionStatus', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        loginUserSuccess({
+          customer: {} as Customer,
+          user: { email: 'test@interhop.com' } as User,
+        })
+      );
+    });
+
+    it('should be undefined if no action was triggered', () => {
+      expect(getNewsletterSubscriptionStatus(store$.state)).toBeUndefined();
+    });
+
+    it('should return the current newsletter subscription status', () => {
+      store$.dispatch(userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess({ subscribed: true }));
+      expect(getNewsletterSubscriptionStatus(store$.state)).toBeTrue();
+    });
+
+    it('should update the newsletter subscription status', () => {
+      store$.dispatch(userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess({ subscriptionStatus: false }));
+      expect(getNewsletterSubscriptionStatus(store$.state)).toBeFalse();
     });
   });
 });
