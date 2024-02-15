@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, filter, take, takeUntil } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -42,13 +42,16 @@ export class AccountWishlistDetailPageComponent implements OnDestroy, OnInit {
   shareWishlist(wishlistSharing: WishlistSharing, wishlist: Wishlist) {
     this.wishlistsFacade.shareWishlist(wishlist.id, wishlistSharing);
 
-    setTimeout(() => {
-      this.wishlistsFacade.currentWishlist$.pipe(take(1), takeUntil(this.destroy)).subscribe(updatedWishlist => {
-        if (updatedWishlist?.owner && updatedWishlist?.secureCode) {
-          this.sendEmail(wishlistSharing, updatedWishlist);
-        }
+    // ensure owner and secureCode are in the store
+    this.wishlistsFacade.currentWishlist$
+      .pipe(
+        filter(updatedWishlist => !!updatedWishlist?.owner && !!updatedWishlist?.secureCode),
+        take(1),
+        takeUntil(this.destroy)
+      )
+      .subscribe(updatedWishlist => {
+        this.sendEmail(wishlistSharing, updatedWishlist);
       });
-    }, 1000);
   }
 
   sendEmail(wishlistSharing: WishlistSharing, wishlist: Wishlist) {

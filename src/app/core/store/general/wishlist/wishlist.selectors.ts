@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
-import { getCoreState } from 'ish-core/store/core/core-store';
+import { getGeneralState } from 'ish-core/store/general/general-store';
 
-const getWishlistState = createSelector(getCoreState, state => state.wishlist);
+const getWishlistState = createSelector(getGeneralState, state => state.wishlist);
 
 export const getWishlist = createSelector(getWishlistState, state => state.wishlist);
 

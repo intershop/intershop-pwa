@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadWishlist } from './wishlist.actions';
@@ -11,7 +12,7 @@ describe('Wishlist Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['wishlist'])],
+      imports: [CoreStoreModule.forTesting(), GeneralStoreModule.forTesting('wishlist')],
       providers: [provideStoreSnapshots()],
     });
 

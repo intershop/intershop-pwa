@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Wishlist } from 'ish-core/models/wishlist/wishlist.model';
-import { loadWishlist } from 'ish-core/store/core/wishlist/wishlist.actions';
-import { getWishlist, getWishlistError } from 'ish-core/store/core/wishlist/wishlist.selectors';
+import { loadWishlist } from 'ish-core/store/general/wishlist/wishlist.actions';
+import { getWishlist, getWishlistError } from 'ish-core/store/general/wishlist/wishlist.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class WishlistFacade {
