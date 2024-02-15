@@ -22,14 +22,14 @@
 <div class="section d-flex flex-nowrap">
   <button
     type="button"
-    class="btn btn-link custom-btn-link"
+    class="btn btn-link btn-link-action"
     (click)="addMultipleRows(1)"
     data-testing-id="add-quickorder-line"
   >
     {{ props?.addText | translate }}
   </button>
   <span class="link-separator"></span>
-  <button type="button" class="btn btn-link custom-btn-link" (click)="addMultipleRows(props?.numberMoreRows)">
+  <button type="button" class="btn btn-link btn-link-action" (click)="addMultipleRows(props?.numberMoreRows)">
     {{ props?.addMoreText | translate : { '0': props?.numberMoreRows } }}
   </button>
 </div>

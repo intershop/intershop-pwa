@@ -8,9 +8,8 @@
           [queryParams]="{ page: currentPage - 1 }"
           [fragment]="fragmentOnRouting"
           class="product-list-paging-previous"
+          >&laquo;</a
         >
-          &laquo;
-        </a>
       </ng-container>
       <ng-template #inactiveFirstLink> &laquo; </ng-template>
     </li>
@@ -21,9 +20,8 @@
         [queryParams]="{ page: p.value }"
         [fragment]="fragmentOnRouting"
         [ngClass]="{ active: p.value === currentPage }"
+        >{{ p.display }}</a
       >
-        {{ p.display }}
-      </a>
     </li>
     <li class="pagination-list-next">
       <ng-container *ngIf="pageIndices[pageIndices.length - 1].value !== currentPage; else inactiveLastLink">

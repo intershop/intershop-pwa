@@ -54,12 +54,12 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li class="selected">
-          <button type="button" class="btn btn-link custom-btn-link" title="Black">
+          <button type="button" class="btn btn-link btn-link-action" title="Black">
             <span style="background-color: rgb(0, 0, 0)"></span>
           </button>
         </li>
         <li>
-          <button type="button" class="btn btn-link custom-btn-link" title="White">
+          <button type="button" class="btn btn-link btn-link-action" title="White">
             <span class="light-color" style="background-color: rgb(255, 255, 255)"></span>
           </button>
         </li>
@@ -73,12 +73,12 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li>
-          <button type="button" class="btn btn-link custom-btn-link" title="yyy">
+          <button type="button" class="btn btn-link btn-link-action" title="yyy">
             <img alt="yyy" src="imageY.png" />
           </button>
         </li>
         <li class="selected">
-          <button type="button" class="btn btn-link custom-btn-link" title="zzz">
+          <button type="button" class="btn btn-link btn-link-action" title="zzz">
             <img alt="zzz" src="imageZ.png" />
           </button>
         </li>

@@ -17,7 +17,7 @@
     <button
       type="button"
       *ngIf="isUserLoggedIn$ | async; else loginLink"
-      class="btn btn-link custom-btn-link"
+      class="btn btn-link btn-link-action"
       (click)="reviewCreateDialog.show()"
       data-testing-id="open-review-dialog"
     >
@@ -67,7 +67,7 @@
       <button
         type="button"
         *ngIf="review.own"
-        class="btn btn-link custom-btn-link"
+        class="btn btn-link btn-link-action"
         (click)="modalDialog.show(review)"
         data-testing-id="delete-review"
       >

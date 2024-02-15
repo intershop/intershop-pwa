@@ -60,13 +60,13 @@ describe('Product Variation Select Enhanced Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <div class="mobile-variation-select">
         <div class="mobile-variation-option">
-          <button type="button" class="btn btn-link custom-btn-link">
+          <button type="button" class="btn btn-link btn-link-action">
             <span class="color-code" style="background-color: rgb(0, 0, 0)"></span
             ><span class="label selected">Black </span>
           </button>
         </div>
         <div class="mobile-variation-option">
-          <button type="button" class="btn btn-link custom-btn-link">
+          <button type="button" class="btn btn-link btn-link-action">
             <span class="color-code light-color" style="background-color: rgb(255, 255, 255)"></span
             ><span class="label">White </span>
           </button>

@@ -80,7 +80,7 @@
       color: $text-color-quaternary;
 
       a,
-      .custom-btn-link {
+      .btn-link-action {
         display: block;
 
         &.filter-item-name {
@@ -114,11 +114,11 @@
       color: $text-color-primary;
 
       .filter-item-name,
-      .custom-btn-link.filter-item-name a.filter-item-name {
+      .btn-link-action.filter-item-name a.filter-item-name {
         color: $text-color-primary;
       }
 
-      .custom-btn-link.filter-clear,
+      .btn-link-action.filter-clear,
       a.filter-clear {
         float: right;
         width: 16px;
@@ -145,7 +145,7 @@
         border-color: $text-color-quaternary;
 
         a,
-        .custom-btn-link {
+        .btn-link-action {
           display: inline-block;
           width: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px;
           height: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px; // diameter + 2 * padding + 2 * border-width
@@ -212,7 +212,7 @@
     width: 100%;
     padding: 0;
 
-    .custom-btn-link.dropdown-item a.dropdown-item {
+    .btn-link-action.dropdown-item a.dropdown-item {
       color: $input-color;
 
       &.selected {
@@ -273,7 +273,7 @@
       li {
         &.filter-item {
           a,
-          .custom-btn-link {
+          .btn-link-action {
             &.filter-item-name {
               &.filter-selected {
                 color: $text-color-primary;

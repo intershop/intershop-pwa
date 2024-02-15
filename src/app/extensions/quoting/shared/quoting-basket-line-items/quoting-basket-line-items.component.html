@@ -4,7 +4,7 @@
       {{ 'quote.basket_items.label' | translate : { '0': getName(item[0]) | async } }}
       <button
         type="button"
-        class="float-md-right pt-2 d-block d-md-inline header-note btn btn-link custom-btn-link"
+        class="float-md-right pt-2 d-block d-md-inline header-note btn btn-link btn-link-action"
         title="{{ 'quote.basket_items.remove.button.label' | translate }}"
         (click)="onDeleteQuote(item[0])"
       >

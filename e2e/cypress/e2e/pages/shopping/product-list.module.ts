@@ -71,7 +71,7 @@ export class ProductListModule {
   }
 
   get currentPage() {
-    return this.pagingBar.find('button.active').then(el => parseInt(el.text(), 10));
+    return this.pagingBar.find('a.active').then(el => parseInt(el.text(), 10));
   }
 
   makeAllProductsVisible() {

@@ -33,7 +33,7 @@
 
     <div *ngIf="!autoplay && !playing" class="video-text">
       <h1 *ngIf="pagelet.hasParam('Heading')">{{ pagelet.stringParam('Heading') }}</h1>
-      <button type="button" class="video-link btn btn-link custom-btn-link" (click)="playing = true; playVideo()">
+      <button type="button" class="video-link btn btn-link btn-link-action" (click)="playing = true; playVideo()">
         <fa-icon [icon]="['fas', 'play-circle']" />
       </button>
     </div>

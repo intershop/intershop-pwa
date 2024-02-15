@@ -5,7 +5,7 @@
       <ng-container *ngIf="facet.selected; else notSelectedBox">
         <button
           type="button"
-          class="btn btn-link custom-btn-link"
+          class="btn btn-link btn-link-action"
           (click)="filter(facet)"
           [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
         >
@@ -21,7 +21,7 @@
       <ng-template #notSelectedBox>
         <button
           type="button"
-          class="filter-item-name btn btn-link custom-btn-link"
+          class="filter-item-name btn btn-link btn-link-action"
           (click)="filter(facet)"
           [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
         >
@@ -33,7 +33,7 @@
   </ng-container>
   <!-- show all/less -->
   <li class="filter-item" *ngIf="filterElement.limitCount !== -1 && facets.length > filterElement.limitCount">
-    <button type="button" class="btn btn-link custom-btn-link" (click)="showAll = !showAll">
+    <button type="button" class="btn btn-link btn-link-action" (click)="showAll = !showAll">
       {{ (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate }}
     </button>
   </li>

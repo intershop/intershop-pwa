@@ -46,9 +46,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-router-link=""
             class="active"
             href="/?page=1"
+            >1</a
           >
-            1
-          </a>
         </li>
         <li>
           <a
@@ -56,9 +55,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
+            >2</a
           >
-            2
-          </a>
         </li>
         <li>
           <a
@@ -66,9 +64,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=3"
+            >3</a
           >
-            3
-          </a>
         </li>
         <li class="pagination-list-next">
           <a
@@ -96,9 +93,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=1"
+            >«</a
           >
-            «
-          </a>
         </li>
         <li>
           <a
@@ -106,9 +102,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=1"
+            >1</a
           >
-            1
-          </a>
         </li>
         <li>
           <a
@@ -117,9 +112,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-router-link=""
             class="active"
             href="/?page=2"
+            >2</a
           >
-            2
-          </a>
         </li>
         <li>
           <a
@@ -127,9 +121,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=3"
+            >3</a
           >
-            3
-          </a>
         </li>
         <li class="pagination-list-next">
           <a
@@ -157,9 +150,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
+            >«</a
           >
-            «
-          </a>
         </li>
         <li>
           <a
@@ -167,9 +159,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=1"
+            >1</a
           >
-            1
-          </a>
         </li>
         <li>
           <a
@@ -177,9 +168,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
+            >2</a
           >
-            2
-          </a>
         </li>
         <li>
           <a
@@ -188,9 +178,8 @@ describe('Product List Paging Component', () => {
             ng-reflect-router-link=""
             class="active"
             href="/?page=3"
+            >3</a
           >
-            3
-          </a>
         </li>
         <li class="pagination-list-next">»</li>
       </ul>

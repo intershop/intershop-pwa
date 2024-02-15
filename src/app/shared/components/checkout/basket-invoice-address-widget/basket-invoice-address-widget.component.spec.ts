@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -37,12 +36,7 @@ describe('Basket Invoice Address Widget Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule.forTesting('addressDoctor'),
-        FormlyTestingModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [FeatureToggleModule.forTesting('addressDoctor'), FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [
         BasketInvoiceAddressWidgetComponent,
         MockComponent(AddressComponent),

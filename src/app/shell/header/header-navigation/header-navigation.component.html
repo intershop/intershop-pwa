@@ -21,7 +21,7 @@
     <ng-container *ngIf="0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren">
       <button
         type="button"
-        class="dropdown-toggle btn btn-link custom-btn-link"
+        class="dropdown-toggle btn btn-link btn-link-action"
         (click)="toggleOpen(category.uniqueId)"
         [attr.aria-label]="
           isOpened(category.uniqueId)

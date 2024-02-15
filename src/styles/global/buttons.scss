@@ -109,9 +109,18 @@ button.btn-link {
     background-color: transparent;
     border: 1px solid transparent;
   }
+
+  &.btn-link-action {
+    padding: 0;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
 }
 
-.custom-btn-link {
+/* .btn-link-action {
   padding: 0;
   margin-right: 0 !important;
   margin-bottom: 0 !important;
@@ -120,14 +129,16 @@ button.btn-link {
 }
 
 @media (max-width: $screen-xs-max) {
-  .custom-btn-link {
+  .btn-link-action {
     display: unset !important;
     width: unset !important;
   }
 }
+*/
+
 // multiple buttons margin handling (use "button-group" in case the buttons are not direct siblings)
 .button-group .btn,
-.btn:not(:only-child) {
+.btn:not(:only-child):not(.btn-link) {
   margin-bottom: divide($space-default, 3);
 
   &:not(.float-right) {

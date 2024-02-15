@@ -7,13 +7,9 @@
   margin-left: $space-default;
   background: $color-tertiary;
 
-  a,
-  .custom-btn-link {
+  .btn-link {
     font-family: $font-family-bold;
-    font-size: $font-size-base;
-    text-decoration: none !important;
     text-transform: uppercase;
-    cursor: pointer;
 
     span {
       color: $text-color-quaternary;
@@ -32,8 +28,7 @@
     }
   }
 
-  > a,
-  .custom-btn-link {
+  > .btn-link {
     padding: 0 ($space-default * 0.5);
     white-space: nowrap;
   }
@@ -41,8 +36,7 @@
   &.mini-cart-active {
     background: $color-corporate;
 
-    > a,
-    .custom-btn-link {
+    > .btn-link {
       span {
         color: $text-color-inverse;
 
@@ -119,8 +113,7 @@
     padding-left: $space-default;
     text-align: left;
 
-    a,
-    .custom-btn-link {
+    a {
       display: block;
       padding-top: ($space-default * 0.5);
       padding-bottom: ($space-default * 0.25);

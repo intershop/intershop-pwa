@@ -2,7 +2,7 @@
   <li *ngFor="let mainItem of tree$ | async" class="pt-1 pb-1">
     <button
       type="button"
-      class="btn btn-link custom-btn-link"
+      class="btn btn-link btn-link-action"
       (click)="changeStep(mainItem.name)"
       [ngClass]="{ 'font-weight-bold': mainItem.active }"
     >
@@ -14,7 +14,7 @@
           <li *ngIf="subItem.hasVisibleParameters" class="pt-1 pb-1">
             <button
               type="button"
-              class="btn btn-link custom-btn-link"
+              class="btn btn-link btn-link-action"
               (click)="scrollIntoView(subItem.name)"
               [ngClass]="{ 'font-weight-bold': isActive$(subItem.name) | async }"
             >

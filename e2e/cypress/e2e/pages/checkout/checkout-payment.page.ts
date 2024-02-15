@@ -25,7 +25,7 @@ export class CheckoutPaymentPage {
 
   addPaymentInstrument(method: string) {
     waitLoadingEnd(1000);
-    cy.get(`[data-testing-id=payment-parameter-form-${method}] a[data-testing-id="add-payment-link"]`).click();
+    cy.get(`[data-testing-id=payment-parameter-form-${method}] button[data-testing-id="add-payment-link"]`).click();
     waitLoadingEnd(1000);
   }
 

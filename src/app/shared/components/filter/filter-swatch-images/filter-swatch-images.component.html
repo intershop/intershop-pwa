@@ -3,7 +3,7 @@
     <li class="filter-item filter-color" [ngClass]="{ 'filter-selected': facet.selected }">
       <button
         type="button"
-        class="filter-swatch btn btn-link custom-btn-link"
+        class="filter-swatch btn btn-link btn-link-action"
         [title]="facet.displayName + ' (' + facet.count + ')'"
         (click)="filter(facet)"
         [attr.data-testing-id]="'filter-link-' + (facet.displayName | sanitize)"

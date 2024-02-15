@@ -11,7 +11,7 @@
     <div class="container">
       <div class="row list-header d-none d-md-flex">
         <div class="col-md-2 list-header-item no-seperator">
-          <button type="button" (click)="toggleItemSelection()" class="btn btn-link custom-btn-link">
+          <button type="button" (click)="toggleItemSelection()" class="btn btn-link">
             <ng-container *ngIf="selectAll; else clearAll">{{
               'account.costcenter.details.buyers.list.header.selectall' | translate
             }}</ng-container>

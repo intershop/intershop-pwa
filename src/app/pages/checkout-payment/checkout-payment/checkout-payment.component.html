@@ -86,7 +86,7 @@
                     </label>
                     <button
                       type="button"
-                      class="btn btn-link custom-btn-link float-right"
+                      class="btn btn-link btn-link-action float-right"
                       (click)="deleteBasketPayment(paymentInstrument)"
                       data-testing-id="delete-payment-link"
                     >
@@ -110,7 +110,7 @@
                   <button
                     *ngIf="!formIsOpen(i)"
                     type="button"
-                    class="btn btn-link custom-btn-link"
+                    class="btn btn-link btn-link-action"
                     (click)="openPaymentParameterForm(i)"
                     data-testing-id="add-payment-link"
                   >

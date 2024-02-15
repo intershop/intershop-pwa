@@ -18,7 +18,7 @@
     <ng-container *ngIf="subCategoriesDepth < mainNavigationMaxSubCategoriesDepth && subcategory.hasChildren">
       <button
         type="button"
-        class="dropdown-toggle btn btn-link custom-btn-link"
+        class="dropdown-toggle btn btn-link btn-link-action"
         [ngClass]="{ 'd-none': view === 'full' }"
         (click)="toggleOpen(subcategory.uniqueId)"
         [attr.aria-label]="

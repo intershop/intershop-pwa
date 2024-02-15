@@ -5,7 +5,7 @@ exports[`Filter Swatch Images Component should be created 1`] = `
   <li class="filter-item filter-color">
     <button
       type="button"
-      class="filter-swatch btn btn-link custom-btn-link"
+      class="filter-swatch btn btn-link btn-link-action"
       title="Black (4)"
       data-testing-id="filter-link-Black"
     >
@@ -15,7 +15,7 @@ exports[`Filter Swatch Images Component should be created 1`] = `
   <li class="filter-item filter-color filter-selected">
     <button
       type="button"
-      class="filter-swatch btn btn-link custom-btn-link"
+      class="filter-swatch btn btn-link btn-link-action"
       title="Red (5)"
       data-testing-id="filter-link-Red"
     >

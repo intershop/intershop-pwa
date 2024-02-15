@@ -2,7 +2,7 @@
   <li *ngFor="let option of group.options" [ngClass]="{ selected: option.active }">
     <button
       type="button"
-      class="btn btn-link custom-btn-link"
+      class="btn btn-link btn-link-action"
       (click)="optionChange(group.id, option.value)"
       title="{{ option.label }}"
     >

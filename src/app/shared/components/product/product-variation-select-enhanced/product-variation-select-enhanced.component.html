@@ -28,7 +28,7 @@
 <ng-template #mobile>
   <div class="mobile-variation-select">
     <div *ngFor="let option of group.options" class="mobile-variation-option">
-      <button type="button" class="btn btn-link custom-btn-link" (click)="optionChange(group.id, option.value)">
+      <button type="button" class="btn btn-link btn-link-action" (click)="optionChange(group.id, option.value)">
         <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
       </button>
     </div>

@@ -15,7 +15,7 @@
     <button
       *ngFor="let facet of filterElement.facets; trackBy: trackByFn"
       type="button"
-      class="dropdown-item btn btn-link custom-btn-link"
+      class="dropdown-item btn btn-link btn-link-action"
       [ngClass]="{ selected: facet.selected }"
       (click)="apply(facet)"
     >

@@ -111,7 +111,7 @@ The tab-order has to be determined by the HTML-structure, not by the index.
 ### How to fix `click-events-have-key-events` problems
 
 To address this issue, make sure that every `<a>` tag in the HTML files includes a `routerLink` attribute.
-If adding a meaningful `routerLink` is not possible, consider using `<button>` along with `type="button"` attribute and the `btn btn-link custom-btn-link` classes.
+If adding a meaningful `routerLink` is not possible, consider using `<button>` along with `type="button"` attribute and the `btn btn-link btn-link-action` classes.
 If a button-like appearance is intended, no additional classes are needed.
 
 For new use cases, it is recommended to prioritize the use of native `<button>` elements over `<a>` tags, as buttons inherently provide better support for keyboard interactions and enhance overall accessibility.

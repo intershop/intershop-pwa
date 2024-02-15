@@ -110,7 +110,7 @@ export class CartPage {
       remove: () => cy.get(this.tag).find('[data-testing-id="remove-line-item"]').eq(idx).click(),
       sku: cy.get(this.tag).find('.product-id').eq(idx),
       openVariationEditDialog: () =>
-        cy.get(this.tag).find('ish-line-item-edit').eq(idx).find('a.line-item-edit-link').click(),
+        cy.get(this.tag).find('ish-line-item-edit').eq(idx).find('.line-item-edit-link').click(),
     };
   }
 
