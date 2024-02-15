@@ -37,12 +37,12 @@
           <div *ngIf="user.login !== (currentUser$ | async)?.login" class="float-right">
             <button
               type="button"
-              data-testing-id="remove-user"
-              class="btn btn-tool btn-link custom-btn-link"
+              class="btn-tool btn-link"
               title="{{
                 'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName }
               }}"
               (click)="modalDialog.show(user)"
+              data-testing-id="remove-user"
             >
               <fa-icon [icon]="['fas', 'trash-alt']" />
             </button>

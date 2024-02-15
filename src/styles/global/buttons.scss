@@ -71,12 +71,6 @@
     margin-left: 0;
   }
 
-  &.btn-link {
-    font-family: $font-family-regular;
-    text-decoration: none;
-    text-transform: unset;
-  }
-
   &.btn-link-inline {
     display: inline;
     padding: 0;
@@ -102,6 +96,18 @@
   &.btn-block {
     padding-right: 0;
     padding-left: 0;
+  }
+}
+
+button.btn-link {
+  font-family: $font-family-regular;
+  text-decoration: none;
+  text-transform: unset;
+
+  &.btn-tool {
+    padding: 0;
+    background-color: transparent;
+    border: 1px solid transparent;
   }
 }
 

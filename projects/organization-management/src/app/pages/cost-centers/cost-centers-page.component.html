@@ -81,7 +81,8 @@
               <!-- Deactivate -->
               <button
                 *ngIf="costCenter.active; else activateCostCenter"
-                class="btn btn-tool btn-link custom-btn-link"
+                type="button"
+                class="btn-tool btn-link"
                 title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deactivateDialog)"
                 data-testing-id="deactivate-cost-center"
@@ -93,7 +94,7 @@
               <ng-template #activateCostCenter>
                 <button
                   type="button"
-                  class="btn btn-tool btn-link custom-btn-link"
+                  class="btn-tool btn-link"
                   title="{{ 'account.costcenter.activate.button.title' | translate }}"
                   (click)="activate(costCenter)"
                   data-testing-id="activate-cost-center"
@@ -104,9 +105,9 @@
 
               <!-- Delete -->
               <button
-                type="button"
                 *ngIf="!(costCenter.pendingOrders + costCenter.approvedOrders); else deleteButtonDisabled"
-                class="btn btn-tool btn-link custom-btn-link"
+                type="button"
+                class="btn-tool btn-link"
                 title="{{ 'account.costcenter.delete.link' | translate }}"
                 (click)="openConfirmationDialog(costCenter, deleteDialog)"
                 data-testing-id="delete-cost-center"
@@ -114,7 +115,10 @@
                 <fa-icon [icon]="['fas', 'trash-alt']" />
               </button>
               <ng-template #deleteButtonDisabled>
-                <span class="btn-tool inactive" title="{{ 'account.costcenter.delete.disabled.icon' | translate }}">
+                <span
+                  class="btn-tool btn-link inactive"
+                  title="{{ 'account.costcenter.delete.disabled.icon' | translate }}"
+                >
                   <fa-icon [icon]="['fas', 'trash-alt']" />
                 </span>
               </ng-template>

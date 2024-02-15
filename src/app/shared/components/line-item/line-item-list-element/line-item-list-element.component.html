@@ -85,10 +85,10 @@
           [cssClass]="'btn-link btn-tool pl-0 add-to-order-template'"
           displayType="icon"
         />
-        <ish-lazy-product-add-to-wishlist *ngIf="editable" [cssClass]="'btn-link btn-tool pl-0'" displayType="icon" />
+        <ish-lazy-product-add-to-wishlist *ngIf="editable" [cssClass]="'btn-link btn-tool'" displayType="icon" />
         <button
           *ngIf="!pli.isFreeGift && editable"
-          class="btn btn-tool btn-link custom-btn-link"
+          class="btn-tool btn-link"
           [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="pli.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"

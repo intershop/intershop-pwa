@@ -16,11 +16,10 @@
     <!-- button -->
     <button
       type="button"
-      class="btn"
       [ngClass]="cssClass"
+      [title]="buttonKey('title') | async | translate"
       (click)="openModal(modal)"
       data-testing-id="product-notification-edit"
-      [title]="buttonKey('title') | async | translate"
     >
       {{ buttonKey('label') | async | translate }}
     </button>

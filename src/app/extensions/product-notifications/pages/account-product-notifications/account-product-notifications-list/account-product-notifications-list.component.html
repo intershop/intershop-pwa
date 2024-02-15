@@ -66,12 +66,12 @@
       <td cdk-cell *cdkCellDef="let productNotification">
         <div class="d-flex flex-nowrap justify-content-center" ishProductContext [sku]="productNotification.sku">
           <ish-product-notification-edit
-            cssClass="btn-link btn-tool mr-0 pt-1"
+            cssClass="btn-tool btn-link pt-1 mr-3"
             [productNotification]="productNotification"
             displayType="icon"
           />
           <ish-product-notification-delete
-            cssClass="btn-link btn-tool mr-0 pt-1 px-0"
+            cssClass="btn-tool btn-link pt-1 mr-0"
             [productNotification]="productNotification"
           />
         </div>

@@ -77,7 +77,7 @@
         <td cdk-cell *cdkCellDef="let buyer" class="column-price">
           <button
             type="button"
-            class="btn btn-tool btn-link custom-btn-link"
+            class="btn-tool btn-link"
             [title]="'account.costcenter.details.action.edit' | translate"
             data-testing-id="cost-center-buyer-edit"
             (click)="openEditCostCenterBuyerDialog(buyer, editCostCenterBuyerDialog)"
@@ -88,7 +88,7 @@
           <!-- Remove buyer -->
           <button
             type="button"
-            class="btn btn-tool btn-link custom-btn-link"
+            class="btn-tool btn-link"
             title="{{ 'account.costcenter.remove.button.label' | translate }}"
             (click)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
             data-testing-id="cost-center-buyer-remove"

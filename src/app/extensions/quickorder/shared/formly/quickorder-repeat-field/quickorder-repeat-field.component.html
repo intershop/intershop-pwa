@@ -8,12 +8,12 @@
 >
   <formly-field class="col-6" [field]="field" />
   <ish-product-quantity class="col-3 col-sm-2 quickorder-line-item" />
-  <div class="col-3 col-sm-2 d-flex quickorder-line-item">
+  <div class="col-3 col-sm-2 d-flex align-items-start quickorder-line-item">
     <button
       type="button"
-      class="btn btn-tool btn-link custom-btn-link"
-      (click)="remove(i); updateContexts()"
+      class="btn-tool btn-link m-2"
       title="{{ 'quickorder.page.remove.row' | translate }}"
+      (click)="remove(i); updateContexts()"
     >
       <fa-icon [icon]="['fas', 'trash-alt']" />
     </button>

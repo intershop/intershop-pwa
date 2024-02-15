@@ -137,9 +137,9 @@
             <button
               type="button"
               *ngIf="isUpdateAddressFormCollapsed(address)"
-              class="btn btn-tool btn-link custom-btn-link"
-              (click)="showUpdateAddressForm(address)"
+              class="btn-tool btn-link"
               title="{{ 'checkout.address.update.button.label' | translate }}"
+              (click)="showUpdateAddressForm(address)"
               [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
               aria-controls="CollapseBasicEdit"
               data-testing-id="update-address-button"
@@ -150,7 +150,7 @@
             <button
               type="button"
               *ngIf="deletable"
-              class="btn btn-tool btn-link custom-btn-link"
+              class="btn-tool btn-link"
               title="{{ 'account.addresses.delete_address.text' | translate }}"
               (click)="modalDialog.show(address)"
               data-testing-id="delete-address-icon"

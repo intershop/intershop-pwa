@@ -20,13 +20,13 @@
       <ish-product-inventory />
       <div *ngIf="editable$ | async" class="d-flex align-items-center">
         <ish-lazy-product-add-to-order-template
-          [cssClass]="'btn btn-link btn-tool add-to-order-template'"
+          [cssClass]="'btn-link btn-tool add-to-order-template'"
           displayType="icon"
         />
         <ish-lazy-product-add-to-wishlist [cssClass]="'btn-link btn-tool ml-0'" displayType="icon" />
         <button
           type="button"
-          class="btn btn-tool btn-link custom-btn-link"
+          class="btn-tool btn-link"
           [attr.data-testing-id]="'remove-line-item'"
           [attr.data-id]="lineItem.id"
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
