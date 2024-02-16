@@ -3,24 +3,14 @@
 exports[`Filter Swatch Images Component should be created 1`] = `
 <ul class="filter-list clearfix" id="filter-list_Color">
   <li class="filter-item filter-color">
-    <button
-      type="button"
-      class="filter-swatch btn btn-link btn-link-action"
-      title="Black (4)"
-      data-testing-id="filter-link-Black"
-    >
-      <span style="background-color: black"></span>
-    </button>
+    <a tabindex="0" class="filter-swatch" title="Black (4)" data-testing-id="filter-link-Black"
+      ><span style="background-color: black"></span
+    ></a>
   </li>
   <li class="filter-item filter-color filter-selected">
-    <button
-      type="button"
-      class="filter-swatch btn btn-link btn-link-action"
-      title="Red (5)"
-      data-testing-id="filter-link-Red"
-    >
-      <span style="background-color: red"></span>
-    </button>
+    <a tabindex="0" class="filter-swatch" title="Red (5)" data-testing-id="filter-link-Red"
+      ><span style="background-color: red"></span
+    ></a>
   </li>
 </ul>
 `;

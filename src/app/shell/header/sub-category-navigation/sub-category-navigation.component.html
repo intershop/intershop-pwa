@@ -16,20 +16,21 @@
       >{{ subcategory.name }}</a
     >
     <ng-container *ngIf="subCategoriesDepth < mainNavigationMaxSubCategoriesDepth && subcategory.hasChildren">
-      <button
-        type="button"
-        class="dropdown-toggle btn btn-link btn-link-action"
+      <a
+        class="dropdown-toggle"
         [ngClass]="{ 'd-none': view === 'full' }"
         (click)="toggleOpen(subcategory.uniqueId)"
+        (keydown.enter)="toggleOpen(subcategory.uniqueId)"
         [attr.aria-label]="
           isOpened(subcategory.uniqueId)
             ? ('header.navigation.collapse_category.aria_label' | translate : { '0': subcategory.name })
             : ('header.navigation.expand_category.aria_label' | translate : { '0': subcategory.name })
         "
+        tabindex="0"
       >
         <fa-icon *ngIf="isOpened(subcategory.uniqueId); else closed" [icon]="['fas', 'minus']" />
         <ng-template #closed> <fa-icon [icon]="['fas', 'plus']" /> </ng-template>
-      </button>
+      </a>
       <ish-sub-category-navigation
         [categoryUniqueId]="subcategory.uniqueId"
         [subCategoriesDepth]="subCategoriesDepth + 1"

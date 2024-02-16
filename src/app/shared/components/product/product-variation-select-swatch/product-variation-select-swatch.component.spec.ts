@@ -54,14 +54,12 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li class="selected">
-          <button type="button" class="btn btn-link btn-link-action" title="Black">
-            <span style="background-color: rgb(0, 0, 0)"></span>
-          </button>
+          <a tabindex="0" title="Black"><span style="background-color: rgb(0, 0, 0)"></span></a>
         </li>
         <li>
-          <button type="button" class="btn btn-link btn-link-action" title="White">
-            <span class="light-color" style="background-color: rgb(255, 255, 255)"></span>
-          </button>
+          <a tabindex="0" title="White"
+            ><span class="light-color" style="background-color: rgb(255, 255, 255)"></span
+          ></a>
         </li>
       </ul>
     `);
@@ -73,14 +71,10 @@ describe('Product Variation Select Swatch Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul>
         <li>
-          <button type="button" class="btn btn-link btn-link-action" title="yyy">
-            <img alt="yyy" src="imageY.png" />
-          </button>
+          <a tabindex="0" title="yyy"><img alt="yyy" src="imageY.png" /></a>
         </li>
         <li class="selected">
-          <button type="button" class="btn btn-link btn-link-action" title="zzz">
-            <img alt="zzz" src="imageZ.png" />
-          </button>
+          <a tabindex="0" title="zzz"><img alt="zzz" src="imageZ.png" /></a>
         </li>
       </ul>
     `);
@@ -90,7 +84,7 @@ describe('Product Variation Select Swatch Component', () => {
     component.group = group_colorCode;
     fixture.detectChanges();
     const emitter = spy(component.changeOption);
-    const link = fixture.debugElement.query(By.css('li.selected button')).nativeElement;
+    const link = fixture.debugElement.query(By.css('li.selected a')).nativeElement;
     link.dispatchEvent(new Event('click'));
 
     verify(emitter.emit(anything())).once();
@@ -107,7 +101,7 @@ describe('Product Variation Select Swatch Component', () => {
     component.group = group_swatchImage;
     fixture.detectChanges();
     const emitter = spy(component.changeOption);
-    const link = fixture.debugElement.query(By.css('li.selected button')).nativeElement;
+    const link = fixture.debugElement.query(By.css('li.selected a')).nativeElement;
     link.dispatchEvent(new Event('click'));
 
     verify(emitter.emit(anything())).once();

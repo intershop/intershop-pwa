@@ -1,10 +1,10 @@
 <ul>
   <li *ngFor="let option of group.options" [ngClass]="{ selected: option.active }">
-    <button
-      type="button"
-      class="btn btn-link btn-link-action"
+    <a
       (click)="optionChange(group.id, option.value)"
+      (keydown.enter)="optionChange(group.id, option.value)"
       title="{{ option.label }}"
+      tabindex="0"
     >
       <span
         *ngIf="group.attributeType === 'colorCode'"
@@ -12,6 +12,6 @@
         [ngClass]="{ 'light-color': option.label.toLowerCase() === 'white' }"
       ></span>
       <img *ngIf="group.attributeType === 'swatchImage'" [src]="option.metaData" alt="{{ option.label }}" />
-    </button>
+    </a>
   </li>
 </ul>

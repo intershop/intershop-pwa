@@ -1,19 +1,20 @@
 <ul class="filter-list clearfix" [id]="'filter-list_' + filterElement.name">
   <ng-container *ngFor="let facet of filterElement.facets">
     <li class="filter-item filter-color" [ngClass]="{ 'filter-selected': facet.selected }">
-      <button
-        type="button"
-        class="filter-swatch btn btn-link btn-link-action"
+      <a
+        class="filter-swatch"
         [title]="facet.displayName + ' (' + facet.count + ')'"
         (click)="filter(facet)"
+        (keypress.down)="filter(facet)"
         [attr.data-testing-id]="'filter-link-' + (facet.displayName | sanitize)"
+        tabindex="0"
       >
         <span
           [style.background-image]="getBackgroundImage(facet)"
           [style.background-color]="getBackgroundColor(facet)"
           [style.border]="facet.displayName.toLowerCase() === 'white' ? '1px solid #ddd' : null"
         ></span>
-      </button>
+      </a>
     </li>
   </ng-container>
 </ul>
