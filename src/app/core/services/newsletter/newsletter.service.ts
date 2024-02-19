@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, throwError } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, catchError, map, of, switchMap, take, throwError } from 'rxjs';
 
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getNewsletterSubscriptionStatus } from 'ish-core/store/customer/user';
 
 /**
  * The Newsletter Service handles the newsletter related interaction with the 'subscriptions' REST API.
  */
 @Injectable({ providedIn: 'root' })
 export class NewsletterService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private store: Store) {}
+
+  private newsletterSubscriptionStatus$ = this.store.pipe(select(getNewsletterSubscriptionStatus), take(1));
 
   /**
    * Gets the current newsletter subscription status of the user.
@@ -34,27 +38,21 @@ export class NewsletterService {
    * Doesn't make a REST call when newStatus and currentStatus are the same.
    *
    * @param newStatus        The new newsletter subscription status of the user.
-   * @param currentStatus    The current newsletter subscription status of the user.
    * @param userEmail        The user email.
    * @returns                The new newsletter subscription status.
    *                         Returns the current status when newStatus and currentStatus are the same.
    */
-  updateNewsletterSubscriptionStatus(
-    newStatus: boolean,
-    // TODO: check if there is a better way to open a stream on the currentStatus instead of passing it through the effect
-    currentStatus: boolean,
-    userEmail: string
-  ): Observable<boolean> {
+  updateNewsletterSubscriptionStatus(newStatus: boolean, userEmail: string): Observable<boolean> {
     // only make a REST-call when the status has changed
-    if (currentStatus === newStatus) {
-      return of(currentStatus);
-    }
+    return this.newsletterSubscriptionStatus$.pipe(
+      switchMap(currentStatus => {
+        if (currentStatus === newStatus) {
+          return of(currentStatus);
+        }
 
-    if (newStatus) {
-      return this.subscribeToNewsletter(userEmail);
-    } else {
-      return this.unsubscribeFromNewsletter(userEmail);
-    }
+        return newStatus ? this.subscribeToNewsletter(userEmail) : this.unsubscribeFromNewsletter(userEmail);
+      })
+    );
   }
 
   /**

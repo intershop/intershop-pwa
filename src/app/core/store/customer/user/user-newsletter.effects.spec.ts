@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { NewsletterService } from 'ish-core/services/newsletter/newsletter.service';
-import { getLoggedInUser, getNewsletterSubscriptionStatus } from 'ish-core/store/customer/user';
+import { getLoggedInUser } from 'ish-core/store/customer/user';
 
 import { UserNewsletterEffects } from './user-newsletter.effects';
 import { userNewsletterActions, userNewsletterApiActions } from './user.actions';
@@ -23,19 +23,14 @@ describe('User Newsletter Effects', () => {
     newsletterServiceMock = mock(NewsletterService);
 
     when(newsletterServiceMock.getSubscription(anything())).thenReturn(of(true));
-    when(newsletterServiceMock.updateNewsletterSubscriptionStatus(anything(), anything(), anything())).thenReturn(
-      of(true)
-    );
+    when(newsletterServiceMock.updateNewsletterSubscriptionStatus(anything(), anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
       providers: [
         { provide: NewsletterService, useFactory: () => instance(newsletterServiceMock) },
         provideMockActions(() => actions$),
         provideMockStore({
-          selectors: [
-            { selector: getLoggedInUser, value: { email: testEmail } },
-            { selector: getNewsletterSubscriptionStatus, value: false },
-          ],
+          selectors: [{ selector: getLoggedInUser, value: { email: testEmail } }],
         }),
         UserNewsletterEffects,
       ],
@@ -76,7 +71,7 @@ describe('User Newsletter Effects', () => {
       actions$ = of(action);
 
       effects.updateNewsletterSubscription$.subscribe(() => {
-        verify(newsletterServiceMock.updateNewsletterSubscriptionStatus(true, false, testEmail)).once();
+        verify(newsletterServiceMock.updateNewsletterSubscriptionStatus(true, testEmail)).once();
         done();
       });
     });
@@ -90,7 +85,7 @@ describe('User Newsletter Effects', () => {
       actions$ = of(action);
 
       effects.updateNewsletterSubscription$.subscribe(() => {
-        verify(newsletterServiceMock.updateNewsletterSubscriptionStatus(true, false, testEmail)).once();
+        verify(newsletterServiceMock.updateNewsletterSubscriptionStatus(true, testEmail)).once();
         done();
       });
     });
@@ -106,7 +101,7 @@ describe('User Newsletter Effects', () => {
       actions$ = of(action);
 
       effects.updateNewsletterSubscription$.subscribe(() => {
-        verify(newsletterServiceMock.updateNewsletterSubscriptionStatus(true, false, newTestEmail)).once();
+        verify(newsletterServiceMock.updateNewsletterSubscriptionStatus(true, newTestEmail)).once();
         done();
       });
     });

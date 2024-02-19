@@ -7,7 +7,7 @@ import { NewsletterService } from 'ish-core/services/newsletter/newsletter.servi
 import { mapErrorToAction, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
 
 import { userNewsletterActions, userNewsletterApiActions } from './user.actions';
-import { getLoggedInUser, getNewsletterSubscriptionStatus } from './user.selectors';
+import { getLoggedInUser } from './user.selectors';
 
 @Injectable()
 export class UserNewsletterEffects {
@@ -47,18 +47,11 @@ export class UserNewsletterEffects {
     this.actions$.pipe(
       ofType(userNewsletterActions.updateUserNewsletterSubscription),
       mapToPayload(),
-      concatLatestFrom(() => [
-        this.store.pipe(select(getLoggedInUser)),
-        this.store.pipe(select(getNewsletterSubscriptionStatus)),
-      ]),
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInUser))),
       filter(([payload, user]) => !!payload.userEmail || !!user?.email),
-      concatMap(([payload, user, currentNewsletterSubscriptionStatus]) =>
+      concatMap(([payload, user]) =>
         this.newsletterService
-          .updateNewsletterSubscriptionStatus(
-            payload.subscriptionStatus,
-            currentNewsletterSubscriptionStatus,
-            payload.userEmail || user.email
-          )
+          .updateNewsletterSubscriptionStatus(payload.subscriptionStatus, payload.userEmail || user.email)
           .pipe(
             map(subscriptionStatus =>
               userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess({ subscriptionStatus })
