@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 
@@ -9,7 +9,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 export function fetchUserNewsletterGuard(): boolean | Observable<boolean> {
   const accountFacade = inject(AccountFacade);
 
-  accountFacade.loadNewsletterSubscription();
+  return accountFacade.loadNewsletterSubscription().pipe(map(() => true));
 
   return of(true);
 }

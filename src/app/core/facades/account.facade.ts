@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -13,6 +13,7 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { User } from 'ish-core/models/user/user.model';
 import { OrderListQuery } from 'ish-core/services/order/order.service';
 import { MessagesPayloadType } from 'ish-core/store/core/messages';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import {
   createCustomerAddress,
   deleteCustomerAddress,
@@ -262,14 +263,23 @@ export class AccountFacade {
   }
 
   // NEWSLETTER
-  // should only be called when the server-configuration-parameter 'marketing.newsletterSubscriptionEnabled' is true
-
   subscribedToNewsletter$ = this.store.pipe(select(getNewsletterSubscriptionStatus));
 
-  loadNewsletterSubscription() {
-    this.store.dispatch(userNewsletterActions.loadUserNewsletterSubscription());
+  loadNewsletterSubscription(): Observable<boolean> {
+    return this.store.pipe(
+      select(getServerConfigParameter<boolean>('marketing.newsletterSubscriptionEnabled')),
+      take(1),
+      switchMap(enabled => {
+        if (enabled) {
+          this.store.dispatch(userNewsletterActions.loadUserNewsletterSubscription());
+          return this.store.pipe(select(getNewsletterSubscriptionStatus));
+        }
+        return of(false);
+      })
+    );
   }
 
+  // should only be called when the server-configuration-parameter 'marketing.newsletterSubscriptionEnabled' is true
   updateNewsletterSubscription(subscribedToNewsletter: boolean) {
     this.store.dispatch(
       userNewsletterActions.updateUserNewsletterSubscription({ subscriptionStatus: subscribedToNewsletter })
