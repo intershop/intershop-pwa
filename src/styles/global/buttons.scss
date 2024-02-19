@@ -5,11 +5,13 @@
   font-family: $font-family-bold;
   text-transform: uppercase;
 
-  @media (max-width: $screen-xs-max) {
-    display: block;
-    width: 100%;
-    margin-bottom: $space-default;
-    clear: both;
+  &:not(.btn-link) {
+    @media (max-width: $screen-xs-max) {
+      display: block;
+      width: 100%;
+      margin-bottom: $space-default;
+      clear: both;
+    }
   }
 
   &:focus,
@@ -75,6 +77,7 @@
     font-family: $font-family-regular;
     text-decoration: none;
     text-transform: unset;
+    border: none;
   }
 
   &.btn-link-inline {
