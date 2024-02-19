@@ -1,18 +1,23 @@
 import { at } from '../../framework';
+import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { MyAccountPage } from '../../pages/account/my-account.page';
+import { sensibleDefaults } from '../../pages/account/registration.page';
 import { HomePage } from '../../pages/home.page';
 
 const _ = {
-  name: 'Patricia Miller',
-  email: 'patricia@test.intershop.de',
+  user: { ...sensibleDefaults, login: `testuser${new Date().getTime()}@test.intershop.de` },
   password: '!InterShop00!',
   wrongPassword: 'wrong',
 };
 
 describe('Returning User', () => {
   describe('with valid password', () => {
-    before(() => HomePage.navigateTo());
+    before(() => {
+      createUserViaREST(_.user);
+
+      HomePage.navigateTo();
+    });
 
     it('should press login and be routed to login page', () => {
       at(HomePage, page => {
@@ -24,11 +29,11 @@ describe('Returning User', () => {
     it('should enter credentials and submit and be directed to my-account', () => {
       at(LoginPage, page => {
         page.errorText.should('not.exist');
-        page.fillForm(_.email, _.password);
+        page.fillForm(_.user.login, _.password);
         page.submit().its('response.statusCode').should('equal', 200);
       });
       at(MyAccountPage, page => {
-        page.header.myAccountLink.should('have.text', _.name);
+        page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
       });
     });
 
@@ -66,7 +71,7 @@ describe('Returning User', () => {
 
     it('should enter wrong credentials and submit and be be still at login page', () => {
       at(LoginPage, page => {
-        page.fillForm(_.email, _.wrongPassword);
+        page.fillForm(_.user.login, _.wrongPassword);
         page.submit().its('response.statusCode').should('equal', 401);
         page.errorText.should('be.visible');
       });
