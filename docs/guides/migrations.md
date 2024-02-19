@@ -12,7 +12,7 @@ kb_sync_latest_only
 The OrderListComponent is strictly presentational, components using it have to supply the data.
 The getOrders method of the OrderService doesn't fetch all related order data by default, you can provide an additional parameter to include the data you need.
 For accessibility reasons, we use buttons instead of anchor tags for links that trigger only an action and are not intended for navigation purposes.
-Be aware of minor styling changes: Use css classes `btn btn-link link-action` for text links and `btn-tool btn-link` for icon links.
+Be aware of minor styling changes: Use css classes `btn btn-link btn-link-action` for text links and `btn-tool btn-link` for icon links.
 
 ## From 4.2 to 5.0
 
