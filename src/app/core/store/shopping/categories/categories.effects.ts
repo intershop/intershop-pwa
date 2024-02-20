@@ -109,7 +109,7 @@ export class CategoriesEffects {
         personalizationStatusDetermined
       ),
       switchMap(() =>
-        this.categoryService.getTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth).pipe(
+        this.categoryService.getTopLevelCategories(SSR ? 0 : this.mainNavigationMaxSubCategoriesDepth).pipe(
           map(categories => loadTopLevelCategoriesSuccess({ categories })),
           mapErrorToAction(loadTopLevelCategoriesFail)
         )

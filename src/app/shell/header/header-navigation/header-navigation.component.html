@@ -18,7 +18,7 @@
     >
       {{ category.name }}
     </a>
-    <ng-container *ngIf="0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren">
+    <ng-container *ngIf="!SSR && mainNavigationMaxSubCategoriesDepth > 0 && category.hasChildren">
       <a
         class="dropdown-toggle"
         (click)="toggleOpen(category.uniqueId)"
