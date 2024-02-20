@@ -116,35 +116,25 @@ button.btn-link {
   &.btn-tool {
     padding: 0;
     background-color: transparent;
-    border: 1px solid transparent;
+    border: none;
   }
 
   &.btn-link-action {
     padding: 0;
+    margin-bottom: 1px; // fix inline display
     font-size: unset;
   }
 
   &:hover,
   &:focus {
     text-decoration: none;
+
+    &:not(:focus-visible) {
+      // remove shadow for non-keyboard :focus (shadow is kept if user uses the keyboard)
+      box-shadow: none;
+    }
   }
 }
-
-/* .btn-link-action {
-  padding: 0;
-  margin-right: 0 !important;
-  margin-bottom: 0 !important;
-  font-size: unset;
-  border: none;
-}
-
-@media (max-width: $screen-xs-max) {
-  .btn-link-action {
-    display: unset !important;
-    width: unset !important;
-  }
-}
-*/
 
 // multiple buttons margin handling (use "button-group" in case the buttons are not direct siblings)
 .button-group .btn,

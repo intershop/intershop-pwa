@@ -2,7 +2,7 @@
   <ng-container *ngFor="let fill of stars; index as i">
     <button
       type="button"
-      class="text-muted mt-4 btn btn-link btn-link-action"
+      class="text-muted btn btn-link btn-link-action"
       [title]="'product.review.rating.tooltip' | translate : { '0': i + 1 }"
       (click)="setStars(i + 1)"
     >

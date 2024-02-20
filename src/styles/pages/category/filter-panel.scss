@@ -94,6 +94,11 @@
         }
       }
 
+      .btn-link-action {
+        width: 100%;
+        text-align: left;
+      }
+
       span {
         &.icon-notselected {
           display: inline-block;
@@ -323,22 +328,25 @@ input {
 }
 
 @media (max-width: $screen-xs-max) {
-  .mobile-filter-toggle {
-    display: block;
-    padding: $space-default 0;
-    margin-bottom: $space-default;
-    font-family: $font-family-condensedregular;
-    font-size: 15px;
-    font-weight: 700;
-    text-align: center;
-    text-transform: uppercase;
-
-    &:hover {
-      text-decoration: none;
-    }
-
-    .ng-fa-icon {
+  button.btn-link-action {
+    &.mobile-filter-toggle {
       display: block;
+      width: 100%;
+      padding: $space-default 0;
+      margin-bottom: $space-default;
+      font-family: $font-family-condensedregular;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      .ng-fa-icon {
+        display: block;
+      }
     }
   }
 }
