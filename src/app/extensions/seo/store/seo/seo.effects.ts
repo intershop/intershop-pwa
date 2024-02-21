@@ -75,7 +75,13 @@ export class SeoEffects {
             // DEFAULT
             this.appRef.isStable.pipe(
               whenTruthy(),
-              map(() => this.doc.URL.replace(/[;?].*/g, ''))
+              map(() => {
+                let cleanURL = this.doc.URL.replace(/[;?].*/g, '');
+                if (SSR) {
+                  cleanURL = cleanURL.slice(0, cleanURL.lastIndexOf('/'));
+                }
+                return cleanURL;
+              })
             ),
           ])
         ),
@@ -199,6 +205,7 @@ export class SeoEffects {
     // the canonical URL of a production system should always be with 'https:'
     // even though the PWA SSR container itself is usually not deployed in an SSL environment so the URLs need manual adaption
     const canonicalUrl = encodeURI(url.replace('http:', 'https:'));
+
     const canonicalLink = this.domService.getOrCreateElement('link[rel="canonical"]', 'link', this.doc.head);
 
     this.domService.setAttribute(canonicalLink, 'rel', 'canonical');
