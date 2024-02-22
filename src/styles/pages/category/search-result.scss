@@ -35,19 +35,6 @@
     padding-left: 14px;
     line-height: $search-container-height;
     border: $border-width-default solid $border-color-light;
-
-    /* removes the 'x' inside the search input in IE */
-    &::-ms-clear {
-      display: none;
-    }
-
-    /* removes the 'x' and other default search elements inside the search input in Chrome */
-    &::-webkit-search-decoration,
-    &::-webkit-search-cancel-button,
-    &::-webkit-search-results-button,
-    &::-webkit-search-results-decoration {
-      display: none;
-    }
   }
 
   button {
