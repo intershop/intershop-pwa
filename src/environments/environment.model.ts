@@ -35,7 +35,6 @@ export interface Environment {
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'
-    | 'messageToMerchant'
     | 'quoting'
     | 'quickorder'
     | 'orderTemplates'
@@ -43,6 +42,8 @@ export interface Environment {
     /* B2C features */
     | 'guestCheckout'
     | 'wishlists'
+    /* ICM compatibility - to be used with the ICMCompatibilityInterceptor */
+    // | 'messageToMerchant'
     /* Third-party Integrations */
     | 'addressDoctor'
     | 'sentry'

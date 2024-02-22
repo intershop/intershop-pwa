@@ -32,6 +32,11 @@ export class ProductsListComponent implements OnChanges {
   productSKUs$: Observable<string[]>;
 
   /**
+   * track already fetched SKUs
+   */
+  private fetchedSKUs = new Set<string>();
+
+  /**
    * configuration of swiper carousel
    * https://swiperjs.com/swiper-api
    */
@@ -44,6 +49,7 @@ export class ProductsListComponent implements OnChanges {
     private shoppingFacade: ShoppingFacade
   ) {
     this.swiperConfig = {
+      watchSlidesProgress: true,
       direction: 'horizontal',
       navigation: true,
       pagination: {
@@ -62,6 +68,13 @@ export class ProductsListComponent implements OnChanges {
       distinctUntilChanged<[string[], string[]]>(isEqual),
       map(([skus, failed]) => skus.filter(x => !failed.includes(x)))
     );
+  }
+
+  lazyFetch(fetch: boolean, sku: string): boolean {
+    if (fetch) {
+      this.fetchedSKUs.add(sku);
+    }
+    return this.fetchedSKUs.has(sku);
   }
 
   /**

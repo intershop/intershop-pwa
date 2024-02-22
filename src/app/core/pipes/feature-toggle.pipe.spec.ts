@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 import { FeatureTogglePipe } from './feature-toggle.pipe';
 
@@ -23,7 +24,7 @@ describe('Feature Toggle Pipe', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('feature1')],
+      imports: [FeatureToggleModule.forTesting('feature1' as FeatureToggleType)],
       declarations: [FeatureTogglePipe, TestComponent],
     });
   });
@@ -56,7 +57,7 @@ describe('Feature Toggle Pipe', () => {
 
   describe('after switching features', () => {
     beforeEach(() => {
-      FeatureToggleModule.switchTestingFeatures('feature2');
+      FeatureToggleModule.switchTestingFeatures('feature2' as FeatureToggleType);
       fixture.detectChanges();
     });
 

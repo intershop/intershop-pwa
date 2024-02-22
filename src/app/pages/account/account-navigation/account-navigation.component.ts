@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 import { navigationItems } from './account-navigation.items';
 
@@ -12,7 +13,7 @@ export interface NavigationItem {
   routerLink?: string;
   faIcon?: IconProp;
   isCollapsed?: boolean;
-  feature?: string;
+  feature?: FeatureToggleType;
   serverSetting?: string;
   permission?: string | string[];
   notRole?: string | string[];

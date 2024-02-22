@@ -304,3 +304,18 @@ export function setStyleUrls(componentFile: string, styleUrls: string[]): Rule {
     });
   };
 }
+
+export function addFeatureToEnvironment(feature: string): Rule {
+  return host => {
+    const source = readIntoSourceFile(host, '/src/environments/environment.model.ts');
+    const recorder = host.beginUpdate('/src/environments/environment.model.ts');
+    const existing = tsquery(
+      source,
+      `InterfaceDeclaration:has(Identifier[name=Environment]) > PropertySignature:has(Identifier[name=features]) UnionType`
+    )[0];
+    if (existing) {
+      recorder.insertLeft(existing.getEnd(), `\n    | '${feature}'`);
+    }
+    host.commitUpdate(recorder);
+  };
+}

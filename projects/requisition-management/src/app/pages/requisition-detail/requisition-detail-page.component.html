@@ -37,7 +37,7 @@
 
     <h2>{{ 'approval.detailspage.order_details.heading' | translate }}</h2>
 
-    <div *ishFeature="'messageToMerchant'">
+    <div *ngIf="'shipping.messageToMerchant' | ishServerSetting">
       <!-- MessageToMerchant-->
       <ish-basket-merchant-message-view [data]="requisition" />
     </div>

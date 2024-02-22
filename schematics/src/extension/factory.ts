@@ -15,7 +15,12 @@ import { PWAExtensionOptionsSchema as Options } from 'schemas/extension/schema';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
-import { addExportToNgModule, addImportToNgModule, addImportToNgModuleBefore } from '../utils/registration';
+import {
+  addExportToNgModule,
+  addFeatureToEnvironment,
+  addImportToNgModule,
+  addImportToNgModuleBefore,
+} from '../utils/registration';
 
 export function createExtension(options: Options): Rule {
   return async host => {
@@ -66,6 +71,8 @@ export function createExtension(options: Options): Rule {
       )}-routing.module`,
     };
     operations.push(addImportToNgModuleBefore(appModuleOptions, 'AppLastRoutingModule'));
+
+    operations.push(addFeatureToEnvironment(strings.camelize(options.name)));
 
     operations.push(applyLintFix());
 

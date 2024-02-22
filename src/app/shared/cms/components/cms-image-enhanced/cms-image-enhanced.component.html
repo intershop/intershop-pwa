@@ -39,11 +39,11 @@
     <div class="enhanced-image-text">
       <h1 *ngIf="pagelet.hasParam('Heading1')">{{ pagelet.stringParam('Heading1') }}</h1>
       <h2 *ngIf="pagelet.hasParam('Heading2')">{{ pagelet.stringParam('Heading2') }}</h2>
-      <p
+      <div
         *ngIf="pagelet.hasParam('Description')"
         class="d-none d-sm-inline"
         [ishServerHtml]="pagelet.stringParam('Description')"
-      ></p>
+      ></div>
       <a
         *ngIf="pagelet.hasParam('Link') && pagelet.hasParam('LinkText')"
         [routerLink]="routerLink(pagelet, 'Link')"

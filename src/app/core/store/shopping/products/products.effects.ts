@@ -314,7 +314,13 @@ export class ProductsEffects {
             : undefined
         ),
         whenTruthy(),
-        map(sku => loadProductVariationsIfNotLoaded({ sku }))
+        groupBy(identity),
+        mergeMap(group$ =>
+          group$.pipe(
+            throttleTime(10),
+            map(sku => loadProductVariationsIfNotLoaded({ sku }))
+          )
+        )
       ),
     { dispatch: true }
   );

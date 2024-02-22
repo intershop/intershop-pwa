@@ -11,7 +11,7 @@ type OrderBasket = Omit<AbstractBasket<OrderLineItem>, 'approval'>;
 
 export interface Order extends OrderBasket {
   documentNo: string;
-  creationDate: number;
+  creationDate: string;
   orderCreation: {
     status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
     stopAction?: {

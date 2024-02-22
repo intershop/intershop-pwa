@@ -15,6 +15,14 @@ The getOrders method of the OrderService doesn't fetch all related order data by
 For accessibility reasons, we use buttons instead of anchor tags for links that trigger only an action and are not intended for navigation purposes.
 Be aware of minor styling changes: Use css classes `btn btn-link btn-link-action` for text links and `btn-tool btn-link` for icon links, (see [Accessibility guide/How to fix `'click-events-have-key-events`' problems](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/accessibility.md#how-to-fix-click-events-have-key-events-problems) for more details).
 
+In ICM 11 the `messageToMerchant` flag can be configured in the back office and its setting is supplied by the `/configurations` REST call.
+For this reason the `messageToMerchant` feature toggle is removed as a configurable feature toggle.
+To still be able to configure the message to merchant feature via feature toggle in ICM 7.10 environments an [`ICMCompatibilityInterceptor`](../../src/app/core/interceptors/icm-compatibility.interceptor.ts) was introduced that can be enabled in ICM 7.10 based projects in the [`core.module.ts`](../../src/app/core/core.module.ts).
+In addition the `'messageToMerchant'` environment feature toggle option needs to be enabled in the [`environment.model.ts`](../../src/environments/environment.model.ts).
+
+To address an Angular hydration issue ([#1585](https://github.com/intershop/intershop-pwa/pull/1585)) the `header` component rendering was changed and in addition a `HeaderType` was introduced for the standard header types `['simple', 'error', 'checkout']`.
+If in a project other header types are used these header types and the rendering needs to be adapted accordingly.
+
 ## From 4.2 to 5.0
 
 Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.

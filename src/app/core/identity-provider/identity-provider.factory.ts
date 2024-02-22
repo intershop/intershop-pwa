@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { getIdentityProvider } from 'ish-core/store/core/configuration';
+import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { IdentityProvider } from './identity-provider.interface';
@@ -13,7 +14,7 @@ import { IdentityProvider } from './identity-provider.interface';
 interface IdentityProviderImplementor {
   type: string;
   implementor: Type<IdentityProvider<unknown>>;
-  feature?: string;
+  feature?: FeatureToggleType;
 }
 
 export const IDENTITY_PROVIDER_IMPLEMENTOR = new InjectionToken<IdentityProviderImplementor>(

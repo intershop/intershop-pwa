@@ -3,9 +3,10 @@
     <ng-container *ngIf="listStyle === 'carousel'; else plainList">
       <div class="product-list">
         <swiper [config]="swiperConfig">
-          <ng-template *ngFor="let sku of products" swiperSlide>
+          <ng-template *ngFor="let sku of products" swiperSlide let-data>
             <div [ngClass]="listItemCSSClass">
               <ish-product-item
+                *ngIf="lazyFetch(data.isVisible, sku)"
                 ishProductContext
                 [sku]="sku"
                 [configuration]="listItemConfiguration"
