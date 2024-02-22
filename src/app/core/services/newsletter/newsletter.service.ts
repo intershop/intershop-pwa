@@ -38,7 +38,7 @@ export class NewsletterService {
    * Doesn't make a REST call when newStatus and currentStatus are the same.
    *
    * @param newStatus        The new newsletter subscription status of the user.
-   * @param userEmail        The user email.
+   * @param userEmail        The user e-mail.
    * @returns                The new newsletter subscription status.
    *                         Returns the current status when newStatus and currentStatus are the same.
    */
