@@ -277,7 +277,7 @@ describe('Checkout Payment Component', () => {
       expect(
         element.querySelector('[data-testing-id=payment-parameter-form-ISH_CreditCard] input[type=radio]')
       ).toBeTruthy();
-      expect(element.querySelector('[data-testing-id=payment-parameter-form-ISH_CreditCard] a')).toBeTruthy();
+      expect(element.querySelector('[data-testing-id=payment-parameter-form-ISH_CreditCard] button')).toBeTruthy();
     });
 
     it('should throw deletePaymentInstrument event when the user deletes a payment instrument', () => {

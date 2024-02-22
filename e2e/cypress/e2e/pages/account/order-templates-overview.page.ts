@@ -8,7 +8,7 @@ export class OrderTemplatesOverviewPage {
   readonly breadcrumb = new BreadcrumbModule();
 
   addOrderTemplate(name: string) {
-    cy.get('a[data-testing-id="add-order-template"').click();
+    cy.get('button[data-testing-id="add-order-template"').click();
     cy.get('[data-testing-id="title"]').clear().type(name);
     cy.get('[data-testing-id="order-template-dialog-submit"]').click();
   }

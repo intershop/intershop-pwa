@@ -8,7 +8,7 @@ export class WishlistsOverviewPage {
   readonly breadcrumb = new BreadcrumbModule();
 
   addWishlist(name: string, preferred: boolean) {
-    cy.get('a[data-testing-id="add-wishlist"').click();
+    cy.get('button[data-testing-id="add-wishlist"').click();
     cy.get('[data-testing-id="title-wrapper"]').find('[data-testing-id="title"]').clear().type(name);
     if (preferred) {
       cy.get('[data-testing-id="preferred-wrapper"]').find('[data-testing-id="preferred"]').check();

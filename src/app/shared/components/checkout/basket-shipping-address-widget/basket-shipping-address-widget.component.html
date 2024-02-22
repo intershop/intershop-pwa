@@ -4,29 +4,27 @@
     <ng-container *ngIf="(basketInvoiceAndShippingAddressEqual$ | async) === false">
       <div class="float-right">
         <!-- edit shipping address -->
-        <a
+        <button
           *ngIf="collapseChange | async"
-          class="btn-tool"
+          type="button"
+          class="btn-tool btn-link"
           title="{{ 'checkout.address.update.shipping.label' | translate }}"
           (click)="showAddressForm(address)"
-          (keydown.enter)="showAddressForm(address)"
           data-testing-id="edit-shipping-address-link"
-          tabindex="0"
         >
           <fa-icon [icon]="['fas', 'pencil-alt']" />
-        </a>
+        </button>
 
         <!-- delete shipping address -->
-        <a
+        <button
           *ngIf="(basketShippingAddressDeletable$ | async) && (collapseChange | async)"
-          class="btn-tool"
+          type="button"
+          class="btn-tool btn-link"
           title="{{ 'checkout.address.delete.button.label' | translate }}"
           (click)="modalDialog.show(address)"
-          (keydown.enter)="modalDialog.show(address)"
-          tabindex="0"
         >
           <fa-icon [icon]="['fas', 'trash-alt']" />
-        </a>
+        </button>
 
         <ish-modal-dialog
           #modalDialog

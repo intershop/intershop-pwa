@@ -124,7 +124,7 @@ describe('Basket Shipping Address Widget Component', () => {
 
     it('should expand form if shipping is edited', () => {
       fixture.detectChanges();
-      (element.querySelector('a[data-testing-id="edit-shipping-address-link"') as HTMLLinkElement).click();
+      (element.querySelector('[data-testing-id="edit-shipping-address-link"') as HTMLLinkElement).click();
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`

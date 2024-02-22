@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -92,12 +91,7 @@ describe('Account Addresses Component', () => {
           MockComponent(LazyAddressDoctorComponent),
           MockComponent(ModalDialogComponent),
         ],
-        imports: [
-          FeatureToggleModule.forTesting(),
-          FormlyTestingModule,
-          RouterTestingModule,
-          TranslateModule.forRoot(),
-        ],
+        imports: [FeatureToggleModule.forTesting(), FormlyTestingModule, TranslateModule.forRoot()],
         providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
       })
         .overrideComponent(AccountAddressesComponent, {
@@ -259,7 +253,7 @@ describe('Account Addresses Component', () => {
 
     it('should render create address button after creation', () => {
       fixture.detectChanges();
-      expect(element.querySelector('a[data-testing-id=create-address-button]')).toBeTruthy();
+      expect(element.querySelector('button[data-testing-id=create-address-button]')).toBeTruthy();
       expect(element.querySelector('[data-testing-id=create-address-form]')).toBeFalsy();
     });
 
@@ -272,7 +266,7 @@ describe('Account Addresses Component', () => {
 
       expect(component.isCreateAddressFormCollapsed).toBeFalse();
       expect(element.querySelector('[data-testing-id=create-address-form]')).toBeTruthy();
-      expect(element.querySelector('a[data-testing-id=create-address-button]')).toBeFalsy();
+      expect(element.querySelector('button[data-testing-id=create-address-button]')).toBeFalsy();
     });
 
     it('should render an error if an error occurs', () => {

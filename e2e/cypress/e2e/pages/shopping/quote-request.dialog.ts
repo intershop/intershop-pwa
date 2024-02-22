@@ -48,7 +48,7 @@ export class QuoteRequestDialog {
   }
 
   deleteItemFromQuoteRequest() {
-    cy.get(`a[title="Remove"]`).click();
+    cy.get(`button[title="Remove"]`).click();
   }
 
   assertClosed() {

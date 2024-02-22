@@ -99,6 +99,12 @@
   .list-header-item {
     @include list-header-item();
 
+    > .btn-link {
+      @include list-header-item();
+
+      padding: 0;
+    }
+
     &:last-child {
       padding-right: 0;
     }

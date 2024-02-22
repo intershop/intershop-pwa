@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -29,7 +28,6 @@ describe('Rating Stars Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
-        RouterTestingModule,
         TranslateModule.forRoot(),
       ],
       declarations: [MockComponent(ProductRatingStarComponent), RatingStarsFieldComponent],
@@ -70,9 +68,9 @@ describe('Rating Stars Field Component', () => {
   it('should be rendered after creation', () => {
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('a')).toHaveLength(5);
+    expect(element.querySelectorAll('button')).toHaveLength(5);
 
-    element.querySelectorAll('a').forEach((el, key) => {
+    element.querySelectorAll('button').forEach((el, key) => {
       el.click();
       expect(component.form.get('input').value).toEqual(key + 1);
     });
