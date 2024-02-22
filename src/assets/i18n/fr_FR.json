@@ -1223,7 +1223,7 @@
   "store_locator.title": "Recherche de magasins",
   "subject.has.no.permission.assigned": "Vous n’avez pas la permission d’accéder à cette page. Veuillez contacter votre administrateur de compte pour connaître les droits d’accès.",
   "subscriptions.not_subscribed": "non abonné",
-  "subscriptions.recipient.already_subscribed.error": "Vous vous êtes déjà inscrit à la lettre d’information.",
+  "subscriptions.recipient.already_subscribed.error": "Vous vous êtes déjà inscrit au bulletin d’information.",
   "subscriptions.subscribed": "abonné",
   "subscriptions.subscription_not_found.error": "Aucun abonnement à la newsletter n’a été trouvé.",
   "tacton.bom.name.label": "ID produit :",
