@@ -107,7 +107,9 @@
           <ng-container *ngIf="'marketing.newsletterSubscriptionEnabled' | ishServerSetting">
             <dt class="col-md-4">{{ 'account.profile.newsletter.label' | translate }}</dt>
             <dd class="col-md-8" data-testing-id="newsletter-info">
-              {{ (subscribedToNewsletter ? 'subscriptions.subscribed' : 'subscriptions.not_subscribed') | translate }}
+              <ng-container *ngIf="subscribedToNewsletter !== undefined">
+                {{ (subscribedToNewsletter ? 'subscriptions.subscribed' : 'subscriptions.not_subscribed') | translate }}
+              </ng-container>
             </dd>
           </ng-container>
           <!-- Birthday
