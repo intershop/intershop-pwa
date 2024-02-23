@@ -1225,7 +1225,7 @@
   "subscriptions.not_subscribed": "not subscribed",
   "subscriptions.recipient.already_subscribed.error": "You have already subscribed to the newsletter.",
   "subscriptions.subscribed": "subscribed",
-  "subscriptions.subscription_not_found.error": "No newsletter subscription found.",
+  "subscriptions.subscription_not_found.error": "No newsletter subscription was found.",
   "tacton.bom.name.label": "Product ID:",
   "tacton.bom.quantity.label": "Qty:",
   "tacton.bom.title": "Bill of Material",

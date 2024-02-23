@@ -1225,7 +1225,7 @@
   "subscriptions.not_subscribed": "non abonné",
   "subscriptions.recipient.already_subscribed.error": "Vous vous êtes déjà inscrit au bulletin d’information.",
   "subscriptions.subscribed": "abonné",
-  "subscriptions.subscription_not_found.error": "Aucun abonnement à la newsletter n’a été trouvé.",
+  "subscriptions.subscription_not_found.error": "Aucun abonnement au bulletin d’information n’a été trouvé.",
   "tacton.bom.name.label": "ID produit :",
   "tacton.bom.quantity.label": "Qté :",
   "tacton.bom.title": "Nomenclature",
