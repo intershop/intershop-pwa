@@ -2,7 +2,7 @@
   <ul>
     <ng-container
       [ngTemplateOutlet]="pageTreeNode"
-      [ngTemplateOutletContext]="{ treeNodes: [contentPageTree], counter: 0 }"
+      [ngTemplateOutletContext]="{ treeNodes: [contentPageTree], counter: 1 }"
     />
   </ul>
 
@@ -13,10 +13,7 @@
       [ngClass]="{ 'page-navigation-active': treeNode.contentPageId === currentContentPage.id }"
     >
       <a [routerLink]="treeNode | ishContentPageRoute" [title]="treeNode.name">{{ treeNode.name }}</a>
-      <ul
-        *ngIf="treeNode.children.length > 0 && ((!depth && depth !== 0) || depth >= counter)"
-        [ngClass]="'page-navigation-' + counter"
-      >
+      <ul *ngIf="treeNode.children.length && depth > counter" [ngClass]="'page-navigation-' + counter">
         <ng-container
           [ngTemplateOutlet]="pageTreeNode"
           [ngTemplateOutletContext]="{ treeNodes: treeNode.children, counter: counter + 1 }"
