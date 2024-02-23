@@ -35,10 +35,6 @@
     padding-left: 14px;
     line-height: $search-container-height;
     border: $border-width-default solid $border-color-light;
-
-    &::-ms-clear {
-      display: none;
-    }
   }
 
   button {
