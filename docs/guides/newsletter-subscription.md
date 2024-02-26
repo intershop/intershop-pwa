@@ -9,16 +9,16 @@ kb_sync_latest_only
 
 ## Introduction
 
-In the PWA registered users can subscribe/unsubscribe to a newsletter service.
+In the PWA registered users can subscribe to and unsubscribe from a newsletter service.
 
 ## Configuration
 
-To enable this feature an e-mail marketing provider has to be configured in the ICM under Channel Preferences / E-mail Marketing.
-The PWA gets the information whether an e-mail provider is configured or not via the `/configurations` REST call under `marketing.newsletterSubscriptionEnabled`.
+To enable this feature, an e-mail marketing provider has to be configured in Intershop Commerce Management under **Channel Preferences** | **E-mail Marketing**.
+The PWA receives information about the e-mail provider configuration via the `/configurations` REST call under `marketing.newsletterSubscriptionEnabled`.
 
 ## Storefront
 
-If the newsletter subscription feature is enabled an additional checkbox is shown on the registration page and the account profile page that enables the user to subscribe or unsubscribe from the newsletter service.
+If the newsletter subscription feature is enabled, an additional checkbox is displayed on the registration page and on the account profile page that enables the user to subscribe to or unsubscribe from the newsletter service.
 
 ## Further References
 
