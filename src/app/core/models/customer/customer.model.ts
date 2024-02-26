@@ -33,8 +33,8 @@ export type CustomerUserType = {
  * registration request data type
  */
 export type CustomerRegistrationType = {
-  credentials?: Credentials;
   address: Address;
+  credentials?: Credentials;
   subscribedToNewsletter?: boolean;
 } & CustomerUserType &
   Captcha;
@@ -43,4 +43,5 @@ export interface SsoRegistrationType {
   companyInfo: { companyName1: string; companyName2?: string; taxationID: string };
   address: Address;
   userId: string;
+  subscribedToNewsletter?: boolean;
 }

@@ -140,6 +140,7 @@ export class RegistrationFormConfigurationService {
         },
         address,
         userId: registrationConfig.userId,
+        subscribedToNewsletter: formValue.newsletterSubscription,
       });
     } else {
       const customer: Customer = {
