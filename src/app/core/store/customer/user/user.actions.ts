@@ -1,4 +1,4 @@
-import { createAction } from '@ngrx/store';
+import { createAction, createActionGroup, emptyProps } from '@ngrx/store';
 
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerLoginType, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
@@ -146,3 +146,21 @@ export const updateUserPasswordByPasswordReminderFail = createAction(
 );
 
 export const fetchAnonymousUserToken = createAction('[Token API] Fetch Anonymous User Token');
+
+export const userNewsletterActions = createActionGroup({
+  source: 'User Newsletter',
+  events: {
+    'Load User Newsletter Subscription': emptyProps(),
+    'Update User Newsletter Subscription': payload<{ subscriptionStatus: boolean; userEmail?: string }>(),
+  },
+});
+
+export const userNewsletterApiActions = createActionGroup({
+  source: 'User Newsletter API',
+  events: {
+    'Load User Newsletter Subscription Success': payload<{ subscribed: boolean }>(),
+    'Load User Newsletter Subscription Fail': httpError<{}>(),
+    'Update User Newsletter Subscription Success': payload<{ subscriptionStatus: boolean }>(),
+    'Update User Newsletter Subscription Fail': httpError<{}>(),
+  },
+});

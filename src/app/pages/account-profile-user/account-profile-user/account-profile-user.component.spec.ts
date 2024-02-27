@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
@@ -14,11 +17,20 @@ describe('Account Profile User Component', () => {
   let component: AccountProfileUserComponent;
   let fixture: ComponentFixture<AccountProfileUserComponent>;
   let element: HTMLElement;
-  let fieldLibrary: FieldLibrary;
+  let fieldLibraryMock: FieldLibrary;
+
+  let appFacadeMock: AppFacade;
+  let accountFacadeMock: AccountFacade;
+
+  let currentUser: User;
+  let invalidUser: User;
 
   beforeEach(async () => {
-    fieldLibrary = mock(FieldLibrary);
-    when(fieldLibrary.getConfigurationGroup(anything())).thenReturn([
+    appFacadeMock = mock(AppFacade);
+    accountFacadeMock = mock(AccountFacade);
+
+    fieldLibraryMock = mock(FieldLibrary);
+    when(fieldLibraryMock.getConfigurationGroup(anything())).thenReturn([
       {
         key: 'title',
         type: 'ish-select-field',
@@ -43,7 +55,11 @@ describe('Account Profile User Component', () => {
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [AccountProfileUserComponent, MockComponent(ErrorMessageComponent)],
-      providers: [{ provide: FieldLibrary, useFactory: () => instance(fieldLibrary) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
+        { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
+        { provide: FieldLibrary, useFactory: () => instance(fieldLibraryMock) },
+      ],
     }).compileComponents();
   });
 
@@ -51,6 +67,15 @@ describe('Account Profile User Component', () => {
     fixture = TestBed.createComponent(AccountProfileUserComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    currentUser = { firstName: 'Patricia', lastName: 'Miller' } as User;
+    component.currentUser$ = of(currentUser);
+
+    invalidUser = { firstName: '', lastName: '' } as User;
+
+    when(appFacadeMock.serverSetting$(anything())).thenReturn(of(true));
+
+    when(accountFacadeMock.subscribedToNewsletter$).thenReturn(of(true));
   });
 
   it('should be created', () => {
@@ -77,31 +102,43 @@ describe('Account Profile User Component', () => {
     expect(element.innerHTML).toContain('title');
   });
 
+  it('should display checkbox for newsletter subscription', () => {
+    fixture.detectChanges();
+
+    expect(element.innerHTML).toContain('newsletter');
+  });
+
   it('should emit updateUserProfile event if form is valid', () => {
     const eventEmitter$ = spy(component.updateUserProfile);
 
-    component.currentUser = { firstName: 'Patricia', lastName: 'Miller' } as User;
     fixture.detectChanges();
 
-    component.submit();
+    component.submitForm(currentUser);
 
     verify(eventEmitter$.emit(anything())).once();
   });
 
   it('should not emit updateUserProfile event if form is invalid', () => {
     const eventEmitter$ = spy(component.updateUserProfile);
+
+    component.currentUser$ = of(invalidUser);
+
     fixture.detectChanges();
 
-    component.submit();
+    component.submitForm(anything());
 
     verify(eventEmitter$.emit(anything())).never();
   });
 
   it('should disable submit button when the user submits an invalid form', () => {
+    component.currentUser$ = of(invalidUser);
+
     fixture.detectChanges();
 
     expect(component.buttonDisabled).toBeFalse();
-    component.submit();
+
+    component.submitForm(anything());
+
     expect(component.buttonDisabled).toBeTrue();
   });
 });

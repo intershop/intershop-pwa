@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs/operators';
+import { concatMap, mergeMap } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { UserService } from 'ish-core/services/user/user.service';
+import { userNewsletterActions } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload } from 'ish-core/utils/operators';
 
 import { registerFailure, registerSuccess, setRegistrationInfo } from './sso-registration.actions';
@@ -35,7 +36,20 @@ export class SsoRegistrationEffects {
             },
             userId: data.userId,
           })
-          .pipe(map(registerSuccess), mapErrorToAction(registerFailure))
+          .pipe(
+            concatMap(createUserResponse => [
+              registerSuccess,
+              ...(data.subscribedToNewsletter
+                ? [
+                    userNewsletterActions.updateUserNewsletterSubscription({
+                      subscriptionStatus: true,
+                      userEmail: createUserResponse.user.email,
+                    }),
+                  ]
+                : []),
+            ]),
+            mapErrorToAction(registerFailure)
+          )
       )
     )
   );

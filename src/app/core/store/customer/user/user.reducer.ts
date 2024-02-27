@@ -49,6 +49,8 @@ import {
   updateUserPasswordSuccess,
   updateUserSuccess,
   userErrorReset,
+  userNewsletterActions,
+  userNewsletterApiActions,
 } from './user.actions';
 
 export interface UserState {
@@ -63,6 +65,7 @@ export interface UserState {
   passwordReminderSuccess: boolean;
   passwordReminderError: HttpError;
   customerApprovalEmail: string;
+  subscribedToNewsletter: boolean;
 }
 
 const initialState: UserState = {
@@ -77,6 +80,7 @@ const initialState: UserState = {
   passwordReminderSuccess: undefined,
   passwordReminderError: undefined,
   customerApprovalEmail: undefined,
+  subscribedToNewsletter: undefined,
 };
 
 export const userReducer = createReducer(
@@ -101,7 +105,9 @@ export const userReducer = createReducer(
     updateUserPasswordByPasswordReminder,
     requestPasswordReminder,
     loginUserWithToken,
-    logoutUser
+    logoutUser,
+    userNewsletterActions.loadUserNewsletterSubscription,
+    userNewsletterActions.updateUserNewsletterSubscription
   ),
   unsetLoadingOn(
     loadUserCostCentersFail,
@@ -120,7 +126,9 @@ export const userReducer = createReducer(
     loadUserCostCentersSuccess,
     loadUserPaymentMethodsSuccess,
     deleteUserPaymentInstrumentSuccess,
-    logoutUserSuccess
+    logoutUserSuccess,
+    userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess,
+    userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess
   ),
   setErrorOn(
     updateUserFail,
@@ -129,7 +137,9 @@ export const userReducer = createReducer(
     loadUserPaymentMethodsFail,
     deleteUserPaymentInstrumentFail,
     loadRolesAndPermissionsFail,
-    logoutUserFail
+    logoutUserFail,
+    userNewsletterApiActions.loadUserNewsletterSubscriptionFail,
+    userNewsletterApiActions.updateUserNewsletterSubscriptionFail
   ),
   on(loginUserFail, loadCompanyUserFail, createUserFail, (_, action): UserState => {
     const error = action.payload.error;
@@ -212,6 +222,7 @@ export const userReducer = createReducer(
       ...state,
     })
   ),
+  // Password Reminder
   on(
     updateUserPasswordByPasswordReminder,
     requestPasswordReminder,
@@ -245,6 +256,21 @@ export const userReducer = createReducer(
       ...state,
       passwordReminderSuccess: undefined,
       passwordReminderError: undefined,
+    })
+  ),
+  // Newsletter
+  on(
+    userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess,
+    (state, action): UserState => ({
+      ...state,
+      subscribedToNewsletter: action.payload.subscribed,
+    })
+  ),
+  on(
+    userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess,
+    (state, action): UserState => ({
+      ...state,
+      subscribedToNewsletter: action.payload.subscriptionStatus,
     })
   )
 );
