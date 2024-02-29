@@ -14,4 +14,8 @@ export class CMSImageEnhancedComponent implements CMSComponent {
 
   isRouterLink = ContentViewHelper.isRouterLink;
   routerLink = ContentViewHelper.getRouterLink;
+
+  lazyLoading(pagelet: ContentPageletView): boolean {
+    return pagelet.stringParam('CSSClass')?.includes('loading-lazy');
+  }
 }
