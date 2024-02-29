@@ -8,9 +8,7 @@ describe('Wishlist Line Item Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WishlistLineItemComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   beforeEach(() => {

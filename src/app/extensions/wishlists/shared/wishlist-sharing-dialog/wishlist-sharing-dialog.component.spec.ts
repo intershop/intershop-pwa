@@ -8,9 +8,7 @@ describe('Wishlist Sharing Dialog Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WishlistSharingDialogComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   beforeEach(() => {
