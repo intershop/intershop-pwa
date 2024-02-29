@@ -11,6 +11,9 @@
 <h1>{{ 'account.orderdetails.heading.default' | translate }}</h1>
 <p>{{ 'account.orderdetails.headerDetails.default' | translate }}</p>
 
+<!-- Create cart from order -->
+<button type="submit" name="addProduct" class="btn btn-primary" (click)="addToBasket()">Create cart from order</button>
+
 <div *ngIf="order" class="section" data-testing-id="order-summary-info">
   <dl class="row dl-horizontal dl-separator">
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_number.label' | translate }}</dt>
