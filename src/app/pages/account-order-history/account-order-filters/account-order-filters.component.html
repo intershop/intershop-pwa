@@ -3,15 +3,18 @@
   <div class="mb-4">
     <a (click)="expandForm()" (keyup)="expandForm()">{{ formIsCollapsed ? showFiltersText : hideFiltersText }}</a>
   </div>
-  <div [ngbCollapse]="formIsCollapsed">
-    <formly-form [form]="form" [fields]="fields" />
+  <div>
+    <formly-form [form]="form" [fields]="[fields[0]]" />
   </div>
-  <div class="row">
+  <div [ngbCollapse]="formIsCollapsed">
+    <formly-form [form]="form" [fields]="fields.slice(1)" />
+  </div>
+  <div class="row mb-4">
     <div class="col-md-12 text-right">
       <button type="reset" class="btn btn-link" (click)="resetForm()">
         {{ 'account.order-history.filter.clear' | translate }}
       </button>
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary mr-0">
         <fa-icon [icon]="['fas', 'search']" />
         {{ 'account.order-history.filter.apply' | translate }}
       </button>

@@ -153,7 +153,7 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   private destroyRef = inject(DestroyRef);
 
-  formIsCollapsed = false;
+  formIsCollapsed = true;
 
   showFiltersText = 'Show All Filters';
   hideFiltersText = 'Hide All Filters';
@@ -174,7 +174,7 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
         fieldGroupClassName: 'row',
         fieldGroup: [
           {
-            className: 'col-6', // 1/3 width for Product ID
+            className: 'col-12 col-md-6',
             key: 'sku',
             type: 'ish-text-input-field',
             wrappers: ['form-field-horizontal'],
@@ -183,22 +183,8 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
               placeholder: 'account.order-history.filter.label.sku',
             },
           },
-          // {
-          //   className: 'col-4', // 1/3 width for Order status
-          //   key: 'state',
-          //   type: 'ish-select-field',
-          //   templateOptions: {
-          //     // keep-localization-pattern: ^account.order-history.filter.label.state.*
-          //     options: filterableStates.map(s => ({
-          //       label: `account.order-history.filter.label.state.${s}`,
-          //       value: s,
-          //     })),
-          //     placeholder: 'account.order-history.filter.label.state',
-          //     label: 'account.order-history.filter.label.state',
-          //   },
-          // },
           {
-            className: 'col-6', // 2/3 width for Date
+            className: 'col-12 col-md-6',
             key: 'date',
             type: 'ish-date-range-picker-field',
             props: {
