@@ -30,24 +30,26 @@
   </button>
 
   <ng-container *ishFeature="'wishlistSharing'">
-    <a
-      [routerLink]="[]"
+    <button
+      type="button"
       (click)="shareWishlistDialog.show()"
-      class="btn-tool float-right ml-0 mr-4"
+      class="btn-tool btn-link float-right ml-0 mr-4"
       [title]="'account.wishlist.header.send_wishlist.label' | translate"
       data-testing-id="wishlist-sharing"
-      ><fa-icon icon="paper-plane"
-    /></a>
+    >
+      <fa-icon icon="paper-plane" />
+    </button>
 
-    <a
+    <button
+      type="button"
       *ngIf="wishlist.shared"
-      [routerLink]="[]"
       (click)="unshareWishlist(wishlist.id)"
-      class="btn-tool float-right ml-0 mr-4"
+      class="btn-tool btn-link float-right ml-0 mr-4"
       [title]="'account.wishlist.header.stop_wishlist_sharing.label' | translate"
       data-testing-id="wishlist-stop-sharing"
-      ><fa-icon icon="pause"
-    /></a>
+    >
+      <fa-icon icon="pause" />
+    </button>
   </ng-container>
 
   <h1>{{ wishlist?.title }}</h1>
