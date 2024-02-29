@@ -253,6 +253,7 @@
   "account.order_templates.edit_form.save_button.text": "Änderungen speichern",
   "account.orderdetails.approved.text": "(genehmigt von {{0}} am {{1}})",
   "account.orderdetails.breadcrumb": "Bestelldetails",
+  "account.orderdetails.create_cart_from_order.label": "Warenkorb aus diesem Einkauf erstellen",
   "account.orderdetails.date_of_order.label": "Bestelldatum",
   "account.orderdetails.headerDetails.default": "Unten finden Sie Details zu Artikeln Ihrer Bestellung. Wenn Sie mehr als einen Artikel bestellt haben, beachten Sie, dass einige Artikel eine andere Versandart und/oder Bestellstatus haben können, weil sie einzeln versandt werden.",
   "account.orderdetails.heading.default": "Bestelldetails",

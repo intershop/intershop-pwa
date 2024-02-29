@@ -21,10 +21,9 @@
   data-testing-id="create-cart-from-order"
 >
   <ng-container *ngIf="(displaySpinner$ | async) !== true; else spinning">
-    <!-- <ng-template #defaultButton>{{ translationKey$ | async | translate }}</ng-template> -->
-    Create cart from order
+    {{ 'account.orderdetails.create_cart_from_order.label' | translate }}
   </ng-container>
-  <!-- button with spinning animation after Create Cart from Order -->
+  <!-- spinning animation after clicking button -->
   <ng-template #spinning>
     <fa-icon [icon]="['fas', 'spinner']" [spin]="true" ngClass="pr-3" />
     <span>{{ 'common.button.spinning.label' | translate }}</span>

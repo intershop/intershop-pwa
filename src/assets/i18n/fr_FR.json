@@ -253,6 +253,7 @@
   "account.order_templates.edit_form.save_button.text": "Enregistrer les modifications",
   "account.orderdetails.approved.text": "(approuvé par {{0}} sur {{1}})",
   "account.orderdetails.breadcrumb": "Détails de la commande",
+  "account.orderdetails.create_cart_from_order.label": "Créer un panier d’achat à partir d’une commande",
   "account.orderdetails.date_of_order.label": "Date de la commande",
   "account.orderdetails.headerDetails.default": "Ci-dessous, vous trouverez des détails sur les articles que vous avez commandés. Si vous avez commandé plus d’un article, veuillez noter que certains articles peuvent afficher un mode d’expédition différent et/ou un statut différent parce qu’ils sont expédiés dans un emballage séparé.",
   "account.orderdetails.heading.default": "Détails de la commande",
