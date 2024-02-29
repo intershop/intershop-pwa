@@ -160,17 +160,22 @@ export class DesignViewService {
 
   // send ids of the content includes and content pages to the design view system
   private sendContentIds() {
-    const contentIds: string[] = [];
+    const contentIds: { id: string; resource: 'includes' | 'pages' | 'viewcontexts' }[] = [];
     document.querySelectorAll('[includeid], [contentpageid], [viewcontextid]').forEach(element => {
       // transfer only viewcontexts that have call params
       if (element.getAttribute('viewcontextid')) {
         const callParams = element.getAttribute('callparamsstr');
         if (callParams) {
-          contentIds.push(`${element.getAttribute('viewcontextid')}/entrypoint?${callParams}`);
+          contentIds.push({
+            id: `${element.getAttribute('viewcontextid')}/entrypoint?${callParams}`,
+            resource: 'viewcontexts',
+          });
         }
       } else {
         contentIds.push(
-          element.getAttribute('includeid') ? element.getAttribute('includeid') : element.getAttribute('contentpageid')
+          element.getAttribute('includeid')
+            ? { id: element.getAttribute('includeid'), resource: 'includes' }
+            : { id: element.getAttribute('contentpageid'), resource: 'pages' }
         );
       }
     });
