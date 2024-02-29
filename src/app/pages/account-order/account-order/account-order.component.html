@@ -11,8 +11,25 @@
 <h1>{{ 'account.orderdetails.heading.default' | translate }}</h1>
 <p>{{ 'account.orderdetails.headerDetails.default' | translate }}</p>
 
-<!-- Create cart from order -->
-<button type="submit" name="addProduct" class="btn btn-primary" (click)="addToBasket()">Create cart from order</button>
+<!-- Create Cart from Order button -->
+<button
+  type="submit"
+  name="addProduct"
+  class="btn btn-primary"
+  [disabled]="buttonDisabled$ | async"
+  (click)="addToBasket()"
+  data-testing-id="create-cart-from-order"
+>
+  <ng-container *ngIf="(displaySpinner$ | async) !== true; else spinning">
+    <!-- <ng-template #defaultButton>{{ translationKey$ | async | translate }}</ng-template> -->
+    Create cart from order
+  </ng-container>
+  <!-- button with spinning animation after Create Cart from Order -->
+  <ng-template #spinning>
+    <fa-icon [icon]="['fas', 'spinner']" [spin]="true" ngClass="pr-3" />
+    <span>{{ 'common.button.spinning.label' | translate }}</span>
+  </ng-template>
+</button>
 
 <div *ngIf="order" class="section" data-testing-id="order-summary-info">
   <dl class="row dl-horizontal dl-separator">
