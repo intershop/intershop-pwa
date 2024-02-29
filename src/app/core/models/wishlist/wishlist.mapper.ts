@@ -11,16 +11,6 @@ import { Wishlist, WishlistItem } from './wishlist.model';
 export class WishlistMapper {
   private sanitizer = inject(DomSanitizer);
 
-  private static parseIdFromURI(uri: string): string {
-    const match = /wishlists[^\/]*\/([^\?]*)/.exec(uri);
-    if (match) {
-      return match[1];
-    } else {
-      console.warn(`could not find id in uri '${uri}'`);
-      return;
-    }
-  }
-
   fromData(wishlistData: WishlistData, wishlistId: string): Wishlist {
     if (wishlistData) {
       let items: WishlistItem[];
@@ -48,12 +38,5 @@ export class WishlistMapper {
     } else {
       throw new Error(`wishlistData is required`);
     }
-  }
-
-  /**
-   * extract ID from URI
-   */
-  fromDataToId(wishlistData: WishlistData): string {
-    return wishlistData ? WishlistMapper.parseIdFromURI(wishlistData.uri) : undefined;
   }
 }
