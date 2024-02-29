@@ -26,3 +26,5 @@
     <p>{{ 'wishlist.no_entries' | translate }}</p>
   </ng-template>
 </ng-container>
+
+<ish-loading *ngIf="wishlistLoading$ | async" />

@@ -32,7 +32,6 @@ export interface WishlistState extends EntityState<Wishlist> {
   loading: boolean;
   selected: string;
   error: HttpError;
-  wishlist: Wishlist | null;
 }
 
 export const wishlistsAdapter = createEntityAdapter<Wishlist>({
@@ -43,7 +42,6 @@ export const initialState: WishlistState = wishlistsAdapter.getInitialState({
   loading: false,
   selected: undefined,
   error: undefined,
-  wishlist: undefined,
 });
 
 export const wishlistReducer = createReducer(

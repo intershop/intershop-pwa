@@ -17,6 +17,7 @@ export class WishlistPageComponent implements OnDestroy, OnInit {
   secureCode: string;
   wishlist$: Observable<Wishlist>;
   wishlistError$: Observable<HttpError>;
+  wishlistLoading$: Observable<boolean>;
 
   private destroy = new Subject<void>();
 
@@ -38,6 +39,7 @@ export class WishlistPageComponent implements OnDestroy, OnInit {
 
     this.wishlist$ = this.wishlistFacade.wishlist$;
     this.wishlistError$ = this.wishlistFacade.wishlistError$;
+    this.wishlistLoading$ = this.wishlistFacade.wishlistLoading$;
   }
 
   trackByFn(_: number, item: WishlistItem) {
