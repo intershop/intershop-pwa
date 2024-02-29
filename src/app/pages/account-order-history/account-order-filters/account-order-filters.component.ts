@@ -64,6 +64,15 @@ const filterableStates: OrderListQuery['statusCode'] = [
   'CANCELLEDANDEXPORTED',
 ];
 
+// /**
+//  * Determine whether order filtering form is opened or not
+//  *
+//  * @param index Numerical index of the parameter form to get info from
+//  */
+// function formIsOpen(index: number): boolean {
+//   return index === this.openFormIndex;
+// }
+
 function selectFirst(val: string | string[]): string {
   return Array.isArray(val) ? val[0] : val;
 }
@@ -138,11 +147,16 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   form = new UntypedFormGroup({});
 
-  fields: (FormlyFieldConfig & { key: keyof FormModel })[];
+  fields: FormlyFieldConfig[];
 
   @Output() modelChange = new EventEmitter<Partial<OrderListQuery>>();
 
   private destroyRef = inject(DestroyRef);
+
+  formIsCollapsed = false;
+
+  showFiltersText = 'Show All Filters';
+  hideFiltersText = 'Hide All Filters';
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
@@ -153,37 +167,49 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
         type: 'ish-text-input-field',
         props: {
           placeholder: 'account.order-history.filter.label.order-no',
-          label: 'account.order-history.filter.label.order-no',
+          fieldClass: 'col-12',
         },
       },
       {
-        key: 'sku',
-        type: 'ish-text-input-field',
-        props: {
-          placeholder: 'account.order-history.filter.label.sku',
-          label: 'account.order-history.filter.label.sku',
-        },
-      },
-      {
-        key: 'state',
-        type: 'ish-select-field',
-        templateOptions: {
-          // keep-localization-pattern: ^account.order-history.filter.label.state.*
-          options: filterableStates.map(s => ({ label: `account.order-history.filter.label.state.${s}`, value: s })),
-          placeholder: 'account.order-history.filter.label.state',
-          label: 'account.order-history.filter.label.state',
-        },
-      },
-      {
-        key: 'date',
-        type: 'ish-date-range-picker-field',
-        props: {
-          placeholder: 'common.placeholder.shortdate-caps',
-          label: 'account.order-history.filter.label.date',
-          minDays: -365 * 2,
-          maxDays: 0,
-          startDate: -30,
-        },
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            className: 'col-6', // 1/3 width for Product ID
+            key: 'sku',
+            type: 'ish-text-input-field',
+            wrappers: ['form-field-horizontal'],
+            props: {
+              label: 'account.order-history.filter.label.sku',
+              placeholder: 'account.order-history.filter.label.sku',
+            },
+          },
+          // {
+          //   className: 'col-4', // 1/3 width for Order status
+          //   key: 'state',
+          //   type: 'ish-select-field',
+          //   templateOptions: {
+          //     // keep-localization-pattern: ^account.order-history.filter.label.state.*
+          //     options: filterableStates.map(s => ({
+          //       label: `account.order-history.filter.label.state.${s}`,
+          //       value: s,
+          //     })),
+          //     placeholder: 'account.order-history.filter.label.state',
+          //     label: 'account.order-history.filter.label.state',
+          //   },
+          // },
+          {
+            className: 'col-6', // 2/3 width for Date
+            key: 'date',
+            type: 'ish-date-range-picker-field',
+            props: {
+              placeholder: 'common.placeholder.shortdate-caps',
+              label: 'account.order-history.filter.label.date',
+              minDays: -365 * 2,
+              maxDays: 0,
+              startDate: -30,
+            },
+          },
+        ],
       },
     ];
   }
@@ -201,6 +227,10 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
       queryParams,
       fragment: this.fragmentOnRouting,
     });
+  }
+
+  expandForm() {
+    this.formIsCollapsed = !this.formIsCollapsed;
   }
 
   submitForm() {
