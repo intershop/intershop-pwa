@@ -1,15 +1,17 @@
-FROM openresty/openresty:1.21.4.3-1-jammy
-COPY --from=nginx:mainline /docker-entrypoint.sh /
-COPY --from=nginx:mainline /docker-entrypoint.d/*.sh /docker-entrypoint.d/
-COPY lua/*.lua /usr/local/openresty/lualib/
-RUN ln -s /usr/local/openresty/nginx/conf/mime.types /etc/nginx/ \
-  && useradd -Ms /bin/false nginx \
-  && mkdir -p /etc/resolvconf/resolv.conf.d \
-  && echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail \
-  && luarocks install lua-resty-redis-connector
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
+FROM nginx:1.22 AS builder
+RUN apt-get update \
+  && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev wget git gcc make libbrotli-dev
 
+WORKDIR /app
+RUN wget -q https://nginx.org/download/nginx-1.22.1.tar.gz && tar -zxf nginx-1.22.1.tar.gz \
+    && git clone https://github.com/google/ngx_brotli.git \
+    && cd ngx_brotli \
+    && git submodule update --init \
+    && cd ../nginx-1.22.1 \
+    && ./configure --with-compat --add-dynamic-module=../ngx_brotli \
+    && make modules
+
+FROM nginx:1.22
 RUN apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils libnss3-tools
 COPY nginx.conf /etc/nginx/nginx.conf
@@ -23,6 +25,10 @@ RUN chmod 700 /gomplate
 ADD https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert
 RUN chmod 700 /usr/bin/mkcert
 COPY --from=nginx/nginx-prometheus-exporter:1.0.0 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
+
+COPY --from=builder /app/nginx-1.22.1/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
+COPY --from=builder /app/nginx-1.22.1/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
+
 ENV CACHE=on
 ENV COMPRESSION=on
 ENV DEVICE_DETECTION=on
