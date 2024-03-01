@@ -49,30 +49,6 @@ interface FormModel extends Record<string, unknown> {
 
 type UrlModel = Partial<Record<'from' | 'to' | 'orderNo' | 'sku' | 'state', string | string[]>>;
 
-const filterableStates: OrderListQuery['statusCode'] = [
-  'NEW',
-  'INPROGRESS',
-  'CANCELLED',
-  'NOTDELIVERABLE',
-  'DELIVERED',
-  'RETURNED',
-  'PENDING',
-  'COMPLETED',
-  'MANUAL_INTERVENTION_NEEDED',
-  'EXPORTED',
-  'EXPORTFAILED',
-  'CANCELLEDANDEXPORTED',
-];
-
-// /**
-//  * Determine whether order filtering form is opened or not
-//  *
-//  * @param index Numerical index of the parameter form to get info from
-//  */
-// function formIsOpen(index: number): boolean {
-//   return index === this.openFormIndex;
-// }
-
 function selectFirst(val: string | string[]): string {
   return Array.isArray(val) ? val[0] : val;
 }
@@ -122,7 +98,7 @@ function modelToUrl(model: FormModel): UrlModel {
     state: model.state
       ?.split(',')
       .map(s => s.trim())
-      .filter(x => !!x) as OrderListQuery['statusCode'],
+      .filter(x => !!x),
   });
 }
 
@@ -132,7 +108,6 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
     creationDateTo: selectFirst(params.to),
     documentNumber: selectArray(params.orderNo),
     lineItem_product: selectArray(params.sku),
-    statusCode: selectArray(params.state) as OrderListQuery['statusCode'],
   });
 }
 
@@ -225,5 +200,12 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   resetForm() {
     this.navigate(undefined);
+  }
+
+  showResetButton(): boolean {
+    const productId = this.form.get('sku')?.value;
+    const date = this.form.get('date')?.value;
+
+    return !this.formIsCollapsed && (!!productId || !!date);
   }
 }

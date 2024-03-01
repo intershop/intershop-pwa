@@ -24,20 +24,6 @@ export interface OrderListQuery {
   limit: number;
   include?: OrderIncludeType[];
   offset?: number;
-  statusCode?: (
-    | 'NEW'
-    | 'INPROGRESS'
-    | 'CANCELLED'
-    | 'CANCELLEDANDEXPORTED'
-    | 'NOTDELIVERABLE'
-    | 'DELIVERED'
-    | 'RETURNED'
-    | 'PENDING'
-    | 'COMPLETED'
-    | 'EXPORTED'
-    | 'EXPORTFAILED'
-    | 'MANUAL_INTERVENTION_NEEDED'
-  )[];
   documentNumber?: string[];
   customerOrderID?: string[];
   creationDateFrom?: string;

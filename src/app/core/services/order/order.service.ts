@@ -18,8 +18,6 @@ export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
       if (Array.isArray(value)) {
         if (key === 'include') {
           return acc.set(key, value.join(','));
-        } else if (key === 'statusCode') {
-          return acc.set('filter[statusCode]', value.join(','));
         } else {
           return (value as string[]).reduce((acc, value) => acc.append(key, value?.toString()), acc);
         }
