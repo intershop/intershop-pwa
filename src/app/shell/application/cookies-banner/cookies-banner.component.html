@@ -4,17 +4,28 @@
   (@bottomOut.done)="setCookiesConsent($event)"
   class="cookies-banner"
 >
-  <div [ishServerHtml]="'cookies.banner.text' | translate"></div>
+  <div class="d-lg-flex justify-content-between align-items-center">
+    <div [ishServerHtml]="'cookies.banner.text' | translate"></div>
 
-  <button type="button" class="btn btn-light float-right" (click)="acceptAll()" data-testing-id="acceptAllButton">
-    {{ 'cookies.banner.accept_all' | translate }}
-  </button>
+    <div class="d-flex flex-column align-items-start">
+      <div class="d-sm-flex p-1">
+        <button type="button" class="btn btn-outline-light text-nowrap" (click)="acceptOnlyRequired()">
+          {{ 'cookies.banner.accept_only_required' | translate }}
+        </button>
 
-  <button type="button" class="btn btn-outline-light float-right" (click)="acceptOnlyRequired()">
-    {{ 'cookies.banner.accept_only_required' | translate }}
-  </button>
+        <button
+          type="button"
+          class="btn btn-light text-nowrap mr-0"
+          (click)="acceptAll()"
+          data-testing-id="acceptAllButton"
+        >
+          {{ 'cookies.banner.accept_all' | translate }}
+        </button>
+      </div>
 
-  <button type="button" class="btn btn-link float-right" routerLink="/cookies">
-    {{ 'cookies.banner.set_preferences' | translate }}
-  </button>
+      <button type="button" class="btn btn-link text-nowrap" routerLink="/cookies">
+        {{ 'cookies.banner.set_preferences' | translate }}
+      </button>
+    </div>
+  </div>
 </div>
