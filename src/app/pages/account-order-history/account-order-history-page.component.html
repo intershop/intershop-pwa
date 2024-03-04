@@ -8,7 +8,11 @@
 <ish-order-list
   [orders]="orders$ | async"
   [columnsToDisplay]="['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'destination', 'orderTotal']"
-  [noOrdersMessageKey]="!filtersActive ? 'account.orderlist.no_placed_orders_message' : undefined"
+  [noOrdersMessageKey]="
+    !filtersActive
+      ? 'account.orderlist.no_results_found_message'
+      : 'account.order_history.filter.no_results_found_message'
+  "
   [loading]="ordersLoading$ | async"
 />
 

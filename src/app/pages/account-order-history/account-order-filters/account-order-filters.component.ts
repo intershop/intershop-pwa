@@ -141,7 +141,7 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
         key: 'orderNo',
         type: 'ish-text-input-field',
         props: {
-          placeholder: 'account.order-history.filter.label.order-no',
+          placeholder: 'account.order_history.filter.label.order_no',
           fieldClass: 'col-12',
         },
       },
@@ -154,8 +154,8 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
             type: 'ish-text-input-field',
             wrappers: ['form-field-horizontal'],
             props: {
-              label: 'account.order-history.filter.label.sku',
-              placeholder: 'account.order-history.filter.label.sku',
+              label: 'account.order_history.filter.label.sku',
+              placeholder: 'account.order_history.filter.label.sku',
             },
           },
           {
@@ -164,7 +164,7 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
             type: 'ish-date-range-picker-field',
             props: {
               placeholder: 'common.placeholder.shortdate-caps',
-              label: 'account.order-history.filter.label.date',
+              label: 'account.order_history.filter.label.date',
               minDays: -365 * 2,
               maxDays: 0,
               startDate: -30,
