@@ -130,9 +130,6 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   formIsCollapsed = true;
 
-  showFiltersText = 'Show All Filters';
-  hideFiltersText = 'Hide All Filters';
-
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
