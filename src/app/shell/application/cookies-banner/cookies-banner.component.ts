@@ -47,11 +47,6 @@ export class CookiesBannerComponent implements OnInit {
     this.transitionBanner = 'bottom-out';
   }
 
-  acceptOnlyRequired() {
-    this.transitionBanner = 'bottom-out';
-    this.cookiesConsentFor = ['required'];
-  }
-
   setCookiesConsent(event: AnimationEvent): void {
     if (event.toState === this.transitionBanner) {
       if (this.cookiesConsentFor === undefined) {

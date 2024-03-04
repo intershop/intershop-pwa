@@ -3,23 +3,13 @@
   bottom: 0;
   z-index: 1000;
   width: 100%;
-  padding: 8px 15px;
+  padding: $space-default $space-default $space-default * 0.5;
   color: $color-inverse;
   background-color: $color-primary !important;
   opacity: 0.9;
 
-  h4 {
-    color: $color-inverse;
-  }
-
-  a,
-  .btn-link {
-    color: $color-inverse !important;
-    text-decoration: underline;
-
-    &:hover {
-      color: $text-color-quaternary !important;
-    }
+  .cookies-banner-text {
+    margin-bottom: divide($space-default, 3);
   }
 }
 
