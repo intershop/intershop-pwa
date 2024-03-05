@@ -34,6 +34,7 @@
   "account.addresses.address_updated.message": "Votre adresse a été mise à jour.",
   "account.addresses.create_address.button.label": "Enregistrer l’adresse",
   "account.addresses.delete_address.text": "Supprimer cette adresse",
+  "account.addresses.edit_address.button.label": "Modifier cette adresse",
   "account.addresses.have_no_saved_address.text": "Actuellement vous n’avez aucune adresse enregistrée. Ajoutez vos adresses de facturation et d’expédition pour un paiement plus rapide à l’avenir.",
   "account.addresses.heading": "Autres adresses",
   "account.addresses.new_address_created.message": "Votre adresse a été ajoutée à votre carnet d’adresses.",

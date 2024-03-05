@@ -34,6 +34,7 @@
   "account.addresses.address_updated.message": "Ihre Adresse wurde aktualisiert.",
   "account.addresses.create_address.button.label": "Adresse speichern",
   "account.addresses.delete_address.text": "Diese Adresse löschen",
+  "account.addresses.edit_address.button.label": "Diese Adresse bearbeiten",
   "account.addresses.have_no_saved_address.text": "Sie haben derzeit keine gespeicherten Adressen. Fügen Sie Ihre Rechnungs- und Lieferadresse hinzu, um den Bestellvorgang in Zukunft zu beschleunigen.",
   "account.addresses.heading": "Weitere Adressen",
   "account.addresses.new_address_created.message": "Ihre Adresse wurde Ihrem Adressbuch hinzugefügt.",
