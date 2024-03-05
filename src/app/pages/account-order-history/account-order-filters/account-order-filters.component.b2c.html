@@ -8,7 +8,13 @@
   </div>
   <div class="row mb-4">
     <div class="col-md-4 d-flex align-items-center">
-      <a (click)="expandForm()" (keyup)="expandForm()">{{ formIsCollapsed ? showFiltersText : hideFiltersText }}</a>
+      <a (click)="expandForm()" (keyup)="expandForm()">
+        {{
+          formIsCollapsed
+            ? ('account.order_history.filter.show' | translate)
+            : ('account.order_history.filter.hide' | translate)
+        }}</a
+      >
     </div>
     <div class="col-md-8 text-right">
       <button type="reset" class="btn btn-link" [hidden]="!showResetButton()" (click)="resetForm()">
