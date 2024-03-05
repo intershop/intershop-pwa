@@ -9,6 +9,7 @@ import { HtmlEncodePipe } from './pipes/html-encode.pipe';
 import { MakeHrefPipe } from './pipes/make-href.pipe';
 import { SanitizePipe } from './pipes/sanitize.pipe';
 import { ServerSettingPipe } from './pipes/server-setting.pipe';
+import { VariationAttributePipe } from './pipes/variation-attribute.pipe';
 import { CategoryRoutePipe } from './routing/category/category-route.pipe';
 import { ContentPageRoutePipe } from './routing/content-page/content-page-route.pipe';
 import { ProductRoutePipe } from './routing/product/product-route.pipe';
@@ -26,6 +27,7 @@ const pipes = [
   ProductRoutePipe,
   SanitizePipe,
   ServerSettingPipe,
+  VariationAttributePipe,
 ];
 
 @NgModule({
