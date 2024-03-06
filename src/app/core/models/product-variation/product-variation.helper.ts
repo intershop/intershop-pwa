@@ -1,4 +1,4 @@
-import { flatten, groupBy } from 'lodash-es';
+import { groupBy } from 'lodash-es';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -99,9 +99,10 @@ export class ProductVariationHelper {
       return product.variations?.length;
     }
 
-    const selectedFacets = flatten(
-      filters.filter.map(filter => filter.facets.filter(facet => facet.selected).map(facet => facet.name))
-    ).map(selected => selected.split('='));
+    const selectedFacets = filters.filter
+      .map(filter => filter.facets.filter(facet => facet.selected).map(facet => facet.name))
+      .flat()
+      .map(selected => selected.split('='));
 
     if (!selectedFacets.length) {
       return product.variations?.length;

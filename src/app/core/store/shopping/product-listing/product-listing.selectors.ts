@@ -1,6 +1,6 @@
 import { Dictionary } from '@ngrx/entity';
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
-import { flatten, isEqual, memoize, once, range } from 'lodash-es';
+import { isEqual, memoize, once, range } from 'lodash-es';
 import { identity } from 'rxjs';
 
 import {
@@ -28,7 +28,7 @@ const getProductListingSettings = createSelector(getProductListingState, state =
 const { selectEntities: getProductListingEntities } = adapter.getSelectors(getProductListingState);
 
 function mergeAllPages(data: ProductListingType) {
-  return flatten(data.pages.map(page => data[page]));
+  return data.pages.map(page => data[page]).flat();
 }
 
 function calculatePageIndices(currentPage: number, itemCount: number, itemsPerPage: number) {

@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { flatten, pick } from 'lodash-es';
+import { pick } from 'lodash-es';
 import { EMPTY, Observable, concat, defer, forkJoin, iif, of, throwError } from 'rxjs';
 import { concatMap, defaultIfEmpty, expand, filter, last, map, take } from 'rxjs/operators';
 
@@ -48,7 +48,7 @@ export class QuotingService {
           map(qrs => qrs.reverse()),
           map((quotes: QuoteData[]) => quotes.map(data => this.quoteMapper.fromData(data, 'Quote')))
         ),
-    ]).pipe(map(flatten));
+    ]).pipe(map(quotes => quotes.flat()));
   }
 
   getQuoteDetails(id: string, type: 'Quote' | 'QuoteRequest', completenessLevel: QuoteCompletenessLevel) {

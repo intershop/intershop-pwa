@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { flatten, range } from 'lodash-es';
+import { range } from 'lodash-es';
 import { Observable, from, identity, of, throwError } from 'rxjs';
 import { defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
 
@@ -289,7 +289,7 @@ export class ProductsService {
                 }),
                 mergeMap(identity, 2),
                 toArray(),
-                map(resp2 => [...resp.elements, ...flatten(resp2)])
+                map(resp2 => [...resp.elements, ...resp2.flat()])
               )
         ),
         map((links: ProductVariationLink[]) => ({
