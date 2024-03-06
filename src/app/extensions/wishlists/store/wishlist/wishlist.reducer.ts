@@ -14,6 +14,9 @@ import {
   deleteWishlist,
   deleteWishlistFail,
   deleteWishlistSuccess,
+  loadSharedWishlist,
+  loadSharedWishlistFail,
+  loadSharedWishlistSuccess,
   loadWishlists,
   loadWishlistsFail,
   loadWishlistsSuccess,
@@ -48,19 +51,21 @@ export const wishlistReducer = createReducer(
   initialState,
   setLoadingOn(
     loadWishlists,
+    loadSharedWishlist,
     createWishlist,
     deleteWishlist,
     updateWishlist,
     removeItemFromWishlist,
     moveItemToWishlist
   ),
-  setErrorOn(loadWishlistsFail, deleteWishlistFail, createWishlistFail, updateWishlistFail),
+  setErrorOn(loadWishlistsFail, loadSharedWishlistFail, deleteWishlistFail, createWishlistFail, updateWishlistFail),
   unsetLoadingAndErrorOn(
     updateWishlistSuccess,
     addProductToWishlistSuccess,
     removeItemFromWishlistSuccess,
     createWishlistSuccess,
     loadWishlistsSuccess,
+    loadSharedWishlistSuccess,
     deleteWishlistSuccess
   ),
   on(
@@ -92,7 +97,7 @@ export const wishlistReducer = createReducer(
     const { wishlistId } = action.payload;
     return wishlistsAdapter.removeOne(wishlistId, state);
   }),
-  on(selectWishlist, (state, action): WishlistState => {
+  on(selectWishlist, loadSharedWishlist, (state, action): WishlistState => {
     const { id } = action.payload;
     return {
       ...state,
@@ -131,6 +136,20 @@ export const wishlistReducer = createReducer(
       entities: {
         ...state.entities,
         [wishlistId]: updatedWishlist,
+      },
+    };
+  }),
+  on(loadSharedWishlistSuccess, (state, action): WishlistState => {
+    const wishlist = action.payload.wishlist;
+    const wishlistId = wishlist.id;
+
+    return {
+      ...state,
+      entities: {
+        ...state.entities,
+        [wishlistId]: {
+          ...wishlist,
+        },
       },
     };
   })

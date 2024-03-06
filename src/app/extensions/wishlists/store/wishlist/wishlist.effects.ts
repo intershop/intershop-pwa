@@ -31,6 +31,9 @@ import {
   deleteWishlist,
   deleteWishlistFail,
   deleteWishlistSuccess,
+  loadSharedWishlist,
+  loadSharedWishlistFail,
+  loadSharedWishlistSuccess,
   loadWishlists,
   loadWishlistsFail,
   loadWishlistsSuccess,
@@ -271,6 +274,18 @@ export class WishlistEffects {
         this.wishlistService.unshareWishlist(action.payload.wishlistId).pipe(
           map(() => unshareWishlistSuccess({ wishlistId: action.payload.wishlistId })),
           mapErrorToAction(unshareWishlistFail)
+        )
+      )
+    )
+  );
+
+  loadSharedWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadSharedWishlist),
+      mergeMap(action =>
+        this.wishlistService.getSharedWishlist(action.payload.id, action.payload.owner, action.payload.secureCode).pipe(
+          map(wishlist => loadSharedWishlistSuccess({ wishlist })),
+          mapErrorToAction(loadSharedWishlistFail)
         )
       )
     )

@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
-import { WishlistFacade } from 'ish-core/facades/wishlist.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Wishlist, WishlistItem } from 'ish-core/models/wishlist/wishlist.model';
+
+import { WishlistsFacade } from '../../facades/wishlists.facade';
+import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
 
 @Component({
   selector: 'ish-wishlist-page',
@@ -21,7 +22,7 @@ export class WishlistPageComponent implements OnDestroy, OnInit {
 
   private destroy = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private wishlistFacade: WishlistFacade) {}
+  constructor(private route: ActivatedRoute, private wishlistsFacade: WishlistsFacade) {}
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.destroy)).subscribe(params => {
@@ -34,12 +35,12 @@ export class WishlistPageComponent implements OnDestroy, OnInit {
     });
 
     if (this.id && this.owner && this.secureCode) {
-      this.wishlistFacade.loadWishlist(this.id, this.owner, this.secureCode);
+      this.wishlistsFacade.loadSharedWishlist(this.id, this.owner, this.secureCode);
     }
 
-    this.wishlist$ = this.wishlistFacade.wishlist$;
-    this.wishlistError$ = this.wishlistFacade.wishlistError$;
-    this.wishlistLoading$ = this.wishlistFacade.wishlistLoading$;
+    this.wishlist$ = this.wishlistsFacade.currentWishlist$;
+    this.wishlistError$ = this.wishlistsFacade.wishlistError$;
+    this.wishlistLoading$ = this.wishlistsFacade.wishlistLoading$;
   }
 
   trackByFn(_: number, item: WishlistItem) {

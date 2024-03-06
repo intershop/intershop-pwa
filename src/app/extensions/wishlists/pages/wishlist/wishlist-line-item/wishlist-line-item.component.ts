@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { WishlistItem } from 'ish-core/models/wishlist/wishlist.model';
+import { WishlistItem } from '../../../models/wishlist/wishlist.model';
 
 @Component({
   selector: 'ish-wishlist-line-item',
