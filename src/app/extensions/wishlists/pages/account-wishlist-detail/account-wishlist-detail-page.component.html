@@ -4,10 +4,6 @@
 <ng-container *ngIf="wishlist$ | async as wishlist">
   <ng-template #WishlistDescription>
     <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
-    <span
-      *ngIf="'wishlistSharing' | ishFeature"
-      innerHTML="{{ 'account.wishlists.wishlist_sharing.heading.tooltip.content' | translate }}"
-    ></span>
   </ng-template>
 
   <div>
@@ -29,7 +25,7 @@
     <fa-icon icon="pencil-alt" />
   </button>
 
-  <ng-container *ishFeature="'wishlistSharing'">
+  <ng-container>
     <button
       type="button"
       (click)="shareWishlistDialog.show()"
