@@ -3,8 +3,9 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 
-import { WishlistFacade } from 'ish-core/facades/wishlist.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+
+import { WishlistsFacade } from '../../facades/wishlists.facade';
 
 import { WishlistPageComponent } from './wishlist-page.component';
 
@@ -29,9 +30,9 @@ describe('Wishlist Page Component', () => {
           },
         },
         {
-          provide: WishlistFacade,
+          provide: WishlistsFacade,
           useValue: {
-            loadWishlist: jasmine.createSpy('loadWishlist').and.returnValue(of(undefined)),
+            loadSharedWishlist: jasmine.createSpy('loadSharedWishlist').and.returnValue(of(undefined)),
             wishlist$: of(undefined),
           },
         },

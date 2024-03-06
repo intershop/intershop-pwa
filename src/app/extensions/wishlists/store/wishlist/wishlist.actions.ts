@@ -97,3 +97,15 @@ export const unshareWishlistSuccess = createAction(
 );
 
 export const unshareWishlistFail = createAction('[Wishlist API] Unshare Wishlist Fail', httpError());
+
+export const loadSharedWishlist = createAction(
+  '[Wishlist] Load Shared Wishlist',
+  payload<{ id: string; owner: string; secureCode: string }>()
+);
+
+export const loadSharedWishlistSuccess = createAction(
+  '[Wishlist API] Load Shared Wishlist Success',
+  payload<{ wishlist: Wishlist }>()
+);
+
+export const loadSharedWishlistFail = createAction('[Wishlist API] Load Shared Wishlist Failure', httpError());

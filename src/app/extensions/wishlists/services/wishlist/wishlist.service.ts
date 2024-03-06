@@ -179,4 +179,10 @@ export class WishlistService {
       concatMap(restResource => this.apiService.delete<void>(`${restResource}/-/wishlists/${wishlistId}/share`))
     );
   }
+
+  getSharedWishlist(wishlistId: string, owner: string, secureCode: string): Observable<Wishlist> {
+    return this.apiService
+      .get<WishlistData>(`wishlists/${wishlistId};owner=${owner};secureCode=${secureCode}`)
+      .pipe(map(wishlist => this.wishlistMapper.fromData(wishlist, wishlistId)));
+  }
 }

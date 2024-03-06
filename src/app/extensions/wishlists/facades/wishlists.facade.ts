@@ -18,6 +18,7 @@ import {
   getSelectedWishlistDetails,
   getWishlistsError,
   getWishlistsLoading,
+  loadSharedWishlist,
   moveItemToWishlist,
   removeItemFromWishlist,
   shareWishlist,
@@ -96,5 +97,9 @@ export class WishlistsFacade {
 
   unshareWishlist(wishlistId: string): void {
     this.store.dispatch(unshareWishlist({ wishlistId }));
+  }
+
+  loadSharedWishlist(id: string, owner: string, secureCode: string) {
+    this.store.dispatch(loadSharedWishlist({ id, owner, secureCode }));
   }
 }
