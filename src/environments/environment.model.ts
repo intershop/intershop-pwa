@@ -42,7 +42,6 @@ export interface Environment {
     /* B2C features */
     | 'guestCheckout'
     | 'wishlists'
-    | 'wishlistSharing'
     /* ICM compatibility - to be used with the ICMCompatibilityInterceptor */
     // | 'messageToMerchant'
     /* Third-party Integrations */
