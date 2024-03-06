@@ -1,9 +1,15 @@
 import { Injector } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
 
 export class InstanceCreators {
-  static getOAuthServiceInstance(parent: Injector): OAuthService {
-    const injector = Injector.create({ providers: [{ provide: OAuthService }], parent });
+  static getOAuthServiceInstance(parent: Injector, storageFactory?: () => OAuthStorage): OAuthService {
+    const injector = Injector.create({
+      providers: [
+        ...(storageFactory ? [{ provide: OAuthStorage, useFactory: storageFactory }] : []),
+        { provide: OAuthService },
+      ],
+      parent,
+    });
     return injector.get(OAuthService);
   }
 }
