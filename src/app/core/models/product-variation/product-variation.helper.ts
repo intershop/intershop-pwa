@@ -18,7 +18,7 @@ export class ProductVariationHelper {
     }
 
     // transform currently selected variation attribute list to object with the attributeId as key
-    const currentSettings = (product.variableVariationAttributes || []).reduce<{ [id: string]: VariationAttribute }>(
+    const currentSettings = product.variableVariationAttributes.reduce<{ [id: string]: VariationAttribute }>(
       (acc, attr) => ({
         ...acc,
         [attr.variationAttributeId]: attr,
@@ -101,6 +101,10 @@ export class ProductVariationHelper {
       filters.filter.map(filter => filter.facets.filter(facet => facet.selected).map(facet => facet.name))
     ).map(selected => selected.split('='));
 
+    if (!selectedFacets.length) {
+      return product.variations?.length;
+    }
+
     return product.variations
       .map(p => p.variableVariationAttributes)
       .filter(attrs =>
@@ -136,7 +140,7 @@ export class ProductVariationHelper {
         quality = 0;
 
         // loop attributes of possible variation.
-        for (const attribute of variation.variableVariationAttributes || []) {
+        for (const attribute of variation.variableVariationAttributes) {
           // increment quality if variation attribute matches selected product attribute.
           if (
             attribute.variationAttributeId === selectedAttribute.variationAttributeId &&
