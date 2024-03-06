@@ -35,8 +35,9 @@ RUN chmod 700 /gomplate
 ADD https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert
 RUN chmod 700 /usr/bin/mkcert
 COPY --from=nginx/nginx-prometheus-exporter:1.0.0 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
-COPY --from=buildstep /app/openresty-1.21.4.3/build/nginx-1.21.4/objs/ngx_http_brotli_static_module.so /usr/local/openresty/nginx/modules
-COPY --from=buildstep /app/openresty-1.21.4.3/build/nginx-1.21.4/objs/ngx_http_brotli_filter_module.so /usr/local/openresty/nginx/modules
+COPY --from=buildstep /app/openresty-1.21.4.3/build/nginx-1.21.4/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
+COPY --from=buildstep /app/openresty-1.21.4.3/build/nginx-1.21.4/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
+
 ENV CACHE=on
 ENV COMPRESSION=on
 ENV DEVICE_DETECTION=on
