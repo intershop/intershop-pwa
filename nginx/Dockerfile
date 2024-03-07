@@ -22,7 +22,9 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
 
 RUN apt-get update \
-  && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils libnss3-tools
+  && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils libnss3-tools \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY features /etc/nginx/features/
 COPY templates /etc/nginx/templates/
