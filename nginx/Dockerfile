@@ -1,14 +1,13 @@
 FROM openresty/openresty:1.21.4.3-1-jammy AS buildstep
 RUN apt-get update \
-  && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev wget git gcc make libbrotli-dev
+  && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev wget git gcc make
 
 WORKDIR /app
-RUN wget https://openresty.org/download/openresty-1.21.4.3.tar.gz && tar -zxf openresty-1.21.4.3.tar.gz \
-    && git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli \
-    && cd openresty-1.21.4.3 \
-    && ./configure --with-compat --add-dynamic-module=../ngx_brotli \
-    && make \
-    && make install
+RUN wget https://nginx.org/download/nginx-1.21.4.tar.gz && tar -zxf nginx-1.21.4.tar.gz \
+  && git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli \
+  && cd nginx-1.21.4 \
+  && ./configure --with-compat --add-dynamic-module=../ngx_brotli \
+  && make modules
 
 FROM openresty/openresty:1.21.4.3-1-jammy
 COPY --from=nginx:mainline /docker-entrypoint.sh /
@@ -35,9 +34,8 @@ RUN chmod 700 /gomplate
 ADD https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert
 RUN chmod 700 /usr/bin/mkcert
 COPY --from=nginx/nginx-prometheus-exporter:1.0.0 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
-COPY --from=buildstep /app/openresty-1.21.4.3/build/nginx-1.21.4/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
-COPY --from=buildstep /app/openresty-1.21.4.3/build/nginx-1.21.4/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
-
+COPY --from=buildstep /app/nginx-1.21.4/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
+COPY --from=buildstep /app/nginx-1.21.4/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
 ENV CACHE=on
 ENV COMPRESSION=on
 ENV DEVICE_DETECTION=on
@@ -49,4 +47,3 @@ ENV LOGFORMAT=main
 ENV LOG_ALL=on
 
 EXPOSE 80 443 9113
-
