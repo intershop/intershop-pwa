@@ -837,6 +837,8 @@
   "cookie.preferences.heading": "Cookie Preferences",
   "cookies.banner.accept_all": "Accept All",
   "cookies.banner.accept_all.tooltip": "Agree to the use of all cookies",
+  "cookies.banner.accept_only_required": "Accept Only Essential",
+  "cookies.banner.accept_only_required.tooltip": "Agree only to the use of essential cookies",
   "cookies.banner.set_preferences": "Set Preferences",
   "cookies.banner.set_preferences.tooltip": "Learn more and manage your options",
   "cookies.banner.text": "This website uses cookies and other technologies to keep our site secure, to measure the performance, to personalize the content and to improve your experience on our site. To find out more, read our <a href=\"page://page.privacyPolicy.pagelet2-Page\">Privacy Policy</a>.",

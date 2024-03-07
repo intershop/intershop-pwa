@@ -11,6 +11,21 @@
   .cookies-banner-text {
     margin-bottom: divide($space-default, 3);
   }
+
+  .btn-link {
+    margin-bottom: 5px;
+    color: $color-inverse !important;
+    text-decoration: underline;
+
+    &:hover {
+      color: $text-color-quaternary !important;
+    }
+
+    @media (max-width: $screen-xs-max) {
+      display: block;
+      width: 100%;
+    }
+  }
 }
 
 .cookies-modal {
