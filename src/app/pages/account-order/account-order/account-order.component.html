@@ -20,7 +20,7 @@
   (click)="addToBasket()"
   data-testing-id="create-cart-from-order"
 >
-  <ng-container *ngIf="(displaySpinner$ | async) !== true; else spinning">
+  <ng-container *ngIf="this.displaySpinner() !== true; else spinning">
     {{ 'account.orderdetails.create_cart_from_order.label' | translate }}
   </ng-container>
   <!-- spinning animation after clicking button -->

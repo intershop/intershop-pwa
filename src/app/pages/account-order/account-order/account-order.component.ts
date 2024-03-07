@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Observable, combineLatest, map, startWith } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { Observable, combineLatest, map, of, startWith } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Order } from 'ish-core/models/order/order.model';
-import { whenFalsy } from 'ish-core/utils/operators';
 
 /**
  * The Order Page Component displays the details of an order.
@@ -22,26 +21,20 @@ export class AccountOrderComponent implements OnInit {
   @Input({ required: true }) order: Order;
 
   basketLoading$: Observable<boolean>;
-
   buttonDisabled$: Observable<boolean>;
+  loading$: Observable<boolean>;
 
-  constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {}
+  displaySpinner: Signal<boolean>;
 
-  // fires 'true' after add To Cart is clicked and basket is loading
-  displaySpinner$ = new BehaviorSubject(false);
-
-  private destroyRef = inject(DestroyRef);
+  constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {
+    this.basketLoading$ = this.checkoutFacade.basketLoading$;
+    this.displaySpinner = toSignal(this.basketLoading$, { initialValue: false });
+    this.loading$ = toObservable(this.displaySpinner).pipe(startWith(false));
+  }
 
   ngOnInit() {
-    this.basketLoading$ = this.checkoutFacade.basketLoading$;
-
-    // update emitted to display spinning animation
-    this.basketLoading$.pipe(whenFalsy(), takeUntilDestroyed(this.destroyRef)).subscribe(this.displaySpinner$); // false
-
-    const loading$ = this.displaySpinner$.pipe(startWith(false));
-
     // disable button when spinning, in case of an error or basket loading
-    this.buttonDisabled$ = combineLatest([loading$, this.basketLoading$]).pipe(
+    this.buttonDisabled$ = combineLatest([this.loading$, this.basketLoading$]).pipe(
       map(conditions => conditions.some(c => c))
     );
   }
@@ -53,6 +46,9 @@ export class AccountOrderComponent implements OnInit {
       }
     });
 
-    this.displaySpinner$.next(true);
+    // TODO: find solution, throws error:
+    // Error: NG0203: toSignal() can only be used within an injection context such as a constructor, a factory function, a field initializer,
+    // or a function used with `runInInjectionContext`. Find more at https://angular.io/errors/NG0203
+    this.displaySpinner = toSignal(of(true));
   }
 }
