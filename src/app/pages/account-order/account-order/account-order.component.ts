@@ -48,7 +48,9 @@ export class AccountOrderComponent implements OnInit {
 
   addToBasket() {
     this.order.lineItems.forEach(lineItem => {
-      this.shoppingFacade.addProductToBasket(lineItem.productSKU, lineItem.quantity.value);
+      if (!lineItem.isFreeGift) {
+        this.shoppingFacade.addProductToBasket(lineItem.productSKU, lineItem.quantity.value);
+      }
     });
 
     this.displaySpinner$.next(true);
