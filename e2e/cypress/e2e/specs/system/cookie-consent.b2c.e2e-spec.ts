@@ -10,7 +10,7 @@ describe('Cookie Consent', () => {
 
     it('should see cookie banner', () => {
       at(HomePage, () => {
-        cy.get('.cookies-banner').should('contain', 'Your privacy is important for us');
+        cy.get('.cookies-banner').should('contain', 'cookies');
       });
     });
 

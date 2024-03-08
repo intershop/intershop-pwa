@@ -3,22 +3,27 @@
   bottom: 0;
   z-index: 1000;
   width: 100%;
-  padding: 20px;
+  padding: $space-default $space-default $space-default * 0.5;
   color: $color-inverse;
   background-color: $color-primary !important;
   opacity: 0.9;
 
-  h4 {
-    color: $color-inverse;
+  .cookies-banner-text {
+    margin-bottom: divide($space-default, 3);
   }
 
-  a,
   .btn-link {
+    margin-bottom: 5px;
     color: $color-inverse !important;
     text-decoration: underline;
 
     &:hover {
       color: $text-color-quaternary !important;
+    }
+
+    @media (max-width: $screen-xs-max) {
+      display: block;
+      width: 100%;
     }
   }
 }
