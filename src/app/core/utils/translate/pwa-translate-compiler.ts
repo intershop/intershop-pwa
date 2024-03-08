@@ -52,7 +52,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
    * - "\s*" captures (and ignores) additional whitespace
    * - global matching ("/g") must be active to iterate over matches
    */
-  private static CASE_REGEX = /(zero|one|two|few|many|other|=\w+)\s*\{(.*?)\}/g;
+  private static CASE_REGEX = /(zero|one|two|few|many|other|=[\w-]+)\s*\{(.*?)\}/g;
 
   /**
    * regular expression for matching simple variables that
