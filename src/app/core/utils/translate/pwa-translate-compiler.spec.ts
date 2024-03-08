@@ -178,15 +178,16 @@ describe('Pwa Translate Compiler', () => {
 
   describe('with translate functionality and variable', () => {
     beforeEach(() => {
-      translate.set('key.type', '{{ type, select, =a{A} =b{B} other{something else} }}');
+      translate.set('key.type', '{{ type, select, =a{A} =b{B} =a-b{A&B} other{something else} }}');
       translate.set('message', 'You chose {{ type, translate, key.type }}.');
     });
 
     it.each`
-      type   | expected
-      ${'a'} | ${'You chose A.'}
-      ${'b'} | ${'You chose B.'}
-      ${'c'} | ${'You chose something else.'}
+      type     | expected
+      ${'a'}   | ${'You chose A.'}
+      ${'b'}   | ${'You chose B.'}
+      ${'a-b'} | ${'You chose A&B.'}
+      ${'c'}   | ${'You chose something else.'}
     `('should translate when $type was given as argument', ({ type, expected }) => {
       expect(translate.instant('message', { type })).toEqual(expected);
     });
