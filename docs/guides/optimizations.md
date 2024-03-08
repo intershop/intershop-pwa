@@ -13,7 +13,8 @@ The Nginx building block applies:
 
 - Compression of responses
 
-for further information, please refer to the [Guide - Building and Running nginx][nginx-startup].
+[ngx_brotli](https://github.com/google/ngx_brotli) is used because Brotli has a better compression ratio compared to gzip.
+For further information, please refer to the [Guide - Building and Running nginx](./nginx-startup.md#brotli-configuration).
 
 ## Custom Webpack Build
 

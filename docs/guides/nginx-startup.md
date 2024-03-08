@@ -255,6 +255,18 @@ An additional Redis service is not intended for production environments where a 
 For that reason also the PWA Helm chart does not support deploying an own Redis service with the PWA.
 Only the `redis.uri` can be configured for a Helm deployment.
 
+#### Brotli configuration
+
+All [configuration directives](https://github.com/google/ngx_brotli?tab=readme-ov-file#configuration-directives) can be set in
+[compression.conf](../../nginx/features/compression.conf).
+
+The nginx modules
+
+- ngx_http_brotli_filter_module.so
+- ngx_http_brotli_static_module.so
+
+are built in the [Dockerfile](../../nginx/Dockerfile) .
+
 ## Further References
 
 - [Concept - Multi-Site Handling](../concepts/multi-site-handling.md)
