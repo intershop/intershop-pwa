@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -20,6 +20,8 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   ordersError$: Observable<HttpError>;
   moreOrdersAvailable$: Observable<boolean>;
   filtersActive: boolean;
+  ordersAvailable: boolean;
+  private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade) {}
 
@@ -28,6 +30,10 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.ordersLoading$ = this.accountFacade.ordersLoading$;
     this.ordersError$ = this.accountFacade.ordersError$;
     this.moreOrdersAvailable$ = this.accountFacade.moreOrdersAvailable$;
+
+    this.orders$.pipe(takeUntil(this.destroy$)).subscribe(orders => {
+      this.ordersAvailable = orders.length > 0;
+    });
   }
 
   filter(filters: Partial<OrderListQuery>) {
@@ -41,5 +47,9 @@ export class AccountOrderHistoryPageComponent implements OnInit {
 
   loadMoreOrders(): void {
     this.accountFacade.loadMoreOrders();
+  }
+
+  ordersExist() {
+    return this.filtersActive ? this.filtersActive : this.ordersAvailable;
   }
 }

@@ -3,20 +3,22 @@
 <ish-error-message [error]="ordersError$ | async" />
 <p class="section">{{ 'account.order.subtitle' | translate }}</p>
 
-<ish-account-order-filters fragmentOnRouting="order-list-top" (modelChange)="filter($event)" />
+<ng-container *ngIf="ordersExist()">
+  <ish-account-order-filters fragmentOnRouting="order-list-top" (modelChange)="filter($event)" />
+</ng-container>
 
 <ish-order-list
   [orders]="orders$ | async"
   [columnsToDisplay]="['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'destination', 'orderTotal']"
   [noOrdersMessageKey]="
     !filtersActive
-      ? 'account.orderlist.no_results_found_message'
+      ? 'account.orderlist.no_placed_orders_message'
       : 'account.order_history.filter.no_results_found_message'
   "
   [loading]="ordersLoading$ | async"
 />
 
-<div *ngIf="moreOrdersAvailable$ | async" class="d-flex justify-content-center">
+<div *ngIf="ordersExist() && moreOrdersAvailable$ | async" class="d-flex justify-content-center">
   <button class="btn btn-secondary" (click)="loadMoreOrders()" [disabled]="ordersLoading$ | async">
     {{ 'account.order.load_more' | translate }}
   </button>

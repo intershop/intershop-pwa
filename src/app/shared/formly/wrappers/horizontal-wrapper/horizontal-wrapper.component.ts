@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 /**
- * The wrapper for displaying labels on the top of fields.
+ * The default wrapper for displaying fields with labels.
  *
  * @props **label** - the label to be displayed
  * @props **labelClass** - the css class to be applied to the ``<label>`` tag.
@@ -21,8 +21,8 @@ import { FieldWrapper } from '@ngx-formly/core';
 })
 export class HorizontalWrapperComponent extends FieldWrapper {
   dprops = {
-    labelClass: 'col-md-6',
-    fieldClass: 'col-md-12',
+    labelClass: 'col-md-4',
+    fieldClass: 'col-md-8',
   };
   get keyString() {
     return this.field.key as string;

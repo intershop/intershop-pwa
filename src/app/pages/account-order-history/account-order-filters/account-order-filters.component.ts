@@ -149,7 +149,7 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
             className: 'col-12 col-md-6',
             key: 'sku',
             type: 'ish-text-input-field',
-            wrappers: ['form-field-horizontal'],
+            wrappers: ['form-field-vertical'],
             props: {
               label: 'account.order_history.filter.label.sku',
               placeholder: 'account.order_history.filter.label.sku',
@@ -159,10 +159,11 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
             className: 'col-12 col-md-6',
             key: 'date',
             type: 'ish-date-range-picker-field',
+            wrappers: ['form-field-vertical'],
             props: {
-              placeholder: 'common.placeholder.shortdate-caps',
               label: 'account.order_history.filter.label.date',
-              minDays: -365 * 2,
+              placeholder: 'checkout.desired_delivery_date.note',
+              minDays: -365 * 10,
               maxDays: 0,
               startDate: -30,
             },
