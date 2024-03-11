@@ -3,7 +3,7 @@ RUN apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev wget git gcc make
 
 WORKDIR /app
-RUN wget https://nginx.org/download/nginx-1.21.4.tar.gz && tar -zxf nginx-1.21.4.tar.gz \
+RUN wget -q https://nginx.org/download/nginx-1.21.4.tar.gz && tar -zxf nginx-1.21.4.tar.gz \
   && git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli \
   && cd nginx-1.21.4 \
   && ./configure --with-compat --add-dynamic-module=../ngx_brotli \
