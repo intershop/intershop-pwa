@@ -265,7 +265,15 @@ The two NGINX modules
 - ngx_http_brotli_filter_module.so – for compressing responses on-the-fly
 - ngx_http_brotli_static_module.so - for serving pre-compressed files
 
-are built in the [Dockerfile](../../nginx/Dockerfile).
+are built in the [Dockerfile](../../nginx/Dockerfile) using an NGINX archive in a version which matches the openresty Docker image version.
+The archive needs to be used because it includes the `configure` command.
+The `./configure` [arguments](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded) are taken from the current openresty configuration (`nginx -V`) where the `--add-module` arguments are excluded.
+
+The modules can also be built using an openresty archive but in this case the built process is taking significantly longer:
+
+- `wget` the openresty archive version which matches the Docker image version
+- replace `make modules` with `make && make install`
+- the two filter modules are built into the folder /build/nginx-<version>/objs/
 
 ## Further References
 
