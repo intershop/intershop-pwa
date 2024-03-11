@@ -20,7 +20,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   ordersError$: Observable<HttpError>;
   moreOrdersAvailable$: Observable<boolean>;
   filtersActive: boolean;
-  ordersAvailable: boolean;
+  ordersAvailable = false;
   private destroy$ = new Subject<void>();
 
   constructor(private accountFacade: AccountFacade) {}
@@ -31,7 +31,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.ordersError$ = this.accountFacade.ordersError$;
     this.moreOrdersAvailable$ = this.accountFacade.moreOrdersAvailable$;
 
-    this.orders$.pipe(takeUntil(this.destroy$)).subscribe(orders => {
+    this.orders$?.pipe(takeUntil(this.destroy$)).subscribe(orders => {
       this.ordersAvailable = orders.length > 0;
     });
   }
@@ -40,7 +40,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.filtersActive = Object.keys(filters).length > 0;
     this.accountFacade.loadOrders({
       ...filters,
-      limit: 30,
+      limit: 3,
       include: ['commonShipToAddress'],
     });
   }
