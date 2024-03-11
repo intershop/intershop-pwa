@@ -260,12 +260,12 @@ Only the `redis.uri` can be configured for a Helm deployment.
 All [configuration directives](https://github.com/google/ngx_brotli?tab=readme-ov-file#configuration-directives) can be set in
 [compression.conf](../../nginx/features/compression.conf).
 
-The nginx modules
+The two NGINX modules
 
-- ngx_http_brotli_filter_module.so
-- ngx_http_brotli_static_module.so
+- ngx_http_brotli_filter_module.so – for compressing responses on-the-fly
+- ngx_http_brotli_static_module.so - for serving pre-compressed files
 
-are built in the [Dockerfile](../../nginx/Dockerfile) .
+are built in the [Dockerfile](../../nginx/Dockerfile).
 
 ## Further References
 
