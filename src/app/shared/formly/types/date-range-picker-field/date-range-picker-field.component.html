@@ -39,7 +39,7 @@
       <input
         #dpFromDate
         class="form-control"
-        [placeholder]="props.placeholder"
+        [placeholder]="props.placeholder | translate"
         name="dpFromDate"
         [value]="formatter.format(fromDate)"
         (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
@@ -62,7 +62,7 @@
     <input
       #dpToDate
       class="form-control"
-      [placeholder]="props.placeholder"
+      [placeholder]="props.placeholder | translate"
       name="dpToDate"
       [value]="formatter.format(toDate)"
       (input)="toDate = validateInput(toDate, dpToDate.value)"
