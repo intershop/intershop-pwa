@@ -138,7 +138,7 @@ describe('Content Navigation Component', () => {
     });
 
     it('should split page tree, when given maxDepth is smaller than page tree depth', () => {
-      component.depth = 0;
+      component.depth = 2;
       fixture.detectChanges();
 
       expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
@@ -172,7 +172,7 @@ describe('Content Navigation Component', () => {
             <a ng-reflect-router-link="/page-1/page-1.a-pg1.A" title="Page 1.A" href="/page-1/page-1.a-pg1.A"
               >Page 1.A</a
             >
-            <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
+            <ul ng-reflect-ng-class="page-navigation-2" class="page-navigation-2">
               <li>
                 <a
                   ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
@@ -201,10 +201,10 @@ describe('Content Navigation Component', () => {
         fixture.detectChanges();
       });
 
-      it('should set page-navigation-0 class to first layer', () => {
-        expect(element.querySelectorAll('.page-navigation-0')).toMatchInlineSnapshot(`
+      it('should set page-navigation-1 class to first layer', () => {
+        expect(element.querySelectorAll('.page-navigation-1')).toMatchInlineSnapshot(`
           NodeList [
-            <ul ng-reflect-ng-class="page-navigation-0" class="page-navigation-0">
+            <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
             <li>
               <a
                 ng-reflect-router-link="/page-1/page-1.a-pg1.A"
@@ -212,7 +212,7 @@ describe('Content Navigation Component', () => {
                 href="/page-1/page-1.a-pg1.A"
                 >Page 1.A</a
               >
-              <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
+              <ul ng-reflect-ng-class="page-navigation-2" class="page-navigation-2">
                 <li>
                   <a
                     ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
@@ -244,10 +244,10 @@ describe('Content Navigation Component', () => {
         `);
       });
 
-      it('should set page-navigation-1 class to second layer', () => {
-        expect(element.querySelectorAll('.page-navigation-1')).toMatchInlineSnapshot(`
+      it('should set page-navigation-2 class to second layer', () => {
+        expect(element.querySelectorAll('.page-navigation-2')).toMatchInlineSnapshot(`
           NodeList [
-            <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
+            <ul ng-reflect-ng-class="page-navigation-2" class="page-navigation-2">
             <li>
               <a
                 ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"

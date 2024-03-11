@@ -26,6 +26,13 @@ If in a project other header types are used these header types and the rendering
 With the introduction of the new [navigation CMS components](../concepts/cms-integration.md#navigation-cms-components) it became necessary to adapt the main navigation styling.
 The styling can no longer rely on child selectors (`>`) since the CMS manged components introduce a lot of additional HTML tags around the styling relevant `li` tags.
 
+To improve the performance of the 'Static Content Page' component the triggered `/pagetree` REST calls default behavior regarding the used `depth` was changed.
+In the past no given 'Navigation Depth' in the ICM backend configuration resulted in no limitation at all ("Define how many levels the navigation tree displays.
+To show all levels, leave the field empty.").
+With the content model adaptions of `icm-as-customization-headless:1.7.0` a depth default value of `5` was introduced and the description was changed accordingly.
+In the PWA the rendering was adapted as well so that an empty `NavigationDepth` value of the 'Static Content Page' component now defaults to `0` instead of no depth limitation, that resulted in the whole content page tree being fetched and saved to the state.
+To keep the current behavior in an existing project either adapt the `0` default in `pagelet.numberParam('NavigationDepth', 0)"` to a reasonable number or set the 'Navigation Depth' values for all 'Static Content Page' component instances in the ICM backend to reasonable depth values instead of leaving them empty.
+
 ## From 4.2 to 5.0
 
 Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.

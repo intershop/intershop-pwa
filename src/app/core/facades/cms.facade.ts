@@ -44,7 +44,8 @@ export class CMSFacade {
   }
 
   contentPageTree$(rootId: string, depth: number) {
-    this.store.dispatch(loadContentPageTree({ rootId, depth }));
+    // fetch only the depth that is actually needed, depth=0 returns already the next child level
+    this.store.dispatch(loadContentPageTree({ rootId, depth: depth > 0 ? depth - 1 : 0 }));
     return this.store.pipe(select(getContentPageTree(rootId)));
   }
 

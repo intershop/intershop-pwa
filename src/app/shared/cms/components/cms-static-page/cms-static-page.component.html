@@ -8,7 +8,7 @@
           <ng-container *ngIf="contentPageTree$ | async as contentPageTree">
             <ish-content-navigation
               [contentPageTree]="contentPageTree"
-              [depth]="pagelet.numberParam('NavigationDepth')"
+              [depth]="pagelet.numberParam('NavigationDepth', 0)"
             />
           </ng-container>
         </div>
