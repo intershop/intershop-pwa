@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
 @Component({
@@ -14,6 +15,8 @@ export class PagingComponent implements OnChanges {
 
   pageIndices: number[] = [];
 
+  constructor(private scroller: ViewportScroller) {}
+
   ngOnChanges(): void {
     if (this.currentPage && this.lastPage) {
       this.pageIndices = this.getPages(this.currentPage, this.lastPage);
@@ -26,6 +29,7 @@ export class PagingComponent implements OnChanges {
    */
   setPage(page: number) {
     this.goToPage.emit(page);
+    this.scroller.scrollToPosition([0, 0]);
   }
 
   /**

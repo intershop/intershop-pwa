@@ -6,6 +6,8 @@ import { spy, verify } from 'ts-mockito';
 
 import { PagingComponent } from './paging.component';
 
+window.scrollTo = jest.fn();
+
 describe('Paging Component', () => {
   let component: PagingComponent;
   let fixture: ComponentFixture<PagingComponent>;
@@ -25,6 +27,10 @@ describe('Paging Component', () => {
 
     component.currentPage = 1;
     component.lastPage = 10;
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 
   it('should be created', () => {
