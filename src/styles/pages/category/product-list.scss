@@ -113,6 +113,10 @@
 
     &.list-view {
       width: 100%;
+
+      .product-tile-actions {
+        justify-content: flex-start;
+      }
     }
   }
 
