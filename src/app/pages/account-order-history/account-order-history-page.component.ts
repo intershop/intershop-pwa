@@ -36,7 +36,11 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     });
   }
 
-  filter(filters: Partial<OrderListQuery>) {
+  /**
+   * Load filtered orders
+   *
+   */
+  loadFilteredOrders(filters: Partial<OrderListQuery>) {
     this.filtersActive = Object.keys(filters).length > 0;
     this.accountFacade.loadOrders({
       ...filters,

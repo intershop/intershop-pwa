@@ -4,7 +4,7 @@
 <p class="section">{{ 'account.order.subtitle' | translate }}</p>
 
 <ng-container *ngIf="ordersExist()">
-  <ish-account-order-filters fragmentOnRouting="order-list-top" (modelChange)="filter($event)" />
+  <ish-account-order-filters fragmentOnRouting="order-list-top" (modelChange)="loadFilteredOrders($event)" />
 </ng-container>
 
 <ish-order-list

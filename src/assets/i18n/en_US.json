@@ -220,6 +220,7 @@
   "account.order_history.filter.clear": "Clear All Filters",
   "account.order_history.filter.hide": "Hide All Filters",
   "account.order_history.filter.label.date": "Time frame",
+  "account.order_history.filter.label.date.aria_label": "Date",
   "account.order_history.filter.label.order_no": "Search for order no.",
   "account.order_history.filter.label.sku": "Product ID",
   "account.order_history.filter.no_results_found_message": "No matching results could be found for your search. Please check the search term or change your selected search criteria.",

@@ -43,6 +43,7 @@
         name="dpFromDate"
         [value]="formatter.format(fromDate)"
         (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+        [attr.aria-label]="'account.order_history.filter.label.date.aria_label' | translate"
       />
       <div class="input-group-append">
         <div
@@ -50,7 +51,7 @@
           (click)="d.toggle()"
           (keydown.enter)="d.toggle()"
           tabindex="-1"
-          type="button"
+          title="Pick a date"
           data-testing-id="btn-date-picker"
         >
           <fa-icon class="text-secondary" icon="calendar-day" />
@@ -66,9 +67,16 @@
       name="dpToDate"
       [value]="formatter.format(toDate)"
       (input)="toDate = validateInput(toDate, dpToDate.value)"
+      [attr.aria-label]="'account.order_history.filter.label.date.aria_label' | translate"
     />
     <div class="input-group-append">
-      <div class="btn btn-secondary" (click)="d.toggle()" (keydown.enter)="d.toggle()" tabindex="-1" type="button">
+      <div
+        class="btn btn-secondary"
+        (click)="d.toggle()"
+        (keydown.enter)="d.toggle()"
+        tabindex="-1"
+        title="Pick a date"
+      >
         <fa-icon class="text-secondary" icon="calendar-day" />
       </div>
     </div>
