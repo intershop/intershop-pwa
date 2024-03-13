@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Order } from 'ish-core/models/order/order.model';
@@ -29,9 +30,11 @@ export class BasketBuyerComponent implements OnInit {
   companyName1: string;
   companyName2: string;
 
+  isOrganizationHierarchiesServiceAvailable$: Observable<boolean>;
+
   private destroyRef = inject(DestroyRef);
 
-  constructor(private accountFacade: AccountFacade) {}
+  constructor(private accountFacade: AccountFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.taxationID = this.object.taxationId;
@@ -52,6 +55,10 @@ export class BasketBuyerComponent implements OnInit {
     this.customer$.pipe(whenTruthy(), first(), takeUntilDestroyed(this.destroyRef)).subscribe(customer => {
       this.taxationID = this.taxationID || customer?.taxationID;
     });
+
+    this.isOrganizationHierarchiesServiceAvailable$ = this.appFacade
+      .serverSetting$<string>('services.OrganizationHierarchyServiceDefinition.Endpoint')
+      .pipe(map(url => (url && url.length !== 0 ? true : false)));
   }
 
   private getAttributeValue(attributeName: string): string {

@@ -14,6 +14,7 @@ import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
+import { OrganizationHierarchiesExportsModule } from '../extensions/organization-hierarchies/exports/organization-hierarchies-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { SentryExportsModule } from '../extensions/sentry/exports/sentry-exports.module';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
@@ -51,6 +52,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     IconModule,
     NgbCollapseModule,
     NgbDropdownModule,
+    OrganizationHierarchiesExportsModule,
     PipesModule,
     QuickorderExportsModule,
     RoleToggleModule,

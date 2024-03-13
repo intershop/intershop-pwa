@@ -4,6 +4,8 @@ import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { OhsInterceptor } from '../extensions/organization-hierarchies/interceptors/ohs.interceptor';
+
 import { AppearanceModule } from './appearance.module';
 import { ConfigurationModule } from './configuration.module';
 import { FeatureToggleModule } from './feature-toggle.module';
@@ -42,6 +44,7 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     { provide: HTTP_INTERCEPTORS, useClass: PaymentPayoneInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: PreviewInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: OhsInterceptor, multi: true },
     { provide: ErrorHandler, useClass: DefaultErrorHandler },
     {
       provide: APP_BASE_HREF,

@@ -17,6 +17,7 @@ export const environment: Environment = {
     'quickorder',
     'quoting',
     'orderTemplates',
+    'organizationHierarchies',
   ],
 
   ...overrides,

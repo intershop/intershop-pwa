@@ -22,6 +22,7 @@ export interface BasketBaseData {
   costCenter?: string;
   customer?: string;
   user?: string;
+  buyingContext?: string;
   discounts?: {
     dynamicMessages?: string[];
     shippingBasedDiscounts?: string[];

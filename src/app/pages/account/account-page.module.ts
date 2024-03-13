@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { isServiceAvailable } from 'src/app/extensions/organization-hierarchies/pages/hierarchies/hierarchies-page.guard';
 
 import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
@@ -66,6 +67,17 @@ const accountPageRoutes: Routes = [
         loadChildren: () =>
           import('../../extensions/punchout/pages/punchout-account-routing.module').then(
             m => m.PunchoutAccountRoutingModule
+          ),
+      },
+      {
+        path: 'hierarchies',
+        canActivate: [isServiceAvailable],
+        data: {
+          feature: 'organizationHierarchies',
+        },
+        loadChildren: () =>
+          import('../../extensions/organization-hierarchies/pages/hierarchies-account-routing.module').then(
+            m => m.HierarchiesAccountRoutingModule
           ),
       },
       {

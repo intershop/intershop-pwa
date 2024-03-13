@@ -1,0 +1,30 @@
+<div *ngIf="pathArray$ | async as path">
+  <div *ngIf="path.length > 1">
+    <span>{{ path[1] }}</span>
+    <span *ngIf="path.length > 3">&nbsp;&#124;&nbsp;</span>
+    <a
+      *ngIf="path.length > 3 && !isCollapsed"
+      [routerLink]="[]"
+      (click)="toggle()"
+      title="{{ 'account.organization.hierarchies.grouppath.tooltip.open' | translate }}"
+    >
+      <fa-icon [icon]="['fas', 'ellipsis-h']" />
+    </a>
+    <span [ngbCollapse]="!isCollapsed">
+      <ng-container *ngFor="let groupName of path; let i = index">
+        <span *ngIf="i > 1 && i < path.length - 2">{{ groupName }} &#124; </span>
+      </ng-container>
+      <span>{{ path[path.length - 2] }}</span>
+    </span>
+    <span *ngIf="path.length > 2"> &#124; {{ path[path.length - 1] }}</span>
+    <a
+      *ngIf="path.length > 3 && isCollapsed"
+      [routerLink]="[]"
+      (click)="toggle()"
+      title="{{ 'account.organization.hierarchies.grouppath.tooltip.close' | translate }}"
+      >&nbsp;
+      <fa-icon [icon]="['fas', 'arrow-left']" />
+    </a>
+  </div>
+  <ng-template #anchor></ng-template>
+</div>
