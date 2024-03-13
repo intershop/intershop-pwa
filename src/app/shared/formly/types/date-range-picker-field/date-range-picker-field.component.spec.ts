@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -15,10 +16,12 @@ describe('Date Range Picker Field Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
+  let calendar: NgbCalendar;
 
   const templateOptionsVal = {
-    minDays: -365,
-    maxDays: 0,
+    minDays: -365 * 10, // 10 years ago
+    maxDays: 'a',
+    startDate: -5,
   };
 
   beforeEach(async () => {
@@ -32,6 +35,8 @@ describe('Date Range Picker Field Component', () => {
         TranslateModule.forRoot(),
       ],
     }).compileComponents();
+
+    calendar = TestBed.inject(NgbCalendar);
   });
 
   beforeEach(() => {
@@ -69,5 +74,29 @@ describe('Date Range Picker Field Component', () => {
 
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="date-range-picker"]')).toBeTruthy();
+  });
+
+  it('should properly set start date 5 days from now', () => {
+    setTestComponentInputs();
+
+    fixture.detectChanges();
+    const datePickerDirective = fixture.debugElement
+      .query(By.directive(NgbInputDatepicker))
+      .injector.get(NgbInputDatepicker) as NgbInputDatepicker;
+
+    const expectedStartDate = calendar.getPrev(calendar.getToday(), 'd', 5);
+
+    expect(datePickerDirective.startDate).toEqual(expectedStartDate);
+  });
+
+  it('should not set max date because property is invalid', () => {
+    setTestComponentInputs();
+
+    fixture.detectChanges();
+    const datePickerDirective = fixture.debugElement
+      .query(By.directive(NgbInputDatepicker))
+      .injector.get(NgbInputDatepicker) as NgbInputDatepicker;
+
+    expect(datePickerDirective.maxDate).toBeUndefined();
   });
 });
