@@ -16,6 +16,8 @@ The Nginx building block applies:
 [ngx_brotli](https://github.com/google/ngx_brotli) is used to compress files on NGINX because Brotli has a better compression ratio compared to gzip.
 The configuration of the module is described in [Guide - Building and Running nginx](./nginx-startup.md#brotli-configuration).
 
+> NOTE: Brotli compression is typically only used over HTTPS connections. This is because most modern web browsers only advertise support for Brotli encoding to servers when the connection is secure (HTTPS).
+
 ## Custom Webpack Build
 
 The PWA uses a customized webpack build, that opens the doors to additional optimizations.
