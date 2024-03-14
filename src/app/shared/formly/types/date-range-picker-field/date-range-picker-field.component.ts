@@ -24,6 +24,17 @@ function toObservableNumber(days: number | Observable<number>) {
 
 /**
  * Form control for picking a date range.
+ * Uses NgbDatepicker with custom formatting and parsing.
+ * Refer to `fixed-format-adapter.ts` and `localized-parser-formatter.ts` for more information on date formatting.
+ *
+ * @props **minDays** - computes the minDate by adding the minimum allowed days to today.
+ * @props **maxDays** - computes the maxDate by adding the maximum allowed days to today.
+ * @props **startDate** - computes the start date.
+ * @props **inputClass** - class to apply to the input field
+ *
+ * @defaultWrappers 'form-field-horizontal', 'validation'
+ *
+ *
  */
 @Component({
   selector: 'ish-date-range-picker-field',
