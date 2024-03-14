@@ -44,7 +44,7 @@ describe('Returning User', () => {
       });
 
       cy.getAllLocalStorage().then(
-        localStorage => expect(localStorage[Cypress.config('baseUrl')].access_token).to.not.be.empty
+        localStorage => expect(localStorage[Cypress.config('baseUrl')].icm_access_token).to.not.be.empty
       );
     });
 
@@ -61,7 +61,7 @@ describe('Returning User', () => {
       });
 
       cy.getAllLocalStorage().then(
-        localStorage => expect(localStorage[Cypress.config('baseUrl')].access_token).to.be.undefined
+        localStorage => expect(localStorage[Cypress.config('baseUrl')].icm_access_token).to.be.undefined
       );
     });
   });
