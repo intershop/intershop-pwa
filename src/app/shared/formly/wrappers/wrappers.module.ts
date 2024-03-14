@@ -13,13 +13,11 @@ import { InputAddonWrapperComponent } from './input-addon-wrapper/input-addon-wr
 import { TextareaDescriptionWrapperComponent } from './textarea-description-wrapper/textarea-description-wrapper.component';
 import { TooltipWrapperComponent } from './tooltip-wrapper/tooltip-wrapper.component';
 import { ValidationWrapperComponent } from './validation-wrapper/validation-wrapper.component';
-import { VerticalWrapperComponent } from './vertical-wrapper/vertical-wrapper.component';
 
 const wrapperComponents = [
   DescriptionWrapperComponent,
   HorizontalCheckboxWrapperComponent,
   HorizontalWrapperComponent,
-  VerticalWrapperComponent,
   InputAddonWrapperComponent,
   TextareaDescriptionWrapperComponent,
   TooltipWrapperComponent,
@@ -35,7 +33,6 @@ const wrapperComponents = [
     FormlyBaseModule.forChild({
       wrappers: [
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
-        { name: 'form-field-vertical', component: VerticalWrapperComponent },
         { name: 'form-field-checkbox-horizontal', component: HorizontalCheckboxWrapperComponent },
         { name: 'input-addon', component: InputAddonWrapperComponent },
         { name: 'textarea-description', component: TextareaDescriptionWrapperComponent },
