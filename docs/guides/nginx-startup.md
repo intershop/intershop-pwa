@@ -260,20 +260,25 @@ Only the `redis.uri` can be configured for a Helm deployment.
 All [configuration directives](https://github.com/google/ngx_brotli?tab=readme-ov-file#configuration-directives) can be set in
 [compression.conf](../../nginx/features/compression.conf).
 
+The on-the-fly compression Brotli compression level is set to the [recommended](https://www.brotli.pro/enable-brotli/servers/nginx/) value of `4` instead of 6 ([default](https://github.com/google/ngx_brotli?tab=readme-ov-file#brotli_comp_level)).
+This setting provides a balance between the compression rate and CPU usage.
+A higher level would achieve better compression but would also consume more CPU resources.
+
 The two NGINX modules
 
 - ngx_http_brotli_filter_module.so – for compressing responses on-the-fly
 - ngx_http_brotli_static_module.so - for serving pre-compressed files
 
-are built in the [Dockerfile](../../nginx/Dockerfile) using an NGINX archive in a version which matches the openresty Docker image version.
+are built in the [Dockerfile](../../nginx/Dockerfile) using an NGINX archive in a version which matches the openresty Docker image version and referenced in [nginx.conf](../../nginx/nginx.conf).
 The archive needs to be used because it includes the `configure` command.
-The `./configure` [arguments](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded) are taken from the current openresty configuration (`nginx -V`) where the `--add-module` arguments are excluded.
+The `./configure` [arguments](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded) are taken from the current openresty configuration using `nginx -V` (`--add-module` arguments are excluded), see [ngx_brotli
+](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded).
 
-The modules can also be built using an openresty archive but in this case the built process is taking significantly longer:
+The modules can also be built using an openresty archive but in this case the built process is taking longer:
 
 - `wget` the openresty archive version which matches the Docker image version
 - replace `make modules` with `make && make install`
-- the two filter modules are built into the folder /build/nginx-<version>/objs/
+- the two Brotli modules are built into the folder _/build/nginx-<version>/objs/_
 
 ## Further References
 
