@@ -16,7 +16,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { InstanceCreators } from 'ish-core/utils/instance-creators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-export function storageFactory(): OAuthStorage {
+function storageFactory(): OAuthStorage {
   const prefix = 'icm_' as const;
   if (!SSR) {
     return {
