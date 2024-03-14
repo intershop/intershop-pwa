@@ -1,6 +1,13 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { AuthConfig, OAuthInfoEvent, OAuthService, OAuthSuccessEvent, TokenResponse } from 'angular-oauth2-oidc';
+import {
+  AuthConfig,
+  OAuthInfoEvent,
+  OAuthService,
+  OAuthStorage,
+  OAuthSuccessEvent,
+  TokenResponse,
+} from 'angular-oauth2-oidc';
 import { BehaviorSubject, Observable, filter, first, from, map, noop, switchMap, take } from 'rxjs';
 
 import { FetchTokenOptions, GrantType } from 'ish-core/models/token/token.interface';
@@ -9,13 +16,30 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { InstanceCreators } from 'ish-core/utils/instance-creators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+function storageFactory(): OAuthStorage {
+  const prefix = 'icm_' as const;
+  if (!SSR) {
+    return {
+      getItem(key: string): string {
+        return localStorage.getItem(`${prefix}${key}`);
+      },
+      removeItem(key: string): void {
+        return localStorage.removeItem(`${prefix}${key}`);
+      },
+      setItem(key: string, data: string): void {
+        return localStorage.setItem(`${prefix}${key}`, data);
+      },
+    };
+  }
+}
+
 @Injectable({ providedIn: 'root' })
 export class TokenService {
   private oAuthService: OAuthService;
   private serviceConfigured$ = new BehaviorSubject<boolean>(false);
 
   constructor(private apiService: ApiService, private apiTokenService: ApiTokenService, parent: Injector) {
-    this.oAuthService = InstanceCreators.getOAuthServiceInstance(parent);
+    this.oAuthService = InstanceCreators.getOAuthServiceInstance(parent, storageFactory);
 
     this.apiService
       .constructUrlForPath('token', {

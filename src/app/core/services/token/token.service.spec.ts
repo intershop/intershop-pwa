@@ -26,7 +26,7 @@ describe('Token Service', () => {
   when(oAuthService.configure(anything())).thenResolve();
   when(oAuthService.events).thenReturn(of(undefined));
 
-  when(instanceCreators.getOAuthServiceInstance(anything())).thenReturn(instance(oAuthService));
+  when(instanceCreators.getOAuthServiceInstance(anything(), anything())).thenReturn(instance(oAuthService));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
