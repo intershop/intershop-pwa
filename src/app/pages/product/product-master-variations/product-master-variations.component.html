@@ -1,4 +1,4 @@
-<ng-container *ngIf="variationCount$ | async">
+<ng-container *ngIf="hasVariations$ | async">
   <a id="variation-list-top" title="top"></a>
   <ish-filter-navigation orientation="horizontal" fragmentOnRouting="variation-list-top" />
   <ish-product-listing

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { debounce, filter, map, takeUntil } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-master-variations',
@@ -15,14 +16,16 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 export class ProductMasterVariationsComponent implements OnInit {
   sku$: Observable<string>;
   categoryId$: Observable<string>;
-  variationCount$: Observable<number>;
+  hasVariations$: Observable<boolean>;
 
   constructor(private router: Router, private scroller: ViewportScroller, private context: ProductContextFacade) {}
 
   ngOnInit() {
     this.sku$ = this.context.select('product', 'sku');
     this.categoryId$ = this.context.select('categoryId');
-    this.variationCount$ = this.context.select('variationCount');
+    this.hasVariations$ = this.context
+      .select('product')
+      .pipe(map(product => ProductHelper.isMasterProduct(product) && product.variations?.length > 0));
 
     this.router.events
       .pipe(

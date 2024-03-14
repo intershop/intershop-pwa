@@ -23,7 +23,7 @@ function generateLocalizedProductSlug(product: ProductView) {
 
   let slug = product.name || '';
 
-  if (ProductHelper.isVariationProduct(product) && product.variableVariationAttributes) {
+  if (ProductHelper.isVariationProduct(product) && product.variableVariationAttributes?.length > 0) {
     slug += '-';
     slug += product.variableVariationAttributes
       .map(att => att.value)
