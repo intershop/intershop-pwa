@@ -29,7 +29,8 @@ function toObservableNumber(days: number | Observable<number>) {
  *
  * @props **minDays** - computes the minDate by adding the minimum allowed days to today.
  * @props **maxDays** - computes the maxDate by adding the maximum allowed days to today.
- * @props **startDate** - computes the start date.
+ * @props **startDate** - the start date.
+ * @props **placeholder** - placeholder that displays the date format in the input field.
  * @props **inputClass** - class to apply to the input field
  *
  * @defaultWrappers 'form-field-horizontal', 'validation'
