@@ -17,16 +17,17 @@ import { InstanceCreators } from 'ish-core/utils/instance-creators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 export function storageFactory(): OAuthStorage {
+  const prefix = 'icm_' as const;
   if (!SSR) {
     return {
       getItem(key: string): string {
-        return localStorage.getItem(`token_${key}`);
+        return localStorage.getItem(`${prefix}${key}`);
       },
       removeItem(key: string): void {
-        return localStorage.removeItem(`token__${key}`);
+        return localStorage.removeItem(`${prefix}${key}`);
       },
       setItem(key: string, data: string): void {
-        return localStorage.setItem(`token_${key}`, data);
+        return localStorage.setItem(`${prefix}${key}`, data);
       },
     };
   }
@@ -38,7 +39,7 @@ export class TokenService {
   private serviceConfigured$ = new BehaviorSubject<boolean>(false);
 
   constructor(private apiService: ApiService, private apiTokenService: ApiTokenService, parent: Injector) {
-    this.oAuthService = InstanceCreators.getOAuthServiceInstance(parent,storageFactory);
+    this.oAuthService = InstanceCreators.getOAuthServiceInstance(parent, storageFactory);
 
     this.apiService
       .constructUrlForPath('token', {
