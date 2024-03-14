@@ -36,6 +36,7 @@ export class AccountOrderComponent {
 
   addOrderToBasket() {
     this.displaySpinner.set(true);
+
     this.order.lineItems.forEach(lineItem => {
       if (!lineItem.isFreeGift) {
         this.shoppingFacade.addProductToBasket(lineItem.productSKU, lineItem.quantity.value);
