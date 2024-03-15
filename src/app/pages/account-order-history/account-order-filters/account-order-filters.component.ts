@@ -133,12 +133,6 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      if (Object.keys(params).length > 0) {
-        this.expandForm();
-      }
-    });
-
     this.fields = [
       {
         key: 'orderNo',
@@ -183,6 +177,9 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
+      if (Object.keys(params).length > 0) {
+        this.formIsCollapsed = false;
+      }
       this.form.patchValue(urlToModel(params));
       this.modelChange.emit(urlToQuery(params));
     });
