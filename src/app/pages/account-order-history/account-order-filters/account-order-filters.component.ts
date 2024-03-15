@@ -133,6 +133,12 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
+    this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
+      if (Object.keys(params).length > 0) {
+        this.expandForm();
+      }
+    });
+
     this.fields = [
       {
         key: 'orderNo',
