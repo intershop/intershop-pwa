@@ -153,7 +153,7 @@
   "account.customer.registered.title": "Vielen Dank für Ihre Registrierung!",
   "account.date.month": "Monat",
   "account.date.month.error.required": "Bitte wählen Sie einen Monat aus.",
-  "account.date.title": "Pick a date",
+  "account.date.title": "Ein Datum wählen",
   "account.date.year": "Jahr",
   "account.date.year.error.required": "Bitte wählen Sie ein Jahr aus.",
   "account.default_address.state.label": "Bundesland",
