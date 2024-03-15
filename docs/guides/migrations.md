@@ -33,7 +33,7 @@ With the content model adaptions of `icm-as-customization-headless:1.7.0` a dept
 In the PWA the rendering was adapted as well so that an empty `NavigationDepth` value of the 'Static Content Page' component now defaults to `0` instead of no depth limitation, that resulted in the whole content page tree being fetched and saved to the state.
 To keep the current behavior in an existing project either adapt the `0` default in `pagelet.numberParam('NavigationDepth', 0)"` to a reasonable number or set the 'Navigation Depth' values for all 'Static Content Page' component instances in the ICM backend to reasonable depth values instead of leaving them empty.
 
-The [Brotli NGINX module](https://github.com/google/ngx_brotli) used now instead of gzip for compression on the NGINX server, see [Nginx Optimizations](./optimizations.md#nginx-optimizations).
+The [Brotli NGINX module](https://github.com/google/ngx_brotli) is used instead of gzip for compression on the NGINX server now, see [NGINX Optimizations](./optimizations.md#nginx-optimizations).
 
 ## From 4.2 to 5.0
 
