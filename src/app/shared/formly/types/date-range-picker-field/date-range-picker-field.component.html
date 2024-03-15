@@ -51,7 +51,7 @@
           (click)="d.toggle()"
           (keydown.enter)="d.toggle()"
           tabindex="-1"
-          title="Pick a date"
+          title="{{ 'account.date.title' | translate }}"
           data-testing-id="btn-date-picker"
         >
           <fa-icon class="text-secondary" icon="calendar-day" />
@@ -75,7 +75,7 @@
         (click)="d.toggle()"
         (keydown.enter)="d.toggle()"
         tabindex="-1"
-        title="Pick a date"
+        title="{{ 'account.date.title' | translate }}"
       >
         <fa-icon class="text-secondary" icon="calendar-day" />
       </div>
