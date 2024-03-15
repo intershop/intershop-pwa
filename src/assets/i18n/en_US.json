@@ -254,6 +254,7 @@
   "account.order_templates.delete_dialog.header": "Delete {{0}}",
   "account.order_templates.edit.confirmation": "Your order template \"{{0}}\" has been updated.",
   "account.order_templates.edit_form.save_button.text": "Save Changes",
+  "account.orderdetails.add_to_cart.button.label": "Reorder",
   "account.orderdetails.approved.text": "(approved by {{0}} on {{1}})",
   "account.orderdetails.breadcrumb": "Order Details",
   "account.orderdetails.date_of_order.label": "Date of Order",
