@@ -12,12 +12,17 @@ To enable user tracking and setting it up with [Google Tag Manager](https://gith
 > [!NOTE]
 > The standard Intershop PWA Google Tag Manager integration is very basic and currently only supports the tracking of route changes.
 >
-> Please refer to the [angulartics2 documentation](https://github.com/angulartics/angulartics2#usage) for information on how to enable tracking for additional events (e.g. ecommerce events).
+> Please refer to the [angulartics2 documentation](https://github.com/angulartics/angulartics2#usage) for information on how to enable tracking for additional events (e.g. e-commerce events).
+
+This feature only works in combination with Server Side Rendering, where the initial tracking configuration is set if the feature is enabled.
+
+> [!IMPORTANT]
+> The actual tracking on the client side will only work if the user has given his consent for `tracking` via the cookie banner or setting the according cookie preferences.
 
 To activate GTM tracking, set the Tag Manager Token either in the used Angular CLI environment file with the property `gtmToken` or via the environment variable `GTM_TOKEN`.
 Additionally, the feature toggle `tracking` has to be added to the enabled feature list.
-This feature only works in Universal Rendering mode.
-Prefer configuration via system environment variables.
+
+The configuration via system environment variables is recommended since it is more flexible for different deployments and it does not require to add tokens to the PWA source code.
 
 Example via `environment.ts` file:
 
