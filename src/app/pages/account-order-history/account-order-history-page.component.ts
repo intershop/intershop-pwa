@@ -43,7 +43,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
    */
   loadOrders(): void {
     this.accountFacade.loadOrders({
-      limit: 3,
+      limit: 30,
       include: ['commonShipToAddress'],
     });
   }
@@ -56,7 +56,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.filtersActive = Object.keys(filters).length > 0;
     this.accountFacade.loadOrders({
       ...filters,
-      limit: 3,
+      limit: 30,
       include: ['commonShipToAddress'],
     });
   }
