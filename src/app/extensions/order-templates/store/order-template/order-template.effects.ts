@@ -3,12 +3,11 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
-import { concatMap, filter, last, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, last, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { getUserAuthorized } from 'ish-core/store/customer/user';
 import {
   distinctCompareWith,
@@ -22,9 +21,6 @@ import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/
 import { OrderTemplateService } from '../../services/order-template/order-template.service';
 
 import {
-  addBasketToNewOrderTemplate,
-  addBasketToNewOrderTemplateFail,
-  addBasketToNewOrderTemplateSuccess,
   addProductToNewOrderTemplate,
   addProductToOrderTemplate,
   addProductToOrderTemplateFail,
@@ -92,46 +88,7 @@ export class OrderTemplateEffects {
     )
   );
 
-  addBasketToNewOrderTemplate$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(addBasketToNewOrderTemplate),
-      mapToPayload(),
-      mergeMap(payload =>
-        this.orderTemplateService
-          .createOrderTemplate({
-            title: payload.orderTemplate.title,
-          })
-          .pipe(
-            withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-            // use created order template data to dispatch addProduct action
-            concatMap(([orderTemplate, currentBasket]) =>
-              concat(
-                ...currentBasket.lineItems.map(lineItem =>
-                  this.orderTemplateService.addProductToOrderTemplate(
-                    orderTemplate.id,
-                    lineItem.productSKU,
-                    lineItem.quantity.value
-                  )
-                )
-              ).pipe(
-                last(),
-                concatMap(newOrderTemplate => [
-                  addBasketToNewOrderTemplateSuccess({ orderTemplate: newOrderTemplate }),
-                  displaySuccessMessage({
-                    message: 'account.order_template.new_from_basket_confirm.heading',
-                    messageParams: { 0: orderTemplate.title },
-                  }),
-                ]),
-                mapErrorToAction(addBasketToNewOrderTemplateFail)
-              )
-            )
-          )
-      ),
-      mapErrorToAction(createOrderTemplateFail)
-    )
-  );
-
-  addOrderToNewOrderTemplate$ = createEffect(() =>
+  createOrderTemplateFromLineItems$ = createEffect(() =>
     this.actions$.pipe(
       ofType(orderTemplatesActions.createOrderTemplateFromLineItems),
       mapToPayload(),

@@ -9,7 +9,6 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 
 import { OrderTemplate, OrderTemplateHeader } from '../models/order-template/order-template.model';
 import {
-  addBasketToNewOrderTemplate,
   addProductToNewOrderTemplate,
   addProductToOrderTemplate,
   createOrderTemplate,
@@ -58,10 +57,6 @@ export class OrderTemplatesFacade {
 
   addOrderTemplate(orderTemplate: OrderTemplateHeader): void | HttpError {
     this.store.dispatch(createOrderTemplate({ orderTemplate }));
-  }
-
-  addBasketToNewOrderTemplate(orderTemplate: OrderTemplateHeader): void | HttpError {
-    this.store.dispatch(addBasketToNewOrderTemplate({ orderTemplate }));
   }
 
   createOrderTemplateFromLineItems(orderTemplate: OrderTemplateHeader, lineItems: LineItem[]): void | HttpError {

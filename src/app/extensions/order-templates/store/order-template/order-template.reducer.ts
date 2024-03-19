@@ -7,9 +7,6 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 
 import {
-  addBasketToNewOrderTemplate,
-  addBasketToNewOrderTemplateFail,
-  addBasketToNewOrderTemplateSuccess,
   addProductToOrderTemplate,
   addProductToOrderTemplateFail,
   addProductToOrderTemplateSuccess,
@@ -50,7 +47,6 @@ export const initialState: OrderTemplateState = orderTemplateAdapter.getInitialS
 export const orderTemplateReducer = createReducer(
   initialState,
   setLoadingOn(
-    addBasketToNewOrderTemplate,
     addProductToOrderTemplate,
     createOrderTemplate,
     deleteOrderTemplate,
@@ -59,7 +55,6 @@ export const orderTemplateReducer = createReducer(
     updateOrderTemplate
   ),
   unsetLoadingAndErrorOn(
-    addBasketToNewOrderTemplateSuccess,
     addProductToOrderTemplateSuccess,
     createOrderTemplateSuccess,
     deleteOrderTemplateSuccess,
@@ -69,7 +64,6 @@ export const orderTemplateReducer = createReducer(
     updateOrderTemplateSuccess
   ),
   setErrorOn(
-    addBasketToNewOrderTemplateFail,
     addProductToOrderTemplateFail,
     createOrderTemplateFail,
     deleteOrderTemplateFail,
@@ -79,7 +73,6 @@ export const orderTemplateReducer = createReducer(
   ),
 
   on(
-    addBasketToNewOrderTemplateFail,
     createOrderTemplateFail,
     deleteOrderTemplateFail,
     loadOrderTemplatesFail,
@@ -95,7 +88,6 @@ export const orderTemplateReducer = createReducer(
     return orderTemplateAdapter.setAll(orderTemplates, state);
   }),
   on(
-    addBasketToNewOrderTemplateSuccess,
     addProductToOrderTemplateSuccess,
     createOrderTemplateSuccess,
     removeItemFromOrderTemplateSuccess,

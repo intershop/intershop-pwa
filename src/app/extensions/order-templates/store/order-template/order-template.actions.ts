@@ -95,21 +95,6 @@ export const selectOrderTemplate = createAction(
   payload<{ id: string }>()
 );
 
-export const addBasketToNewOrderTemplate = createAction(
-  '[Order Templates] Add basket to New Order Template',
-  payload<{ orderTemplate: OrderTemplateHeader }>()
-);
-
-export const addBasketToNewOrderTemplateFail = createAction(
-  '[Order Templates API] Add basket to New Order Template Fail',
-  httpError()
-);
-
-export const addBasketToNewOrderTemplateSuccess = createAction(
-  '[Order Templates API] Add basket to New Order Template Success',
-  payload<{ orderTemplate: OrderTemplate }>()
-);
-
 export const orderTemplatesActions = createActionGroup({
   source: 'Order Templates',
   events: {
