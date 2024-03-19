@@ -116,6 +116,12 @@
           <span>{{ 'common.button.spinning.label' | translate }}</span>
         </ng-template>
       </button>
+
+      <!-- Create Order-Template from Order Button -->
+      <ish-lazy-order-create-order-template
+        [cssClass]="'btn btn-secondary btn-block mb-3'"
+        [lineItems]="order.lineItems"
+      />
     </div>
   </div>
 </ng-container>

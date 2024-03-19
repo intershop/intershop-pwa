@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
 import { OrderTemplate, OrderTemplateHeader } from '../models/order-template/order-template.model';
@@ -19,6 +20,7 @@ import {
   getSelectedOrderTemplateDetails,
   getSelectedOrderTemplateOutOfStockItems,
   moveItemToOrderTemplate,
+  orderTemplatesActions,
   removeItemFromOrderTemplate,
   updateOrderTemplate,
 } from '../store/order-template';
@@ -60,6 +62,10 @@ export class OrderTemplatesFacade {
 
   addBasketToNewOrderTemplate(orderTemplate: OrderTemplateHeader): void | HttpError {
     this.store.dispatch(addBasketToNewOrderTemplate({ orderTemplate }));
+  }
+
+  createOrderTemplateFromLineItems(orderTemplate: OrderTemplateHeader, lineItems: LineItem[]): void | HttpError {
+    this.store.dispatch(orderTemplatesActions.createOrderTemplateFromLineItems({ orderTemplate, lineItems }));
   }
 
   deleteOrderTemplate(id: string): void {

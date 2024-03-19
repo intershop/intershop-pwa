@@ -1,0 +1,9 @@
+<button type="submit" name="addProduct" [ngClass]="cssClass" (click)="openModal(modal)">
+  {{ 'order_template.create.heading' | translate }}
+</button>
+
+<ish-order-template-preferences-dialog
+  #modal
+  modalTitle="account.order_template.new_from_basket.heading"
+  (submitOrderTemplate)="createOrderTemplate($event)"
+/>

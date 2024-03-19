@@ -39,6 +39,8 @@ import {
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
   moveItemToOrderTemplate,
+  orderTemplatesActions,
+  orderTemplatesApiActions,
   removeItemFromOrderTemplate,
   removeItemFromOrderTemplateFail,
   removeItemFromOrderTemplateSuccess,
@@ -124,6 +126,40 @@ export class OrderTemplateEffects {
               )
             )
           )
+      ),
+      mapErrorToAction(createOrderTemplateFail)
+    )
+  );
+
+  addOrderToNewOrderTemplate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(orderTemplatesActions.createOrderTemplateFromLineItems),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.orderTemplateService.createOrderTemplate({ title: payload.orderTemplate.title }).pipe(
+          // use created order template data to dispatch addProduct action
+          concatMap(orderTemplate =>
+            concat(
+              ...payload.lineItems.map(lineItem =>
+                this.orderTemplateService.addProductToOrderTemplate(
+                  orderTemplate.id,
+                  lineItem.productSKU,
+                  lineItem.quantity.value
+                )
+              )
+            ).pipe(
+              last(),
+              concatMap(newOrderTemplate => [
+                orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess({ orderTemplate: newOrderTemplate }),
+                displaySuccessMessage({
+                  message: 'account.order_template.new_from_basket_confirm.heading',
+                  messageParams: { 0: orderTemplate.title },
+                }),
+              ]),
+              mapErrorToAction(orderTemplatesApiActions.createOrderTemplateFromLineItemsFail)
+            )
+          )
+        )
       ),
       mapErrorToAction(createOrderTemplateFail)
     )
