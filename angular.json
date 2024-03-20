@@ -50,10 +50,10 @@
           "configurations": {
             "production": {
               "outputHashing": "all",
-              "namedChunks": false,
+              "namedChunks": true,
               "extractLicenses": true,
               "vendorChunk": true,
-              "commonChunk": false,
+              "commonChunk": true,
               "budgets": [
                 {
                   "type": "bundle",
