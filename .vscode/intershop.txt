@@ -14,6 +14,7 @@ bars
 bitnami
 blocklist
 breakline
+Brotli
 categoryref
 cobrowse
 colorcode
@@ -97,6 +98,7 @@ noindex
 noneditable
 notselected
 npsc
+objs
 oidc
 openid
 ordertemplate

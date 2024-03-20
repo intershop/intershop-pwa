@@ -7,13 +7,17 @@ kb_sync_latest_only
 
 # Optimizations
 
-## Nginx Optimizations
+## NGINX Optimizations
 
-The Nginx building block applies:
+The NGINX building block applies:
 
 - Compression of responses
 
-for further information, please refer to the [Guide - Building and Running nginx][nginx-startup].
+[ngx_brotli](https://github.com/google/ngx_brotli) is used to compress files on NGINX because Brotli has a better compression ratio compared to gzip.
+The configuration of the module is described in [Guide - Building and Running NGINX](./nginx-startup.md#brotli-configuration).
+
+> [!NOTE]
+> Brotli compression is typically only used over HTTPS connections. This is because most modern web browsers only advertise support for Brotli encoding to servers when the connection is secure (HTTPS).
 
 ## Custom Webpack Build
 
