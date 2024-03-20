@@ -18,7 +18,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
-  exports: [RouterModule],
   declarations: [AccountOrderHistoryPageComponent],
 })
 export class AccountOrderHistoryPageModule {}
