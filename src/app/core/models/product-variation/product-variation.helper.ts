@@ -13,7 +13,7 @@ export class ProductVariationHelper {
    * Build select value structure
    */
   static buildVariationOptionGroups(product: ProductView): VariationOptionGroup[] {
-    if (!product) {
+    if (!product?.variableVariationAttributes?.length) {
       return [];
     }
 
@@ -126,53 +126,44 @@ export class ProductVariationHelper {
    * Check specific option if perfect variant match is not existing.
    *
    * @param option  The select option to check.
+   * @param product The given product containing the related product variations
    * @returns       Indicates if no perfect match is found.
    */
-  // eslint-disable-next-line complexity
   private static alternativeCombinationCheck(option: VariationSelectOption, product: ProductView): boolean {
     if (!product.variableVariationAttributes?.length) {
       return;
     }
 
-    let quality: number;
-    const perfectMatchQuality = product.variableVariationAttributes.length;
+    const comparisonAttributes = product.variableVariationAttributes.map(attribute =>
+      attribute.variationAttributeId === option.type ? { ...attribute, value: option.value } : attribute
+    );
 
-    // loop all selected product attributes ignoring the ones related to currently checked option.
-    for (const selectedAttribute of product.variableVariationAttributes) {
-      // loop all possible variations
-      for (const variation of product.variations) {
-        quality = 0;
-
-        // loop attributes of possible variation.
-        for (const attribute of variation.variableVariationAttributes) {
-          // increment quality if variation attribute matches selected product attribute.
-          if (
-            attribute.variationAttributeId === selectedAttribute.variationAttributeId &&
-            ProductVariationHelper.isEqual(attribute.value, selectedAttribute.value)
-          ) {
-            quality += 1;
-            continue;
-          }
-
-          // increment quality if variation attribute matches currently checked option.
-          if (
-            attribute.variationAttributeId === option.type &&
-            ProductVariationHelper.isEqual(attribute.value, option.value)
-          ) {
-            quality += 1;
-            continue;
-          }
-        }
-
-        // perfect match found
-        if (quality === perfectMatchQuality) {
-          return false;
-        }
-      }
+    // check if the current product has the same attributes as the attributes to be compared
+    if (
+      ProductVariationHelper.variationAttributeArrayEquals(product.variableVariationAttributes, comparisonAttributes)
+    ) {
+      // perfect match found
+      return false;
     }
 
-    // imperfect match
-    return true;
+    // check if one of the variation products has the same attributes as the attributes to be compared
+    return !product.variations.some(variation =>
+      ProductVariationHelper.variationAttributeArrayEquals(variation.variableVariationAttributes, comparisonAttributes)
+    );
+  }
+
+  // determines whether both arrays have the same variation attributes
+  private static variationAttributeArrayEquals(array1: VariationAttribute[], array2: VariationAttribute[]): boolean {
+    return (
+      Array.isArray(array1) &&
+      Array.isArray(array2) &&
+      array1.length === array2.length &&
+      array1.every(val =>
+        array2.find(
+          attribute => attribute.name === val.name && ProductVariationHelper.isEqual(attribute.value, val.value)
+        )
+      )
+    );
   }
 
   private static toValue(input: VariationAttribute['value']): string | number {
