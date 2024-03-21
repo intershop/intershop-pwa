@@ -3,7 +3,10 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { InstantSearchFacade } from 'ish-core/facades/instant-search.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
@@ -11,6 +14,7 @@ import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/langua
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
+import { InstantsearchPlaceholderComponent } from 'ish-shell/instantsearch/instantsearch-placeholder/instantsearch-placeholder.component';
 import { LazySearchBoxComponent } from 'ish-shell/shared/lazy-search-box/lazy-search-box.component';
 
 import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
@@ -22,14 +26,18 @@ describe('Header Default Component', () => {
   let fixture: ComponentFixture<HeaderDefaultComponent>;
   let element: HTMLElement;
   let component: HeaderDefaultComponent;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
+    appFacade = mock(AppFacade);
+
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
       declarations: [
         HeaderDefaultComponent,
         MockComponent(FaIconComponent),
         MockComponent(HeaderNavigationComponent),
+        MockComponent(InstantsearchPlaceholderComponent),
         MockComponent(LanguageSwitchComponent),
         MockComponent(LazyProductCompareStatusComponent),
         MockComponent(LazyQuickorderLinkComponent),
@@ -38,6 +46,10 @@ describe('Header Default Component', () => {
         MockComponent(MiniBasketComponent),
         MockComponent(UserInformationMobileComponent),
         MockDirective(NgbCollapse),
+      ],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: InstantSearchFacade, useFactory: () => instance(mock(InstantSearchFacade)) },
       ],
     }).compileComponents();
   });
@@ -62,11 +74,6 @@ describe('Header Default Component', () => {
   it('should render Language Switch on template', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toContain('ish-language-switch');
-  });
-
-  it('should render Search Box on template', () => {
-    fixture.detectChanges();
-    expect(findAllCustomElements(element)).toContain('ish-lazy-search-box');
   });
 
   it('should render Header Navigation on template', () => {

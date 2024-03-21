@@ -1,0 +1,23 @@
+<div class="search clearfix">
+  <input
+    style="cursor: pointer"
+    #searchInput
+    [placeholder]="placeholder || ''"
+    autocomplete="off"
+    type="search"
+    class="form-control searchTerm"
+    (click)="openSearchOverlay()"
+  />
+
+  <div class="buttons">
+    <button
+      class="btn-search btn btn-primary"
+      type="submit"
+      name="search"
+      [title]="'search.searchbox.button.title' | translate"
+      (click)="openSearchOverlay()"
+    >
+      <fa-icon [icon]="['fas', usedIcon]" />
+    </button>
+  </div>
+</div>

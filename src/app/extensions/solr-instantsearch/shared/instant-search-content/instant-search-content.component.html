@@ -1,0 +1,8 @@
+<div class="container">
+  <div [class.d-none]="hasNoResults$ | async">
+    <ish-instant-search-result />
+  </div>
+  <div [class.d-none]="hasResults$ | async">
+    <ish-instant-search-no-result />
+  </div>
+</div>

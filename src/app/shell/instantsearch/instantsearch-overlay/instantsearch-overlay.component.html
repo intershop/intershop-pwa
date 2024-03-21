@@ -1,0 +1,14 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+
+<ng-container *ngIf="{ showResult: showResults$ | async } as ctx">
+  <div class="searchbox-container" [class.searchbox-container-small]="!ctx.showResult">
+    <ish-instantsearch-input />
+
+    <div [class.d-none]="!ctx.showResult" class="searchbox-body-container">
+      <ish-instantsearch-content />
+    </div>
+  </div>
+</ng-container>
+
+<div class="searchbox-overlay" (click)="desactivateInstantSearch()"></div>

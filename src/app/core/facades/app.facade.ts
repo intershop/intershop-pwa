@@ -16,7 +16,14 @@ import {
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
 import { getExtraConfigParameter, getServerConfigParameter } from 'ish-core/store/core/server-config';
-import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
+import {
+  getBreadcrumbData,
+  getHeaderType,
+  getWrapperClass,
+  isInstantSearch,
+  isStickyHeader,
+  setInstantSearchHeader,
+} from 'ish-core/store/core/viewconf';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
@@ -34,6 +41,7 @@ export class AppFacade {
   headerType$ = this.store.pipe(select(getHeaderType));
   deviceType$ = this.store.pipe(select(getDeviceType));
   stickyHeader$ = this.store.pipe(select(isStickyHeader));
+  instantSearch$ = this.store.pipe(select(isInstantSearch));
 
   currentLocale$ = this.store.pipe(select(getCurrentLocale));
   availableLocales$ = this.store.pipe(select(getAvailableLocales));
@@ -53,10 +61,6 @@ export class AppFacade {
     this.store.pipe(
       select(isStickyHeader),
       map(isSticky => (isSticky ? 'sticky-header' : ''))
-    ),
-    this.store.pipe(
-      select(getDeviceType),
-      map(deviceType => (deviceType === 'mobile' ? 'sticky-header' : ''))
     ),
   ]).pipe(map(classes => classes.filter(c => !!c)));
 
@@ -145,5 +149,9 @@ export class AppFacade {
   regions$(countryCode: string) {
     this.store.dispatch(loadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode(countryCode)));
+  }
+
+  setInstantSearch(instantSearch: boolean) {
+    this.store.dispatch(setInstantSearchHeader({ instantSearch }));
   }
 }

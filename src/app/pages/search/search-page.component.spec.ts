@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { InstantSearchFacade } from 'ish-core/facades/instant-search.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 
@@ -17,17 +18,21 @@ describe('Search Page Component', () => {
   let fixture: ComponentFixture<SearchPageComponent>;
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
+  let instantSearchFacade: InstantSearchFacade;
 
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
+    instantSearchFacade = mock(InstantSearchFacade);
     when(shoppingFacade.searchTerm$).thenReturn(of('search'));
     when(shoppingFacade.searchLoading$).thenReturn(of(false));
+    when(instantSearchFacade.select('activated')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [MockComponent(SearchNoResultComponent), MockComponent(SearchResultComponent), SearchPageComponent],
       providers: [
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        { provide: InstantSearchFacade, useFactory: () => instance(instantSearchFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
     }).compileComponents();

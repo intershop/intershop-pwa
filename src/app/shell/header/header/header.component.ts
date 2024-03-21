@@ -16,10 +16,12 @@ export class HeaderComponent implements OnInit {
   deviceType$: Observable<DeviceType>;
   isSticky$: Observable<boolean>;
   reset$: Observable<Event>;
+  instantSearch$: Observable<boolean>;
 
   constructor(private appFacade: AppFacade, private router: Router) {}
 
   ngOnInit() {
+    this.instantSearch$ = this.appFacade.instantSearch$;
     this.headerType$ = this.appFacade.headerType$.pipe(
       map(headerType => (headerTypes.includes(headerType) ? headerType : undefined))
     );

@@ -47,6 +47,7 @@ describe('App Component', () => {
     translate.use('en');
 
     when(appFacade.appWrapperClasses$).thenReturn(of(['col-m-12']));
+    when(appFacade.instantSearch$).thenReturn(of(false));
   });
 
   it('should be created', () => {

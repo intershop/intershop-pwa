@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, DestroyRef, Inject, OnInit, Renderer2, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -17,11 +19,28 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 export class AppComponent implements OnInit {
   wrapperClasses$: Observable<string[]>;
   deviceType$: Observable<DeviceType>;
+  instantSearchMode$: Observable<boolean>;
 
-  constructor(private appFacade: AppFacade) {}
+  private destroyRef = inject(DestroyRef);
+
+  constructor(
+    private appFacade: AppFacade,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit() {
     this.deviceType$ = this.appFacade.deviceType$;
     this.wrapperClasses$ = this.appFacade.appWrapperClasses$;
+
+    this.instantSearchMode$ = this.appFacade.instantSearch$;
+
+    this.instantSearchMode$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(instantSearch => {
+      if (instantSearch) {
+        this.renderer.addClass(this.document.body, 'overflow-hidden');
+      } else {
+        this.renderer.removeClass(this.document.body, 'overflow-hidden');
+      }
+    });
   }
 }

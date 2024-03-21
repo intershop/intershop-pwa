@@ -1,0 +1,45 @@
+<div class="row product-search-result" data-testing-id="search-result-page" id="search-page-top">
+  <div class="marketing-area col-12">
+    <ish-content-include includeId="include.searchresult.base.top.pagelet2-Include" />
+  </div>
+
+  <div class="col-md-3">
+    <div class="navigation-panel" [ngbCollapse]="isCollapsed$ | async">
+      <ish-filter-navigation />
+      <div class="marketing-area">
+        <ish-content-include includeId="include.searchresult.navigation.pagelet2-Include" />
+      </div>
+    </div>
+    <button type="button" class="d-md-none mobile-filter-toggle btn btn-link btn-link-action" (click)="toggle()">
+      {{ 'search.mobile.filter.trigger' | translate }}
+
+      <fa-icon *ngIf="isCollapsed$ | async; else upIcon" [icon]="['fas', 'angle-down']" />
+      <ng-template #upIcon>
+        <fa-icon [icon]="['fas', 'angle-up']" />
+      </ng-template>
+    </button>
+  </div>
+
+  <div class="col-md-9">
+    <ng-container *ngIf="{ searchTerm: searchTerm$ | async, totalItems: numberOfItems$ | async } as ctx">
+      <h1>
+        {{ 'search.title.text' | translate : { '1': ctx.searchTerm, '2': ctx.totalItems } }}
+      </h1>
+      <div class="marketing-area">
+        <ish-content-include includeId="include.searchresult.content.top.pagelet2-Include" />
+      </div>
+      <ish-product-listing
+        [productListingId]="productListingID$ | async"
+        fragmentOnRouting="search-page-top"
+        mode="showmore"
+      />
+    </ng-container>
+    <div class="marketing-area">
+      <ish-content-include includeId="include.searchresult.content.bottom.pagelet2-Include" />
+    </div>
+  </div>
+
+  <div class="marketing-area col-12">
+    <ish-content-include includeId="include.searchresult.base.bottom.pagelet2-Include" />
+  </div>
+</div>

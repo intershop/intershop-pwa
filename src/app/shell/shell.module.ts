@@ -17,6 +17,7 @@ import { CompareExportsModule } from '../extensions/compare/exports/compare-expo
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { SentryExportsModule } from '../extensions/sentry/exports/sentry-exports.module';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
+import { SolrInstantsearchExportsModule } from '../extensions/solr-instantsearch/exports/solr-instantsearch-exports.module';
 import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
 import { TrackingExportsModule } from '../extensions/tracking/exports/tracking-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
@@ -28,6 +29,7 @@ import { HeaderCheckoutComponent } from './header/header-checkout/header-checkou
 import { HeaderDefaultComponent } from './header/header-default/header-default.component';
 import { HeaderErrorComponent } from './header/header-error/header-error.component';
 import { HeaderNavigationComponent } from './header/header-navigation/header-navigation.component';
+import { HeaderSearchComponent } from './header/header-search/header-search.component';
 import { HeaderSimpleComponent } from './header/header-simple/header-simple.component';
 import { HeaderComponent } from './header/header/header.component';
 import { LanguageSwitchComponent } from './header/language-switch/language-switch.component';
@@ -35,11 +37,16 @@ import { LoginStatusComponent } from './header/login-status/login-status.compone
 import { MiniBasketComponent } from './header/mini-basket/mini-basket.component';
 import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
+import { InstantsearchCloseComponent } from './instantsearch/instantsearch-close/instantsearch-close.component';
+import { InstantsearchContentComponent } from './instantsearch/instantsearch-content/instantsearch-content.component';
+import { InstantsearchInputComponent } from './instantsearch/instantsearch-input/instantsearch-input.component';
+import { InstantsearchOverlayComponent } from './instantsearch/instantsearch-overlay/instantsearch-overlay.component';
+import { InstantsearchPlaceholderComponent } from './instantsearch/instantsearch-placeholder/instantsearch-placeholder.component';
 import { LazyContentIncludeComponent } from './shared/lazy-content-include/lazy-content-include.component';
 import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
 import { LazySearchBoxComponent } from './shared/lazy-search-box/lazy-search-box.component';
 
-const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
+const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent, InstantsearchOverlayComponent];
 
 @NgModule({
   imports: [
@@ -57,6 +64,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     RouterModule,
     SentryExportsModule,
     SeoExportsModule,
+    SolrInstantsearchExportsModule,
     StoreLocatorExportsModule,
     TrackingExportsModule,
     TranslateModule,
@@ -70,7 +78,12 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     HeaderDefaultComponent,
     HeaderErrorComponent,
     HeaderNavigationComponent,
+    HeaderSearchComponent,
     HeaderSimpleComponent,
+    InstantsearchCloseComponent,
+    InstantsearchContentComponent,
+    InstantsearchInputComponent,
+    InstantsearchPlaceholderComponent,
     LanguageSwitchComponent,
     LazyContentIncludeComponent,
     LazyMiniBasketContentComponent,

@@ -1,5 +1,29 @@
 <a *ngIf="fragmentOnRouting === 'product-list-top'" id="product-list-top" title="top"></a>
 <ng-container *ngIf="productListingView$ | async as listing">
+  <div *ngIf="isShowMore">
+    <ish-product-list-toolbar
+      [itemCount]="listing.itemCount"
+      [sortableAttributes]="listing.sortableAttributes"
+      [viewType]="viewType$ | async"
+      [sortBy]="sortBy$ | async"
+      [fragmentOnRouting]="fragmentOnRouting"
+    />
+
+    <ish-product-list [products]="listing.products()" [categoryId]="categoryId" [viewType]="viewType$ | async" />
+
+    <div class="row justify-content-center">
+      <button
+        type="button"
+        name="showMore"
+        class="btn btn-primary btn-lg"
+        (click)="loadMoreProducts('up')"
+        [disabled]="isLastPage$ | async"
+      >
+        <fa-icon [icon]="['fas', 'plus']" /> Show more
+      </button>
+    </div>
+  </div>
+
   <div
     *ngIf="isEndlessScrolling"
     infiniteScroll

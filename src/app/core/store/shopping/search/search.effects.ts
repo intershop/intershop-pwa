@@ -13,9 +13,11 @@ import {
   map,
   sample,
   switchMap,
+  takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { InstantSearchFacade } from 'ish-core/facades/instant-search.facade';
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
@@ -50,7 +52,8 @@ export class SearchEffects {
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private translateService: TranslateService,
-    private router: Router
+    private router: Router,
+    private instantSearchFacade: InstantSearchFacade
   ) {}
 
   /**
@@ -70,7 +73,8 @@ export class SearchEffects {
       withLatestFrom(this.store.pipe(select(selectRouteParam('searchTerm')))),
       map(([, searchTerm]) => searchTerm),
       whenTruthy(),
-      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } }))
+      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } })),
+      takeUntil(this.instantSearchFacade.select('activated').pipe(whenTruthy()))
     )
   );
 
