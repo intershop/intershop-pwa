@@ -167,31 +167,8 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         minChunks: 1,
         priority: 25,
         chunks: 'async',
-        // eslint-disable-next-line complexity
         name(module: { identifier(): string }) {
           const identifier = module.identifier() as string;
-
-          if (/[\\/]node_modules[\\/]@ngx-formly[\\/]/.test(identifier)) {
-            return 'ngx-formly';
-          }
-          if (/[\\/]node_modules[\\/]@angular[\\/]cdk[\\/]/.test(identifier)) {
-            return 'cdk';
-          }
-          if (/[\\/]node_modules[\\/]swiper[\\/]/.test(identifier)) {
-            return 'swiper';
-          }
-
-          if (/[\\/]node_modules[\\/]date-fns[\\/]/.test(identifier)) {
-            return 'date-fns';
-          }
-
-          if (/[\\/]node_modules[\\/]@ng-bootstrap[\\/]/.test(identifier)) {
-            return 'ng-bootstrap';
-          }
-
-          if (/[\\/]node_modules[\\/]ngx-toastr[\\/]/.test(identifier)) {
-            return 'ngx-toastr';
-          }
 
           // embed sentry library in sentry chunk
           if (/[\\/]node_modules[\\/]@sentry[\\/]/.test(identifier)) {
@@ -205,38 +182,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
           if (locale) {
             return locale.replace('_', '-');
           }
-
-          const sharedBundleMatch = /[\\/]shared[\\/](.*?)[\\/](.*)/.exec(identifier);
-          const sharedBundle = sharedBundleMatch?.[1];
-          if (sharedBundle) {
-            return `shared-${sharedBundle}`;
-          }
-
-          const pageMatch = /[\\/]pages[\\/](.*?)[\\/](.*)/.exec(identifier);
-          const page = pageMatch?.[1];
-          if (page) {
-            return `page-${page}`;
-          }
-
-          const featureMatch = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
-          const feature = featureMatch?.[2];
-
-          if (feature) {
-            // include core functionality in common bundle
-            if (['captcha', 'seo', 'tracking', 'recently'].some(f => f === feature)) {
-              return 'common';
-            }
-
-            const effectivePath = featureMatch[4];
-
-            // send exports and routing modules to the common module
-            if (effectivePath.startsWith('exports') || effectivePath.endsWith('-routing.module.ts')) {
-              return 'common';
-            }
-
-            return feature;
-          }
-          return 'common';
         },
       };
     }
