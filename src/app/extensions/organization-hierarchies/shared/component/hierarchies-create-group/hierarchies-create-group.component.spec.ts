@@ -6,14 +6,14 @@ import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
-import { GroupFormComponent } from '../../shared/component/group-form/group-form.component';
+import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
+import { GroupFormComponent } from '../group-form/group-form.component';
 
-import { HierarchiesCreateGroupPageComponent } from './hierarchies-create-group-page.component';
+import { HierarchiesCreateGroupComponent } from './hierarchies-create-group.component';
 
-describe('Hierarchies Create Group Page Component', () => {
-  let component: HierarchiesCreateGroupPageComponent;
-  let fixture: ComponentFixture<HierarchiesCreateGroupPageComponent>;
+describe('Hierarchies Create Group Component', () => {
+  let component: HierarchiesCreateGroupComponent;
+  let fixture: ComponentFixture<HierarchiesCreateGroupComponent>;
   let element: HTMLElement;
   let organizationHierarchiesFacade: OrganizationHierarchiesFacade;
   let fb: FormBuilder;
@@ -23,7 +23,7 @@ describe('Hierarchies Create Group Page Component', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
-        HierarchiesCreateGroupPageComponent,
+        HierarchiesCreateGroupComponent,
         MockComponent(GroupFormComponent),
         MockComponent(LoadingComponent),
       ],
@@ -34,7 +34,7 @@ describe('Hierarchies Create Group Page Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HierarchiesCreateGroupPageComponent);
+    fixture = TestBed.createComponent(HierarchiesCreateGroupComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fb = TestBed.inject(FormBuilder);

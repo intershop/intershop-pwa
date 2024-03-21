@@ -48,7 +48,6 @@ export const groupReducer = createReducer(
 
     return {
       ...groupAdapter.upsertOne(group, state),
-      selected: group.id,
     };
   }),
   on(assignGroup, (state: GroupState, action): GroupState => {

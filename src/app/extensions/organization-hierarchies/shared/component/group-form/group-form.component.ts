@@ -3,8 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, map } from 'rxjs';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
-
 import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
 
 @Component({
@@ -15,7 +13,6 @@ import { OrganizationGroup } from '../../../models/organization-group/organizati
 export class GroupFormComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() groups$: Observable<OrganizationGroup[]>;
-  @Input() error: HttpError;
 
   fields: FormlyFieldConfig[];
 

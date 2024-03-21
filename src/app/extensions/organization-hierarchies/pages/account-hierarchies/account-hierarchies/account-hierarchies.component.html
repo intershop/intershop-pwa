@@ -1,0 +1,32 @@
+<ish-error-message [error]="error | async" />
+
+<h1>
+  {{ 'account.organization.hierarchies' | translate }}
+  <!-- Add address link -->
+  <button
+    type="button"
+    *ngIf="isCreateGroupFormCollapsed"
+    class="btn btn-secondary float-right"
+    (click)="showCreateGroupForm()"
+    [attr.aria-expanded]="!isCreateGroupFormCollapsed"
+    aria-controls="collapseBasic"
+    data-testing-id="create-group-button"
+  >
+    {{ 'account.organization.hierarchies.groups.add' | translate }}
+  </button>
+</h1>
+
+<!-- create group form -->
+<div id="collapseBasic" class="section" *ngIf="!isCreateGroupFormCollapsed" data-testing-id="create-group-form">
+  <div class="row">
+    <div class="col-md-10 col-xl-8">
+      <ish-hierarchies-create-group
+        [resetForm]="isCreateGroupFormCollapsed"
+        (save)="createGroup($event)"
+        (cancel)="hideCreateGroupForm()"
+      />
+    </div>
+  </div>
+</div>
+
+<ish-tree />

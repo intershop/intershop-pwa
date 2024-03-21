@@ -11,7 +11,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 import { getBuyingContext } from '../store/buying-context';
 
 @Injectable()
-export class TxSelectedGroupInterceptor implements HttpInterceptor {
+export class BuyingContextInterceptor implements HttpInterceptor {
   constructor(private store: Store) {}
 
   static matrixparam = 'bctx';
@@ -43,14 +43,14 @@ export class TxSelectedGroupInterceptor implements HttpInterceptor {
             ),
             map(([, buyingcontext, baseurl, configuration]) =>
               buyingcontext &&
-              !req?.url.includes(TxSelectedGroupInterceptor.matrixparam) &&
+              !req?.url.includes(BuyingContextInterceptor.matrixparam) &&
               req?.url.includes(configuration.channel)
                 ? req.clone({
                     url: req.url
                       .substring(0, baseurl.length)
                       .concat(
                         ';',
-                        TxSelectedGroupInterceptor.matrixparam,
+                        BuyingContextInterceptor.matrixparam,
                         '=',
                         buyingcontext.bctx,
                         req.url.substring(baseurl.length)

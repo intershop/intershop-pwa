@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { isServiceAvailable } from 'src/app/extensions/organization-hierarchies/pages/hierarchies/hierarchies-page.guard';
+import { isServiceAvailable } from 'src/app/extensions/organization-hierarchies/pages/account-hierarchies/account-hierarchies-page.guard';
 
 import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
@@ -72,13 +72,10 @@ const accountPageRoutes: Routes = [
       {
         path: 'hierarchies',
         canActivate: [isServiceAvailable],
-        data: {
-          feature: 'organizationHierarchies',
-        },
         loadChildren: () =>
-          import('../../extensions/organization-hierarchies/pages/hierarchies-account-routing.module').then(
-            m => m.HierarchiesAccountRoutingModule
-          ),
+          import(
+            '../../extensions/organization-hierarchies/pages/account-hierarchies/account-hierarchies-page.module'
+          ).then(m => m.AccountHierarchiesPageModule),
       },
       {
         path: 'quotes',

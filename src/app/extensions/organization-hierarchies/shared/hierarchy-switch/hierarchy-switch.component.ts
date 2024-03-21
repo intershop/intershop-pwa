@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
@@ -12,7 +10,6 @@ import { OrganizationGroup } from '../../models/organization-group/organization-
   templateUrl: './hierarchy-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@GenerateLazyComponent()
 export class HierarchySwitchComponent implements OnInit {
   /**
    * determines position of dropbox - dropup or dropdown, default is dropdown
@@ -25,10 +22,7 @@ export class HierarchySwitchComponent implements OnInit {
 
   constructor(private facade: OrganizationHierarchiesFacade) {}
 
-  homeHref: string;
-
   ngOnInit(): void {
-    console.log('feuer frei');
     this.groups$ = this.facade.groups$;
     this.count$ = this.facade.groupsCount$();
     this.setSelectedElement();

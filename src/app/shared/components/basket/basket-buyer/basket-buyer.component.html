@@ -1,6 +1,6 @@
 <div *ngIf="object">
   {{ companyName1 }} {{ companyName2 }}
-  <ish-lazy-hierarchy-path *ngIf="isOrganizationHierarchiesServiceAvailable$ | async" [object]="object" />
+  <ish-lazy-hierarchy-path [object]="object" />
   <span *ngIf="taxationID" data-testing-id="taxationID">
     <br />{{ 'checkout.widget.buyer.TaxationID' | translate }} {{ taxationID }}
   </span>

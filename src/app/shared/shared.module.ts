@@ -182,7 +182,6 @@ const importExportModules = [
   NgbModalModule,
   NgbPopoverModule,
   OrderTemplatesExportsModule,
-  OrganizationHierarchiesExportsModule,
   PipesModule,
   ProductNotificationsExportsModule,
   PunchoutExportsModule,
@@ -198,6 +197,7 @@ const importExportModules = [
   TactonExportsModule,
   TranslateModule,
   WishlistsExportsModule,
+  OrganizationHierarchiesExportsModule,
 ];
 
 const declaredComponents = [

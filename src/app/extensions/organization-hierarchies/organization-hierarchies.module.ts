@@ -2,28 +2,14 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { GroupFormComponent } from './shared/component/group-form/group-form.component';
 import { HierarchyGroupNameComponent } from './shared/hierarchy-group-name/hierarchy-group-name.component';
-import { HierarchyOrderListComponent } from './shared/hierarchy-order-list/hierarchy-order-list.component';
 import { HierarchyPathComponent } from './shared/hierarchy-path/hierarchy-path.component';
 import { HierarchySwitchComponent } from './shared/hierarchy-switch/hierarchy-switch.component';
+import { OrganizationHierarchiesStoreModule } from './store/organization-hierarchies-store.module';
 
 @NgModule({
-  imports: [SharedModule],
-  declarations: [
-    GroupFormComponent,
-    HierarchyGroupNameComponent,
-    HierarchyOrderListComponent,
-    HierarchyPathComponent,
-    HierarchySwitchComponent,
-  ],
-  exports: [
-    GroupFormComponent,
-    HierarchyGroupNameComponent,
-    HierarchyOrderListComponent,
-    HierarchyPathComponent,
-    HierarchySwitchComponent,
-    SharedModule,
-  ],
+  imports: [OrganizationHierarchiesStoreModule, SharedModule],
+  declarations: [HierarchyGroupNameComponent, HierarchyPathComponent, HierarchySwitchComponent],
+  exports: [HierarchyGroupNameComponent, HierarchyPathComponent, HierarchySwitchComponent],
 })
 export class OrganizationHierarchiesModule {}

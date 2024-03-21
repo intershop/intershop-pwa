@@ -7,14 +7,14 @@ import { instance, mock, when } from 'ts-mockito';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { TreeComponent } from 'ish-shared/components/common/tree/tree.component';
 
-import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
+import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
 
-import { HierarchiesPageComponent } from './hierarchies-page.component';
+import { AccountHierarchiesComponent } from './account-hierarchies.component';
 
-describe('Hierarchies Page Component', () => {
-  let component: HierarchiesPageComponent;
-  let fixture: ComponentFixture<HierarchiesPageComponent>;
+describe('Account Hierarchies Component', () => {
+  let component: AccountHierarchiesComponent;
+  let fixture: ComponentFixture<AccountHierarchiesComponent>;
   let element: HTMLElement;
   let organizationHierarchiesFacade: OrganizationHierarchiesFacade;
 
@@ -35,7 +35,7 @@ describe('Hierarchies Page Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [HierarchiesPageComponent, MockComponent(ErrorMessageComponent), MockComponent(TreeComponent)],
+      declarations: [AccountHierarchiesComponent, MockComponent(ErrorMessageComponent), MockComponent(TreeComponent)],
       providers: [
         { provide: OrganizationHierarchiesFacade, useFactory: () => instance(organizationHierarchiesFacade) },
       ],
@@ -43,7 +43,7 @@ describe('Hierarchies Page Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HierarchiesPageComponent);
+    fixture = TestBed.createComponent(AccountHierarchiesComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 

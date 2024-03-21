@@ -28,11 +28,7 @@
         <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.order_number' | translate">
           <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
           <br />
-          <ish-lazy-hierarchy-group-name
-            *ishFeature="'organizationHierarchies'"
-            [buyingContext]="order.buyingContext"
-            [showLabel]="true"
-          />
+          <ish-lazy-hierarchy-group-name [buyingContext]="order.buyingContext" [showLabel]="true" />
         </td>
       </ng-container>
 

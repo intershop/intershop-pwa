@@ -6,7 +6,7 @@ import { Observable, take } from 'rxjs';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 
 @Injectable()
-export class OhsInterceptor implements HttpInterceptor {
+export class OrganizationHierarchiesRedirectInterceptor implements HttpInterceptor {
   constructor(private store: Store) {}
 
   static readonly URL_PATH = '/organizations';
@@ -21,9 +21,11 @@ export class OhsInterceptor implements HttpInterceptor {
       )
       .subscribe(externalURL => (this.externalURL = externalURL));
     let cloneReq = req;
-    if (req.url.includes(OhsInterceptor.URL_PATH)) {
+    if (req.url.includes(OrganizationHierarchiesRedirectInterceptor.URL_PATH)) {
       cloneReq = req.clone({
-        url: this.externalURL.concat(req.url.substring(req.url.indexOf(OhsInterceptor.URL_PATH))),
+        url: this.externalURL.concat(
+          req.url.substring(req.url.indexOf(OrganizationHierarchiesRedirectInterceptor.URL_PATH))
+        ),
       });
     }
     return next.handle(cloneReq);

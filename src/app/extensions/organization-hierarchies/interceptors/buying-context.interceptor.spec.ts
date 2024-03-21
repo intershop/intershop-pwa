@@ -6,16 +6,15 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { getConfigurationState, getRestEndpoint } from 'ish-core/store/core/configuration';
 import { ConfigurationState } from 'ish-core/store/core/configuration/configuration.reducer';
 
-import { OrganizationGroup } from '../models/organization-group/organization-group.model';
 import { getBuyingContext } from '../store/buying-context';
 import { BuyingContextState } from '../store/buying-context/buying-context.reducer';
 
-import { TxSelectedGroupInterceptor } from './tx-selected-group.interceptor';
+import { BuyingContextInterceptor } from './buying-context.interceptor';
 
-describe('Tx Selected Group Interceptor', () => {
+describe('Buying Context Interceptor', () => {
   let httpController: HttpTestingController;
   let http: HttpClient;
-  const buyingContext: BuyingContextState = { group: {} as OrganizationGroup, bctx: 'Testgroup@TestCompany' };
+  const buyingContext: BuyingContextState = { bctx: 'Testgroup@TestCompany' };
   const SITE = 'site';
   const BASE_URL = 'http://example.org/WFS/'.concat(SITE, '/rest');
 
@@ -29,7 +28,7 @@ describe('Tx Selected Group Interceptor', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: TxSelectedGroupInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: BuyingContextInterceptor, multi: true },
         provideMockStore({
           initialState: { organizationHierarchies: {} },
           selectors: [
@@ -62,12 +61,12 @@ describe('Tx Selected Group Interceptor', () => {
     const requests = httpController.match({ method: 'get' });
     requests[0].flush('All good');
     expect(requests[0].request.url).toContain(
-      ';'.concat(TxSelectedGroupInterceptor.matrixparam, '=', buyingContext.bctx)
+      ';'.concat(BuyingContextInterceptor.matrixparam, '=', buyingContext.bctx)
     );
   });
 
   it('should NOT include a BuyingGroupID value in the url if request already has one', done => {
-    http.get(BASE_URL.concat(';', TxSelectedGroupInterceptor.matrixparam, '=existing/some')).subscribe(
+    http.get(BASE_URL.concat(';', BuyingContextInterceptor.matrixparam, '=existing/some')).subscribe(
       response => {
         expect(response).toBeTruthy();
       },
@@ -79,6 +78,6 @@ describe('Tx Selected Group Interceptor', () => {
 
     const requests = httpController.match({ method: 'get' });
     requests[0].flush('All good');
-    expect(requests[0].request.url).toContain(';'.concat(TxSelectedGroupInterceptor.matrixparam, '=existing'));
+    expect(requests[0].request.url).toContain(';'.concat(BuyingContextInterceptor.matrixparam, '=existing'));
   });
 });

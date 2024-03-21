@@ -24,7 +24,7 @@
         >
       </a>
       <ng-container *ngIf="(isSticky$ | async) === false && view !== 'small'">
-        <ish-lazy-hierarchy-switch *ngIf="isOrganizationHierarchiesServiceAvailable$ | async" />
+        <ish-lazy-hierarchy-switch />
       </ng-container>
 
       <span class="separator" [ngClass]="getViewClasses()">&#124;</span>

@@ -124,22 +124,4 @@ export class GroupEffects {
       )
     )
   );
-
-  redirectAfterCreateNewGroup$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(createGroupSuccess),
-        concatMap(async () => this.navigateTo('../'))
-      ),
-    { dispatch: false }
-  );
-
-  private navigateTo(path: string): void {
-    // find current ActivatedRoute by following first activated children
-    let currentRoute = this.router.routerState.root;
-    while (currentRoute.firstChild) {
-      currentRoute = currentRoute.firstChild;
-    }
-    this.router.navigate([path], { relativeTo: currentRoute });
-  }
 }

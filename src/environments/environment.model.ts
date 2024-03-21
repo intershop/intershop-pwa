@@ -39,7 +39,6 @@ export interface Environment {
     | 'quickorder'
     | 'orderTemplates'
     | 'punchout'
-    | 'organizationHierarchies'
     /* B2C features */
     | 'guestCheckout'
     | 'wishlists'

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -18,16 +18,11 @@ export class LoginStatusComponent implements OnInit {
 
   user$: Observable<User>;
 
-  isOrganizationHierarchiesServiceAvailable$: Observable<boolean>;
-
   constructor(private accountFacade: AccountFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.user$ = this.accountFacade.user$;
     this.isSticky$ = this.appFacade.stickyHeader$;
-    this.isOrganizationHierarchiesServiceAvailable$ = this.appFacade
-      .serverSetting$<string>('services.OrganizationHierarchyServiceDefinition.Endpoint')
-      .pipe(map(url => (url ? true : false)));
   }
 
   getViewClasses(): string {

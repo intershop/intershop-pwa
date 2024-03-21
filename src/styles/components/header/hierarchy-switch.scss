@@ -10,7 +10,7 @@
   
     .hierarchy-switch-link {
       display: inherit;
-      max-width: 300px;
+      max-width: 200px;
       padding-right: $space-default;
       padding-left: $space-default / 2;
       overflow: hidden;
@@ -77,6 +77,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: $CORPORATE-PRIMARY;
           }
   
           a:hover {
