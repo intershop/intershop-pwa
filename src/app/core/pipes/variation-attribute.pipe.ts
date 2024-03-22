@@ -4,6 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
 
+/**
+ * Pipe
+ *
+ * Used on a variation attribute (of type VariationAttribute), this pipe will return the corresponding display (string) value, considering the current locale for number attribute values.
+ */
 @Pipe({ name: 'ishVariationAttribute', pure: false })
 export class VariationAttributePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
