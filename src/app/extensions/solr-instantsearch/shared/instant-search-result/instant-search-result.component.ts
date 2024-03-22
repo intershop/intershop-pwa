@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Observable, Subject, distinctUntilChanged, map, scan, startWith, switchMap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -29,8 +28,7 @@ export class InstantSearchResultComponent implements OnInit, OnDestroy {
   constructor(
     private appFacade: AppFacade,
     private instantSearchFacade: InstantSearchFacade,
-    private solrInstantsearchFacade: SolrInstantsearchFacade,
-    private store: Store
+    private solrInstantsearchFacade: SolrInstantsearchFacade
   ) {}
 
   ngOnInit() {
