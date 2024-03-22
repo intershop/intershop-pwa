@@ -37,10 +37,10 @@ export class ScrollDirective implements OnChanges {
 
   /**
    * Sets the scroll container
-   * This values uses the elements parent node by default.
+   * The scroll container must have a scroll bar.
    *
    * @usageNotes
-   * Set it to "root" to use the window, "parent" to use the elements parent (default)
+   * Set it to "root" to use the window documentElement (default), "parent" to use the element's parent,
    * or pass in any HTMLElement that is a parent to the element.
    */
   @Input() scrollContainer: 'parent' | 'root' | HTMLElement = 'root';
@@ -60,7 +60,7 @@ export class ScrollDirective implements OnChanges {
 
   private scroll() {
     const target: HTMLElement = this.el.nativeElement;
-    const scrollContainer =
+    const container =
       this.scrollContainer === 'parent'
         ? target.parentElement
         : this.scrollContainer === 'root'
@@ -75,21 +75,24 @@ export class ScrollDirective implements OnChanges {
     // calculate the offset from target to scrollContainer
     let offset = target.offsetTop;
     let tempTarget = target.offsetParent as HTMLElement;
-    while (!tempTarget.isSameNode(scrollContainer) && !tempTarget.isSameNode(this.document.body)) {
+    while (!tempTarget.isSameNode(container) && !tempTarget.isSameNode(this.document.body)) {
       offset += tempTarget.offsetTop;
       tempTarget = tempTarget.offsetParent as HTMLElement;
     }
     offset -= this.scrollSpacing;
+    if (offset < 0) {
+      offset = 0;
+    }
 
     // scroll instantly if no duration is set
     if (!this.scrollDuration) {
-      scrollContainer.scrollTop = offset;
+      container.scrollTop = offset;
       return;
     }
 
     // set values for animation
     let startTime: number;
-    const initialScrollPosition = scrollContainer.scrollTop;
+    const initialScrollPosition = container.scrollTop;
     const scrollDifference = offset - initialScrollPosition;
 
     const step = (timestamp: number) => {
@@ -102,8 +105,8 @@ export class ScrollDirective implements OnChanges {
       const passed = timestamp - startTime;
 
       // exit animation when duration is reached or calculated difference is smaller than 0.5 pixel
-      if (passed >= this.scrollDuration || Math.abs(scrollContainer.scrollTop - offset) <= 0.5) {
-        scrollContainer.scrollTop = offset;
+      if (passed >= this.scrollDuration || Math.abs(container.scrollTop - offset) <= 0.5) {
+        container.scrollTop = offset;
         return;
       }
 
@@ -114,7 +117,7 @@ export class ScrollDirective implements OnChanges {
       const ease = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 
       // set new scroll value based on current time progression
-      scrollContainer.scrollTop = initialScrollPosition + scrollDifference * ease(progress);
+      container.scrollTop = initialScrollPosition + scrollDifference * ease(progress);
 
       // request next animation frame
       requestAnimationFrame(step);

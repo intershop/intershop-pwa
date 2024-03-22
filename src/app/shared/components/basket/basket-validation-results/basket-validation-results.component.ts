@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, OnInit, O
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { uniq } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
@@ -29,11 +29,11 @@ export class BasketValidationResultsComponent implements OnInit {
   infoMessages$: Observable<string[]>;
   undeliverableItems$: Observable<LineItemView[]>;
   removedItems$: Observable<{ message: string; productSKU: string; price: PriceItem }[]>;
+  scrollToMessage$: Observable<boolean>;
 
   itemHasBeenRemoved = false;
 
   // default values to control scrolling behavior
-  scrollDuration = 500;
   scrollSpacing = 64;
 
   private destroyRef = inject(DestroyRef);
@@ -43,9 +43,8 @@ export class BasketValidationResultsComponent implements OnInit {
   @Output() continueCheckout = new EventEmitter<void>();
 
   ngOnInit() {
-    this.validationResults$ = this.checkoutFacade.basketValidationResults$;
-
     // update emitted to display spinning animation
+    this.validationResults$ = this.checkoutFacade.basketValidationResults$.pipe(shareReplay(1));
     this.validationResults$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       if (this.itemHasBeenRemoved) {
         this.continueCheckout.emit();
@@ -98,6 +97,10 @@ export class BasketValidationResultsComponent implements OnInit {
 
     this.infoMessages$ = this.validationResults$.pipe(
       map(results => uniq(results?.infos?.map(info => info.message)).filter(message => !!message))
+    );
+
+    this.scrollToMessage$ = this.validationResults$.pipe(
+      map(results => !!(results?.errors?.length || results?.infos?.length))
     );
   }
 
