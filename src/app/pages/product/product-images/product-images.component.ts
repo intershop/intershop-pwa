@@ -1,16 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { distinctUntilKeyChanged, map, shareReplay, tap } from 'rxjs/operators';
-import SwiperCore, { Navigation } from 'swiper';
-import { SwiperComponent } from 'swiper/angular';
+import { Navigation } from 'swiper/modules';
+import { SwiperOptions } from 'swiper/types';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-
-SwiperCore.use([Navigation]);
+import { SwiperComponent } from 'ish-shared/swiper/swiper.component';
 
 /**
  * The Product Images Component
@@ -34,14 +33,19 @@ export class ProductImagesComponent implements OnInit {
   product$: Observable<ProductView>;
   zoomImageIds$: Observable<string[]>;
 
+  swiperConfig: SwiperOptions;
+
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
+    this.swiperConfig = {
+      modules: [Navigation],
+    };
     this.product$ = this.context.select('product').pipe(
       whenTruthy(),
       distinctUntilKeyChanged('sku'),
       tap(() => {
-        if (this.carousel?.swiperRef?.activeIndex) {
+        if (this.carousel?.swiper?.activeIndex) {
           this.setActiveSlide(0);
         }
       }),
@@ -63,7 +67,7 @@ export class ProductImagesComponent implements OnInit {
    * @param slideIndex The slide index to set the active slide
    */
   setActiveSlide(slideIndex: number) {
-    this.carousel?.swiperRef?.slideTo(slideIndex);
+    this.carousel?.swiper?.slideTo(slideIndex);
   }
 
   /**
@@ -73,7 +77,7 @@ export class ProductImagesComponent implements OnInit {
    * @returns True if the given slide index is the active slide, false otherwise
    */
   isActiveSlide(slideIndex: number): boolean {
-    return this.carousel?.swiperRef?.activeIndex === slideIndex;
+    return this.carousel?.swiper?.activeIndex === slideIndex;
   }
 
   getZoomImageAnchorId(i: number) {

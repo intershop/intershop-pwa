@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 import { RxState } from '@rx-angular/state';
-import { EMPTY, Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
+import { SwiperOptions } from 'swiper/types';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -10,8 +11,6 @@ import { ProductLinks } from 'ish-core/models/product-links/product-links.model'
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty } from 'ish-core/utils/operators';
-
-SwiperCore.use([Navigation, Pagination]);
 
 /**
  * The Product Link Carousel Component
@@ -49,11 +48,6 @@ export class ProductLinksCarouselComponent {
   productSKUs$ = this.state.select('products$');
 
   /**
-   * track already fetched SKUs
-   */
-  private fetchedSKUs = new Set<Observable<string>>();
-
-  /**
    * configuration of swiper carousel
    * https://swiperjs.com/swiper-api
    */
@@ -76,6 +70,7 @@ export class ProductLinksCarouselComponent {
     }));
 
     this.swiperConfig = {
+      modules: [Navigation, Pagination],
       watchSlidesProgress: true,
       direction: 'horizontal',
       navigation: true,
@@ -126,15 +121,5 @@ export class ProductLinksCarouselComponent {
     ]).pipe(map(([products, hiddenSlides]) => products.filter((_, index) => !hiddenSlides.includes(index))));
 
     this.state.connect('products$', filteredProducts$);
-  }
-
-  lazyFetch(fetch: boolean, sku$: Observable<string>): Observable<string> {
-    if (fetch) {
-      this.fetchedSKUs.add(sku$);
-    }
-    if (this.fetchedSKUs.has(sku$)) {
-      return sku$;
-    }
-    return EMPTY;
   }
 }

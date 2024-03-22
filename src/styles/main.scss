@@ -16,10 +16,6 @@
 // import Angular Toastr bootstrap styles
 @import 'ngx-toastr/toastr-bs4-alert';
 
-// import Swiper default theme
-@import 'swiper/scss';
-@import 'swiper/scss/pagination';
-
 //
 // STYLING COMPATIBILITY LAYER
 
@@ -39,7 +35,6 @@
 @import 'global/panel';
 @import 'global/tables';
 @import 'global/toasts';
-@import 'global/swiper';
 @import 'global/forms';
 @import 'global/lists';
 @import 'global/share-tools';
@@ -47,6 +42,7 @@
 @import 'global/line-item';
 @import 'global/print';
 @import 'global/promotions';
+@import 'global/swiper';
 @import 'components/header/header';
 @import 'components/header/language-switch';
 @import 'components/header/search-container';
