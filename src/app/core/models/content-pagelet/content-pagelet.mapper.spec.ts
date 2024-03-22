@@ -156,9 +156,9 @@ describe('Content Pagelet Mapper', () => {
     expect(result).toHaveLength(4);
     expect(result.map(p => p.id)).toIncludeAllMembers([
       'pagelet',
-      'pagelet-nested',
-      'pagelet-nested2',
-      'pagelet-deeply-nested',
+      'pagelet-nested#0$0@pagelet',
+      'pagelet-nested2#0$1@pagelet',
+      'pagelet-deeply-nested#0$0@pagelet-nested2#0$1@pagelet',
     ]);
     expect(result).toMatchSnapshot();
   });
