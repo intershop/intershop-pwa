@@ -162,17 +162,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
       const cacheGroups = config.optimization.splitChunks.cacheGroups;
 
-      // chunk for all core functionality the user usually doesn't use while just browsing the shop
-      cacheGroups.customer = {
-        minChunks: 1,
-        priority: 30,
-        // add [\\/]src[\\/]app at the beginning of this regex to only include
-        // my-account pages from the PWA core
-        test: /[\\/]pages[\\/](account|checkout|registration|contact|forgot-password)/,
-        chunks: 'async',
-        name: 'customer',
-      };
-
       // individual bundles for extensions and projects, that should only be loaded when necessary
       cacheGroups.features = {
         minChunks: 1,
@@ -193,27 +182,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
           if (locale) {
             return locale.replace('_', '-');
           }
-
-          const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
-          const feature = match?.[2];
-
-          if (feature) {
-            // include core functionality in common bundle
-            if (['captcha', 'seo', 'tracking', 'recently'].some(f => f === feature)) {
-              return 'common';
-            }
-
-            const effectivePath = match[4];
-
-            // send exports and routing modules to the common module
-            if (effectivePath.startsWith('exports') || effectivePath.endsWith('-routing.module.ts')) {
-              return 'common';
-            }
-
-            return feature;
-          }
-
-          return 'common';
         },
       };
     }
