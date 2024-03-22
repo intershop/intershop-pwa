@@ -30,11 +30,11 @@ export class ProductVariationHelper {
     // each with information about alternative combinations and active status (active status comes from currently selected variation)
     const options: VariationSelectOption[] = (product.productMaster?.variationAttributeValues || [])
       .map(attr => ({
-        label: attr.value,
-        value: attr.value,
+        label: ProductVariationHelper.toDisplayValue(attr.value),
+        value: ProductVariationHelper.toValue(attr.value)?.toString(),
         type: attr.variationAttributeId,
         metaData: attr.metaData,
-        active: currentSettings?.[attr.variationAttributeId]?.value === attr.value,
+        active: ProductVariationHelper.isEqual(currentSettings?.[attr.variationAttributeId]?.value, attr.value),
       }))
       .map(option => ({
         ...option,
@@ -65,7 +65,9 @@ export class ProductVariationHelper {
 
     const candidates = product.variations
       .filter(variation =>
-        variation.variableVariationAttributes.some(attr => attr.variationAttributeId === name && attr.value === value)
+        variation.variableVariationAttributes.some(
+          attr => attr.variationAttributeId === name && ProductVariationHelper.isEqual(attr.value, value)
+        )
       )
       .map(variation => ({
         sku: variation.sku,
@@ -113,7 +115,9 @@ export class ProductVariationHelper {
             // attribute is not selected
             !selectedFacets.find(([key]) => key === attr.variationAttributeId) ||
             // selection is variation
-            selectedFacets.find(([key, val]) => key === attr.variationAttributeId && val === attr.value.toString())
+            selectedFacets.find(
+              ([key, val]) => key === attr.variationAttributeId && ProductVariationHelper.isEqual(val, attr.value)
+            )
         )
       ).length;
   }
@@ -144,14 +148,17 @@ export class ProductVariationHelper {
           // increment quality if variation attribute matches selected product attribute.
           if (
             attribute.variationAttributeId === selectedAttribute.variationAttributeId &&
-            attribute.value === selectedAttribute.value
+            ProductVariationHelper.isEqual(attribute.value, selectedAttribute.value)
           ) {
             quality += 1;
             continue;
           }
 
           // increment quality if variation attribute matches currently checked option.
-          if (attribute.variationAttributeId === option.type && attribute.value === option.value) {
+          if (
+            attribute.variationAttributeId === option.type &&
+            ProductVariationHelper.isEqual(attribute.value, option.value)
+          ) {
             quality += 1;
             continue;
           }
@@ -166,6 +173,19 @@ export class ProductVariationHelper {
 
     // imperfect match
     return true;
+  }
+
+  private static toValue(input: VariationAttribute['value']): string | number {
+    return typeof input === 'object' ? input.value : input;
+  }
+
+  private static toDisplayValue(input: VariationAttribute['value']): string {
+    return typeof input === 'object' ? `${input.value} ${input.unit}` : input.toString();
+  }
+
+  private static isEqual(obj1: VariationAttribute['value'], obj2: VariationAttribute['value']): boolean {
+    // eslint-disable-next-line eqeqeq -- needed for comparison of string, integers and floats
+    return ProductVariationHelper.toValue(obj1) == ProductVariationHelper.toValue(obj2);
   }
 
   private static simplifyVariableVariationAttributes(attrs: VariationAttribute[]): { [name: string]: string } {
