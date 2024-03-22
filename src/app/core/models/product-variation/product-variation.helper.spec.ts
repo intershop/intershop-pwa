@@ -91,7 +91,7 @@ describe('Product Variation Helper', () => {
             "options": [
               {
                 "active": true,
-                "alternativeCombination": true,
+                "alternativeCombination": false,
                 "label": "A",
                 "metaData": undefined,
                 "type": "a1",
@@ -114,7 +114,7 @@ describe('Product Variation Helper', () => {
             "options": [
               {
                 "active": true,
-                "alternativeCombination": true,
+                "alternativeCombination": false,
                 "label": "A",
                 "metaData": undefined,
                 "type": "a2",
@@ -161,7 +161,7 @@ describe('Product Variation Helper', () => {
               },
               {
                 "active": true,
-                "alternativeCombination": true,
+                "alternativeCombination": false,
                 "label": "3",
                 "metaData": undefined,
                 "type": "a3",
