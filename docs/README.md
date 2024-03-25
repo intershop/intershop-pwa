@@ -59,6 +59,7 @@ kb_sync_latest_only
 - [Guide - Cookie Consent](./guides/cookie-consent.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
 - [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
+- [Guide - Core Web Vitals](./guides/core-web-vitals.md)
 
 ### Maintenance
 
