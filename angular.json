@@ -128,7 +128,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "intershop-pwa:build"
+            "buildTarget": "intershop-pwa:build"
           }
         },
         "lint": {
