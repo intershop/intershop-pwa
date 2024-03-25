@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { RESPONSE } from '../../../../express.tokens';
 
 import { InjectSingle } from 'ish-core/utils/injection';
 

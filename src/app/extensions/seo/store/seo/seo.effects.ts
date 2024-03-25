@@ -4,7 +4,7 @@ import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { REQUEST } from '@nguniversal/express-engine/tokens';
+import { REQUEST } from '../../../../../express.tokens';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
