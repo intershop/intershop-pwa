@@ -162,7 +162,7 @@
           }
         },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "options": {
             "browserTarget": "intershop-pwa:build",
             "serverTarget": "intershop-pwa:server"
