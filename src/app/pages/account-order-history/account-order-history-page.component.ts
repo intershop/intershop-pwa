@@ -9,6 +9,8 @@ import { Order } from 'ish-core/models/order/order.model';
 /**
  * The Order History Page Component renders the account history page of a logged in user.
  *
+ * If search results have no order, filters should be rendered
+ * If no order placed yet, filters should not be rendered
  */
 @Component({
   templateUrl: './account-order-history-page.component.html',
@@ -31,20 +33,8 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.ordersError$ = this.accountFacade.ordersError$;
     this.moreOrdersAvailable$ = this.accountFacade.moreOrdersAvailable$;
 
-    this.loadOrders();
-
     this.orders$?.pipe(takeUntil(this.destroy$)).subscribe(orders => {
       this.ordersAvailable = orders.length > 0;
-    });
-  }
-
-  /**
-   * Load orders
-   */
-  loadOrders(): void {
-    this.accountFacade.loadOrders({
-      limit: 30,
-      include: ['commonShipToAddress'],
     });
   }
 
@@ -63,13 +53,5 @@ export class AccountOrderHistoryPageComponent implements OnInit {
 
   loadMoreOrders(): void {
     this.accountFacade.loadMoreOrders();
-  }
-
-  /**
-   * If search results have no order, filters should be rendered
-   * If no order placed yet, filters should not be rendered
-   */
-  ordersExist() {
-    return this.filtersActive ? this.filtersActive : this.ordersAvailable;
   }
 }
