@@ -18,6 +18,8 @@ import { BasketShippingMethodComponent } from 'ish-shared/components/basket/bask
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
+import { LazyOrderCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-order-create-order-template/lazy-order-create-order-template.component';
+
 import { AccountOrderComponent } from './account-order.component';
 
 describe('Account Order Component', () => {
@@ -38,6 +40,7 @@ describe('Account Order Component', () => {
         MockComponent(BasketShippingMethodComponent),
         MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
+        MockComponent(LazyOrderCreateOrderTemplateComponent),
         MockComponent(LineItemListComponent),
         MockPipe(DatePipe),
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
@@ -91,5 +94,10 @@ describe('Account Order Component', () => {
   it('should display the create cart from order button after creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="create-cart-from-order"]')).toBeTruthy();
+  });
+
+  it('should display the create order-template from order button after creation', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-lazy-order-create-order-template')).toBeTruthy();
   });
 });
