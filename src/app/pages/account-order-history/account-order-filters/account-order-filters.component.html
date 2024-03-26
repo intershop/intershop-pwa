@@ -1,4 +1,3 @@
-<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <form [formGroup]="form" (ngSubmit)="submitForm()">
   <div>
     <formly-form [form]="form" [fields]="[fields[0]]" />
@@ -8,13 +7,13 @@
   </div>
   <div class="row mb-4">
     <div class="col-md-4 d-flex align-items-center">
-      <a (click)="expandForm()" (keyup)="expandForm()">
+      <button type="button" class="btn btn-link pl-0" (click)="expandForm()">
         {{
           formIsCollapsed
             ? ('account.order_history.filter.show' | translate)
             : ('account.order_history.filter.hide' | translate)
-        }}</a
-      >
+        }}
+      </button>
     </div>
     <div class="col-md-8 text-right">
       <button type="reset" class="btn btn-link" [hidden]="!showResetButton()" (click)="resetForm()">
