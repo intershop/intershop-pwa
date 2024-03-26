@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Signal, effect, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
@@ -22,13 +23,28 @@ export class OrderCreateOrderTemplateComponent {
 
   @Input() cssClass: string;
 
-  constructor(private orderTemplatesFacade: OrderTemplatesFacade) {}
+  orderTemplateLoading: Signal<boolean>;
+  displaySpinner = signal(false);
+
+  constructor(private orderTemplatesFacade: OrderTemplatesFacade) {
+    this.orderTemplateLoading = toSignal(this.orderTemplatesFacade.orderTemplateLoading$, { initialValue: false });
+    effect(
+      () => {
+        if (!this.orderTemplateLoading()) {
+          this.displaySpinner.set(this.orderTemplateLoading());
+        }
+      },
+      { allowSignalWrites: true }
+    );
+  }
 
   openModal(modal: OrderTemplatePreferencesDialogComponent) {
     modal.show();
   }
 
   createOrderTemplate(orderTemplate: OrderTemplate) {
+    this.displaySpinner.set(true);
+
     this.orderTemplatesFacade.createOrderTemplateFromLineItems(orderTemplate, this.lineItems);
   }
 }
