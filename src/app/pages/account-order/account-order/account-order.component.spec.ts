@@ -2,10 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { instance, mock } from 'ts-mockito';
 
-import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -19,6 +17,7 @@ import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { LazyOrderCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-order-create-order-template/lazy-order-create-order-template.component';
+import { AccountOrderToBasketComponent } from '../account-order-to-basket/account-order-to-basket.component';
 
 import { AccountOrderComponent } from './account-order.component';
 
@@ -28,12 +27,10 @@ describe('Account Order Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    const checkoutFacadeMock = mock(CheckoutFacade);
-    when(checkoutFacadeMock.basketLoading$).thenReturn(of(false));
-
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderComponent,
+        MockComponent(AccountOrderToBasketComponent),
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketMerchantMessageViewComponent),
@@ -46,10 +43,7 @@ describe('Account Order Component', () => {
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
       imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
-      providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) },
-        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
-      ],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) }],
     }).compileComponents();
   });
 
@@ -93,7 +87,7 @@ describe('Account Order Component', () => {
 
   it('should display the create cart from order button after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id="create-cart-from-order"]')).toBeTruthy();
+    expect(element.querySelector('ish-account-order-to-basket')).toBeTruthy();
   });
 
   it('should display the create order-template from order button after creation', () => {
