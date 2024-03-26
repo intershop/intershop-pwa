@@ -18,7 +18,7 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
 
 @GenerateLazyComponent()
 export class OrderCreateOrderTemplateComponent {
-  @Input() lineItems: LineItemView[];
+  @Input({ required: true }) lineItems: LineItemView[];
 
   @Input() cssClass: string;
 
