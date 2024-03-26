@@ -2,9 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -43,7 +41,6 @@ describe('Account Order Component', () => {
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
       imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) }],
     }).compileComponents();
   });
 

@@ -5,7 +5,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Order } from 'ish-core/models/order/order.model';
 
@@ -41,7 +40,7 @@ describe('Account Order To Basket Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [AccountOrderToBasketComponent],
-      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) },
