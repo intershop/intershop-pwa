@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, instance, mock, verify } from 'ts-mockito';
-
-import { AccountFacade } from 'ish-core/facades/account.facade';
+import { of } from 'rxjs';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplatePreferencesDialogComponent } from '../order-template-preferences-dialog/order-template-preferences-dialog.component';
@@ -20,13 +19,12 @@ describe('Order Create Order Template Component', () => {
   beforeEach(async () => {
     orderTemplatesFacadeMock = mock(OrderTemplatesFacade);
 
+    when(orderTemplatesFacadeMock.orderTemplateLoading$).thenReturn(of(false));
+
     await TestBed.configureTestingModule({
       declarations: [MockComponent(OrderTemplatePreferencesDialogComponent), OrderCreateOrderTemplateComponent],
       imports: [TranslateModule.forRoot()],
-      providers: [
-        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
-        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacadeMock) },
-      ],
+      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacadeMock) }],
     }).compileComponents();
   });
 
