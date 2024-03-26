@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Signal, effect, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Signal, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
@@ -24,18 +24,12 @@ export class OrderCreateOrderTemplateComponent {
   @Input() cssClass: string;
 
   orderTemplateLoading: Signal<boolean>;
-  displaySpinner = signal(false);
+  displaySpinner: Signal<boolean>;
 
   constructor(private orderTemplatesFacade: OrderTemplatesFacade) {
     this.orderTemplateLoading = toSignal(this.orderTemplatesFacade.orderTemplateLoading$, { initialValue: false });
-    effect(
-      () => {
-        if (!this.orderTemplateLoading()) {
-          this.displaySpinner.set(this.orderTemplateLoading());
-        }
-      },
-      { allowSignalWrites: true }
-    );
+
+    this.displaySpinner = computed(() => this.orderTemplateLoading());
   }
 
   openModal(modal: OrderTemplatePreferencesDialogComponent) {
@@ -43,8 +37,6 @@ export class OrderCreateOrderTemplateComponent {
   }
 
   createOrderTemplate(orderTemplate: OrderTemplate) {
-    this.displaySpinner.set(true);
-
     this.orderTemplatesFacade.createOrderTemplateFromLineItems(orderTemplate, this.lineItems);
   }
 }
