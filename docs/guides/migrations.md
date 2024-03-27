@@ -277,7 +277,7 @@ A `ProductVariationSelectSwatchComponent` for colorCode and swatchImage variatio
 
 The user authentication process has changed.
 User authentication tokens are requested from the ICM server using the `/token` REST endpoint now.
-Regarding this, the logout action triggers a service which revokes the currently available access token on the ICM backend.
+Regarding this, the logout action triggers a service which revokes the currently available access token on the ICM back office.
 If the logout was successful, all personalized information is removed from the ngrx store.
 Please use `logoutUser({ revokeToken: false })` from the account facade or dispatch `logoutUserSuccess` instead of the `logoutUser` action to use the old behavior.
 
