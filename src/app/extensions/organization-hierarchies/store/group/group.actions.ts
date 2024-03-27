@@ -18,11 +18,10 @@ export const createGroup = createAction(
   payload<{ parentGroupId: string; child: OrganizationGroup }>()
 );
 
-export const createGroupSuccess = createAction(
-  '[Organizational Groups API] Create Group Success',
-  payload<{ group: OrganizationGroup }>()
-);
-
 export const createGroupFail = createAction('[Organizational Groups API] Create Group Fail', httpError());
+
+export const deleteGroup = createAction('[Organizational Groups API] Delete Group', payload<{ groupId: string }>());
+
+export const deleteGroupFail = createAction('[Organizational Groups API] Delete Group Fail', httpError());
 
 export const assignGroup = createAction('[Organizational Groups API] Assign Group', payload<{ id: string }>());

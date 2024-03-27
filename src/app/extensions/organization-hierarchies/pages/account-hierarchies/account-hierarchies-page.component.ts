@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { TREE_FACADE_IMPLEMENTOR } from 'ish-core/facades/common/tree.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
@@ -11,7 +10,6 @@ import { OrganizationGroup } from '../../models/organization-group/organization-
   selector: 'ish-hierarchies-page',
   templateUrl: './account-hierarchies-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: TREE_FACADE_IMPLEMENTOR, useClass: OrganizationHierarchiesFacade, multi: false }],
 })
 export class AccountHierarchiesPageComponent implements OnInit {
   groups: OrganizationGroup[];

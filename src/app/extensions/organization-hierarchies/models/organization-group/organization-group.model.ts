@@ -1,8 +1,6 @@
-export interface OrganizationGroup {
-  id: string;
-  parentId?: string;
+import { DynamicFlatNode } from 'ish-core/utils/tree/tree.interface';
+
+export interface OrganizationGroup extends DynamicFlatNode {
   description?: string;
   organization?: string;
-  name: string;
-  childrenIds?: string[];
 }

@@ -15,6 +15,7 @@ import { OrganizationGroup } from '../../../models/organization-group/organizati
 })
 export class HierarchiesCreateGroupComponent implements OnInit {
   @Input() resetForm = false;
+  @Input() selectedParentGroup$: Observable<OrganizationGroup>;
 
   @Output() save = new EventEmitter<{ parentGroupId: string; child: OrganizationGroup }>();
   @Output() cancel = new EventEmitter();
@@ -69,7 +70,7 @@ export class HierarchiesCreateGroupComponent implements OnInit {
 
     const group: OrganizationGroup = {
       id: uuid(),
-      name: formValue.groupName,
+      displayName: formValue.groupName,
       description: formValue.groupDescription === '' ? undefined : formValue.groupDescription,
     };
 

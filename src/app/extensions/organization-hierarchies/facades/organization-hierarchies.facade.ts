@@ -3,32 +3,30 @@ import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
-import { TreeFacade } from 'ish-core/facades/common/tree.facade';
 import { OrderListQuery } from 'ish-core/services/order/order.service';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getOrders } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { DynamicFlatNode } from 'ish-core/utils/tree/tree.interface';
 
 import { OrganizationGroup } from '../models/organization-group/organization-group.model';
 import { loadOrdersForBuyingContext } from '../store/buying-context/buying-context.actions';
 import {
   assignGroup,
   createGroup,
-  getChilds,
+  deleteGroup,
   getGroupDetails,
-  getGroupsByID,
   getGroupsOfOrganization,
   getGroupsOfOrganizationCount,
   getOrganizationGroupsError,
   getOrganizationGroupsLoading,
+  getRootGroupDetails,
   getSelectedGroupDetails,
   loadGroups,
 } from '../store/group';
 
 @Injectable({ providedIn: 'root' })
-export class OrganizationHierarchiesFacade implements TreeFacade {
+export class OrganizationHierarchiesFacade {
   constructor(private store: Store) {}
 
   /**
@@ -49,6 +47,8 @@ export class OrganizationHierarchiesFacade implements TreeFacade {
    * Returns the current activated organization hierarchy group.
    */
   getSelectedGroup$ = this.store.pipe(select(getSelectedGroupDetails));
+
+  getRootGroup$ = this.store.pipe(select(getRootGroupDetails));
 
   /**
    * Returns the number organization hierarchy groups for the current customer.
@@ -97,17 +97,6 @@ export class OrganizationHierarchiesFacade implements TreeFacade {
   }
 
   /**
-   * At first an action of type [Organizational Groups API] Load Groups is triggered, after that an
-   * array of organization hierarchy groups will returned.
-   *
-   * @returns an Observable of an array of organization hierarchy groups
-   */
-  groupsOfCurrentUser$() {
-    this.store.dispatch(loadGroups());
-    return this.groups$;
-  }
-
-  /**
    * Method to create and add a new organization hierarchy group to the existing organization hierarchy tree.
    *
    * @param parentGroupId id of parent group where the new groups will be attached
@@ -115,6 +104,15 @@ export class OrganizationHierarchiesFacade implements TreeFacade {
    */
   createAndAddGroup(parentGroupId: string, child: OrganizationGroup) {
     this.store.dispatch(createGroup({ parentGroupId, child }));
+  }
+
+  /**
+   * Method to delete an organization hierarchy group of the existing organization hierarchy tree.
+   *
+   * @param groupId id of group to delete
+   */
+  deleteGroup(groupId: string) {
+    this.store.dispatch(deleteGroup({ groupId }));
   }
 
   /**
@@ -127,63 +125,11 @@ export class OrganizationHierarchiesFacade implements TreeFacade {
    */
   determineGroupPath(groupId: string, intermediateResult: string[] = []): Observable<string[]> {
     this.store.pipe(select(getGroupDetails(groupId)), take(1)).subscribe(group => {
-      intermediateResult.unshift(group.name);
+      intermediateResult.unshift(group.displayName);
       if (group.parentId) {
         this.determineGroupPath(group.parentId, intermediateResult);
       }
     });
     return of(intermediateResult);
-  }
-
-  // Angular Material CDK Tree functions
-
-  /**
-   * Initial method to collect all necessary data to display an cdk tree for OrganizationGroups.
-   *
-   * @returns an Observable of an array of DynamicFlatNode
-   */
-  initialData$(): Observable<DynamicFlatNode[]> {
-    const tree$ = this.store.pipe(select(getGroupsOfOrganization));
-
-    return tree$.pipe(
-      whenTruthy(),
-      map(groups =>
-        groups
-          .filter(group => !group.parentId)
-          .map<DynamicFlatNode>(group => ({
-            id: group.id,
-            displayName: group.name,
-            level: 0, // root
-            expandable: group.childrenIds?.length > 0 ? true : false,
-          }))
-      )
-    );
-  }
-
-  /**
-   * Retrieve all chields as OrganizationGroup array of a parent group.
-   */
-  getChildrenByParentId(nodeId: string): Observable<OrganizationGroup[]> {
-    const childIds$ = this.store.pipe(select(getChilds(nodeId)));
-    return childIds$.pipe(
-      whenTruthy(),
-      switchMap(ids => this.store.pipe(select(getGroupsByID(ids))))
-    );
-  }
-
-  /**
-   * Retrieve all children tree nodes for a specific node.
-   * The method will fetch the new data from server when no information is stored in cache.
-   */
-  getChildren$(nodeId: string): Observable<Omit<DynamicFlatNode, 'level'>[]> {
-    return this.getChildrenByParentId(nodeId).pipe(
-      map(childNodes =>
-        childNodes.map(child => ({
-          id: child.id,
-          displayName: child.name,
-          expandable: child.childrenIds?.length > 0 ? true : false,
-        }))
-      )
-    );
   }
 }

@@ -68,6 +68,14 @@ export class OrganizationHierarchiesService {
     );
   }
 
+  deleteGroup(groupId: string) {
+    return this.currentCustomer$.pipe(
+      switchMap(customer =>
+        this.apiService.delete(`/organizations/${customer.customerNo}/groups/${groupId}`, this.contentTypeHeader)
+      )
+    );
+  }
+
   /**
    * Gets the orders of the logged-in user
    *

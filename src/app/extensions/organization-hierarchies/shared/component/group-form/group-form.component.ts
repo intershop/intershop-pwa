@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, map } from 'rxjs';
@@ -13,10 +14,17 @@ import { OrganizationGroup } from '../../../models/organization-group/organizati
 export class GroupFormComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() groups$: Observable<OrganizationGroup[]>;
+  @Input() selectedParentGroup$: Observable<OrganizationGroup>;
+
+  private destroyRef = inject(DestroyRef);
 
   fields: FormlyFieldConfig[];
+  selectedParentGroupId: string;
 
   ngOnInit() {
+    this.selectedParentGroup$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(group => {
+      this.selectedParentGroupId = group.id;
+    });
     this.fields = this.getFields();
   }
 
@@ -48,11 +56,14 @@ export class GroupFormComponent implements OnInit {
           {
             key: 'parentGroupId',
             type: 'ish-select-field',
+            defaultValue: this.selectedParentGroupId ? this.selectedParentGroupId : undefined,
             props: {
               label: 'organization.groups.parent.label',
               required: true,
               placeholder: 'organization.groups.parent.placeholder',
-              options: this.groups$.pipe(map(groups => groups?.map(group => ({ value: group.id, label: group.name })))),
+              options: this.groups$.pipe(
+                map(groups => groups?.map(group => ({ value: group.id, label: group.displayName })))
+              ),
             },
             validation: {
               messages: {

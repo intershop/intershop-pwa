@@ -8,7 +8,7 @@
   <a ngbDropdownToggle class="hierarchy-switch-link" title="{{ (selectedElement$ | async).name }}">
     <span class="separator">&#124;</span>
     <span *ngIf="selectedElement$ | async as selectedElement" class="hierarchy-switch-current-selection"
-      >{{ selectedElement.name }}<span class="switch_arrow"></span
+      >{{ selectedElement.displayName }}<span class="switch_arrow"></span
     ></span>
   </a>
 
@@ -22,8 +22,8 @@
               [routerLink]="[]"
               class="d-block"
               (click)="groupSelected(g); hierarchyDropDown.close()"
-              title="{{ g.name }}"
-              >{{ g.name | slice : 0 : 20 }}<span *ngIf="g.name.length >= 20">...</span></a
+              title="{{ g.displayName }}"
+              >{{ g.displayName | slice : 0 : 20 }}<span *ngIf="g.displayName.length >= 20">...</span></a
             >
           </li>
         </ul>

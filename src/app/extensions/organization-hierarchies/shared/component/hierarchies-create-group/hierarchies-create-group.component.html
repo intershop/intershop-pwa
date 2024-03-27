@@ -1,5 +1,5 @@
 <form [formGroup]="groupForm" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
-  <ish-group-form [form]="groupForm" [groups$]="items$" />
+  <ish-group-form [form]="groupForm" [groups$]="items$" [selectedParentGroup$]="selectedParentGroup$" />
 
   <div class="row">
     <div class="offset-md-4 col-md-8 offset-lg-0 col-lg-12 offset-lg-4 col-xl-8">

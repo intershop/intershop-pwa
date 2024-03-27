@@ -20,6 +20,8 @@ export const getSelectedGroupDetails = createSelector(
   (entities, id) => id && entities[id]
 );
 
+export const getRootGroupDetails = createSelector(selectAll, entities => entities.find(e => !e.parentId));
+
 export const getGroupDetails = (groupId: string) =>
   createSelector(selectAll, entities => entities.find(e => e.id === groupId));
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
@@ -19,7 +18,8 @@ import {
   assignGroup,
   createGroup,
   createGroupFail,
-  createGroupSuccess,
+  deleteGroup,
+  deleteGroupFail,
   loadGroups,
   loadGroupsFail,
   loadGroupsSuccess,
@@ -32,10 +32,10 @@ export class GroupEffects {
     private actions$: Actions,
     private basketService: BasketService,
     private store: Store,
-    private organizationService: OrganizationHierarchiesService,
-    private router: Router
+    private organizationService: OrganizationHierarchiesService
   ) {}
 
+  // log in leads to
   loadGroups$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadGroups),
@@ -69,6 +69,7 @@ export class GroupEffects {
     )
   );
 
+  // successful group assignment leads to reloading of basket and orders
   reloadContext$ = createEffect(() =>
     this.actions$.pipe(
       ofType(assignBuyingContextSuccess),
@@ -89,9 +90,7 @@ export class GroupEffects {
     )
   );
 
-  /**
-   * The load orders and corresponding order group paths effect.
-   */
+  // selection of a new group (buying context) leads to
   loadOrdersWithGroupPaths$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrdersForBuyingContext, loadWidgetOrders),
@@ -106,20 +105,41 @@ export class GroupEffects {
     )
   );
 
+  // creation of a new group leads to
   createNewGroup$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createGroup),
       mapToPayload(),
       concatMap(newGroup =>
         this.organizationService.createGroup(newGroup.parentGroupId, newGroup.child).pipe(
-          mergeMap(group => [
-            createGroupSuccess({ group }),
+          mergeMap(() => [
+            loadGroups(),
             displaySuccessMessage({
               message: 'account.organization.hierarchies.groups.new.confirmation',
-              messageParams: { 0: newGroup.child.name },
+              messageParams: { 0: newGroup.child.displayName },
             }),
           ]),
           mapErrorToAction(createGroupFail)
+        )
+      )
+    )
+  );
+
+  // deletion of a group leads to deletion REST request and reloading of the organization structure
+  deleteGroup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteGroup),
+      mapToPayload(),
+      concatMap(payload =>
+        this.organizationService.deleteGroup(payload.groupId).pipe(
+          mergeMap(() => [
+            loadGroups(),
+            displaySuccessMessage({
+              message: 'account.organization.hierarchies.groups.delete.confirmation',
+              messageParams: { 0: payload.groupId },
+            }),
+          ]),
+          mapErrorToAction(deleteGroupFail)
         )
       )
     )

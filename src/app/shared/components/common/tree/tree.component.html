@@ -1,14 +1,13 @@
-<ng-container *ngIf="dataSource && treeControl">
-  <cdk-tree [dataSource]="dataSource" [treeControl]="treeControl">
+<ng-container *ngIf="baseData$ && treeControl">
+  <cdk-tree [dataSource]="baseData$" [treeControl]="treeControl">
     <!-- This is the tree node template for leaf nodes -->
     <cdk-tree-node
       *cdkTreeNodeDef="let node"
       class="tree-node leaf"
-      [class.active]="activeNode?.id === node.id"
+      [style.display]="shouldRender(node) ? 'block' : 'none'"
       cdkTreeNodePadding
       cdkTreeNodePaddingIndent="30"
-      ><input type="radio" name="contentPage" [id]="node.id" [value]="node.id" (click)="setActiveNode(node)" />
-      <label [for]="node.id">{{ node.displayName }}</label>
+      >{{ node.displayName }}
     </cdk-tree-node>
 
     <!-- This is the tree node template for expandable nodes -->
@@ -17,16 +16,17 @@
       class="tree-node"
       cdkTreeNodePadding
       cdkTreeNodePaddingIndent="30"
-      [class.active]="activeNode?.id === node.id"
+      [style.display]="shouldRender(node) ? 'block' : 'none'"
+      [class.active]="isExpanded(node)"
     >
       <button
         [attr.aria-label]="'Toggle ' + node.id"
-        [class.closed]="!treeControl.isExpanded(node)"
-        cdkTreeNodeToggle
+        (click)="toogleNode(node)"
+        [style.visibility]="node.expandable ? 'visible' : 'hidden'"
+        [class.closed]="!isExpanded(node)"
       ></button>
-      <input type="radio" name="contentPage" [id]="node.id" [value]="node.id" (click)="setActiveNode(node)" />
-      <label [for]="node.id">{{ node.displayName }}</label>
-      <div [class.tree-invisible]="!treeControl.isExpanded(node)">
+      {{ node.displayName }}
+      <div [class.tree-invisible]="!isExpanded(node)">
         <ng-container cdkTreeNodeOutlet />
       </div>
     </cdk-tree-node>

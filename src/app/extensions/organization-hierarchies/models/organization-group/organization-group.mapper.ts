@@ -15,7 +15,7 @@ export class OrganizationGroupMapper {
   fromCustomerData(customer: Customer): OrganizationGroup {
     return {
       id: customer.customerNo,
-      name: customer.companyName ?? customer.customerNo,
+      displayName: customer.companyName ?? customer.customerNo,
       organization: customer.customerNo,
       description: customer.description,
     };
@@ -24,13 +24,13 @@ export class OrganizationGroupMapper {
   fromDocument(groupList: OrganizationGroupListDocument): OrganizationGroup[] {
     const tree: OrganizationGroup[] = [];
     if (groupList) {
-      groupList.data
-        .sort((a, b) => OrganizationGroupHelper.rootsFirst(a, b))
-        .forEach(groupData => this.fromData(groupData, tree));
+      groupList.data.forEach(groupData => {
+        this.fromData(groupData, tree);
+      });
     } else {
       throw new Error(`groupDocument is required`);
     }
-    return tree;
+    return OrganizationGroupHelper.resolveTreeAttributes(tree, undefined);
   }
 
   fromData(groupData: OrganizationGroupData, tree: OrganizationGroup[]): OrganizationGroup[] {
@@ -46,11 +46,13 @@ export class OrganizationGroupMapper {
     const relationship = group.relationships;
     return {
       id: group.id,
-      name: group.attributes.name,
+      displayName: group.attributes.name,
       description: group.attributes.description,
       organization: relationship?.organization?.data.id,
       childrenIds: relationship?.childGroups?.data.map(entry => entry.id),
       parentId: relationship?.parentGroup?.data?.id,
+      expandable: relationship?.childGroups?.data.length > 0 ? true : false,
+      level: relationship?.parentGroup?.data?.id ? undefined : 0,
     };
   }
 
@@ -68,7 +70,7 @@ export class OrganizationGroupMapper {
 
     const groupData: OrganizationGroupData = {
       attributes: {
-        name: data.name,
+        name: data.displayName,
         description: data.description,
       },
       id: data.id,
@@ -98,16 +100,4 @@ export class OrganizationGroupMapper {
       throw new Error('groupData is required');
     }
   }
-
-  //fromData(organizationGroupData: OrganizationGroupData): OrganizationGroup {
-  //  if (organizationGroupData) {
-  //    return {
-  //      id: organizationGroupData.id,
-  //      name: organizationGroupData.attributes.name,
-  //      parentid: organizationGroupData.relationships.parentGroup?.data?.id,
-  //    };
-  //  } else {
-  //    throw new Error(`organizationGroupData is required`);
-  //  }
-  //}
 }

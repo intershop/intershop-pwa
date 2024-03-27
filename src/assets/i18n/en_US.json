@@ -1273,6 +1273,7 @@
   "account.organization.hierarchies.groups.add": "Add Group",
   "account.organization.hierarchies.groups.new.button.label": "Create",
   "account.organization.hierarchies.groups.new.confirmation": "The group \"{{0}}\" has been created.",
+  "account.organization.hierarchies.groups.delete.confirmation": "The group with id \"{{0}}\" has been deleted.",
   "account.organization.hierarchies.groups.new.heading": "Add Group",
   "account.organization.hierarchies.groups.new.message": "Creating a new group to track your company structure. You can assign users to it.",
   "organization.group.label": "Group:",
@@ -1281,5 +1282,16 @@
   "organization.groups.new.name.error.required": "Please enter a name.",
   "organization.groups.new.parent.error.required": "Please select a parent group.",
   "organization.groups.parent.label": "Parent Group",
-  "organization.groups.parent.placeholder": "Select any parent group"
+  "organization.groups.parent.placeholder": "Select any parent group",
+  "account.organization.hierarchies.groups.button.add.label": "Add Group",
+  "account.organization.hierarchies.groups.button.update.label": "Update",
+  "account.organization.hierarchies.groups.button.delete.label": "Delete",
+  "account.organization.hierarchies.groups.select.placeholder" : "Select group",
+  "account.organization.hierarchies.groups.info.text" : "This page offers to maintain your organizational structure here. In addition, addresses and payment methods can be associated with this structure.",
+  "account.organization.hierarchies.tree.checkbox.label": "Tree focus",
+  "account.organization.hierarchies.tree.info.text": "Activation of the tree focus leads to the behavior, that only the subtree whose root is the selected group is displayed.",
+  "account.organization.hierarchies.remove_dialog.label_no": "Cancel",
+  "account.organization.hierarchies.remove_dialog.label_yes": "Delete",
+  "account.organization.hierarchies.remove_dialog.message_line2": "Are you sure you want to delete Group \"{{0}}\"?",
+  "account.organization.hierarchies.remove_dialog.title": "Delete Group"
 }

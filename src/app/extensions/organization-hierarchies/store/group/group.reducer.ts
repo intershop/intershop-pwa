@@ -10,7 +10,6 @@ import {
   assignGroup,
   createGroup,
   createGroupFail,
-  createGroupSuccess,
   loadGroups,
   loadGroupsFail,
   loadGroupsSuccess,
@@ -36,18 +35,11 @@ export const groupReducer = createReducer(
   initialState,
   setLoadingOn(loadGroups, createGroup),
   setErrorOn(loadGroupsFail, createGroupFail),
-  unsetLoadingAndErrorOn(loadGroupsSuccess, createGroupSuccess),
+  unsetLoadingAndErrorOn(loadGroupsSuccess),
   on(loadGroupsSuccess, (state, action) => {
     const { groups } = action.payload;
     return {
       ...groupAdapter.setAll(groups, state),
-    };
-  }),
-  on(createGroupSuccess, (state, action) => {
-    const { group } = action.payload;
-
-    return {
-      ...groupAdapter.upsertOne(group, state),
     };
   }),
   on(assignGroup, (state: GroupState, action): GroupState => {
