@@ -35,8 +35,8 @@ To keep the current behavior in an existing project, either adapt the `0` defaul
 
 The [Brotli NGINX module](https://github.com/google/ngx_brotli) is used instead of gzip for compression on the NGINX server now, see [NGINX Optimizations](./optimizations.md#nginx-optimizations).
 
-The rendering of the [`CMSImageEnhancedComponent`](../../src/app/shared/cms/components/cms-image-enhanced/cms-image-enhanced.component.ts) was changed and is no longer loading the image with `loading="lazy"` by default.
-See the ["Guide - Core Web Vitals" section on the Enhanced Image Teaser](./core-web-vitals.md#enhanced-image-teaser) for further information.
+The rendering of the [`CMSImageEnhancedComponent`](../../src/app/shared/cms/components/cms-image-enhanced/cms-image-enhanced.component.ts) has been changed and is no longer loading the image with `loading="lazy"` by default.
+See the [Enhanced Image Teaser section in "Guide - Core Web Vitals"](./core-web-vitals.md#enhanced-image-teaser) for further information.
 
 ## From 4.2 to 5.0
 
