@@ -112,15 +112,13 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
 
   /** Opens the modal. */
   show() {
-    if (this.orderTemplate) {
-      this.model = pick(this.orderTemplate, 'title');
-    }
+    this.orderTemplateForm.reset();
+    this.model = pick(this.orderTemplate, 'title');
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
 
   /** Close the modal. */
   hide() {
-    this.orderTemplateForm.reset({});
     this.submitted = false;
     if (this.modal) {
       this.modal.close();

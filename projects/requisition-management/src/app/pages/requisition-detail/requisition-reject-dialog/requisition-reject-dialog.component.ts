@@ -86,12 +86,12 @@ export class RequisitionRejectDialogComponent implements OnInit {
 
   /** Opens the modal. */
   show() {
+    this.rejectForm.reset();
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
 
   /** Close the modal. */
   hide() {
-    this.rejectForm.reset();
     this.submitted = false;
     if (this.modal) {
       this.modal.close();
