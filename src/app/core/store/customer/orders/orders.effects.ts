@@ -19,6 +19,7 @@ import {
   createOrder,
   createOrderFail,
   createOrderSuccess,
+  loadMoreOrders,
   loadOrder,
   loadOrderByAPIToken,
   loadOrderFail,
@@ -30,7 +31,7 @@ import {
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
 } from './orders.actions';
-import { getOrder, getSelectedOrder } from './orders.selectors';
+import { getOrder, getOrderListQuery, getSelectedOrder } from './orders.selectors';
 
 @Injectable()
 export class OrdersEffects {
@@ -116,10 +117,18 @@ export class OrdersEffects {
       mapToPayloadProperty('query'),
       switchMap(query =>
         this.orderService.getOrders(query).pipe(
-          map(orders => loadOrdersSuccess({ orders })),
+          map(orders => loadOrdersSuccess({ orders, query, allRetrieved: orders.length < query.limit })),
           mapErrorToAction(loadOrdersFail)
         )
       )
+    )
+  );
+
+  loadMoreOrders$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMoreOrders),
+      concatLatestFrom(() => this.store.pipe(select(getOrderListQuery))),
+      map(([, query]) => loadOrders({ query: { ...query, offset: (query.offset ?? 0) + query.limit } }))
     )
   );
 

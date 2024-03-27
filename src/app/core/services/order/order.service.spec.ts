@@ -5,13 +5,14 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { OrderBaseData } from 'ish-core/models/order/order.interface';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
-import { OrderListQuery, OrderService, orderListQueryToHttpParams } from './order.service';
+import { OrderService, orderListQueryToHttpParams } from './order.service';
 
 describe('Order Service', () => {
   let orderService: OrderService;

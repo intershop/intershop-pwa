@@ -5,27 +5,12 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators';
 
+import { OrderIncludeType, OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
-
-type OrderIncludeType =
-  | 'invoiceToAddress'
-  | 'commonShipToAddress'
-  | 'commonShippingMethod'
-  | 'discounts'
-  | 'lineItems_discounts'
-  | 'lineItems'
-  | 'payments'
-  | 'payments_paymentMethod'
-  | 'payments_paymentInstrument';
-
-export interface OrderListQuery {
-  limit: number;
-  include?: OrderIncludeType[];
-}
 
 export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
   return Object.entries(query).reduce(
@@ -34,7 +19,7 @@ export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
         if (key === 'include') {
           return acc.set(key, value.join(','));
         } else {
-          return value.reduce((acc, value) => acc.append(key, value.toString()), acc);
+          return (value as string[]).reduce((acc, value) => acc.append(key, value?.toString()), acc);
         }
       } else if (value !== undefined) {
         return acc.set(key, value.toString());

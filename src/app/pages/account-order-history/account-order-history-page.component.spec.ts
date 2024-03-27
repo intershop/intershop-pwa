@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -14,8 +15,12 @@ describe('Account Order History Page Component', () => {
   let component: AccountOrderHistoryPageComponent;
   let fixture: ComponentFixture<AccountOrderHistoryPageComponent>;
   let element: HTMLElement;
+  let accountFacade: AccountFacade;
 
   beforeEach(async () => {
+    accountFacade = mock(AccountFacade);
+    when(accountFacade.orders$).thenReturn(of([]));
+
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderHistoryPageComponent,
@@ -24,7 +29,7 @@ describe('Account Order History Page Component', () => {
         MockDirective(ServerHtmlDirective),
       ],
       imports: [TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
 
