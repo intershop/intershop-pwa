@@ -59,7 +59,7 @@ export class ContentPageTreeMapper {
           // yield page tree element
           return {
             name: pathElement.title,
-            path: [...newTreeElementPath],
+            path: [...newTreeElementPath].filter((v, i, a) => a.indexOf(v) === i),
             contentPageId: pathElement.itemId,
           };
         })

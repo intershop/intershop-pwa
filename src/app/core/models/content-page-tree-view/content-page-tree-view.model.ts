@@ -42,11 +42,9 @@ function getContentPageTreeElements(
   // If current content page is part of element subtree or equals the element itself, then all children of elements should be analyzed
   if (tree.edges[elementId] && isContentPagePartOfPageTreeElement(tree, currentContentPageId, elementId)) {
     treeElements = tree.edges[elementId]
+      .filter(child => child !== elementId)
       .map(child => getContentPageTreeElements(tree, child, rootId, currentContentPageId))
-      .reduce((a, b) => {
-        b.map(element => a.push(element));
-        return a;
-      });
+      .flat();
   }
 
   const parent = tree.nodes[elementId].path[tree.nodes[elementId].path.length - 2];
@@ -75,6 +73,7 @@ function isContentPagePartOfPageTreeElement(
       result = true;
     } else {
       result = tree.edges[elementId]
+        .filter(e => e !== elementId)
         .map(e => isContentPagePartOfPageTreeElement(tree, currentContentPageId, e))
         .find(res => res);
     }
