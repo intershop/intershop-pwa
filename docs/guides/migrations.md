@@ -35,6 +35,8 @@ To keep the current behavior in an existing project, either adapt the `0` defaul
 
 The [Brotli NGINX module](https://github.com/google/ngx_brotli) is used instead of gzip for compression on the NGINX server now, see [NGINX Optimizations](./optimizations.md#nginx-optimizations).
 
+The methods `hasUserApiTokenCookie()` and `parseCookie()` have been moved from the apiToken.service to the cookies.service, the `parseCookie()` method has been renamed to `getApiTokenCookie()`.
+
 ## From 4.2 to 5.0
 
 Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.

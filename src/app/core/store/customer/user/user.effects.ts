@@ -13,7 +13,7 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
-import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { getPGID, personalizationStatusDetermined } from '.';
@@ -72,8 +72,8 @@ export class UserEffects {
     private userService: UserService,
     private paymentService: PaymentService,
     private router: Router,
-    private apiTokenService: ApiTokenService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private cookiesService: CookiesService
   ) {}
 
   loginUser$ = createEffect(() =>
@@ -280,7 +280,7 @@ export class UserEffects {
   determinePersonalizationStatus$ = createEffect(() =>
     this.store.pipe(
       select(getPGID),
-      map(pgid => !this.apiTokenService.hasUserApiTokenCookie() || pgid),
+      map(pgid => !this.cookiesService.hasUserApiTokenCookie() || pgid),
       whenTruthy(),
       delay(100),
       map(() => personalizationStatusDetermined())

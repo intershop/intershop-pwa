@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { noop } from 'rxjs';
-import { anything, capture, spy, verify } from 'ts-mockito';
+import { anything, capture, instance, mock, spy, verify } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
@@ -19,6 +19,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { serverError } from 'ish-core/store/core/error';
 import { isServerConfigurationLoaded, loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { getPGID } from 'ish-core/store/customer/user';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 import { ApiService, unpackEnvelope } from './api.service';
 
@@ -37,6 +38,7 @@ describe('Api Service', () => {
         // https://angular.io/guide/http#testing-http-requests
         imports: [HttpClientTestingModule],
         providers: [
+          { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -197,6 +199,7 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
+          { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -402,6 +405,7 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
+          { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -557,6 +561,7 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
         imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig']), HttpClientTestingModule],
+        providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],
       });
 
       apiService = TestBed.inject(ApiService);
@@ -680,6 +685,7 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
+          { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },

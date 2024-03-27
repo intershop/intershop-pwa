@@ -22,7 +22,6 @@ import { ApiTokenCookie, ApiTokenService } from './api-token.service';
 describe('Api Token Service', () => {
   let apiTokenService: ApiTokenService;
   let cookieServiceMock: CookiesService;
-
   let store: Store;
 
   const initialApiTokenCookie: ApiTokenCookie = {
@@ -57,7 +56,7 @@ describe('Api Token Service', () => {
 
   describe('getInternalApiTokenCookieValue$', () => {
     beforeEach(() => {
-      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify({ apiToken: '123' } as ApiTokenCookie));
+      when(cookieServiceMock.getApiTokenCookie()).thenReturn({ apiToken: '123', type: 'user' });
       injectServices(cookieServiceMock);
     });
 
@@ -98,10 +97,16 @@ describe('Api Token Service', () => {
     });
 
     it('should update apiToken information in cookie when apiToken changes', () => {
+      when(cookieServiceMock.getApiTokenCookie()).thenReturn({ apiToken: 'new-api-token', type: 'user' });
+
       apiTokenService.setApiToken('new-api-token');
 
       verify(
-        cookieServiceMock.put('apiToken', JSON.stringify({ apiToken: 'new-api-token' } as ApiTokenCookie), anything())
+        cookieServiceMock.put(
+          'apiToken',
+          JSON.stringify({ apiToken: 'new-api-token', type: 'user' } as ApiTokenCookie),
+          anything()
+        )
       ).once();
     });
   });
@@ -125,12 +130,13 @@ describe('Api Token Service', () => {
 
   describe('cookieVanish$', () => {
     beforeEach(() => {
+      when(cookieServiceMock.getApiTokenCookie()).thenReturn(initialApiTokenCookie);
       when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
       injectServices(cookieServiceMock);
     });
 
     it('should vanish apiToken information when cookie is removed unexpectedly from the outside', done => {
-      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie), undefined);
+      when(cookieServiceMock.getApiTokenCookie()).thenReturn(initialApiTokenCookie, undefined);
       combineLatest([apiTokenService.getApiToken$(), apiTokenService.getCookieVanishes$()]).subscribe(
         ([apiToken, cookieVanishes]) => {
           expect(apiToken).toBeUndefined();
@@ -149,7 +155,7 @@ describe('Api Token Service', () => {
     });
 
     it('should set correct apiToken when new apiToken is set unexpectedly from the outside', done => {
-      when(cookieServiceMock.get('apiToken')).thenReturn(undefined, JSON.stringify(initialApiTokenCookie));
+      when(cookieServiceMock.getApiTokenCookie()).thenReturn(undefined, initialApiTokenCookie);
       apiTokenService
         .getApiToken$()
         .pipe(skip(1))

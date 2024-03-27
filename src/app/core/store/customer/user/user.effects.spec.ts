@@ -20,7 +20,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
@@ -73,7 +73,7 @@ describe('User Effects', () => {
   let store: Store;
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
-  let apiTokenServiceMock: ApiTokenService;
+  let cookiesServiceMock: CookiesService;
   let oAuthServiceMock: OAuthService;
   let tokenServiceMock: TokenService;
   let router: Router;
@@ -103,7 +103,7 @@ describe('User Effects', () => {
   beforeEach(() => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
-    apiTokenServiceMock = mock(ApiTokenService);
+    cookiesServiceMock = mock(CookiesService);
     oAuthServiceMock = mock(OAuthService);
     tokenServiceMock = mock(TokenService);
 
@@ -122,7 +122,7 @@ describe('User Effects', () => {
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(paymentServiceMock.createUserPayment(anything(), anything())).thenReturn(of({ id: 'paymentInstrumentId' }));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
-    when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+    when(cookiesServiceMock.hasUserApiTokenCookie()).thenReturn(false);
     when(oAuthServiceMock.events).thenReturn(of());
 
     TestBed.configureTestingModule({
@@ -132,7 +132,7 @@ describe('User Effects', () => {
         RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
       providers: [
-        { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+        { provide: CookiesService, useFactory: () => instance(cookiesServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: TokenService, useFactory: () => instance(tokenServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },

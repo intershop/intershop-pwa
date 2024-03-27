@@ -28,6 +28,7 @@ import { communicationTimeoutError, serverError } from 'ish-core/store/core/erro
 import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
@@ -69,7 +70,7 @@ export class ApiService {
   static TOKEN_HEADER_KEY = 'authentication-token';
   static AUTHORIZATION_HEADER_KEY = 'Authorization';
 
-  constructor(private httpClient: HttpClient, private store: Store) {}
+  constructor(private httpClient: HttpClient, private store: Store, private cookiesService: CookiesService) {}
 
   /**
 -  * sets the request header for the appropriate captcha service
@@ -132,6 +133,7 @@ export class ApiService {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return of(path);
     }
+
     return combineLatest([
       this.store.pipe(select(getRestEndpoint), whenTruthy()),
       this.getLocale$(options),
@@ -141,6 +143,10 @@ export class ApiService {
       // pgid
       this.store.pipe(
         select(getPGID),
+        // when a user apiToken is available, then the pgid has to be set when the options are enabled
+        this.cookiesService.hasUserApiTokenCookie() && (options?.sendPGID || options?.sendSPGID)
+          ? whenTruthy()
+          : identity,
         map(pgid => (options?.sendPGID && pgid ? `;pgid=${pgid}` : options?.sendSPGID && pgid ? `;spgid=${pgid}` : ''))
       ),
       // remaining path
