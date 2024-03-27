@@ -35,6 +35,9 @@ To keep the current behavior in an existing project, either adapt the `0` defaul
 
 The [Brotli NGINX module](https://github.com/google/ngx_brotli) is used instead of gzip for compression on the NGINX server now, see [NGINX Optimizations](./optimizations.md#nginx-optimizations).
 
+The rendering of the [`CMSImageEnhancedComponent`](../../src/app/shared/cms/components/cms-image-enhanced/cms-image-enhanced.component.ts) has been changed and is no longer loading the image with `loading="lazy"` by default.
+See the [Enhanced Image Teaser section in "Guide - Core Web Vitals"](./core-web-vitals.md#enhanced-image-teaser) for further information.
+
 ## From 4.2 to 5.0
 
 Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.
@@ -274,7 +277,7 @@ A `ProductVariationSelectSwatchComponent` for colorCode and swatchImage variatio
 
 The user authentication process has changed.
 User authentication tokens are requested from the ICM server using the `/token` REST endpoint now.
-Regarding this, the logout action triggers a service which revokes the currently available access token on the ICM backend.
+Regarding this, the logout action triggers a service which revokes the currently available access token on the ICM back office.
 If the logout was successful, all personalized information is removed from the ngrx store.
 Please use `logoutUser({ revokeToken: false })` from the account facade or dispatch `logoutUserSuccess` instead of the `logoutUser` action to use the old behavior.
 

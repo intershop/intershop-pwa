@@ -30,7 +30,7 @@
         media="(max-width: 1199px)"
       />
       <img
-        loading="lazy"
+        [attr.loading]="loading"
         [src]="pagelet.stringParam('Image')"
         [attr.alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
         class="enhanced-image"

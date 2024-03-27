@@ -23,6 +23,7 @@ concardis
 concat
 condensedbold
 condensedregular
+contentful
 costcenter
 costcenters
 creditcard
