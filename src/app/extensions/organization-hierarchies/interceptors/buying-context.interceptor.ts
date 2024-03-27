@@ -34,8 +34,6 @@ export class BuyingContextInterceptor implements HttpInterceptor {
         iif(
           () => !!store.organizationHierarchies,
           this.store.pipe(
-            //select(getServerConfigParameter<string>('services.OrganizationHierarchyServiceDefinition.Endpoint')),
-            //whenTruthy(),
             withLatestFrom(
               this.store.pipe(select(getBuyingContext)),
               this.store.pipe(select(getRestEndpoint)),

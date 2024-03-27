@@ -97,6 +97,7 @@ export const navigationItems: NavigationItem[] = [
         id: 'hierarchies',
         localizationKey: 'account.company_structure.link',
         routerLink: '/account/hierarchies',
+        serverSetting: 'services.OrganizationHierarchyServiceDefinition.runnable',
       },
     ],
   },
