@@ -8,23 +8,28 @@
 >
   <formly-field class="col-6" [field]="field" />
   <ish-product-quantity class="col-3 col-sm-2 quickorder-line-item" />
-  <div class="col-3 col-sm-2 d-flex quickorder-line-item">
-    <a
-      [routerLink]="[]"
-      class="btn btn-tool"
-      (click)="remove(i); updateContexts()"
+  <div class="col-3 col-sm-2 d-flex align-items-start quickorder-line-item">
+    <button
+      type="button"
+      class="btn-tool btn-link m-2"
       title="{{ 'quickorder.page.remove.row' | translate }}"
+      (click)="remove(i); updateContexts()"
     >
       <fa-icon [icon]="['fas', 'trash-alt']" />
-    </a>
+    </button>
   </div>
 </div>
 <div class="section d-flex flex-nowrap">
-  <a [routerLink]="[]" (click)="addMultipleRows(1)" data-testing-id="add-quickorder-line">{{
-    props?.addText | translate
-  }}</a>
+  <button
+    type="button"
+    class="btn btn-link btn-link-action"
+    (click)="addMultipleRows(1)"
+    data-testing-id="add-quickorder-line"
+  >
+    {{ props?.addText | translate }}
+  </button>
   <span class="link-separator"></span>
-  <a [routerLink]="[]" (click)="addMultipleRows(props?.numberMoreRows)">{{
-    props?.addMoreText | translate : { '0': props?.numberMoreRows }
-  }}</a>
+  <button type="button" class="btn btn-link btn-link-action" (click)="addMultipleRows(props?.numberMoreRows)">
+    {{ props?.addMoreText | translate : { '0': props?.numberMoreRows } }}
+  </button>
 </div>

@@ -11,4 +11,6 @@ import { User } from 'ish-core/models/user/user.model';
 export class AccountProfileComponent {
   @Input({ required: true }) user: User;
   @Input() customer: Customer;
+
+  @Input() subscribedToNewsletter: boolean;
 }

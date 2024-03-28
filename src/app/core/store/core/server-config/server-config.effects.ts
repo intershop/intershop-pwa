@@ -13,6 +13,7 @@ import { ConfigurationState } from 'ish-core/store/core/configuration/configurat
 import { serverConfigError } from 'ish-core/store/core/error';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
+import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 import { delayUntil, mapErrorToAction, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
@@ -156,10 +157,10 @@ export class ServerConfigEffects {
   private mapFeatures(config: ServerConfig): Partial<ConfigurationState> {
     const featureConfig: Partial<ConfigurationState> = {};
     if (config.Features) {
-      featureConfig.features = (config.Features as string).split(',');
+      featureConfig.features = (config.Features as string).split(',') as FeatureToggleType[];
     }
     if (config.AddFeatures) {
-      featureConfig.addFeatures = (config.AddFeatures as string).split(',');
+      featureConfig.addFeatures = (config.AddFeatures as string).split(',') as FeatureToggleType[];
     }
     return featureConfig.features?.length || featureConfig.addFeatures?.length ? featureConfig : undefined;
   }

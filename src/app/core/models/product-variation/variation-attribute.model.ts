@@ -1,7 +1,7 @@
 export interface VariationAttribute {
   variationAttributeId: string;
   name: string;
-  value: string;
+  value: string | number | { value: number; unit: string };
   attributeType: VariationAttributeType;
   metaData?: string;
 }

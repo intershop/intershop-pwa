@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
@@ -9,6 +9,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { IdentityProviderModule } from 'ish-core/identity-provider.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
 import { AccountProfileComponent } from './account-profile.component';
 
@@ -27,6 +28,7 @@ describe('Account Profile Component', () => {
         IdentityProviderCapabilityDirective,
         MockComponent(FaIconComponent),
         MockDirective(ServerHtmlDirective),
+        MockPipe(ServerSettingPipe, () => true),
       ],
       imports: [
         AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS'),
@@ -67,5 +69,11 @@ describe('Account Profile Component', () => {
 
     expect(element.querySelector('[data-testing-id="company-info"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="edit-company"]')).toBeTruthy();
+  });
+
+  it('should display newsletter subscription status when the newsletter feature is enabled', () => {
+    fixture.detectChanges();
+
+    expect(element.querySelector('[data-testing-id="newsletter-info"]')).toBeTruthy();
   });
 });

@@ -28,7 +28,7 @@ export class DatePickerFieldComponent extends FieldType<FieldTypeConfig> {
     super();
   }
 
-  addDaysToToday$(days$: Observable<number | undefined>): Observable<NgbDateStruct | undefined> {
+  private addDaysToToday$(days$: Observable<number | undefined>): Observable<NgbDateStruct | undefined> {
     return days$.pipe(
       map(daysLoc =>
         typeof daysLoc === 'number' ? this.calendar.getNext(this.calendar.getToday(), 'd', daysLoc) : undefined

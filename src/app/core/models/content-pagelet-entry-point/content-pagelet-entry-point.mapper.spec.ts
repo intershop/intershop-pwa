@@ -77,7 +77,7 @@ describe('Content Pagelet Entry Point Mapper', () => {
     const [pageletEntryPoint, pagelets] = contentPageletEntryPointMapper.fromData(input);
 
     expect(pagelets).toHaveLength(3);
-    expect(pagelets.map(p => p.id)).toIncludeAllMembers(['pagelet1', 'pagelet11', 'pagelet2']);
+    expect(pagelets.map(p => p.id)).toIncludeAllMembers(['pagelet1', 'pagelet11#0$0@pagelet1', 'pagelet2']);
     expect(pageletEntryPoint).not.toBeEmpty();
     expect(pageletEntryPoint).toMatchInlineSnapshot(`
       {

@@ -14,4 +14,12 @@ export class CMSImageEnhancedComponent implements CMSComponent {
 
   isRouterLink = ContentViewHelper.isRouterLink;
   routerLink = ContentViewHelper.getRouterLink;
+
+  /**
+   * Getter method to decide whether the image is loading 'lazy' or 'eager'
+   * based on the presence of the CSS class 'loading-lazy' in the pagelet configuration.
+   */
+  get loading(): 'lazy' | 'eager' {
+    return this.pagelet.stringParam('CSSClass')?.includes('loading-lazy') ? 'lazy' : 'eager';
+  }
 }

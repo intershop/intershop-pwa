@@ -140,10 +140,6 @@
       background: $color-primary;
       border: $border-width-default solid $border-color-default;
 
-      &::-ms-clear {
-        display: none;
-      }
-
       @include media-breakpoint-down(sm) {
         border: $border-width-default solid $border-color-default;
 

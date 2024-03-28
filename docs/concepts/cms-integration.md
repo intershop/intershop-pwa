@@ -109,6 +109,24 @@ The [`PreviewInterceptor`](../../src/app/core/interceptors/preview.interceptor.t
 
 To end a preview session and to delete the saved `PreviewContextID` in the browser session storage, use the _Finish Preview_ button of the _Design View_ configuration.
 
+## Navigation CMS Components
+
+With the Intershop PWA release 5.1.0 three new CMS rendering components are introduced that can be used to extend the main navigation.
+
+| Component           | Description                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| Navigation Category | Renders a main navigation entry based on the selected category with optional sub navigation. |
+| Navigation Link     | Renders a main navigation entry to the given link with optional sub navigation.              |
+| Navigation Page     | Renders a main navigation entry based on the selected page with optional sub navigation.     |
+
+The according content models, to configure these new components in the ICM backoffice, are part of `icm-as-customization-headless:1.7.0` (ICM 11.9.0).
+They are all assignable to the _Header - Navigation_ include and can be combined to extend the main navigation.
+It would also be possible to completely configure the main navigation with these components without the default main navigation by only rendering the `<ish-lazy-content-include includeId="include.header.navigation.pagelet2-Include"/>` in the `HeaderNavigationComponent`.
+To fulfill such a requirement the source code needs to be adapted accordingly.
+
+All three component allow the configuration of additional freestyle HTML that is rendered within the sub navigation layer.
+The root element as well as the depth of the sub navigation tree is configurable for the _Navigation Category_ and the _Navigation Page_ component.
+
 ## Integration with an External CMS
 
 Since the Intershop PWA can integrate any other REST API in addition to the ICM REST API, it should not be a problem to integrate an external 3rd party CMS that provides an own REST API, instead of using the integrated ICM CMS.

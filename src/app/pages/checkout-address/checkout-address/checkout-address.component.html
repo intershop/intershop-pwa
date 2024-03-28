@@ -16,6 +16,7 @@
   <!-- ------------------------------- invoice address ---------------------------------- -->
   <div class="col-md-6 col-lg-4" data-testing-id="invoiceToAddress">
     <ish-basket-invoice-address-widget
+      [eligibleAddresses$]="eligibleAddresses$"
       [showErrors]="nextDisabled"
       [collapse]="active === 'shipping'"
       (collapseChange)="invoiceCollapsed($event)"
@@ -25,6 +26,7 @@
   <!-- ------------------------------ shipping address ----------------------------------------- -->
   <div class="col-md-6 col-lg-4" data-testing-id="shipToAddress">
     <ish-basket-shipping-address-widget
+      [eligibleAddresses$]="eligibleAddresses$"
       [showErrors]="nextDisabled"
       [collapse]="active === 'invoice'"
       (collapseChange)="shippingCollapsed($event)"

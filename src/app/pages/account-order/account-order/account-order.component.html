@@ -48,7 +48,7 @@
     </ish-info-box>
   </div>
 
-  <ng-container *ishFeature="'messageToMerchant'">
+  <ng-container *ngIf="'shipping.messageToMerchant' | ishServerSetting">
     <!-- MessageToMerchant-->
     <ish-basket-merchant-message-view [data]="order" />
   </ng-container>
@@ -98,6 +98,24 @@
         <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
         <ish-basket-cost-summary [totals]="order.totals" />
       </div>
+
+      <!-- Add Order Items to Cart -->
+      <button
+        type="button"
+        class="btn btn-secondary btn-block mb-3"
+        [disabled]="displaySpinner()"
+        (click)="addOrderToBasket()"
+        data-testing-id="create-cart-from-order"
+      >
+        <ng-container *ngIf="this.displaySpinner() !== true; else spinning">
+          {{ 'account.orderdetails.add_to_cart.button.label' | translate }}
+        </ng-container>
+        <!-- spinning animation after clicking button -->
+        <ng-template #spinning>
+          <fa-icon [icon]="['fas', 'spinner']" [spin]="true" ngClass="pr-3" />
+          <span>{{ 'common.button.spinning.label' | translate }}</span>
+        </ng-template>
+      </button>
     </div>
   </div>
 </ng-container>

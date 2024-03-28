@@ -17,7 +17,7 @@ export class ContentViewHelper {
   }
 
   /**
-   * determine whether the a given configuration parameter of the given configuration parameter container
+   * determine whether the given configuration parameter of the given configuration parameter container
    * contains a link value that is supposed to be handled as a routerLink or not (external link)
    *
    * @param configParamView

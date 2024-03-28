@@ -5,22 +5,31 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators';
 
+import { OrderIncludeType, OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 
-type OrderIncludeType =
-  | 'invoiceToAddress'
-  | 'commonShipToAddress'
-  | 'commonShippingMethod'
-  | 'discounts'
-  | 'lineItems_discounts'
-  | 'lineItems'
-  | 'payments'
-  | 'payments_paymentMethod'
-  | 'payments_paymentInstrument';
+export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
+  return Object.entries(query).reduce(
+    (acc, [key, value]: [keyof OrderListQuery, OrderListQuery[keyof OrderListQuery]]) => {
+      if (Array.isArray(value)) {
+        if (key === 'include') {
+          return acc.set(key, value.join(','));
+        } else {
+          return (value as string[]).reduce((acc, value) => acc.append(key, value?.toString()), acc);
+        }
+      } else if (value !== undefined) {
+        return acc.set(key, value.toString());
+      } else {
+        return acc;
+      }
+    },
+    new HttpParams()
+  );
+}
 
 /**
  * The Order Service handles the interaction with the REST API concerning orders.
@@ -117,14 +126,18 @@ export class OrderService {
   /**
    * Gets the orders of the logged-in user
    *
-   * @param amount The count of items which should be fetched.
-   * @returns      A list of the user's orders
+   * @param query   Additional query parameters
+   *                - the number of items that should be fetched
+   *                - which data should be included.
+   * @returns       A list of the user's orders
    */
-  getOrders(amount: number = 30): Observable<Order[]> {
-    const params = new HttpParams().set('include', this.allOrderIncludes.join());
+  getOrders(query: OrderListQuery): Observable<Order[]> {
+    let params = orderListQueryToHttpParams(query);
+    // for 7.10 compliance - ToDo: will be removed in PWA 6.0
+    params = params.set('page[limit]', query.limit);
 
     return this.apiService
-      .get<OrderData>(`orders?page[limit]=${amount}`, {
+      .get<OrderData>('orders', {
         headers: this.orderHeaders,
         params,
       })

@@ -7,5 +7,5 @@ export interface OrderTemplateData extends OrderTemplateHeader {
   itemsCount?: number;
   name?: string;
   uri?: string;
-  creationDate?: Date;
+  creationDate?: number;
 }

@@ -11,7 +11,10 @@
     <ish-content-include includeId="include.searchnoresult.content.top.pagelet2-Include" />
   </div>
 
-  <p class="no-search-result-title" [innerHTML]="'search.noResult.message' | translate : { '0': searchTerm }"></p>
+  <p
+    class="no-search-result-title"
+    [innerHTML]="'search.noResult.message' | translate : { '0': searchTerm | htmlEncode }"
+  ></p>
 
   <div class="search-container main-search-container">
     <ish-search-box

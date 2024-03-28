@@ -13,12 +13,12 @@ export class ProductVariationHelper {
    * Build select value structure
    */
   static buildVariationOptionGroups(product: ProductView): VariationOptionGroup[] {
-    if (!product) {
+    if (!product?.variableVariationAttributes?.length) {
       return [];
     }
 
     // transform currently selected variation attribute list to object with the attributeId as key
-    const currentSettings = (product.variableVariationAttributes || []).reduce<{ [id: string]: VariationAttribute }>(
+    const currentSettings = product.variableVariationAttributes.reduce<{ [id: string]: VariationAttribute }>(
       (acc, attr) => ({
         ...acc,
         [attr.variationAttributeId]: attr,
@@ -30,11 +30,11 @@ export class ProductVariationHelper {
     // each with information about alternative combinations and active status (active status comes from currently selected variation)
     const options: VariationSelectOption[] = (product.productMaster?.variationAttributeValues || [])
       .map(attr => ({
-        label: attr.value,
-        value: attr.value,
+        label: ProductVariationHelper.toDisplayValue(attr.value),
+        value: ProductVariationHelper.toValue(attr.value)?.toString(),
         type: attr.variationAttributeId,
         metaData: attr.metaData,
-        active: currentSettings?.[attr.variationAttributeId]?.value === attr.value,
+        active: ProductVariationHelper.isEqual(currentSettings?.[attr.variationAttributeId]?.value, attr.value),
       }))
       .map(option => ({
         ...option,
@@ -65,7 +65,9 @@ export class ProductVariationHelper {
 
     const candidates = product.variations
       .filter(variation =>
-        variation.variableVariationAttributes.some(attr => attr.variationAttributeId === name && attr.value === value)
+        variation.variableVariationAttributes.some(
+          attr => attr.variationAttributeId === name && ProductVariationHelper.isEqual(attr.value, value)
+        )
       )
       .map(variation => ({
         sku: variation.sku,
@@ -101,6 +103,10 @@ export class ProductVariationHelper {
       filters.filter.map(filter => filter.facets.filter(facet => facet.selected).map(facet => facet.name))
     ).map(selected => selected.split('='));
 
+    if (!selectedFacets.length) {
+      return product.variations?.length;
+    }
+
     return product.variations
       .map(p => p.variableVariationAttributes)
       .filter(attrs =>
@@ -109,7 +115,9 @@ export class ProductVariationHelper {
             // attribute is not selected
             !selectedFacets.find(([key]) => key === attr.variationAttributeId) ||
             // selection is variation
-            selectedFacets.find(([key, val]) => key === attr.variationAttributeId && val === attr.value.toString())
+            selectedFacets.find(
+              ([key, val]) => key === attr.variationAttributeId && ProductVariationHelper.isEqual(val, attr.value)
+            )
         )
       ).length;
   }
@@ -118,50 +126,57 @@ export class ProductVariationHelper {
    * Check specific option if perfect variant match is not existing.
    *
    * @param option  The select option to check.
+   * @param product The given product containing the related product variations
    * @returns       Indicates if no perfect match is found.
    */
-  // eslint-disable-next-line complexity
   private static alternativeCombinationCheck(option: VariationSelectOption, product: ProductView): boolean {
     if (!product.variableVariationAttributes?.length) {
       return;
     }
 
-    let quality: number;
-    const perfectMatchQuality = product.variableVariationAttributes.length;
+    const comparisonAttributes = product.variableVariationAttributes.map(attribute =>
+      attribute.variationAttributeId === option.type ? { ...attribute, value: option.value } : attribute
+    );
 
-    // loop all selected product attributes ignoring the ones related to currently checked option.
-    for (const selectedAttribute of product.variableVariationAttributes) {
-      // loop all possible variations
-      for (const variation of product.variations) {
-        quality = 0;
-
-        // loop attributes of possible variation.
-        for (const attribute of variation.variableVariationAttributes || []) {
-          // increment quality if variation attribute matches selected product attribute.
-          if (
-            attribute.variationAttributeId === selectedAttribute.variationAttributeId &&
-            attribute.value === selectedAttribute.value
-          ) {
-            quality += 1;
-            continue;
-          }
-
-          // increment quality if variation attribute matches currently checked option.
-          if (attribute.variationAttributeId === option.type && attribute.value === option.value) {
-            quality += 1;
-            continue;
-          }
-        }
-
-        // perfect match found
-        if (quality === perfectMatchQuality) {
-          return false;
-        }
-      }
+    // check if the current product has the same attributes as the attributes to be compared
+    if (
+      ProductVariationHelper.variationAttributeArrayEquals(product.variableVariationAttributes, comparisonAttributes)
+    ) {
+      // perfect match found
+      return false;
     }
 
-    // imperfect match
-    return true;
+    // check if one of the variation products has the same attributes as the attributes to be compared
+    return !product.variations.some(variation =>
+      ProductVariationHelper.variationAttributeArrayEquals(variation.variableVariationAttributes, comparisonAttributes)
+    );
+  }
+
+  // determines whether both arrays have the same variation attributes
+  private static variationAttributeArrayEquals(array1: VariationAttribute[], array2: VariationAttribute[]): boolean {
+    return (
+      Array.isArray(array1) &&
+      Array.isArray(array2) &&
+      array1.length === array2.length &&
+      array1.every(val =>
+        array2.find(
+          attribute => attribute.name === val.name && ProductVariationHelper.isEqual(attribute.value, val.value)
+        )
+      )
+    );
+  }
+
+  private static toValue(input: VariationAttribute['value']): string | number {
+    return typeof input === 'object' ? input.value : input;
+  }
+
+  private static toDisplayValue(input: VariationAttribute['value']): string {
+    return typeof input === 'object' ? `${input.value} ${input.unit}` : input.toString();
+  }
+
+  private static isEqual(obj1: VariationAttribute['value'], obj2: VariationAttribute['value']): boolean {
+    // eslint-disable-next-line eqeqeq -- needed for comparison of string, integers and floats
+    return ProductVariationHelper.toValue(obj1) == ProductVariationHelper.toValue(obj2);
   }
 
   private static simplifyVariableVariationAttributes(attrs: VariationAttribute[]): { [name: string]: string } {

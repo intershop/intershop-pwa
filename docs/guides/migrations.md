@@ -7,6 +7,37 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 5.0 to 5.1
+
+The OrderListComponent is strictly presentational, components using it have to supply the data.
+The getOrders method of the OrderService does not fetch all related order data by default, you can provide an additional parameter to include the data you need.
+
+For accessibility reasons, we use buttons instead of anchor tags for links that only trigger an action and are not intended for navigation purposes.
+Note the following minor styling changes: use CSS classes `btn btn-link btn-link-action` for text links and `btn-tool btn-link` for icon links, (see [Accessibility guide/How to fix `'click-events-have-key-events`' problems](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/accessibility.md#how-to-fix-click-events-have-key-events-problems) for more details).
+
+In ICM 11 the `messageToMerchant` flag can be configured in the back office and its setting is supplied by the `/configurations` REST call.
+For this reason, the `messageToMerchant` feature toggle has been removed as a configurable feature toggle.
+To still be able to configure the message to merchant feature via feature toggle in ICM 7.10 environments, an [`ICMCompatibilityInterceptor`](../../src/app/core/interceptors/icm-compatibility.interceptor.ts) has been introduced that can be enabled in ICM 7.10 based projects in the [`core.module.ts`](../../src/app/core/core.module.ts).
+In addition, the `'messageToMerchant'` environment feature toggle option needs to be enabled in the [`environment.model.ts`](../../src/environments/environment.model.ts).
+
+To address an Angular hydration issue ([#1585](https://github.com/intershop/intershop-pwa/pull/1585)), the `header` component rendering has been changed and, in addition, a `HeaderType` has been introduced for the standard header types `['simple', 'error', 'checkout']`.
+If other header types are used in a project, these header types and the rendering need to be adapted accordingly.
+
+With the introduction of the new [navigation CMS components](../concepts/cms-integration.md#navigation-cms-components) it became necessary to adapt the main navigation styling.
+The styling can no longer rely on child selectors (`>`), since the CMS managed components introduce a lot of additional HTML tags around the styling-relevant `li` tags.
+
+To improve the performance of the 'Static Content Page' component, the default behavior of the triggered `/pagetree` REST call regarding the used `depth` has been changed.
+Previously, no 'Navigation Depth' specified in the Commerce Management configuration resulted in no limitation at all ("Define how many levels the navigation tree displays.
+To show all levels, leave the field empty.").
+With the content model adaptions of `icm-as-customization-headless:1.7.0`, a depth default value of `5` has been introduced and the description has been changed accordingly.
+In the PWA, the rendering was adapted as well so that an empty `NavigationDepth` value of the 'Static Content Page' component now defaults to `0` instead of no depth limitation that resulted in the whole content page tree being fetched and saved to the state.
+To keep the current behavior in an existing project, either adapt the `0` default in `pagelet.numberParam('NavigationDepth', 0)"` to a reasonable number or set the 'Navigation Depth' values for all 'Static Content Page' component instances in Intershop Commerce Management to reasonable depth values instead of leaving them empty.
+
+The [Brotli NGINX module](https://github.com/google/ngx_brotli) is used instead of gzip for compression on the NGINX server now, see [NGINX Optimizations](./optimizations.md#nginx-optimizations).
+
+The rendering of the [`CMSImageEnhancedComponent`](../../src/app/shared/cms/components/cms-image-enhanced/cms-image-enhanced.component.ts) has been changed and is no longer loading the image with `loading="lazy"` by default.
+See the [Enhanced Image Teaser section in "Guide - Core Web Vitals"](./core-web-vitals.md#enhanced-image-teaser) for further information.
+
 ## From 4.2 to 5.0
 
 Starting with the Intershop PWA 5.0 we develop and test against an Intershop Commerce Management 11 server.
@@ -15,11 +46,11 @@ In the [changelog](../../CHANGELOG.md) of this project we will inform about feat
 With the transition to ICM 11 the configured default `icmBaseURL` is now `'https://develop.icm.intershop.de'`.
 
 With the switch to ICM 11 we switched to ICM deployments without the Responsive Starter Store as well.
-Because of this the default `icmApplication` is now configured to `'-'`.
+Because of this, the default `icmApplication` is now configured to `'-'`.
 For ICM deployments with the Responsive Starter Store this probably has to be configured as it was before with `'rest'`.
 
 The project has been updated to work with Angular 16.
-Besides this a lot of other dependencies (NgRx, Typescript) have also been updated.
+Besides this, a lot of other dependencies (NgRx, Typescript) have also been updated.
 
 The spelling of the OCI punchout actions has changed due to a changed naming schema of the NgRx action creator functions.
 
@@ -246,7 +277,7 @@ A `ProductVariationSelectSwatchComponent` for colorCode and swatchImage variatio
 
 The user authentication process has changed.
 User authentication tokens are requested from the ICM server using the `/token` REST endpoint now.
-Regarding this, the logout action triggers a service which revokes the currently available access token on the ICM backend.
+Regarding this, the logout action triggers a service which revokes the currently available access token on the ICM back office.
 If the logout was successful, all personalized information is removed from the ngrx store.
 Please use `logoutUser({ revokeToken: false })` from the account facade or dispatch `logoutUserSuccess` instead of the `logoutUser` action to use the old behavior.
 

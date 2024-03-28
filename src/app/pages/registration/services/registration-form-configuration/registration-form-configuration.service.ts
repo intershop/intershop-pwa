@@ -97,6 +97,10 @@ export class RegistrationFormConfigurationService {
             },
           },
           {
+            type: 'ish-registration-newsletter-field',
+            key: 'newsletterSubscription',
+          },
+          {
             type: 'ish-captcha-field',
             props: {
               topic: 'register',
@@ -136,6 +140,7 @@ export class RegistrationFormConfigurationService {
         },
         address,
         userId: registrationConfig.userId,
+        subscribedToNewsletter: formValue.newsletterSubscription,
       });
     } else {
       const customer: Customer = {
@@ -168,6 +173,8 @@ export class RegistrationFormConfigurationService {
       const registration: CustomerRegistrationType = { customer, user, credentials, address };
       registration.captcha = form.get('captcha').value;
       registration.captchaAction = form.get('captchaAction').value;
+
+      registration.subscribedToNewsletter = formValue.newsletterSubscription;
 
       this.accountFacade.createUser(registration);
     }

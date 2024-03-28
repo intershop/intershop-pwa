@@ -35,7 +35,6 @@ export interface Environment {
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'
-    | 'messageToMerchant'
     | 'quoting'
     | 'quickorder'
     | 'orderTemplates'
@@ -43,6 +42,8 @@ export interface Environment {
     /* B2C features */
     | 'guestCheckout'
     | 'wishlists'
+    /* ICM compatibility - to be used with the ICMCompatibilityInterceptor */
+    // | 'messageToMerchant'
     /* Third-party Integrations */
     | 'addressDoctor'
     | 'sentry'
@@ -194,7 +195,15 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
         description: 'cookie.consent.option.tracking.description',
       },
     },
-    allowedCookies: ['apiToken', 'cookieConsent', 'preferredLocale'],
+    allowedCookies: [
+      'apiToken',
+      'cookieConsent',
+      'preferredLocale',
+      'punchout_SID',
+      'punchout_BasketID',
+      'punchout_ReturnURL',
+      'punchout_HookURL',
+    ],
   },
   cookieConsentVersion: 1,
 

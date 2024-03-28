@@ -6,9 +6,10 @@ import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountProfilePageComponent } from './account-profile-page.component';
 import { AccountProfileComponent } from './account-profile/account-profile.component';
+import { fetchUserNewsletterGuard } from './fetch-user-newsletter.guard';
 
 const routes: Routes = [
-  { path: '', component: AccountProfilePageComponent },
+  { path: '', canActivate: [fetchUserNewsletterGuard], component: AccountProfilePageComponent },
   {
     path: 'email',
     data: {
@@ -35,6 +36,7 @@ const routes: Routes = [
   },
   {
     path: 'user',
+    canActivate: [fetchUserNewsletterGuard],
     data: {
       breadcrumbData: [
         { key: 'account.profile.link', link: '/account/profile' },

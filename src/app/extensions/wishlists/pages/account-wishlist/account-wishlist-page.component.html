@@ -13,9 +13,9 @@
       {{ 'account.wishlists.heading.tooltip.link' | translate }}
       <fa-icon [icon]="['fas', 'info-circle']" />
     </a>
-    <a class="btn btn-secondary" data-testing-id="add-wishlist" [routerLink]="[]" (click)="addWishlistDialog.show()">{{
-      'account.wishlists.add_wishlist' | translate
-    }}</a>
+    <button type="button" class="btn btn-secondary" data-testing-id="add-wishlist" (click)="addWishlistDialog.show()">
+      {{ 'account.wishlists.add_wishlist' | translate }}
+    </button>
   </h1>
 
   <!-- Error message -->

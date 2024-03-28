@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { User } from 'ish-core/models/user/user.model';
 import { MessagesPayloadType } from 'ish-core/store/core/messages';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import {
   createCustomerAddress,
   deleteCustomerAddress,
@@ -27,7 +29,15 @@ import {
   getDataRequestError,
   getDataRequestLoading,
 } from 'ish-core/store/customer/data-requests';
-import { getOrders, getOrdersLoading, getSelectedOrder, loadOrders } from 'ish-core/store/customer/orders';
+import {
+  getMoreOrdersAvailable,
+  getOrders,
+  getOrdersError,
+  getOrdersLoading,
+  getSelectedOrder,
+  loadMoreOrders,
+  loadOrders,
+} from 'ish-core/store/customer/orders';
 import {
   cancelRegistration,
   getSsoRegistrationCancelled,
@@ -41,6 +51,7 @@ import {
   getCustomerApprovalEmail,
   getLoggedInCustomer,
   getLoggedInUser,
+  getNewsletterSubscriptionStatus,
   getPasswordReminderError,
   getPasswordReminderSuccess,
   getPriceDisplayType,
@@ -61,6 +72,7 @@ import {
   updateUserPassword,
   updateUserPasswordByPasswordReminder,
   updateUserPreferredPayment,
+  userNewsletterActions,
 } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -163,13 +175,21 @@ export class AccountFacade {
 
   // ORDERS
 
-  orders$() {
-    this.store.dispatch(loadOrders());
-    return this.store.pipe(select(getOrders));
+  orders$ = this.store.pipe(select(getOrders));
+
+  loadOrders(query?: OrderListQuery) {
+    this.store.dispatch(loadOrders({ query: query || { limit: 30 } }));
+  }
+
+  moreOrdersAvailable$ = this.store.pipe(select(getMoreOrdersAvailable));
+
+  loadMoreOrders() {
+    this.store.dispatch(loadMoreOrders());
   }
 
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
   ordersLoading$ = this.store.pipe(select(getOrdersLoading));
+  ordersError$ = this.store.pipe(select(getOrdersError));
 
   // PAYMENT
 
@@ -249,6 +269,30 @@ export class AccountFacade {
 
   updateCustomerAddress(address: Address) {
     this.store.dispatch(updateCustomerAddress({ address }));
+  }
+
+  // NEWSLETTER
+  subscribedToNewsletter$ = this.store.pipe(select(getNewsletterSubscriptionStatus));
+
+  loadNewsletterSubscription(): Observable<boolean> {
+    return this.store.pipe(
+      select(getServerConfigParameter<boolean>('marketing.newsletterSubscriptionEnabled')),
+      take(1),
+      switchMap(enabled => {
+        if (enabled) {
+          this.store.dispatch(userNewsletterActions.loadUserNewsletterSubscription());
+          return this.store.pipe(select(getNewsletterSubscriptionStatus));
+        }
+        return of(false);
+      })
+    );
+  }
+
+  // should only be called when the server-configuration-parameter 'marketing.newsletterSubscriptionEnabled' is true
+  updateNewsletterSubscription(subscribedToNewsletter: boolean) {
+    this.store.dispatch(
+      userNewsletterActions.updateUserNewsletterSubscription({ subscriptionStatus: subscribedToNewsletter })
+    );
   }
 
   // DATA REQUESTS

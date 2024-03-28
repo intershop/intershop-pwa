@@ -26,11 +26,13 @@ export class CMSStaticPageComponent implements CMSComponent, OnChanges {
     if (this.pagelet?.stringParam('NavigationRoot')) {
       this.contentPageTree$ = this.cmsFacade.contentPageTree$(
         this.pagelet.stringParam('NavigationRoot'),
-        this.pagelet.numberParam('NavigationDepth')
+        this.pagelet.numberParam('NavigationDepth', 0)
       );
     }
 
-    // explicitly set breadcrumb data for content pages that use the Static Content Page Component
+    // explicitly set breadcrumb data for content pages that use the Static Content component
+    // to have the complete breadcrumb data it is necessary that the content page tree
+    // was fetched for the given 'NavigationRoot' even if the navigation is not shown in the side panel
     this.cmsFacade.setBreadcrumbForContentPage(this.pagelet?.stringParam('NavigationRoot'));
   }
 }

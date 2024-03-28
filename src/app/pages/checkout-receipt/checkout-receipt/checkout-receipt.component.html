@@ -3,7 +3,7 @@
     <!-- header as content -->
     <ng-content></ng-content>
 
-    <ng-container *ishFeature="'messageToMerchant'">
+    <ng-container *ngIf="'shipping.messageToMerchant' | ishServerSetting">
       <!-- MessageToMerchant-->
       <ish-basket-merchant-message-view [data]="order" />
     </ng-container>

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { FeatureToggleModule, featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 describe('Feature Toggle Guard', () => {
   let router: Router;
@@ -10,7 +11,7 @@ describe('Feature Toggle Guard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule.forTesting('feature1'),
+        FeatureToggleModule.forTesting('feature1' as FeatureToggleType),
         RouterTestingModule.withRoutes([
           {
             path: 'error',

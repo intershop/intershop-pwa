@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Observable, shareReplay } from 'rxjs';
 
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -11,14 +14,22 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   templateUrl: './checkout-address.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutAddressComponent {
+export class CheckoutAddressComponent implements OnInit {
   @Input({ required: true }) basket: Basket;
   @Input() error: HttpError;
 
   @Output() nextStep = new EventEmitter<void>();
 
+  eligibleAddresses$: Observable<Address[]>;
+
   submitted = false;
   active: 'invoice' | 'shipping';
+
+  constructor(private checkoutFacade: CheckoutFacade) {}
+
+  ngOnInit(): void {
+    this.eligibleAddresses$ = this.checkoutFacade.eligibleAddresses$().pipe(shareReplay(1));
+  }
 
   /**
    * leads to next checkout page (checkout shipping)

@@ -12,7 +12,7 @@ class TranslatePlaceholderExtension implements FormlyExtension {
 
   prePopulate(field: FormlyFieldConfig): void {
     const props = field.props;
-    if (!props?.placeholder) {
+    if (!props?.placeholder || field.type === 'ish-date-range-picker-field') {
       return;
     }
 

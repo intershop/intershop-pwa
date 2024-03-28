@@ -6,7 +6,7 @@ import { delay, switchMap, tap } from 'rxjs/operators';
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { CategoryHelper } from 'ish-core/models/category/category.helper';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
-import { getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-tree';
+import { getCompleteContentPageTree, getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-tree';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import {
   getContentPageLoading,
@@ -44,8 +44,15 @@ export class CMSFacade {
   }
 
   contentPageTree$(rootId: string, depth: number) {
-    this.store.dispatch(loadContentPageTree({ rootId, depth }));
+    // fetch only the depth that is actually needed, depth=0 returns already the next child level
+    this.store.dispatch(loadContentPageTree({ rootId, depth: depth > 0 ? depth - 1 : 0 }));
     return this.store.pipe(select(getContentPageTree(rootId)));
+  }
+
+  completeContentPageTree$(rootId: string, depth: number) {
+    // fetch only the depth that is actually needed, depth=0 returns already the next child level
+    this.store.dispatch(loadContentPageTree({ rootId, depth: depth > 0 ? depth - 1 : 0 }));
+    return this.store.pipe(select(getCompleteContentPageTree(rootId, depth)));
   }
 
   /**

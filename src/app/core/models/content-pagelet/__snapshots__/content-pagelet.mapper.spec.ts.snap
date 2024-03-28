@@ -16,7 +16,7 @@ exports[`Content Pagelet Mapper should convert pagelet with slots and additional
         "definitionQualifiedName": "quali-slot",
         "displayName": "slot1",
         "pageletIDs": [
-          "pagelet-nested",
+          "pagelet-nested#0$0@pagelet",
         ],
       },
       {
@@ -30,7 +30,7 @@ exports[`Content Pagelet Mapper should convert pagelet with slots and additional
         "definitionQualifiedName": "quali-slot",
         "displayName": "slot2",
         "pageletIDs": [
-          "pagelet-nested2",
+          "pagelet-nested2#0$1@pagelet",
         ],
       },
     ],
@@ -40,7 +40,7 @@ exports[`Content Pagelet Mapper should convert pagelet with slots and additional
     "definitionQualifiedName": "fq",
     "displayName": "name-nested",
     "domain": "domain",
-    "id": "pagelet-nested",
+    "id": "pagelet-nested#0$0@pagelet",
     "slots": [],
   },
   {
@@ -50,14 +50,14 @@ exports[`Content Pagelet Mapper should convert pagelet with slots and additional
     "definitionQualifiedName": "domain-pagelet",
     "displayName": "name1",
     "domain": "domain",
-    "id": "pagelet-nested2",
+    "id": "pagelet-nested2#0$1@pagelet",
     "slots": [
       {
         "configurationParameters": {},
         "definitionQualifiedName": "fq-2",
         "displayName": "slot11",
         "pageletIDs": [
-          "pagelet-deeply-nested",
+          "pagelet-deeply-nested#0$0@pagelet-nested2#0$1@pagelet",
         ],
       },
     ],
@@ -69,7 +69,7 @@ exports[`Content Pagelet Mapper should convert pagelet with slots and additional
     "definitionQualifiedName": "fq",
     "displayName": "name-nested",
     "domain": "domain",
-    "id": "pagelet-deeply-nested",
+    "id": "pagelet-deeply-nested#0$0@pagelet-nested2#0$1@pagelet",
     "slots": [],
   },
 ]

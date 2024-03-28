@@ -9,7 +9,7 @@ export class CostCenterMapper {
         orders: data.orders?.map(order => ({
           documentNo: order.orderNo,
           status: order.orderStatus,
-          creationDate: order.orderDate,
+          creationDate: order.orderDate.toString(),
           attributes: order.buyer.attributes,
           totalProductQuantity: order.items,
           totals: {

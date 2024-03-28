@@ -14,13 +14,15 @@ export class VariationAttributeMapper {
   constructor(private imageMapper: ImageMapper) {}
 
   fromData(data: VariationAttributeData[]): VariationAttribute[] {
-    return data?.map(varAttr => ({
-      variationAttributeId: varAttr.variationAttributeId,
-      name: varAttr.name,
-      value: varAttr.value.value,
-      attributeType: varAttr.attributeType,
-      metaData: this.mapMetaData(varAttr.attributeType, varAttr.metadata),
-    }));
+    return (
+      data?.map(varAttr => ({
+        variationAttributeId: varAttr.variationAttributeId,
+        name: varAttr.name,
+        value: varAttr.value.value,
+        attributeType: varAttr.attributeType,
+        metaData: this.mapMetaData(varAttr.attributeType, varAttr.metadata),
+      })) ?? []
+    );
   }
 
   fromMasterData(variationAttributes: VariationAttributeData[]): VariationAttribute[] {

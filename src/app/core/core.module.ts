@@ -30,6 +30,8 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     StateManagementModule,
   ],
   providers: [
+    // include the ICMCompatibilityInterceptor to add support for REST API changes (e.g. messageToMerchant)
+    // { provide: HTTP_INTERCEPTORS, useClass: ICMCompatibilityInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: PGIDChangeInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
     {

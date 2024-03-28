@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
 
+import { AddressData } from 'ish-core/models/address/address.interface';
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -32,41 +33,6 @@ export type BasketUpdateType =
   | { invoiceToAddress: string }
   | { messageToMerchant: string };
 
-type BasketIncludeType =
-  | 'invoiceToAddress'
-  | 'commonShipToAddress'
-  | 'commonShippingMethod'
-  | 'discounts'
-  | 'lineItems_discounts'
-  | 'lineItems'
-  | 'payments'
-  | 'payments_paymentMethod'
-  | 'payments_paymentInstrument';
-
-type MergeBasketIncludeType =
-  | 'targetBasket'
-  | 'targetBasket_invoiceToAddress'
-  | 'targetBasket_commonShipToAddress'
-  | 'targetBasket_commonShippingMethod'
-  | 'targetBasket_discounts'
-  | 'targetBasket_lineItems_discounts'
-  | 'targetBasket_lineItems'
-  | 'targetBasket_payments'
-  | 'targetBasket_payments_paymentMethod'
-  | 'targetBasket_payments_paymentInstrument';
-
-type ValidationBasketIncludeType =
-  | 'basket'
-  | 'basket_invoiceToAddress'
-  | 'basket_commonShipToAddress'
-  | 'basket_commonShippingMethod'
-  | 'basket_discounts'
-  | 'basket_lineItems_discounts'
-  | 'basket_lineItems'
-  | 'basket_payments'
-  | 'basket_payments_paymentMethod'
-  | 'basket_payments_paymentInstrument';
-
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
  * Methods related to basket-items are handled in the basket-items.service.
@@ -84,7 +50,7 @@ export class BasketService {
     Accept: 'application/vnd.intershop.basket.v1+json',
   });
 
-  private allBasketIncludes: BasketIncludeType[] = [
+  private readonly allBasketIncludes = [
     'invoiceToAddress',
     'commonShipToAddress',
     'commonShippingMethod',
@@ -96,7 +62,7 @@ export class BasketService {
     'payments_paymentInstrument',
   ];
 
-  private allTargetBasketIncludes: MergeBasketIncludeType[] = [
+  private readonly allTargetBasketIncludes = [
     'targetBasket',
     'targetBasket_invoiceToAddress',
     'targetBasket_commonShipToAddress',
@@ -109,7 +75,7 @@ export class BasketService {
     'targetBasket_payments_paymentInstrument',
   ];
 
-  private allBasketValidationIncludes: ValidationBasketIncludeType[] = [
+  private readonly allBasketValidationIncludes = [
     'basket',
     'basket_invoiceToAddress',
     'basket_commonShipToAddress',
@@ -307,6 +273,23 @@ export class BasketService {
     return this.apiService.currentBasketEndpoint().delete<string>(`promotioncodes/${encodeResourceID(codeStr)}`, {
       headers: this.basketHeaders,
     });
+  }
+
+  /**
+   * Get eligible addresses for the currently used basket.
+   *
+   * @returns         The eligible addresses.
+   */
+  getBasketEligibleAddresses(): Observable<Address[]> {
+    return this.apiService
+      .currentBasketEndpoint()
+      .get('eligible-addresses', {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        unpackEnvelope<AddressData>('data'),
+        map(addressesData => addressesData.map(AddressMapper.fromData))
+      );
   }
 
   /**

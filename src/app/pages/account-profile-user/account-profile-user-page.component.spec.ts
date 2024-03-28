@@ -1,11 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 
 import { AccountProfileUserPageComponent } from './account-profile-user-page.component';
-import { AccountProfileUserComponent } from './account-profile-user/account-profile-user.component';
 
 describe('Account Profile User Page Component', () => {
   let component: AccountProfileUserPageComponent;
@@ -14,7 +12,7 @@ describe('Account Profile User Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccountProfileUserPageComponent, MockComponent(AccountProfileUserComponent)],
+      declarations: [AccountProfileUserPageComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });

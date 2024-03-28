@@ -33,7 +33,7 @@
     </div>
     <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval" />
 
-    <ng-container *ishFeature="'messageToMerchant'">
+    <ng-container *ngIf="'shipping.messageToMerchant' | ishServerSetting">
       <!-- MessageToMerchant-->
       <ish-basket-merchant-message-view [data]="basket" editRouterLink="/checkout/shipping" />
     </ng-container>

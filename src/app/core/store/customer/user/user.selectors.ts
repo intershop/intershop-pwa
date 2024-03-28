@@ -43,3 +43,5 @@ export const getPriceDisplayType = createSelector(
     return isB2B ? b2b || 'net' : b2c || 'gross';
   }
 );
+
+export const getNewsletterSubscriptionStatus = createSelector(getUserState, state => state.subscribedToNewsletter);

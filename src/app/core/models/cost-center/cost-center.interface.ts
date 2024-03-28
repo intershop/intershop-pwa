@@ -6,7 +6,7 @@ import { CostCenter } from './cost-center.model';
 export type CostCenterData = Omit<CostCenter, 'orders'> & {
   orders?: {
     orderNo: string;
-    orderDate: number;
+    orderDate: number[];
     orderStatus: string;
     items: number;
     buyer: { attributes: Attribute[] };

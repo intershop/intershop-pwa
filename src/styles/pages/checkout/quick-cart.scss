@@ -7,12 +7,9 @@
   margin-left: $space-default;
   background: $color-tertiary;
 
-  a {
+  .btn-link {
     font-family: $font-family-bold;
-    font-size: $font-size-base;
-    text-decoration: none !important;
     text-transform: uppercase;
-    cursor: pointer;
 
     span {
       color: $text-color-quaternary;
@@ -31,7 +28,7 @@
     }
   }
 
-  > a {
+  > .btn-link {
     padding: 0 ($space-default * 0.5);
     white-space: nowrap;
   }
@@ -39,7 +36,7 @@
   &.mini-cart-active {
     background: $color-corporate;
 
-    > a {
+    > .btn-link {
       span {
         color: $text-color-inverse;
 

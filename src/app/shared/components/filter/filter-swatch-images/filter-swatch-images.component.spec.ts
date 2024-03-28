@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
@@ -13,7 +12,6 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [FilterSwatchImagesComponent, SanitizePipe],
     }).compileComponents();
   });

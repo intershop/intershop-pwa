@@ -1,13 +1,13 @@
 <ng-container *ngIf="isLoggedIn$ | async; else loginButton">
-  <a
+  <button
+    type="button"
     *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
-    [routerLink]="[]"
     class="btn btn-secondary"
     data-testing-id="create-quote-from-basket"
     (click)="addToQuote()"
   >
     {{ 'shopping_cart.quote.create.button' | translate }}
-  </a>
+  </button>
 </ng-container>
 <ng-template #loginButton>
   <button

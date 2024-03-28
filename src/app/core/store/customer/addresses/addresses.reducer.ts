@@ -3,12 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import {
-  createBasketAddress,
-  createBasketAddressSuccess,
-  deleteBasketShippingAddress,
-  updateBasketAddress,
-} from 'ish-core/store/customer/basket';
+import { deleteBasketShippingAddress, updateBasketAddress } from 'ish-core/store/customer/basket';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -43,7 +38,6 @@ export const addressesReducer = createReducer(
   setLoadingOn(
     loadAddresses,
     createCustomerAddress,
-    createBasketAddress,
     updateCustomerAddress,
     updateBasketAddress,
     deleteCustomerAddress,
@@ -53,12 +47,11 @@ export const addressesReducer = createReducer(
   unsetLoadingAndErrorOn(
     loadAddressesSuccess,
     createCustomerAddressSuccess,
-    createBasketAddressSuccess,
     updateCustomerAddressSuccess,
     deleteCustomerAddressSuccess
   ),
   on(loadAddressesSuccess, (state, action) => addressAdapter.setAll(action.payload.addresses, state)),
-  on(createCustomerAddressSuccess, createBasketAddressSuccess, updateCustomerAddressSuccess, (state, action) =>
+  on(createCustomerAddressSuccess, updateCustomerAddressSuccess, (state, action) =>
     addressAdapter.upsertOne(action.payload.address, state)
   ),
   on(deleteCustomerAddressSuccess, (state, action) => addressAdapter.removeOne(action.payload.addressId, state))

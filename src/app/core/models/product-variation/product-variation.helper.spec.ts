@@ -11,6 +11,7 @@ const productVariations = [
     variableVariationAttributes: [
       { name: 'Attr 1', value: 'A', variationAttributeId: 'a1' },
       { name: 'Attr 2', value: 'A', variationAttributeId: 'a2' },
+      { name: 'Attr 3', value: { value: 3, unit: 'm' }, variationAttributeId: 'a3' },
     ],
   },
   {
@@ -20,6 +21,7 @@ const productVariations = [
     variableVariationAttributes: [
       { name: 'Attr 1', value: 'A', variationAttributeId: 'a1' },
       { name: 'Attr 2', value: 'B', variationAttributeId: 'a2' },
+      { name: 'Attr 3', value: { value: 1, unit: 'm' }, variationAttributeId: 'a3' },
     ],
   },
   {
@@ -28,6 +30,7 @@ const productVariations = [
     variableVariationAttributes: [
       { name: 'Attr 1', value: 'B', variationAttributeId: 'a1' },
       { name: 'Attr 2', value: 'A', variationAttributeId: 'a2' },
+      { name: 'Attr 3', value: { value: 2, unit: 'm' }, variationAttributeId: 'a3' },
     ],
   },
   {
@@ -36,6 +39,7 @@ const productVariations = [
     variableVariationAttributes: [
       { name: 'Attr 1', value: 'B', variationAttributeId: 'a1' },
       { name: 'Attr 2', value: 'B', variationAttributeId: 'a2' },
+      { name: 'Attr 3', value: { value: 3, unit: 'm' }, variationAttributeId: 'a3' },
     ],
   },
   {
@@ -44,6 +48,7 @@ const productVariations = [
     variableVariationAttributes: [
       { name: 'Attr 1', value: 'B', variationAttributeId: 'a1' },
       { name: 'Attr 2', value: 'C', variationAttributeId: 'a2' },
+      { name: 'Attr 3', value: { value: 3, unit: 'm' }, variationAttributeId: 'a3' },
     ],
   },
 ] as VariationProduct[];
@@ -56,6 +61,9 @@ const productMaster = {
     { name: 'Attr 2', value: 'A', variationAttributeId: 'a2' },
     { name: 'Attr 2', value: 'B', variationAttributeId: 'a2' },
     { name: 'Attr 2', value: 'C', variationAttributeId: 'a2' },
+    { name: 'Attr 3', value: '1', variationAttributeId: 'a3' },
+    { name: 'Attr 3', value: '2', variationAttributeId: 'a3' },
+    { name: 'Attr 3', value: '3', variationAttributeId: 'a3' },
   ],
 } as VariationProductMaster;
 
@@ -73,58 +81,96 @@ const masterProductView = {
 describe('Product Variation Helper', () => {
   describe('buildVariationOptionGroups', () => {
     it('should build variation option groups for variation product', () => {
-      const expectedGroups = [
-        {
-          id: 'a1',
-          label: 'Attr 1',
-          options: [
-            {
-              label: 'A',
-              value: 'A',
-              type: 'a1',
-              alternativeCombination: false,
-              active: true,
-            },
-            {
-              label: 'B',
-              value: 'B',
-              type: 'a1',
-              alternativeCombination: false,
-              active: false,
-            },
-          ],
-        },
-        {
-          id: 'a2',
-          label: 'Attr 2',
-          options: [
-            {
-              label: 'A',
-              value: 'A',
-              type: 'a2',
-              alternativeCombination: false,
-              active: true,
-            },
-            {
-              label: 'B',
-              value: 'B',
-              type: 'a2',
-              alternativeCombination: false,
-              active: false,
-            },
-            {
-              label: 'C',
-              value: 'C',
-              type: 'a2',
-              alternativeCombination: true,
-              active: false,
-            },
-          ],
-        },
-      ];
-
       const result = ProductVariationHelper.buildVariationOptionGroups(variationProductView);
-      expect(result).toEqual(expectedGroups);
+      expect(result).toMatchInlineSnapshot(`
+        [
+          {
+            "attributeType": undefined,
+            "id": "a1",
+            "label": "Attr 1",
+            "options": [
+              {
+                "active": true,
+                "alternativeCombination": false,
+                "label": "A",
+                "metaData": undefined,
+                "type": "a1",
+                "value": "A",
+              },
+              {
+                "active": false,
+                "alternativeCombination": true,
+                "label": "B",
+                "metaData": undefined,
+                "type": "a1",
+                "value": "B",
+              },
+            ],
+          },
+          {
+            "attributeType": undefined,
+            "id": "a2",
+            "label": "Attr 2",
+            "options": [
+              {
+                "active": true,
+                "alternativeCombination": false,
+                "label": "A",
+                "metaData": undefined,
+                "type": "a2",
+                "value": "A",
+              },
+              {
+                "active": false,
+                "alternativeCombination": true,
+                "label": "B",
+                "metaData": undefined,
+                "type": "a2",
+                "value": "B",
+              },
+              {
+                "active": false,
+                "alternativeCombination": true,
+                "label": "C",
+                "metaData": undefined,
+                "type": "a2",
+                "value": "C",
+              },
+            ],
+          },
+          {
+            "attributeType": undefined,
+            "id": "a3",
+            "label": "Attr 3",
+            "options": [
+              {
+                "active": false,
+                "alternativeCombination": true,
+                "label": "1",
+                "metaData": undefined,
+                "type": "a3",
+                "value": "1",
+              },
+              {
+                "active": false,
+                "alternativeCombination": true,
+                "label": "2",
+                "metaData": undefined,
+                "type": "a3",
+                "value": "2",
+              },
+              {
+                "active": true,
+                "alternativeCombination": false,
+                "label": "3",
+                "metaData": undefined,
+                "type": "a3",
+                "value": "3",
+              },
+            ],
+          },
+        ]
+      `);
     });
   });
 
@@ -186,6 +232,19 @@ describe('Product Variation Helper', () => {
       } as FilterNavigation;
 
       expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(2);
+    });
+
+    it('should filter for products matching complex value attributes', () => {
+      const filters = {
+        filter: [
+          {
+            id: 'a1',
+            facets: [{ selected: true, name: 'a3=3' }],
+          },
+        ],
+      } as FilterNavigation;
+
+      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(3);
     });
 
     it('should filter for products matching multiple selected attributes', () => {

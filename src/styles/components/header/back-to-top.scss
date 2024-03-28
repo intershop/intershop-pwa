@@ -21,6 +21,6 @@ html:not(.cypress-tests) {
   animation: back-to-top-btn-animation 0.15s ease-in-out;
 
   @media (max-width: $screen-xs-max) {
-    width: auto;
+    width: auto !important;
   }
 }

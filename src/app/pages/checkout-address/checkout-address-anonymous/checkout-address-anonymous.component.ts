@@ -95,13 +95,15 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
         ? undefined
         : this.form.get('shippingAddress').value.address;
 
-    if (this.form.get('additionalAddressAttributes').value.taxationID) {
-      this.checkoutFacade.setBasketCustomAttribute({
-        name: 'taxationID',
-        value: this.form.get('additionalAddressAttributes').value.taxationID,
-      });
-    } else {
-      this.checkoutFacade.deleteBasketCustomAttribute('taxationID');
+    if (this.form.get('additionalAddressAttributes').get('taxationID')) {
+      if (this.form.get('additionalAddressAttributes').value.taxationID) {
+        this.checkoutFacade.setBasketCustomAttribute({
+          name: 'taxationID',
+          value: this.form.get('additionalAddressAttributes').value.taxationID,
+        });
+      } else {
+        this.checkoutFacade.deleteBasketCustomAttribute('taxationID');
+      }
     }
 
     if (shippingAddress) {

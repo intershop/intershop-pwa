@@ -4,16 +4,16 @@ import { map } from 'rxjs/operators';
 
 import { FeatureToggleDirective } from './directives/feature-toggle.directive';
 import { NotFeatureToggleDirective } from './directives/not-feature-toggle.directive';
-import { FeatureToggleService, checkFeature } from './utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType, checkFeature } from './utils/feature-toggle/feature-toggle.service';
 
 @NgModule({
   declarations: [FeatureToggleDirective, NotFeatureToggleDirective],
   exports: [FeatureToggleDirective, NotFeatureToggleDirective],
 })
 export class FeatureToggleModule {
-  private static features$ = new BehaviorSubject<string[]>(undefined);
+  private static features$ = new BehaviorSubject<FeatureToggleType[]>(undefined);
 
-  static forTesting(...features: string[]): ModuleWithProviders<FeatureToggleModule> {
+  static forTesting(...features: FeatureToggleType[]): ModuleWithProviders<FeatureToggleModule> {
     FeatureToggleModule.switchTestingFeatures(...features);
     return {
       ngModule: FeatureToggleModule,
@@ -21,17 +21,17 @@ export class FeatureToggleModule {
         {
           provide: FeatureToggleService,
           useValue: {
-            enabled$: (feature: string) =>
+            enabled$: (feature: FeatureToggleType) =>
               FeatureToggleModule.features$.pipe(map(toggles => checkFeature(toggles, feature))),
             // eslint-disable-next-line rxjs/no-subject-value
-            enabled: (feature: string) => checkFeature(FeatureToggleModule.features$.value, feature),
+            enabled: (feature: FeatureToggleType) => checkFeature(FeatureToggleModule.features$.value, feature),
           },
         },
       ],
     };
   }
 
-  static switchTestingFeatures(...features: string[]) {
+  static switchTestingFeatures(...features: FeatureToggleType[]) {
     FeatureToggleModule.features$.next(features);
   }
 }

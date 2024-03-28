@@ -48,6 +48,8 @@ export const createBasketAddressSuccess = createAction(
   payload<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>()
 );
 
+export const createBasketAddressFail = createAction('[Basket API] Create Basket Address Fail', httpError());
+
 export const assignBasketAddress = createAction(
   '[Basket] Assign an Address to the Basket',
   payload<{ addressId: string; scope: 'invoice' | 'shipping' | 'any' }>()
@@ -204,6 +206,18 @@ export const deleteBasketAttribute = createAction(
 export const deleteBasketAttributeFail = createAction('[Basket API] Delete Basket Attribute Fail', httpError());
 
 export const deleteBasketAttributeSuccess = createAction('[Basket API] Delete Basket Attribute Success');
+
+export const loadBasketEligibleAddresses = createAction('[Basket Internal] Load Basket Eligible Addresses');
+
+export const loadBasketEligibleAddressesFail = createAction(
+  '[Basket API] Load Basket Eligible Addresses Fail',
+  httpError()
+);
+
+export const loadBasketEligibleAddressesSuccess = createAction(
+  '[Basket API] Load Basket Eligible Addresses Success',
+  payload<{ addresses: Address[] }>()
+);
 
 export const loadBasketEligibleShippingMethods = createAction(
   '[Basket Internal] Load Basket Eligible Shipping Methods'

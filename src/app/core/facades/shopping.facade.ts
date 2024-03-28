@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, identity } from 'rxjs';
-import { debounce, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
+import { debounce, distinctUntilChanged, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { PRICE_UPDATE } from 'ish-core/configurations/injection-keys';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
@@ -14,8 +14,10 @@ import {
   getCategory,
   getCategoryIdByRefId,
   getNavigationCategories,
+  getNavigationCategoryTree,
   getSelectedCategory,
   loadCategoryByRef,
+  loadCategoryTree,
   loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
@@ -69,8 +71,14 @@ export class ShoppingFacade {
     }
     return this.store.pipe(
       select(getNavigationCategories(uniqueId)),
+      // prevent to display an empty navigation bar after login/logout);
       filter(categories => !!categories?.length)
-    ); // prevent to display an empty navigation bar after login/logout);
+    );
+  }
+
+  navigationCategoryTree$(categoryRef: string, depth: number) {
+    this.store.dispatch(loadCategoryTree({ categoryRef, depth }));
+    return this.store.pipe(select(getNavigationCategoryTree(categoryRef, depth)));
   }
 
   // PRODUCT
@@ -120,6 +128,7 @@ export class ShoppingFacade {
             select(getProductPrice(plainSKU)),
             // reset state when updates are forced
             this.priceUpdate === 'always' || fresh ? startWith(undefined) : identity,
+            distinctUntilChanged(),
             tap(prices => {
               if (!prices) {
                 this.store.dispatch(loadProductPrices({ skus: [plainSKU] }));
@@ -162,10 +171,16 @@ export class ShoppingFacade {
   productLinks$(sku: string | Observable<string>) {
     return toObservable(sku).pipe(
       whenTruthy(),
-      tap(plainSKU => {
-        this.store.dispatch(loadProductLinks({ sku: plainSKU }));
-      }),
-      switchMap(plainSKU => this.store.pipe(select(getProductLinks(plainSKU))))
+      switchMap(plainSKU =>
+        this.store.pipe(
+          select(getProductLinks(plainSKU)),
+          tap(links => {
+            if (!links) {
+              this.store.dispatch(loadProductLinks({ sku: plainSKU }));
+            }
+          })
+        )
+      )
     );
   }
 

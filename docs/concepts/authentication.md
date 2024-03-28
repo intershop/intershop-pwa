@@ -54,10 +54,10 @@ To add or change the functionality of an identity provider, the following steps 
    }
    ```
 
-   > [!NOTE]
-   > If an identity provider is using the OAuthService for authentication, the identity provider have to inject the OAuthService with a new instance.
-   > Otherwise, difficult side effects with the [TokenService](../../src/app/core/services/token/token.service.ts) will occur.
-   > Please checkout the [Auth0IdentityProvider](../../src/app/core/identity-provider/auth0.identity-provider.ts) for an example.
+> [!NOTE]
+> If an identity provider is using the OAuthService for authentication, the identity provider have to inject the OAuthService with a new instance.
+> Otherwise, difficult side effects with the [TokenService](../../src/app/core/services/token/token.service.ts) will occur.
+> Please checkout the [Auth0IdentityProvider](../../src/app/core/identity-provider/auth0.identity-provider.ts) for an example.
 
 2. Register the `<idp>.identity-provider.ts` in the [`IdentityProviderModule`](../../src/app/core/identity-provider.module.ts). The `APP_INITIALIZER` injection token is used to configure and initialize the identity provider before app initialization.
 

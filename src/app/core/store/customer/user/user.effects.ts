@@ -60,6 +60,7 @@ import {
   updateUserPreferredPayment,
   updateUserSuccess,
   userErrorReset,
+  userNewsletterActions,
 } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
@@ -153,6 +154,14 @@ export class UserEffects {
           ),
           concatMap(([createUserResponse, customerTypeForLoginApproval]) => [
             createUserSuccess({ email: createUserResponse.user.email }),
+            ...(data.subscribedToNewsletter
+              ? [
+                  userNewsletterActions.updateUserNewsletterSubscription({
+                    subscriptionStatus: true,
+                    userEmail: createUserResponse.user.email,
+                  }),
+                ]
+              : []),
             customerTypeForLoginApproval?.includes(createUserResponse.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
               ? createUserApprovalRequired({ email: createUserResponse.user.email })
               : loginUser({ credentials: data.credentials }),

@@ -1,3 +1,5 @@
+import { isEqual, pick } from 'lodash-es';
+
 import { ContentPageTree, ContentPageTreeElement } from './content-page-tree.model';
 
 export class ContentPageTreeHelper {
@@ -68,6 +70,40 @@ export class ContentPageTreeHelper {
     return ContentPageTreeHelper.merge(tree, singleContentPageTree);
   }
 
+  /**
+   * Extract a sub tree.
+   */
+  static subTree(tree: ContentPageTree, uniqueId: string): ContentPageTree {
+    if (!uniqueId) {
+      return tree;
+    }
+
+    const subTreeElements = Object.keys(tree.nodes)
+      .map(id => tree.nodes[id])
+      .filter(elements => elements.path.find(path => path === uniqueId))
+      .map(el => el.contentPageId);
+
+    const select = (e: string) => subTreeElements.find(el => el === e);
+    return {
+      rootIds: tree.rootIds.filter(select),
+      edges: pick(tree.edges, ...Object.keys(tree.edges).filter(select)),
+      nodes: pick(tree.nodes, ...Object.keys(tree.nodes).filter(select)),
+    };
+  }
+
+  /**
+   * Perform check for equality. Order of items is ignored.
+   */
+  static equals(tree1: ContentPageTree, tree2: ContentPageTree): boolean {
+    return (
+      tree1 &&
+      tree2 &&
+      ContentPageTreeHelper.rootIdsEqual(tree1.rootIds, tree2.rootIds) &&
+      ContentPageTreeHelper.edgesEqual(tree1.edges, tree2.edges) &&
+      ContentPageTreeHelper.contentEqual(tree1.nodes, tree2.nodes)
+    );
+  }
+
   private static removeDuplicates<T>(input: T[]): T[] {
     return input.filter((value, index, array) => array.indexOf(value) === index);
   }
@@ -118,5 +154,26 @@ export class ContentPageTreeHelper {
     } else {
       return ContentPageTreeHelper.removeDuplicates([...current, ...incoming]);
     }
+  }
+
+  private static rootIdsEqual(t1: string[], t2: string[]) {
+    return t1.length === t2.length && t1.every(e => t2.includes(e));
+  }
+
+  private static edgesEqual(t1: { [id: string]: string[] }, t2: { [id: string]: string[] }) {
+    return isEqual(t1, t2);
+  }
+
+  private static contentEqual(
+    t1: { [id: string]: ContentPageTreeElement },
+    t2: { [id: string]: ContentPageTreeElement }
+  ) {
+    const keys1 = Object.keys(t1);
+    const keys2 = Object.keys(t2);
+    return (
+      keys1.length === keys2.length &&
+      keys1.every(id => keys2.includes(id)) &&
+      keys1.every(id => isEqual(t1[id], t2[id]))
+    );
   }
 }

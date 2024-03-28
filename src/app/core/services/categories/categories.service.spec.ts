@@ -24,6 +24,9 @@ describe('Categories Service', () => {
     when(apiServiceMock.get('categories/dummyid/dummysubid', anything())).thenReturn(
       of({ categoryPath: [{ id: 'blubb' }] } as CategoryData)
     );
+    when(apiServiceMock.get('categories/dummyid@cat', anything())).thenReturn(
+      of({ categoryPath: [{ id: 'blubb' }] } as CategoryData)
+    );
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, provideMockStore()],
     });
@@ -43,7 +46,7 @@ describe('Categories Service', () => {
       expect(capture(apiServiceMock.get).last()[0].toString()).toMatchInlineSnapshot(`"categories"`);
       const options: AvailableOptions = capture(apiServiceMock.get).last()[1];
       expect(options.params.toString()).toMatchInlineSnapshot(
-        `"imageView=NO-IMAGE&view=tree&limit=1&omitHasOnlineProducts=true"`
+        `"view=tree&limit=1&omitHasOnlineProducts=true&imageView=NO-IMAGE"`
       );
     });
 
@@ -94,6 +97,19 @@ describe('Categories Service', () => {
     it('should call underlying ApiService categories/id when asked to resolve a subcategory by id', () => {
       categoriesService.getCategory('dummyid/dummysubid');
       verify(apiServiceMock.get('categories/dummyid/dummysubid', anything())).once();
+    });
+  });
+
+  describe('getCategoryTree()', () => {
+    it('should call ApiService "categories" when called', () => {
+      categoriesService.getCategoryTree('dummyid@cat', 1);
+      verify(apiServiceMock.get('categories/dummyid@cat', anything())).once();
+
+      expect(capture(apiServiceMock.get).last()[0].toString()).toMatchInlineSnapshot(`"categories/dummyid@cat"`);
+      const options: AvailableOptions = capture(apiServiceMock.get).last()[1];
+      expect(options.params.toString()).toMatchInlineSnapshot(
+        `"view=tree&limit=1&omitHasOnlineProducts=true&imageView=NO-IMAGE"`
+      );
     });
   });
 });

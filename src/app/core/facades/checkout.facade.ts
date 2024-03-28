@@ -11,7 +11,6 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { selectRouteData } from 'ish-core/store/core/router';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
-import { getAllAddresses } from 'ish-core/store/customer/addresses';
 import {
   addMessageToMerchant,
   addPromotionCodeToBasket,
@@ -25,6 +24,7 @@ import {
   deleteBasketItems,
   deleteBasketPayment,
   deleteBasketShippingAddress,
+  getBasketEligibleAddresses,
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
@@ -38,6 +38,7 @@ import {
   getCurrentBasket,
   getSubmittedBasket,
   isBasketInvoiceAndShippingAddressEqual,
+  loadBasketEligibleAddresses,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
   loadBasketWithId,
@@ -283,17 +284,26 @@ export class CheckoutFacade {
     select(
       createSelector(
         getLoggedInUser,
-        getAllAddresses,
+        getBasketEligibleAddresses,
         getBasketShippingAddress,
         (user, addresses, shippingAddress): boolean =>
           !!shippingAddress &&
           !!user &&
-          addresses.length > 1 &&
+          addresses?.length > 1 &&
           (!user.preferredInvoiceToAddressUrn || user.preferredInvoiceToAddressUrn !== shippingAddress.urn) &&
           (!user.preferredShipToAddressUrn || user.preferredShipToAddressUrn !== shippingAddress.urn)
       )
     )
   );
+
+  eligibleAddresses$() {
+    return this.basket$.pipe(
+      whenTruthy(),
+      take(1),
+      tap(() => this.store.dispatch(loadBasketEligibleAddresses())),
+      switchMap(() => this.store.pipe(select(getBasketEligibleAddresses)))
+    );
+  }
 
   assignBasketAddress(addressId: string, scope: 'invoice' | 'shipping' | 'any') {
     this.store.dispatch(assignBasketAddress({ addressId, scope }));

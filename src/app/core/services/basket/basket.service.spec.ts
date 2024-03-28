@@ -195,6 +195,15 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should get eligible addresses for a basket when 'getBasketEligibleAddresses' is called", done => {
+    when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
+
+    basketService.getBasketEligibleAddresses().subscribe(() => {
+      verify(apiService.get('eligible-addresses', anything())).once();
+      done();
+    });
+  });
+
   it("should get eligible shipping methods for a basket when 'getBasketEligibleShippingMethods' is called", done => {
     when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 

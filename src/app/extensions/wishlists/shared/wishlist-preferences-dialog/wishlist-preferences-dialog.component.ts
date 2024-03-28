@@ -126,6 +126,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
 
   /** Opens the modal. */
   show() {
+    this.wishListForm.reset();
     if (!this.wishlist) {
       this.model = { preferred: false };
     } else {
@@ -136,7 +137,6 @@ export class WishlistPreferencesDialogComponent implements OnInit {
 
   /** Close the modal. */
   hide() {
-    this.wishListForm.reset();
     this.submitted = false;
     if (this.modal) {
       this.modal.close();

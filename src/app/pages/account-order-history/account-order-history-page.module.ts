@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
+import { AccountOrderFiltersComponent } from './account-order-filters/account-order-filters.component';
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 
 const routes: Routes = [
@@ -19,6 +20,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
   exports: [RouterModule],
-  declarations: [AccountOrderHistoryPageComponent],
+  declarations: [AccountOrderFiltersComponent, AccountOrderHistoryPageComponent],
 })
 export class AccountOrderHistoryPageModule {}

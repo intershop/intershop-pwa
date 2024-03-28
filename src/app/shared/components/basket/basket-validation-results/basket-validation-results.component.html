@@ -1,11 +1,10 @@
+<!-- target element to scroll to the messages -->
+<div [ishScroll]="scrollToMessage$ | async" [scrollSpacing]="scrollSpacing"></div>
 <!-- error messages -->
 <div
-  *ngFor="let message of errorMessages$ | async; let first = first"
+  *ngFor="let message of errorMessages$ | async"
   class="alert alert-danger"
   role="alert"
-  [ishScroll]="first"
-  [scrollDuration]="scrollDuration"
-  [scrollSpacing]="scrollSpacing"
   data-testing-id="validation-error-message"
 >
   {{ message }}
@@ -13,25 +12,15 @@
 
 <!-- info messages -->
 <div
-  *ngFor="let message of infoMessages$ | async; let first = first"
+  *ngFor="let message of infoMessages$ | async"
   class="alert alert-info"
   role="alert"
-  [ishScroll]="first"
-  [scrollDuration]="scrollDuration"
-  [scrollSpacing]="scrollSpacing"
   data-testing-id="validation-info-message"
 >
   {{ message }}
 </div>
 
-<div
-  *ngIf="hasGeneralBasketError$ | async"
-  class="alert alert-danger"
-  [ishScroll]="true"
-  [scrollDuration]="scrollDuration"
-  [scrollSpacing]="scrollSpacing"
-  data-testing-id="general-validation-message"
->
+<div *ngIf="hasGeneralBasketError$ | async" class="alert alert-danger" data-testing-id="general-validation-message">
   {{ 'basket.validation.general.error' | translate }}
 </div>
 
@@ -41,9 +30,6 @@
     *ngIf="undeliverableItems.length"
     class="alert alert-box"
     role="alert"
-    [ishScroll]="true"
-    [scrollDuration]="scrollDuration"
-    [scrollSpacing]="scrollSpacing"
     data-testing-id="undeliverable-items-message"
   >
     <div class="alert-box-header">
@@ -62,14 +48,7 @@
 
 <!-- removed items messages -->
 <ng-container *ngIf="removedItems$ | async as removedItems">
-  <div
-    *ngIf="removedItems.length"
-    class="alert alert-danger"
-    [ishScroll]="true"
-    [scrollDuration]="scrollDuration"
-    [scrollSpacing]="scrollSpacing"
-    data-testing-id="validation-removed-message"
-  >
+  <div *ngIf="removedItems.length" class="alert alert-danger" data-testing-id="validation-removed-message">
     {{ 'shopping_cart.adjusted_items.warnung' | translate }}
   </div>
   <ish-basket-validation-products [items]="removedItems" />

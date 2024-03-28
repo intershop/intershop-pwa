@@ -1,0 +1,24 @@
+@import 'variables';
+
+.custom-day {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.185rem 0.25rem;
+  text-align: center;
+}
+
+.custom-day.range,
+.custom-day:hover {
+  color: $color-tertiary;
+  background-color: $CORPORATE-PRIMARY;
+}
+
+.custom-day.faded {
+  background-color: $CORPORATE-LIGHT;
+}
+
+.custom-day.disabled {
+  color: $color-tertiary;
+  background-color: transparent;
+}

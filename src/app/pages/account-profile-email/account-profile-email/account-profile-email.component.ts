@@ -41,6 +41,7 @@ export class AccountProfileEmailComponent implements OnInit {
           validation: [SpecialValidators.equalTo('emailConfirmation', 'email')],
         },
         fieldGroup: [
+          // New Email
           {
             key: 'email',
             type: 'ish-email-field',
@@ -50,7 +51,7 @@ export class AccountProfileEmailComponent implements OnInit {
               required: true,
             },
           },
-
+          // New Email confirmation
           {
             key: 'emailConfirmation',
             type: 'ish-text-input-field',
@@ -67,6 +68,7 @@ export class AccountProfileEmailComponent implements OnInit {
               },
             },
           },
+          // Password
           {
             key: 'currentPassword',
             type: 'ish-password-field',

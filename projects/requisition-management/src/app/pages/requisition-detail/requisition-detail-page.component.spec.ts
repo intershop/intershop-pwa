@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
@@ -34,7 +34,7 @@ describe('Requisition Detail Page Component', () => {
     context = mock(RequisitionContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('messageToMerchant'), RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
@@ -47,6 +47,7 @@ describe('Requisition Detail Page Component', () => {
         MockComponent(RequisitionRejectDialogComponent),
         MockComponent(RequisitionSummaryComponent),
         MockDirective(AuthorizationToggleDirective),
+        MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
         RequisitionDetailPageComponent,
       ],
     })

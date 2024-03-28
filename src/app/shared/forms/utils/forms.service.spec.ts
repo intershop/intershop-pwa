@@ -94,7 +94,7 @@ describe('Forms Service', () => {
 
   describe('getCostCenterBudgetPeriodOptions', () => {
     it('should return budget period options if called', () => {
-      expect(FormsService.getCostCenterBudgetPeriodOptions()).toHaveLength(4);
+      expect(FormsService.getCostCenterBudgetPeriodOptions()).toHaveLength(6);
     });
   });
 });

@@ -27,6 +27,7 @@ import {
   createOrder,
   createOrderFail,
   createOrderSuccess,
+  loadMoreOrders,
   loadOrder,
   loadOrderByAPIToken,
   loadOrderFail,
@@ -53,7 +54,7 @@ describe('Orders Effects', () => {
 
   beforeEach(() => {
     orderServiceMock = mock(OrderService);
-    when(orderServiceMock.getOrders()).thenReturn(of(orders));
+    when(orderServiceMock.getOrders(anything())).thenReturn(of(orders));
     when(orderServiceMock.getOrder(anyString())).thenReturn(of(order));
     when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(of(order));
 
@@ -198,18 +199,29 @@ describe('Orders Effects', () => {
 
   describe('loadOrders$', () => {
     it('should call the orderService for loadOrders', done => {
-      const action = loadOrders();
+      const action = loadOrders({ query: { limit: 30 } });
       actions$ = of(action);
 
       effects.loadOrders$.subscribe(() => {
-        verify(orderServiceMock.getOrders()).once();
+        verify(orderServiceMock.getOrders(anything())).once();
         done();
       });
     });
 
     it('should load all orders of a user and dispatch a LoadOrdersSuccess action', () => {
-      const action = loadOrders();
-      const completion = loadOrdersSuccess({ orders });
+      const query = { limit: 30 };
+      const action = loadOrders({ query });
+      const completion = loadOrdersSuccess({ orders, query, allRetrieved: true });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadOrders$).toBeObservable(expected$);
+    });
+
+    it('should report more available if limit was reached', () => {
+      const query = { limit: orders.length };
+      const action = loadOrders({ query });
+      const completion = loadOrdersSuccess({ orders, query, allRetrieved: false });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -217,14 +229,27 @@ describe('Orders Effects', () => {
     });
 
     it('should dispatch a LoadOrdersFail action if a load error occurs', () => {
-      when(orderServiceMock.getOrders()).thenReturn(throwError(() => makeHttpError({ message: 'error' })));
+      when(orderServiceMock.getOrders(anything())).thenReturn(throwError(() => makeHttpError({ message: 'error' })));
 
-      const action = loadOrders();
+      const action = loadOrders({ query: { limit: 30 } });
       const completion = loadOrdersFail({ error: makeHttpError({ message: 'error' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadOrders$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadMoreOrders$', () => {
+    it('should load more orders', () => {
+      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
+
+      const action = loadMoreOrders();
+      const completion = loadOrders({ query: { limit: 30, offset: 30 } });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadMoreOrders$).toBeObservable(expected$);
     });
   });
 
@@ -429,7 +454,7 @@ describe('Orders Effects', () => {
 
   describe('setOrderBreadcrumb$', () => {
     beforeEach(fakeAsync(() => {
-      store.dispatch(loadOrdersSuccess({ orders }));
+      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
       router.navigateByUrl(`/account/orders/${orders[0].id}`);
       tick(500);
       store.dispatch(selectOrder({ orderId: orders[0].id }));

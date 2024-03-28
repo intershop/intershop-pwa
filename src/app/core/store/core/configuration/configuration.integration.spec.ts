@@ -102,7 +102,7 @@ describe('Configuration Integration', () => {
   }));
 
   it('should unset features if "none" was provided', fakeAsync(() => {
-    store$.dispatch(applyConfiguration({ features: ['a', 'b', 'c'] }));
+    store$.dispatch(applyConfiguration({ features: ['compare', 'wishlists'] }));
     router.navigateByUrl('/home;features=none');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
@@ -110,15 +110,14 @@ describe('Configuration Integration', () => {
   }));
 
   it('should not set features if "default" was provided', fakeAsync(() => {
-    store$.dispatch(applyConfiguration({ features: ['a', 'b', 'c'] }));
+    store$.dispatch(applyConfiguration({ features: ['compare', 'wishlists'] }));
     router.navigateByUrl('/home;features=default');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
     expect(getFeatures(store$.state)).toMatchInlineSnapshot(`
       [
-        "a",
-        "b",
-        "c",
+        "compare",
+        "wishlists",
       ]
     `);
   }));
