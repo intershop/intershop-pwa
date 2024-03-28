@@ -47,6 +47,6 @@ export class BasketCreateOrderTemplateComponent {
   }
 
   createOrderTemplate(orderTemplate: OrderTemplate) {
-    this.orderTemplatesFacade.addBasketToNewOrderTemplate(orderTemplate);
+    this.orderTemplatesFacade.createOrderTemplateFromLineItems(orderTemplate, this.products);
   }
 }

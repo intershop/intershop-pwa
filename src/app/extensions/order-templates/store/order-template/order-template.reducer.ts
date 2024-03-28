@@ -7,9 +7,6 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 
 import {
-  addBasketToNewOrderTemplate,
-  addBasketToNewOrderTemplateFail,
-  addBasketToNewOrderTemplateSuccess,
   addProductToOrderTemplate,
   addProductToOrderTemplateFail,
   addProductToOrderTemplateSuccess,
@@ -22,6 +19,8 @@ import {
   loadOrderTemplates,
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
+  orderTemplatesActions,
+  orderTemplatesApiActions,
   removeItemFromOrderTemplateSuccess,
   selectOrderTemplate,
   updateOrderTemplate,
@@ -48,35 +47,36 @@ export const initialState: OrderTemplateState = orderTemplateAdapter.getInitialS
 export const orderTemplateReducer = createReducer(
   initialState,
   setLoadingOn(
-    loadOrderTemplates,
+    addProductToOrderTemplate,
     createOrderTemplate,
-    addBasketToNewOrderTemplate,
     deleteOrderTemplate,
-    updateOrderTemplate,
-    addProductToOrderTemplate
+    loadOrderTemplates,
+    orderTemplatesActions.createOrderTemplateFromLineItems,
+    updateOrderTemplate
   ),
   unsetLoadingAndErrorOn(
-    loadOrderTemplatesSuccess,
-    addBasketToNewOrderTemplateSuccess,
-    createOrderTemplateSuccess,
-    updateOrderTemplateSuccess,
     addProductToOrderTemplateSuccess,
+    createOrderTemplateSuccess,
+    deleteOrderTemplateSuccess,
+    loadOrderTemplatesSuccess,
+    orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
     removeItemFromOrderTemplateSuccess,
-    deleteOrderTemplateSuccess
+    updateOrderTemplateSuccess
   ),
   setErrorOn(
-    loadOrderTemplatesFail,
-    deleteOrderTemplateFail,
+    addProductToOrderTemplateFail,
     createOrderTemplateFail,
-    addBasketToNewOrderTemplateFail,
-    updateOrderTemplateFail,
-    addProductToOrderTemplateFail
+    deleteOrderTemplateFail,
+    loadOrderTemplatesFail,
+    orderTemplatesApiActions.createOrderTemplateFromLineItemsFail,
+    updateOrderTemplateFail
   ),
+
   on(
-    loadOrderTemplatesFail,
-    deleteOrderTemplateFail,
     createOrderTemplateFail,
-    addBasketToNewOrderTemplateFail,
+    deleteOrderTemplateFail,
+    loadOrderTemplatesFail,
+    orderTemplatesApiActions.createOrderTemplateFromLineItemsFail,
     updateOrderTemplateFail,
     (state: OrderTemplateState): OrderTemplateState => ({
       ...state,
@@ -88,11 +88,11 @@ export const orderTemplateReducer = createReducer(
     return orderTemplateAdapter.setAll(orderTemplates, state);
   }),
   on(
-    addBasketToNewOrderTemplateSuccess,
-    createOrderTemplateSuccess,
-    updateOrderTemplateSuccess,
     addProductToOrderTemplateSuccess,
+    createOrderTemplateSuccess,
     removeItemFromOrderTemplateSuccess,
+    orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
+    updateOrderTemplateSuccess,
     (state, action) => {
       const { orderTemplate } = action.payload;
 

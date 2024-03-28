@@ -1,19 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, instance, mock, verify } from 'ts-mockito';
-
-import { AccountFacade } from 'ish-core/facades/account.facade';
+import { of } from 'rxjs';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 import { OrderTemplatePreferencesDialogComponent } from '../order-template-preferences-dialog/order-template-preferences-dialog.component';
 
-import { BasketCreateOrderTemplateComponent } from './basket-create-order-template.component';
+import { OrderCreateOrderTemplateComponent } from './order-create-order-template.component';
 
-describe('Basket Create Order Template Component', () => {
-  let component: BasketCreateOrderTemplateComponent;
-  let fixture: ComponentFixture<BasketCreateOrderTemplateComponent>;
+describe('Order Create Order Template Component', () => {
+  let component: OrderCreateOrderTemplateComponent;
+  let fixture: ComponentFixture<OrderCreateOrderTemplateComponent>;
   let element: HTMLElement;
 
   let orderTemplatesFacadeMock: OrderTemplatesFacade;
@@ -21,18 +20,17 @@ describe('Basket Create Order Template Component', () => {
   beforeEach(async () => {
     orderTemplatesFacadeMock = mock(OrderTemplatesFacade);
 
+    when(orderTemplatesFacadeMock.orderTemplateLoading$).thenReturn(of(false));
+
     await TestBed.configureTestingModule({
-      declarations: [BasketCreateOrderTemplateComponent, MockComponent(OrderTemplatePreferencesDialogComponent)],
+      declarations: [MockComponent(OrderTemplatePreferencesDialogComponent), OrderCreateOrderTemplateComponent],
       imports: [TranslateModule.forRoot()],
-      providers: [
-        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
-        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacadeMock) },
-      ],
+      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacadeMock) }],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BasketCreateOrderTemplateComponent);
+    fixture = TestBed.createComponent(OrderCreateOrderTemplateComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
@@ -43,10 +41,10 @@ describe('Basket Create Order Template Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render the create order-template from basket button', () => {
+  it('should render the create order-template from order button', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('button[data-testing-id=addBasketToOrderTemplateButton]')).toBeTruthy();
+    expect(element.querySelector('button[data-testing-id="addOrderToOrderTemplateButton"]')).toBeTruthy();
   });
 
   it('should trigger createOrderTemplatesFromLineItems when createOrderTemplates is called', () => {
