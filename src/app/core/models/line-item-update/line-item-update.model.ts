@@ -3,4 +3,6 @@ export interface LineItemUpdate {
   quantity?: number;
   sku?: string;
   unit?: string;
+  customerProductID?: string;
+  partialOrderNo?: string;
 }

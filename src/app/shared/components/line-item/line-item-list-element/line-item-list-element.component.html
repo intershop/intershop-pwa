@@ -22,8 +22,12 @@
 
       <!-- Product Variations -->
       <ish-product-variation-display />
+
       <!-- Product Bundles -->
       <ish-product-bundle-display />
+
+      <!-- Extended Attributes -->
+      <ish-line-item-extended-content [lineItem]="pli" [editable]="editable" />
 
       <!-- switch by lineItemViewType -->
       <ng-container [ngSwitch]="lineItemViewType">

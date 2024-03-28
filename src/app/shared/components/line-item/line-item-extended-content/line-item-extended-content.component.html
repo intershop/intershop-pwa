@@ -1,0 +1,9 @@
+<div class="line-item-attributes">
+  <ish-line-item-extended-content-entry
+    *ngFor="let key of keys"
+    [key]="key"
+    [lineItem]="lineItem"
+    [editable]="editable"
+    (updateValue)="update(key, $event)"
+  />
+</div>
