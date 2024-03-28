@@ -1,15 +1,21 @@
-<ng-container *ngIf="searchTerm$ | async as searchTerm">
-  <!-- search result with products -->
-  <ng-container *ngIf="(numberOfItems$ | async) || (filterParams$ | async); else noResult">
-    <ish-search-result
-      [searchTerm]="searchTerm"
-      [totalItems]="numberOfItems$ | async"
-      [deviceType]="deviceType$ | async"
-    />
-  </ng-container>
-
-  <!-- empty search result -->
-  <ng-template #noResult>
-    <ish-search-no-result *ngIf="(searchLoading$ | async) === false" [searchTerm]="searchTerm" />
-  </ng-template>
+<ng-container *ngIf="hasInstantSearch$ | async as searchTerm; else legacySearch">
+  <ish-content-include includeId="include.homepage.content.pagelet2-Include" />
 </ng-container>
+
+<ng-template #legacySearch>
+  <ng-container *ngIf="searchTerm$ | async as searchTerm">
+    <!-- search result with products -->
+    <ng-container *ngIf="(numberOfItems$ | async) || (filterParams$ | async); else noResult">
+      <ish-search-result
+        [searchTerm]="searchTerm"
+        [totalItems]="numberOfItems$ | async"
+        [deviceType]="deviceType$ | async"
+      />
+    </ng-container>
+
+    <!-- empty search result -->
+    <ng-template #noResult>
+      <ish-search-no-result *ngIf="(searchLoading$ | async) === false" [searchTerm]="searchTerm" />
+    </ng-template>
+  </ng-container>
+</ng-template>

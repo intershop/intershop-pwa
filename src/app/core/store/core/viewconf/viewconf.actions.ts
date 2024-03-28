@@ -9,3 +9,13 @@ export const setBreadcrumbData = createAction(
 );
 
 export const setStickyHeader = createAction('[Viewconf Internal] Set Sticky Header', payload<{ sticky: boolean }>());
+
+export const setInstantSearchHeader = createAction(
+  '[Viewconf Internal] Set Instant Search Header',
+  payload<{ instantSearch: boolean }>()
+);
+
+export const setDefaultInstantSearchQuery = createAction(
+  '[Viewconf Internal] Set Default Instant Search Query',
+  payload<{ instantSearchQuery: string }>()
+);

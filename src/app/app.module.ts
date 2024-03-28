@@ -16,6 +16,7 @@ import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-rout
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
 import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing.module';
 import { RecentlyRoutingModule } from './extensions/recently/pages/recently-routing.module';
+import { SolrInstantsearchRoutingModule } from './extensions/solr-instantsearch/pages/solr-instantsearch-routing.module';
 import { StoreLocatorRoutingModule } from './extensions/store-locator/pages/store-locator-routing.module';
 import { TactonRoutingModule } from './extensions/tacton/pages/tacton-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
@@ -39,6 +40,7 @@ import { ShellModule } from './shell/shell.module';
     RecentlyRoutingModule,
     CompareRoutingModule,
     ContactUsRoutingModule,
+    SolrInstantsearchRoutingModule,
     AppLastRoutingModule,
   ],
   /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */

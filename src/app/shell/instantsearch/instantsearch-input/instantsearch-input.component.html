@@ -1,0 +1,20 @@
+<section class="searchbox-inputbox-wrapper" role="search">
+  <div class="searchbox-inputbox-content">
+    <div class="searchbox-input-wrapper">
+      <button type="button" class="searchbox-icon-search d-none d-md-block" style="padding-left: 13px">
+        <fa-icon [icon]="['fas', 'search']" />
+      </button>
+      <input
+        #searchInput
+        [placeholder]="'search.searchbox.instructional_text' | translate"
+        class="searchbox-input"
+        type="search"
+        [value]="defaultSearchTerm"
+        (input)="searchSuggest($event.target)"
+      />
+      <div class="searchbox-input-action">
+        <button class="searchbox-icon-close" (click)="resetSuggest()"><fa-icon [icon]="['fas', 'close']" /></button>
+      </div>
+    </div>
+  </div>
+</section>

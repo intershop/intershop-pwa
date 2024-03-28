@@ -1,3 +1,11 @@
+<ng-template #instantSearchBoxTemplate let-icon="icon">
+  <ish-instantsearch-placeholder
+    data-testing-id="search-box-desktop"
+    [placeholder]="'search.searchbox.instructional_text' | translate"
+    [icon]="icon"
+  />
+</ng-template>
+
 <ng-template #searchBoxTemplate let-icon="icon">
   <ish-lazy-search-box
     data-testing-id="search-box-desktop"
@@ -26,15 +34,20 @@
 
   <div class="header-utility">
     <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
-      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')" />
-      <div
-        *ngIf="isSticky || showSearch"
-        class="search-container header-search-container"
-        [ngbCollapse]="!showSearch"
-        [ngClass]="{ show: !isSticky }"
-      >
-        <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }" />
-      </div>
+      <ng-container *ngIf="instantSearchActive$ | async; else stickySearchBox">
+        <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="activeInstantSearch()" />
+      </ng-container>
+      <ng-template #stickySearchBox>
+        <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')" />
+        <div
+          *ngIf="isSticky || showSearch"
+          class="search-container header-search-container"
+          [ngbCollapse]="!showSearch"
+          [ngClass]="{ show: !isSticky }"
+        >
+          <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }" />
+        </div>
+      </ng-template>
     </a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop" />
@@ -81,7 +94,9 @@
     </div>
     <div class="col-md-4">
       <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">
-        <ng-container *ngTemplateOutlet="searchBoxTemplate" />
+        <ng-container *ngIf="instantSearchActive$ | async; else searchBoxTemplate">
+          <ng-container *ngTemplateOutlet="instantSearchBoxTemplate" />
+        </ng-container>
       </div>
     </div>
   </div>

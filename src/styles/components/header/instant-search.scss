@@ -1,0 +1,136 @@
+$header-size: 40px;
+
+.searchbox-container-small {
+  max-height: 115px;
+}
+
+.searchbox-container {
+  position: fixed;
+  top: $header-size;
+  right: 0;
+  left: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - $header-size);
+  overflow: scroll;
+  background: $color-inverse;
+}
+
+.searchbox-inputbox-content {
+  @include media-breakpoint-up(md) {
+    max-width: map-get($container-max-widths, xl);
+    margin: 0 auto;
+  }
+}
+
+.searchbox-inputbox-wrapper {
+  z-index: 1;
+  width: 100%;
+  background-color: $color-inverse;
+
+  @include media-breakpoint-up(md) {
+    padding: 2rem 2.4rem;
+    border-bottom: 1px solid $border-color-lighter;
+  }
+}
+
+.searchbox-input-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid $border-color-light;
+  border-bottom: 1px solid $border-color-light;
+
+  @include media-breakpoint-up(md) {
+    border: 1px solid $border-color-light;
+    border-radius: 4px;
+  }
+}
+
+.searchbox-icon-search {
+  font-size: 1.5rem;
+  background: none;
+  border: 0;
+}
+
+.searchbox-input-action {
+  padding: 6px 1.2rem;
+  border-left: 1px solid $border-color-light;
+}
+
+.searchbox-icon-close {
+  font-size: 1.5rem;
+  background: none;
+  border: 0;
+}
+
+.searchbox-input {
+  flex: 1;
+  height: 2rem;
+  padding: 0 1.6rem;
+  font-size: $h3-font-size;
+  text-overflow: ellipsis;
+  border: 0;
+  outline: 0;
+
+  @include media-breakpoint-up(md) {
+    height: 3rem;
+    padding: 0 0.8rem;
+    background: 0;
+  }
+}
+
+.searchbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.searchbox-header {
+  z-index: 10000;
+  height: $header-size;
+  background: $color-primary;
+
+  &::before {
+    background-color: $color-primary;
+
+    @include media-breakpoint-down(sm) {
+      background-color: $color-primary;
+    }
+  }
+}
+
+.searchbox-header-container {
+  height: 40px;
+}
+
+.logo-instantsearch {
+  height: 30px;
+}
+
+.searchbox-header-basket {
+  .quick-cart-link {
+    background: $color-primary !important;
+
+    &.mini-cart-active {
+      background: $color-primary !important;
+    }
+  }
+}
+
+.searchbox-body-container {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+  background-color: $color-inverse;
+
+  @include media-breakpoint-up(md) {
+    display: flex;
+    justify-content: center;
+    padding: 3.2rem 0 3.2rem 1.4rem;
+  }
+}

@@ -32,6 +32,7 @@ export interface Environment {
     | 'recently'
     | 'saveLanguageSelection'
     | 'storeLocator'
+    | 'solrInstantsearch'
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'
@@ -158,6 +159,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     'recently',
     'saveLanguageSelection',
     'storeLocator',
+    'solrInstantsearch',
   ],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
