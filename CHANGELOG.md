@@ -7,6 +7,89 @@ kb_everyone
 
 # Changelog
 
+## [5.1.0](https://github.com/intershop/intershop-pwa/releases/tag/5.1.0) (2024-03-28)
+
+> [!NOTE]
+> The Intershop PWA 5.1.0 has been developed and tested with Intershop Commerce Management (ICM) version 11.7.0.
+> It will work with all versions from ICM 11.7.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newer ICM 7.10.x versions. The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 for PWA 5.1.0 deployments.
+
+### Features
+
+- order list filtering (#1571) ([564d5c8](https://github.com/intershop/intershop-pwa/commit/564d5c8))
+- lazy loading switch option for the Enhanced Image Teaser component (#1591) ([650dcf3](https://github.com/intershop/intershop-pwa/commit/650dcf3))
+- handle complex values of variation attributes (#1600) ([59d15c6](https://github.com/intershop/intershop-pwa/commit/59d15c6))
+- use brotli instead of gzip for compression in NGINX (#1593) ([a9c5766](https://github.com/intershop/intershop-pwa/commit/a9c5766))
+- add an order to shopping cart (#1592) ([8c216a7](https://github.com/intershop/intershop-pwa/commit/8c216a7))
+- CMS navigation category component ([b08443c](https://github.com/intershop/intershop-pwa/commit/b08443c))
+- CMS navigation page component ([c4ff692](https://github.com/intershop/intershop-pwa/commit/c4ff692))
+- CMS navigation link component ([c9ca883](https://github.com/intershop/intershop-pwa/commit/c9ca883))
+- styling changes for main navigation with CMS components + documentation ([b3c3e92](https://github.com/intershop/intershop-pwa/commit/b3c3e92))
+- support further budget periods (#1539) ([e2e7aea](https://github.com/intershop/intershop-pwa/commit/e2e7aea))
+- newsletter subscription (#1523) ([68c0bc5](https://github.com/intershop/intershop-pwa/commit/68c0bc5))
+- introduce optional ICM Compatibility Interceptor (#1542) ([88de2a2](https://github.com/intershop/intershop-pwa/commit/88de2a2))
+- use server setting for message-to-merchant checkout field (#1542) ([a77fd0f](https://github.com/intershop/intershop-pwa/commit/a77fd0f))
+- extension schematic adds feature toggle ([29173be](https://github.com/intershop/intershop-pwa/commit/29173be))
+- introduce `htmlEncode` pipe to encode HTML code to be rendered as string (#1575) ([c99e1d0](https://github.com/intershop/intershop-pwa/commit/c99e1d0))
+
+### Bug Fixes
+
+- scrolling to basket validation messages (#1615) ([25c2c3f](https://github.com/intershop/intershop-pwa/commit/25c2c3f))
+- confirming cookie preferences removes punchout related cookies (#1619) ([d929606](https://github.com/intershop/intershop-pwa/commit/d929606))
+- content page tree calculation improvments (#1555) ([2e84cb7](https://github.com/intershop/intershop-pwa/commit/2e84cb7))
+- prevent validation error when closing dialogs (#1617) ([f14f8aa](https://github.com/intershop/intershop-pwa/commit/f14f8aa))
+- product variation availability if the products have more than 2 variation attributes (#1613) ([4e06b47](https://github.com/intershop/intershop-pwa/commit/4e06b47))
+- render CMS content based on component templates correctly (#1608) ([ff21e54](https://github.com/intershop/intershop-pwa/commit/ff21e54))
+- paging bar ui issues on cart ([cc23804](https://github.com/intershop/intershop-pwa/commit/cc23804))
+- missing translation for edit address button (#1596) ([6a0f9e3](https://github.com/intershop/intershop-pwa/commit/6a0f9e3))
+- use a prefix (icm\_) for internal token oauth storage (#1601) ([f3e940f](https://github.com/intershop/intershop-pwa/commit/f3e940f))
+- display variations when there are no variation attributes at the master product (#1599) ([b230a93](https://github.com/intershop/intershop-pwa/commit/b230a93))
+- small UI issues (#1604) ([7643c5f](https://github.com/intershop/intershop-pwa/commit/7643c5f))
+- support hyphens in translation case variables (#1539) ([9487fc3](https://github.com/intershop/intershop-pwa/commit/9487fc3))
+- improved NGINX route rewrite handling for '/home' and '/loading' (#1566) ([052a4ec](https://github.com/intershop/intershop-pwa/commit/052a4ec))
+- remove default search input field specific elements in Chrome (#1589) ([1903d09](https://github.com/intershop/intershop-pwa/commit/1903d09))
+- display of duplicated headers for special logins with activated hydration (#1585) ([75bf2d2](https://github.com/intershop/intershop-pwa/commit/75bf2d2))
+- prevent rendering errors for text on enhanced image teaser caused by Angular hydration (#1583) ([6b8256e](https://github.com/intershop/intershop-pwa/commit/6b8256e))
+- display dates in the user's timezone, if no timezone is given (#1582) ([33ff2fc](https://github.com/intershop/intershop-pwa/commit/33ff2fc))
+- data type of some creation dates (#1582) ([7e6c02c](https://github.com/intershop/intershop-pwa/commit/7e6c02c))
+- prevent HTML injection on no search result page and account overview (#1575) ([3066250](https://github.com/intershop/intershop-pwa/commit/3066250))
+- display error message on order history page #1565 ([a93e17d](https://github.com/intershop/intershop-pwa/commit/a93e17d))
+
+### Performance Improvements
+
+- improve the performance of 'Static Content Page' component (#1603) ([a6189fe](https://github.com/intershop/intershop-pwa/commit/a6189fe))
+- in SSR load only top level categories, on client side load and render the configured level of sub categories (#1586) ([b589113](https://github.com/intershop/intershop-pwa/commit/b589113))
+- lazily fetch products for CMS carousels (#1581) ([cbe9072](https://github.com/intershop/intershop-pwa/commit/cbe9072))
+- prevent unnecessary actions (#1580) ([093f1ec](https://github.com/intershop/intershop-pwa/commit/093f1ec))
+- fetching eligible basket addresses (#1567) ([71a93ad](https://github.com/intershop/intershop-pwa/commit/71a93ad))
+- optimize getting order lists (#1565) ([9211841](https://github.com/intershop/intershop-pwa/commit/9211841))
+
+### Documentation
+
+- documentation improvements (Redis, Address Doctor) (#1605) ([194d4d4](https://github.com/intershop/intershop-pwa/commit/194d4d4))
+- improve Google Tag Manager integration documentation ([b68ab76](https://github.com/intershop/intershop-pwa/commit/b68ab76))
+- clarify ICM required version documentation (#1574) ([afab8cf](https://github.com/intershop/intershop-pwa/commit/afab8cf))
+
+### BREAKING CHANGES
+
+- An empty 'NavigationDepth' value of the 'Static Content Page' component now defaults to '0' instead of no depth limitation, that resulted in the whole content page tree being fetched and saved to the state (see [Migrations / From 5.0 to 5.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-50-to-51) for more details).
+- Header rendering was changed and introduced header type (see [Migrations / From 5.0 to 5.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-50-to-51) for more details).
+- The feature toggle `messageToMerchant` was removed since the feature is controlled via back office configuration in ICM 11 (see [Migrations / From 5.0 to 5.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-50-to-51) for more details and ICM 7.10 compatibility).
+- The orders API call now uses additionally the `limit` parameter (requires ICM 11.6), the deprecated `page[limit]` parameter will be removed soon.
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- order list filtering (#1571) - ICM 11.7.0
+- support further budget periods (#1539) - ICM 11.8.0 or ICM 7.10.38.29-LTS
+- use server setting for message-to-merchant checkout field (#1542) - ICM 11.5.0
+- CMS navigation components (link, page, category) (#1266) - `icm-as-customization-headless:1.7.0`
+
 ## [5.0.0](https://github.com/intershop/intershop-pwa/releases/tag/5.0.0) (2023-12-31)
 
 > [!NOTE]
