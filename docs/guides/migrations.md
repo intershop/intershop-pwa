@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 5.1 to 5.2
+
+The store action and method `addBasketToNewOrderTemplate` of the OrderTemplatesFacade have been renamed to `createOrderTemplateFromLineItems` and refactored slightly.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.

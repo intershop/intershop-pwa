@@ -242,7 +242,7 @@
   "account.order_template.new_from_basket.heading": "Créer un modèle de commande à partir du panier",
   "account.order_template.new_from_basket_confirm.heading": "Le modèle de commande \"{{0}}\" a été créé et tous les articles ont été transférés.",
   "account.order_template.new_from_order.button.create.label": "Créer",
-  "account.order_template.new_from_order.heading": "Créer un modèle de commande à partir de la commande en cours",
+  "account.order_template.new_from_order.heading": "Créer un modèle de commande à partir de la commande",
   "account.order_template.new_order_template.confirmation": "Votre modèle de commande \"{{0}}\" a été créé.",
   "account.order_template.new_order_template.text": "Nouveau modèle de commande",
   "account.order_template.no_entries": "Il n’y a actuellement aucun article dans ce modèle de commande.",

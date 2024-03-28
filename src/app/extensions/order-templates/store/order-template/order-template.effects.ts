@@ -97,13 +97,15 @@ export class OrderTemplateEffects {
           // use created order template data to dispatch addProduct action
           concatMap(orderTemplate =>
             concat(
-              ...payload.lineItems.map(lineItem =>
-                this.orderTemplateService.addProductToOrderTemplate(
-                  orderTemplate.id,
-                  lineItem.productSKU,
-                  lineItem.quantity.value
+              ...payload.lineItems
+                .filter(lineItem => !lineItem.isFreeGift)
+                .map(lineItem =>
+                  this.orderTemplateService.addProductToOrderTemplate(
+                    orderTemplate.id,
+                    lineItem.productSKU,
+                    lineItem.quantity.value
+                  )
                 )
-              )
             ).pipe(
               last(),
               concatMap(newOrderTemplate => [
@@ -115,10 +117,10 @@ export class OrderTemplateEffects {
               ]),
               mapErrorToAction(orderTemplatesApiActions.createOrderTemplateFromLineItemsFail)
             )
-          )
+          ),
+          mapErrorToAction(createOrderTemplateFail)
         )
-      ),
-      mapErrorToAction(createOrderTemplateFail)
+      )
     )
   );
 

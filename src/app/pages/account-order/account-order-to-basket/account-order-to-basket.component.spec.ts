@@ -63,7 +63,7 @@ describe('Account Order To Basket Component', () => {
   it('should render the create basket from order button', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('button')).toBeTruthy();
+    expect(element.querySelector('button[data-testing-id=addOrderToBasketButton')).toBeTruthy();
   });
 
   it('should call addProductToBasket for every line item', () => {

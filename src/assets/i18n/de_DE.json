@@ -242,7 +242,7 @@
   "account.order_template.new_from_basket.heading": "Aus Warenkorb Bestellvorlage anlegen",
   "account.order_template.new_from_basket_confirm.heading": "Die Bestellvorlage \"{{0}}\" wurde angelegt und alle Artikel wurden übertragen.",
   "account.order_template.new_from_order.button.create.label": "Anlegen",
-  "account.order_template.new_from_order.heading": "Neue Bestellvorlage aus der aktuellen Bestellung anlegen",
+  "account.order_template.new_from_order.heading": "Bestellvorlage von der Bestellung anlegen",
   "account.order_template.new_order_template.confirmation": "Ihre Bestellvorlage \"{{0}}\" wurde angelegt.",
   "account.order_template.new_order_template.text": "Neue Bestellvorlage",
   "account.order_template.no_entries": "Derzeit befinden sich keine Artikel in der Bestellvorlage.",
