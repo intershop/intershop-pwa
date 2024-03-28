@@ -14,6 +14,29 @@ When running `npm run build` in any shape or form, the build output is aggregate
 
 When the application is served this way, the initial page response for the browser is minimal (`index.html` with scripts inserted) and the application gets composed and rendered on the client side.
 
+```mermaid
+sequenceDiagram
+participant REST API
+participant HTTP Server (static)
+participant Browser App
+Browser App->>+HTTP Server (static): Initial request
+activate Browser App
+HTTP Server (static)->>-Browser App: .
+Browser App->>Browser App: .
+Browser App->>+REST API: .
+Browser App->>+HTTP Server (static): Lazy loading
+HTTP Server (static)->>-Browser App: .
+Browser App->>Browser App: .
+REST API->>-Browser App: .
+Browser App->>+REST API: .
+Browser App->>+REST API: .
+REST API->>-Browser App: .
+REST API->>-Browser App: .
+Browser App->>Browser App: .
+Browser App->>Browser App: .
+deactivate Browser App
+```
+
 ![Angular-BrowserSideApp-Sequence](deployment-angular-browsersideapp-sequence.jpg 'Angular-BrowserSideApp-Sequence')
 
 You can get your hands on that HTTP Server by building a container image based on file `Dockerfile_noSSR`.
@@ -37,6 +60,31 @@ The _server.js_ executable handles client requests on the server and pre-renders
 The resulting initial page response to the browser is mainly prepared and can be displayed quickly on the client side while the client-side application is booting up.
 With the introduction of the non-destructive [Client Hydration](https://angular.io/guide/hydration) in Angular V16 the server side rendered application is restored on the client, reusing the server-rendered DOM structures, preserving the application state, transferring application data that was already retrieved by the server, and other processes.
 This leads to significant performance improvements.
+
+```mermaid
+sequenceDiagram
+participant REST API
+participant Angular Server (dynamic)
+participant Browser App
+activate Browser App
+Browser App->>Angular Server (dynamic): .
+activate Angular Server (dynamic)
+deactivate Browser App
+Angular Server (dynamic)->>Angular Server (dynamic): .
+Angular Server (dynamic)->>+REST API: .
+REST API->>-Angular Server (dynamic): .
+Angular Server (dynamic)->>Angular Server (dynamic): .
+Angular Server (dynamic)->>+REST API: .
+Angular Server (dynamic)->>+REST API: .
+REST API->>-Angular Server (dynamic): .
+REST API->>-Angular Server (dynamic): .
+Angular Server (dynamic)->>+Browser App: .
+deactivate Angular Server (dynamic)
+Browser App->>Browser App: .
+Browser App->>+REST API: .
+REST API->>-Browser App: .
+Browser App->>-Browser App: .
+```
 
 ![Angular-ServerSideRendering-Sequence](deployment-angular-serversiderendering-sequence.jpg 'Angular-ServerSideRendering-Sequence')
 
