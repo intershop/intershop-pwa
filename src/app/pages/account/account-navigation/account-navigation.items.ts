@@ -15,6 +15,11 @@ export const navigationItems: NavigationItem[] = [
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
       {
+        id: 'return-requests',
+        localizationKey: 'toolineo.account.return_overview.link',
+        routerLink: '/account/returns-overview',
+      },
+      {
         id: 'requisitions',
         localizationKey: 'account.requisitions.requisitions',
         routerLink: '/account/requisitions/buyer',
