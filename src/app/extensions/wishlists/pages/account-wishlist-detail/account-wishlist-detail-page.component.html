@@ -24,6 +24,30 @@
   >
     <fa-icon icon="pencil-alt" />
   </button>
+
+  <ng-container>
+    <button
+      type="button"
+      (click)="shareWishlistDialog.show()"
+      class="btn-tool btn-link float-right ml-0 mr-4"
+      [title]="'account.wishlist.header.send_wishlist.label' | translate"
+      data-testing-id="wishlist-sharing"
+    >
+      <fa-icon icon="paper-plane" />
+    </button>
+
+    <button
+      type="button"
+      *ngIf="wishlist.shared"
+      (click)="unshareWishlist(wishlist.id)"
+      class="btn-tool btn-link float-right ml-0 mr-4"
+      [title]="'account.wishlist.header.stop_wishlist_sharing.label' | translate"
+      data-testing-id="wishlist-stop-sharing"
+    >
+      <fa-icon icon="pause" />
+    </button>
+  </ng-container>
+
   <h1>{{ wishlist?.title }}</h1>
 
   <p *ngIf="wishlist?.preferred" data-testing-id="preferred-wishlist-text">
@@ -61,6 +85,12 @@
     #editWishlistDialog
     [wishlist]="wishlist"
     (submitWishlist)="editPreferences($event, wishlist.id)"
+  />
+
+  <ish-wishlist-sharing-dialog
+    #shareWishlistDialog
+    [wishlist]="wishlist"
+    (submitWishlistSharing)="shareWishlist($event, wishlist)"
   />
 </ng-container>
 

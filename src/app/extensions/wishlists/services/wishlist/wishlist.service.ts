@@ -5,6 +5,7 @@ import { concatMap, first, map, switchMap } from 'rxjs/operators';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
+import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
 import { WishlistData } from '../../models/wishlist/wishlist.interface';
 import { WishlistMapper } from '../../models/wishlist/wishlist.mapper';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
@@ -148,5 +149,29 @@ export class WishlistService {
           .pipe(concatMap(() => this.getWishlist(wishlistId)))
       )
     );
+  }
+
+  shareWishlist(wishlistId: string, wishlistSharing: WishlistSharing): Observable<WishlistSharingResponse> {
+    return this.appFacade.customerRestResource$.pipe(
+      first(),
+      concatMap(restResource =>
+        this.apiService
+          .post(`${restResource}/-/wishlists/${wishlistId}/share`, wishlistSharing)
+          .pipe(map((response: WishlistSharingResponse) => response))
+      )
+    );
+  }
+
+  unshareWishlist(wishlistId: string): Observable<void> {
+    return this.appFacade.customerRestResource$.pipe(
+      first(),
+      concatMap(restResource => this.apiService.delete<void>(`${restResource}/-/wishlists/${wishlistId}/share`))
+    );
+  }
+
+  getSharedWishlist(wishlistId: string, owner: string, secureCode: string): Observable<Wishlist> {
+    return this.apiService
+      .get<WishlistData>(`wishlists/${wishlistId};owner=${owner};secureCode=${secureCode}`)
+      .pipe(map(wishlist => this.wishlistMapper.fromData(wishlist, wishlistId)));
   }
 }

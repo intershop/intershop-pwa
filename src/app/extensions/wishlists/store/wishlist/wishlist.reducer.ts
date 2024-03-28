@@ -14,6 +14,9 @@ import {
   deleteWishlist,
   deleteWishlistFail,
   deleteWishlistSuccess,
+  loadSharedWishlist,
+  loadSharedWishlistFail,
+  loadSharedWishlistSuccess,
   loadWishlists,
   loadWishlistsFail,
   loadWishlistsSuccess,
@@ -21,6 +24,8 @@ import {
   removeItemFromWishlist,
   removeItemFromWishlistSuccess,
   selectWishlist,
+  shareWishlistSuccess,
+  unshareWishlistSuccess,
   updateWishlist,
   updateWishlistFail,
   updateWishlistSuccess,
@@ -46,19 +51,21 @@ export const wishlistReducer = createReducer(
   initialState,
   setLoadingOn(
     loadWishlists,
+    loadSharedWishlist,
     createWishlist,
     deleteWishlist,
     updateWishlist,
     removeItemFromWishlist,
     moveItemToWishlist
   ),
-  setErrorOn(loadWishlistsFail, deleteWishlistFail, createWishlistFail, updateWishlistFail),
+  setErrorOn(loadWishlistsFail, loadSharedWishlistFail, deleteWishlistFail, createWishlistFail, updateWishlistFail),
   unsetLoadingAndErrorOn(
     updateWishlistSuccess,
     addProductToWishlistSuccess,
     removeItemFromWishlistSuccess,
     createWishlistSuccess,
     loadWishlistsSuccess,
+    loadSharedWishlistSuccess,
     deleteWishlistSuccess
   ),
   on(
@@ -90,11 +97,60 @@ export const wishlistReducer = createReducer(
     const { wishlistId } = action.payload;
     return wishlistsAdapter.removeOne(wishlistId, state);
   }),
-  on(selectWishlist, (state, action): WishlistState => {
+  on(selectWishlist, loadSharedWishlist, (state, action): WishlistState => {
     const { id } = action.payload;
     return {
       ...state,
       selected: id,
+    };
+  }),
+  on(shareWishlistSuccess, (state, action): WishlistState => {
+    const wishlistSharingResponse = action.payload.wishlistSharingResponse;
+    const wishlistId = wishlistSharingResponse.wishlistId;
+
+    const updatedWishlist: Wishlist = {
+      ...state.entities[wishlistId],
+      shared: true,
+      owner: wishlistSharingResponse.owner,
+      secureCode: wishlistSharingResponse.secureCode,
+    };
+
+    return {
+      ...state,
+      entities: {
+        ...state.entities,
+        [wishlistId]: updatedWishlist,
+      },
+    };
+  }),
+  on(unshareWishlistSuccess, (state, action): WishlistState => {
+    const wishlistId = action.payload.wishlistId;
+
+    const updatedWishlist: Wishlist = {
+      ...state.entities[wishlistId],
+      shared: false,
+    };
+
+    return {
+      ...state,
+      entities: {
+        ...state.entities,
+        [wishlistId]: updatedWishlist,
+      },
+    };
+  }),
+  on(loadSharedWishlistSuccess, (state, action): WishlistState => {
+    const wishlist = action.payload.wishlist;
+    const wishlistId = wishlist.id;
+
+    return {
+      ...state,
+      entities: {
+        ...state.entities,
+        [wishlistId]: {
+          ...wishlist,
+        },
+      },
     };
   })
 );
