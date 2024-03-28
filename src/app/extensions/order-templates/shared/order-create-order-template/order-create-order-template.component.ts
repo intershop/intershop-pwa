@@ -20,7 +20,6 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
 @GenerateLazyComponent()
 export class OrderCreateOrderTemplateComponent {
   @Input({ required: true }) lineItems: LineItemView[];
-
   @Input() cssClass: string;
 
   orderTemplateLoading: Signal<boolean>;

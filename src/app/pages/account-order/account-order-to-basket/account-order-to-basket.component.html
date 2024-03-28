@@ -1,4 +1,11 @@
-<button type="button" [ngClass]="cssClass" [disabled]="displaySpinner()" (click)="addOrderToBasket()">
+<button
+  type="button"
+  class="btn btn-secondary btn-block"
+  [ngClass]="cssClass"
+  [disabled]="displaySpinner()"
+  (click)="addOrderToBasket()"
+  data-testing-id="addOrderToBasketButton"
+>
   <ng-container *ngIf="this.displaySpinner() !== true; else spinning">
     {{ 'account.orderdetails.add_to_cart.button.label' | translate }}
   </ng-container>

@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
+import { OrderTemplate } from '../../models/order-template/order-template.model';
 import { OrderTemplatePreferencesDialogComponent } from '../order-template-preferences-dialog/order-template-preferences-dialog.component';
 
 import { OrderCreateOrderTemplateComponent } from './order-create-order-template.component';
@@ -43,11 +44,11 @@ describe('Order Create Order Template Component', () => {
   it('should render the create order-template from order button', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('button')).toBeTruthy();
+    expect(element.querySelector('button[data-testing-id="addOrderToOrderTemplateButton"]')).toBeTruthy();
   });
 
   it('should trigger createOrderTemplatesFromLineItems when createOrderTemplates is called', () => {
-    component.createOrderTemplate(anything());
+    component.createOrderTemplate({ id: 'orderTemplateId' } as OrderTemplate);
 
     verify(orderTemplatesFacadeMock.createOrderTemplateFromLineItems(anything(), anything())).once();
   });

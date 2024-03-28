@@ -1,4 +1,11 @@
-<button type="button" [ngClass]="cssClass" (click)="openModal(modal)" [disabled]="displaySpinner()">
+<button
+  type="button"
+  class="btn btn-secondary btn-block"
+  [ngClass]="cssClass"
+  (click)="openModal(modal)"
+  [disabled]="displaySpinner()"
+  data-testing-id="addOrderToOrderTemplateButton"
+>
   <ng-container *ngIf="this.displaySpinner() !== true; else spinning">
     {{ 'order_template.create.heading' | translate }}
   </ng-container>
