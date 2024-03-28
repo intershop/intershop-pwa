@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
+import { SwiperComponent } from 'ish-shared/swiper/swiper.component';
 
 import { ProductsListComponent } from './products-list.component';
 
@@ -52,7 +52,7 @@ describe('Products List Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`<div class="product-list"><swiper></swiper></div>`);
+    expect(element).toMatchInlineSnapshot(`<div class="product-list"><ish-swiper></ish-swiper></div>`);
   });
 
   it('should set displayType of product item to listItemStyle value', () => {

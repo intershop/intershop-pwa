@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { forkJoin, of, switchMap } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { SwiperComponent } from 'ish-shared/swiper/swiper.component';
 
 import { ProductLinksCarouselComponent } from './product-links-carousel.component';
 
@@ -38,7 +38,7 @@ describe('Product Links Carousel Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element.querySelector('swiper')).toBeTruthy();
+    expect(element.querySelector('ish-swiper')).toBeTruthy();
   });
 
   it('should render all product slides if stocks filtering is off', done => {

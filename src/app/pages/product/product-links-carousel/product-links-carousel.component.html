@@ -3,11 +3,15 @@
     <h2>{{ productLinkTitle }}</h2>
 
     <div class="product-list">
-      <swiper [config]="swiperConfig">
-        <ng-template *ngFor="let sku$ of productSKUs" swiperSlide let-data>
-          <ish-product-item *ngIf="lazyFetch(data.isVisible, sku$) | async as sku" ishProductContext [sku]="sku" />
+      <ish-swiper [config]="swiperConfig">
+        <ng-template *ngFor="let sku$ of productSKUs" swiperSlide>
+          <ish-lazy-item>
+            <ng-template ishLazyLoadingContent>
+              <ish-product-item *ngIf="sku$ | async as sku" ishProductContext [sku]="sku" />
+            </ng-template>
+          </ish-lazy-item>
         </ng-template>
-      </swiper>
+      </ish-swiper>
     </div>
   </div>
 </ng-container>

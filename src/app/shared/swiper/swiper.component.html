@@ -1,0 +1,5 @@
+<swiper-container #swiper init="false">
+  <swiper-slide *ngFor="let slide of activeSlides">
+    <ng-template [ngTemplateOutlet]="slide.template"></ng-template>
+  </swiper-slide>
+</swiper-container>
