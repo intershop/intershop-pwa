@@ -6,14 +6,14 @@
   [disabled]="displaySpinner()"
   data-testing-id="addOrderToOrderTemplateButton"
 >
-  <ng-container *ngIf="this.displaySpinner() !== true; else spinning">
+  <ng-container *ngIf="displaySpinner() !== true; else spinning">
     {{ 'order_template.create.heading' | translate }}
   </ng-container>
   <!-- spinning animation after clicking button -->
   <ng-template #spinning>
     <fa-icon [icon]="['fas', 'spinner']" [spin]="true" ngClass="pr-3" />
-    <span>{{ 'common.button.spinning.label' | translate }}</span>
-  </ng-template>
+    <span>{{ 'common.button.spinning.label' | translate }}</span></ng-template
+  >&nbsp;
 </button>
 
 <ish-order-template-preferences-dialog

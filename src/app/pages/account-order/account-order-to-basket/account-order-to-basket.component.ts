@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, Signal, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -21,15 +22,18 @@ export class AccountOrderToBasketComponent {
 
   @Input() cssClass: string;
 
-  basketLoading: Signal<boolean>;
   displaySpinner: Signal<boolean>;
+  initialLoading = true;
 
   constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {
-    this.basketLoading = toSignal(this.checkoutFacade.basketLoading$, { initialValue: false });
-    this.displaySpinner = computed(() => this.basketLoading());
+    this.displaySpinner = toSignal(
+      this.checkoutFacade.basketLoading$.pipe(map(loading => loading && !this.initialLoading)),
+      { initialValue: false }
+    );
   }
 
   addOrderToBasket() {
+    this.initialLoading = false;
     this.order.lineItems.forEach(lineItem => {
       if (!lineItem.isFreeGift) {
         this.shoppingFacade.addProductToBasket(lineItem.productSKU, lineItem.quantity.value);
