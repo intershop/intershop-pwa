@@ -53,7 +53,7 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": true,
-              "commonChunk": false,
+              "commonChunk": true,
               "budgets": [
                 {
                   "type": "bundle",
