@@ -1,10 +1,4 @@
-<button
-  type="submit"
-  name="addProduct"
-  [ngClass]="cssClass"
-  (click)="openModal(modal)"
-  data-testing-id="addBasketToOrderTemplateButton"
->
+<button type="button" [ngClass]="cssClass" (click)="openModal(modal)" data-testing-id="addBasketToOrderTemplateButton">
   {{ 'order_template.create.heading' | translate }}
 </button>
 
