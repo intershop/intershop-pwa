@@ -33,7 +33,7 @@ $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1r
 //
 //CORPORATE DESIGN COLORS
 
-$CORPORATE-PRIMARY: #688dc3; // BLUE
+$CORPORATE-PRIMARY: #5378ae; // BLUE
 $CORPORATE-SECONDARY: darken($CORPORATE-PRIMARY, 10%);
 $CORPORATE-LIGHT: lighten($CORPORATE-PRIMARY, 10%);
 $CORPORATE-DARK: darken($CORPORATE-PRIMARY, 20%);
@@ -45,9 +45,9 @@ $CORPORATE-SHADOW: #7f9ecc80; // with alpha transparency
 $text-color-corporate: $CORPORATE-PRIMARY;
 
 $text-color-primary: #222;
-$text-color-secondary: #555;
+$text-color-secondary: #757575;
 $text-color-tertiary: #8b8b8b;
-$text-color-quaternary: #999;
+$text-color-quaternary: #767676;
 $text-color-quinary: #eee;
 
 $text-color-inverse: #fff;
