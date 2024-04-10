@@ -5,15 +5,15 @@ import {
   ResourceIdentifierListDocument,
 } from '../resource-identifier/resource-identifier.interface';
 
-export interface OrganizationGroupListDocument {
-  data: OrganizationGroupData[];
+export interface OrganizationHierarchiesGroupListDocument {
+  data: OrganizationHierarchiesGroupData[];
 }
 
-export interface OrganizationGroupDocument {
-  data: OrganizationGroupData;
+export interface OrganizationHierarchiesGroupDocument {
+  data: OrganizationHierarchiesGroupData;
 }
 
-export interface OrganizationGroupData extends ResourceIdentifierData {
+export interface OrganizationHierarchiesGroupData extends ResourceIdentifierData {
   attributes: ResourceAttributeData;
   relationships: GroupRelationships;
 }

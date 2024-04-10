@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
 @Component({
   selector: 'ish-hierarchy-group-name',
@@ -12,7 +12,7 @@ import { OrganizationGroup } from '../../models/organization-group/organization-
 export class HierarchyGroupNameComponent implements OnInit {
   @Input() buyingContext: string;
   @Input() showLabel: boolean;
-  group$: Observable<OrganizationGroup>;
+  group$: Observable<OrganizationHierarchiesGroup>;
 
   constructor(private facade: OrganizationHierarchiesFacade) {}
 

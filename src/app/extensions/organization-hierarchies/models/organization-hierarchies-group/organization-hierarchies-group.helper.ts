@@ -1,6 +1,6 @@
-import { OrganizationGroup } from './organization-group.model';
+import { OrganizationHierarchiesGroup } from './organization-hierarchies-group.model';
 
-export class OrganizationGroupHelper {
+export class OrganizationHierarchiesGroupHelper {
   /**
    * This recursive method resolves all parameter which are necessary to use OrganizationGroup model as cdk flat tree data object.
    * The data array will sorted by the tree level and the alphanumeric order of each organization group display name.
@@ -14,11 +14,11 @@ export class OrganizationGroupHelper {
    * @returns the new sorted OrganizationGroup array.
    */
   static resolveTreeAttributes(
-    data: OrganizationGroup[],
+    data: OrganizationHierarchiesGroup[],
     index: number,
-    sortedArray: OrganizationGroup[] = [],
+    sortedArray: OrganizationHierarchiesGroup[] = [],
     level: number = 0
-  ): OrganizationGroup[] {
+  ): OrganizationHierarchiesGroup[] {
     let currentIndex = index;
     if (currentIndex === undefined) {
       currentIndex = data.findIndex(e => !e.parentId);
@@ -33,7 +33,7 @@ export class OrganizationGroupHelper {
 
       sortedChildArray.forEach(child => {
         sortedArray.push(child);
-        OrganizationGroupHelper.resolveTreeAttributes(
+        OrganizationHierarchiesGroupHelper.resolveTreeAttributes(
           data,
           data.findIndex(e => e.id === child.id),
           sortedArray,

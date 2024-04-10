@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { createBasket, loadBasketWithId } from 'ish-core/store/customer/basket';
-import { loadOrdersFail, loadOrdersSuccess, loadWidgetOrders } from 'ish-core/store/customer/orders';
+import { loadOrdersFail, loadOrdersForBuyingContext, loadOrdersSuccess } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { OrganizationHierarchiesService } from '../../services/organization-hierarchies/organization-hierarchies.service';
 import { getBuyingContext } from '../buying-context';
-import { assignBuyingContextSuccess, loadOrdersForBuyingContext } from '../buying-context/buying-context.actions';
+import { assignBuyingContextSuccess } from '../buying-context/buying-context.actions';
 
 import {
   assignGroup,
@@ -23,14 +24,14 @@ import {
   loadGroups,
   loadGroupsFail,
   loadGroupsSuccess,
-} from './group.actions';
-import { getSelectedGroupDetails } from './group.selectors';
+} from './organization-hierarchies-group.actions';
 
 @Injectable()
-export class GroupEffects {
+export class OrganizationHierarchiesGroupEffects {
   constructor(
     private actions$: Actions,
     private basketService: BasketService,
+    private router: Router,
     private store: Store,
     private organizationService: OrganizationHierarchiesService
   ) {}
@@ -39,16 +40,13 @@ export class GroupEffects {
   loadGroups$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadGroups),
-      concatLatestFrom(() => [
-        this.store.pipe(select(getSelectedGroupDetails)),
-        this.store.pipe(select(getLoggedInCustomer)),
-      ]),
-      switchMap(([, selectedGroup, customer]) =>
+      concatLatestFrom(() => [this.store.pipe(select(getLoggedInCustomer))]),
+      switchMap(([, customer]) =>
         this.organizationService.getGroups(customer).pipe(
-          switchMap(groups => {
-            const selectedGroupId = selectedGroup ? selectedGroup.id : groups[0].id;
-            return [loadGroupsSuccess({ groups, selectedGroupId }), assignGroup({ id: selectedGroupId })];
-          }),
+          switchMap(groups => [
+            loadGroupsSuccess({ groups }),
+            assignGroup({ id: groups.length > 0 ? groups[0].id : undefined }),
+          ]),
           mapErrorToAction(loadGroupsFail)
         )
       )
@@ -79,10 +77,10 @@ export class GroupEffects {
             if (baskets?.length > 0) {
               return [
                 loadBasketWithId({ basketId: baskets[0].id }),
-                loadOrdersForBuyingContext({ query: { limit: 30 } }),
+                loadOrdersForBuyingContext({ query: { limit: this.getOrderPageLimit() } }),
               ];
             } else {
-              return [createBasket(), loadOrdersForBuyingContext({ query: { limit: 30 } })];
+              return [createBasket(), loadOrdersForBuyingContext({ query: { limit: this.getOrderPageLimit() } })];
             }
           })
         )
@@ -93,9 +91,10 @@ export class GroupEffects {
   // selection of a new group (buying context) leads to
   loadOrdersWithGroupPaths$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadOrdersForBuyingContext, loadWidgetOrders),
+      ofType(loadOrdersForBuyingContext),
       mapToPayloadProperty('query'),
       concatLatestFrom(() => this.store.pipe(select(getBuyingContext))),
+      filter(([, buyingContext]) => buyingContext?.bctx?.length > 0),
       concatMap(([query, buyingContext]) =>
         this.organizationService.getOrders(query, buyingContext.bctx).pipe(
           map(orders => loadOrdersSuccess({ orders })),
@@ -144,4 +143,8 @@ export class GroupEffects {
       )
     )
   );
+
+  private getOrderPageLimit(): number {
+    return this.router.url.endsWith('orders') ? 30 : 5;
+  }
 }

@@ -72,6 +72,7 @@ const accountPageRoutes: Routes = [
       {
         path: 'hierarchies',
         canActivate: [isServiceAvailable],
+        data: { breadcrumbData: [{ key: 'account.organization.hierarchies.link' }] },
         loadChildren: () =>
           import(
             '../../extensions/organization-hierarchies/pages/account-hierarchies/account-hierarchies-page.module'

@@ -12,7 +12,7 @@ import { DynamicFlatNode } from 'ish-core/utils/tree/tree.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeComponent {
-  @Input() baseData$: Observable<unknown>;
+  @Input() baseData$: Observable<DynamicFlatNode[]>;
 
   treeControl = new FlatTreeControl<DynamicFlatNode>(
     node => node.level,

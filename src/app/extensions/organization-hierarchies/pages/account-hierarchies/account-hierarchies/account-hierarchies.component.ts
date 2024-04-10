@@ -9,11 +9,11 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
 /**
- * The Account Address Page Component displays the preferred InvoiceTo and ShipTo addresses of the user
- * and any further addresses. The user can add and delete addresses. It is mandatory to have at least one address.
+ * The Account Organization Hierarchies Page Component displays the organization hierarchy of a customer.
+ * The user can add and delete hierarchy groups.
  */
 @Component({
   selector: 'ish-account-hierarchies',
@@ -22,23 +22,13 @@ import { OrganizationGroup } from '../../../models/organization-group/organizati
 })
 export class AccountHierarchiesComponent implements OnInit {
   @Input() error: HttpError;
-  groups$: Observable<OrganizationGroup[]>;
-  selectedGroup$: Observable<OrganizationGroup>;
+  groups$: Observable<OrganizationHierarchiesGroup[]>;
+  availableGroups: { label: string; value: string }[] = [];
+  selectedGroup$: Observable<OrganizationHierarchiesGroup>;
 
   isCreateGroupFormCollapsed = true;
-  dynamicTreeFocus = false;
 
   selectNodeConfig: FormlyFieldConfig;
-  dynamicTreeConfig: FormlyFieldConfig = {
-    key: 'active',
-    type: 'ish-checkbox-field',
-    defaultValue: this.dynamicTreeFocus,
-    props: {
-      fieldClass: 'offset-1',
-      label: 'account.organization.hierarchies.tree.checkbox.label',
-    },
-  };
-  dynamicTreeForm: FormGroup = new FormGroup({});
   maintainGroupForm: FormGroup = new FormGroup({});
 
   private destroyRef = inject(DestroyRef);
@@ -61,30 +51,53 @@ export class AccountHierarchiesComponent implements OnInit {
     };
   }
 
-  changeDynamicTreeFocus() {
-    this.dynamicTreeFocus = this.dynamicTreeForm.value.active;
-  }
-
+  /**
+   * new organization hierarchies group is selected
+   */
   changeSelectedGroup() {
     this.selectedGroup$ = this.organizationHierarchiesFacade.getDetailsOfGroup$(
       this.maintainGroupForm.value.selectedNode
     );
   }
 
-  createGroup(data: { parentGroupId: string; child: OrganizationGroup }) {
+  /**
+   * sub component ish-hierarchies-create-group triggers an event to create a new
+   * organization hierarchies group
+   */
+  createGroup(data: { parentGroupId: string; child: OrganizationHierarchiesGroup }) {
     this.organizationHierarchiesFacade.createAndAddGroup(data.parentGroupId, data.child);
     this.hideCreateGroupForm();
   }
 
+  /**
+   * toggle create organization hierarchies group modal
+   */
   showCreateGroupForm() {
     this.isCreateGroupFormCollapsed = false;
   }
 
+  /**
+   * close create organization hierarchies group modal
+   */
   hideCreateGroupForm() {
     this.isCreateGroupFormCollapsed = true;
   }
 
-  private getGroupOptions(groups$: Observable<OrganizationGroup[]>): Observable<SelectOption[]> {
+  /**
+   * triggers delete organization hierarchies group action if form is submitted
+   */
+  deleteGroup() {
+    this.selectedGroup$
+      .pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef))
+      .subscribe(group => this.organizationHierarchiesFacade.deleteGroup(group.id));
+  }
+
+  /**
+   * Mapping of organization hierarchies group list to a SelectOption list.
+   * @param groups$ groups to map
+   * @returns the option list for a select box
+   */
+  private getGroupOptions(groups$: Observable<OrganizationHierarchiesGroup[]>): Observable<SelectOption[]> {
     return groups$.pipe(
       whenTruthy(),
       map(groups =>
@@ -94,11 +107,5 @@ export class AccountHierarchiesComponent implements OnInit {
         }))
       )
     );
-  }
-
-  deleteGroup() {
-    this.selectedGroup$
-      .pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef))
-      .subscribe(group => this.organizationHierarchiesFacade.deleteGroup(group.id));
   }
 }

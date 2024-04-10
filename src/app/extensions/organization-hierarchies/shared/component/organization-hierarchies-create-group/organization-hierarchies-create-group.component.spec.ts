@@ -1,19 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, instance, mock, verify } from 'ts-mockito';
+import { anything, capture, instance, mock, spy, verify } from 'ts-mockito';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
-import { GroupFormComponent } from '../group-form/group-form.component';
+import { OrganizationHierarchiesGroupFormComponent } from '../organization-hierarchies-group-form/organization-hierarchies-group-form.component';
 
-import { HierarchiesCreateGroupComponent } from './hierarchies-create-group.component';
+import { OrganizationHierarchiesCreateGroupComponent } from './organization-hierarchies-create-group.component';
 
-describe('Hierarchies Create Group Component', () => {
-  let component: HierarchiesCreateGroupComponent;
-  let fixture: ComponentFixture<HierarchiesCreateGroupComponent>;
+describe('Organization Hierarchies Create Group Component', () => {
+  let component: OrganizationHierarchiesCreateGroupComponent;
+  let fixture: ComponentFixture<OrganizationHierarchiesCreateGroupComponent>;
   let element: HTMLElement;
   let organizationHierarchiesFacade: OrganizationHierarchiesFacade;
   let fb: FormBuilder;
@@ -23,9 +23,9 @@ describe('Hierarchies Create Group Component', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
-        HierarchiesCreateGroupComponent,
-        MockComponent(GroupFormComponent),
         MockComponent(LoadingComponent),
+        MockComponent(OrganizationHierarchiesGroupFormComponent),
+        OrganizationHierarchiesCreateGroupComponent,
       ],
       providers: [
         { provide: OrganizationHierarchiesFacade, useFactory: () => instance(organizationHierarchiesFacade) },
@@ -34,7 +34,7 @@ describe('Hierarchies Create Group Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HierarchiesCreateGroupComponent);
+    fixture = TestBed.createComponent(OrganizationHierarchiesCreateGroupComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fb = TestBed.inject(FormBuilder);
@@ -50,30 +50,31 @@ describe('Hierarchies Create Group Component', () => {
   it('should display form interactions after creation', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('ish-loading')).toBeFalsy();
     expect(element.querySelector('[data-testing-id="create-group-cancel"]').textContent).toMatchInlineSnapshot(
-      `" account.cancel.link "`
+      `" checkout.address.cancel.button.label "`
     );
     expect(element.querySelector('[data-testing-id="create-group-submit"]').textContent).toMatchInlineSnapshot(
       `" account.organization.hierarchies.groups.new.button.label "`
     );
   });
 
-  it('should submit a valid form when the user fills all required fields', () => {
+  it('should submit a valid form when the user fills all required fields', fakeAsync(() => {
     fixture.detectChanges();
-
     component.groupForm = fb.group({
-      organizationGroup: fb.group({
-        name: ['Test', [Validators.required]],
-        parent: ['Organization', [Validators.required]],
-        description: [''],
-      }),
+      groupName: ['Test', [Validators.required]],
+      parentGroupId: ['parentID', [Validators.required]],
+      groupDescription: ['lorum ipsum'],
     });
 
-    expect(component.formDisabled).toBeFalse();
     component.submitForm();
-    expect(component.formDisabled).toBeFalse();
+    const emitter = spy(component.save);
 
-    verify(organizationHierarchiesFacade.createAndAddGroup(anything(), anything())).once();
-  });
+    component.submitForm();
+    tick(1000);
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg.parentGroupId).toBe('parentID');
+    expect(arg.child.displayName).toBe('Test');
+    expect(arg.child.description).toBe('lorum ipsum');
+  }));
 });

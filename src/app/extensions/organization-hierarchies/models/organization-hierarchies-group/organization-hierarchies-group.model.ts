@@ -1,6 +1,6 @@
 import { DynamicFlatNode } from 'ish-core/utils/tree/tree.interface';
 
-export interface OrganizationGroup extends DynamicFlatNode {
+export interface OrganizationHierarchiesGroup extends DynamicFlatNode {
   description?: string;
   organization?: string;
 }

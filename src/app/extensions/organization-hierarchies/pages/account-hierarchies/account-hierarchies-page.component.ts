@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
 @Component({
   selector: 'ish-hierarchies-page',
@@ -12,7 +12,7 @@ import { OrganizationGroup } from '../../models/organization-group/organization-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountHierarchiesPageComponent implements OnInit {
-  groups: OrganizationGroup[];
+  groups: OrganizationHierarchiesGroup[];
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
 

@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
 import { HierarchySwitchComponent } from './hierarchy-switch.component';
 
@@ -17,12 +17,12 @@ describe('Hierarchy Switch Component', () => {
 
   const groupA = {
     id: 'root',
-    name: 'ROOT',
-  } as OrganizationGroup;
+    displayName: 'ROOT',
+  } as OrganizationHierarchiesGroup;
   const groupB = {
     id: 'child',
-    name: 'CHILD',
-  } as OrganizationGroup;
+    displayName: 'CHILD',
+  } as OrganizationHierarchiesGroup;
 
   beforeEach(async () => {
     organizationHierarchiesFacade = mock(OrganizationHierarchiesFacade);

@@ -2,7 +2,7 @@ import { createSelector } from '@ngrx/store';
 
 import { getOrganizationHierarchiesState } from '../organization-hierarchies-store';
 
-import { groupAdapter } from './group.reducer';
+import { groupAdapter } from './organization-hierarchies-group.reducer';
 
 const getGroupState = createSelector(getOrganizationHierarchiesState, state => state.group);
 
@@ -24,15 +24,6 @@ export const getRootGroupDetails = createSelector(selectAll, entities => entitie
 
 export const getGroupDetails = (groupId: string) =>
   createSelector(selectAll, entities => entities.find(e => e.id === groupId));
-
-export const getGroupsByID = (groupIds: string[]) =>
-  createSelector(selectAll, entities => entities.filter(e => groupIds.includes(e.id)));
-
-export const getChilds = (groupId: string) =>
-  createSelector(selectAll, entities => entities.find(e => e.id === groupId).childrenIds);
-
-export const getParent = (groupId: string) =>
-  createSelector(selectAll, entities => entities.find(e => e.id === groupId).parentId);
 
 export const getOrganizationGroupsLoading = createSelector(
   getOrganizationHierarchiesState,

@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { instance, mock, strictEqual, when } from 'ts-mockito';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
 import { HierarchyGroupNameComponent } from './hierarchy-group-name.component';
 
@@ -47,7 +47,7 @@ describe('Hierarchy Group Name Component', () => {
 
   it('should show group name when provided with id', () => {
     component.buyingContext = 'test-group@test-org';
-    const group: OrganizationGroup = { id: 'test-group', name: 'Test Group' };
+    const group: OrganizationHierarchiesGroup = { id: 'test-group', displayName: 'Test Group' };
     when(organizationHierarchiesFacade.getDetailsOfGroup$(strictEqual('test-group'))).thenReturn(of(group));
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`<span>Group:&nbsp;</span><span>Test Group</span>`);
@@ -56,7 +56,7 @@ describe('Hierarchy Group Name Component', () => {
   it('should show group name without label when provided with id', () => {
     component.buyingContext = 'test-group@test-org';
     component.showLabel = false;
-    const group: OrganizationGroup = { id: 'test-group', name: 'Test Group' };
+    const group: OrganizationHierarchiesGroup = { id: 'test-group', displayName: 'Test Group' };
     when(organizationHierarchiesFacade.getDetailsOfGroup$(strictEqual('test-group'))).thenReturn(of(group));
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`<span>Test Group</span>`);

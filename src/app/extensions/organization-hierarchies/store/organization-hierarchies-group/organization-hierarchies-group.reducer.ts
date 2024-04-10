@@ -4,7 +4,7 @@ import { createReducer, on } from '@ngrx/store';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
-import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
 import {
   assignGroup,
@@ -13,19 +13,19 @@ import {
   loadGroups,
   loadGroupsFail,
   loadGroupsSuccess,
-} from './group.actions';
+} from './organization-hierarchies-group.actions';
 
-export const groupAdapter = createEntityAdapter<OrganizationGroup>({
+export const groupAdapter = createEntityAdapter<OrganizationHierarchiesGroup>({
   selectId: group => group.id,
 });
 
-export interface GroupState extends EntityState<OrganizationGroup> {
+export interface OrganizationHierarchiesGroupState extends EntityState<OrganizationHierarchiesGroup> {
   loading: boolean;
   selected: string;
   error: HttpError;
 }
 
-const initialState: GroupState = groupAdapter.getInitialState({
+const initialState: OrganizationHierarchiesGroupState = groupAdapter.getInitialState({
   loading: false,
   selected: undefined,
   error: undefined,
@@ -42,7 +42,7 @@ export const groupReducer = createReducer(
       ...groupAdapter.setAll(groups, state),
     };
   }),
-  on(assignGroup, (state: GroupState, action): GroupState => {
+  on(assignGroup, (state: OrganizationHierarchiesGroupState, action): OrganizationHierarchiesGroupState => {
     const { id } = action.payload;
     return {
       ...state,

@@ -6,36 +6,37 @@ import { of } from 'rxjs';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
-import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
-import { GroupFormComponent } from './group-form.component';
+import { OrganizationHierarchiesGroupFormComponent } from './organization-hierarchies-group-form.component';
 
-describe('Group Form Component', () => {
-  let component: GroupFormComponent;
-  let fixture: ComponentFixture<GroupFormComponent>;
+describe('Organization Hierarchies Group Form Component', () => {
+  let component: OrganizationHierarchiesGroupFormComponent;
+  let fixture: ComponentFixture<OrganizationHierarchiesGroupFormComponent>;
   let element: HTMLElement;
   const rootGroup = {
     id: 'root',
-    name: 'ROOT',
-  } as OrganizationGroup;
+    displayName: 'ROOT',
+  } as OrganizationHierarchiesGroup;
   const childGroup = {
     id: 'child',
-    name: 'Child',
-  } as OrganizationGroup;
-  const groupTree = [rootGroup, childGroup] as OrganizationGroup[];
+    displayName: 'Child',
+  } as OrganizationHierarchiesGroup;
+  const groupTree = [rootGroup, childGroup] as OrganizationHierarchiesGroup[];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [GroupFormComponent, MockComponent(ErrorMessageComponent)],
+      declarations: [MockComponent(ErrorMessageComponent), OrganizationHierarchiesGroupFormComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupFormComponent);
+    fixture = TestBed.createComponent(OrganizationHierarchiesGroupFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.groups$ = of(groupTree);
+    component.selectedParentGroup$ = of(rootGroup);
   });
 
   it('should be created', () => {

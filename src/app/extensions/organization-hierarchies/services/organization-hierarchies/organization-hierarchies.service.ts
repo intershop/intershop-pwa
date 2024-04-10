@@ -13,17 +13,20 @@ import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
-  OrganizationGroupDocument,
-  OrganizationGroupListDocument,
-} from '../../models/organization-group/organization-group.interface';
-import { OrganizationGroupMapper } from '../../models/organization-group/organization-group.mapper';
-import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+  OrganizationHierarchiesGroupDocument,
+  OrganizationHierarchiesGroupListDocument,
+} from '../../models/organization-hierarchies-group/organization-hierarchies-group.interface';
+import { OrganizationHierarchiesGroupMapper } from '../../models/organization-hierarchies-group/organization-hierarchies-group.mapper';
+import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
+/**
+ * Service class to communicate with organization hierarchies service and with the icm server.
+ */
 @Injectable({ providedIn: 'root' })
 export class OrganizationHierarchiesService {
   constructor(
     private apiService: ApiService,
-    private organizationGroupMapper: OrganizationGroupMapper,
+    private organizationGroupMapper: OrganizationHierarchiesGroupMapper,
     private store: Store
   ) {}
 
@@ -42,18 +45,32 @@ export class OrganizationHierarchiesService {
     Accept: 'application/vnd.intershop.order.v1+json',
   });
 
-  getGroups(customer: Customer): Observable<OrganizationGroup[]> {
+  /**
+   * Returns all existing organization hierarchies groups for a given customer.
+   * @param customer is needed for request
+   * @returns a list oforganization hierarchies group
+   */
+  getGroups(customer: Customer): Observable<OrganizationHierarchiesGroup[]> {
     return this.apiService
-      .get<OrganizationGroupListDocument>(`/organizations/${customer.customerNo}/groups`, this.contentTypeHeader)
+      .get<OrganizationHierarchiesGroupListDocument>(
+        `organizations/${customer.customerNo}/groups`,
+        this.contentTypeHeader
+      )
       .pipe(map(list => this.organizationGroupMapper.fromDocument(list)));
   }
 
-  createGroup(parentGroupId: string, child: OrganizationGroup): Observable<OrganizationGroup> {
+  /**
+   * Organization hierarchies group creation request method.
+   * @param parentGroupId id of the parent group node
+   * @param child new organization hierarchies group parameter
+   * @returns the new created organization hierarchies group
+   */
+  createGroup(parentGroupId: string, child: OrganizationHierarchiesGroup): Observable<OrganizationHierarchiesGroup> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .post<OrganizationGroupDocument>(
-            `/organizations/${customer.customerNo}/groups`,
+          .post<OrganizationHierarchiesGroupDocument>(
+            `organizations/${customer.customerNo}/groups`,
             this.organizationGroupMapper.toGroupDocument(
               child,
               parentGroupId === customer.customerNo ? undefined : parentGroupId
@@ -68,16 +85,20 @@ export class OrganizationHierarchiesService {
     );
   }
 
+  /**
+   * Organization hierarchies group deletion request method.
+   * @param groupId id of organization hierarchies group to delete
+   */
   deleteGroup(groupId: string) {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.delete(`/organizations/${customer.customerNo}/groups/${groupId}`, this.contentTypeHeader)
+        this.apiService.delete(`organizations/${customer.customerNo}/groups/${groupId}`, this.contentTypeHeader)
       )
     );
   }
 
   /**
-   * Gets the orders of the logged-in user
+   * Gets the orders of the logged-in user with selected buying context
    *
    * @param query   Additional query parameters
    *                - the number of items that should be fetched
@@ -85,7 +106,9 @@ export class OrganizationHierarchiesService {
    * @returns       A list of the user's orders
    */
   getOrders(query: OrderListQuery, buyingContextId: string = ''): Observable<Order[]> {
-    const params = orderListQueryToHttpParams(query);
+    let params = orderListQueryToHttpParams(query);
+    // for 7.10 compliance - ToDo: will be removed in PWA 6.0
+    params = params.set('page[limit]', query.limit);
     return this.apiService
       .get(`orders`.concat('?include=buyingContext&filter[buyingContext]='.concat(buyingContextId)), {
         headers: this.orderHeaders,

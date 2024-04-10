@@ -5,13 +5,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'ish-shared/shared.module';
 
 // eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
-import { GroupFormComponent } from '../../shared/component/group-form/group-form.component';
-// eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
-import { HierarchiesCreateGroupComponent } from '../../shared/component/hierarchies-create-group/hierarchies-create-group.component';
+import { OrganizationHierarchiesGroupFormComponent } from '../../shared/component/organization-hierarchies-group-form/organization-hierarchies-group-form.component';
+
 import { OrganizationHierarchiesStoreModule } from '../../store/organization-hierarchies-store.module';
 
 import { AccountHierarchiesPageComponent } from './account-hierarchies-page.component';
 import { AccountHierarchiesComponent } from './account-hierarchies/account-hierarchies.component';
+// eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
+import { OrganizationHierarchiesCreateGroupComponent } from '../../shared/component/organization-hierarchies-create-group/organization-hierarchies-create-group.component';
 
 const hierarchiesRoutes: Routes = [{ path: '', component: AccountHierarchiesPageComponent }];
 
@@ -20,9 +21,9 @@ const hierarchiesRoutes: Routes = [{ path: '', component: AccountHierarchiesPage
   declarations: [
     AccountHierarchiesComponent,
     AccountHierarchiesPageComponent,
-    GroupFormComponent,
-    HierarchiesCreateGroupComponent,
+    OrganizationHierarchiesCreateGroupComponent,
+    OrganizationHierarchiesGroupFormComponent,
   ],
-  exports: [GroupFormComponent, HierarchiesCreateGroupComponent],
+  exports: [OrganizationHierarchiesCreateGroupComponent, OrganizationHierarchiesGroupFormComponent],
 })
 export class AccountHierarchiesPageModule {}

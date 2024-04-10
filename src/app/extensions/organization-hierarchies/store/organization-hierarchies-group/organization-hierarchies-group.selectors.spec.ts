@@ -4,19 +4,19 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 import { OrganizationHierarchiesStoreModule } from '../organization-hierarchies-store.module';
 
-import { assignGroup, loadGroups, loadGroupsFail, loadGroupsSuccess } from './group.actions';
+import { assignGroup, loadGroups, loadGroupsFail, loadGroupsSuccess } from './organization-hierarchies-group.actions';
 import {
-  getCurrentGroupPath,
   getGroupDetails,
   getGroupsOfOrganization,
   getGroupsOfOrganizationCount,
+  getRootGroupDetails,
   getSelectedGroupDetails,
-} from './group.selectors';
+} from './organization-hierarchies-group.selectors';
 
-describe('Group Selectors', () => {
+describe('Organization Hierarchies Group Selectors', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {
@@ -44,17 +44,17 @@ describe('Group Selectors', () => {
 
     it('should set loading to false and set group state', () => {
       const groups = [
-        { id: '1', name: 'Test 1' },
-        { id: '2', name: 'Test 2' },
-      ] as OrganizationGroup[];
-      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: undefined }));
+        { id: '1', displayName: 'Test 1' },
+        { id: '2', displayName: 'Test 2' },
+      ] as OrganizationHierarchiesGroup[];
+      store$.dispatch(loadGroupsSuccess({ groups }));
       expect(getGroupsOfOrganization(store$.state)).not.toBeEmpty();
       expect(getGroupsOfOrganizationCount(store$.state)).toBe(2);
       expect(getGroupDetails('not-existing')(store$.state)).toBeUndefined();
       expect(getGroupDetails('1')(store$.state)).toMatchInlineSnapshot(`
         {
+          "displayName": "Test 1",
           "id": "1",
-          "name": "Test 1",
         }
       `);
     });
@@ -69,20 +69,20 @@ describe('Group Selectors', () => {
 
   describe('selected group', () => {
     const groups = [
-      { id: '1', name: 'Test 1' },
-      { id: '2', name: 'Test 2', parentid: '1' },
-    ] as OrganizationGroup[];
+      { id: '1', displayName: 'Test 1' },
+      { id: '2', displayName: 'Test 2', parentid: '1' },
+    ] as OrganizationHierarchiesGroup[];
 
     beforeEach(() => {
-      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: undefined }));
+      store$.dispatch(loadGroupsSuccess({ groups }));
     });
 
     it('should set selected to 1', () => {
       store$.dispatch(assignGroup({ id: '1' }));
       expect(getSelectedGroupDetails(store$.state)).toMatchInlineSnapshot(`
         {
+          "displayName": "Test 1",
           "id": "1",
-          "name": "Test 1",
         }
       `);
     });
@@ -91,8 +91,8 @@ describe('Group Selectors', () => {
       store$.dispatch(assignGroup({ id: '2' }));
       expect(getSelectedGroupDetails(store$.state)).toMatchInlineSnapshot(`
         {
+          "displayName": "Test 2",
           "id": "2",
-          "name": "Test 2",
           "parentid": "1",
         }
       `);
@@ -104,38 +104,37 @@ describe('Group Selectors', () => {
     });
   });
 
-  describe('get group path', () => {
-    const groups = [
-      { id: '1', name: 'Test 1' },
-      { id: '2', name: 'Test 2', parentid: '1' },
-      { id: '3', name: 'Test 3', parentid: '2' },
-    ] as OrganizationGroup[];
+  describe('get root group', () => {
+    const action = loadGroups();
 
     beforeEach(() => {
-      store$.dispatch(loadGroupsSuccess({ groups, selectedGroupId: undefined }));
+      store$.dispatch(action);
     });
 
-    it('should get group path of selected group', () => {
-      store$.dispatch(assignGroup({ id: '3' }));
-      expect(getCurrentGroupPath(store$.state)).toMatchInlineSnapshot(`
+    it('should deliver first group without parent', () => {
+      const groups = [
+        { id: '1', displayName: 'Test 1' },
+        { id: '2', displayName: 'Test 2' },
+      ] as OrganizationHierarchiesGroup[];
+      store$.dispatch(loadGroupsSuccess({ groups }));
+      expect(getRootGroupDetails(store$.state)).toMatchInlineSnapshot(`
         {
-          "groupId": "3",
-          "groupName": "Test 3",
-          "groupPath": [
-            {
-              "groupId": "1",
-              "groupName": "Test 1",
-            },
-            {
-              "groupId": "2",
-              "groupName": "Test 2",
-            },
-            {
-              "groupId": "3",
-              "groupName": "Test 3",
-            },
-          ],
-          "organizationId": undefined,
+          "displayName": "Test 1",
+          "id": "1",
+        }
+      `);
+    });
+
+    it('should deliver group without parent', () => {
+      const groups = [
+        { id: '1', displayName: 'Test 1', parentId: 'Test2' },
+        { id: '2', displayName: 'Test 2' },
+      ] as OrganizationHierarchiesGroup[];
+      store$.dispatch(loadGroupsSuccess({ groups }));
+      expect(getRootGroupDetails(store$.state)).toMatchInlineSnapshot(`
+        {
+          "displayName": "Test 2",
+          "id": "2",
         }
       `);
     });

@@ -6,18 +6,18 @@ import { v4 as uuid } from 'uuid';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
 @Component({
-  selector: 'ish-hierarchies-create-group',
-  templateUrl: './hierarchies-create-group.component.html',
+  selector: 'ish-organization-hierarchies-create-group',
+  templateUrl: './organization-hierarchies-create-group.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HierarchiesCreateGroupComponent implements OnInit {
+export class OrganizationHierarchiesCreateGroupComponent implements OnInit {
   @Input() resetForm = false;
-  @Input() selectedParentGroup$: Observable<OrganizationGroup>;
+  @Input() selectedParentGroup$: Observable<OrganizationHierarchiesGroup>;
 
-  @Output() save = new EventEmitter<{ parentGroupId: string; child: OrganizationGroup }>();
+  @Output() save = new EventEmitter<{ parentGroupId: string; child: OrganizationHierarchiesGroup }>();
   @Output() cancel = new EventEmitter();
 
   form: FormGroup;
@@ -27,7 +27,7 @@ export class HierarchiesCreateGroupComponent implements OnInit {
 
   groupForm: FormGroup = this.fb.group({});
 
-  items$: Observable<OrganizationGroup[]>;
+  items$: Observable<OrganizationHierarchiesGroup[]>;
 
   constructor(private fb: FormBuilder, private organizationFacade: OrganizationHierarchiesFacade) {}
 
@@ -68,7 +68,7 @@ export class HierarchiesCreateGroupComponent implements OnInit {
 
     const formValue = this.groupForm.value;
 
-    const group: OrganizationGroup = {
+    const group: OrganizationHierarchiesGroup = {
       id: uuid(),
       displayName: formValue.groupName,
       description: formValue.groupDescription === '' ? undefined : formValue.groupDescription,

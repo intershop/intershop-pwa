@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 
 /**
- * Fetch cost centers for cost center management page
+ * Fetch information whether the organization hierarchies service is available.
  */
 export function isServiceAvailable(): boolean | Observable<boolean> {
   const organizationHierarchiesFacade = inject(OrganizationHierarchiesFacade);

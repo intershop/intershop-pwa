@@ -1,17 +1,6 @@
-<ish-error-message [error]="error | async" />
+<ish-error-message [error]="error" />
 
 <h1>{{ 'account.organization.hierarchies' | translate }}</h1>
-
-<div class="row">
-  <div class="col-3">
-    <form [formGroup]="dynamicTreeForm" (change)="changeDynamicTreeFocus()">
-      <formly-form [form]="dynamicTreeForm" [fields]="[dynamicTreeConfig]" />
-    </form>
-  </div>
-  <div class="col-9">
-    <span class="form-text"> {{ 'account.organization.hierarchies.tree.info.text' | translate }}</span>
-  </div>
-</div>
 
 <!-- search group and maintain selected one -->
 <div class="list-body">
@@ -69,7 +58,7 @@
   <div id="collapseBasic" class="section" *ngIf="!isCreateGroupFormCollapsed" data-testing-id="create-group-form">
     <div class="row">
       <div class="col-md-10 col-xl-8">
-        <ish-hierarchies-create-group
+        <ish-organization-hierarchies-create-group
           [selectedParentGroup$]="selectedGroup$"
           [resetForm]="isCreateGroupFormCollapsed"
           (save)="createGroup($event)"
@@ -80,4 +69,5 @@
   </div>
 </div>
 
+<!--cdk tree representation of the organization hierarchy-->
 <ish-tree [baseData$]="groups$" />

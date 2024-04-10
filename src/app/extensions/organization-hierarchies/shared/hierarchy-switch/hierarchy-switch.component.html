@@ -5,7 +5,7 @@
   #hierarchyDropDown="ngbDropdown"
   placement="{{ placement === 'up' ? 'top-left' : 'bottom-left' }}"
 >
-  <a ngbDropdownToggle class="hierarchy-switch-link" title="{{ (selectedElement$ | async).name }}">
+  <a ngbDropdownToggle class="hierarchy-switch-link" title="{{ (selectedElement$ | async).displayName }}">
     <span class="separator">&#124;</span>
     <span *ngIf="selectedElement$ | async as selectedElement" class="hierarchy-switch-current-selection"
       >{{ selectedElement.displayName }}<span class="switch_arrow"></span

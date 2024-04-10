@@ -18,7 +18,7 @@ describe('Hierarchy Path Component', () => {
   let fixture: ComponentFixture<HierarchyPathComponent>;
   let element: HTMLElement;
   let organizationHierarchiesFacade: OrganizationHierarchiesFacade;
-  const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
+  const order = { id: '1', documentNo: '00000001', lineItems: [], buyingContext: 'klaus@klausInc' } as Order;
 
   beforeEach(async () => {
     organizationHierarchiesFacade = mock(OrganizationHierarchiesFacade);

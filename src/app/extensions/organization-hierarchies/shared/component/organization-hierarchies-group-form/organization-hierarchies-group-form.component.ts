@@ -4,17 +4,17 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, map } from 'rxjs';
 
-import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
 @Component({
-  selector: 'ish-group-form',
-  templateUrl: './group-form.component.html',
+  selector: 'ish-organization-hierarchies-group-form',
+  templateUrl: './organization-hierarchies-group-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GroupFormComponent implements OnInit {
+export class OrganizationHierarchiesGroupFormComponent implements OnInit {
   @Input() form: FormGroup;
-  @Input() groups$: Observable<OrganizationGroup[]>;
-  @Input() selectedParentGroup$: Observable<OrganizationGroup>;
+  @Input() groups$: Observable<OrganizationHierarchiesGroup[]>;
+  @Input() selectedParentGroup$: Observable<OrganizationHierarchiesGroup>;
 
   private destroyRef = inject(DestroyRef);
 

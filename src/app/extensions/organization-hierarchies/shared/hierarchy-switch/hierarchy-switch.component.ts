@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
 @Component({
   selector: 'ish-hierarchy-switch',
@@ -16,9 +16,9 @@ export class HierarchySwitchComponent implements OnInit {
    */
   @Input() placement: '' | 'up' = '';
 
-  groups$: Observable<OrganizationGroup[]>;
+  groups$: Observable<OrganizationHierarchiesGroup[]>;
   count$: Observable<number>;
-  selectedElement$: Observable<OrganizationGroup>;
+  selectedElement$: Observable<OrganizationHierarchiesGroup>;
 
   constructor(private facade: OrganizationHierarchiesFacade) {}
 
@@ -28,7 +28,7 @@ export class HierarchySwitchComponent implements OnInit {
     this.setSelectedElement();
   }
 
-  groupSelected(group: OrganizationGroup): void {
+  groupSelected(group: OrganizationHierarchiesGroup): void {
     if (group) {
       this.facade.assignGroup(group.id);
     }

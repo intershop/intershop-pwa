@@ -6,8 +6,8 @@ import { pick } from 'lodash-es';
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 
 import { buyingContextReducer } from './buying-context/buying-context.reducer';
-import { GroupEffects } from './group/group.effects';
-import { groupReducer } from './group/group.reducer';
+import { OrganizationHierarchiesGroupEffects } from './organization-hierarchies-group/organization-hierarchies-group.effects';
+import { groupReducer } from './organization-hierarchies-group/organization-hierarchies-group.reducer';
 import { OrganizationHierarchiesState } from './organization-hierarchies-store';
 
 const organizationHierarchiesReducers: ActionReducerMap<OrganizationHierarchiesState> = {
@@ -20,7 +20,7 @@ const metaReducers = [resetOnLogoutMeta];
 // not-dead-code
 @NgModule({
   imports: [
-    EffectsModule.forFeature(GroupEffects),
+    EffectsModule.forFeature(OrganizationHierarchiesGroupEffects),
     StoreModule.forFeature('organizationHierarchies', organizationHierarchiesReducers, { metaReducers }),
   ],
 })

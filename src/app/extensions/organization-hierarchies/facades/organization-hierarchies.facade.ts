@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import { OrderListQuery } from 'ish-core/services/order/order.service';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
-import { getOrders } from 'ish-core/store/customer/orders';
+import { getOrders, loadOrdersForBuyingContext } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-import { OrganizationGroup } from '../models/organization-group/organization-group.model';
-import { loadOrdersForBuyingContext } from '../store/buying-context/buying-context.actions';
+import { OrganizationHierarchiesGroup } from '../models/organization-hierarchies-group/organization-hierarchies-group.model';
 import {
   assignGroup,
   createGroup,
@@ -23,7 +22,7 @@ import {
   getRootGroupDetails,
   getSelectedGroupDetails,
   loadGroups,
-} from '../store/group';
+} from '../store/organization-hierarchies-group';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationHierarchiesFacade {
@@ -33,8 +32,7 @@ export class OrganizationHierarchiesFacade {
    * Returns an Observable of true if organization hierarchy service is configured in ICM otherwise false.
    */
   isServiceAvailable$ = this.store.pipe(
-    select(getServerConfigParameter<string>('services.OrganizationHierarchyServiceDefinition.Endpoint')),
-    map(url => (url && url.length !== 0 ? true : false))
+    select(getServerConfigParameter<boolean>('services.OrganizationHierarchyServiceDefinition.runnable'))
   );
 
   // organization hierarchy groups
@@ -79,7 +77,7 @@ export class OrganizationHierarchiesFacade {
    * @param id group id
    * @returns an Observable of OrganizationGroup for given id
    */
-  getDetailsOfGroup$(id: string): Observable<OrganizationGroup> {
+  getDetailsOfGroup$(id: string): Observable<OrganizationHierarchiesGroup> {
     return this.store.pipe(select(getGroupDetails(id)));
   }
 
@@ -102,7 +100,7 @@ export class OrganizationHierarchiesFacade {
    * @param parentGroupId id of parent group where the new groups will be attached
    * @param child the OrganizationGroup object for the new created group
    */
-  createAndAddGroup(parentGroupId: string, child: OrganizationGroup) {
+  createAndAddGroup(parentGroupId: string, child: OrganizationHierarchiesGroup) {
     this.store.dispatch(createGroup({ parentGroupId, child }));
   }
 
