@@ -27,7 +27,7 @@ export class LoginStatusComponent implements OnInit {
     this.isSticky$ = this.appFacade.stickyHeader$;
     this.isOrganizationHierarchiesServiceAvailable$ = this.appFacade
       .serverSetting$<string>('services.OrganizationHierarchyServiceDefinition.Endpoint')
-      .pipe(map(url => (url && url.length !== 0 ? true : false)));
+      .pipe(map(url => (url ? true : false)));
   }
 
   getViewClasses(): string {

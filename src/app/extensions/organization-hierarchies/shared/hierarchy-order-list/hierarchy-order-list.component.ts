@@ -7,7 +7,7 @@ import { Order } from 'ish-core/models/order/order.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
-import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
+import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 
 @Component({
   selector: 'ish-hierarchy-order-list',

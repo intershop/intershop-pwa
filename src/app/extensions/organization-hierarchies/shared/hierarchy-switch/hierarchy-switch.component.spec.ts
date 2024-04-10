@@ -4,8 +4,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
-import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
+import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
 import { HierarchySwitchComponent } from './hierarchy-switch.component';
 

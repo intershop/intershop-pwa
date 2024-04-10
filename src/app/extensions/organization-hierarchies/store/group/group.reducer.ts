@@ -51,18 +51,6 @@ export const groupReducer = createReducer(
       selected: group.id,
     };
   }),
-  //on(loadGroupsSuccess, (state: GroupState, action) => {
-  //  const groups = action.payload.groups as OrganizationGroup[];
-  //  const newState = groupAdapter.upsertMany(groups, state);
-  //  return {
-  //    ...newState,
-  //    selected: action.payload.selectedGroupId
-  //      ? action.payload.selectedGroupId
-  //      : newState?.ids?.length
-  //      ? (newState.ids[0] as string)
-  //      : undefined,
-  //  };
-  //}),
   on(assignGroup, (state: GroupState, action): GroupState => {
     const { id } = action.payload;
     return {

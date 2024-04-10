@@ -37,6 +37,7 @@ import {
   getSelectedOrder,
   loadMoreOrders,
   loadOrders,
+  loadWidgetOrders,
 } from 'ish-core/store/customer/orders';
 import {
   cancelRegistration,
@@ -178,7 +179,17 @@ export class AccountFacade {
   orders$ = this.store.pipe(select(getOrders));
 
   loadOrders(query?: OrderListQuery) {
-    this.store.dispatch(loadOrders({ query: query || { limit: 30 } }));
+    this.store
+      .pipe(
+        select(getServerConfigParameter<string>('services.OrganizationHierarchyServiceDefinition.Endpoint')),
+        take(1)
+      )
+      .subscribe(url =>
+        url && url.length > 0
+          ? this.store.dispatch(loadWidgetOrders({ query }))
+          : this.store.dispatch(loadOrders({ query: query || { limit: 30 } }))
+      );
+
   }
 
   moreOrdersAvailable$ = this.store.pipe(select(getMoreOrdersAvailable));

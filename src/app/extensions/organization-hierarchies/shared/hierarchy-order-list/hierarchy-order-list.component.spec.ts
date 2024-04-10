@@ -13,7 +13,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
 import { LazyHierarchyGroupNameComponent } from '../../../exports/lazy-hierarchy-group-name/lazy-hierarchy-group-name.component';
-import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
+import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 
 import { HierarchyOrderListComponent } from './hierarchy-order-list.component';
 

@@ -3,8 +3,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, strictEqual, when } from 'ts-mockito';
 
-import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
+import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
 import { HierarchyGroupNameComponent } from './hierarchy-group-name.component';
 

@@ -28,7 +28,7 @@
         <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.order_number' | translate">
           <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
           <br />
-          <ish-hierarchy-group-name
+          <ish-lazy-hierarchy-group-name
             *ishFeature="'organizationHierarchies'"
             [buyingContext]="order.buyingContext"
             [showLabel]="true"

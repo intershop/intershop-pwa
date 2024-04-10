@@ -15,6 +15,11 @@ export const loadOrders = createAction('[Orders] Load Orders', payload<{ query: 
 
 export const loadMoreOrders = createAction('[Orders] Load More Orders');
 
+export const loadWidgetOrders = createAction(
+  '[Orders Internal] Load Widget Orders',
+  payload<{ query: OrderListQuery }>()
+);
+
 export const loadOrdersFail = createAction('[Orders API] Load Orders Fail', httpError());
 
 export const loadOrdersSuccess = createAction(

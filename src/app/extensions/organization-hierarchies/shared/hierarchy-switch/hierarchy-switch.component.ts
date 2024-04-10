@@ -4,8 +4,8 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
-import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
+import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
 @Component({
   selector: 'ish-hierarchy-switch',
@@ -28,6 +28,7 @@ export class HierarchySwitchComponent implements OnInit {
   homeHref: string;
 
   ngOnInit(): void {
+    console.log('feuer frei');
     this.groups$ = this.facade.groups$;
     this.count$ = this.facade.groupsCount$();
     this.setSelectedElement();

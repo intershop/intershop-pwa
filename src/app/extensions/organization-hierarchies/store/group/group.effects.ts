@@ -7,7 +7,7 @@ import { concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { createBasket, loadBasketWithId } from 'ish-core/store/customer/basket';
-import { loadOrdersFail, loadOrdersSuccess } from 'ish-core/store/customer/orders';
+import { loadOrdersFail, loadOrdersSuccess, loadWidgetOrders } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -45,11 +45,10 @@ export class GroupEffects {
       ]),
       switchMap(([, selectedGroup, customer]) =>
         this.organizationService.getGroups(customer).pipe(
-          switchMap(groups =>
-            selectedGroup
-              ? [loadGroupsSuccess({ groups, selectedGroupId: selectedGroup.id }), assignGroup(selectedGroup)]
-              : [loadGroupsSuccess({ groups, selectedGroupId: undefined })]
-          ),
+          switchMap(groups => {
+            const selectedGroupId = selectedGroup ? selectedGroup.id : groups[0].id;
+            return [loadGroupsSuccess({ groups, selectedGroupId }), assignGroup({ id: selectedGroupId })];
+          }),
           mapErrorToAction(loadGroupsFail)
         )
       )
@@ -95,7 +94,7 @@ export class GroupEffects {
    */
   loadOrdersWithGroupPaths$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadOrdersForBuyingContext),
+      ofType(loadOrdersForBuyingContext, loadWidgetOrders),
       mapToPayloadProperty('query'),
       concatLatestFrom(() => this.store.pipe(select(getBuyingContext))),
       concatMap(([query, buyingContext]) =>

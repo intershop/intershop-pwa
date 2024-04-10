@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
-import { OrganizationHierarchiesFacade } from '../../../facades/organization-hierarchies.facade';
-import { OrganizationGroup } from '../../../models/organization-group/organization-group.model';
+import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
+import { OrganizationGroup } from '../../models/organization-group/organization-group.model';
 
 @Component({
   selector: 'ish-hierarchy-group-name',
