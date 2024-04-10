@@ -11,11 +11,11 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 
-import { HierarchyPathComponent } from './hierarchy-path.component';
+import { OrganizationHierarchiesPathComponent } from './organization-hierarchies-path.component';
 
-describe('Hierarchy Path Component', () => {
-  let component: HierarchyPathComponent;
-  let fixture: ComponentFixture<HierarchyPathComponent>;
+describe('Organization Hierarchies Path Component', () => {
+  let component: OrganizationHierarchiesPathComponent;
+  let fixture: ComponentFixture<OrganizationHierarchiesPathComponent>;
   let element: HTMLElement;
   let organizationHierarchiesFacade: OrganizationHierarchiesFacade;
   const order = { id: '1', documentNo: '00000001', lineItems: [], buyingContext: 'klaus@klausInc' } as Order;
@@ -26,11 +26,11 @@ describe('Hierarchy Path Component', () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
-        HierarchyPathComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockDirective(NgbCollapse),
+        OrganizationHierarchiesPathComponent,
       ],
       providers: [
         { provide: OrganizationHierarchiesFacade, useFactory: () => instance(organizationHierarchiesFacade) },
@@ -39,7 +39,7 @@ describe('Hierarchy Path Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HierarchyPathComponent);
+    fixture = TestBed.createComponent(OrganizationHierarchiesPathComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.object = order;

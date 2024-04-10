@@ -15,29 +15,17 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
-import type { HierarchyGroupNameComponent as OriginalComponent } from '../../shared/hierarchy-group-name/hierarchy-group-name.component';
+import type { OrganizationHierarchiesPathComponent as OriginalComponent } from '../../shared/organization-hierarchies-path/organization-hierarchies-path.component';
 
 @Component({
-  selector: 'ish-lazy-hierarchy-group-name',
-  templateUrl: './lazy-hierarchy-group-name.component.html',
+  selector: 'ish-lazy-organization-hierarchies-path',
+  templateUrl: './lazy-organization-hierarchies-path.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LazyHierarchyGroupNameComponent implements OnInit, OnChanges {
-  /*
-   * WARNING!
-   *
-   * This file was automatically generated!
-   * It should be updated using:
-   *
-   * ng g lazy-component extensions/organization-hierarchies/shared/hierarchy-group-name/hierarchy-group-name.component.ts
-   *
-   */
-
+export class LazyOrganizationHierarchiesPathComponent implements OnInit, OnChanges {
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
 
-  @Input() buyingContext: OriginalComponent['buyingContext'];
-
-  @Input() showLabel: OriginalComponent['showLabel'];
+  @Input() object: OriginalComponent['object'];
 
   private component: ComponentRef<OriginalComponent>;
   private destroyRef = inject(DestroyRef);
@@ -59,8 +47,8 @@ export class LazyHierarchyGroupNameComponent implements OnInit, OnChanges {
   private async renderComponent() {
     const module = await import(`../../organization-hierarchies.module`).then(m => m.OrganizationHierarchiesModule);
 
-    const { HierarchyGroupNameComponent: originalComponent } = await import(
-      '../../shared/hierarchy-group-name/hierarchy-group-name.component'
+    const { OrganizationHierarchiesPathComponent: originalComponent } = await import(
+      '../../shared/organization-hierarchies-path/organization-hierarchies-path.component'
     );
 
     const ngModuleRef = createNgModule(module, this.injector);
@@ -74,9 +62,7 @@ export class LazyHierarchyGroupNameComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.component) {
-      this.component.instance.buyingContext = this.buyingContext;
-
-      this.component.instance.showLabel = this.showLabel;
+      this.component.instance.object = this.object;
     }
   }
 }

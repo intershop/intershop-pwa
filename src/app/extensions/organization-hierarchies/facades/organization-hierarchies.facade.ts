@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
-import { OrderListQuery } from 'ish-core/services/order/order.service';
+import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getOrders, loadOrdersForBuyingContext } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';

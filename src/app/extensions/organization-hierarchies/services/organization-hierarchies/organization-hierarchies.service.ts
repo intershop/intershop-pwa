@@ -5,10 +5,11 @@ import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { OrderListQuery, orderListQueryToHttpParams } from 'ish-core/services/order/order.service';
+import { orderListQueryToHttpParams } from 'ish-core/services/order/order.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 

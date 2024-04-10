@@ -5,12 +5,16 @@ import { map, switchMap } from 'rxjs/operators';
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
+/**
+ * Component to display a selectbox for organization hierarchies groups in the header.
+ * Used in {@link LoginStatusComponent}.
+ */
 @Component({
-  selector: 'ish-hierarchy-switch',
-  templateUrl: './hierarchy-switch.component.html',
+  selector: 'ish-organization-hierarchies-switch',
+  templateUrl: './organization-hierarchies-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HierarchySwitchComponent implements OnInit {
+export class OrganizationHierarchiesSwitchComponent implements OnInit {
   /**
    * determines position of dropbox - dropup or dropdown, default is dropdown
    */

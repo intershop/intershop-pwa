@@ -15,17 +15,19 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
-import type { HierarchySwitchComponent as OriginalComponent } from '../../shared/hierarchy-switch/hierarchy-switch.component';
+import type { OrganizationHierarchiesGroupNameComponent as OriginalComponent } from '../../shared/organization-hierarchies-group-name/organization-hierarchies-group-name.component';
 
 @Component({
-  selector: 'ish-lazy-hierarchy-switch',
-  templateUrl: './lazy-hierarchy-switch.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  selector: 'ish-lazy-organization-hierarchies-group-name',
+  templateUrl: './lazy-organization-hierarchies-group-name.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LazyHierarchySwitchComponent implements OnInit, OnChanges {
+export class LazyOrganizationHierarchiesGroupNameComponent implements OnInit, OnChanges {
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
 
-  @Input() placement: OriginalComponent['placement'];
+  @Input() buyingContext: OriginalComponent['buyingContext'];
+
+  @Input() showLabel: OriginalComponent['showLabel'];
 
   private component: ComponentRef<OriginalComponent>;
   private destroyRef = inject(DestroyRef);
@@ -47,8 +49,8 @@ export class LazyHierarchySwitchComponent implements OnInit, OnChanges {
   private async renderComponent() {
     const module = await import(`../../organization-hierarchies.module`).then(m => m.OrganizationHierarchiesModule);
 
-    const { HierarchySwitchComponent: originalComponent } = await import(
-      '../../shared/hierarchy-switch/hierarchy-switch.component'
+    const { OrganizationHierarchiesGroupNameComponent: originalComponent } = await import(
+      '../../shared/organization-hierarchies-group-name/organization-hierarchies-group-name.component'
     );
 
     const ngModuleRef = createNgModule(module, this.injector);
@@ -62,7 +64,9 @@ export class LazyHierarchySwitchComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.component) {
-      this.component.instance.placement = this.placement;
+      this.component.instance.buyingContext = this.buyingContext;
+
+      this.component.instance.showLabel = this.showLabel;
     }
   }
 }

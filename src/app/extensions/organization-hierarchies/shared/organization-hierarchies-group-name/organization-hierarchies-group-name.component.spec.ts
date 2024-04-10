@@ -6,11 +6,11 @@ import { instance, mock, strictEqual, when } from 'ts-mockito';
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
-import { HierarchyGroupNameComponent } from './hierarchy-group-name.component';
+import { OrganizationHierarchiesGroupNameComponent } from './organization-hierarchies-group-name.component';
 
-describe('Hierarchy Group Name Component', () => {
-  let component: HierarchyGroupNameComponent;
-  let fixture: ComponentFixture<HierarchyGroupNameComponent>;
+describe('Organization Hierarchies Group Name Component', () => {
+  let component: OrganizationHierarchiesGroupNameComponent;
+  let fixture: ComponentFixture<OrganizationHierarchiesGroupNameComponent>;
   let element: HTMLElement;
   let organizationHierarchiesFacade: OrganizationHierarchiesFacade;
   let translateService: TranslateService;
@@ -20,7 +20,7 @@ describe('Hierarchy Group Name Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [HierarchyGroupNameComponent],
+      declarations: [OrganizationHierarchiesGroupNameComponent],
       providers: [
         { provide: OrganizationHierarchiesFacade, useFactory: () => instance(organizationHierarchiesFacade) },
       ],
@@ -28,7 +28,7 @@ describe('Hierarchy Group Name Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HierarchyGroupNameComponent);
+    fixture = TestBed.createComponent(OrganizationHierarchiesGroupNameComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translateService = TestBed.inject(TranslateService);

@@ -6,12 +6,16 @@ import { Order } from 'ish-core/models/order/order.model';
 
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 
+/**
+ * Component to display a the organization hierarchies group path on an order or basket.
+ * Used in {@link BasketBuyerComponent}.
+ */
 @Component({
-  selector: 'ish-hierarchy-path',
-  templateUrl: './hierarchy-path.component.html',
+  selector: 'ish-organization-hierarchies-path',
+  templateUrl: './organization-hierarchies-path.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HierarchyPathComponent implements OnInit {
+export class OrganizationHierarchiesPathComponent implements OnInit {
   @Input() object: Basket | Order;
 
   pathArray$: Observable<string[]>;

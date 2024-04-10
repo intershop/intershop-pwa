@@ -7,11 +7,11 @@ import { instance, mock, verify, when } from 'ts-mockito';
 import { OrganizationHierarchiesFacade } from '../../facades/organization-hierarchies.facade';
 import { OrganizationHierarchiesGroup } from '../../models/organization-hierarchies-group/organization-hierarchies-group.model';
 
-import { HierarchySwitchComponent } from './hierarchy-switch.component';
+import { OrganizationHierarchiesSwitchComponent } from './organization-hierarchies-switch.component';
 
-describe('Hierarchy Switch Component', () => {
-  let component: HierarchySwitchComponent;
-  let fixture: ComponentFixture<HierarchySwitchComponent>;
+describe('Organization Hierarchies Switch Component', () => {
+  let component: OrganizationHierarchiesSwitchComponent;
+  let fixture: ComponentFixture<OrganizationHierarchiesSwitchComponent>;
   let element: HTMLElement;
   let organizationHierarchiesFacade: OrganizationHierarchiesFacade;
 
@@ -31,7 +31,7 @@ describe('Hierarchy Switch Component', () => {
     when(organizationHierarchiesFacade.getSelectedGroup$).thenReturn(of(groupA));
 
     await TestBed.configureTestingModule({
-      declarations: [HierarchySwitchComponent],
+      declarations: [OrganizationHierarchiesSwitchComponent],
       imports: [NgbDropdownModule, RouterTestingModule],
       providers: [
         { provide: OrganizationHierarchiesFacade, useFactory: () => instance(organizationHierarchiesFacade) },
@@ -40,7 +40,7 @@ describe('Hierarchy Switch Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HierarchySwitchComponent);
+    fixture = TestBed.createComponent(OrganizationHierarchiesSwitchComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

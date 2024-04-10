@@ -8,7 +8,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
-import { LazyHierarchyPathComponent } from '../../../../extensions/organization-hierarchies/exports/lazy-hierarchy-path/lazy-hierarchy-path.component';
+import { LazyOrganizationHierarchiesPathComponent } from '../../../../extensions/organization-hierarchies/exports/lazy-organization-hierarchies-path/lazy-organization-hierarchies-path.component';
 
 import { BasketBuyerComponent } from './basket-buyer.component';
 
@@ -23,7 +23,7 @@ describe('Basket Buyer Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [BasketBuyerComponent, MockComponent(LazyHierarchyPathComponent)],
+      declarations: [BasketBuyerComponent, MockComponent(LazyOrganizationHierarchiesPathComponent)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

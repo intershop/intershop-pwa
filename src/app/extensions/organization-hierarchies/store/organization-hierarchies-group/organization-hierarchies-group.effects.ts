@@ -97,7 +97,7 @@ export class OrganizationHierarchiesGroupEffects {
       filter(([, buyingContext]) => buyingContext?.bctx?.length > 0),
       concatMap(([query, buyingContext]) =>
         this.organizationService.getOrders(query, buyingContext.bctx).pipe(
-          map(orders => loadOrdersSuccess({ orders })),
+          map(orders => loadOrdersSuccess({ orders, query: { limit: this.getOrderPageLimit() } })),
           mapErrorToAction(loadOrdersFail)
         )
       )
