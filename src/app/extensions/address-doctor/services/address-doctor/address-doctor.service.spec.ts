@@ -1,13 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { pick } from 'lodash-es';
-import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
-import { AddressDoctorConfig } from '../../models/address-doctor/address-doctor-config.model';
+import { getAddressDoctorConfig } from '../../store/address-doctor';
 
 import { AddressDoctorService } from './address-doctor.service';
 
@@ -121,28 +119,29 @@ const response = {
 describe('Address Doctor Service', () => {
   let addressDoctorService: AddressDoctorService;
   let controller: HttpTestingController;
-  let statePropertiesService: StatePropertiesService;
 
   beforeEach(() => {
-    statePropertiesService = mock(StatePropertiesService);
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{ provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) }],
+      providers: [
+        provideMockStore({
+          selectors: [
+            {
+              selector: getAddressDoctorConfig,
+              value: {
+                login: 'login',
+                password: 'password',
+                maxResultCount: 5,
+                url: 'http://address-doctor.com',
+              },
+            },
+          ],
+        }),
+      ],
     });
     addressDoctorService = TestBed.inject(AddressDoctorService);
 
     controller = TestBed.inject(HttpTestingController);
-
-    when(
-      statePropertiesService.getStateOrEnvOrDefault<AddressDoctorConfig>('ADDRESS_DOCTOR', 'addressDoctor')
-    ).thenReturn(
-      of({
-        login: 'login',
-        password: 'password',
-        maxResultCount: 5,
-        url: 'http://address-doctor.com',
-      })
-    );
   });
 
   afterEach(() => {
