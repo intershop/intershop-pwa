@@ -16,8 +16,10 @@ export const getResponsiveStarterStoreApplication = createSelector(
   state => state.hybridApplication || '-'
 );
 
+const ssrBaseUrl = SSR && process.env.ICM_BASE_URL_SSR;
+
 export const getICMServerURL = createSelector(getConfigurationState, state =>
-  state.baseURL && state.server ? `${state.baseURL}/${state.server}` : undefined
+  state.baseURL && state.server ? `${ssrBaseUrl || state.baseURL}/${state.server}` : undefined
 );
 
 export const getRestEndpoint = createSelector(
