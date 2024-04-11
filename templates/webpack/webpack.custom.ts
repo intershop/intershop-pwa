@@ -156,6 +156,68 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       }
     });
 
+    // splitChunks not available for SSR build
+    if (config.optimization.splitChunks) {
+      logger.log('optimizing chunk splitting');
+
+      const cacheGroups = config.optimization.splitChunks.cacheGroups;
+
+      // chunk for all core functionality the user usually doesn't use while just browsing the shop
+      cacheGroups.customer = {
+        minChunks: 1,
+        priority: 30,
+        // add [\\/]src[\\/]app at the beginning of this regex to only include
+        // my-account pages from the PWA core
+        test: /[\\/]pages[\\/](account|checkout|registration|contact|forgot-password)/,
+        chunks: 'async',
+        name: 'customer',
+      };
+
+      // individual bundles for extensions and projects, that should only be loaded when necessary
+      cacheGroups.features = {
+        minChunks: 1,
+        priority: 25,
+        chunks: 'async',
+        name(module: { identifier(): string }) {
+          const identifier = module.identifier() as string;
+
+          // embed sentry library in sentry chunk
+          if (/[\\/]node_modules[\\/]@sentry[\\/]/.test(identifier)) {
+            return 'sentry';
+          }
+
+          // move translation files into own bundles
+          const i18nMatch = /[\\/]assets[\\/]i18n[\\/](.*?)\.json/.exec(identifier);
+          const locale = i18nMatch?.[1];
+
+          if (locale) {
+            return locale.replace('_', '-');
+          }
+
+          const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
+          const feature = match?.[2];
+
+          if (feature) {
+            // include core functionality in common bundle
+            if (['captcha', 'seo', 'tracking', 'recently'].some(f => f === feature)) {
+              return 'common';
+            }
+
+            const effectivePath = match[4];
+
+            // send exports and routing modules to the common module
+            if (effectivePath.startsWith('exports') || effectivePath.endsWith('-routing.module.ts')) {
+              return 'common';
+            }
+
+            return feature;
+          }
+
+          return 'common';
+        },
+      };
+    }
+
     if (!process.env.TESTING) {
       logger.log('setting up data-testing-id removal');
       // remove testing ids when loading html files
