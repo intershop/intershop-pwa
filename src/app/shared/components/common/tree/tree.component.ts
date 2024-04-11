@@ -5,6 +5,25 @@ import { Observable } from 'rxjs';
 
 import { DynamicFlatNode } from 'ish-core/utils/tree/tree.interface';
 
+/**
+ * Component for displaying angular material cdk trees @see {@link https://material.angular.io/cdk/tree/overview}.
+ * The base data is a list of objects that are extensions of the DynamicFlatNode {@link DynamicFlatNode}.
+ * Each object corresponds to a node in the tree.
+ *
+ * The list must be sorted in the following way:
+ *
+ * expample tree
+ * r __ a __ a1__a1.1
+ *   |  |___ a2__a2.1
+ *   |        |__a2.2
+ *   |
+ *   |__b __ b1
+ *      |___ b2
+ *
+ * resulting sort order
+ *
+ * [r,a,a1,a1.1,a2,a2.1,a2.2,b,b1,b2]
+ */
 @Component({
   selector: 'ish-tree',
   templateUrl: './tree.component.html',
