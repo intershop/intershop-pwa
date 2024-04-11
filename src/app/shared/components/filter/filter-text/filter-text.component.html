@@ -7,7 +7,7 @@
           type="button"
           class="btn btn-link btn-link-action"
           (click)="filter(facet)"
-          [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
+          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
         >
           <span class="filter-item-name"> {{ facet.displayName }} </span>
           <span class="count"> ({{ facet.count }}) </span>
@@ -23,7 +23,7 @@
           type="button"
           class="filter-item-name btn btn-link btn-link-action"
           (click)="filter(facet)"
-          [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
+          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
         >
           {{ facet.displayName }}
           <ng-container *ngIf="facet.level === maxLevel"> ({{ facet.count }}) </ng-container>

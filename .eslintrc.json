@@ -43,6 +43,12 @@
             "style": "camelCase"
           }
         ],
+        "@angular-eslint/pipe-prefix": [
+          "error",
+          {
+            "prefixes": ["ish"]
+          }
+        ],
         "@angular-eslint/sort-ngmodule-metadata-arrays": "warn",
         "@ngrx/avoid-combining-selectors": "off",
         "@ngrx/avoid-mapping-selectors": "off",

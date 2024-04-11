@@ -6,7 +6,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { omit } from 'ish-core/utils/functions';
 import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 
-@Pipe({ name: 'makeHref', pure: false })
+@Pipe({ name: 'ishMakeHref', pure: false })
 export class MakeHrefPipe implements PipeTransform {
   constructor(private multiSiteService: MultiSiteService) {}
   transform(location: LocationStrategy, urlParams: Record<string, string>): Observable<string> {
