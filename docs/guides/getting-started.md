@@ -41,7 +41,7 @@ ng serve --open
 > By default, the project is configured to work against a publicly available Intershop Commerce Management server (see `environment.model.ts`).
 >
 > ```
-> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> icmBaseURL: 'https://develop.icm.intershop.de',
 > ```
 >
 > To run your PWA against an own ICM server, configure the `icmBaseURL` in your local `environment.development.ts` or set the `icmBaseURL` in your projects `environment.model.ts` to your own ICM default server.
@@ -65,7 +65,7 @@ For production and production-like deployments we provide an [Intershop PWA Helm
 >
 > ```yaml
 > upstream:
->   icmBaseURL: https://pwa-ish-demo.test.intershop.com
+>   icmBaseURL: https://develop.icm.intershop.de
 > ```
 
 For a simple production-like development or testing deployment of the current project state, the project includes a `docker-compose.yml` that can be deployed with `docker compose up --build` in the project root.
@@ -78,7 +78,7 @@ This will deploy both containers of the Intershop PWA - the pwa (SSR) container 
 > services:
 >   pwa:
 >     environment:
->       ICM_BASE_URL: 'https://pwa-ish-demo.test.intershop.com'
+>       ICM_BASE_URL: 'https://develop.icm.intershop.de'
 > ```
 
 You can also manually build the docker image supplied with the `Dockerfile` in the root folder of the project.

@@ -74,7 +74,7 @@ CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-disp
 > The Intershop PWA project is configured to work against a publicly available Intershop Commerce Management server by default (see `environment.model.ts`).
 >
 > ```
-> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> icmBaseURL: 'https://develop.icm.intershop.de',
 > ```
 >
 > To configure your PWA project to use an own default ICM server, set the `icmBaseURL` in your projects `environment.model.ts` accordingly.
