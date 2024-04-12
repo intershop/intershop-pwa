@@ -42,16 +42,6 @@ if (localICMCacheActive) {
   content += `      ICM_BASE_URL_SSR: http://localhost:10000
     `;
 }
------
- *
- * Code snippet to adapt 'src\app\core\store\core\configuration\configuration.selectors.ts':
------
-const ssrBaseUrl = typeof process !== 'undefined' && process.env.ICM_BASE_URL_SSR;
-
-export const getICMServerURL = createSelector(getConfigurationState, state =>
-  state.baseURL && state.server ? `${ssrBaseUrl || state.baseURL}/${state.server}` : undefined
-);
------
  *
  */
 

@@ -50,6 +50,7 @@ Make sure to use them as written in the table below.
 |                     | CONCURRENCY_SSR       | number \| max        | Concurrency for SSR instances per theme (default: 2)                                             |
 |                     | CACHE_ICM_CALLS       | recommended \| JSON  | Enable caching for ICM calls, see [Local ICM Cache](#local-icm-cache) (default: disabled)        |
 | **General**         | ICM_BASE_URL          | string               | Sets the base URL for the ICM                                                                    |
+|                     | ICM_BASE_URL_SSR      | string               | Sets the base URL for the ICM used in SSR (optional)                                             |
 |                     | ICM_CHANNEL           | string               | Overrides the default channel                                                                    |
 |                     | ICM_APPLICATION       | string               | Overrides the default application                                                                |
 |                     | FEATURES              | comma-separated list | Overrides active features                                                                        |
