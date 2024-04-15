@@ -6,7 +6,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
@@ -169,14 +168,11 @@ export class ProductNotificationEditFormComponent implements OnChanges {
           addonLeft: {
             text: this.appFacade.currencySymbol$(),
           },
-        },
-        validators: {
-          validation: [SpecialValidators.moneyAmount],
+          mask: 'separator.2',
         },
         validation: {
           messages: {
             required: 'product.notification.edit.form.price.error.required',
-            moneyAmount: 'product.notification.edit.form.price.error.valid',
           },
         },
       },

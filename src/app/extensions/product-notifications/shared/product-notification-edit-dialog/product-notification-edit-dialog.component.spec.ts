@@ -62,22 +62,12 @@ describe('Product Notification Edit Dialog Component', () => {
       component.productNotificationForm = fb.group({
         alertType: ['price'],
         email: ['jlink@test.intershop.de', [Validators.required, SpecialValidators.email]],
-        priceValue: [1000, [SpecialValidators.moneyAmount]],
+        priceValue: [1000],
       });
 
       expect(component.formDisabled).toBeFalse();
       component.submitForm();
       expect(component.formDisabled).toBeFalse();
-    });
-
-    it('should not submit a form when the user does not provide money format for price notification', () => {
-      component.productNotificationForm = fb.group({
-        priceValue: ['abc', [SpecialValidators.moneyAmount]],
-      });
-
-      expect(component.formDisabled).toBeFalse();
-      component.submitForm();
-      expect(component.formDisabled).toBeTrue();
     });
 
     it('should emit delete product notification when alert type is delete', () => {
