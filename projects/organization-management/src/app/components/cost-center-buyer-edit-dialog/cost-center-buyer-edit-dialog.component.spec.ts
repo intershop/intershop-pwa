@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -20,6 +21,8 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);
+    when(appFacade.currencySymbol$(anything())).thenReturn(of('$'));
+
     organizationManagementFacade = mock(organizationManagementFacade);
 
     await TestBed.configureTestingModule({
@@ -41,30 +44,21 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
       login: ['jlink@test.intershop.de'],
       firstName: ['Jack'],
       lastName: ['Link'],
-      budgetValue: [123, [SpecialValidators.moneyAmount]],
+      budgetValue: [123],
       budgetPeriod: ['monthly'],
     });
 
     component.costCenterBuyerForm = form;
+    component.show({
+      login: 'jlink@test.intershop.de',
+      budget: { currency: 'USD', value: 10000 },
+    } as CostCenterBuyer);
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  it('should not submit a form when the user does not provide money format for budget', () => {
-    component.costCenterBuyerForm = fb.group({
-      budgetValue: ['abc', [SpecialValidators.moneyAmount]],
-    });
-
-    fixture.detectChanges();
-
-    expect(component.formDisabled).toBeFalse();
-    component.submitCostCenterBuyerForm();
-
-    expect(component.formDisabled).toBeTrue();
   });
 
   it('should display all form input fields for cost center buyer update', () => {

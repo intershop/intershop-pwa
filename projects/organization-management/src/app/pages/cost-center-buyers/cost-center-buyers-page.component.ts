@@ -12,7 +12,6 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -127,15 +126,8 @@ export class CostCenterBuyersPageComponent implements OnInit {
                 addonLeft: {
                   text: this.appFacade.currencySymbol$(),
                 },
+                mask: 'separator.2',
                 ariaLabel: 'Buyer budget',
-              },
-              validators: {
-                validation: [SpecialValidators.moneyAmount],
-              },
-              validation: {
-                messages: {
-                  moneyAmount: 'account.costcenter.budget.error.valid',
-                },
               },
             },
             {
