@@ -977,7 +977,6 @@
   "product.notification.edit.form.instock_notification.label": "Notify me when the product is back in stock.",
   "product.notification.edit.form.no_notification.label": "I no longer wish to receive any notifications about this item.",
   "product.notification.edit.form.price.error.required": "Please enter a valid amount of money.",
-  "product.notification.edit.form.price.error.valid": "Please enter a valid amount of money.",
   "product.notification.edit.form.price.label": "Price",
   "product.notification.edit.form.price_notification.label": "Notify me if the price drops to:",
   "product.notification.edit.form.update.button.label": "Update",
