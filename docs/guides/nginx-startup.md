@@ -269,7 +269,7 @@ The two NGINX modules
 - `ngx_http_brotli_filter_module.so` – for compressing responses on-the-fly
 - `ngx_http_brotli_static_module.so` - for serving pre-compressed files
 
-are built in the [`Dockerfile`](../../nginx/Dockerfile) using an NGINX archive in a version which matches the openresty Docker image version and are referenced in [`nginx.conf`](../../nginx/nginx.conf).
+are built in the [`Dockerfile`](../../nginx/Dockerfile) using an NGINX archive in a version which matches the openresty Docker image version and are referenced in [`nginx.conf.tmpl`](../../nginx/nginx.conf.tmpl).
 The archive needs to be used because it includes the `configure` command.
 The `./configure` [arguments](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded) are taken from the current openresty configuration using `nginx -V` (`--add-module` arguments are excluded), see [ngx_brotli
 ](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded).
@@ -279,6 +279,22 @@ The modules can also be built using an openresty archive, but in this case the b
 - `wget` the openresty archive version which matches the Docker image version
 - replace `make modules` with `make && make install`
 - the two Brotli modules are built into the folder _/build/nginx-<version>/objs/_
+
+## Environment Variables
+
+NGINX environment variables need to be configured in the `cache.extraEnvVars` section of the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa), e.g.
+
+```yaml
+cache:
+  extraEnvVars:
+    - name: NGINX_WORKER_PROCESSES
+      value: auto
+```
+
+| parameter                | format | default | comment                                                  |
+| ------------------------ | ------ | ------- | -------------------------------------------------------- |
+| NGINX_WORKER_PROCESSES   | string | `auto`  | overwrite the default `worker_processes` configuration   |
+| NGINX_WORKER_CONNECTIONS | string | `1024`  | overwrite the default `worker_connections` configuration |
 
 ## Further References
 

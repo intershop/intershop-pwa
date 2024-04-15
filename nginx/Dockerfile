@@ -25,7 +25,7 @@ RUN apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils libnss3-tools \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf.tmpl /etc/nginx/nginx.conf.tmpl
 COPY features /etc/nginx/features/
 COPY templates /etc/nginx/templates/
 COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
