@@ -1104,7 +1104,7 @@
   "quote.edit.unsubmitted.enter_an_optional_name.text": "Enter a quote request name (optional)",
   "quote.edit.unsubmitted.name.label": "Name:",
   "quote.edit.unsubmitted.provide_comment.text": "Provide a comment for your quote request",
-  "quote.edit.unsubmitted.quote_no.label": "Quote No.:",
+  "quote.edit.unsubmitted.quote_no.label": "Quote no.:",
   "quote.edit.unsubmitted.quote_request_details.text": "Quote request details",
   "quote.edit.unsubmitted.seller_comment.label": "Seller comment:",
   "quote.edit.unsubmitted.status.label": "Status:",
