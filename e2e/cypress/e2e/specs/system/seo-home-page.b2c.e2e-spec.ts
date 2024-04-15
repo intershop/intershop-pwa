@@ -10,7 +10,7 @@ describe('Page Meta', () => {
       page.metaData.check({
         title: 'inTRONICS Home | Intershop PWA',
         url: /.*\/home$/,
-        description: 'inTRONICS home description ...',
+        description: 'inTRONICS Home description ...',
       });
     });
   });
