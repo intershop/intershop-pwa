@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { flatten } from 'lodash-es';
 
 import { AttachmentMapper } from 'ish-core/models/attachment/attachment.mapper';
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
@@ -72,10 +71,14 @@ export class ProductMapper {
         type: 'VariationProductMaster',
         sku,
         completenessLevel: 0,
-        variationAttributeValues: flatten(variations.map(v => v.variableVariationAttributes)).filter(
-          (val, idx, arr) =>
-            arr.findIndex(el => el.variationAttributeId === val.variationAttributeId && el.value === val.value) === idx
-        ),
+        variationAttributeValues: variations
+          .map(v => v.variableVariationAttributes)
+          .flat()
+          .filter(
+            (val, idx, arr) =>
+              arr.findIndex(el => el.variationAttributeId === val.variationAttributeId && el.value === val.value) ===
+              idx
+          ),
       }
     );
   }
