@@ -228,9 +228,11 @@ export class ApiTokenService {
                   event.url.endsWith('token') &&
                   request.body instanceof HttpParams
                 ) {
-                  const { id_token: _, ...body } = event.body;
                   return event.clone({
-                    body,
+                    body: {
+                      ...event.body,
+                      id_token: undefined,
+                    },
                   });
                 }
                 return event;

@@ -109,19 +109,30 @@
           {
             "selector": "variable",
             "modifiers": ["const"],
-            "format": ["camelCase", "UPPER_CASE"],
-            "filter": {
-              "regex": "_",
-              "match": false
-            }
+            "format": ["camelCase", "UPPER_CASE"]
           },
           {
             "selector": "typeLike",
             "format": ["PascalCase"]
           },
           {
-            "selector": "function",
+            "selector": ["function", "classMethod", "classProperty"],
             "format": ["camelCase"]
+          },
+          {
+            "selector": "classProperty",
+            "modifiers": ["static"],
+            "format": ["camelCase", "UPPER_CASE"]
+          },
+          {
+            "selector": "parameter",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": "parameter",
+            "modifiers": ["unused"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
           }
         ],
         "@typescript-eslint/no-empty-function": "warn",
@@ -140,7 +151,10 @@
             "allowTernary": true
           }
         ],
-        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_" }
+        ],
         "@typescript-eslint/prefer-optional-chain": "warn",
         "arrow-body-style": ["warn", "as-needed"],
         "arrow-parens": ["warn", "as-needed"],

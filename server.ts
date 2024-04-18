@@ -96,7 +96,7 @@ global['navigator'] = win.navigator;
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
-  const log_all = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
+  const logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
 
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
@@ -199,7 +199,7 @@ export function app() {
     server.use(
       morgan(logFormat, {
         skip: (req: express.Request, res: express.Response) =>
-          req.originalUrl.startsWith('/INTERSHOP/static') || (res.statusCode < 400 && !log_all),
+          req.originalUrl.startsWith('/INTERSHOP/static') || (res.statusCode < 400 && !logAll),
       })
     );
   }
@@ -243,10 +243,11 @@ export function app() {
           ...icmMatchArray.groups,
           application: environment.icmApplication || '-',
         };
-        // Rewrite configuration part of incoming ICM url
-        const _url = url.replace(new RegExp(ICM_CONFIG_MATCH), buildICMWebURL(config));
-        // Build pwa URL based on equally named-groups of ICM url
-        newUrl = _url.replace(icmUrlRegex, `/${entry.pwaBuild}`);
+        newUrl = url
+          // Rewrite configuration part of incoming ICM url
+          .replace(new RegExp(ICM_CONFIG_MATCH), buildICMWebURL(config))
+          // Build pwa URL based on equally named-groups of ICM url
+          .replace(icmUrlRegex, `/${entry.pwaBuild}`);
         break;
       } else if (pwaUrlRegex.exec(url) && entry.handledBy === 'icm') {
         const config: { [is: string]: string } = {};
@@ -394,7 +395,7 @@ export function app() {
   );
 
   const angularUniversal = (req: express.Request, res: express.Response) => {
-    if (logging && log_all) {
+    if (logging && logAll) {
       console.log(`SSR ${req.originalUrl}`);
     }
 
@@ -447,7 +448,7 @@ export function app() {
           res.status(500).send(err.message);
         }
         if (logging) {
-          if (log_all || res.statusCode >= 400) {
+          if (logAll || res.statusCode >= 400) {
             console.log(`RES ${res.statusCode} ${req.originalUrl}`);
           }
           if (err) {

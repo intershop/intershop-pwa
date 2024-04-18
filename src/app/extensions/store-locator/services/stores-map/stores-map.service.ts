@@ -35,6 +35,7 @@ export class StoresMapService {
       apiKey: gmaKey,
       version: 'weekly',
     });
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     loader.importLibrary('maps').then(({ Map }) => {
       this.map = new Map(container, {
         center: { lat: 0, lng: 0 },
