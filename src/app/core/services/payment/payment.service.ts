@@ -107,6 +107,12 @@ export class PaymentService {
         failureUrl: `${loc}/checkout/payment;lang=${lang}?redirect=failure`,
       };
 
+      if (pm.capabilities.some(data => ['FastCheckout'].includes(data))) {
+        redirect.successUrl = `${loc}/checkout/review;lang=${lang}?redirect=success`;
+        redirect.cancelUrl = `${loc}/basket;lang=${lang}?redirect=cancel`;
+        redirect.failureUrl = `${loc}/basket;lang=${lang}?redirect=failure`;
+      }
+
       if (pm.capabilities.some(data => ['RedirectAfterCheckout'].includes(data))) {
         // *OrderID* will be replaced by the ICM server
         redirect.successUrl = `${loc}/checkout/receipt;lang=${lang}?redirect=success&orderId=*orderID*`;

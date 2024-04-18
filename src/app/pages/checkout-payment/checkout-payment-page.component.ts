@@ -31,7 +31,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
     this.basketError$ = this.checkoutFacade.basketError$;
     this.loading$ = this.checkoutFacade.basketLoading$;
     this.priceType$ = this.checkoutFacade.priceType$;
-    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$().pipe(shareReplay(1));
+    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethodsForCheckoutStep$('payment').pipe(shareReplay(1));
 
     // if there is only one eligible payment method without parameters, assign it automatically to the basket
     this.paymentMethods$

@@ -17,8 +17,8 @@ describe('Checkout Payment Page Component', () => {
 
   beforeEach(async () => {
     const checkoutFacade = mock(CheckoutFacade);
-    when(checkoutFacade.eligiblePaymentMethods$()).thenReturn(of([]));
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
+    when(checkoutFacade.eligiblePaymentMethodsForCheckoutStep$('payment')).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
       declarations: [CheckoutPaymentPageComponent, MockComponent(CheckoutPaymentComponent)],

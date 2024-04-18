@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { anyString } from 'ts-mockito';
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
@@ -35,7 +36,7 @@ import {
 } from './basket.actions';
 import {
   getBasketEligibleAddresses,
-  getBasketEligiblePaymentMethods,
+  getBasketEligiblePaymentMethodsForCheckoutStep,
   getBasketEligibleShippingMethods,
   getBasketError,
   getBasketInfo,
@@ -67,11 +68,11 @@ describe('Basket Selectors', () => {
     });
 
     it('should not select any shipping methods if it is in initial state', () => {
-      expect(getBasketEligibleShippingMethods(store$.state)).toBeUndefined();
+      expect(getBasketEligiblePaymentMethodsForCheckoutStep(anyString())(store$.state)).toBeUndefined();
     });
 
     it('should not select any payment methods if it is in initial state', () => {
-      expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
+      expect(getBasketEligiblePaymentMethodsForCheckoutStep(anyString())(store$.state)).toBeUndefined();
     });
 
     it('should not select a submitted basket if it is in initial state', () => {
@@ -284,12 +285,14 @@ describe('Basket Selectors', () => {
       it('should set load data when user is logged in', () => {
         store$.dispatch(loginUserSuccess({ customer: {} as Customer }));
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligiblePaymentMethods(store$.state)).toEqual([BasketMockData.getPaymentMethod()]);
+        expect(getBasketEligiblePaymentMethodsForCheckoutStep('payment')(store$.state)).toEqual([
+          BasketMockData.getPaymentMethod(),
+        ]);
       });
 
       it('should set load data and set saveForLater to false if user is logged out', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligiblePaymentMethods(store$.state)).toEqual([
+        expect(getBasketEligiblePaymentMethodsForCheckoutStep('payment')(store$.state)).toEqual([
           { ...BasketMockData.getPaymentMethod(), saveAllowed: false },
         ]);
       });
@@ -302,7 +305,7 @@ describe('Basket Selectors', () => {
 
       it('should not have loaded payment methods on error', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
+        expect(getBasketEligiblePaymentMethodsForCheckoutStep(anyString())(store$.state)).toBeUndefined();
         expect(getBasketError(store$.state)).toMatchInlineSnapshot(`
           {
             "message": "error",

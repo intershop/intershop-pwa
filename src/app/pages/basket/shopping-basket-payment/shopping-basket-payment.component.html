@@ -1,0 +1,48 @@
+<ul class="list-unstyled">
+  <!-- error message in case after cancelled/faulty redirect -->
+  <div *ngIf="redirectStatus" role="alert" class="alert alert-danger">
+    {{ 'checkout.payment.sorry_message.text' | translate }}
+    <ng-container *ngIf="redirectStatus === 'cancel'">{{ 'checkout.payment.canceled.text' | translate }}</ng-container>
+    <ng-container *ngIf="redirectStatus === 'failure'">{{ 'checkout.payment.failed.text' | translate }}</ng-container>
+  </div>
+  <!-- container for displaying of fast checkout payment methods -->
+  <ng-container *ngFor="let paymentMethod of paymentMethods$ | async">
+    <li class="d-none d-md-block">
+      <button
+        (click)="fastCheckout(paymentMethod.id)"
+        class="btn btn-lg btn-block btn-primary"
+        [disabled]="paymentMethod.isRestricted"
+      >
+        {{ paymentMethod.displayName }}
+      </button>
+      <!-- payment cost information -->
+      <p *ngIf="paymentCostThresholdReached(paymentMethod); else displayPaymentCosts">
+        {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}
+        {{ basket.totals.total | ishPrice }}
+      </p>
+      <ng-template #displayPaymentCosts>
+        <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
+          <p *ngIf="paymentMethod.paymentCosts?.[priceType]">
+            {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
+              paymentMethod.paymentCosts | ishPrice
+            }}&nbsp;
+            <span *ngIf="paymentMethod.paymentCostsThreshold" class="text-muted">
+              <span>-&nbsp;</span>{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
+              <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
+            </span>
+          </p>
+        </div>
+      </ng-template>
+      <!--payment restriction informations -->
+      <ng-template #displayRestrictions>
+        {{ 'checkout.payment.method.charges.text' | translate }}
+        &nbsp;
+        {{ paymentMethod.paymentCosts | ishPrice }}
+        &nbsp;
+        <p *ngFor="let restriction of paymentMethod.restrictionCauses" class="text-info">
+          {{ restriction.message }}
+        </p>
+      </ng-template>
+    </li>
+  </ng-container>
+</ul>

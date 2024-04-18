@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { concatMap, delay, filter, map, switchMap, take } from 'rxjs/operators';
 
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
@@ -35,6 +36,24 @@ import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 @Injectable()
 export class BasketPaymentEffects {
   constructor(private actions$: Actions, private store: Store, private paymentService: PaymentService) {}
+
+  /**
+   * The redirect after fast checkout payment method effect.
+   */
+  executeFastCheckoutRedirect$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(setBasketPaymentSuccess),
+        delay(100),
+        concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
+        filter(([, basket]) => basket.payment.capabilities?.includes('FastCheckout')),
+        concatMap(([, basket]) => {
+          location.assign(basket.payment.redirectUrl);
+          return EMPTY;
+        })
+      ),
+    { dispatch: false }
+  );
 
   /**
    * The load basket eligible payment methods effect.

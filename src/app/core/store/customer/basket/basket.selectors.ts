@@ -5,6 +5,7 @@ import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketView, createBasketView } from 'ish-core/models/basket/basket.model';
+import { PaymentMethodHelper } from 'ish-core/models/payment-method/payment-method.helper';
 import { getCustomerState } from 'ish-core/store/customer/customer-store';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
@@ -76,9 +77,12 @@ export const getBasketEligibleShippingMethods = createSelector(
   basket => basket.eligibleShippingMethods
 );
 
-export const getBasketEligiblePaymentMethods = createSelector(getBasketState, getLoggedInCustomer, (basket, customer) =>
-  basket?.eligiblePaymentMethods?.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
-);
+export const getBasketEligiblePaymentMethodsForCheckoutStep = (step: string) =>
+  createSelector(getBasketState, getLoggedInCustomer, (basket, customer) =>
+    basket?.eligiblePaymentMethods
+      ?.filter(pm => PaymentMethodHelper.shouldShowOnCheckoutStep(pm.capabilities, step))
+      .map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
+  );
 
 export const getBasketInvoiceAddress = createSelectorFactory<object, Address>(projector =>
   resultMemoize(projector, isEqual)
