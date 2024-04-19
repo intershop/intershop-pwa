@@ -1,5 +1,3 @@
-import { TestBed } from '@angular/core/testing';
-
 import { OrganizationHierarchiesGroupData } from './organization-hierarchies-group.interface';
 import { OrganizationHierarchiesGroupMapper } from './organization-hierarchies-group.mapper';
 import { OrganizationHierarchiesGroup } from './organization-hierarchies-group.model';
@@ -12,8 +10,6 @@ describe('Organization Hierarchies Group Mapper', () => {
   const CHILD_DISPLAYNAME = 'child';
   const CHILD_DESCRIPTION = 'child description';
   const LEAF_ID = 'leaf id';
-
-  let organizationHierarchiesGroupMapper: OrganizationHierarchiesGroupMapper;
 
   const ROOT: OrganizationHierarchiesGroupData = {
     attributes: { name: ROOT_DISPLAYNAME },
@@ -40,18 +36,13 @@ describe('Organization Hierarchies Group Mapper', () => {
     },
   };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    organizationHierarchiesGroupMapper = TestBed.inject(OrganizationHierarchiesGroupMapper);
-  });
-
   describe('fromData', () => {
     it('should throw when input is falsy', () => {
-      expect(() => organizationHierarchiesGroupMapper.fromData(undefined, undefined)).toThrow();
+      expect(() => OrganizationHierarchiesGroupMapper.fromData(undefined, undefined)).toThrow();
     });
 
     it('should map incoming data to model data', () => {
-      const mapped = organizationHierarchiesGroupMapper.fromData(ROOT, []);
+      const mapped = OrganizationHierarchiesGroupMapper.fromData(ROOT, []);
       expect(mapped).toHaveLength(1);
       expect(mapped[0]).toHaveProperty('id', ROOT_ID);
       expect(mapped[0]).toHaveProperty('displayName', ROOT_DISPLAYNAME);
@@ -63,9 +54,9 @@ describe('Organization Hierarchies Group Mapper', () => {
     });
 
     it('should map incoming data to model data with parent reference', () => {
-      const mapped: OrganizationHierarchiesGroup[] = organizationHierarchiesGroupMapper.fromData(
+      const mapped: OrganizationHierarchiesGroup[] = OrganizationHierarchiesGroupMapper.fromData(
         CHILD,
-        organizationHierarchiesGroupMapper.fromData(ROOT, [])
+        OrganizationHierarchiesGroupMapper.fromData(ROOT, [])
       );
       const index = mapped.findIndex(e => e.id === CHILD_ID);
       expect(mapped).toHaveLength(2);
@@ -81,11 +72,11 @@ describe('Organization Hierarchies Group Mapper', () => {
 
   describe('fromDocument', () => {
     it('should throw when input is falsy', () => {
-      expect(() => organizationHierarchiesGroupMapper.fromDocument(undefined)).toThrow();
+      expect(() => OrganizationHierarchiesGroupMapper.fromDocument(undefined)).toThrow();
     });
 
     it('should map incoming data to model data', () => {
-      const mapped = organizationHierarchiesGroupMapper.fromDocument({ data: [ROOT, CHILD] });
+      const mapped = OrganizationHierarchiesGroupMapper.fromDocument({ data: [ROOT, CHILD] });
       const index = mapped.findIndex(e => e.id === CHILD_ID);
       expect(mapped).toHaveLength(2);
       expect(mapped[index]).toHaveProperty('id', CHILD_ID);
@@ -110,7 +101,7 @@ describe('Organization Hierarchies Group Mapper', () => {
         },
       };
 
-      const mapped = organizationHierarchiesGroupMapper.fromDocument({ data: [CHILD, LEAF, ROOT] });
+      const mapped = OrganizationHierarchiesGroupMapper.fromDocument({ data: [CHILD, LEAF, ROOT] });
 
       expect(mapped).toHaveLength(3);
       expect(mapped[0]).toHaveProperty('id', ROOT_ID);
@@ -127,12 +118,12 @@ describe('Organization Hierarchies Group Mapper', () => {
 
   describe('toGroupData', () => {
     it('should throw when input is falsy', () => {
-      expect(() => organizationHierarchiesGroupMapper.toGroupData(undefined)).toThrow();
+      expect(() => OrganizationHierarchiesGroupMapper.toGroupData(undefined)).toThrow();
     });
 
     it('should map client site data to corresponding REST data', () => {
-      const mapped = organizationHierarchiesGroupMapper.toGroupData(
-        organizationHierarchiesGroupMapper.fromData(CHILD, [])[0],
+      const mapped = OrganizationHierarchiesGroupMapper.toGroupData(
+        OrganizationHierarchiesGroupMapper.fromData(CHILD, [])[0],
         ROOT_ID
       );
 

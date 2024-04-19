@@ -25,11 +25,7 @@ import { OrganizationHierarchiesGroup } from '../../models/organization-hierarch
  */
 @Injectable({ providedIn: 'root' })
 export class OrganizationHierarchiesService {
-  constructor(
-    private apiService: ApiService,
-    private organizationGroupMapper: OrganizationHierarchiesGroupMapper,
-    private store: Store
-  ) {}
+  constructor(private apiService: ApiService, private store: Store) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
@@ -57,7 +53,7 @@ export class OrganizationHierarchiesService {
         `organizations/${customer.customerNo}/groups`,
         this.contentTypeHeader
       )
-      .pipe(map(list => this.organizationGroupMapper.fromDocument(list)));
+      .pipe(map(list => OrganizationHierarchiesGroupMapper.fromDocument(list)));
   }
 
   /**
@@ -72,7 +68,7 @@ export class OrganizationHierarchiesService {
         this.apiService
           .post<OrganizationHierarchiesGroupDocument>(
             `organizations/${customer.customerNo}/groups`,
-            this.organizationGroupMapper.toGroupDocument(
+            OrganizationHierarchiesGroupMapper.toGroupDocument(
               child,
               parentGroupId === customer.customerNo ? undefined : parentGroupId
             ),
@@ -80,7 +76,7 @@ export class OrganizationHierarchiesService {
           )
           .pipe(
             mapToProperty('data'),
-            map(groupData => this.organizationGroupMapper.fromDataReversed(groupData))
+            map(groupData => OrganizationHierarchiesGroupMapper.fromDataReversed(groupData))
           )
       )
     );

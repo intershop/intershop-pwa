@@ -22,14 +22,14 @@
     //hierarchy selector when dropdown is shown
     &.show .hierarchy-switch-link {
       span:hover {
-        color: darken($text-color-quinary, 10%);
+        color: $CORPORATE-SECONDARY;
       }
     }
 
     //hierarchy selector when dropdown is hidden
     &:not(.show) .hierarchy-switch-link {
       span:hover {
-        color: darken($text-color-quinary, 10%);
+        color: $CORPORATE-SECONDARY;
       }
     }
   }

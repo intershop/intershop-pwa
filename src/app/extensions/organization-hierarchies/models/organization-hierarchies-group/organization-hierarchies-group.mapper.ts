@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { Customer } from 'ish-core/models/customer/customer.model';
-
 import { OrganizationHierarchiesGroupHelper } from './organization-hierarchies-group.helper';
 import {
   OrganizationHierarchiesGroupData,
@@ -12,20 +10,11 @@ import { OrganizationHierarchiesGroup } from './organization-hierarchies-group.m
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationHierarchiesGroupMapper {
-  fromCustomerData(customer: Customer): OrganizationHierarchiesGroup {
-    return {
-      id: customer.customerNo,
-      displayName: customer.companyName ?? customer.customerNo,
-      organization: customer.customerNo,
-      description: customer.description,
-    };
-  }
-
-  fromDocument(groupList: OrganizationHierarchiesGroupListDocument): OrganizationHierarchiesGroup[] {
+  static fromDocument(groupList: OrganizationHierarchiesGroupListDocument): OrganizationHierarchiesGroup[] {
     const tree: OrganizationHierarchiesGroup[] = [];
     if (groupList) {
       groupList.data.forEach(groupData => {
-        this.fromData(groupData, tree);
+        OrganizationHierarchiesGroupMapper.fromData(groupData, tree);
       });
     } else {
       throw new Error(`groupDocument is required`);
@@ -33,19 +22,19 @@ export class OrganizationHierarchiesGroupMapper {
     return tree.length > 0 ? OrganizationHierarchiesGroupHelper.resolveTreeAttributes(tree, undefined) : tree;
   }
 
-  fromData(
+  static fromData(
     groupData: OrganizationHierarchiesGroupData,
     tree: OrganizationHierarchiesGroup[]
   ): OrganizationHierarchiesGroup[] {
     if (groupData) {
-      tree.push(this.resolveAttributes(groupData));
+      tree.push(OrganizationHierarchiesGroupMapper.resolveAttributes(groupData));
       return tree;
     } else {
       throw new Error(`groupData is required`);
     }
   }
 
-  resolveAttributes(group: OrganizationHierarchiesGroupData): OrganizationHierarchiesGroup {
+  private static resolveAttributes(group: OrganizationHierarchiesGroupData): OrganizationHierarchiesGroup {
     const relationship = group.relationships;
     return {
       id: group.id,
@@ -59,14 +48,17 @@ export class OrganizationHierarchiesGroupMapper {
     };
   }
 
-  toGroupDocument(child: OrganizationHierarchiesGroup, parentGroupId?: string): OrganizationHierarchiesGroupDocument {
-    const childGroupData = this.toGroupData(child, parentGroupId);
+  static toGroupDocument(
+    child: OrganizationHierarchiesGroup,
+    parentGroupId?: string
+  ): OrganizationHierarchiesGroupDocument {
+    const childGroupData = OrganizationHierarchiesGroupMapper.toGroupData(child, parentGroupId);
     return {
       data: childGroupData,
     };
   }
 
-  toGroupData(data: OrganizationHierarchiesGroup, parentGroupId?: string): OrganizationHierarchiesGroupData {
+  static toGroupData(data: OrganizationHierarchiesGroup, parentGroupId?: string): OrganizationHierarchiesGroupData {
     if (!data) {
       throw new Error('Group data is mandatory');
     }
@@ -96,9 +88,9 @@ export class OrganizationHierarchiesGroupMapper {
     return groupData;
   }
 
-  fromDataReversed(groupData: OrganizationHierarchiesGroupData): OrganizationHierarchiesGroup {
+  static fromDataReversed(groupData: OrganizationHierarchiesGroupData): OrganizationHierarchiesGroup {
     if (groupData) {
-      return this.resolveAttributes(groupData);
+      return OrganizationHierarchiesGroupMapper.resolveAttributes(groupData);
     } else {
       throw new Error('groupData is required');
     }

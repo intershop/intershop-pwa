@@ -18,7 +18,7 @@ export interface OrganizationHierarchiesGroupData extends ResourceIdentifierData
   relationships: GroupRelationships;
 }
 
-export interface GroupRelationships {
+interface GroupRelationships {
   childGroups?: ResourceIdentifierListDocument;
   organization: ResourceIdentifierDocument;
   parentGroup?: ResourceIdentifierDocument;

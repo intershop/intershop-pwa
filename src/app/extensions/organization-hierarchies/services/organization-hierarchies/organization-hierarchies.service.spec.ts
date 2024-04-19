@@ -9,26 +9,21 @@ import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service'
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
-import { OrganizationHierarchiesGroupMapper } from '../../models/organization-hierarchies-group/organization-hierarchies-group.mapper';
-
 import { OrganizationHierarchiesService } from './organization-hierarchies.service';
 
 describe('Organization Hierarchies Service', () => {
   let apiServiceMock: ApiService;
   let organizationHierarchiesService: OrganizationHierarchiesService;
-  let organizationGroupMapper: OrganizationHierarchiesGroupMapper;
 
   const customer = { customerNo: 'testNumber' } as Customer;
   const buyingContext = 'testGroup';
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
-    organizationGroupMapper = mock(OrganizationHierarchiesGroupMapper);
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['configuration'])],
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
-        { provide: OrganizationHierarchiesGroupMapper, useFactory: () => instance(organizationGroupMapper) },
         provideMockStore({
           selectors: [{ selector: getLoggedInCustomer, value: customer }],
         }),
@@ -73,12 +68,10 @@ describe('Organization Hierarchies Service', () => {
     const customer = { customerNo: 'testNumber' } as Customer;
     const root = { displayName: 'root', id: 'rootID' };
     const newGroup = { displayName: 'newGroup', id: 'newGroupId' };
-    const organizationHierarchiesGroup = { displayName: 'newGroup', id: 'newGroupId', parentId: 'rootID' };
 
     it("should create group when 'createGroup' is called", done => {
-      when(organizationGroupMapper.fromDataReversed(anything())).thenReturn(organizationHierarchiesGroup);
       when(apiServiceMock.post(anything(), anything(), anything())).thenReturn(
-        of({ data: { id: anyString(), displayName: anyString(), description: anyString() } })
+        of({ data: { id: anyString(), attributes: { name: anyString(), description: anyString() } } })
       );
       const url = 'organizations/'.concat(customer.customerNo).concat('/groups');
       organizationHierarchiesService.createGroup(root.id, newGroup).subscribe(() => {

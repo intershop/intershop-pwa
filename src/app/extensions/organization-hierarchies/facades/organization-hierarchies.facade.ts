@@ -3,9 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
-import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
-import { getOrders, loadOrdersForBuyingContext } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -79,19 +77,6 @@ export class OrganizationHierarchiesFacade {
    */
   getDetailsOfGroup$(id: string): Observable<OrganizationHierarchiesGroup> {
     return this.store.pipe(select(getGroupDetails(id)));
-  }
-
-  // ORDERS
-
-  /**
-   * Returns all orders with the current buying context.
-   *
-   * @param query OrderListQuery for custom page limit
-   * @returns orders with the current buying context
-   */
-  orders$(query?: OrderListQuery) {
-    this.store.dispatch(loadOrdersForBuyingContext({ query: query || { limit: 30 } }));
-    return this.store.pipe(select(getOrders));
   }
 
   /**
