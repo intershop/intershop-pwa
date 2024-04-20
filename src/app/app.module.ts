@@ -1,5 +1,5 @@
 import { APP_ID, NgModule, TransferState } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration, withNoHttpTransferCache } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UrlSerializer } from '@angular/router';
 
@@ -46,7 +46,7 @@ import { ShellModule } from './shell/shell.module';
   providers: [
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
     { provide: APP_ID, useValue: 'intershop-pwa' },
-    provideClientHydration(),
+    provideClientHydration(withNoHttpTransferCache()),
   ],
 })
 export class AppModule {
