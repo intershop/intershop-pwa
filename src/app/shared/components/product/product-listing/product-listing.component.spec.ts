@@ -1,10 +1,9 @@
-import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { of } from 'rxjs';
-import { deepEqual, instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
@@ -24,7 +23,7 @@ describe('Product Listing Component', () => {
   beforeEach(async () => {
     const shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.productListingViewType$).thenReturn(of('grid'));
-    when(shoppingFacade.productListingView$(deepEqual(TEST_ID))).thenReturn(
+    when(shoppingFacade.productListingView$(anything())).thenReturn(
       of({
         allPagesAvailable: () => false,
         empty: () => false,
@@ -57,12 +56,12 @@ describe('Product Listing Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(() => component.ngOnChanges({})).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should display components without paging on the page', () => {
-    component.ngOnChanges({ productListingId: new SimpleChange(undefined, TEST_ID, true) });
+    component.productListingId = TEST_ID;
+
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-product-list', 'ish-product-list-toolbar']);
@@ -70,7 +69,7 @@ describe('Product Listing Component', () => {
 
   describe('display modes', () => {
     beforeEach(() => {
-      component.ngOnChanges({ productListingId: new SimpleChange(undefined, TEST_ID, true) });
+      component.productListingId = TEST_ID;
     });
 
     it('should display components with paging on the page if available and mode is endless-scrolling', () => {
