@@ -2,7 +2,7 @@ import { ChangeDetectorRef, DestroyRef, Pipe, PipeTransform, inject } from '@ang
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 
 /**
  * Pipe

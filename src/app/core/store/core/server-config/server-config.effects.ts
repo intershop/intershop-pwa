@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, identity } from 'rxjs';
 import { concatMap, filter, first, map, switchMap, take, takeWhile } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { applyConfiguration, getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
@@ -13,7 +13,6 @@ import { ConfigurationState } from 'ish-core/store/core/configuration/configurat
 import { serverConfigError } from 'ish-core/store/core/error';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
-import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 import { delayUntil, mapErrorToAction, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 

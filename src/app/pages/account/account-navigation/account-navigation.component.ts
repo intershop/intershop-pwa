@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
+import { FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 import { navigationItems } from './account-navigation.items';
 

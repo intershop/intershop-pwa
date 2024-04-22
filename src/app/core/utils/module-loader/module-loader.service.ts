@@ -12,8 +12,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store, select } from '@ngrx/store';
 import { takeUntil } from 'rxjs';
 
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { getFeatures } from 'ish-core/store/core/configuration';
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 declare interface LazyModuleType {

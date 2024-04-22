@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 
 /**
  * Structural directive.

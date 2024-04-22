@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Injectable } from '@angular/core';
 import { Observable, map, withLatestFrom } from 'rxjs';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 
 // not-dead-code
 /**
