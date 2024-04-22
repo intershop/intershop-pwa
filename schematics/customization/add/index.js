@@ -94,7 +94,11 @@ const overrideSchematic = './schematics/src/helpers/override/schema.json';
 const schematicsJson = parse(fs.readFileSync(overrideSchematic, { encoding: 'UTF-8' }));
 
 if (!schematicsJson.properties.theme.enum.includes(theme)) {
-  schematicsJson.properties.theme.enum.unshift(theme);
+  if (setDefault) {
+    schematicsJson.properties.theme.enum = [theme, 'all'];
+  } else {
+    schematicsJson.properties.theme.enum.unshift(theme);
+  }
   fs.writeFileSync(overrideSchematic, stringify(schematicsJson, null, 2));
   execSync('npx prettier --write ' + overrideSchematic);
   execSync('npm run build:schematics');
