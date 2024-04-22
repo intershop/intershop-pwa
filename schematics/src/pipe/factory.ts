@@ -11,7 +11,13 @@ import {
 } from '@angular-devkit/schematics';
 import { PWAPipeOptionsSchema as Options } from 'schemas/pipe/schema';
 
-import { applyNameAndPath, detectExtension, determineArtifactName, findDeclaringModule } from '../utils/common';
+import {
+  applyNameAndPath,
+  detectExtension,
+  determineArtifactName,
+  findDeclaringModule,
+  generateSelector,
+} from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addExportToNgModule, addProviderToNgModule } from '../utils/registration';
 
@@ -23,6 +29,7 @@ export function createPipe(options: Options): Rule {
     options = await detectExtension('pipe', host, options);
     options = await applyNameAndPath('pipe', host, options);
     options = determineArtifactName('pipe', host, options);
+    options = await generateSelector(host, options);
 
     if (!options.extension) {
       options.module = `core/pipes.module`;

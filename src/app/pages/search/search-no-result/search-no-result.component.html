@@ -13,7 +13,7 @@
 
   <p
     class="no-search-result-title"
-    [innerHTML]="'search.noResult.message' | translate : { '0': searchTerm | htmlEncode }"
+    [innerHTML]="'search.noResult.message' | translate : { '0': searchTerm | ishHtmlEncode }"
   ></p>
 
   <div class="search-container main-search-container">

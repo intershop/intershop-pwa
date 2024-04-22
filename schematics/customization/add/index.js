@@ -67,10 +67,16 @@ const addPrefixToRule = ruleConfig => {
   ruleConfig.prefix = ruleConfig.prefix.filter((val, idx, arr) => arr.indexOf(val) === idx);
 };
 
+const addPrefixesToRule = ruleConfig => {
+  ruleConfig.prefixes.push('custom');
+  ruleConfig.prefixes = ruleConfig.prefixes.filter((val, idx, arr) => arr.indexOf(val) === idx);
+};
+
 const eslintJson = parse(fs.readFileSync('./.eslintrc.json', { encoding: 'UTF-8' }));
 const overrideRules = eslintJson.overrides.find(c => c.files.includes('*.ts')).rules;
 addPrefixToRule(overrideRules['@angular-eslint/directive-selector'][1]);
 addPrefixToRule(overrideRules['@angular-eslint/component-selector'][1]);
+addPrefixesToRule(overrideRules['@angular-eslint/pipe-prefix'][1]);
 
 const reusePatterns = overrideRules['ish-custom-rules/project-structure'][1].reusePatterns;
 reusePatterns.theme = reusePatterns.theme.replace('b2b|b2c', `b2b|b2c|${theme}`);

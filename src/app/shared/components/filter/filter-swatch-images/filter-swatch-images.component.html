@@ -6,7 +6,7 @@
         [title]="facet.displayName + ' (' + facet.count + ')'"
         (click)="filter(facet)"
         (keypress.down)="filter(facet)"
-        [attr.data-testing-id]="'filter-link-' + (facet.displayName | sanitize)"
+        [attr.data-testing-id]="'filter-link-' + (facet.displayName | ishSanitize)"
         tabindex="0"
       >
         <span
