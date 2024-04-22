@@ -18,21 +18,40 @@ You will also have to provide the endpoint and additional verification data.
 This can be done by defining it in [Angular CLI environment](../concepts/configuration.md#angular-cli-environments) files:
 
 ```typescript
-export const environment: Environment = {
-  ...ENVIRONMENT_DEFAULTS,
-
-  addressDoctor: {
-    url: '<addressDoctor-url>',
-    login: '<addressDoctor-login>',
-    password: '<addressDoctor-password>',
-    maxResultCount: 5,
-  },
+features: [
+  'addressDoctor'
+],
+addressDoctor: {
+  url: '<addressDoctor-url>',
+  login: '<addressDoctor-login>',
+  password: '<addressDoctor-password>',
+  maxResultCount: 5,
+},
 ```
 
-This configuration can also be supplied via environment variable `ADDRESS_DOCTOR` as stringified JSON:
+The Address Doctor configuration can also be supplied via environment variable `ADDRESS_DOCTOR` as stringified JSON:
 
 ```text
-ADDRESS_DOCTOR='{ "addressDoctor": { "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5" } }';
+ADDRESS_DOCTOR='{ "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5" }';
+```
+
+The Address Doctor configuration for `docker-compose` looks like this:
+
+```yaml
+pwa:
+  environment:
+    ADDRESS_DOCTOR: '{ "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5" }'
+```
+
+For the current PWA Helm Chart that is also used in the PWA Flux deployments, the Address Doctor configuration looks like this.:
+
+```yaml
+environment:
+  - name: ADDRESS_DOCTOR
+    value: |
+      {
+        "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5"
+      }
 ```
 
 ## Workflow
