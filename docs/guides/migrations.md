@@ -11,6 +11,10 @@ kb_sync_latest_only
 
 The store action and method `addBasketToNewOrderTemplate` of the OrderTemplatesFacade have been renamed to `createOrderTemplateFromLineItems` and refactored slightly.
 
+The Intershop PWA specific Pipes `sanitize`, `makeHref` and `htmlEncode` were renamed using the common `ish` prefix that is used for the other custom Pipes as well.
+When migrating all occurrences of these Pipes need to be renamed to `ishSanitize`, `ishMakeHref` and `ishHtmlEncode`.
+The code generation was adapted to generate new Pipes from the beginning with the correct prefixes now.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.
