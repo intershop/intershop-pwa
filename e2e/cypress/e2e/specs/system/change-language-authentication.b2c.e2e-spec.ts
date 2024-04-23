@@ -6,7 +6,7 @@ import { Registration, sensibleDefaults } from '../../pages/account/registration
 
 const _ = {
   loginForm: {
-    englishTitle: 'Sign In',
+    englishTitle: 'Sign in',
     germanTitle: 'Anmelden',
   },
   user: {

@@ -5,7 +5,7 @@ export class CheckoutShippingPage {
 
   continueCheckout() {
     waitLoadingEnd(1000);
-    cy.get('button').contains('Continue Checkout').click();
+    cy.get('button').contains('Continue checkout').click();
     waitLoadingEnd(1000);
   }
 }

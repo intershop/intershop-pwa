@@ -50,7 +50,7 @@ export class AddressesPage {
   }
 
   saveAddress() {
-    cy.get('button').contains('Save Address').click();
+    cy.get('button').contains('Save address').click();
   }
 
   selectShippingAddress() {

@@ -62,7 +62,7 @@ describe('Shopping User', () => {
       waitLoadingEnd(1000);
     });
     at(CheckoutShippingPage, () => {
-      cy.contains('Select a Shipping Method');
+      cy.contains('Select a shipping method');
     });
   });
 });
