@@ -19,7 +19,9 @@ export type BasketItemUpdateType =
   | { quantity?: { value: number; unit: string }; product?: string }
   | { shippingMethod?: { id: string } }
   | { desiredDelivery?: string }
-  | { calculated: boolean };
+  | { calculated: boolean }
+  | { customerProductID?: string }
+  | { partialOrderNo?: string };
 
 /**
  * The Basket-Items Service handles basket line-item related calls for the 'baskets/items' REST API.
