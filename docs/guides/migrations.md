@@ -15,6 +15,12 @@ The Intershop PWA specific Pipes `sanitize`, `makeHref` and `htmlEncode` were re
 When migrating all occurrences of these Pipes need to be renamed to `ishSanitize`, `ishMakeHref` and `ishHtmlEncode`.
 The code generation was adapted to generate new Pipes from the beginning with the correct prefixes now.
 
+A few Stylelint rules were changed and the `.scss` files were adapted.
+`color-function-notation` was changed to the default `modern` resulting in changed color notations from `rgba(0, 0, 0, 0.125)` to `rgb(0 0 0 / 0.125)`
+`scss/no-global-function-names` was enabled resulting in changes e.g. from `map-get($grid-breakpoints, 'xs')` to `map.get($grid-breakpoints, 'xs')` with the necessary `@use` references or from `darken($color-label-new, 20%)` to `color.adjust($color-label-new, $lightness: -20%)`.
+In addition empty comments in `.scss` files are no longer allowed and removed.
+In migration projects either keep the Stylelint rules with the old settings or migrate all your styling files accordingly running `npm run format`.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.

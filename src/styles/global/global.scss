@@ -1,4 +1,3 @@
-//
 // LAYOUT
 // contains layout and presentation classes for the global page structure (header, footer, global navigation, ...)
 .main-container {
@@ -111,7 +110,6 @@ a {
   }
 }
 
-//
 // Main working area
 .wrapper {
   padding: 0 0 50px;
@@ -127,7 +125,6 @@ img {
   vertical-align: middle;
 }
 
-//
 // Global Panels
 .grey-panel {
   padding: ($space-default * 1.5) 0;
