@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { ProductReview, ProductReviewCreationType } from '../../models/product-reviews/product-review.model';
 import { ProductReviewsMapper } from '../../models/product-reviews/product-reviews.mapper';
@@ -24,7 +25,7 @@ export class ReviewsService {
       return throwError(() => new Error('getProductReviews() called without sku'));
     }
 
-    return this.apiService.get(`products/${sku}/reviews?attrs=own`, { sendSPGID: true }).pipe(
+    return this.apiService.get(`products/${encodeResourceID(sku)}/reviews?attrs=own`, { sendSPGID: true }).pipe(
       unpackEnvelope<Link>(),
       this.apiService.resolveLinks<ProductReview>(),
       map(reviews => ProductReviewsMapper.fromData(sku, reviews))
@@ -46,10 +47,12 @@ export class ReviewsService {
       return throwError(() => new Error('createProductReview() called without review'));
     }
 
-    return this.apiService.post(`products/${sku}/reviews`, { ...review, showAuthorNameFlag: true }).pipe(
-      this.apiService.resolveLink<ProductReview>(),
-      map(review => ProductReviewsMapper.fromData(sku, [{ ...review, own: true }]))
-    );
+    return this.apiService
+      .post(`products/${encodeResourceID(sku)}/reviews`, { ...review, showAuthorNameFlag: true })
+      .pipe(
+        this.apiService.resolveLink<ProductReview>(),
+        map(review => ProductReviewsMapper.fromData(sku, [{ ...review, own: true }]))
+      );
   }
 
   /**
@@ -66,6 +69,6 @@ export class ReviewsService {
       return throwError(() => new Error('deleteProductReview() called without reviewId'));
     }
 
-    return this.apiService.delete(`products/${sku}/reviews/${reviewId}`);
+    return this.apiService.delete(`products/${encodeResourceID(sku)}/reviews/${encodeResourceID(reviewId)}`);
   }
 }
