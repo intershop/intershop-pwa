@@ -12,10 +12,10 @@
             <ish-product-variation-display />
             <ish-product-bundle-display />
             <div class="d-none d-sm-block">
-              <span class="col-form-label">{{ 'account.wishlist.table.added_on' | translate }}</span>
+              <span class="col-form-label">{{ 'wishlist.table.added_on' | translate }}</span>
               {{ wishlistItemData?.creationDate | ishDate : 'shortDate' }}
             </div>
-            <div class="mb-2">
+            <div *ngIf="!readOnly" class="mb-2">
               <button
                 type="button"
                 class="btn-tool btn-link"
@@ -24,7 +24,7 @@
               >
                 <fa-icon
                   [icon]="['fas', 'arrows-alt']"
-                  [title]="'account.wishlist.table.options.move_to_another_wishlist' | translate"
+                  [title]="'wishlist.table.options.move_to_another_wishlist' | translate"
                 />
               </button>
               <button
@@ -33,7 +33,7 @@
                 (click)="removeProductFromWishlist(wishlistItemData.sku)"
                 data-testing-id="delete-wishlist"
               >
-                <fa-icon [icon]="['fas', 'trash-alt']" [title]="'account.wishlist.table.options.remove' | translate" />
+                <fa-icon [icon]="['fas', 'trash-alt']" [title]="'wishlist.table.options.remove' | translate" />
               </button>
             </div>
           </div>
@@ -42,10 +42,10 @@
         <div class="col-12 col-md-5 product-list-actions-container">
           <ish-product-price />
           <p *ngIf="product.available; else noInStock">
-            {{ 'account.wishlist.table.in_stock' | translate }}
+            {{ 'wishlist.table.in_stock' | translate }}
           </p>
           <ng-template #noInStock>
-            <p>{{ 'account.wishlist.table.not_accessible' | translate }}</p>
+            <p>{{ 'wishlist.table.not_accessible' | translate }}</p>
           </ng-template>
           <div *ngIf="product.available" class="row">
             <div class="col-6 offset-md-6 col-lg-5 offset-lg-0">

@@ -560,7 +560,7 @@
   "account.wishlists.edit_wishlist.confirmation": "Your wish list \"{{0}}\" has been updated.",
   "account.wishlists.edit_wishlist_form.save_button.text": "Save changes",
   "account.wishlists.heading": "Wish lists",
-  "account.wishlists.heading.tooltip.content": "You can create one or more personal wish lists to save and organize items. Every list has its own settings:<br><br> <b>Set as Preferred</b> makes a wish list your preferred wish list and sets all other lists (if any) back to normal. All added products will be added by default to this wish list. <br><br> You can share wish lists with friends by sending them an e-mail. This works with non-public lists, too. If you do not want to share this wish list anymore, you can click the Stop Sharing icon.",
+  "account.wishlists.heading.tooltip.content": "You can create one or more personal wish lists to save and organize items. Every list has its own settings:<br><br> <b>Set as Preferred</b> makes a wish list your preferred wish list and sets all other lists (if any) back to normal. All added products will be added by default to this wish list. <br><br> You can share wish lists with friends by sending them an e-mail. If you do not want to share this wish list anymore, you can click the Stop Sharing icon.",
   "account.wishlists.heading.tooltip.headline": "Wish lists",
   "account.wishlists.heading.tooltip.link": "How do wish lists work?",
   "account.wishlists.items": "{{0, plural, one{# Item} other{# Items}}}",
@@ -584,6 +584,7 @@
   "account.wishlists.wishlist_form.preferred.tooltip.linktext": "Details",
   "account.wishlists.wishlist_sharing_form.cancel_button.text": "Cancel",
   "account.wishlists.wishlist_sharing_form.friend_mails.description": "Separate multiple e-mail addresses with a comma.",
+  "account.wishlists.wishlist_sharing_form.friend_mails.error.emailList": "The e-mail address(es) are not valid.",
   "account.wishlists.wishlist_sharing_form.friend_mails.error.required": "The e-mail address(es) are required and must not be empty.",
   "account.wishlists.wishlist_sharing_form.friend_mails.label": "Friend's E-mail Address(es)",
   "account.wishlists.wishlist_sharing_form.heading": "E-mail My Wish List",
@@ -1296,5 +1297,7 @@
   "wishlist.table.header.item": "Item Description",
   "wishlist.table.header.price": "Price",
   "wishlist.table.in_stock": "In stock",
-  "wishlist.table.not_accessible": "No longer available"
+  "wishlist.table.not_accessible": "No longer available",
+  "wishlist.table.options.move_to_another_wishlist": "Move to other list",
+  "wishlist.table.options.remove": "Remove"
 }

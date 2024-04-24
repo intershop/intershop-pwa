@@ -1,4 +1,4 @@
-import { createAction } from '@ngrx/store';
+import { createAction, createActionGroup } from '@ngrx/store';
 
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
@@ -75,37 +75,25 @@ export const removeItemFromWishlistSuccess = createAction(
 
 export const removeItemFromWishlistFail = createAction('[Wishlist API] Remove Item from Wishlist Fail', httpError());
 
-export const selectWishlist = createAction('[Wishlist Internal] Select Wishlist', payload<{ id: string }>());
+export const selectWishlist = createAction('[Wishlist Internal] Select Wishlist', payload<{ wishlistId: string }>());
 
-export const shareWishlist = createAction(
-  '[Wishlist] Share Wishlist',
-  payload<{ wishlistId: string; wishlistSharing: WishlistSharing }>()
-);
+export const wishlistActions = createActionGroup({
+  source: 'Wishlist',
+  events: {
+    'Share Wishlist': payload<{ wishlistId: string; wishlistSharing: WishlistSharing }>(),
+    'Unshare Wishlist': payload<{ wishlistId: string }>(),
+    'Load Shared Wishlist': payload<{ wishlistId: string; owner: string; secureCode: string }>(),
+  },
+});
 
-export const shareWishlistSuccess = createAction(
-  '[Wishlist API] Share Wishlist Success',
-  payload<{ wishlistSharingResponse: WishlistSharingResponse }>()
-);
-
-export const shareWishlistFail = createAction('[Wishlist API] Share Wishlist Fail', httpError());
-
-export const unshareWishlist = createAction('[Wishlist] Unshare Wishlist', payload<{ wishlistId: string }>());
-
-export const unshareWishlistSuccess = createAction(
-  '[Wishlist API] Unshare Wishlist Success',
-  payload<{ wishlistId: string }>()
-);
-
-export const unshareWishlistFail = createAction('[Wishlist API] Unshare Wishlist Fail', httpError());
-
-export const loadSharedWishlist = createAction(
-  '[Wishlist] Load Shared Wishlist',
-  payload<{ id: string; owner: string; secureCode: string }>()
-);
-
-export const loadSharedWishlistSuccess = createAction(
-  '[Wishlist API] Load Shared Wishlist Success',
-  payload<{ wishlist: Wishlist }>()
-);
-
-export const loadSharedWishlistFail = createAction('[Wishlist API] Load Shared Wishlist Failure', httpError());
+export const wishlistApiActions = createActionGroup({
+  source: 'Wishlist API',
+  events: {
+    'Share Wishlist Success': payload<{ wishlistSharingResponse: WishlistSharingResponse }>(),
+    'Share Wishlist Fail': httpError<{}>(),
+    'Unshare Wishlist Success': payload<{ wishlistId: string }>(),
+    'Unshare Wishlist Fail': httpError<{}>(),
+    'Load Shared Wishlist Success': payload<{ wishlist: Wishlist }>(),
+    'Load Shared Wishlist Fail': httpError<{}>(),
+  },
+});

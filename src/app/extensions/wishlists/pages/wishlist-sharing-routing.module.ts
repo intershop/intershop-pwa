@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
+import { fetchSharedWishlist } from '../guards/fetch-shared-wishlist.guard';
+
 const routes: Routes = [
   {
-    path: 'wishlists',
-    loadChildren: () => import('./wishlist/wishlist-page.module').then(m => m.WishlistPageModule),
-    canActivate: [featureToggleGuard],
+    path: 'wishlists/:wishlistId',
+    loadChildren: () => import('./shared-wishlist/shared-wishlist-page.module').then(m => m.SharedWishlistPageModule),
+    canActivate: [featureToggleGuard, fetchSharedWishlist],
     data: { feature: 'wishlists' },
   },
 ];

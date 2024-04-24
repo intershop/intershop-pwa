@@ -18,12 +18,10 @@ import {
   getSelectedWishlistDetails,
   getWishlistsError,
   getWishlistsLoading,
-  loadSharedWishlist,
   moveItemToWishlist,
   removeItemFromWishlist,
-  shareWishlist,
-  unshareWishlist,
   updateWishlist,
+  wishlistActions,
 } from '../store/wishlist';
 
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -92,14 +90,14 @@ export class WishlistsFacade {
   }
 
   shareWishlist(wishlistId: string, wishlistSharing: WishlistSharing): void {
-    this.store.dispatch(shareWishlist({ wishlistId, wishlistSharing }));
+    this.store.dispatch(wishlistActions.shareWishlist({ wishlistId, wishlistSharing }));
   }
 
   unshareWishlist(wishlistId: string): void {
-    this.store.dispatch(unshareWishlist({ wishlistId }));
+    this.store.dispatch(wishlistActions.unshareWishlist({ wishlistId }));
   }
 
   loadSharedWishlist(id: string, owner: string, secureCode: string) {
-    this.store.dispatch(loadSharedWishlist({ id, owner, secureCode }));
+    this.store.dispatch(wishlistActions.loadSharedWishlist({ wishlistId: id, owner, secureCode }));
   }
 }

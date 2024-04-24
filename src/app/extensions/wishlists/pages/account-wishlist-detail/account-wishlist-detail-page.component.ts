@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, filter, take, takeUntil } from 'rxjs';
+import { Observable, filter, take } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -13,12 +14,12 @@ import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
   templateUrl: './account-wishlist-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountWishlistDetailPageComponent implements OnDestroy, OnInit {
+export class AccountWishlistDetailPageComponent implements OnInit {
   wishlist$: Observable<Wishlist>;
   wishlistError$: Observable<HttpError>;
   wishlistLoading$: Observable<boolean>;
 
-  private destroy = new Subject<void>();
+  private destroyedRef = inject(DestroyRef);
 
   constructor(private wishlistsFacade: WishlistsFacade, private translate: TranslateService) {}
 
@@ -39,22 +40,22 @@ export class AccountWishlistDetailPageComponent implements OnDestroy, OnInit {
     this.wishlistsFacade.unshareWishlist(wishlistId);
   }
 
-  shareWishlist(wishlistSharing: WishlistSharing, wishlist: Wishlist) {
-    this.wishlistsFacade.shareWishlist(wishlist.id, wishlistSharing);
+  shareWishlist(wishlistSharing: WishlistSharing, wishlistId: string) {
+    this.wishlistsFacade.shareWishlist(wishlistId, wishlistSharing);
 
     // ensure owner and secureCode are in the store
-    this.wishlistsFacade.currentWishlist$
+    this.wishlist$
       .pipe(
         filter(updatedWishlist => !!updatedWishlist?.owner && !!updatedWishlist?.secureCode),
         take(1),
-        takeUntil(this.destroy)
+        takeUntilDestroyed(this.destroyedRef)
       )
       .subscribe(updatedWishlist => {
         this.sendEmail(wishlistSharing, updatedWishlist);
       });
   }
 
-  sendEmail(wishlistSharing: WishlistSharing, wishlist: Wishlist) {
+  private sendEmail(wishlistSharing: WishlistSharing, wishlist: Wishlist) {
     const emailSubject = this.translate.instant('email.wishlist_sharing.heading');
     const defaultText = this.translate.instant('email.wishlist_sharing.text');
 
@@ -71,10 +72,5 @@ export class AccountWishlistDetailPageComponent implements OnDestroy, OnInit {
 
   trackByFn(_: number, item: WishlistItem) {
     return item.id;
-  }
-
-  ngOnDestroy() {
-    this.destroy.next();
-    this.destroy.complete();
   }
 }

@@ -7,16 +7,16 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 
-import { WishlistPageComponent } from './wishlist-page.component';
+import { SharedWishlistPageComponent } from './shared-wishlist-page.component';
 
-describe('Wishlist Page Component', () => {
-  let component: WishlistPageComponent;
-  let fixture: ComponentFixture<WishlistPageComponent>;
+describe('Shared Wishlist Page Component', () => {
+  let component: SharedWishlistPageComponent;
+  let fixture: ComponentFixture<SharedWishlistPageComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(ErrorMessageComponent), WishlistPageComponent],
+      declarations: [MockComponent(ErrorMessageComponent), SharedWishlistPageComponent],
       providers: [
         {
           provide: ActivatedRoute,
@@ -41,7 +41,7 @@ describe('Wishlist Page Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WishlistPageComponent);
+    fixture = TestBed.createComponent(SharedWishlistPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

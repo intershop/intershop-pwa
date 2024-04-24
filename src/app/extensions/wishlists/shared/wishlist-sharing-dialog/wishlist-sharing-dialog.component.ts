@@ -36,7 +36,7 @@ export class WishlistSharingDialogComponent implements OnInit {
   /**
    * Wishlist that should be shared
    */
-  @Input() wishlist: Wishlist;
+  @Input({ required: true }) wishlist: Wishlist;
 
   /**
    * Emits the data of the wishlist sharing.
@@ -75,11 +75,12 @@ export class WishlistSharingDialogComponent implements OnInit {
           maxLength: 256,
         },
         validators: {
-          validation: [SpecialValidators.noHtmlTags],
+          validation: [SpecialValidators.noHtmlTags, SpecialValidators.emailList],
         },
         validation: {
           messages: {
             required: 'account.wishlists.wishlist_sharing_form.friend_mails.error.required',
+            emailList: 'account.wishlists.wishlist_sharing_form.friend_mails.error.emailList',
             noHtmlTags: 'account.name.error.forbidden.html.chars',
           },
         },
@@ -105,10 +106,8 @@ export class WishlistSharingDialogComponent implements OnInit {
     }
 
     this.submitWishlistSharing.emit({
-      name: this.wishlist.title,
       recipients: this.wishListForm.get('friendEmails').value,
       message: this.wishListForm.get('personalMessage').value,
-      sender: undefined,
     });
 
     this.hide();

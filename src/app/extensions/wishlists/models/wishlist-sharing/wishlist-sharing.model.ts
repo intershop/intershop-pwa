@@ -1,8 +1,6 @@
 export interface WishlistSharing {
-  name: string;
   recipients: string;
   message: string;
-  sender: string;
 }
 
 export interface WishlistSharingResponse {

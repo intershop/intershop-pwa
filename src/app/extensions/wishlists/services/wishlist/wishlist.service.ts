@@ -162,6 +162,13 @@ export class WishlistService {
     );
   }
 
+  /**
+   * Shares the wishlist with other users (a comma separated list of email addresses)
+   *
+   * @param wishlistId       The wishlist id.
+   * @param wishlistSharing  The wishlist sharing data.
+   * @returns                The wishlist sharing response data with the secureCode which should be used to access the shared wishlist.
+   */
   shareWishlist(wishlistId: string, wishlistSharing: WishlistSharing): Observable<WishlistSharingResponse> {
     return this.appFacade.customerRestResource$.pipe(
       first(),
@@ -173,6 +180,11 @@ export class WishlistService {
     );
   }
 
+  /**
+   * Unshare the wishlist and invalidate all generated secureCodes.
+   *
+   * @param wishlistId  The wishlist id.
+   */
   unshareWishlist(wishlistId: string): Observable<void> {
     return this.appFacade.customerRestResource$.pipe(
       first(),
@@ -180,6 +192,14 @@ export class WishlistService {
     );
   }
 
+  /**
+   * Gets the shared wishlist using the secureCode to check access.
+   *
+   * @param wishlistId  The wishlist id.
+   * @param owner       The wishlist owner.
+   * @param secureCode  The secureCode.
+   * @returns           The wishlist.
+   */
   getSharedWishlist(wishlistId: string, owner: string, secureCode: string): Observable<Wishlist> {
     return this.apiService
       .get<WishlistData>(`wishlists/${wishlistId};owner=${owner};secureCode=${secureCode}`)

@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { instance, mock } from 'ts-mockito';
+
+import { WishlistsFacade } from '../../facades/wishlists.facade';
 
 import { WishlistLineItemComponent } from './wishlist-line-item.component';
 
@@ -8,7 +11,9 @@ describe('Wishlist Line Item Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) }],
+    }).compileComponents();
   });
 
   beforeEach(() => {
