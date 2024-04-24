@@ -96,14 +96,23 @@ If no environment variables for ignoring parameters are provided, the configurat
 
 ### Access ICM Sitemap
 
-Please refer to [Concept - XML Sitemaps](https://support.intershop.com/kb/index.php/Display/23D962#Concept-XMLSitemaps-XMLSitemapsandIntershopPWA) on how to configure ICM to generate PWA sitemap files.
+Please refer to [Concept - XML Sitemaps](https://support.intershop.com/kb/index.php/Display/23D962#Concept-XMLSitemaps-XMLSitemapsandIntershopPWA) on how to configure ICM to generate PWA sitemap files where the sitemap XML name has to start with the prefix `sitemap_`, e.g. `sitemap_pwa`.
 
 ```
-http://pwa/sitemap_pwa.xml
+http://foo.com/en/sitemap_pwa.xml
 ```
 
 To make above sitemap index file available under your deployment, you need to add the environment variable `ICM_BASE_URL` to your NGINX container.
 Let `ICM_BASE_URL` point to your ICM backend installation, e.g., `https://develop.icm.intershop.de`.
+
+On a local development system you need to add it to [`docker-compose.yml`](../../docker-compose.yml), e.g.
+
+```yaml
+nginx:
+  environment:
+    ICM_BASE_URL: 'https://develop.icm.intershop.de'
+```
+
 When the container is started it will process cache-ignore and multi-channel templates as well as sitemap proxy rules like this:
 
 ```yaml
@@ -114,6 +123,27 @@ proxy_pass https://develop.icm.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRON
 
 The process will utilize your [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax).
 Be sure to include `application` if you deviate from standard `rest` application.
+
+The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (instead of `default`) because it is used to generate the correct sitemap URL path, e.g.
+
+```yaml
+nginx:
+  environment:
+    MULTI_CHANNEL: |
+      .+:
+        - baseHref: /en
+          channel: inSPIRED-inTRONICS_Business-Site
+          lang: en_US
+        - baseHref: /de
+          channel: inSPIRED-inTRONICS_Business-Site
+          lang: de_DE
+        - baseHref: /fr
+          channel: inSPIRED-inTRONICS_Business-Site
+          lang: fr_FR
+        - baseHref: /b2c
+          channel: inSPIRED-inTRONICS-Site
+          theme: b2c
+```
 
 ### Override Identity Providers by Path
 
