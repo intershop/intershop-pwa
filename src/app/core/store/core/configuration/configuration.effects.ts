@@ -8,10 +8,10 @@ import { distinctUntilChanged, map, mergeMap, take, takeWhile } from 'rxjs/opera
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
+import { FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
-import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { distinctCompareWith, mapToPayload, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';

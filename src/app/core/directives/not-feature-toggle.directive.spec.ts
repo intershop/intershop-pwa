@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.module';
 
 @Component({
   template: `

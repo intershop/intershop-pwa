@@ -365,6 +365,12 @@
               "name": "ish-core/utils/dom/dom.service",
               "filePattern": "^.*\\.(component|directive)\\.ts*$",
               "message": "The \"DomService\" should only be used in injectable classes. Use the Angular \"Renderer2\" instead."
+            },
+            {
+              "importNamePattern": "^(F|f)eatureToggle",
+              "name": "ish-core/utils/feature-toggle/feature-toggle.service",
+              "filePattern": "^.*\\.ts*$",
+              "message": "Feature toggle related functionality should only be imported from the FeatureToggleModule"
             }
           ]
         ],

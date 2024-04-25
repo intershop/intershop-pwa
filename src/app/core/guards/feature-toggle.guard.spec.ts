@@ -2,8 +2,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { FeatureToggleModule, featureToggleGuard } from 'ish-core/feature-toggle.module';
-import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleModule, FeatureToggleType, featureToggleGuard } from 'ish-core/feature-toggle.module';
 
 describe('Feature Toggle Guard', () => {
   let router: Router;
