@@ -56,6 +56,9 @@ This environment file references two more files:
 - `environment.model.ts` where "ENVIRONMENT_DEFAULTS" are taken from
 - `environment.development.ts` where you can add your own configuration only for the local development environment, see overrides explanation above.
 
+To provide a common `environment.development.ts` base configuration for projects one can add the file `src/environments/environment.development.ts.template` to the project sources and pre-configure it for the projects context.
+This template will then be used by the initial `npm install` instead of our standard development configuration.
+
 ## Development Server
 
 Run `ng serve` or `ng s` for a development server.
