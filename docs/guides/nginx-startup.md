@@ -124,7 +124,7 @@ proxy_pass https://develop.icm.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRON
 The process will utilize your [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax).
 Be sure to include `application` if you deviate from standard `rest` application.
 
-The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (instead of `default`) because it is used to generate the correct sitemap URL path, e.g.
+The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (e.g. `inSPIRED-inTRONICS_Business-Site` and `inSPIRED-inTRONICS-Site` instead of `default`) because it is used to generate the correct sitemap URL path, e.g.
 
 ```yaml
 nginx:
