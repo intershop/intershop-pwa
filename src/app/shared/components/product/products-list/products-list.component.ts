@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@a
 import { isEqual } from 'lodash-es';
 import { Observable, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
+import { SwiperOptions } from 'swiper/types';
 
 import {
   LARGE_BREAKPOINT_WIDTH,
@@ -13,8 +14,6 @@ import { ProductContextDisplayProperties } from 'ish-core/facades/product-contex
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
-
-SwiperCore.use([Pagination, Navigation]);
 
 @Component({
   selector: 'ish-products-list',
@@ -32,11 +31,6 @@ export class ProductsListComponent implements OnChanges {
   productSKUs$: Observable<string[]>;
 
   /**
-   * track already fetched SKUs
-   */
-  private fetchedSKUs = new Set<string>();
-
-  /**
    * configuration of swiper carousel
    * https://swiperjs.com/swiper-api
    */
@@ -49,6 +43,7 @@ export class ProductsListComponent implements OnChanges {
     private shoppingFacade: ShoppingFacade
   ) {
     this.swiperConfig = {
+      modules: [Pagination, Navigation],
       watchSlidesProgress: true,
       direction: 'horizontal',
       navigation: true,
@@ -68,13 +63,6 @@ export class ProductsListComponent implements OnChanges {
       distinctUntilChanged<[string[], string[]]>(isEqual),
       map(([skus, failed]) => skus.filter(x => !failed.includes(x)))
     );
-  }
-
-  lazyFetch(fetch: boolean, sku: string): boolean {
-    if (fetch) {
-      this.fetchedSKUs.add(sku);
-    }
-    return this.fetchedSKUs.has(sku);
   }
 
   /**

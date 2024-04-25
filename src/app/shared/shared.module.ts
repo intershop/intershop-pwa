@@ -12,7 +12,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { SwiperModule } from 'swiper/angular';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -92,6 +91,7 @@ import { ErrorMessageComponent } from './components/common/error-message/error-m
 import { InPlaceEditComponent } from './components/common/in-place-edit/in-place-edit.component';
 import { InfoBoxComponent } from './components/common/info-box/info-box.component';
 import { InfoMessageComponent } from './components/common/info-message/info-message.component';
+import { LazyItemComponent } from './components/common/lazy-item/lazy-item.component';
 import { LoadingComponent } from './components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
@@ -155,6 +155,7 @@ import { SearchBoxComponent } from './components/search/search-box/search-box.co
 import { FormlyAddressFormsModule } from './formly-address-forms/formly-address-forms.module';
 import { FormlyModule } from './formly/formly.module';
 import { FormsSharedModule } from './forms/forms.module';
+import { SwiperModule } from './swiper/swiper.module';
 
 const importExportModules = [
   AddressDoctorExportsModule,
@@ -226,6 +227,7 @@ const declaredComponents = [
   FilterNavigationSidebarComponent,
   FilterSwatchImagesComponent,
   FilterTextComponent,
+  LazyItemComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
   LineItemListElementComponent,
@@ -279,6 +281,7 @@ const exportedComponents = [
   InfoBoxComponent,
   InfoMessageComponent,
   InPlaceEditComponent,
+  LazyItemComponent,
   LineItemListComponent,
   LoadingComponent,
   LoginFormComponent,

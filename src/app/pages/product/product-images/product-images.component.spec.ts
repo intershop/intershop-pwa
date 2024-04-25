@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductLabelComponent } from 'ish-shared/components/product/product-label/product-label.component';
+import { SwiperComponent } from 'ish-shared/swiper/swiper.component';
 
 import { ProductImagesComponent } from './product-images.component';
 

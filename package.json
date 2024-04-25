@@ -102,7 +102,7 @@
     "ngx-toastr": "^18.0.0",
     "pm2": "^5.3.1",
     "rxjs": "~7.8.1",
-    "swiper": "^8.4.7",
+    "swiper": "^11.0.7",
     "tslib": "^2.6.2",
     "typeface-roboto": "^1.1.13",
     "typeface-roboto-condensed": "^1.1.13",
