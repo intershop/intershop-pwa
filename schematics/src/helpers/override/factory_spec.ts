@@ -98,7 +98,7 @@ describe('override Schematic', () => {
   });
 
   it('should do nothing when no override was specified', async () => {
-    const tree = await runOverride({ from: 'src/app/foo/dummy/dummy.component.ts', theme: 'b2b' });
+    const tree = await runOverride({ from: 'src/app/foo/dummy/dummy.component.ts', theme: 'all' });
 
     expect(tree.files.filter(x => x.includes('dummy.component'))).toMatchInlineSnapshot(`
       [
@@ -114,36 +114,36 @@ describe('override Schematic', () => {
   });
 
   it('should throw an error if html override is specified on a non-component', async done => {
-    await runOverride({ from: 'core/services/dummy/dummy.service.ts', theme: 'b2b', html: true }).catch(err => {
+    await runOverride({ from: 'core/services/dummy/dummy.service.ts', theme: 'all', html: true }).catch(err => {
       expect(err).toMatchInlineSnapshot(`[Error: Template and Style overrides only work on components.]`);
       done();
     });
   });
 
   it('should throw an error if scss override is specified on a non-component', async done => {
-    await runOverride({ from: 'core/services/dummy/dummy.service.ts', theme: 'b2b', scss: true }).catch(err => {
+    await runOverride({ from: 'core/services/dummy/dummy.service.ts', theme: 'all', scss: true }).catch(err => {
       expect(err).toMatchInlineSnapshot(`[Error: Template and Style overrides only work on components.]`);
       done();
     });
   });
 
   it('should override component html if specified', async () => {
-    const tree = await runOverride({ from: 'foo/dummy/dummy.component.ts', theme: 'b2b', html: true });
+    const tree = await runOverride({ from: 'foo/dummy/dummy.component.ts', theme: 'all', html: true });
 
     expect(tree.files.filter(x => x.includes('dummy.component'))).toMatchInlineSnapshot(`
       [
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
-        "/src/app/foo/dummy/dummy.component.b2b.html",
+        "/src/app/foo/dummy/dummy.component.all.html",
       ]
     `);
 
-    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.b2b.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
+    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
   });
 
   it('should override component scss for components with css if specified', async () => {
-    const tree = await runOverride({ from: 'src/app/foo/foobar/foobar.component.ts', theme: 'b2b', scss: true });
+    const tree = await runOverride({ from: 'src/app/foo/foobar/foobar.component.ts', theme: 'all', scss: true });
 
     expect(tree.files.filter(x => x.includes('foobar.component'))).toMatchInlineSnapshot(`
       [
@@ -151,15 +151,15 @@ describe('override Schematic', () => {
         "/src/app/foo/foobar/foobar.component.scss",
         "/src/app/foo/foobar/foobar.component.spec.ts",
         "/src/app/foo/foobar/foobar.component.ts",
-        "/src/app/foo/foobar/foobar.component.b2b.scss",
+        "/src/app/foo/foobar/foobar.component.all.scss",
       ]
     `);
 
-    expect(appTree.exists('/src/app/foo/foobar/foobar.component.b2b.scss')).toBeTrue();
+    expect(appTree.exists('/src/app/foo/foobar/foobar.component.all.scss')).toBeTrue();
   });
 
   it('should override component scss for components without it', async () => {
-    const tree = await runOverride({ from: 'foo/dummy/dummy.component.ts', theme: 'b2b', scss: true });
+    const tree = await runOverride({ from: 'foo/dummy/dummy.component.ts', theme: 'all', scss: true });
 
     expect(tree.files.filter(x => x.includes('dummy.component'))).toMatchInlineSnapshot(`
       [
@@ -167,11 +167,11 @@ describe('override Schematic', () => {
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
         "/src/app/foo/dummy/dummy.component.scss",
-        "/src/app/foo/dummy/dummy.component.b2b.scss",
+        "/src/app/foo/dummy/dummy.component.all.scss",
       ]
     `);
 
-    expect(appTree.exists('/src/app/foo/dummy/dummy.component.b2b.scss')).toBeTrue();
+    expect(appTree.exists('/src/app/foo/dummy/dummy.component.all.scss')).toBeTrue();
     expect(appTree.exists('/src/app/foo/dummy/dummy.component.scss')).toBeTrue();
     const dummyComponent = appTree.readContent('/src/app/foo/dummy/dummy.component.ts');
     expect(componentDecorator(dummyComponent)).toMatchInlineSnapshot(
@@ -180,18 +180,18 @@ describe('override Schematic', () => {
   });
 
   it('should override component ts if specified', async () => {
-    const tree = await runOverride({ from: 'foo/dummy/dummy.component.ts', theme: 'b2b', ts: true });
+    const tree = await runOverride({ from: 'foo/dummy/dummy.component.ts', theme: 'all', ts: true });
 
     expect(tree.files.filter(x => x.includes('dummy.component'))).toMatchInlineSnapshot(`
       [
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
-        "/src/app/foo/dummy/dummy.component.b2b.ts",
+        "/src/app/foo/dummy/dummy.component.all.ts",
       ]
     `);
 
-    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.b2b.ts')).toEqual(
+    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts')).toEqual(
       appTree.readContent('/src/app/foo/dummy/dummy.component.ts')
     );
   });
@@ -199,7 +199,7 @@ describe('override Schematic', () => {
   it('should override everything on components with css if specified', async () => {
     const tree = await runOverride({
       from: 'src/app/foo/foobar/foobar.component.ts',
-      theme: 'b2b',
+      theme: 'all',
       scss: true,
       html: true,
       ts: true,
@@ -211,15 +211,15 @@ describe('override Schematic', () => {
         "/src/app/foo/foobar/foobar.component.scss",
         "/src/app/foo/foobar/foobar.component.spec.ts",
         "/src/app/foo/foobar/foobar.component.ts",
-        "/src/app/foo/foobar/foobar.component.b2b.html",
-        "/src/app/foo/foobar/foobar.component.b2b.scss",
-        "/src/app/foo/foobar/foobar.component.b2b.ts",
+        "/src/app/foo/foobar/foobar.component.all.html",
+        "/src/app/foo/foobar/foobar.component.all.scss",
+        "/src/app/foo/foobar/foobar.component.all.ts",
       ]
     `);
 
-    expect(appTree.exists('/src/app/foo/foobar/foobar.component.b2b.scss')).toBeTrue();
-    expect(appTree.readContent('/src/app/foo/foobar/foobar.component.b2b.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
-    expect(appTree.readContent('/src/app/foo/foobar/foobar.component.b2b.ts')).toEqual(
+    expect(appTree.exists('/src/app/foo/foobar/foobar.component.all.scss')).toBeTrue();
+    expect(appTree.readContent('/src/app/foo/foobar/foobar.component.all.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
+    expect(appTree.readContent('/src/app/foo/foobar/foobar.component.all.ts')).toEqual(
       appTree.readContent('/src/app/foo/foobar/foobar.component.ts')
     );
   });
@@ -227,7 +227,7 @@ describe('override Schematic', () => {
   it('should override everything on components without css if specified', async () => {
     const tree = await runOverride({
       from: 'foo/dummy/dummy.component.ts',
-      theme: 'b2b',
+      theme: 'all',
       scss: true,
       html: true,
       ts: true,
@@ -238,16 +238,16 @@ describe('override Schematic', () => {
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
-        "/src/app/foo/dummy/dummy.component.b2b.html",
+        "/src/app/foo/dummy/dummy.component.all.html",
         "/src/app/foo/dummy/dummy.component.scss",
-        "/src/app/foo/dummy/dummy.component.b2b.scss",
-        "/src/app/foo/dummy/dummy.component.b2b.ts",
+        "/src/app/foo/dummy/dummy.component.all.scss",
+        "/src/app/foo/dummy/dummy.component.all.ts",
       ]
     `);
 
-    expect(appTree.exists('/src/app/foo/dummy/dummy.component.b2b.scss')).toBeTrue();
-    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.b2b.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
-    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.b2b.ts')).toEqual(
+    expect(appTree.exists('/src/app/foo/dummy/dummy.component.all.scss')).toBeTrue();
+    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
+    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts')).toEqual(
       appTree.readContent('/src/app/foo/dummy/dummy.component.ts')
     );
   });
@@ -255,7 +255,7 @@ describe('override Schematic', () => {
   it('should override service ts if requested', async () => {
     const tree = await runOverride({
       from: 'src/app/core/services/dummy/dummy.service.ts',
-      theme: 'b2b',
+      theme: 'all',
       ts: true,
     });
 
@@ -263,7 +263,7 @@ describe('override Schematic', () => {
       [
         "/src/app/core/services/dummy/dummy.service.spec.ts",
         "/src/app/core/services/dummy/dummy.service.ts",
-        "/src/app/core/services/dummy/dummy.service.b2b.ts",
+        "/src/app/core/services/dummy/dummy.service.all.ts",
       ]
     `);
   });
@@ -271,14 +271,14 @@ describe('override Schematic', () => {
   it('should override any ts if requested', async () => {
     const tree = await runOverride({
       from: 'core/routing/product.route.ts',
-      theme: 'b2b',
+      theme: 'all',
       ts: true,
     });
 
     expect(tree.files.filter(x => x.includes('product.route'))).toMatchInlineSnapshot(`
       [
         "/src/app/core/routing/product.route.ts",
-        "/src/app/core/routing/product.route.b2b.ts",
+        "/src/app/core/routing/product.route.all.ts",
       ]
     `);
   });
@@ -286,14 +286,14 @@ describe('override Schematic', () => {
   it('should override file if path is windows-styled', async () => {
     const tree = await runOverride({
       from: 'core\\routing\\product.route.ts',
-      theme: 'b2b',
+      theme: 'all',
       ts: true,
     });
 
     expect(tree.files.filter(x => x.includes('product.route'))).toMatchInlineSnapshot(`
       [
         "/src/app/core/routing/product.route.ts",
-        "/src/app/core/routing/product.route.b2b.ts",
+        "/src/app/core/routing/product.route.all.ts",
       ]
     `);
   });
