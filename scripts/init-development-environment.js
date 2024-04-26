@@ -9,7 +9,7 @@ const envDevTemplatePath = 'src/environments/environment.development.ts.template
 /** @type string */
 let envDevTemplate;
 if (fs.existsSync(envDevTemplatePath)) {
-  envDevTemplate = fs.readFileSync('src/environments/environment.development.ts.template', 'utf8');
+  envDevTemplate = fs.readFileSync(envDevTemplatePath, 'utf8');
 } else {
   envDevTemplate = `import { Environment } from "./environment.model";
 
