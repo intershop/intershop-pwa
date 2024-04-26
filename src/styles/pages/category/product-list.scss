@@ -1,4 +1,5 @@
-//
+@use 'sass:color';
+
 // PRODUCT LIST
 
 .product-list {
@@ -219,7 +220,7 @@
 
     &::before {
       // ribbon color
-      border-color: darken($color-label-new, 20%) transparent transparent;
+      border-color: color.adjust($color-label-new, $lightness: -20%) transparent transparent;
     }
   }
 
@@ -228,7 +229,7 @@
 
     &::before {
       // ribbon color
-      border-color: darken($color-label-topseller, 20%) transparent transparent;
+      border-color: color.adjust($color-label-topseller, $lightness: -20%) transparent transparent;
     }
   }
 
@@ -237,7 +238,7 @@
 
     &::before {
       // ribbon color
-      border-color: darken($color-label-sale, 20%) transparent transparent;
+      border-color: color.adjust($color-label-sale, $lightness: -20%) transparent transparent;
     }
   }
 }

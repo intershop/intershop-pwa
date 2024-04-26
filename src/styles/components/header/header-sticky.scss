@@ -15,7 +15,7 @@
     display: block;
     width: 100%;
     background-color: $color-inverse;
-    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 5px 0 rgb(0 0 0 / 0.1);
 
     &::before {
       background-color: $color-inverse;
@@ -120,7 +120,7 @@
 
 .homepage.sticky-header {
   header {
-    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 5px 0 rgb(0 0 0 / 0.1);
   }
 
   .wrapper {

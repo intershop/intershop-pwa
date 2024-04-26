@@ -49,5 +49,5 @@ code {
   color: #319f9e;
   background: #f0f2f1;
   border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.125);
 }

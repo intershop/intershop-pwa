@@ -9,7 +9,6 @@
   "rules": {
     "alpha-value-notation": "number",
     "at-rule-no-vendor-prefix": true,
-    "color-function-notation": "legacy",
     "color-named": "never",
     "font-family-name-quotes": "always-unless-keyword",
     "function-url-no-scheme-relative": true,
@@ -17,9 +16,7 @@
     "import-notation": "string",
     "media-feature-name-no-vendor-prefix": true,
     "media-feature-name-no-unknown": true,
-    "media-query-no-invalid": null,
     "no-descending-specificity": null,
-    "no-duplicate-selectors": true,
     "property-no-vendor-prefix": true,
     "selector-no-vendor-prefix": true,
     "selector-not-notation": "simple",
@@ -27,8 +24,6 @@
       true,
       { "ignorePseudoElements": ["ng-deep"] }
     ],
-    "scss/comment-no-empty": null,
-    "scss/no-global-function-names": null,
     "value-keyword-case": "lower",
     "value-no-vendor-prefix": true
   }

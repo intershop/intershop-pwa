@@ -153,6 +153,7 @@ rediss
 refactoring
 refactorings
 resetted
+rgba
 roadmap
 roboto
 robotobold
