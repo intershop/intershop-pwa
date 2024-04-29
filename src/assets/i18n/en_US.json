@@ -555,7 +555,7 @@
   "account.wishlists.new_wishlist.confirmation": "Your wish list \"{{0}}\" has been created.",
   "account.wishlists.new_wishlist_dialog.header": "Add wish list",
   "account.wishlists.new_wishlist_form.create_button.text": "Create",
-  "account.wishlists.no_items": "You have not added any items to your wish list.",
+  "account.wishlists.no_items": "You have not added any available items to your wish list.",
   "account.wishlists.no_wishlists": "Currently you don’t have any wish lists.",
   "account.wishlists.table.preferred": "Preferred",
   "account.wishlists.widget.heading": "Your wish list items",

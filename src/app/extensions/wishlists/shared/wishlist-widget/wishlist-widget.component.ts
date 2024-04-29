@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -19,7 +20,7 @@ export class WishlistWidgetComponent implements OnInit {
   allWishlistsItemsSkus$: Observable<string[]>;
   tileConfiguration: Partial<ProductContextDisplayProperties>;
 
-  constructor(private wishlistsFacade: WishlistsFacade) {
+  constructor(private wishlistsFacade: WishlistsFacade, private shoppingFacade: ShoppingFacade) {
     this.tileConfiguration = {
       addToWishlist: false,
       addToOrderTemplate: false,
@@ -29,6 +30,8 @@ export class WishlistWidgetComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.allWishlistsItemsSkus$ = this.wishlistsFacade.allWishlistsItemsSkus$;
+    this.allWishlistsItemsSkus$ = this.shoppingFacade.excludeFailedProducts$(
+      this.wishlistsFacade.allWishlistsItemsSkus$
+    );
   }
 }

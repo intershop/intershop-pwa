@@ -4,8 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
@@ -18,15 +19,20 @@ describe('Recently Viewed Component', () => {
   let component: RecentlyViewedComponent;
   let element: HTMLElement;
   let recentlyFacade: RecentlyFacade;
+  let shoppingFacade: ShoppingFacade;
   let location: Location;
 
   beforeEach(async () => {
     recentlyFacade = mock(RecentlyFacade);
+    shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([{ path: 'recently', component: RecentlyViewedComponent }])],
       declarations: [MockComponent(ProductsListComponent), MockPipe(TranslatePipe), RecentlyViewedComponent],
-      providers: [{ provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) }],
+      providers: [
+        { provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+      ],
     }).compileComponents();
   });
 
@@ -51,12 +57,14 @@ describe('Recently Viewed Component', () => {
 
   it('should display view all link on page', () => {
     when(recentlyFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1', 'P2', 'P3']));
+    when(shoppingFacade.excludeFailedProducts$(anything())).thenReturn(of(['P1', 'P2', 'P3']));
     fixture.detectChanges();
     expect(findAllDataTestingIDs(fixture)).toContain('view-all');
   });
 
   it('should navigate to recently page when view-all link is clicked', fakeAsync(() => {
     when(recentlyFacade.mostRecentlyViewedProducts$).thenReturn(of(['P1']));
+    when(shoppingFacade.excludeFailedProducts$(anything())).thenReturn(of(['P1']));
     fixture.detectChanges();
 
     expect(location.path()).toMatchInlineSnapshot(`""`);
