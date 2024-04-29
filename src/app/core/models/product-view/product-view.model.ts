@@ -11,7 +11,6 @@ interface SimpleProductView extends Product {
 
 interface VariationProductView extends VariationProduct, SimpleProductView {
   type: VariationProduct['type'];
-  productMaster: VariationProductMaster;
 }
 
 interface VariationProductMasterView extends VariationProductMaster, SimpleProductView {
@@ -44,14 +43,12 @@ export function createVariationProductMasterView(
 
 export function createVariationProductView(
   product: VariationProduct,
-  productMaster: VariationProductMaster,
   defaultCategory?: CategoryView
 ): VariationProductView {
   return (
     product && {
       ...createProductView(product, defaultCategory),
       type: 'VariationProduct',
-      productMaster,
     }
   );
 }

@@ -2,7 +2,7 @@ import { groupBy } from 'lodash-es';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { VariationProduct } from 'ish-core/models/product/product.model';
+import { VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 import { omit } from 'ish-core/utils/functions';
 
 import { VariationAttribute } from './variation-attribute.model';
@@ -13,13 +13,17 @@ export class ProductVariationHelper {
   /**
    * Build select value structure
    */
-  static buildVariationOptionGroups(product: ProductView, variations: VariationProduct[]): VariationOptionGroup[] {
-    if (!product?.variableVariationAttributes?.length) {
+  static buildVariationOptionGroups(
+    variationProduct: VariationProduct,
+    productMaster: VariationProductMaster,
+    variations: VariationProduct[]
+  ): VariationOptionGroup[] {
+    if (!variationProduct?.variableVariationAttributes?.length) {
       return [];
     }
 
     // transform currently selected variation attribute list to object with the attributeId as key
-    const currentSettings = product.variableVariationAttributes.reduce<{ [id: string]: VariationAttribute }>(
+    const currentSettings = variationProduct.variableVariationAttributes.reduce<{ [id: string]: VariationAttribute }>(
       (acc, attr) => ({
         ...acc,
         [attr.variationAttributeId]: attr,
@@ -29,7 +33,7 @@ export class ProductVariationHelper {
 
     // transform all variation attribute values to selectOptions
     // each with information about alternative combinations and active status (active status comes from currently selected variation)
-    const options: VariationSelectOption[] = (product.productMaster?.variationAttributeValues || [])
+    const options: VariationSelectOption[] = (productMaster?.variationAttributeValues || [])
       .map(attr => ({
         label: ProductVariationHelper.toDisplayValue(attr.value),
         value: ProductVariationHelper.toValue(attr.value)?.toString(),
@@ -39,7 +43,11 @@ export class ProductVariationHelper {
       }))
       .map(option => ({
         ...option,
-        alternativeCombination: ProductVariationHelper.alternativeCombinationCheck(option, product, variations),
+        alternativeCombination: ProductVariationHelper.alternativeCombinationCheck(
+          option,
+          variationProduct,
+          variations
+        ),
       }));
 
     // group options list by attributeId
@@ -48,7 +56,7 @@ export class ProductVariationHelper {
     // go through those groups and transform them to more complex objects
     return Object.keys(groupedOptions).map(attrId => {
       // we need to get one of the original attributes again here, because we lost the attribute name
-      const attribute = product.productMaster.variationAttributeValues.find(a => a.variationAttributeId === attrId);
+      const attribute = productMaster.variationAttributeValues.find(a => a.variationAttributeId === attrId);
       return {
         id: attribute.variationAttributeId,
         label: attribute.name,
