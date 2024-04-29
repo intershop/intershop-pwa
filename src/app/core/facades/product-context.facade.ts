@@ -23,7 +23,12 @@ import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
+import {
+  ProductCompletenessLevel,
+  ProductHelper,
+  SkuQuantityType,
+  VariationProduct,
+} from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -102,6 +107,7 @@ export interface ProductContext {
   links: ProductLinksDictionary;
   promotions: Promotion[];
   parts: SkuQuantityType[];
+  variations: VariationProduct[];
 
   // variation handling
   variationCount: number;
@@ -136,6 +142,13 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
   private validProductSKU$ = this.select('product').pipe(
     filter(p => !!p && !p.failed),
     mapToProperty('sku')
+  );
+
+  private masterProductSKU$ = this.select('product').pipe(
+    switchMap(product =>
+      ProductHelper.isMasterProduct(product) ? this.validProductSKU$ : this.select('product', 'productMasterSKU')
+    ),
+    whenTruthy()
   );
 
   constructor(
@@ -441,6 +454,9 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     };
 
     switch (k1) {
+      case 'variations':
+        wrap('variations', this.shoppingFacade.productVariations$(this.masterProductSKU$));
+        break;
       case 'links':
         wrap('links', this.shoppingFacade.productLinks$(this.validProductSKU$));
         break;
@@ -499,7 +515,9 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
   }
 
   changeVariationOption(name: string, value: string) {
-    this.set('sku', () => ProductVariationHelper.findPossibleVariation(name, value, this.get('product')));
+    this.set('sku', () =>
+      ProductVariationHelper.findPossibleVariation(name, value, this.get('product'), this.get('variations'))
+    );
   }
 
   addToBasket() {

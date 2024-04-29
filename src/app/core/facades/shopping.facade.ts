@@ -36,6 +36,7 @@ import {
   getProductLinks,
   getProductParts,
   getProductVariationCount,
+  getProductVariations,
   loadProduct,
   loadProductIfNotLoaded,
   loadProductLinks,
@@ -149,6 +150,13 @@ export class ShoppingFacade {
           this.store.pipe(select(getPriceDisplayType)),
         ]).pipe(map(args => PriceItemHelper.selectPricing(...args)))
       )
+    );
+  }
+
+  productVariations$(sku: string | Observable<string>) {
+    return toObservable(sku).pipe(
+      whenTruthy(),
+      switchMap(plainSKU => this.store.pipe(select(getProductVariations(plainSKU))))
     );
   }
 

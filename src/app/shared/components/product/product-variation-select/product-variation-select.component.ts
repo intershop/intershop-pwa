@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
@@ -20,9 +20,9 @@ export class ProductVariationSelectComponent implements OnInit {
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.variationOptions$ = this.context
-      .select('product')
-      .pipe(map(ProductVariationHelper.buildVariationOptionGroups));
+    this.variationOptions$ = combineLatest([this.context.select('product'), this.context.select('variations')]).pipe(
+      map(([product, variations]) => ProductVariationHelper.buildVariationOptionGroups(product, variations))
+    );
     this.visible$ = this.context.select('displayProperties', 'variations');
   }
 

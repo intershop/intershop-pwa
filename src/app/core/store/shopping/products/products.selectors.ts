@@ -64,7 +64,7 @@ export const getProductVariationSKUs = (sku: string) =>
     return state.variations[sku];
   });
 
-const internalProductVariations = (sku: string) =>
+export const getProductVariations = (sku: string) =>
   /* memoization manually by output: variation SKUs don't vary, but reference to state changes often */
   createSelectorFactory<object, VariationProduct[]>(projector => resultMemoize(projector, isEqual))(
     getProductsState,
@@ -94,13 +94,12 @@ export const getProduct = (sku: string) =>
     internalRawProduct(sku),
     internalProductDefaultCategory(sku),
     internalProductDefaultVariationSKU(sku),
-    internalProductVariations(sku),
     internalProductMaster(sku),
-    (product, defaultCategory, defaultVariationSKU, variations, productMaster): ProductView =>
+    (product, defaultCategory, defaultVariationSKU, productMaster): ProductView =>
       ProductHelper.isMasterProduct(product)
-        ? createVariationProductMasterView(product, defaultVariationSKU, variations, defaultCategory)
+        ? createVariationProductMasterView(product, defaultVariationSKU, defaultCategory)
         : ProductHelper.isVariationProduct(product)
-        ? createVariationProductView(product, variations, productMaster, defaultCategory)
+        ? createVariationProductView(product, productMaster, defaultCategory)
         : createProductView(product, defaultCategory)
   );
 
@@ -112,8 +111,9 @@ export const getProductVariationCount = (sku: string) =>
   createSelector(
     getAvailableFilter,
     getProduct(sku),
-    (filters, product) =>
-      ProductHelper.isMasterProduct(product) && ProductVariationHelper.productVariationCount(product, filters)
+    getProductVariations(sku),
+    (filters, product, variations) =>
+      ProductHelper.isMasterProduct(product) && ProductVariationHelper.productVariationCount(variations, filters)
   );
 
 export const getProductLinks = (sku: string) => createSelector(getProductsState, state => state.links[sku]);
