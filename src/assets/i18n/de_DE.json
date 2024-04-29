@@ -555,7 +555,7 @@
   "account.wishlists.new_wishlist.confirmation": "Ihre Wunschliste \"{{0}}\" wurde erstellt. ",
   "account.wishlists.new_wishlist_dialog.header": "Wunschliste hinzufügen",
   "account.wishlists.new_wishlist_form.create_button.text": "Anlegen",
-  "account.wishlists.no_items": "Sie haben keine Artikel zu Ihrer Wunschliste hinzugefügt.",
+  "account.wishlists.no_items": "Sie haben keine verfügbaren Artikel zu Ihrer Wunschliste hinzugefügt.",
   "account.wishlists.no_wishlists": "Derzeit haben Sie keine Wunschlisten.",
   "account.wishlists.table.preferred": "Standardliste",
   "account.wishlists.widget.heading": "Artikel auf Ihrer Wunschliste",

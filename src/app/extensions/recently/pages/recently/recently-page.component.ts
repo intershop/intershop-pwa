@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+
 import { RecentlyFacade } from '../../facades/recently.facade';
 
 @Component({
@@ -11,10 +13,10 @@ import { RecentlyFacade } from '../../facades/recently.facade';
 export class RecentlyPageComponent implements OnInit {
   products$: Observable<string[]>;
 
-  constructor(private recentlyFacade: RecentlyFacade) {}
+  constructor(private recentlyFacade: RecentlyFacade, private shoppingFacade: ShoppingFacade) {}
 
   ngOnInit() {
-    this.products$ = this.recentlyFacade.recentlyViewedProducts$;
+    this.products$ = this.shoppingFacade.excludeFailedProducts$(this.recentlyFacade.recentlyViewedProducts$);
   }
 
   clearAll() {

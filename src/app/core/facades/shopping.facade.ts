@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 import { Observable, combineLatest, identity } from 'rxjs';
 import { debounce, distinctUntilChanged, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
@@ -119,6 +120,14 @@ export class ShoppingFacade {
   }
 
   failedProducts$ = this.store.pipe(select(getFailedProducts));
+
+  // remove all SKUs from the productSKUs that are also contained in the failed products
+  excludeFailedProducts$(productSKUs: string[] | Observable<string[]>) {
+    return combineLatest([toObservable(productSKUs), this.store.pipe(select(getFailedProducts))]).pipe(
+      distinctUntilChanged<[string[], string[]]>(isEqual),
+      map(([skus, failed]) => skus.filter(sku => !failed.includes(sku)))
+    );
+  }
 
   productPrices$(sku: string | Observable<string>, fresh = false) {
     return toObservable(sku).pipe(
