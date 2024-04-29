@@ -43,7 +43,8 @@ Product variations were eagerly loaded via effects.
 In projects with a lot of Variations, this can lead to performance issues, especially if the variations data is not needed for the current views.
 For that reason product variations are now loaded lazily through the following changes that might need adaptions with project customizations.
 
-- The variations property on the product view interface was removed. Variations can now be retrieved via the product context facade or the shopping facade.
+- The `variations` property on the product view interface was removed. Variations can now be retrieved via the product context facade or the shopping facade.
+- The `productMaster` property on the product view model has been removed. The master product should be individually retrieved.
 
 ## From 5.0 to 5.1
 

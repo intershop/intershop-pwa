@@ -1,5 +1,4 @@
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 
 import { ProductVariationHelper } from './product-variation.helper';
@@ -67,15 +66,16 @@ const productMaster = {
   ],
 } as VariationProductMaster;
 
-const variationProduct = {
-  ...productVariations[0],
-  productMaster,
-} as ProductView;
+const variationProduct = productVariations[0];
 
 describe('Product Variation Helper', () => {
   describe('buildVariationOptionGroups', () => {
     it('should build variation option groups for variation product', () => {
-      const result = ProductVariationHelper.buildVariationOptionGroups(variationProduct, productVariations);
+      const result = ProductVariationHelper.buildVariationOptionGroups(
+        variationProduct,
+        productMaster,
+        productVariations
+      );
       expect(result).toMatchInlineSnapshot(`
         [
           {

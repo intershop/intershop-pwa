@@ -39,7 +39,7 @@ export const loadProductsForMasterFail = createAction(
 );
 
 export const loadProductVariationsIfNotLoaded = createAction(
-  '[Products Internal] Load Product Variations if not loaded',
+  '[Products] Load Product Variations if not loaded',
   payload<{ sku: string }>()
 );
 

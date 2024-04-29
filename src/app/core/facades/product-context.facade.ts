@@ -28,6 +28,7 @@ import {
   ProductHelper,
   SkuQuantityType,
   VariationProduct,
+  VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
@@ -109,6 +110,7 @@ export interface ProductContext {
   parts: SkuQuantityType[];
   variations: VariationProduct[];
   variationCount: number;
+  productMaster: VariationProductMaster;
 
   // quantity
   quantity: number;
@@ -453,6 +455,13 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
       case 'variationCount':
         wrap('variationCount', this.shoppingFacade.productVariationCount$(this.validProductSKU$));
         break;
+      case 'productMaster':
+        wrap(
+          'productMaster',
+          this.shoppingFacade
+            .product$(this.masterProductSKU$, ProductCompletenessLevel.List)
+            .pipe(filter(ProductHelper.isMasterProduct))
+        );
       case 'links':
         wrap('links', this.shoppingFacade.productLinks$(this.validProductSKU$));
         break;
