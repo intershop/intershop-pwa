@@ -39,6 +39,12 @@ The dead code detection script was improved and extended and is now checking Ang
 This resulted in more variables and methods being declared as `private` and some unused code being removed.
 This should not affect PWA based projects as long as such internal declarations were not used, else compiling will fail and the code would need to be adapted/reverted accordingly.
 
+Product variations were eagerly loaded via effects.
+In projects with a lot of Variations, this can lead to performance issues, especially if the variations data is not needed for the current views.
+For that reason product variations are now loaded lazily through the following changes that might need adaptions with project customizations.
+
+- The variations property on the product view interface was removed. Variations can now be retrieved via the product context facade or the shopping facade.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.

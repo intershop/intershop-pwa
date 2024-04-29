@@ -27,6 +27,7 @@ import {
   getProductEntities,
   getProductLinks,
   getProductParts,
+  getProductVariations,
   getSelectedProduct,
 } from './products.selectors';
 
@@ -330,13 +331,15 @@ describe('Products Selectors', () => {
             "defaultVariationSKU": "VAR",
             "sku": "SKU",
             "type": "VariationProductMaster",
-            "variations": [
-              {
-                "sku": "VAR",
-                "type": "VariationProduct",
-              },
-            ],
           }
+        `);
+        expect(getProductVariations('SKU')(store$.state)).toMatchInlineSnapshot(`
+          [
+            {
+              "sku": "VAR",
+              "type": "VariationProduct",
+            },
+          ]
         `);
       });
     });

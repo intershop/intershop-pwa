@@ -2,6 +2,7 @@ import { groupBy } from 'lodash-es';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { VariationProduct } from 'ish-core/models/product/product.model';
 import { omit } from 'ish-core/utils/functions';
 
 import { VariationAttribute } from './variation-attribute.model';
@@ -12,7 +13,7 @@ export class ProductVariationHelper {
   /**
    * Build select value structure
    */
-  static buildVariationOptionGroups(product: ProductView): VariationOptionGroup[] {
+  static buildVariationOptionGroups(product: ProductView, variations: VariationProduct[]): VariationOptionGroup[] {
     if (!product?.variableVariationAttributes?.length) {
       return [];
     }
@@ -38,7 +39,7 @@ export class ProductVariationHelper {
       }))
       .map(option => ({
         ...option,
-        alternativeCombination: ProductVariationHelper.alternativeCombinationCheck(option, product),
+        alternativeCombination: ProductVariationHelper.alternativeCombinationCheck(option, product, variations),
       }));
 
     // group options list by attributeId
@@ -57,13 +58,18 @@ export class ProductVariationHelper {
     });
   }
 
-  static findPossibleVariation(name: string, value: string, product: ProductView): string {
+  static findPossibleVariation(
+    name: string,
+    value: string,
+    product: ProductView,
+    variations: VariationProduct[]
+  ): string {
     const target = omit(
       ProductVariationHelper.simplifyVariableVariationAttributes(product.variableVariationAttributes),
       name
     );
 
-    const candidates = product.variations
+    const candidates = variations
       .filter(variation =>
         variation.variableVariationAttributes.some(
           attr => attr.variationAttributeId === name && ProductVariationHelper.isEqual(attr.value, value)
@@ -92,11 +98,11 @@ export class ProductVariationHelper {
     return product && !!product.defaultVariationSKU;
   }
 
-  static productVariationCount(product: ProductView, filters: FilterNavigation): number {
-    if (!product) {
+  static productVariationCount(variations: VariationProduct[], filters: FilterNavigation): number {
+    if (!variations?.length) {
       return 0;
     } else if (!filters?.filter) {
-      return product.variations?.length;
+      return variations?.length;
     }
 
     const selectedFacets = filters.filter
@@ -105,10 +111,10 @@ export class ProductVariationHelper {
       .map(selected => selected.split('='));
 
     if (!selectedFacets.length) {
-      return product.variations?.length;
+      return variations?.length;
     }
 
-    return product.variations
+    return variations
       .map(p => p.variableVariationAttributes)
       .filter(attrs =>
         attrs.every(
@@ -130,7 +136,11 @@ export class ProductVariationHelper {
    * @param product The given product containing the related product variations
    * @returns       Indicates if no perfect match is found.
    */
-  private static alternativeCombinationCheck(option: VariationSelectOption, product: ProductView): boolean {
+  private static alternativeCombinationCheck(
+    option: VariationSelectOption,
+    product: ProductView,
+    variations: VariationProduct[]
+  ): boolean {
     if (!product.variableVariationAttributes?.length) {
       return;
     }
@@ -148,7 +158,7 @@ export class ProductVariationHelper {
     }
 
     // check if one of the variation products has the same attributes as the attributes to be compared
-    return !product.variations.some(variation =>
+    return !variations.some(variation =>
       ProductVariationHelper.variationAttributeArrayEquals(variation.variableVariationAttributes, comparisonAttributes)
     );
   }

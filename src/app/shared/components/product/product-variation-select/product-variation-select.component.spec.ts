@@ -46,7 +46,6 @@ describe('Product Variation Select Component', () => {
 
   const variationProductView = {
     ...variationProduct,
-    variations: [variationProduct],
     productMaster,
   } as ProductView;
 
@@ -69,6 +68,7 @@ describe('Product Variation Select Component', () => {
     element = fixture.nativeElement;
 
     when(context.select('product')).thenReturn(of(variationProductView));
+    when(context.select('variations')).thenReturn(of([variationProduct]));
     when(context.select('displayProperties', 'variations')).thenReturn(of(true));
   });
 
