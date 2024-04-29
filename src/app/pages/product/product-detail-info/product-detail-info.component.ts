@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductHelper } from 'ish-core/models/product/product.helper';
 
 @Component({
   selector: 'ish-product-detail-info',
@@ -28,6 +29,6 @@ export class ProductDetailInfoComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => (this.active = 'DESCRIPTION'));
 
-    this.isVariationMaster$ = this.context.select('variationCount').pipe(map(variationCount => !!variationCount));
+    this.isVariationMaster$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
   }
 }

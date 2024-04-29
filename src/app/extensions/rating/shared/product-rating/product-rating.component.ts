@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 /**
@@ -31,6 +32,6 @@ export class ProductRatingComponent implements OnInit {
       map(rate => range(1, 6).map(index => (index <= rate ? 'full' : index - 0.5 === rate ? 'half' : 'empty')))
     );
     this.numberOfReviews$ = this.context.select('product', 'numberOfReviews');
-    this.isVariationMaster$ = this.context.select('variationCount').pipe(map(variationCount => !!variationCount));
+    this.isVariationMaster$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
   }
 }
