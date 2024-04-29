@@ -67,21 +67,21 @@ export class ProductMapper {
   }
 
   static constructMasterStub(sku: string, variations: Partial<VariationProduct>[]): Partial<VariationProductMaster> {
-    return (
-      variations?.length && {
-        type: 'VariationProductMaster',
-        sku,
-        completenessLevel: 0,
-        variationAttributeValues: variations
-          .map(v => v.variableVariationAttributes)
-          .flat()
-          .filter(
-            (val, idx, arr) =>
-              arr.findIndex(el => el.variationAttributeId === val.variationAttributeId && el.value === val.value) ===
-              idx
-          ),
-      }
-    );
+    return variations?.length
+      ? {
+          type: 'VariationProductMaster',
+          sku,
+          completenessLevel: 0,
+          variationAttributeValues: variations
+            .map(v => v.variableVariationAttributes)
+            .flat()
+            .filter(
+              (val, idx, arr) =>
+                arr.findIndex(el => el.variationAttributeId === val.variationAttributeId && el.value === val.value) ===
+                idx
+            ),
+        }
+      : undefined;
   }
 
   fromLink(link: Link): Partial<Product> {

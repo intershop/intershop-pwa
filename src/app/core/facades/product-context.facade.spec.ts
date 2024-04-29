@@ -121,7 +121,6 @@ describe('Product Context Facade', () => {
           "requiredCompletenessLevel": 2,
           "sku": "123",
           "stepQuantity": 10,
-          "variationCount": undefined,
         }
       `);
     });
@@ -193,7 +192,6 @@ describe('Product Context Facade', () => {
           "requiredCompletenessLevel": 2,
           "sku": "123",
           "stepQuantity": 10,
-          "variationCount": undefined,
         }
       `);
     });

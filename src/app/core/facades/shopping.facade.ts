@@ -41,13 +41,14 @@ import {
   loadProductIfNotLoaded,
   loadProductLinks,
   loadProductParts,
+  loadProductVariationsIfNotLoaded,
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
 import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/store/shopping/search';
 import { getWarranty, getWarrantyError, getWarrantyLoading, warrantyActions } from 'ish-core/store/shopping/warranties';
 import { toObservable } from 'ish-core/utils/functions';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
@@ -153,15 +154,26 @@ export class ShoppingFacade {
     );
   }
 
-  productVariations$(sku: string | Observable<string>) {
-    return toObservable(sku).pipe(
+  private lazyLoadVariations(sku: string | Observable<string>) {
+    return this.product$(sku, ProductCompletenessLevel.List).pipe(
       whenTruthy(),
-      switchMap(plainSKU => this.store.pipe(select(getProductVariations(plainSKU))))
+      filter(ProductHelper.isMasterProduct),
+      mapToProperty('sku'),
+      distinctUntilChanged(),
+      tap(sku => {
+        this.store.dispatch(loadProductVariationsIfNotLoaded({ sku }));
+      })
     );
   }
 
-  productVariationCount$(sku: string) {
-    return toObservable(sku).pipe(switchMap(plainSKU => this.store.pipe(select(getProductVariationCount(plainSKU)))));
+  productVariations$(sku: string | Observable<string>) {
+    return this.lazyLoadVariations(sku).pipe(switchMap(sku => this.store.pipe(select(getProductVariations(sku)))));
+  }
+
+  productVariationCount$(sku: string | Observable<string>) {
+    return this.lazyLoadVariations(sku).pipe(
+      switchMap(plainSKU => this.store.pipe(select(getProductVariationCount(plainSKU))))
+    );
   }
 
   // CHECKOUT

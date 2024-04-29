@@ -108,8 +108,6 @@ export interface ProductContext {
   promotions: Promotion[];
   parts: SkuQuantityType[];
   variations: VariationProduct[];
-
-  // variation handling
   variationCount: number;
 
   // quantity
@@ -199,11 +197,6 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
         map(args => generateProductUrl(...args)),
         distinctUntilChanged()
       )
-    );
-
-    this.connect(
-      'variationCount',
-      this.select('sku').pipe(switchMap(sku => this.shoppingFacade.productVariationCount$(sku)))
     );
 
     this.connect(
@@ -456,6 +449,9 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     switch (k1) {
       case 'variations':
         wrap('variations', this.shoppingFacade.productVariations$(this.masterProductSKU$));
+        break;
+      case 'variationCount':
+        wrap('variationCount', this.shoppingFacade.productVariationCount$(this.validProductSKU$));
         break;
       case 'links':
         wrap('links', this.shoppingFacade.productLinks$(this.validProductSKU$));

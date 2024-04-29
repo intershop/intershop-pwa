@@ -9,7 +9,7 @@ import { delay, toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
-import { Product, VariationProductMaster } from 'ish-core/models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
@@ -327,49 +327,6 @@ describe('Products Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadProductVariations$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadProductVariationsForMasterOrVariationProduct$', () => {
-    it('should trigger action if product load triggered for master product', () => {
-      const action = loadProductSuccess({
-        product: {
-          sku: 'MasterSKU',
-          type: 'VariationProductMaster',
-        } as VariationProductMaster,
-      });
-      const completion = loadProductVariationsIfNotLoaded({ sku: 'MasterSKU' });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
-
-      expect(effects.loadProductVariationsForMasterOrVariationProduct$).toBeObservable(expected$);
-    });
-
-    it('should trigger action if product load triggered for variation product', () => {
-      const action = loadProductSuccess({
-        product: {
-          sku: 'MasterSKU',
-          type: 'VariationProductMaster',
-        } as VariationProductMaster,
-      });
-      const completion = loadProductVariationsIfNotLoaded({ sku: 'MasterSKU' });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
-
-      expect(effects.loadProductVariationsForMasterOrVariationProduct$).toBeObservable(expected$);
-    });
-
-    it('should not trigger action if loaded product is standard product', () => {
-      const action = loadProductSuccess({
-        product: {
-          sku: 'SKU',
-          type: 'Product',
-        } as Product,
-      });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-');
-
-      expect(effects.loadProductVariationsForMasterOrVariationProduct$).toBeObservable(expected$);
     });
   });
 
