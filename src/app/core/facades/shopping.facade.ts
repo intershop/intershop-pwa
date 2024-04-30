@@ -164,9 +164,12 @@ export class ShoppingFacade {
 
   // PRODUCT LISTING
 
-  productListingView$(id: ProductListingID) {
-    this.store.dispatch(loadMoreProducts({ id }));
-    return this.store.pipe(select(getProductListingView(id)));
+  productListingView$(id: ProductListingID | Observable<ProductListingID>) {
+    return toObservable(id).pipe(
+      whenTruthy(),
+      tap(id => this.store.dispatch(loadMoreProducts({ id }))),
+      switchMap(id => this.store.pipe(select(getProductListingView(id))))
+    );
   }
 
   productListingViewType$ = this.store.pipe(select(getProductListingViewType));
