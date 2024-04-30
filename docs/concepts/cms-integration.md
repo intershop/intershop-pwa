@@ -87,6 +87,42 @@ CREATE src/app/cms/components/cms-inventory/cms-inventory.component.spec.ts (795
 UPDATE src/app/cms/cms.module.ts (4956 bytes)
 ```
 
+## View Contexts
+
+With the Intershop PWA version 2.0.0 we introduced demo/example view contexts that are now by default disabled with Intershop PWA 5.2.0.
+Each integrated view context triggers a REST call that will potentially decrease the SSR rendering performance, something that is not necessary if this feature is not actively used in a PWA project.
+If the used ICM does not have the integrated view context instances configured, the requests result in 404 responses which is not helpful either.
+For that reason the examples were commented out in the source code and have to be activated in the project source code if needed.
+
+The PWA is prepared to work with the following set of view contexts.
+
+```
+viewcontext.include.category.base.bottom
+viewcontext.include.category.base.top
+viewcontext.include.category.content.bottom
+viewcontext.include.category.content.top
+viewcontext.include.category.navigation
+viewcontext.include.family.base.bottom
+viewcontext.include.family.base.top
+viewcontext.include.family.content.bottom
+viewcontext.include.family.content.top
+viewcontext.include.family.navigation
+viewcontext.include.product.base.bottom
+viewcontext.include.product.base.top
+viewcontext.include.product.content.bottom
+viewcontext.include.product.content.top
+viewcontext.include.product.productinfo
+```
+
+To easily add these view contexts to the used ICM (other then the inSPIRED demo data that already contains these view contexts) a content import file is provided in the project sources ([`src/assets/sample-data/view_contexts_import.xml`](../../src/assets/sample-data/view_contexts_import.xml)) that can be imported on organization level.
+
+To activate the view contexts in the PWA search for `<!-- DISABLED VIEW CONTEXT --` and `-- DISABLED VIEW CONTEXT -->` and remove these lines around the view contexts that should be used.
+Be aware that some Jest component tests need to be adapted once view contexts are enabled (`MockComponent(ContentViewcontextComponent),`).
+
+> [!NOTE]
+> The default view contexts are examples for demonstration purposes that could be used in the same way in a customer project.
+> It is advised though to actually evaluate which view contexts are really needed in the project and to activate them accordingly or create the once that fit the project requirements even better.
+
 ## Design View
 
 > [!IMPORTANT]

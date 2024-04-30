@@ -23,6 +23,7 @@
 *.crt
 *.key
 *.lua
+*.xml
 .*ignore
 .husky
 .gitattributes

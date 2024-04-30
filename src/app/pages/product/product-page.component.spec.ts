@@ -8,7 +8,6 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { ContentViewcontextComponent } from 'ish-shared/cms/components/content-viewcontext/content-viewcontext.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -36,7 +35,6 @@ describe('Product Page Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(BreadcrumbComponent),
-        MockComponent(ContentViewcontextComponent),
         MockComponent(LazyRecentlyViewedComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductBundlePartsComponent),
@@ -83,18 +81,14 @@ describe('Product Page Component', () => {
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
-        "ish-content-viewcontext",
         "ish-breadcrumb",
         "ish-product-detail",
-        "ish-content-viewcontext",
         "ish-product-bundle-parts",
         "ish-retail-set-parts",
         "ish-product-detail-info",
         "ish-product-master-variations",
         "ish-product-links",
-        "ish-content-viewcontext",
         "ish-lazy-recently-viewed",
-        "ish-content-viewcontext",
       ]
     `);
   });
