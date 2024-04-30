@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { InstantSearchFacade } from 'ish-core/facades/instant-search.facade';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
@@ -23,13 +26,20 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
   templateUrl: './header-default.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderDefaultComponent implements OnChanges {
+export class HeaderDefaultComponent implements OnInit, OnChanges {
   @Input() isSticky = false;
   @Input() deviceType: DeviceType;
   @Input() reset: unknown;
 
   activeComponent: CollapsibleComponent = 'search';
 
+  instantSearchActive$: Observable<boolean>;
+
+  constructor(private appFacade: AppFacade, private instantSearchFacade: InstantSearchFacade) {}
+
+  ngOnInit(): void {
+    this.instantSearchActive$ = this.instantSearchFacade.select('activated');
+  }
   ngOnChanges(changes: SimpleChanges) {
     if (changes.reset) {
       this.activeComponent = 'search';
@@ -81,5 +91,9 @@ export class HeaderDefaultComponent implements OnChanges {
     } else {
       this.activeComponent = component;
     }
+  }
+
+  activeInstantSearch() {
+    this.appFacade.setInstantSearch(true);
   }
 }

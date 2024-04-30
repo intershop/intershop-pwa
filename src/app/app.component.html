@@ -2,6 +2,7 @@
   <header data-testing-id="page-header" class="top"><ish-header /></header>
 
   <div class="wrapper">
+    <ish-instantsearch-overlay *ngIf="instantSearchMode$ | async" />
     <div role="main" class="container main-container">
       <router-outlet />
     </div>

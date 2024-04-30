@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { concatMap, map, take } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { concatMap, distinctUntilChanged, map, startWith, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
@@ -28,7 +28,7 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 export class ProductListingComponent implements OnInit, OnChanges {
   @Input() categoryId: string;
   @Input() productListingId: ProductListingID;
-  @Input() mode: 'endless-scrolling' | 'paging' = 'endless-scrolling';
+  @Input() mode: 'endless-scrolling' | 'paging' | 'showmore' = 'endless-scrolling';
   @Input() fragmentOnRouting = 'product-list-top';
 
   productListingView$: Observable<ProductListingView>;
@@ -36,14 +36,31 @@ export class ProductListingComponent implements OnInit, OnChanges {
   listingLoading$: Observable<boolean>;
   currentPage$: Observable<number>;
   sortBy$: Observable<string>;
+  isLastPage$: Observable<boolean>;
+
+  private listingViewID$ = new BehaviorSubject<ProductListingID>(undefined);
+  private loadmore$ = new BehaviorSubject<'up' | 'down'>(undefined);
 
   private destroyRef = inject(DestroyRef);
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
+    this.productListingView$ = this.listingViewID$.pipe(
+      whenTruthy(),
+      distinctUntilChanged(),
+      switchMap(listingViewID => this.shoppingFacade.productListingView$(listingViewID)),
+
+      whenTruthy()
+    );
+
     this.viewType$ = this.shoppingFacade.productListingViewType$;
     this.listingLoading$ = this.shoppingFacade.productListingLoading$;
+    this.isLastPage$ = this.productListingView$.pipe(
+      whenTruthy(),
+      map(view => view.nextPage() === undefined),
+      startWith(false)
+    );
     this.currentPage$ = this.activatedRoute.queryParamMap.pipe(map(params => +params.get('page') || 1));
     this.sortBy$ = this.activatedRoute.queryParamMap.pipe(map(params => params.get('sorting')));
 
@@ -57,13 +74,23 @@ export class ProductListingComponent implements OnInit, OnChanges {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(view => this.changeViewType(view));
+
+    this.loadmore$
+      .pipe(
+        whenTruthy(),
+        withLatestFrom(this.productListingView$.pipe(whenTruthy())),
+        map(([direction, view]) => (direction === 'down' ? view.previousPage() : view.nextPage())),
+        whenTruthy(),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(page => {
+        this.shoppingFacade.loadMoreProducts(this.productListingId, page);
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.productListingId && this.productListingId?.value) {
-      this.productListingView$ = this.shoppingFacade
-        .productListingView$(this.productListingId)
-        .pipe(takeUntilDestroyed(this.destroyRef));
+      this.listingViewID$.next(this.productListingId);
     }
   }
   /**
@@ -84,16 +111,7 @@ export class ProductListingComponent implements OnInit, OnChanges {
    * Emits the event for loading more products.
    */
   loadMoreProducts(direction: 'up' | 'down') {
-    this.productListingView$
-      .pipe(
-        take(1),
-        map(view => (direction === 'down' ? view.nextPage() : view.previousPage())),
-        whenTruthy(),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(page => {
-        this.shoppingFacade.loadMoreProducts(this.productListingId, page);
-      });
+    this.loadmore$.next(direction);
   }
 
   get isEndlessScrolling() {
@@ -101,6 +119,10 @@ export class ProductListingComponent implements OnInit, OnChanges {
   }
 
   get isPaging() {
-    return !this.isEndlessScrolling;
+    return this.mode === 'paging';
+  }
+
+  get isShowMore() {
+    return this.mode === 'showmore';
   }
 }

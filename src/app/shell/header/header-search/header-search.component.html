@@ -1,0 +1,23 @@
+<div class="container mw-100 fixed-top w-100 searchbox-header">
+  <div class="row align-items-center searchbox-header-container">
+    <div class="col-2 d-none d-md-block">
+      <a
+        rel="home"
+        (click)="closeSearchOverlay()"
+        routerLink="/home"
+        class="logo logo-instantsearch"
+        [attr.aria-label]="'common.home.link' | translate"
+        role="img"
+        data-testing-id="header-home-link-desktop"
+      ></a>
+    </div>
+    <div class="col-12 col-md-8">
+      <div class="row justify-content-center">
+        <ish-instantsearch-close />
+      </div>
+    </div>
+    <div class="col-md-1 d-none d-md-block">
+      <ish-mini-basket data-testing-id="mini-basket-desktop" view="full" class="searchbox-header-basket" />
+    </div>
+  </div>
+</div>
