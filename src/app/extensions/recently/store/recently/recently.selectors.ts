@@ -5,9 +5,9 @@ import { isArrayEqual } from 'ish-core/utils/functions';
 
 import { getRecentlyState } from '../recently-store';
 
-import { RecentlyViewedProducts } from './recently.reducer';
+import { RecentlyViewedProducts, initialState } from './recently.reducer';
 
-const internalProducts = createSelector(getRecentlyState, state => state._recently);
+const internalProducts = createSelector(getRecentlyState, state => state?._recently || initialState);
 
 export const getRecentlyViewedProducts = createSelectorFactory<object, string[]>(projector =>
   resultMemoize(projector, isArrayEqual)
@@ -21,7 +21,7 @@ export const getRecentlyViewedProducts = createSelectorFactory<object, string[]>
 );
 
 /**
- * Selector to get the most recent 4 products without the currently viewed product on product detail pages
+ * Selector to get the most recent 12 products without the currently viewed product on product detail pages
  */
 export const getMostRecentlyViewedProducts = createSelector(
   getRecentlyViewedProducts,

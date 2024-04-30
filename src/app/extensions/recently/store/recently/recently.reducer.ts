@@ -6,7 +6,7 @@ import { addToRecently, clearRecently } from './recently.actions';
 
 export type RecentlyViewedProducts = RecentlyViewedProduct[];
 
-const initialState: RecentlyViewedProducts = [];
+export const initialState: RecentlyViewedProducts = [];
 
 export const recentlyReducer = createReducer(
   [],
