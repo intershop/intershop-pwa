@@ -29,6 +29,19 @@ export function findAllCustomElements(el: HTMLElement): string[] {
   return returnList;
 }
 
+export function findAllElements(el: HTMLElement): string[] {
+  const returnList = [];
+  const tagList = getAllElementTagsRecursively(el);
+
+  for (const element of tagList) {
+    const tagName = element.toLocaleLowerCase();
+    returnList.push(tagName);
+  }
+
+  // leave out first testing div
+  return returnList.slice(1);
+}
+
 export function findAllDataTestingIDs(fixture: ComponentFixture<unknown>): string[] {
   return fixture.debugElement.queryAll(By.css('[data-testing-id]')).map(el => el.attributes['data-testing-id']);
 }

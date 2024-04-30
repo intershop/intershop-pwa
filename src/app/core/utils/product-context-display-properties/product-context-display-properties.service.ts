@@ -23,7 +23,7 @@ export class ProductContextDisplayPropertiesService implements ExternalDisplayPr
         const calc = {
           inventory: !ProductHelper.isRetailSet(product) && !ProductHelper.isMasterProduct(product),
           quantity: canBeOrderedNotRetail,
-          variations: ProductHelper.isVariationProduct(product),
+          variations: ProductHelper.isMasterProduct(product) || ProductHelper.isVariationProduct(product),
           bundleParts: ProductHelper.isProductBundle(product),
           retailSetParts: ProductHelper.isRetailSet(product),
           shipment:

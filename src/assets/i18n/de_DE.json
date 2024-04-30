@@ -1053,7 +1053,7 @@
   "product.reviews.your_review.heading": "Ihre Produktbewertung",
   "product.short_description.label": "Kurzbeschreibung",
   "product.specific_attributes.label": "Spezifische Attribute",
-  "product.variations.text": "Variationen",
+  "product.variations.text": "{{ 0, plural, zero{keine Variationen} one{eine Variation} other{# Variationen}}}",
   "product.warranty.code.text": "Garantie-Code:",
   "product.warranty.detail.text": "Details",
   "product.warranty.expire_date.text": "Läuft aus am:",

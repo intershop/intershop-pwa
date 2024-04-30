@@ -708,7 +708,7 @@ describe('Product Context Facade', () => {
           "retailSetParts": false,
           "shipment": false,
           "sku": true,
-          "variations": false,
+          "variations": true,
         }
       `);
     });

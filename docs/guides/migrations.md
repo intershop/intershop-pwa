@@ -45,6 +45,7 @@ For that reason product variations are now loaded lazily through the following c
 
 - The `variations` property on the product view interface was removed. Variations can now be retrieved via the product context facade or the shopping facade.
 - The `productMaster` property on the product view model has been removed. The master product should be individually retrieved.
+- The `ish-product-item-variations` component has been refactored.
 
 ## From 5.0 to 5.1
 
