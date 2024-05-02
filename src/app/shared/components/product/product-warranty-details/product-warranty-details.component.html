@@ -8,11 +8,11 @@
     <ish-error-message [error]="error$ | async" [toast]="false" />
 
     <ng-container *ngIf="warrantyDetails$ | async as warrantyDetails">
-      <p>
+      <div class="mb-3">
         {{ 'product.warranty.short_description.label' | translate }}
         <strong [ishServerHtml]="warrantyDetails.shortDescription"></strong>
-      </p>
-      <p [ishServerHtml]="warrantyDetails.longDescription"></p>
+      </div>
+      <div class="mb-3" [ishServerHtml]="warrantyDetails.longDescription"></div>
 
       <div class="text-muted">
         <p>
