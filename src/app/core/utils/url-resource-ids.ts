@@ -9,5 +9,5 @@
 export function encodeResourceID(resourceID: string): string {
   return encodeURIComponent(encodeURIComponent(resourceID));
   // ICM 12.0.0 (estimated release)
-  // return encodeURIComponent(resourceID);
+  // return encodeURIComponent(resourceID.replaceAll('+', '%2B')).replaceAll('\\+', '%20').replaceAll('%252B', '+');
 }
