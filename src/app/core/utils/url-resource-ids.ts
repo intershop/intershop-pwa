@@ -7,8 +7,10 @@
  * @returns             The encoded resource ID.
  */
 export function encodeResourceID(resourceID: string): string {
+  // ICM 7.10 & ICM 11 resource ID encoding
   return encodeURIComponent(encodeURIComponent(resourceID));
-  // ICM 12.0.0 (estimated release)
+
+  // ICM 12 and above resource ID encoding
   // encodeURIComponent replaces spaces with '+' that's not RFC conform.
   // Therefore, we encode existing '+' with '%2B', converting the string with encodeURIComponent,
   // and converting '%2B' ('%252B' after encodeURIComponent) to '+' back.

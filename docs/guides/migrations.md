@@ -21,6 +21,12 @@ A few Stylelint rules were changed and the `.scss` files were adapted.
 In addition empty comments in `.scss` files are no longer allowed and removed.
 In migration projects either keep the Stylelint rules with the old settings or migrate all your styling files accordingly running `npm run format`.
 
+The method [`encodeResourceID`](../../src/app/core/utils/url-resource-ids.ts) is now used to encode all dynamic resource IDs in any REST API call.
+This was previously only done for the login but is now consistently used for all resource IDs.
+For ICM 7.10 and ICM 11 this is done by default with a duplicated `encodeURIComponent` encoding.
+For ICM 12 and newer this needs to be changed to a single `encodeURIComponent` with additional `+` character handling.
+The ICM 12 handling is already prepared in [`encodeResourceID`](../../src/app/core/utils/url-resource-ids.ts) and needs to be activated in the source code if the Intershop PWA is used together with ICM 12.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.
