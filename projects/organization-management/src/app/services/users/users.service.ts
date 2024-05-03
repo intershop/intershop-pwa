@@ -37,7 +37,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .get(`customers/${customer.customerNo}/users`)
+          .get(`customers/${encodeResourceID(customer.customerNo)}/users`)
           .pipe(unpackEnvelope(), map(B2bUserMapper.fromListData))
       )
     );
@@ -53,7 +53,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .get(`customers/${customer.customerNo}/users/${encodeResourceID(login)}`)
+          .get(`customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(login)}`)
           .pipe(map(B2bUserMapper.fromData))
       )
     );
@@ -74,7 +74,7 @@ export class UsersService {
       withLatestFrom(this.appFacade.currentLocale$),
       switchMap(([customer, currentLocale]) =>
         this.apiService
-          .post<B2bUser>(`customers/${customer.customerNo}/users`, {
+          .post<B2bUser>(`customers/${encodeResourceID(customer.customerNo)}/users`, {
             elements: [
               {
                 ...customer,
@@ -120,7 +120,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put(`customers/${customer.customerNo}/users/${encodeResourceID(user.login)}`, {
+          .put(`customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(user.login)}`, {
             ...customer,
             ...user,
             preferredInvoiceToAddress: { urn: user.preferredInvoiceToAddressUrn },
@@ -147,14 +147,16 @@ export class UsersService {
     }
 
     return this.currentCustomer$.pipe(
-      switchMap(customer => this.apiService.delete(`customers/${customer.customerNo}/users/${encodeResourceID(login)}`))
+      switchMap(customer =>
+        this.apiService.delete(`customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(login)}`)
+      )
     );
   }
 
   getAvailableRoles(): Observable<B2bRole[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.get(`customers/${customer.customerNo}/roles`).pipe(
+        this.apiService.get(`customers/${encodeResourceID(customer.customerNo)}/roles`).pipe(
           unpackEnvelope<B2bRoleData>('userRoles'),
           map(data => this.b2bRoleMapper.fromData(data))
         )
@@ -171,7 +173,9 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put(`customers/${customer.customerNo}/users/${encodeResourceID(login)}/roles`, { userRoles })
+          .put(`customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(login)}/roles`, {
+            userRoles,
+          })
           .pipe(
             unpackEnvelope<B2bRoleData>('userRoles'),
             map(data => data.map(r => r.roleID))
@@ -195,7 +199,7 @@ export class UsersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService.put<UserBudget>(
-          `customers/${customer.customerNo}/users/${encodeResourceID(login)}/budgets`,
+          `customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(login)}/budgets`,
           budget
         )
       )

@@ -3,6 +3,7 @@ import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, map, switchMap } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { OrderTemplateData } from '../../models/order-template/order-template.interface';
 import { OrderTemplateMapper } from '../../models/order-template/order-template.mapper';
@@ -64,7 +65,7 @@ export class OrderTemplateService {
     if (!orderTemplateId) {
       return throwError(() => new Error('deleteOrderTemplate() called without orderTemplateId'));
     }
-    return this.apiService.delete(`customers/-/users/-/wishlists/${orderTemplateId}`);
+    return this.apiService.delete(`customers/-/users/-/wishlists/${encodeResourceID(orderTemplateId)}`);
   }
 
   /**
@@ -75,7 +76,7 @@ export class OrderTemplateService {
    */
   updateOrderTemplate(orderTemplate: OrderTemplate): Observable<OrderTemplate> {
     return this.apiService
-      .put(`customers/-/users/-/wishlists/${orderTemplate.id}`, orderTemplate)
+      .put(`customers/-/users/-/wishlists/${encodeResourceID(orderTemplate.id)}`, orderTemplate)
       .pipe(map((response: OrderTemplate) => this.orderTemplateMapper.fromUpdate(response, orderTemplate.id)));
   }
 
@@ -95,7 +96,11 @@ export class OrderTemplateService {
       return throwError(() => new Error('addProductToOrderTemplate() called without sku'));
     }
     return this.apiService
-      .post(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}?quantity=${quantity}`)
+      .post(
+        `customers/-/users/-/wishlists/${encodeResourceID(orderTemplateId)}/products/${encodeResourceID(
+          sku
+        )}?quantity=${quantity}`
+      )
       .pipe(concatMap(() => this.getOrderTemplate(orderTemplateId)));
   }
 
@@ -114,7 +119,7 @@ export class OrderTemplateService {
       return throwError(() => new Error('removeProductFromOrderTemplate() called without sku'));
     }
     return this.apiService
-      .delete(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}`)
+      .delete(`customers/-/users/-/wishlists/${encodeResourceID(orderTemplateId)}/products/${encodeResourceID(sku)}`)
       .pipe(concatMap(() => this.getOrderTemplate(orderTemplateId)));
   }
 }

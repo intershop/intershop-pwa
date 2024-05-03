@@ -291,7 +291,9 @@ export class UserService {
       select(getLoggedInCustomer),
       map(customer => customer?.customerNo || '-'),
       take(1),
-      concatMap(customerNo => this.apiService.get(`customers/${customerNo}/users/-`).pipe(map(UserMapper.fromData)))
+      concatMap(customerNo =>
+        this.apiService.get(`customers/${encodeResourceID(customerNo)}/users/-`).pipe(map(UserMapper.fromData))
+      )
     );
   }
 
@@ -333,10 +335,12 @@ export class UserService {
     ]).pipe(
       take(1),
       switchMap(([customer, user]) =>
-        this.apiService.get(`customers/${customer.customerNo}/users/${encodeResourceID(user.login)}/costcenters`).pipe(
-          unpackEnvelope(),
-          map((costCenters: UserCostCenter[]) => costCenters)
-        )
+        this.apiService
+          .get(`customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(user.login)}/costcenters`)
+          .pipe(
+            unpackEnvelope(),
+            map((costCenters: UserCostCenter[]) => costCenters)
+          )
       )
     );
   }
@@ -359,7 +363,9 @@ export class UserService {
       take(1),
       switchMap(([customer, permissions]) => {
         if (permissions.includes('APP_B2B_VIEW_COSTCENTER')) {
-          return this.apiService.get<CostCenter>(`customers/${customer.customerNo}/costcenters/${id}`);
+          return this.apiService.get<CostCenter>(
+            `customers/${encodeResourceID(customer.customerNo)}/costcenters/${encodeResourceID(id)}`
+          );
         } else {
           return of(undefined);
         }
