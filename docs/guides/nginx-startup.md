@@ -24,11 +24,11 @@ For HTTPS, the server will run on default port 443.
 
 We are using an OpenResty Docker image.
 Therefore, we inherit all their configuration capabilities.
-For further information please refer to [the official OpenResty Docker image page](https://hub.docker.com/r/openresty/openresty)
+For further information, please refer to [the official OpenResty Docker image page](https://hub.docker.com/r/openresty/openresty)
 
 ### HTTPS or SSL
 
-You can switch on HTTPS for the NGINX container to execute a production-like setup locally or for demo purposes by changing `ENV SSL=0` to `ENV SSL=1` and adjusting the port mapping in `docker-compose.yml`.
+You can switch on HTTPS for the NGINX container to execute a production-like setup locally, or for demo purposes by changing `ENV SSL=0` to `ENV SSL=1` and adjusting the port mapping in `docker-compose.yml`.
 No need to supply a certificate and a key.
 They are automatically generated inside the running container.
 The certificate is self-signed and will not work in your browser.
@@ -47,7 +47,7 @@ You can now export the local CA by adjusting your docker-compose.yml /home/your-
 ### Basic Auth
 
 For deploying to test environments that are not to be indexed by search bots or are not to be accessible by the public, the NGINX container can be set up with basic authentication.
-To do so, supply a single user-password combination as environment variable, i.e. `BASIC_AUTH=<user>:<password>`.
+To do so, supply a single user-password combination as environment variable, i.e., `BASIC_AUTH=<user>:<password>`.
 You can also whitelist IPs by supplying a YAML list to the environment variable `BASIC_AUTH_IP_WHITELIST`:
 
 ```yaml
@@ -83,7 +83,7 @@ An extended list of examples can be found in the [Multi-Site Configurations](../
 
 ### Ignore Parameters During Caching
 
-Often, NGINX receives requests from advertising networks or various user agents that append unused query parameters when making a request, for example `utm_source`. <br>
+Often, NGINX receives requests from advertising networks or various user agents that append unused query parameters when making a request, for example, `utm_source`. <br>
 These parameters can lead to inefficient caching, because even if the same URL is requested multiple times, the cached version will not be used if the URL is accessed with different query parameters.
 
 To prevent this, you can define any number of blacklisted parameters that will be ignored by NGINX during caching.
@@ -96,7 +96,7 @@ If no environment variables for ignoring parameters are provided, the configurat
 
 ### Access ICM Sitemap
 
-Please refer to [Concept - XML Sitemaps](https://support.intershop.com/kb/index.php/Display/23D962#Concept-XMLSitemaps-XMLSitemapsandIntershopPWA) on how to configure ICM to generate PWA sitemap files where the sitemap XML name has to start with the prefix `sitemap_`, e.g. `sitemap_pwa`.
+Please refer to [Concept - XML Sitemaps](https://support.intershop.com/kb/index.php/Display/23D962#Concept-XMLSitemaps-XMLSitemapsandIntershopPWA) on how to configure ICM to generate PWA sitemap files where the sitemap XML name has to start with the prefix `sitemap_`, e.g., `sitemap_pwa`.
 
 ```
 http://foo.com/en/sitemap_pwa.xml
@@ -105,7 +105,7 @@ http://foo.com/en/sitemap_pwa.xml
 To make above sitemap index file available under your deployment, you need to add the environment variable `ICM_BASE_URL` to your NGINX container.
 Let `ICM_BASE_URL` point to your ICM backend installation, e.g., `https://develop.icm.intershop.de`.
 
-On a local development system you need to add it to [`docker-compose.yml`](../../docker-compose.yml), e.g.
+On a local development system you need to add it to [`docker-compose.yml`](../../docker-compose.yml), e.g.,
 
 ```yaml
 nginx:
@@ -124,7 +124,7 @@ proxy_pass https://develop.icm.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRON
 The process will utilize your [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax).
 Be sure to include `application` if you deviate from standard `rest` application.
 
-The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (e.g. `inSPIRED-inTRONICS_Business-Site` and `inSPIRED-inTRONICS-Site` instead of `default`) because it is used to generate the correct sitemap URL path, e.g.
+The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (e.g., `inSPIRED-inTRONICS_Business-Site` and `inSPIRED-inTRONICS-Site` instead of `default`) because it is used to generate the correct sitemap URL path, e.g.,
 
 ```yaml
 nginx:
@@ -219,7 +219,7 @@ The value supplied must be in the `time` format that is supported by [NGINX prox
 
 ### Shared Redis Cache
 
-Each NGINX has its own cache so in a deployment with multiple NGINX (for redundancy), the cache hit rate is significantly lower than it could be.
+Each NGINX has its own cache, so in a deployment with multiple NGINX (for redundancy) the cache hit rate is significantly lower than it could be.
 With the shared Redis cache the different NGINX instances push the cache to a shared Redis service and retrieve it from there.
 This way each NGINX profits from already rendered SSR results and the overall performance of such a deployment increases.
 
@@ -312,7 +312,7 @@ The modules can also be built using an openresty archive, but in this case the b
 
 ## Environment Variables
 
-NGINX environment variables need to be configured in the `cache.extraEnvVars` section of the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa), e.g.
+NGINX environment variables need to be configured in the `cache.extraEnvVars` section of the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa), e.g.,
 
 ```yaml
 cache:
