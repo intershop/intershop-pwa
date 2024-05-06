@@ -166,6 +166,7 @@
   "account.forgotdata.email.label": "Courriel",
   "account.forgotdata.password_retrieval.heading": "Mot de passe oublié ?",
   "account.forgotdata.password_retrieval_info.text": "Pour des raisons de sécurité, veuillez fournir votre courriel et soumettre le formulaire. Si les informations que vous avez saisies sont correctes, nous vous enverrons un courriel avec un lien. Suivez ce lien pour créer un nouveau mot de passe. Si vous avez des problèmes ou si vous avez besoin d’aide, veuillez contacter notre <a href=\"route://contact\">service client</a>.",
+  "account.go_to_account.aria_label": "Accéder au compte",
   "account.help.heading": "Rubriques d’aide",
   "account.login.addresses.message": "Veuillez vous connecter à votre compte pour mettre à jour les adresses.",
   "account.login.customer_approval.error.invalid": "Votre compte client nécessite une approbation avant de pouvoir vous connecter.",
