@@ -305,7 +305,7 @@
   "account.organization.hierarchies.groups.delete.confirmation": "The group with ID \"{{0}}\" has been deleted.",
   "account.organization.hierarchies.groups.new.button.label": "Create",
   "account.organization.hierarchies.groups.new.confirmation": "The group \"{{0}}\" has been created.",
-  "account.organization.hierarchies.groups.new.message": "Creating a new group to reflect your company structure. You can assign users to it.",
+  "account.organization.hierarchies.groups.new.message": "Create a new group to reflect your company structure. You can assign users to it.",
   "account.organization.hierarchies.groups.select.placeholder": "Select group",
   "account.organization.hierarchies.link": "Company structure",
   "account.organization.hierarchies.remove_dialog.label_no": "Cancel",
