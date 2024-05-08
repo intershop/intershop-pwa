@@ -2,10 +2,11 @@ import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe, ngMocks } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { BrowserLazyViewDirective } from 'ish-core/directives/browser-lazy-view.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
@@ -28,7 +29,12 @@ describe('Recently Viewed Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([{ path: 'recently', component: RecentlyViewedComponent }])],
-      declarations: [MockComponent(ProductsListComponent), MockPipe(TranslatePipe), RecentlyViewedComponent],
+      declarations: [
+        MockComponent(ProductsListComponent),
+        MockDirective(BrowserLazyViewDirective),
+        MockPipe(TranslatePipe),
+        RecentlyViewedComponent,
+      ],
       providers: [
         { provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
@@ -42,6 +48,9 @@ describe('Recently Viewed Component', () => {
     element = fixture.nativeElement;
 
     location = TestBed.inject(Location);
+
+    const directive = ngMocks.findInstance(BrowserLazyViewDirective);
+    ngMocks.render(directive, directive);
   });
 
   it('should be created', () => {
