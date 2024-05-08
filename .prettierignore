@@ -27,7 +27,7 @@
 .husky
 .gitattributes
 .editorconfig
-.createMockdata.table
+.nvmrc
 package*.json
 Dockerfile*
 .browserslistrc
@@ -50,5 +50,4 @@ nginx.conf
 /.idea/
 /charts/**/templates/*
 *~
-/src/environments/environment.local.ts
 /src/environments/environment.development.ts
