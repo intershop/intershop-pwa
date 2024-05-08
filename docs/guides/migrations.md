@@ -27,6 +27,11 @@ For ICM 7.10 and ICM 11 this is done by default with a duplicated `encodeURIComp
 For ICM 12 and newer this needs to be changed to a single `encodeURIComponent` with additional `+` character handling.
 The ICM 12 handling is already prepared in [`encodeResourceID`](../../src/app/core/utils/url-resource-ids.ts) and needs to be activated in the source code if the Intershop PWA is used together with ICM 12.
 
+With the Intershop PWA version 5.2.0 the rendering of our demo/example view contexts was disabled by default.
+Each integrated view context triggers a REST call that will potentially decrease the SSR rendering performance, something that is not necessary if this feature is not actively used in a PWA project.
+For that reason the examples were commented out in the source code and have to be activated in the project source code if needed.
+See [CMS Integration - View Contexts](../concepts/cms-integration.md#view-contexts) for more information.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.

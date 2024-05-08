@@ -5,7 +5,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { ContentViewcontextComponent } from 'ish-shared/cms/components/content-viewcontext/content-viewcontext.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
@@ -40,7 +39,6 @@ describe('Product Detail Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [
-        MockComponent(ContentViewcontextComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductNotificationEditComponent),
@@ -101,7 +99,6 @@ describe('Product Detail Component', () => {
         "ish-lazy-product-add-to-quote",
         "ish-lazy-product-notification-edit",
         "ish-product-warranty",
-        "ish-content-viewcontext",
       ]
     `);
   });

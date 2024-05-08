@@ -3,6 +3,7 @@
   [attr.data-testing-id]="'family-page-' + category.uniqueId"
   id="family-page-top"
 >
+  <!-- DISABLED VIEW CONTEXT --
   <div class="marketing-area">
     <ish-content-viewcontext
       *ngIf="category.categoryRef"
@@ -10,6 +11,7 @@
       [callParameters]="{ Category: category.categoryRef }"
     />
   </div>
+  -- DISABLED VIEW CONTEXT -->
 
   <div class="row">
     <div class="col-md-3">
@@ -24,6 +26,7 @@
         <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
       </button>
 
+      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           *ngIf="category.categoryRef"
@@ -31,11 +34,13 @@
           [callParameters]="{ Category: category.categoryRef }"
         />
       </div>
+      -- DISABLED VIEW CONTEXT -->
     </div>
     <div class="col-md-9">
       <ish-breadcrumb />
       <h1>{{ category.name }}</h1>
 
+      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           *ngIf="category.categoryRef"
@@ -43,6 +48,7 @@
           [callParameters]="{ Category: category.categoryRef }"
         />
       </div>
+      -- DISABLED VIEW CONTEXT -->
 
       <ish-product-listing
         [categoryId]="category.uniqueId"
@@ -50,6 +56,7 @@
         fragmentOnRouting="family-page-top"
       />
 
+      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           *ngIf="category.categoryRef"
@@ -57,9 +64,11 @@
           [callParameters]="{ Category: category.categoryRef }"
         />
       </div>
+      -- DISABLED VIEW CONTEXT -->
     </div>
   </div>
 
+  <!-- DISABLED VIEW CONTEXT --
   <div class="marketing-area">
     <ish-content-viewcontext
       *ngIf="category.categoryRef"
@@ -67,4 +76,5 @@
       [callParameters]="{ Category: category.categoryRef }"
     />
   </div>
+  -- DISABLED VIEW CONTEXT -->
 </div>
