@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { IntersectionStatus } from 'ish-core/directives/intersection-observer.directive';
+import { IntersectionStatus } from 'ish-core/directives/intersection-observer-util';
 
 import { TactonFacade } from '../../../facades/tacton.facade';
 import { TactonProductConfigurationHelper } from '../../../models/tacton-product-configuration/tacton-product-configuration.helper';
