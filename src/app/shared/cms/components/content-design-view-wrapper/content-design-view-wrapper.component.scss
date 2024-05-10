@@ -10,9 +10,9 @@ $design-view-color-include: #ce5399;
 
   > .design-view-wrapper-actions {
     position: absolute;
-    top: -43px;
-    left: -2px;
-    z-index: 1000;
+    top: 0;
+    left: 0;
+    z-index: 2;
     display: none;
     align-items: center;
     justify-content: flex-end;
@@ -36,10 +36,20 @@ $design-view-color-include: #ce5399;
      * The class .last-design-view-wrapper is applied in TypeScript because &.pagelet:not(:has(.design-view-wrapper))
      * does not work in Firefox yet. So it cannot be done in CSS only.
     */
+
     &:hover {
-      outline-width: 3px;
-      outline-style: solid;
-      outline-offset: -1px;
+      &::before {
+        // create highlighted wrapping element which overlays the component
+        position: absolute;
+        top: 0;
+        z-index: 2;
+        display: block;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; // important not to block mouse events on included components
+        content: '';
+        border: 2px solid $design-view-color-pagelet;
+      }
 
       > .design-view-wrapper-actions {
         display: flex;
