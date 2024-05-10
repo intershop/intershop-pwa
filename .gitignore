@@ -17,7 +17,6 @@ node_modules
 /*.sublime-workspace
 /.nb-gradle
 /nbproject/
-/.nvmrc
 /.vim/
 
 # misc
