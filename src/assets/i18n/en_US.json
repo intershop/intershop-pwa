@@ -944,7 +944,7 @@
   "organization.groups.new.name.error.required": "Please enter a name.",
   "organization.groups.new.parent.error.required": "Please select a parent group.",
   "organization.groups.parent.label": "Parent group",
-  "organization.groups.parent.placeholder": "Select any parent group",
+  "organization.groups.parent.placeholder": "Select a parent group",
   "payment.error.PaymentInstrumentAlreadyExists": "The payment instrument could not be created. Payment data with the given parameters already exists.",
   "personal.data.request.confirmation.confirmed.heading": "Already verified",
   "personal.data.request.confirmation.confirmed.message": "<p>You have already verified your request and it is being processed.</p><p>For any questions, please contact our customer service at 1-800-xxx-xxx or write a message to our <a href=\"route://contact\">customer service</a>.</p>",
