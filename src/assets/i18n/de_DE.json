@@ -944,7 +944,7 @@
   "organization.groups.new.name.error.required": "Bitte geben Sie einen Namen an.",
   "organization.groups.new.parent.error.required": "Bitte wählen Sie eine Stammgruppe aus.",
   "organization.groups.parent.label": "Stammgruppe",
-  "organization.groups.parent.placeholder": "Beliebige Stammgruppe auswählen",
+  "organization.groups.parent.placeholder": "Stammgruppe auswählen",
   "payment.error.PaymentInstrumentAlreadyExists": "Das Zahlungsmittel konnte nicht angelegt werden. Zahlungsdaten mit den angegebenen Parametern sind bereits vorhanden.",
   "personal.data.request.confirmation.confirmed.heading": "Bereits bestätigt",
   "personal.data.request.confirmation.confirmed.message": "<p>Sie haben Ihre Anfrage bereits bestätigt und sie wird bearbeitet.</p><p>Bei Fragen wenden Sie sich bitte an unseren Kundenservice unter 1-800-xxx-xxx oder schreiben Sie uns eine Nachricht: <a href=\"route://contact\">Kundenservice</a>.</p>",
