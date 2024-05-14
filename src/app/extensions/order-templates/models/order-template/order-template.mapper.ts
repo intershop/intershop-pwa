@@ -1,5 +1,4 @@
-import { Injectable, SecurityContext, inject } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Injectable } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -9,8 +8,6 @@ import { OrderTemplate, OrderTemplateItem } from './order-template.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderTemplateMapper {
-  private sanitizer = inject(DomSanitizer);
-
   private static parseIdFromURI(uri: string): string {
     const match = /wishlists[^\/]*\/([^\?]*)/.exec(uri);
     if (match) {
@@ -43,7 +40,7 @@ export class OrderTemplateMapper {
 
       return {
         id: orderTemplateId,
-        title: this.sanitizer.sanitize(SecurityContext.HTML, orderTemplateData.title),
+        title: orderTemplateData.title,
         itemsCount: orderTemplateData.itemsCount || 0,
         creationDate: orderTemplateData.creationDate,
         items,
@@ -57,7 +54,7 @@ export class OrderTemplateMapper {
     if (orderTemplate && id) {
       return {
         id,
-        title: this.sanitizer.sanitize(SecurityContext.HTML, orderTemplate.title),
+        title: orderTemplate.title,
         creationDate: orderTemplate.creationDate,
       };
     }

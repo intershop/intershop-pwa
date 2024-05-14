@@ -31,7 +31,7 @@
             | translate
               : {
                   '0': product.name,
-                  '1': selectedOrderTemplateTitle$ | async,
+                  '1': selectedOrderTemplateTitle$ | async | ishHtmlEncode,
                   '2': selectedOrderTemplateRoute$ | async
                 }
         "

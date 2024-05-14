@@ -8,6 +8,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({ name: 'ishHtmlEncode', pure: true })
 export class HtmlEncodePipe implements PipeTransform {
   transform(value: string): string {
-    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return value?.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 }
