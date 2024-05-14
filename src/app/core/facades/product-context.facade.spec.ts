@@ -715,6 +715,45 @@ describe('Product Context Facade', () => {
       `);
     });
   });
+
+  describe('add to basket handling', () => {
+    let product: ProductView;
+
+    beforeEach(() => {
+      product = {
+        sku: '123',
+        completenessLevel: ProductCompletenessLevel.Detail,
+        available: true,
+      } as ProductView;
+
+      when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+
+      context.set('sku', () => '123');
+    });
+
+    it('should set "addToBasket" to "false" for a product without a price', () => {
+      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`false`);
+    });
+
+    it('should set "addToBasket" to "true" for a product with price', () => {
+      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
+      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
+    });
+
+    it('should set "addToBasket" to "true" for a retail set independend from a price', () => {
+      when(shoppingFacade.product$(anything(), anything())).thenReturn(
+        of({
+          sku: '456',
+          completenessLevel: ProductCompletenessLevel.Detail,
+          type: 'RetailSet',
+          available: true,
+        } as ProductView)
+      );
+      context.set('sku', () => '456');
+
+      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
+    });
+  });
 });
 
 describe('Product Context Facade', () => {
