@@ -66,7 +66,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
         : {
             alertType: undefined,
             email: this.userEmail,
-            priceValue: this.productPrices.salePrice.value,
+            priceValue: this.productPrices?.salePrice?.value || 99.99,
           };
 
       // differentiate form with or without a product notification
