@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, Injector, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
-import { isEqual } from 'lodash-es';
+import { isEqual, pick } from 'lodash-es';
 import { BehaviorSubject, Observable, combineLatest, race } from 'rxjs';
 import {
   debounceTime,
@@ -77,7 +77,9 @@ const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined
 };
 
 export interface ExternalDisplayPropertiesProvider {
-  setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>>;
+  setup(
+    context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+  ): Observable<Partial<ProductContextDisplayProperties<false>>>;
 }
 
 export const EXTERNAL_DISPLAY_PROPERTY_PROVIDER = new InjectionToken<ExternalDisplayPropertiesProvider>(
@@ -348,7 +350,14 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     const externalDisplayPropertyProviders = [
       injector.get(ProductContextDisplayPropertiesService),
       ...injector.get<ExternalDisplayPropertiesProvider[]>(EXTERNAL_DISPLAY_PROPERTY_PROVIDER, []),
-    ].map(edp => edp.setup(this.select('product')));
+    ].map(edp =>
+      edp.setup(
+        this.select().pipe(
+          map(context => pick(context, 'product', 'prices')),
+          distinctUntilChanged(isEqual)
+        )
+      )
+    );
 
     const internalDisplayProperty$ = combineLatest([this.select('product'), this.privateConfig$]).pipe(
       map(([product, privateConfig]) =>

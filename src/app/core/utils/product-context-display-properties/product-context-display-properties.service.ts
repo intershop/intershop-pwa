@@ -4,17 +4,19 @@ import { map } from 'rxjs/operators';
 
 import {
   ExternalDisplayPropertiesProvider,
+  ProductContext,
   ProductContextDisplayProperties,
 } from 'ish-core/facades/product-context.facade';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 
 @Injectable({ providedIn: 'root' })
 export class ProductContextDisplayPropertiesService implements ExternalDisplayPropertiesProvider {
-  setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
-    return product$.pipe(
-      map(product => {
-        const canBeOrdered = !ProductHelper.isMasterProduct(product) && product.available;
+  setup(
+    context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+  ): Observable<Partial<ProductContextDisplayProperties<false>>> {
+    return context$.pipe(
+      map(({ product }) => {
+        const canBeOrdered = !ProductHelper.isMasterProduct(product) && product?.available;
 
         const canBeOrderedNotRetail = canBeOrdered && !ProductHelper.isRetailSet(product);
 
@@ -26,8 +28,8 @@ export class ProductContextDisplayPropertiesService implements ExternalDisplayPr
           retailSetParts: ProductHelper.isRetailSet(product),
           shipment:
             canBeOrderedNotRetail &&
-            Number.isInteger(product.readyForShipmentMin) &&
-            Number.isInteger(product.readyForShipmentMax),
+            Number.isInteger(product?.readyForShipmentMin) &&
+            Number.isInteger(product?.readyForShipmentMax),
           addToBasket: canBeOrdered,
           addToWishlist: !ProductHelper.isMasterProduct(product),
           addToOrderTemplate: canBeOrdered,
