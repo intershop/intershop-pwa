@@ -15,9 +15,9 @@ export class ProductContextDisplayPropertiesService implements ExternalDisplayPr
     context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
   ): Observable<Partial<ProductContextDisplayProperties<false>>> {
     return context$.pipe(
-      map(({ product }) => {
+      map(({ product, prices }) => {
         const canBeOrdered = !ProductHelper.isMasterProduct(product) && product?.available;
-
+        const canBeOrderedWithPrice = canBeOrdered && (!!prices?.salePrice || ProductHelper.isRetailSet(product));
         const canBeOrderedNotRetail = canBeOrdered && !ProductHelper.isRetailSet(product);
 
         const calc = {
@@ -30,7 +30,7 @@ export class ProductContextDisplayPropertiesService implements ExternalDisplayPr
             canBeOrderedNotRetail &&
             Number.isInteger(product?.readyForShipmentMin) &&
             Number.isInteger(product?.readyForShipmentMax),
-          addToBasket: canBeOrdered,
+          addToBasket: canBeOrderedWithPrice,
           addToWishlist: !ProductHelper.isMasterProduct(product),
           addToOrderTemplate: canBeOrdered,
           addToCompare: !ProductHelper.isMasterProduct(product),
