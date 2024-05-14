@@ -32,6 +32,9 @@ Each integrated view context triggers a REST call that will potentially decrease
 For that reason the examples were commented out in the source code and have to be activated in the project source code if needed.
 See [CMS Integration - View Contexts](../concepts/cms-integration.md#view-contexts) for more information.
 
+The `ExternalDisplayPropertiesProvider` `setup` notation was changed from providing only the `product` context to providing a combined `{ product, prices }` context object.
+For that reason any custom `ContextDisplayPropertiesService` that implements the `ExternalDisplayPropertiesProvider` needs to be adapted accordingly (see the changes of #1657).
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.
