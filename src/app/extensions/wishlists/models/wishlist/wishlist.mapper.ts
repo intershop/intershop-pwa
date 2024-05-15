@@ -1,5 +1,4 @@
-import { Injectable, SecurityContext, inject } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Injectable } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -9,8 +8,6 @@ import { Wishlist, WishlistItem } from './wishlist.model';
 
 @Injectable({ providedIn: 'root' })
 export class WishlistMapper {
-  private sanitizer = inject(DomSanitizer);
-
   private static parseIdFromURI(uri: string): string {
     const match = /wishlists[^\/]*\/([^\?]*)/.exec(uri);
     if (match) {
@@ -43,7 +40,7 @@ export class WishlistMapper {
       }
       return {
         id: wishlistId,
-        title: this.sanitizer.sanitize(SecurityContext.HTML, wishlistData.title),
+        title: wishlistData.title,
         itemsCount: wishlistData.itemsCount || 0,
         preferred: wishlistData.preferred,
         public: wishlistData.public,
@@ -58,7 +55,7 @@ export class WishlistMapper {
     if (wishlist && id) {
       return {
         id,
-        title: this.sanitizer.sanitize(SecurityContext.HTML, wishlist.title),
+        title: wishlist.title,
         preferred: wishlist.preferred,
         public: wishlist.public,
       };
