@@ -13,8 +13,15 @@ export class CheckoutReceiptPage {
     return cy.get('ish-line-item-list-element').find('ish-line-item-warranty');
   }
 
-  goToDetailPageOfOrder() {
-    cy.get('[data-testing-id="order-document-number-link"]').should('have.attr', 'href');
-    cy.get('[data-testing-id="order-document-number-link"]').click();
+  get orderCustomFields() {
+    return cy.get('[data-testing-id="additional-information-basket-custom-fields"]');
+  }
+
+  getLineItemCustomFields(sku: string) {
+    return cy.get(`[data-testing-id="line-item-information-edit_${sku}"]`);
+  }
+
+  navigateToOrderDetailPage() {
+    cy.get('[data-testing-id="order-document-number"] a').click();
   }
 }

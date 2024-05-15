@@ -83,6 +83,10 @@ describe('Basket Mapper', () => {
     },
     messageToMerchant: 'test message',
     externalOrderReference: 'EXT12345',
+    customFields: [
+      { name: 'customField1', value: 'value1', type: 'String' },
+      { name: 'customField2', value: 'value2', type: 'String' },
+    ],
   };
 
   const basketIncludedData = {
@@ -246,6 +250,16 @@ describe('Basket Mapper', () => {
     it('should return approval data if approval data are set', () => {
       basket = BasketMapper.fromData(basketData);
       expect(basket.approval.approvalRequired).toBeTrue();
+    });
+
+    it('should return custom fields if custom fields data are set', () => {
+      basket = BasketMapper.fromData(basketData);
+      expect(basket.customFields).toMatchInlineSnapshot(`
+        {
+          "customField1": "value1",
+          "customField2": "value2",
+        }
+      `);
     });
   });
 

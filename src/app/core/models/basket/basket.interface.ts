@@ -5,6 +5,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from 'ish-core/models/basket-total/basket-total.interface';
 import { BasketWarrantyData } from 'ish-core/models/basket-warranty/basket-warranty.interface';
+import { CustomFieldData } from 'ish-core/models/custom-field/custom-field.interface';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
@@ -57,6 +58,7 @@ export interface BasketBaseData {
     lastName: string;
   };
   recurrence?: Recurrence;
+  customFields?: CustomFieldData[];
 }
 
 export interface BasketIncludedData {

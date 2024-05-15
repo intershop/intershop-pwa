@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { isEqual } from 'lodash-es';
+import { Subscription } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -12,17 +14,30 @@ import { OrderLineItem } from 'ish-core/models/order/order.model';
   templateUrl: './line-item-list-element.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LineItemListElementComponent implements OnInit {
+export class LineItemListElementComponent implements OnChanges {
   @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;
   @Input() editable = true;
   @Input() lineItemViewType: 'simple' | 'availability';
 
+  private updateSubscription: Subscription;
+  private destroyRef = inject(DestroyRef);
+
   constructor(private context: ProductContextFacade, private checkoutFacade: CheckoutFacade) {}
 
-  ngOnInit() {
-    this.context.hold(this.context.validDebouncedQuantityUpdate$(), quantity => {
-      this.checkoutFacade.updateBasketItem({ itemId: this.pli.id, quantity });
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.pli) {
+      if (this.updateSubscription) {
+        // eslint-disable-next-line ban/ban
+        this.updateSubscription.unsubscribe();
+      }
+
+      this.updateSubscription = this.context
+        .validDebouncedQuantityUpdate$()
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(quantity => {
+          this.checkoutFacade.updateBasketItem({ itemId: this.pli.id, quantity });
+        });
+    }
   }
 
   get oldPrice() {
