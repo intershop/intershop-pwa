@@ -48,10 +48,6 @@ export class LineItemListComponent implements OnChanges {
     return this.pageSize && this.lineItems?.length > this.pageSize;
   }
 
-  trackByFn(_: number, item: Partial<LineItemView & OrderLineItem>) {
-    return item.id;
-  }
-
   /**
    * Refresh items to display after changing the current page
    *

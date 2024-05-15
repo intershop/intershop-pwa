@@ -45,7 +45,10 @@
 
         <ish-basket-cost-center-selection />
 
+        <ish-basket-custom-fields />
+
         <div class="section">
+          <h2 class="h3 mb-0">{{ 'shopping_cart.items.heading' | translate }}</h2>
           <ish-skip-content-link>
             <ng-container *ishFeature="'quoting'; else elseTemplate">
               <ish-lazy-quoting-basket-line-items />

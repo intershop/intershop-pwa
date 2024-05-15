@@ -17,13 +17,14 @@
       </ng-container>
 
       <!-- Additional Information -->
-      <ng-container *ngIf="order.costCenter || order.recurrence">
+      <ng-container *ngIf="order.costCenter || hasCustomFields() || order.recurrence">
         <ish-info-box
           heading="checkout.widget.additional-information.heading"
           class="infobox-wrapper col-md-6"
           cssClass="pb-3"
         >
           <ish-basket-cost-center-view [data]="order" />
+          <ish-basket-custom-fields-view [data]="order" />
           <ish-order-recurrence
             *ngIf="order.recurrence"
             [recurrence]="order.recurrence"

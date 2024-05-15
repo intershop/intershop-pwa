@@ -3,6 +3,7 @@ import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.in
 import { BasketRebateMapper } from 'ish-core/models/basket-rebate/basket-rebate.mapper';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
+import { CustomFieldMapper } from 'ish-core/models/custom-field/custom-field.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
@@ -75,6 +76,7 @@ export class BasketMapper {
       externalOrderReference: data.externalOrderReference,
       messageToMerchant: data.messageToMerchant,
       recurrence: data.recurrence,
+      customFields: CustomFieldMapper.fromData(data.customFields),
     };
   }
 

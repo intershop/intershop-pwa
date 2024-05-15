@@ -35,6 +35,10 @@ sparque: {
 The `TranslationService.getServerTranslations()` method now accepts an optional `prefix` parameter (default: `'pwa-'`) to specify the prefix for translation keys to be loaded from the server.
 This change requires no migration of existing code.
 
+Intershop PWA 9.0.0 contains support for ICM [Pre-integrated Custom Fields](https://knowledge.intershop.com/kb/index.php/Display/3M1102).
+With this configuration, shop users can now add/edit additional information at the basket and at basket line-items.
+The custom field information is displayed during the checkout and on the order details page.
+
 ## From 7.1.0 to 8.0.0
 
 The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.

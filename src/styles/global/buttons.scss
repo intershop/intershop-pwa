@@ -190,6 +190,7 @@ button.btn-link {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 0;
 
   @include hover-none-underline();
 }

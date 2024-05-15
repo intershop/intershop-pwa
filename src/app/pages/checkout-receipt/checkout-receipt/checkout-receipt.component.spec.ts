@@ -12,6 +12,7 @@ import { BasketCostCenterViewComponent } from 'ish-shared/components/basket/bask
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
+import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
@@ -30,6 +31,7 @@ describe('Checkout Receipt Component', () => {
         MockComponent(AddressComponent),
         MockComponent(BasketCostCenterViewComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketCustomFieldsViewComponent),
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(FaIconComponent),
@@ -72,6 +74,7 @@ describe('Checkout Receipt Component', () => {
         "ish-basket-merchant-message-view",
         "ish-info-box",
         "ish-basket-cost-center-view",
+        "ish-basket-custom-fields-view",
         "ish-info-box",
         "ish-address",
         "ish-info-box",

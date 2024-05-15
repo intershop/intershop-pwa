@@ -17,13 +17,20 @@ import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 import { delayUntil, mapErrorToAction, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import {
+  loadCustomFieldTranslationsFail,
+  loadCustomFieldTranslationsSuccess,
   loadExtraConfigFail,
   loadExtraConfigSuccess,
   loadServerConfig,
   loadServerConfigFail,
   loadServerConfigSuccess,
 } from './server-config.actions';
-import { isExtraConfigurationLoaded, isServerConfigurationLoaded } from './server-config.selectors';
+import {
+  getCustomFieldDefinitionEntities,
+  getServerConfigParameter,
+  isExtraConfigurationLoaded,
+  isServerConfigurationLoaded,
+} from './server-config.selectors';
 
 @Injectable()
 export class ServerConfigEffects {
@@ -54,7 +61,7 @@ export class ServerConfigEffects {
       ofType(loadServerConfig),
       switchMap(() =>
         this.configService.getServerConfiguration().pipe(
-          map(config => loadServerConfigSuccess({ config })),
+          map(([config, definitions]) => loadServerConfigSuccess({ config, definitions })),
           mapErrorToAction(loadServerConfigFail)
         )
       )
@@ -101,6 +108,36 @@ export class ServerConfigEffects {
           })
         ),
       { dispatch: false }
+    );
+
+  /**
+   * Effect to fetch custom field definition localizations after the server configuration is successfully loaded.
+   * The configuration call always returns the custom field definitions in the default locale.
+   *
+   * If the current locale differs from the default locale and custom field definitions are present,
+   * it requests the custom field translations for the current locale from the configuration service and updates them in the state.
+   */
+  fetchCustomFieldLocalizations$ =
+    !SSR &&
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(loadServerConfigSuccess),
+        take(1),
+        concatLatestFrom(() => [
+          this.store.pipe(select(getServerConfigParameter<string>('general.defaultLocale'))),
+          this.store.pipe(select(getCurrentLocale)),
+          this.store.pipe(select(getCustomFieldDefinitionEntities)),
+        ]),
+        filter(
+          ([, defaultLocale, currentLocale, fieldDefinitions]) => defaultLocale !== currentLocale && !!fieldDefinitions
+        ),
+        switchMap(([, , currentLocale, fieldDefinitionsEntities]) =>
+          this.configService.getCustomFieldsTranslations(currentLocale, fieldDefinitionsEntities).pipe(
+            map(customFieldEntities => loadCustomFieldTranslationsSuccess({ definitionEntities: customFieldEntities })),
+            mapErrorToAction(loadCustomFieldTranslationsFail)
+          )
+        )
+      )
     );
 
   loadExtraServerConfig$ = createEffect(() =>

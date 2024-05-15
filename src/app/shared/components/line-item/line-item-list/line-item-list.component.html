@@ -4,7 +4,7 @@
     <div class="col-md-8 col-xl-6 list-header-item list-header-item-descr">
       {{ 'shopping_cart.product_description.heading' | translate }}
     </div>
-    <div class="col-xl-2 d-none d-xl-flex list-header-item" [ngClass]="{ 'justify-content-end': editable }">
+    <div class="col-xl-2 d-none d-xl-flex list-header-item justify-content-end">
       {{ 'shopping_cart.qty.heading' | translate }}
     </div>
     <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
@@ -12,7 +12,7 @@
   </div>
   <div class="list-body">
     <ish-line-item-list-element
-      *ngFor="let pli of displayItems; index as i; trackBy: trackByFn"
+      *ngFor="let pli of displayItems; index as i"
       ishProductContext
       [sku]="pli.productSKU"
       [quantity]="pli.quantity.value"

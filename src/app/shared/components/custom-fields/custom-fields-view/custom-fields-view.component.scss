@@ -1,0 +1,33 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+
+.custom-fields-view {
+  display: table;
+  margin-block-end: 3px;
+
+  .custom-field {
+    display: table-row;
+  }
+
+  dt {
+    display: table-cell;
+    padding-right: divide($space-default, 3);
+    margin: 0;
+    font-weight: 400;
+    text-wrap: nowrap;
+
+    &::after {
+      content: ':';
+    }
+  }
+
+  dd {
+    display: table-cell;
+    margin-bottom: 0;
+  }
+
+  .no-value {
+    font-style: italic;
+    color: $text-color-quaternary;
+  }
+}
