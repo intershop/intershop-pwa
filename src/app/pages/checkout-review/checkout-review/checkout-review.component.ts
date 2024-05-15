@@ -52,6 +52,10 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
     }
   }
 
+  hasCustomFields(): boolean {
+    return this.basket?.customFields && Object.keys(this.basket.customFields).length > 0;
+  }
+
   private setFields() {
     return [
       {

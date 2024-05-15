@@ -4,16 +4,19 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ContentConfigurationParameterMapper } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 
 import { ConfigurationService } from './configuration.service';
 
 describe('Configuration Service', () => {
   let apiServiceMock: ApiService;
   let contentConfigurationParameterMapperMock: ContentConfigurationParameterMapper;
+  let localizationsServiceMock: LocalizationsService;
   let configurationService: ConfigurationService;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
+    localizationsServiceMock = mock(LocalizationsService);
     contentConfigurationParameterMapperMock = mock(ContentConfigurationParameterMapper);
     TestBed.configureTestingModule({
       providers: [
@@ -22,6 +25,7 @@ describe('Configuration Service', () => {
           useFactory: () => instance(contentConfigurationParameterMapperMock),
         },
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        { provide: LocalizationsService, useFactory: () => instance(localizationsServiceMock) },
       ],
     });
     configurationService = TestBed.inject(ConfigurationService);

@@ -1,14 +1,18 @@
+import { CustomFieldDefinitionMapper } from 'ish-core/models/custom-field-definition/custom-field-definition.mapper';
+import { CustomFieldDefinitions } from 'ish-core/models/custom-field-definition/custom-field-definition.model';
 import { omit } from 'ish-core/utils/functions';
 
 import { ServerConfigData, ServerConfigDataEntry } from './server-config.interface';
 import { ServerConfig } from './server-config.model';
 
 export class ServerConfigMapper {
-  static fromData(payload: ServerConfigData): ServerConfig {
+  static fromData(payload: ServerConfigData): [ServerConfig, CustomFieldDefinitions | undefined] {
     if (payload?.data) {
-      return ServerConfigMapper.mapEntries(payload.data);
+      const config = ServerConfigMapper.mapEntries(omit(payload.data, 'customFieldDefinitions'));
+      const definitions = CustomFieldDefinitionMapper.fromData(payload.data.customFieldDefinitions);
+      return [config, definitions];
     }
-    return {};
+    return [{}, undefined];
   }
 
   private static transformType(val: unknown) {

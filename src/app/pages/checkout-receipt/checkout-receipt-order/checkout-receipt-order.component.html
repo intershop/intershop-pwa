@@ -34,7 +34,6 @@
         <a
           *ngIf="order.customerNo; else plainOrderNo"
           [routerLink]="[order.recurrence ? '/account/recurring-orders/' + order.id : '/account/orders/' + order.id]"
-          data-testing-id="order-document-number-link"
           >{{ order.documentNo }}</a
         >
         <ng-template #plainOrderNo> {{ order.documentNo }}</ng-template>

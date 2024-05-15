@@ -15,4 +15,8 @@ import { Order } from 'ish-core/models/order/order.model';
 })
 export class AccountOrderComponent {
   @Input({ required: true }) order: Order;
+
+  hasCustomFields(): boolean {
+    return this.order?.customFields && Object.keys(this.order.customFields).length > 0;
+  }
 }

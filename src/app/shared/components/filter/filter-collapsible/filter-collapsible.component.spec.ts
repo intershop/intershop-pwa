@@ -42,7 +42,7 @@ describe('Filter Collapsible Component', () => {
         <button
           type="button"
           data-testing-id="filter-toggle-button"
-          class="btn btn-link btn-content-toggle p-0 mb-3"
+          class="btn btn-link btn-content-toggle mb-3"
           aria-expanded="true"
           aria-controls="PriceFilterId"
         >
@@ -63,7 +63,7 @@ describe('Filter Collapsible Component', () => {
         <button
           type="button"
           data-testing-id="filter-toggle-button"
-          class="btn btn-link btn-content-toggle p-0 mb-3"
+          class="btn btn-link btn-content-toggle mb-3"
           aria-expanded="false"
           aria-controls="PriceFilterId"
         >
