@@ -28,7 +28,17 @@ export class PaymentParameterFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.fields = [];
     this.paymentMethod.parameters.forEach(param => this.fields.push({ ...param }));
-    this.fields.forEach(field => (this.model[field.key as string] = field.props?.options ? undefined : ''));
+    this.fields.forEach(field => {
+      if (field.key === 'IBAN') {
+        field.props.mask = 'UU00 AAAA 0000 0009 9999 9999 9999 9999 99';
+        field.props.placeholder = 'XX00 0000 0000 000';
+        // max length of IBAN is 34, but the 8 spaces of the mask must be added
+        field.props.maxLength = 42;
+      } else if (field.key === 'BIC') {
+        field.props.mask = 'AAAAAAAA||AAAAAAAAAAA';
+      }
+      this.model[field.key as string] = field.props?.options ? undefined : '';
+    });
   }
 
   /**
