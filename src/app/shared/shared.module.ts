@@ -112,7 +112,9 @@ import { FilterNavigationComponent } from './components/filter/filter-navigation
 import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-images/filter-swatch-images.component';
 import { FilterTextComponent } from './components/filter/filter-text/filter-text.component';
 import { LineItemCustomFieldsComponent } from './components/line-item/line-item-custom-fields/line-item-custom-fields.component';
+import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
+import { LineItemInformationEditComponent } from './components/line-item/line-item-information-edit/line-item-information-edit.component';
 import { LineItemListElementComponent } from './components/line-item/line-item-list-element/line-item-list-element.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
 import { LineItemWarrantyComponent } from './components/line-item/line-item-warranty/line-item-warranty.component';
@@ -232,6 +234,8 @@ const declaredComponents = [
   FilterSwatchImagesComponent,
   FilterTextComponent,
   LineItemEditComponent,
+  LineItemEditDialogComponent,
+  LineItemInformationEditComponent,
   LineItemListElementComponent,
   LineItemWarrantyComponent,
   LoginModalComponent,

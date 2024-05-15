@@ -130,10 +130,10 @@ export class CheckoutFacade {
   }
 
   updateBasketItem(update: LineItemUpdate) {
-    if (update.quantity) {
-      this.store.dispatch(updateBasketItem({ lineItemUpdate: update }));
-    } else {
+    if (update.quantity === 0) {
       this.store.dispatch(deleteBasketItem({ itemId: update.itemId }));
+    } else {
+      this.store.dispatch(updateBasketItem({ lineItemUpdate: update }));
     }
   }
 

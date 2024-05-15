@@ -20,8 +20,6 @@
       <!-- Product ID -->
       <ish-product-id />
 
-      <ish-line-item-custom-fields [lineItem]="pli" [editable]="editable" />
-
       <!-- Product Variations -->
       <ish-product-variation-display />
       <!-- Product Bundles -->
@@ -39,6 +37,18 @@
 
         <!-- default lineItemViewType -->
         <ng-container *ngSwitchDefault>
+          <!-- edit variation & quantity -->
+          <ng-container *ngIf="editable">
+            <ish-line-item-edit
+              *ngIf="!('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting)"
+              ishProductContext
+              [sku]="pli.productSKU"
+              [quantity]="pli.quantity.value"
+              [itemId]="pli.id"
+              (updateItem)="onUpdateItem($event)"
+            />
+          </ng-container>
+
           <!-- availability -->
           <ish-product-inventory />
 
@@ -127,6 +137,12 @@
   <!-- line item action and edit panel -->
   <div class="col-12">
     <div class="row">
+      <div class="offset-2 col-10 list-item-actions">
+        <ish-line-item-information-edit [lineItem]="pli" (updateItem)="onUpdateItem($event)" [editable]="editable" />
+      </div>
+    </div>
+
+    <div class="row">
       <div class="offset-2 col-10 d-flex align-items-end list-item-actions">
         <ish-lazy-product-add-to-order-template
           *ngIf="editable"
@@ -145,9 +161,6 @@
         >
           <fa-icon [icon]="['fas', 'trash-alt']" />
         </button>
-        <ng-container *ngIf="editable">
-          <ish-line-item-edit [lineItem]="pli" (updateItem)="onUpdateItem($event)" />
-        </ng-container>
       </div>
     </div>
   </div>

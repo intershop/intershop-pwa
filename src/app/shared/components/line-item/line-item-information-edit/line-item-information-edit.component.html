@@ -1,0 +1,71 @@
+<ng-container *ngIf="select('visible') | async">
+  <ng-container *ngIf="select('editableFieldsMode') | async as editingMode">
+    <ng-container *ngIf="!editMode; else editForm">
+      <div class="row">
+        <div class="col-12">
+          <ish-line-item-custom-fields [lineItem]="select('lineItem') | async" [editable]="editable" />
+
+          <button
+            (click)="edit()"
+            type="button"
+            class="line-item-edit-link btn btn-link btn-link-action"
+            rel="nofollow"
+            title="{{
+              (editingMode === 'edit'
+                ? 'checkout.custom-fields.edit.link.label'
+                : 'checkout.custom-fields.add.link.label'
+              ) | translate
+            }}"
+          >
+            {{
+              (editingMode === 'edit'
+                ? 'checkout.custom-fields.edit.link.label'
+                : 'checkout.custom-fields.add.link.label'
+              ) | translate
+            }}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #editForm>
+      <div class="row">
+        <div class="col-12">
+          <ish-custom-fields-formly [form]="customFieldsForm" [fields]="select('customFields') | async" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 offset-md-4 col-md-8">
+          <button
+            (click)="save()"
+            type="button"
+            class="btn btn-primary"
+            rel="nofollow"
+            title="{{
+              (editingMode === 'edit'
+                ? 'checkout.custom-fields.save.button.label'
+                : 'checkout.custom-fields.add.button.label'
+              ) | translate
+            }}"
+          >
+            {{
+              (editingMode === 'edit'
+                ? 'checkout.custom-fields.save.button.label'
+                : 'checkout.custom-fields.add.button.label'
+              ) | translate
+            }}
+          </button>
+          <button
+            (click)="cancel()"
+            type="button"
+            class="btn btn-secondary"
+            rel="nofollow"
+            title="{{ 'checkout.custom-fields.cancel.button.label' | translate }}"
+          >
+            {{ 'checkout.custom-fields.cancel.button.label' | translate }}
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </ng-container>
+</ng-container>

@@ -1,67 +1,24 @@
-<ng-container *ngIf="select('visible') | async">
+<ng-container *ngIf="product$ | async as product">
   <button
+    *ngIf="product.type === 'VariationProduct'"
     type="button"
     (click)="show()"
-    class="line-item-edit-link btn btn-link btn-link-action btn-tool"
+    class="line-item-edit-link btn btn-link btn-link-action"
     rel="nofollow"
     title="{{ 'checkout.variation.edit.button.label' | translate }}"
   >
-    <fa-icon [icon]="['fas', 'pencil']" />
+    {{ 'checkout.variation.edit.button.label' | translate }}
   </button>
+
+  <ish-modal-dialog
+    #modalDialog
+    [options]="{
+      titleText: product.name,
+      confirmText: 'shopping_cart.variation.save.button.label' | translate,
+      rejectText: 'shopping_cart.button.cancel' | translate,
+      size: 'lg'
+    }"
+  >
+    <ish-line-item-edit-dialog />
+  </ish-modal-dialog>
 </ng-container>
-
-<ish-modal-dialog
-  #modalDialog
-  [options]="{
-    confirmText: 'shopping_cart.variation.save.button.label' | translate,
-    rejectText: 'shopping_cart.button.cancel' | translate,
-    size: 'lg'
-  }"
->
-  <ng-container *ngIf="select('visible') | async">
-    <div class="container line-item-edit-dialog">
-      <ish-loading *ngIf="select('loading') | async" />
-
-      <div class="row">
-        <!-- right box -->
-        <div class="col-12 col-md">
-          <div class="text-center"><ish-product-image imageType="M" /></div>
-        </div>
-
-        <!-- left box -->
-        <div class="col-12 col-md product-info">
-          <!-- sku -->
-          <ish-product-id />
-
-          <!-- price -->
-          <div class="current-price">{{ select('lineItem', 'singleBasePrice') | async | ishPrice }}</div>
-
-          <!-- Availability -->
-          <ish-product-inventory />
-
-          <!-- select (variation) -->
-          <div class="product-variation-container">
-            <ish-product-variation-select
-              *ngIf="(select('variationEditable') | async) === true; else variationDisplay"
-            />
-            <ng-template #variationDisplay>
-              <ish-product-variation-display />
-            </ng-template>
-          </div>
-
-          <!-- input (quantity) -->
-          <div class="form-group">
-            <div class="row">
-              <ish-product-quantity-label for="line-item-edit-quantity" class="col" />
-              <div class="col">
-                <ish-product-quantity elementId="line-item-edit-quantity" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ish-custom-fields-formly [form]="customFieldsForm" [fields]="select('customFields') | async" />
-    </div>
-  </ng-container>
-</ish-modal-dialog>

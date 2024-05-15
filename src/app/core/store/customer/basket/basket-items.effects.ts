@@ -196,7 +196,7 @@ export class BasketItemsEffects {
       itemUpdate.customFields = customFieldDefinitions.map(({ name, type }) => ({
         name,
         type,
-        value: update.customFields[name],
+        value: update.customFields[name] || '',
       }));
     }
 

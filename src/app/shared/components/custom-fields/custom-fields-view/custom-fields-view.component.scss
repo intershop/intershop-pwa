@@ -2,9 +2,11 @@
 @import 'bootstrap/scss/functions';
 
 .custom-fields-view {
-  display: flex;
-  flex-direction: column;
-  gap: divide($space-default, 3);
+  .custom-field {
+    &:last-of-type {
+      margin-bottom: divide($space-default * 2, 3);
+    }
+  }
 
   label {
     padding-right: divide($space-default, 3);
