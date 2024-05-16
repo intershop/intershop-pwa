@@ -8,12 +8,14 @@
   [ngClass]="cssClass"
   (click)="openModal(modal)"
   data-testing-id="addToOrderTemplateButton"
+  [tabindex]="displayType === 'icon' ? '-1' : '0'"
 >
   <ng-container [ngSwitch]="displayType">
     <ng-template [ngSwitchCase]="'animated'">
       <fa-icon
         [icon]="['fas', 'list']"
         [title]="'account.order_template.add_to_template.button.add_to_template.label' | translate"
+        aria-hidden="true"
       />
       <span class="share-label">{{
         'account.order_template.add_to_template.button.add_to_template.label' | translate
@@ -23,6 +25,7 @@
       <fa-icon
         [icon]="['fas', 'list']"
         [title]="'account.order_template.add_to_template.button.add_to_template.label' | translate"
+        aria-hidden="true"
       />
     </ng-template>
     <ng-template ngSwitchDefault>
