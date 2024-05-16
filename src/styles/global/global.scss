@@ -1,6 +1,23 @@
 //
 // LAYOUT
 // contains layout and presentation classes for the global page structure (header, footer, global navigation, ...)
+.skip-to-content-link {
+  position: absolute;
+  left: 0%;
+  padding: 15px;
+  font-size: large;
+  color: #000;
+  background: #e77e23;
+  outline-width: 2px;
+  outline-color: #fff;
+  transition: transform 0.3s;
+  transform: translateY(-100%);
+}
+
+.skip-to-content-link:focus {
+  transform: translateY(0%);
+}
+
 .main-container {
   position: relative;
   min-height: 200px;
