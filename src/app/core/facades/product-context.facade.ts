@@ -390,7 +390,8 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
           skipWhile(children => !children || !Object.values(children)?.length),
           map(() => true)
         ),
-        this.select('parts').pipe(
+        this.select().pipe(
+          map(context => context.parts),
           skipWhile(parts => !parts?.length),
           map(() => true)
         ),
