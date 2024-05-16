@@ -26,7 +26,7 @@ export class CategoryImageComponent implements OnChanges {
    * Set the category image URL from the (non-)empty property effectiveUrl.
    * The URL to a non-empty effectiveUrl has a prefix URL of property icmBaseURL.
    */
-  setCategoryImageUrl() {
+  private setCategoryImageUrl() {
     if (this.category.images?.[0]?.effectiveUrl?.length > 0) {
       this.categoryImageUrl = `${this.category.images[0].effectiveUrl}`;
     }

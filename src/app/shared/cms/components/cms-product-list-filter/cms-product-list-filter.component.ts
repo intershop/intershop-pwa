@@ -25,7 +25,7 @@ export class CMSProductListFilterComponent implements CMSComponent, OnChanges {
     }
   }
 
-  getProductSKUs$(): Observable<string[]> {
+  private getProductSKUs$(): Observable<string[]> {
     return this.shoppingFacade.selectedCategoryId$.pipe(
       switchMap(categoryId =>
         this.cmsFacade.parameterProductListFilter$(

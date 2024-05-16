@@ -3,7 +3,6 @@ import { UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -15,16 +14,14 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 })
 export class CostCenterCreatePageComponent implements OnInit {
   loading$: Observable<boolean>;
-  error$: Observable<HttpError>;
 
-  submitted = false;
+  private submitted = false;
   form = new UntypedFormGroup({});
 
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit() {
     this.loading$ = this.organizationManagementFacade.costCentersLoading$;
-    this.error$ = this.organizationManagementFacade.costCentersError$;
   }
 
   submitForm() {

@@ -12,8 +12,4 @@ export class TactonSelectInputComponent extends TactonConfigParameterComponent {
   constructor(protected facade: TactonFacade) {
     super(facade);
   }
-
-  selectedValue() {
-    return this.parameter?.domain.elements.find(el => el.selected).name;
-  }
 }

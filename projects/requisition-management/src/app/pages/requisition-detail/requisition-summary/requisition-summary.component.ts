@@ -25,7 +25,7 @@ export class RequisitionSummaryComponent implements OnInit {
     this.customerApproverCount = this.getCustomerApproverCount();
   }
 
-  getCustomerApproverCount() {
+  private getCustomerApproverCount() {
     return this.requisition?.approval?.statusCode === 'PENDING'
       ? this.requisition?.approval?.customerApproval.approvers?.length || 1
       : this.requisition?.approval?.approvers?.length || 1;

@@ -25,7 +25,7 @@ export class StoreLocatorPageComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
   stores$: Observable<StoreLocation[]>;
-  highlightedStore$: Observable<StoreLocation>;
+  private highlightedStore$: Observable<StoreLocation>;
 
   submitted = false;
 

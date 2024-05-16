@@ -24,7 +24,7 @@ export class UserCreatePageComponent implements OnInit {
     userBudget: this.fb.group({}),
   });
 
-  submitted = false;
+  private submitted = false;
 
   constructor(private fb: FormBuilder, private organizationManagementFacade: OrganizationManagementFacade) {}
 

@@ -4,7 +4,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
@@ -36,9 +35,6 @@ export class ProductNotificationEditFormComponent implements OnChanges {
   @Input() productNotification: ProductNotification;
   @Input() userEmail: string;
 
-  product: ProductView;
-  productPrices: Pricing;
-
   model: {
     alertType?: string;
     email: string;
@@ -52,8 +48,8 @@ export class ProductNotificationEditFormComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.userEmail && this.form) {
-      this.product = this.context.get('product');
-      this.productPrices = this.context.get('prices');
+      const product = this.context.get('product');
+      const productPrices = this.context.get('prices');
 
       // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
       this.model = this.productNotification
@@ -66,17 +62,18 @@ export class ProductNotificationEditFormComponent implements OnChanges {
         : {
             alertType: undefined,
             email: this.userEmail,
-            priceValue: this.productPrices?.salePrice?.value || 99.99,
+            priceValue: productPrices?.salePrice?.value || 99.99,
           };
 
       // differentiate form with or without a product notification
       this.fields = this.productNotification
-        ? this.getFieldsForProductNotification(this.productNotification, this.product)
-        : this.getFieldsForNoProductNotification(this.product);
+        ? this.getFieldsForProductNotification(this.productNotification, product)
+        : this.getFieldsForNoProductNotification(product);
     }
   }
 
-  // get form fields if a product notification is available
+  /** get form fields if a product notification is available */
+  // visible-for-testing
   getFieldsForProductNotification(productNotification: ProductNotification, product: ProductView): FormlyFieldConfig[] {
     return [
       {
@@ -101,7 +98,8 @@ export class ProductNotificationEditFormComponent implements OnChanges {
     ];
   }
 
-  // wrap form fields in fieldset if a product notification is not available because there are no radio buttons
+  /** wrap form fields in fieldset if a product notification is not available because there are no radio buttons */
+  // visible-for-testing
   getFieldsForNoProductNotification(product: ProductView): FormlyFieldConfig[] {
     return [
       {

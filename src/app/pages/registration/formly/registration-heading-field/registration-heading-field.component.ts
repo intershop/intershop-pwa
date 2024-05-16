@@ -17,7 +17,7 @@ const sizes = ['h1', 'h2'];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationHeadingFieldComponent extends FieldType {
-  dto = {
+  private dto = {
     headingSize: 'h1',
     showRequiredInfo: false,
   };

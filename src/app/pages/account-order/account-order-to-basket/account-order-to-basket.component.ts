@@ -23,7 +23,7 @@ export class AccountOrderToBasketComponent {
   @Input() cssClass: string;
 
   displaySpinner: Signal<boolean>;
-  initialLoading = true;
+  private initialLoading = true;
 
   constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {
     this.displaySpinner = toSignal(

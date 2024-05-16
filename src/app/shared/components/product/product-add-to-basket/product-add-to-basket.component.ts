@@ -32,7 +32,7 @@ export class ProductAddToBasketComponent implements OnInit {
    */
   @Input() cssClass: string;
 
-  basketLoading$: Observable<boolean>;
+  private basketLoading$: Observable<boolean>;
   visible$: Observable<boolean>;
   translationKey$: Observable<string>;
 

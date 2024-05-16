@@ -32,7 +32,7 @@ export class ProductWarrantyComponent implements OnInit {
   uuid: string = uuid();
 
   warranties$: Observable<Warranty[]>;
-  noWarranty: Warranty;
+  private noWarranty: Warranty;
 
   constructor(private productContext: ProductContextFacade, private translateService: TranslateService) {}
 

@@ -28,8 +28,6 @@ export class InPlaceEditComponent implements AfterViewInit {
   private mode: 'view' | 'edit' = 'view';
   private destroyRef = inject(DestroyRef);
 
-  hover: boolean;
-
   constructor(
     private host: ElementRef,
     private cdRef: ChangeDetectorRef,

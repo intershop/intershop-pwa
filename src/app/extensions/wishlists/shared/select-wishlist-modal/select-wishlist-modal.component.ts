@@ -13,7 +13,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
@@ -42,14 +41,12 @@ export class SelectWishlistModalComponent implements OnInit {
    */
   @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
 
-  wishlistOptions$: Observable<SelectOption[]>;
+  private wishlistOptions$: Observable<SelectOption[]>;
 
   formGroup: FormGroup = new FormGroup({
     wishlist: new FormControl(''),
     newList: new FormControl(''),
   });
-  multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
-  singleFieldConfig: FormlyFieldConfig[];
 
   showForm: boolean;
 
@@ -81,7 +78,7 @@ export class SelectWishlistModalComponent implements OnInit {
     }
   }
 
-  submitExisting(wishlistId: string) {
+  private submitExisting(wishlistId: string) {
     this.wishlistOptions$
       .pipe(
         filter(options => options.length > 0),
@@ -98,7 +95,7 @@ export class SelectWishlistModalComponent implements OnInit {
       });
   }
 
-  submitNew(newList: string) {
+  private submitNew(newList: string) {
     this.submitEmitter.emit({
       id: undefined,
       title: newList,

@@ -5,7 +5,6 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { SelectedQuoteContextFacade } from '../../facades/selected-quote-context.facade';
-import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.model';
 
 @Component({
@@ -20,8 +19,6 @@ export class QuotePageComponent implements OnInit {
   state$: Observable<QuoteStatus>;
   error$: Observable<HttpError>;
   justSubmitted$: Observable<boolean>;
-
-  asQuoteRequest = QuotingHelper.asQuoteRequest;
 
   constructor(private context: QuoteContextFacade) {}
 

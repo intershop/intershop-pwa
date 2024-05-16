@@ -54,7 +54,7 @@ export class AddressDoctorComponent implements AfterViewInit {
           suggestions?.length &&
           !suggestions.find(suggestion => AddressDoctorHelper.equalityCheck(address, suggestion))
         ) {
-          this.modal.openModal(address, suggestions);
+          this.modal.show(address, suggestions);
         } else {
           this.sendAddress(address);
         }

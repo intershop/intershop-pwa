@@ -26,7 +26,7 @@ export class CMSContainerComponent implements CMSComponent, OnChanges {
   }
 
   // eslint-disable-next-line complexity
-  getGridCSS(grid: string): string {
+  private getGridCSS(grid: string): string {
     let gridCSS = '';
 
     if (grid) {

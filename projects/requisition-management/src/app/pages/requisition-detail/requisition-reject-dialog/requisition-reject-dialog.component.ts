@@ -33,7 +33,7 @@ export class RequisitionRejectDialogComponent implements OnInit {
   @Output() submitRejectRequisition = new EventEmitter<string>();
 
   rejectForm = new FormGroup({});
-  submitted = false;
+  private submitted = false;
   fields: FormlyFieldConfig[];
 
   /**
@@ -49,7 +49,7 @@ export class RequisitionRejectDialogComponent implements OnInit {
     this.initForm();
   }
 
-  initForm() {
+  private initForm() {
     this.fields = [
       {
         key: 'comment',

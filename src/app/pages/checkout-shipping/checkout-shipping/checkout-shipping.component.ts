@@ -16,8 +16,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutShippingComponent implements OnInit {
-  isBusinessCustomer$: Observable<boolean>;
-
   shippingMethods$: Observable<ShippingMethod[]>;
   basket$: Observable<BasketView>;
 

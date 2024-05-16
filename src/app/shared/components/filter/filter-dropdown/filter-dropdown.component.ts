@@ -16,7 +16,6 @@ export class FilterDropdownComponent implements OnInit {
   @Output() applyFilter: EventEmitter<{ searchParameter: URLFormParams }> = new EventEmitter();
 
   placeholder = '';
-  selectedFacets: Facet[] = [];
 
   apply(facet: Facet) {
     this.applyFilter.emit({ searchParameter: facet.searchParameter });
@@ -30,13 +29,13 @@ export class FilterDropdownComponent implements OnInit {
     this.initPlaceHolder();
   }
 
-  initPlaceHolder() {
+  private initPlaceHolder() {
     this.placeholder = this.filterElement.name;
 
-    this.selectedFacets = this.filterElement.facets.filter(x => x.selected);
+    const selectedFacets = this.filterElement.facets.filter(x => x.selected);
 
     if (this.placeholderType === 'selectedFacets') {
-      const placeholder = this.selectedFacets.map(x => x.displayName).join(', ');
+      const placeholder = selectedFacets.map(x => x.displayName).join(', ');
 
       if (placeholder) {
         this.placeholder = placeholder;

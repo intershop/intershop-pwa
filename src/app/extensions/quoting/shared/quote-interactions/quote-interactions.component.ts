@@ -13,7 +13,6 @@ export class QuoteInteractionsComponent implements OnInit {
   quote$: Observable<Quote | QuoteRequest>;
   state$: Observable<QuoteStatus>;
   isQuoteValid$: Observable<boolean>;
-  formHasChanges$: Observable<boolean>;
 
   constructor(private context: QuoteContextFacade) {}
 

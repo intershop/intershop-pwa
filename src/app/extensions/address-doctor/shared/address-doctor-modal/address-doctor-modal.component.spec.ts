@@ -78,7 +78,7 @@ describe('Address Doctor Modal Component', () => {
 
   it('should display modal dialog when open function is called', () => {
     fixture.detectChanges();
-    component.openModal(mockAddresses[0], mockAddresses);
+    component.show(mockAddresses[0], mockAddresses);
     expect(component.ngbModalRef).toBeTruthy();
 
     const mapped = component.fields.map(field => pick(field, ['type', 'key']));

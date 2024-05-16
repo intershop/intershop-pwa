@@ -26,7 +26,7 @@ export class UpdatePasswordFormComponent implements OnInit {
 
   updatePasswordForm = new FormGroup({});
   fields: FormlyFieldConfig[];
-  submitted = false;
+  private submitted = false;
 
   ngOnInit() {
     this.fields = [

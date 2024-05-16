@@ -47,6 +47,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
   monthOptions: SelectOption[];
   yearOptions: SelectOption[];
 
+  // visible-for-testing
   iframesReference: {
     // iframesReference, id needed by the payment host
     creditCardIframeName: string;
@@ -117,6 +118,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
   /**
    * call back function to initialize iframes for cardNumber and cvc
    */
+  // visible-for-testing
   initCallback(error: { error: string }, result: any) {
     if (error) {
       this.errorMessage.general.message = error.error;
@@ -129,6 +131,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
   /**
    * call back function to submit data, get a response token from provider and send data in case of success
    */
+  // visible-for-testing
   submitCallback(
     error: { message: ConcardisErrorMessageType },
     result: {

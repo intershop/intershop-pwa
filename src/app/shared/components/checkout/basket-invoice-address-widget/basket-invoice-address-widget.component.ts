@@ -41,7 +41,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit {
   form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
   editAddress: Partial<Address>;
-  emptyOptionLabel = 'checkout.addresses.select_invoice_address.button';
+  private emptyOptionLabel = 'checkout.addresses.select_invoice_address.button';
 
   private destroyRef = inject(DestroyRef);
 

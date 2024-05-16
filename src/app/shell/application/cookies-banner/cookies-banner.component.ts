@@ -18,7 +18,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 export class CookiesBannerComponent implements OnInit {
   showBanner = false;
   transitionBanner: string = undefined;
-  cookiesConsentFor: string[] = undefined;
+  private cookiesConsentFor: string[] = undefined;
 
   constructor(private transferState: TransferState, private cookiesService: CookiesService) {}
 
@@ -31,7 +31,7 @@ export class CookiesBannerComponent implements OnInit {
    * - consent not yet given
    * - consent outdated
    */
-  showBannerIfNecessary() {
+  private showBannerIfNecessary() {
     if (!SSR) {
       const cookieConsentSettings = JSON.parse(
         this.cookiesService.get('cookieConsent') || 'null'

@@ -32,7 +32,7 @@ export class TextareaDescriptionWrapperComponent extends FieldWrapper implements
     );
   }
 
-  getDescription$(value: string): Observable<string> {
+  private getDescription$(value: string): Observable<string> {
     return this.translate.get(this.props.customDescription ?? 'textarea.max_limit', {
       0: Math.max(0, this.props.maxLength - (value?.length ?? 0)),
     });

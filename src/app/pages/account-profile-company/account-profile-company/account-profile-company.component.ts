@@ -22,7 +22,7 @@ export class AccountProfileCompanyComponent implements OnInit {
   @Input() error: HttpError;
   @Output() updateCompanyProfile = new EventEmitter<Customer>();
 
-  submitted = false;
+  private submitted = false;
 
   accountProfileCompanyForm = new FormGroup({});
   model: Partial<Customer>;

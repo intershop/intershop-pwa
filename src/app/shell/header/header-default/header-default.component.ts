@@ -26,9 +26,10 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 export class HeaderDefaultComponent implements OnChanges {
   @Input() isSticky = false;
   @Input() deviceType: DeviceType;
+  // not-dead-code
   @Input() reset: unknown;
 
-  activeComponent: CollapsibleComponent = 'search';
+  private activeComponent: CollapsibleComponent = 'search';
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.reset) {

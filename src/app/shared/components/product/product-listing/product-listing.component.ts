@@ -61,7 +61,7 @@ export class ProductListingComponent implements OnInit {
    *
    * @param view The new view type.
    */
-  changeViewType(view: ViewType) {
+  private changeViewType(view: ViewType) {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       replaceUrl: true,

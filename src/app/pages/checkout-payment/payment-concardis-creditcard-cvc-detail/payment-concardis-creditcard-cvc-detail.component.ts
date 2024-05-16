@@ -22,6 +22,7 @@ declare let PayEngine: any;
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input({ required: true }) paymentInstrument: PaymentInstrument;
 
+  // visible-for-testing
   validityTimeInMinutes: string;
   cvcDetailForm = new FormGroup({});
   fields: FormlyFieldConfig[];
@@ -114,6 +115,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
   /**
    * call back function to submit data
    */
+  // visible-for-testing
   submitCallback(error: any) {
     if (error) {
       // map error messages

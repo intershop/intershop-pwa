@@ -23,7 +23,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
 
   costCenterBuyerForm = new FormGroup({});
   fields: FormlyFieldConfig[];
-  submitted = false;
+  private submitted = false;
 
   buyer: CostCenterBuyer;
 

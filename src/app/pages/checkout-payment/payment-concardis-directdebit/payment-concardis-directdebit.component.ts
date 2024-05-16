@@ -36,7 +36,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
 
   options: FormlyFormOptions;
 
-  handleErrors(controlName: string, message: string) {
+  private handleErrors(controlName: string, message: string) {
     if (this.parameterForm.controls[controlName]) {
       this.options.formState = {
         ...this.options.formState,
@@ -106,7 +106,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
   /**
    * hide fields without labels and enrich mandate reference and mandate text with corresponding values from hosted payment page parameters
    */
-  getFieldConfig(): FormlyFieldConfig[] {
+  private getFieldConfig(): FormlyFieldConfig[] {
     return this.paymentMethod.parameters.map(param => (param.hide ? this.modifyParam(param) : param));
   }
 
@@ -132,6 +132,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
   /**
    * call back function to submit data, get a response token from provider and send data in case of success
    */
+  // visible-for-testing
   submitCallback(
     error: { message: { properties: { key: string; code: number; message: string; messageKey: string }[] } | string },
     result: {
