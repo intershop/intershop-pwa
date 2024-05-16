@@ -33,6 +33,7 @@ export class AddressDoctorModalComponent {
   private translateService = inject(TranslateService);
   private destroyRef = inject(DestroyRef);
 
+  // visible-for-testing
   ngbModalRef: NgbModalRef;
 
   form: FormGroup = new FormGroup({});
@@ -43,7 +44,7 @@ export class AddressDoctorModalComponent {
     address: Address;
   };
 
-  openModal(address: Address, suggestions: Address[]) {
+  show(address: Address, suggestions: Address[]) {
     this.fields = this.getFields(address, suggestions);
     this.model = {
       defaultText: `
@@ -68,7 +69,7 @@ export class AddressDoctorModalComponent {
     this.confirmAddress.emit(this.model.address);
   }
 
-  getFields(address: Address, suggestions: Address[]): FormlyFieldConfig[] {
+  private getFields(address: Address, suggestions: Address[]): FormlyFieldConfig[] {
     return [
       {
         type: 'ish-html-text-field',

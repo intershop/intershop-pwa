@@ -20,7 +20,7 @@ export class QuickorderAddProductsFormComponent implements OnInit {
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[];
 
-  numberOfRows = 5;
+  private numberOfRows = 5;
 
   constructor(private translate: TranslateService, private shoppingFacade: ShoppingFacade) {}
 

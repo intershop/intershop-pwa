@@ -20,7 +20,7 @@ export class CostCenterBudgetComponent implements OnChanges {
     }
   }
 
-  calculate() {
+  private calculate() {
     if (this.costCenter) {
       this.spentBudgetPercentage =
         this.costCenter.budget.value === 0 ? 0 : this.costCenter.spentBudget?.value / this.costCenter.budget.value;

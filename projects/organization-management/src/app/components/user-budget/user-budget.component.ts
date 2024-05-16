@@ -26,7 +26,7 @@ export class UserBudgetComponent implements OnChanges {
     }
   }
 
-  isBudgetDefined(): boolean {
+  private isBudgetDefined(): boolean {
     return !!this.budget?.budget && !!this.budget?.remainingBudget;
   }
 

@@ -26,7 +26,7 @@ export class AccountProfileUserComponent implements OnInit {
 
   @Output() updateUserProfile = new EventEmitter<User>();
 
-  submitted = false;
+  private submitted = false;
 
   accountProfileUserForm = new FormGroup({});
   model$: Observable<Partial<User>>;
@@ -62,7 +62,7 @@ export class AccountProfileUserComponent implements OnInit {
     );
   }
 
-  newsletterCheckboxField(): FormlyFieldConfig {
+  private newsletterCheckboxField(): FormlyFieldConfig {
     return {
       type: 'ish-checkbox-field',
       key: 'newsletter',

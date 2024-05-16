@@ -21,7 +21,7 @@ export class BasketBuyerComponent implements OnInit {
    */
   @Input() editRouterLink: string;
 
-  customer$: Observable<Customer>;
+  private customer$: Observable<Customer>;
 
   taxationID: string;
   costCenterName: string;

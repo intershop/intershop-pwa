@@ -32,8 +32,6 @@ export class ShoppingBasketComponent {
 
   @Output() nextStep = new EventEmitter<void>();
 
-  submitted = false;
-
   /**
    * checkout button leads to checkout address page if basket is valid
    */

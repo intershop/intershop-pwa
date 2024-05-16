@@ -19,7 +19,7 @@ export class PunchoutUserFormComponent implements OnInit {
   @Input() punchoutType: PunchoutType;
   @Output() submitUser = new EventEmitter<PunchoutUser>();
 
-  submitted = false;
+  private submitted = false;
   form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
   model = {};

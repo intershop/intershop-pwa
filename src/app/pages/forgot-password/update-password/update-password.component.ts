@@ -20,10 +20,10 @@ export class UpdatePasswordComponent implements OnInit {
   error$: Observable<HttpError>;
   loading$: Observable<boolean>;
 
+  // visible-for-testing
   userID: string;
+  // visible-for-testing
   secureCode: string;
-
-  errorTranslationCode: string;
 
   private destroyRef = inject(DestroyRef);
 

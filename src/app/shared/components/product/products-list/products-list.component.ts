@@ -83,7 +83,7 @@ export class ProductsListComponent implements OnChanges {
    *
    * @param slideItems The amount of slide items that should be rendered if enough screen space is available.
    */
-  configureSlides(slideItems: number) {
+  private configureSlides(slideItems: number) {
     switch (slideItems) {
       case 1: {
         this.swiperConfig.breakpoints = {

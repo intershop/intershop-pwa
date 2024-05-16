@@ -35,6 +35,10 @@ See [CMS Integration - View Contexts](../concepts/cms-integration.md#view-contex
 The `ExternalDisplayPropertiesProvider` `setup` notation was changed from providing only the `product` context to providing a combined `{ product, prices }` context object.
 For that reason any custom `ContextDisplayPropertiesService` that implements the `ExternalDisplayPropertiesProvider` needs to be adapted accordingly (see the changes of #1657).
 
+The dead code detection script was improved and extended and is now checking Angular components in more detail.
+This resulted in more variables and methods being declared as `private` and some unused code being removed.
+This should not affect PWA based projects as long as such internal declarations were not used, else compiling will fail and the code would need to be adapted/reverted accordingly.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.

@@ -25,7 +25,7 @@ export class CMSProductListRestComponent implements CMSComponent, OnChanges {
     }
   }
 
-  getProductSKUs$(): Observable<string[]> {
+  private getProductSKUs$(): Observable<string[]> {
     return this.httpClient.get<unknown>(this.pagelet.stringParam('ProductsRestEndpoint')).pipe(
       map(data => {
         let skus: string[] = [];

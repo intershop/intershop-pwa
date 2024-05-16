@@ -31,14 +31,14 @@ import { whenTruthy } from 'ish-core/utils/operators';
 export class BasketPromotionCodeComponent implements OnInit {
   @Input() toast = true;
 
-  basket$: Observable<BasketView>;
+  private basket$: Observable<BasketView>;
   promotionError$: Observable<HttpError>;
   codeInput: FormControl;
   isCollapsed = true;
   codeMaxLength = 128;
 
-  basketPromoCodes: string[];
-  lastEnteredPromoCode = '';
+  private basketPromoCodes: string[];
+  private lastEnteredPromoCode = '';
 
   private destroyRef = inject(DestroyRef);
 

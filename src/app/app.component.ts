@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
  * The App Component provides the application frame for the single page application.
@@ -16,12 +15,10 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 })
 export class AppComponent implements OnInit {
   wrapperClasses$: Observable<string[]>;
-  deviceType$: Observable<DeviceType>;
 
   constructor(private appFacade: AppFacade) {}
 
   ngOnInit() {
-    this.deviceType$ = this.appFacade.deviceType$;
     this.wrapperClasses$ = this.appFacade.appWrapperClasses$;
   }
 }

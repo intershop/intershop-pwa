@@ -27,7 +27,7 @@ export class AccountProfileEmailComponent implements OnInit {
   fields: FormlyFieldConfig[];
   model: Partial<User>;
 
-  submitted = false;
+  private submitted = false;
 
   ngOnInit() {
     this.model = {};

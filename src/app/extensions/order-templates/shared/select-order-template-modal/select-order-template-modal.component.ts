@@ -13,7 +13,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
@@ -42,14 +41,12 @@ export class SelectOrderTemplateModalComponent implements OnInit {
    */
   @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
 
-  orderTemplateOptions$: Observable<SelectOption[]>;
+  private orderTemplateOptions$: Observable<SelectOption[]>;
 
   formGroup: FormGroup = new FormGroup({
     orderTemplate: new FormControl(''),
     newOrderTemplate: new FormControl(''),
   });
-  singleFieldConfig: FormlyFieldConfig[];
-  multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
 
   showForm: boolean;
   modal: NgbModalRef;
@@ -83,7 +80,8 @@ export class SelectOrderTemplateModalComponent implements OnInit {
       markAsDirtyRecursive(this.formGroup);
     }
   }
-  submitExisting(orderTemplateId: string) {
+
+  private submitExisting(orderTemplateId: string) {
     this.orderTemplateOptions$
       .pipe(
         filter(options => options.length > 0),
@@ -99,7 +97,7 @@ export class SelectOrderTemplateModalComponent implements OnInit {
         this.showForm = false;
       });
   }
-  submitNew(newOrderTemplate: string) {
+  private submitNew(newOrderTemplate: string) {
     this.submitEmitter.emit({
       id: undefined,
       title: newOrderTemplate,

@@ -19,7 +19,7 @@ export class SubCategoryNavigationComponent implements OnInit {
   @Input({ required: true }) subCategoriesDepth: number;
   @Input() view = 'auto';
 
-  openedCategories: string[] = [];
+  private openedCategories: string[] = [];
 
   navigationCategories$: Observable<NavigationCategory[]>;
 

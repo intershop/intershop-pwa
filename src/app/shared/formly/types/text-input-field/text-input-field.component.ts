@@ -20,7 +20,7 @@ import { provideNgxMask } from 'ngx-mask';
   providers: [provideNgxMask()],
 })
 export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implements OnInit {
-  textInputFieldTypes = ['text', 'email', 'password', 'tel'];
+  private textInputFieldTypes = ['text', 'email', 'password', 'tel'];
   thousandSeparator: string;
   decimalMarker: ',' | '.';
 
@@ -28,6 +28,7 @@ export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implemen
     super();
   }
 
+  // not-dead-code
   onPopulate(field: FormlyFieldConfig) {
     if (!field.props?.type) {
       field.props.type = 'text';

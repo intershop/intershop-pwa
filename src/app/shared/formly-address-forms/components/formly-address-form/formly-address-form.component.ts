@@ -36,9 +36,9 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   @Input() shortForm: boolean;
   @Input() prefilledAddress: Partial<Address>;
 
-  countryCode = '';
+  private countryCode = '';
 
-  countries$: Observable<SelectOption[]>;
+  private countries$: Observable<SelectOption[]>;
 
   addressForm: FormGroup;
   addressModel: { [key: string]: unknown; countryCode: string };

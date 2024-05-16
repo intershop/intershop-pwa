@@ -19,13 +19,13 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
 })
 export class OciConfigurationFormComponent implements OnInit {
   form: FormGroup = new FormGroup({});
-  submitted = false;
+  private submitted = false;
 
   configItems$: Observable<OciConfigurationItem[]>;
   error$: Observable<HttpError>;
   loading$: Observable<boolean>;
 
-  formatterOptions$: Observable<SelectOption[]>;
+  private formatterOptions$: Observable<SelectOption[]>;
   availablePlaceholders$: Observable<string[]>;
 
   model$: Observable<{ ociConfig: OciConfigurationItem[] }>;

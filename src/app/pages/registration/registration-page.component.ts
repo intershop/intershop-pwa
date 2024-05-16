@@ -38,10 +38,10 @@ export class RegistrationPageComponent implements OnInit {
     private featureEventService: FeatureEventService
   ) {}
 
-  submitted = false;
+  private submitted = false;
 
   loading$: Observable<boolean>;
-  registrationConfig: RegistrationConfigType;
+  private registrationConfig: RegistrationConfigType;
 
   fields: FormlyFieldConfig[];
   model: Record<string, unknown>;
@@ -93,14 +93,14 @@ export class RegistrationPageComponent implements OnInit {
     }
   }
 
-  onCreateWithSuggestion(address: Address) {
+  private onCreateWithSuggestion(address: Address) {
     Object.keys(this.form.get('address').value).forEach(key =>
       (this.form.get('address').get(key) as AbstractControl).setValue(address[key as keyof Address])
     );
     this.submitRegistrationForm();
   }
 
-  submitRegistrationForm() {
+  private submitRegistrationForm() {
     this.registrationFormConfiguration.submitRegistrationForm(this.form, this.registrationConfig, this.model);
   }
 

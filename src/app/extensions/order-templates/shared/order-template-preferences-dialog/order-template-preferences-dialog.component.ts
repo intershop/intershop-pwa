@@ -46,7 +46,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
   orderTemplateForm = new FormGroup({});
   model: Partial<OrderTemplate>;
   fields: FormlyFieldConfig[];
-  submitted = false;
+  private submitted = false;
 
   /**
    *  A reference to the current modal.
@@ -55,7 +55,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
 
   /** localization keys, default = for new */
   primaryButton = 'account.order_template.new_from_order.button.create.label';
-  orderTemplateTitle = 'account.order_template.new_order_template.text';
+  private orderTemplateTitle = 'account.order_template.new_order_template.text';
   modalHeader = 'account.order_template.list.button.add_template.label';
 
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;

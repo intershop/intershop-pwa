@@ -17,8 +17,6 @@ import {
 })
 export class AccountProductNotificationsPageComponent implements OnInit {
   productNotifications$: Observable<ProductNotification[]>;
-  productNotificationsPrice$: Observable<ProductNotification[]>;
-  productNotificationsInStock$: Observable<ProductNotification[]>;
   productNotificationsLoading$: Observable<boolean>;
   productNotificationsError$: Observable<HttpError>;
   active$: Observable<ProductNotificationType>;

@@ -92,6 +92,7 @@ export class MiniBasketComponent implements OnInit {
   /**
    * Open the mini basket programmatically.
    */
+  // visible-for-testing
   open() {
     this.isCollapsed = false;
     this.cdRef.markForCheck();

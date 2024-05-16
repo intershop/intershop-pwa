@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, TransferState } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, TransferState } from '@angular/core';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
-import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
  * Footer Component
@@ -12,8 +11,6 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent implements OnInit {
-  @Input() deviceType: DeviceType;
-
   appVersion: string;
 
   constructor(private transferState: TransferState) {}

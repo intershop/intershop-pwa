@@ -62,14 +62,11 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
 
   private destroyRef = inject(DestroyRef);
 
-  /**
-   * flag to make sure that the init script is executed only once
-   */
-  scriptLoaded = false;
+  private microform: any;
 
-  microform: any;
-
+  // visible-for-testing
   expirationMonthVal: string;
+  // visible-for-testing
   expirationYearVal: string;
 
   /**
@@ -106,7 +103,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
    * gets a parameter value from payment method
    * sets the general error message (key) if the parameter is not available
    */
-  protected getParamValue(name: string, errorMessage: string): string {
+  private getParamValue(name: string, errorMessage: string): string {
     const parameter = this.paymentMethod.hostedPaymentPageParameters.find(param => param.name === name);
     if (!parameter?.value) {
       this.errorMessage.general.message = errorMessage;
@@ -115,13 +112,12 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
     return parameter.value;
   }
 
-  loadScript() {
+  private loadScript() {
     // spell-checker: words flexkey
     // load script only once if component becomes visible
     if (this.activated) {
       const flexkeyId = this.getParamValue('flexkeyId', 'checkout.credit_card.flexkeyId.error.notFound');
 
-      this.scriptLoaded = true;
       this.scriptLoader
         .load('https://flex.cybersource.com/cybersource/assets/microform/0.11/flex-microform.min.js')
         .pipe(takeUntilDestroyed(this.destroyRef))
@@ -141,6 +137,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
     }
   }
 
+  // visible-for-testing
   submitCallback(error: { details: { location: string; message: string }[] }, token: string) {
     this.resetErrors();
 
@@ -193,7 +190,8 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
     }
     this.cd.detectChanges();
   }
-  resetErrors() {
+
+  private resetErrors() {
     this.errorMessage.general.message = undefined;
     this.errorMessage.number.message = undefined;
     this.errorMessage.securityCode.message = undefined;

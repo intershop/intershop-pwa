@@ -28,7 +28,7 @@ export class AccountAddressesComponent implements OnInit {
   @Input() error: HttpError;
 
   addresses$: Observable<Address[]>;
-  user$: Observable<User>;
+  private user$: Observable<User>;
   hasPreferredAddresses = false;
   preferredAddressesEqual: boolean;
   preferredInvoiceToAddress: Address;

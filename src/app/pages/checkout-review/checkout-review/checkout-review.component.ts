@@ -32,7 +32,7 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
 
   model = { termsAndConditions: false };
 
-  submitted = false;
+  private submitted = false;
   multipleBuckets = false;
 
   ngOnInit() {

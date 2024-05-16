@@ -27,9 +27,9 @@ export class UserBudgetFormComponent implements OnInit {
   fields: FormlyFieldConfig[];
   model: UserBudgetModel;
 
-  currentCurrency: string;
+  private currentCurrency: string;
 
-  periods = ['weekly', 'monthly', 'quarterly', 'half-yearly', 'yearly'];
+  private periods = ['weekly', 'monthly', 'quarterly', 'half-yearly', 'yearly'];
 
   private destroyRef = inject(DestroyRef);
 

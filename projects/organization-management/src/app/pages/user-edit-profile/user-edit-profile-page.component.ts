@@ -18,7 +18,7 @@ export class UserEditProfilePageComponent implements OnInit {
   userError$: Observable<HttpError>;
   selectedUser$: Observable<B2bUser>;
 
-  submitted = false;
+  private submitted = false;
   profileForm = new UntypedFormGroup({});
 
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}

@@ -26,7 +26,7 @@ export class ProductReviewsComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
   isUserLoggedIn$: Observable<boolean>;
 
-  maxReviewItems = 10;
+  private maxReviewItems = 10;
 
   constructor(
     private accountFacade: AccountFacade,

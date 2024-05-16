@@ -22,6 +22,7 @@ export class CheckoutAddressComponent implements OnInit {
 
   eligibleAddresses$: Observable<Address[]>;
 
+  // visible-for-testing
   submitted = false;
   active: 'invoice' | 'shipping';
 

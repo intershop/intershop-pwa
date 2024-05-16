@@ -10,8 +10,9 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
 export class BasketItemsSummaryComponent {
   @Input({ required: true }) basket: BasketView;
 
+  // visible-for-testing
   isCollapsed = true;
-  collapsedItemsCount = 3;
+  private collapsedItemsCount = 3;
 
   toggleCollapse() {
     this.isCollapsed = !this.isCollapsed;

@@ -31,7 +31,7 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
 
   accountProfilePasswordForm = new FormGroup({});
   fields: FormlyFieldConfig[];
-  submitted = false;
+  private submitted = false;
 
   ngOnInit() {
     this.fields = [
@@ -95,7 +95,7 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
     this.handleErrors(c);
   }
 
-  handleErrors(c: SimpleChanges) {
+  private handleErrors(c: SimpleChanges) {
     if (c.error?.currentValue?.error && c.error.currentValue.status === 401) {
       this.accountProfilePasswordForm.get('currentPassword').setErrors({ incorrect: true });
       this.accountProfilePasswordForm.get('currentPassword').markAsDirty();

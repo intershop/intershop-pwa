@@ -26,7 +26,7 @@ export class CMSProductListCategoryComponent implements CMSComponent, OnChanges 
     }
   }
 
-  getProductSKUs$(): Observable<string[]> {
+  private getProductSKUs$(): Observable<string[]> {
     return this.shoppingFacade.categoryIdByRefId$(this.pagelet.stringParam('Category')).pipe(
       whenTruthy(),
       switchMap(categoryId =>

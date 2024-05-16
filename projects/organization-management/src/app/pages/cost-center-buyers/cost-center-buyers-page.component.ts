@@ -31,7 +31,7 @@ export class CostCenterBuyersPageComponent implements OnInit {
   buyers$: Observable<B2bUser[]>;
 
   form: FormGroup = new FormGroup({});
-  submitted = false;
+  private submitted = false;
 
   fields: FormlyFieldConfig[];
   model: {
@@ -73,7 +73,7 @@ export class CostCenterBuyersPageComponent implements OnInit {
       });
   }
 
-  getModel(buyers: B2bUser[], currency: string) {
+  private getModel(buyers: B2bUser[], currency: string) {
     const inactiveText = this.translateService.instant('account.user.list.status.inactive');
     return {
       addBuyers: buyers.map(buyer => ({
@@ -89,7 +89,7 @@ export class CostCenterBuyersPageComponent implements OnInit {
     };
   }
 
-  getFields() {
+  private getFields() {
     return [
       {
         key: 'addBuyers',

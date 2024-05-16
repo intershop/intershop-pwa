@@ -24,7 +24,7 @@ export class ProductReviewCreateDialogComponent implements OnInit {
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
   form = new UntypedFormGroup({});
-  submitted = false;
+  private submitted = false;
   fields: FormlyFieldConfig[];
   model$: Observable<Partial<ProductReview>>;
 

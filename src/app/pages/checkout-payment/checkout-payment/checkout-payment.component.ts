@@ -53,7 +53,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   filteredPaymentMethods: PaymentMethod[] = [];
 
+  // visible-for-testing
   nextSubmitted = false;
+  // visible-for-testing
   formSubmitted = false;
 
   redirectStatus: string;
