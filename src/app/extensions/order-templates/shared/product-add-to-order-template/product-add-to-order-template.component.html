@@ -8,6 +8,8 @@
   [ngClass]="cssClass"
   (click)="openModal(modal)"
   data-testing-id="addToOrderTemplateButton"
+  tabindex="-1"
+  aria-hidden="true"
 >
   <ng-container [ngSwitch]="displayType">
     <ng-template [ngSwitchCase]="'animated'">
