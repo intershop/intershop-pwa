@@ -112,7 +112,7 @@ describe('Pages Effects', () => {
     it('should select the route when url parameter is available', done => {
       effects.selectedContentPage$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Content Page] Load Content Page:
+          [Content Page Internal] Load Content Page:
             contentPageId: "dummy"
         `);
         done();

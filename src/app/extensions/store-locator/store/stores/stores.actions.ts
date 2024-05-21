@@ -5,7 +5,7 @@ import { payload } from 'ish-core/utils/ngrx-creators';
 import { StoreLocation } from '../../models/store-location/store-location.model';
 
 export const loadStores = createAction(
-  '[Stores Internal] Load Stores',
+  '[Stores] Load Stores',
   payload<{ countryCode: string; postalCode: string; city: string }>()
 );
 

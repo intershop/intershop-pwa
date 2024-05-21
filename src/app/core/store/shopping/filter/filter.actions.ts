@@ -27,7 +27,10 @@ export const loadFilterSuccess = createAction(
 
 export const loadFilterFail = createAction('[Filter API] Load Filter Fail', httpError());
 
-export const applyFilter = createAction('[Filter] Apply Filter', payload<{ searchParameter: URLFormParams }>());
+export const applyFilter = createAction(
+  '[Filter Internal] Apply Filter',
+  payload<{ searchParameter: URLFormParams }>()
+);
 
 export const applyFilterSuccess = createAction(
   '[Filter API] Apply Filter Success',

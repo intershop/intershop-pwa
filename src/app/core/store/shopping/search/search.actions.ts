@@ -11,7 +11,7 @@ export const searchProducts = createAction(
 export const searchProductsFail = createAction('[Search API] Search Products Fail', httpError());
 
 export const suggestSearch = createAction(
-  '[Suggest Search Internal] Load Search Suggestions',
+  '[Suggest Search] Load Search Suggestions',
   payload<{ searchTerm: string }>()
 );
 

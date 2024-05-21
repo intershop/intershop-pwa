@@ -42,6 +42,6 @@ describe('Error Selectors', () => {
         "status": 123,
       }
     `);
-    expect(getGeneralErrorType(store$.state)).toMatchInlineSnapshot(`"[Error] Communication Timeout Error"`);
+    expect(getGeneralErrorType(store$.state)).toMatchInlineSnapshot(`"[Error Internal] Communication Timeout Error"`);
   });
 });

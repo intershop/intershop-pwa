@@ -271,7 +271,7 @@ describe('Shopping Store', () => {
 
       it('should trigger suggest actions when suggest feature is used', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Suggest Search Internal] Load Search Suggestions:
+          [Suggest Search] Load Search Suggestions:
             searchTerm: "some"
           [Suggest Search API] Return Search Suggestions:
             searchTerm: "some"
@@ -338,7 +338,7 @@ describe('Shopping Store', () => {
           expect(store.actionsArray()).toMatchInlineSnapshot(`
             @ngrx/router-store/request: /product/P2
             @ngrx/router-store/navigation: /product/P2
-            [Products Internal] Load Product:
+            [Products] Load Product:
               sku: "P2"
             [Products API] Load Product Success:
               product: {"sku":"P2","name":"nP2"}
@@ -481,7 +481,7 @@ describe('Shopping Store', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           @ngrx/router-store/request: /category/A.123.456/product/P1
           @ngrx/router-store/navigation: /category/A.123.456/product/P1
-          [Products Internal] Load Product:
+          [Products] Load Product:
             sku: "P1"
           [Products API] Load Product Success:
             product: {"sku":"P1","name":"nP1"}
@@ -663,7 +663,7 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
           categories: tree(A,A.123,A.123.456)
-        [Products Internal] Load Product:
+        [Products] Load Product:
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
@@ -777,7 +777,7 @@ describe('Shopping Store', () => {
         [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /product/P1
         @ngrx/router-store/navigation: /product/P1
-        [Products Internal] Load Product:
+        [Products] Load Product:
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
@@ -838,7 +838,7 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
           categories: tree(A,A.123,A.123.456)
-        [Products Internal] Load Product:
+        [Products] Load Product:
           sku: "P3"
         [Products API] Load Product Fail:
           error: {"name":"HttpErrorResponse","message":"error loading product...

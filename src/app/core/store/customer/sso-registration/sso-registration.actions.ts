@@ -9,10 +9,10 @@ export const setRegistrationInfo = createAction(
 );
 
 export const registerSuccess = createAction(
-  '[SsoRegistration] Register SMB Customer Success',
+  '[SsoRegistration API] Register SMB Customer Success',
   payload<CustomerRegistrationType>()
 );
 
-export const registerFailure = createAction('[SsoRegistration] Register SMB Customer Failure', httpError());
+export const registerFailure = createAction('[SsoRegistration API] Register SMB Customer Failure', httpError());
 
 export const cancelRegistration = createAction('[SsoRegistration] Cancel Registration');

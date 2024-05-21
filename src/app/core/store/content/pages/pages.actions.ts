@@ -4,7 +4,10 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const loadContentPage = createAction('[Content Page] Load Content Page', payload<{ contentPageId: string }>());
+export const loadContentPage = createAction(
+  '[Content Page Internal] Load Content Page',
+  payload<{ contentPageId: string }>()
+);
 
 export const loadContentPageFail = createAction('[Content Page API] Load Content Page Fail', httpError());
 
@@ -14,6 +17,6 @@ export const loadContentPageSuccess = createAction(
 );
 
 export const setBreadcrumbForContentPage = createAction(
-  '[Content Page Internal] Set Breadcrumb For Content Page',
+  '[Content Page] Set Breadcrumb For Content Page',
   payload<{ rootId: string }>()
 );

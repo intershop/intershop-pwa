@@ -126,7 +126,7 @@ describe('Requisitions Effects', () => {
 
       effects.loadProductsForSelectedRequisition$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Products Internal] Load Product if not Loaded:
+          [Products] Load Product if not Loaded:
             sku: "SKU"
             level: 2
         `);

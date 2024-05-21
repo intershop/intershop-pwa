@@ -78,7 +78,7 @@ describe('Account Facade', () => {
 
           verify(storeSpy$.dispatch(anything())).once();
 
-          expect(capture(storeSpy$.dispatch).last()).toMatchInlineSnapshot(`[Address Internal] Load Addresses`);
+          expect(capture(storeSpy$.dispatch).last()).toMatchInlineSnapshot(`[Address] Load Addresses`);
 
           done();
         });

@@ -25,7 +25,8 @@ export const loadCompanyUserSuccess = createAction('[User API] Load Company User
 
 export const logoutUser = createAction('[User] Logout User');
 
-export const logoutUserSuccess = createAction('[User API] Logout User Success');
+// TODO: this should be an API action
+export const logoutUserSuccess = createAction('[User] Logout User Success');
 
 export const logoutUserFail = createAction('[User API] Logout User Failed', httpError());
 
@@ -129,7 +130,7 @@ export const requestPasswordReminderFail = createAction(
   httpError()
 );
 
-export const resetPasswordReminder = createAction('[Password Reminder Internal] Reset Password Reminder Data');
+export const resetPasswordReminder = createAction('[Password Reminder] Reset Password Reminder Data');
 
 export const updateUserPasswordByPasswordReminder = createAction(
   '[Password Reminder] Update User Password',
@@ -137,11 +138,11 @@ export const updateUserPasswordByPasswordReminder = createAction(
 );
 
 export const updateUserPasswordByPasswordReminderSuccess = createAction(
-  '[Password Reminder] Update User Password Succeeded'
+  '[Password Reminder API] Update User Password Succeeded'
 );
 
 export const updateUserPasswordByPasswordReminderFail = createAction(
-  '[Password Reminder] Update User Password Failed',
+  '[Password Reminder API] Update User Password Failed',
   httpError()
 );
 

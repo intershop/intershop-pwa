@@ -3,7 +3,7 @@ import { createAction } from '@ngrx/store';
 import { Address } from 'ish-core/models/address/address.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const loadAddresses = createAction('[Address Internal] Load Addresses');
+export const loadAddresses = createAction('[Address] Load Addresses');
 
 export const loadAddressesFail = createAction('[Address API] Load Addresses Fail', httpError());
 

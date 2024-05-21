@@ -4,7 +4,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { UserBudget } from '../../models/user-budget/user-budget.model';
 
-export const loadBudget = createAction('[Budget Internal] Load Budget');
+export const loadBudget = createAction('[Budget] Load Budget');
 
 export const loadBudgetSuccess = createAction('[Budget API] Load Budget Success', payload<{ budget: UserBudget }>());
 

@@ -337,7 +337,7 @@ describe('Orders Effects', () => {
 
       effects.routeListenerForSelectingOrder$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Orders] Select Order:
+          [Orders Internal] Select Order:
             orderId: "123"
         `);
         done();

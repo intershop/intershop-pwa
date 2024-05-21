@@ -53,7 +53,7 @@ export const addProductToWishlistSuccess = createAction(
 export const addProductToWishlistFail = createAction('[Wishlist API] Add Item to Wishlist Fail', httpError());
 
 export const addProductToNewWishlist = createAction(
-  '[Wishlist Internal] Add Product To New Wishlist',
+  '[Wishlist] Add Product To New Wishlist',
   payload<{ title: string; sku: string }>()
 );
 

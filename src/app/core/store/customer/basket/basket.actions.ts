@@ -72,7 +72,7 @@ export const addMessageToMerchant = createAction(
   '[Basket] Message to Merchant',
   payload<{ messageToMerchant: string }>()
 );
-export const updateBasket = createAction('[Basket API] Update Basket', payload<{ update: BasketUpdateType }>());
+export const updateBasket = createAction('[Basket] Update Basket', payload<{ update: BasketUpdateType }>());
 
 export const updateBasketFail = createAction('[Basket API] Update Basket Fail', httpError());
 
@@ -166,7 +166,7 @@ export const deleteBasketItemsSuccess = createAction(
 );
 
 export const removePromotionCodeFromBasket = createAction(
-  '[Basket Internal] Remove Promotion Code From Basket',
+  '[Basket] Remove Promotion Code From Basket',
   payload<{ code: string }>()
 );
 
@@ -180,7 +180,7 @@ export const removePromotionCodeFromBasketSuccess = createAction(
 );
 
 export const addPromotionCodeToBasket = createAction(
-  '[Basket Internal] Add Promotion Code To Basket',
+  '[Basket] Add Promotion Code To Basket',
   payload<{ code: string }>()
 );
 
@@ -206,7 +206,7 @@ export const deleteBasketAttributeFail = createAction('[Basket API] Delete Baske
 
 export const deleteBasketAttributeSuccess = createAction('[Basket API] Delete Basket Attribute Success');
 
-export const loadBasketEligibleAddresses = createAction('[Basket Internal] Load Basket Eligible Addresses');
+export const loadBasketEligibleAddresses = createAction('[Basket] Load Basket Eligible Addresses');
 
 export const loadBasketEligibleAddressesFail = createAction(
   '[Basket API] Load Basket Eligible Addresses Fail',
@@ -218,9 +218,7 @@ export const loadBasketEligibleAddressesSuccess = createAction(
   payload<{ addresses: Address[] }>()
 );
 
-export const loadBasketEligibleShippingMethods = createAction(
-  '[Basket Internal] Load Basket Eligible Shipping Methods'
-);
+export const loadBasketEligibleShippingMethods = createAction('[Basket] Load Basket Eligible Shipping Methods');
 
 export const loadBasketEligibleShippingMethodsFail = createAction(
   '[Basket API] Load Basket Eligible Shipping Methods Fail',
@@ -232,7 +230,7 @@ export const loadBasketEligibleShippingMethodsSuccess = createAction(
   payload<{ shippingMethods: ShippingMethod[] }>()
 );
 
-export const loadBasketEligiblePaymentMethods = createAction('[Basket Internal] Load Basket Eligible Payment Methods');
+export const loadBasketEligiblePaymentMethods = createAction('[Basket] Load Basket Eligible Payment Methods');
 
 export const loadBasketEligiblePaymentMethodsFail = createAction(
   '[Basket API] Load Basket Eligible Payment Methods Fail',
@@ -260,7 +258,7 @@ export const createBasketPaymentFail = createAction('[Basket API] Create a Baske
 export const createBasketPaymentSuccess = createAction('[Basket API] Create a Basket Payment Success');
 
 export const updateBasketPayment = createAction(
-  '[Basket] Update a Basket Payment with Redirect Data',
+  '[Basket Internal] Update a Basket Payment with Redirect Data',
   payload<{ params: Params }>()
 );
 

@@ -8,4 +8,4 @@ export const setBreadcrumbData = createAction(
   payload<{ breadcrumbData: BreadcrumbItem[] }>()
 );
 
-export const setStickyHeader = createAction('[Viewconf Internal] Set Sticky Header', payload<{ sticky: boolean }>());
+export const setStickyHeader = createAction('[Viewconf] Set Sticky Header', payload<{ sticky: boolean }>());

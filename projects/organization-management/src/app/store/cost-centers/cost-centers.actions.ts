@@ -12,7 +12,10 @@ export const loadCostCentersSuccess = createAction(
   payload<{ costCenters: CostCenter[] }>()
 );
 
-export const loadCostCenter = createAction('[CostCenters] Load Cost Center', payload<{ costCenterId: string }>());
+export const loadCostCenter = createAction(
+  '[CostCenters Internal] Load Cost Center',
+  payload<{ costCenterId: string }>()
+);
 
 export const loadCostCenterFail = createAction('[CostCenters API] Load Cost Center Fail', httpError());
 

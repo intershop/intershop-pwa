@@ -310,7 +310,7 @@ describe('Basket Payment Effects', () => {
 
       effects.sendPaymentRedirectData$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Basket] Update a Basket Payment with Redirect Data:
+          [Basket Internal] Update a Basket Payment with Redirect Data:
             params: {"redirect":"success","param1":"123"}
         `);
         done();

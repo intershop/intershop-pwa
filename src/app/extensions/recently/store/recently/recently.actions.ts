@@ -9,4 +9,4 @@ export const addToRecently = createAction(
   payload<RecentlyViewedProduct>()
 );
 
-export const clearRecently = createAction('[Recently Viewed Internal] Clear Recently');
+export const clearRecently = createAction('[Recently Viewed] Clear Recently');
