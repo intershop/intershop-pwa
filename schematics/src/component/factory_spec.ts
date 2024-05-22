@@ -105,6 +105,17 @@ describe('Component Schematic', () => {
     expect(componentSource).toContain(`styleUrls: ['./foo.component.scss']`);
   });
 
+  it('should create a component without test file if requested', async () => {
+    const options = { ...defaultOptions, skipTests: true };
+    const tree = await schematicRunner.runSchematic('component', options, appTree);
+    expect(tree.files.filter(x => x.search('foo.component') >= 0)).toMatchInlineSnapshot(`
+      [
+        "/src/app/foo/foo.component.html",
+        "/src/app/foo/foo.component.ts",
+      ]
+    `);
+  });
+
   it('should find the closest module', async () => {
     const options = { ...defaultOptions };
     const fooModule = '/src/app/foo/foo.module.ts';
