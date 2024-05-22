@@ -19,7 +19,7 @@ export class HeaderNavigationComponent implements OnInit {
   private openedCategories: string[] = [];
 
   // make variable SSR, that is used to check if the application is running in SSR or browser context, accessible in the template
-  SSR = SSR;
+  isBrowser = !SSR;
 
   constructor(
     private shoppingFacade: ShoppingFacade,

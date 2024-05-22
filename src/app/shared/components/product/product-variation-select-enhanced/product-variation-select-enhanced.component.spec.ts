@@ -14,7 +14,7 @@ describe('Product Variation Select Enhanced Component', () => {
   let element: HTMLElement;
   let appFacade: AppFacade;
 
-  const group_colorCode = {
+  const groupColorCode = {
     id: 'color',
     attributeType: 'defaultAndColorCode',
     options: [
@@ -23,7 +23,7 @@ describe('Product Variation Select Enhanced Component', () => {
     ],
   } as VariationOptionGroup;
 
-  const group_swatchImage = {
+  const groupSwatchImage = {
     id: 'swatch',
     attributeType: 'defaultAndSwatchImage',
     options: [
@@ -44,7 +44,7 @@ describe('Product Variation Select Enhanced Component', () => {
     fixture = TestBed.createComponent(ProductVariationSelectEnhancedComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.group = group_colorCode;
+    component.group = groupColorCode;
     component.uuid = 'uuid';
   });
 
@@ -55,7 +55,7 @@ describe('Product Variation Select Enhanced Component', () => {
   });
 
   it('should render a color code select when the attribute type is "defaultAndColorCode" for mobile', () => {
-    component.group = group_colorCode;
+    component.group = groupColorCode;
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <div class="mobile-variation-select">
@@ -77,7 +77,7 @@ describe('Product Variation Select Enhanced Component', () => {
 
   it('should render a swatch image select when the attribute type is "defaultAndColorCode" for desktop', () => {
     when(appFacade.deviceType$).thenReturn(of('desktop'));
-    component.group = group_swatchImage;
+    component.group = groupSwatchImage;
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <div ngbdropdown="">
@@ -98,7 +98,7 @@ describe('Product Variation Select Enhanced Component', () => {
   });
 
   it('should trigger changeOption output handler if color code element is clicked (mobile)', () => {
-    component.group = group_colorCode;
+    component.group = groupColorCode;
     fixture.detectChanges();
     const emitter = spy(component.changeOption);
     const link = fixture.debugElement.query(By.css('.label.selected')).parent.nativeElement;
@@ -116,7 +116,7 @@ describe('Product Variation Select Enhanced Component', () => {
 
   it('should trigger changeOption output handler if swatch image element is clicked (desktop)', () => {
     when(appFacade.deviceType$).thenReturn(of('desktop'));
-    component.group = group_swatchImage;
+    component.group = groupSwatchImage;
     fixture.detectChanges();
     const emitter = spy(component.changeOption);
     const link = fixture.debugElement.queryAll(By.css('.label.selected')).pop().parent.nativeElement;

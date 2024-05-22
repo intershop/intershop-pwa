@@ -29,9 +29,9 @@ describe('Cms Navigation Category Component', () => {
     },
   };
 
-  const categoryTree_0 = { uniqueId: 'A', name: 'Cat A', url: '/cat/A' } as NavigationCategory;
+  const categoryTree0 = { uniqueId: 'A', name: 'Cat A', url: '/cat/A' } as NavigationCategory;
 
-  const categoryTree_1 = {
+  const categoryTree1 = {
     uniqueId: 'A',
     name: 'Cat A',
     url: '/cat/A',
@@ -42,7 +42,7 @@ describe('Cms Navigation Category Component', () => {
     ],
   } as NavigationCategory;
 
-  const categoryTree_2 = {
+  const categoryTree2 = {
     uniqueId: 'A',
     name: 'Cat A',
     url: '/cat/A',
@@ -75,10 +75,10 @@ describe('Cms Navigation Category Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    when(shoppingFacade.navigationCategoryTree$(anything(), 0)).thenReturn(of(categoryTree_0));
-    when(shoppingFacade.navigationCategoryTree$(anything(), 1)).thenReturn(of(categoryTree_1));
-    when(shoppingFacade.navigationCategoryTree$(anything(), 2)).thenReturn(of(categoryTree_2));
-    when(shoppingFacade.navigationCategoryTree$(anything(), 3)).thenReturn(of(categoryTree_0));
+    when(shoppingFacade.navigationCategoryTree$(anything(), 0)).thenReturn(of(categoryTree0));
+    when(shoppingFacade.navigationCategoryTree$(anything(), 1)).thenReturn(of(categoryTree1));
+    when(shoppingFacade.navigationCategoryTree$(anything(), 2)).thenReturn(of(categoryTree2));
+    when(shoppingFacade.navigationCategoryTree$(anything(), 3)).thenReturn(of(categoryTree0));
   });
 
   it('should be created', () => {
