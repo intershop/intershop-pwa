@@ -64,6 +64,11 @@
       "description": "When true, does not import this component into the owning NgModule.",
       "default": false
     },
+    "skipTests": {
+      "type": "boolean",
+      "description": "When true, does not create test.",
+      "default": false
+    },
     "export": {
       "type": "boolean",
       "default": false,

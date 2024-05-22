@@ -161,6 +161,18 @@ If possible, use the Jest update feature **update snapshots** when adapting test
 When you upgrade the PWA to a new version, those snapshots will most likely have merge conflicts in them.
 Here you can just accept either modification and update the test snapshots.
 
+You can disable creating component tests by adding the following snippet to your `angular.json`:
+
+```json
+  "projects": {
+    "intershop-pwa": {
+      "schematics": {
+        "intershop-schematics:component": {
+          "skipTests": true
+        }
+      },
+```
+
 ### Styling
 
 Changing the styling by applying changes to SCSS files should be done in the custom theme folder `src/styles/themes/<theme-prefix>`.

@@ -8,7 +8,6 @@ import {
   filter,
   mergeWith,
   move,
-  noop,
   url,
 } from '@angular-devkit/schematics';
 import { PWAComponentOptionsSchema as Options } from 'schemas/component/schema';
@@ -37,7 +36,14 @@ export function createComponent(options: Options): Rule {
     operations.push(
       mergeWith(
         apply(url('./files'), [
-          options.styleFile ? noop() : filter(path => !path.includes('.scss')),
+          filter(path => {
+            if (path.endsWith('.scss.template')) {
+              return options.styleFile;
+            } else if (path.endsWith('.spec.ts.template')) {
+              return !options.skipTests;
+            }
+            return true;
+          }),
           applyTemplates({
             ...strings,
             ...options,
