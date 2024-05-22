@@ -3,7 +3,7 @@ import { createAction } from '@ngrx/store';
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const loadTopLevelCategories = createAction('[Categories Internal] Load top level categories');
+export const loadTopLevelCategories = createAction('[Categories] Load top level categories');
 
 export const loadTopLevelCategoriesFail = createAction('[Categories API] Load top level categories fail', httpError());
 
@@ -13,7 +13,7 @@ export const loadTopLevelCategoriesSuccess = createAction(
 );
 
 export const loadCategoryTree = createAction(
-  '[Categories Internal] Load a specific category tree',
+  '[Categories] Load a specific category tree',
   payload<{ categoryRef: string; depth: number }>()
 );
 
@@ -32,6 +32,6 @@ export const loadCategorySuccess = createAction(
 );
 
 export const loadCategoryByRef = createAction(
-  '[Categories Internal] Load Category By Reference',
+  '[Categories] Load Category By Reference',
   payload<{ categoryId: string }>()
 );

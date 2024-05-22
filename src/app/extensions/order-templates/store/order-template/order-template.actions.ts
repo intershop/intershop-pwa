@@ -66,7 +66,7 @@ export const addProductToOrderTemplateFail = createAction(
 );
 
 export const addProductToNewOrderTemplate = createAction(
-  '[Order Templates Internal] Add Product To New Order Template',
+  '[Order Templates] Add Product To New Order Template',
   payload<{ title: string; sku: string; quantity?: number }>()
 );
 

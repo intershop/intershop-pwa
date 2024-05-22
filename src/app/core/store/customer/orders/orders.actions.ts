@@ -5,7 +5,7 @@ import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-quer
 import { Order } from 'ish-core/models/order/order.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const createOrder = createAction('[Orders] Create Order');
+export const createOrder = createAction('[Orders Internal] Create Order');
 
 export const createOrderFail = createAction('[Orders API] Create Order Fail', httpError());
 
@@ -33,7 +33,7 @@ export const loadOrderFail = createAction('[Orders API] Load Order Fail', httpEr
 
 export const loadOrderSuccess = createAction('[Orders API] Load Order Success', payload<{ order: Order }>());
 
-export const selectOrder = createAction('[Orders] Select Order', payload<{ orderId: string }>());
+export const selectOrder = createAction('[Orders Internal] Select Order', payload<{ orderId: string }>());
 
 export const selectOrderAfterRedirect = createAction(
   '[Orders Internal] Select Order After Checkout Redirect',

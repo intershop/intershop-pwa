@@ -41,7 +41,7 @@ describe('Punchout Types Effects', () => {
       );
 
       effects.loadPunchoutTypesInitially$.subscribe(action => {
-        expect(action).toMatchInlineSnapshot(`[Punchout] Load Punchout Types`);
+        expect(action).toMatchInlineSnapshot(`[Punchout Internal] Load Punchout Types`);
         done();
       });
     });

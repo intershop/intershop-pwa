@@ -15,12 +15,19 @@ const rootDirectory = `${project.getRootDirectories()[0].getPath()}/`;
 
 let isError = false;
 
+let warningCount = 0;
+
 let errorCount = 0;
 
 function logError(message: string) {
   console.error('ERROR', message);
   errorCount++;
   isError = true;
+}
+
+function logWarning(message: string) {
+  console.warn('WARNING', message);
+  warningCount++;
 }
 
 const args = process.argv.splice(2);
@@ -67,6 +74,84 @@ for (const file of files) {
       const minifiedTemplate = removeAllComments(templateContent);
       file.getClasses().forEach(componentClass => checkComponent(componentClass, minifiedTemplate));
     }
+  }
+
+  if (/\.actions?\.ts$/.test(file.getFilePath())) {
+    file
+      .getDescendantStatements()
+      .filter(stmt => Node.isVariableStatement(stmt) && stmt.hasModifier(SyntaxKind.ExportKeyword))
+      .forEach(action => checkAction(action));
+  }
+}
+
+function checkAction(node: Node) {
+  if (!isNodeIgnored(node) && Node.isVariableStatement(node)) {
+    const actions = node
+      .getChildrenOfKind(SyntaxKind.VariableDeclarationList)
+      .map(l => l.getLastChild()?.getFirstChild())
+      .flat()
+      .filter(Boolean)
+      .map(node => {
+        if (Node.isVariableDeclaration(node)) {
+          const actionInitNode = node
+            .getChildrenOfKind(SyntaxKind.CallExpression)
+            .map(ce => ce.getArguments()[0])
+            .flat()[0];
+
+          let type: string;
+          if (Node.isStringLiteral(actionInitNode)) {
+            type = /\[(.*?)\]/.exec(actionInitNode.getLiteralValue())[1];
+          } else if (Node.isObjectLiteralExpression(actionInitNode)) {
+            type = actionInitNode
+              .getProperty('source')
+              .getChildrenOfKind(SyntaxKind.StringLiteral)[0]
+              .getLiteralValue();
+          } else {
+            return;
+          }
+
+          return { node, name: node.getName(), type };
+        }
+      })
+      .filter(Boolean);
+
+    actions.forEach(a => {
+      const references = a.node
+        .findReferencesAsNodes()
+        .filter(n => !Node.isImportSpecifier(n.getParent()))
+        .map(n => n.getSourceFile().getBaseNameWithoutExtension())
+        .filter(n => !n.endsWith('.spec'));
+
+      const { internal, external } = references.reduce(
+        (acc, val) => {
+          if (/(\.effects?|\.reducers?|-store\.module|\.service)$/.test(val)) {
+            acc.internal.push(val);
+          } else {
+            acc.external.push(val);
+          }
+          return acc;
+        },
+        { internal: [], external: [] }
+      );
+
+      const isInternal: (type: string) => boolean = type => ['Internal', 'API'].some(t => type.endsWith(t));
+
+      if (references.length === 1 && internal.length) {
+        logWarning(`${printRef(a.node)}: ${a.name} is only used once internally and should be removed.`);
+      } else if (isInternal(a.type) && external.length) {
+        logError(
+          `${printRef(a.node)}: ${
+            a.name
+          } is marked as Internal and accessed outside of the state management. Either it shouldn't be internal or it should not be accessed outside. Offenders: ${external}`
+        );
+      } else if (!isInternal(a.type) && !external.length) {
+        logError(
+          `${printRef(a.node)}: ${
+            a.name
+          } is not accessed outside of the state management. It should either be marked as Internal or be removed.`
+        );
+      }
+    });
   }
 }
 
@@ -376,9 +461,12 @@ function checkNode(node: Node) {
   }
 }
 
-if (isError) {
-  console.warn('Found', errorCount, 'errors');
-  process.exit(1);
+if (warningCount || errorCount) {
+  console.warn('Found', errorCount, 'errors', 'and', warningCount, 'warnings');
 } else {
   console.log('No dead code found');
+}
+
+if (isError) {
+  process.exit(1);
 }

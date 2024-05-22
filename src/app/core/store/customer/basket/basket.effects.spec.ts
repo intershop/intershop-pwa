@@ -228,7 +228,7 @@ describe('Basket Effects', () => {
 
       effects.recalculateBasketAfterCurrencyChange$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Basket API] Update Basket:
+          [Basket] Update Basket:
             update: {"calculated":true}
         `);
         done();

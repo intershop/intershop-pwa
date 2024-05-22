@@ -161,7 +161,7 @@ describe('Search Effects', () => {
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(500); // debounceTime
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "good"
@@ -172,12 +172,12 @@ describe('Search Effects', () => {
       store$.dispatch(suggestSearch({ searchTerm: 'goo' }));
       tick(500);
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "good"
           suggests: [{"term":"Goods"}]
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "goo"
@@ -188,17 +188,17 @@ describe('Search Effects', () => {
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(500);
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "good"
           suggests: [{"term":"Goods"}]
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "goo"
           suggests: [{"term":"Goods"}]
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "good"
