@@ -7,6 +7,8 @@
   [attr.title]="'quote.add_product_to_quote.button.add_to_quote.label' | translate"
   data-testing-id="addToQuoteButton"
   (click)="addToQuote()"
+  tabindex="-1"
+  aria-hidden="true"
 >
   <ng-container *ngIf="displayType === 'icon'; else defaultButton">
     <fa-icon [icon]="['fas', 'inbox']" />

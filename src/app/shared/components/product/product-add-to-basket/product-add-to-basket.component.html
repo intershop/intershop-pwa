@@ -9,6 +9,8 @@
     [attr.title]="translationKey$ | async | translate"
     data-testing-id="addToCartButton"
     (click)="addToBasket()"
+    tabindex="-1"
+    aria-hidden="true"
   >
     <ng-container *ngIf="(displaySpinner$ | async) !== true; else spinning">
       <!-- Add to Cart button -->

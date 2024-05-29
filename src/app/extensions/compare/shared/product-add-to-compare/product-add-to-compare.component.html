@@ -5,6 +5,8 @@
   [class.is-selected]="isInCompareList$ | async"
   title="{{ 'product.compare.link' | translate }}"
   (click)="toggleCompare()"
+  tabindex="-1"
+  aria-hidden="true"
 >
   <ng-container *ngIf="displayType === 'icon'; else defaultButton">
     <fa-icon [icon]="['fas', 'balance-scale']" />

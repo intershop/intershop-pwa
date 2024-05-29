@@ -7,6 +7,8 @@
   [ngClass]="cssClass"
   (click)="openModal(modal)"
   data-testing-id="addToWishlistButton"
+  tabindex="-1"
+  aria-hidden="true"
 >
   <ng-container [ngSwitch]="displayType">
     <ng-template [ngSwitchCase]="'link'">{{ 'product.add_to_wishlist.link' | translate }}</ng-template>
