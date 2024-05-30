@@ -27,7 +27,8 @@
     "e2e": "cd e2e && npm install && node open-cypress",
     "lint": "ng lint",
     "lint-hard": "node scripts/eslint-hard",
-    "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --loglevel warn --write \"**/*.*\"",
+    "sort-i18n": "node scripts/sort-i18n.mjs",
+    "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --loglevel warn --write \"**/*.*\" && npm run sort-i18n",
     "compile": "tsc --project tsconfig.all.json --noEmit",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
     "clean-localizations": "node scripts/clean-up-localizations",
@@ -218,7 +219,7 @@
       "jest --ci --bail --findRelatedTests --passWithNoTests"
     ],
     "src/assets/i18n/*.json": [
-      "sort-json --indent-size=2"
+      "npm run sort-i18n"
     ]
   },
   "commitlint": {
