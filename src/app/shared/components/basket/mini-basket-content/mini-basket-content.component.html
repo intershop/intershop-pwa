@@ -5,16 +5,18 @@
       [error]="basketError"
       cssClass="text-danger"
     />
-    <div *ngFor="let lineItem of lineItems | slice : 0 : maxItemNumber" class="product-row">
+    <div *ngFor="let lineItem of lineItems | slice : 0 : maxItemNumber" class="product-row" role="menu">
       <ng-container ishProductContext [sku]="lineItem.productSKU">
-        <div class="mini-product-img">
-          <ish-product-image imageType="S" [link]="true" />
-        </div>
-        <div class="mini-product-info">
-          <ish-product-name />
-          <div class="product-price">{{ lineItem.price | ishPrice }}</div>
-          <div class="cart-pli-data">
-            <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
+        <div role="menuitem">
+          <div class="mini-product-img">
+            <ish-product-image imageType="S" [link]="true" />
+          </div>
+          <div class="mini-product-info">
+            <ish-product-name />
+            <div class="product-price">{{ lineItem.price | ishPrice }}</div>
+            <div class="cart-pli-data">
+              <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
+            </div>
           </div>
         </div>
       </ng-container>
