@@ -9,14 +9,12 @@
   <button
     ngbDropdownToggle
     class="language-switch-button btn btn-link"
-    aria-expanded="false"
     aria-haspopup="menu"
-    [attr.aria-label]="'locale.' + locale + '.long' | translate"
+    [attr.aria-label]="'Selected language: ' + ('locale.' + locale + '.long' | translate)"
   >
     <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon" />
     <span class="language-switch-current-selection d-inline"
-      >{{ 'locale.' + locale + (view === 'accordion' ? '.long' : '.short') | translate
-      }}<span class="switch_arrow"></span
+      >{{ 'locale.' + locale + '.long' | translate }}<span class="switch_arrow"></span
     ></span>
   </button>
   <div ngbDropdownMenu class="language-switch-container dropdown-menu" style="left: 0 !important" role="menu">
