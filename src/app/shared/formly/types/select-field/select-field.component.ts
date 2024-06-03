@@ -14,9 +14,8 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
  * @defaultWrappers form-field-horizontal & validation
  *
  * @usageNotes
- * The select field functionality is coupled with the translate-select-options extension. It reads the ``options`` and ``placeholder``
- * from the configuration and writes them to ``props.processedOptions``.
- * Please don't use ``props.processedOptions`` manually.
+ * The select field functionality is coupled with the translate-select-options extension.
+ * It reads the ``options`` and ``placeholder`` from the configuration and writes them to ``props.options``.
  *
  */
 @Component({
@@ -33,8 +32,4 @@ export class SelectFieldComponent extends FieldType<FieldTypeConfig> {
       },
     },
   };
-
-  get selectOptions() {
-    return this.props.processedOptions ?? this.props.options;
-  }
 }
