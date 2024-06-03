@@ -6,6 +6,12 @@ fieldset {
   }
 }
 
+.legend-invisible {
+  legend {
+    display: none;
+  }
+}
+
 // 	REQUIRED FIELDS
 .indicates-required {
   color: $text-color-quaternary;

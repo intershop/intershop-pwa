@@ -97,6 +97,10 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   private createCountrySelectField(): FormlyFieldConfig {
     return {
       type: 'ish-fieldset-field',
+      props: {
+        legend: 'Country',
+        fieldsetClass: 'legend-invisible',
+      },
       fieldGroup: [
         {
           key: 'countryCode',

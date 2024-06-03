@@ -76,7 +76,8 @@ export class RegistrationFormConfigurationService {
       {
         type: 'ish-fieldset-field',
         props: {
-          fieldsetClass: 'row',
+          legend: 'Address',
+          fieldsetClass: 'row legend-invisible',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
         fieldGroup: [
@@ -230,7 +231,8 @@ export class RegistrationFormConfigurationService {
       {
         type: 'ish-fieldset-field',
         props: {
-          fieldsetClass: 'row',
+          legend: 'Email and Password',
+          fieldsetClass: 'row legend-invisible',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
         validators: {
@@ -311,7 +313,8 @@ export class RegistrationFormConfigurationService {
       {
         type: 'ish-fieldset-field',
         props: {
-          fieldsetClass: 'row',
+          legend: 'Personal information',
+          fieldsetClass: 'row legend-invisible',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('personalInfo'),
@@ -332,7 +335,8 @@ export class RegistrationFormConfigurationService {
       {
         type: 'ish-fieldset-field',
         props: {
-          fieldsetClass: 'row',
+          legend: 'Company information',
+          fieldsetClass: 'row legend-invisible',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('companyInfo'),
