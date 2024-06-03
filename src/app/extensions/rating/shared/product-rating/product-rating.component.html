@@ -1,6 +1,8 @@
 <ng-container *ngIf="(isVariationMaster$ | async) === false">
-  <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
-    <ish-product-rating-star [filled]="fill" />
-    <span *ngIf="lastStar && !hideNumberOfReviews" class="product-info">({{ numberOfReviews$ | async }})</span>
-  </ng-container>
+  <div role="img" [attr.aria-label]="'Rating: ' + (rating$ | async) + ' out of 5 stars'">
+    <ng-container *ngFor="let fill of stars$ | async; let lastStar = last">
+      <ish-product-rating-star [filled]="fill" />
+      <span *ngIf="lastStar && !hideNumberOfReviews" class="product-info">({{ numberOfReviews$ | async }})</span>
+    </ng-container>
+  </div>
 </ng-container>
