@@ -5,6 +5,7 @@ import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core'
  * Type for a basic input field
  *
  * @props **ariaLabel** adds an aria-label to the component for better accessibility, recommended if there is no associated label
+ * @props **ariaLabelledby** can be used to link related information to the input field (like conditions for passwords)
  * @props **type** supports all text types; 'text' (default), 'email', 'password', 'tel'
  *
  * @defaultWrappers form-field-horizontal & validation

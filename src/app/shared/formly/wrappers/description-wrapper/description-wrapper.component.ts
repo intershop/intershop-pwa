@@ -22,6 +22,10 @@ export class DescriptionWrapperComponent extends FieldWrapper {
       : this.props.customDescription?.key;
   }
 
+  get id() {
+    return this.props.customDescription.id;
+  }
+
   get args() {
     return typeof this.props.customDescription === 'string' ? {} : this.props.customDescription?.args;
   }

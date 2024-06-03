@@ -275,8 +275,11 @@ export class RegistrationFormConfigurationService {
               customDescription: {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
+                id: 'password_conditions',
               },
               attributes: { autocomplete: 'new-password' },
+              ariaLabel: 'Password',
+              ariaLabelledby: 'password_conditions',
             },
           },
           {
