@@ -8,7 +8,8 @@
   <h2 class="mt-1">
     {{ 'account.punchout.user.list.heading' | translate : { '0': selectedType } }}
     <a
-      [routerLink]="['/account/punchout/create', { format: selectedType }]"
+      [routerLink]="['/account/punchout/create']"
+      [queryParams]="{ format: selectedType }"
       class="btn btn-secondary"
       data-testing-id="add-user-button"
     >
@@ -32,6 +33,7 @@
             <div class="float-right">
               <a
                 [routerLink]="[user.login]"
+                [queryParams]="{ format: selectedType }"
                 class="btn-tool"
                 title="{{ 'account.profile.update.link' | translate }}"
                 data-testing-id="edit-user"

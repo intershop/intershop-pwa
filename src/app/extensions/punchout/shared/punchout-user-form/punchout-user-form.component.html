@@ -5,7 +5,9 @@
       <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="punchout-user-submit">
         {{ (punchoutUser ? 'account.update.button.label' : 'account.user.new.button.create.label') | translate }}
       </button>
-      <a routerLink="../" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>
+      <a [routerLink]="['../']" [queryParams]="{ format: punchoutType }" class="btn btn-secondary">{{
+        'account.cancel.link' | translate
+      }}</a>
     </div>
   </div>
 </form>

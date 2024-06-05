@@ -4,7 +4,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { selectRouteParam } from 'ish-core/store/core/router';
+import { selectQueryParam } from 'ish-core/store/core/router';
 import { decamelizeString } from 'ish-core/utils/functions';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -45,7 +45,7 @@ export class PunchoutFacade {
   supportedPunchoutTypes$: Observable<PunchoutType[]> = this.store.pipe(select(getPunchoutTypes));
 
   selectedPunchoutType$ = combineLatest([
-    this.store.pipe(select(selectRouteParam('format'))),
+    this.store.pipe(select(selectQueryParam('format'))),
     this.store.pipe(select(getPunchoutTypes)),
   ]).pipe(
     filter(([format, types]) => !!format || types?.length > 0),
