@@ -60,7 +60,7 @@
         >
           {{ 'account.update.button.label' | translate }}
         </button>
-        <a [routerLink]="['/account/punchout', { format: 'oci' }]" class="btn btn-secondary">{{
+        <a [routerLink]="['/account/punchout']" [queryParams]="{ format: 'oci' }" class="btn btn-secondary">{{
           'account.cancel.link' | translate
         }}</a>
       </div>

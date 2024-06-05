@@ -6,7 +6,7 @@ import { from } from 'rxjs';
 import { concatMap, exhaustMap, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { selectRouteParam } from 'ish-core/store/core/router';
+import { selectQueryParam, selectRouteParam } from 'ish-core/store/core/router';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutType } from '../../models/punchout-user/punchout-user.model';
@@ -41,7 +41,7 @@ export class PunchoutUsersEffects {
     this.actions$.pipe(
       ofType(loadPunchoutTypesSuccess),
       mapToPayloadProperty('types'),
-      concatLatestFrom(() => this.store.pipe(select(selectRouteParam('format')))),
+      concatLatestFrom(() => this.store.pipe(select(selectQueryParam('format')))),
       map(([types, selectedType]) => loadPunchoutUsers({ type: (selectedType as PunchoutType) || types[0] }))
     )
   );
@@ -63,7 +63,7 @@ export class PunchoutUsersEffects {
     this.store.pipe(
       select(selectRouteParam('PunchoutLogin')),
       whenTruthy(),
-      withLatestFrom(this.store.pipe(select(selectRouteParam('format')))),
+      withLatestFrom(this.store.pipe(select(selectQueryParam('format')))),
       concatMap(([, format]) =>
         this.punchoutService.getUsers(format as PunchoutType).pipe(
           map(users => loadPunchoutUsersSuccess({ users })),
@@ -80,7 +80,7 @@ export class PunchoutUsersEffects {
       concatMap(newUser =>
         this.punchoutService.createUser(newUser).pipe(
           concatMap(user =>
-            from(this.router.navigate([`/account/punchout`, { format: user.punchoutType }])).pipe(
+            from(this.router.navigate([`/account/punchout`], { queryParams: { format: user.punchoutType } })).pipe(
               mergeMap(() => [
                 addPunchoutUserSuccess({ user }),
                 displaySuccessMessage({
@@ -103,7 +103,7 @@ export class PunchoutUsersEffects {
       concatMap(changedUser =>
         this.punchoutService.updateUser(changedUser).pipe(
           concatMap(user =>
-            from(this.router.navigate([`/account/punchout`, { format: user.punchoutType }])).pipe(
+            from(this.router.navigate([`/account/punchout`], { queryParams: { format: user.punchoutType } })).pipe(
               mergeMap(() => [
                 updatePunchoutUserSuccess({ user }),
                 displaySuccessMessage({

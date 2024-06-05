@@ -103,7 +103,7 @@ describe('Punchout Users Effects', () => {
 
   describe('loadDetailedUser$', () => {
     it('should call the service for retrieving user', done => {
-      router.navigate(['/account/punchout/ociuser@test.intershop.de', { format: 'oci' }]);
+      router.navigate(['/account/punchout/ociuser@test.intershop.de'], { queryParams: { format: 'oci' } });
 
       effects.loadDetailedUser$.subscribe(() => {
         verify(punchoutService.getUsers('oci')).once();
@@ -147,7 +147,7 @@ describe('Punchout Users Effects', () => {
               message: "account.punchout.user.created.message"
               messageParams: {"0":"ociuser@test.intershop.de"}
           `);
-          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
+          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout?format=oci"`);
         },
         error: fail,
         complete: done,
@@ -191,7 +191,7 @@ describe('Punchout Users Effects', () => {
               message: "account.punchout.user.updated.message"
               messageParams: {"0":"ociuser@test.intershop.de"}
           `);
-          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
+          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout?format=oci"`);
         },
         error: fail,
         complete: done,

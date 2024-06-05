@@ -66,6 +66,9 @@ If so these wrapper configurations need to be replaced with `maxlength-descripti
 B2B users with the permission `APP_B2B_MANAGE_ORDERS` (only available for admin users in ICM 12.1.0 and higher) see now the orders of all users of the company on the My Account order history page.
 They can filter the orders by buyer in order to see only e.g. the own orders again.
 
+In preparation of the cXML punchout self service configuration we switched from a hidden route parameter that conveys the punchout type context information to an URL query parameter (e.g. `?format=cxml`).
+So customized routing within the punchout area needs to be adapted accordingly.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.
