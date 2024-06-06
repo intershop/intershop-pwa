@@ -139,7 +139,7 @@ const fieldComponents = [
         {
           name: 'ish-textarea-field',
           component: TextareaFieldComponent,
-          wrappers: ['form-field-horizontal', 'textarea-description', 'validation'],
+          wrappers: ['form-field-horizontal', 'maxlength-description', 'validation'],
         },
         {
           name: 'ish-checkbox-field',

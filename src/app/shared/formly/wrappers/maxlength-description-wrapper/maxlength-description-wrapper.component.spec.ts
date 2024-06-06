@@ -7,9 +7,9 @@ import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/for
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
 
-import { TextareaDescriptionWrapperComponent } from './textarea-description-wrapper.component';
+import { MaxlengthDescriptionWrapperComponent } from './maxlength-description-wrapper.component';
 
-describe('Textarea Description Wrapper Component', () => {
+describe('Maxlength Description Wrapper Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
@@ -21,12 +21,12 @@ describe('Textarea Description Wrapper Component', () => {
       imports: [
         FormlyModule.forRoot({
           types: [{ name: 'textarea', component: FormlyTestingExampleComponent }],
-          wrappers: [{ name: 'textarea-description-wrapper', component: TextareaDescriptionWrapperComponent }],
+          wrappers: [{ name: 'maxlength-description-wrapper', component: MaxlengthDescriptionWrapperComponent }],
         }),
         FormlyTestingComponentsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [TextareaDescriptionWrapperComponent],
+      declarations: [MaxlengthDescriptionWrapperComponent],
     }).compileComponents();
   });
 
@@ -44,7 +44,7 @@ describe('Textarea Description Wrapper Component', () => {
         {
           key: 'textarea',
           type: 'textarea',
-          wrappers: ['textarea-description-wrapper'],
+          wrappers: ['maxlength-description-wrapper'],
           props: {
             maxLength: 1000,
           },
@@ -65,13 +65,13 @@ describe('Textarea Description Wrapper Component', () => {
 
   it('should be rendered after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-textarea-description-wrapper')).toBeTruthy();
+    expect(element.querySelector('ish-maxlength-description-wrapper')).toBeTruthy();
   });
 
   it('should display maxLength on empty field', () => {
     component.form.get('textarea')?.setValue('');
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id="textarea-description"]')?.textContent.trim()).toEqual('1000');
+    expect(element.querySelector('[data-testing-id="maxlength-description"]')?.textContent.trim()).toEqual('1000');
   });
 
   it('should display correct remaining length if field is not empty', fakeAsync(() => {
@@ -79,6 +79,6 @@ describe('Textarea Description Wrapper Component', () => {
     component.form.get('textarea')?.setValue('0123456789');
     tick(1000);
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id="textarea-description"]')?.textContent.trim()).toEqual('990');
+    expect(element.querySelector('[data-testing-id="maxlength-description"]')?.textContent.trim()).toEqual('990');
   }));
 });

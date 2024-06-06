@@ -47,6 +47,16 @@ For that reason product variations are now loaded lazily through the following c
 - The `productMaster` property on the product view model has been removed. The master product should be individually retrieved.
 - The `ish-product-item-variations` component has been refactored.
 
+The Formly wrapper `textarea-description` was renamed to the better suited name `maxlength-description` and the rendering logic and compatibility to the general `description` wrapper was improved.
+The renaming should better convey the fact that this wrapper can be used not only for `ish-textarea-field` (where it is configured by default) but with other input field types as well.
+Besides this the main difference to the general `description` wrapper is its remaining `maxlength` calculation.
+Together with the renaming the implementation was changed so that the description will only be rendered if the according field has a `props.maxLength` value configured.
+And the `props` key to provide an alternative translation key was changed from `customDescription` to `maxLengthDescription`.
+This change provides the possibility to use the `description` wrapper with its `customDescription` together with the `maxlength-description` wrapper with a customized `maxLengthDescription`.
+For the migration of customer projects it needs to be checked whether a `customDescription` is configured for a `ish-textarea-field` and if so it needs to be replaced with `maxLengthDescription`.
+Additionally it needs to be checked if the `textarea-description` wrapper is configured anywhere else then the default assignment to the `ish-textarea-field`.
+If so these wrapper configurations need to be replaced with `maxlength-description`.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.

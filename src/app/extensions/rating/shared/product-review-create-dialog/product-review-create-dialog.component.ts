@@ -92,10 +92,10 @@ export class ProductReviewCreateDialogComponent implements OnInit {
           labelClass: 'col-md-3',
           fieldClass: 'col-md-9',
           required: true,
-          maxLength: 4000,
           rows: 5,
           placeholder: 'product.review.content.placeholder',
-          customDescription: 'product.review.content.max_limit',
+          maxLength: 4000,
+          maxLengthDescription: 'product.review.content.max_limit',
         },
         validation: {
           messages: {
