@@ -8,10 +8,10 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  * @props **cols** - the amount of columns the textarea should have
  * @props **rows** - the amount of rows the textarea should have
  *
- * @defaultWrappers form-field-horizontal & textarea-description & validation
+ * @defaultWrappers form-field-horizontal & maxlength-description & validation
  *
  * @usageNotes
- * See the textarea-description wrapper for more info on the relevant props.
+ * See the maxlength-description wrapper for more info on the relevant props.
  */
 @Component({
   selector: 'ish-textarea-field',

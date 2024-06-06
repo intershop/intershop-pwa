@@ -40,7 +40,6 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
         key: 'messageToMerchant',
         type: 'ish-textarea-field',
         props: {
-          postWrappers: [{ wrapper: 'description', index: -1 }],
           label: 'checkout.basket_merchant_message.label',
           maxLength: 1000,
           rows: 2,
