@@ -1,7 +1,7 @@
 import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { isObservable, of } from 'rxjs';
-import { map, startWith, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 /**
  * Extension to translate the props.options and add a placeholder element.
@@ -19,20 +19,23 @@ class TranslateSelectOptionsExtension implements FormlyExtension {
   constructor(private translate: TranslateService) {}
 
   prePopulate(field: FormlyFieldConfig): void {
-    const props = field.props;
-    if (!props?.options) {
+    const props = field.props || {};
+    if (!props.options) {
       return;
     }
-    field.props.processedOptions = (isObservable(props.options) ? props.options : of(props.options)).pipe(
-      startWith([]),
-      map(options => (props.placeholder ? [{ value: '', label: props.placeholder }] : []).concat(options ?? [])),
-      tap(() => {
-        if (props.placeholder && !field.formControl.value && !field.model[field.key as string]) {
-          field.formControl.setValue('');
-        }
-      }),
-      map(options => options?.map(option => ({ ...option, label: this.translate.instant(option.label) })))
-    );
+
+    field.expressions = {
+      ...(field.expressions || {}),
+      'props.options': (isObservable(props.options) ? props.options : of(props.options)).pipe(
+        map(options => (props.placeholder ? [{ value: '', label: props.placeholder }] : []).concat(options ?? [])),
+        tap(() => {
+          if (props.placeholder && !field.formControl.value && !field.model[field.key as string]) {
+            field.formControl.setValue('');
+          }
+        }),
+        map(options => options?.map(option => ({ ...option, label: this.translate.instant(option.label) })))
+      ),
+    };
   }
 }
 

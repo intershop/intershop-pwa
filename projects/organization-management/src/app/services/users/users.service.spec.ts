@@ -86,7 +86,7 @@ describe('Users Service', () => {
   });
 
   it('should call the addUser for creating a new b2b user', done => {
-    const user = { login: millersEMail } as B2bUser;
+    const user = { login: millersEMail, email: millersEMail } as B2bUser;
 
     usersService.addUser(user).subscribe(() => {
       verify(apiService.post(anything(), anything())).once();

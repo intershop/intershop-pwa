@@ -28,9 +28,12 @@ import { ssoRegistrationReducer } from './sso-registration/sso-registration.redu
 import { UserNewsletterEffects } from './user/user-newsletter.effects';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
+import { UsersEffects } from './users/users.effects';
+import { usersReducer } from './users/users.reducer';
 
 const customerReducers: ActionReducerMap<CustomerState> = {
   user: userReducer,
+  users: usersReducer,
   addresses: addressesReducer,
   orders: ordersReducer,
   basket: basketReducer,
@@ -49,6 +52,7 @@ const customerEffects = [
   BasketValidationEffects,
   OrdersEffects,
   UserEffects,
+  UsersEffects,
   AuthorizationEffects,
   OrganizationManagementEffects,
   RequisitionManagementEffects,

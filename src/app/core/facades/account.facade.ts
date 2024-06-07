@@ -74,6 +74,7 @@ import {
   updateUserPreferredPayment,
   userNewsletterActions,
 } from 'ish-core/store/customer/user';
+import { getUsers } from 'ish-core/store/customer/users';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -96,6 +97,7 @@ export class AccountFacade {
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
   roles$ = this.store.pipe(select(getUserRoles));
+  users$ = this.store.pipe(select(getUsers));
 
   loginUser(credentials: Credentials) {
     this.store.dispatch(loginUser({ credentials }));

@@ -8,11 +8,11 @@
  */
 export function encodeResourceID(resourceID: string): string {
   // ICM 7.10 & ICM 11 resource ID encoding
-  return encodeURIComponent(encodeURIComponent(resourceID));
+  //return encodeURIComponent(encodeURIComponent(resourceID));
 
   // ICM 12 and above resource ID encoding
   // encodeURIComponent replaces spaces with '+' that's not RFC conform.
   // Therefore, we encode existing '+' with '%2B', converting the string with encodeURIComponent,
   // and converting '%2B' ('%252B' after encodeURIComponent) to '+' back.
-  // return encodeURIComponent(resourceID.replaceAll('+', '%2B')).replaceAll('\\+', '%20').replaceAll('%252B', '+');
+  return encodeURIComponent(resourceID.replaceAll('+', '%2B')).replaceAll('\\+', '%20').replaceAll('%252B', '+');
 }
