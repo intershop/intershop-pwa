@@ -572,6 +572,11 @@ describe('Shopping Store', () => {
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
               breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
+            @ngrx/router-store/navigated: /category/A.123.456
+            [Product Listing] Load More Products:
+              id: {"type":"category","value":"A.123.456"}
+            [Viewconf Internal] Set Breadcrumb Data:
+              breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
             [Product Listing Internal] Load More Products For Params:
               id: {"type":"category","value":"A.123.456"}
               filters: undefined
@@ -594,11 +599,6 @@ describe('Shopping Store', () => {
               sortableAttributes: []
             [Filter API] Load Filter Success:
               filterNavigation: {}
-            @ngrx/router-store/navigated: /category/A.123.456
-            [Product Listing] Load More Products:
-              id: {"type":"category","value":"A.123.456"}
-            [Viewconf Internal] Set Breadcrumb Data:
-              breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
           `);
         }));
       });
@@ -697,6 +697,11 @@ describe('Shopping Store', () => {
             id: {"type":"category","value":"A.123.456"}
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
+          @ngrx/router-store/navigated: /category/A.123.456
+          [Product Listing] Load More Products:
+            id: {"type":"category","value":"A.123.456"}
+          [Viewconf Internal] Set Breadcrumb Data:
+            breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
           [Product Listing Internal] Load More Products For Params:
             id: {"type":"category","value":"A.123.456"}
             filters: undefined
@@ -719,11 +724,6 @@ describe('Shopping Store', () => {
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
-          @ngrx/router-store/navigated: /category/A.123.456
-          [Product Listing] Load More Products:
-            id: {"type":"category","value":"A.123.456"}
-          [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
         `);
       }));
     });
