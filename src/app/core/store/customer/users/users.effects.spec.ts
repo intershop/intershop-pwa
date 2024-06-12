@@ -7,8 +7,6 @@ import { instance, mock, verify, when } from 'ts-mockito';
 
 import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { UserService } from 'ish-core/services/user/user.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadCustomerUsers, loadCustomerUsersFail } from './users.actions';
@@ -40,7 +38,6 @@ describe('Users Effects', () => {
     when(userService.getUsers()).thenReturn(of(users));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['serverConfig']), CustomerStoreModule.forTesting('users')],
       providers: [
         { provide: UserService, useFactory: () => instance(userService) },
         provideMockActions(() => actions$),
