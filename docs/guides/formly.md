@@ -56,7 +56,7 @@ A configuration for a form containing only a basic input field could be defined 
 ```typescript
 const fields: FormlyFieldConfig[] = [
   {
-    type: 'ish-input-field',
+    type: 'ish-text-input-field',
     key: 'example-input',
     props: {
       required: true,
@@ -268,6 +268,8 @@ Refer to the tables below for an overview of these parts.
 | ish-html-text-field           | Only display the form value as html                                                                   | ----                                                                                                                                                                                                                                                                                                                                                                                              |
 | ish-date-picker-field         | Basic datepicker                                                                                      | <ul><li>`minDays`: Computes the minDate by adding the minimum allowed days to today.</li><li>`maxDays`: Computes the maxDate by adding the maximum allowed days to today.</li><li>`isSatExcluded`: Specifies if Saturdays can be disabled.</li><li>`isSunExcluded`: Specifies if Sundays can be disabled.</li></ul>                                                                               |
 | ish-date-range-picker-field   | Datepicker with range                                                                                 | <ul><li>`minDays`: Computes the minDate by adding the minimum allowed days to today.</li><li>`maxDays`: Computes the maxDate by adding the maximum allowed days to today.</li><li>`startDate`: The start date.</li><li>`placeholder`: Placeholder that displays the date format in the input field.</li></ul>                                                                                     |
+| ish-number-field              | Basic number input field for smaller Integer numbers, with `+` and `-` buttons (use `ish-text-input-field` with `mask` for larger numbers) | `min`, `max` and `step` input configuration is considered by the in-/decrease buttons                                                                                                                                                                                             |
+
 
 ### Wrappers
 
