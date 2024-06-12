@@ -27,6 +27,7 @@ import { LocalizedParserFormatter } from './date-picker-field/localized-parser-f
 import { DateRangePickerFieldComponent } from './date-range-picker-field/date-range-picker-field.component';
 import { FieldsetFieldComponent } from './fieldset-field/fieldset-field.component';
 import { HtmlTextFieldComponent } from './html-text-field/html-text-field.component';
+import { NumberFieldComponent } from './number-field/number-field.component';
 import { PasswordFieldComponent } from './password-field/password-field.component';
 import { PlainTextFieldComponent } from './plain-text-field/plain-text-field.component';
 import { RadioFieldComponent } from './radio-field/radio-field.component';
@@ -51,6 +52,7 @@ const fieldComponents = [
   TextareaFieldComponent,
   TextInputFieldComponent,
   SearchSelectFieldComponent,
+  NumberFieldComponent,
 ];
 
 @NgModule({
@@ -205,6 +207,18 @@ const fieldComponents = [
           name: 'ish-search-select-field',
           component: SearchSelectFieldComponent,
           wrappers: ['form-field-horizontal'],
+        },
+        {
+          name: 'ish-number-field',
+          component: NumberFieldComponent,
+          defaultOptions: {
+            validation: {
+              messages: {
+                required: 'form.number.error.required',
+              },
+            },
+          },
+          wrappers: ['form-field-horizontal', 'validation'],
         },
       ],
     }),
