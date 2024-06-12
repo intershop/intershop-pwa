@@ -1,5 +1,8 @@
 import { PAYMENT_METHOD_TYPE_CHECKOUT_ASSIGNMENT } from './payment-method.model';
 
+/**
+ * Auxiliary method for determining which payment method is displayed at which point in the checkout process.
+ */
 export class PaymentMethodHelper {
   static shouldShowOnCheckoutStep(capabilities: string[], focus: string): boolean {
     let shouldShow = false;
@@ -26,5 +29,7 @@ export class PaymentMethodHelper {
       }
       return shouldShow;
     }
+
+    return shouldShow;
   }
 }

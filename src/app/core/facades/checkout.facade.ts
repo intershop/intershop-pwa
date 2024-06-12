@@ -46,6 +46,7 @@ import {
   setBasketAttribute,
   setBasketDesiredDeliveryDate,
   setBasketPayment,
+  setFastCheckoutPayment,
   startCheckout,
   submitOrder,
   updateBasket,
@@ -273,6 +274,10 @@ export class CheckoutFacade {
 
   setBasketPayment(paymentName: string) {
     this.store.dispatch(setBasketPayment({ id: paymentName }));
+  }
+
+  setFastCheckoutPayment(paymentName: string) {
+    this.store.dispatch(setFastCheckoutPayment({ id: paymentName }));
   }
 
   createBasketPayment(paymentInstrument: PaymentInstrument, saveForLater = false) {

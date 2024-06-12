@@ -111,6 +111,24 @@ export class PaymentService {
         redirect.successUrl = `${loc}/checkout/review;lang=${lang}?redirect=success`;
         redirect.cancelUrl = `${loc}/basket;lang=${lang}?redirect=cancel`;
         redirect.failureUrl = `${loc}/basket;lang=${lang}?redirect=failure`;
+
+        const body = {
+          paymentInstrument,
+          redirect,
+        };
+
+        return this.apiService
+          .currentBasketEndpoint()
+          .put<{
+            data: {
+              redirect: {
+                redirectUrl: string;
+              };
+            };
+          }>('payments/open-tender', body, {
+            headers: this.basketHeaders,
+          })
+          .pipe(map(payload => payload.data.redirect.redirectUrl));
       }
 
       if (pm.capabilities.some(data => ['RedirectAfterCheckout'].includes(data))) {

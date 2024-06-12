@@ -10,6 +10,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
+import { BasketService } from 'ish-core/services/basket/basket.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
@@ -26,6 +27,7 @@ import {
   deleteBasketPayment,
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
+  executeFastCheckout,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -34,6 +36,8 @@ import {
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
+  setFastCheckoutPayment,
+  startCheckoutFail,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -42,15 +46,18 @@ import {
 describe('Basket Payment Effects', () => {
   let actions$: Observable<Action>;
   let paymentServiceMock: PaymentService;
+  let basketServiceMock: BasketService;
   let effects: BasketPaymentEffects;
   let store: Store;
 
   beforeEach(() => {
     paymentServiceMock = mock(PaymentService);
+    basketServiceMock = mock(BasketService);
 
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['router']), CustomerStoreModule.forTesting('user', 'basket')],
       providers: [
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         BasketPaymentEffects,
         provideMockActions(() => actions$),
@@ -481,6 +488,43 @@ describe('Basket Payment Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketAfterBasketChangeSuccess$).toBeObservable(expected$);
+    });
+  });
+
+  describe('startFastCheckoutProcess$ - set payment at basket with subsequent basket validation', () => {
+    beforeEach(() => {
+      when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(of(undefined));
+      when(basketServiceMock.validateBasket(anything())).thenReturn(of(undefined));
+    });
+    it('should map to action of type executeFastCheckout in case of success', () => {
+      const action = setFastCheckoutPayment({ id: 'FastCheckout' });
+      const completion = executeFastCheckout(anything());
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
+    });
+    it('should map to action of type setBasketPaymentFail in case of failure', () => {
+      when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = setFastCheckoutPayment({ id: 'FastCheckout' });
+      const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
+    });
+    it('should map to action of type startCheckoutFail in case of failure', () => {
+      when(basketServiceMock.validateBasket(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = setFastCheckoutPayment({ id: 'FastCheckout' });
+      const completion = startCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
     });
   });
 });

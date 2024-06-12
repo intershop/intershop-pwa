@@ -3,8 +3,9 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
-import { concatMap, delay, filter, map, switchMap, take } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
 
+import { BasketService } from 'ish-core/services/basket/basket.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
@@ -17,6 +18,7 @@ import {
   deleteBasketPayment,
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
+  executeFastCheckout,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -24,6 +26,8 @@ import {
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
+  setFastCheckoutPayment,
+  startCheckoutFail,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -35,7 +39,12 @@ import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketPaymentEffects {
-  constructor(private actions$: Actions, private store: Store, private paymentService: PaymentService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private paymentService: PaymentService,
+    private basketService: BasketService
+  ) {}
 
   /**
    * The redirect after fast checkout payment method effect.
@@ -43,16 +52,36 @@ export class BasketPaymentEffects {
   executeFastCheckoutRedirect$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(setBasketPaymentSuccess),
-        delay(100),
-        concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
-        filter(([, basket]) => basket.payment.capabilities?.includes('FastCheckout')),
-        concatMap(([, basket]) => {
-          location.assign(basket.payment.redirectUrl);
+        ofType(executeFastCheckout),
+        mapToPayloadProperty('redirectUrl'),
+        concatMap(redirectUrl => {
+          location.assign(redirectUrl);
           return EMPTY;
         })
       ),
     { dispatch: false }
+  );
+
+  /**
+   * Check the basket before starting the fast checkout
+   */
+  startFastCheckoutProcess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setFastCheckoutPayment),
+      mapToPayloadProperty('id'),
+      concatMap(paymentInstrumentId =>
+        this.paymentService.setBasketPayment(paymentInstrumentId).pipe(
+          switchMap(redirectUrl => {
+            const url = redirectUrl;
+            return this.basketService.validateBasket(['Products', 'Promotion', 'Value', 'CostCenter']).pipe(
+              map(() => executeFastCheckout({ redirectUrl: url })),
+              mapErrorToAction(startCheckoutFail)
+            );
+          }),
+          mapErrorToAction(setBasketPaymentFail)
+        )
+      )
+    )
   );
 
   /**

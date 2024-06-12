@@ -39,7 +39,7 @@ export class ShoppingBasketPaymentComponent implements OnInit {
   }
 
   fastCheckout(paymentId: string) {
-    this.checkoutFacade.setBasketPayment(paymentId);
+    this.checkoutFacade.setFastCheckoutPayment(paymentId);
   }
 
   /**
