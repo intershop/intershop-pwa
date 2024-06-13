@@ -108,7 +108,7 @@ Since `defaultProject` is no longer a valid option in `angular.json`, it has bee
 
 We enabled the [Angular Hydration](https://angular.io/guide/hydration) to improve performance and prevent the UI from flickering when a page renders - please note that this feature is still in developer preview and may have some limitations.
 
-From this version, we use the [`takeUntilDestroyed`](https://indepth.dev/posts/1518/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
+From this version, we use the [`takeUntilDestroyed`](https://angularindepth.com/posts/1518/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
 The `add-destroy` schematic has been removed but you can keep the `takeUntil(destroy$)` mechanism for a transitional period.
 A [migration script](../../scripts/migrate-destroy-subject.ts) is created to support the migration to the new way to complete open observable subscriptions on destroy.
 This script can be executed with `npx ts-node .\scripts\migrate-destroy-subject.ts`.
@@ -243,7 +243,7 @@ will become
 },
 ```
 
-For more information about functional guards, see this [blog article](https://blog.angular.io/advancements-in-the-angular-router-5d69ec4c032).
+For more information about functional guards, see this [blog article](https://blog.angular.dev/advancements-in-the-angular-router-5d69ec4c032).
 
 With the [Prettier update to version 2.8](https://prettier.io/blog/2022/11/23/2.8.0.html#angular) the format of pipes in HTML files changed slightly.
 
