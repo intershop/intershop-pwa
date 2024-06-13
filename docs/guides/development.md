@@ -170,7 +170,7 @@ This can be done by setting the environment variable `NODE_OPTIONS=--max_old_spa
 - Use `ng.profiler.timeChangeDetection({record:true})` to profile a change detection cycle of the current page.
 - Use the `json` pipe in Angular to print out data on templates. Easy-to-use snippets are available with `ng-debug` and `ng-debug-async` .
 
-[Everything You Need to Know About Debugging Angular Applications](https://indepth.dev/posts/1138/everything-you-need-to-know-about-debugging-angular-applications)
+[Everything You Need to Know About Debugging Angular Applications](https://angularindepth.com/posts/1138/everything-you-need-to-know-about-debugging-angular-applications)
 
 - Provides a more in-depth view about internals.
 
