@@ -28,7 +28,7 @@ http {
                                       '"status_code":$status,'
                                       '"referer":"$http_referer",'
                                       '"useragent":"$http_user_agent",'
-                                      '"x_forward_for":"$proxy_add_x_forwarded_for"'
+                                      '"x_forward_for":"$http_x_forwarded_for"'
                                       '"method":"$request_method",'
                                       '"request_time":$request_time,'
                                       '"host":"$http_host",'
@@ -49,12 +49,12 @@ http {
                                     '},'
                                   '"upstream":'
                                     '{'
-                                      '"name":"$proxy_upstream_name",'
                                       '"address_list":"$upstream_addr",'
                                       '"status_code":"$upstream_status",'
+                                      '"name":"$proxy_upstream_name",'
                                       '"response_time":"$upstream_response_time",'
                                       '"response_length":"$upstream_response_length",'
-                                      '"cache_status":"$cache_status",'
+                                      '"cache_status":"$cache_status"'
                                     '}'
                                 '}';
 
