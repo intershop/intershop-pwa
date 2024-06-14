@@ -25,7 +25,7 @@ import {
   deleteBasketPayment,
   deleteBasketShippingAddress,
   getBasketEligibleAddresses,
-  getBasketEligiblePaymentMethodsForCheckoutStep,
+  getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
   getBasketInfo,
@@ -257,17 +257,17 @@ export class CheckoutFacade {
   }
 
   // PAYMENT
-  eligiblePaymentMethodsForCheckoutStep$(step: string) {
+  eligiblePaymentMethods$(step?: string) {
     return this.basket$.pipe(
       whenTruthy(),
       take(1),
       tap(() => this.store.dispatch(loadBasketEligiblePaymentMethods())),
-      switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethodsForCheckoutStep(step))))
+      switchMap(() =>
+        step
+          ? this.store.pipe(select(getBasketEligiblePaymentMethods(step)))
+          : this.store.pipe(select(getBasketEligiblePaymentMethods()))
+      )
     );
-  }
-
-  loadEligiblePaymentMethods() {
-    this.store.dispatch(loadBasketEligiblePaymentMethods());
   }
 
   priceType$ = this.store.pipe(select(getServerConfigParameter<'gross' | 'net'>('pricing.priceType')));

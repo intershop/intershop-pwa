@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
 /**
  * The Shopping Basket Component displays the users basket items, cost summary
@@ -31,7 +29,6 @@ export class ShoppingBasketComponent {
   @Input({ required: true }) basket: BasketView;
   @Input() error: HttpError;
   @Input() loading = false;
-  @Input() paymentMethods$: Observable<PaymentMethod[]>;
 
   @Output() nextStep = new EventEmitter<void>();
 

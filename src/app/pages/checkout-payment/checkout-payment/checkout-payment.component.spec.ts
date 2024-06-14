@@ -20,6 +20,7 @@ import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/baske
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
+import { PaymentCostInfoComponent } from 'ish-shared/components/payment/payment-cost-info/payment-cost-info.component';
 
 import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
@@ -47,6 +48,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(FormlyForm),
         MockComponent(InfoMessageComponent),
         MockComponent(PaymentConcardisCreditcardComponent),
+        MockComponent(PaymentCostInfoComponent),
         MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(NgbCollapse),
         MockDirective(ServerHtmlDirective),

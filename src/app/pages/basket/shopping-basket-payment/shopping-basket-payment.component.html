@@ -16,33 +16,7 @@
         {{ paymentMethod.displayName }}
       </button>
       <!-- payment cost information -->
-      <p *ngIf="paymentCostThresholdReached(paymentMethod); else displayPaymentCosts">
-        {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}
-        {{ basket.totals.total | ishPrice }}
-      </p>
-      <ng-template #displayPaymentCosts>
-        <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
-          <p *ngIf="paymentMethod.paymentCosts?.[priceType]">
-            {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
-              paymentMethod.paymentCosts | ishPrice
-            }}&nbsp;
-            <span *ngIf="paymentMethod.paymentCostsThreshold" class="text-muted">
-              <span>-&nbsp;</span>{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
-              <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
-            </span>
-          </p>
-        </div>
-      </ng-template>
-      <!--payment restriction informations -->
-      <ng-template #displayRestrictions>
-        {{ 'checkout.payment.method.charges.text' | translate }}
-        &nbsp;
-        {{ paymentMethod.paymentCosts | ishPrice }}
-        &nbsp;
-        <p *ngFor="let restriction of paymentMethod.restrictionCauses" class="text-info">
-          {{ restriction.message }}
-        </p>
-      </ng-template>
+      <ish-payment-cost-info [basket]="basket" [paymentMethod]="paymentMethod" [priceType]="priceType | async" />
     </li>
   </ng-container>
 </ul>

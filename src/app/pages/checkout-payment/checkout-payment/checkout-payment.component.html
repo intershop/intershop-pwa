@@ -28,32 +28,7 @@
                   <ng-container *ngIf="!paymentMethod.displayName">{{ paymentMethod.id }}</ng-container>
                 </strong>
                 <p *ngIf="paymentMethod.description">{{ paymentMethod.description }}</p>
-                <p *ngIf="paymentCostThresholdReached(paymentMethod); else displayPaymentCosts">
-                  {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}
-                  {{ basket.totals.total | ishPrice }}
-                </p>
-                <ng-template #displayPaymentCosts>
-                  <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
-                    <p *ngIf="paymentMethod.paymentCosts?.[priceType]">
-                      {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
-                        paymentMethod.paymentCosts | ishPrice
-                      }}&nbsp;
-                      <span *ngIf="paymentMethod.paymentCostsThreshold" class="text-muted">
-                        <span>-&nbsp;</span>{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
-                        <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
-                      </span>
-                    </p>
-                  </div>
-                </ng-template>
-                <ng-template #displayRestrictions>
-                  {{ 'checkout.payment.method.charges.text' | translate }}
-                  &nbsp;
-                  {{ paymentMethod.paymentCosts | ishPrice }}
-                  &nbsp;
-                  <p *ngFor="let restriction of paymentMethod.restrictionCauses" class="text-info">
-                    {{ restriction.message }}
-                  </p>
-                </ng-template>
+                <ish-payment-cost-info [basket]="basket" [paymentMethod]="paymentMethod" [priceType]="priceType" />
                 <!-- display radio buttons only for payment methods without parameters -->
                 <ng-container *ngIf="!paymentMethod.parameters && !paymentMethod.isRestricted">
                   <input

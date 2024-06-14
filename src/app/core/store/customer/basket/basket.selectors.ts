@@ -77,11 +77,13 @@ export const getBasketEligibleShippingMethods = createSelector(
   basket => basket.eligibleShippingMethods
 );
 
-export const getBasketEligiblePaymentMethodsForCheckoutStep = (step: string) =>
+export const getBasketEligiblePaymentMethods = (step?: string) =>
   createSelector(getBasketState, getLoggedInCustomer, (basket, customer) =>
-    basket?.eligiblePaymentMethods
-      ?.filter(pm => PaymentMethodHelper.shouldShowOnCheckoutStep(pm.capabilities, step))
-      .map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
+    step
+      ? basket?.eligiblePaymentMethods
+          ?.filter(pm => PaymentMethodHelper.shouldShowOnCheckoutStep(pm.capabilities, step))
+          .map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
+      : basket?.eligiblePaymentMethods?.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
   );
 
 export const getBasketInvoiceAddress = createSelectorFactory<object, Address>(projector =>
