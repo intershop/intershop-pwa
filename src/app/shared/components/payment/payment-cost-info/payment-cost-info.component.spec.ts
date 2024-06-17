@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -12,7 +11,6 @@ describe('Payment Cost Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       declarations: [PaymentCostInfoComponent],
     }).compileComponents();
   });
