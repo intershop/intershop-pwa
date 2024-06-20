@@ -9,13 +9,12 @@ import { Observable, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
+import { UsersService } from 'ish-core/services/users/users.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
+import { OrganizationManagementStoreModule } from 'ish-core/store/organization-management/organization-management-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-
-import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { UsersService } from '../../services/users/users.service';
-import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
 import {
   addUser,

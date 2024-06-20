@@ -1,11 +1,10 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
+import { B2bRole } from 'ish-core/models/b2b-role/b2b-role.model';
+import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
-
-import { B2bRole } from '../../models/b2b-role/b2b-role.model';
-import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import {
   addUser,

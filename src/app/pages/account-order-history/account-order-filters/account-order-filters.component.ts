@@ -124,11 +124,12 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   private destroyRef = inject(DestroyRef);
 
-  private allBuyersOption: SelectOption = {
-    value: 'all',
-    label: 'account.order_history.filter.all_buyers',
-  };
-  private buyers: SelectOption[] = [this.allBuyersOption];
+  private buyers: SelectOption[] = [
+    {
+      value: 'all',
+      label: 'account.order_history.filter.all_buyers',
+    },
+  ];
 
   formIsCollapsed = true;
   private hideBuyerField = true;

@@ -4,11 +4,11 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import { UserEditBudgetPageComponent } from './user-edit-budget-page.component';
 

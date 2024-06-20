@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { B2bRole } from 'ish-core/models/b2b-role/b2b-role.model';
+
 import { OrganizationManagementFacade } from '../../../facades/organization-management.facade';
-import { B2bRole } from '../../../models/b2b-role/b2b-role.model';
 
 @Component({
   selector: 'ish-user-roles-badges',

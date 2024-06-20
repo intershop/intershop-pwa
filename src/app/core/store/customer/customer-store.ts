@@ -8,11 +8,9 @@ import { DataRequestsState } from './data-requests/data-requests.reducer';
 import { OrdersState } from './orders/orders.reducer';
 import { SsoRegistrationState } from './sso-registration/sso-registration.reducer';
 import { UserState } from './user/user.reducer';
-import { UsersState } from './users/users.reducer';
 
 export interface CustomerState {
   user: UserState;
-  users: UsersState;
   addresses: AddressesState;
   orders: OrdersState;
   basket: BasketState;

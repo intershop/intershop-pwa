@@ -74,7 +74,7 @@ import {
   updateUserPreferredPayment,
   userNewsletterActions,
 } from 'ish-core/store/customer/user';
-import { getUsers } from 'ish-core/store/customer/users';
+import { getUsers } from 'ish-core/store/organization-management/users';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /* eslint-disable @typescript-eslint/member-ordering */

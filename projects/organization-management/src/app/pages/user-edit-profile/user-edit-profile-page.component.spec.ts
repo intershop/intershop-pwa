@@ -5,9 +5,10 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
+
 import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import { UserEditProfilePageComponent } from './user-edit-profile-page.component';
 

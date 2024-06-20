@@ -10,10 +10,9 @@ import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
+import { CostCentersService } from 'ish-core/services/cost-centers/cost-centers.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-
-import { CostCentersService } from '../../services/cost-centers/cost-centers.service';
 
 import {
   addCostCenter,

@@ -5,13 +5,12 @@ import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
 import { concatMap, exhaustMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
+import { UsersService } from 'ish-core/services/users/users.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectPath, selectRouteParam } from 'ish-core/store/core/router';
 import { loadRolesAndPermissions } from 'ish-core/store/customer/authorization';
-import { getLoggedInUser, loadCompanyUser } from 'ish-core/store/customer/user';
+import { getLoggedInUser, loadCompanyUser, loadCompanyUserSuccess } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
-
-import { UsersService } from '../../services/users/users.service';
 
 import {
   addUser,
@@ -46,6 +45,13 @@ export class UsersEffects {
     private store: Store,
     private router: Router
   ) {}
+
+  triggerLoading$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadCompanyUserSuccess),
+      map(() => loadUsers())
+    )
+  );
 
   loadUsers$ = createEffect(() =>
     this.actions$.pipe(

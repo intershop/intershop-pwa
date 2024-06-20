@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
-import { loadCostCenters } from '../store/cost-centers';
+import { loadCostCenters } from 'ish-core/store/organization-management/cost-centers';
 
 /**
  * Fetch cost centers for cost center management page

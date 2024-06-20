@@ -7,6 +7,7 @@ import { Observable, merge } from 'rxjs';
 import { take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
@@ -14,7 +15,6 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 /**
  * The Cost Center Buyers Page Component displays all the users that are not yet assigned to this cost center. The user can enter user budgets and add these users to the cost center.

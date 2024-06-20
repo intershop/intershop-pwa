@@ -7,8 +7,6 @@ import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxj
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
-import { B2bUserMapper } from 'ish-core/models/b2b-user/b2b-user.mapper';
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData, CustomerType } from 'ish-core/models/customer/customer.interface';
@@ -61,8 +59,6 @@ export class UserService {
     private store: Store,
     private tokenService: TokenService
   ) {}
-
-  private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 
   /**
    * Sign in an existing user with the given login credentials (login, password).
@@ -345,21 +341,6 @@ export class UserService {
             unpackEnvelope(),
             map((costCenters: UserCostCenter[]) => costCenters)
           )
-      )
-    );
-  }
-
-  /**
-   * Get all users of a customer. The current user is expected to have user management permission.
-   *
-   * @returns               All users of the customer.
-   */
-  getUsers(): Observable<B2bUser[]> {
-    return this.currentCustomer$.pipe(
-      switchMap(customer =>
-        this.apiService
-          .get(`customers/${encodeResourceID(customer.customerNo)}/users`)
-          .pipe(unpackEnvelope(), map(B2bUserMapper.fromListData))
       )
     );
   }

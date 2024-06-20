@@ -4,14 +4,13 @@ import { of } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { B2bRoleData } from 'ish-core/models/b2b-role/b2b-role.interface';
+import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { UserBudget } from 'ish-core/models/user-budget/user-budget.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
-
-import { B2bRoleData } from '../../models/b2b-role/b2b-role.interface';
-import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 import { UsersService } from './users.service';
 

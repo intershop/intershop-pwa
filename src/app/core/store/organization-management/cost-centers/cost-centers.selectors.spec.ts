@@ -4,10 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { OrganizationManagementStoreModule } from 'ish-core/store/organization-management/organization-management-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
-
-import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
 import {
   addCostCenter,

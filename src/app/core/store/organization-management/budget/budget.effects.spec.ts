@@ -6,9 +6,8 @@ import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { Price } from 'ish-core/models/price/price.model';
+import { UsersService } from 'ish-core/services/users/users.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-
-import { UsersService } from '../../services/users/users.service';
 
 import { loadBudget, loadBudgetSuccess } from './budget.actions';
 import { BudgetEffects } from './budget.effects';
