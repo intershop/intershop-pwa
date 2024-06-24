@@ -1,0 +1,4 @@
+<div
+  [ngClass]="props.containerClass"
+  [innerHtml]="props.localizationKey ? (props.localizationKey | translate) : props.text"
+></div>
