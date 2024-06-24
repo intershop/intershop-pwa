@@ -4,30 +4,32 @@
 <ish-error-message [error]="error" />
 
 <p>{{ 'account.update_profile.text' | translate }}</p>
-<ng-container *ngIf="currentUser$ | async as user">
-  <div class="row">
-    <div class="col-md-10 col-xl-8">
-      <div class="section">
-        <p class="indicates-required">
-          <span class="required">*</span>{{ 'account.required_field.message' | translate }}
-        </p>
-        <form
-          [formGroup]="accountProfileUserForm"
-          (ngSubmit)="submitForm(user)"
-          class="form-horizontal"
-          novalidate="novalidate"
-        >
-          <formly-form [form]="accountProfileUserForm" [fields]="fields$ | async" [model]="model$ | async" />
-          <div class="row">
-            <div class="offset-md-4 col-md-8">
-              <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">
-                {{ 'account.update.button.label' | translate }}
-              </button>
-              <a routerLink="/account/profile" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>
-            </div>
+<div class="row">
+  <div class="col-md-10 col-xl-8">
+    <div class="section">
+      <p class="indicates-required">
+        <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+      </p>
+      <form
+        [formGroup]="accountProfileUserForm"
+        (ngSubmit)="submitForm()"
+        class="form-horizontal"
+        novalidate="novalidate"
+      >
+        <formly-form
+          [form]="accountProfileUserForm"
+          [fields]="select('fields') | async"
+          [model]="select('model') | async"
+        />
+        <div class="row">
+          <div class="offset-md-4 col-md-8">
+            <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">
+              {{ 'account.update.button.label' | translate }}
+            </button>
+            <a routerLink="/account/profile" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
-</ng-container>
+</div>
