@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-users-page',

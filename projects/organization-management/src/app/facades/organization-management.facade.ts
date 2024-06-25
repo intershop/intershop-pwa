@@ -4,17 +4,20 @@ import { differenceBy } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
-import { UserBudget } from 'ish-core/models/user-budget/user-budget.model';
 import { getUserPermissions, getUserRoles } from 'ish-core/store/customer/authorization';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
+import { toObservable } from 'ish-core/utils/functions';
+import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+
+import { B2bUser } from '../models/b2b-user/b2b-user.model';
+import { UserBudget } from '../models/user-budget/user-budget.model';
 import {
   getCurrentUserBudget,
   getCurrentUserBudgetError,
   getCurrentUserBudgetLoading,
   loadBudget,
-} from 'ish-core/store/organization-management/budget';
+} from '../store/budget';
 import {
   addCostCenter,
   addCostCenterBuyers,
@@ -27,7 +30,7 @@ import {
   loadCostCenters,
   updateCostCenter,
   updateCostCenterBuyer,
-} from 'ish-core/store/organization-management/cost-centers';
+} from '../store/cost-centers';
 import {
   addUser,
   deleteUser,
@@ -43,9 +46,7 @@ import {
   setUserBudget,
   setUserRoles,
   updateUser,
-} from 'ish-core/store/organization-management/users';
-import { toObservable } from 'ish-core/utils/functions';
-import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+} from '../store/users';
 
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })

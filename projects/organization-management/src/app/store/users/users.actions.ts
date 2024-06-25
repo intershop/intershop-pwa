@@ -1,9 +1,10 @@
 import { createAction } from '@ngrx/store';
 
-import { B2bRole } from 'ish-core/models/b2b-role/b2b-role.model';
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
-import { UserBudget } from 'ish-core/models/user-budget/user-budget.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
+
+import { B2bRole } from '../../models/b2b-role/b2b-role.model';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 export const loadUsers = createAction('[Users] Load Users');
 

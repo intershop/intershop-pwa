@@ -4,8 +4,9 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { UserBudget } from 'ish-core/models/user-budget/user-budget.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 interface UserBudgetModel {
   orderSpentLimitValue?: number;

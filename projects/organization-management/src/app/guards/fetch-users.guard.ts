@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { getUserCount, loadUsers } from 'ish-core/store/organization-management/users';
+import { getUserCount, loadUsers } from '../store/users';
 
 /**
  * Fetch users for user management page

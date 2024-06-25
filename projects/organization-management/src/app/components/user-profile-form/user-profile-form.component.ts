@@ -3,8 +3,9 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-user-profile-form',

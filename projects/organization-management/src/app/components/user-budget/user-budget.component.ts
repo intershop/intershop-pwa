@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { Price } from 'ish-core/models/price/price.model';
-import { UserBudget } from 'ish-core/models/user-budget/user-budget.model';
+
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 /**
  * displays the user budget and the appropriate budget bar

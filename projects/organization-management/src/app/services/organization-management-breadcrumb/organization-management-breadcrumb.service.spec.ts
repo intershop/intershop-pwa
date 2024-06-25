@@ -7,14 +7,14 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { loadCostCenterSuccess } from 'ish-core/store/organization-management/cost-centers/cost-centers.actions';
-import { OrganizationManagementStoreModule } from 'ish-core/store/organization-management/organization-management-store.module';
-import { loadUserSuccess } from 'ish-core/store/organization-management/users/users.actions';
 
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 import { routes } from '../../pages/organization-management-routing.module';
+import { loadCostCenterSuccess } from '../../store/cost-centers';
+import { OrganizationManagementStoreModule } from '../../store/organization-management-store.module';
+import { loadUserSuccess } from '../../store/users';
 
 import { OrganizationManagementBreadcrumbService } from './organization-management-breadcrumb.service';
 

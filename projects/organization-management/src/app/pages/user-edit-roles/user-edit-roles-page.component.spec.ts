@@ -6,12 +6,12 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { UserRolesSelectionComponent } from '../../components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import { UserEditRolesPageComponent } from './user-edit-roles-page.component';
 

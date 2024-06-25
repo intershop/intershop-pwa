@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-user-create-page',

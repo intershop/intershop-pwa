@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { UserBudget } from 'ish-core/models/user-budget/user-budget.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 @Component({
   selector: 'ish-budget-widget',

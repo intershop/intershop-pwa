@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { getOrganizationManagementState } from 'ish-core/store/organization-management/organization-management-store';
+import { getOrganizationManagementState } from '../organization-management-store';
 
 const getBudgetState = createSelector(getOrganizationManagementState, state => state.budget);
 

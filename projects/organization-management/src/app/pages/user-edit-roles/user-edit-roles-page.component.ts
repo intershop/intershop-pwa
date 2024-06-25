@@ -5,11 +5,11 @@ import { Observable, combineLatest, of } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-user-edit-roles-page',

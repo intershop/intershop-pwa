@@ -1,8 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { UserBudget } from 'ish-core/models/user-budget/user-budget.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
+
+import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 import { loadBudget, loadBudgetFail, loadBudgetSuccess } from './budget.actions';
 

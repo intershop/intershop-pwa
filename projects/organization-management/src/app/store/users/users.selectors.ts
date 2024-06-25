@@ -1,7 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { getOrganizationManagementState } from 'ish-core/store/organization-management/organization-management-store';
+
+import { getOrganizationManagementState } from '../organization-management-store';
 
 import { usersAdapter } from './users.reducer';
 

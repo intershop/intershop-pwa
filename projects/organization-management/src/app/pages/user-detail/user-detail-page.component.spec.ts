@@ -5,11 +5,11 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { B2bRole } from 'ish-core/models/b2b-role/b2b-role.model';
-import { B2bUser } from 'ish-core/models/b2b-user/b2b-user.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { B2bRole } from '../../models/b2b-role/b2b-role.model';
+import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 import { UserDetailPageComponent } from './user-detail-page.component';
 
