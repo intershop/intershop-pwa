@@ -20,7 +20,7 @@ describe('Return Overview Page Component', () => {
 
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
-    when(accountFacade.orders$()).thenReturn(of([]));
+    when(accountFacade.orders$).thenReturn(of([]));
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [

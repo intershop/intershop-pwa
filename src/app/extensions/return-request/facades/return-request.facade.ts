@@ -4,11 +4,13 @@ import { Store, select } from '@ngrx/store';
 import { CreateReturnRequestPayload } from '../models/return-request/return-request.model';
 import {
   createReturnRequest,
+  getGuestOrders,
   getReasons,
   getReturnRequestError,
   getReturnRequestLoading,
   getReturnRequests,
   getReturnableItems,
+  loadOrderByDocumentNoAndEmail,
   loadOrderReturnReasons,
   loadOrderReturnRequests,
   loadOrderReturnableItems,
@@ -26,8 +28,8 @@ export class ReturnRequestFacade {
     return this.store.pipe(select(getReasons));
   }
 
-  getOrderReturnableItems$(orderId: string) {
-    this.store.dispatch(loadOrderReturnableItems({ orderId }));
+  getOrderReturnableItems$(request: { orderId?: string; documentNo?: string; email?: string; isGuest: boolean }) {
+    this.store.dispatch(loadOrderReturnableItems({ ...request }));
     return this.store.pipe(select(getReturnableItems));
   }
 
@@ -36,7 +38,12 @@ export class ReturnRequestFacade {
     return this.store.pipe(select(getReturnRequests));
   }
 
-  createRequest(orderId: string, body: CreateReturnRequestPayload) {
-    this.store.dispatch(createReturnRequest({ orderId, body }));
+  createRequest(request: CreateReturnRequestPayload) {
+    this.store.dispatch(createReturnRequest({ request }));
+  }
+
+  getGuestUserOrders$(documentNo: string, email: string) {
+    this.store.dispatch(loadOrderByDocumentNoAndEmail({ documentNo, email }));
+    return this.store.pipe(select(getGuestOrders));
   }
 }

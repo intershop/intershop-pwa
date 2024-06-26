@@ -32,8 +32,7 @@ export class ReturnOverviewPageComponent implements OnInit {
     this.loading$ = this.returnRequestFacade.returnRequestLoading$;
     this.error$ = this.returnRequestFacade.returnRequestError$;
 
-    this.accountFacade
-      .orders$()
+    this.accountFacade.orders$
       .pipe(
         map(orders => orders.filter(order => allowedStatus(order.statusCode)).map(order => order.id)),
         switchMap(ids => (ids.length ? this.returnRequestFacade.getOrderReturnRequests$(ids) : of(undefined))),

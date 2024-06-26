@@ -26,6 +26,7 @@ export const navigationItems: NavigationItem[] = [
         id: 'return-requests',
         localizationKey: 'toolineo.account.return_overview.link',
         routerLink: '/account/returns-overview',
+        feature: 'returnRequest',
       },
       {
         id: 'requisitions',

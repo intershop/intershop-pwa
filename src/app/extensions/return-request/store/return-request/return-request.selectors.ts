@@ -17,3 +17,5 @@ export const getReturnRequestError = createSelector(getReturnRequestState, state
 export const getReasons = createSelector(getReturnRequestState, state => state.reasons);
 
 export const getReturnableItems = createSelector(getReturnRequestState, state => state.orderReturnableItems);
+
+export const getGuestOrders = createSelector(getReturnRequestState, state => state.guestUserOrder);

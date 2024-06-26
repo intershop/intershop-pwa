@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
-import { LazyReturnRequestModalComponent } from './lazy-return-request-modal/lazy-return-request-modal.component';
+import { LazyReturnRequestReturnButtonComponent } from './lazy-return-request-return-button/lazy-return-request-return-button.component';
 
 @NgModule({
   imports: [FeatureToggleModule],
@@ -17,7 +17,7 @@ import { LazyReturnRequestModalComponent } from './lazy-return-request-modal/laz
       multi: true,
     },
   ],
-  declarations: [LazyReturnRequestModalComponent],
-  exports: [LazyReturnRequestModalComponent],
+  declarations: [LazyReturnRequestReturnButtonComponent],
+  exports: [LazyReturnRequestReturnButtonComponent],
 })
 export class ReturnRequestExportsModule {}
