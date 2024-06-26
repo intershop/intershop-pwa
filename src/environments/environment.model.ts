@@ -160,7 +160,6 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     'recently',
     'saveLanguageSelection',
     'storeLocator',
-    'returnRequest',
   ],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */

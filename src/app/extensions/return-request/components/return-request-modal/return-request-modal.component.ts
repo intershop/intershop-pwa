@@ -1,9 +1,18 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { Order } from 'ish-core/models/order/order.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { ReturnRequestFacade } from '../../facades/return-request.facade';
@@ -19,16 +28,18 @@ import { allowedStatus } from '../../util';
   templateUrl: './return-request-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@GenerateLazyComponent()
-export class ReturnRequestModalComponent implements OnInit {
+export class ReturnRequestModalComponent implements OnInit, OnChanges {
   @Input() order: Order;
-  @Input() cssClass = 'text-right';
+  @Input() isOpenModal: boolean;
+  @Input() isGuest: boolean;
+  @Output() closeModal = new EventEmitter<void>();
   @ViewChild('returnRequestDialog') returnRequestDialog: ModalDialogComponent<unknown>;
 
   form: UntypedFormGroup;
   returnableItems$: Observable<ReturnablePosition[]>;
 
   positions: CreateReturnRequestPosition[];
+  returnItemsLoaded = false;
   selectedQuantity = 0;
 
   constructor(private returnRequestFacade: ReturnRequestFacade, private cdr: ChangeDetectorRef) {}
@@ -39,8 +50,18 @@ export class ReturnRequestModalComponent implements OnInit {
       items: new FormGroup({}),
       comment: new FormControl(''),
     });
+    this.returnableItems$ = this.returnRequestFacade.getOrderReturnableItems$({
+      email: this.order?.email,
+      documentNo: this.order?.documentNo,
+      orderId: this.order?.id,
+      isGuest: this.isGuest,
+    });
+  }
 
-    this.returnableItems$ = this.returnRequestFacade.getOrderReturnableItems$(this.order?.id);
+  ngOnChanges() {
+    if (this.isOpenModal) {
+      this.showModal();
+    }
   }
 
   showModal() {
@@ -49,6 +70,7 @@ export class ReturnRequestModalComponent implements OnInit {
 
   hideModal() {
     this.returnRequestDialog.hide();
+    this.closeModal.emit();
   }
 
   onItemsUpdate(data: CreateReturnRequestPosition[]) {
@@ -60,7 +82,7 @@ export class ReturnRequestModalComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  private request(): CreateReturnRequestPayload {
+  private getRequest(): CreateReturnRequestPayload {
     const customAttributes = [];
     if (this.form.get('comment').value) {
       customAttributes.push({
@@ -73,6 +95,10 @@ export class ReturnRequestModalComponent implements OnInit {
       type: 'RETURN',
       positions: this.positions,
       customAttributes,
+      isGuest: this.isGuest,
+      orderId: this.order.id,
+      email: this.order.email,
+      documentNo: this.order.documentNo,
     };
   }
 
@@ -81,7 +107,7 @@ export class ReturnRequestModalComponent implements OnInit {
   }
 
   submit() {
-    this.returnRequestFacade.createRequest(this.order.id, this.request());
+    this.returnRequestFacade.createRequest(this.getRequest());
     this.form.reset();
     this.hideModal();
   }

@@ -11,6 +11,6 @@ export class ReturnRequestProductInfoComponent {
   @Input() sku: string;
 
   getAttribute(product: ProductView, name: string) {
-    return product.attributes.find(attr => attr.name === name) ?? 'N/A';
+    return product.attributes?.find(attr => attr.name === name) ?? 'N/A';
   }
 }

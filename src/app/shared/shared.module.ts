@@ -188,6 +188,7 @@ const importExportModules = [
   RatingExportsModule,
   ReactiveFormsModule,
   RecentlyExportsModule,
+  ReturnRequestExportsModule,
   RoleToggleModule,
   RouterModule,
   StoreLocatorExportsModule,
@@ -321,9 +322,9 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  imports: [...importExportModules, ReturnRequestExportsModule],
+  imports: [...importExportModules],
   declarations: [...declaredComponents, ...exportedComponents],
-  exports: [...exportedComponents, ...importExportModules, ReturnRequestExportsModule],
+  exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {
   constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {

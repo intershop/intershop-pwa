@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, switchMap } from 'rxjs';
+import { concatMap, iif, map, switchMap } from 'rxjs';
 
 import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -10,6 +10,9 @@ import { ReturnRequestService } from '../../services/return-request/return-reque
 import {
   createReturnRequest,
   createReturnRequestFail,
+  loadOrderByDocumentNoAndEmail,
+  loadOrderByDocumentNoAndEmailFail,
+  loadOrderByDocumentNoAndEmailSuccess,
   loadOrderReturnReasons,
   loadOrderReturnReasonsFail,
   loadOrderReturnReasonsSuccess,
@@ -41,8 +44,12 @@ export class ReturnRequestEffects {
     this.actions$.pipe(
       ofType(loadOrderReturnableItems),
       mapToPayload(),
-      switchMap(({ orderId }) =>
-        this.returnRequestService.getOrderReturnableItems(orderId).pipe(
+      switchMap(payload =>
+        iif(
+          () => payload.isGuest,
+          this.returnRequestService.getOrderReturnableItemsByDocumentNoAndEmail(payload.documentNo, payload.email),
+          this.returnRequestService.getOrderReturnableItems(payload.orderId)
+        ).pipe(
           map(orderReturnableItems => loadOrderReturnableItemsSuccess({ orderReturnableItems })),
           mapErrorToAction(loadOrderReturnableItemsFail)
         )
@@ -67,8 +74,12 @@ export class ReturnRequestEffects {
     this.actions$.pipe(
       ofType(createReturnRequest),
       mapToPayload(),
-      concatMap(({ orderId, body }) =>
-        this.returnRequestService.createReturnRequest(orderId, body).pipe(
+      concatMap(({ request }) =>
+        iif(
+          () => request.isGuest,
+          this.returnRequestService.createReturnRequestByDocumentNoAndEmail(request),
+          this.returnRequestService.createReturnRequest(request)
+        ).pipe(
           map(() => displaySuccessMessage({ message: 'toolineo.account.return_request.modal.submit_success' })),
           mapErrorToAction(createReturnRequestFail)
         )
@@ -84,6 +95,19 @@ export class ReturnRequestEffects {
         displayErrorMessage({
           message: error.message,
         })
+      )
+    )
+  );
+
+  loadOrderByDocumentNoAndEmail$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadOrderByDocumentNoAndEmail),
+      mapToPayload(),
+      switchMap(({ documentNo, email }) =>
+        this.returnRequestService.getOrderByDocumentNoAndEmail(documentNo, email).pipe(
+          map(order => loadOrderByDocumentNoAndEmailSuccess({ order })),
+          mapErrorToAction(loadOrderByDocumentNoAndEmailFail)
+        )
       )
     )
   );

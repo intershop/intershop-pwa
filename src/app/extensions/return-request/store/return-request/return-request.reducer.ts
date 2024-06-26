@@ -2,6 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Order } from 'ish-core/models/order/order.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
@@ -11,6 +12,9 @@ import {
   createReturnRequest,
   createReturnRequestFail,
   createReturnRequestSuccess,
+  loadOrderByDocumentNoAndEmail,
+  loadOrderByDocumentNoAndEmailFail,
+  loadOrderByDocumentNoAndEmailSuccess,
   loadOrderReturnReasons,
   loadOrderReturnReasonsFail,
   loadOrderReturnReasonsSuccess,
@@ -31,6 +35,7 @@ export interface ReturnRequestState extends EntityState<ReturnRequest> {
   error: HttpError;
   reasons: SelectOption[];
   orderReturnableItems: ReturnablePosition[];
+  guestUserOrder: Order;
 }
 
 export const initialState: ReturnRequestState = returnRequestAdapter.getInitialState({
@@ -38,16 +43,24 @@ export const initialState: ReturnRequestState = returnRequestAdapter.getInitialS
   error: undefined,
   reasons: undefined,
   orderReturnableItems: undefined,
+  guestUserOrder: undefined,
 });
 
 export const returnRequestReducer = createReducer(
   initialState,
-  setLoadingOn(loadOrderReturnReasons, loadOrderReturnRequests, createReturnRequest, loadOrderReturnableItems),
+  setLoadingOn(
+    loadOrderReturnReasons,
+    loadOrderReturnRequests,
+    createReturnRequest,
+    loadOrderReturnableItems,
+    loadOrderByDocumentNoAndEmail
+  ),
   setErrorOn(
     loadOrderReturnReasonsFail,
     loadOrderReturnRequestsFail,
     createReturnRequestFail,
-    loadOrderReturnableItemsFail
+    loadOrderReturnableItemsFail,
+    loadOrderByDocumentNoAndEmailFail
   ),
   unsetLoadingAndErrorOn(
     loadOrderReturnReasonsSuccess,
@@ -66,5 +79,9 @@ export const returnRequestReducer = createReducer(
   on(
     loadOrderReturnReasonsSuccess,
     (state, action): ReturnRequestState => ({ ...state, reasons: action.payload.reasons })
+  ),
+  on(
+    loadOrderByDocumentNoAndEmailSuccess,
+    (state, action): ReturnRequestState => ({ ...state, guestUserOrder: action.payload.order })
   )
 );

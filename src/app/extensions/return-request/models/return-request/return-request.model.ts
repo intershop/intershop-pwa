@@ -42,4 +42,8 @@ export interface CreateReturnRequestPayload {
   type: ReturnRequestType;
   positions: CreateReturnRequestPosition[];
   customAttributes?: { [key: string]: string }[];
+  isGuest: boolean;
+  orderId?: string;
+  email?: string;
+  documentNo?: string;
 }

@@ -1,7 +1,10 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, concatMap, forkJoin, map, throwError } from 'rxjs';
 
+import { OrderData } from 'ish-core/models/order/order.interface';
+import { OrderMapper } from 'ish-core/models/order/order.mapper';
+import { Order } from 'ish-core/models/order/order.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
@@ -81,9 +84,9 @@ export class ReturnRequestService {
       concatMap(requestData =>
         forkJoin(requestData.map(d => this.getOrderReturnRequestPosition(d.orderId, d.id))).pipe(
           map(d => d.flat(1)),
-          map(requestRequstPostion =>
+          map(requestRequestPosition =>
             requestData.map(request => {
-              const position = requestRequstPostion.find(pos => pos.id === request.id);
+              const position = requestRequestPosition.find(pos => pos.id === request.id);
               return { ...request, ...position };
             })
           )
@@ -92,8 +95,73 @@ export class ReturnRequestService {
     );
   }
 
-  createReturnRequest(orderId: string, body: CreateReturnRequestPayload): Observable<void> {
-    return this.apiService.post(`orders/${orderId}/return-requests`, body, {
+  createReturnRequest(request: CreateReturnRequestPayload): Observable<void> {
+    const body = {
+      type: request.type,
+      positions: request.positions,
+      customAttributes: request.customAttributes,
+    };
+    return this.apiService.post(`orders/${request.orderId}/return-requests`, body, {
+      headers: this.returnRequestHeaders,
+    });
+  }
+
+  /**
+   * Gets an anonymous line items with the given id and email.
+   *
+   * @param documentNo  The (uuid) of the order.
+   * @param email email used while placing an order.
+   * @returns        The order
+   */
+  getOrderByDocumentNoAndEmail(documentNo: string, email: string): Observable<Order> {
+    if (!documentNo) {
+      return throwError(() => new Error('getOrderByDocumentNoAndEmail() called without documentNo'));
+    }
+
+    if (!email) {
+      return throwError(() => new Error('getOrderByDocumentNoAndEmail() called without email'));
+    }
+
+    return this.apiService
+      .get<OrderData>(`return/${documentNo}`, {
+        params: new HttpParams().append('email', email),
+        headers: this.returnRequestHeaders,
+      })
+      .pipe(map(data => OrderMapper.fromData(data)));
+  }
+
+  getOrderReturnableItemsByDocumentNoAndEmail(documentNo: string, email: string): Observable<ReturnablePosition[]> {
+    if (!email) {
+      return throwError(() => new Error('getOrderReturnableItemsByEmail() called without email'));
+    }
+
+    if (!documentNo) {
+      return throwError(() => new Error('getOrderReturnableItemsByEmail() called without documentNo'));
+    }
+
+    return this.apiService
+      .get<{
+        returnableData: {
+          entity: ReturnableOrdersData;
+        };
+      }>(`return/${documentNo}/return-requests/returnables`, {
+        params: new HttpParams().append('email', email),
+        headers: this.returnRequestHeaders,
+      })
+      .pipe(
+        map(data => data.returnableData.entity),
+        map(data => ReturnRequestMapper.fromReturnPosition(data))
+      );
+  }
+
+  createReturnRequestByDocumentNoAndEmail(request: CreateReturnRequestPayload): Observable<void> {
+    const body = {
+      type: request.type,
+      positions: request.positions,
+      customAttributes: request.customAttributes,
+    };
+    return this.apiService.post(`return/${request.documentNo}/return-requests`, body, {
+      params: new HttpParams().append('email', request.email),
       headers: this.returnRequestHeaders,
     });
   }

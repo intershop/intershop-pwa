@@ -1,5 +1,6 @@
 import { createAction } from '@ngrx/store';
 
+import { Order } from 'ish-core/models/order/order.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
@@ -23,7 +24,7 @@ export const loadOrderReturnReasonsFail = createAction(
 
 export const loadOrderReturnableItems = createAction(
   '[Order Return Request] Load Order Returnable Items',
-  payload<{ orderId: string }>()
+  payload<{ isGuest: boolean; orderId?: string; documentNo?: string; email?: string }>()
 );
 
 export const loadOrderReturnableItemsSuccess = createAction(
@@ -53,9 +54,24 @@ export const loadOrderReturnRequestsFail = createAction(
 
 export const createReturnRequest = createAction(
   '[Order Return Request] Create Return Request',
-  payload<{ orderId: string; body: CreateReturnRequestPayload }>()
+  payload<{ request: CreateReturnRequestPayload }>()
 );
 
 export const createReturnRequestSuccess = createAction('[Order Return Request] Create Return Request Success');
 
 export const createReturnRequestFail = createAction('[Order Return Request] Create Return Request Fail', httpError());
+
+export const loadOrderByDocumentNoAndEmail = createAction(
+  '[Order Return Request] Load Order By Document Number and Email',
+  payload<{ documentNo: string; email: string }>()
+);
+
+export const loadOrderByDocumentNoAndEmailSuccess = createAction(
+  '[Order Return Request] Load Order By Document Number and Email Success',
+  payload<{ order: Order }>()
+);
+
+export const loadOrderByDocumentNoAndEmailFail = createAction(
+  '[Order Return Request] Load Order By Document Number and Email Fail',
+  httpError()
+);

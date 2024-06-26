@@ -10,7 +10,6 @@ export type OrderColumnsType =
   | 'lineItems'
   | 'status'
   | 'destination'
-  | 'lineItems'
   | 'orderTotal';
 
 /**
