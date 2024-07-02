@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { ContactUsFacade } from '../../facades/contact-us.facade';
   templateUrl: './contact-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContactPageComponent implements OnInit, OnDestroy {
+export class ContactPageComponent implements OnInit {
   /**
    * Indicator for any loading state.
    */
@@ -33,10 +33,5 @@ export class ContactPageComponent implements OnInit, OnDestroy {
   createRequest(contact: Contact) {
     this.contactUsFacade.createContact(contact);
     this.router.navigate([], { queryParams: { submitted: true } });
-  }
-
-  ngOnDestroy() {
-    // reset contact page if the user routes to 'contact' again
-    this.contactUsFacade.resetContactState();
   }
 }
