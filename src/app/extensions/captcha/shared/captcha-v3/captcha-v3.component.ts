@@ -34,11 +34,10 @@ export class CaptchaV3Component implements OnInit {
   ngOnInit() {
     this.parentForm.get('captchaAction').setValidators([Validators.required]);
 
-    // as soon as the form gets valid request a captcha token every 2 minutes
+    // as soon as the user starts editing the form request a captcha token every 2 minutes
     if (!SSR) {
       this.parentForm.statusChanges
         .pipe(
-          filter(status => status === 'VALID'),
           take(1),
           switchMap(() =>
             timer(0, 2 * (60 - 3) * 1000).pipe(
