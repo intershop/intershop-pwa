@@ -42,7 +42,7 @@ export class SelectedProductContextFacade extends ProductContextFacade {
         withLatestFrom(appFacade.routingInProgress$),
         filter(([, progress]) => !progress)
       ),
-      ([url]) => router.navigateByUrl(encodeURI(url), { replaceUrl: true })
+      ([url]) => router.navigateByUrl(url)
     );
   }
 }
