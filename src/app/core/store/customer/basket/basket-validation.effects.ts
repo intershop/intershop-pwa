@@ -25,6 +25,7 @@ import {
   continueCheckoutWithIssues,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
+  loadBasketFail,
   startCheckout,
   startCheckoutFail,
   startCheckoutSuccess,
@@ -191,6 +192,22 @@ export class BasketValidationEffects {
             .map(info => loadProduct({ sku: info.parameters.productSku }));
         }
       })
+    )
+  );
+
+  // if the basket is expired or doesn't exist - clear the basket and go to cart page
+  handleBasketNotFoundError$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startCheckoutFail, continueCheckoutFail),
+      mapToPayloadProperty('error'),
+      filter(error => error?.code === 'basket.not_found.error' || error?.errors[0]?.code === 'basket.not_found.error'),
+      concatMap(error =>
+        from(
+          this.router.navigate([this.validationSteps[CheckoutStepType.BeforeCheckout].route], {
+            queryParams: { error: true },
+          })
+        ).pipe(map(() => loadBasketFail({ error })))
+      )
     )
   );
 

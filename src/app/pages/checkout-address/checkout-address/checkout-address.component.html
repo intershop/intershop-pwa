@@ -2,6 +2,7 @@
   <!-- Error Message -->
   <div *ngIf="error" class="col-md-12">
     <ish-error-message [error]="error" [toast]="false" />
+    <ish-basket-error-message [error]="error" />
   </div>
 
   <div *ngIf="nextDisabled && !error" class="col-md-12">

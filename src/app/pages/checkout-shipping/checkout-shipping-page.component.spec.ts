@@ -12,6 +12,7 @@ import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
 import { BasketMerchantMessageComponent } from 'ish-shared/components/basket/basket-merchant-message/basket-merchant-message.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
@@ -33,6 +34,7 @@ describe('Checkout Shipping Page Component', () => {
         CheckoutShippingPageComponent,
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketErrorMessageComponent),
         MockComponent(BasketItemsSummaryComponent),
         MockComponent(BasketMerchantMessageComponent),
         MockComponent(BasketValidationResultsComponent),

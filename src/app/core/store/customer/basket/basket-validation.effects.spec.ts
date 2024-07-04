@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable, noop, of, throwError } from 'rxjs';
+import { Observable, noop, of, throwError, toArray } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
@@ -50,6 +50,8 @@ describe('Basket Validation Effects', () => {
         RouterTestingModule.withRoutes([
           { path: 'checkout', children: [{ path: 'address', children: [] }] },
           { path: 'checkout', children: [{ path: 'review', children: [] }] },
+          { path: 'basket', children: [] },
+          { path: '**', children: [] },
         ]),
       ],
       providers: [
@@ -403,6 +405,52 @@ describe('Basket Validation Effects', () => {
       const expected$ = cold('-c', { c: completion });
 
       expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
+    });
+
+    describe('handleBasketNotFoundError$', () => {
+      it('should navigate to (empty) /basket after ContinueCheckoutFail if basket expired or could not be found', done => {
+        const action = continueCheckoutFail({
+          error: makeHttpError({ message: 'invalid', code: 'basket.not_found.error' }),
+        });
+        actions$ = of(action);
+
+        effects.handleBasketNotFoundError$.pipe(toArray()).subscribe({
+          next: actions => {
+            expect(actions).toMatchInlineSnapshot(`
+            [Basket API] Load Basket Fail:
+              error: {"name":"HttpErrorResponse","message":"invalid","code":"bask...
+            `);
+
+            expect(location.path()).toMatchInlineSnapshot(`"/basket?error=true"`);
+
+            done();
+          },
+          error: fail,
+          complete: noop,
+        });
+      });
+
+      it('should navigate to (empty) /basket after StartCheckoutFail if basket expired or could not be found', done => {
+        const action = startCheckoutFail({
+          error: makeHttpError({ message: 'invalid', code: 'basket.not_found.error' }),
+        });
+        actions$ = of(action);
+
+        effects.handleBasketNotFoundError$.pipe(toArray()).subscribe({
+          next: actions => {
+            expect(actions).toMatchInlineSnapshot(`
+            [Basket API] Load Basket Fail:
+              error: {"name":"HttpErrorResponse","message":"invalid","code":"bask...
+            `);
+
+            expect(location.path()).toMatchInlineSnapshot(`"/basket?error=true"`);
+
+            done();
+          },
+          error: fail,
+          complete: noop,
+        });
+      });
     });
   });
 });

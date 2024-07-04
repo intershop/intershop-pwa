@@ -342,7 +342,13 @@ export const basketReducer = createReducer(
       validationResults: initialValidationResults,
     })
   ),
-
+  on(
+    loadBasketFail,
+    (state): BasketState => ({
+      ...state,
+      basket: undefined,
+    })
+  ),
   on(
     resetBasketErrors,
     (state): BasketState => ({
