@@ -1,4 +1,4 @@
-<ul class="filter-list" [id]="'filter-list_' + filterElement.name">
+<ul class="filter-list" [id]="filterListElementId">
   <ng-container *ngFor="let facet of getFacets()">
     <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
       <!-- selected -->

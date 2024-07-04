@@ -59,10 +59,14 @@
           (change)="change($event.target)"
           (keyup)="change($event.target)"
           [attr.aria-label]="'product.quantity.aria_label' | translate"
+          [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
+          [attr.aria-describedby]="ariaDescribedByIds"
         />
       </div>
     </ng-template>
   </ng-container>
 
-  <small *ngIf="hasQuantityError$ | async" class="validation-message">{{ quantityError$ | async }}</small>
+  <small *ngIf="hasQuantityError$ | async" [id]="elementId + '-formly-validation-error'" class="validation-message">{{
+    quantityError$ | async
+  }}</small>
 </div>

@@ -21,6 +21,8 @@ describe('Product Quantity Component', () => {
     when(context.select('minQuantity')).thenReturn(of(2));
     when(context.select('maxQuantity')).thenReturn(of(6));
     when(context.select('stepQuantity')).thenReturn(of(2));
+    const hasQuantityError$ = of(false);
+    when(context.select('hasQuantityError')).thenReturn(hasQuantityError$);
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],

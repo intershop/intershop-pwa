@@ -44,6 +44,9 @@
         [value]="formatter.format(fromDate)"
         (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
         [attr.aria-label]="'account.order_history.filter.label.date.aria_label' | translate"
+        [attr.aria-required]="props.required ? 'true' : undefined"
+        [attr.aria-invalid]="showError ? 'true' : undefined"
+        [attr.aria-describedby]="ariaDescribedByIds"
       />
       <div class="input-group-append">
         <div
@@ -68,6 +71,9 @@
       [value]="formatter.format(toDate)"
       (input)="toDate = validateInput(toDate, dpToDate.value)"
       [attr.aria-label]="'account.order_history.filter.label.date.aria_label' | translate"
+      [attr.aria-required]="props.required ? 'true' : undefined"
+      [attr.aria-invalid]="showError ? 'true' : undefined"
+      [attr.aria-describedby]="ariaDescribedByIds"
     />
     <div class="input-group-append">
       <div

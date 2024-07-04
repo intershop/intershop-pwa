@@ -19,21 +19,20 @@
               <button
                 type="button"
                 class="btn-tool btn-link"
+                [title]="'wishlist.table.options.move_to_another_wishlist' | translate"
                 (click)="moveDialog.show()"
                 data-testing-id="move-wishlist"
               >
-                <fa-icon
-                  [icon]="['fas', 'arrows-alt']"
-                  [title]="'wishlist.table.options.move_to_another_wishlist' | translate"
-                />
+                <fa-icon [icon]="['fas', 'arrows-alt']" />
               </button>
               <button
                 type="button"
                 class="btn-tool btn-link"
+                [title]="'wishlist.table.options.remove' | translate"
                 (click)="removeProductFromWishlist(wishlistItemData.sku)"
                 data-testing-id="delete-wishlist"
               >
-                <fa-icon [icon]="['fas', 'trash-alt']" [title]="'wishlist.table.options.remove' | translate" />
+                <fa-icon [icon]="['fas', 'trash-alt']" />
               </button>
             </div>
           </div>

@@ -1,4 +1,9 @@
-<a class="compare-status item-count-container" routerLink="/compare" rel="nofollow">
+<a
+  class="compare-status item-count-container"
+  routerLink="/compare"
+  rel="nofollow"
+  [attr.aria-label]="'product.compare.label' | translate : { '0': productCompareCount$ | async }"
+>
   <fa-icon class="header-icon" [icon]="['fas', 'balance-scale']" />
   <span class="badge badge-pill" data-testing-id="product-compare-count">{{ productCompareCount$ | async }}</span>
   <span [ngClass]="{ 'd-none': view === 'auto' || view === 'small', 'd-md-inline': view === 'auto' }">{{

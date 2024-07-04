@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { range } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
 
 @Component({
   selector: 'ish-product-quantity',
@@ -28,6 +30,8 @@ export class ProductQuantityComponent implements OnInit {
 
   cannotIncrease$: Observable<boolean>;
   cannotDecrease$: Observable<boolean>;
+
+  private destroyRef = inject(DestroyRef);
 
   constructor(private context: ProductContextFacade) {}
 
@@ -69,5 +73,11 @@ export class ProductQuantityComponent implements OnInit {
 
   change(target: EventTarget) {
     this.setValue(Number.parseInt((target as HTMLDataElement).value, 10));
+  }
+
+  get ariaDescribedByIds(): string | null {
+    let hasQuantityError: boolean;
+    this.hasQuantityError$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => (hasQuantityError = value));
+    return ariaDescribedByIds(this.elementId, hasQuantityError);
   }
 }
