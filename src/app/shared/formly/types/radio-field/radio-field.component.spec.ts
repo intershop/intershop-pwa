@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -14,11 +15,14 @@ describe('Radio Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [RadioFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [{ name: 'radio', component: RadioFieldComponent }],
         }),
         FormlyTestingComponentsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
       ],
     }).compileComponents();
   });
@@ -38,6 +42,7 @@ describe('Radio Field Component', () => {
       ],
       form: new FormGroup({}),
     };
+
     fixture = TestBed.createComponent(FormlyTestingContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
@@ -58,8 +63,8 @@ describe('Radio Field Component', () => {
       <ish-radio-field
         ><input
           type="radio"
-          class="form-check-input"
-          value="value1"
+          class="form-check-input ng-untouched ng-pristine ng-valid"
+          ng-reflect-value="value1"
           id="formly_1_radio_rkey_0"
           name="formly_0_formly-group__rkey"
           data-testing-id="radio-radio-label"

@@ -20,4 +20,8 @@ export class FilterCollapsibleComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
     this.collapsedChange.emit(this.isCollapsed);
   }
+
+  get ariaControlsId(): string {
+    return `filter-list_${this.title.replace(/\s+/g, '-')}`;
+  }
 }

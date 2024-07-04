@@ -7,7 +7,7 @@
   <!-- card number -->
   <div class="row form-group">
     <label class="col-form-label col-md-4" for="cardpanInput"
-      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <span id="cardpan" class="inputIframe"></span>
@@ -17,7 +17,7 @@
   <!-- card type -->
   <div class="row form-group">
     <label class="col-form-label col-md-4" for="cardtype"
-      >{{ 'checkout.credit_card.type.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.type.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <span id="cardtype" class="inputIframe"></span>
@@ -27,7 +27,8 @@
   <!-- expiry date -->
   <div class="row form-group">
     <label class="col-form-label col-md-4" for="expireInput"
-      >{{ 'checkout.credit_card.expiration_date.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.expiration_date.label' | translate
+      }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <span id="expireInput" class="inputIframe">
@@ -39,7 +40,7 @@
   <!-- security code CVC -->
   <div *ngIf="isSecurityCodeCheckRequired()" class="row form-group">
     <label class="col-form-label col-md-4" for="cvcInput"
-      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <span id="cardcvc2" class="inputIframe"></span>

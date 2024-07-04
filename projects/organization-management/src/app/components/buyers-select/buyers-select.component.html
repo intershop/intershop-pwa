@@ -1,5 +1,10 @@
 <ng-container *ngIf="buyers$ | async as buyers">
-  <select [formControl]="control" class="form-control" data-testing-id="buyers-select-box">
+  <select
+    [formControl]="control"
+    class="form-control"
+    data-testing-id="buyers-select-box"
+    [attr.aria-label]="'account.order_history.filter.label.buyer' | translate"
+  >
     <option value="all">
       {{ 'account.order_history.filter.all_buyers' | translate }}
     </option>

@@ -13,6 +13,9 @@
     ngbDatepicker
     #d="ngbDatepicker"
     data-testing-id="date-picker"
+    [attr.aria-required]="props.required ? 'true' : undefined"
+    [attr.aria-invalid]="showError ? 'true' : undefined"
+    [attr.aria-describedby]="ariaDescribedByIds"
   />
 
   <div class="input-group-append">
