@@ -4,9 +4,12 @@
   class="btn"
   [ngClass]="cssClass"
   [disabled]="disabled$ | async"
-  [attr.title]="'quote.add_product_to_quote.button.add_to_quote.label' | translate"
   data-testing-id="addToQuoteButton"
   (click)="addToQuote()"
+  [attr.title]="
+    displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : undefined
+  "
+  [attr.tabindex]="tabIndex"
 >
   <ng-container *ngIf="displayType === 'icon'; else defaultButton">
     <fa-icon [icon]="['fas', 'inbox']" />

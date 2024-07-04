@@ -15,6 +15,7 @@
     (keydown.arrowdown)="selectSuggestedTerm(activeIndex + 1)"
     (keydown.arrowup)="selectSuggestedTerm(activeIndex - 1)"
     (keydown.enter)="submitSearch(searchInput.value)"
+    [attr.aria-label]="'search.searchbox.label' | translate"
   />
 
   <div class="buttons">

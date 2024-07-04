@@ -1,10 +1,11 @@
 <button
   *ngIf="(visible$ | async) && ('compare' | ishFeature)"
+  type="button"
   class="btn add-to-compare"
   [ngClass]="cssClass"
   [class.is-selected]="isInCompareList$ | async"
-  title="{{ 'product.compare.link' | translate }}"
   (click)="toggleCompare()"
+  [title]="displayType === 'icon' ? ('product.compare.link' | translate) : ''"
 >
   <ng-container *ngIf="displayType === 'icon'; else defaultButton">
     <fa-icon [icon]="['fas', 'balance-scale']" />

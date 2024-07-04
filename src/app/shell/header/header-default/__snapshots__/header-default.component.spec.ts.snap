@@ -36,7 +36,6 @@ exports[`Header Default Component should render normal header adequately for des
         <a
           rel="home"
           routerlink="/home"
-          role="img"
           data-testing-id="header-home-link-desktop"
           class="logo"
           aria-label="common.home.link"
@@ -108,7 +107,6 @@ exports[`Header Default Component should render normal header adequately for mob
         <a
           rel="home"
           routerlink="/home"
-          role="img"
           data-testing-id="header-home-link-mobile"
           class="mobile-logo"
           aria-label="common.home.link"
@@ -173,7 +171,6 @@ exports[`Header Default Component should render normal header adequately for tab
         <a
           rel="home"
           routerlink="/home"
-          role="img"
           data-testing-id="header-home-link-desktop"
           class="logo"
           aria-label="common.home.link"
@@ -237,7 +234,6 @@ exports[`Header Default Component should render sticky header adequately for des
         <a
           rel="home"
           routerlink="/home"
-          role="img"
           data-testing-id="header-home-link-desktop"
           class="logo"
           aria-label="common.home.link"
@@ -297,7 +293,6 @@ exports[`Header Default Component should render sticky header adequately for mob
         <a
           rel="home"
           routerlink="/home"
-          role="img"
           data-testing-id="header-home-link-mobile"
           class="mobile-logo"
           aria-label="common.home.link"
@@ -357,7 +352,6 @@ exports[`Header Default Component should render sticky header adequately for tab
         <a
           rel="home"
           routerlink="/home"
-          role="img"
           data-testing-id="header-home-link-mobile"
           class="mobile-logo"
           aria-label="common.home.link"

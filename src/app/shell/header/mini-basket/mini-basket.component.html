@@ -4,7 +4,15 @@
   ishClickOutside
   (isClickedOutside)="collapse()"
 >
-  <button type="button" class="btn btn-link" (click)="toggleCollapse()">
+  <button
+    type="button"
+    class="btn btn-link"
+    (click)="toggleCollapse()"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="!isCollapsed"
+    [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
+    aria-controls="mini_basket_content"
+  >
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
     <span>{{ 'shopping_cart.ministatus.items.text' | translate : { '0': itemCount$ | async } }}</span>
     <ng-container *ngIf="itemTotal$ | async as itemTotal">
@@ -12,7 +20,7 @@
     </ng-container>
   </button>
 
-  <div *ngIf="!isCollapsed" class="mini-cart">
+  <div *ngIf="!isCollapsed" class="mini-cart" id="mini_basket_content">
     <ish-lazy-mini-basket-content />
   </div>
 </div>

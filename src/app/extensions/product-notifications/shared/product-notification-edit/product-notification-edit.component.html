@@ -8,8 +8,9 @@
     [ngClass]="cssClass"
     (click)="openModal(modal)"
     data-testing-id="product-notification-edit"
+    [title]="'product.notification.edit.link.title' | translate"
   >
-    <fa-icon [icon]="['fas', 'pencil-alt']" [title]="'product.notification.edit.link.title' | translate" />
+    <fa-icon [icon]="['fas', 'pencil-alt']" />
   </button>
 
   <ng-container *ngSwitchCase="'button'">

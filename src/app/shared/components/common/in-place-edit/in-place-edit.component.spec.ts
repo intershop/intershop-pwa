@@ -57,9 +57,9 @@ describe('In Place Edit Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ish-in-place-edit
-        ><div class="d-flex flex-row align-items-baseline" title="inplace_edit.click_to_edit">
+        ><div class="d-flex flex-row align-items-baseline">
           <p class="form-control-plaintext">VIEW</p>
-          <button class="btn btn-link">
+          <button class="btn btn-link" title="inplace_edit.click_to_edit">
             <fa-icon class="pl-2 mr-auto btn-link" ng-reflect-icon="fas,pencil-alt"></fa-icon>
           </button></div
       ></ish-in-place-edit>

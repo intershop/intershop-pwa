@@ -9,23 +9,25 @@
   <button
     ngbDropdownToggle
     class="language-switch-button btn btn-link"
-    aria-expanded="false"
     aria-haspopup="menu"
-    [attr.aria-label]="'locale.' + locale + '.long' | translate"
+    [attr.aria-label]="('language_switch.label' | translate) + ('locale.' + locale + '.long' | translate)"
   >
     <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon" />
     <span class="language-switch-current-selection d-inline"
-      >{{ 'locale.' + locale + (view === 'accordion' ? '.long' : '.short') | translate
-      }}<span class="switch_arrow"></span
+      >{{ 'locale.' + locale + '.long' | translate }}<span class="switch_arrow"></span
     ></span>
   </button>
-  <div ngbDropdownMenu class="language-switch-container dropdown-menu" style="left: 0 !important" role="menu">
+  <div ngbDropdownMenu class="language-switch-container dropdown-menu" style="left: 0 !important">
     <div class="language-switch-menu-container">
       <ng-container *ngIf="availableLocales$ | async as availableLocales">
         <ul *ngIf="availableLocales.length">
           <ng-container *ngFor="let l of availableLocales">
             <li *ngIf="l !== locale">
-              <a [href]="location | ishMakeHref : { lang: l } | async" (click)="setLocaleCookie(l)" role="menuitem">
+              <a
+                [href]="location | ishMakeHref : { lang: l } | async"
+                (click)="setLocaleCookie(l)"
+                [lang]="'locale.' + l + '.short' | translate"
+              >
                 {{ 'locale.' + l + '.long' | translate }}
               </a>
             </li>

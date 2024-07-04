@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
@@ -48,6 +48,8 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
   fields: FormlyFieldConfig[];
   private submitted = false;
 
+  private modalOptions: NgbModalOptions;
+
   /**
    *  A reference to the current modal.
    */
@@ -85,6 +87,10 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
       },
     ];
 
+    this.modalOptions = {
+      ariaLabelledBy: 'order-template-preferences-title',
+    };
+
     this.model = pick(this.orderTemplate, 'title');
 
     if (this.orderTemplate) {
@@ -114,7 +120,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
   show() {
     this.orderTemplateForm.reset();
     this.model = pick(this.orderTemplate, 'title');
-    this.modal = this.ngbModal.open(this.modalTemplate);
+    this.modal = this.ngbModal.open(this.modalTemplate, this.modalOptions);
   }
 
   /** Close the modal. */

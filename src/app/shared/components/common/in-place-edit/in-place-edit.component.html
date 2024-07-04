@@ -1,7 +1,15 @@
 <ng-container *ngIf="viewMode; else edit">
-  <div class="d-flex flex-row align-items-baseline" [title]="'inplace_edit.click_to_edit' | translate">
+  <div class="d-flex flex-row align-items-baseline">
     <ng-content select=".form-control-plaintext"></ng-content>
-    <button (click)="changeEditMode()" class="btn btn-link">
+    <button
+      (click)="changeEditMode()"
+      class="btn btn-link"
+      [title]="
+        ariaLabelName === ''
+          ? 'inplace_edit.click_to_edit'
+          : ('inplace_edit.label' | translate : { '0': ariaLabelName | translate })
+      "
+    >
       <fa-icon class="pl-2 mr-auto btn-link" [icon]="['fas', 'pencil-alt']" />
     </button>
   </div>
