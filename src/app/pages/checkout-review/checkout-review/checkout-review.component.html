@@ -18,6 +18,7 @@
   <!-- Error Message-->
   <div class="col-md-12">
     <ish-error-message [error]="error" [toast]="false" />
+    <ish-basket-error-message [error]="error" />
     <div *ngIf="multipleBuckets" role="alert" class="alert alert-danger">
       {{ 'checkout.shipping.no_methods.message' | translate }}
     </div>

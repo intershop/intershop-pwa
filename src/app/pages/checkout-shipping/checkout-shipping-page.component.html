@@ -4,7 +4,10 @@
   <div class="row">
     <!-- Messages -->
     <div class="col-md-12">
-      <ish-error-message [error]="basketError$ | async" [toast]="false" />
+      <ng-container *ngIf="basketError$ | async as error">
+        <ish-error-message [error]="error" [toast]="false" />
+        <ish-basket-error-message [error]="error" />
+      </ng-container>
       <ish-basket-validation-results />
     </div>
     <!-- Shipping method form-->
