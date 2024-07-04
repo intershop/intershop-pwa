@@ -107,6 +107,11 @@ export class RegistrationFormConfigurationService {
             validators: {
               validation: [Validators.pattern('true')],
             },
+            validation: {
+              messages: {
+                pattern: 'registration.tac.error.tip',
+              },
+            },
           },
           {
             type: 'ish-registration-newsletter-field',
@@ -272,7 +277,7 @@ export class RegistrationFormConfigurationService {
             },
             validation: {
               messages: {
-                required: 'form.email.error.required',
+                required: 'form.email.error.email_confirmation',
                 equalTo: 'account.registration.email.not_match.error',
               },
             },

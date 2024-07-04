@@ -7,7 +7,7 @@
   <!-- Credit card number -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cardNumber?.message }">
     <label class="col-form-label col-md-4" for="cardpanInput"
-      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <div id="a_credit_card_number_container" class="iframe-container"></div>
@@ -24,7 +24,8 @@
     [ishShowFormFeedback]="[parameterForm.controls.expirationMonth, parameterForm.controls.expirationYear]"
   >
     <label for="month" class="col-form-label col-md-4"
-      >{{ 'checkout.credit_card.expiration_date.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.expiration_date.label' | translate
+      }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <div class="clearfix row">
@@ -70,7 +71,7 @@
   <!-- CVC -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cvc?.message }">
     <label class="col-form-label col-md-4" for="cvcInput"
-      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-3 col-md-2">
       <div id="a_verification_container" class="iframe-container"></div>

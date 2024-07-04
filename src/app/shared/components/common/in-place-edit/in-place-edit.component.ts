@@ -8,6 +8,7 @@ import {
   ElementRef,
   EventEmitter,
   Inject,
+  Input,
   Output,
   inject,
 } from '@angular/core';
@@ -22,6 +23,9 @@ import { filter, map } from 'rxjs/operators';
   styleUrls: ['./in-place-edit.component.scss'],
 })
 export class InPlaceEditComponent implements AfterViewInit {
+  // localization key, can be used to give the edit-pen icon a more descriptive aria label that describes what will be edited when clicking it
+  @Input() ariaLabelName = '';
+
   @Output() edited = new EventEmitter<void>();
   @Output() aborted = new EventEmitter<void>();
 

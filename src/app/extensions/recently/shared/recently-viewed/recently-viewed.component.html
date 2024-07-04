@@ -5,9 +5,13 @@
 
       <ish-products-list [productSKUs]="products" listStyle="carousel" listItemStyle="tile" />
 
-      <a [routerLink]="['/recently']" class="view-all" data-testing-id="view-all">{{
-        'common.view_all.link' | translate
-      }}</a>
+      <a
+        [routerLink]="['/recently']"
+        class="view-all"
+        data-testing-id="view-all"
+        [attr.aria-label]="'common.view_all.link.label' | translate"
+        >{{ 'common.view_all.link' | translate }}</a
+      >
     </div>
   </ng-container>
 </ng-container>

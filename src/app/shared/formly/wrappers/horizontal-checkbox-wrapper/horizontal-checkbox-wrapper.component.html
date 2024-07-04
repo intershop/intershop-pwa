@@ -1,7 +1,7 @@
 <div [ngClass]="{ 'form-group': field.type === 'ish-checkbox-field' }" class="row">
   <div *ngIf="props.title" class="col-form-label" [ngClass]="props.titleClass ? props.titleClass : dprops.titleClass">
     {{ props.titleNoTranslate ? props.title : (props.title | translate)
-    }}<span *ngIf="props.required && !props.hideRequiredMarker" class="required">*</span>
+    }}<span *ngIf="props.required && !props.hideRequiredMarker" class="required" aria-hidden="true">*</span>
   </div>
   <div
     class="col-form-label"
@@ -23,7 +23,7 @@
       </label>
     </div>
     <ng-container *ngIf="showError" class="invalid-feedback d-block">
-      <ish-validation-message [field]="field" class="validation-message" />
+      <ish-validation-message [field]="field" class="validation-message" [id]="id + '-formly-validation-error'" />
     </ng-container>
   </div>
 </div>

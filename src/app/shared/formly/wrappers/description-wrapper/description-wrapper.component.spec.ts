@@ -66,7 +66,10 @@ describe('Description Wrapper Component', () => {
   it('should contain basic string description for no arguments', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('small').textContent).toMatchInlineSnapshot(`" value:desc args:{} "`);
+    expect(element.querySelector('small').textContent).toMatchInlineSnapshot(`
+      " value:desc args:{}
+      "
+    `);
   });
 
   it('should contain complex description when arguments are supplied', () => {
@@ -84,8 +87,9 @@ describe('Description Wrapper Component', () => {
       },
     ];
     fixture.detectChanges();
-    expect(element.querySelector('small').textContent).toMatchInlineSnapshot(
-      `" value:description args:{"0":"argument"} "`
-    );
+    expect(element.querySelector('small').textContent).toMatchInlineSnapshot(`
+      " value:description args:{"0":"argument"}
+      "
+    `);
   });
 });

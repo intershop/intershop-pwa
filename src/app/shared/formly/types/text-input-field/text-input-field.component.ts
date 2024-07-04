@@ -4,6 +4,8 @@ import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core'
 import { TranslateService } from '@ngx-translate/core';
 import { provideNgxMask } from 'ngx-mask';
 
+import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
+
 /**
  * Type for a basic input field
  *
@@ -55,5 +57,9 @@ export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implemen
         | '.'
         | ',';
     }
+  }
+
+  get ariaDescribedByIds(): string | null {
+    return ariaDescribedByIds(this.field.id, this.showError, this.props.customDescription);
   }
 }

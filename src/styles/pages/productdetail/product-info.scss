@@ -28,14 +28,6 @@ a.product-title {
 
   .product-brand {
     text-transform: uppercase;
-
-    a {
-      color: $text-color-quaternary;
-
-      &:hover {
-        color: $text-color-tertiary;
-      }
-    }
   }
 
   .current-price {

@@ -125,7 +125,7 @@ export class CostCenterBuyersPageComponent implements OnInit {
                   text: this.appFacade.currencySymbol$(),
                 },
                 mask: 'separator.2',
-                ariaLabel: 'Buyer budget',
+                ariaLabel: 'account.costcenter.details.buyers.list.order_spend_limit.label',
               },
             },
             {
@@ -135,6 +135,7 @@ export class CostCenterBuyersPageComponent implements OnInit {
               props: {
                 fieldClass: 'col-12',
                 options: FormsService.getCostCenterBudgetPeriodOptions(),
+                ariaLabel: 'account.costcenter.details.buyers.list.order_spend_limit.label',
               },
             },
           ],
