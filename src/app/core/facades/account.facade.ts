@@ -96,6 +96,7 @@ export class AccountFacade {
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
   roles$ = this.store.pipe(select(getUserRoles));
+  isAccountAdmin$ = this.roles$.pipe(map(roles => roles.some(role => role.roleId === 'APP_B2B_ACCOUNT_OWNER')));
 
   loginUser(credentials: Credentials) {
     this.store.dispatch(loginUser({ credentials }));

@@ -1,0 +1,12 @@
+<ng-container *ngIf="buyers$ | async as buyers">
+  <select [formControl]="control" class="form-control" data-testing-id="buyers-select-box">
+    <option value="all">
+      {{ 'account.order_history.filter.all_buyers' | translate }}
+    </option>
+    <ng-container *ngIf="buyers.length">
+      <ng-container *ngFor="let buyer of buyers">
+        <option [value]="buyer.login">{{ buyer.firstName }} {{ buyer.lastName }}</option>
+      </ng-container>
+    </ng-container>
+  </select>
+</ng-container>

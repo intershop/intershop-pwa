@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { BudgetWidgetComponent } from './components/budget-widget/budget-widget.component';
+import { BuyersSelectComponent } from './components/buyers-select/buyers-select.component';
 import { CostCenterBudgetComponent } from './components/cost-center-budget/cost-center-budget.component';
 import { CostCenterBuyerEditDialogComponent } from './components/cost-center-buyer-edit-dialog/cost-center-buyer-edit-dialog.component';
 import { CostCenterFormComponent } from './components/cost-center-form/cost-center-form.component';
@@ -15,6 +16,7 @@ import { UserRolesSelectionComponent } from './components/user-roles-selection/u
 import { OrganizationManagementStoreModule } from './store/organization-management-store.module';
 
 const exportedComponents = [
+  BuyersSelectComponent,
   CostCenterBudgetComponent,
   CostCenterBuyerEditDialogComponent,
   CostCenterFormComponent,

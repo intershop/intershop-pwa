@@ -11,7 +11,7 @@
 
 <ish-order-list
   [orders]="orders$ | async"
-  [columnsToDisplay]="['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'destination', 'orderTotal']"
+  [columnsToDisplay]="columnsToDisplay$ | async"
   [noOrdersMessageKey]="
     !filtersActive
       ? 'account.orderlist.no_placed_orders_message'

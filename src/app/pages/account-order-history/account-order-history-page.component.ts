@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { OrderColumnsType } from 'ish-shared/components/order/order-list/order-list.component';
 
 /**
  * The Order History Page Component renders the account history page of a logged in user.
@@ -20,6 +21,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   orders$: Observable<Order[]>;
   ordersLoading$: Observable<boolean>;
   ordersError$: Observable<HttpError>;
+  columnsToDisplay$: Observable<OrderColumnsType[]>;
   moreOrdersAvailable$: Observable<boolean>;
   filtersActive: boolean;
 
@@ -30,6 +32,13 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.ordersLoading$ = this.accountFacade.ordersLoading$;
     this.ordersError$ = this.accountFacade.ordersError$;
     this.moreOrdersAvailable$ = this.accountFacade.moreOrdersAvailable$;
+    this.columnsToDisplay$ = this.accountFacade.isAccountAdmin$.pipe(
+      map(isAdmin =>
+        isAdmin
+          ? ['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'buyer', 'orderTotal']
+          : ['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'destination', 'orderTotal']
+      )
+    );
   }
 
   /**
@@ -42,6 +51,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
       ...filters,
       limit: 30,
       include: ['commonShipToAddress'],
+      buyer: 'all',
     });
   }
 

@@ -1,9 +1,9 @@
-<form [formGroup]="form" (ngSubmit)="submitForm()">
+<form *ngIf="fields$ | async as fields" [formGroup]="form" (ngSubmit)="submitForm()">
   <div>
-    <formly-form [form]="form" [fields]="[fields[0]]" />
+    <formly-form [form]="form" [fields]="[fields[0]]" [model]="model$ | async" />
   </div>
   <div [ngbCollapse]="formIsCollapsed">
-    <formly-form [form]="form" [fields]="fields.slice(1)" />
+    <formly-form [form]="form" [fields]="fields.slice(1)" [model]="model$ | async" />
   </div>
   <div class="row mb-4">
     <div class="col-md-4 d-flex align-items-center">
