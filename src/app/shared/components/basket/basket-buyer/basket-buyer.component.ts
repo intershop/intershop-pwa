@@ -29,6 +29,8 @@ export class BasketBuyerComponent implements OnInit {
   companyName1: string;
   companyName2: string;
 
+  isOrganizationHierarchiesServiceAvailable$: Observable<boolean>;
+
   private destroyRef = inject(DestroyRef);
 
   constructor(private accountFacade: AccountFacade) {}

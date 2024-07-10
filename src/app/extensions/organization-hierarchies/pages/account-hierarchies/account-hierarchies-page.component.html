@@ -1,0 +1,5 @@
+<div class="loading-container">
+  <ish-account-hierarchies [error]="error$ | async" />
+
+  <ish-loading *ngIf="loading$ | async" />
+</div>

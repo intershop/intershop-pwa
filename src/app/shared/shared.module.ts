@@ -1,4 +1,5 @@
 import { CdkTableModule } from '@angular/cdk/table';
+import { CdkTreeModule } from '@angular/cdk/tree';
 import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -28,6 +29,7 @@ import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-expo
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
+import { OrganizationHierarchiesExportsModule } from '../extensions/organization-hierarchies/exports/organization-hierarchies-exports.module';
 import { ProductNotificationsExportsModule } from '../extensions/product-notifications/exports/product-notifications-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
@@ -97,6 +99,7 @@ import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
 import { PagingComponent } from './components/common/paging/paging.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
+import { TreeComponent } from './components/common/tree/tree.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
@@ -162,6 +165,7 @@ const importExportModules = [
   CMSModule,
   CaptchaExportsModule,
   CdkTableModule,
+  CdkTreeModule,
   CommonModule,
   CompareExportsModule,
   ContactUsExportsModule,
@@ -193,6 +197,7 @@ const importExportModules = [
   TactonExportsModule,
   TranslateModule,
   WishlistsExportsModule,
+  OrganizationHierarchiesExportsModule,
 ];
 
 const declaredComponents = [
@@ -241,6 +246,7 @@ const declaredComponents = [
   ProductListToolbarComponent,
   ProductRowComponent,
   ProductTileComponent,
+  TreeComponent,
 ];
 
 const exportedComponents = [
@@ -315,6 +321,7 @@ const exportedComponents = [
   PromotionRemoveComponent,
   SearchBoxComponent,
   SuccessMessageComponent,
+  TreeComponent,
 ];
 
 @NgModule({

@@ -42,6 +42,7 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     { provide: HTTP_INTERCEPTORS, useClass: PaymentPayoneInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: PreviewInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: OhsInterceptor, multi: true },
     { provide: ErrorHandler, useClass: DefaultErrorHandler },
     {
       provide: APP_BASE_HREF,

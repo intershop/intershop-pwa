@@ -1,0 +1,73 @@
+<ish-error-message [error]="error" />
+
+<h1>{{ 'account.organization.hierarchies' | translate }}</h1>
+
+<!-- search group and maintain selected one -->
+<div class="list-body">
+  <div class="list-item-row row">
+    <div class="col-md-7 col-sm-10">
+      <form [formGroup]="maintainGroupForm" (change)="changeSelectedGroup()">
+        <formly-form [form]="maintainGroupForm" [fields]="[selectNodeConfig]" />
+      </form>
+    </div>
+    <div class="col-md-5">
+      <ul class="share-tools">
+        <li class="mr-2">
+          <button
+            type="button"
+            (click)="showCreateGroupForm()"
+            class="btn-lg btn-link float-right"
+            data-testing-id="add-new-group"
+            title="{{ 'account.organization.hierarchies.groups.button.add.label' | translate }}"
+          >
+            <fa-icon [icon]="['fas', 'plus-square']" />
+          </button>
+        </li>
+        <li class="mr-2">
+          <button
+            type="button"
+            (click)="modalDialog.show()"
+            class="btn-lg btn-link float-right"
+            data-testing-id="delete-selected-group"
+            title="{{ 'account.organization.hierarchies.remove_dialog.title' | translate }}"
+          >
+            <fa-icon [icon]="['fas', 'trash-alt']" />
+          </button>
+
+          <ish-modal-dialog
+            #modalDialog
+            [options]="{
+              titleText: 'account.organization.hierarchies.remove_dialog.title' | translate,
+              confirmText: 'account.organization.hierarchies.remove_dialog.label_yes' | translate,
+              rejectText: 'account.organization.hierarchies.remove_dialog.label_no' | translate
+            }"
+            (confirmed)="deleteGroup()"
+          >
+            <ng-container *ngIf="selectedGroup$ | async as selectedGroup">
+              {{
+                'account.organization.hierarchies.remove_dialog.message_line2'
+                  | translate : { '0': selectedGroup.displayName }
+              }}
+            </ng-container>
+          </ish-modal-dialog>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- create group form -->
+  <div id="collapseBasic" class="section" *ngIf="!isCreateGroupFormCollapsed" data-testing-id="create-group-form">
+    <div class="row">
+      <div class="col-md-10 col-xl-8">
+        <ish-organization-hierarchies-create-group
+          [selectedParentGroup$]="selectedGroup$"
+          [resetForm]="isCreateGroupFormCollapsed"
+          (save)="createGroup($event)"
+          (cancel)="hideCreateGroupForm()"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--cdk tree representation of the organization hierarchy-->
+<ish-tree [baseData$]="groups$" />
