@@ -186,3 +186,11 @@
     max-width: 100%;
   }
 }
+
+.list-item-actions {
+  padding: $table-cell-padding * 0.2 0 $table-cell-padding * 0.9 0;
+
+  .btn-tool.btn-link {
+    padding: 0 divide($space-default, 3);
+  }
+}

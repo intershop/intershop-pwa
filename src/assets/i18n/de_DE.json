@@ -715,6 +715,7 @@
   "checkout.credit_card.user.lastname.missing.error": "Bitte geben Sie den Nachnamen des Karteninhabers an.",
   "checkout.credit_card.user.name.missing.error": "Bitte geben Sie den Namen des Karteninhabers an.",
   "checkout.credit_card.validityTime.error.notFound": "Die maximale Gültigkeitsdauer der Kartenprüfnummer wurde nicht gefunden.",
+  "checkout.custom-field.no-value": "Kein Wert",
   "checkout.desired_delivery_date.apply.button.label": "Übernehmen",
   "checkout.desired_delivery_date.error.date": "Das Datum ist ungültig. Bitte verwenden Sie das korrekte Format ({{ translate, common.placeholder.shortdate-caps }}).",
   "checkout.desired_delivery_date.error.max_date": "Ihr gewünschter Liefertermin kann nicht realisiert werden, weil das Datum zu weit in der Zukunft liegt.",
