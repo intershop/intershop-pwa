@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
@@ -51,6 +51,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     IconModule,
     NgbCollapseModule,
     NgbDropdownModule,
+    NgbPopoverModule,
     PipesModule,
     QuickorderExportsModule,
     RoleToggleModule,

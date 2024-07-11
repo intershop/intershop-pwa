@@ -17,10 +17,32 @@
   </div>
 </div>
 
-<a routerLink="/basket" *ngIf="view === 'small'" class="item-count-container position-relative">
-  <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
-  <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">{{ itemCount$ | async }}</span>
-</a>
+<ng-container *ngIf="view === 'small'">
+  <a
+    *ngIf="itemCount$ | async as itemCount; else emptyMobileCart"
+    routerLink="/basket"
+    class="item-count-container position-relative"
+  >
+    <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
+    <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">{{ itemCount }}</span>
+  </a>
+  <ng-template #emptyMobileCart>
+    <a
+      class="item-count-container position-relative"
+      [autoClose]="'outside'"
+      [ngbPopover]="'shopping_cart.ministatus.empty_cart.text' | translate"
+      placement="bottom"
+      triggers="manual"
+      #p="ngbPopover"
+      (click)="p.open()"
+      (keyup.enter)="p.open()"
+      tabindex="0"
+    >
+      <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
+      <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">0</span>
+    </a>
+  </ng-template>
+</ng-container>
 
 <!-- dummy element tracking basket loading for cypress tests -->
 <span *ngIf="basketLoading$ | async" class="loading" style="display: none"></span>
