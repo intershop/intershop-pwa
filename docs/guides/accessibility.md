@@ -12,6 +12,16 @@ kb_sync_latest_only
     - [Attributes and Roles](#attributes-and-roles)
     - [Titles instead of ARIA-Attributes](#titles-instead-of-aria-attributes)
     - [Usage of native HTML-Elements](#usage-of-native-html-elements)
+  - [Check the Accessibility of a Page](#check-the-accessibility-of-a-page)
+    - [Tools](#tools)
+      - [Google Lighthouse](#google-lighthouse)
+      - [Silktide - Accessibility Checker](#silktide---accessibility-checker)
+      - [WAVE - Web Accessibility Evaluation Tool](#wave---web-accessibility-evaluation-tool)
+      - [IBM - Equal Access Accessibility Checker](#ibm---equal-access-accessibility-checker)
+    - [Manual Testing](#manual-testing)
+      - [Keyboard](#keyboard)
+      - [Screen Reader](#screen-reader)
+    - [Example Workflow](#example-workflow)
   - [ESLint Rules](#eslint-rules)
     - [Accessibility Plugin](#accessibility-plugin)
     - [Additional Rules](#additional-rules)
@@ -48,7 +58,7 @@ If an element has to be made more descriptive by adding a title-attribute or an 
 :warning: **Only use when no title is needed**
 
 ```html
-<button [title]="Close" [aria-label]="close">
+<button [aria-label]="close">
   <span>x</span>
 </button>
 ```
@@ -81,6 +91,109 @@ If, for example, instead of a `<button>` a `<div role="button">` is used, the fu
   <span>x</span>
 </button>
 ```
+
+## Check the Accessibility of a Page
+
+### Tools
+
+With the current technology, automated tools can only check for around 25-30% of the WCAG criteria.
+They can however provide a **quick and easy overview over some accessibility issues** on a page and give a good starting point on where to focus and fix accessibility problems.
+The following list are some suggestions of free tools that have been used to check the accessibility of the PWA:
+
+- <u>**Google Lighthouse**</u>: quick overview and good for detecting general problems
+- <u>**Silktide**</u>: huge toolbox, can categorize issues after different WCAG versions
+- <u>WAVE</u>: good for checking non-visible attributes like aria-labels and -roles or image alt-texts
+- <u>IBM</u>: categorizes the issues directly after the WCAG criteria, but throws many false positives
+
+#### Google Lighthouse
+
+Google Lighthouse is a tool directly build into the dev-tools of the Google Chrome browser and is great to **get a first quick overview** over the page status.
+
+It is accessible by pressing "`F12`" and selecting the "_Lighthouse_" tab.
+If you only want to check for accessibility issues, only tick the "_Accessibility_" checkbox under "_Categories_".
+
+The most informative and visual "_Mode_" is the default mode "_Navigation_".
+That option reloads the page.
+If a page needs to be tested which has elements that don’t stay after a reload, select the "_Snapshot_" option instead.
+
+> [!NOTE]
+> It’s important to note that the browser window with the tested page should be focused after clicking "Analyze page load" or else it might throw an error, saying that it couldn’t analyze the page because it didn’t render any content.
+
+The <u>list of checked criteria</u> can be found [here](https://developer.chrome.com/docs/lighthouse/accessibility/scoring).
+
+#### Silktide - Accessibility Checker
+
+Silktide is a Chrome-only extension with **many different functionalities** for accessibility that combines a lot of features of other tools.
+
+It also **includes a simulated screen reader** that is **very easy to use**.
+The screen reader works almost exactly like a locally installed one and is a good and easy way to check for accessible names of buttons and links.
+It does have limitations compared to an installed screen reader, but it is a good tool for people who are not familiar with screen readers and just want to quickly check some elements.
+
+Comparing it to the other tools, it doesn’t seem to detect as many accessibility issues.
+It can however test against different WCAG versions and conformance levels.
+
+<u>Browser Plugin</u>:
+
+- [Chrome](https://chromewebstore.google.com/detail/silktide-accessibility-ch/mpobacholfblmnpnfbiomjkecoojakah)
+
+#### WAVE - Web Accessibility Evaluation Tool
+
+WAVE is a browser extension and website.
+The extension can be toggled by clicking the extension-icon in the browser.
+
+It is a very helpful tool to **visualize non-visual accessibility attributes** like `aria-labels` and `-roles` or `alt`-texts for images.
+Clicking on the :information_source:-icon behind a problem displays a more detailed description, as well as the related WCAG criteria.
+
+It can also visualize the **tab-order** and the **HTML site structure** (landmarks and headings).
+
+> [!NOTE]
+> The tool isn’t that technically advanced and seems a bit rudimentary. One big downside is that it displaces elements on the page to render its own content, which leads to a cluttered page, obscured elements and false alerts regarding contrast issues.
+
+<u>Browser Plugin</u>:
+
+- [Chrome](https://chromewebstore.google.com/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh)
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/wave-accessibility-tool)
+
+<u>Website</u> for deployed websites: https://wave.webaim.org
+
+#### IBM - Equal Access Accessibility Checker
+
+IBM is a browser extension that after installing it can be found in the dev-tools (opened by pressing "`F12`") of the browser like Google Lighthouse.
+
+This tool is helpful because it **categorizes the issues directly after the WCAG criteria**.
+By default, they’re sorted after "_Element roles_", that should be changed to "_Requirements_" via the dropdown.
+
+> [!NOTE]
+> The detection feels a bit too strict, so the results have to be manually filtered
+>
+> - a lot of things are marked as "_Needs review_" that often aren’t a violation
+> - and bootstrap elements or angular components are marked as violations, that may have a function when being activated but don’t present a real issue on the website
+
+<u>Browser Plugin</u>:
+
+- [Chrome](https://chromewebstore.google.com/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp)
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker)
+
+### Manual Testing
+
+#### Keyboard
+
+The point of manual testing via keyboard is to check for the **general operability of the page** and a logical HTML structure.
+
+Simply don’t use the mouse, and only navigate/operate the page with the tab- and enter/space-keys (or arrow-keys for certain input fields).
+
+Things to look out for:
+
+- Does the **tab-focus** go through the page in a **logical order**?
+- Can the **tab-focus** go through the entire page without being "**trapped**" somewhere?
+- Is the **tab-focus visible** on every element it can reach?
+- Is every interactive **element reachable** with just the keyboard?
+- Is every interactive **element operable** with just the keyboard?
+- Do elements that receive the tab-focus only **execute a functionality** if it is specifically activated with the enter/space-key?
+
+#### Screen Reader
+
+### Example Workflow
 
 ## ESLint Rules
 
