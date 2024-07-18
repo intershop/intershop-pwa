@@ -15,7 +15,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, map, shareReplay } from 'rxjs';
+import { Observable, distinctUntilChanged, map, shareReplay, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
@@ -114,7 +114,7 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
     creationDateTo: selectFirst(params.to),
     documentNumber: selectArray(params.orderNo),
     lineItem_product: selectArray(params.sku),
-    buyer: params.buyer || '',
+    buyer: selectFirst(params.buyer) || '',
   });
 }
 
@@ -217,7 +217,6 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
       this.form.patchValue(urlToModel(params));
 
       this.model$ = this.getModel(params);
-      this.modelChange.emit(urlToQuery(params));
     });
   }
 
@@ -250,6 +249,9 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   private getModel(params?: UrlModel): Observable<FormModel> {
     return this.isAdmin$.pipe(
+      distinctUntilChanged(),
+
+      tap(() => this.modelChange.emit(urlToQuery(params))),
       map(isAdmin => ({
         date:
           params?.from || params?.to
@@ -262,7 +264,8 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
         sku: params?.sku ? selectFirst(params.sku) : '',
         state: params?.from ? selectFirst(params.state) : '',
         buyer: params?.buyer ? selectFirst(params.buyer) : isAdmin ? 'all' : '',
-      }))
+      })),
+      shareReplay(1)
     );
   }
 }

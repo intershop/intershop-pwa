@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -30,7 +29,7 @@ describe('Account Order Filters Component', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [AccountOrderFiltersComponent, MockComponent(FaIconComponent)],
+      declarations: [AccountOrderFiltersComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

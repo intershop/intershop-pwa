@@ -11,6 +11,8 @@ describe('B2b User Mapper', () => {
       const userData = {
         firstName: 'Patricia',
         lastName: 'Miller',
+        businessPartnerNo: 'pmiller',
+        email: 'test@test.intershop.de',
         preferredInvoiceToAddress: BasketMockData.getAddress(),
         preferredShipToAddress: { urn: 'urn:1234' } as Address,
         preferredPaymentInstrument: { id: '1234' } as PaymentInstrument,
@@ -23,9 +25,9 @@ describe('B2b User Mapper', () => {
         {
           "active": true,
           "birthday": undefined,
-          "businessPartnerNo": undefined,
+          "businessPartnerNo": "pmiller",
           "department": undefined,
-          "email": undefined,
+          "email": "test@test.intershop.de",
           "fax": undefined,
           "firstName": "Patricia",
           "lastName": "Miller",
@@ -55,6 +57,7 @@ describe('B2b User Mapper', () => {
             },
             { name: 'firstName', value: 'Patricia' },
             { name: 'lastName', value: 'Miller' },
+            { name: 'businessPartnerNo', value: 'pmiller' },
             { name: 'active', value: true },
             { name: 'budgetPeriod', type: 'String', value: 'monthly' },
             { name: 'orderSpentLimit', type: 'MoneyRO', value: { currency: 'USD', value: 500 } },
@@ -70,6 +73,7 @@ describe('B2b User Mapper', () => {
         [
           {
             "active": true,
+            "businessPartnerNo": "pmiller",
             "firstName": "Patricia",
             "lastName": "Miller",
             "login": "pmiller@test.intershop.de",

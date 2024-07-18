@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, map, shareReplay } from 'rxjs';
+import { Observable, map, shareReplay, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -24,6 +24,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   columnsToDisplay$: Observable<OrderColumnsType[]>;
   moreOrdersAvailable$: Observable<boolean>;
   filtersActive: boolean;
+  isAdmin = false;
 
   constructor(private accountFacade: AccountFacade) {}
 
@@ -33,6 +34,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.ordersError$ = this.accountFacade.ordersError$;
     this.moreOrdersAvailable$ = this.accountFacade.moreOrdersAvailable$;
     this.columnsToDisplay$ = this.accountFacade.isAccountAdmin$.pipe(
+      tap(isAdmin => (this.isAdmin = isAdmin)),
       map(isAdmin =>
         isAdmin
           ? ['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'buyer', 'orderTotal']
@@ -51,7 +53,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
       ...filters,
       limit: 30,
       include: ['commonShipToAddress'],
-      buyer: 'all',
+      buyer: filters.buyer || (this.isAdmin ? 'all' : undefined),
     });
   }
 

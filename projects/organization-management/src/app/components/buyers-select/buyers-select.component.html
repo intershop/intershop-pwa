@@ -5,7 +5,7 @@
     </option>
     <ng-container *ngIf="buyers.length">
       <ng-container *ngFor="let buyer of buyers">
-        <option [value]="buyer.login">{{ buyer.firstName }} {{ buyer.lastName }}</option>
+        <option [value]="buyer.businessPartnerNo">{{ buyer.firstName }} {{ buyer.lastName }}</option>
       </ng-container>
     </ng-container>
   </select>
