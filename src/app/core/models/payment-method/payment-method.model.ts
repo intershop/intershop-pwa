@@ -21,6 +21,13 @@ export interface PaymentMethod {
   hasParameters?: boolean; // Needed for old payment method user REST api
 }
 
+export interface CheckoutPaymentCondition {
+  checkoutStep: string;
+  isGuestCheckoutEnabled?: boolean;
+  anonymous?: boolean;
+  appliedPaymentInstrumentId?: string;
+}
+
 enum PaymentMethodType {
   FastCheckout = 'FastCheckout',
   RedirectBeforeCheckout = 'RedirectBeforeCheckout',

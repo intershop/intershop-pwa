@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, take } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
@@ -20,11 +21,22 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
 
   priceType: Observable<'gross' | 'net'>;
   redirectStatus: string;
+  private isGuestCheckoutEnabled: boolean;
 
-  constructor(private checkoutFacade: CheckoutFacade, private route: ActivatedRoute) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private featureToggleService: FeatureToggleService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$('basket');
+    this.isGuestCheckoutEnabled = this.featureToggleService.enabled('guestCheckout');
+    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$({
+      checkoutStep: 'basket',
+      isGuestCheckoutEnabled: this.isGuestCheckoutEnabled,
+      anonymous: this.basket.user === undefined,
+      appliedPaymentInstrumentId: this.basket.payment?.paymentInstrument.id,
+    });
 
     this.priceType = this.checkoutFacade.priceType$;
 
@@ -36,7 +48,12 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$('basket');
+    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$({
+      checkoutStep: 'basket',
+      isGuestCheckoutEnabled: this.isGuestCheckoutEnabled,
+      anonymous: this.basket.user === undefined,
+      appliedPaymentInstrumentId: this.basket.payment?.paymentInstrument.id,
+    });
   }
 
   fastCheckout(paymentId: string) {

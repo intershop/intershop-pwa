@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -18,7 +18,7 @@ describe('Checkout Payment Page Component', () => {
   beforeEach(async () => {
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
-    when(checkoutFacade.eligiblePaymentMethods$('payment')).thenReturn(of([]));
+    when(checkoutFacade.eligiblePaymentMethods$(anything())).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
       declarations: [CheckoutPaymentPageComponent, MockComponent(CheckoutPaymentComponent)],

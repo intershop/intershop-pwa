@@ -40,6 +40,15 @@ export class BasketMockData {
     } as LineItemView;
   }
 
+  static getUser(isB2BUser: boolean = false) {
+    return {
+      companyName: isB2BUser ? 'KlausInc.' : undefined,
+      companyName2: isB2BUser ? 'Department Klaustown' : undefined,
+      firstName: 'Klaus',
+      lastName: 'Klausen',
+    };
+  }
+
   static getOrder() {
     return {
       id: '4711',
