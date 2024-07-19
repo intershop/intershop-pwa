@@ -20,29 +20,3 @@ export interface PaymentMethod {
   hostedPaymentPageParameters?: { name: string; value: string }[];
   hasParameters?: boolean; // Needed for old payment method user REST api
 }
-
-export interface CheckoutPaymentCondition {
-  checkoutStep: string;
-  isGuestCheckoutEnabled?: boolean;
-  anonymous?: boolean;
-  appliedPaymentInstrumentId?: string;
-}
-
-enum PaymentMethodType {
-  FastCheckout = 'FastCheckout',
-  RedirectBeforeCheckout = 'RedirectBeforeCheckout',
-  RedirectAfterCheckout = 'RedirectAfterCheckout',
-  WithoutRedirect = '',
-}
-
-export const PAYMENT_METHOD_TYPE_CHECKOUT_ASSIGNMENT = new Map<string, PaymentMethodType[]>([
-  ['basket', [PaymentMethodType.FastCheckout]],
-  [
-    'payment',
-    [
-      PaymentMethodType.RedirectBeforeCheckout,
-      PaymentMethodType.RedirectAfterCheckout,
-      PaymentMethodType.WithoutRedirect,
-    ],
-  ],
-]);

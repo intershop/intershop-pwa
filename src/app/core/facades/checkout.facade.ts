@@ -9,8 +9,6 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
-import { CheckoutPaymentCondition } from 'ish-core/models/payment-method/payment-method.model';
-import { Payment } from 'ish-core/models/payment/payment.model';
 import { selectRouteData } from 'ish-core/store/core/router';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import {
@@ -38,6 +36,7 @@ import {
   getBasketShippingAddress,
   getBasketValidationResults,
   getCurrentBasket,
+  getEligibleFastCheckoutPaymentMethods,
   getSubmittedBasket,
   isBasketInvoiceAndShippingAddressEqual,
   loadBasketEligibleAddresses,
@@ -259,32 +258,23 @@ export class CheckoutFacade {
   }
 
   // PAYMENT
-  eligiblePaymentMethods$(condition?: CheckoutPaymentCondition) {
+
+  eligiblePaymentMethods$() {
     return this.basket$.pipe(
       whenTruthy(),
       take(1),
       tap(() => this.store.dispatch(loadBasketEligiblePaymentMethods())),
-      switchMap(basket =>
-        condition
-          ? this.store.pipe(
-              select(
-                getBasketEligiblePaymentMethods(
-                  condition.checkoutStep.endsWith('payment')
-                    ? this.getUpdatedCondition(condition, basket.payment)
-                    : condition
-                )
-              )
-            )
-          : this.store.pipe(select(getBasketEligiblePaymentMethods()))
-      )
+      switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
 
-  private getUpdatedCondition(condition: CheckoutPaymentCondition, payment: Payment): CheckoutPaymentCondition {
-    if (payment !== undefined) {
-      condition.appliedPaymentInstrumentId = payment.paymentInstrument.id;
-    }
-    return condition;
+  eligibleFastCheckoutPaymentMethods$() {
+    return this.basket$.pipe(
+      whenTruthy(),
+      take(1),
+      tap(() => this.store.dispatch(loadBasketEligiblePaymentMethods())),
+      switchMap(() => this.store.pipe(select(getEligibleFastCheckoutPaymentMethods)))
+    );
   }
 
   priceType$ = this.store.pipe(select(getServerConfigParameter<'gross' | 'net'>('pricing.priceType')));

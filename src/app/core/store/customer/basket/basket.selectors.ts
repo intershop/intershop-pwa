@@ -5,8 +5,6 @@ import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketView, createBasketView } from 'ish-core/models/basket/basket.model';
-import { PaymentMethodHelper } from 'ish-core/models/payment-method/payment-method.helper';
-import { CheckoutPaymentCondition } from 'ish-core/models/payment-method/payment-method.model';
 import { getCustomerState } from 'ish-core/store/customer/customer-store';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
@@ -78,14 +76,18 @@ export const getBasketEligibleShippingMethods = createSelector(
   basket => basket.eligibleShippingMethods
 );
 
-export const getBasketEligiblePaymentMethods = (condition?: CheckoutPaymentCondition) =>
-  createSelector(getBasketState, getLoggedInCustomer, (basket, customer) =>
-    condition
-      ? basket?.eligiblePaymentMethods
-          ?.filter(pm => PaymentMethodHelper.shouldShowOnCheckoutStep(pm, condition))
-          .map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
-      : basket?.eligiblePaymentMethods?.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
-  );
+export const getBasketEligiblePaymentMethods = createSelector(getBasketState, getLoggedInCustomer, (basket, customer) =>
+  basket?.eligiblePaymentMethods?.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
+);
+
+export const getEligibleFastCheckoutPaymentMethods = createSelector(
+  getBasketState,
+  getLoggedInCustomer,
+  (basket, customer) =>
+    basket?.eligiblePaymentMethods
+      ?.filter(pm => pm.capabilities && pm.capabilities.includes('FastCheckout'))
+      .map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
+);
 
 export const getBasketInvoiceAddress = createSelectorFactory<object, Address>(projector =>
   resultMemoize(projector, isEqual)

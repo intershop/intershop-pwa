@@ -1,14 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { anyString } from 'ts-mockito';
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { applyConfiguration } from 'ish-core/store/core/configuration';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
@@ -34,7 +31,6 @@ import {
   loadBasketEligibleShippingMethodsSuccess,
   loadBasketFail,
   loadBasketSuccess,
-  setFastCheckoutPayment,
   submitBasketSuccess,
 } from './basket.actions';
 import {
@@ -71,11 +67,11 @@ describe('Basket Selectors', () => {
     });
 
     it('should not select any shipping methods if it is in initial state', () => {
-      expect(getBasketEligiblePaymentMethods()(store$.state)).toBeUndefined();
+      expect(getBasketEligibleShippingMethods(store$.state)).toBeUndefined();
     });
 
     it('should not select any payment methods if it is in initial state', () => {
-      expect(getBasketEligiblePaymentMethods()(store$.state)).toBeUndefined();
+      expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
     });
 
     it('should not select a submitted basket if it is in initial state', () => {
@@ -288,14 +284,12 @@ describe('Basket Selectors', () => {
       it('should set load data when user is logged in', () => {
         store$.dispatch(loginUserSuccess({ customer: {} as Customer }));
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligiblePaymentMethods({ checkoutStep: 'payment' })(store$.state)).toEqual([
-          BasketMockData.getPaymentMethod(),
-        ]);
+        expect(getBasketEligiblePaymentMethods(store$.state)).toEqual([BasketMockData.getPaymentMethod()]);
       });
 
       it('should set load data and set saveForLater to false if user is logged out', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligiblePaymentMethods({ checkoutStep: 'payment' })(store$.state)).toEqual([
+        expect(getBasketEligiblePaymentMethods(store$.state)).toEqual([
           { ...BasketMockData.getPaymentMethod(), saveAllowed: false },
         ]);
       });
@@ -308,7 +302,7 @@ describe('Basket Selectors', () => {
 
       it('should not have loaded payment methods on error', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligiblePaymentMethods(anyString())(store$.state)).toBeUndefined();
+        expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
         expect(getBasketError(store$.state)).toMatchInlineSnapshot(`
           {
             "message": "error",
@@ -411,106 +405,6 @@ describe('Basket Selectors', () => {
       store$.dispatch(submitBasketSuccess());
       expect(getSubmittedBasket(store$.state).id).toBe('test');
       expect(getCurrentBasket(store$.state)).toBeUndefined();
-    });
-  });
-
-  describe('get eligible payment methods for registered user', () => {
-    const redirectBeforePM = {
-      id: 'RedirectBeforePaymentMethodID',
-      displayName: 'Redirect Before PaymentMethod',
-      serviceId: 'RedirectBeforePaymentMethodID',
-      capabilities: ['RedirectBeforeCheckout'],
-    } as PaymentMethod;
-    const fastCheckoutPM = {
-      id: 'FastCheckoutPaymentMethodID',
-      displayName: 'Fast Checkout PaymentMethod',
-      serviceId: 'FastCheckoutPaymentMethodID',
-      capabilities: ['FastCheckout'],
-    } as PaymentMethod;
-
-    beforeEach(() => {
-      store$.dispatch(
-        loadBasketEligiblePaymentMethodsSuccess({
-          paymentMethods: [BasketMockData.getPaymentMethod(), redirectBeforePM, fastCheckoutPM],
-        })
-      );
-      store$.dispatch(loginUserSuccess({ customer: {} as Customer }));
-    });
-
-    it('should contain only FastCheckout PaymentMethod on basket focus', () => {
-      expect(getBasketLoading(store$.state)).toBeFalse();
-      expect(getBasketEligiblePaymentMethods({ checkoutStep: 'basket' })(store$.state)).toEqual([fastCheckoutPM]);
-    });
-    it('should contain all PaymentMethods exept FastCheckout on payment focus', () => {
-      expect(getBasketLoading(store$.state)).toBeFalse();
-      expect(getBasketEligiblePaymentMethods({ checkoutStep: 'payment' })(store$.state)).toEqual([
-        BasketMockData.getPaymentMethod(),
-        redirectBeforePM,
-      ]);
-    });
-    it('should contain all PaymentMethods if no focus is specified', () => {
-      expect(getBasketLoading(store$.state)).toBeFalse();
-      expect(getBasketEligiblePaymentMethods()(store$.state)).toEqual([
-        BasketMockData.getPaymentMethod(),
-        redirectBeforePM,
-        fastCheckoutPM,
-      ]);
-    });
-  });
-
-  describe('get eligible payment methods for anonymous user', () => {
-    const redirectBeforePM = {
-      id: 'RedirectBeforePaymentMethodID',
-      displayName: 'Redirect Before PaymentMethod',
-      serviceId: 'RedirectBeforePaymentMethodID',
-      saveAllowed: false,
-      capabilities: ['RedirectBeforeCheckout'],
-    } as PaymentMethod;
-    const fastCheckoutPM = {
-      id: 'FastCheckoutPaymentMethodID',
-      displayName: 'Fast Checkout PaymentMethod',
-      serviceId: 'FastCheckoutPaymentMethodID',
-      saveAllowed: false,
-      capabilities: ['FastCheckout'],
-    } as PaymentMethod;
-
-    beforeEach(() => {
-      store$.dispatch(
-        loadBasketEligiblePaymentMethodsSuccess({
-          paymentMethods: [redirectBeforePM, fastCheckoutPM],
-        })
-      );
-      store$.dispatch(
-        applyConfiguration({
-          baseURL: 'http://example.org',
-          server: 'api',
-          serverStatic: 'static',
-          channel: 'site',
-          features: ['guestCheckout'],
-        })
-      );
-    });
-
-    it('should contain only FastCheckout PaymentMethod on basket focus', () => {
-      expect(getBasketLoading(store$.state)).toBeFalse();
-      expect(getBasketEligiblePaymentMethods({ checkoutStep: 'basket' })(store$.state)).toEqual([fastCheckoutPM]);
-    });
-    it('should contain all PaymentMethods exept FastCheckout on payment focus', () => {
-      expect(getBasketLoading(store$.state)).toBeFalse();
-      expect(getBasketEligiblePaymentMethods({ checkoutStep: 'payment' })(store$.state)).toEqual([redirectBeforePM]);
-    });
-    it('should contain all PaymentMethods if FastCheckout is selected before on payment focus', () => {
-      store$.dispatch(setFastCheckoutPayment({ id: fastCheckoutPM.id }));
-      expect(getBasketLoading(store$.state)).toBeFalse();
-      expect(
-        getBasketEligiblePaymentMethods({ checkoutStep: 'payment', appliedPaymentInstrumentId: fastCheckoutPM.id })(
-          store$.state
-        )
-      ).toEqual([redirectBeforePM, fastCheckoutPM]);
-    });
-    it('should contain all PaymentMethods if no focus is specified', () => {
-      expect(getBasketLoading(store$.state)).toBeFalse();
-      expect(getBasketEligiblePaymentMethods()(store$.state)).toEqual([redirectBeforePM, fastCheckoutPM]);
     });
   });
 });

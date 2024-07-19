@@ -1,4 +1,4 @@
-<ul class="list-unstyled">
+<ul *ngIf="isApplicable()" class="list-unstyled">
   <!-- error message in case after cancelled/faulty redirect -->
   <div *ngIf="redirectStatus" role="alert" class="alert alert-danger">
     {{ 'checkout.payment.sorry_message.text' | translate }}

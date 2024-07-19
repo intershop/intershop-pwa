@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, take } from 'rxjs';
+import { Observable, shareReplay, take } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -21,7 +21,6 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
 
   priceType: Observable<'gross' | 'net'>;
   redirectStatus: string;
-  private isGuestCheckoutEnabled: boolean;
 
   constructor(
     private checkoutFacade: CheckoutFacade,
@@ -30,13 +29,7 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.isGuestCheckoutEnabled = this.featureToggleService.enabled('guestCheckout');
-    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$({
-      checkoutStep: 'basket',
-      isGuestCheckoutEnabled: this.isGuestCheckoutEnabled,
-      anonymous: this.basket.user === undefined,
-      appliedPaymentInstrumentId: this.basket.payment?.paymentInstrument.id,
-    });
+    this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$().pipe(shareReplay(1));
 
     this.priceType = this.checkoutFacade.priceType$;
 
@@ -48,15 +41,14 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$({
-      checkoutStep: 'basket',
-      isGuestCheckoutEnabled: this.isGuestCheckoutEnabled,
-      anonymous: this.basket.user === undefined,
-      appliedPaymentInstrumentId: this.basket.payment?.paymentInstrument.id,
-    });
+    this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$().pipe(shareReplay(1));
   }
 
   fastCheckout(paymentId: string) {
     this.checkoutFacade.setFastCheckoutPayment(paymentId);
+  }
+
+  isApplicable(): boolean {
+    return this.featureToggleService.enabled('guestCheckout') || this.basket.user !== undefined;
   }
 }

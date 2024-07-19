@@ -6,6 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { PaymentCostInfoComponent } from 'ish-shared/components/payment/payment-cost-info/payment-cost-info.component';
 
 import { ShoppingBasketPaymentComponent } from './shopping-basket-payment.component';
 
@@ -20,7 +21,7 @@ describe('Shopping Basket Payment Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [ShoppingBasketPaymentComponent],
+      declarations: [PaymentCostInfoComponent, ShoppingBasketPaymentComponent],
       imports: [RouterTestingModule.withRoutes([{ path: 'basket', children: [] }])],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
@@ -28,10 +29,8 @@ describe('Shopping Basket Payment Component', () => {
       ],
     }).compileComponents();
 
-    when(checkoutFacade.eligiblePaymentMethods$({ checkoutStep: 'basket' })).thenReturn(
-      of([BasketMockData.getPaymentMethod()])
-    );
-    when(featureToggleService.enabled('businessCustomerRegistration')).thenReturn(false);
+    when(checkoutFacade.eligibleFastCheckoutPaymentMethods$()).thenReturn(of([BasketMockData.getPaymentMethod()]));
+    when(featureToggleService.enabled('guestCheckout')).thenReturn(false);
   });
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { filter, first, map, shareReplay, withLatestFrom } from 'rxjs/operators';
+import { filter, first, map, withLatestFrom } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -19,6 +19,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
   basket$: Observable<BasketView>;
   basketError$: Observable<HttpError>;
   loading$: Observable<boolean>;
+  paymentMethods = [] as PaymentMethod[];
   paymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<'gross' | 'net'>;
 
@@ -31,9 +32,21 @@ export class CheckoutPaymentPageComponent implements OnInit {
     this.basketError$ = this.checkoutFacade.basketError$;
     this.loading$ = this.checkoutFacade.basketLoading$;
     this.priceType$ = this.checkoutFacade.priceType$;
-    this.paymentMethods$ = this.checkoutFacade
-      .eligiblePaymentMethods$({ checkoutStep: 'payment' })
-      .pipe(shareReplay(1));
+
+    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$().pipe(
+      withLatestFrom(this.basket$),
+      map(([pmList, basket]) =>
+        pmList?.filter(
+          pm =>
+            !pm.capabilities ||
+            !pm.capabilities.includes('FastCheckout') ||
+            (pm.capabilities &&
+              pm.capabilities.includes('FastCheckout') &&
+              basket?.payment?.capabilities?.includes('FastCheckout') &&
+              basket.payment.paymentInstrument.id === pm.id)
+        )
+      )
+    );
 
     // if there is only one eligible payment method without parameters, assign it automatically to the basket
     this.paymentMethods$
