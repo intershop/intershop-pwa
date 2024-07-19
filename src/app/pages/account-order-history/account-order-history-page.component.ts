@@ -24,7 +24,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   columnsToDisplay$: Observable<OrderColumnsType[]>;
   moreOrdersAvailable$: Observable<boolean>;
   filtersActive: boolean;
-  isAdmin = false;
+  private isAdmin = false;
 
   constructor(private accountFacade: AccountFacade) {}
 
