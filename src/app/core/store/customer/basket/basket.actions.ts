@@ -248,7 +248,7 @@ export const setBasketPaymentFail = createAction('[Basket API] Set a Payment at 
 
 export const setBasketPaymentSuccess = createAction('[Basket API] Set a Payment at Basket Success');
 
-export const setFastCheckoutPayment = createAction(
+export const setBasketFastCheckoutPayment = createAction(
   '[Basket] Set a FastCheckout Payment at Basket ',
   payload<{ id: string }>()
 );

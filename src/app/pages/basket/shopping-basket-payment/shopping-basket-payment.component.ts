@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, shareReplay, take } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -14,13 +13,12 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
-  @Input() basket: BasketView;
+  @Input({ required: true }) basket: BasketView;
 
-  private destroyRef = inject(DestroyRef);
   paymentMethods$: Observable<PaymentMethod[]>;
 
-  priceType: Observable<'gross' | 'net'>;
-  redirectStatus: string;
+  priceType$: Observable<'gross' | 'net'>;
+  redirectStatus$: Observable<string>;
 
   constructor(
     private checkoutFacade: CheckoutFacade,
@@ -29,15 +27,10 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$().pipe(shareReplay(1));
-
-    this.priceType = this.checkoutFacade.priceType$;
+    this.priceType$ = this.checkoutFacade.priceType$;
 
     // if page is shown after cancelled/faulty redirect determine error message variable
-    this.route.queryParamMap.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      const redirect = params.get('redirect');
-      this.redirectStatus = redirect;
-    });
+    this.redirectStatus$ = this.route.queryParamMap.pipe(map(params => params.get('redirect')));
   }
 
   ngOnChanges(): void {

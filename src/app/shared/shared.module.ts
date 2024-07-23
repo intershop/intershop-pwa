@@ -75,6 +75,7 @@ import { BasketItemsSummaryComponent } from './components/basket/basket-items-su
 import { BasketMerchantMessageViewComponent } from './components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketMerchantMessageComponent } from './components/basket/basket-merchant-message/basket-merchant-message.component';
 import { BasketOrderReferenceComponent } from './components/basket/basket-order-reference/basket-order-reference.component';
+import { BasketPaymentCostInfoComponent } from './components/basket/basket-payment-cost-info/basket-payment-cost-info.component';
 import { BasketPromotionCodeComponent } from './components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketPromotionComponent } from './components/basket/basket-promotion/basket-promotion.component';
 import { BasketShippingMethodComponent } from './components/basket/basket-shipping-method/basket-shipping-method.component';
@@ -117,7 +118,6 @@ import { LoginFormComponent } from './components/login/login-form/login-form.com
 import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
 import { OrderWidgetComponent } from './components/order/order-widget/order-widget.component';
-import { PaymentCostInfoComponent } from './components/payment/payment-cost-info/payment-cost-info.component';
 import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttachmentsComponent } from './components/product/product-attachments/product-attachments.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
@@ -261,6 +261,7 @@ const exportedComponents = [
   BasketMerchantMessageComponent,
   BasketMerchantMessageViewComponent,
   BasketOrderReferenceComponent,
+  BasketPaymentCostInfoComponent,
   BasketPromotionCodeComponent,
   BasketPromotionComponent,
   BasketShippingAddressWidgetComponent,
@@ -288,7 +289,6 @@ const exportedComponents = [
   ModalDialogLinkComponent,
   OrderListComponent,
   OrderWidgetComponent,
-  PaymentCostInfoComponent,
   ProductAddToBasketComponent,
   ProductAttachmentsComponent,
   ProductAttributesComponent,

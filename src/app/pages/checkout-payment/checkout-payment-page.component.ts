@@ -19,7 +19,6 @@ export class CheckoutPaymentPageComponent implements OnInit {
   basket$: Observable<BasketView>;
   basketError$: Observable<HttpError>;
   loading$: Observable<boolean>;
-  paymentMethods = [] as PaymentMethod[];
   paymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<'gross' | 'net'>;
 

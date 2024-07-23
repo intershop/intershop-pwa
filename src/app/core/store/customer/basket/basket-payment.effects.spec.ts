@@ -13,6 +13,7 @@ import { Payment } from 'ish-core/models/payment/payment.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -33,10 +34,10 @@ import {
   loadBasketEligiblePaymentMethodsFail,
   loadBasketEligiblePaymentMethodsSuccess,
   loadBasketSuccess,
+  setBasketFastCheckoutPayment,
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
-  setFastCheckoutPayment,
   startCheckoutFail,
   updateBasketPayment,
   updateBasketPaymentFail,
@@ -55,7 +56,10 @@ describe('Basket Payment Effects', () => {
     basketServiceMock = mock(BasketService);
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), CustomerStoreModule.forTesting('user', 'basket')],
+      imports: [
+        CoreStoreModule.forTesting(['configuration', 'serverConfig', 'router']),
+        CustomerStoreModule.forTesting('user', 'basket'),
+      ],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
@@ -493,11 +497,23 @@ describe('Basket Payment Effects', () => {
 
   describe('startFastCheckoutProcess$ - set payment at basket with subsequent basket validation', () => {
     beforeEach(() => {
-      when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(of(undefined));
+      when(paymentServiceMock.setBasketFastCheckoutPayment(anyString(), anyString())).thenReturn(of(undefined));
       when(basketServiceMock.validateBasket(anything())).thenReturn(of(undefined));
+      store.dispatch(
+        loadServerConfigSuccess({
+          config: {
+            general: {
+              defaultLocale: 'de_DE',
+              defaultCurrency: 'EUR',
+              locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE'],
+              currencies: ['USD', 'EUR'],
+            },
+          },
+        })
+      );
     });
     it('should map to action of type executeFastCheckout in case of success', () => {
-      const action = setFastCheckoutPayment({ id: 'FastCheckout' });
+      const action = setBasketFastCheckoutPayment({ id: 'FastCheckout' });
       const completion = executeFastCheckout(anything());
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -505,11 +521,11 @@ describe('Basket Payment Effects', () => {
       expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
     });
     it('should map to action of type setBasketPaymentFail in case of failure', () => {
-      when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(
+      when(paymentServiceMock.setBasketFastCheckoutPayment(anyString(), anyString())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
-      const action = setFastCheckoutPayment({ id: 'FastCheckout' });
-      const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
+      const action = setBasketFastCheckoutPayment({ id: 'FastCheckout' });
+      const completion = startCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -519,7 +535,7 @@ describe('Basket Payment Effects', () => {
       when(basketServiceMock.validateBasket(anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
-      const action = setFastCheckoutPayment({ id: 'FastCheckout' });
+      const action = setBasketFastCheckoutPayment({ id: 'FastCheckout' });
       const completion = startCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

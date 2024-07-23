@@ -56,6 +56,42 @@ export class PaymentService {
   }
 
   /**
+   * Adds a fast checkout payment at the selected basket and generate redirect url in one step/request.
+   *
+   * @param paymentInstrument The payment instrument id.
+   * @param lang              The language code of the current locale, e.g. en_US
+   * @returns                 The necessary url for redirecting to payment provider.
+   */
+  setBasketFastCheckoutPayment(paymentInstrument: string, currentLocale: string): Observable<string> {
+    if (!paymentInstrument) {
+      return throwError(() => new Error('setBasketPayment() called without paymentInstrument'));
+    }
+    const loc = `${location.origin}${this.baseHref}`;
+
+    const body = {
+      paymentInstrument,
+      redirect: {
+        successUrl: `${loc}/checkout/review;lang=${currentLocale}?redirect=success`,
+        cancelUrl: `${loc}/basket;lang=${currentLocale}?redirect=cancel`,
+        failureUrl: `${loc}/basket;lang=${currentLocale}?redirect=cancel`,
+      },
+    };
+
+    return this.apiService
+      .currentBasketEndpoint()
+      .put<{
+        data: {
+          redirect: {
+            redirectUrl: string;
+          };
+        };
+      }>('payments/open-tender', body, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(payload => payload.data.redirect.redirectUrl));
+  }
+
+  /**
    * Adds a payment at the selected basket. If redirect is required the redirect urls are saved at basket in dependence of the payment instrument capabilities (redirectBeforeCheckout/RedirectAfterCheckout).
    *
    * @param paymentInstrument The unique name of the payment method, e.g. ISH_INVOICE
@@ -106,30 +142,6 @@ export class PaymentService {
         cancelUrl: `${loc}/checkout/payment;lang=${lang}?redirect=cancel`,
         failureUrl: `${loc}/checkout/payment;lang=${lang}?redirect=failure`,
       };
-
-      if (pm.capabilities.some(data => ['FastCheckout'].includes(data))) {
-        redirect.successUrl = `${loc}/checkout/review;lang=${lang}?redirect=success`;
-        redirect.cancelUrl = `${loc}/basket;lang=${lang}?redirect=cancel`;
-        redirect.failureUrl = `${loc}/basket;lang=${lang}?redirect=failure`;
-
-        const body = {
-          paymentInstrument,
-          redirect,
-        };
-
-        return this.apiService
-          .currentBasketEndpoint()
-          .put<{
-            data: {
-              redirect: {
-                redirectUrl: string;
-              };
-            };
-          }>('payments/open-tender', body, {
-            headers: this.basketHeaders,
-          })
-          .pipe(map(payload => payload.data.redirect.redirectUrl));
-      }
 
       if (pm.capabilities.some(data => ['RedirectAfterCheckout'].includes(data))) {
         // *OrderID* will be replaced by the ICM server

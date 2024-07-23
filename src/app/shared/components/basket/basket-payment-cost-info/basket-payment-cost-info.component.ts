@@ -5,17 +5,17 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 
 /**
- * Component for displaying payment costs and payment restriction informations.
+ * Component for displaying payment costs and payment restriction information.
  */
 @Component({
-  selector: 'ish-payment-cost-info',
-  templateUrl: './payment-cost-info.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  selector: 'ish-basket-payment-cost-info',
+  templateUrl: './basket-payment-cost-info.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaymentCostInfoComponent {
-  @Input() paymentMethod: PaymentMethod;
-  @Input() basket: BasketView;
-  @Input() priceType: 'gross' | 'net';
+export class BasketPaymentCostInfoComponent {
+  @Input({ required: true }) paymentMethod: PaymentMethod;
+  @Input({ required: true }) basket: BasketView;
+  @Input({ required: true }) priceType: 'gross' | 'net';
 
   /**
    * Determine whether payment cost threshold has been reached
