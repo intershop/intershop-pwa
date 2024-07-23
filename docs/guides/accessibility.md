@@ -21,6 +21,9 @@ kb_sync_latest_only
     - [Manual Testing](#manual-testing)
       - [Keyboard](#keyboard)
       - [Screen Reader](#screen-reader)
+        - [Settings](#settings)
+        - [Speech Viewer](#speech-viewer)
+        - [Shortcuts](#shortcuts)
     - [Example Workflow](#example-workflow)
   - [ESLint Rules](#eslint-rules)
     - [Accessibility Plugin](#accessibility-plugin)
@@ -193,7 +196,77 @@ Things to look out for:
 
 #### Screen Reader
 
+For the beginning, it is recommended to start with Silktide’s simulated screen reader.
+It is less sophisticated and a lot easier and simpler to use.
+
+A locally installed screen reader can be used to **thoroughly test a page** for features and properties that the simulated screen reader isn’t capable of (like announcing errors via aria-live attributes).
+It also reflects the real world application of such an assistive technology a lot closer than the simulated one.
+
+A widely used locally installed screen reader is [NVDA](https://www.nvaccess.org/download/) ("Non-Visual Desktop Access").
+
+After installing and starting the program, the screen reader is immediately active.
+
+Then you can tab with the keyboard through the website and check it for accessibility issues, or use the up and down arrow-keys to access text-content that isn’t tab-able.
+
+##### Settings
+
+There are some settings that should be changed to make the program easier to use.
+On Windows, the settings can be accessed by clicking on the small NVDA system tray icon in the taskbar.
+Then navigate to "_Preferences_" → "_Settings…_".
+
+- "_Mouse_" → all the options should be unchecked, so the program only reads content focused by the keyboard
+- "_Speech_" → the "Rate" should probably be tuned down because the program reads very fast for someone who isn’t used to the software
+
+##### Speech Viewer
+
+It is also very helpful enabling the "**Speech Viewer**", that displays the spoken text.
+
+The "_Speech Viewer_" can be accessed by clicking the NVDA system tray icon and enabling it through "_Tools_" → "_Speech viewer_".
+
+It’s also recommended checking "_Show Speech Viewer on Startup_" at the bottom of the "_Speech Viewer_".
+
+##### Shortcuts
+
+NVDA has a huge list of **shortcuts**.
+The following ones are the most useful for **checking** the correct **HTML structure** and correctly defined **aria-roles**.
+It’s possible to move in the reverse order by pressing the "`Shift`"-key together with the shortcut key.
+
+- "`D`"-key - next landmark (header, main, footer, …)
+- "`H`"-key - next heading
+- "`1`"-"`6`"-keys - jump to heading-levels 1-6
+- "`G`"-key - next graphic
+- "`K`"-key - next link
+- "`B`"-key - next button
+- "`L`"-key - next list
+- "`I`"-key - next item in a list
+
+[General shortcut list](https://dequeuniversity.com/screenreaders/nvda-keyboard-shortcuts) |
+[Complete shortcut list](https://www.nvaccess.org/files/nvda/documentation/keyCommands.html)
+
+These shortcuts can help decide if an element has an appropriate `aria-role`.
+
+For example, if it’s unclear if an icon should have an "`img`"-role, think about if it’d make sense that it’s possible to access that icon with the "`G`"-key shortcut.
+In most cases, that doesn’t make sense, because an icon often just visually represents the underlying function of a link or button.
+The graphical content of the icon isn’t that important.
+It’s better to make the icon `aria-hidden` and give the underlying link/button an accessible name.
+
 ### Example Workflow
+
+- scan page with **Google Lighthouse** → check for automatically detected issues
+- scan page with **Silktide** → check for automatically detected issues
+- check with Silktide or WAVE:
+  - correctly defined **HTML-landmarks**
+  - correct **headings-order** (logical order without skipping a number)
+  - visualize and check a logical **tab-focus order**
+- navigate/operate page with the keyboard tab-key
+  - check logical **tab-order**
+  - check **reachability/operability** of elements
+  - check **visibility of the tab-focus** on every reachable element
+- use Silktide’s simulated **screen reader** to check accessible link and button names
+- for further in-depth testing → use other tools (like IBM) and a locally installed screen reader
+
+> [!NOTE]
+> Be aware of general accessibility issues like accessible link/button names, sufficient color contrast, marked links and an always visible tab-focus.
 
 ## ESLint Rules
 
