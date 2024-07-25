@@ -22,7 +22,7 @@ export const getICMServerURL = createSelector(getConfigurationState, state =>
   state.baseURL && state.server ? `${ssrBaseUrl || state.baseURL}/${state.server}` : undefined
 );
 
-export const getICMServerWebURL = createSelector(getConfigurationState, state =>
+const getICMServerWebURL = createSelector(getConfigurationState, state =>
   state.baseURL && state.serverWeb ? `${ssrBaseUrl || state.baseURL}/${state.serverWeb}` : undefined
 );
 

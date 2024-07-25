@@ -18,6 +18,9 @@ Previously it has been used to determine whether the 'privatecustomers' or the '
 Now the 'privatecustomers' REST resource is the new standard for b2c users.
 If your ICM doesn't support the new standard the method `getCustomerRestResource` of the [`app.facade`](../../src/app/core/facades/app.facade.ts) has to be adapted.
 
+With ICM 12.2.0, 11.11.1 or 7.10.41.3 the ICM server itself provides an OCI punchout URL (Pipeline) that works better for the OCI punchout functions `BACKGROUND_SEARCH` and `VALIDATE` than the similar now deprecated functionality in the PWA.
+For that reason the provided OCI Punchout URL is now pointing to the ICM pipeline `ViewOCICatalogPWA-Start` that handles the different functionalities and redirects to the PWA (configured as _External Base URL_ in ICM) only for catalog browsing and the detail function.
+
 ## From 5.1 to 5.2
 
 > [!NOTE]

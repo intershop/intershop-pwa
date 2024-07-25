@@ -63,6 +63,9 @@ describe('Account Punchout Page Component', () => {
     when(punchoutFacade.punchoutUsersByRoute$()).thenReturn(of(users));
     when(punchoutFacade.selectedPunchoutType$).thenReturn(of('oci'));
     when(appFacade.getRestEndpoint$).thenReturn(of('https://myBaseServerURL/INTERSHOP/rest/WFS/myChannel/rest'));
+    when(appFacade.getPipelineEndpoint$).thenReturn(
+      of('https://myBaseServerURL/INTERSHOP/web/WFS/myChannel/en_US/rest/USD')
+    );
     when(punchoutFacade.punchoutLoading$).thenReturn(of(false));
   });
 
@@ -110,6 +113,17 @@ describe('Account Punchout Page Component', () => {
     component.cxmlPunchoutUrl$.subscribe(url => {
       expect(url).toMatchInlineSnapshot(
         `"https://myBaseServerURL/INTERSHOP/rest/WFS/myChannel/rest/customers/OilCorp/punchouts/cxml1.2/setuprequest"`
+      );
+      done();
+    });
+  });
+
+  it('should determine oci punchout url on init', done => {
+    fixture.detectChanges();
+
+    component.ociPunchoutUrl$.subscribe(url => {
+      expect(url).toMatchInlineSnapshot(
+        `"https://myBaseServerURL/INTERSHOP/web/WFS/myChannel/en_US/rest/USD/ViewOCICatalogPWA-Start?USERNAME=<USERNAME>&PASSWORD=<PASSWORD>&HOOK_URL=<HOOK_URL>"`
       );
       done();
     });
