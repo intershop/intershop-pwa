@@ -68,6 +68,7 @@ export class ConfigurationEffects {
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_BASE_URL', 'icmBaseURL'),
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER', 'icmServer'),
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER_STATIC', 'icmServerStatic'),
+          this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER_WEB', 'icmServerWeb'),
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_CHANNEL', 'icmChannel'),
           this.stateProperties.getStateOrEnvOrDefault<string>('ICM_APPLICATION', 'icmApplication'),
           this.stateProperties
@@ -91,6 +92,7 @@ export class ConfigurationEffects {
             baseURL,
             server,
             serverStatic,
+            serverWeb,
             channel,
             application,
             features,
@@ -102,6 +104,7 @@ export class ConfigurationEffects {
               baseURL,
               server,
               serverStatic,
+              serverWeb,
               channel,
               application,
               features,

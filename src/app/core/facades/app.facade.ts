@@ -11,6 +11,7 @@ import {
   getCurrentLocale,
   getDeviceType,
   getICMBaseURL,
+  getPipelineEndpoint,
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
@@ -44,6 +45,7 @@ export class AppFacade {
   breadcrumbData$ = this.store.pipe(select(getBreadcrumbData));
 
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
+  getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
 
   appWrapperClasses$ = combineLatest([
     this.store.pipe(
