@@ -22,12 +22,8 @@ export const getICMServerURL = createSelector(getConfigurationState, state =>
   state.baseURL && state.server ? `${ssrBaseUrl || state.baseURL}/${state.server}` : undefined
 );
 
-export const getRestEndpoint = createSelector(
-  getICMServerURL,
-  getConfigurationState,
-  getICMApplication,
-  (serverUrl, state, application) =>
-    serverUrl && state.channel ? `${serverUrl}/${state.channel}/${application}` : undefined
+export const getICMServerWebURL = createSelector(getConfigurationState, state =>
+  state.baseURL && state.serverWeb ? `${ssrBaseUrl || state.baseURL}/${state.serverWeb}` : undefined
 );
 
 export const getICMStaticURL = createSelector(getConfigurationState, getICMApplication, (state, application) =>
@@ -135,4 +131,22 @@ export const getSpecificServerTranslation = (lang: string, key: string) =>
 export const getMultiSiteLocaleMap = createSelector(
   getConfigurationState,
   (state: ConfigurationState) => state.multiSiteLocaleMap
+);
+
+export const getRestEndpoint = createSelector(
+  getICMServerURL,
+  getConfigurationState,
+  getICMApplication,
+  (serverUrl, state, application) =>
+    serverUrl && state.channel ? `${serverUrl}/${state.channel}/${application}` : undefined
+);
+
+export const getPipelineEndpoint = createSelector(
+  getICMServerWebURL,
+  getConfigurationState,
+  getCurrentLocale,
+  getICMApplication,
+  getCurrentCurrency,
+  (serverUrl, state, locale, application, currency) =>
+    serverUrl && state.channel ? `${serverUrl}/${state.channel}/${locale}/${application}/${currency}` : undefined
 );
