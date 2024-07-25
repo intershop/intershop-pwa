@@ -38,7 +38,7 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   }
 
   fastCheckout(paymentId: string) {
-    this.checkoutFacade.setFastCheckoutPayment(paymentId);
+    this.checkoutFacade.startFastCheckout(paymentId);
   }
 
   isApplicable(): boolean {

@@ -23,12 +23,14 @@ import {
   continueCheckoutFail,
   continueCheckoutSuccess,
   continueCheckoutWithIssues,
+  continueWithFastCheckout,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
   loadBasketFail,
   startCheckout,
   startCheckoutFail,
   startCheckoutSuccess,
+  startFastCheckout,
   submitBasket,
   validateBasket,
 } from './basket.actions';
@@ -156,6 +158,26 @@ export class BasketValidationEffects {
           mapErrorToAction(continueCheckoutFail)
         );
       })
+    )
+  );
+
+  /**
+   * Validation the basket before starting the fast checkout effect.
+   */
+  startFastCheckoutProcess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startFastCheckout),
+      mapToPayloadProperty('id'),
+      concatMap(paymentInstrumentId =>
+        this.basketService.validateBasket(this.validationSteps[0].scopes).pipe(
+          map(basketValidation =>
+            basketValidation.results.valid
+              ? continueWithFastCheckout({ targetRoute: undefined, basketValidation, pId: paymentInstrumentId })
+              : continueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
+          ),
+          mapErrorToAction(startCheckoutFail)
+        )
+      )
     )
   );
 

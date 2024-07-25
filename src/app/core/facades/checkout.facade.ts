@@ -46,9 +46,9 @@ import {
   removePromotionCodeFromBasket,
   setBasketAttribute,
   setBasketDesiredDeliveryDate,
-  setBasketFastCheckoutPayment,
   setBasketPayment,
   startCheckout,
+  startFastCheckout,
   submitOrder,
   updateBasket,
   updateBasketAddress,
@@ -283,8 +283,8 @@ export class CheckoutFacade {
     this.store.dispatch(setBasketPayment({ id: paymentName }));
   }
 
-  setFastCheckoutPayment(paymentName: string) {
-    this.store.dispatch(setBasketFastCheckoutPayment({ id: paymentName }));
+  startFastCheckout(paymentName: string) {
+    this.store.dispatch(startFastCheckout({ id: paymentName }));
   }
 
   createBasketPayment(paymentInstrument: PaymentInstrument, saveForLater = false) {

@@ -1,10 +1,11 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -22,23 +23,21 @@ import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import { BasketPaymentEffects } from './basket-payment.effects';
 import {
+  continueWithFastCheckout,
   createBasketPayment,
   createBasketPaymentFail,
   createBasketPaymentSuccess,
   deleteBasketPayment,
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
-  executeFastCheckout,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
   loadBasketEligiblePaymentMethodsSuccess,
   loadBasketSuccess,
-  setBasketFastCheckoutPayment,
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
-  startCheckoutFail,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -495,10 +494,17 @@ describe('Basket Payment Effects', () => {
     });
   });
 
-  describe('startFastCheckoutProcess$ - set payment at basket with subsequent basket validation', () => {
+  describe('continueWithFastCheckout$ - continue with redirect', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: true,
+        adjusted: false,
+      },
+    };
+
     beforeEach(() => {
       when(paymentServiceMock.setBasketFastCheckoutPayment(anyString(), anyString())).thenReturn(of(undefined));
-      when(basketServiceMock.validateBasket(anything())).thenReturn(of(undefined));
       store.dispatch(
         loadServerConfigSuccess({
           config: {
@@ -512,35 +518,33 @@ describe('Basket Payment Effects', () => {
         })
       );
     });
-    it('should map to action of type executeFastCheckout in case of success', () => {
-      const action = setBasketFastCheckoutPayment({ id: 'FastCheckout' });
-      const completion = executeFastCheckout(anything());
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
-    });
+    it('should start redirect in case of successful payment instrument assignment', fakeAsync(() => {
+      // mock location.assign() with jest.fn()
+      Object.defineProperty(window, 'location', {
+        value: { assign: jest.fn() },
+        writable: true,
+      });
+
+      const action = continueWithFastCheckout({ targetRoute: undefined, basketValidation, pId: 'FastCheckout' });
+      actions$ = of(action);
+
+      effects.continueWithFastCheckout$.subscribe({ next: noop, error: fail, complete: noop });
+
+      tick(500);
+
+      expect(window.location.assign).toHaveBeenCalled();
+    }));
     it('should map to action of type setBasketPaymentFail in case of failure', () => {
       when(paymentServiceMock.setBasketFastCheckoutPayment(anyString(), anyString())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
-      const action = setBasketFastCheckoutPayment({ id: 'FastCheckout' });
-      const completion = startCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
+      const action = continueWithFastCheckout({ targetRoute: undefined, basketValidation, pId: 'FastCheckout' });
+      const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
-    });
-    it('should map to action of type startCheckoutFail in case of failure', () => {
-      when(basketServiceMock.validateBasket(anything())).thenReturn(
-        throwError(() => makeHttpError({ message: 'invalid' }))
-      );
-      const action = setBasketFastCheckoutPayment({ id: 'FastCheckout' });
-      const completion = startCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
+      expect(effects.continueWithFastCheckout$).toBeObservable(expected$);
     });
   });
 });

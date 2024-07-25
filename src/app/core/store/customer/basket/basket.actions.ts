@@ -135,6 +135,11 @@ export const continueCheckoutWithIssues = createAction(
   payload<{ targetRoute: string; basketValidation: BasketValidation }>()
 );
 
+export const continueWithFastCheckout = createAction(
+  '[Basket API] Validate Basket and continue with fast checkout',
+  payload<{ targetRoute: string; basketValidation: BasketValidation; pId: string }>()
+);
+
 export const updateBasketItem = createAction(
   '[Basket] Update Basket Item',
   payload<{ lineItemUpdate: LineItemUpdate }>()
@@ -248,15 +253,7 @@ export const setBasketPaymentFail = createAction('[Basket API] Set a Payment at 
 
 export const setBasketPaymentSuccess = createAction('[Basket API] Set a Payment at Basket Success');
 
-export const setBasketFastCheckoutPayment = createAction(
-  '[Basket] Set a FastCheckout Payment at Basket ',
-  payload<{ id: string }>()
-);
-
-export const executeFastCheckout = createAction(
-  '[Basket API] Execute Fast Checkout',
-  payload<{ redirectUrl: string }>()
-);
+export const startFastCheckout = createAction('[Basket] Start FastCheckout Process ', payload<{ id: string }>());
 
 export const createBasketPayment = createAction(
   '[Basket] Create a Basket Payment',
