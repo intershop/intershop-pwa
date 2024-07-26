@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -16,18 +15,15 @@ describe('Shopping Basket Payment Component', () => {
   let fixture: ComponentFixture<ShoppingBasketPaymentComponent>;
   let element: HTMLElement;
   let checkoutFacade: CheckoutFacade;
-  let activatedRoute: ActivatedRoute;
   const featureToggleService = mock(FeatureToggleService);
 
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
-    activatedRoute = mock(ActivatedRoute);
 
     await TestBed.configureTestingModule({
       declarations: [BasketPaymentCostInfoComponent, ShoppingBasketPaymentComponent],
       imports: [RouterTestingModule],
       providers: [
-        { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: FeatureToggleService, useValue: instance(featureToggleService) },
       ],
@@ -35,7 +31,6 @@ describe('Shopping Basket Payment Component', () => {
 
     when(checkoutFacade.eligibleFastCheckoutPaymentMethods$()).thenReturn(of([BasketMockData.getPaymentMethod()]));
     when(featureToggleService.enabled('guestCheckout')).thenReturn(false);
-    when(activatedRoute.queryParamMap).thenReturn(of());
   });
 
   beforeEach(() => {
