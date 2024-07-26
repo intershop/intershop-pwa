@@ -11,7 +11,6 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
-import { BasketService } from 'ish-core/services/basket/basket.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
@@ -46,13 +45,11 @@ import {
 describe('Basket Payment Effects', () => {
   let actions$: Observable<Action>;
   let paymentServiceMock: PaymentService;
-  let basketServiceMock: BasketService;
   let effects: BasketPaymentEffects;
   let store: Store;
 
   beforeEach(() => {
     paymentServiceMock = mock(PaymentService);
-    basketServiceMock = mock(BasketService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -60,7 +57,6 @@ describe('Basket Payment Effects', () => {
         CustomerStoreModule.forTesting('user', 'basket'),
       ],
       providers: [
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         BasketPaymentEffects,
         provideMockActions(() => actions$),
