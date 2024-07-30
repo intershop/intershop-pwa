@@ -8,16 +8,17 @@ kb_sync_latest_only
 # Accessibility
 
 - [Accessibility](#accessibility)
-  - [General](#general)
-    - [Attributes and Roles](#attributes-and-roles)
-    - [Titles instead of ARIA-Attributes](#titles-instead-of-aria-attributes)
-    - [Usage of native HTML-Elements](#usage-of-native-html-elements)
   - [Check the Accessibility of a Page](#check-the-accessibility-of-a-page)
-    - [Tools](#tools)
-      - [Google Lighthouse](#google-lighthouse)
-      - [Silktide - Accessibility Checker](#silktide---accessibility-checker)
-      - [WAVE - Web Accessibility Evaluation Tool](#wave---web-accessibility-evaluation-tool)
-      - [IBM - Equal Access Accessibility Checker](#ibm---equal-access-accessibility-checker)
+    - [Automated Testing](#automated-testing)
+      - [ESLint Rules](#eslint-rules)
+        - [Accessibility Plugin](#accessibility-plugin)
+        - [Additional Rules](#additional-rules)
+    - [Partially automated Testing](#partially-automated-testing)
+      - [Tools](#tools)
+        - [Google Lighthouse](#google-lighthouse)
+        - [Silktide - Accessibility Checker](#silktide---accessibility-checker)
+        - [WAVE - Web Accessibility Evaluation Tool](#wave---web-accessibility-evaluation-tool)
+        - [IBM - Equal Access Accessibility Checker](#ibm---equal-access-accessibility-checker)
     - [Manual Testing](#manual-testing)
       - [Keyboard](#keyboard)
       - [Screen Reader](#screen-reader)
@@ -25,13 +26,11 @@ kb_sync_latest_only
         - [Speech Viewer](#speech-viewer)
         - [Shortcuts](#shortcuts)
     - [Example Workflow](#example-workflow)
-  - [ESLint Rules](#eslint-rules)
-    - [Accessibility Plugin](#accessibility-plugin)
-    - [Additional Rules](#additional-rules)
   - [Project specific Applications](#project-specific-applications)
     - [How to fix `click-events-have-key-events` problems](#how-to-fix-click-events-have-key-events-problems)
     - [Form Submission using the key "Enter"](#form-submission-using-the-key-enter)
     - [Form submission in dialogs](#form-submission-in-dialogs)
+    - [Titles instead of ARIA-Attributes](#titles-instead-of-aria-attributes)
   - [Further References](#further-references)
 
 The goal of accessibility is to unlock the full potential of the Web and enable people with disabilities to participate equally.
@@ -40,75 +39,49 @@ The `@angular-eslint` repo contains a number of linting rules that can help enfo
 Most of the accessibility rules that are enabled in the Intershop PWA are contained in the plugin `@angular-eslint/template/accessibility` that is configured in the `.eslintrc.json` file of the project.
 To check whether the rules are followed in your custom code or not, run `npm run lint`.
 
-## General
-
-### Attributes and Roles
-
-Generally it is checked if valid `aria-*` and `role=*` attributes are used and that every necessary element is reachable with the keyboard, and that an action (like pressing enter) can be performed on them.
-
-### Titles instead of ARIA-Attributes
-
-If an element has to be made more descriptive by adding a title-attribute or an aria-label, we decided to use the title and not the label, because a title provides visual feedback and can also be read as a label by screen-readers.
-
-:x: **Wrong HTML structure, title and aria-label would be read by a screen-reader**
-
-```html
-<button [title]="Close" [aria-label]="close">
-  <span>x</span>
-</button>
-```
-
-:warning: **Only use when no title is needed**
-
-```html
-<button [aria-label]="close">
-  <span>x</span>
-</button>
-```
-
-:heavy_check_mark: **Preferred HTML structure**
-
-```html
-<button [title]="Close">
-  <span>x</span>
-</button>
-```
-
-### Usage of native HTML-Elements
-
-It is generally advised to use native HTML-elements instead of giving roles to container-elements like a `<div>`, because native elements already bring most accessibility functionalities with them, like tab-focus and confirm by pressing enter.
-If, for example, instead of a `<button>` a `<div role="button">` is used, the functionality of pressing enter to activate the button has to be manually implemented via code.
-
-:warning: **Don't assign roles to HTML-elements that exist natively**
-
-```html
-<div role="button">
-  <span>x</span>
-</div>
-```
-
-:heavy_check_mark: **Use native HTML-elements if they exist**
-
-```html
-<button [title]="Close">
-  <span>x</span>
-</button>
-```
-
 ## Check the Accessibility of a Page
 
-### Tools
+### Automated Testing
+
+#### ESLint Rules
+
+ESLint provides a plugin that includes a number of accessibility rules that check the static code for some basic accessibility issues.
+Only some individual rules that do not come with this plugin are specifically written down here.
+These rules alone are not sufficient to guarantee good accessibility of a website.
+
+##### Accessibility Plugin
+
+```
+plugin:@angular-eslint/template/accessibility
+```
+
+For reference on which rules the plugin currently includes, please check the official repository:
+
+- [ESLint-Plugin Accessibility Rules](https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/src/configs/accessibility.json)
+
+##### Additional Rules
+
+```
+@angular-eslint/template/no-positive-tabindex
+```
+
+If an unreachable element has to be made reachable by providing a `tabindex`, the index should never be a positive number, only `0` (element is tab focusable) or `-1` (element is not tab focusable).
+The tab-order has to be determined by the HTML-structure, not by the index.
+
+### Partially automated Testing
+
+#### Tools
 
 With the current technology, automated tools can only check for around 25-30% of the WCAG criteria.
 They can however provide a **quick and easy overview over some accessibility issues** on a page and give a good starting point on where to focus and fix accessibility problems.
 The following list are some suggestions of free tools that have been used to check the accessibility of the PWA:
 
-- <u>**Google Lighthouse**</u>: quick overview and good for detecting general problems
-- <u>**Silktide**</u>: huge toolbox, can categorize issues after different WCAG versions
-- <u>WAVE</u>: good for checking non-visible attributes like aria-labels and -roles or image alt-texts
-- <u>IBM</u>: categorizes the issues directly after the WCAG criteria, but throws many false positives
+- **_Google Lighthouse_**: quick overview and good for detecting general problems
+- **_Silktide_**: huge toolbox, can categorize issues after different WCAG versions
+- _WAVE_: good for checking non-visible attributes like aria-labels and -roles or image alt-texts
+- _IBM_: categorizes the issues directly after the WCAG criteria, but throws many false positives
 
-#### Google Lighthouse
+##### Google Lighthouse
 
 Google Lighthouse is a tool directly build into the dev-tools of the Google Chrome browser and is great to **get a first quick overview** over the page status.
 
@@ -122,9 +95,9 @@ If a page needs to be tested which has elements that don’t stay after a reload
 > [!NOTE]
 > It’s important to note that the browser window with the tested page should be focused after clicking "Analyze page load" or else it might throw an error, saying that it couldn’t analyze the page because it didn’t render any content.
 
-The <u>list of checked criteria</u> can be found [here](https://developer.chrome.com/docs/lighthouse/accessibility/scoring).
+The list of checked criteria can be found [here](https://developer.chrome.com/docs/lighthouse/accessibility/scoring).
 
-#### Silktide - Accessibility Checker
+##### Silktide - Accessibility Checker
 
 Silktide is a Chrome-only extension with **many different functionalities** for accessibility that combines a lot of features of other tools.
 
@@ -135,11 +108,11 @@ It does have limitations compared to an installed screen reader, but it is a goo
 Comparing it to the other tools, it doesn’t seem to detect as many accessibility issues.
 It can however test against different WCAG versions and conformance levels.
 
-<u>Browser Plugin</u>:
+Browser Plugin:
 
 - [Chrome](https://chromewebstore.google.com/detail/silktide-accessibility-ch/mpobacholfblmnpnfbiomjkecoojakah)
 
-#### WAVE - Web Accessibility Evaluation Tool
+##### WAVE - Web Accessibility Evaluation Tool
 
 WAVE is a browser extension and website.
 The extension can be toggled by clicking the extension-icon in the browser.
@@ -152,14 +125,14 @@ It can also visualize the **tab-order** and the **HTML site structure** (landmar
 > [!NOTE]
 > The tool isn’t that technically advanced and seems a bit rudimentary. One big downside is that it displaces elements on the page to render its own content, which leads to a cluttered page, obscured elements and false alerts regarding contrast issues.
 
-<u>Browser Plugin</u>:
+Browser Plugin:
 
 - [Chrome](https://chromewebstore.google.com/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh)
 - [Firefox](https://addons.mozilla.org/en-US/firefox/addon/wave-accessibility-tool)
 
-<u>Website</u> for deployed websites: https://wave.webaim.org
+Website for deployed websites: https://wave.webaim.org
 
-#### IBM - Equal Access Accessibility Checker
+##### IBM - Equal Access Accessibility Checker
 
 IBM is a browser extension that after installing it can be found in the dev-tools (opened by pressing "`F12`") of the browser like Google Lighthouse.
 
@@ -172,7 +145,7 @@ By default, they’re sorted after "_Element roles_", that should be changed to 
 > - a lot of things are marked as "_Needs review_" that often aren’t a violation
 > - and bootstrap elements or angular components are marked as violations, that may have a function when being activated but don’t present a real issue on the website
 
-<u>Browser Plugin</u>:
+Browser Plugin:
 
 - [Chrome](https://chromewebstore.google.com/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp)
 - [Firefox](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker)
@@ -268,30 +241,6 @@ It’s better to make the icon `aria-hidden` and give the underlying link/button
 > [!NOTE]
 > Be aware of general accessibility issues like accessible link/button names, sufficient color contrast, marked links and an always visible tab-focus.
 
-## ESLint Rules
-
-ESLint provides a plugin that includes most of the necessary accessibility-rules.
-Only some individual rules that do not come with this plugin are specifically written down here.
-
-### Accessibility Plugin
-
-```
-plugin:@angular-eslint/template/accessibility
-```
-
-For reference on which rules the plugin currently includes, please check the official repository:
-
-- [ESLint-Plugin Accessibility Rules](https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/src/configs/accessibility.json)
-
-### Additional Rules
-
-```
-@angular-eslint/template/no-positive-tabindex
-```
-
-If an unreachable element has to be made reachable by providing a `tabindex`, the index should never be a positive number, only `0` (element is tab focusable) or `-1` (element is not tab focusable).
-The tab-order has to be determined by the HTML-structure, not by the index.
-
 ## Project specific Applications
 
 ### How to fix `click-events-have-key-events` problems
@@ -338,7 +287,7 @@ Dialogs (or modals) are separated into three sections:
 where the form is positioned inside the model body and the buttons are positioned inside the modal footer.
 The following simplified example shows the wrong HTML structure:
 
-:warning: **Wrong HTML structure**
+:x: **Wrong HTML structure**
 
 ```html
 <div class="modal-body">
@@ -375,6 +324,26 @@ where
 - the function `submit()` is only called at the `form` tag
 - the "Submit" button is correctly defined using `type="submit"` and does not call `submit()` using `(click)=""`
 - the "Cancel" button is only defined as `type="button"` to prevent any default behavior
+
+### Titles instead of ARIA-Attributes
+
+If an element has to be made more descriptive by adding a title-attribute or an aria-label, we decided to use the title and not the label, because a title provides visual feedback and can also be read as a label by screen-readers.
+
+:x: **Wrong HTML structure, title and aria-label would be read by a screen-reader**
+
+```html
+<button [title]="Close" [aria-label]="close">
+  <span>x</span>
+</button>
+```
+
+:heavy_check_mark: **Preferred HTML structure when a title is needed**
+
+```html
+<button [title]="Close">
+  <span>x</span>
+</button>
+```
 
 ## Further References
 
