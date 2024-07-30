@@ -207,7 +207,7 @@ exports[`Header Default Component should render sticky header adequately for des
 <div class="header container desktop" ng-reflect-ng-class="desktop">
   <div class="header-utility">
     <a class="search-toggler active-search"
-      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
+      ><fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
       <div class="search-container header-search-container" ng-reflect-collapsed="false">
         <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>
@@ -266,7 +266,7 @@ exports[`Header Default Component should render sticky header adequately for mob
 <div class="header container mobile" ng-reflect-ng-class="mobile">
   <div class="header-utility">
     <a class="search-toggler active-search"
-      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
+      ><fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
       <div class="search-container header-search-container" ng-reflect-collapsed="false">
         <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>
@@ -325,7 +325,7 @@ exports[`Header Default Component should render sticky header adequately for tab
 <div class="header container tablet" ng-reflect-ng-class="tablet">
   <div class="header-utility">
     <a class="search-toggler active-search"
-      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
+      ><fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
       <div class="search-container header-search-container" ng-reflect-collapsed="false">
         <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
     ></a>

@@ -124,7 +124,8 @@
   a {
     &.product-title {
       display: block;
-      padding-top: $space-default;
+      padding-top: 0;
+      margin-top: $space-default;
       font-family: $font-family-condensedregular;
       font-size: $font-size-lg;
       color: $text-color-primary;

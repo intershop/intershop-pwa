@@ -159,7 +159,11 @@ img {
   .nav-link.active:hover,
   .nav-link.active:focus {
     border-color: transparent;
-    border-bottom: 2px solid $CORPORATE-PRIMARY !important;
+    box-shadow: 0 2px $CORPORATE-PRIMARY;
+  }
+
+  .nav-link {
+    margin: 2px;
   }
 }
 
@@ -215,6 +219,10 @@ img.marketing {
   white-space: nowrap;
 }
 
+.details-tooltip {
+  text-decoration: none !important;
+}
+
 .download-link {
   display: inline-block;
   padding-left: $space-default * 0.5;
@@ -263,4 +271,20 @@ img.marketing {
 .section {
   margin-bottom: ($space-default * 2);
   clear: both;
+}
+
+@mixin focus-visible-reset() {
+  &:focus-visible {
+    // accessibility: revert to browser default focus style
+    outline: revert !important;
+    outline-offset: 0 !important;
+  }
+
+  // fallback if browser doesn't support :focus-visible
+  @supports not selector(:focus-visible) {
+    &:focus {
+      outline: revert !important;
+      outline-offset: 0 !important;
+    }
+  }
 }

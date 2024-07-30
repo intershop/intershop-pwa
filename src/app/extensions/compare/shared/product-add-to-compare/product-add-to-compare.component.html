@@ -4,8 +4,10 @@
   class="btn add-to-compare"
   [ngClass]="cssClass"
   [class.is-selected]="isInCompareList$ | async"
-  (click)="toggleCompare()"
   [title]="displayType === 'icon' ? ('product.compare.link' | translate) : ''"
+  [attr.tabindex]="ariaHidden ? -1 : 0"
+  [attr.aria-hidden]="ariaHidden"
+  (click)="toggleCompare()"
 >
   <ng-container *ngIf="displayType === 'icon'; else defaultButton">
     <fa-icon [icon]="['fas', 'balance-scale']" />
