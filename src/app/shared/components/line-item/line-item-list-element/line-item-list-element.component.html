@@ -61,7 +61,7 @@
             <span class="text-nowrap"> {{ surcharge.amount | ishPrice }} </span>
             <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
             <a
-              class="details-tooltip"
+              class="details-tooltip text-decoration-none"
               [ngbPopover]="SurchargeDescription"
               [popoverTitle]="surcharge.displayName"
               placement="top"

@@ -13,6 +13,7 @@
       ? ('account.order_template.add_to_template.button.add_to_template.label' | translate)
       : undefined
   "
+  [attr.tabindex]="tabIndex"
 >
   <ng-container [ngSwitch]="displayType">
     <ng-template [ngSwitchCase]="'animated'">

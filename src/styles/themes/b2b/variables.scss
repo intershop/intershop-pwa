@@ -83,7 +83,7 @@ $border-width-default: 1px;
 
 // primary buttons
 $button-primary-bg: $CORPORATE-PRIMARY;
-$button-primary-border: $CORPORATE-SECONDARY;
+$button-primary-border: $CORPORATE-PRIMARY;
 $button-focus-box-shadow: $CORPORATE-SHADOW;
 
 // default buttons
@@ -210,8 +210,8 @@ $headings-color: $text-color-primary;
 // Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
 
 // Forms
-$input-placeholder-color: $text-color-quaternary;
-$input-accent-color: #222;
+$input-placeholder-color: $text-color-tertiary;
+$input-accent-color: $CORPORATE-DARK;
 
 // Dropdown
 // Dropdown menu container and contents.

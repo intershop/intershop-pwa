@@ -15,23 +15,25 @@
 
   &:focus,
   &.focus {
-    box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+    box-shadow: none;
   }
 
+  @include focus-visible-reset();
+
   &-primary {
-    background-color: $CORPORATE-PRIMARY;
-    border-color: $CORPORATE-PRIMARY;
+    background-color: $button-primary-bg;
+    border-color: $button-primary-border;
 
-    &:hover {
-      background-color: $CORPORATE-SECONDARY;
-      border-color: $CORPORATE-SECONDARY;
-    }
-
+    &:hover,
     &:focus,
     &.focus {
       background-color: $CORPORATE-SECONDARY;
       border-color: $CORPORATE-SECONDARY;
-      box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      box-shadow: none;
     }
 
     &.disabled,
@@ -42,28 +44,50 @@
 
     &:not(:disabled):not(.disabled):active,
     &:not(:disabled):not(.disabled).active {
-      background-color: $CORPORATE-SECONDARY;
-      border-color: $CORPORATE-SECONDARY;
+      background-color: $input-accent-color;
+      border-color: $input-accent-color;
+      box-shadow: none;
 
       &:focus {
-        box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+        box-shadow: none;
       }
     }
   }
 
   &-secondary {
+    color: $button-default-color;
+    background-color: $button-default-bg;
+    border-color: $button-default-border;
+
+    &:hover,
     &:focus,
     &.focus {
-      box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+      color: $CORPORATE-SECONDARY;
+      background-color: $color-tertiary;
+      border-color: $CORPORATE-SECONDARY;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      box-shadow: none;
+    }
+
+    &.disabled,
+    &:disabled {
+      color: $text-color-secondary;
+      background-color: $button-default-bg;
+      border-color: $border-color-light;
     }
 
     &:not(:disabled):not(.disabled):active,
     &:not(:disabled):not(.disabled).active {
-      background-color: $CORPORATE-SECONDARY;
-      border-color: $CORPORATE-SECONDARY;
+      color: $input-accent-color;
+      background-color: $color-quaternary;
+      border-color: $input-accent-color;
+      box-shadow: none;
 
       &:focus {
-        box-shadow: 0 0 0 $btn-focus-width $CORPORATE-SHADOW;
+        box-shadow: none;
       }
     }
   }

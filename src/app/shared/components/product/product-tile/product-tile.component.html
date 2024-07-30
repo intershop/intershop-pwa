@@ -19,11 +19,15 @@
 
     <div class="product-tile-actions btn-group">
       <ish-lazy-tacton-configure-product displayType="icon" />
-      <ish-lazy-product-add-to-quote displayType="icon" cssClass="btn-link" />
-      <ish-lazy-product-add-to-compare displayType="icon" cssClass="btn-link" />
-      <ish-lazy-product-add-to-order-template [cssClass]="'btn btn-link mr-0'" displayType="icon" />
-      <ish-lazy-product-add-to-wishlist cssClass="btn-link" displayType="icon" />
-      <ish-product-add-to-basket displayType="icon" cssClass="btn-link" />
+      <ish-lazy-product-add-to-quote displayType="icon" renderContext="grid" cssClass="btn-link" />
+      <ish-lazy-product-add-to-compare displayType="icon" renderContext="grid" cssClass="btn-link" />
+      <ish-lazy-product-add-to-order-template
+        [cssClass]="'btn btn-link mr-0'"
+        displayType="icon"
+        renderContext="grid"
+      />
+      <ish-lazy-product-add-to-wishlist cssClass="btn-link" displayType="icon" renderContext="grid" />
+      <ish-product-add-to-basket displayType="icon" renderContext="grid" cssClass="btn-link" />
     </div>
   </div>
 </ng-container>

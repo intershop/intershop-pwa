@@ -23,8 +23,8 @@
   &:not(.accordion) {
     .language-switch-button {
       display: block;
-      padding: ($space-default * 0.5) $space-default ($space-default * 0.5) ($space-default * 0.5);
-      margin: 0;
+      padding: ($space-default * 0.5) $space-default 9px ($space-default * 0.5);
+      margin: 2px 0 0;
       color: $text-color-quinary !important;
     }
 

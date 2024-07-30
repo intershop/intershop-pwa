@@ -264,3 +264,19 @@ img.marketing {
   margin-bottom: ($space-default * 2);
   clear: both;
 }
+
+@mixin focus-visible-reset() {
+  &:focus-visible {
+    // accessibility: revert to browser default focus style
+    outline: revert !important;
+    outline-offset: 0 !important;
+  }
+
+  // fallback if browser doesn't support :focus-visible
+  @supports not selector(:focus-visible) {
+    &:focus {
+      outline: revert !important;
+      outline-offset: 0 !important;
+    }
+  }
+}

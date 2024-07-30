@@ -28,6 +28,10 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
 export class ProductAddToOrderTemplateComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
   @Input() cssClass: string;
+  /**
+   * render context, e.g. 'grid' for product list grid view
+   */
+  @Input() renderContext: 'grid' | undefined;
 
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;
@@ -75,5 +79,10 @@ export class ProductAddToOrderTemplateComponent implements OnInit {
         this.context.get('quantity')
       );
     }
+  }
+
+  get tabIndex(): number {
+    // if shown in product list 'grid' view, the icon is not accessible using keyboard tab, otherwise it is accessible
+    return this.displayType === 'icon' && this.renderContext === 'grid' ? -1 : undefined;
   }
 }
