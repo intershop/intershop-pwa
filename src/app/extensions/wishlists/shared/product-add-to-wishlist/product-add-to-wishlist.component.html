@@ -5,10 +5,11 @@
   name="addProduct"
   class="btn add-to-wishlist"
   [ngClass]="cssClass"
+  [attr.title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : undefined"
+  [attr.tabindex]="ariaHidden ? -1 : 0"
+  [attr.aria-hidden]="ariaHidden"
   (click)="openModal(modal)"
   data-testing-id="addToWishlistButton"
-  [attr.title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : undefined"
-  [attr.tabindex]="tabIndex"
 >
   <ng-container [ngSwitch]="displayType">
     <ng-template [ngSwitchCase]="'link'">{{ 'product.add_to_wishlist.link' | translate }}</ng-template>

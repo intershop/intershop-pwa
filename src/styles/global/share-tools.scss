@@ -17,6 +17,14 @@
 
     @include transition(max-width 0.5s ease-in-out);
 
+    span {
+      &.share-label {
+        @include transition(color 1s ease-in-out);
+
+        color: $text-color-inverse;
+      }
+    }
+
     button {
       padding: 3px 0 0;
       font-family: $font-family-regular;
@@ -52,11 +60,15 @@
         cursor: pointer;
 
         .share-label {
+          @include transition(color 1s ease-in-out);
+
           color: $text-color-corporate;
         }
       }
 
       .share-label {
+        @include transition(color 1s ease-in-out);
+
         padding-left: ($space-default * 0.5);
         font-size: $font-size-base;
         line-height: 26px;

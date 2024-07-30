@@ -31,6 +31,10 @@ export class ProductAddToBasketComponent implements OnInit {
    * additional css styling
    */
   @Input() cssClass: string;
+  /**
+   * hidden for screen readers
+   */
+  @Input() ariaHidden = false;
 
   private basketLoading$: Observable<boolean>;
   visible$: Observable<boolean>;

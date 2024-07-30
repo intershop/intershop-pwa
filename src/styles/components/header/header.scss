@@ -71,6 +71,8 @@ header {
 
   .mid-header {
     .quickorder-link {
+      padding: ($space-default * 0.5) divide($space-default, 3);
+
       .header-icon {
         font-size: $font-size-corporate;
         color: $CORPORATE-PRIMARY;
@@ -147,6 +149,8 @@ header {
     }
 
     a {
+      display: inline-block !important;
+      line-height: 34px;
       color: $text-color-quinary;
     }
 
@@ -157,6 +161,12 @@ header {
     .wishlist-count,
     .compare-status {
       position: relative;
+    }
+
+    .item-count-container {
+      .badge {
+        top: 2px;
+      }
     }
   }
 }
