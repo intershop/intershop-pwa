@@ -26,7 +26,14 @@
 
   <div class="header-utility">
     <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
-      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')" />
+      <fa-icon
+        *ngIf="isSticky"
+        class="header-icon"
+        [icon]="['fas', 'search']"
+        (click)="toggle('search')"
+        (keydown.enter)="toggle('search')"
+        tabindex="0"
+      />
       <div
         *ngIf="isSticky || showSearch"
         class="search-container header-search-container"

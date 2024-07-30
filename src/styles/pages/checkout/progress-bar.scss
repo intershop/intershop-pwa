@@ -44,6 +44,13 @@
   .progress-complete {
     color: $text-color-corporate;
     border-bottom: solid 4px $border-color-corporate;
+
+    a {
+      @media (min-width: $screen-sm-min) {
+        display: inline-block;
+        line-height: 40px;
+      }
+    }
   }
 }
 
