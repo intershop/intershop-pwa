@@ -300,6 +300,10 @@ export class CheckoutFacade {
     )
   );
 
+  /**
+   * Determines the eligible addresses of baskets that have an invoice address.
+   * This ensures that the basket has at least one address.
+   */
   eligibleAddresses$() {
     return this.basket$.pipe(
       whenTruthy(),
