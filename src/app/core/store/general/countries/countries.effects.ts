@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { exhaustMap, filter, map } from 'rxjs/operators';
 
 import { CountryService } from 'ish-core/services/country/country.service';
 import { mapErrorToAction } from 'ish-core/utils/operators';
@@ -18,7 +18,7 @@ export class CountriesEffects {
       ofType(loadCountries),
       concatLatestFrom(() => this.store.pipe(select(getAllCountries))),
       filter(([, countries]) => !countries.length),
-      switchMap(() =>
+      exhaustMap(() =>
         this.countryService.getCountries().pipe(
           map(countries => loadCountriesSuccess({ countries })),
           mapErrorToAction(loadCountriesFail)
