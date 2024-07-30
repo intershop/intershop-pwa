@@ -2,12 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
 
-import {
-  loadCategoryFail,
-  loadCategorySuccess,
-  loadCategoryTreeSuccess,
-  loadTopLevelCategoriesSuccess,
-} from './categories.actions';
+import { loadCategorySuccess, loadCategoryTreeSuccess, loadTopLevelCategoriesSuccess } from './categories.actions';
 
 export interface CategoriesState {
   categories: CategoryTree;
@@ -31,11 +26,5 @@ function mergeCategories(
 
 export const categoriesReducer = createReducer(
   initialState,
-  on(
-    loadCategoryFail,
-    (state): CategoriesState => ({
-      ...state,
-    })
-  ),
   on(loadCategorySuccess, loadCategoryTreeSuccess, loadTopLevelCategoriesSuccess, mergeCategories)
 );
