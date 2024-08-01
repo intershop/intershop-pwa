@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { formatISO } from 'date-fns';
 import { Subject, combineLatest, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -300,9 +300,14 @@ export class CheckoutFacade {
     )
   );
 
+  /**
+   * Determines the eligible addresses of baskets that have an invoice address.
+   * This ensures that the basket has at least one address.
+   */
   eligibleAddresses$() {
     return this.basket$.pipe(
       whenTruthy(),
+      filter(basket => basket.invoiceToAddress !== undefined),
       take(1),
       tap(() => this.store.dispatch(loadBasketEligibleAddresses())),
       switchMap(() => this.store.pipe(select(getBasketEligibleAddresses)))
