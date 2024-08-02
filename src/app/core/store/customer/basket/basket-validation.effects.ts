@@ -167,12 +167,12 @@ export class BasketValidationEffects {
   startFastCheckoutProcess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(startFastCheckout),
-      mapToPayloadProperty('id'),
-      concatMap(paymentInstrumentId =>
+      mapToPayloadProperty('paymentId'),
+      concatMap(paymentId =>
         this.basketService.validateBasket(this.validationSteps[0].scopes).pipe(
           map(basketValidation =>
             basketValidation.results.valid
-              ? continueWithFastCheckout({ targetRoute: undefined, basketValidation, pId: paymentInstrumentId })
+              ? continueWithFastCheckout({ targetRoute: undefined, basketValidation, paymentId })
               : continueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
           ),
           mapErrorToAction(startCheckoutFail)

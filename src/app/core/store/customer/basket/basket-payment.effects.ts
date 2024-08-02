@@ -46,7 +46,7 @@ export class BasketPaymentEffects {
     () =>
       this.actions$.pipe(
         ofType(continueWithFastCheckout),
-        mapToPayloadProperty('pId'),
+        mapToPayloadProperty('paymentId'),
         concatLatestFrom(() => this.store.pipe(select(getCurrentLocale))),
         switchMap(([paymentInstrumentId, currentLocale]) =>
           this.paymentService.setBasketFastCheckoutPayment(paymentInstrumentId, currentLocale).pipe(

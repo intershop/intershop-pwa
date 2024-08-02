@@ -522,7 +522,11 @@ describe('Basket Payment Effects', () => {
         writable: true,
       });
 
-      const action = continueWithFastCheckout({ targetRoute: undefined, basketValidation, pId: 'FastCheckout' });
+      const action = continueWithFastCheckout({
+        targetRoute: undefined,
+        basketValidation,
+        paymentId: 'FastCheckout',
+      });
       actions$ = of(action);
 
       effects.continueWithFastCheckout$.subscribe({ next: noop, error: fail, complete: noop });
@@ -535,7 +539,11 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.setBasketFastCheckoutPayment(anyString(), anyString())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
-      const action = continueWithFastCheckout({ targetRoute: undefined, basketValidation, pId: 'FastCheckout' });
+      const action = continueWithFastCheckout({
+        targetRoute: undefined,
+        basketValidation,
+        paymentId: 'FastCheckout',
+      });
       const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
