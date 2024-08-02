@@ -105,8 +105,25 @@ describe('Payment Service', () => {
       });
     });
 
+    it("should set a payment to the basket when 'setBasketFastCheckoutPayment' is called", done => {
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(
+        of({
+          data: {
+            redirect: {
+              redirectUrl: '/checkout/review',
+            },
+          },
+        })
+      );
+
+      paymentService.setBasketFastCheckoutPayment('testPayment').subscribe(() => {
+        verify(apiServiceMock.put(`payments/open-tender`, anything(), anything())).once();
+        done();
+      });
+    });
+
     it("should set a payment to the basket when 'setBasketPayment' is called", done => {
-      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of([]));
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
 
       paymentService.setBasketPayment('testPayment').subscribe(() => {
         verify(apiServiceMock.put(`payments/open-tender`, anything(), anything())).once();

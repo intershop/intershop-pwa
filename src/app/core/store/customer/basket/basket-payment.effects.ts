@@ -6,7 +6,6 @@ import { EMPTY } from 'rxjs';
 import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
 
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -47,9 +46,8 @@ export class BasketPaymentEffects {
       this.actions$.pipe(
         ofType(continueWithFastCheckout),
         mapToPayloadProperty('paymentId'),
-        concatLatestFrom(() => this.store.pipe(select(getCurrentLocale))),
-        switchMap(([paymentInstrumentId, currentLocale]) =>
-          this.paymentService.setBasketFastCheckoutPayment(paymentInstrumentId, currentLocale).pipe(
+        switchMap(paymentInstrumentId =>
+          this.paymentService.setBasketFastCheckoutPayment(paymentInstrumentId).pipe(
             concatMap(redirectUrl => {
               location.assign(redirectUrl);
               return EMPTY;

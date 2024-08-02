@@ -500,7 +500,7 @@ describe('Basket Payment Effects', () => {
     };
 
     beforeEach(() => {
-      when(paymentServiceMock.setBasketFastCheckoutPayment(anyString(), anyString())).thenReturn(of(undefined));
+      when(paymentServiceMock.setBasketFastCheckoutPayment(anyString())).thenReturn(of(undefined));
       store.dispatch(
         loadServerConfigSuccess({
           config: {
@@ -536,7 +536,7 @@ describe('Basket Payment Effects', () => {
       expect(window.location.assign).toHaveBeenCalled();
     }));
     it('should map to action of type setBasketPaymentFail in case of failure', () => {
-      when(paymentServiceMock.setBasketFastCheckoutPayment(anyString(), anyString())).thenReturn(
+      when(paymentServiceMock.setBasketFastCheckoutPayment(anyString())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = continueWithFastCheckout({
