@@ -268,14 +268,7 @@ export class CheckoutFacade {
     );
   }
 
-  eligibleFastCheckoutPaymentMethods$() {
-    return this.basket$.pipe(
-      whenTruthy(),
-      take(1),
-      tap(() => this.store.dispatch(loadBasketEligiblePaymentMethods())),
-      switchMap(() => this.store.pipe(select(getEligibleFastCheckoutPaymentMethods)))
-    );
-  }
+  eligibleFastCheckoutPaymentMethods$ = this.store.pipe(select(getEligibleFastCheckoutPaymentMethods));
 
   priceType$ = this.store.pipe(select(getServerConfigParameter<'gross' | 'net'>('pricing.priceType')));
 
@@ -284,7 +277,7 @@ export class CheckoutFacade {
   }
 
   startFastCheckout(paymentName: string) {
-    this.store.dispatch(startFastCheckout({ id: paymentName }));
+    this.store.dispatch(startFastCheckout({ paymentId: paymentName }));
   }
 
   createBasketPayment(paymentInstrument: PaymentInstrument, saveForLater = false) {

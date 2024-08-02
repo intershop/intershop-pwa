@@ -29,7 +29,7 @@ describe('Shopping Basket Payment Component', () => {
       ],
     }).compileComponents();
 
-    when(checkoutFacade.eligibleFastCheckoutPaymentMethods$()).thenReturn(of([BasketMockData.getPaymentMethod()]));
+    when(checkoutFacade.eligibleFastCheckoutPaymentMethods$).thenReturn(of([BasketMockData.getPaymentMethod()]));
     when(featureToggleService.enabled('guestCheckout')).thenReturn(false);
   });
 
@@ -54,14 +54,12 @@ describe('Shopping Basket Payment Component', () => {
 
   it('should render component if user is anonyous and guest checkout is enabled', () => {
     when(featureToggleService.enabled('guestCheckout')).thenReturn(true);
-    component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('ish-basket-payment-cost-info')).toBeTruthy();
   });
 
   it('should render component if user is logged in', () => {
     component.basket.user = BasketMockData.getUser();
-    component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('ish-basket-payment-cost-info')).toBeTruthy();
   });
