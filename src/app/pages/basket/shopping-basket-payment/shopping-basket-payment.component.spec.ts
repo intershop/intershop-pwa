@@ -59,7 +59,7 @@ describe('Shopping Basket Payment Component', () => {
   });
 
   it('should render component if user is logged in', () => {
-    component.basket.user = BasketMockData.getUser();
+    component.basket.user = BasketMockData.getBasketUser();
     fixture.detectChanges();
     expect(element.querySelector('ish-basket-payment-cost-info')).toBeTruthy();
   });

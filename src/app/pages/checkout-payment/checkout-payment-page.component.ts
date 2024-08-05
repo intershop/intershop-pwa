@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { filter, first, map, withLatestFrom } from 'rxjs/operators';
+import { filter, first, map, shareReplay, withLatestFrom } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -44,7 +44,8 @@ export class CheckoutPaymentPageComponent implements OnInit {
               basket?.payment?.capabilities?.includes('FastCheckout') &&
               basket.payment.paymentInstrument.id === pm.id)
         )
-      )
+      ),
+      shareReplay(1)
     );
 
     // if there is only one eligible payment method without parameters, assign it automatically to the basket
