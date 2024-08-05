@@ -5,7 +5,7 @@
 
   <div class="row section">
     <div class="col-10 col-lg-8">
-      <h3>{{ 'account.costcenter.details.details.heading' | translate }}</h3>
+      <h2 class="h3">{{ 'account.costcenter.details.details.heading' | translate }}</h2>
       <div class="row">
         <div class="col-md-12">
           <dl class="row dl-horizontal dl-separator">
@@ -48,14 +48,14 @@
 
   <!--- display the order list only if the current user is the manager of this cost center -->
   <ng-container *ngIf="(user$ | async)?.login === costCenter.costCenterOwner?.login">
-    <h3>{{ 'account.costcenter.details.orders.list.title' | translate }}</h3>
+    <h2 class="h3">{{ 'account.costcenter.details.orders.list.title' | translate }}</h2>
     <ish-order-list
       [orders]="costCenter?.orders | slice : 0 : 10"
       [columnsToDisplay]="['creationDate', 'orderNo', 'buyer', 'lineItems', 'status', 'orderTotal']"
     />
   </ng-container>
 
-  <h3>
+  <h2 class="h3">
     {{ 'account.costcenter.details.buyers.list.title' | translate }}
     <a
       *ngIf="isEditable$ | async"
@@ -64,7 +64,7 @@
       data-testing-id="add-cost-center-buyers"
       >{{ 'account.costcenter.details.buyers.action.add' | translate }}</a
     >
-  </h3>
+  </h2>
 
   <ish-cost-center-users-list [costCenter]="costCenter" [isEditable]="isEditable$ | async" />
 </div>

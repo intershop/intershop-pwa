@@ -1,5 +1,5 @@
 <div *ngIf="visible$ | async" class="retail-product-list">
-  <h3>{{ 'product.retailSet.products.heading' | translate }}</h3>
+  <h2 class="h3">{{ 'product.retailSet.products.heading' | translate }}</h2>
 
   <div class="product-list row">
     <ng-container *ngFor="let part of parts$ | async; index as i">

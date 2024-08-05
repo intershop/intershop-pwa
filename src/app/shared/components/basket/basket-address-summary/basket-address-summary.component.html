@@ -8,7 +8,7 @@
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
     </a>
-    <h5 class="float-left">{{ 'checkout.address.billing.label' | translate }}</h5>
+    <h3 class="h5 float-left">{{ 'checkout.address.billing.label' | translate }}</h3>
   </div>
   <div data-testing-id="address-summary-invoice-to-address">
     <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true" />
@@ -23,7 +23,7 @@
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
     </a>
-    <h5>{{ 'checkout.address.shipping.label' | translate }}</h5>
+    <h3 class="h5">{{ 'checkout.address.shipping.label' | translate }}</h3>
   </div>
   <div data-testing-id="address-summary-ship-to-address">
     <address *ngIf="basket.invoiceToAddress.id === basket.commonShipToAddress?.id; else shippingAddress">
