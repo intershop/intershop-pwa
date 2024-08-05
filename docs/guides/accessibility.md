@@ -34,10 +34,7 @@ kb_sync_latest_only
   - [Further References](#further-references)
 
 The goal of accessibility is to unlock the full potential of the Web and enable people with disabilities to participate equally.
-The `@angular-eslint` repo contains a number of linting rules that can help enforce accessibility best practices in Angular component templates.
-
-Most of the accessibility rules that are enabled in the Intershop PWA are contained in the plugin `@angular-eslint/template/accessibility` that is configured in the `.eslintrc.json` file of the project.
-To check whether the rules are followed in your custom code or not, run `npm run lint`.
+To achieve this, the [Web Content Accessibility Guidelines (WCAG)](https://wcagcom.wpenginepowered.com/resource/what-is-wcag/) provide a set of standards ("[success criteria](https://www.w3.org/WAI/WCAG22/Understanding/)") that ensure online content is perceivable, operable, understandable, and robust for everyone.
 
 ## Check the Accessibility of a Page
 
@@ -45,9 +42,15 @@ To check whether the rules are followed in your custom code or not, run `npm run
 
 #### ESLint Rules
 
-ESLint provides a plugin that includes a number of accessibility rules that check the static code for some basic accessibility issues.
+The `@angular-eslint` repo contains a number of linting rules that can help enforce accessibility best practices in Angular component templates.
+
+Most of the accessibility rules that are enabled in the Intershop PWA are contained in the plugin `@angular-eslint/template/accessibility` that is configured in the `.eslintrc.json` file of the project.
+To check whether the rules are followed in your custom code or not, run `npm run lint`.
+
 Only some individual rules that do not come with this plugin are specifically written down here.
-These rules alone are not sufficient to guarantee good accessibility of a website.
+
+> [!WARNING]
+> These rules alone are not sufficient to guarantee good accessibility of a website.
 
 ##### Accessibility Plugin
 
@@ -74,7 +77,7 @@ The tab-order has to be determined by the HTML-structure, not by the index.
 
 With the current technology, automated tools can only check for around 25-30% of the WCAG criteria.
 They can however provide a **quick and easy overview over some accessibility issues** on a page and give a good starting point on where to focus and fix accessibility problems.
-The following list are some suggestions of free tools that have been used to check the accessibility of the PWA:
+The following list contains some suggestions of free tools that have been used to check the accessibility of the PWA:
 
 - **_Google Lighthouse_**: quick overview and good for detecting general problems
 - **_Silktide_**: huge toolbox, can categorize issues after different WCAG versions
@@ -93,7 +96,7 @@ That option reloads the page.
 If a page needs to be tested which has elements that don’t stay after a reload, select the "_Snapshot_" option instead.
 
 > [!NOTE]
-> It’s important to note that the browser window with the tested page should be focused after clicking "Analyze page load" or else it might throw an error, saying that it couldn’t analyze the page because it didn’t render any content.
+> It’s important to note that the browser window with the tested page should be focused after clicking "_Analyze page load_" or else it might throw an error, saying that it couldn’t analyze the page because it didn’t render any content.
 
 The list of checked criteria can be found [here](https://developer.chrome.com/docs/lighthouse/accessibility/scoring).
 
@@ -351,3 +354,4 @@ If an element has to be made more descriptive by adding a title-attribute or an 
 - [Enforcing Accessibility with Angular A11y ESLint Rules](https://www.bitovi.com/blog/angular-a11y-eslint-rules)
 - [Angular ESLint Rules for Keyboard Accessibility](https://dev.to/angular/angular-eslint-rules-for-keyboard-accessibility-236f)
 - [Angular ESLint Rules for ARIA](https://dev.to/angular/angular-eslint-rules-for-aria-3ba1)
+- [WCAG 2.2 Success Criteria](https://www.w3.org/WAI/WCAG22/Understanding/)
