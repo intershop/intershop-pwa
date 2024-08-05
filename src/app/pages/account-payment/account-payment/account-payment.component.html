@@ -4,7 +4,7 @@
 
     <!-- Preferred Payment Method -->
     <div class="section payment-methods">
-      <h3>{{ 'account.payment.preferred_method' | translate }}</h3>
+      <h2 class="h3">{{ 'account.payment.preferred_method' | translate }}</h2>
       <div class="panel">
         <ng-container *ngIf="preferredPaymentInstrument; else noPreferredPayment">
           <div
@@ -29,7 +29,7 @@
 
     <!-- Further Payment Methods -->
     <div *ngIf="savedPaymentMethods?.length || standardPaymentMethods?.length" class="payment-methods">
-      <h3>{{ 'account.payment.further_payments.heading' | translate }}</h3>
+      <h2 class="h3">{{ 'account.payment.further_payments.heading' | translate }}</h2>
       <div *ngFor="let method of savedPaymentMethods" class="panel section" data-testing-id="paymentMethodList">
         <div class="font-weight-bold">
           {{ method.displayName }}
