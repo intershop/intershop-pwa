@@ -40,6 +40,10 @@ h3,
     color: $text-color-quaternary;
     text-transform: none;
   }
+
+  &.h5 {
+    text-transform: none;
+  }
 }
 
 h4,
@@ -169,8 +173,10 @@ img {
   color: $text-color-quaternary;
 }
 
-h4.form-text {
+h2.form-text {
+  font-family: $font-family-regular;
   color: $text-color-quaternary;
+  text-transform: none;
 }
 
 .form-text-inline {

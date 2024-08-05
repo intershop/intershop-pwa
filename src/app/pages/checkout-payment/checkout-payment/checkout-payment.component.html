@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="col-md-12 col-lg-8">
-    <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
+    <h2 class="h3">{{ 'checkout.payment.method.select.heading' | translate }}</h2>
 
     <!-- display all payment methods -->
     <ng-container *ngIf="basket.totals?.total?.net > 0 || !basket.payment; else zeroTotalInfo">
