@@ -25,7 +25,6 @@ export class BasketBuyerComponent implements OnInit {
 
   taxationID: string;
   costCenterName: string;
-  userName: string;
   companyName1: string;
   companyName2: string;
 
@@ -36,10 +35,6 @@ export class BasketBuyerComponent implements OnInit {
   ngOnInit() {
     this.taxationID = this.object.taxationId;
     this.costCenterName = this.getAttributeValue('BusinessObjectAttributes#Order_CostCenter_Name');
-
-    this.userName = this.object.user
-      ? `${this.object.user?.firstName} ${this.object.user?.lastName}`
-      : `${this.object.invoiceToAddress?.firstName} ${this.object.invoiceToAddress?.lastName}`;
 
     this.companyName1 = this.object.user?.companyName || this.object.invoiceToAddress?.companyName1 || '';
     this.companyName2 =
@@ -56,5 +51,11 @@ export class BasketBuyerComponent implements OnInit {
 
   private getAttributeValue(attributeName: string): string {
     return this.object.attributes?.find(attr => attr.name === attributeName)?.value as string;
+  }
+
+  get userName(): string {
+    return this.object.user
+      ? `${this.object.user?.firstName} ${this.object.user?.lastName}`
+      : `${this.object.invoiceToAddress?.firstName} ${this.object.invoiceToAddress?.lastName}`;
   }
 }
