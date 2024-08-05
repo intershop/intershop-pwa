@@ -37,7 +37,7 @@
     margin-bottom: $space-default * 2;
     background-color: $color-tertiary;
 
-    h3 {
+    h2 {
       margin-top: 0;
     }
 
@@ -52,7 +52,8 @@
       color: $text-color-inverse;
       background: $CORPORATE-PRIMARY;
 
-      h3 {
+      h2,
+      .h3 {
         font-size: $font-size-navbar-item;
         color: inherit;
       }

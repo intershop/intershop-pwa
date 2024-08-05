@@ -9,6 +9,8 @@ footer {
   // h4 is obsolete, should use .link-group-heading instead
   h4,
   .link-group-heading {
+    margin-top: divide($space-default * 2, 3);
+    margin-bottom: $space-default;
     font-family: $font-family-regular;
     font-size: 18px;
     color: $text-color-inverse;
