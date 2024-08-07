@@ -151,7 +151,7 @@ The PWA can be configured with multiple identity providers.
 In some use cases a specific identity provider must be selected when a certain route is requested.
 For example, a punchout user should be logged in by the punchout identity provider requesting a punchout route.
 For all other possible routes the default identity provider must be selected.
-This can be done by setting only the environment variable `OVERRIDE_IDENTITY_PROVIDER`.
+This can be done by setting the environment variable `OVERRIDE_IDENTITY_PROVIDER`.
 
 ```yaml
 nginx:
@@ -166,6 +166,12 @@ This setting will generate rewrite rules for the URL paths for all given domains
 Alternatively, the source can be supplied by setting `OVERRIDE_IDENTITY_PROVIDERS_SOURCE` in any supported format by gomplate.
 
 If no environment variable is set, this feature is disabled.
+
+> [!NOTE]
+> The alternative identity providers need to be configured for the SSR container via `IDENTITY_PROVIDERS` to be used in the NGINX `OVERRIDE_IDENTITY_PROVIDER` configuration.
+
+> [!IMPORTANT]
+> Overriding identity providers by path via NGINX configuration will only work with enabled SSR. SSR is enabled by default and must not be disabled via `SSR: 0`.
 
 ### Add Additional Headers
 

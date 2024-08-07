@@ -39,7 +39,7 @@ identityProviders: {
 > As mentioned above, this configuration example is only relevant for development purposes.
 
 For production-like deployments, the PWA has to be be configured to use the `Co-Browse` identity provider only when the user enters the `cobrowse` route.
-This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path][nginx-startup]) for the NGINX container.
+This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path](../guides/nginx-startup.md#override-identity-providers-by-path)) for the NGINX container.
 Nevertheless, the SSR process needs to be provided with the co-browse identity provider configuration as one of the available identity providers.
 In this way, the global `identityProvider` configuration is left to be the default ICM configuration.
 
@@ -139,6 +139,3 @@ Hence, the token will not expire as long as the user keeps the PWA open in the b
 
 When the user logs out by clicking the logout link or navigating to the `/logout` route, the configured [`logout()`](../../src/app/core/identity-provider/co-browse.identity-provider.ts) function will be executed, which will call the [`revokeApiToken()`](../../src/app/core/services/user/user.service.ts) user service in order to deactivate the token on server side.
 Besides this, the PWA removes the token, the apiToken cookie and basket-id on browser side.
-
-[ssr-startup]: ../guides/ssr-startup.md
-[nginx-startup]: ../guides/nginx-startup.md
