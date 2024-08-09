@@ -77,14 +77,14 @@
   li {
     &.filter-item {
       padding: 3px 0;
-      color: $text-color-quaternary;
+      color: $text-color-tertiary;
 
       a,
       .btn-link-action {
         display: block;
 
         &.filter-item-name {
-          color: $text-color-quaternary;
+          color: $text-color-tertiary;
         }
 
         &.filter-swatch {
@@ -134,7 +134,7 @@
 
       span {
         font-weight: normal;
-        color: $text-color-quaternary;
+        color: $text-color-tertiary;
 
         &.icon-selected {
           display: inline-block;
@@ -147,7 +147,7 @@
       }
 
       &.filter-color {
-        border-color: $text-color-quaternary;
+        border-color: $text-color-tertiary;
 
         a,
         .btn-link-action {

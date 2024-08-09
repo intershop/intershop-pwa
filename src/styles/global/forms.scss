@@ -8,7 +8,7 @@ fieldset {
 
 // 	REQUIRED FIELDS
 .indicates-required {
-  color: $text-color-quaternary;
+  color: $text-color-tertiary;
 
   .required {
     margin-right: 4px;
@@ -140,7 +140,7 @@ input.form-check-input {
 }
 
 .input-help {
-  color: $text-color-quaternary;
+  color: $text-color-tertiary;
 }
 
 select {

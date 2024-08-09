@@ -8,10 +8,10 @@
 
 // LOGOS
 
-$logo: url('/assets/themes/b2b/img/logo.png');
+$logo: url('/assets/themes/b2b/img/logo.svg');
 $logo-width: 114px;
 $logo-height: 40px;
-$logo-mobile: url('/assets/themes/b2b/img/logo_mobile.png');
+$logo-mobile: url('/assets/themes/b2b/img/logo_mobile.svg');
 $logo-mobile-width: 41px;
 $logo-mobile-height: 41px;
 
@@ -29,7 +29,7 @@ $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1r
 
 //CORPORATE DESIGN COLORS
 
-$CORPORATE-PRIMARY: #688dc3; // BLUE
+$CORPORATE-PRIMARY: #006b99; // sea blue
 $CORPORATE-SECONDARY: color.adjust($CORPORATE-PRIMARY, $lightness: -10%);
 $CORPORATE-LIGHT: color.adjust($CORPORATE-PRIMARY, $lightness: 10%);
 $CORPORATE-DARK: color.adjust($CORPORATE-PRIMARY, $lightness: -20%);
@@ -40,9 +40,9 @@ $CORPORATE-SHADOW: #7f9ecc80; // with alpha transparency
 $text-color-corporate: $CORPORATE-PRIMARY;
 
 $text-color-primary: #222;
-$text-color-secondary: #555;
-$text-color-tertiary: #8b8b8b;
-$text-color-quaternary: #999;
+$text-color-secondary: #6b6b6b;
+$text-color-tertiary: #757575;
+$text-color-quaternary: #8b8b8b;
 $text-color-quinary: #eee;
 
 $text-color-inverse: #fff;
@@ -59,9 +59,9 @@ $color-quaternary: #d5d5d5;
 
 $color-dark: #000;
 $color-inverse: #fff;
-$color-special-primary: #e74c3c; //RED
+$color-special-primary: #c00; //RED
 $color-special-secondary: #f39c12; //ORANGE
-$color-special-tertiary: #00abea; //BLUE
+$color-special-tertiary: #006f6f; //DARK TURQUOISE
 $color-special-quaternary: #5cb85c; // GREEN
 
 // colors for product label ribbons
@@ -151,7 +151,7 @@ $white: #fff;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
 $gray-300: #dee2e6;
-$gray-400: #ced4da;
+$gray-400: #757575;
 $gray-500: #adb5bd;
 $gray-600: #6c757d;
 $gray-700: #495057;

@@ -37,7 +37,7 @@ h3,
   .header-note {
     font-family: $font-family-regular;
     font-size: $font-size-corporate;
-    color: $text-color-quaternary;
+    color: $text-color-tertiary;
     text-transform: none;
   }
 
@@ -75,7 +75,7 @@ a {
   }
 
   h3:hover {
-    color: $text-color-quaternary;
+    color: $text-color-tertiary;
   }
 
   &.teaser-link {
@@ -170,12 +170,12 @@ img {
 // Help Text
 .form-text {
   margin: divide($space-default, 3) 0 $space-default * 0.5;
-  color: $text-color-quaternary;
+  color: $text-color-tertiary;
 }
 
 h2.form-text {
   font-family: $font-family-regular;
-  color: $text-color-quaternary;
+  color: $text-color-tertiary;
   text-transform: none;
 }
 
@@ -252,11 +252,11 @@ img.marketing {
 }
 
 .badge-primary {
-  background-color: #1db5b5;
+  background-color: $color-special-tertiary;
 }
 
 .badge.border-primary {
-  border-color: #1db5b5 !important;
+  border-color: $color-special-tertiary !important;
 }
 
 .alert {
