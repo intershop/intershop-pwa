@@ -11,7 +11,7 @@
           >&laquo;</a
         >
       </ng-container>
-      <ng-template #inactiveFirstLink> &laquo; </ng-template>
+      <ng-template #inactiveFirstLink> <span class="product-list-paging-previous">&laquo;</span> </ng-template>
     </li>
     <li *ngFor="let p of pageIndices">
       <a
@@ -30,10 +30,11 @@
           queryParamsHandling="merge"
           [queryParams]="{ page: currentPage + 1 }"
           [fragment]="fragmentOnRouting"
+          class="product-list-paging-next"
           >&raquo;</a
         >
       </ng-container>
-      <ng-template #inactiveLastLink> &raquo; </ng-template>
+      <ng-template #inactiveLastLink> <span class="product-list-paging-next">&raquo;</span> </ng-template>
     </li>
   </ul>
 </ng-container>
