@@ -42,10 +42,10 @@
     padding: divide($space-default, 3) 0;
 
     a {
-      color: $text-color-quaternary;
+      color: $text-color-tertiary;
 
       &:hover {
-        color: $text-color-tertiary;
+        color: $text-color-quaternary;
       }
     }
 
@@ -135,7 +135,7 @@
   margin-bottom: $space-default * 2;
 
   .review-item-created {
-    color: $text-color-quaternary;
+    color: $text-color-tertiary;
   }
 
   .review-item-header-title {

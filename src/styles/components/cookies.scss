@@ -10,6 +10,10 @@
 
   .cookies-banner-text {
     margin-bottom: divide($space-default, 3);
+
+    a {
+      color: $color-inverse;
+    }
   }
 
   .btn-link {
@@ -18,7 +22,7 @@
     text-decoration: underline;
 
     &:hover {
-      color: $text-color-quaternary !important;
+      color: $text-color-tertiary !important;
     }
 
     @media (max-width: $screen-xs-max) {

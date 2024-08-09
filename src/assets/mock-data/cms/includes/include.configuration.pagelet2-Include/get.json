@@ -22,12 +22,12 @@
       "domain": "inSPIRED-inTRONICS_Business-rest",
       "configurationParameters": {
         "Logo": {
-          "value": "inSPIRED-inTRONICS_Business-rest:/config/logo.png",
+          "value": "inSPIRED-inTRONICS_Business-rest:/config/logo.svg",
           "type": "bc_pmc:types.pagelet2-ImageFileRef",
           "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component-Logo"
         },
         "LogoMobile": {
-          "value": "inSPIRED-inTRONICS_Business-rest:/config/logo_mobile.png",
+          "value": "inSPIRED-inTRONICS_Business-rest:/config/logo_mobile.svg",
           "type": "bc_pmc:types.pagelet2-ImageFileRef",
           "definitionQualifiedName": "app_sf_pwa_cm:component.configuration.pagelet2-Component-LogoMobile"
         },

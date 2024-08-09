@@ -140,7 +140,7 @@ header {
     padding-right: ($space-default * 1.5);
     font-family: $font-family-bold;
     font-size: 12px;
-    color: $text-color-quaternary;
+    color: $text-color-tertiary;
     text-transform: uppercase;
     list-style: none;
 
@@ -152,10 +152,6 @@ header {
       display: inline-block !important;
       line-height: 34px;
       color: $text-color-quinary;
-    }
-
-    .login-name {
-      color: $text-color-corporate;
     }
 
     .wishlist-count,
@@ -180,7 +176,7 @@ header {
   position: relative;
   padding: 0 10px 0 4px;
   font-size: 17px;
-  color: $text-color-quaternary;
+  color: $text-color-quinary;
 
   @include media-breakpoint-down(sm) {
     color: $text-color-primary;
@@ -199,7 +195,7 @@ header {
   display: block;
   width: $logo-mobile-width;
   height: $logo-mobile-height;
-  margin: 0 $space-default * 2 0 $space-default;
+  margin: divide($space-default, 3) ($space-default * 2) 0 $space-default;
   background: $logo-mobile left no-repeat;
   background-size: $logo-mobile-width $logo-mobile-height;
 }

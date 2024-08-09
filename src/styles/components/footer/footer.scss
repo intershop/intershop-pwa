@@ -4,7 +4,7 @@
 
 footer {
   clear: both;
-  color: $text-color-secondary;
+  color: $text-color-tertiary;
 
   // h4 is obsolete, should use .link-group-heading instead
   h4,
@@ -42,8 +42,13 @@ footer {
     }
 
     a {
-      text-decoration: none;
+      color: $text-color-inverse;
+      text-decoration: underline;
       text-transform: uppercase;
+
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 
@@ -66,7 +71,7 @@ footer {
       a,
       a:not([href]):not([tabindex]) {
         font-family: $font-family-condensedregular;
-        color: $text-color-quaternary;
+        color: $text-color-tertiary;
         text-decoration: none;
       }
     }

@@ -11,7 +11,7 @@
     text-transform: uppercase;
 
     span {
-      color: $text-color-quaternary;
+      color: $text-color-secondary;
 
       &.mini-cart-price {
         font-size: $font-size-base;
@@ -21,9 +21,10 @@
     }
 
     .ng-fa-icon {
-      padding: 0;
+      padding: 0 !important;
       margin-right: ($space-default * 0.5);
       font-size: 17px;
+      color: $text-color-secondary;
     }
   }
 
@@ -45,7 +46,7 @@
       }
 
       > .ng-fa-icon {
-        color: $text-color-inverse;
+        color: $text-color-inverse !important;
       }
     }
   }
@@ -121,7 +122,7 @@
       font-family: $font-family-condensedregular;
       font-size: $font-size-base;
       font-weight: normal;
-      color: $text-color-quaternary;
+      color: $text-color-tertiary;
       text-overflow: ellipsis;
       text-transform: none;
       white-space: nowrap;
@@ -136,7 +137,7 @@
 
     .cart-pli-data {
       font-size: 85%;
-      color: $text-color-quaternary;
+      color: $text-color-tertiary;
 
       span {
         display: inline-block;
