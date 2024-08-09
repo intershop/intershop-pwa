@@ -12,6 +12,30 @@
       &:only-child {
         visibility: hidden;
       }
+
+      position: relative;
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      background: transparent;
+      opacity: 1;
+    }
+
+    .swiper-pagination-bullet::before {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      content: '';
+      background-color: $text-color-quaternary;
+      border-radius: 50%;
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+
+    .swiper-pagination-bullet-active::before {
+      background-color: $text-color-primary;
     }
   }
 }
