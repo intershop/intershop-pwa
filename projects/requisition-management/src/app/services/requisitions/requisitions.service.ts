@@ -87,7 +87,7 @@ export class RequisitionsService {
 
     return this.apiService
       .b2bUserEndpoint()
-      .get<RequisitionData>(`requisitions/${requisitionId}`, {
+      .get<RequisitionData>(`requisitions/${this.apiService.encodeResourceId(requisitionId)}`, {
         params,
       })
       .pipe(
@@ -129,7 +129,7 @@ export class RequisitionsService {
 
     return this.apiService
       .b2bUserEndpoint()
-      .patch<RequisitionData>(`requisitions/${requisitionId}`, body, {
+      .patch<RequisitionData>(`requisitions/${this.apiService.encodeResourceId(requisitionId)}`, body, {
         params,
       })
       .pipe(concatMap(payload => this.processRequisitionData(payload)));
@@ -149,7 +149,7 @@ export class RequisitionsService {
 
       if (requisitionData.order?.itemId) {
         return this.apiService
-          .get<OrderData>(`orders/${requisitionData.order.itemId}`, {
+          .get<OrderData>(`orders/${this.apiService.encodeResourceId(requisitionData.order.itemId)}`, {
             headers: this.orderHeaders,
             params,
           })

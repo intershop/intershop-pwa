@@ -4,7 +4,6 @@ import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, map, switchMap } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { OrderTemplateData } from '../../models/order-template/order-template.interface';
 import { OrderTemplateMapper } from '../../models/order-template/order-template.mapper';
@@ -40,7 +39,7 @@ export class OrderTemplateService {
       return throwError(() => new Error('getOrderTemplate() called without orderTemplateId'));
     }
     return this.apiService
-      .get<OrderTemplateData>(`customers/-/users/-/wishlists/${orderTemplateId}`)
+      .get<OrderTemplateData>(`customers/-/users/-/wishlists/${this.apiService.encodeResourceId(orderTemplateId)}`)
       .pipe(map(orderTemplateData => this.orderTemplateMapper.fromData(orderTemplateData, orderTemplateId)));
   }
 
@@ -66,7 +65,7 @@ export class OrderTemplateService {
     if (!orderTemplateId) {
       return throwError(() => new Error('deleteOrderTemplate() called without orderTemplateId'));
     }
-    return this.apiService.delete(`customers/-/users/-/wishlists/${encodeResourceID(orderTemplateId)}`);
+    return this.apiService.delete(`customers/-/users/-/wishlists/${this.apiService.encodeResourceId(orderTemplateId)}`);
   }
 
   /**
@@ -77,7 +76,7 @@ export class OrderTemplateService {
    */
   updateOrderTemplate(orderTemplate: OrderTemplate): Observable<OrderTemplate> {
     return this.apiService
-      .put(`customers/-/users/-/wishlists/${encodeResourceID(orderTemplate.id)}`, orderTemplate)
+      .put(`customers/-/users/-/wishlists/${this.apiService.encodeResourceId(orderTemplate.id)}`, orderTemplate)
       .pipe(map((response: OrderTemplate) => this.orderTemplateMapper.fromUpdate(response, orderTemplate.id)));
   }
 
@@ -98,7 +97,9 @@ export class OrderTemplateService {
     }
     return this.apiService
       .post(
-        `customers/-/users/-/wishlists/${encodeResourceID(orderTemplateId)}/products/${encodeResourceID(sku)}`,
+        `customers/-/users/-/wishlists/${this.apiService.encodeResourceId(
+          orderTemplateId
+        )}/products/${this.apiService.encodeResourceId(sku)}`,
         {},
         { params: new HttpParams().set('quantity', quantity || 1) }
       )
@@ -120,7 +121,11 @@ export class OrderTemplateService {
       return throwError(() => new Error('removeProductFromOrderTemplate() called without sku'));
     }
     return this.apiService
-      .delete(`customers/-/users/-/wishlists/${encodeResourceID(orderTemplateId)}/products/${encodeResourceID(sku)}`)
+      .delete(
+        `customers/-/users/-/wishlists/${this.apiService.encodeResourceId(
+          orderTemplateId
+        )}/products/${this.apiService.encodeResourceId(sku)}`
+      )
       .pipe(concatMap(() => this.getOrderTemplate(orderTemplateId)));
   }
 }

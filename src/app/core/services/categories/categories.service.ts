@@ -70,7 +70,10 @@ export class CategoriesService {
       return throwError(() => new Error('getCategoryTree() called without categoryRef'));
     }
     return this.apiService
-      .get<CategoryData>(`categories/${categoryRef}`, { sendSPGID: true, params: this.setTreeParams(depth) })
+      .get<CategoryData>(`categories/${this.apiService.encodeResourceId(categoryRef)}`, {
+        sendSPGID: true,
+        params: this.setTreeParams(depth),
+      })
       .pipe(map(categoryData => this.categoryMapper.fromData(categoryData)));
   }
 

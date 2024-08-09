@@ -29,6 +29,7 @@ describe('Punchout Service', () => {
     when(apiServiceMock.resolveLink(anything())).thenReturn(() => of({}));
     when(apiServiceMock.put(anything(), anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.delete(anything(), anything())).thenReturn(of({}));
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [

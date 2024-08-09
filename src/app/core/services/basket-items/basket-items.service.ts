@@ -96,7 +96,7 @@ export class BasketItemsService {
   updateBasketItem(itemId: string, body: BasketItemUpdateType): Observable<{ lineItem: LineItem; info: BasketInfo[] }> {
     return this.apiService
       .currentBasketEndpoint()
-      .patch<{ data: LineItemData; infos: BasketInfo[] }>(`items/${itemId}`, body, {
+      .patch<{ data: LineItemData; infos: BasketInfo[] }>(`items/${this.apiService.encodeResourceId(itemId)}`, body, {
         headers: this.basketHeaders,
       })
       .pipe(
@@ -115,7 +115,7 @@ export class BasketItemsService {
   deleteBasketItem(itemId: string): Observable<BasketInfo[]> {
     return this.apiService
       .currentBasketEndpoint()
-      .delete<{ infos: BasketInfo[] }>(`items/${itemId}`, {
+      .delete<{ infos: BasketInfo[] }>(`items/${this.apiService.encodeResourceId(itemId)}`, {
         headers: this.basketHeaders,
       })
       .pipe(

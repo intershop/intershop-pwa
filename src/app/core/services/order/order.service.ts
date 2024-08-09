@@ -115,7 +115,7 @@ export class OrderService {
         },
       };
       return this.apiService
-        .patch(`orders/${order.id}`, body, {
+        .patch(`orders/${this.apiService.encodeResourceId(order.id)}`, body, {
           headers: this.orderHeaders,
         })
         .pipe(map(OrderMapper.fromData));
@@ -159,7 +159,7 @@ export class OrderService {
     }
 
     return this.apiService
-      .get<OrderData>(`orders/${orderId}`, {
+      .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
         headers: this.orderHeaders,
         params,
       })
@@ -185,7 +185,7 @@ export class OrderService {
     }
 
     return this.apiService
-      .get<OrderData>(`orders/${orderId}`, {
+      .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
         headers: this.orderHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
         params,
         skipApiErrorHandling: true,
@@ -231,7 +231,7 @@ export class OrderService {
 
     return this.apiService
       .patch<OrderData>(
-        `orders/${orderId}`,
+        `orders/${this.apiService.encodeResourceId(orderId)}`,
         { orderCreation },
         {
           headers: this.orderHeaders,

@@ -25,6 +25,7 @@ describe('Wishlist Service', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     });
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
     when(appFacade.customerRestResource$).thenReturn(of('privatecustomers'));
 
     wishlistService = TestBed.inject(WishlistService);

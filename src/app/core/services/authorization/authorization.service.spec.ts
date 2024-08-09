@@ -15,6 +15,7 @@ describe('Authorization Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     when(apiService.get(anything())).thenReturn(of({}));
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],

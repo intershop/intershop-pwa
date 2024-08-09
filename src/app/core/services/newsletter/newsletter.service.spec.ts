@@ -6,7 +6,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getNewsletterSubscriptionStatus } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { NewsletterService } from './newsletter.service';
 
@@ -15,11 +14,13 @@ describe('Newsletter Service', () => {
   let apiServiceMock: ApiService;
   let store$: MockStore;
 
-  const userEmail = 'user@test.com';
-  const usersSubscriptionEndpoint = `subscriptions/${encodeResourceID(userEmail)}`;
+  const userEmail = 'user%40test.com';
+  const usersSubscriptionEndpoint = `subscriptions/${userEmail}`;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
+
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, provideMockStore()],
     });

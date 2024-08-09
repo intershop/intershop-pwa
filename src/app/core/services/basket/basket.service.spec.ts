@@ -35,6 +35,7 @@ describe('Basket Service', () => {
     orderService = mock(OrderService);
 
     when(apiService.currentBasketEndpoint()).thenReturn(instance(apiService));
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [

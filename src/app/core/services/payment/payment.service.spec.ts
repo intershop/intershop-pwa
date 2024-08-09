@@ -72,6 +72,7 @@ describe('Payment Service', () => {
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.currentBasketEndpoint()).thenReturn(instance(apiServiceMock));
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
 
     appFacadeMock = mock(AppFacade);
     when(appFacadeMock.customerRestResource$).thenReturn(of('customers'));

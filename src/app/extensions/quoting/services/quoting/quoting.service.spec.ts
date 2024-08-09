@@ -16,6 +16,7 @@ describe('Quoting Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     when(apiService.b2bUserEndpoint()).thenReturn(instance(apiService));
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],

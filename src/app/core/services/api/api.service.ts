@@ -16,6 +16,7 @@ import {
 } from 'rxjs';
 import { catchError, concatMap, filter, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
 import {
@@ -29,7 +30,6 @@ import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 /**
  * Pipeable operator for elements translation (removing the envelope).
@@ -69,7 +69,11 @@ export class ApiService {
   static TOKEN_HEADER_KEY = 'authentication-token';
   static AUTHORIZATION_HEADER_KEY = 'Authorization';
 
-  constructor(private httpClient: HttpClient, private store: Store) {}
+  constructor(
+    private httpClient: HttpClient,
+    private store: Store,
+    private featureToggleService: FeatureToggleService
+  ) {}
 
   /**
 -  * sets the request header for the appropriate captcha service
@@ -313,6 +317,28 @@ export class ApiService {
       );
   }
 
+  /**
+   * To support special characters (slash, percent and plus char) of user defined URI Components (like login, email, ...).
+   * This method encodes a given resource ID in a way that can be processed by ICM.
+   * REST API of ICM version pre 12.0 encode the URI components twice, because of former restriction of the httpd.
+   *
+   * @param resourceId    The resource ID to be encoded.
+   * @returns             The encoded resource ID.
+   */
+  encodeResourceId(resourceId: string): string {
+    return this.featureToggleService.enabled('legacyEncoding')
+      ? // ICM 7.10 & ICM 11 resource ID encoding
+        encodeURIComponent(encodeURIComponent(resourceId))
+      : // ICM 12 and above resource ID encoding
+        // encodeURIComponent replaces spaces with '+' that's not RFC conform.
+        // Therefore, we encode existing '+' with '%2B', converting the string with encodeURIComponent,
+        // and converting '%2B' ('%252B' after encodeURIComponent) to '+' back.
+        encodeURIComponent(resourceId?.replaceAll('+', '%2B'))?.replaceAll('\\+', '%20')?.replaceAll('%252B', '+');
+  }
+
+  /**
+   * Method to generate a B2B user endpoint prefix based on the currently logged in user and customer.
+   */
   b2bUserEndpoint() {
     const ids$ = combineLatest([
       this.store.pipe(select(getLoggedInUser)),
@@ -327,7 +353,9 @@ export class ApiService {
         ids$.pipe(
           concatMap(([user, customer]) =>
             this.get<T>(
-              `customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(user.login)}/${path}`,
+              `customers/${this.encodeResourceId(customer.customerNo)}/users/${this.encodeResourceId(
+                user.login
+              )}/${path}`,
               options
             )
           )
@@ -336,7 +364,9 @@ export class ApiService {
         ids$.pipe(
           concatMap(([user, customer]) =>
             this.delete<T>(
-              `customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(user.login)}/${path}`,
+              `customers/${this.encodeResourceId(customer.customerNo)}/users/${this.encodeResourceId(
+                user.login
+              )}/${path}`,
               options
             )
           )
@@ -345,7 +375,9 @@ export class ApiService {
         ids$.pipe(
           concatMap(([user, customer]) =>
             this.put<T>(
-              `customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(user.login)}/${path}`,
+              `customers/${this.encodeResourceId(customer.customerNo)}/users/${this.encodeResourceId(
+                user.login
+              )}/${path}`,
               body,
               options
             )
@@ -355,7 +387,9 @@ export class ApiService {
         ids$.pipe(
           concatMap(([user, customer]) =>
             this.patch<T>(
-              `customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(user.login)}/${path}`,
+              `customers/${this.encodeResourceId(customer.customerNo)}/users/${this.encodeResourceId(
+                user.login
+              )}/${path}`,
               body,
               options
             )
@@ -365,7 +399,9 @@ export class ApiService {
         ids$.pipe(
           concatMap(([user, customer]) =>
             this.post<T>(
-              `customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(user.login)}/${path}`,
+              `customers/${this.encodeResourceId(customer.customerNo)}/users/${this.encodeResourceId(
+                user.login
+              )}/${path}`,
               body,
               options
             )

@@ -25,10 +25,9 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
-import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
@@ -292,7 +291,9 @@ export class UserService {
       map(customer => customer?.customerNo || '-'),
       take(1),
       concatMap(customerNo =>
-        this.apiService.get(`customers/${encodeResourceID(customerNo)}/users/-`).pipe(map(UserMapper.fromData))
+        this.apiService
+          .get(`customers/${this.apiService.encodeResourceId(customerNo)}/users/-`)
+          .pipe(map(UserMapper.fromData))
       )
     );
   }
@@ -329,20 +330,13 @@ export class UserService {
    * @returns The related cost centers.
    */
   getEligibleCostCenters(): Observable<UserCostCenter[]> {
-    return combineLatest([
-      this.store.pipe(select(getLoggedInCustomer), whenTruthy()),
-      this.store.pipe(select(getLoggedInUser), whenTruthy()),
-    ]).pipe(
-      take(1),
-      switchMap(([customer, user]) =>
-        this.apiService
-          .get(`customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(user.login)}/costcenters`)
-          .pipe(
-            unpackEnvelope(),
-            map((costCenters: UserCostCenter[]) => costCenters)
-          )
-      )
-    );
+    return this.apiService
+      .b2bUserEndpoint()
+      .get(`/costcenters`)
+      .pipe(
+        unpackEnvelope(),
+        map((costCenters: UserCostCenter[]) => costCenters)
+      );
   }
 
   /**
@@ -364,7 +358,9 @@ export class UserService {
       switchMap(([customer, permissions]) => {
         if (permissions.includes('APP_B2B_VIEW_COSTCENTER')) {
           return this.apiService.get<CostCenter>(
-            `customers/${encodeResourceID(customer.customerNo)}/costcenters/${encodeResourceID(id)}`
+            `customers/${this.apiService.encodeResourceId(
+              customer.customerNo
+            )}/costcenters/${this.apiService.encodeResourceId(id)}`
           );
         } else {
           return of(undefined);

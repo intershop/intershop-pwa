@@ -42,8 +42,9 @@ export interface Environment {
     /* B2C features */
     | 'guestCheckout'
     | 'wishlists'
-    /* ICM compatibility - to be used with the ICMCompatibilityInterceptor */
+    /* ICM compatibility - a.o. to be used with the ICMCompatibilityInterceptor */
     // | 'messageToMerchant'
+    | 'legacyEncoding'
     /* Third-party Integrations */
     | 'addressDoctor'
     | 'sentry'

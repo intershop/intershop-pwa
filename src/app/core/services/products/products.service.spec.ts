@@ -79,6 +79,7 @@ describe('Products Service', () => {
     productsService = TestBed.inject(ProductsService);
 
     when(appFacadeMock.serverSetting$(anyString())).thenReturn(of(false));
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
   });
 
   it("should get Product data when 'getProduct' is called", done => {

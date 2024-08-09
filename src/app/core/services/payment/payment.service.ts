@@ -20,7 +20,6 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 /**
  * The Payment Service handles the interaction with the 'baskets' and 'users' REST API concerning payment functionality.
@@ -115,16 +114,11 @@ export class PaymentService {
         redirect.failureUrl = `${loc}/checkout/payment;lang=${lang}?redirect=failure&orderId=*orderID*`;
       }
 
-      const body = {
-        paymentInstrument,
-        redirect,
-      };
+      const body = { paymentInstrument, redirect };
 
       return this.apiService
         .currentBasketEndpoint()
-        .put('payments/open-tender', body, {
-          headers: this.basketHeaders,
-        })
+        .put('payments/open-tender', body, { headers: this.basketHeaders })
         .pipe(map(() => paymentInstrument));
     }
   }
@@ -176,13 +170,7 @@ export class PaymentService {
 
     return this.apiService
       .currentBasketEndpoint()
-      .patch(
-        'payments/open-tender',
-        { redirect },
-        {
-          headers: this.basketHeaders,
-        }
-      )
+      .patch('payments/open-tender', { redirect }, { headers: this.basketHeaders })
       .pipe(map(({ data }) => data));
   }
 
@@ -212,10 +200,10 @@ export class PaymentService {
 
     // basket payment instrument, payment will be deleted automatically, if necessary
     return this.apiService.delete(
-      `baskets/${encodeResourceID(basket.id)}/payment-instruments/${encodeResourceID(paymentInstrument.id)}`,
-      {
-        headers: this.basketHeaders,
-      }
+      `baskets/${this.apiService.encodeResourceId(basket.id)}/payment-instruments/${this.apiService.encodeResourceId(
+        paymentInstrument.id
+      )}`,
+      { headers: this.basketHeaders }
     );
   }
 
@@ -233,10 +221,10 @@ export class PaymentService {
     }
 
     return this.apiService.delete(
-      `baskets/${encodeResourceID(basket.id)}/payments/${encodeResourceID(basket.payment.id)}`,
-      {
-        headers: this.basketHeaders,
-      }
+      `baskets/${this.apiService.encodeResourceId(basket.id)}/payments/${this.apiService.encodeResourceId(
+        basket.payment.id
+      )}`,
+      { headers: this.basketHeaders }
     );
   }
 
@@ -254,14 +242,16 @@ export class PaymentService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.get(`${restResource}/${encodeResourceID(customer.customerNo)}/payments`).pipe(
+        this.apiService.get(`${restResource}/${this.apiService.encodeResourceId(customer.customerNo)}/payments`).pipe(
           unpackEnvelope<Link>(),
           this.apiService.resolveLinks<PaymentInstrumentData>(),
           concatMap(instruments =>
-            this.apiService.options(`${restResource}/${encodeResourceID(customer.customerNo)}/payments`).pipe(
-              unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
-              map(methods => PaymentMethodMapper.fromOptions({ methods, instruments }))
-            )
+            this.apiService
+              .options(`${restResource}/${this.apiService.encodeResourceId(customer.customerNo)}/payments`)
+              .pipe(
+                unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
+                map(methods => PaymentMethodMapper.fromOptions({ methods, instruments }))
+              )
           )
         )
       )
@@ -300,7 +290,7 @@ export class PaymentService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .post(`${restResource}/${encodeResourceID(customerNo)}/payments`, body)
+          .post(`${restResource}/${this.apiService.encodeResourceId(customerNo)}/payments`, body)
           .pipe(this.apiService.resolveLink<PaymentInstrument>())
       )
     );
@@ -323,7 +313,11 @@ export class PaymentService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.delete<void>(`${restResource}/${customerNo}/payments/${paymentInstrumentId}`)
+        this.apiService.delete<void>(
+          `${restResource}/${this.apiService.encodeResourceId(customerNo)}/payments/${this.apiService.encodeResourceId(
+            paymentInstrumentId
+          )}`
+        )
       )
     );
   }
@@ -353,9 +347,11 @@ export class PaymentService {
 
       return this.apiService
         .currentBasketEndpoint()
-        .patch(`payment-instruments/${paymentInstrument.id}`, body, {
-          headers: this.basketHeaders,
-        })
+        .patch<{ data: PaymentInstrument }>(
+          `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
+          body,
+          { headers: this.basketHeaders }
+        )
         .pipe(map(({ data }) => data));
     } else {
       // update user payment instrument
@@ -371,7 +367,7 @@ export class PaymentService {
       };
 
       return this.apiService
-        .put(`customers/-/payments/${encodeResourceID(paymentInstrument.id)}`, body)
+        .put(`customers/-/payments/${this.apiService.encodeResourceId(paymentInstrument.id)}`, body)
         .pipe(map(() => paymentInstrument));
     }
   }

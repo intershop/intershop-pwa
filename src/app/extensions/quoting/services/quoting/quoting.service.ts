@@ -6,7 +6,6 @@ import { concatMap, defaultIfEmpty, expand, filter, last, map, take } from 'rxjs
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { QuoteRequestUpdate } from '../../models/quote-request-update/quote-request-update.model';
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
@@ -59,11 +58,11 @@ export class QuotingService {
     return type === 'Quote'
       ? this.apiService
           .b2bUserEndpoint()
-          .get<QuoteData>(`quotes/${id}`)
+          .get<QuoteData>(`quotes/${this.apiService.encodeResourceId(id)}`)
           .pipe(map(res => this.quoteMapper.fromData(res, 'Quote')))
       : this.apiService
           .b2bUserEndpoint()
-          .get<QuoteData>(`quoterequests/${id}`)
+          .get<QuoteData>(`quoterequests/${this.apiService.encodeResourceId(id)}`)
           .pipe(
             concatMap(data =>
               iif(
@@ -85,14 +84,14 @@ export class QuotingService {
   deleteQuote(entity: QuotingEntity) {
     return this.apiService
       .b2bUserEndpoint()
-      .delete(`${entity.type === 'Quote' ? 'quotes' : 'quoterequests'}/${encodeResourceID(entity.id)}`)
+      .delete(`${entity.type === 'Quote' ? 'quotes' : 'quoterequests'}/${this.apiService.encodeResourceId(entity.id)}`)
       .pipe(map(() => entity.id));
   }
 
   rejectQuote(quoteId: string) {
     return this.apiService
       .b2bUserEndpoint()
-      .put<QuoteData>(`quotes/${encodeResourceID(quoteId)}`, { rejected: true })
+      .put<QuoteData>(`quotes/${this.apiService.encodeResourceId(quoteId)}`, { rejected: true })
       .pipe(map(data => this.quoteMapper.fromData(data, 'Quote')));
   }
 
@@ -173,11 +172,9 @@ export class QuotingService {
       concatMap(quoteRequest =>
         this.apiService
           .b2bUserEndpoint()
-          .post(`quoterequests/${encodeResourceID(quoteRequest.id)}/items`, {
+          .post(`quoterequests/${this.apiService.encodeResourceId(quoteRequest.id)}/items`, {
             productSKU: sku,
-            quantity: {
-              value: quantity,
-            },
+            quantity: { value: quantity },
           })
           .pipe(map(() => quoteRequest.id))
       )
@@ -193,16 +190,26 @@ export class QuotingService {
         change.type === 'meta-data'
           ? this.apiService
               .b2bUserEndpoint()
-              .put(`quoterequests/${encodeResourceID(quoteRequestId)}`, pick(change, 'description', 'displayName'))
+              .put(
+                `quoterequests/${this.apiService.encodeResourceId(quoteRequestId)}`,
+                pick(change, 'description', 'displayName')
+              )
           : change.type === 'change-item'
           ? this.apiService
               .b2bUserEndpoint()
-              .put(`quoterequests/${encodeResourceID(quoteRequestId)}/items/${encodeResourceID(change.itemId)}`, {
-                quantity: { value: change.quantity },
-              })
+              .put(
+                `quoterequests/${this.apiService.encodeResourceId(
+                  quoteRequestId
+                )}/items/${this.apiService.encodeResourceId(change.itemId)}`,
+                { quantity: { value: change.quantity } }
+              )
           : this.apiService
               .b2bUserEndpoint()
-              .delete(`quoterequests/${encodeResourceID(quoteRequestId)}/items/${encodeResourceID(change.itemId)}`)
+              .delete(
+                `quoterequests/${this.apiService.encodeResourceId(
+                  quoteRequestId
+                )}/items/${this.apiService.encodeResourceId(change.itemId)}`
+              )
       )
     ).pipe(
       last(),

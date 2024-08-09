@@ -36,10 +36,14 @@ export class CMSService {
       return throwError(() => new Error('getContentInclude() called without an includeId'));
     }
 
-    return this.apiService.get<ContentPageletEntryPointData>(`cms/includes/${includeId}`, { sendPGID: true }).pipe(
-      map(x => this.contentPageletEntryPointMapper.fromData(x)),
-      map(([include, pagelets]) => ({ include, pagelets }))
-    );
+    return this.apiService
+      .get<ContentPageletEntryPointData>(`cms/includes/${this.apiService.encodeResourceId(includeId)}`, {
+        sendPGID: true,
+      })
+      .pipe(
+        map(x => this.contentPageletEntryPointMapper.fromData(x)),
+        map(([include, pagelets]) => ({ include, pagelets }))
+      );
   }
 
   /**
@@ -53,11 +57,13 @@ export class CMSService {
       return throwError(() => new Error('getContentPage() called without an pageId'));
     }
 
-    return this.apiService.get<ContentPageletEntryPointData>(`cms/pages/${pageId}`, { sendPGID: true }).pipe(
-      map(x => this.contentPageletEntryPointMapper.fromData(x)),
-      map(([page, pagelets]) => this.mapSeoAttributes(page, pagelets)),
-      map(([page, pagelets]) => ({ page, pagelets }))
-    );
+    return this.apiService
+      .get<ContentPageletEntryPointData>(`cms/pages/${this.apiService.encodeResourceId(pageId)}`, { sendPGID: true })
+      .pipe(
+        map(x => this.contentPageletEntryPointMapper.fromData(x)),
+        map(([page, pagelets]) => this.mapSeoAttributes(page, pagelets)),
+        map(([page, pagelets]) => ({ page, pagelets }))
+      );
   }
 
   /**
@@ -78,7 +84,7 @@ export class CMSService {
     }
 
     return this.apiService
-      .get<ContentPageTreeData>(`cms/pagetree/${rootId}`, { sendPGID: true, params })
+      .get<ContentPageTreeData>(`cms/pagetree/${this.apiService.encodeResourceId(rootId)}`, { sendPGID: true, params })
       .pipe(map(data => this.contentPageTreeMapper.fromData(data)));
   }
 
@@ -110,11 +116,14 @@ export class CMSService {
     }
 
     return this.apiService
-      .get<ContentPageletEntryPointData>(`cms/viewcontexts/${viewContextId}/entrypoint`, {
-        sendPGID: true,
-        params,
-        skipApiErrorHandling: true,
-      })
+      .get<ContentPageletEntryPointData>(
+        `cms/viewcontexts/${this.apiService.encodeResourceId(viewContextId)}/entrypoint`,
+        {
+          sendPGID: true,
+          params,
+          skipApiErrorHandling: true,
+        }
+      )
       .pipe(
         map(entrypoint => this.contentPageletEntryPointMapper.fromData(entrypoint)),
         map(([entrypoint, pagelets]) => ({ entrypoint, pagelets }))

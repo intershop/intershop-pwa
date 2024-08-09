@@ -7,7 +7,6 @@ import { AuthorizationMapper } from 'ish-core/models/authorization/authorization
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorizationService {
@@ -23,7 +22,9 @@ export class AuthorizationService {
 
     return this.apiService
       .get<AuthorizationData>(
-        `customers/${encodeResourceID(customer.customerNo)}/users/${encodeResourceID(user.login)}/roles`
+        `customers/${this.apiService.encodeResourceId(customer.customerNo)}/users/${this.apiService.encodeResourceId(
+          user.login
+        )}/roles`
       )
       .pipe(map(data => this.authorizationMapper.fromData(data)));
   }
