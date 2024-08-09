@@ -91,6 +91,13 @@
           line-height: $header-height-mobile;
         }
 
+        .ng-fa-icon {
+          &.header-icon {
+            padding: 0 10px;
+            color: $text-color-tertiary;
+          }
+        }
+
         .header-search-container {
           &.collapse {
             input {

@@ -90,7 +90,7 @@
         font-family: $font-family-regular;
         font-size: 13px;
         line-height: 47px;
-        color: $text-color-quaternary;
+        color: $text-color-tertiary;
         text-align: left;
         background: none;
         border: 0;
@@ -140,6 +140,11 @@
       background: $color-primary;
       border: $border-width-default solid $border-color-default;
 
+      &::placeholder {
+        // specific lighter color to have a better contrast
+        color: $text-color-quinary;
+      }
+
       @include media-breakpoint-down(sm) {
         border: $border-width-default solid $border-color-default;
 
@@ -155,6 +160,10 @@
       background: $color-inverse;
       border: $border-width-default solid $border-color-light;
       box-shadow: none;
+
+      &::placeholder {
+        color: $input-placeholder-color;
+      }
     }
   }
 

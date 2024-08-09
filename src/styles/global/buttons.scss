@@ -38,8 +38,9 @@
 
     &.disabled,
     &:disabled {
-      background-color: $CORPORATE-LIGHT;
-      border-color: $CORPORATE-LIGHT;
+      color: $text-color-secondary;
+      background-color: $color-tertiary;
+      border-color: $border-color-light;
     }
 
     &:not(:disabled):not(.disabled):active,
@@ -108,17 +109,6 @@
     padding: 0;
     line-height: inherit;
     vertical-align: baseline;
-  }
-
-  &.btn-secondary {
-    color: $button-default-color;
-    background-color: $button-default-bg;
-    border-color: $button-default-border;
-
-    &:not(:disabled):hover {
-      background-color: $color-tertiary;
-      border-color: $CORPORATE-SECONDARY;
-    }
   }
 }
 
